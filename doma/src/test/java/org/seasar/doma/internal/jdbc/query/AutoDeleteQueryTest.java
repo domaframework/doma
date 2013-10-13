@@ -68,7 +68,7 @@ public class AutoDeleteQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("delete from EMP where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
@@ -92,7 +92,7 @@ public class AutoDeleteQueryTest extends TestCase {
 
         PreparedSql sql = query.getSql();
         assertEquals("delete from EMP where ID = ?", sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
     }

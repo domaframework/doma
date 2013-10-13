@@ -15,40 +15,17 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainInParameter<V, D> implements InParameter {
+public class DomainInParameter<BASIC, DOMAIN> extends
+        AbstractInParameter<BASIC, DOMAIN> {
 
-    protected final DomainType<V, D> domainType;
-
-    protected final D domain;
-
-    protected final Holder<V, D> holder;
-
-    public DomainInParameter(DomainType<V, D> domainType, D domain) {
-        assertNotNull(domainType, domain);
-        this.domainType = domainType;
-        this.domain = domain;
-        this.holder = domainType.createDomainHolder();
-        holder.set(domain);
-    }
-
-    @Override
-    public Object getValue() {
-        return domain;
-    }
-
-    @Override
-    public Wrapper<?> getWrapper() {
-        return holder.getWrapper();
+    public DomainInParameter(DomainType<BASIC, DOMAIN> domainType, DOMAIN domain) {
+        super(domainType.createDomainHolder(), domain);
     }
 
     @Override

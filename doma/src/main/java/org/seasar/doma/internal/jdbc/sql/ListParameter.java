@@ -15,11 +15,19 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import org.seasar.doma.internal.jdbc.command.ResultProvider;
+import org.seasar.doma.internal.jdbc.query.Query;
+
 /**
  * @author taedium
  * 
  */
-public interface ListParameter<H, V> extends CallableSqlParameter {
+public interface ListParameter<ELEMENT> extends CallableSqlParameter {
 
-    void add(V value);
+    String getName();
+
+    ResultProvider<ELEMENT> createResultProvider(Query query);
+
+    void add(ELEMENT element);
+
 }

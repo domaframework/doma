@@ -21,7 +21,6 @@ import org.seasar.doma.jdbc.domain.AbstractDomainType;
  * @author taedium
  * 
  */
-@SuppressWarnings("all")
 public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
 
     private _Height() {
@@ -42,6 +41,7 @@ public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
         return Integer.class;
     }
 
+    @SuppressWarnings("unchecked")
     public Class<Height<T>> getDomainClass() {
         Class<?> clazz = Height.class;
         return (Class<Height<T>>) clazz;

@@ -31,7 +31,7 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class PreparedSqlBuilder {
 
-    protected final List<BasicInParameter> parameters = new ArrayList<BasicInParameter>();
+    protected final List<BasicInParameter<?>> parameters = new ArrayList<BasicInParameter<?>>();
 
     protected final StringBuilder rawSql = new StringBuilder(200);
 
@@ -60,11 +60,11 @@ public class PreparedSqlBuilder {
         formattedSql.setLength(formattedSql.length() - length);
     }
 
-    public void appendWrapper(Wrapper<?> wrapper) {
+    public <T> void appendWrapper(Wrapper<T> wrapper) {
         rawSql.append("?");
         formattedSql.append(wrapper.accept(config.getDialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
-        parameters.add(new BasicInParameter(wrapper));
+        parameters.add(new BasicInParameter<T>(() -> wrapper));
     }
 
     public PreparedSql build() {

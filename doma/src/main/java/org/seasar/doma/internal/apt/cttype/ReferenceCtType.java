@@ -37,7 +37,7 @@ public class ReferenceCtType extends AbstractCtType {
         super(type, env);
     }
 
-    public CtType getReferentType() {
+    public CtType getReferentCtType() {
         return referentType;
     }
 
@@ -66,14 +66,18 @@ public class ReferenceCtType extends AbstractCtType {
                 .getTypeArguments();
         if (typeArguments.size() == 1) {
             referenceCtType.referentTypeMirror = typeArguments.get(0);
-            referenceCtType.referentType = DomainCtType.newInstance(
+            referenceCtType.referentType = OptionalCtType.newInstance(
                     referenceCtType.referentTypeMirror, env);
             if (referenceCtType.referentType == null) {
-                referenceCtType.referentType = BasicCtType.newInstance(
+                referenceCtType.referentType = DomainCtType.newInstance(
                         referenceCtType.referentTypeMirror, env);
                 if (referenceCtType.referentType == null) {
-                    referenceCtType.referentType = AnyCtType.newInstance(
+                    referenceCtType.referentType = BasicCtType.newInstance(
                             referenceCtType.referentTypeMirror, env);
+                    if (referenceCtType.referentType == null) {
+                        referenceCtType.referentType = AnyCtType.newInstance(
+                                referenceCtType.referentTypeMirror, env);
+                    }
                 }
             }
         }

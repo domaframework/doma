@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-public interface InParameter extends PreparedSqlParameter, CallableSqlParameter {
+public interface InParameter<BASIC> extends PreparedSqlParameter<BASIC>,
+        CallableSqlParameter {
 
 }

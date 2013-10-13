@@ -75,7 +75,7 @@ public class AutoUpdateQueryTest extends TestCase {
                 "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
 
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
@@ -102,7 +102,7 @@ public class AutoUpdateQueryTest extends TestCase {
         assertEquals(
                 "update EMP set VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(100), parameters.get(0).getWrapper().get());
         assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
@@ -129,7 +129,7 @@ public class AutoUpdateQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("update EMP set NAME = ?, VERSION = ? where ID = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
@@ -157,7 +157,7 @@ public class AutoUpdateQueryTest extends TestCase {
         assertEquals(
                 "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
@@ -186,7 +186,7 @@ public class AutoUpdateQueryTest extends TestCase {
         assertEquals(
                 "update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());

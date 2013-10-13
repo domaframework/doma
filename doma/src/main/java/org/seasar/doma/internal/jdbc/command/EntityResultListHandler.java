@@ -36,7 +36,8 @@ public class EntityResultListHandler<ENTITY> extends
 
     @Override
     protected ResultProvider<ENTITY> createResultProvider(SelectQuery query) {
-        return new EntityResultProvider<>(entityType, query, entity -> entity);
+        return new EntityResultProvider<>(entityType, query,
+                query.isResultMappingEnsured(), entity -> entity);
     }
 
 }

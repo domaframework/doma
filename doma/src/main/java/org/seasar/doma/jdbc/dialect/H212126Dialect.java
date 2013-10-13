@@ -140,7 +140,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call identity()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override
@@ -151,7 +151,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call next value for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override

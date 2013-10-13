@@ -164,7 +164,7 @@ public class QueryParameterMeta {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
                         qualifiedName);
             }
-            referenceCtType.getReferentType().accept(
+            referenceCtType.getReferentCtType().accept(
                     new ReferenceReferentCtTypeVisitor(parameterElement), null);
             return referenceCtType;
         }

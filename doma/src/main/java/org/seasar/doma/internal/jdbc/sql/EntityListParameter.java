@@ -19,51 +19,37 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
+import org.seasar.doma.internal.jdbc.command.EntityResultProvider;
+import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
  * 
  */
-public class EntityListParameter<E> implements ListParameter<EntityType<E>, E> {
+public class EntityListParameter<ENTITY> extends AbstractListParameter<ENTITY> {
 
-    protected final List<E> entities;
-
-    protected final EntityType<E> entityType;
-
-    protected final String name;
+    protected final EntityType<ENTITY> entityType;
 
     protected final boolean resultMappingEnsured;
 
-    public EntityListParameter(EntityType<E> entityType, List<E> entities,
-            String name, boolean resultMappingEnsured) {
-        assertNotNull(entityType, entities, name);
+    public EntityListParameter(EntityType<ENTITY> entityType,
+            List<ENTITY> list, String name, boolean resultMappingEnsured) {
+        super(list, name);
+        assertNotNull(entityType);
         this.entityType = entityType;
-        this.entities = entities;
-        this.name = name;
         this.resultMappingEnsured = resultMappingEnsured;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public Object getValue() {
-        return entities;
-    }
-
-    public EntityType<E> getEntityType() {
-        return entityType;
-    }
-
-    @Override
-    public void add(E entity) {
-        entities.add(entity);
-    }
-
-    public boolean isResultMappingEnsured() {
-        return resultMappingEnsured;
+    public EntityResultProvider<ENTITY, ENTITY> createResultProvider(Query query) {
+        return new EntityResultProvider<>(entityType, query,
+                resultMappingEnsured, entity -> entity);
     }
 
     @Override

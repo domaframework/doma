@@ -158,7 +158,7 @@ public class Db2Dialect extends StandardDialect {
         }
         String rawSql = "values nextval for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override

@@ -30,7 +30,7 @@ public class UtilLoggingJdbcLoggerTest extends TestCase {
 
     public void testLogSql() throws Exception {
         PreparedSql sql = new PreparedSql(SqlKind.SELECT, "aaa", "bbb", "ccc",
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
         UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
         logger.logSql("ddd", "eee", sql);
     }

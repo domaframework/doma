@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Function;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
@@ -30,10 +30,6 @@ import org.seasar.doma.jdbc.entity.EntityType;
  */
 public class EntityResultProvider<ENTITY, CONTAINER> implements
         ResultProvider<CONTAINER> {
-
-    protected final EntityType<ENTITY> entityType;
-
-    protected final SelectQuery query;
 
     protected final Function<ENTITY, CONTAINER> mapper;
 
@@ -44,20 +40,16 @@ public class EntityResultProvider<ENTITY, CONTAINER> implements
      * @param query
      * @param mapper
      */
-    public EntityResultProvider(EntityType<ENTITY> entityType,
-            SelectQuery query, Function<ENTITY, CONTAINER> mapper) {
+    public EntityResultProvider(EntityType<ENTITY> entityType, Query query,
+            boolean resultMappingEnsured, Function<ENTITY, CONTAINER> mapper) {
         assertNotNull(entityType, query, mapper);
-        this.entityType = entityType;
-        this.query = query;
-        this.mapper = mapper;
         this.builder = new EntityBuilder<ENTITY>(query, entityType,
-                query.isResultMappingEnsured());
+                resultMappingEnsured);
+        this.mapper = mapper;
     }
 
     @Override
     public CONTAINER get(ResultSet resultSet) throws SQLException {
-        EntityBuilder<ENTITY> builder = new EntityBuilder<ENTITY>(query,
-                entityType, query.isResultMappingEnsured());
         ENTITY entity = builder.build(resultSet);
         return mapper.apply(entity);
     }

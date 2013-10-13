@@ -98,13 +98,18 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         allocationSizeWrapper.set(allocationSize);
         StringWrapper pkColumnValueWrapper = new StringWrapper();
         pkColumnValueWrapper.set(pkColumnValue);
-        updateSql = new PreparedSql(SqlKind.UPDATE, createUpdateRawSql(),
-                createUpdateFormattedSql(), null, Arrays.asList(
-                        new BasicInParameter(allocationSizeWrapper),
-                        new BasicInParameter(pkColumnValueWrapper)));
+        updateSql = new PreparedSql(
+                SqlKind.UPDATE,
+                createUpdateRawSql(),
+                createUpdateFormattedSql(),
+                null,
+                Arrays.asList(
+                        new BasicInParameter<Long>(() -> allocationSizeWrapper),
+                        new BasicInParameter<String>(() -> pkColumnValueWrapper)));
         selectSql = new PreparedSql(SqlKind.SELECT, createSelectRawSql(),
                 createSelectFormattedSql(), null,
-                Arrays.asList(new BasicInParameter(pkColumnValueWrapper)));
+                Arrays.asList(new BasicInParameter<String>(
+                        () -> pkColumnValueWrapper)));
     }
 
     /**

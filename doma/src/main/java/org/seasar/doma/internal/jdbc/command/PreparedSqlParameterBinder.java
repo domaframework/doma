@@ -32,7 +32,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class PreparedSqlParameterBinder implements
-        ParameterBinder<PreparedStatement, PreparedSqlParameter> {
+        ParameterBinder<PreparedStatement, PreparedSqlParameter<?>> {
 
     protected final Query query;
 
@@ -43,12 +43,13 @@ public class PreparedSqlParameterBinder implements
 
     @Override
     public void bind(PreparedStatement preparedStatement,
-            List<? extends PreparedSqlParameter> paramters) throws SQLException {
+            List<? extends PreparedSqlParameter<?>> paramters)
+            throws SQLException {
         assertNotNull(preparedStatement, paramters);
         int index = 1;
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
-        for (PreparedSqlParameter parameter : paramters) {
+        for (PreparedSqlParameter<?> parameter : paramters) {
             SetValueFunction function = new SetValueFunction(preparedStatement,
                     index);
             Wrapper<?> wrapper = parameter.getWrapper();

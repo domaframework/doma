@@ -173,7 +173,7 @@ public class PostgresDialect extends StandardDialect {
         buf.append("_seq')");
         String rawSql = buf.toString();
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override
@@ -184,7 +184,7 @@ public class PostgresDialect extends StandardDialect {
         }
         String rawSql = "select nextval('" + qualifiedSequenceName + "')";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override

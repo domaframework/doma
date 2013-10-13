@@ -21,36 +21,46 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.query.ModuleQuery;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
 import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
-import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.EntityResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapListParameter;
-import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.MapResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
+import org.seasar.doma.internal.jdbc.sql.SingleResultParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.Wrapper;
@@ -103,16 +113,23 @@ public class CallableSqlParameterFetcher implements
         }
 
         @Override
-        public <V> Void visitBasicInOutParameter(
-                BasicInOutParameter<V> parameter, Void p) throws SQLException {
+        public <BASIC> Void visitBasicInParameter(
+                BasicInParameter<BASIC> parameter, Void p) throws SQLException {
+            index++;
+            return null;
+        }
+
+        @Override
+        public <BASIC> Void visitBasicOutParameter(
+                BasicOutParameter<BASIC> parameter, Void p) throws SQLException {
             handleOutParameter(parameter);
             index++;
             return null;
         }
 
         @Override
-        public <V, D> Void visitDomainInOutParameter(
-                DomainInOutParameter<V, D> parameter, Void p)
+        public <BASIC> Void visitBasicInOutParameter(
+                BasicInOutParameter<BASIC> parameter, Void p)
                 throws SQLException {
             handleOutParameter(parameter);
             index++;
@@ -120,135 +137,250 @@ public class CallableSqlParameterFetcher implements
         }
 
         @Override
-        public Void visitBasicInParameter(BasicInParameter parameter, Void p)
+        public <BASIC> Void visitBasicListParameter(
+                BasicListParameter<BASIC> parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public <BASIC> Void visitBasicSingleResultParameter(
+                BasicSingleResultParameter<BASIC> parameter, Void p)
+                throws SQLException {
+            handleSingleResultParameter(parameter);
+            index++;
+            return null;
+        }
+
+        @Override
+        public <BASIC> Void visitBasicResultListParameter(
+                BasicResultListParameter<BASIC> parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public <BASIC, DOMAIN> Void visitDomainInParameter(
+                DomainInParameter<BASIC, DOMAIN> parameter, Void p)
                 throws SQLException {
             index++;
             return null;
         }
 
         @Override
-        public <V, D> Void visitDomainInParameter(
-                DomainInParameter<V, D> parameter, Void p) throws SQLException {
-            index++;
-            return null;
-        }
-
-        @Override
-        public <V> Void visitBasicOutParameter(BasicOutParameter<V> parameter,
-                Void p) throws SQLException {
+        public <BASIC, DOMAIN> Void visitDomainOutParameter(
+                DomainOutParameter<BASIC, DOMAIN> parameter, Void p)
+                throws SQLException {
             handleOutParameter(parameter);
             index++;
             return null;
         }
 
         @Override
-        public <V, D> Void visitDomainOutParameter(
-                DomainOutParameter<V, D> parameter, Void p) throws SQLException {
+        public <BASIC, DOMAIN> Void visitDomainInOutParameter(
+                DomainInOutParameter<BASIC, DOMAIN> parameter, Void p)
+                throws SQLException {
             handleOutParameter(parameter);
             index++;
             return null;
         }
 
-        protected void handleOutParameter(OutParameter<?> parameter)
+        @Override
+        public <BASIC, DOMAIN> Void visitDomainListParameter(
+                DomainListParameter<BASIC, DOMAIN> parameter, Void p)
                 throws SQLException {
-            parameter.getWrapper().accept(jdbcMappingVisitor,
-                    new GetOutParameterFunction(callableStatement, index));
-            parameter.update();
+            handleListParameter(parameter);
+            return null;
         }
 
         @Override
-        public <V> Void visitBasicResultParameter(
-                BasicResultParameter<V> parameter, Void p) throws SQLException {
-            parameter.getWrapper().accept(jdbcMappingVisitor,
-                    new GetOutParameterFunction(callableStatement, index));
+        public <BASIC, DOMAIN> Void visitDomainSingleResultParameter(
+                DomainSingleResultParameter<BASIC, DOMAIN> parameter, Void p)
+                throws SQLException {
+            handleSingleResultParameter(parameter);
             index++;
             return null;
         }
 
         @Override
-        public <V, D> Void visitDomainResultParameter(
-                DomainResultParameter<V, D> parameter, Void p)
+        public <BASIC, DOMAIN> Void visitDomainResultListParameter(
+                DomainResultListParameter<BASIC, DOMAIN> parameter, Void p)
                 throws SQLException {
-            Wrapper<?> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index));
-            index++;
+            handleListParameter(parameter);
             return null;
         }
 
         @Override
-        public <V> Void visitBasicListParameter(
-                BasicListParameter<V> parameter, Void p) throws SQLException {
-            handleListParameter(new BasicFetcherCallback<V>(parameter));
-            return null;
-        }
-
-        @Override
-        public <V, D> Void visitDomainListParameter(
-                DomainListParameter<V, D> parameter, Void p)
+        public <ENTITY> Void visitEntityListParameter(
+                EntityListParameter<ENTITY> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new DomainFetcherCallback<V, D>(parameter));
+            handleListParameter(parameter);
             return null;
         }
 
         @Override
-        public <E> Void visitEntityListParameter(
-                EntityListParameter<E> parameter, Void p) throws SQLException {
-            handleListParameter(new EntityFetcherCallback<E>(parameter));
+        public <ENTITY> Void visitEntityResultListParameter(
+                EntityResultListParameter<ENTITY> parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
             return null;
         }
 
         @Override
         public Void visitMapListParameter(MapListParameter parameter, Void p)
                 throws SQLException {
-            handleListParameter(new MapFetcherCallback(parameter));
+            handleListParameter(parameter);
             return null;
         }
 
         @Override
-        public <V> Void visitBasicListResultParameter(
-                BasicListResultParameter<V> parameter, Void p)
-                throws SQLException {
-            handleListParameter(new BasicFetcherCallback<V>(parameter));
+        public Void visitMapResultListParameter(
+                MapResultListParameter parameter, Void p) throws SQLException {
+            handleListParameter(parameter);
             return null;
         }
 
         @Override
-        public <V, D> Void visitDomainListResultParameter(
-                DomainListResultParameter<V, D> parameter, Void p)
+        public <BASIC> Void visitOptionalBasicOutParameter(
+                OptionalBasicOutParameter<BASIC> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new DomainFetcherCallback<V, D>(parameter));
+            handleOutParameter(parameter);
+            index++;
             return null;
         }
 
         @Override
-        public <E> Void visitEntityListResultParameter(
-                EntityListResultParameter<E> parameter, Void p)
+        public <BASIC> Void visitOptionalBasicInParameter(
+                OptionalBasicInParameter<BASIC> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new EntityFetcherCallback<E>(parameter));
+            index++;
             return null;
         }
 
         @Override
-        public Void visitMapListResultParameter(
-                MapListResultParameter parameter, Void p) throws SQLException {
-            handleListParameter(new MapFetcherCallback(parameter));
+        public <BASIC> Void visitOptionalBasicInOutParameter(
+                OptionalBasicInOutParameter<BASIC> parameter, Void p)
+                throws SQLException {
+            handleOutParameter(parameter);
+            index++;
             return null;
         }
 
-        protected void handleListParameter(FetcherCallback callback)
+        @Override
+        public <BASIC> Void visitOptionalBasicListParameter(
+                OptionalBasicListParameter<BASIC> parameter, Void p)
                 throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public <BASIC> Void visitOptionalBasicSingleResultParameter(
+                OptionalBasicSingleResultParameter<BASIC> parameter, Void p)
+                throws SQLException {
+            handleSingleResultParameter(parameter);
+            index++;
+            return null;
+        }
+
+        @Override
+        public <BASIC> Void visitOptionalBasicResultListParameter(
+                OptionalBasicResultListParameter<BASIC> parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public <BASIC, DOMAIN> Void visitOptionalDomainOutParameter(
+                OptionalDomainOutParameter<BASIC, DOMAIN> parameter, Void p)
+                throws SQLException {
+            handleOutParameter(parameter);
+            index++;
+            return null;
+        }
+
+        @Override
+        public <BASIC, DOMAIN> Void visitOptionalDomainInParameter(
+                OptionalDomainInParameter<BASIC, DOMAIN> parameter, Void p)
+                throws SQLException {
+            index++;
+            return null;
+        }
+
+        @Override
+        public <BASIC, DOMAIN> Void visitOptionalDomainInOutParameter(
+                OptionalDomainInOutParameter<BASIC, DOMAIN> parameter, Void p)
+                throws SQLException {
+            handleOutParameter(parameter);
+            index++;
+            return null;
+        }
+
+        @Override
+        public <BASIC, DOMAIN> Void visitOptionalDomainListParameter(
+                OptionalDomainListParameter<BASIC, DOMAIN> parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public <BASIC, DOMAIN> Void visitOptionalDomainSingleResultParameter(
+                OptionalDomainSingleResultParameter<BASIC, DOMAIN> parameter,
+                Void p) throws SQLException {
+            handleSingleResultParameter(parameter);
+            index++;
+            return null;
+        }
+
+        @Override
+        public <BASIC, DOMAIN> Void visitOptionalDomainResultListParameter(
+                OptionalDomainResultListParameter<BASIC, DOMAIN> parameter,
+                Void p) throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        protected <BASIC> void handleOutParameter(OutParameter<BASIC> parameter)
+                throws SQLException {
+            Wrapper<BASIC> wrapper = parameter.getWrapper();
+            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
+                    callableStatement, index));
+            parameter.update();
+        }
+
+        protected <BASIC, RESULT> void handleSingleResultParameter(
+                SingleResultParameter<BASIC, RESULT> parameter)
+                throws SQLException {
+            Wrapper<BASIC> wrapper = parameter.getWrapper();
+            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
+                    callableStatement, index));
+        }
+
+        protected <ELEMENT> void handleListParameter(
+                ListParameter<ELEMENT> parameter) throws SQLException {
+            ResultProvider<ELEMENT> provider = parameter
+                    .createResultProvider(query);
+            consumeResultSet(parameter.getName(),
+                    resultSet -> parameter.add(provider.get(resultSet)));
+        }
+
+        protected void consumeResultSet(String parameterName,
+                ResultSetConsumer consumer) throws SQLException {
             if (dialect.supportsResultSetReturningAsOutParameter()) {
                 JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
                 ResultSet resultSet = resultSetType.getValue(callableStatement,
                         index);
                 if (resultSet == null) {
                     throw new JdbcException(Message.DOMA2137, index,
-                            callback.getParameterName(), query.getModuleName());
+                            parameterName, query.getModuleName());
                 }
                 try {
                     while (resultSet.next()) {
-                        callback.fetch(resultSet);
+                        consumer.accept(resultSet);
                     }
                 } finally {
                     JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger());
@@ -262,12 +394,12 @@ public class CallableSqlParameterFetcher implements
                     resultSet = callableStatement.getResultSet();
                 }
                 if (resultSet == null) {
-                    throw new JdbcException(Message.DOMA2136,
-                            callback.getParameterName(), query.getModuleName());
+                    throw new JdbcException(Message.DOMA2136, parameterName,
+                            query.getModuleName());
                 }
                 try {
                     while (resultSet.next()) {
-                        callback.fetch(resultSet);
+                        consumer.accept(resultSet);
                     }
                 } finally {
                     callableStatement
@@ -276,112 +408,8 @@ public class CallableSqlParameterFetcher implements
             }
         }
 
-        protected interface FetcherCallback {
-
-            String getParameterName();
-
-            void fetch(ResultSet resultSet) throws SQLException;
-
-        }
-
-        protected class EntityFetcherCallback<E> implements FetcherCallback {
-
-            protected EntityBuilder<E> builder;
-
-            protected EntityListParameter<E> parameter;
-
-            protected EntityType<E> entityType;
-
-            public EntityFetcherCallback(EntityListParameter<E> parameter) {
-                this.entityType = parameter.getEntityType();
-                this.builder = new EntityBuilder<E>(query, entityType,
-                        parameter.isResultMappingEnsured());
-                this.parameter = parameter;
-            }
-
-            @Override
-            public void fetch(ResultSet resultSet) throws SQLException {
-                E entity = builder.build(resultSet);
-                parameter.add(entity);
-            }
-
-            @Override
-            public String getParameterName() {
-                return parameter.getName();
-            }
-        }
-
-        protected class MapFetcherCallback implements FetcherCallback {
-
-            protected MapFetcher fetcher;
-
-            protected MapListParameter parameter;
-
-            public MapFetcherCallback(MapListParameter parameter) {
-                this.fetcher = new MapFetcher(query,
-                        parameter.getMapKeyNamingType());
-                this.parameter = parameter;
-            }
-
-            @Override
-            public void fetch(ResultSet resultSet) throws SQLException {
-                Map<String, Object> map = new LinkedHashMap<String, Object>();
-                fetcher.fetch(resultSet, map);
-                parameter.add(map);
-            }
-
-            @Override
-            public String getParameterName() {
-                return parameter.getName();
-            }
-        }
-
-        protected class DomainFetcherCallback<V, D> implements FetcherCallback {
-
-            protected BasicFetcher fetcher;
-
-            protected DomainListParameter<V, D> parameter;
-
-            public DomainFetcherCallback(DomainListParameter<V, D> parameter) {
-                this.fetcher = new BasicFetcher(query);
-                this.parameter = parameter;
-            }
-
-            @Override
-            public void fetch(ResultSet resultSet) throws SQLException {
-                Holder<V, D> state = parameter.getDomainHolder();
-                fetcher.fetch(resultSet, state.getWrapper());
-                parameter.add(state.get());
-            }
-
-            @Override
-            public String getParameterName() {
-                return parameter.getName();
-            }
-        }
-
-        protected class BasicFetcherCallback<V> implements FetcherCallback {
-
-            protected BasicFetcher fetcher;
-
-            protected BasicListParameter<V> parameter;
-
-            public BasicFetcherCallback(BasicListParameter<V> parameter) {
-                this.fetcher = new BasicFetcher(query);
-                this.parameter = parameter;
-            }
-
-            @Override
-            public void fetch(ResultSet resultSet) throws SQLException {
-                Wrapper<V> wrapper = parameter.getWrapper();
-                fetcher.fetch(resultSet, wrapper);
-                parameter.add(wrapper.get());
-            }
-
-            @Override
-            public String getParameterName() {
-                return parameter.getName();
-            }
+        protected interface ResultSetConsumer {
+            void accept(ResultSet resultSet) throws SQLException;
         }
 
     }

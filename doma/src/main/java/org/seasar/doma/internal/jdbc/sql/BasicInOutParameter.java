@@ -15,8 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import java.util.function.Supplier;
 
+import org.seasar.doma.internal.wrapper.BasicHolder;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -24,32 +25,12 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicInOutParameter<V> implements InParameter, OutParameter<V> {
+public class BasicInOutParameter<BASIC> extends
+        AbstractInOutParameter<BASIC, BASIC> {
 
-    protected final Wrapper<V> wrapper;
-
-    protected final Reference<V> reference;
-
-    public BasicInOutParameter(Wrapper<V> wrapper, Reference<V> reference) {
-        assertNotNull(wrapper, reference);
-        wrapper.set(reference.get());
-        this.wrapper = wrapper;
-        this.reference = reference;
-    }
-
-    @Override
-    public V getValue() {
-        return wrapper.get();
-    }
-
-    @Override
-    public Wrapper<V> getWrapper() {
-        return wrapper;
-    }
-
-    @Override
-    public void update() {
-        reference.set(wrapper.get());
+    public BasicInOutParameter(Supplier<Wrapper<BASIC>> supplier,
+            Reference<BASIC> reference) {
+        super(new BasicHolder<BASIC>(supplier, false), reference);
     }
 
     @Override

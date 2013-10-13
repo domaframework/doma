@@ -85,7 +85,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(
                 "update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(5, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertTrue(parameters.get(1).getWrapper().get() == null);
@@ -131,7 +131,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(
                 "update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertNull(parameters.get(1).getWrapper().get());
@@ -175,7 +175,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(
                 "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
@@ -219,7 +219,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(
                 "update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());

@@ -28,8 +28,6 @@ import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.StringWrapper;
 
 public class PreparedSqlParameterBinderTest extends TestCase {
 
@@ -37,10 +35,12 @@ public class PreparedSqlParameterBinderTest extends TestCase {
 
     public void testBind() throws Exception {
         MockPreparedStatement preparedStatement = new MockPreparedStatement();
-        List<BasicInParameter> parameters = new ArrayList<BasicInParameter>();
-        parameters.add(new BasicInParameter(new StringWrapper("aaa")));
-        parameters.add(new BasicInParameter(new BigDecimalWrapper(
-                new BigDecimal(10))));
+        List<BasicInParameter<?>> parameters = new ArrayList<BasicInParameter<?>>();
+        parameters.add(new BasicInParameter<String>(
+                () -> new org.seasar.doma.wrapper.StringWrapper("aaa")));
+        parameters.add(new BasicInParameter<BigDecimal>(
+                () -> new org.seasar.doma.wrapper.BigDecimalWrapper(
+                        new BigDecimal(10))));
         PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
                 new MyQuery());
         binder.bind(preparedStatement, parameters);

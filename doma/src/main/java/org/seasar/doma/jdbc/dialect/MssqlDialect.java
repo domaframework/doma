@@ -144,7 +144,7 @@ public class MssqlDialect extends Mssql2008Dialect {
         }
         String rawSql = "select next value for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override

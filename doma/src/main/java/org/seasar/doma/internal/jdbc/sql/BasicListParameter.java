@@ -18,44 +18,32 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
+import java.util.function.Supplier;
 
+import org.seasar.doma.internal.jdbc.command.BasicResultProvider;
+import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BasicListParameter<V> implements ListParameter<Wrapper<V>, V> {
+public class BasicListParameter<BASIC> extends AbstractListParameter<BASIC> {
 
-    protected final Wrapper<V> wrapper;
+    protected final Supplier<Wrapper<BASIC>> supplier;
 
-    protected final List<V> values;
-
-    protected final String name;
-
-    public BasicListParameter(Wrapper<V> wrapper, List<V> values, String name) {
-        assertNotNull(wrapper, values, name);
-        this.wrapper = wrapper;
-        this.values = values;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+    public BasicListParameter(Supplier<Wrapper<BASIC>> supplier,
+            List<BASIC> list, String name) {
+        super(list, name);
+        assertNotNull(supplier);
+        this.supplier = supplier;
     }
 
     @Override
-    public Object getValue() {
-        return values;
-    }
-
-    public Wrapper<V> getWrapper() {
-        return wrapper;
-    }
-
-    @Override
-    public void add(V value) {
-        values.add(value);
+    public BasicResultProvider<BASIC, BASIC> createResultProvider(Query query) {
+        return new BasicResultProvider<>(
+                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                        supplier, false), query);
     }
 
     @Override

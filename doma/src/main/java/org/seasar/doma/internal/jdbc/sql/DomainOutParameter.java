@@ -15,47 +15,19 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainOutParameter<V, D> implements OutParameter<V> {
+public class DomainOutParameter<BASIC, DOMAIN> extends
+        AbstractOutParameter<BASIC, DOMAIN> {
 
-    protected final DomainType<V, D> domainType;
-
-    protected final Reference<D> reference;
-
-    protected final Holder<V, D> holder;
-
-    public DomainOutParameter(DomainType<V, D> domainType,
-            Reference<D> reference) {
-        assertNotNull(domainType, reference);
-        this.domainType = domainType;
-        this.reference = reference;
-        holder = domainType.createDomainHolder();
-        holder.set(reference.get());
-    }
-
-    @Override
-    public Object getValue() {
-        return reference.get();
-    }
-
-    @Override
-    public Wrapper<V> getWrapper() {
-        return holder.getWrapper();
-    }
-
-    @Override
-    public void update() {
-        reference.set(holder.get());
+    public DomainOutParameter(DomainType<BASIC, DOMAIN> domainType,
+            Reference<DOMAIN> reference) {
+        super(domainType.createDomainHolder(), reference);
     }
 
     @Override

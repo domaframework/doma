@@ -27,6 +27,7 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 import org.seasar.doma.message.Message;
@@ -64,102 +65,144 @@ public class AutoFunctionQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
-        ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(
+        ResultParameterMeta resultParameterMeta = createResultParameterMeta(
                 queryMeta, returnMeta);
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
 
-    protected ResultParameterMeta createCallableSqlResultParameterMeta(
+    protected ResultParameterMeta createResultParameterMeta(
             final AutoFunctionQueryMeta queryMeta,
             final QueryReturnMeta returnMeta) {
-        return returnMeta
-                .getCtType()
-                .accept(new SimpleCtTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
+        return returnMeta.getCtType().accept(
+                new ReturnCtTypeVisitor(queryMeta, returnMeta), false);
+    }
 
-                    @Override
-                    protected ResultParameterMeta defaultAction(CtType type,
-                            Void p) throws RuntimeException {
-                        throw new AptException(Message.DOMA4063, env,
-                                returnMeta.getElement(), returnMeta.getType());
-                    }
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class ReturnCtTypeVisitor extends
+            SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 
-                    @Override
-                    public ResultParameterMeta visitBasicCtType(
-                            BasicCtType ctType, Void p) throws RuntimeException {
-                        return new BasicResultParameterMeta(ctType);
-                    }
+        protected final AutoFunctionQueryMeta queryMeta;
 
-                    @Override
-                    public ResultParameterMeta visitDomainCtType(
-                            DomainCtType ctType, Void p)
-                            throws RuntimeException {
-                        return new DomainResultParameterMeta(ctType);
-                    }
+        protected final QueryReturnMeta returnMeta;
 
-                    @Override
-                    public ResultParameterMeta visitIterableCtType(
-                            IterableCtType ctType, Void p)
-                            throws RuntimeException {
-                        if (!ctType.isList()) {
-                            defaultAction(ctType, p);
-                        }
-                        return ctType
-                                .getElementCtType()
-                                .accept(new SimpleCtTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
+        public ReturnCtTypeVisitor(AutoFunctionQueryMeta queryMeta,
+                QueryReturnMeta returnMeta) {
+            this.queryMeta = queryMeta;
+            this.returnMeta = returnMeta;
+        }
 
-                                    @Override
-                                    protected ResultParameterMeta defaultAction(
-                                            CtType ctType, Void p)
-                                            throws RuntimeException {
-                                        throw new AptException(
-                                                Message.DOMA4065, env,
-                                                returnMeta.getElement(),
-                                                ctType.getTypeName());
-                                    }
+        @Override
+        protected ResultParameterMeta defaultAction(CtType type, Boolean p)
+                throws RuntimeException {
+            throw new AptException(Message.DOMA4063, env,
+                    returnMeta.getElement(), returnMeta.getType());
+        }
 
-                                    @Override
-                                    public ResultParameterMeta visitBasicCtType(
-                                            BasicCtType ctType, Void p)
-                                            throws RuntimeException {
-                                        return new BasicListResultParameterMeta(
-                                                ctType);
-                                    }
+        @Override
+        public ResultParameterMeta visitBasicCtType(BasicCtType ctType,
+                Boolean optional) throws RuntimeException {
+            if (Boolean.TRUE == optional) {
+                return new OptionalBasicSingleResultParameterMeta(ctType);
+            }
+            return new BasicSingleResultParameterMeta(ctType);
+        }
 
-                                    @Override
-                                    public ResultParameterMeta visitDomainCtType(
-                                            DomainCtType ctType, Void p)
-                                            throws RuntimeException {
-                                        return new DomainListResultParameterMeta(
-                                                ctType);
-                                    }
+        @Override
+        public ResultParameterMeta visitDomainCtType(DomainCtType ctType,
+                Boolean optional) throws RuntimeException {
+            if (Boolean.TRUE == optional) {
+                return new OptionalDomainSingleResultParameterMeta(ctType);
+            }
+            return new DomainSingleResultParameterMeta(ctType);
+        }
 
-                                    @Override
-                                    public ResultParameterMeta visitEntityCtType(
-                                            EntityCtType ctType, Void p)
-                                            throws RuntimeException {
-                                        if (ctType.isAbstract()) {
-                                            throw new AptException(
-                                                    Message.DOMA4156, env,
-                                                    returnMeta.getElement(),
-                                                    ctType.getTypeName());
-                                        }
-                                        return new EntityListResultParameterMeta(
-                                                ctType,
-                                                queryMeta
-                                                        .getEnsureResultMapping());
-                                    }
+        @Override
+        public ResultParameterMeta visitIterableCtType(IterableCtType ctType,
+                Boolean p) throws RuntimeException {
+            if (!ctType.isList()) {
+                defaultAction(ctType, p);
+            }
+            return ctType.getElementCtType().accept(
+                    new IterableElementCtTypeVisitor(queryMeta, returnMeta),
+                    false);
+        }
 
-                                    @Override
-                                    public ResultParameterMeta visitMapCtType(
-                                            MapCtType ctType, Void p)
-                                            throws RuntimeException {
-                                        return new MapListResultParameterMeta(
-                                                ctType);
-                                    }
+        @Override
+        public ResultParameterMeta visitOptionalCtType(OptionalCtType ctType,
+                Boolean p) throws RuntimeException {
+            return ctType.getElementCtType().accept(this, true);
+        }
 
-                                }, p);
-                    }
+    }
 
-                }, null);
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class IterableElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
+
+        protected final AutoFunctionQueryMeta queryMeta;
+
+        protected final QueryReturnMeta returnMeta;
+
+        public IterableElementCtTypeVisitor(AutoFunctionQueryMeta queryMeta,
+                QueryReturnMeta returnMeta) {
+            this.queryMeta = queryMeta;
+            this.returnMeta = returnMeta;
+        }
+
+        @Override
+        protected ResultParameterMeta defaultAction(CtType ctType, Boolean p)
+                throws RuntimeException {
+            throw new AptException(Message.DOMA4065, env,
+                    returnMeta.getElement(), ctType.getTypeName());
+        }
+
+        @Override
+        public ResultParameterMeta visitBasicCtType(BasicCtType ctType,
+                Boolean optional) throws RuntimeException {
+            if (Boolean.TRUE == optional) {
+                return new OptionalBasicResultListParameterMeta(ctType);
+            }
+            return new BasicResultListParameterMeta(ctType);
+        }
+
+        @Override
+        public ResultParameterMeta visitDomainCtType(DomainCtType ctType,
+                Boolean optional) throws RuntimeException {
+            if (Boolean.TRUE == optional) {
+                return new OptionalDomainResultListParameterMeta(ctType);
+            }
+            return new DomainResultListParameterMeta(ctType);
+        }
+
+        @Override
+        public ResultParameterMeta visitEntityCtType(EntityCtType ctType,
+                Boolean p) throws RuntimeException {
+            if (ctType.isAbstract()) {
+                throw new AptException(Message.DOMA4156, env,
+                        returnMeta.getElement(), ctType.getTypeName());
+            }
+            return new EntityResultListParameterMeta(ctType,
+                    queryMeta.getEnsureResultMapping());
+        }
+
+        @Override
+        public ResultParameterMeta visitMapCtType(MapCtType ctType, Boolean p)
+                throws RuntimeException {
+            return new MapResultListParameterMeta(ctType);
+        }
+
+        @Override
+        public ResultParameterMeta visitOptionalCtType(OptionalCtType ctType,
+                Boolean p) throws RuntimeException {
+            return ctType.getElementCtType().accept(this, true);
+        }
     }
 }

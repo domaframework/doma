@@ -51,9 +51,9 @@ import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMeta;
 import org.seasar.doma.internal.apt.meta.BasicInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.BasicInParameterMeta;
 import org.seasar.doma.internal.apt.meta.BasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.BasicOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
@@ -61,13 +61,25 @@ import org.seasar.doma.internal.apt.meta.DelegateQueryMeta;
 import org.seasar.doma.internal.apt.meta.DomainInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainInParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainListParameterMeta;
-import org.seasar.doma.internal.apt.meta.DomainListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.DomainResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.DomainResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.DomainSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
-import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.EntityResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
-import org.seasar.doma.internal.apt.meta.MapListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.MapResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalBasicInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalBasicInParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalBasicListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalBasicOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalBasicResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalBasicSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDomainInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDomainInParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDomainListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDomainOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDomainResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDomainSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ParentDaoMeta;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
@@ -105,19 +117,31 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
-import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.EntityResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapListParameter;
-import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.MapResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalBasicSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDomainSingleResultParameter;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
@@ -1015,18 +1039,18 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitBasicListParameterMeta(final BasicListParameterMeta m,
                 AutoModuleQueryMeta p) {
             BasicCtType basicCtType = m.getBasicCtType();
-            basicCtType.getWrapperType().accept(
+            basicCtType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
                         public Void visitEnumWrapperCtType(
-                                EnumWrapperCtType dataType, Void p)
+                                EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
-                                    BasicListParameter.class.getName(),
-                                    dataType.getBasicCtType()
-                                            .getBoxedTypeName(), dataType
-                                            .getTypeName(), dataType
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
+                                    BasicListParameter.class.getName(), ctType
+                                            .getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), ctType
                                             .getBasicCtType()
                                             .getQualifiedName(), m.getName());
                             return null;
@@ -1035,7 +1059,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s, \"%4$s\"));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s, \"%4$s\"));%n",
                                     BasicListParameter.class.getName(), ctType
                                             .getBasicCtType()
                                             .getBoxedTypeName(), ctType
@@ -1085,18 +1109,18 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitBasicInOutParameterMeta(
                 final BasicInOutParameterMeta m, AutoModuleQueryMeta p) {
             BasicCtType basicCtType = m.getBasicCtType();
-            basicCtType.getWrapperType().accept(
+            basicCtType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
                         public Void visitEnumWrapperCtType(
-                                EnumWrapperCtType dataType, Void p)
+                                EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
-                                    BasicInOutParameter.class.getName(),
-                                    dataType.getBasicCtType()
-                                            .getBoxedTypeName(), dataType
-                                            .getTypeName(), dataType
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                                    BasicInOutParameter.class.getName(), ctType
+                                            .getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), ctType
                                             .getBasicCtType()
                                             .getQualifiedName(), m.getName());
                             return null;
@@ -1105,7 +1129,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
                                     BasicInOutParameter.class.getName(), ctType
                                             .getBasicCtType()
                                             .getBoxedTypeName(), ctType
@@ -1133,18 +1157,18 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitBasicOutParameterMeta(final BasicOutParameterMeta m,
                 AutoModuleQueryMeta p) {
             BasicCtType basicCtType = m.getBasicCtType();
-            basicCtType.getWrapperType().accept(
+            basicCtType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
                         public Void visitEnumWrapperCtType(
-                                EnumWrapperCtType dataType, Void p)
+                                EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
-                                    BasicOutParameter.class.getName(), dataType
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                                    BasicOutParameter.class.getName(), ctType
                                             .getBasicCtType()
-                                            .getBoxedTypeName(), dataType
-                                            .getTypeName(), dataType
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), ctType
                                             .getBasicCtType()
                                             .getQualifiedName(), m.getName());
                             return null;
@@ -1153,7 +1177,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
                                     BasicOutParameter.class.getName(), ctType
                                             .getBasicCtType()
                                             .getBoxedTypeName(), ctType
@@ -1182,27 +1206,30 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitBasicInParameterMeta(final BasicInParameterMeta m,
                 AutoModuleQueryMeta p) {
             BasicCtType basicCtType = m.getBasicCtType();
-            basicCtType.getWrapperType().accept(
+            basicCtType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
                         public Void visitEnumWrapperCtType(
-                                EnumWrapperCtType dataType, Void p)
+                                EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s(new %2$s(%3$s.class, %4$s)));%n",
-                                    BasicInParameter.class.getName(), dataType
-                                            .getTypeName(), dataType
-                                            .getBasicCtType().getTypeName(), m
-                                            .getName());
+                            iprint("__query.addParameter(new %1$s<%5$s>(() -> new %2$s(%3$s.class, %4$s)));%n",
+                                    BasicInParameter.class.getName(), ctType
+                                            .getTypeName(), ctType
+                                            .getBasicCtType()
+                                            .getQualifiedName(), m.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s(new %2$s(%3$s)));%n",
-                                    BasicInParameter.class.getName(),
-                                    ctType.getTypeName(), m.getName());
+                            iprint("__query.addParameter(new %1$s<%4$s>(%2$s::new, %3$s));%n",
+                                    BasicInParameter.class.getName(), ctType
+                                            .getTypeName(), m.getName(), ctType
+                                            .getBasicCtType()
+                                            .getBoxedTypeName());
                             return null;
                         }
 
@@ -1224,21 +1251,20 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitBasicListResultParameterMeta(
-                BasicListResultParameterMeta m, AutoModuleQueryMeta p) {
+        public Void visitBasicResultListParameterMeta(
+                BasicResultListParameterMeta m, AutoModuleQueryMeta p) {
             BasicCtType basicCtType = m.getBasicCtType();
-            basicCtType.getWrapperType().accept(
+            basicCtType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
                         public Void visitEnumWrapperCtType(
-                                EnumWrapperCtType dataType, Void p)
+                                EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class)));%n",
-                                    BasicListResultParameter.class.getName(),
-                                    dataType.getBasicCtType()
-                                            .getBoxedTypeName(), dataType
-                                            .getTypeName(), dataType
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
+                                    BasicResultListParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), ctType
                                             .getBasicCtType()
                                             .getQualifiedName());
                             return null;
@@ -1247,8 +1273,8 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
-                                    BasicListResultParameter.class.getName(),
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s::new));%n",
+                                    BasicResultListParameter.class.getName(),
                                     ctType.getBasicCtType().getBoxedTypeName(),
                                     ctType.getTypeName());
                             return null;
@@ -1259,54 +1285,53 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainListResultParameterMeta(
-                DomainListResultParameterMeta m, AutoModuleQueryMeta p) {
+        public Void visitDomainResultListParameterMeta(
+                DomainResultListParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
             BasicCtType basicCtType = domainCtType.getBasicType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
-                    DomainListResultParameter.class.getName(),
+                    DomainResultListParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
                     domainCtType.getInstantiationCommand());
             return null;
         }
 
         @Override
-        public Void visitEntityListResultParameterMeta(
-                EntityListResultParameterMeta m, AutoModuleQueryMeta p) {
+        public Void visitEntityResultListParameterMeta(
+                EntityResultListParameterMeta m, AutoModuleQueryMeta p) {
             EntityCtType entityCtType = m.getEntityCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s));%n",
-                    EntityListResultParameter.class.getName(),
+                    EntityResultListParameter.class.getName(),
                     entityCtType.getTypeName(), entityCtType.getMetaTypeName(),
                     m.getEnsureResultMapping());
             return null;
         }
 
         @Override
-        public Void visitMapListResultParameterMeta(
-                MapListResultParameterMeta m, AutoModuleQueryMeta p) {
+        public Void visitMapResultListParameterMeta(
+                MapResultListParameterMeta m, AutoModuleQueryMeta p) {
             MapKeyNamingType namingType = p.getMapKeyNamingType();
             iprint("__query.setResultParameter(new %1$s(%2$s.%3$s));%n",
-                    MapListResultParameter.class.getName(), namingType
+                    MapResultListParameter.class.getName(), namingType
                             .getDeclaringClass().getName(), namingType.name());
             return null;
         }
 
         @Override
-        public Void visitBasicResultParameterMeta(BasicResultParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public Void visitBasicSingleResultParameterMeta(
+                BasicSingleResultParameterMeta m, AutoModuleQueryMeta p) {
             final BasicCtType basicCtType = m.getBasicCtType();
-            basicCtType.getWrapperType().accept(
+            basicCtType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
                         public Void visitEnumWrapperCtType(
-                                EnumWrapperCtType dataType, Void p)
+                                EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class), false));%n",
-                                    BasicResultParameter.class.getName(),
-                                    dataType.getBasicCtType()
-                                            .getBoxedTypeName(), dataType
-                                            .getTypeName(), dataType
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), false));%n",
+                                    BasicSingleResultParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), ctType
                                             .getBasicCtType()
                                             .getQualifiedName());
                             return null;
@@ -1315,8 +1340,8 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
-                                    BasicResultParameter.class.getName(),
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
+                                    BasicSingleResultParameter.class.getName(),
                                     ctType.getBasicCtType().getBoxedTypeName(),
                                     ctType.getTypeName(),
                                     basicCtType.isPrimitive());
@@ -1328,16 +1353,301 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainResultParameterMeta(DomainResultParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public Void visitDomainSingleResultParameterMeta(
+                DomainSingleResultParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
             BasicCtType basicCtType = domainCtType.getBasicType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
-                    DomainResultParameter.class.getName(),
+                    DomainSingleResultParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
                     domainCtType.getInstantiationCommand());
             return null;
         }
+
+        @Override
+        public Void visitOptionalBasicInParameterMeta(
+                OptionalBasicInParameterMeta m, AutoModuleQueryMeta p) {
+            BasicCtType basicCtType = m.getBasicCtType();
+            basicCtType.getWrapperCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType ctType, Void p)
+                                throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%5$s>(() -> new %2$s(%3$s.class), %4$s));%n",
+                                    OptionalBasicInParameter.class.getName(),
+                                    ctType.getTypeName(), ctType
+                                            .getBasicCtType()
+                                            .getQualifiedName(), m.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%4$s>(%2$s::new, %3$s));%n",
+                                    OptionalBasicInParameter.class.getName(),
+                                    ctType.getTypeName(), m.getName(), ctType
+                                            .getBasicCtType()
+                                            .getBoxedTypeName());
+                            return null;
+                        }
+
+                    }, null);
+
+            return null;
+
+        }
+
+        @Override
+        public Void visitOptionalBasicOutParameterMeta(
+                OptionalBasicOutParameterMeta m, AutoModuleQueryMeta p) {
+            BasicCtType basicCtType = m.getBasicCtType();
+            basicCtType.getWrapperCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType ctType, Void p)
+                                throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                                    OptionalBasicOutParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), ctType
+                                            .getBasicCtType()
+                                            .getQualifiedName(), m.getName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s));%n",
+                                    OptionalBasicOutParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), m.getName());
+                            return null;
+                        }
+
+                    }, null);
+
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalBasicInOutParameterMeta(
+                OptionalBasicInOutParameterMeta m, AutoModuleQueryMeta p) {
+            BasicCtType basicCtType = m.getBasicCtType();
+            basicCtType.getWrapperCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType ctType, Void p)
+                                throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                                    OptionalBasicInOutParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), ctType
+                                            .getBasicCtType()
+                                            .getQualifiedName(), m.getName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s));%n",
+                                    OptionalBasicInOutParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), m.getName());
+                            return null;
+                        }
+
+                    }, null);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalBasicListParameterMeta(
+                OptionalBasicListParameterMeta m, AutoModuleQueryMeta p) {
+            BasicCtType basicCtType = m.getBasicCtType();
+            basicCtType.getWrapperCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType ctType, Void p)
+                                throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
+                                    OptionalBasicListParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), ctType
+                                            .getBasicCtType()
+                                            .getQualifiedName(), m.getName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s, \"%4$s\"));%n",
+                                    OptionalBasicListParameter.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), m.getName());
+                            return null;
+                        }
+
+                    }, null);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalBasicSingleResultParameterMeta(
+                OptionalBasicSingleResultParameterMeta m, AutoModuleQueryMeta p) {
+            final BasicCtType basicCtType = m.getBasicCtType();
+            basicCtType.getWrapperCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType ctType, Void p)
+                                throws RuntimeException {
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
+                                    OptionalBasicSingleResultParameter.class
+                                            .getName(), ctType.getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), ctType
+                                            .getBasicCtType()
+                                            .getQualifiedName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s()));%n",
+                                    OptionalBasicSingleResultParameter.class
+                                            .getName(), ctType.getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName());
+                            return null;
+                        }
+
+                    }, null);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalBasicResultListParameterMeta(
+                OptionalBasicResultListParameterMeta m, AutoModuleQueryMeta p) {
+            BasicCtType basicCtType = m.getBasicCtType();
+            basicCtType.getWrapperCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType ctType, Void p)
+                                throws RuntimeException {
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
+                                    OptionalBasicResultListParameter.class
+                                            .getName(), ctType.getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), ctType
+                                            .getBasicCtType()
+                                            .getQualifiedName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s()));%n",
+                                    OptionalBasicResultListParameter.class
+                                            .getName(), ctType.getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName());
+                            return null;
+                        }
+
+                    }, null);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDomainInParameterMeta(
+                OptionalDomainInParameterMeta m, AutoModuleQueryMeta p) {
+            DomainCtType domainCtType = m.getDomainCtType();
+            BasicCtType basicCtType = domainCtType.getBasicType();
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+                    OptionalDomainInParameter.class.getName(),
+                    basicCtType.getTypeName(), domainCtType.getTypeName(),
+                    domainCtType.getInstantiationCommand(), m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDomainOutParameterMeta(
+                OptionalDomainOutParameterMeta m, AutoModuleQueryMeta p) {
+            DomainCtType domainCtType = m.getDomainCtType();
+            BasicCtType basicCtType = domainCtType.getBasicType();
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+                    OptionalDomainOutParameter.class.getName(),
+                    basicCtType.getTypeName(), domainCtType.getTypeName(),
+                    domainCtType.getInstantiationCommand(), m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDomainInOutParameterMeta(
+                OptionalDomainInOutParameterMeta m, AutoModuleQueryMeta p) {
+            DomainCtType domainCtType = m.getDomainCtType();
+            BasicCtType basicCtType = domainCtType.getBasicType();
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+                    OptionalDomainInOutParameter.class.getName(),
+                    basicCtType.getBoxedTypeName(), domainCtType.getTypeName(),
+                    domainCtType.getInstantiationCommand(), m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDomainListParameterMeta(
+                OptionalDomainListParameterMeta m, AutoModuleQueryMeta p) {
+            DomainCtType domainCtType = m.getDomainCtType();
+            BasicCtType basicCtType = domainCtType.getBasicType();
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
+                    OptionalDomainListParameter.class.getName(),
+                    basicCtType.getTypeName(), domainCtType.getTypeName(),
+                    domainCtType.getInstantiationCommand(), m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDomainSingleResultParameterMeta(
+                OptionalDomainSingleResultParameterMeta m, AutoModuleQueryMeta p) {
+            DomainCtType domainCtType = m.getDomainCtType();
+            BasicCtType basicCtType = domainCtType.getBasicType();
+            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
+                    OptionalDomainSingleResultParameter.class.getName(),
+                    basicCtType.getTypeName(), domainCtType.getTypeName(),
+                    domainCtType.getInstantiationCommand());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDomainResultListParameterMeta(
+                OptionalDomainResultListParameterMeta m, AutoModuleQueryMeta p) {
+            DomainCtType domainCtType = m.getDomainCtType();
+            BasicCtType basicCtType = domainCtType.getBasicType();
+            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
+                    OptionalDomainResultListParameter.class.getName(),
+                    basicCtType.getTypeName(), domainCtType.getTypeName(),
+                    domainCtType.getInstantiationCommand());
+            return null;
+        }
+
     }
 
     /**
@@ -1368,7 +1678,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitBasicCtType(BasicCtType ctType, final Boolean optional)
                 throws RuntimeException {
-            ctType.getWrapperType().accept(
+            ctType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
@@ -1445,14 +1755,14 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         protected String getBasicIterationHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalBasicIterationHandler.class.getName();
             }
             return BasicIterationHandler.class.getName();
         }
 
         protected String getDomainIterationHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalDomainIterationHandler.class.getName();
             }
             return DomainIterationHandler.class.getName();
@@ -1492,7 +1802,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitBasicCtType(final BasicCtType basicCtType,
                 Boolean optional) throws RuntimeException {
-            basicCtType.getWrapperType().accept(
+            basicCtType.getWrapperCtType().accept(
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
@@ -1574,7 +1884,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitBasicCtType(BasicCtType ctType,
                                 Boolean optional) throws RuntimeException {
-                            ctType.getWrapperType()
+                            ctType.getWrapperCtType()
                                     .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                                         @Override
@@ -1657,35 +1967,35 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         protected String getBasicSingleResultHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalBasicSingleResultHandler.class.getName();
             }
             return BasicSingleResultHandler.class.getName();
         }
 
         protected String getBasicResultListHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalBasicResultListHandler.class.getName();
             }
             return BasicResultListHandler.class.getName();
         }
 
         protected String getDomainSingleResultHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalDomainSingleResultHandler.class.getName();
             }
             return DomainSingleResultHandler.class.getName();
         }
 
         protected String getDomainResultListHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalDomainResultListHandler.class.getName();
             }
             return DomainResultListHandler.class.getName();
         }
 
         protected String getMapSingleResultHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalMapSingleResultHandler.class.getName();
             }
             return MapSingleResultHandler.class.getName();
@@ -1696,7 +2006,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         protected String getEntitySingleResultHandlerName(Boolean optional) {
-            if (optional == Boolean.TRUE) {
+            if (Boolean.TRUE == optional) {
                 return OptionalEntitySingleResultHandler.class.getName();
             }
             return EntitySingleResultHandler.class.getName();

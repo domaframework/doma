@@ -28,7 +28,7 @@ public class BasicCtType extends AbstractCtType {
         super(type, env);
     }
 
-    public WrapperCtType getWrapperType() {
+    public WrapperCtType getWrapperCtType() {
         return wrapperCtType;
     }
 

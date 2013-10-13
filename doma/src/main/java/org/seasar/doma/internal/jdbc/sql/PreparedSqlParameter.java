@@ -22,7 +22,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public interface PreparedSqlParameter extends SqlParameter {
+public interface PreparedSqlParameter<BASIC> extends SqlParameter {
 
-    Wrapper<?> getWrapper();
+    Wrapper<BASIC> getWrapper();
 }

@@ -29,14 +29,11 @@ import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium
@@ -50,13 +47,15 @@ public class CallableSqlParameterBinderTest extends TestCase {
         MockCallableStatement callableStatement = new MockCallableStatement();
 
         List<CallableSqlParameter> parameters = new ArrayList<CallableSqlParameter>();
-        parameters.add(new BasicResultParameter<Integer>(new IntegerWrapper(),
-                false));
-        parameters.add(new BasicInParameter(new StringWrapper("aaa")));
+        parameters.add(new BasicSingleResultParameter<Integer>(
+                () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
+        parameters.add(new BasicInParameter<String>(
+                () -> new org.seasar.doma.wrapper.StringWrapper("aaa")));
         parameters.add(new BasicInOutParameter<BigDecimal>(
-                new BigDecimalWrapper(), new Reference<BigDecimal>(
-                        new BigDecimal(10))));
-        parameters.add(new BasicOutParameter<String>(new StringWrapper("bbb"),
+                () -> new org.seasar.doma.wrapper.BigDecimalWrapper(),
+                new Reference<BigDecimal>(new BigDecimal(10))));
+        parameters.add(new BasicOutParameter<String>(
+                () -> new org.seasar.doma.wrapper.StringWrapper("bbb"),
                 new Reference<String>()));
         CallableSqlParameterBinder binder = new CallableSqlParameterBinder(
                 new MyQuery());

@@ -15,50 +15,34 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.jdbc.command.DomainResultProvider;
+import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, D> {
+public class DomainListParameter<BASIC, DOMAIN> extends
+        AbstractListParameter<DOMAIN> {
 
-    protected final String name;
+    protected final DomainType<BASIC, DOMAIN> domainType;
 
-    protected final List<D> domains;
-
-    protected final DomainType<V, D> domainType;
-
-    public DomainListParameter(DomainType<V, D> domainType, List<D> domains,
-            String name) {
-        assertNotNull(domainType, domains, name);
+    public DomainListParameter(DomainType<BASIC, DOMAIN> domainType,
+            List<DOMAIN> list, String name) {
+        super(list, name);
+        assertNotNull(domainType);
         this.domainType = domainType;
-        this.domains = domains;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override
-    public Object getValue() {
-        return domains;
-    }
-
-    public Holder<V, D> getDomainHolder() {
-        return domainType.createDomainHolder();
-    }
-
-    @Override
-    public void add(D domain) {
-        domains.add(domain);
+    public DomainResultProvider<DOMAIN> createResultProvider(Query query) {
+        return new DomainResultProvider<>(
+                () -> domainType.createDomainHolder(), query);
     }
 
     @Override

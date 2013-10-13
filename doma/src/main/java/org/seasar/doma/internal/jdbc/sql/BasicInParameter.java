@@ -15,31 +15,23 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import java.util.function.Supplier;
 
+import org.seasar.doma.internal.wrapper.BasicHolder;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BasicInParameter implements InParameter {
+public class BasicInParameter<BASIC> extends AbstractInParameter<BASIC, BASIC> {
 
-    protected final Wrapper<?> wrapper;
-
-    public BasicInParameter(Wrapper<?> wrapper) {
-        assertNotNull(wrapper);
-        this.wrapper = wrapper;
+    public BasicInParameter(Supplier<Wrapper<BASIC>> supplier) {
+        super(new BasicHolder<BASIC>(supplier, false));
     }
 
-    @Override
-    public Object getValue() {
-        return wrapper.get();
-    }
-
-    @Override
-    public Wrapper<?> getWrapper() {
-        return wrapper;
+    public BasicInParameter(Supplier<Wrapper<BASIC>> supplier, BASIC value) {
+        super(new BasicHolder<BASIC>(supplier, false), value);
     }
 
     @Override

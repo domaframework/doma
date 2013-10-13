@@ -173,7 +173,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             @Override
             public Void visitBasicCtType(BasicCtType basicCtType, Void p)
                     throws RuntimeException {
-                this.wrapperCtType = basicCtType.getWrapperType();
+                this.wrapperCtType = basicCtType.getWrapperCtType();
                 return null;
             }
 
@@ -182,7 +182,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     throws RuntimeException {
                 this.domainCtType = domainCtType;
                 this.wrapperCtType = domainCtType.getBasicType()
-                        .getWrapperType();
+                        .getWrapperCtType();
                 return null;
             }
         }

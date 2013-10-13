@@ -19,7 +19,7 @@ package org.seasar.doma.internal.jdbc.sql;
  * @author taedium
  * 
  */
-public interface ResultParameter<R> extends CallableSqlParameter {
+public interface ResultParameter<RESULT> extends CallableSqlParameter {
 
-    R getResult();
+    RESULT getResult();
 }

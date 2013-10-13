@@ -184,7 +184,7 @@ public class OracleDialect extends StandardDialect {
         String rawSql = "select " + qualifiedSequenceName
                 + ".nextval from dual";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override

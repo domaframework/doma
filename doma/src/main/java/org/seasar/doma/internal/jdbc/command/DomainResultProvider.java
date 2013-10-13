@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.wrapper.Holder;
 
 /**
@@ -41,7 +41,7 @@ public class DomainResultProvider<CONTAINER> implements
      * @param query
      */
     public DomainResultProvider(Supplier<Holder<?, CONTAINER>> supplier,
-            SelectQuery query) {
+            Query query) {
         assertNotNull(supplier, query);
         this.supplier = supplier;
         this.fetcher = new BasicFetcher(query);

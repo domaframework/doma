@@ -136,7 +136,7 @@ public class SqliteDialect extends StandardDialect {
         }
         String rawSql = "select last_insert_rowid()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override

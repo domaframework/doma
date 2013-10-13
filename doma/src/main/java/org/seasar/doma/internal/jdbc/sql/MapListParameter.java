@@ -21,44 +21,29 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.internal.jdbc.command.MapResultProvider;
+import org.seasar.doma.internal.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
-public class MapListParameter implements
-        ListParameter<Object, Map<String, Object>> {
+public class MapListParameter extends
+        AbstractListParameter<Map<String, Object>> {
 
     protected final MapKeyNamingType mapKeyNamingType;
 
-    protected final List<Map<String, Object>> mapList;
-
-    protected final String name;
-
     public MapListParameter(MapKeyNamingType mapKeyNamingType,
-            List<Map<String, Object>> mapList, String name) {
-        assertNotNull(mapKeyNamingType, mapList, name);
+            List<Map<String, Object>> list, String name) {
+        super(list, name);
+        assertNotNull(mapKeyNamingType);
         this.mapKeyNamingType = mapKeyNamingType;
-        this.mapList = mapList;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override
-    public Object getValue() {
-        return mapList;
-    }
-
-    public MapKeyNamingType getMapKeyNamingType() {
-        return mapKeyNamingType;
-    }
-
-    @Override
-    public void add(Map<String, Object> map) {
-        mapList.add(map);
+    public MapResultProvider<Map<String, Object>> createResultProvider(
+            Query query) {
+        return new MapResultProvider<>(query, mapKeyNamingType, map -> map);
     }
 
     @Override

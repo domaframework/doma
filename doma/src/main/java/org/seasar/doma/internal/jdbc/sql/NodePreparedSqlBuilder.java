@@ -627,7 +627,7 @@ public class NodePreparedSqlBuilder implements
 
         private final StringBuilder formattedSqlBuf = new StringBuilder(200);
 
-        private final List<PreparedSqlParameter> parameters = new ArrayList<PreparedSqlParameter>();
+        private final List<PreparedSqlParameter<?>> parameters = new ArrayList<PreparedSqlParameter<?>>();
 
         private boolean available;
 
@@ -664,18 +664,18 @@ public class NodePreparedSqlBuilder implements
             return formattedSqlBuf;
         }
 
-        protected void addBindValue(Wrapper<?> value) {
-            parameters.add(new BasicInParameter(value));
+        protected <T> void addBindValue(Wrapper<T> value) {
+            parameters.add(new BasicInParameter<T>(() -> value));
             rawSqlBuf.append("?");
             formattedSqlBuf.append(value.accept(config.getDialect()
                     .getSqlLogFormattingVisitor(), formattingFunction));
         }
 
-        protected void addAllParameters(List<PreparedSqlParameter> values) {
+        protected void addAllParameters(List<PreparedSqlParameter<?>> values) {
             parameters.addAll(values);
         }
 
-        protected List<PreparedSqlParameter> getParameters() {
+        protected List<PreparedSqlParameter<?>> getParameters() {
             return parameters;
         }
 

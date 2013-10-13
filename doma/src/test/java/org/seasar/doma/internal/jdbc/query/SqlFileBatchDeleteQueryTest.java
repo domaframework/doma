@@ -83,7 +83,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
 
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("delete from emp where name = ?", sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
 

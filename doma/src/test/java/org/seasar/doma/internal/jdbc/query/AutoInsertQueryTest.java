@@ -71,7 +71,7 @@ public class AutoInsertQueryTest extends TestCase {
         assertEquals(
                 "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());
@@ -97,7 +97,7 @@ public class AutoInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());
@@ -123,7 +123,7 @@ public class AutoInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());
@@ -149,7 +149,7 @@ public class AutoInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals(new BigDecimal(200), parameters.get(1).getWrapper().get());

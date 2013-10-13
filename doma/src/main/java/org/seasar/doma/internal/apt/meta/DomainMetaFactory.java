@@ -80,7 +80,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                     domainMirror.getValueType(),
                     domainMirror.getValueTypeValue());
         }
-        domainMeta.setWrapperCtType(basicCtType.getWrapperType());
+        domainMeta.setWrapperCtType(basicCtType.getWrapperCtType());
     }
 
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {

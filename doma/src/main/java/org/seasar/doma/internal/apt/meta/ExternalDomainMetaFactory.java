@@ -155,6 +155,6 @@ public class ExternalDomainMetaFactory implements
             throw new AptException(Message.DOMA4194, env, convElement,
                     valueElement.getQualifiedName());
         }
-        meta.setWrapperCtType(basicCtType.getWrapperType());
+        meta.setWrapperCtType(basicCtType.getWrapperCtType());
     }
 }

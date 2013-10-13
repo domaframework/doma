@@ -148,7 +148,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.entity.Emp>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.entity.Emp>>();
             __query.setConfig(config);
             __query.setFunctionName("function");
-            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityListResultParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), true));
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityResultListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), true));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");
             __query.setCallerMethodName("function");

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.internal.jdbc.query.Query;
 
 /***
  * 
@@ -45,7 +45,7 @@ public class MapResultProvider<CONTAINER> implements ResultProvider<CONTAINER> {
      * @param keyNamingType
      * @param mapper
      */
-    public MapResultProvider(SelectQuery query, MapKeyNamingType keyNamingType,
+    public MapResultProvider(Query query, MapKeyNamingType keyNamingType,
             Function<Map<String, Object>, CONTAINER> mapper) {
         assertNotNull(query, keyNamingType);
         this.fetcher = new MapFetcher(query, keyNamingType);

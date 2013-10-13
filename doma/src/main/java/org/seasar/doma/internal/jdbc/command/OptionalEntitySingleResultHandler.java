@@ -42,7 +42,7 @@ public class OptionalEntitySingleResultHandler<ENTITY> extends
     protected ResultProvider<Optional<ENTITY>> createResultProvider(
             SelectQuery query) {
         return new EntityResultProvider<>(entityType, query,
-                Optional::ofNullable);
+                query.isResultMappingEnsured(), Optional::ofNullable);
     }
 
 }

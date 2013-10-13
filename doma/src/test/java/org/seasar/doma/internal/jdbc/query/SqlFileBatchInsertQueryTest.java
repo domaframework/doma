@@ -89,7 +89,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("insert into emp (id, name, salary) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter> parameters = sql.getParameters();
+        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());

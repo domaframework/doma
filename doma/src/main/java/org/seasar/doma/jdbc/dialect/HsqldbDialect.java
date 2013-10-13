@@ -139,7 +139,7 @@ public class HsqldbDialect extends StandardDialect {
         }
         String rawSql = "call identity()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override
@@ -152,7 +152,7 @@ public class HsqldbDialect extends StandardDialect {
                 + qualifiedSequenceName
                 + " from information_schema.system_tables where table_name = 'SYSTEM_TABLES'";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+                Collections.<PreparedSqlParameter<?>> emptyList());
     }
 
     @Override
