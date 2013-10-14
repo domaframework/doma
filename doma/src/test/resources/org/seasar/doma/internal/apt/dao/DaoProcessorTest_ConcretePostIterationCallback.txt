@@ -8,6 +8,8 @@ public class ConcretePostIterationCallbackDaoImpl extends org.seasar.doma.intern
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ConcretePostIterationCallbackDao.class, "iterate", org.seasar.doma.internal.apt.dao.ConcretePostIterationCallback.class);
+
     /** */
     public ConcretePostIterationCallbackDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -57,8 +59,9 @@ public class ConcretePostIterationCallbackDaoImpl extends org.seasar.doma.intern
             if (callback == null) {
                 throw new org.seasar.doma.DomaNullPointerException("callback");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ConcretePostIterationCallbackDao/iterate.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ConcretePostIterationCallbackDaoImpl");
             __query.setCallerMethodName("iterate");
@@ -68,7 +71,7 @@ public class ConcretePostIterationCallbackDaoImpl extends org.seasar.doma.intern
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ConcretePostIterationCallbackDaoImpl", "iterate", __result);

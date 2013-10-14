@@ -8,6 +8,8 @@ public class DaoAwareDelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DaoAwareDelegateDao.class, "execute", java.lang.String.class, java.lang.Integer.class);
+
     /** */
     public DaoAwareDelegateDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,7 +56,7 @@ public class DaoAwareDelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
     public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
         entering("org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoImpl", "execute", aaa, bbb);
         try {
-            org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate(config, this);
+            org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate(__config, this);
             java.math.BigDecimal __result = __delegate.execute(aaa, bbb);
             exiting("org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoImpl", "execute", __result);
             return __result;

@@ -8,6 +8,10 @@ public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectMapDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectMapDao.class, "selectByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
     /** */
     public SqlFileSelectMapDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -57,8 +61,9 @@ public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectMapDao/selectById.sql");
             __query.setOptions(options);
             __query.addParameter("id", java.lang.Integer.class, id);
@@ -70,7 +75,7 @@ public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>>(__query, new org.seasar.doma.internal.jdbc.command.MapSingleResultHandler(org.seasar.doma.MapKeyNamingType.CAMEL_CASE));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.MapSingleResultHandler(org.seasar.doma.MapKeyNamingType.CAMEL_CASE));
             java.util.Map<java.lang.String, java.lang.Object> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectById", __result);
@@ -88,8 +93,9 @@ public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectMapDao/selectByNameAndSalary.sql");
             __query.setOptions(options);
             __query.addParameter("name", java.lang.String.class, name);
@@ -102,7 +108,7 @@ public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>>(__query, new org.seasar.doma.internal.jdbc.command.MapResultListHandler(org.seasar.doma.MapKeyNamingType.NONE));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.MapResultListHandler(org.seasar.doma.MapKeyNamingType.NONE));
             java.util.List<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectByNameAndSalary", __result);

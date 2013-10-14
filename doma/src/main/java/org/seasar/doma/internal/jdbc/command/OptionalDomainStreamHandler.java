@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 

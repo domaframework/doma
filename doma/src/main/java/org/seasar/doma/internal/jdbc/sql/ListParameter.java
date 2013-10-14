@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import org.seasar.doma.internal.jdbc.command.ResultProvider;
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium

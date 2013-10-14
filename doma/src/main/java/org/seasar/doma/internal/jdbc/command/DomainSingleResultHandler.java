@@ -17,8 +17,8 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium

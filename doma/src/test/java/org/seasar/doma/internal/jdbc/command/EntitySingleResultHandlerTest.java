@@ -22,10 +22,10 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
-import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -51,6 +51,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(getClass().getMethod(getName()));
         query.prepare();
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
@@ -74,6 +75,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(getClass().getMethod(getName()));
         query.prepare();
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
@@ -98,6 +100,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setResultEnsured(true);
+        query.setMethod(getClass().getMethod(getName()));
         query.prepare();
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(

@@ -8,7 +8,9 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.DaoExtendsDao.class, "update2", example.entity.Emp.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DaoExtendsDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DaoExtendsDao.class, "update2", example.entity.Emp.class);
 
     /** */
     public DaoExtendsDaoImpl() {
@@ -59,8 +61,9 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DaoExtendsDao/selectById.sql");
             __query.setOptions(options);
             __query.addParameter("id", java.lang.Integer.class, id);
@@ -72,7 +75,7 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<example.entity.Emp> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<example.entity.Emp>(__query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
             example.entity.Emp __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.DaoExtendsDaoImpl", "selectById", __result);
@@ -90,9 +93,9 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
             if (entity == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
-            org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<example.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<example.entity.Emp>(example.entity._Emp.getSingletonInternal());
+            org.seasar.doma.jdbc.query.AutoUpdateQuery<example.entity.Emp> __query = getQueryImplementors().createAutoUpdateQuery(__method1, example.entity._Emp.getSingletonInternal());
             __query.setMethod(__method1);
-            __query.setConfig(config);
+            __query.setConfig(__config);
             __query.setEntity(entity);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DaoExtendsDaoImpl");
             __query.setCallerMethodName("update2");
@@ -104,7 +107,7 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
             __query.setUnchangedPropertyIncluded(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
+            org.seasar.doma.jdbc.command.UpdateCommand __command = getCommandImplementors().createUpdateCommand(__method1, __query);
             int __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.DaoExtendsDaoImpl", "update2", __result);

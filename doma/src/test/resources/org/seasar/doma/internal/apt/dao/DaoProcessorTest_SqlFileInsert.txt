@@ -8,7 +8,7 @@ public class SqlFileInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileInsertDao.class, "insert", java.lang.Integer.class, java.math.BigDecimal.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileInsertDao.class, "insert", java.lang.Integer.class, java.math.BigDecimal.class);
 
     /** */
     public SqlFileInsertDaoImpl() {
@@ -56,9 +56,9 @@ public class SqlFileInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
     public int insert(java.lang.Integer id, java.math.BigDecimal salary) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileInsertDaoImpl", "insert", id, salary);
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
+            org.seasar.doma.jdbc.query.SqlFileInsertQuery __query = getQueryImplementors().createSqlFileInsertQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(config);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileInsertDao/insert.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.addParameter("salary", java.math.BigDecimal.class, salary);
@@ -66,7 +66,7 @@ public class SqlFileInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            org.seasar.doma.jdbc.command.InsertCommand __command = getCommandImplementors().createInsertCommand(__method0, __query);
             int __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileInsertDaoImpl", "insert", __result);

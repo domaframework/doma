@@ -8,7 +8,7 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.AutoUpdateDao.class, "update", org.seasar.doma.internal.apt.entity.Emp.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.AutoUpdateDao.class, "update", org.seasar.doma.internal.apt.entity.Emp.class);
 
     /** */
     public AutoUpdateDaoImpl() {
@@ -59,9 +59,9 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
             if (entity == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
-            org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            org.seasar.doma.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = getQueryImplementors().createAutoUpdateQuery(__method0, org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.setMethod(__method0);
-            __query.setConfig(config);
+            __query.setConfig(__config);
             __query.setEntity(entity);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl");
             __query.setCallerMethodName("update");
@@ -73,7 +73,7 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
             __query.setUnchangedPropertyIncluded(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
+            org.seasar.doma.jdbc.command.UpdateCommand __command = getCommandImplementors().createUpdateCommand(__method0, __query);
             int __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl", "update", __result);

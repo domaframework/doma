@@ -54,6 +54,18 @@ public abstract class DomaAbstractConfig implements Config {
     protected static ClassHelper defaultClassHelper = new DefaultClassHelper();
 
     /**
+     * @since 2.0.0
+     */
+    protected static CommandImplementors defaultCommandImplementors = new CommandImplementors() {
+    };
+
+    /**
+     * @since 2.0.0
+     */
+    protected static QueryImplementors defaultQueryImplementors = new QueryImplementors() {
+    };
+
+    /**
      * インスタンスを構築します。
      */
     protected DomaAbstractConfig() {
@@ -82,6 +94,16 @@ public abstract class DomaAbstractConfig implements Config {
     @Override
     public ClassHelper getClassHelper() {
         return defaultClassHelper;
+    }
+
+    @Override
+    public CommandImplementors getCommandImplementors() {
+        return defaultCommandImplementors;
+    }
+
+    @Override
+    public QueryImplementors getQueryImplementors() {
+        return defaultQueryImplementors;
     }
 
     @Override

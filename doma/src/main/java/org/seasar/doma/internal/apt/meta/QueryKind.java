@@ -15,39 +15,39 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import org.seasar.doma.internal.jdbc.command.BatchDeleteCommand;
-import org.seasar.doma.internal.jdbc.command.BatchInsertCommand;
-import org.seasar.doma.internal.jdbc.command.BatchUpdateCommand;
-import org.seasar.doma.internal.jdbc.command.Command;
-import org.seasar.doma.internal.jdbc.command.CreateCommand;
-import org.seasar.doma.internal.jdbc.command.DeleteCommand;
-import org.seasar.doma.internal.jdbc.command.FunctionCommand;
-import org.seasar.doma.internal.jdbc.command.InsertCommand;
-import org.seasar.doma.internal.jdbc.command.ProcedureCommand;
-import org.seasar.doma.internal.jdbc.command.ScriptCommand;
-import org.seasar.doma.internal.jdbc.command.SelectCommand;
-import org.seasar.doma.internal.jdbc.command.UpdateCommand;
-import org.seasar.doma.internal.jdbc.query.ArrayCreateQuery;
-import org.seasar.doma.internal.jdbc.query.AutoBatchDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.AutoBatchInsertQuery;
-import org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
-import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
-import org.seasar.doma.internal.jdbc.query.AutoProcedureQuery;
-import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.BlobCreateQuery;
-import org.seasar.doma.internal.jdbc.query.ClobCreateQuery;
-import org.seasar.doma.internal.jdbc.query.NClobCreateQuery;
-import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.jdbc.query.SqlFileBatchDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery;
+import org.seasar.doma.jdbc.command.BatchDeleteCommand;
+import org.seasar.doma.jdbc.command.BatchInsertCommand;
+import org.seasar.doma.jdbc.command.BatchUpdateCommand;
+import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.command.CreateCommand;
+import org.seasar.doma.jdbc.command.DeleteCommand;
+import org.seasar.doma.jdbc.command.FunctionCommand;
+import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.command.ProcedureCommand;
+import org.seasar.doma.jdbc.command.ScriptCommand;
+import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.query.ArrayCreateQuery;
+import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
+import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
+import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
+import org.seasar.doma.jdbc.query.AutoDeleteQuery;
+import org.seasar.doma.jdbc.query.AutoFunctionQuery;
+import org.seasar.doma.jdbc.query.AutoInsertQuery;
+import org.seasar.doma.jdbc.query.AutoProcedureQuery;
+import org.seasar.doma.jdbc.query.AutoUpdateQuery;
+import org.seasar.doma.jdbc.query.BlobCreateQuery;
+import org.seasar.doma.jdbc.query.ClobCreateQuery;
+import org.seasar.doma.jdbc.query.NClobCreateQuery;
+import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery;
+import org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery;
+import org.seasar.doma.jdbc.query.SqlFileDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlFileInsertQuery;
+import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
+import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.jdbc.query.SqlFileUpdateQuery;
 
 /**
  * @author taedium
@@ -68,11 +68,6 @@ public enum QueryKind {
             return SelectCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return false;
-        }
-
     },
     SQLFILE_SCRIPT {
 
@@ -85,11 +80,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return ScriptCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return false;
         }
 
     },
@@ -106,11 +96,6 @@ public enum QueryKind {
             return InsertCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return true;
-        }
-
     },
     SQLFILE_UPDATE {
 
@@ -123,11 +108,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return UpdateCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return true;
         }
 
     },
@@ -144,11 +124,6 @@ public enum QueryKind {
             return DeleteCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return true;
-        }
-
     },
     SQLFILE_BATCH_INSERT {
 
@@ -161,11 +136,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchInsertCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return true;
         }
 
     },
@@ -182,11 +152,6 @@ public enum QueryKind {
             return BatchUpdateCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return true;
-        }
-
     },
     SQLFILE_BATCH_DELETE {
 
@@ -199,11 +164,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchDeleteCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return true;
         }
 
     },
@@ -220,11 +180,6 @@ public enum QueryKind {
             return InsertCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return true;
-        }
-
     },
     AUTO_UPDATE {
 
@@ -237,11 +192,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return UpdateCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return true;
         }
 
     },
@@ -258,11 +208,6 @@ public enum QueryKind {
             return DeleteCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return true;
-        }
-
     },
     AUTO_BATCH_INSERT {
 
@@ -275,11 +220,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchInsertCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return true;
         }
 
     },
@@ -296,11 +236,6 @@ public enum QueryKind {
             return BatchUpdateCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return true;
-        }
-
     },
     AUTO_BATCH_DELETE {
 
@@ -313,11 +248,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchDeleteCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return true;
         }
 
     },
@@ -334,11 +264,6 @@ public enum QueryKind {
             return FunctionCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return false;
-        }
-
     },
     AUTO_PROCEDURE {
 
@@ -351,11 +276,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return ProcedureCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return false;
         }
 
     },
@@ -372,11 +292,6 @@ public enum QueryKind {
             return CreateCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return false;
-        }
-
     },
     BLOB_FACTORY {
 
@@ -389,11 +304,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return false;
         }
 
     },
@@ -410,11 +320,6 @@ public enum QueryKind {
             return CreateCommand.class;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return false;
-        }
-
     },
     NCLOB_FACTORY {
 
@@ -427,11 +332,6 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
-        }
-
-        @Override
-        public boolean isTrigger() {
-            return false;
         }
 
     },
@@ -448,11 +348,6 @@ public enum QueryKind {
             return null;
         }
 
-        @Override
-        public boolean isTrigger() {
-            return false;
-        }
-
     },
     ;
 
@@ -460,7 +355,5 @@ public enum QueryKind {
 
     @SuppressWarnings("rawtypes")
     public abstract Class<? extends Command> getCommandClass();
-
-    public abstract boolean isTrigger();
 
 }

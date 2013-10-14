@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.query.ModuleQuery;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
@@ -61,6 +60,7 @@ import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.query.ModuleQuery;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.Wrapper;

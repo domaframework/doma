@@ -8,6 +8,8 @@ public class NClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.NClobFactoryDao.class, "create");
+
     /** */
     public NClobFactoryDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,12 +56,13 @@ public class NClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public java.sql.NClob create() {
         entering("org.seasar.doma.internal.apt.dao.NClobFactoryDaoImpl", "create");
         try {
-            org.seasar.doma.internal.jdbc.query.NClobCreateQuery __query = new org.seasar.doma.internal.jdbc.query.NClobCreateQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.NClobCreateQuery __query = getQueryImplementors().createNClobCreateQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.NClobFactoryDaoImpl");
             __query.setCallerMethodName("create");
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.NClob> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.NClob>(__query);
+            org.seasar.doma.jdbc.command.CreateCommand<java.sql.NClob> __command = getCommandImplementors().createCreateCommand(__method0, __query);
             java.sql.NClob __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.NClobFactoryDaoImpl", "create", __result);

@@ -8,6 +8,8 @@ public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.FunctionDao.class, "execute", int.class);
+
     /** */
     public FunctionDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,8 +56,9 @@ public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
     public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> execute(int id) {
         entering("org.seasar.doma.internal.apt.dao.FunctionDaoImpl", "execute", id);
         try {
-            org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>>();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __query = getQueryImplementors().createAutoFunctionQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setFunctionName("execute");
             __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.MapResultListParameter(org.seasar.doma.MapKeyNamingType.CAMEL_CASE));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, id));
@@ -63,7 +66,7 @@ public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>>(__query);
+            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createFunctionCommand(__method0, __query);
             java.util.List<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.FunctionDaoImpl", "execute", __result);

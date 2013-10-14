@@ -8,6 +8,8 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlValidationSkipDao.class, "selectById", java.lang.String.class);
+
     /** */
     public SqlValidationSkipDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,8 +56,9 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
     public java.lang.String selectById(java.lang.String name) {
         entering("org.seasar.doma.internal.apt.dao.SqlValidationSkipDaoImpl", "selectById", name);
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlValidationSkipDao/selectById.sql");
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlValidationSkipDaoImpl");
@@ -66,7 +69,7 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, false));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, false));
             java.lang.String __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlValidationSkipDaoImpl", "selectById", __result);

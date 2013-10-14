@@ -8,6 +8,10 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnumDao.class, "selectById", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnumDao.class, "selectByNameAndSalary", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, org.seasar.doma.jdbc.SelectOptions.class);
+
     /** */
     public EnumDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -57,8 +61,9 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnumDao/selectById.sql");
             __query.setOptions(options);
             __query.addParameter("id", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, id);
@@ -70,7 +75,7 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(() -> new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class), false));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(() -> new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class), false));
             org.seasar.doma.internal.apt.dao.EnumDao.MyEnum __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnumDaoImpl", "selectById", __result);
@@ -88,8 +93,9 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnumDao/selectByNameAndSalary.sql");
             __query.setOptions(options);
             __query.addParameter("name", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, name);
@@ -102,7 +108,7 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>>(__query, new org.seasar.doma.internal.jdbc.command.BasicResultListHandler<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(() -> new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class)));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.BasicResultListHandler<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(() -> new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum>(org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class)));
             java.util.List<org.seasar.doma.internal.apt.dao.EnumDao.MyEnum> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnumDaoImpl", "selectByNameAndSalary", __result);

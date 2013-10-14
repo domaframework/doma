@@ -21,9 +21,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

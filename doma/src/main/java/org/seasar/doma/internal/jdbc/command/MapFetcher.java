@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.ObjectWrapper;
 
 /**

@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.ResultMappingException;
@@ -38,6 +37,7 @@ import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * エンティティのビルダーです。

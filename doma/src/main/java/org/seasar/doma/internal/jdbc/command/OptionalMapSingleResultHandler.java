@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 

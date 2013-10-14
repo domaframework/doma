@@ -8,7 +8,7 @@ public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jd
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateEntityDao.class, "update", java.util.List.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateEntityDao.class, "update", java.util.List.class);
 
     /** */
     public SqlFileBatchUpdateEntityDaoImpl() {
@@ -59,9 +59,9 @@ public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jd
             if (entities == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entities");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity.Emp.class);
+            org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = getQueryImplementors().createSqlFileBatchUpdateQuery(__method0, org.seasar.doma.internal.apt.entity.Emp.class);
             __query.setMethod(__method0);
-            __query.setConfig(config);
+            __query.setConfig(__config);
             __query.setElements(entities);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileBatchUpdateEntityDao/update.sql");
             __query.setParameterName("entities");
@@ -73,7 +73,7 @@ public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jd
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.BatchUpdateCommand __command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(__query);
+            org.seasar.doma.jdbc.command.BatchUpdateCommand __command = getCommandImplementors().createBatchUpdateCommand(__method0, __query);
             int[] __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateEntityDaoImpl", "update", __result);

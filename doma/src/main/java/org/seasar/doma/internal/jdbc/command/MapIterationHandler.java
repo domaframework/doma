@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium

@@ -22,10 +22,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

@@ -8,9 +8,9 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDao.class, "insert", org.seasar.doma.internal.apt.entity.Emp.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDao.class, "insert", org.seasar.doma.internal.apt.entity.Emp.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDao.class, "insertMultipleEntities", org.seasar.doma.internal.apt.entity.Emp.class, org.seasar.doma.internal.apt.entity.ParentEntity.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDao.class, "insertMultipleEntities", org.seasar.doma.internal.apt.entity.Emp.class, org.seasar.doma.internal.apt.entity.ParentEntity.class);
 
     /** */
     public SqlFileInsertEntityDaoImpl() {
@@ -61,9 +61,9 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
+            org.seasar.doma.jdbc.query.SqlFileInsertQuery __query = getQueryImplementors().createSqlFileInsertQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(config);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileInsertEntityDao/insert.sql");
             __query.addParameter("emp", org.seasar.doma.internal.apt.entity.Emp.class, emp);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl");
@@ -71,7 +71,7 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setQueryTimeout(-1);
             __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            org.seasar.doma.jdbc.command.InsertCommand __command = getCommandImplementors().createInsertCommand(__method0, __query);
             int __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insert", __result);
@@ -92,9 +92,9 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (parentEntity == null) {
                 throw new org.seasar.doma.DomaNullPointerException("parentEntity");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
+            org.seasar.doma.jdbc.query.SqlFileInsertQuery __query = getQueryImplementors().createSqlFileInsertQuery(__method1);
             __query.setMethod(__method1);
-            __query.setConfig(config);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileInsertEntityDao/insertMultipleEntities.sql");
             __query.addParameter("emp", org.seasar.doma.internal.apt.entity.Emp.class, emp);
             __query.addParameter("parentEntity", org.seasar.doma.internal.apt.entity.ParentEntity.class, parentEntity);
@@ -103,7 +103,7 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setQueryTimeout(-1);
             __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            org.seasar.doma.jdbc.command.InsertCommand __command = getCommandImplementors().createInsertCommand(__method1, __query);
             int __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insertMultipleEntities", __result);

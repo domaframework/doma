@@ -22,11 +22,11 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
-import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.domain.PhoneNumber;
 import example.domain._PhoneNumber;

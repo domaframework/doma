@@ -21,7 +21,9 @@ import java.sql.Statement;
 import javax.sql.DataSource;
 
 import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.message.Message;
 
 /**
@@ -91,6 +93,22 @@ public interface Config {
      * @since 1.27.0
      */
     ClassHelper getClassHelper();
+
+    /**
+     * {@link Command} の実装クラスのファクトリを返します。
+     * 
+     * @return {@link Command} の実装クラスのファクトリ
+     * @since 2.0.0
+     */
+    CommandImplementors getCommandImplementors();
+
+    /**
+     * {@link Query} の実装クラスのファクトリを返します。
+     * 
+     * @return {@link Query} の実装クラスのファクトリ
+     * @since 2.0.0
+     */
+    QueryImplementors getQueryImplementors();
 
     /**
      * 例外に含めるSQLログのタイプを返します。

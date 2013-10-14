@@ -19,8 +19,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Optional;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 

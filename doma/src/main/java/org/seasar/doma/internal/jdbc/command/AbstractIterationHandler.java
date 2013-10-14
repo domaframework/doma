@@ -20,12 +20,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.PostIterationCallback;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author nakamura-to

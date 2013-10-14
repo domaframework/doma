@@ -120,9 +120,6 @@ import org.seasar.doma.internal.jdbc.command.OptionalDomainStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
-import org.seasar.doma.internal.jdbc.query.FunctionQuery;
-import org.seasar.doma.internal.jdbc.query.ProcedureQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
@@ -155,6 +152,9 @@ import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.query.FunctionQuery;
+import org.seasar.doma.jdbc.query.ProcedureQuery;
+import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 /**
  * 
@@ -216,18 +216,16 @@ public class DaoGenerator extends AbstractGenerator {
     protected void printStaticFields() {
         int i = 0;
         for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-            if (queryMeta.getQueryKind().isTrigger()) {
-                iprint("private static final %1$s __method%2$s = %3$s.__getDeclaredMethod(%4$s.class, \"%5$s\"",
-                        Method.class.getName(), i, AbstractDao.class.getName(),
-                        daoMeta.getDaoType(), queryMeta.getName());
-                for (QueryParameterMeta parameterMeta : queryMeta
-                        .getParameterMetas()) {
-                    print(", %1$s.class", parameterMeta.getQualifiedName());
-                }
-                print(");%n");
-                print("%n");
+            iprint("private static final %1$s __method%2$s = %3$s.getDeclaredMethod(%4$s.class, \"%5$s\"",
+                    Method.class.getName(), i, AbstractDao.class.getName(),
+                    daoMeta.getDaoType(), queryMeta.getName());
+            for (QueryParameterMeta parameterMeta : queryMeta
+                    .getParameterMetas()) {
+                print(", %1$s.class", parameterMeta.getQualifiedName());
             }
             i++;
+            print(");%n");
+            print("%n");
         }
     }
 
@@ -402,7 +400,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
         print("{%n");
         indent();
-        m.accept(generator, index);
+        m.accept(generator, "__method" + index);
         unindent();
         iprint("}%n");
         print("%n");
@@ -414,19 +412,19 @@ public class DaoGenerator extends AbstractGenerator {
      * @author nakamura-to
      */
     protected class MethodBodyGenerator implements
-            QueryMetaVisitor<Void, Integer> {
+            QueryMetaVisitor<Void, String> {
 
         @Override
         public Void visitSqlFileSelectQueryMeta(final SqlFileSelectQueryMeta m,
-                Integer p) {
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+                    m.getQueryClass().getName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setSqlFilePath(\"%1$s\");%n",
                     SqlFileUtil.buildPath(daoMeta.getDaoElement()
                             .getQualifiedName().toString(), m.getName()));
@@ -451,8 +449,8 @@ public class DaoGenerator extends AbstractGenerator {
 
             if (m.getLoadType() == LoadType.BULK) {
                 CtType returnCtType = returnMeta.getCtType();
-                returnCtType.accept(
-                        new SqlFileSelectQueryReturnCtTypeVisitor(m), false);
+                returnCtType.accept(new SqlFileSelectQueryReturnCtTypeVisitor(
+                        m, methodName), false);
                 iprint("%1$s __result = __command.execute();%n",
                         returnMeta.getTypeName());
                 iprint("__query.complete();%n");
@@ -464,13 +462,13 @@ public class DaoGenerator extends AbstractGenerator {
                     IterationCallbackCtType callbackCtType = m
                             .getIterationCallbackCtType();
                     callbackCtType.getTargetCtType().accept(
-                            new SqlFileSelectQueryCallbackCtTypeVisitor(m),
-                            false);
+                            new SqlFileSelectQueryCallbackCtTypeVisitor(m,
+                                    methodName), false);
                 } else if (m.getLoadType() == LoadType.STREAM) {
                     FunctionCtType functionCtType = m.getFunctionCtType();
                     functionCtType.getTargetCtType().accept(
-                            new SqlFileSelectQueryFunctionCtTypeVisitor(m),
-                            null);
+                            new SqlFileSelectQueryFunctionCtTypeVisitor(m,
+                                    methodName), null);
                 }
                 if ("void".equals(returnMeta.getTypeName())) {
                     iprint("__command.execute();%n");
@@ -493,15 +491,15 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m,
-                Integer p) {
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+                    m.getQueryClass().getName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setScriptFilePath(\"%1$s\");%n",
                     ScriptFileUtil.buildPath(daoMeta.getDaoElement()
                             .getQualifiedName().toString(), m.getName()));
@@ -511,8 +509,9 @@ public class DaoGenerator extends AbstractGenerator {
                     m.getBlockDelimiter());
             iprint("__query.setHaltOnError(%1$s);%n", m.getHaltOnError());
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+            iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+                    m.getCommandClass().getName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
             iprint("__command.execute();%n");
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName,
@@ -523,18 +522,18 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitAutoModifyQueryMeta(AutoModifyQueryMeta m, Integer p) {
+        public Void visitAutoModifyQueryMeta(AutoModifyQueryMeta m,
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
+            iprint("%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
                     m.getQueryClass().getName(), m.getEntityCtType()
                             .getBoxedTypeName(), m.getEntityCtType()
-                            .getBoxedMetaTypeName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+                            .getBoxedMetaTypeName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -576,8 +575,9 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+            iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+                    m.getCommandClass().getName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
 
             EntityCtType entityCtType = m.getEntityCtType();
             if (entityCtType != null && entityCtType.isImmutable()) {
@@ -601,15 +601,15 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m,
-                Integer p) {
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+                    m.getQueryClass().getName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setSqlFilePath(\"%1$s\");%n",
                     SqlFileUtil.buildPath(daoMeta.getDaoElement()
                             .getQualifiedName().toString(), m.getName()));
@@ -640,8 +640,9 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+            iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+                    m.getCommandClass().getName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
 
             EntityCtType entityCtType = m.getEntityCtType();
             if (entityCtType != null && entityCtType.isImmutable()) {
@@ -666,18 +667,17 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m,
-                Integer p) {
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
+            iprint("%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
                     m.getQueryClass().getName(), m.getEntityCtType()
                             .getBoxedTypeName(), m.getEntityCtType()
-                            .getBoxedMetaTypeName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+                            .getBoxedMetaTypeName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -709,8 +709,9 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+            iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+                    m.getCommandClass().getName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
 
             EntityCtType entityCtType = m.getEntityCtType();
             if (entityCtType != null && entityCtType.isImmutable()) {
@@ -734,18 +735,17 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitSqlFileBatchModifyQueryMeta(
-                SqlFileBatchModifyQueryMeta m, Integer p) {
+                SqlFileBatchModifyQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.class);%n", m
-                    .getQueryClass().getName(), m.getElementCtType()
-                    .getBoxedTypeName(), m.getElementCtType()
-                    .getQualifiedName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.class);%n",
+                    m.getQueryClass().getName(), m.getElementCtType()
+                            .getBoxedTypeName(), m.getElementCtType()
+                            .getQualifiedName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
             iprint("__query.setSqlFilePath(\"%1$s\");%n",
                     SqlFileUtil.buildPath(daoMeta.getDaoElement()
@@ -775,8 +775,9 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+            iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+                    m.getCommandClass().getName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
 
             EntityCtType entityCtType = m.getEntityType();
             if (entityCtType != null && entityCtType.isImmutable()) {
@@ -800,17 +801,16 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m,
-                Integer p) {
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             QueryReturnMeta returnMeta = m.getReturnMeta();
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>();%n", m
-                    .getQueryClass().getName(), returnMeta.getBoxedTypeName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s<%2$s> __query = getQueryImplementors().create%3$s(%4$s);%n",
+                    m.getQueryClass().getName(), returnMeta.getBoxedTypeName(),
+                    m.getQueryClass().getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
             m.getResultParameterMeta().accept(parameterGenerator, m);
@@ -822,8 +822,10 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.prepare();%n");
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(), returnMeta.getBoxedTypeName());
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+                    m.getCommandClass().getName(), returnMeta
+                            .getBoxedTypeName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
             iprint("%1$s __result = __command.execute();%n",
                     returnMeta.getTypeName());
             iprint("__query.complete();%n");
@@ -837,15 +839,15 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m,
-                Integer p) {
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+                    m.getQueryClass().getName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setProcedureName(\"%1$s\");%n",
                     m.getProcedureName());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
@@ -857,8 +859,9 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+            iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+                    m.getCommandClass().getName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
             iprint("__command.execute();%n");
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName,
@@ -870,22 +873,22 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m,
-                Integer p) {
+                String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
-            iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName(),
-                    resultMeta.getTypeName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+                    m.getQueryClass().getName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.prepare();%n");
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(), resultMeta.getTypeName());
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+                    m.getCommandClass().getName(), resultMeta.getTypeName(), m
+                            .getCommandClass().getSimpleName(), methodName);
             iprint("%1$s __result = __command.execute();%n",
                     resultMeta.getTypeName());
             iprint("__query.complete();%n");
@@ -898,23 +901,26 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, Integer p) {
+        public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m,
+                String methodName) {
             printArrayCreateEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
-            iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            if (m.isTrigger()) {
-                iprint("__query.setMethod(__method%1$s);%n", p);
-            }
-            iprint("__query.setConfig(config);%n");
+            iprint("%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+                    m.getQueryClass().getName(), m.getQueryClass()
+                            .getSimpleName(), methodName);
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setTypeName(\"%1$s\");%n", m.getArrayTypeName());
             iprint("__query.setElements(%1$s);%n", m.getParameterName());
             iprint("__query.prepare();%n");
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(), resultMeta.getBoxedTypeName());
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+                    m.getCommandClass().getName(), resultMeta
+                            .getBoxedTypeName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
             iprint("%1$s __result = __command.execute();%n",
                     resultMeta.getTypeName());
             iprint("__query.complete();%n");
@@ -927,10 +933,11 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDelegateQueryMeta(DelegateQueryMeta m, Integer p) {
+        public Void visitDelegateQueryMeta(DelegateQueryMeta m,
+                String methodName) {
             printEnteringStatements(m);
 
-            iprint("%1$s __delegate = new %1$s(config", m.getTo());
+            iprint("%1$s __delegate = new %1$s(__config", m.getTo());
             if (m.isDaoAware()) {
                 print(", this);%n");
             } else {
@@ -1679,17 +1686,23 @@ public class DaoGenerator extends AbstractGenerator {
 
         protected final SqlFileSelectQueryMeta m;
 
+        protected final String methodName;
+
         protected final QueryReturnMeta resultMeta;
 
         protected final String commandClassName;
 
+        protected final String commandName;
+
         protected final String callbackParamName;
 
         protected SqlFileSelectQueryCallbackCtTypeVisitor(
-                SqlFileSelectQueryMeta m) {
+                SqlFileSelectQueryMeta m, String methodName) {
             this.m = m;
+            this.methodName = methodName;
             this.resultMeta = m.getReturnMeta();
             this.commandClassName = m.getCommandClass().getName();
+            this.commandName = m.getCommandClass().getSimpleName();
             this.callbackParamName = m.getIterationCallbackParameterName();
         }
 
@@ -1703,7 +1716,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(() -> new %5$s(%6$s.class), %7$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%2$s, %4$s>(() -> new %5$s(%6$s.class), %7$s));%n",
                                     commandClassName, resultMeta
                                             .getBoxedTypeName(),
                                     getBasicIterationHandlerName(optional),
@@ -1711,19 +1724,20 @@ public class DaoGenerator extends AbstractGenerator {
                                     ctType.getTypeName(), ctType
                                             .getBasicCtType()
                                             .getQualifiedName(),
-                                    callbackParamName);
+                                    callbackParamName, commandName, methodName);
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s::new, %6$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s::new, %6$s));%n",
                                     commandClassName,
                                     resultMeta.getBoxedTypeName(),
                                     getBasicIterationHandlerName(optional),
                                     ctType.getBasicCtType().getBoxedTypeName(),
-                                    ctType.getTypeName(), callbackParamName);
+                                    ctType.getTypeName(), callbackParamName,
+                                    commandName, methodName);
                             return null;
                         }
 
@@ -1735,11 +1749,12 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
                     commandClassName, resultMeta.getBoxedTypeName(),
                     getDomainIterationHandlerName(optional),
                     ctType.getBoxedTypeName(),
-                    ctType.getInstantiationCommand(), callbackParamName);
+                    ctType.getInstantiationCommand(), callbackParamName,
+                    commandName, methodName);
             return null;
         }
 
@@ -1747,22 +1762,22 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitMapCtType(MapCtType ctType, Boolean optional)
                 throws RuntimeException {
             MapKeyNamingType namingType = m.getMapKeyNamingType();
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
                     commandClassName, resultMeta.getBoxedTypeName(),
                     getMapIterationHandlerName(optional), namingType
                             .getDeclaringClass().getName(), namingType.name(),
-                    callbackParamName);
+                    callbackParamName, commandName, methodName);
             return null;
         }
 
         @Override
         public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
                     commandClassName, resultMeta.getBoxedTypeName(),
                     getEntityIterationHandlerName(optional),
                     ctType.getTypeName(), ctType.getMetaTypeName(),
-                    callbackParamName);
+                    callbackParamName, commandName, methodName);
             return null;
         }
 
@@ -1806,16 +1821,23 @@ public class DaoGenerator extends AbstractGenerator {
 
         protected final SqlFileSelectQueryMeta m;
 
+        protected final String methodName;
+
         protected final QueryReturnMeta resultMeta;
 
         protected final String commandClassName;
 
+        protected final String commandName;
+
         protected final String functionParamName;
 
-        public SqlFileSelectQueryFunctionCtTypeVisitor(SqlFileSelectQueryMeta m) {
+        public SqlFileSelectQueryFunctionCtTypeVisitor(
+                SqlFileSelectQueryMeta m, String methodName) {
             this.m = m;
+            this.methodName = methodName;
             this.resultMeta = m.getReturnMeta();
             this.commandClassName = m.getCommandClass().getName();
+            this.commandName = m.getCommandClass().getSimpleName();
             this.functionParamName = m.getFunctionParameterName();
         }
 
@@ -1839,7 +1861,7 @@ public class DaoGenerator extends AbstractGenerator {
                             public Void visitEnumWrapperCtType(
                                     EnumWrapperCtType ctType, Void p)
                                     throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(() -> new %5$s(%6$s.class), %7$s));%n",
+                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%2$s, %4$s>(() -> new %5$s(%6$s.class), %7$s));%n",
                                         commandClassName, resultMeta
                                                 .getBoxedTypeName(),
                                         getBasicStreamHandlerName(optional),
@@ -1848,7 +1870,8 @@ public class DaoGenerator extends AbstractGenerator {
                                                 .getTypeName(), ctType
                                                 .getBasicCtType()
                                                 .getQualifiedName(),
-                                        functionParamName);
+                                        functionParamName, commandName,
+                                        methodName);
                                 return null;
                             }
 
@@ -1856,14 +1879,15 @@ public class DaoGenerator extends AbstractGenerator {
                             public Void visitWrapperCtType(
                                     WrapperCtType ctType, Void p)
                                     throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s::new, %6$s));%n",
+                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s::new, %6$s));%n",
                                         commandClassName, resultMeta
                                                 .getBoxedTypeName(),
                                         getBasicStreamHandlerName(optional),
                                         ctType.getBasicCtType()
                                                 .getBoxedTypeName(), ctType
                                                 .getTypeName(),
-                                        functionParamName);
+                                        functionParamName, commandName,
+                                        methodName);
                                 return null;
                             }
 
@@ -1875,11 +1899,12 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                     throws RuntimeException {
-                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
                         commandClassName, resultMeta.getBoxedTypeName(),
                         getDomainStreamHandlerName(optional),
                         ctType.getBoxedTypeName(),
-                        ctType.getInstantiationCommand(), functionParamName);
+                        ctType.getInstantiationCommand(), functionParamName,
+                        commandName, methodName);
                 return null;
             }
 
@@ -1887,22 +1912,23 @@ public class DaoGenerator extends AbstractGenerator {
             public Void visitMapCtType(MapCtType ctType, Boolean optional)
                     throws RuntimeException {
                 MapKeyNamingType namingType = m.getMapKeyNamingType();
-                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
                         commandClassName, resultMeta.getBoxedTypeName(),
                         getMapStreamHandlerName(optional), namingType
                                 .getDeclaringClass().getName(), namingType
-                                .name(), functionParamName);
+                                .name(), functionParamName, commandName,
+                        methodName);
                 return null;
             }
 
             @Override
             public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
                     throws RuntimeException {
-                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
                         commandClassName, resultMeta.getBoxedTypeName(),
                         getEntityStreamHandlerName(optional),
                         ctType.getTypeName(), ctType.getMetaTypeName(),
-                        functionParamName);
+                        functionParamName, commandName, methodName);
                 return null;
             }
 
@@ -1946,15 +1972,22 @@ public class DaoGenerator extends AbstractGenerator {
 
         protected final SqlFileSelectQueryMeta m;
 
+        protected final String methodName;
+
         protected final String resultBoxedTypeName;
 
         protected final String commandClassName;
 
-        protected SqlFileSelectQueryReturnCtTypeVisitor(SqlFileSelectQueryMeta m) {
+        protected final String commandName;
+
+        protected SqlFileSelectQueryReturnCtTypeVisitor(
+                SqlFileSelectQueryMeta m, String methodName) {
             this.m = m;
+            this.methodName = methodName;
             this.resultBoxedTypeName = this.m.getReturnMeta()
                     .getBoxedTypeName();
             this.commandClassName = m.getCommandClass().getName();
+            this.commandName = m.getCommandClass().getSimpleName();
         }
 
         @Override
@@ -1967,27 +2000,29 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%6$s>(() -> new %4$s(%5$s.class), false));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%6$s>(() -> new %4$s(%5$s.class), false));%n",
                                     commandClassName, resultBoxedTypeName,
                                     getBasicSingleResultHandlerName(optional),
                                     ctType.getTypeName(), ctType
                                             .getBasicCtType()
                                             .getQualifiedName(), ctType
                                             .getBasicCtType()
-                                            .getBoxedTypeName());
+                                            .getBoxedTypeName(), commandName,
+                                    methodName);
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%6$s>(%4$s::new, %5$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%6$s>(%4$s::new, %5$s));%n",
                                     commandClassName, resultBoxedTypeName,
                                     getBasicSingleResultHandlerName(optional),
                                     ctType.getTypeName(), basicCtType
                                             .isPrimitive(), ctType
                                             .getBasicCtType()
-                                            .getBoxedTypeName());
+                                            .getBoxedTypeName(), commandName,
+                                    methodName);
                             return null;
                         }
 
@@ -1999,10 +2034,11 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%5$s>(%4$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
                     commandClassName, resultBoxedTypeName,
                     getDomainSingleResultHandlerName(optional),
-                    ctType.getInstantiationCommand(), ctType.getBoxedTypeName());
+                    ctType.getInstantiationCommand(),
+                    ctType.getBoxedTypeName(), commandName, methodName);
             return null;
         }
 
@@ -2010,20 +2046,22 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitMapCtType(MapCtType ctType, Boolean optional)
                 throws RuntimeException {
             MapKeyNamingType namingType = m.getMapKeyNamingType();
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
                     commandClassName, resultBoxedTypeName,
                     getMapSingleResultHandlerName(optional), namingType
-                            .getDeclaringClass().getName(), namingType.name());
+                            .getDeclaringClass().getName(), namingType.name(),
+                    commandName, methodName);
             return null;
         }
 
         @Override
         public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%5$s>(%4$s.getSingletonInternal()));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s.getSingletonInternal()));%n",
                     commandClassName, resultBoxedTypeName,
                     getEntitySingleResultHandlerName(optional),
-                    ctType.getMetaTypeName(), ctType.getBoxedTypeName());
+                    ctType.getMetaTypeName(), ctType.getBoxedTypeName(),
+                    commandName, methodName);
             return null;
         }
 
@@ -2049,7 +2087,7 @@ public class DaoGenerator extends AbstractGenerator {
                                         public Void visitEnumWrapperCtType(
                                                 EnumWrapperCtType ctType, Void p)
                                                 throws RuntimeException {
-                                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(() -> new %5$s(%6$s.class)));%n",
+                                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s>(() -> new %5$s(%6$s.class)));%n",
                                                     commandClassName,
                                                     resultBoxedTypeName,
                                                     getBasicResultListHandlerName(optional),
@@ -2057,7 +2095,8 @@ public class DaoGenerator extends AbstractGenerator {
                                                             .getBoxedTypeName(),
                                                     ctType.getTypeName(),
                                                     ctType.getBasicCtType()
-                                                            .getQualifiedName());
+                                                            .getQualifiedName(),
+                                                    commandName, methodName);
                                             return null;
                                         }
 
@@ -2065,13 +2104,14 @@ public class DaoGenerator extends AbstractGenerator {
                                         public Void visitWrapperCtType(
                                                 WrapperCtType ctType, Void p)
                                                 throws RuntimeException {
-                                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s::new));%n",
+                                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s::new));%n",
                                                     commandClassName,
                                                     resultBoxedTypeName,
                                                     getBasicResultListHandlerName(optional),
                                                     ctType.getBasicCtType()
                                                             .getBoxedTypeName(),
-                                                    ctType.getTypeName());
+                                                    ctType.getTypeName(),
+                                                    commandName, methodName);
                                             return null;
                                         }
 
@@ -2083,11 +2123,12 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitDomainCtType(DomainCtType ctType,
                                 Boolean optional) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
                                     commandClassName, resultBoxedTypeName,
                                     getDomainResultListHandlerName(optional),
                                     ctType.getBoxedTypeName(),
-                                    ctType.getInstantiationCommand());
+                                    ctType.getInstantiationCommand(),
+                                    commandName, methodName);
                             return null;
                         }
 
@@ -2095,22 +2136,23 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitMapCtType(MapCtType ctType,
                                 Boolean optional) throws RuntimeException {
                             MapKeyNamingType namingType = m.getMapKeyNamingType();
-                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
                                     commandClassName, resultBoxedTypeName,
                                     getMapResultListHandlerName(optional),
                                     namingType.getDeclaringClass().getName(),
-                                    namingType.name());
+                                    namingType.name(), commandName, methodName);
                             return null;
                         }
 
                         @Override
                         public Void visitEntityCtType(EntityCtType ctType,
                                 Boolean optional) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
                                     commandClassName, resultBoxedTypeName,
                                     getEntityResultListHandlerName(optional),
                                     ctType.getTypeName(),
-                                    ctType.getMetaTypeName());
+                                    ctType.getMetaTypeName(), commandName,
+                                    methodName);
                             return null;
                         }
 

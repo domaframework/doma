@@ -8,6 +8,18 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "selectSingleResult");
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "selectOptionalSingleResult");
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "selectResultList");
+
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "selectOptionalResultList");
+
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "iterate", org.seasar.doma.jdbc.IterationCallback.class);
+
+    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "iterateOptional", org.seasar.doma.jdbc.IterationCallback.class);
+
     /** */
     public ParameterizedDomainResultDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,8 +66,9 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
     public org.seasar.doma.internal.apt.dao.Height<java.lang.String> selectSingleResult() {
         entering("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectSingleResult");
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/selectSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
             __query.setCallerMethodName("selectSingleResult");
@@ -65,7 +78,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(__query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             org.seasar.doma.internal.apt.dao.Height<java.lang.String> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectSingleResult", __result);
@@ -80,8 +93,9 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
     public java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> selectOptionalSingleResult() {
         entering("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectOptionalSingleResult");
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/selectOptionalSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
             __query.setCallerMethodName("selectOptionalSingleResult");
@@ -91,7 +105,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>>(__query, new org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectOptionalSingleResult", __result);
@@ -106,8 +120,9 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
     public java.util.List<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> selectResultList() {
         entering("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectResultList");
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            __query.setMethod(__method2);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/selectResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
             __query.setCallerMethodName("selectResultList");
@@ -117,7 +132,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>>(__query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             java.util.List<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectResultList", __result);
@@ -132,8 +147,9 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
     public java.util.List<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> selectOptionalResultList() {
         entering("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectOptionalResultList");
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            __query.setMethod(__method3);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/selectOptionalResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
             __query.setCallerMethodName("selectOptionalResultList");
@@ -143,7 +159,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>>>(__query, new org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             java.util.List<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "selectOptionalResultList", __result);
@@ -161,8 +177,9 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             if (callback == null) {
                 throw new org.seasar.doma.DomaNullPointerException("callback");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            __query.setMethod(__method4);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/iterate.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
             __query.setCallerMethodName("iterate");
@@ -172,7 +189,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<R, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<R, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterate", __result);
@@ -190,8 +207,9 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             if (callback == null) {
                 throw new org.seasar.doma.DomaNullPointerException("callback");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method5);
+            __query.setMethod(__method5);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/iterateOptional.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
             __query.setCallerMethodName("iterateOptional");
@@ -201,7 +219,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<R, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method5, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<R, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterateOptional", __result);

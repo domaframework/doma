@@ -18,12 +18,14 @@ package org.seasar.doma.internal.jdbc.mock;
 import javax.sql.DataSource;
 
 import org.seasar.doma.jdbc.ClassHelper;
+import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.NullRequiresNewController;
+import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
@@ -47,6 +49,12 @@ public class MockConfig implements Config {
     protected RequiresNewController requiresNewController = new NullRequiresNewController();
 
     protected ClassHelper classHelper = new DefaultClassHelper();
+
+    protected CommandImplementors commandImplementors = new CommandImplementors() {
+    };
+
+    protected QueryImplementors queryImplementors = new QueryImplementors() {
+    };
 
     protected ExceptionSqlLogType exceptionSqlLogType = ExceptionSqlLogType.FORMATTED_SQL;
 
@@ -83,6 +91,16 @@ public class MockConfig implements Config {
     @Override
     public ClassHelper getClassHelper() {
         return classHelper;
+    }
+
+    @Override
+    public CommandImplementors getCommandImplementors() {
+        return commandImplementors;
+    }
+
+    @Override
+    public QueryImplementors getQueryImplementors() {
+        return queryImplementors;
     }
 
     @Override

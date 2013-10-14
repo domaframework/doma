@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.command.BasicResultProvider;
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.seasar.doma.internal.jdbc.command.DomainResultProvider;
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium

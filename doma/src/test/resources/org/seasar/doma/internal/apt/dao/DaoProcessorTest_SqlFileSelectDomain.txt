@@ -8,6 +8,14 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao.class, "selectPhoneNumberById", java.lang.Integer.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao.class, "selectPhoneNumberByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao.class, "selectJobTypeById", java.lang.Integer.class);
+
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao.class, "selectJobTypeByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
     /** */
     public SqlFileSelectDomainDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,8 +62,9 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
     public example.domain.PhoneNumber selectPhoneNumberById(java.lang.Integer id) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", id);
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectDomainDao/selectPhoneNumberById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl");
@@ -66,7 +75,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.PhoneNumber>(__query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
             example.domain.PhoneNumber __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", __result);
@@ -84,8 +93,9 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectDomainDao/selectPhoneNumberByNameAndSalary.sql");
             __query.setOptions(options);
             __query.addParameter("name", java.lang.String.class, name);
@@ -98,7 +108,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>>(__query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
             java.util.List<example.domain.PhoneNumber> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", __result);
@@ -113,8 +123,9 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
     public example.domain.JobType selectJobTypeById(java.lang.Integer id) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", id);
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            __query.setMethod(__method2);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectDomainDao/selectJobTypeById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl");
@@ -125,7 +136,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.JobType> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.JobType>(__query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.domain.JobType> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
             example.domain.JobType __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", __result);
@@ -143,8 +154,9 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            __query.setMethod(__method3);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectDomainDao/selectJobTypeByNameAndSalary.sql");
             __query.setOptions(options);
             __query.addParameter("name", java.lang.String.class, name);
@@ -157,7 +169,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.JobType>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.JobType>>(__query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.JobType>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
             java.util.List<example.domain.JobType> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", __result);

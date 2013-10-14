@@ -8,6 +8,8 @@ public class OptionalParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalParameterDao.class, "selectById", java.util.Optional.class, org.seasar.doma.jdbc.SelectOptions.class);
+
     /** */
     public OptionalParameterDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -60,8 +62,9 @@ public class OptionalParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/OptionalParameterDao/selectById.sql");
             __query.setOptions(options);
             __query.addParameter("id", java.lang.Integer.class, id.orElse(null));
@@ -73,7 +76,7 @@ public class OptionalParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<example.entity.Emp> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<example.entity.Emp>(__query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
             example.entity.Emp __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.OptionalParameterDaoImpl", "selectById", __result);

@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.command.EntityResultProvider;
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium

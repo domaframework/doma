@@ -8,6 +8,12 @@ public class DelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DelegateDao.class, "execute", java.lang.String.class, java.lang.Integer.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DelegateDao.class, "execute2", java.lang.String.class, java.lang.Integer.class, java.lang.String[].class);
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DelegateDao.class, "execute3", java.lang.String.class, java.lang.Integer.class, java.lang.String[].class);
+
     /** */
     public DelegateDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,7 +60,7 @@ public class DelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
     public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
         entering("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute", aaa, bbb);
         try {
-            org.seasar.doma.internal.apt.dao.DelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(config);
+            org.seasar.doma.internal.apt.dao.DelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(__config);
             java.math.BigDecimal __result = __delegate.execute(aaa, bbb);
             exiting("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute", __result);
             return __result;
@@ -68,7 +74,7 @@ public class DelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
     public java.math.BigDecimal execute2(java.lang.String aaa, java.lang.Integer bbb, java.lang.String... ccc) {
         entering("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute2", aaa, bbb, ccc);
         try {
-            org.seasar.doma.internal.apt.dao.DelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(config);
+            org.seasar.doma.internal.apt.dao.DelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(__config);
             java.math.BigDecimal __result = __delegate.execute2(aaa, bbb, ccc);
             exiting("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute2", __result);
             return __result;
@@ -82,7 +88,7 @@ public class DelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
     public void execute3(java.lang.String aaa, java.lang.Integer bbb, java.lang.String... ccc) {
         entering("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute3", aaa, bbb, ccc);
         try {
-            org.seasar.doma.internal.apt.dao.DelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(config);
+            org.seasar.doma.internal.apt.dao.DelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(__config);
             Object __result = null;
             __delegate.execute3(aaa, bbb, ccc);
             exiting("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute3", __result);

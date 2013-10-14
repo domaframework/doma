@@ -26,10 +26,12 @@ import org.seasar.doma.internal.RuntimeConfig;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
 import org.seasar.doma.jdbc.ConfigProvider;
 import org.seasar.doma.jdbc.DaoMethodNotFoundException;
+import org.seasar.doma.jdbc.QueryImplementors;
 
 /**
  * {@link Dao} が注釈されたインタフェースの実装クラスのための骨格実装です。
@@ -43,7 +45,7 @@ public abstract class AbstractDao implements ConfigProvider {
     /**
      * 実行時用の設定です。
      */
-    protected final Config config;
+    protected final Config __config;
 
     /**
      * 実行時用の設定を作成します。
@@ -60,7 +62,7 @@ public abstract class AbstractDao implements ConfigProvider {
             new DomaNullPointerException("config");
         }
         validateConfig(config, null);
-        this.config = new RuntimeConfig(config, config.getDataSource());
+        this.__config = new RuntimeConfig(config, config.getDataSource());
     }
 
     /**
@@ -89,7 +91,7 @@ public abstract class AbstractDao implements ConfigProvider {
                     new NeverClosedConnection(connection));
         }
         validateConfig(config, dataSource);
-        this.config = new RuntimeConfig(config, dataSource);
+        this.__config = new RuntimeConfig(config, dataSource);
     }
 
     /**
@@ -112,7 +114,7 @@ public abstract class AbstractDao implements ConfigProvider {
             new DomaNullPointerException("dataSource");
         }
         validateConfig(config, dataSource);
-        this.config = new RuntimeConfig(config, dataSource);
+        this.__config = new RuntimeConfig(config, dataSource);
     }
 
     private void validateConfig(Config config, DataSource dataSource) {
@@ -133,6 +135,14 @@ public abstract class AbstractDao implements ConfigProvider {
             throw new ConfigException(config.getClass().getName(),
                     "getJdbcLogger");
         }
+        if (config.getCommandImplementors() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getCommandFactory");
+        }
+        if (config.getQueryImplementors() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getQueryFactory");
+        }
         if (config.getExceptionSqlLogType() == null) {
             throw new ConfigException(config.getClass().getName(),
                     "getExceptionSqlLogType");
@@ -141,7 +151,7 @@ public abstract class AbstractDao implements ConfigProvider {
 
     @Override
     public Config getConfig() {
-        return config;
+        return __config;
     }
 
     /**
@@ -150,7 +160,15 @@ public abstract class AbstractDao implements ConfigProvider {
      * @return データソース
      */
     protected DataSource getDataSource() {
-        return config.getDataSource();
+        return __config.getDataSource();
+    }
+
+    protected CommandImplementors getCommandImplementors() {
+        return __config.getCommandImplementors();
+    }
+
+    protected QueryImplementors getQueryImplementors() {
+        return __config.getQueryImplementors();
     }
 
     /**
@@ -165,7 +183,7 @@ public abstract class AbstractDao implements ConfigProvider {
      */
     protected void entering(String callerClassName, String callerMethodName,
             Object... args) {
-        config.getJdbcLogger().logDaoMethodEntering(callerClassName,
+        __config.getJdbcLogger().logDaoMethodEntering(callerClassName,
                 callerMethodName, args);
     }
 
@@ -181,7 +199,7 @@ public abstract class AbstractDao implements ConfigProvider {
      */
     protected void exiting(String callerClassName, String callerMethodName,
             Object result) {
-        config.getJdbcLogger().logDaoMethodExiting(callerClassName,
+        __config.getJdbcLogger().logDaoMethodExiting(callerClassName,
                 callerMethodName, result);
     }
 
@@ -197,11 +215,11 @@ public abstract class AbstractDao implements ConfigProvider {
      */
     protected void throwing(String callerClassName, String callerMethodName,
             RuntimeException e) {
-        config.getJdbcLogger().logDaoMethodThrowing(callerClassName,
+        __config.getJdbcLogger().logDaoMethodThrowing(callerClassName,
                 callerMethodName, e);
     }
 
-    public static <T> Method __getDeclaredMethod(Class<T> clazz, String name,
+    public static <T> Method getDeclaredMethod(Class<T> clazz, String name,
             Class<?>... parameterTypes) {
         try {
             return ClassUtil.getDeclaredMethod(clazz, name, parameterTypes);

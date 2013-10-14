@@ -8,6 +8,14 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnsureResultMappingDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnsureResultMappingDao.class, "selectByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnsureResultMappingDao.class, "procedure", java.util.List.class);
+
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnsureResultMappingDao.class, "function", java.util.List.class);
+
     /** */
     public EnsureResultMappingDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -57,8 +65,9 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnsureResultMappingDao/selectById.sql");
             __query.setOptions(options);
             __query.addParameter("id", java.lang.Integer.class, id);
@@ -70,7 +79,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<example.entity.Emp> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<example.entity.Emp>(__query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
             example.entity.Emp __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl", "selectById", __result);
@@ -88,8 +97,9 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnsureResultMappingDao/selectByNameAndSalary.sql");
             __query.setOptions(options);
             __query.addParameter("name", java.lang.String.class, name);
@@ -102,7 +112,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.entity.Emp>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.entity.Emp>>(__query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
             java.util.List<example.entity.Emp> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl", "selectByNameAndSalary", __result);
@@ -120,15 +130,16 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.internal.jdbc.query.AutoProcedureQuery __query = new org.seasar.doma.internal.jdbc.query.AutoProcedureQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method2);
+            __query.setMethod(__method2);
+            __query.setConfig(__config);
             __query.setProcedureName("procedure");
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");
             __query.setCallerMethodName("procedure");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.ProcedureCommand __command = new org.seasar.doma.internal.jdbc.command.ProcedureCommand(__query);
+            org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method2, __query);
             __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl", "procedure", null);
@@ -145,8 +156,9 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.entity.Emp>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.entity.Emp>>();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<example.entity.Emp>> __query = getQueryImplementors().createAutoFunctionQuery(__method3);
+            __query.setMethod(__method3);
+            __query.setConfig(__config);
             __query.setFunctionName("function");
             __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityResultListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), true));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
@@ -154,7 +166,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerMethodName("function");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.entity.Emp>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.entity.Emp>>(__query);
+            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<example.entity.Emp>> __command = getCommandImplementors().createFunctionCommand(__method3, __query);
             java.util.List<example.entity.Emp> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl", "function", __result);

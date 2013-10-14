@@ -18,10 +18,10 @@ package org.seasar.doma.internal.jdbc.command;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author nakamura-to

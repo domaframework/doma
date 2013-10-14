@@ -22,7 +22,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
@@ -58,7 +57,9 @@ import org.seasar.doma.internal.jdbc.sql.OptionalDomainSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.sql.SingleResultParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.command.RegisterOutParameterFunction;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 

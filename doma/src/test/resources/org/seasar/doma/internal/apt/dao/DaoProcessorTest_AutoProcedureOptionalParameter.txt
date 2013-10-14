@@ -8,6 +8,8 @@ public class AutoProcedureOptionalParameterDaoImpl extends org.seasar.doma.inter
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.AutoProcedureOptionalParameterDao.class, "executeProcedure", java.util.Optional.class, org.seasar.doma.jdbc.Reference.class);
+
     /** */
     public AutoProcedureOptionalParameterDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -60,8 +62,9 @@ public class AutoProcedureOptionalParameterDaoImpl extends org.seasar.doma.inter
             if (arg2 == null) {
                 throw new org.seasar.doma.DomaNullPointerException("arg2");
             }
-            org.seasar.doma.internal.jdbc.query.AutoProcedureQuery __query = new org.seasar.doma.internal.jdbc.query.AutoProcedureQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setProcedureName("executeProcedure");
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalBasicInParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, arg1));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalBasicOutParameter<java.lang.Integer>(() -> new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
@@ -69,7 +72,7 @@ public class AutoProcedureOptionalParameterDaoImpl extends org.seasar.doma.inter
             __query.setCallerMethodName("executeProcedure");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.ProcedureCommand __command = new org.seasar.doma.internal.jdbc.command.ProcedureCommand(__query);
+            org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method0, __query);
             __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.AutoProcedureOptionalParameterDaoImpl", "executeProcedure", null);

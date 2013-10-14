@@ -15,6 +15,7 @@
  */
 package example.dao;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.List;
@@ -22,23 +23,23 @@ import java.util.List;
 import javax.annotation.Generated;
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.jdbc.command.DeleteCommand;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.InsertCommand;
-import org.seasar.doma.internal.jdbc.command.ScriptCommand;
-import org.seasar.doma.internal.jdbc.command.SelectCommand;
-import org.seasar.doma.internal.jdbc.command.UpdateCommand;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
-import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
-import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.command.DeleteCommand;
+import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.command.ScriptCommand;
+import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.query.AutoDeleteQuery;
+import org.seasar.doma.jdbc.query.AutoInsertQuery;
+import org.seasar.doma.jdbc.query.AutoUpdateQuery;
+import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
+import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -49,6 +50,31 @@ import example.entity._Emp;
  */
 @Generated("")
 public class EmpDaoImpl extends AbstractDao implements EmpDao {
+
+    private static Method method0 = getDeclaredMethod(EmpDaoImpl.class,
+            "selectById", Integer.class, SelectOptions.class);
+
+    private static Method method1 = getDeclaredMethod(EmpDaoImpl.class,
+            "selectByNameAndSalary", String.class, BigDecimal.class,
+            SelectOptions.class);
+
+    private static Method method2 = getDeclaredMethod(EmpDaoImpl.class,
+            "selectByExample", Emp.class);
+
+    private static Method method3 = getDeclaredMethod(EmpDaoImpl.class,
+            "insert", Emp.class);
+
+    private static Method method4 = getDeclaredMethod(EmpDaoImpl.class,
+            "update", Emp.class);
+
+    private static Method method5 = getDeclaredMethod(EmpDaoImpl.class,
+            "delete", Emp.class);
+
+    private static Method method6 = getDeclaredMethod(EmpDaoImpl.class,
+            "iterate", IterationCallback.class);
+
+    private static Method method7 = getDeclaredMethod(EmpDaoImpl.class,
+            "execute");
 
     public EmpDaoImpl() {
         super(new ExampleConfig());
@@ -64,8 +90,9 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public Emp selectById(Integer id, SelectOptions option) {
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(config);
+        SqlFileSelectQuery query = getQueryImplementors()
+                .createSqlFileSelectQuery(method0);
+        query.setConfig(__config);
         query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
                 "selectById"));
         query.addParameter("id", Integer.class, id);
@@ -73,16 +100,21 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectById");
         query.prepare();
-        SelectCommand<Emp> command = new SelectCommand<Emp>(query,
-                new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        SelectCommand<Emp> command = getCommandImplementors()
+                .createSelectCommand(
+                        method0,
+                        query,
+                        new EntitySingleResultHandler<Emp>(_Emp
+                                .getSingletonInternal()));
         return command.execute();
     }
 
     @Override
     public List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
             SelectOptions option) {
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(config);
+        SqlFileSelectQuery query = getQueryImplementors()
+                .createSqlFileSelectQuery(method1);
+        query.setConfig(__config);
         query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
                 "selectByNameAndSalary"));
         query.addParameter("name", String.class, name);
@@ -91,90 +123,108 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectByNameAndSalary");
         query.prepare();
-        SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(_Emp.getSingletonInternal()));
+        SelectCommand<List<Emp>> command = getCommandImplementors()
+                .createSelectCommand(
+                        method1,
+                        query,
+                        new EntityResultListHandler<Emp>(_Emp
+                                .getSingletonInternal()));
         return command.execute();
     }
 
     @Override
     public List<Emp> selectByExample(Emp emp) {
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(config);
+        SqlFileSelectQuery query = getQueryImplementors()
+                .createSqlFileSelectQuery(method2);
+        query.setConfig(__config);
         query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
                 "selectByNameAndSalary"));
         query.addParameter("emp", Emp.class, emp);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectByNameAndSalary");
         query.prepare();
-        SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(_Emp.getSingletonInternal()));
+        SelectCommand<List<Emp>> command = getCommandImplementors()
+                .createSelectCommand(
+                        method2,
+                        query,
+                        new EntityResultListHandler<Emp>(_Emp
+                                .getSingletonInternal()));
         return command.execute();
     }
 
     @Override
     public int insert(Emp entity) {
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
-        query.setConfig(config);
+        AutoInsertQuery<Emp> query = getQueryImplementors()
+                .createAutoInsertQuery(method3, _Emp.getSingletonInternal());
+        query.setConfig(__config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("insert");
         query.prepare();
-        InsertCommand command = new InsertCommand(query);
+        InsertCommand command = getCommandImplementors().createInsertCommand(
+                method3, query);
         return command.execute();
     }
 
     @Override
     public int update(Emp entity) {
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
-                _Emp.getSingletonInternal());
-        query.setConfig(config);
+        AutoUpdateQuery<Emp> query = getQueryImplementors()
+                .createAutoUpdateQuery(method4, _Emp.getSingletonInternal());
+        query.setConfig(__config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("update");
         query.prepare();
-        UpdateCommand command = new UpdateCommand(query);
+        UpdateCommand command = getCommandImplementors().createUpdateCommand(
+                method4, query);
         return command.execute();
     }
 
     @Override
     public int delete(Emp entity) {
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
-                _Emp.getSingletonInternal());
-        query.setConfig(config);
+        AutoDeleteQuery<Emp> query = getQueryImplementors()
+                .createAutoDeleteQuery(method5, _Emp.getSingletonInternal());
+        query.setConfig(__config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("update");
+        query.setCallerMethodName("delete");
         query.prepare();
-        DeleteCommand command = new DeleteCommand(query);
+        DeleteCommand command = getCommandImplementors().createDeleteCommand(
+                method5, query);
         return command.execute();
     }
 
     @Override
     public Integer iterate(IterationCallback<Integer, Emp> callback) {
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(config);
+        SqlFileSelectQuery query = getQueryImplementors()
+                .createSqlFileSelectQuery(method6);
+        query.setConfig(__config);
         query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
-                "selectById"));
+                "iterate"));
         query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("selectById");
+        query.setCallerMethodName("iterate");
         query.prepare();
-        SelectCommand<Integer> command = new SelectCommand<Integer>(query,
-                new EntityIterationHandler<Integer, Emp>(
-                        _Emp.getSingletonInternal(), callback));
+        SelectCommand<Integer> command = getCommandImplementors()
+                .createSelectCommand(
+                        method6,
+                        query,
+                        new EntityIterationHandler<Integer, Emp>(_Emp
+                                .getSingletonInternal(), callback));
         return command.execute();
     }
 
     @Override
     public void execute() {
-        SqlFileScriptQuery query = new SqlFileScriptQuery();
-        query.setConfig(config);
+        SqlFileScriptQuery query = getQueryImplementors()
+                .createSqlFileScriptQuery(method7);
+        query.setConfig(__config);
         query.setScriptFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
-                "selectById"));
+                "execute"));
         query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("selectById");
+        query.setCallerMethodName("execute");
         query.prepare();
-        ScriptCommand command = new ScriptCommand(query);
+        ScriptCommand command = getCommandImplementors().createScriptCommand(
+                method7, query);
         command.execute();
     }
 

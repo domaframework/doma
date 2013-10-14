@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.Constants;
-import org.seasar.doma.internal.jdbc.query.ScriptQuery;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.ScriptBlockContext;
+import org.seasar.doma.jdbc.query.ScriptQuery;
 import org.seasar.doma.message.Message;
 
 /**

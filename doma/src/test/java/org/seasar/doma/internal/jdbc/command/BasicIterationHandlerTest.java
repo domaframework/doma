@@ -22,12 +22,12 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
-import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
+import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 /**
  * @author taedium
@@ -50,6 +50,7 @@ public class BasicIterationHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(getClass().getMethod(getName()));
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
@@ -82,6 +83,7 @@ public class BasicIterationHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(getClass().getMethod(getName()));
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
@@ -116,6 +118,7 @@ public class BasicIterationHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setResultEnsured(true);
+        query.setMethod(getClass().getMethod(getName()));
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
@@ -150,6 +153,7 @@ public class BasicIterationHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setResultEnsured(true);
+        query.setMethod(getClass().getMethod(getName()));
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(

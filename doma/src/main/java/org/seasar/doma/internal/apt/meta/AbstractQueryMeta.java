@@ -29,8 +29,8 @@ import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.jdbc.command.Command;
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
@@ -103,13 +103,6 @@ public abstract class AbstractQueryMeta implements QueryMeta {
             return null;
         }
         return queryKind.getCommandClass();
-    }
-
-    public boolean isTrigger() {
-        if (queryKind == null) {
-            return false;
-        }
-        return queryKind.isTrigger();
     }
 
     @Override

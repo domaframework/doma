@@ -18,12 +18,12 @@ package org.seasar.doma.jdbc.builder;
 import java.sql.Statement;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.jdbc.command.InsertCommand;
-import org.seasar.doma.internal.jdbc.query.SqlInsertQuery;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.UniqueConstraintException;
+import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.query.SqlInsertQuery;
 
 /**
  * INSERT文を組み立て実行するクラスです。

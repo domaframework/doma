@@ -8,6 +8,8 @@ public class ParameterizedParamDaoImpl extends org.seasar.doma.internal.jdbc.dao
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedParamDao.class, "select", org.seasar.doma.internal.apt.dao.Height.class);
+
     /** */
     public ParameterizedParamDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,8 +56,9 @@ public class ParameterizedParamDaoImpl extends org.seasar.doma.internal.jdbc.dao
     public int select(org.seasar.doma.internal.apt.dao.Height<java.lang.String> height) {
         entering("org.seasar.doma.internal.apt.dao.ParameterizedParamDaoImpl", "select", height);
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedParamDao/select.sql");
             __query.addParameter("height", org.seasar.doma.internal.apt.dao.Height.class, height);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedParamDaoImpl");
@@ -66,7 +69,7 @@ public class ParameterizedParamDaoImpl extends org.seasar.doma.internal.jdbc.dao
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, true));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, true));
             int __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedParamDaoImpl", "select", __result);

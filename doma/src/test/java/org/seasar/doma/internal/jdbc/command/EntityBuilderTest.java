@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
 import junit.framework.TestCase;
@@ -24,10 +25,10 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -120,6 +121,11 @@ public class EntityBuilderTest extends TestCase {
 
         @Override
         public void complete() {
+        }
+
+        @Override
+        public Method getMethod() {
+            return null;
         }
 
     }

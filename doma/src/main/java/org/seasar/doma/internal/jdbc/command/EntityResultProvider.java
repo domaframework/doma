@@ -21,8 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Function;
 
-import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author nakamura-to

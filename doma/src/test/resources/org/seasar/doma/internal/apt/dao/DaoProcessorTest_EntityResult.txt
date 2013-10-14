@@ -8,6 +8,14 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EntityResultDao.class, "selectSingleResult");
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EntityResultDao.class, "selectOptionalSingleResult");
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EntityResultDao.class, "selectResultList");
+
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.EntityResultDao.class, "iterate", org.seasar.doma.jdbc.IterationCallback.class);
+
     /** */
     public EntityResultDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -54,8 +62,9 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public org.seasar.doma.internal.apt.entity.Emp selectSingleResult() {
         entering("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "selectSingleResult");
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EntityResultDao/selectSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl");
             __query.setCallerMethodName("selectSingleResult");
@@ -65,7 +74,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp>(__query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
             org.seasar.doma.internal.apt.entity.Emp __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "selectSingleResult", __result);
@@ -80,8 +89,9 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public java.util.Optional<org.seasar.doma.internal.apt.entity.Emp> selectOptionalSingleResult() {
         entering("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "selectOptionalSingleResult");
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EntityResultDao/selectOptionalSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl");
             __query.setCallerMethodName("selectOptionalSingleResult");
@@ -91,7 +101,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.entity.Emp>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.entity.Emp>>(__query, new org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
             java.util.Optional<org.seasar.doma.internal.apt.entity.Emp> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "selectOptionalSingleResult", __result);
@@ -106,8 +116,9 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public java.util.List<org.seasar.doma.internal.apt.entity.Emp> selectResultList() {
         entering("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "selectResultList");
         try {
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            __query.setMethod(__method2);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EntityResultDao/selectResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl");
             __query.setCallerMethodName("selectResultList");
@@ -117,7 +128,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>(__query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
             java.util.List<org.seasar.doma.internal.apt.entity.Emp> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "selectResultList", __result);
@@ -135,8 +146,9 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (callback == null) {
                 throw new org.seasar.doma.DomaNullPointerException("callback");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setConfig(config);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            __query.setMethod(__method3);
+            __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EntityResultDao/iterate.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl");
             __query.setCallerMethodName("iterate");
@@ -146,7 +158,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<R, org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<R, org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "iterate", __result);
