@@ -29,17 +29,20 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.LoadType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.EnumWrapperCtType;
+import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
@@ -93,21 +96,27 @@ import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
 import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.BasicStreamHandler;
 import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
 import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
 import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.DomainStreamHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
 import org.seasar.doma.internal.jdbc.command.MapIterationHandler;
 import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
 import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.MapStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicIterationHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalBasicStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDomainIterationHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalDomainStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
@@ -437,27 +446,10 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
             iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
             iprint("__query.prepare();%n");
-            final QueryReturnMeta resultMeta = m.getReturnMeta();
-            if (m.getIterate()) {
-                IterationCallbackCtType callbackCtType = m
-                        .getIterationCallbackCtType();
-                callbackCtType.getTargetType().accept(
-                        new SqlFileSelectQueryCallbackCtTypeVisitor(m), false);
-                if ("void".equals(resultMeta.getTypeName())) {
-                    iprint("__command.execute();%n");
-                    iprint("__query.complete();%n");
-                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
-                            qualifiedName, m.getName());
-                } else {
-                    iprint("%1$s __result = __command.execute();%n",
-                            resultMeta.getTypeName());
-                    iprint("__query.complete();%n");
-                    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
-                            qualifiedName, m.getName());
-                    iprint("return __result;%n");
-                }
-            } else {
-                QueryReturnMeta returnMeta = m.getReturnMeta();
+
+            QueryReturnMeta returnMeta = m.getReturnMeta();
+
+            if (m.getLoadType() == LoadType.BULK) {
                 CtType returnCtType = returnMeta.getCtType();
                 returnCtType.accept(
                         new SqlFileSelectQueryReturnCtTypeVisitor(m), false);
@@ -467,6 +459,32 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
                         qualifiedName, m.getName());
                 iprint("return __result;%n");
+            } else {
+                if (m.getLoadType() == LoadType.ITERATION) {
+                    IterationCallbackCtType callbackCtType = m
+                            .getIterationCallbackCtType();
+                    callbackCtType.getTargetCtType().accept(
+                            new SqlFileSelectQueryCallbackCtTypeVisitor(m),
+                            false);
+                } else if (m.getLoadType() == LoadType.STREAM) {
+                    FunctionCtType functionCtType = m.getFunctionCtType();
+                    functionCtType.getTargetCtType().accept(
+                            new SqlFileSelectQueryFunctionCtTypeVisitor(m),
+                            null);
+                }
+                if ("void".equals(returnMeta.getTypeName())) {
+                    iprint("__command.execute();%n");
+                    iprint("__query.complete();%n");
+                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
+                            qualifiedName, m.getName());
+                } else {
+                    iprint("%1$s __result = __command.execute();%n",
+                            returnMeta.getTypeName());
+                    iprint("__query.complete();%n");
+                    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
+                            qualifiedName, m.getName());
+                    iprint("return __result;%n");
+                }
             }
 
             printThrowingStatements(m);
@@ -1672,7 +1690,7 @@ public class DaoGenerator extends AbstractGenerator {
             this.m = m;
             this.resultMeta = m.getReturnMeta();
             this.commandClassName = m.getCommandClass().getName();
-            this.callbackParamName = m.getIterationCallbackPrameterName();
+            this.callbackParamName = m.getIterationCallbackParameterName();
         }
 
         @Override
@@ -1776,6 +1794,146 @@ public class DaoGenerator extends AbstractGenerator {
             return EntityIterationHandler.class.getName();
         }
 
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class SqlFileSelectQueryFunctionCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final SqlFileSelectQueryMeta m;
+
+        protected final QueryReturnMeta resultMeta;
+
+        protected final String commandClassName;
+
+        protected final String functionParamName;
+
+        public SqlFileSelectQueryFunctionCtTypeVisitor(SqlFileSelectQueryMeta m) {
+            this.m = m;
+            this.resultMeta = m.getReturnMeta();
+            this.commandClassName = m.getCommandClass().getName();
+            this.functionParamName = m.getFunctionParameterName();
+        }
+
+        @Override
+        public Void visitStreamCtType(StreamCtType ctType, Void p)
+                throws RuntimeException {
+            ctType.getElementCtType().accept(new StreamCtTypeVisitor(), false);
+            return null;
+        }
+
+        protected class StreamCtTypeVisitor extends
+                SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
+
+            @Override
+            public Void visitBasicCtType(BasicCtType ctType,
+                    final Boolean optional) throws RuntimeException {
+                ctType.getWrapperCtType()
+                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                            @Override
+                            public Void visitEnumWrapperCtType(
+                                    EnumWrapperCtType ctType, Void p)
+                                    throws RuntimeException {
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(() -> new %5$s(%6$s.class), %7$s));%n",
+                                        commandClassName, resultMeta
+                                                .getBoxedTypeName(),
+                                        getBasicStreamHandlerName(optional),
+                                        ctType.getBasicCtType()
+                                                .getBoxedTypeName(), ctType
+                                                .getTypeName(), ctType
+                                                .getBasicCtType()
+                                                .getQualifiedName(),
+                                        functionParamName);
+                                return null;
+                            }
+
+                            @Override
+                            public Void visitWrapperCtType(
+                                    WrapperCtType ctType, Void p)
+                                    throws RuntimeException {
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s::new, %6$s));%n",
+                                        commandClassName, resultMeta
+                                                .getBoxedTypeName(),
+                                        getBasicStreamHandlerName(optional),
+                                        ctType.getBasicCtType()
+                                                .getBoxedTypeName(), ctType
+                                                .getTypeName(),
+                                        functionParamName);
+                                return null;
+                            }
+
+                        }, null);
+
+                return null;
+            }
+
+            @Override
+            public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
+                    throws RuntimeException {
+                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
+                        commandClassName, resultMeta.getBoxedTypeName(),
+                        getDomainStreamHandlerName(optional),
+                        ctType.getBoxedTypeName(),
+                        ctType.getInstantiationCommand(), functionParamName);
+                return null;
+            }
+
+            @Override
+            public Void visitMapCtType(MapCtType ctType, Boolean optional)
+                    throws RuntimeException {
+                MapKeyNamingType namingType = m.getMapKeyNamingType();
+                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+                        commandClassName, resultMeta.getBoxedTypeName(),
+                        getMapStreamHandlerName(optional), namingType
+                                .getDeclaringClass().getName(), namingType
+                                .name(), functionParamName);
+                return null;
+            }
+
+            @Override
+            public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
+                    throws RuntimeException {
+                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                        commandClassName, resultMeta.getBoxedTypeName(),
+                        getEntityStreamHandlerName(optional),
+                        ctType.getTypeName(), ctType.getMetaTypeName(),
+                        functionParamName);
+                return null;
+            }
+
+            @Override
+            public Void visitOptionalCtType(OptionalCtType ctType,
+                    Boolean optional) throws RuntimeException {
+                return ctType.getElementCtType().accept(this, true);
+            }
+
+            protected String getBasicStreamHandlerName(Boolean optional) {
+                if (Boolean.TRUE == optional) {
+                    return OptionalBasicStreamHandler.class.getName();
+                }
+                return BasicStreamHandler.class.getName();
+            }
+
+            protected String getDomainStreamHandlerName(Boolean optional) {
+                if (Boolean.TRUE == optional) {
+                    return OptionalDomainStreamHandler.class.getName();
+                }
+                return DomainStreamHandler.class.getName();
+            }
+
+            protected String getMapStreamHandlerName(Boolean optional) {
+                return MapStreamHandler.class.getName();
+            }
+
+            protected String getEntityStreamHandlerName(Boolean optional) {
+                return EntityStreamHandler.class.getName();
+            }
+        }
     }
 
     /**

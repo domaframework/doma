@@ -21,18 +21,21 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
+import org.seasar.doma.LoadType;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.message.Message;
 
@@ -76,46 +79,20 @@ public class SqlFileSelectQueryMetaFactory extends
     }
 
     @Override
-    protected void doReturnType(final SqlFileSelectQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
-        final QueryReturnMeta returnMeta = createReturnMeta(method);
-        queryMeta.setReturnMeta(returnMeta);
-        if (queryMeta.getIterate()) {
-            IterationCallbackCtType iterationCallbackCtType = queryMeta
-                    .getIterationCallbackCtType();
-            AnyCtType callbackReturnType = iterationCallbackCtType
-                    .getReturnType();
-            if (callbackReturnType == null
-                    || !env.getTypeUtils().isSameType(returnMeta.getType(),
-                            callbackReturnType.getTypeMirror())) {
-                throw new AptException(Message.DOMA4055, env, method,
-                        returnMeta.getType(),
-                        callbackReturnType.getBoxedTypeName());
-            }
-            CtType callbackTargetCtType = iterationCallbackCtType
-                    .getTargetType();
-            callbackTargetCtType.accept(new CallbackTargetCtTypeVisitor(
-                    queryMeta), null);
-        } else {
-            returnMeta.getCtType().accept(new ReturnCtTypeVisitor(returnMeta),
-                    null);
-        }
-    }
-
-    @Override
     protected void doParameters(final SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             parameterMeta.getCtType().accept(
-                    new ParameterCtTypeVisitor(queryMeta, parameterMeta), null);
+                    new ParamCtTypeVisitor(queryMeta, parameterMeta), null);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterCtType(parameterMeta.getName(),
                         parameterMeta.getCtType());
             }
         }
-        if (queryMeta.getIterate()) {
+
+        if (queryMeta.getLoadType() == LoadType.ITERATION) {
             if (queryMeta.getIterationCallbackCtType() == null) {
                 throw new AptException(Message.DOMA4056, env, method);
             }
@@ -124,18 +101,134 @@ public class SqlFileSelectQueryMetaFactory extends
                 SelectMirror selectMirror = queryMeta.getSelectMirror();
                 throw new AptException(Message.DOMA4057, env, method,
                         selectMirror.getAnnotationMirror(),
-                        selectMirror.getIterate());
+                        selectMirror.getLoad());
+            }
+        }
+
+        if (queryMeta.getLoadType() == LoadType.STREAM) {
+            if (queryMeta.getFunctionCtType() == null) {
+                throw new AptException(Message.DOMA4247, env, method);
+            }
+        } else {
+            if (queryMeta.getFunctionCtType() != null) {
+                SelectMirror selectMirror = queryMeta.getSelectMirror();
+                throw new AptException(Message.DOMA4248, env, method,
+                        selectMirror.getAnnotationMirror(),
+                        selectMirror.getLoad());
             }
         }
     }
 
-    protected class CallbackTargetCtTypeVisitor extends
+    @Override
+    protected void doReturnType(final SqlFileSelectQueryMeta queryMeta,
+            ExecutableElement method, DaoMeta daoMeta) {
+        final QueryReturnMeta returnMeta = createReturnMeta(method);
+        queryMeta.setReturnMeta(returnMeta);
+
+        if (queryMeta.getLoadType() == LoadType.ITERATION) {
+            IterationCallbackCtType iterationCallbackCtType = queryMeta
+                    .getIterationCallbackCtType();
+            AnyCtType returnCtType = iterationCallbackCtType.getReturnCtType();
+            if (returnCtType == null
+                    || !env.getTypeUtils().isSameType(returnMeta.getType(),
+                            returnCtType.getTypeMirror())) {
+                throw new AptException(Message.DOMA4055, env, method,
+                        returnMeta.getType(), returnCtType.getBoxedTypeName());
+            }
+        } else if (queryMeta.getLoadType() == LoadType.STREAM) {
+            FunctionCtType functionCtType = queryMeta.getFunctionCtType();
+            AnyCtType returnCtType = functionCtType.getReturnCtType();
+            if (returnCtType == null
+                    || !env.getTypeUtils().isSameType(returnMeta.getType(),
+                            returnCtType.getTypeMirror())) {
+                throw new AptException(Message.DOMA4246, env, method,
+                        returnMeta.getType(), returnCtType.getBoxedTypeName());
+            }
+        } else {
+            returnMeta.getCtType().accept(new ReturnCtTypeVisitor(returnMeta),
+                    null);
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class ParamCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         protected SqlFileSelectQueryMeta queryMeta;
 
-        protected CallbackTargetCtTypeVisitor(SqlFileSelectQueryMeta queryMeta) {
+        protected QueryParameterMeta parameterMeta;
+
+        protected ParamCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
+                QueryParameterMeta parameterMeta) {
             this.queryMeta = queryMeta;
+            this.parameterMeta = parameterMeta;
+        }
+
+        @Override
+        public Void visitIterationCallbackCtType(
+                IterationCallbackCtType ctType, Void p) throws RuntimeException {
+            if (queryMeta.getIterationCallbackCtType() != null) {
+                throw new AptException(Message.DOMA4054, env,
+                        parameterMeta.getElement());
+            }
+            ctType.getTargetCtType().accept(
+                    new ParamIterationCallbackTargetCtTypeVisitor(queryMeta,
+                            parameterMeta), null);
+            queryMeta.setIterationCallbackCtType(ctType);
+            queryMeta
+                    .setIterationCallbackParameterName(parameterMeta.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitFunctionCtType(FunctionCtType ctType, Void p)
+                throws RuntimeException {
+            if (queryMeta.getFunctionCtType() != null) {
+                throw new AptException(Message.DOMA4249, env,
+                        parameterMeta.getElement());
+            }
+            ctType.getTargetCtType().accept(
+                    new ParamFunctionTargetCtTypeVisitor(queryMeta,
+                            parameterMeta), null);
+            queryMeta.setFunctionCtType(ctType);
+            queryMeta.setFunctionParameterName(parameterMeta.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitSelectOptionsCtType(SelectOptionsCtType ctType, Void p)
+                throws RuntimeException {
+            if (queryMeta.getSelectOptionsCtType() != null) {
+                throw new AptException(Message.DOMA4053, env,
+                        parameterMeta.getElement());
+            }
+            queryMeta.setSelectOptionsCtType(ctType);
+            queryMeta.setSelectOptionsParameterName(parameterMeta.getName());
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class ParamIterationCallbackTargetCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected SqlFileSelectQueryMeta queryMeta;
+
+        protected QueryParameterMeta parameterMeta;
+
+        protected ParamIterationCallbackTargetCtTypeVisitor(
+                SqlFileSelectQueryMeta queryMeta,
+                QueryParameterMeta parameterMeta) {
+            this.queryMeta = queryMeta;
+            this.parameterMeta = parameterMeta;
         }
 
         @Override
@@ -166,10 +259,156 @@ public class SqlFileSelectQueryMetaFactory extends
         @Override
         public Void visitEntityCtType(EntityCtType ctType, Void p)
                 throws RuntimeException {
+            if (ctType.isAbstract()) {
+                throw new AptException(Message.DOMA4158, env,
+                        parameterMeta.getElement(), ctType.getTypeName());
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                throws RuntimeException {
+            Boolean valid = ctType.getElementCtType().accept(
+                    new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
+
+                        @Override
+                        protected Boolean defaultAction(CtType ctType, Void p)
+                                throws RuntimeException {
+                            return false;
+                        }
+
+                        @Override
+                        public Boolean visitBasicCtType(BasicCtType ctType,
+                                Void p) throws RuntimeException {
+                            return true;
+                        }
+
+                        @Override
+                        public Boolean visitDomainCtType(DomainCtType ctType,
+                                Void p) throws RuntimeException {
+                            return true;
+                        }
+
+                    }, null);
+            if (Boolean.FALSE == valid) {
+                defaultAction(ctType, null);
+            }
             return null;
         }
     }
 
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class ParamFunctionTargetCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected SqlFileSelectQueryMeta queryMeta;
+
+        protected QueryParameterMeta parameterMeta;
+
+        protected ParamFunctionTargetCtTypeVisitor(
+                SqlFileSelectQueryMeta queryMeta,
+                QueryParameterMeta parameterMeta) {
+            this.queryMeta = queryMeta;
+            this.parameterMeta = parameterMeta;
+        }
+
+        @Override
+        protected Void defaultAction(CtType type, Void p)
+                throws RuntimeException {
+            throw new AptException(Message.DOMA4244, env,
+                    queryMeta.getExecutableElement());
+        }
+
+        @Override
+        public Void visitStreamCtType(StreamCtType ctType, Void p)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(
+                    new StreamElementCtTypeVisitor(), null);
+        }
+
+        protected class StreamElementCtTypeVisitor extends
+                SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+            @Override
+            protected Void defaultAction(CtType ctType, Void p)
+                    throws RuntimeException {
+                throw new AptException(Message.DOMA4245, env,
+                        queryMeta.getExecutableElement());
+            }
+
+            @Override
+            public Void visitBasicCtType(BasicCtType ctType, Void p)
+                    throws RuntimeException {
+                return null;
+            }
+
+            @Override
+            public Void visitDomainCtType(DomainCtType ctType, Void p)
+                    throws RuntimeException {
+                return null;
+            }
+
+            @Override
+            public Void visitMapCtType(MapCtType ctType, Void p)
+                    throws RuntimeException {
+                return null;
+            }
+
+            @Override
+            public Void visitEntityCtType(EntityCtType ctType, Void p)
+                    throws RuntimeException {
+                if (ctType.isAbstract()) {
+                    throw new AptException(Message.DOMA4250, env,
+                            parameterMeta.getElement(), ctType.getTypeName());
+                }
+                return null;
+            }
+
+            @Override
+            public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                    throws RuntimeException {
+                Boolean valid = ctType
+                        .getElementCtType()
+                        .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
+
+                            @Override
+                            protected Boolean defaultAction(CtType ctType,
+                                    Void p) throws RuntimeException {
+                                return false;
+                            }
+
+                            @Override
+                            public Boolean visitBasicCtType(BasicCtType ctType,
+                                    Void p) throws RuntimeException {
+                                return true;
+                            }
+
+                            @Override
+                            public Boolean visitDomainCtType(
+                                    DomainCtType ctType, Void p)
+                                    throws RuntimeException {
+                                return true;
+                            }
+
+                        }, null);
+                if (Boolean.FALSE == valid) {
+                    defaultAction(ctType, null);
+                }
+                return null;
+            }
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
     protected class ReturnCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -234,6 +473,11 @@ public class SqlFileSelectQueryMetaFactory extends
         }
     }
 
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
     protected class ReturnIterableElementCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -288,6 +532,11 @@ public class SqlFileSelectQueryMetaFactory extends
 
     }
 
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
     protected class ReturnOptionalElementCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -333,56 +582,4 @@ public class SqlFileSelectQueryMetaFactory extends
         }
     }
 
-    protected class ParameterCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
-
-        protected SqlFileSelectQueryMeta queryMeta;
-
-        protected QueryParameterMeta parameterMeta;
-
-        protected ParameterCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
-                QueryParameterMeta parameterMeta) {
-            this.queryMeta = queryMeta;
-            this.parameterMeta = parameterMeta;
-        }
-
-        @Override
-        public Void visitIterationCallbackCtType(
-                IterationCallbackCtType ctType, Void p) throws RuntimeException {
-            if (queryMeta.getIterationCallbackCtType() != null) {
-                throw new AptException(Message.DOMA4054, env,
-                        parameterMeta.getElement());
-            }
-            ctType.getTargetType().accept(
-                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        public Void visitEntityCtType(EntityCtType ctType,
-                                Void p) throws RuntimeException {
-                            if (ctType.isAbstract()) {
-                                throw new AptException(Message.DOMA4158, env,
-                                        parameterMeta.getElement(),
-                                        ctType.getTypeName());
-                            }
-                            return null;
-                        }
-
-                    }, null);
-            queryMeta.setIterationCallbackCtType(ctType);
-            queryMeta.setIterationCallbackPrameterName(parameterMeta.getName());
-            return null;
-        }
-
-        @Override
-        public Void visitSelectOptionsCtType(SelectOptionsCtType ctType, Void p)
-                throws RuntimeException {
-            if (queryMeta.getSelectOptionsCtType() != null) {
-                throw new AptException(Message.DOMA4053, env,
-                        parameterMeta.getElement());
-            }
-            queryMeta.setSelectOptionsCtType(ctType);
-            queryMeta.setSelectOptionsParameterName(parameterMeta.getName());
-            return null;
-        }
-    }
 }

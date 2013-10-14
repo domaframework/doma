@@ -18,10 +18,13 @@ package org.seasar.doma.it.dao;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
+import org.seasar.doma.LoadType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
@@ -50,10 +53,10 @@ public interface EmployeeDao {
     @Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     List<Map<String, Object>> selectAllAsMapList();
 
-    @Select(iterate = true, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R selectAllAsMapList(IterationCallback<R, Map<String, Object>> callback);
 
-    @Select(iterate = true, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R selectAllAsMapList(
             IterationCallback<R, Map<String, Object>> callback,
             SelectOptions options);
@@ -79,19 +82,25 @@ public interface EmployeeDao {
     @Select(ensureResultMapping = false)
     List<Employee> selectOnlyNameWithoutMappingCheck();
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R selectAll(IterationCallback<R, Employee> callback);
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R selectAll(IterationCallback<R, Employee> callback,
             SelectOptions options);
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R selectAllSalary(IterationCallback<R, BigDecimal> callback);
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R selectAllSalary(IterationCallback<R, BigDecimal> callback,
             SelectOptions options);
+
+    @Select(load = LoadType.STREAM)
+    <R> R streamAll(Function<Stream<Employee>, R> mapper);
+
+    @Select(load = LoadType.STREAM)
+    <R> R streamBySalary(BigDecimal salary, Function<Stream<Employee>, R> mapper);
 
     @Delete
     int delete(Employee entity);

@@ -193,12 +193,11 @@ public @interface Select {
     int maxRows() default -1;
 
     /**
-     * 結果のインスタンスを1件ずつ処理するかどうかを示します。
-     * <p>
-     * {@code true} の場合、注釈されたメソッドのパラメータに {@link IterationCallback}
-     * 型のパラメータを含める必要があります。
+     * 検索結果をエンティティなどのマッピング対象オブジェクトへロードする方法です。
+     * 
+     * @since 2.0.0
      */
-    boolean iterate() default false;
+    LoadType load() default LoadType.BULK;
 
     /**
      * 結果が少なくとも1件以上存在することを保証します。

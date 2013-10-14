@@ -25,6 +25,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
+import org.seasar.doma.LoadType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -39,7 +40,7 @@ public class SelectMirror {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected AnnotationValue iterate;
+    protected AnnotationValue load;
 
     protected AnnotationValue ensureResult;
 
@@ -57,8 +58,8 @@ public class SelectMirror {
         this.annotationMirror = annotationMirror;
     }
 
-    public AnnotationValue getIterate() {
-        return iterate;
+    public AnnotationValue getLoad() {
+        return load;
     }
 
     public AnnotationValue getEnsureResult() {
@@ -109,12 +110,12 @@ public class SelectMirror {
         return value.intValue();
     }
 
-    public boolean getIterateValue() {
-        Boolean value = AnnotationValueUtil.toBoolean(iterate);
-        if (value == null) {
-            throw new AptIllegalStateException("iterate");
+    public LoadType getLoadTypeValue() {
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(load);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("load");
         }
-        return value.booleanValue();
+        return LoadType.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public boolean getEnsureResultValue() {
@@ -161,8 +162,8 @@ public class SelectMirror {
                 .getElementValuesWithDefaults(annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("iterate".equals(name)) {
-                result.iterate = value;
+            if ("load".equals(name)) {
+                result.load = value;
             } else if ("ensureResult".equals(name)) {
                 result.ensureResult = value;
             } else if ("ensureResultMapping".equals(name)) {

@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.LoadType;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
@@ -28,7 +29,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 public interface IterateWildcardTypeDao {
 
     @SuppressWarnings("rawtypes")
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R select(IterationCallback<R, Height> callback);
 
 }

@@ -17,7 +17,9 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 
+import org.seasar.doma.LoadType;
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
@@ -30,9 +32,13 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected SelectMirror selectMirror;
 
-    protected String iterationCallbackPrameterName;
+    protected String iterationCallbackParameterName;
 
     protected IterationCallbackCtType iterationCallbackCtType;
+
+    protected String functionParameterName;
+
+    protected FunctionCtType functionCtType;
 
     protected String selectOptionsParameterName;
 
@@ -42,13 +48,13 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         super(method);
     }
 
-    public String getIterationCallbackPrameterName() {
-        return iterationCallbackPrameterName;
+    public String getIterationCallbackParameterName() {
+        return iterationCallbackParameterName;
     }
 
-    public void setIterationCallbackPrameterName(
+    public void setIterationCallbackParameterName(
             String iterationCallbackPrameterName) {
-        this.iterationCallbackPrameterName = iterationCallbackPrameterName;
+        this.iterationCallbackParameterName = iterationCallbackPrameterName;
     }
 
     public IterationCallbackCtType getIterationCallbackCtType() {
@@ -58,6 +64,22 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     public void setIterationCallbackCtType(
             IterationCallbackCtType iterationCallbackCtType) {
         this.iterationCallbackCtType = iterationCallbackCtType;
+    }
+
+    public String getFunctionParameterName() {
+        return functionParameterName;
+    }
+
+    public void setFunctionParameterName(String functionParameterName) {
+        this.functionParameterName = functionParameterName;
+    }
+
+    public FunctionCtType getFunctionCtType() {
+        return functionCtType;
+    }
+
+    public void setFunctionCtType(FunctionCtType functionCtType) {
+        this.functionCtType = functionCtType;
     }
 
     public String getSelectOptionsParameterName() {
@@ -96,8 +118,8 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         return selectMirror.getQueryTimeoutValue();
     }
 
-    public boolean getIterate() {
-        return selectMirror.getIterateValue();
+    public LoadType getLoadType() {
+        return selectMirror.getLoadTypeValue();
     }
 
     public boolean getEnsureResult() {

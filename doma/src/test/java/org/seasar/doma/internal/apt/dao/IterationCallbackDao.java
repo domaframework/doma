@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.dao;
 import java.util.Map;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.LoadType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.entity.Emp;
@@ -32,20 +33,20 @@ import example.domain.PhoneNumber;
 @Dao(config = MyConfig.class)
 public interface IterationCallbackDao {
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     Integer iterateByIdAndName(Integer id, String name,
             IterationCallback<Integer, Emp> callback);
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R iterateById(Integer id, IterationCallback<R, PhoneNumber> callback);
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R extends Number> R iterate(IterationCallback<R, String> callback);
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     String iterateWithHogeIterationCallback(HogeIterationCallback callback);
 
-    @Select(iterate = true, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R iterateByIdAsMap(Integer id,
             IterationCallback<R, Map<String, Object>> callback);
 }

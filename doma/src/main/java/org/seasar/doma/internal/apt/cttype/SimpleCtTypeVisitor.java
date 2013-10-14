@@ -97,4 +97,14 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements
         return defaultAction(ctType, p);
     }
 
+    @Override
+    public R visitFunctionCtType(FunctionCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
+    @Override
+    public R visitStreamCtType(StreamCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
 }

@@ -1,0 +1,112 @@
+package org.seasar.doma.internal.apt.dao;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public class IterationCallbackOptionalParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    /** */
+    public IterationCallbackOptionalParameterDaoImpl() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
+    }
+
+    /**
+     * @param connection the connection
+     */
+    public IterationCallbackOptionalParameterDaoImpl(java.sql.Connection connection) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), connection);
+    }
+
+    /**
+     * @param dataSource the dataSource
+     */
+    public IterationCallbackOptionalParameterDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    /**
+     * @param config the configuration
+     */
+    protected IterationCallbackOptionalParameterDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected IterationCallbackOptionalParameterDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected IterationCallbackOptionalParameterDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
+    @Override
+    public <R> R iterateById(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<R, java.util.Optional<example.domain.PhoneNumber>> callback) {
+        entering("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterateById", id, callback);
+        try {
+            if (callback == null) {
+                throw new org.seasar.doma.DomaNullPointerException("callback");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/IterationCallbackOptionalParameterDao/iterateById.sql");
+            __query.addParameter("id", java.lang.Integer.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl");
+            __query.setCallerMethodName("iterateById");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.OptionalDomainIterationHandler<R, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), callback));
+            R __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterateById", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterateById", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public <R extends java.lang.Number> R iterate(org.seasar.doma.jdbc.IterationCallback<R, java.util.Optional<java.lang.String>> callback) {
+        entering("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterate", callback);
+        try {
+            if (callback == null) {
+                throw new org.seasar.doma.DomaNullPointerException("callback");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/IterationCallbackOptionalParameterDao/iterate.sql");
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl");
+            __query.setCallerMethodName("iterate");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.OptionalBasicIterationHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, callback));
+            R __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterate", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterate", __e);
+            throw __e;
+        }
+    }
+
+}

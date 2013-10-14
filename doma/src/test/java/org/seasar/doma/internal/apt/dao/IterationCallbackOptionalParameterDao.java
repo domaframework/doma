@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.seasar.doma.Dao;
@@ -23,28 +22,20 @@ import org.seasar.doma.LoadType;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
+import example.domain.PhoneNumber;
+
 /**
- * @author nakamura-to
+ * @author taedium
  * 
  */
 @Dao(config = MyConfig.class)
-public interface ParameterizedDomainResultDao {
-
-    @Select
-    Height<String> selectSingleResult();
-
-    @Select
-    Optional<Height<String>> selectOptionalSingleResult();
-
-    @Select
-    List<Height<String>> selectResultList();
-
-    @Select
-    List<Optional<Height<String>>> selectOptionalResultList();
+public interface IterationCallbackOptionalParameterDao {
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterate(IterationCallback<R, Height<String>> callback);
+    <R> R iterateById(Integer id,
+            IterationCallback<R, Optional<PhoneNumber>> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterateOptional(IterationCallback<R, Height<String>> callback);
+    <R extends Number> R iterate(IterationCallback<R, Optional<String>> callback);
+
 }

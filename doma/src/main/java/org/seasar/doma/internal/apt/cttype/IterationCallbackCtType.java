@@ -37,11 +37,11 @@ public class IterationCallbackCtType extends AbstractCtType {
         super(type, env);
     }
 
-    public AnyCtType getReturnType() {
+    public AnyCtType getReturnCtType() {
         return returnCtType;
     }
 
-    public CtType getTargetType() {
+    public CtType getTargetCtType() {
         return targetCtType;
     }
 

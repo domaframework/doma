@@ -13,34 +13,33 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.dao;
+package org.seasar.doma;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Stream;
 
-import org.seasar.doma.Dao;
-import org.seasar.doma.LoadType;
-import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
 /**
- * @author nakamura-to
+ * 検索結果をエンティティなどのマッピング対象オブジェクトへロードする方法です。
  * 
+ * @author nakamura-to
+ * @since 2.0.0
  */
-@Dao(config = MyConfig.class)
-public interface MapResultDao {
+public enum LoadType {
 
-    @Select
-    Map<String, Object> selectSingleResult();
+    /**
+     * 一括でロードします。結果が複数件ある場合は {@link List} に蓄積します。
+     */
+    BULK,
 
-    @Select
-    Optional<Map<String, Object>> selectOptionalSingleResult();
+    /**
+     * {@link IterationCallback} を使って1件ずつ反復的にロードします。
+     */
+    ITERATION,
 
-    @Select
-    List<Map<String, Object>> selectResultList();
-
-    @Select(load = LoadType.ITERATION)
-    <R> R iterate(IterationCallback<R, Map<String, Object>> callback);
-
+    /**
+     * {@link Stream} を使ってロードします。
+     */
+    STREAM
 }

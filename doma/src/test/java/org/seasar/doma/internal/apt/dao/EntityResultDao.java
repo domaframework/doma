@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.LoadType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -39,7 +40,7 @@ public interface EntityResultDao {
     @Select
     List<Emp> selectResultList();
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R iterate(IterationCallback<R, Emp> callback);
 
 }

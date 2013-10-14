@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.LoadType;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
@@ -26,7 +27,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 @Dao(config = MyConfig.class)
 public interface IllegalTargetTypeIterationCallbackDao {
 
-    @Select(iterate = true)
+    @Select(load = LoadType.ITERATION)
     <R> R iterateById(Integer id,
             IterationCallback<R, IllegalTargetTypeIterationCallbackDao> callback);
 

@@ -30,12 +30,14 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
@@ -147,10 +149,25 @@ public class QueryParameterMeta {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
                         qualifiedName);
             }
-            iterationCallbackCtType.getTargetType().accept(
+            iterationCallbackCtType.getTargetCtType().accept(
                     new IterationCallbackTargetCtTypeVisitor(parameterElement),
                     null);
             return iterationCallbackCtType;
+        }
+
+        FunctionCtType functionCtType = FunctionCtType.newInstance(type, env);
+        if (functionCtType != null) {
+            if (functionCtType.isRawType()) {
+                throw new AptException(Message.DOMA4240, env, parameterElement,
+                        qualifiedName);
+            }
+            if (functionCtType.isWildcardType()) {
+                throw new AptException(Message.DOMA4241, env, parameterElement,
+                        qualifiedName);
+            }
+            functionCtType.getTargetCtType().accept(
+                    new FunctionTargetCtTypeVisitor(parameterElement), null);
+            return functionCtType;
         }
 
         ReferenceCtType referenceCtType = ReferenceCtType
@@ -373,6 +390,47 @@ public class QueryParameterMeta {
                         ctType.getQualifiedName());
             }
             return null;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class FunctionTargetCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final VariableElement parameterElement;
+
+        protected FunctionTargetCtTypeVisitor(VariableElement parameterElement) {
+            this.parameterElement = parameterElement;
+        }
+
+        @Override
+        public Void visitStreamCtType(StreamCtType ctType, Void p)
+                throws RuntimeException {
+            ctType.getElementCtType().accept(new StreamElementCtTypeVisitor(),
+                    p);
+            return null;
+        }
+
+        protected class StreamElementCtTypeVisitor extends
+                SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+            @Override
+            public Void visitDomainCtType(final DomainCtType ctType, Void p)
+                    throws RuntimeException {
+                if (ctType.isRawType()) {
+                    throw new AptException(Message.DOMA4242, env,
+                            parameterElement, ctType.getQualifiedName());
+                }
+                if (ctType.isWildcardType()) {
+                    throw new AptException(Message.DOMA4243, env,
+                            parameterElement, ctType.getQualifiedName());
+                }
+                return null;
+            }
         }
     }
 
