@@ -20,7 +20,9 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.message.Message;
 
 /**
  * JDBCに関する設定です。
@@ -143,4 +145,23 @@ public interface Config {
      */
     int getBatchSize();
 
+    /**
+     * {@link ConfigProvider} から {@link Config} を取得します。
+     * 
+     * @param provider
+     *            {@link ConfigProvider} を実装していることを期待されるオブジェクト
+     * @return {@link ConfigProvider} が返した {@link Config}
+     * @throws DomaIllegalArgumentException
+     *             {@code provider} が {@link ConfigProvider} でない場合
+     * @since 2.0.0
+     */
+    static Config get(Object provider) {
+        if (provider instanceof ConfigProvider) {
+            ConfigProvider p = (ConfigProvider) provider;
+            return p.getConfig();
+        }
+        throw new DomaIllegalArgumentException("provider",
+                Message.DOMA2218.getMessage("provider",
+                        ConfigProvider.class.getName()));
+    }
 }

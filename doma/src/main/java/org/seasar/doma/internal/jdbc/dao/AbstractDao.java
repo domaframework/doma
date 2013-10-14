@@ -28,6 +28,7 @@ import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
+import org.seasar.doma.jdbc.ConfigProvider;
 import org.seasar.doma.jdbc.DaoMethodNotFoundException;
 
 /**
@@ -37,7 +38,7 @@ import org.seasar.doma.jdbc.DaoMethodNotFoundException;
  * @author taedium
  * 
  */
-public abstract class AbstractDao {
+public abstract class AbstractDao implements ConfigProvider {
 
     /**
      * 実行時用の設定です。
@@ -136,6 +137,11 @@ public abstract class AbstractDao {
             throw new ConfigException(config.getClass().getName(),
                     "getExceptionSqlLogType");
         }
+    }
+
+    @Override
+    public Config getConfig() {
+        return config;
     }
 
     /**
