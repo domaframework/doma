@@ -92,10 +92,6 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof IntegerWrapperVisitor<?, ?, ?>) {
-            IntegerWrapperVisitor<R, P, TH> v = (IntegerWrapperVisitor<R, P, TH>) visitor;
-            return v.visitIntegerWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitIntegerWrapper(this, p);
     }
 }

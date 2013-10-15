@@ -58,10 +58,6 @@ public class TimeWrapper extends AbstractWrapper<Time> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof TimeWrapperVisitor<?, ?, ?>) {
-            TimeWrapperVisitor<R, P, TH> v = (TimeWrapperVisitor<R, P, TH>) visitor;
-            return v.visitTimeWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitTimeWrapper(this, p);
     }
 }

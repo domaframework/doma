@@ -75,10 +75,6 @@ public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof EnumWrapperVisitor<?, ?, ?>) {
-            EnumWrapperVisitor<R, P, TH> v = (EnumWrapperVisitor<R, P, TH>) visitor;
-            return v.visitEnumWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitEnumWrapper(this, p);
     }
 }

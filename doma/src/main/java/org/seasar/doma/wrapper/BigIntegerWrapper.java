@@ -96,10 +96,6 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof BigIntegerWrapperVisitor<?, ?, ?>) {
-            BigIntegerWrapperVisitor<R, P, TH> v = (BigIntegerWrapperVisitor<R, P, TH>) visitor;
-            return v.visitBigIntegerWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitBigIntegerWrapper(this, p);
     }
 }

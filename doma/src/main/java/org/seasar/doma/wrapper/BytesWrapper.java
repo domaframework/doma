@@ -66,10 +66,6 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof BytesWrapperVisitor<?, ?, ?>) {
-            BytesWrapperVisitor<R, P, TH> v = (BytesWrapperVisitor<R, P, TH>) visitor;
-            return v.visitBytesWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitBytesWrapper(this, p);
     }
 }

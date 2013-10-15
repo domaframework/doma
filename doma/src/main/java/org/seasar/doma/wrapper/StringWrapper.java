@@ -47,10 +47,6 @@ public class StringWrapper extends AbstractWrapper<String> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof StringWrapperVisitor<?, ?, ?>) {
-            StringWrapperVisitor<R, P, TH> v = (StringWrapperVisitor<R, P, TH>) visitor;
-            return v.visitStringWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitStringWrapper(this, p);
     }
 }

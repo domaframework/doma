@@ -92,10 +92,6 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof ByteWrapperVisitor<?, ?, ?>) {
-            ByteWrapperVisitor<R, P, TH> v = (ByteWrapperVisitor<R, P, TH>) visitor;
-            return v.visitByteWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitByteWrapper(this, p);
     }
 }

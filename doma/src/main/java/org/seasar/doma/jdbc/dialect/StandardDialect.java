@@ -40,7 +40,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
-import org.seasar.doma.jdbc.PersistentWrapperVisitor;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -489,8 +488,7 @@ public class StandardDialect implements Dialect {
      * 
      */
     public static class StandardJdbcMappingVisitor implements
-            JdbcMappingVisitor,
-            PersistentWrapperVisitor<Void, JdbcMappingFunction, SQLException> {
+            JdbcMappingVisitor {
 
         @Override
         public Void visitArrayWrapper(ArrayWrapper wrapper,
@@ -619,12 +617,6 @@ public class StandardDialect implements Dialect {
             return p.apply(wrapper, JdbcTypes.OBJECT);
         }
 
-        @Override
-        public Void visitUnknownWrapper(Wrapper<?> wrapper,
-                JdbcMappingFunction p) throws SQLException {
-            throw new JdbcException(Message.DOMA2019, wrapper.getClass()
-                    .getName());
-        }
     }
 
     /**
@@ -633,10 +625,8 @@ public class StandardDialect implements Dialect {
      * @author taedium
      * 
      */
-    public static class StandardSqlLogFormattingVisitor
-            implements
-            SqlLogFormattingVisitor,
-            PersistentWrapperVisitor<String, SqlLogFormattingFunction, RuntimeException> {
+    public static class StandardSqlLogFormattingVisitor implements
+            SqlLogFormattingVisitor {
 
         @Override
         public String visitArrayWrapper(ArrayWrapper wrapper,
@@ -763,13 +753,6 @@ public class StandardDialect implements Dialect {
         public String visitObjectWrapper(ObjectWrapper wrapper,
                 SqlLogFormattingFunction p) {
             return p.apply(wrapper, JdbcTypes.OBJECT);
-        }
-
-        @Override
-        public String visitUnknownWrapper(Wrapper<?> wrapper,
-                SqlLogFormattingFunction p) {
-            throw new JdbcException(Message.DOMA2019, wrapper.getClass()
-                    .getName());
         }
 
     }

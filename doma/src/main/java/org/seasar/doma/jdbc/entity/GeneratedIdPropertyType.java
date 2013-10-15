@@ -29,23 +29,16 @@ import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.BigDecimalWrapperVisitor;
 import org.seasar.doma.wrapper.BigIntegerWrapper;
-import org.seasar.doma.wrapper.BigIntegerWrapperVisitor;
 import org.seasar.doma.wrapper.ByteWrapper;
-import org.seasar.doma.wrapper.ByteWrapperVisitor;
 import org.seasar.doma.wrapper.DoubleWrapper;
-import org.seasar.doma.wrapper.DoubleWrapperVisitor;
 import org.seasar.doma.wrapper.FloatWrapper;
-import org.seasar.doma.wrapper.FloatWrapperVisitor;
 import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.IntegerWrapperVisitor;
 import org.seasar.doma.wrapper.LongWrapper;
-import org.seasar.doma.wrapper.LongWrapperVisitor;
 import org.seasar.doma.wrapper.NumberWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
-import org.seasar.doma.wrapper.ShortWrapperVisitor;
 import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * 生成される識別子のプロパティ型です。
@@ -247,14 +240,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
     }
 
     protected static class ValueSetter implements
-            BigDecimalWrapperVisitor<Void, Number, RuntimeException>,
-            BigIntegerWrapperVisitor<Void, Number, RuntimeException>,
-            ByteWrapperVisitor<Void, Number, RuntimeException>,
-            DoubleWrapperVisitor<Void, Number, RuntimeException>,
-            FloatWrapperVisitor<Void, Number, RuntimeException>,
-            IntegerWrapperVisitor<Void, Number, RuntimeException>,
-            LongWrapperVisitor<Void, Number, RuntimeException>,
-            ShortWrapperVisitor<Void, Number, RuntimeException> {
+            WrapperVisitor<Void, Number, RuntimeException> {
 
         @Override
         public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper, Number p)
@@ -320,11 +306,6 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
             }
         }
 
-        @Override
-        public Void visitUnknownWrapper(Wrapper<?> wrapper, Number p)
-                throws RuntimeException {
-            return null;
-        }
     }
 
 }

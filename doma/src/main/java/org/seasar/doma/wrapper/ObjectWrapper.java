@@ -47,10 +47,6 @@ public class ObjectWrapper extends AbstractWrapper<Object> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof StringWrapperVisitor<?, ?, ?>) {
-            ObjectWrapperVisitor<R, P, TH> v = (ObjectWrapperVisitor<R, P, TH>) visitor;
-            return v.visitObjectWrapper(this, p);
-        }
-        return visitor.visitUnknownWrapper(this, p);
+        return visitor.visitObjectWrapper(this, p);
     }
 }
