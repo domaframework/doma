@@ -59,7 +59,7 @@ public abstract class AbstractDao implements ConfigProvider {
      */
     protected AbstractDao(Config config) {
         if (config == null) {
-            new DomaNullPointerException("config");
+            throw new DomaNullPointerException("config");
         }
         validateConfig(config, null);
         this.__config = new RuntimeConfig(config, config.getDataSource());
@@ -77,10 +77,10 @@ public abstract class AbstractDao implements ConfigProvider {
      */
     protected AbstractDao(Config config, Connection connection) {
         if (config == null) {
-            new DomaNullPointerException("config");
+            throw new DomaNullPointerException("config");
         }
         if (connection == null) {
-            new DomaNullPointerException("connection");
+            throw new DomaNullPointerException("connection");
         }
         DataSource dataSource = null;
         if (connection instanceof NeverClosedConnection) {
@@ -108,10 +108,10 @@ public abstract class AbstractDao implements ConfigProvider {
      */
     protected AbstractDao(Config config, DataSource dataSource) {
         if (config == null) {
-            new DomaNullPointerException("config");
+            throw new DomaNullPointerException("config");
         }
         if (dataSource == null) {
-            new DomaNullPointerException("dataSource");
+            throw new DomaNullPointerException("dataSource");
         }
         validateConfig(config, dataSource);
         this.__config = new RuntimeConfig(config, dataSource);
