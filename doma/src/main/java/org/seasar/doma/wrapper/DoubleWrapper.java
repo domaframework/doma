@@ -54,36 +54,18 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
 
     @Override
     public void increment() {
-        Double value = getIncrementedValue();
+        Double value = doGet();
         if (value != null) {
-            doSet(value);
+            doSet(value.doubleValue() + 1d);
         }
     }
 
     @Override
     public void decrement() {
-        Double value = getDecrementedValue();
-        if (value != null) {
-            doSet(value);
-        }
-    }
-
-    @Override
-    public Double getIncrementedValue() {
         Double value = doGet();
         if (value != null) {
-            return Double.valueOf((value.doubleValue() + 1d));
+            doSet(value.doubleValue() - 1d);
         }
-        return null;
-    }
-
-    @Override
-    public Double getDecrementedValue() {
-        Double value = doGet();
-        if (value != null) {
-            return Double.valueOf(value.doubleValue() - 1d);
-        }
-        return null;
     }
 
     @Override

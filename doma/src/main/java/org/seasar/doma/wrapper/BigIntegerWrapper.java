@@ -58,36 +58,18 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
 
     @Override
     public void increment() {
-        BigInteger value = getIncrementedValue();
+        BigInteger value = doGet();
         if (value != null) {
-            doSet(value);
+            doSet(value.add(BigInteger.ONE));
         }
     }
 
     @Override
     public void decrement() {
-        BigInteger value = getDecrementedValue();
-        if (value != null) {
-            doSet(value);
-        }
-    }
-
-    @Override
-    public BigInteger getIncrementedValue() {
         BigInteger value = doGet();
         if (value != null) {
-            return value.add(BigInteger.ONE);
+            doSet(value.subtract(BigInteger.ONE));
         }
-        return null;
-    }
-
-    @Override
-    public BigInteger getDecrementedValue() {
-        BigInteger value = doGet();
-        if (value != null) {
-            return value.subtract(BigInteger.ONE);
-        }
-        return null;
     }
 
     @Override

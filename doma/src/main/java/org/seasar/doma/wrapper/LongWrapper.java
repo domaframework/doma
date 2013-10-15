@@ -54,36 +54,18 @@ public class LongWrapper extends AbstractWrapper<Long> implements
 
     @Override
     public void increment() {
-        Long value = getIncrementedValue();
+        Long value = doGet();
         if (value != null) {
-            doSet(value);
+            doSet(value.longValue() + 1L);
         }
     }
 
     @Override
     public void decrement() {
-        Long value = getDecrementedValue();
-        if (value != null) {
-            doSet(value);
-        }
-    }
-
-    @Override
-    public Long getIncrementedValue() {
         Long value = doGet();
         if (value != null) {
-            return Long.valueOf((value.longValue() + 1L));
+            doSet(value.longValue() - 1L);
         }
-        return null;
-    }
-
-    @Override
-    public Long getDecrementedValue() {
-        Long value = doGet();
-        if (value != null) {
-            return Long.valueOf(value.longValue() - 1L);
-        }
-        return null;
     }
 
     @Override
