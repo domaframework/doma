@@ -18,14 +18,14 @@ package org.seasar.doma.internal.apt.dao;
 import javax.sql.DataSource;
 
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
-import org.seasar.doma.jdbc.DomaAbstractConfig;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
 /**
  * @author taedium
  * 
  */
-public class MyConfig extends DomaAbstractConfig {
+public class MyConfig implements Config {
 
     protected MockDataSource dataSource = new MockDataSource();
 

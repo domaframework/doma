@@ -17,13 +17,13 @@ package org.seasar.doma.it;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.jdbc.DomaAbstractConfig;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.framework.container.SingletonS2Container;
 
-public class ItConfig extends DomaAbstractConfig {
+public class ItConfig implements Config {
 
     protected static final JdbcLogger jdbcLogger = new ItLogger();
 

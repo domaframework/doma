@@ -46,16 +46,6 @@ public interface Config {
     DataSource getDataSource();
 
     /**
-     * データソース名を返します。
-     * <p>
-     * データソースを複数扱う場合、データソースごとに異なる名前を返さなければいけません。この値は、シーケンスやテーブルを使用した識別子の自動生成機能で、
-     * 生成した識別子をデータソースごとに管理するために使用されます。
-     * 
-     * @return データソース名
-     */
-    String getDataSourceName();
-
-    /**
      * RDBMSの方言を返します。
      * 
      * @return RDBMSの方言
@@ -63,18 +53,34 @@ public interface Config {
     Dialect getDialect();
 
     /**
+     * データソース名を返します。
+     * <p>
+     * データソースを複数扱う場合、データソースごとに異なる名前を返さなければいけません。この値は、シーケンスやテーブルを使用した識別子の自動生成機能で、
+     * 生成した識別子をデータソースごとに管理するために使用されます。
+     * 
+     * @return データソース名
+     */
+    default String getDataSourceName() {
+        return getClass().getName();
+    }
+
+    /**
      * SQLファイルのリポジトリを返します。
      * 
      * @return SQLファイルのリポジトリ
      */
-    SqlFileRepository getSqlFileRepository();
+    default SqlFileRepository getSqlFileRepository() {
+        return ConfigSupport.defaultSqlFileRepository;
+    }
 
     /**
      * JDBCロガーを返します。
      * 
      * @return JDBCロガー
      */
-    JdbcLogger getJdbcLogger();
+    default JdbcLogger getJdbcLogger() {
+        return ConfigSupport.defaultJdbcLogger;
+    }
 
     /**
      * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーを返します。
@@ -84,7 +90,9 @@ public interface Config {
      * 
      * @return {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラー
      */
-    RequiresNewController getRequiresNewController();
+    default RequiresNewController getRequiresNewController() {
+        return ConfigSupport.defaultRequiresNewController;
+    }
 
     /**
      * クラスのヘルパーを返します。
@@ -92,7 +100,9 @@ public interface Config {
      * @return クラスのヘルパー
      * @since 1.27.0
      */
-    ClassHelper getClassHelper();
+    default ClassHelper getClassHelper() {
+        return ConfigSupport.defaultClassHelper;
+    }
 
     /**
      * {@link Command} の実装クラスのファクトリを返します。
@@ -100,7 +110,9 @@ public interface Config {
      * @return {@link Command} の実装クラスのファクトリ
      * @since 2.0.0
      */
-    CommandImplementors getCommandImplementors();
+    default CommandImplementors getCommandImplementors() {
+        return ConfigSupport.defaultCommandImplementors;
+    }
 
     /**
      * {@link Query} の実装クラスのファクトリを返します。
@@ -108,7 +120,9 @@ public interface Config {
      * @return {@link Query} の実装クラスのファクトリ
      * @since 2.0.0
      */
-    QueryImplementors getQueryImplementors();
+    default QueryImplementors getQueryImplementors() {
+        return ConfigSupport.defaultQueryImplementors;
+    }
 
     /**
      * 例外に含めるSQLログのタイプを返します。
@@ -116,7 +130,9 @@ public interface Config {
      * @return SQLログのタイプ
      * @since 1.22.0
      */
-    ExceptionSqlLogType getExceptionSqlLogType();
+    default ExceptionSqlLogType getExceptionSqlLogType() {
+        return ExceptionSqlLogType.FORMATTED_SQL;
+    }
 
     /**
      * 最大行数の制限値を返します。
@@ -126,7 +142,9 @@ public interface Config {
      * @return 最大行数の制限値
      * @see Statement#setMaxRows(int)
      */
-    int getMaxRows();
+    default int getMaxRows() {
+        return 0;
+    }
 
     /**
      * フェッチサイズを返します。
@@ -136,7 +154,9 @@ public interface Config {
      * @return フェッチサイズ
      * @see Statement#setFetchSize(int)
      */
-    int getFetchSize();
+    default int getFetchSize() {
+        return 0;
+    }
 
     /**
      * クエリタイムアウト（秒）を返します。
@@ -146,7 +166,9 @@ public interface Config {
      * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
-    int getQueryTimeout();
+    default int getQueryTimeout() {
+        return 0;
+    }
 
     /**
      * バッチサイズを返します。
@@ -161,7 +183,9 @@ public interface Config {
      * @return バッチサイズを返します。
      * @see PreparedStatement#addBatch()
      */
-    int getBatchSize();
+    default int getBatchSize() {
+        return 0;
+    }
 
     /**
      * {@link ConfigProvider} から {@link Config} を取得します。
