@@ -103,6 +103,7 @@ public class AbstractDaoTest extends TestCase {
                 return null;
             }
         };
-        return (T) Proxy.newProxyInstance(loader, interfaces, h);
+        Object proxy = Proxy.newProxyInstance(loader, interfaces, h);
+        return aClass.cast(proxy);
     }
 }
