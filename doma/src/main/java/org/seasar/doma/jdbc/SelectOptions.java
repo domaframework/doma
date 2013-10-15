@@ -93,7 +93,7 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions forUpdate(String... aliases) {
         if (aliases == null) {
-            new DomaNullPointerException("aliases");
+            throw new DomaNullPointerException("aliases");
         }
         forUpdateType = SelectForUpdateType.NORMAL;
         this.aliases = aliases;
@@ -119,7 +119,7 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions forUpdateNowait(String... aliases) {
         if (aliases == null) {
-            new DomaNullPointerException("aliases");
+            throw new DomaNullPointerException("aliases");
         }
         forUpdateType = SelectForUpdateType.NOWAIT;
         this.aliases = aliases;
@@ -135,7 +135,8 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions forUpdateWait(int waitSeconds) {
         if (waitSeconds < 0) {
-            new DomaIllegalArgumentException("waitSeconds", "waitSeconds < 0");
+            throw new DomaIllegalArgumentException("waitSeconds",
+                    "waitSeconds < 0");
         }
         forUpdateType = SelectForUpdateType.WAIT;
         this.waitSeconds = waitSeconds;
@@ -153,10 +154,11 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions forUpdateWait(int waitSeconds, String... aliases) {
         if (waitSeconds < 0) {
-            new DomaIllegalArgumentException("waitSeconds", "waitSeconds < 0");
+            throw new DomaIllegalArgumentException("waitSeconds",
+                    "waitSeconds < 0");
         }
         if (aliases == null) {
-            new DomaNullPointerException("aliases");
+            throw new DomaNullPointerException("aliases");
         }
         forUpdateType = SelectForUpdateType.WAIT;
         this.waitSeconds = waitSeconds;
@@ -173,7 +175,7 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions offset(int offset) {
         if (offset < 0) {
-            new DomaIllegalArgumentException("offset", "offset < 0");
+            throw new DomaIllegalArgumentException("offset", "offset < 0");
         }
         this.offset = offset;
         return this;
@@ -188,7 +190,7 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions limit(int limit) {
         if (limit < 0) {
-            new DomaIllegalArgumentException("limit", "limit < 0");
+            throw new DomaIllegalArgumentException("limit", "limit < 0");
         }
         this.limit = limit;
         return this;
