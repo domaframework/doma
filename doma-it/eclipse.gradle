@@ -45,3 +45,25 @@ eclipseJdt {
  
     doLast { clos*.run() }
 }
+
+task eclipseSettings(type: Copy) {
+  from rootProject.files(
+    "src/eclipse/org.eclipse.jdt.ui.prefs")
+  into project.file('.settings/')
+  outputs.upToDateWhen { false }
+}
+
+task eclipseJdtPrepare(type: Copy) {
+  from rootProject.file("src/eclipse/org.eclipse.jdt.core.prefs")
+  into project.file(".settings/")
+  outputs.upToDateWhen { false }
+}
+
+task cleanEclipseJdtUi(type: Delete) {
+  delete project.file(".settings/org.eclipse.jdt.ui.prefs")
+  delete project.file(".settings/org.eclipse.jdt.core.prefs")
+}
+
+tasks["eclipseJdt"].dependsOn(eclipseJdtPrepare)
+tasks["cleanEclipse"].dependsOn(cleanEclipseJdtUi)
+tasks["eclipse"].dependsOn(eclipseSettings)
