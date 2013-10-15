@@ -15,22 +15,12 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.BigIntegerWrapper;
-import org.seasar.doma.wrapper.ByteWrapper;
-import org.seasar.doma.wrapper.DoubleWrapper;
-import org.seasar.doma.wrapper.FloatWrapper;
-import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NumberWrapper;
-import org.seasar.doma.wrapper.ShortWrapper;
+import org.seasar.doma.wrapper.NumberWrapperVisitor;
 import org.seasar.doma.wrapper.Wrapper;
-import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * バージョンのプロパティ型です。
@@ -86,7 +76,7 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
      * @return エンティティ
      */
     public E setIfNecessary(EntityType<E> entityType, E entity, Number value) {
-        return modifyValue(entityType, entity, new ValueSetter(), value);
+        return modify(entityType, entity, new ValueSetter(), value);
     }
 
     /**
@@ -99,176 +89,32 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
      * @return エンティティ
      */
     public E increment(EntityType<E> entityType, E entity) {
-        return modifyValue(entityType, entity, new Incrementer(), null);
-    }
-
-    /**
-     * エンティティに値を設定して返します。
-     * 
-     * @param entityType
-     *            エンティティタイプ
-     * @param entity
-     *            エンティティ
-     * @param visitor
-     *            ビジター
-     * @param value
-     *            値
-     * @return エンティティ
-     */
-    protected <PARAM> E modifyValue(EntityType<E> entityType, E entity,
-            WrapperVisitor<Void, PARAM, RuntimeException> visitor, PARAM value) {
-        if (entityType.isImmutable()) {
-            Map<String, PropertyState<E, ?>> accessors = new HashMap<>();
-            for (EntityPropertyType<E, ?, ?> p : entityType
-                    .getEntityPropertyTypes()) {
-                PropertyState<E, ?> accessor = p.createState();
-                accessor.load(entity);
-                if (p == this) {
-                    accessor.getWrapper().accept(visitor, value);
-                }
-                accessors.put(p.getName(), accessor);
-            }
-            return entityType.newEntity(accessors);
-        } else {
-            PropertyState<E, ?> accessor = createState();
-            accessor.load(entity);
-            accessor.getWrapper().accept(visitor, value);
-            accessor.save(entity);
-            return entity;
-        }
+        return modify(entityType, entity, new Incrementer(), null);
     }
 
     protected static class ValueSetter implements
-            WrapperVisitor<Void, Number, RuntimeException> {
+            NumberWrapperVisitor<Void, Number, RuntimeException> {
 
         @Override
-        public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitBigDecimalWrapper(BigDecimalWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitByteWrapper(ByteWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitDoubleWrapper(DoubleWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitFloatWrapper(FloatWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitIntegerWrapper(IntegerWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitLongWrapper(LongWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitShortWrapper(ShortWrapper wrapper, Number p)
-                throws RuntimeException {
-            setIfNecessary(wrapper, p);
-            return null;
-        }
-
-        protected void setIfNecessary(NumberWrapper<? extends Number> wrapper,
-                Number value) {
+        public <V extends Number> Void visitNumberWrapper(
+                NumberWrapper<V> wrapper, Number value) {
             Number currentValue = wrapper.get();
             if (currentValue == null || currentValue.intValue() < 0) {
                 wrapper.set(value);
             }
+            return null;
         }
-
     }
 
     protected static class Incrementer implements
-            WrapperVisitor<Void, Void, RuntimeException> {
+            NumberWrapperVisitor<Void, Void, RuntimeException> {
 
         @Override
-        public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        @Override
-        public Void visitBigDecimalWrapper(BigDecimalWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        @Override
-        public Void visitByteWrapper(ByteWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        @Override
-        public Void visitDoubleWrapper(DoubleWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        @Override
-        public Void visitFloatWrapper(FloatWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        @Override
-        public Void visitIntegerWrapper(IntegerWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        @Override
-        public Void visitLongWrapper(LongWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        @Override
-        public Void visitShortWrapper(ShortWrapper wrapper, Void p)
-                throws RuntimeException {
-            increment(wrapper);
-            return null;
-        }
-
-        protected void increment(NumberWrapper<? extends Number> wrapper) {
+        public <V extends Number> Void visitNumberWrapper(
+                NumberWrapper<V> wrapper, Void p) {
             wrapper.increment();
+            return null;
         }
-
     }
+
 }

@@ -16,8 +16,6 @@
 package org.seasar.doma.jdbc.entity;
 
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -28,17 +26,9 @@ import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.BigIntegerWrapper;
-import org.seasar.doma.wrapper.ByteWrapper;
-import org.seasar.doma.wrapper.DoubleWrapper;
-import org.seasar.doma.wrapper.FloatWrapper;
-import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NumberWrapper;
-import org.seasar.doma.wrapper.ShortWrapper;
+import org.seasar.doma.wrapper.NumberWrapperVisitor;
 import org.seasar.doma.wrapper.Wrapper;
-import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * 生成される識別子のプロパティ型です。
@@ -217,95 +207,21 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
         if (value == null) {
             return entity;
         }
-        ValueSetter valueSetter = new ValueSetter();
-        if (entityType.isImmutable()) {
-            Map<String, PropertyState<E, ?>> accessors = new HashMap<>();
-            for (EntityPropertyType<E, ?, ?> p : entityType
-                    .getEntityPropertyTypes()) {
-                PropertyState<E, ?> accessor = p.createState();
-                accessor.load(entity);
-                if (p == this) {
-                    accessor.getWrapper().accept(valueSetter, value);
-                }
-                accessors.put(p.getName(), accessor);
-            }
-            return entityType.newEntity(accessors);
-        } else {
-            PropertyState<E, ?> accessor = createState();
-            accessor.load(entity);
-            accessor.getWrapper().accept(valueSetter, value);
-            accessor.save(entity);
-            return entity;
-        }
+        return modify(entityType, entity, new ValueSetter(), value);
     }
 
     protected static class ValueSetter implements
-            WrapperVisitor<Void, Number, RuntimeException> {
+            NumberWrapperVisitor<Void, Number, RuntimeException> {
 
         @Override
-        public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitBigDecimalWrapper(BigDecimalWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitByteWrapper(ByteWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitDoubleWrapper(DoubleWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitFloatWrapper(FloatWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitIntegerWrapper(IntegerWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitLongWrapper(LongWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        @Override
-        public Void visitShortWrapper(ShortWrapper wrapper, Number p)
-                throws RuntimeException {
-            setValue(wrapper, p);
-            return null;
-        }
-
-        protected void setValue(NumberWrapper<? extends Number> wrapper,
-                Number value) {
+        public <V extends Number> Void visitNumberWrapper(
+                NumberWrapper<V> wrapper, Number value) throws RuntimeException {
             Number currentValue = wrapper.get();
             if (currentValue == null || currentValue.intValue() < 0) {
                 wrapper.set(value);
             }
+            return null;
         }
-
     }
 
 }

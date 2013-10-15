@@ -16,6 +16,8 @@
 package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -26,6 +28,7 @@ import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * 基本のプロパティ型です。
@@ -224,6 +227,42 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     @Override
     public boolean isUpdatable() {
         return updatable;
+    }
+
+    /**
+     * エンティティに値を設定して返します。
+     * 
+     * @param entityType
+     *            エンティティタイプ
+     * @param entity
+     *            エンティティ
+     * @param visitor
+     *            ビジター
+     * @param value
+     *            値
+     * @return エンティティ
+     */
+    protected <PARAM> E modify(EntityType<E> entityType, E entity,
+            WrapperVisitor<Void, PARAM, RuntimeException> visitor, PARAM value) {
+        if (entityType.isImmutable()) {
+            Map<String, PropertyState<E, ?>> states = new HashMap<>();
+            for (EntityPropertyType<E, ?, ?> p : entityType
+                    .getEntityPropertyTypes()) {
+                PropertyState<E, ?> state = p.createState();
+                state.load(entity);
+                if (p == this) {
+                    state.getWrapper().accept(visitor, value);
+                }
+                states.put(p.getName(), state);
+            }
+            return entityType.newEntity(states);
+        } else {
+            PropertyState<E, ?> state = createState();
+            state.load(entity);
+            state.getWrapper().accept(visitor, value);
+            state.save(entity);
+            return entity;
+        }
     }
 
     /**
