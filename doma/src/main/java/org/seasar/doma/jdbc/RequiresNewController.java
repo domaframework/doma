@@ -73,7 +73,12 @@ public interface RequiresNewController {
      * @throws Throwable
      *             ｛@code callback} の処理中に何らかの例外が発生した場合
      */
-    <R> R requiresNew(Callback<R> callback) throws Throwable;
+    default <R> R requiresNew(Callback<R> callback) throws Throwable {
+        if (callback == null) {
+            throw new DomaNullPointerException("callback");
+        }
+        return callback.execute();
+    }
 
     /**
      * {@literal REQUIRES_NEW} のトランザクション属性下で実行される処理です。

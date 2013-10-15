@@ -25,7 +25,8 @@ class ConfigSupport {
 
     static JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
 
-    static RequiresNewController defaultRequiresNewController = new NullRequiresNewController();
+    static RequiresNewController defaultRequiresNewController = new RequiresNewController() {
+    };
 
     static ClassHelper defaultClassHelper = new ClassHelper() {
     };

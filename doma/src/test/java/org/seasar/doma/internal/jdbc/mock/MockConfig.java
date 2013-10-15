@@ -23,7 +23,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
-import org.seasar.doma.jdbc.NullRequiresNewController;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
@@ -45,7 +44,8 @@ public class MockConfig implements Config {
 
     protected JdbcLogger sqlLogger = new UtilLoggingJdbcLogger();
 
-    protected RequiresNewController requiresNewController = new NullRequiresNewController();
+    protected RequiresNewController requiresNewController = new RequiresNewController() {
+    };
 
     protected ClassHelper classHelper = new ClassHelper() {
     };
