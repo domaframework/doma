@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -69,8 +69,8 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     }
 
     protected void prepareSql() {
-        SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
-                config.getDialect());
+        SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(method,
+                sqlFilePath, config.getDialect());
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                 config.getDialect().getExpressionFunctions(),
                 config.getClassHelper());

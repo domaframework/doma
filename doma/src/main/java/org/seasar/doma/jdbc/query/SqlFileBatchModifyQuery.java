@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     protected void prepareSqlFile() {
-        sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
+        sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath,
                 config.getDialect());
     }
 

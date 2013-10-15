@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.lang.reflect.Method;
+
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.Constants;
@@ -37,7 +39,10 @@ import org.seasar.doma.message.Message;
 public abstract class AbstractSqlFileRepository implements SqlFileRepository {
 
     @Override
-    public final SqlFile getSqlFile(String path, Dialect dialect) {
+    public final SqlFile getSqlFile(Method method, String path, Dialect dialect) {
+        if (method == null) {
+            throw new DomaNullPointerException("method");
+        }
         if (path == null) {
             throw new DomaNullPointerException("path");
         }
@@ -54,12 +59,14 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
         if (dialect == null) {
             throw new DomaNullPointerException("dialect");
         }
-        return getSqlFileWithCacheControl(path, dialect);
+        return getSqlFileWithCacheControl(method, path, dialect);
     }
 
     /**
      * キャッシュを制御してSQLファイルを返します。
      * 
+     * @param method
+     *            Daoのメソッド
      * @param path
      *            SQLファイルのパス
      * @param dialect
@@ -70,8 +77,8 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
      * @throws JdbcException
      *             上記以外で例外が発生した場合
      */
-    protected abstract SqlFile getSqlFileWithCacheControl(String path,
-            Dialect dialect);
+    protected abstract SqlFile getSqlFileWithCacheControl(Method method,
+            String path, Dialect dialect);
 
     /**
      * SQLファイルを作成します。

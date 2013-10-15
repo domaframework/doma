@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,11 +26,6 @@ import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.SqlFileNotFoundException;
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.message.Message;
 
@@ -41,11 +37,18 @@ public class JdbcExceptionTest extends TestCase {
 
     private final MockConfig config = new MockConfig();
 
+    private Method method;
+
+    @Override
+    protected void setUp() throws Exception {
+        method = getClass().getMethod(getName());
+    }
+
     public void testSqlFileNotFound() throws Exception {
         GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
         try {
-            repository
-                    .getSqlFile("META-INF/aaa/bbb.sql", new StandardDialect());
+            repository.getSqlFile(method, "META-INF/aaa/bbb.sql",
+                    new StandardDialect());
             fail();
         } catch (SqlFileNotFoundException e) {
             System.out.println(e.getMessage());

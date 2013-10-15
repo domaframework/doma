@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -33,7 +34,8 @@ public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
             200);
 
     @Override
-    protected SqlFile getSqlFileWithCacheControl(String path, Dialect dialect) {
+    protected SqlFile getSqlFileWithCacheControl(Method method, String path,
+            Dialect dialect) {
         SqlFile file = sqlFileMap.get(path);
         if (file != null) {
             return file;

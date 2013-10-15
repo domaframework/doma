@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import java.lang.reflect.Method;
+
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
@@ -38,6 +40,13 @@ public class DomainSingleResultHandlerTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
+    private Method method;
+
+    @Override
+    protected void setUp() throws Exception {
+        method = getClass().getMethod(getName());
+    }
+
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
         metaData.columns.add(new ColumnMetaData("x"));
@@ -50,6 +59,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(method);
         query.prepare();
 
         DomainSingleResultHandler<PhoneNumber> handler = new DomainSingleResultHandler<PhoneNumber>(
@@ -71,6 +81,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(method);
         query.prepare();
 
         DomainSingleResultHandler<PhoneNumber> handler = new DomainSingleResultHandler<PhoneNumber>(
@@ -91,6 +102,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(method);
         query.setResultEnsured(true);
         query.prepare();
 

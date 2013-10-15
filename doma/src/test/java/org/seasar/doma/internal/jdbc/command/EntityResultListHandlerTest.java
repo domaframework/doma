@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -39,6 +40,13 @@ public class EntityResultListHandlerTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
+    private Method method;
+
+    @Override
+    protected void setUp() throws Exception {
+        method = getClass().getMethod(getName());
+    }
+
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
         metaData.columns.add(new ColumnMetaData("id"));
@@ -53,6 +61,7 @@ public class EntityResultListHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(method);
         query.prepare();
 
         EntityResultListHandler<Emp> handler = new EntityResultListHandler<Emp>(
@@ -81,6 +90,7 @@ public class EntityResultListHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setResultEnsured(true);
+        query.setMethod(method);
         query.prepare();
 
         EntityResultListHandler<Emp> handler = new EntityResultListHandler<Emp>(

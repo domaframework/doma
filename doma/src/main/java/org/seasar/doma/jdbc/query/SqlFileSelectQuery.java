@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -89,7 +89,7 @@ public class SqlFileSelectQuery implements SelectQuery {
     }
 
     protected void prepareSql() {
-        sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
+        sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath,
                 config.getDialect());
         SqlNode sqlNode = config.getDialect().transformSelectSqlNode(
                 sqlFile.getSqlNode(), options);

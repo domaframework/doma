@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -39,6 +40,13 @@ public class DomainResultListHandlerTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
+    private Method method;
+
+    @Override
+    protected void setUp() throws Exception {
+        method = getClass().getMethod(getName());
+    }
+
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
         metaData.columns.add(new ColumnMetaData("x"));
@@ -52,6 +60,7 @@ public class DomainResultListHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(method);
         query.prepare();
 
         DomainResultListHandler<PhoneNumber> handler = new DomainResultListHandler<PhoneNumber>(
@@ -73,6 +82,7 @@ public class DomainResultListHandlerTest extends TestCase {
                 getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setMethod(method);
         query.setResultEnsured(true);
         query.prepare();
 

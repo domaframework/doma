@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.lang.reflect.Method;
+
 import org.seasar.doma.Dao;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
@@ -59,6 +61,8 @@ public interface SqlFileRepository {
     /**
      * SQLファイルを返します。
      * 
+     * @param method
+     *            Daoのメソッド
      * @param path
      *            SQLファイルのパス
      * @param dialect
@@ -74,6 +78,6 @@ public interface SqlFileRepository {
      * @throws JdbcException
      *             上記以外で例外が発生した場合
      */
-    SqlFile getSqlFile(String path, Dialect dialect);
+    SqlFile getSqlFile(Method method, String path, Dialect dialect);
 
 }
