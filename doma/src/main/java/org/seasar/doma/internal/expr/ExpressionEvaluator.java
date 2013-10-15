@@ -15,7 +15,9 @@
  */
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -71,7 +73,6 @@ import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.util.GenericsUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
-import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
@@ -88,7 +89,8 @@ public class ExpressionEvaluator implements
     protected final ClassHelper classHelper;
 
     public ExpressionEvaluator() {
-        this(new NullExpressionFunctions(), new DefaultClassHelper());
+        this(new NullExpressionFunctions(), new ClassHelper() {
+        });
     }
 
     public ExpressionEvaluator(ExpressionFunctions expressionFunctions,

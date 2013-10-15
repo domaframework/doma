@@ -18,7 +18,7 @@ package org.seasar.doma.jdbc.domain;
 import junit.framework.TestCase;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.jdbc.DefaultClassHelper;
+import org.seasar.doma.jdbc.ClassHelper;
 
 import example.domain.PhoneNumber;
 
@@ -28,17 +28,19 @@ import example.domain.PhoneNumber;
  */
 public class DomainTypeFactoryTest extends TestCase {
 
+    private ClassHelper classHelper = new ClassHelper() {
+    };
+
     public void testGetDomainType() throws Exception {
         DomainType<String, PhoneNumber> type = DomainTypeFactory.getDomainType(
-                PhoneNumber.class, new DefaultClassHelper());
+                PhoneNumber.class, classHelper);
         assertNotNull(type);
     }
 
     public void testGetDomainType_DomaIllegalArgumentException()
             throws Exception {
         try {
-            DomainTypeFactory.getDomainType(Object.class,
-                    new DefaultClassHelper());
+            DomainTypeFactory.getDomainType(Object.class, classHelper);
             fail();
         } catch (DomaIllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -48,8 +50,7 @@ public class DomainTypeFactoryTest extends TestCase {
     public void testGetDomainType_DomainTypeNotFoundException()
             throws Exception {
         try {
-            DomainTypeFactory.getDomainType(Money.class,
-                    new DefaultClassHelper());
+            DomainTypeFactory.getDomainType(Money.class, classHelper);
             fail();
         } catch (DomainTypeNotFoundException e) {
             System.out.println(e.getMessage());

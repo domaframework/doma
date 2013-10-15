@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
@@ -48,7 +47,8 @@ public class MockConfig implements Config {
 
     protected RequiresNewController requiresNewController = new NullRequiresNewController();
 
-    protected ClassHelper classHelper = new DefaultClassHelper();
+    protected ClassHelper classHelper = new ClassHelper() {
+    };
 
     protected CommandImplementors commandImplementors = new CommandImplementors() {
     };

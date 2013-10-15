@@ -27,7 +27,8 @@ class ConfigSupport {
 
     static RequiresNewController defaultRequiresNewController = new NullRequiresNewController();
 
-    static ClassHelper defaultClassHelper = new DefaultClassHelper();
+    static ClassHelper defaultClassHelper = new ClassHelper() {
+    };
 
     static CommandImplementors defaultCommandImplementors = new CommandImplementors() {
     };

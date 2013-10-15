@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.internal.WrapException;
+
 /**
  * クラスのヘルパーです。
  * <p>
@@ -35,5 +37,13 @@ public interface ClassHelper {
      *             例外
      * @see Class#forName(String)
      */
-    <T> Class<T> forName(String className) throws Exception;
+    default <T> Class<T> forName(String className) throws Exception {
+        try {
+            @SuppressWarnings("unchecked")
+            Class<T> clazz = (Class<T>) Class.forName(className);
+            return clazz;
+        } catch (ClassNotFoundException e) {
+            throw new WrapException(e);
+        }
+    }
 }

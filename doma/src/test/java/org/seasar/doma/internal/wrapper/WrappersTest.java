@@ -28,7 +28,6 @@ import java.sql.Timestamp;
 import junit.framework.TestCase;
 
 import org.seasar.doma.jdbc.ClassHelper;
-import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -43,7 +42,8 @@ import example.domain.PhoneNumber;
  */
 public class WrappersTest extends TestCase {
 
-    private final ClassHelper classHelper = new DefaultClassHelper();
+    private final ClassHelper classHelper = new ClassHelper() {
+    };
 
     public void testWrap() throws Exception {
         assertNotNull(Wrappers.wrap(true, boolean.class, classHelper));
