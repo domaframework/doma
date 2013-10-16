@@ -21,91 +21,164 @@ package org.seasar.doma.internal.jdbc.sql;
  */
 public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
 
-    <BASIC> R visitBasicInParameter(BasicInParameter<BASIC> parameter, P p)
+    <BASIC> R visitInParameter(InParameter<BASIC> parameter, P p) throws TH;
+
+    <BASIC> R visitOutParameter(OutParameter<BASIC> parameter, P p) throws TH;
+
+    <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> R visitInOutParameter(
+            INOUT parameter, P p) throws TH;
+
+    <ELEMENT> R visitListParameter(ListParameter<ELEMENT> parameter, P p)
             throws TH;
 
-    <BASIC> R visitBasicOutParameter(BasicOutParameter<BASIC> parameter, P p)
-            throws TH;
+    <BASIC, RESULT> R visitSingleResultParameter(
+            SingleResultParameter<BASIC, RESULT> parameter, P p) throws TH;
 
-    <BASIC> R visitBasicInOutParameter(BasicInOutParameter<BASIC> parameter, P p)
-            throws TH;
+    <ELEMENT> R visitResultListParameter(
+            ResultListParameter<ELEMENT> parameter, P p) throws TH;
 
-    <BASIC> R visitBasicListParameter(BasicListParameter<BASIC> parameter, P p)
-            throws TH;
+    default <BASIC> R visitBasicInParameter(BasicInParameter<BASIC> parameter,
+            P p) throws TH {
+        return visitInParameter(parameter, p);
+    }
 
-    <BASIC> R visitBasicSingleResultParameter(
-            BasicSingleResultParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitBasicOutParameter(
+            BasicOutParameter<BASIC> parameter, P p) throws TH {
+        return visitOutParameter(parameter, p);
+    }
 
-    <BASIC> R visitBasicResultListParameter(
-            BasicResultListParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitBasicInOutParameter(
+            BasicInOutParameter<BASIC> parameter, P p) throws TH {
+        return visitInOutParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitDomainInParameter(
-            DomainInParameter<BASIC, DOMAIN> parameter, P p) throws TH;
+    default <BASIC> R visitBasicListParameter(
+            BasicListParameter<BASIC> parameter, P p) throws TH {
+        return visitListParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitDomainOutParameter(
-            DomainOutParameter<BASIC, DOMAIN> parameter, P p) throws TH;
+    default <BASIC> R visitBasicSingleResultParameter(
+            BasicSingleResultParameter<BASIC> parameter, P p) throws TH {
+        return visitSingleResultParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitDomainInOutParameter(
-            DomainInOutParameter<BASIC, DOMAIN> parameter, P p) throws TH;
+    default <BASIC> R visitBasicResultListParameter(
+            BasicResultListParameter<BASIC> parameter, P p) throws TH {
+        return visitResultListParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitDomainListParameter(
-            DomainListParameter<BASIC, DOMAIN> parameter, P p) throws TH;
+    default <BASIC, DOMAIN> R visitDomainInParameter(
+            DomainInParameter<BASIC, DOMAIN> parameter, P p) throws TH {
+        return visitInParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitDomainSingleResultParameter(
+    default <BASIC, DOMAIN> R visitDomainOutParameter(
+            DomainOutParameter<BASIC, DOMAIN> parameter, P p) throws TH {
+        return visitOutParameter(parameter, p);
+    }
+
+    default <BASIC, DOMAIN> R visitDomainInOutParameter(
+            DomainInOutParameter<BASIC, DOMAIN> parameter, P p) throws TH {
+        return visitInOutParameter(parameter, p);
+    }
+
+    default <BASIC, DOMAIN> R visitDomainListParameter(
+            DomainListParameter<BASIC, DOMAIN> parameter, P p) throws TH {
+        return visitListParameter(parameter, p);
+    }
+
+    default <BASIC, DOMAIN> R visitDomainSingleResultParameter(
             DomainSingleResultParameter<BASIC, DOMAIN> parameter, P p)
-            throws TH;
+            throws TH {
+        return visitSingleResultParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitDomainResultListParameter(
-            DomainResultListParameter<BASIC, DOMAIN> parameter, P p) throws TH;
+    default <BASIC, DOMAIN> R visitDomainResultListParameter(
+            DomainResultListParameter<BASIC, DOMAIN> parameter, P p) throws TH {
+        return visitResultListParameter(parameter, p);
+    }
 
-    <ENTITY> R visitEntityListParameter(EntityListParameter<ENTITY> parameter,
-            P p) throws TH;
+    default <ENTITY> R visitEntityListParameter(
+            EntityListParameter<ENTITY> parameter, P p) throws TH {
+        return visitListParameter(parameter, p);
+    }
 
-    <ENTITY> R visitEntityResultListParameter(
-            EntityResultListParameter<ENTITY> parameter, P p) throws TH;
+    default <ENTITY> R visitEntityResultListParameter(
+            EntityResultListParameter<ENTITY> parameter, P p) throws TH {
+        return visitResultListParameter(parameter, p);
+    }
 
-    R visitMapListParameter(MapListParameter parameter, P p) throws TH;
+    default R visitMapListParameter(MapListParameter parameter, P p) throws TH {
+        return visitListParameter(parameter, p);
+    }
 
-    R visitMapResultListParameter(MapResultListParameter parameter, P p)
-            throws TH;
+    default R visitMapResultListParameter(MapResultListParameter parameter, P p)
+            throws TH {
+        return visitResultListParameter(parameter, p);
+    }
 
-    <BASIC> R visitOptionalBasicInParameter(
-            OptionalBasicInParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitOptionalBasicInParameter(
+            OptionalBasicInParameter<BASIC> parameter, P p) throws TH {
+        return visitInParameter(parameter, p);
+    }
 
-    <BASIC> R visitOptionalBasicOutParameter(
-            OptionalBasicOutParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitOptionalBasicOutParameter(
+            OptionalBasicOutParameter<BASIC> parameter, P p) throws TH {
+        return visitOutParameter(parameter, p);
+    }
 
-    <BASIC> R visitOptionalBasicInOutParameter(
-            OptionalBasicInOutParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitOptionalBasicInOutParameter(
+            OptionalBasicInOutParameter<BASIC> parameter, P p) throws TH {
+        return visitInOutParameter(parameter, p);
+    }
 
-    <BASIC> R visitOptionalBasicListParameter(
-            OptionalBasicListParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitOptionalBasicListParameter(
+            OptionalBasicListParameter<BASIC> parameter, P p) throws TH {
+        return visitListParameter(parameter, p);
+    }
 
-    <BASIC> R visitOptionalBasicResultListParameter(
-            OptionalBasicResultListParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitOptionalBasicResultListParameter(
+            OptionalBasicResultListParameter<BASIC> parameter, P p) throws TH {
+        return visitResultListParameter(parameter, p);
+    }
 
-    <BASIC> R visitOptionalBasicSingleResultParameter(
-            OptionalBasicSingleResultParameter<BASIC> parameter, P p) throws TH;
+    default <BASIC> R visitOptionalBasicSingleResultParameter(
+            OptionalBasicSingleResultParameter<BASIC> parameter, P p) throws TH {
+        return visitSingleResultParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitOptionalDomainInParameter(
-            OptionalDomainInParameter<BASIC, DOMAIN> parameter, P p) throws TH;
+    default <BASIC, DOMAIN> R visitOptionalDomainInParameter(
+            OptionalDomainInParameter<BASIC, DOMAIN> parameter, P p) throws TH {
+        return visitInParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitOptionalDomainOutParameter(
-            OptionalDomainOutParameter<BASIC, DOMAIN> parameter, P p) throws TH;
+    default <BASIC, DOMAIN> R visitOptionalDomainOutParameter(
+            OptionalDomainOutParameter<BASIC, DOMAIN> parameter, P p) throws TH {
+        return visitOutParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitOptionalDomainInOutParameter(
+    default <BASIC, DOMAIN> R visitOptionalDomainInOutParameter(
             OptionalDomainInOutParameter<BASIC, DOMAIN> parameter, P p)
-            throws TH;
+            throws TH {
+        return visitInOutParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitOptionalDomainListParameter(
+    default <BASIC, DOMAIN> R visitOptionalDomainListParameter(
             OptionalDomainListParameter<BASIC, DOMAIN> parameter, P p)
-            throws TH;
+            throws TH {
+        return visitListParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitOptionalDomainSingleResultParameter(
+    default <BASIC, DOMAIN> R visitOptionalDomainSingleResultParameter(
             OptionalDomainSingleResultParameter<BASIC, DOMAIN> parameter, P p)
-            throws TH;
+            throws TH {
+        return visitSingleResultParameter(parameter, p);
+    }
 
-    <BASIC, DOMAIN> R visitOptionalDomainResultListParameter(
+    default <BASIC, DOMAIN> R visitOptionalDomainResultListParameter(
             OptionalDomainResultListParameter<BASIC, DOMAIN> parameter, P p)
-            throws TH;
+            throws TH {
+        return visitResultListParameter(parameter, p);
+    }
+
 }

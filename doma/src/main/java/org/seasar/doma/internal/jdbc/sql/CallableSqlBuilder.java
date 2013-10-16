@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -90,257 +90,60 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public <BASIC> Void visitBasicInParameter(
-            BasicInParameter<BASIC> parameter, Context p)
+    public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Context p)
             throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitBasicOutParameter(
-            BasicOutParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handleOutParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitBasicInOutParameter(
-            BasicInOutParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitBasicListParameter(
-            BasicListParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handelListParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitBasicSingleResultParameter(
-            BasicSingleResultParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitBasicResultListParameter(
-            BasicResultListParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitDomainInParameter(
-            DomainInParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitDomainInOutParameter(
-            DomainInOutParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitDomainOutParameter(
-            DomainOutParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handleOutParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitDomainListParameter(
-            DomainListParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handelListParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitDomainSingleResultParameter(
-            DomainSingleResultParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitDomainResultListParameter(
-            DomainResultListParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <ENTITY> Void visitEntityListParameter(
-            EntityListParameter<ENTITY> parameter, Context p)
-            throws RuntimeException {
-        handelListParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <ENTITY> Void visitEntityResultListParameter(
-            EntityResultListParameter<ENTITY> parameter, Context p)
-            throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public Void visitMapListParameter(MapListParameter parameter, Context p)
-            throws RuntimeException {
-        handelListParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public Void visitMapResultListParameter(MapResultListParameter parameter,
-            Context p) throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitOptionalBasicInParameter(
-            OptionalBasicInParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitOptionalBasicOutParameter(
-            OptionalBasicOutParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handleOutParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitOptionalBasicInOutParameter(
-            OptionalBasicInOutParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitOptionalBasicListParameter(
-            OptionalBasicListParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handelListParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitOptionalBasicSingleResultParameter(
-            OptionalBasicSingleResultParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC> Void visitOptionalBasicResultListParameter(
-            OptionalBasicResultListParameter<BASIC> parameter, Context p)
-            throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitOptionalDomainInParameter(
-            OptionalDomainInParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitOptionalDomainOutParameter(
-            OptionalDomainOutParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handleOutParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitOptionalDomainInOutParameter(
-            OptionalDomainInOutParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handleInParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitOptionalDomainListParameter(
-            OptionalDomainListParameter<BASIC, DOMAIN> parameter, Context p)
-            throws RuntimeException {
-        handelListParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitOptionalDomainSingleResultParameter(
-            OptionalDomainSingleResultParameter<BASIC, DOMAIN> parameter,
-            Context p) throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public <BASIC, DOMAIN> Void visitOptionalDomainResultListParameter(
-            OptionalDomainResultListParameter<BASIC, DOMAIN> parameter,
-            Context p) throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    protected <BASIC> void handleInParameter(InParameter<BASIC> parameter,
-            Context p) {
         Wrapper<BASIC> wrapper = parameter.getWrapper();
         p.appendRawSql("?, ");
         p.appendFormattedSql(wrapper.accept(config.getDialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
         p.appendFormattedSql(", ");
         p.addParameter(parameter);
+        return null;
     }
 
-    protected <BASIC> void handleOutParameter(OutParameter<BASIC> parameter,
-            Context p) {
+    @Override
+    public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter,
+            Context p) throws RuntimeException {
         p.appendRawSql("?, ");
         p.appendFormattedSql("?, ");
         p.addParameter(parameter);
+        return null;
     }
 
-    protected <ELEMENT> void handelListParameter(
-            ListParameter<ELEMENT> parameter, Context p) {
+    @Override
+    public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> Void visitInOutParameter(
+            INOUT parameter, Context p) throws RuntimeException {
+        visitInParameter(parameter, p);
+        return null;
+    }
+
+    @Override
+    public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter,
+            Context p) throws RuntimeException {
         if (config.getDialect().supportsResultSetReturningAsOutParameter()) {
             p.appendRawSql("?, ");
             p.appendFormattedSql("?, ");
             p.addParameter(parameter);
         }
+        return null;
     }
 
-    protected <RESULT> void handelResultParameter(
-            ResultParameter<RESULT> parameter, Context p) {
+    @Override
+    public <BASIC, RESULT> Void visitSingleResultParameter(
+            SingleResultParameter<BASIC, RESULT> parameter, Context p)
+            throws RuntimeException {
         p.appendRawSql("? ");
         p.appendFormattedSql("? ");
+        return null;
+    }
+
+    @Override
+    public <ELEMENT> Void visitResultListParameter(
+            ResultListParameter<ELEMENT> parameter, Context p)
+            throws RuntimeException {
+        p.appendRawSql("? ");
+        p.appendFormattedSql("? ");
+        return null;
     }
 
     protected class Context {
