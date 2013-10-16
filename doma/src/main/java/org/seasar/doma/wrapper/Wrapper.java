@@ -90,14 +90,16 @@ public interface Wrapper<BASIC> {
      * @param visitor
      *            ビジター
      * @param p
-     *            パラメータ
+     *            1番目のパラメータ
+     * @param q
+     *            2番目のパラメータ
      * @return 戻り値
      * @throws TH
      *             例外
      * @throws DomaNullPointerException
      *             ビジターが {@code null} の場合
      */
-    <R, P, TH extends Throwable> R accept(WrapperVisitor<R, P, TH> visitor, P p)
-            throws TH;
+    <R, P, Q, TH extends Throwable> R accept(
+            WrapperVisitor<R, P, Q, TH> visitor, P p, Q q) throws TH;
 
 }

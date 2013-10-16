@@ -33,12 +33,12 @@ public class _Weight<T> extends AbstractDomainType<Integer, Weight<T>> {
     }
 
     @Override
-    public Integer getValue(Weight<T> domain) {
+    public Integer getBasicValue(Weight<T> domain) {
         return null;
     }
 
     @Override
-    public Class<Integer> getValueClass() {
+    public Class<Integer> getBasicClass() {
         return null;
     }
 

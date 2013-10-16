@@ -44,7 +44,7 @@ public class OptionalDomainListParameter<BASIC, DOMAIN> extends
     public DomainResultProvider<Optional<DOMAIN>> createResultProvider(
             Query query) {
         return new DomainResultProvider<>(
-                () -> domainType.createOptionalDomainHolder(), query);
+                () -> domainType.createOptionalHolder(), query);
     }
 
     @Override

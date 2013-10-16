@@ -38,6 +38,7 @@ import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.internal.util.CharSequenceUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.ScriptBlockContext;
@@ -492,128 +493,128 @@ public class StandardDialect implements Dialect {
 
         @Override
         public Void visitArrayWrapper(ArrayWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.ARRAY);
         }
 
         @Override
         public Void visitBigDecimalWrapper(BigDecimalWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BIG_DECIMAL);
         }
 
         @Override
         public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BIG_INTEGER);
         }
 
         @Override
-        public Void visitBlobWrapper(BlobWrapper wrapper, JdbcMappingFunction p)
-                throws SQLException {
+        public Void visitBlobWrapper(BlobWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BLOB);
         }
 
         @Override
         public Void visitBooleanWrapper(BooleanWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BOOLEAN);
         }
 
         @Override
-        public Void visitByteWrapper(ByteWrapper wrapper, JdbcMappingFunction p)
-                throws SQLException {
+        public Void visitByteWrapper(ByteWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BYTE);
         }
 
         @Override
         public Void visitBytesWrapper(BytesWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BYTES);
         }
 
         @Override
-        public Void visitClobWrapper(ClobWrapper wrapper, JdbcMappingFunction p)
-                throws SQLException {
+        public Void visitClobWrapper(ClobWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.CLOB);
         }
 
         @Override
-        public Void visitDateWrapper(DateWrapper wrapper, JdbcMappingFunction p)
-                throws SQLException {
+        public Void visitDateWrapper(DateWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.DATE);
         }
 
         @Override
         public Void visitDoubleWrapper(DoubleWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.DOUBLE);
         }
 
         @Override
         public Void visitFloatWrapper(FloatWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.FLOAT);
         }
 
         @Override
         public Void visitIntegerWrapper(IntegerWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.INTEGER);
         }
 
         @Override
-        public Void visitLongWrapper(LongWrapper wrapper, JdbcMappingFunction p)
-                throws SQLException {
+        public Void visitLongWrapper(LongWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.LONG);
         }
 
         @Override
         public Void visitNClobWrapper(NClobWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.NCLOB);
         }
 
         @Override
         public Void visitShortWrapper(ShortWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.SHORT);
         }
 
         @Override
         public Void visitStringWrapper(StringWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.STRING);
         }
 
         @Override
-        public Void visitTimeWrapper(TimeWrapper wrapper, JdbcMappingFunction p)
-                throws SQLException {
+        public Void visitTimeWrapper(TimeWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.TIME);
         }
 
         @Override
         public Void visitTimestampWrapper(TimestampWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.TIMESTAMP);
         }
 
         @Override
         public <E extends Enum<E>> Void visitEnumWrapper(
-                EnumWrapper<E> wrapper, JdbcMappingFunction p)
+                EnumWrapper<E> wrapper, JdbcMappingFunction p, JdbcMappingHint q)
                 throws SQLException {
             return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
         }
 
         @Override
         public Void visitUtilDateWrapper(UtilDateWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.UTIL_DATE);
         }
 
         @Override
         public Void visitObjectWrapper(ObjectWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.OBJECT);
         }
 
@@ -630,128 +631,128 @@ public class StandardDialect implements Dialect {
 
         @Override
         public String visitArrayWrapper(ArrayWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.ARRAY);
         }
 
         @Override
         public String visitBigDecimalWrapper(BigDecimalWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.BIG_DECIMAL);
         }
 
         @Override
         public String visitBigIntegerWrapper(BigIntegerWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BIG_INTEGER);
         }
 
         @Override
         public String visitBlobWrapper(BlobWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BLOB);
         }
 
         @Override
         public String visitBooleanWrapper(BooleanWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BOOLEAN);
         }
 
         @Override
         public String visitByteWrapper(ByteWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BYTE);
         }
 
         @Override
         public String visitBytesWrapper(BytesWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BYTES);
         }
 
         @Override
         public String visitClobWrapper(ClobWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.CLOB);
         }
 
         @Override
         public String visitDateWrapper(DateWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.DATE);
         }
 
         @Override
         public String visitDoubleWrapper(DoubleWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.DOUBLE);
         }
 
         @Override
         public String visitFloatWrapper(FloatWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.FLOAT);
         }
 
         @Override
         public String visitIntegerWrapper(IntegerWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.INTEGER);
         }
 
         @Override
         public String visitLongWrapper(LongWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.LONG);
         }
 
         @Override
         public String visitNClobWrapper(NClobWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.NCLOB);
         }
 
         @Override
         public String visitShortWrapper(ShortWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.SHORT);
         }
 
         @Override
         public String visitStringWrapper(StringWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.STRING);
         }
 
         @Override
         public String visitTimeWrapper(TimeWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.TIME);
         }
 
         @Override
         public String visitTimestampWrapper(TimestampWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.TIMESTAMP);
         }
 
         @Override
         public <E extends Enum<E>> String visitEnumWrapper(
-                EnumWrapper<E> wrapper, SqlLogFormattingFunction p)
+                EnumWrapper<E> wrapper, SqlLogFormattingFunction p, Void q)
                 throws RuntimeException {
             return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
         }
 
         @Override
         public String visitUtilDateWrapper(UtilDateWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.UTIL_DATE);
         }
 
         @Override
         public String visitObjectWrapper(ObjectWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.OBJECT);
         }
 

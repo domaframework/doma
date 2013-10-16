@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class PreparedSqlBuilder {
     public <T> void appendWrapper(Wrapper<T> wrapper) {
         rawSql.append("?");
         formattedSql.append(wrapper.accept(config.getDialect()
-                .getSqlLogFormattingVisitor(), formattingFunction));
+                .getSqlLogFormattingVisitor(), formattingFunction, null));
         parameters.add(new BasicInParameter<T>(() -> wrapper));
     }
 

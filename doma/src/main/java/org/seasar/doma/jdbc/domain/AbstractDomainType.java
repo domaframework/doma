@@ -17,19 +17,43 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         this.wrapperSupplier = wrapperSupplier;
     }
 
+    protected abstract DOMAIN newDomain(BASIC value);
+
+    protected abstract BASIC getBasicValue(DOMAIN domain);
+
     @Override
-    public DomainHolder createDomainHolder() {
+    public DomainHolder createHolder() {
         return new DomainHolder();
     }
 
     @Override
-    public OptionalDomainHolder createOptionalDomainHolder() {
+    public OptionalDomainHolder createOptionalHolder() {
         return new OptionalDomainHolder();
     }
 
     protected class DomainHolder implements Holder<BASIC, DOMAIN> {
 
         Wrapper<BASIC> wrapper = wrapperSupplier.get();
+
+        @Override
+        public Class<BASIC> getBasicClass() {
+            return wrapper.getBasicClass();
+        }
+
+        @Override
+        public Class<?> getDomainClass() {
+            return AbstractDomainType.this.getDomainClass();
+        }
+
+        @Override
+        public boolean isOptionalHolder() {
+            return false;
+        }
+
+        @Override
+        public DOMAIN cast(Object value) {
+            return AbstractDomainType.this.getDomainClass().cast(value);
+        }
 
         @Override
         public DOMAIN get() {
@@ -41,10 +65,9 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
             return null;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public void set(Object domain) {
-            BASIC value = getValue((DOMAIN) domain);
+        public void set(DOMAIN domain) {
+            BASIC value = getBasicValue(domain);
             wrapper.set(value);
         }
 
@@ -58,6 +81,27 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
             Holder<BASIC, Optional<DOMAIN>> {
 
         Wrapper<BASIC> wrapper = wrapperSupplier.get();
+
+        @Override
+        public Class<BASIC> getBasicClass() {
+            return wrapper.getBasicClass();
+        }
+
+        @Override
+        public Class<?> getDomainClass() {
+            return AbstractDomainType.this.getDomainClass();
+        }
+
+        @Override
+        public boolean isOptionalHolder() {
+            return true;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Optional<DOMAIN> cast(Object value) {
+            return (Optional<DOMAIN>) value;
+        }
 
         @Override
         public Optional<DOMAIN> get() {
@@ -77,12 +121,10 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
             return Optional.empty();
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public void set(Object domain) {
-            Optional<DOMAIN> optional = (Optional<DOMAIN>) domain;
+        public void set(Optional<DOMAIN> optional) {
             if (optional.isPresent()) {
-                wrapper.set(getValue(optional.get()));
+                wrapper.set(getBasicValue(optional.get()));
             } else {
                 wrapper.set(null);
             }

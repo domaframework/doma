@@ -13,25 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
-
-import org.seasar.doma.jdbc.domain.DomainType;
+package org.seasar.doma.jdbc;
 
 /**
- * @author taedium
- * 
+ * @author nakamura-to
+ *
  */
-public class DomainSingleResultParameter<BASIC, DOMAIN> extends
-        AbstractSingleResultParameter<BASIC, DOMAIN> {
-
-    public DomainSingleResultParameter(DomainType<BASIC, DOMAIN> domainType) {
-        super(domainType.createHolder());
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainSingleResultParameter(this, p);
-    }
+public interface JdbcMappingHint {
 
 }

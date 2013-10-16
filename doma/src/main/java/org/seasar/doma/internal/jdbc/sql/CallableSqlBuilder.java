@@ -94,8 +94,9 @@ public class CallableSqlBuilder
             throws RuntimeException {
         Wrapper<BASIC> wrapper = parameter.getWrapper();
         p.appendRawSql("?, ");
+        // TODO
         p.appendFormattedSql(wrapper.accept(config.getDialect()
-                .getSqlLogFormattingVisitor(), formattingFunction));
+                .getSqlLogFormattingVisitor(), formattingFunction, null));
         p.appendFormattedSql(", ");
         p.addParameter(parameter);
         return null;

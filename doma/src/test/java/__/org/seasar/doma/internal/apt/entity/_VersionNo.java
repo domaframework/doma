@@ -44,7 +44,7 @@ public final class _VersionNo
     }
 
     @Override
-    public Integer getValue(VersionNo domain) {
+    public Integer getBasicValue(VersionNo domain) {
         if (domain == null) {
             return null;
         }
@@ -52,7 +52,7 @@ public final class _VersionNo
     }
 
     @Override
-    public Class<Integer> getValueClass() {
+    public Class<Integer> getBasicClass() {
         return Integer.class;
     }
 

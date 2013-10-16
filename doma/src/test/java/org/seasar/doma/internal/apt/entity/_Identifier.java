@@ -33,12 +33,12 @@ public class _Identifier extends AbstractDomainType<Integer, Identifier> {
     }
 
     @Override
-    public Integer getValue(Identifier domain) {
+    public Integer getBasicValue(Identifier domain) {
         return null;
     }
 
     @Override
-    public Class<Integer> getValueClass() {
+    public Class<Integer> getBasicClass() {
         return null;
     }
 

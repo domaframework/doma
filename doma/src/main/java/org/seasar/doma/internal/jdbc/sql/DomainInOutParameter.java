@@ -27,7 +27,7 @@ public class DomainInOutParameter<BASIC, DOMAIN> extends
 
     public DomainInOutParameter(DomainType<BASIC, DOMAIN> domainType,
             Reference<DOMAIN> reference) {
-        super(domainType.createDomainHolder(), reference);
+        super(domainType.createHolder(), reference);
     }
 
     @Override

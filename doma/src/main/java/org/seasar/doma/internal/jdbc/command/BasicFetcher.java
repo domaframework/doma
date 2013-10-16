@@ -15,13 +15,14 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.Constants.*;
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.Sql;
@@ -55,7 +56,9 @@ public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         GetValueFunction function = new GetValueFunction(resultSet, 1);
-        wrapper.accept(jdbcMappingVisitor, function);
+        // TODO
+        wrapper.accept(jdbcMappingVisitor, function, new JdbcMappingHint() {
+        });
     }
 
     protected void validateColumnCount(ResultSet resultSet) throws SQLException {

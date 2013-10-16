@@ -42,7 +42,7 @@ public class DomainListParameter<BASIC, DOMAIN> extends
     @Override
     public DomainResultProvider<DOMAIN> createResultProvider(Query query) {
         return new DomainResultProvider<>(
-                () -> domainType.createDomainHolder(), query);
+                () -> domainType.createHolder(), query);
     }
 
     @Override

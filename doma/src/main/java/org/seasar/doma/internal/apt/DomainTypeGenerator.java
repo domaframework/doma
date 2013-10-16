@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 
@@ -133,15 +133,15 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
     protected void printMethods() {
         printNewDomainMethod();
-        printGetValueMethod();
-        printGetValueClassMethod();
+        printGetBasicValueMethod();
+        printGetBasicClassMethod();
         printGetDomainClassMethod();
         printGetSingletonInternalMethod();
     }
 
     protected void printNewDomainMethod() {
         iprint("@Override%n");
-        iprint("public %1$s newDomain(%2$s value) {%n", typeName,
+        iprint("protected %1$s newDomain(%2$s value) {%n", typeName,
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
         if (domainMeta.providesConstructor()) {
             if (domainMeta.getWrapperCtType().getBasicCtType().isPrimitive()) {
@@ -166,9 +166,9 @@ public class DomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetValueMethod() {
+    protected void printGetBasicValueMethod() {
         iprint("@Override%n");
-        iprint("public %1$s getValue(%2$s domain) {%n",
+        iprint("protected %1$s getBasicValue(%2$s domain) {%n",
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env),
                 typeName);
         iprint("    if (domain == null) {%n");
@@ -179,9 +179,9 @@ public class DomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetValueClassMethod() {
+    protected void printGetBasicClassMethod() {
         iprint("@Override%n");
-        iprint("public Class<%1$s> getValueClass() {%n",
+        iprint("public Class<%1$s> getBasicClass() {%n",
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
         iprint("    return %1$s.class;%n",
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));

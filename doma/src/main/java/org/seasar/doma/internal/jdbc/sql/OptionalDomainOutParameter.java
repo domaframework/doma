@@ -29,7 +29,7 @@ public class OptionalDomainOutParameter<BASIC, DOMAIN> extends
 
     public OptionalDomainOutParameter(DomainType<BASIC, DOMAIN> domainType,
             Reference<Optional<DOMAIN>> reference) {
-        super(domainType.createOptionalDomainHolder(), reference);
+        super(domainType.createOptionalHolder(), reference);
     }
 
     @Override

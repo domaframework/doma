@@ -28,6 +28,7 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @author taedium
  * 
  */
-public interface JdbcMappingVisitor extends
-        WrapperVisitor<Void, JdbcMappingFunction, SQLException> {
+public interface JdbcMappingVisitor
+        extends
+        WrapperVisitor<Void, JdbcMappingFunction, JdbcMappingHint, SQLException> {
 }

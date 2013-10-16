@@ -44,7 +44,7 @@ public final class _PrimaryKey
     }
 
     @Override
-    public Integer getValue(PrimaryKey domain) {
+    public Integer getBasicValue(PrimaryKey domain) {
         if (domain == null) {
             return null;
         }
@@ -52,7 +52,7 @@ public final class _PrimaryKey
     }
 
     @Override
-    public Class<Integer> getValueClass() {
+    public Class<Integer> getBasicClass() {
         return Integer.class;
     }
 

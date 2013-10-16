@@ -202,10 +202,9 @@ public final class Wrappers {
      *            クラスヘルパー
      * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
      */
-    @SuppressWarnings("unchecked")
-    protected static <V, D> Wrapper<?> wrapDomainObject(Object value,
-            Class<D> valueClass, ClassHelper classHelper) {
-        DomainType<V, D> domainType;
+    protected static <BASIC, DOMAIN> Wrapper<?> wrapDomainObject(Object value,
+            Class<DOMAIN> valueClass, ClassHelper classHelper) {
+        DomainType<BASIC, DOMAIN> domainType;
         if (valueClass.isAnnotationPresent(Domain.class)) {
             domainType = DomainTypeFactory.getDomainType(valueClass,
                     classHelper);
@@ -216,9 +215,9 @@ public final class Wrappers {
         if (domainType == null) {
             return null;
         }
-        Holder<V, D> wrappedValue = domainType.createDomainHolder();
-        wrappedValue.set((D) value);
-        return wrappedValue.getWrapper();
+        Holder<BASIC, DOMAIN> holder = domainType.createHolder();
+        holder.set(holder.cast(value));
+        return holder.getWrapper();
     }
 
 }

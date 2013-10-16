@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.Constants.*;
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -29,14 +29,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -72,17 +73,20 @@ public class EntityBuilder<E> {
         }
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
-        Map<String, PropertyState<E, ?>> accessors = new HashMap<>(indexMap.size());
+        Map<String, PropertyState<E, ?>> states = new HashMap<>(indexMap.size());
         for (Map.Entry<Integer, EntityPropertyType<E, ?, ?>> entry : indexMap
                 .entrySet()) {
             Integer index = entry.getKey();
             EntityPropertyType<E, ?, ?> propertyType = entry.getValue();
-            PropertyState<E, ?> accessor = propertyType.createState();
+            PropertyState<E, ?> state = propertyType.createState();
             GetValueFunction function = new GetValueFunction(resultSet, index);
-            accessor.getWrapper().accept(jdbcMappingVisitor, function);
-            accessors.put(propertyType.getName(), accessor);
+            // TODO
+            state.getWrapper().accept(jdbcMappingVisitor, function,
+                    new JdbcMappingHint() {
+                    });
+            states.put(propertyType.getName(), state);
         }
-        E entity = entityType.newEntity(accessors);
+        E entity = entityType.newEntity(states);
         if (!entityType.isImmutable()) {
             entityType.saveCurrentStates(entity);
         }

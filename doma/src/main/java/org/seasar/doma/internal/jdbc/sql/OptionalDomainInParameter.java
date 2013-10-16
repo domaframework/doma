@@ -28,7 +28,7 @@ public class OptionalDomainInParameter<BASIC, DOMAIN> extends
 
     public OptionalDomainInParameter(DomainType<BASIC, DOMAIN> domainType,
             Optional<DOMAIN> value) {
-        super(domainType.createOptionalDomainHolder(), value);
+        super(domainType.createOptionalHolder(), value);
     }
 
     @Override

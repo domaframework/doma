@@ -22,12 +22,12 @@ public final class _ParameterizedValueObject<T, U> extends org.seasar.doma.jdbc.
 
     @SuppressWarnings("unchecked")
     @Override
-    public org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> newDomain(java.lang.String value) {
+    protected org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> newDomain(java.lang.String value) {
         return (org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>) converter.fromValueToDomain(value);
     }
 
     @Override
-    public java.lang.String getValue(org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> domain) {
+    protected java.lang.String getBasicValue(org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> domain) {
         if (domain == null) {
             return null;
         }
@@ -35,7 +35,7 @@ public final class _ParameterizedValueObject<T, U> extends org.seasar.doma.jdbc.
     }
 
     @Override
-    public Class<java.lang.String> getValueClass() {
+    public Class<java.lang.String> getBasicClass() {
         return java.lang.String.class;
     }
 

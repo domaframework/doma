@@ -23,94 +23,99 @@ package org.seasar.doma.wrapper;
  * @param <R>
  *            戻り値の型
  * @param <P>
- *            パラメータの型
+ *            1番目のパラメータの型
+ * @param <Q>
+ *            2番目のパラメータの型
  * @param <TH>
  *            例外の型
  */
-public interface WrapperVisitor<R, P, TH extends Throwable> {
+public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
 
-    default R visitArrayWrapper(ArrayWrapper wrapper, P p) throws TH {
+    default R visitArrayWrapper(ArrayWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitBigDecimalWrapper(BigDecimalWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitBigIntegerWrapper(BigIntegerWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitBlobWrapper(BlobWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitBooleanWrapper(BooleanWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitBytesWrapper(BytesWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitByteWrapper(ByteWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitClobWrapper(ClobWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitDateWrapper(DateWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default R visitDoubleWrapper(DoubleWrapper wrapper, P p) throws TH {
-        return null;
-    }
-
-    default <E extends Enum<E>> R visitEnumWrapper(EnumWrapper<E> wrapper, P p)
+    default R visitBigDecimalWrapper(BigDecimalWrapper wrapper, P p, Q q)
             throws TH {
         return null;
     }
 
-    default R visitFloatWrapper(FloatWrapper wrapper, P p) throws TH {
+    default R visitBigIntegerWrapper(BigIntegerWrapper wrapper, P p, Q q)
+            throws TH {
         return null;
     }
 
-    default R visitIntegerWrapper(IntegerWrapper wrapper, P p) throws TH {
+    default R visitBlobWrapper(BlobWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitLongWrapper(LongWrapper wrapper, P p) throws TH {
+    default R visitBooleanWrapper(BooleanWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitNClobWrapper(NClobWrapper wrapper, P p) throws TH {
+    default R visitBytesWrapper(BytesWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitObjectWrapper(ObjectWrapper wrapper, P p) throws TH {
+    default R visitByteWrapper(ByteWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitShortWrapper(ShortWrapper wrapper, P p) throws TH {
+    default R visitClobWrapper(ClobWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitStringWrapper(StringWrapper wrapper, P p) throws TH {
+    default R visitDateWrapper(DateWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitTimestampWrapper(TimestampWrapper wrapper, P p) throws TH {
+    default R visitDoubleWrapper(DoubleWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitTimeWrapper(TimeWrapper wrapper, P p) throws TH {
+    default <E extends Enum<E>> R visitEnumWrapper(EnumWrapper<E> wrapper, P p,
+            Q q) throws TH {
         return null;
     }
 
-    default R visitUtilDateWrapper(UtilDateWrapper wrapper, P p) throws TH {
+    default R visitFloatWrapper(FloatWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitIntegerWrapper(IntegerWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitLongWrapper(LongWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitNClobWrapper(NClobWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitObjectWrapper(ObjectWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitShortWrapper(ShortWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitStringWrapper(StringWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitTimestampWrapper(TimestampWrapper wrapper, P p, Q q)
+            throws TH {
+        return null;
+    }
+
+    default R visitTimeWrapper(TimeWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
+    default R visitUtilDateWrapper(UtilDateWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 }

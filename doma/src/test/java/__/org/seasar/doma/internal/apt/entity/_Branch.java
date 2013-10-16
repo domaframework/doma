@@ -45,7 +45,7 @@ public final class _Branch
     }
 
     @Override
-    public String getValue(Branch domain) {
+    public String getBasicValue(Branch domain) {
         if (domain == null) {
             return null;
         }
@@ -53,7 +53,7 @@ public final class _Branch
     }
 
     @Override
-    public Class<String> getValueClass() {
+    public Class<String> getBasicClass() {
         return String.class;
     }
 

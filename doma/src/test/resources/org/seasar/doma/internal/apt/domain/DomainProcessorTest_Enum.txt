@@ -15,12 +15,12 @@ public final class _EnumDomain extends org.seasar.doma.jdbc.domain.AbstractDomai
     }
 
     @Override
-    public org.seasar.doma.internal.apt.domain.EnumDomain newDomain(org.seasar.doma.internal.apt.domain.EnumDomain.JobType value) {
+    protected org.seasar.doma.internal.apt.domain.EnumDomain newDomain(org.seasar.doma.internal.apt.domain.EnumDomain.JobType value) {
         return new org.seasar.doma.internal.apt.domain.EnumDomain(value);
     }
 
     @Override
-    public org.seasar.doma.internal.apt.domain.EnumDomain.JobType getValue(org.seasar.doma.internal.apt.domain.EnumDomain domain) {
+    protected org.seasar.doma.internal.apt.domain.EnumDomain.JobType getBasicValue(org.seasar.doma.internal.apt.domain.EnumDomain domain) {
         if (domain == null) {
             return null;
         }
@@ -28,7 +28,7 @@ public final class _EnumDomain extends org.seasar.doma.jdbc.domain.AbstractDomai
     }
 
     @Override
-    public Class<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> getValueClass() {
+    public Class<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> getBasicClass() {
         return org.seasar.doma.internal.apt.domain.EnumDomain.JobType.class;
     }
 

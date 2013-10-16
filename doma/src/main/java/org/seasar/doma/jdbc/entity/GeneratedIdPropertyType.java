@@ -211,11 +211,12 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
     }
 
     protected static class ValueSetter implements
-            NumberWrapperVisitor<Void, Number, RuntimeException> {
+            NumberWrapperVisitor<Void, Number, Void, RuntimeException> {
 
         @Override
         public <V extends Number> Void visitNumberWrapper(
-                NumberWrapper<V> wrapper, Number value) throws RuntimeException {
+                NumberWrapper<V> wrapper, Number value, Void q)
+                throws RuntimeException {
             Number currentValue = wrapper.get();
             if (currentValue == null || currentValue.intValue() < 0) {
                 wrapper.set(value);

@@ -37,7 +37,7 @@ public class DomainResultListHandler<DOMAIN> extends
     @Override
     protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
         return new DomainResultProvider<>(
-                () -> domainType.createDomainHolder(), query);
+                () -> domainType.createHolder(), query);
     }
 
 }

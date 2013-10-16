@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 
@@ -142,8 +142,8 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
     protected void printMethods() {
         printNewDomainMethod();
-        printGetValueMethod();
-        printGetValueClassMethod();
+        printGetBasicValueMethod();
+        printGetBasicClassMethod();
         printGetDomainClassMethod();
         printGetSingletonInternalMethod();
     }
@@ -153,7 +153,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
             iprint("@SuppressWarnings(\"unchecked\")%n");
         }
         iprint("@Override%n");
-        iprint("public %1$s newDomain(%2$s value) {%n", domainTypeName,
+        iprint("protected %1$s newDomain(%2$s value) {%n", domainTypeName,
                 domainMeta.getValueElement().getQualifiedName());
         if (parametarized) {
             iprint("    return (%1$s) converter.fromValueToDomain(value);%n",
@@ -165,9 +165,9 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetValueMethod() {
+    protected void printGetBasicValueMethod() {
         iprint("@Override%n");
-        iprint("public %1$s getValue(%2$s domain) {%n", domainMeta
+        iprint("protected %1$s getBasicValue(%2$s domain) {%n", domainMeta
                 .getValueElement().getQualifiedName(), domainTypeName);
         iprint("    if (domain == null) {%n");
         iprint("        return null;%n");
@@ -177,9 +177,9 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetValueClassMethod() {
+    protected void printGetBasicClassMethod() {
         iprint("@Override%n");
-        iprint("public Class<%1$s> getValueClass() {%n", domainMeta
+        iprint("public Class<%1$s> getBasicClass() {%n", domainMeta
                 .getValueElement().getQualifiedName());
         iprint("    return %1$s.class;%n", domainMeta.getValueElement()
                 .getQualifiedName());

@@ -27,6 +27,7 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @author taedium
  * 
  */
-public interface SqlLogFormattingVisitor extends
-        WrapperVisitor<String, SqlLogFormattingFunction, RuntimeException> {
+public interface SqlLogFormattingVisitor
+        extends
+        WrapperVisitor<String, SqlLogFormattingFunction, Void, RuntimeException> {
 }

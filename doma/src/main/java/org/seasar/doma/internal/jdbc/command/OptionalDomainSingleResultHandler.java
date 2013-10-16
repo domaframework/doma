@@ -42,6 +42,6 @@ public class OptionalDomainSingleResultHandler<DOMAIN> extends
     protected ResultProvider<Optional<DOMAIN>> createResultProvider(
             SelectQuery query) {
         return new DomainResultProvider<>(
-                () -> domainType.createOptionalDomainHolder(), query);
+                () -> domainType.createOptionalHolder(), query);
     }
 }

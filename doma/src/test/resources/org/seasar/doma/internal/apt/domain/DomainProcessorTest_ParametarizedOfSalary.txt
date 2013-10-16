@@ -19,12 +19,12 @@ public final class _ParametarizedOfSalary<T, U> extends org.seasar.doma.jdbc.dom
     }
 
     @Override
-    public org.seasar.doma.internal.apt.domain.ParametarizedOfSalary<T, U> newDomain(java.math.BigDecimal value) {
+    protected org.seasar.doma.internal.apt.domain.ParametarizedOfSalary<T, U> newDomain(java.math.BigDecimal value) {
         return org.seasar.doma.internal.apt.domain.ParametarizedOfSalary.of(value);
     }
 
     @Override
-    public java.math.BigDecimal getValue(org.seasar.doma.internal.apt.domain.ParametarizedOfSalary<T, U> domain) {
+    protected java.math.BigDecimal getBasicValue(org.seasar.doma.internal.apt.domain.ParametarizedOfSalary<T, U> domain) {
         if (domain == null) {
             return null;
         }
@@ -32,7 +32,7 @@ public final class _ParametarizedOfSalary<T, U> extends org.seasar.doma.jdbc.dom
     }
 
     @Override
-    public Class<java.math.BigDecimal> getValueClass() {
+    public Class<java.math.BigDecimal> getBasicClass() {
         return java.math.BigDecimal.class;
     }
 

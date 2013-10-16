@@ -11,12 +11,12 @@ public final class _VersionCheckSuppressedDomain extends org.seasar.doma.jdbc.do
     }
 
     @Override
-    public org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain newDomain(java.math.BigDecimal value) {
+    protected org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain newDomain(java.math.BigDecimal value) {
         return new org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain(value);
     }
 
     @Override
-    public java.math.BigDecimal getValue(org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain domain) {
+    protected java.math.BigDecimal getBasicValue(org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain domain) {
         if (domain == null) {
             return null;
         }
@@ -24,7 +24,7 @@ public final class _VersionCheckSuppressedDomain extends org.seasar.doma.jdbc.do
     }
 
     @Override
-    public Class<java.math.BigDecimal> getValueClass() {
+    public Class<java.math.BigDecimal> getBasicClass() {
         return java.math.BigDecimal.class;
     }
 

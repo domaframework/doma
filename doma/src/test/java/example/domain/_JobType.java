@@ -34,12 +34,12 @@ public class _JobType extends AbstractDomainType<Integer, JobType> {
     }
 
     @Override
-    public Integer getValue(JobType domain) {
+    public Integer getBasicValue(JobType domain) {
         return domain.getValue();
     }
 
     @Override
-    public Class<Integer> getValueClass() {
+    public Class<Integer> getBasicClass() {
         return Integer.class;
     }
 

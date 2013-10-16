@@ -15,13 +15,14 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
@@ -53,7 +54,9 @@ public class PreparedSqlParameterBinder implements
             SetValueFunction function = new SetValueFunction(preparedStatement,
                     index);
             Wrapper<?> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, function);
+            // TODO
+            wrapper.accept(jdbcMappingVisitor, function, new JdbcMappingHint() {
+            });
             index++;
         }
     }

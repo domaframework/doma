@@ -74,11 +74,11 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            WrapperVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, Q, TH extends Throwable> R accept(
+            WrapperVisitor<R, P, Q, TH> visitor, P p, Q q) throws TH {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        return visitor.visitBigDecimalWrapper(this, p);
+        return visitor.visitBigDecimalWrapper(this, p, q);
     }
 }

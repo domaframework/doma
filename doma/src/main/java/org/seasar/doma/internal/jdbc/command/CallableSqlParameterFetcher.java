@@ -32,6 +32,7 @@ import org.seasar.doma.internal.jdbc.sql.ResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.SingleResultParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModuleQuery;
@@ -97,8 +98,10 @@ public class CallableSqlParameterFetcher implements
         public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter,
                 Void p) throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
+            // TODO
             wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index));
+                    callableStatement, index), new JdbcMappingHint() {
+            });
             parameter.update();
             index++;
             return null;
@@ -126,8 +129,10 @@ public class CallableSqlParameterFetcher implements
                 SingleResultParameter<BASIC, RESULT> parameter, Void p)
                 throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
+            // TODO
             wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index));
+                    callableStatement, index), new JdbcMappingHint() {
+            });
             index++;
             return null;
         }

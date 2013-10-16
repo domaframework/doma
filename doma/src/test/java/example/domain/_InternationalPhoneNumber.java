@@ -32,12 +32,12 @@ public class _InternationalPhoneNumber extends
     }
 
     @Override
-    public String getValue(InternationalPhoneNumber domain) {
+    public String getBasicValue(InternationalPhoneNumber domain) {
         return domain.getValue();
     }
 
     @Override
-    public Class<String> getValueClass() {
+    public Class<String> getBasicClass() {
         return String.class;
     }
 

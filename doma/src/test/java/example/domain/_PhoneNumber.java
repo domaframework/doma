@@ -31,7 +31,7 @@ public class _PhoneNumber extends AbstractDomainType<String, PhoneNumber> {
     }
 
     @Override
-    public String getValue(PhoneNumber domain) {
+    public String getBasicValue(PhoneNumber domain) {
         if (domain == null) {
             return null;
         }
@@ -39,7 +39,7 @@ public class _PhoneNumber extends AbstractDomainType<String, PhoneNumber> {
     }
 
     @Override
-    public Class<String> getValueClass() {
+    public Class<String> getBasicClass() {
         return String.class;
     }
 

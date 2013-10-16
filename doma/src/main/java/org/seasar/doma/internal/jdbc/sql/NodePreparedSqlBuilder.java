@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -668,7 +669,7 @@ public class NodePreparedSqlBuilder implements
             parameters.add(new BasicInParameter<T>(() -> value));
             rawSqlBuf.append("?");
             formattedSqlBuf.append(value.accept(config.getDialect()
-                    .getSqlLogFormattingVisitor(), formattingFunction));
+                    .getSqlLogFormattingVisitor(), formattingFunction, null));
         }
 
         protected void addAllParameters(List<PreparedSqlParameter<?>> values) {

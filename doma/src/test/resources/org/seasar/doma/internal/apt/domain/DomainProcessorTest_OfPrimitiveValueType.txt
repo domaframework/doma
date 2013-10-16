@@ -15,12 +15,12 @@ public final class _OfPrimitiveValueType extends org.seasar.doma.jdbc.domain.Abs
     }
 
     @Override
-    public org.seasar.doma.internal.apt.domain.OfPrimitiveValueType newDomain(java.lang.Integer value) {
+    protected org.seasar.doma.internal.apt.domain.OfPrimitiveValueType newDomain(java.lang.Integer value) {
         return org.seasar.doma.internal.apt.domain.OfPrimitiveValueType.of(org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(value));
     }
 
     @Override
-    public java.lang.Integer getValue(org.seasar.doma.internal.apt.domain.OfPrimitiveValueType domain) {
+    protected java.lang.Integer getBasicValue(org.seasar.doma.internal.apt.domain.OfPrimitiveValueType domain) {
         if (domain == null) {
             return null;
         }
@@ -28,7 +28,7 @@ public final class _OfPrimitiveValueType extends org.seasar.doma.jdbc.domain.Abs
     }
 
     @Override
-    public Class<java.lang.Integer> getValueClass() {
+    public Class<java.lang.Integer> getBasicClass() {
         return java.lang.Integer.class;
     }
 

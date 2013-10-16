@@ -31,6 +31,7 @@ import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -249,7 +250,7 @@ public class OracleDialect extends StandardDialect {
 
         @Override
         public Void visitBooleanWrapper(BooleanWrapper wrapper,
-                JdbcMappingFunction p) throws SQLException {
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
     }
@@ -277,31 +278,31 @@ public class OracleDialect extends StandardDialect {
 
         @Override
         public String visitBooleanWrapper(BooleanWrapper wrapper,
-                SqlLogFormattingFunction p) throws RuntimeException {
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
 
         @Override
         public String visitDateWrapper(DateWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, dateFormatter);
         }
 
         @Override
         public String visitTimeWrapper(TimeWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, timeFormatter);
         }
 
         @Override
         public String visitTimestampWrapper(TimestampWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, timestampFormatter);
         }
 
         @Override
         public String visitUtilDateWrapper(UtilDateWrapper wrapper,
-                SqlLogFormattingFunction p) {
+                SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, utilDateFormatter);
         }
 

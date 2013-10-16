@@ -17,12 +17,12 @@ public final class _ValueObject extends org.seasar.doma.jdbc.domain.AbstractDoma
     }
 
     @Override
-    public org.seasar.doma.internal.apt.domain.ValueObject newDomain(java.lang.String value) {
+    protected org.seasar.doma.internal.apt.domain.ValueObject newDomain(java.lang.String value) {
         return converter.fromValueToDomain(value);
     }
 
     @Override
-    public java.lang.String getValue(org.seasar.doma.internal.apt.domain.ValueObject domain) {
+    protected java.lang.String getBasicValue(org.seasar.doma.internal.apt.domain.ValueObject domain) {
         if (domain == null) {
             return null;
         }
@@ -30,7 +30,7 @@ public final class _ValueObject extends org.seasar.doma.jdbc.domain.AbstractDoma
     }
 
     @Override
-    public Class<java.lang.String> getValueClass() {
+    public Class<java.lang.String> getBasicClass() {
         return java.lang.String.class;
     }
 

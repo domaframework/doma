@@ -33,12 +33,12 @@ public class _Ver extends AbstractDomainType<Integer, Ver> {
     }
 
     @Override
-    public Integer getValue(Ver domain) {
+    public Integer getBasicValue(Ver domain) {
         return null;
     }
 
     @Override
-    public Class<Integer> getValueClass() {
+    public Class<Integer> getBasicClass() {
         return null;
     }
 

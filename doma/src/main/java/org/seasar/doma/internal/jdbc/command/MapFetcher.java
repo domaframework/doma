@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.ObjectWrapper;
@@ -61,7 +62,9 @@ public class MapFetcher implements
             String key = entry.getValue();
             GetValueFunction function = new GetValueFunction(resultSet, index);
             ObjectWrapper wrapper = new ObjectWrapper();
-            wrapper.accept(jdbcMappingVisitor, function);
+            // TODO
+            wrapper.accept(jdbcMappingVisitor, function, new JdbcMappingHint() {
+            });
             map.put(key, wrapper.get());
         }
     }

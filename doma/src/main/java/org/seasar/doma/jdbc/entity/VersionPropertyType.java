@@ -93,11 +93,11 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
     }
 
     protected static class ValueSetter implements
-            NumberWrapperVisitor<Void, Number, RuntimeException> {
+            NumberWrapperVisitor<Void, Number, Void, RuntimeException> {
 
         @Override
         public <V extends Number> Void visitNumberWrapper(
-                NumberWrapper<V> wrapper, Number value) {
+                NumberWrapper<V> wrapper, Number value, Void q) {
             Number currentValue = wrapper.get();
             if (currentValue == null || currentValue.intValue() < 0) {
                 wrapper.set(value);
@@ -107,11 +107,11 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
     }
 
     protected static class Incrementer implements
-            NumberWrapperVisitor<Void, Void, RuntimeException> {
+            NumberWrapperVisitor<Void, Void, Void, RuntimeException> {
 
         @Override
         public <V extends Number> Void visitNumberWrapper(
-                NumberWrapper<V> wrapper, Void p) {
+                NumberWrapper<V> wrapper, Void p, Void q) {
             wrapper.increment();
             return null;
         }

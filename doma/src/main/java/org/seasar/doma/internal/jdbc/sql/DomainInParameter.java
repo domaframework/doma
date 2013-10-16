@@ -25,7 +25,7 @@ public class DomainInParameter<BASIC, DOMAIN> extends
         AbstractInParameter<BASIC, DOMAIN> {
 
     public DomainInParameter(DomainType<BASIC, DOMAIN> domainType, DOMAIN domain) {
-        super(domainType.createDomainHolder(), domain);
+        super(domainType.createHolder(), domain);
     }
 
     @Override

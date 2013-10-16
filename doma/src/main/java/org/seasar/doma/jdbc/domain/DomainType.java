@@ -20,7 +20,7 @@ import java.util.Optional;
 import org.seasar.doma.internal.wrapper.Holder;
 
 /**
- * ドメインのメタタイプです。
+ * ドメイン型のメタタイプです。
  * 
  * <p>
  * このインタフェースの実装はスレッドセーフであることは要求されません。
@@ -28,33 +28,41 @@ import org.seasar.doma.internal.wrapper.Holder;
  * 
  * @author taedium
  * @since 1.8.0
- * @param <V>
- *            ドメインが扱う値の型
- * @param <D>
- *            ドメインの型
+ * @param <BASIC>
+ *            ドメイン型が扱う基本型
+ * @param <DOMAIN>
+ *            ドメイン型
  */
-public interface DomainType<V, D> {
-
-    D newDomain(V value);
-
-    V getValue(D domain);
+public interface DomainType<BASIC, DOMAIN> {
 
     /**
-     * 値のクラスを返します。
+     * 基本型のクラスを返します。
      * 
-     * @return 値のクラス
+     * @return 基本型のクラス
      */
-    Class<V> getValueClass();
+    Class<BASIC> getBasicClass();
 
     /**
-     * ドメインクラスを返します。
+     * ドメイン型のクラスを返します。
      * 
-     * @return ドメインクラス
+     * @return ドメイン型のクラス
      */
-    Class<D> getDomainClass();
+    Class<DOMAIN> getDomainClass();
 
-    Holder<V, D> createDomainHolder();
+    /**
+     * ドメインのホルダーを返します。
+     * 
+     * @return 値のホルダー
+     * @since 2.0.0
+     */
+    Holder<BASIC, DOMAIN> createHolder();
 
-    Holder<V, Optional<D>> createOptionalDomainHolder();
+    /**
+     * {@link Optional} なドメインのホルダーを返します。
+     * 
+     * @return 値のホルダー
+     * @since 2.0.0
+     */
+    Holder<BASIC, Optional<DOMAIN>> createOptionalHolder();
 
 }

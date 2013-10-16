@@ -33,12 +33,12 @@ public class _Name extends AbstractDomainType<String, Name> {
     }
 
     @Override
-    public String getValue(Name domain) {
+    public String getBasicValue(Name domain) {
         return null;
     }
 
     @Override
-    public Class<String> getValueClass() {
+    public Class<String> getBasicClass() {
         return null;
     }
 

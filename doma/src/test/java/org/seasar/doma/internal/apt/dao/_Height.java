@@ -33,11 +33,11 @@ public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
     }
 
     @Override
-    public Integer getValue(Height<T> domain) {
+    public Integer getBasicValue(Height<T> domain) {
         return null;
     }
 
-    public Class<Integer> getValueClass() {
+    public Class<Integer> getBasicClass() {
         return Integer.class;
     }
 

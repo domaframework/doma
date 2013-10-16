@@ -6,35 +6,54 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class OptionalBasicHolder<V> implements Holder<V, Optional<V>> {
+public class OptionalBasicHolder<BASIC> implements Holder<BASIC, Optional<BASIC>> {
 
-    protected final Wrapper<V> wrapper;
+    protected final Wrapper<BASIC> wrapper;
 
-    public OptionalBasicHolder(Supplier<Wrapper<V>> supplier) {
+    public OptionalBasicHolder(Supplier<Wrapper<BASIC>> supplier) {
         AssertionUtil.assertNotNull(supplier);
         this.wrapper = supplier.get();
         AssertionUtil.assertNotNull(wrapper);
     }
 
     @Override
-    public Optional<V> get() {
-        return Optional.ofNullable(wrapper.get());
+    public Class<BASIC> getBasicClass() {
+        return wrapper.getBasicClass();
     }
 
     @Override
-    public Optional<V> getDefault() {
-        return Optional.empty();
+    public Class<?> getDomainClass() {
+        return null;
+    }
+
+    @Override
+    public boolean isOptionalHolder() {
+        return true;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Object container) {
-        Optional<V> optional = (Optional<V>) container;
+    public Optional<BASIC> cast(Object value) {
+        return (Optional<BASIC>) value;
+    }
+
+    @Override
+    public Optional<BASIC> get() {
+        return Optional.ofNullable(wrapper.get());
+    }
+
+    @Override
+    public Optional<BASIC> getDefault() {
+        return Optional.empty();
+    }
+
+    @Override
+    public void set(Optional<BASIC> optional) {
         wrapper.set(optional.orElse(null));
     }
 
     @Override
-    public Wrapper<V> getWrapper() {
+    public Wrapper<BASIC> getWrapper() {
         return wrapper;
     }
 }

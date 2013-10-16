@@ -148,10 +148,10 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         if (domainType != null) {
             if (isOptional) {
                 return () -> new BasicPropertyState<Optional<D>>(
-                        () -> domainType.createOptionalDomainHolder());
+                        () -> domainType.createOptionalHolder());
             } else {
                 return () -> new BasicPropertyState<D>(
-                        () -> domainType.createDomainHolder());
+                        () -> domainType.createHolder());
             }
         }
         if (isOptional) {
@@ -243,7 +243,8 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
      * @return エンティティ
      */
     protected <PARAM> E modify(EntityType<E> entityType, E entity,
-            WrapperVisitor<Void, PARAM, RuntimeException> visitor, PARAM value) {
+            WrapperVisitor<Void, PARAM, Void, RuntimeException> visitor,
+            PARAM value) {
         if (entityType.isImmutable()) {
             Map<String, PropertyState<E, ?>> states = new HashMap<>();
             for (EntityPropertyType<E, ?, ?> p : entityType
@@ -251,7 +252,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
                 PropertyState<E, ?> state = p.createState();
                 state.load(entity);
                 if (p == this) {
-                    state.getWrapper().accept(visitor, value);
+                    state.getWrapper().accept(visitor, value, null);
                 }
                 states.put(p.getName(), state);
             }
@@ -259,7 +260,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         } else {
             PropertyState<E, ?> state = createState();
             state.load(entity);
-            state.getWrapper().accept(visitor, value);
+            state.getWrapper().accept(visitor, value, null);
             state.save(entity);
             return entity;
         }
@@ -318,7 +319,8 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         @Override
         public PropertyState<E, V> load(E entity) {
             try {
-                holder.set(FieldUtil.get(field, entity));
+                Object value = FieldUtil.get(field, entity);
+                holder.set(holder.cast(value));
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);

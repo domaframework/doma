@@ -28,7 +28,7 @@ public class OptionalDomainSingleResultParameter<BASIC, DOMAIN> extends
 
     public OptionalDomainSingleResultParameter(
             DomainType<BASIC, DOMAIN> domainType) {
-        super(domainType.createOptionalDomainHolder());
+        super(domainType.createOptionalHolder());
     }
 
     @Override

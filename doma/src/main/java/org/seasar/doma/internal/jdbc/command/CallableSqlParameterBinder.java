@@ -29,6 +29,7 @@ import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.sql.ResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.SingleResultParameter;
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.command.RegisterOutParameterFunction;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -83,8 +84,10 @@ public class CallableSqlParameterBinder implements
         public <BASIC> Void visitInParameter(InParameter<BASIC> parameter,
                 Void p) throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
+            // TODO
             wrapper.accept(jdbcMappingVisitor, new SetValueFunction(
-                    callableStatement, index));
+                    callableStatement, index), new JdbcMappingHint() {
+            });
             index++;
             return null;
         }
@@ -94,7 +97,9 @@ public class CallableSqlParameterBinder implements
                 Void p) throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
             wrapper.accept(jdbcMappingVisitor,
-                    new RegisterOutParameterFunction(callableStatement, index));
+                    new RegisterOutParameterFunction(callableStatement, index),
+                    new JdbcMappingHint() {
+                    });
             index++;
             return null;
         }
@@ -124,8 +129,11 @@ public class CallableSqlParameterBinder implements
                 SingleResultParameter<BASIC, RESULT> parameter, Void p)
                 throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
+            // TODO
             wrapper.accept(jdbcMappingVisitor,
-                    new RegisterOutParameterFunction(callableStatement, index));
+                    new RegisterOutParameterFunction(callableStatement, index),
+                    new JdbcMappingHint() {
+                    });
             index++;
             return null;
         }

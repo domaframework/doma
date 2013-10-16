@@ -61,7 +61,7 @@ public class OracleDialectTest extends TestCase {
         SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
         DateWrapper wrapper = new DateWrapper(Date.valueOf("2009-01-23"));
         assertEquals("date'2009-01-23'",
-                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
+                wrapper.accept(visitor, new ConvertToLogFormatFunction(), null));
     }
 
     public void testTimeFormat() throws Exception {
@@ -69,7 +69,7 @@ public class OracleDialectTest extends TestCase {
         SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
         TimeWrapper wrapper = new TimeWrapper(Time.valueOf("01:23:45"));
         assertEquals("time'01:23:45'",
-                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
+                wrapper.accept(visitor, new ConvertToLogFormatFunction(), null));
     }
 
     public void testTimestampFormat() throws Exception {
@@ -78,7 +78,7 @@ public class OracleDialectTest extends TestCase {
         TimestampWrapper wrapper = new TimestampWrapper(
                 Timestamp.valueOf("2009-01-23 01:23:45.123456789"));
         assertEquals("timestamp'2009-01-23 01:23:45.123456789'",
-                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
+                wrapper.accept(visitor, new ConvertToLogFormatFunction(), null));
     }
 
     public void testUtilDateFormat() throws Exception {
@@ -87,6 +87,6 @@ public class OracleDialectTest extends TestCase {
         UtilDateWrapper wrapper = new UtilDateWrapper(new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:sss.SSS").parse("2009-01-23 12:34:56.789"));
         assertEquals("timestamp'2009-01-23 12:34:56.789'",
-                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
+                wrapper.accept(visitor, new ConvertToLogFormatFunction(), null));
     }
 }
