@@ -29,6 +29,7 @@ public class ObjectWrapper extends AbstractWrapper<Object> {
      * インスタンスを構築します。
      */
     public ObjectWrapper() {
+        super(Object.class);
     }
 
     /**
@@ -38,7 +39,7 @@ public class ObjectWrapper extends AbstractWrapper<Object> {
      *            値
      */
     public ObjectWrapper(Object value) {
-        super(value);
+        super(Object.class, value);
     }
 
     @Override

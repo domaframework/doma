@@ -20,10 +20,10 @@ package org.seasar.doma.wrapper;
  * 
  * @author taedium
  * 
- * @param <V>
+ * @param <BASIC>
  *            値の型
  */
-public interface NumberWrapper<V extends Number> extends Wrapper<V> {
+public interface NumberWrapper<BASIC extends Number> extends Wrapper<BASIC> {
 
     @Override
     void set(Number value);

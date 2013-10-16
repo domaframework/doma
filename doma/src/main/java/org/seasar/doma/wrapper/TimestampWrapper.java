@@ -31,6 +31,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
      * インスタンスを構築します。
      */
     public TimestampWrapper() {
+        super(Timestamp.class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
      *            値
      */
     public TimestampWrapper(Timestamp value) {
-        super(value);
+        super(Timestamp.class, value);
     }
 
     @Override

@@ -33,6 +33,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
      * インスタンスを構築します。
      */
     public BigIntegerWrapper() {
+        super(BigInteger.class);
     }
 
     /**
@@ -42,7 +43,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
      *            値
      */
     public BigIntegerWrapper(BigInteger value) {
-        super(value);
+        super(BigInteger.class, value);
     }
 
     @Override

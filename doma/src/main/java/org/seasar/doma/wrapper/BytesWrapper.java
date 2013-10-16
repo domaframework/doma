@@ -31,6 +31,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
      * インスタンスを構築します。
      */
     public BytesWrapper() {
+        super(byte[].class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
      *            値
      */
     public BytesWrapper(byte[] value) {
-        super(value);
+        super(byte[].class, value);
     }
 
     @Override

@@ -31,6 +31,7 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
      * インスタンスを構築します。
      */
     public ArrayWrapper() {
+        super(Array.class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
      *            値
      */
     public ArrayWrapper(Array value) {
-        super(value);
+        super(Array.class, value);
     }
 
     @Override

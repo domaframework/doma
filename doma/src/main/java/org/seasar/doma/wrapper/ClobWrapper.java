@@ -31,6 +31,7 @@ public class ClobWrapper extends AbstractWrapper<Clob> {
      * インスタンスを構築します。
      */
     public ClobWrapper() {
+        super(Clob.class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class ClobWrapper extends AbstractWrapper<Clob> {
      *            値
      */
     public ClobWrapper(Clob value) {
-        super(value);
+        super(Clob.class, value);
     }
 
     @Override

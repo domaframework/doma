@@ -18,23 +18,23 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * 値のラッパーです。
+ * 基本型の値のラッパーです。
  * <p>
  * このインタフェースの実装はスレッドセーフであることを要求されません。
  * 
  * @author taedium
  * 
- * @param <V>
- *            値の型
+ * @param <BASIC>
+ *            基本型
  */
-public interface Wrapper<V> {
+public interface Wrapper<BASIC> {
 
     /**
      * 値を返します。
      * 
      * @return 値、{@code null} でありうる
      */
-    V get();
+    BASIC get();
 
     /**
      * 値を設定します。
@@ -42,14 +42,14 @@ public interface Wrapper<V> {
      * @param value
      *            値
      */
-    void set(V value);
+    void set(BASIC value);
 
     /**
      * 値のコピーを返します。
      * 
      * @return 値のコピー
      */
-    V getCopy();
+    BASIC getCopy();
 
     /**
      * 値の型がプリミティブ型のボックス型であればプリミティブ型のデフォルト値をボックスした値を返します。
@@ -59,7 +59,7 @@ public interface Wrapper<V> {
      *         {@code null}
      * @since 1.5.0
      */
-    V getDefault();
+    BASIC getDefault();
 
     /**
      * 等しい値を持っている場合 {@code true} を返します。
@@ -69,6 +69,14 @@ public interface Wrapper<V> {
      * @return 等しい値を持っている場合 {@code true}
      */
     boolean hasEqualValue(Object other);
+
+    /**
+     * 基本型のクラスを返します。
+     * 
+     * @return 基本型のクラス
+     * @since 2.0.0
+     */
+    Class<BASIC> getBasicClass();
 
     /**
      * ビジターを受け入れます。

@@ -31,6 +31,7 @@ public class DateWrapper extends AbstractWrapper<Date> {
      * インスタンスを構築します。
      */
     public DateWrapper() {
+        super(Date.class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class DateWrapper extends AbstractWrapper<Date> {
      *            値
      */
     public DateWrapper(Date value) {
-        super(value);
+        super(Date.class, value);
     }
 
     @Override

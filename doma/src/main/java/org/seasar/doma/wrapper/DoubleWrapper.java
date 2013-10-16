@@ -30,6 +30,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
      * インスタンスを構築します。
      */
     public DoubleWrapper() {
+        super(Double.class);
     }
 
     /**
@@ -39,7 +40,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
      *            値
      */
     public DoubleWrapper(Double value) {
-        super(value);
+        super(Double.class, value);
     }
 
     @Override

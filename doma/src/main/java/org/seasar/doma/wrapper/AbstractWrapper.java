@@ -21,29 +21,37 @@ package org.seasar.doma.wrapper;
  * @author taedium
  * 
  */
-public abstract class AbstractWrapper<V> implements Wrapper<V> {
+public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
+
+    /** 基本型のクラス */
+    protected Class<BASIC> basicClass;
 
     /** 値 */
-    protected V value;
+    protected BASIC value;
 
     /**
-     * インスタンスを構築します。
+     * クラスを指定してインスタンスを構築します。
+     * 
+     * @param 基本型のクラス
      */
-    protected AbstractWrapper() {
+    protected AbstractWrapper(Class<BASIC> basicClass) {
+        this.basicClass = basicClass;
     }
 
     /**
-     * 値を指定してインスタンスを構築します。
+     * クラスと値を指定してインスタンスを構築します。
      * 
+     * @param 基本型のクラス
      * @param value
      *            値
      */
-    protected AbstractWrapper(V value) {
+    protected AbstractWrapper(Class<BASIC> basicClass, BASIC value) {
+        this(basicClass);
         doSet(value);
     }
 
     @Override
-    public final void set(V value) {
+    public final void set(BASIC value) {
         doSet(value);
     }
 
@@ -53,12 +61,12 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      * @param value
      *            値
      */
-    protected void doSet(V value) {
+    protected void doSet(BASIC value) {
         this.value = value;
     }
 
     @Override
-    public final V get() {
+    public final BASIC get() {
         return doGet();
     }
 
@@ -67,12 +75,12 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      * 
      * @return 値
      */
-    protected V doGet() {
+    protected BASIC doGet() {
         return value;
     }
 
     @Override
-    public final V getCopy() {
+    public final BASIC getCopy() {
         return doGetCopy();
     }
 
@@ -81,12 +89,12 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      * 
      * @return 値のコピーを返します。
      */
-    protected V doGetCopy() {
+    protected BASIC doGetCopy() {
         return doGet();
     }
 
     @Override
-    public V getDefault() {
+    public BASIC getDefault() {
         return null;
     }
 
@@ -103,11 +111,16 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      * @return 等しい値を持っている場合 {@code true}
      */
     protected boolean doHasEqualValue(Object otherValue) {
-        V value = doGet();
+        BASIC value = doGet();
         if (value == null) {
             return otherValue == null;
         }
         return value.equals(otherValue);
+    }
+
+    @Override
+    public Class<BASIC> getBasicClass() {
+        return basicClass;
     }
 
 }

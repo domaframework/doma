@@ -30,6 +30,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements
      * インスタンスを構築します。
      */
     public LongWrapper() {
+        super(Long.class);
     }
 
     /**
@@ -39,7 +40,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements
      *            値
      */
     public LongWrapper(Long value) {
-        super(value);
+        super(Long.class, value);
     }
 
     @Override

@@ -27,9 +27,6 @@ import org.seasar.doma.DomaNullPointerException;
  */
 public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
 
-    /** {@link Enum} のクラス */
-    protected final Class<E> enumClass;
-
     /**
      * インスタンスを構築します。
      * 
@@ -53,20 +50,10 @@ public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
      *             {@link Enum} のクラスが {@code null} の場合
      */
     public EnumWrapper(Class<E> enumClass, E value) {
-        super(value);
+        super(enumClass, value);
         if (enumClass == null) {
             throw new DomaNullPointerException("enumClass");
         }
-        this.enumClass = enumClass;
-    }
-
-    /**
-     * {@link Enum} のクラスを返します。
-     * 
-     * @return {@link Enum} のクラス
-     */
-    public Class<E> getEnumClass() {
-        return enumClass;
     }
 
     @Override

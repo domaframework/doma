@@ -31,6 +31,7 @@ public class BlobWrapper extends AbstractWrapper<Blob> {
      * インスタンスを構築します。
      */
     public BlobWrapper() {
+        super(Blob.class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class BlobWrapper extends AbstractWrapper<Blob> {
      *            値
      */
     public BlobWrapper(Blob value) {
-        super(value);
+        super(Blob.class, value);
     }
 
     @Override

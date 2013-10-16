@@ -33,6 +33,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
      * インスタンスを構築します。
      */
     public BigDecimalWrapper() {
+        super(BigDecimal.class);
     }
 
     /**
@@ -42,7 +43,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
      *            値
      */
     public BigDecimalWrapper(BigDecimal value) {
-        super(value);
+        super(BigDecimal.class, value);
     }
 
     @Override

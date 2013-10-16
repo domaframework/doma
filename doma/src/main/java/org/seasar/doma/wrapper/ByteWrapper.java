@@ -30,6 +30,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
      * インスタンスを構築します。
      */
     public ByteWrapper() {
+        super(Byte.class);
     }
 
     /**
@@ -39,7 +40,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
      *            値
      */
     public ByteWrapper(Byte value) {
-        super(value);
+        super(Byte.class, value);
     }
 
     @Override

@@ -30,6 +30,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
      * インスタンスを構築します。
      */
     public ShortWrapper() {
+        super(Short.class);
     }
 
     /**
@@ -39,7 +40,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
      *            値
      */
     public ShortWrapper(Short value) {
-        super(value);
+        super(Short.class, value);
     }
 
     @Override

@@ -602,7 +602,7 @@ public class StandardDialect implements Dialect {
         public <E extends Enum<E>> Void visitEnumWrapper(
                 EnumWrapper<E> wrapper, JdbcMappingFunction p)
                 throws SQLException {
-            return p.apply(wrapper, new EnumType<E>(wrapper.getEnumClass()));
+            return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
         }
 
         @Override
@@ -740,7 +740,7 @@ public class StandardDialect implements Dialect {
         public <E extends Enum<E>> String visitEnumWrapper(
                 EnumWrapper<E> wrapper, SqlLogFormattingFunction p)
                 throws RuntimeException {
-            return p.apply(wrapper, new EnumType<E>(wrapper.getEnumClass()));
+            return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
         }
 
         @Override

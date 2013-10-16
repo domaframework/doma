@@ -29,6 +29,7 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> {
      * インスタンスを構築します。
      */
     public BooleanWrapper() {
+        super(Boolean.class);
     }
 
     /**
@@ -38,7 +39,7 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> {
      *            値
      */
     public BooleanWrapper(Boolean value) {
-        super(value);
+        super(Boolean.class, value);
     }
 
     @Override

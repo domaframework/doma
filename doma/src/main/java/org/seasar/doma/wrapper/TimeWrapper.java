@@ -31,6 +31,7 @@ public class TimeWrapper extends AbstractWrapper<Time> {
      * インスタンスを構築します。
      */
     public TimeWrapper() {
+        super(Time.class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class TimeWrapper extends AbstractWrapper<Time> {
      *            値
      */
     public TimeWrapper(Time value) {
-        super(value);
+        super(Time.class, value);
     }
 
     @Override

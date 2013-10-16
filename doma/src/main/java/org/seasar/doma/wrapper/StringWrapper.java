@@ -29,6 +29,7 @@ public class StringWrapper extends AbstractWrapper<String> {
      * インスタンスを構築します。
      */
     public StringWrapper() {
+        super(String.class);
     }
 
     /**
@@ -38,7 +39,7 @@ public class StringWrapper extends AbstractWrapper<String> {
      *            値
      */
     public StringWrapper(String value) {
-        super(value);
+        super(String.class, value);
     }
 
     @Override

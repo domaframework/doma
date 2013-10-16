@@ -30,6 +30,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
      * インスタンスを構築します。
      */
     public FloatWrapper() {
+        super(Float.class);
     }
 
     /**
@@ -39,7 +40,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
      *            値
      */
     public FloatWrapper(Float value) {
-        super(value);
+        super(Float.class, value);
     }
 
     @Override

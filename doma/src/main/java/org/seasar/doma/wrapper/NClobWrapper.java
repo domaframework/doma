@@ -31,6 +31,7 @@ public class NClobWrapper extends AbstractWrapper<NClob> {
      * インスタンスを構築します。
      */
     public NClobWrapper() {
+        super(NClob.class);
     }
 
     /**
@@ -40,7 +41,7 @@ public class NClobWrapper extends AbstractWrapper<NClob> {
      *            値
      */
     public NClobWrapper(NClob value) {
-        super(value);
+        super(NClob.class, value);
     }
 
     @Override

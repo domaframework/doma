@@ -30,6 +30,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
      * インスタンスを構築します。
      */
     public IntegerWrapper() {
+        super(Integer.class);
     }
 
     /**
@@ -39,7 +40,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
      *            値
      */
     public IntegerWrapper(Integer value) {
-        super(value);
+        super(Integer.class, value);
     }
 
     @Override
