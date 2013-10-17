@@ -17,27 +17,21 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.wrapper.BasicHolder;
+import org.seasar.doma.internal.wrapper.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BasicInParameter<BASIC> extends AbstractInParameter<BASIC, BASIC> {
+public class BasicInParameter<BASIC> extends ScalarInParameter<BASIC, BASIC> {
 
     public BasicInParameter(Supplier<Wrapper<BASIC>> supplier) {
-        super(new BasicHolder<BASIC>(supplier, false));
+        super(new BasicScalar<BASIC>(supplier, false));
     }
 
     public BasicInParameter(Supplier<Wrapper<BASIC>> supplier, BASIC value) {
-        super(new BasicHolder<BASIC>(supplier, false), value);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitBasicInParameter(this, p);
+        super(new BasicScalar<BASIC>(supplier, false), value);
     }
 
 }

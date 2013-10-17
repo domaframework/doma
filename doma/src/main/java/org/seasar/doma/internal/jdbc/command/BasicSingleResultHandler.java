@@ -42,7 +42,7 @@ public class BasicSingleResultHandler<R> extends AbstractSingleResultHandler<R> 
     @Override
     protected ResultProvider<R> createResultProvider(SelectQuery query) {
         return new BasicResultProvider<R, R>(
-                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
                         supplier, primitive), query);
     }
 

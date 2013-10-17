@@ -23,17 +23,11 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * 
  */
 public class DomainOutParameter<BASIC, DOMAIN> extends
-        AbstractOutParameter<BASIC, DOMAIN> {
+        ScalarOutParameter<BASIC, DOMAIN> {
 
     public DomainOutParameter(DomainType<BASIC, DOMAIN> domainType,
             Reference<DOMAIN> reference) {
-        super(domainType.createHolder(), reference);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainOutParameter(this, p);
+        super(domainType.createScalar(), reference);
     }
 
 }

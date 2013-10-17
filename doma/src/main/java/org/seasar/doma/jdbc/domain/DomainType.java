@@ -17,7 +17,7 @@ package org.seasar.doma.jdbc.domain;
 
 import java.util.Optional;
 
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.wrapper.Scalar;
 
 /**
  * ドメイン型のメタタイプです。
@@ -55,7 +55,7 @@ public interface DomainType<BASIC, DOMAIN> {
      * @return 値のホルダー
      * @since 2.0.0
      */
-    Holder<BASIC, DOMAIN> createHolder();
+    Scalar<BASIC, DOMAIN> createScalar();
 
     /**
      * {@link Optional} なドメインのホルダーを返します。
@@ -63,6 +63,6 @@ public interface DomainType<BASIC, DOMAIN> {
      * @return 値のホルダー
      * @since 2.0.0
      */
-    Holder<BASIC, Optional<DOMAIN>> createOptionalHolder();
+    Scalar<BASIC, Optional<DOMAIN>> createOptionalScalar();
 
 }

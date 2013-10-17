@@ -15,21 +15,29 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.internal.jdbc.command.MapResultProvider;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
-public class MapResultListParameter extends MapListParameter implements
-        ResultListParameter<Map<String, Object>> {
+public class MapResultListParameter extends
+        AbstractResultListParameter<Map<String, Object>> {
+
+    protected final MapKeyNamingType mapKeyNamingType;
 
     public MapResultListParameter(MapKeyNamingType mapKeyNamingType) {
-        super(mapKeyNamingType, new ArrayList<Map<String, Object>>(), "");
+        super(new ArrayList<Map<String, Object>>());
+        assertNotNull(mapKeyNamingType);
+        this.mapKeyNamingType = mapKeyNamingType;
     }
 
     @Override
@@ -38,9 +46,8 @@ public class MapResultListParameter extends MapListParameter implements
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitMapResultListParameter(this, p);
+    public MapResultProvider<Map<String, Object>> createResultProvider(
+            Query query) {
+        return new MapResultProvider<>(query, mapKeyNamingType, map -> map);
     }
-
 }

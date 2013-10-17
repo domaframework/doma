@@ -18,18 +18,22 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.doma.internal.jdbc.command.DomainResultProvider;
 import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
 public class DomainResultListParameter<BASIC, DOMAIN> extends
-        DomainListParameter<BASIC, DOMAIN> implements
-        ResultListParameter<DOMAIN> {
+        AbstractResultListParameter<DOMAIN> {
+
+    protected final DomainType<BASIC, DOMAIN> domainType;
 
     public DomainResultListParameter(DomainType<BASIC, DOMAIN> domainType) {
-        super(domainType, new ArrayList<DOMAIN>(), "");
+        super(new ArrayList<DOMAIN>());
+        this.domainType = domainType;
     }
 
     @Override
@@ -38,9 +42,9 @@ public class DomainResultListParameter<BASIC, DOMAIN> extends
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainResultListParameter(this, p);
+    public DomainResultProvider<DOMAIN> createResultProvider(Query query) {
+        return new DomainResultProvider<>(() -> domainType.createScalar(),
+                query);
     }
 
 }

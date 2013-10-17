@@ -22,16 +22,10 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * 
  */
 public class DomainInParameter<BASIC, DOMAIN> extends
-        AbstractInParameter<BASIC, DOMAIN> {
+        ScalarInParameter<BASIC, DOMAIN> {
 
     public DomainInParameter(DomainType<BASIC, DOMAIN> domainType, DOMAIN domain) {
-        super(domainType.createHolder(), domain);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainInParameter(this, p);
+        super(domainType.createScalar(), domain);
     }
 
 }

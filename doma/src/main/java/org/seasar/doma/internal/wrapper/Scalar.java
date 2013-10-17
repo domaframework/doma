@@ -2,13 +2,13 @@ package org.seasar.doma.internal.wrapper;
 
 import org.seasar.doma.wrapper.Wrapper;
 
-public interface Holder<BASIC, CONTAINER> {
+public interface Scalar<BASIC, CONTAINER> {
 
     Class<BASIC> getBasicClass();
 
     Class<?> getDomainClass();
 
-    boolean isOptionalHolder();
+    boolean isOptional();
 
     CONTAINER cast(Object value);
 

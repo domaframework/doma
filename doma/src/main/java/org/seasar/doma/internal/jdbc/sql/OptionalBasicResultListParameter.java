@@ -42,6 +42,6 @@ public class OptionalBasicResultListParameter<BASIC> extends
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitOptionalBasicResultListParameter(this, p);
+        return visitor.visitResultListParameter(this, p);
     }
 }

@@ -17,22 +17,40 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
-import org.seasar.doma.internal.wrapper.OptionalBasicScalar;
-import org.seasar.doma.wrapper.Wrapper;
+import java.util.List;
 
 /**
  * @author taedium
  * 
  */
-public class OptionalBasicSingleResultParameter<BASIC> extends
-        AbstractSingleResultParameter<BASIC, Optional<BASIC>> {
+public abstract class AbstractResultListParameter<ELEMENT> implements
+        ResultListParameter<ELEMENT> {
 
-    public OptionalBasicSingleResultParameter(Supplier<Wrapper<BASIC>> supplier) {
-        super(new OptionalBasicScalar<>(supplier));
-        assertNotNull(supplier);
+    protected final List<ELEMENT> list;
+
+    public AbstractResultListParameter(List<ELEMENT> list) {
+        assertNotNull(list);
+        this.list = list;
     }
 
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public void add(ELEMENT element) {
+        list.add(element);
+    }
+
+    @Override
+    public Object getValue() {
+        return list;
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitResultListParameter(this, p);
+    }
 }

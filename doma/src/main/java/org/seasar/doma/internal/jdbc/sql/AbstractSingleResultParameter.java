@@ -15,9 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -27,26 +27,32 @@ import org.seasar.doma.wrapper.Wrapper;
 public abstract class AbstractSingleResultParameter<BASIC, CONTAINER>
         implements SingleResultParameter<BASIC, CONTAINER> {
 
-    protected final Holder<BASIC, CONTAINER> holder;
+    protected final Scalar<BASIC, CONTAINER> scalar;
 
-    public AbstractSingleResultParameter(Holder<BASIC, CONTAINER> holder) {
+    public AbstractSingleResultParameter(Scalar<BASIC, CONTAINER> holder) {
         assertNotNull(holder);
-        this.holder = holder;
+        this.scalar = holder;
     }
 
     @Override
     public Wrapper<BASIC> getWrapper() {
-        return holder.getWrapper();
+        return scalar.getWrapper();
     }
 
     @Override
     public Object getValue() {
-        return holder.get();
+        return scalar.get();
     }
 
     @Override
     public CONTAINER getResult() {
-        return holder.get();
+        return scalar.get();
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitSingleResultParameter(this, p);
     }
 
 }

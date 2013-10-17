@@ -42,7 +42,7 @@ public class OptionalDomainResultListParameter<BASIC, DOMAIN> extends
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitOptionalDomainResultListParameter(this, p);
+        return visitor.visitResultListParameter(this, p);
     }
 
 }

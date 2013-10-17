@@ -25,17 +25,11 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * 
  */
 public class OptionalDomainInOutParameter<BASIC, DOMAIN> extends
-        AbstractInOutParameter<BASIC, Optional<DOMAIN>> {
+        ScalarInOutParameter<BASIC, Optional<DOMAIN>> {
 
     public OptionalDomainInOutParameter(DomainType<BASIC, DOMAIN> domainType,
             Reference<Optional<DOMAIN>> reference) {
-        super(domainType.createOptionalHolder(), reference);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitOptionalDomainInOutParameter(this, p);
+        super(domainType.createOptionalScalar(), reference);
     }
 
 }

@@ -25,13 +25,7 @@ public class DomainSingleResultParameter<BASIC, DOMAIN> extends
         AbstractSingleResultParameter<BASIC, DOMAIN> {
 
     public DomainSingleResultParameter(DomainType<BASIC, DOMAIN> domainType) {
-        super(domainType.createHolder());
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainSingleResultParameter(this, p);
+        super(domainType.createScalar());
     }
 
 }

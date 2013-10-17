@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.seasar.doma.internal.util.AssertionUtil;
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 public abstract class AbstractDomainType<BASIC, DOMAIN> implements
@@ -22,16 +22,16 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
     protected abstract BASIC getBasicValue(DOMAIN domain);
 
     @Override
-    public DomainHolder createHolder() {
-        return new DomainHolder();
+    public DomainScalar createScalar() {
+        return new DomainScalar();
     }
 
     @Override
-    public OptionalDomainHolder createOptionalHolder() {
-        return new OptionalDomainHolder();
+    public OptionalDomainScalar createOptionalScalar() {
+        return new OptionalDomainScalar();
     }
 
-    protected class DomainHolder implements Holder<BASIC, DOMAIN> {
+    protected class DomainScalar implements Scalar<BASIC, DOMAIN> {
 
         Wrapper<BASIC> wrapper = wrapperSupplier.get();
 
@@ -46,7 +46,7 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         }
 
         @Override
-        public boolean isOptionalHolder() {
+        public boolean isOptional() {
             return false;
         }
 
@@ -77,8 +77,8 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         }
     }
 
-    protected class OptionalDomainHolder implements
-            Holder<BASIC, Optional<DOMAIN>> {
+    protected class OptionalDomainScalar implements
+            Scalar<BASIC, Optional<DOMAIN>> {
 
         Wrapper<BASIC> wrapper = wrapperSupplier.get();
 
@@ -93,7 +93,7 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         }
 
         @Override
-        public boolean isOptionalHolder() {
+        public boolean isOptional() {
             return true;
         }
 

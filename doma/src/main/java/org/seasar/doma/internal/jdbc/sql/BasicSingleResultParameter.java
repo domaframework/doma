@@ -15,11 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.wrapper.BasicHolder;
+import org.seasar.doma.internal.wrapper.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -31,14 +31,8 @@ public class BasicSingleResultParameter<BASIC> extends
 
     public BasicSingleResultParameter(Supplier<Wrapper<BASIC>> supplier,
             boolean primitive) {
-        super(new BasicHolder<>(supplier, primitive));
+        super(new BasicScalar<>(supplier, primitive));
         assertNotNull(supplier);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitBasicSingleResultParameter(this, p);
     }
 
 }

@@ -25,7 +25,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
@@ -148,19 +148,19 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         if (domainType != null) {
             if (isOptional) {
                 return () -> new BasicPropertyState<Optional<D>>(
-                        () -> domainType.createOptionalHolder());
+                        () -> domainType.createOptionalScalar());
             } else {
                 return () -> new BasicPropertyState<D>(
-                        () -> domainType.createHolder());
+                        () -> domainType.createScalar());
             }
         }
         if (isOptional) {
             return () -> new BasicPropertyState<Optional<V>>(
-                    () -> new org.seasar.doma.internal.wrapper.OptionalBasicHolder<>(
+                    () -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
                             wrapperSupplier));
         } else {
             return () -> new BasicPropertyState<V>(
-                    () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                    () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
                             wrapperSupplier, field.getClass().isPrimitive()));
         }
     }
@@ -305,22 +305,22 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
      */
     protected class BasicPropertyState<C> implements PropertyState<E, V> {
 
-        protected final Holder<V, C> holder;
+        protected final Scalar<V, C> scalar;
 
-        protected BasicPropertyState(Supplier<Holder<V, C>> holderSupplier) {
-            this.holder = holderSupplier.get();
+        protected BasicPropertyState(Supplier<Scalar<V, C>> holderSupplier) {
+            this.scalar = holderSupplier.get();
         }
 
         @Override
         public Object get() {
-            return holder.get();
+            return scalar.get();
         }
 
         @Override
         public PropertyState<E, V> load(E entity) {
             try {
                 Object value = FieldUtil.get(field, entity);
-                holder.set(holder.cast(value));
+                scalar.set(scalar.cast(value));
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);
@@ -331,7 +331,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         @Override
         public PropertyState<E, V> save(E entity) {
             try {
-                FieldUtil.set(field, entity, holder.get());
+                FieldUtil.set(field, entity, scalar.get());
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);
@@ -341,7 +341,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
 
         @Override
         public Wrapper<V> getWrapper() {
-            return holder.getWrapper();
+            return scalar.getWrapper();
         }
     }
 

@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -31,7 +31,7 @@ import org.seasar.doma.jdbc.query.Query;
 public class DomainResultProvider<CONTAINER> implements
         ResultProvider<CONTAINER> {
 
-    protected final Supplier<Holder<?, CONTAINER>> supplier;
+    protected final Supplier<Scalar<?, CONTAINER>> supplier;
 
     protected final BasicFetcher fetcher;
 
@@ -40,7 +40,7 @@ public class DomainResultProvider<CONTAINER> implements
      * @param supplier
      * @param query
      */
-    public DomainResultProvider(Supplier<Holder<?, CONTAINER>> supplier,
+    public DomainResultProvider(Supplier<Scalar<?, CONTAINER>> supplier,
             Query query) {
         assertNotNull(supplier, query);
         this.supplier = supplier;
@@ -49,14 +49,14 @@ public class DomainResultProvider<CONTAINER> implements
 
     @Override
     public CONTAINER get(ResultSet resultSet) throws SQLException {
-        Holder<?, CONTAINER> holder = supplier.get();
+        Scalar<?, CONTAINER> holder = supplier.get();
         fetcher.fetch(resultSet, holder.getWrapper());
         return holder.get();
     }
 
     @Override
     public CONTAINER getDefault() {
-        Holder<?, CONTAINER> holder = supplier.get();
+        Scalar<?, CONTAINER> holder = supplier.get();
         return holder.getDefault();
     }
 

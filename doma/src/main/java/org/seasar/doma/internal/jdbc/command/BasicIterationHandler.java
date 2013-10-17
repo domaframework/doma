@@ -41,7 +41,7 @@ public class BasicIterationHandler<RESULT, BASIC> extends AbstractIterationHandl
     @Override
     protected ResultProvider<BASIC> createResultProvider(SelectQuery query) {
         return new BasicResultProvider<BASIC, BASIC>(
-                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
                         supplier, false), query);
     }
 

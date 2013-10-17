@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -42,14 +42,8 @@ public class BasicListParameter<BASIC> extends AbstractListParameter<BASIC> {
     @Override
     public BasicResultProvider<BASIC, BASIC> createResultProvider(Query query) {
         return new BasicResultProvider<>(
-                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
                         supplier, false), query);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitBasicListParameter(this, p);
     }
 
 }

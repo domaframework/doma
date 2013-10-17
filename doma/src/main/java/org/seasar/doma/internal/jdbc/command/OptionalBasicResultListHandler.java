@@ -42,7 +42,7 @@ public class OptionalBasicResultListHandler<R> extends
     @Override
     protected ResultProvider<Optional<R>> createResultProvider(SelectQuery query) {
         return new BasicResultProvider<R, Optional<R>>(
-                () -> new org.seasar.doma.internal.wrapper.OptionalBasicHolder<>(
+                () -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
                         supplier), query);
     }
 

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -50,12 +50,6 @@ public class EntityListParameter<ENTITY> extends AbstractListParameter<ENTITY> {
     public EntityResultProvider<ENTITY, ENTITY> createResultProvider(Query query) {
         return new EntityResultProvider<>(entityType, query,
                 resultMappingEnsured, entity -> entity);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitEntityListParameter(this, p);
     }
 
 }

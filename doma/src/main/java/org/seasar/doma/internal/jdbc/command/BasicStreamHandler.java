@@ -46,7 +46,7 @@ public class BasicStreamHandler<RESULT, BASIC> extends
     @Override
     protected ResultProvider<BASIC> createResultProvider(SelectQuery query) {
         return new BasicResultProvider<BASIC, BASIC>(
-                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
                         supplier, false), query);
     }
 

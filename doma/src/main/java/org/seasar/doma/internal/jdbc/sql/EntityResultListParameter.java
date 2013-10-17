@@ -15,21 +15,31 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.doma.internal.jdbc.command.EntityResultProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
 public class EntityResultListParameter<ENTITY> extends
-        EntityListParameter<ENTITY> implements ResultListParameter<ENTITY> {
+        AbstractResultListParameter<ENTITY> {
+
+    EntityType<ENTITY> entityType;
+    boolean resultMappingEnsured;
 
     public EntityResultListParameter(EntityType<ENTITY> entityType,
             boolean resultMappingEnsured) {
-        super(entityType, new ArrayList<ENTITY>(), "", resultMappingEnsured);
+        super(new ArrayList<ENTITY>());
+        assertNotNull(entityType);
+        this.entityType = entityType;
+        this.resultMappingEnsured = resultMappingEnsured;
     }
 
     @Override
@@ -38,9 +48,9 @@ public class EntityResultListParameter<ENTITY> extends
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitEntityResultListParameter(this, p);
+    public EntityResultProvider<ENTITY, ENTITY> createResultProvider(Query query) {
+        return new EntityResultProvider<>(entityType, query,
+                resultMappingEnsured, entity -> entity);
     }
 
 }

@@ -15,9 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -27,30 +27,35 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <BASIC>
  * @param <CONTAINER>
  */
-public abstract class AbstractInParameter<BASIC, CONTAINER> implements
+public class ScalarInParameter<BASIC, CONTAINER> implements
         InParameter<BASIC> {
 
-    protected final Holder<BASIC, CONTAINER> holder;
+    protected final Scalar<BASIC, CONTAINER> scalar;
 
-    public AbstractInParameter(Holder<BASIC, CONTAINER> holder) {
+    public ScalarInParameter(Scalar<BASIC, CONTAINER> holder) {
         assertNotNull(holder);
-        this.holder = holder;
+        this.scalar = holder;
     }
 
-    public AbstractInParameter(Holder<BASIC, CONTAINER> holder, CONTAINER value) {
+    public ScalarInParameter(Scalar<BASIC, CONTAINER> holder, CONTAINER value) {
         assertNotNull(holder);
-        this.holder = holder;
+        this.scalar = holder;
         holder.set(value);
     }
 
     @Override
     public CONTAINER getValue() {
-        return holder.get();
+        return scalar.get();
     }
 
     @Override
     public Wrapper<BASIC> getWrapper() {
-        return holder.getWrapper();
+        return scalar.getWrapper();
     }
 
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitInParameter(this, p);
+    }
 }

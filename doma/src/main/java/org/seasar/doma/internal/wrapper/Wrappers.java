@@ -215,9 +215,9 @@ public final class Wrappers {
         if (domainType == null) {
             return null;
         }
-        Holder<BASIC, DOMAIN> holder = domainType.createHolder();
-        holder.set(holder.cast(value));
-        return holder.getWrapper();
+        Scalar<BASIC, DOMAIN> scalar = domainType.createScalar();
+        scalar.set(scalar.cast(value));
+        return scalar.getWrapper();
     }
 
 }

@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.wrapper.OptionalBasicHolder;
+import org.seasar.doma.internal.wrapper.OptionalBasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -26,17 +26,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class OptionalBasicInParameter<BASIC> extends
-        AbstractInParameter<BASIC, Optional<BASIC>> {
+        ScalarInParameter<BASIC, Optional<BASIC>> {
 
     public OptionalBasicInParameter(Supplier<Wrapper<BASIC>> supplier,
             Optional<BASIC> value) {
-        super(new OptionalBasicHolder<BASIC>(supplier), value);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitOptionalBasicInParameter(this, p);
+        super(new OptionalBasicScalar<BASIC>(supplier), value);
     }
 
 }

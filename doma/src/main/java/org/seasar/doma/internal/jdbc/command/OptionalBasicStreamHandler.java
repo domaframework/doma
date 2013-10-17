@@ -48,7 +48,7 @@ public class OptionalBasicStreamHandler<RESULT, BASIC> extends
     protected ResultProvider<Optional<BASIC>> createResultProvider(
             SelectQuery query) {
         return new BasicResultProvider<BASIC, Optional<BASIC>>(
-                () -> new org.seasar.doma.internal.wrapper.OptionalBasicHolder<>(
+                () -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
                         supplier), query);
     }
 

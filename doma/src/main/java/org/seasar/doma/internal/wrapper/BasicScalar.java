@@ -5,13 +5,13 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class BasicHolder<BASIC> implements Holder<BASIC, BASIC> {
+public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
 
     protected final Wrapper<BASIC> wrapper;
 
     protected final boolean primitive;
 
-    public BasicHolder(Supplier<Wrapper<BASIC>> supplier, boolean primitive) {
+    public BasicScalar(Supplier<Wrapper<BASIC>> supplier, boolean primitive) {
         AssertionUtil.assertNotNull(supplier);
         this.wrapper = supplier.get();
         AssertionUtil.assertNotNull(this.wrapper);
@@ -29,7 +29,7 @@ public class BasicHolder<BASIC> implements Holder<BASIC, BASIC> {
     }
 
     @Override
-    public boolean isOptionalHolder() {
+    public boolean isOptional() {
         return false;
     }
 

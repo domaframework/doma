@@ -15,9 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.wrapper.Holder;
+import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -28,33 +28,39 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <BASIC>
  * @param <CONTAINER>
  */
-public abstract class AbstractOutParameter<BASIC, CONTAINER> implements
+public class ScalarOutParameter<BASIC, CONTAINER> implements
         OutParameter<BASIC> {
 
-    protected final Holder<BASIC, CONTAINER> holder;
+    protected final Scalar<BASIC, CONTAINER> scalar;
 
     protected final Reference<CONTAINER> reference;
 
-    public AbstractOutParameter(Holder<BASIC, CONTAINER> holder,
+    public ScalarOutParameter(Scalar<BASIC, CONTAINER> holder,
             Reference<CONTAINER> reference) {
         assertNotNull(holder, reference);
-        this.holder = holder;
+        this.scalar = holder;
         this.reference = reference;
     }
 
     @Override
     public Object getValue() {
-        return holder.get();
+        return scalar.get();
     }
 
     @Override
     public Wrapper<BASIC> getWrapper() {
-        return holder.getWrapper();
+        return scalar.getWrapper();
     }
 
     @Override
     public void update() {
-        reference.set(holder.get());
+        reference.set(scalar.get());
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitOutParameter(this, p);
     }
 
 }

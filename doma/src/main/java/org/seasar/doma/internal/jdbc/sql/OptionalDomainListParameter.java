@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,13 +44,7 @@ public class OptionalDomainListParameter<BASIC, DOMAIN> extends
     public DomainResultProvider<Optional<DOMAIN>> createResultProvider(
             Query query) {
         return new DomainResultProvider<>(
-                () -> domainType.createOptionalHolder(), query);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitOptionalDomainListParameter(this, p);
+                () -> domainType.createOptionalScalar(), query);
     }
 
 }

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -44,12 +44,6 @@ public class MapListParameter extends
     public MapResultProvider<Map<String, Object>> createResultProvider(
             Query query) {
         return new MapResultProvider<>(query, mapKeyNamingType, map -> map);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitMapListParameter(this, p);
     }
 
 }

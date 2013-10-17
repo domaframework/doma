@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Optional;
 
@@ -42,7 +42,7 @@ public class OptionalDomainResultListHandler<DOMAIN> extends
     protected ResultProvider<Optional<DOMAIN>> createResultProvider(
             SelectQuery query) {
         return new DomainResultProvider<>(
-                () -> domainType.createOptionalHolder(), query);
+                () -> domainType.createOptionalScalar(), query);
     }
 
 }

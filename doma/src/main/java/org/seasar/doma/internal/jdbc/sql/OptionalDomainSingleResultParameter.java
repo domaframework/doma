@@ -28,13 +28,7 @@ public class OptionalDomainSingleResultParameter<BASIC, DOMAIN> extends
 
     public OptionalDomainSingleResultParameter(
             DomainType<BASIC, DOMAIN> domainType) {
-        super(domainType.createOptionalHolder());
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitOptionalDomainSingleResultParameter(this, p);
+        super(domainType.createOptionalScalar());
     }
 
 }

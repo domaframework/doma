@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -36,8 +36,8 @@ public class DomainResultListHandler<DOMAIN> extends
 
     @Override
     protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
-        return new DomainResultProvider<>(
-                () -> domainType.createHolder(), query);
+        return new DomainResultProvider<>(() -> domainType.createScalar(),
+                query);
     }
 
 }

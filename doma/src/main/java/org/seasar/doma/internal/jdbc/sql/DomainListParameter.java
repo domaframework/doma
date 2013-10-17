@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -41,14 +41,8 @@ public class DomainListParameter<BASIC, DOMAIN> extends
 
     @Override
     public DomainResultProvider<DOMAIN> createResultProvider(Query query) {
-        return new DomainResultProvider<>(
-                () -> domainType.createHolder(), query);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainListParameter(this, p);
+        return new DomainResultProvider<>(() -> domainType.createScalar(),
+                query);
     }
 
 }
