@@ -112,7 +112,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<R, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<R, java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.StreamDaoImpl", "selectById", __result);

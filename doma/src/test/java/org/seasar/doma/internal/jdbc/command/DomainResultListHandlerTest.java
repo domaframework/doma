@@ -63,7 +63,7 @@ public class DomainResultListHandlerTest extends TestCase {
         query.setMethod(method);
         query.prepare();
 
-        DomainResultListHandler<PhoneNumber> handler = new DomainResultListHandler<PhoneNumber>(
+        DomainResultListHandler<String, PhoneNumber> handler = new DomainResultListHandler<String, PhoneNumber>(
                 _PhoneNumber.getSingletonInternal());
         List<PhoneNumber> results = handler.handle(resultSet, query);
         assertEquals(2, results.size());
@@ -86,7 +86,7 @@ public class DomainResultListHandlerTest extends TestCase {
         query.setResultEnsured(true);
         query.prepare();
 
-        DomainResultListHandler<PhoneNumber> handler = new DomainResultListHandler<PhoneNumber>(
+        DomainResultListHandler<String, PhoneNumber> handler = new DomainResultListHandler<String, PhoneNumber>(
                 _PhoneNumber.getSingletonInternal());
         try {
             handler.handle(resultSet, query);

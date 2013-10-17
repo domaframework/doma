@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -1749,12 +1749,13 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %9$s, %4$s>(%5$s, %6$s));%n",
                     commandClassName, resultMeta.getBoxedTypeName(),
-                    getDomainIterationHandlerName(optional),
-                    ctType.getBoxedTypeName(),
-                    ctType.getInstantiationCommand(), callbackParamName,
-                    commandName, methodName);
+                    getDomainIterationHandlerName(optional), ctType
+                            .getBoxedTypeName(), ctType
+                            .getInstantiationCommand(), callbackParamName,
+                    commandName, methodName, ctType.getBasicType()
+                            .getBoxedTypeName());
             return null;
         }
 
@@ -1899,12 +1900,13 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                     throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %9$s, %4$s>(%5$s, %6$s));%n",
                         commandClassName, resultMeta.getBoxedTypeName(),
-                        getDomainStreamHandlerName(optional),
-                        ctType.getBoxedTypeName(),
-                        ctType.getInstantiationCommand(), functionParamName,
-                        commandName, methodName);
+                        getDomainStreamHandlerName(optional), ctType
+                                .getBoxedTypeName(), ctType
+                                .getInstantiationCommand(), functionParamName,
+                        commandName, methodName, ctType.getBasicType()
+                                .getBoxedTypeName());
                 return null;
             }
 
@@ -2034,11 +2036,15 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
-                    commandClassName, resultBoxedTypeName,
-                    getDomainSingleResultHandlerName(optional),
-                    ctType.getInstantiationCommand(),
-                    ctType.getBoxedTypeName(), commandName, methodName);
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %5$s>(%4$s));%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */getDomainSingleResultHandlerName(optional),
+            /* 4 */ctType.getInstantiationCommand(),
+            /* 5 */ctType.getBoxedTypeName(),
+            /* 6 */commandName,
+            /* 7 */methodName,
+            /* 8 */ctType.getBasicType().getBoxedTypeName());
             return null;
         }
 
@@ -2047,10 +2053,13 @@ public class DaoGenerator extends AbstractGenerator {
                 throws RuntimeException {
             MapKeyNamingType namingType = m.getMapKeyNamingType();
             iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
-                    commandClassName, resultBoxedTypeName,
-                    getMapSingleResultHandlerName(optional), namingType
-                            .getDeclaringClass().getName(), namingType.name(),
-                    commandName, methodName);
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */getMapSingleResultHandlerName(optional),
+            /* 4 */namingType.getDeclaringClass().getName(),
+            /* 5 */namingType.name(),
+            /* 6 */commandName,
+            /* 7 */methodName);
             return null;
         }
 
@@ -2123,19 +2132,21 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitDomainCtType(DomainCtType ctType,
                                 Boolean optional) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %4$s>(%5$s));%n",
                                     commandClassName, resultBoxedTypeName,
                                     getDomainResultListHandlerName(optional),
-                                    ctType.getBoxedTypeName(),
-                                    ctType.getInstantiationCommand(),
-                                    commandName, methodName);
+                                    ctType.getBoxedTypeName(), ctType
+                                            .getInstantiationCommand(),
+                                    commandName, methodName, ctType
+                                            .getBasicType().getBoxedTypeName());
                             return null;
                         }
 
                         @Override
                         public Void visitMapCtType(MapCtType ctType,
                                 Boolean optional) throws RuntimeException {
-                            MapKeyNamingType namingType = m.getMapKeyNamingType();
+                            MapKeyNamingType namingType = m
+                                    .getMapKeyNamingType();
                             iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
                                     commandClassName, resultBoxedTypeName,
                                     getMapResultListHandlerName(optional),

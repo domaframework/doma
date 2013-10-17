@@ -20,28 +20,21 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Optional;
 
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 
  * @author nakamura-to
  * 
+ * @param <BASIC>
  * @param <DOMAIN>
  */
-public class OptionalDomainSingleResultHandler<DOMAIN> extends
-        AbstractSingleResultHandler<Optional<DOMAIN>> {
+public class OptionalDomainSingleResultHandler<BASIC, DOMAIN> extends
+        ScalarSingleResultHandler<BASIC, Optional<DOMAIN>> {
 
-    protected final DomainType<?, DOMAIN> domainType;
-
-    public OptionalDomainSingleResultHandler(DomainType<?, DOMAIN> domainType) {
+    public OptionalDomainSingleResultHandler(
+            DomainType<BASIC, DOMAIN> domainType) {
+        super(() -> domainType.createOptionalScalar());
         assertNotNull(domainType);
-        this.domainType = domainType;
     }
 
-    @Override
-    protected ResultProvider<Optional<DOMAIN>> createResultProvider(
-            SelectQuery query) {
-        return new DomainResultProvider<>(
-                () -> domainType.createOptionalScalar(), query);
-    }
 }

@@ -17,45 +17,42 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
+import org.seasar.doma.internal.wrapper.Scalar;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractResultListParameter<ELEMENT> implements
-        ResultListParameter<ELEMENT> {
+public class ScalarSingleResultParameter<BASIC, CONTAINER> implements
+        SingleResultParameter<BASIC, CONTAINER> {
 
-    protected final List<ELEMENT> list;
+    protected final Scalar<BASIC, CONTAINER> scalar;
 
-    public AbstractResultListParameter(List<ELEMENT> list) {
-        assertNotNull(list);
-        this.list = list;
+    public ScalarSingleResultParameter(Scalar<BASIC, CONTAINER> scalar) {
+        assertNotNull(scalar);
+        this.scalar = scalar;
     }
 
     @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public void add(ELEMENT element) {
-        list.add(element);
+    public Wrapper<BASIC> getWrapper() {
+        return scalar.getWrapper();
     }
 
     @Override
     public Object getValue() {
-        return list;
+        return scalar.get();
     }
 
     @Override
-    public List<ELEMENT> getResult() {
-        return list;
+    public CONTAINER getResult() {
+        return scalar.get();
     }
 
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitResultListParameter(this, p);
+        return visitor.visitSingleResultParameter(this, p);
     }
+
 }

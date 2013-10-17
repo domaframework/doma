@@ -15,14 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.jdbc.command.BasicResultProvider;
-import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -30,25 +24,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class BasicResultListParameter<BASIC> extends
-        AbstractResultListParameter<BASIC> {
-
-    protected final Supplier<Wrapper<BASIC>> supplier;
+        ScalarResultListParameter<BASIC, BASIC> {
 
     public BasicResultListParameter(Supplier<Wrapper<BASIC>> supplier) {
-        super(new ArrayList<BASIC>());
-        assertNotNull(supplier);
-        this.supplier = supplier;
+        super(() -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
+                supplier, false));
     }
 
-    @Override
-    public List<BASIC> getResult() {
-        return list;
-    }
-
-    @Override
-    public BasicResultProvider<BASIC, BASIC> createResultProvider(Query query) {
-        return new BasicResultProvider<>(
-                () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
-                        supplier, false), query);
-    }
 }

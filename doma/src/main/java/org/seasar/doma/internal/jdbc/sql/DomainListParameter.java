@@ -40,9 +40,9 @@ public class DomainListParameter<BASIC, DOMAIN> extends
     }
 
     @Override
-    public DomainResultProvider<DOMAIN> createResultProvider(Query query) {
-        return new DomainResultProvider<>(() -> domainType.createScalar(),
-                query);
+    public DomainResultProvider<BASIC, DOMAIN> createResultProvider(Query query) {
+        return new DomainResultProvider<BASIC, DOMAIN>(
+                () -> domainType.createScalar(), query);
     }
 
 }

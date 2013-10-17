@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.Optional;
 
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 
@@ -30,23 +27,12 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  * @param <DOMAIN>
  */
-public class OptionalDomainIterationHandler<RESULT, DOMAIN> extends
-        AbstractIterationHandler<RESULT, Optional<DOMAIN>> {
+public class OptionalDomainIterationHandler<RESULT, BASIC, DOMAIN> extends
+        ScalarIterationHandler<RESULT, BASIC, Optional<DOMAIN>> {
 
-    protected final DomainType<?, DOMAIN> domainType;
-
-    public OptionalDomainIterationHandler(DomainType<?, DOMAIN> domainType,
+    public OptionalDomainIterationHandler(DomainType<BASIC, DOMAIN> domainType,
             IterationCallback<RESULT, Optional<DOMAIN>> iterationCallback) {
-        super(iterationCallback);
-        assertNotNull(domainType);
-        this.domainType = domainType;
-    }
-
-    @Override
-    protected ResultProvider<Optional<DOMAIN>> createResultProvider(
-            SelectQuery query) {
-        return new DomainResultProvider<>(
-                () -> domainType.createOptionalScalar(), query);
+        super(() -> domainType.createOptionalScalar(), iterationCallback);
     }
 
 }

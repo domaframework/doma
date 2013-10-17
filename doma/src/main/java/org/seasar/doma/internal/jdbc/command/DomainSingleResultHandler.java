@@ -18,25 +18,17 @@ package org.seasar.doma.internal.jdbc.command;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
  * 
  */
-public class DomainSingleResultHandler<DOMAIN> extends
-        AbstractSingleResultHandler<DOMAIN> {
+public class DomainSingleResultHandler<BASIC, DOMAIN> extends
+        ScalarSingleResultHandler<BASIC, DOMAIN> {
 
-    protected final DomainType<?, DOMAIN> domainType;
-
-    public DomainSingleResultHandler(DomainType<?, DOMAIN> domainType) {
+    public DomainSingleResultHandler(DomainType<BASIC, DOMAIN> domainType) {
+        super(() -> domainType.createScalar());
         assertNotNull(domainType);
-        this.domainType = domainType;
     }
 
-    @Override
-    protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
-        return new DomainResultProvider<>(() -> domainType.createScalar(),
-                query);
-    }
 }

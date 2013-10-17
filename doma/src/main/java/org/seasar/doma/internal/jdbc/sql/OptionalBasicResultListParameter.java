@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -27,21 +25,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class OptionalBasicResultListParameter<BASIC> extends
-        OptionalBasicListParameter<BASIC> implements
-        ResultListParameter<Optional<BASIC>> {
+        ScalarResultListParameter<BASIC, Optional<BASIC>> {
 
     public OptionalBasicResultListParameter(Supplier<Wrapper<BASIC>> supplier) {
-        super(supplier, new ArrayList<Optional<BASIC>>(), "");
+        super(() -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+                supplier));
     }
 
-    @Override
-    public List<Optional<BASIC>> getResult() {
-        return list;
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitResultListParameter(this, p);
-    }
 }

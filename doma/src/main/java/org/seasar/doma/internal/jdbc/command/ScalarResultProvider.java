@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.query.Query;
  * @author nakamura-to
  * 
  */
-public class DomainResultProvider<BASIC, CONTAINER> implements
+public class ScalarResultProvider<BASIC, CONTAINER> implements
         ResultProvider<CONTAINER> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
@@ -40,7 +40,7 @@ public class DomainResultProvider<BASIC, CONTAINER> implements
      * @param supplier
      * @param query
      */
-    public DomainResultProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier,
+    public ScalarResultProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier,
             Query query) {
         assertNotNull(supplier, query);
         this.supplier = supplier;
@@ -49,15 +49,15 @@ public class DomainResultProvider<BASIC, CONTAINER> implements
 
     @Override
     public CONTAINER get(ResultSet resultSet) throws SQLException {
-        Scalar<?, CONTAINER> holder = supplier.get();
-        fetcher.fetch(resultSet, holder.getWrapper());
-        return holder.get();
+        Scalar<BASIC, CONTAINER> scalar = supplier.get();
+        fetcher.fetch(resultSet, scalar.getWrapper());
+        return scalar.get();
     }
 
     @Override
     public CONTAINER getDefault() {
-        Scalar<?, CONTAINER> holder = supplier.get();
-        return holder.getDefault();
+        Scalar<BASIC, CONTAINER> scalar = supplier.get();
+        return scalar.getDefault();
     }
 
 }

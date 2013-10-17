@@ -46,7 +46,7 @@ public class BasicFetcherTest extends TestCase {
         resultSet.next();
 
         StringWrapper wrapper = new StringWrapper();
-        BasicFetcher fetcher = new BasicFetcher(new MySelectQuery());
+        ScalarFetcher fetcher = new ScalarFetcher(new MySelectQuery());
         fetcher.fetch(resultSet, wrapper);
 
         assertEquals("hoge", wrapper.get());

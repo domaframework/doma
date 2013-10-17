@@ -28,7 +28,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class OptionalBasicSingleResultParameter<BASIC> extends
-        AbstractSingleResultParameter<BASIC, Optional<BASIC>> {
+        ScalarSingleResultParameter<BASIC, Optional<BASIC>> {
 
     public OptionalBasicSingleResultParameter(Supplier<Wrapper<BASIC>> supplier) {
         super(new OptionalBasicScalar<>(supplier));

@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.seasar.doma.jdbc.domain.DomainType;
@@ -26,23 +24,11 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * 
  */
 public class OptionalDomainResultListParameter<BASIC, DOMAIN> extends
-        OptionalDomainListParameter<BASIC, DOMAIN> implements
-        ResultListParameter<Optional<DOMAIN>> {
+        ScalarResultListParameter<BASIC, Optional<DOMAIN>> {
 
     public OptionalDomainResultListParameter(
             DomainType<BASIC, DOMAIN> domainType) {
-        super(domainType, new ArrayList<Optional<DOMAIN>>(), "");
-    }
-
-    @Override
-    public List<Optional<DOMAIN>> getResult() {
-        return list;
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitResultListParameter(this, p);
+        super(() -> domainType.createOptionalScalar());
     }
 
 }

@@ -15,31 +15,23 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.jdbc.query.SelectQuery;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BasicResultListHandler<BASIC> extends AbstractResultListHandler<BASIC> {
-
-    protected final Supplier<Wrapper<BASIC>> supplier;
+public class BasicResultListHandler<BASIC> extends
+        ScalarResultListHandler<BASIC, BASIC> {
 
     public BasicResultListHandler(Supplier<Wrapper<BASIC>> supplier) {
+        super(() -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
+                supplier, false));
         assertNotNull(supplier);
-        this.supplier = supplier;
-    }
-
-    @Override
-    protected ResultProvider<BASIC> createResultProvider(SelectQuery query) {
-        return new BasicResultProvider<BASIC, BASIC>(
-                () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
-                        supplier, false), query);
     }
 
 }

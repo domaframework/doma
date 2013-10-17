@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.seasar.doma.jdbc.IterationCallback;
-import org.seasar.doma.jdbc.query.SelectQuery;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -29,22 +26,12 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class OptionalBasicIterationHandler<RESULT, BASIC> extends
-        AbstractIterationHandler<RESULT, Optional<BASIC>> {
-
-    protected final Supplier<Wrapper<BASIC>> supplier;
+        ScalarIterationHandler<RESULT, BASIC, Optional<BASIC>> {
 
     public OptionalBasicIterationHandler(Supplier<Wrapper<BASIC>> supplier,
             IterationCallback<RESULT, Optional<BASIC>> iterationCallback) {
-        super(iterationCallback);
-        assertNotNull(supplier);
-        this.supplier = supplier;
-    }
-
-    @Override
-    protected ResultProvider<Optional<BASIC>> createResultProvider(SelectQuery query) {
-        return new BasicResultProvider<BASIC, Optional<BASIC>>(
-                () -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
-                        supplier), query);
+        super(() -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+                supplier), iterationCallback);
     }
 
 }

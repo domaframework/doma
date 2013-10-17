@@ -17,42 +17,38 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
+import org.seasar.doma.internal.jdbc.command.ResultProvider;
+import org.seasar.doma.internal.jdbc.command.ScalarResultProvider;
 import org.seasar.doma.internal.wrapper.Scalar;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractSingleResultParameter<BASIC, CONTAINER>
-        implements SingleResultParameter<BASIC, CONTAINER> {
+public class ScalarResultListParameter<BASIC, CONTAINER> extends
+        AbstractResultListParameter<CONTAINER> {
 
-    protected final Scalar<BASIC, CONTAINER> scalar;
+    protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
-    public AbstractSingleResultParameter(Scalar<BASIC, CONTAINER> holder) {
-        assertNotNull(holder);
-        this.scalar = holder;
+    public ScalarResultListParameter(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
+        super(new ArrayList<CONTAINER>());
+        assertNotNull(supplier);
+        this.supplier = supplier;
     }
 
     @Override
-    public Wrapper<BASIC> getWrapper() {
-        return scalar.getWrapper();
+    public ResultProvider<CONTAINER> createResultProvider(Query query) {
+        return new ScalarResultProvider<>(supplier, query);
     }
 
     @Override
-    public Object getValue() {
-        return scalar.get();
-    }
-
-    @Override
-    public CONTAINER getResult() {
-        return scalar.get();
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitSingleResultParameter(this, p);
+    public List<CONTAINER> getResult() {
+        return null;
     }
 
 }

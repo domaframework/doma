@@ -15,36 +15,27 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import org.seasar.doma.jdbc.query.SelectQuery;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 
  * @author nakamura-to
  * 
- * @param <R>
+ * @param <BASIC>
  */
-public class OptionalBasicSingleResultHandler<R> extends
-        AbstractSingleResultHandler<Optional<R>> {
+public class OptionalBasicSingleResultHandler<BASIC> extends
+        ScalarSingleResultHandler<BASIC, Optional<BASIC>> {
 
-    protected final Supplier<Wrapper<R>> supplier;
-
-    public OptionalBasicSingleResultHandler(Supplier<Wrapper<R>> supplier,
+    public OptionalBasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier,
             boolean primitive) {
+        super(() -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+                supplier));
         assertNotNull(supplier);
-        this.supplier = supplier;
-    }
-
-    @Override
-    protected ResultProvider<Optional<R>> createResultProvider(SelectQuery query) {
-        return new BasicResultProvider<R, Optional<R>>(
-                () -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
-                        supplier), query);
     }
 
 }

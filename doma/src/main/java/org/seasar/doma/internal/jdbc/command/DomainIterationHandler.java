@@ -15,32 +15,19 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
  * 
  */
-public class DomainIterationHandler<RESULT, DOMAIN> extends
-        AbstractIterationHandler<RESULT, DOMAIN> {
+public class DomainIterationHandler<RESULT, BASIC, DOMAIN> extends
+        ScalarIterationHandler<RESULT, BASIC, DOMAIN> {
 
-    protected final DomainType<?, DOMAIN> domainType;
-
-    public DomainIterationHandler(DomainType<?, DOMAIN> domainType,
+    public DomainIterationHandler(DomainType<BASIC, DOMAIN> domainType,
             IterationCallback<RESULT, DOMAIN> iterationCallback) {
-        super(iterationCallback);
-        assertNotNull(domainType);
-        this.domainType = domainType;
-    }
-
-    @Override
-    protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
-        return new DomainResultProvider<>(() -> domainType.createScalar(),
-                query);
+        super(() -> domainType.createScalar(), iterationCallback);
     }
 
 }

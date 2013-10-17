@@ -24,7 +24,7 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * 
  */
 public class OptionalDomainSingleResultParameter<BASIC, DOMAIN> extends
-        AbstractSingleResultParameter<BASIC, Optional<DOMAIN>> {
+        ScalarSingleResultParameter<BASIC, Optional<DOMAIN>> {
 
     public OptionalDomainSingleResultParameter(
             DomainType<BASIC, DOMAIN> domainType) {

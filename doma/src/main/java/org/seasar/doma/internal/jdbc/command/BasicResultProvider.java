@@ -33,7 +33,7 @@ public class BasicResultProvider<BASIC, CONTAINER> implements
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
-    protected final BasicFetcher fetcher;
+    protected final ScalarFetcher fetcher;
 
     /**
      * 
@@ -44,7 +44,7 @@ public class BasicResultProvider<BASIC, CONTAINER> implements
             Query query) {
         assertNotNull(supplier, query);
         this.supplier = supplier;
-        this.fetcher = new BasicFetcher(query);
+        this.fetcher = new ScalarFetcher(query);
     }
 
     @Override

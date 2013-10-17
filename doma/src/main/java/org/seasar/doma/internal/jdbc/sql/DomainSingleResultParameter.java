@@ -22,7 +22,7 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * 
  */
 public class DomainSingleResultParameter<BASIC, DOMAIN> extends
-        AbstractSingleResultParameter<BASIC, DOMAIN> {
+        ScalarSingleResultParameter<BASIC, DOMAIN> {
 
     public DomainSingleResultParameter(DomainType<BASIC, DOMAIN> domainType) {
         super(domainType.createScalar());

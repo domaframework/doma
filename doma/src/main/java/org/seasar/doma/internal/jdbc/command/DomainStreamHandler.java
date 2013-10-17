@@ -30,12 +30,12 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  * @param <DOMAIN>
  */
-public class DomainStreamHandler<RESULT, DOMAIN> extends
+public class DomainStreamHandler<RESULT, BASIC, DOMAIN> extends
         AbstractStreamHandler<RESULT, DOMAIN> {
 
-    protected final DomainType<?, DOMAIN> domainType;
+    protected final DomainType<BASIC, DOMAIN> domainType;
 
-    public DomainStreamHandler(DomainType<?, DOMAIN> domainType,
+    public DomainStreamHandler(DomainType<BASIC, DOMAIN> domainType,
             Function<Stream<DOMAIN>, RESULT> mapper) {
         super(mapper);
         assertNotNull(domainType);
@@ -44,8 +44,8 @@ public class DomainStreamHandler<RESULT, DOMAIN> extends
 
     @Override
     protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
-        return new DomainResultProvider<>(() -> domainType.createScalar(),
-                query);
+        return new DomainResultProvider<BASIC, DOMAIN>(
+                () -> domainType.createScalar(), query);
     }
 
 }

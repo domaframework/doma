@@ -41,7 +41,7 @@ public class OptionalDomainListParameter<BASIC, DOMAIN> extends
     }
 
     @Override
-    public DomainResultProvider<Optional<DOMAIN>> createResultProvider(
+    public DomainResultProvider<BASIC, Optional<DOMAIN>> createResultProvider(
             Query query) {
         return new DomainResultProvider<>(
                 () -> domainType.createOptionalScalar(), query);

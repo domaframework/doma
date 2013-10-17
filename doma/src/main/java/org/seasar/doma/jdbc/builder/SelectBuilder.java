@@ -271,6 +271,7 @@ public class SelectBuilder {
         return execute(singleResultHandler);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <R> ResultSetHandler<R> createSingleResultHanlder(
             Class<R> resultClass) {
         if (resultClass.isAnnotationPresent(Entity.class)) {
@@ -280,12 +281,12 @@ public class SelectBuilder {
         } else if (resultClass.isAnnotationPresent(Domain.class)) {
             DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
                     resultClass, config.getClassHelper());
-            return new DomainSingleResultHandler<R>(domainType);
+            return new DomainSingleResultHandler(domainType);
         } else {
             DomainType<?, R> domainType = DomainTypeFactory
                     .getExternalDomainType(resultClass, config.getClassHelper());
             if (domainType != null) {
-                return new DomainSingleResultHandler<R>(domainType);
+                return new DomainSingleResultHandler(domainType);
             }
         }
         return new BasicSingleResultHandler<R>(() -> createWrapper(
@@ -356,6 +357,7 @@ public class SelectBuilder {
         return execute(resultListHandler);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <R> ResultSetHandler<List<R>> createResultListHanlder(
             Class<R> resultClass) {
         if (resultClass.isAnnotationPresent(Entity.class)) {
@@ -365,12 +367,12 @@ public class SelectBuilder {
         } else if (resultClass.isAnnotationPresent(Domain.class)) {
             DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
                     resultClass, config.getClassHelper());
-            return new DomainResultListHandler<R>(domainType);
+            return new DomainResultListHandler(domainType);
         } else {
             DomainType<?, R> domainType = DomainTypeFactory
                     .getExternalDomainType(resultClass, config.getClassHelper());
             if (domainType != null) {
-                return new DomainResultListHandler<R>(domainType);
+                return new DomainResultListHandler(domainType);
             }
         }
         return new BasicResultListHandler<R>(() -> createWrapper("resultClass",
@@ -450,6 +452,7 @@ public class SelectBuilder {
         return execute(iterationHandler);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <R, T> ResultSetHandler<R> createIterationHanlder(
             Class<T> targetClass, IterationCallback<R, T> iterationCallback) {
         if (targetClass.isAnnotationPresent(Entity.class)) {
@@ -460,14 +463,12 @@ public class SelectBuilder {
         } else if (targetClass.isAnnotationPresent(Domain.class)) {
             DomainType<?, T> domainType = DomainTypeFactory.getDomainType(
                     targetClass, config.getClassHelper());
-            return new DomainIterationHandler<R, T>(domainType,
-                    iterationCallback);
+            return new DomainIterationHandler(domainType, iterationCallback);
         } else {
             DomainType<?, T> domainType = DomainTypeFactory
                     .getExternalDomainType(targetClass, config.getClassHelper());
             if (domainType != null) {
-                return new DomainIterationHandler<R, T>(domainType,
-                        iterationCallback);
+                return new DomainIterationHandler(domainType, iterationCallback);
             }
         }
         return new BasicIterationHandler<R, T>(() -> createWrapper(

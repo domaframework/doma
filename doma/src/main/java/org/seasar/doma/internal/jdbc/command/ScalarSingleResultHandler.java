@@ -13,26 +13,32 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.wrapper.BasicScalar;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.wrapper.Scalar;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
  * 
  */
-public class BasicSingleResultParameter<BASIC> extends
-        ScalarSingleResultParameter<BASIC, BASIC> {
+public class ScalarSingleResultHandler<BASIC, CONTAINER> extends
+        AbstractSingleResultHandler<CONTAINER> {
 
-    public BasicSingleResultParameter(Supplier<Wrapper<BASIC>> supplier,
-            boolean primitive) {
-        super(new BasicScalar<>(supplier, primitive));
+    protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
+
+    public ScalarSingleResultHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
         assertNotNull(supplier);
+        this.supplier = supplier;
     }
 
+    @Override
+    protected ScalarResultProvider<BASIC, CONTAINER> createResultProvider(
+            SelectQuery query) {
+        return new ScalarResultProvider<>(supplier, query);
+    }
 }
