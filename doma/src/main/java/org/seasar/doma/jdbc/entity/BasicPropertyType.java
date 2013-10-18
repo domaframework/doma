@@ -23,9 +23,9 @@ import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
-import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
@@ -147,20 +147,20 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
         if (domainType != null) {
             if (isOptional) {
-                return () -> new BasicPropertyState<Optional<D>>(
+                return () -> new DefaultPropertyState<Optional<D>>(
                         () -> domainType.createOptionalScalar());
             } else {
-                return () -> new BasicPropertyState<D>(
+                return () -> new DefaultPropertyState<D>(
                         () -> domainType.createScalar());
             }
         }
         if (isOptional) {
-            return () -> new BasicPropertyState<Optional<V>>(
-                    () -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+            return () -> new DefaultPropertyState<Optional<V>>(
+                    () -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
                             wrapperSupplier));
         } else {
-            return () -> new BasicPropertyState<V>(
-                    () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
+            return () -> new DefaultPropertyState<V>(
+                    () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
                             wrapperSupplier, field.getClass().isPrimitive()));
         }
     }
@@ -298,16 +298,22 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         public Wrapper<V> getWrapper() {
             return delegate.getWrapper();
         }
+
+        @Override
+        public Optional<Class<?>> getDomainClass() {
+            return delegate.getDomainClass();
+        }
+
     }
 
     /**
      * @author nakamura-to
      */
-    protected class BasicPropertyState<C> implements PropertyState<E, V> {
+    protected class DefaultPropertyState<C> implements PropertyState<E, V> {
 
         protected final Scalar<V, C> scalar;
 
-        protected BasicPropertyState(Supplier<Scalar<V, C>> holderSupplier) {
+        protected DefaultPropertyState(Supplier<Scalar<V, C>> holderSupplier) {
             this.scalar = holderSupplier.get();
         }
 
@@ -343,6 +349,12 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         public Wrapper<V> getWrapper() {
             return scalar.getWrapper();
         }
+
+        @Override
+        public Optional<Class<?>> getDomainClass() {
+            return scalar.getDomainClass();
+        }
+
     }
 
 }

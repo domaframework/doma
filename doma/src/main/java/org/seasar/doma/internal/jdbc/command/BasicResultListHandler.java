@@ -29,7 +29,7 @@ public class BasicResultListHandler<BASIC> extends
         ScalarResultListHandler<BASIC, BASIC> {
 
     public BasicResultListHandler(Supplier<Wrapper<BASIC>> supplier) {
-        super(() -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
                 supplier, false));
         assertNotNull(supplier);
     }

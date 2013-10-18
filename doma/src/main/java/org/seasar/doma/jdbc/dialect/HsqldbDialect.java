@@ -21,8 +21,8 @@ import java.util.Collections;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
@@ -139,7 +139,7 @@ public class HsqldbDialect extends StandardDialect {
         }
         String rawSql = "call identity()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList());
     }
 
     @Override
@@ -152,7 +152,7 @@ public class HsqldbDialect extends StandardDialect {
                 + qualifiedSequenceName
                 + " from information_schema.system_tables where table_name = 'SYSTEM_TABLES'";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList());
     }
 
     @Override

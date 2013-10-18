@@ -33,7 +33,7 @@ public class OptionalBasicSingleResultHandler<BASIC> extends
 
     public OptionalBasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier,
             boolean primitive) {
-        super(() -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
                 supplier));
         assertNotNull(supplier);
     }

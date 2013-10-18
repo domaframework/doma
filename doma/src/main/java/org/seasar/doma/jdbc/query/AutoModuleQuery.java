@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSql;
-import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlParameter;
 
 /**
  * @author taedium
@@ -41,7 +41,7 @@ public abstract class AutoModuleQuery implements ModuleQuery {
 
     protected int queryTimeout;
 
-    protected final List<CallableSqlParameter> parameters = new ArrayList<CallableSqlParameter>();
+    protected final List<SqlParameter> parameters = new ArrayList<>();
 
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
@@ -69,7 +69,7 @@ public abstract class AutoModuleQuery implements ModuleQuery {
         this.queryTimeout = queryTimeout;
     }
 
-    public void addParameter(CallableSqlParameter parameter) {
+    public void addParameter(SqlParameter parameter) {
         parameters.add(parameter);
     }
 

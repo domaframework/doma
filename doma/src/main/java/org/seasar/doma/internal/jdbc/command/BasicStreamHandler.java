@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import org.seasar.doma.jdbc.query.SelectQuery;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -32,22 +29,12 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <BASIC>
  */
 public class BasicStreamHandler<RESULT, BASIC> extends
-        AbstractStreamHandler<RESULT, BASIC> {
-
-    protected final Supplier<Wrapper<BASIC>> supplier;
+        ScalarStreamHandler<RESULT, BASIC, BASIC> {
 
     public BasicStreamHandler(Supplier<Wrapper<BASIC>> supplier,
             Function<Stream<BASIC>, RESULT> mapper) {
-        super(mapper);
-        assertNotNull(supplier);
-        this.supplier = supplier;
-    }
-
-    @Override
-    protected ResultProvider<BASIC> createResultProvider(SelectQuery query) {
-        return new BasicResultProvider<BASIC, BASIC>(
-                () -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
-                        supplier, false), query);
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
+                supplier, false), mapper);
     }
 
 }

@@ -15,36 +15,21 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.List;
 import java.util.Optional;
 
-import org.seasar.doma.internal.jdbc.command.DomainResultProvider;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
 public class OptionalDomainListParameter<BASIC, DOMAIN> extends
-        AbstractListParameter<Optional<DOMAIN>> {
-
-    protected final DomainType<BASIC, DOMAIN> domainType;
+        ScalarListParameter<BASIC, Optional<DOMAIN>> {
 
     public OptionalDomainListParameter(DomainType<BASIC, DOMAIN> domainType,
             List<Optional<DOMAIN>> list, String name) {
-        super(list, name);
-        assertNotNull(domainType);
-        this.domainType = domainType;
-    }
-
-    @Override
-    public DomainResultProvider<BASIC, Optional<DOMAIN>> createResultProvider(
-            Query query) {
-        return new DomainResultProvider<>(
-                () -> domainType.createOptionalScalar(), query);
+        super(() -> domainType.createOptionalScalar(), list, name);
     }
 
 }

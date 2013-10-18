@@ -22,11 +22,9 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.query.BatchInsertQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery;
 
 import example.entity.Emp;
 
@@ -91,7 +89,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("insert into emp (id, name, salary) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());

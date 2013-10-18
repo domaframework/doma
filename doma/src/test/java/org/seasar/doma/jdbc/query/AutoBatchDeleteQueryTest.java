@@ -22,10 +22,8 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
-import org.seasar.doma.jdbc.query.BatchDeleteQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -82,7 +80,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("delete from EMP where ID = ? and VERSION = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertTrue(parameters.get(1).getWrapper().get() == null);
@@ -118,7 +116,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
 
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("delete from EMP where ID = ?", sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
 

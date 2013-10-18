@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.ResultMappingException;
@@ -80,10 +79,7 @@ public class EntityBuilder<E> {
             EntityPropertyType<E, ?, ?> propertyType = entry.getValue();
             PropertyState<E, ?> state = propertyType.createState();
             GetValueFunction function = new GetValueFunction(resultSet, index);
-            // TODO
-            state.getWrapper().accept(jdbcMappingVisitor, function,
-                    new JdbcMappingHint() {
-                    });
+            state.getWrapper().accept(jdbcMappingVisitor, function, state);
             states.put(propertyType.getName(), state);
         }
         E entity = entityType.newEntity(states);

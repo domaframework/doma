@@ -17,7 +17,9 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.wrapper.Scalar;
+import java.util.Optional;
+
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -27,8 +29,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <BASIC>
  * @param <CONTAINER>
  */
-public class ScalarInParameter<BASIC, CONTAINER> implements
-        InParameter<BASIC> {
+public class ScalarInParameter<BASIC, CONTAINER> implements InParameter<BASIC> {
 
     protected final Scalar<BASIC, CONTAINER> scalar;
 
@@ -54,8 +55,13 @@ public class ScalarInParameter<BASIC, CONTAINER> implements
     }
 
     @Override
+    public Optional<Class<?>> getDomainClass() {
+        return Optional.empty();
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitInParameter(this, p);
     }
 }

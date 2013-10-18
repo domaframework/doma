@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class PreparedSql implements Sql<PreparedSqlParameter<?>> {
+public class PreparedSql implements Sql<InParameter<?>> {
 
     protected final SqlKind kind;
 
@@ -37,11 +37,11 @@ public class PreparedSql implements Sql<PreparedSqlParameter<?>> {
 
     protected final String sqlFilePath;
 
-    protected final List<PreparedSqlParameter<?>> parameters;
+    protected final List<InParameter<?>> parameters;
 
     public PreparedSql(SqlKind kind, CharSequence rawSql,
             CharSequence formattedSql, String sqlFilePath,
-            List<? extends PreparedSqlParameter<?>> parameters) {
+            List<? extends InParameter<?>> parameters) {
         if (kind == null) {
             throw new DomaNullPointerException("kind");
         }
@@ -82,7 +82,7 @@ public class PreparedSql implements Sql<PreparedSqlParameter<?>> {
     }
 
     @Override
-    public List<PreparedSqlParameter<?>> getParameters() {
+    public List<InParameter<?>> getParameters() {
         return parameters;
     }
 

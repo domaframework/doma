@@ -23,11 +23,9 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.query.BatchUpdateQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery;
 
 import example.entity.Emp;
 
@@ -92,7 +90,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("update emp set name = ?, salary = ? where id = ?",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertNull(parameters.get(1).getWrapper().get());

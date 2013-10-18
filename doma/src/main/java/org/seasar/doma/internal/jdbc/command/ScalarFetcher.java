@@ -22,18 +22,17 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.seasar.doma.jdbc.JdbcMappingHint;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.query.Query;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ScalarFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
+public class ScalarFetcher implements ResultFetcher<ResultSet, Scalar<?, ?>> {
 
     protected final Query query;
 
@@ -45,9 +44,9 @@ public class ScalarFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
     }
 
     @Override
-    public void fetch(ResultSet resultSet, Wrapper<?> wrapper)
+    public void fetch(ResultSet resultSet, Scalar<?, ?> scalar)
             throws SQLException {
-        assertNotNull(resultSet, wrapper);
+        assertNotNull(resultSet, scalar);
 
         if (!columnCountValidated) {
             validateColumnCount(resultSet);
@@ -56,9 +55,7 @@ public class ScalarFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         GetValueFunction function = new GetValueFunction(resultSet, 1);
-        // TODO
-        wrapper.accept(jdbcMappingVisitor, function, new JdbcMappingHint() {
-        });
+        scalar.getWrapper().accept(jdbcMappingVisitor, function, scalar);
     }
 
     protected void validateColumnCount(ResultSet resultSet) throws SQLException {

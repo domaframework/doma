@@ -3,8 +3,8 @@ package org.seasar.doma.jdbc.domain;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.AssertionUtil;
-import org.seasar.doma.internal.wrapper.Scalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 public abstract class AbstractDomainType<BASIC, DOMAIN> implements
@@ -41,8 +41,9 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         }
 
         @Override
-        public Class<?> getDomainClass() {
-            return AbstractDomainType.this.getDomainClass();
+        public Optional<Class<?>> getDomainClass() {
+            Class<?> c = AbstractDomainType.this.getDomainClass();
+            return Optional.<Class<?>> of(c);
         }
 
         @Override
@@ -88,8 +89,9 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         }
 
         @Override
-        public Class<?> getDomainClass() {
-            return AbstractDomainType.this.getDomainClass();
+        public Optional<Class<?>> getDomainClass() {
+            Class<?> clazz = AbstractDomainType.this.getDomainClass();
+            return Optional.<Class<?>> of(clazz);
         }
 
         @Override

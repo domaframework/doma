@@ -22,8 +22,8 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.H212126ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.H212126PagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
@@ -140,7 +140,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call identity()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList());
     }
 
     @Override
@@ -151,7 +151,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call next value for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList());
     }
 
     @Override

@@ -21,11 +21,9 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.query.BatchDeleteQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery;
 
 import example.entity.Emp;
 
@@ -85,7 +83,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
 
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("delete from emp where name = ?", sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
 

@@ -22,15 +22,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
-import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.sql.ResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.SingleResultParameter;
-import org.seasar.doma.jdbc.JdbcMappingHint;
+import org.seasar.doma.internal.jdbc.sql.SqlParameterVisitor;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.command.RegisterOutParameterFunction;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.Query;
@@ -43,7 +42,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class CallableSqlParameterBinder implements
-        ParameterBinder<CallableStatement, CallableSqlParameter> {
+        ParameterBinder<CallableStatement, SqlParameter> {
 
     protected final Query query;
 
@@ -54,17 +53,16 @@ public class CallableSqlParameterBinder implements
 
     @Override
     public void bind(CallableStatement callableStatement,
-            List<? extends CallableSqlParameter> parameters)
-            throws SQLException {
+            List<? extends SqlParameter> parameters) throws SQLException {
         assertNotNull(callableStatement, parameters);
         BindingVisitor visitor = new BindingVisitor(query, callableStatement);
-        for (CallableSqlParameter parameter : parameters) {
+        for (SqlParameter parameter : parameters) {
             parameter.accept(visitor, null);
         }
     }
 
     protected static class BindingVisitor implements
-            CallableSqlParameterVisitor<Void, Void, SQLException> {
+            SqlParameterVisitor<Void, Void, SQLException> {
 
         protected final Dialect dialect;
 
@@ -84,10 +82,8 @@ public class CallableSqlParameterBinder implements
         public <BASIC> Void visitInParameter(InParameter<BASIC> parameter,
                 Void p) throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
-            // TODO
             wrapper.accept(jdbcMappingVisitor, new SetValueFunction(
-                    callableStatement, index), new JdbcMappingHint() {
-            });
+                    callableStatement, index), parameter);
             index++;
             return null;
         }
@@ -98,8 +94,7 @@ public class CallableSqlParameterBinder implements
             Wrapper<BASIC> wrapper = parameter.getWrapper();
             wrapper.accept(jdbcMappingVisitor,
                     new RegisterOutParameterFunction(callableStatement, index),
-                    new JdbcMappingHint() {
-                    });
+                    parameter);
             index++;
             return null;
         }
@@ -129,11 +124,9 @@ public class CallableSqlParameterBinder implements
                 SingleResultParameter<BASIC, RESULT> parameter, Void p)
                 throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
-            // TODO
             wrapper.accept(jdbcMappingVisitor,
                     new RegisterOutParameterFunction(callableStatement, index),
-                    new JdbcMappingHint() {
-                    });
+                    parameter);
             index++;
             return null;
         }

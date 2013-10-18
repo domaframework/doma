@@ -19,8 +19,8 @@ import java.util.Collections;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
 /**
  * @author taedium
@@ -30,7 +30,7 @@ public class UtilLoggingJdbcLoggerTest extends TestCase {
 
     public void testLogSql() throws Exception {
         PreparedSql sql = new PreparedSql(SqlKind.SELECT, "aaa", "bbb", "ccc",
-                Collections.<PreparedSqlParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList());
         UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
         logger.logSql("ddd", "eee", sql);
     }

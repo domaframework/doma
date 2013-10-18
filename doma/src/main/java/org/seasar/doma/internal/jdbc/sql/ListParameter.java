@@ -16,13 +16,14 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import org.seasar.doma.internal.jdbc.command.ResultProvider;
+import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
-public interface ListParameter<ELEMENT> extends CallableSqlParameter {
+public interface ListParameter<ELEMENT> extends SqlParameter {
 
     String getName();
 

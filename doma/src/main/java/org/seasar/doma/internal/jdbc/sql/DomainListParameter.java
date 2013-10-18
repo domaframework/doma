@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.command.DomainResultProvider;
+import org.seasar.doma.internal.jdbc.command.ScalarResultProvider;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -40,8 +40,8 @@ public class DomainListParameter<BASIC, DOMAIN> extends
     }
 
     @Override
-    public DomainResultProvider<BASIC, DOMAIN> createResultProvider(Query query) {
-        return new DomainResultProvider<BASIC, DOMAIN>(
+    public ScalarResultProvider<BASIC, DOMAIN> createResultProvider(Query query) {
+        return new ScalarResultProvider<BASIC, DOMAIN>(
                 () -> domainType.createScalar(), query);
     }
 

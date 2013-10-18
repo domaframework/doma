@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -22,7 +23,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public interface SingleResultParameter<BASIC, RESULT> extends
-        ResultParameter<RESULT> {
+        ResultParameter<RESULT>, JdbcMappingHint {
 
     Wrapper<BASIC> getWrapper();
 }

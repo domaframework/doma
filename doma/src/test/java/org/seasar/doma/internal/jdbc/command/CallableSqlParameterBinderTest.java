@@ -30,10 +30,10 @@ import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -47,7 +47,7 @@ public class CallableSqlParameterBinderTest extends TestCase {
     public void testBind() throws Exception {
         MockCallableStatement callableStatement = new MockCallableStatement();
 
-        List<CallableSqlParameter> parameters = new ArrayList<CallableSqlParameter>();
+        List<SqlParameter> parameters = new ArrayList<>();
         parameters.add(new BasicSingleResultParameter<Integer>(
                 () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
         parameters.add(new BasicInParameter<String>(

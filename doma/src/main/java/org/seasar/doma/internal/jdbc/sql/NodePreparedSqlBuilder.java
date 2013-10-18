@@ -21,6 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +31,9 @@ import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
+import org.seasar.doma.internal.jdbc.scalar.ScalarException;
+import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
@@ -85,8 +89,6 @@ import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNodeVisitor;
 import org.seasar.doma.internal.util.StringUtil;
-import org.seasar.doma.internal.wrapper.WrapperException;
-import org.seasar.doma.internal.wrapper.Wrappers;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
@@ -95,7 +97,6 @@ import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -278,9 +279,9 @@ public class NodePreparedSqlBuilder implements
 
     protected Void handleSingleBindVarialbeNode(BindVariableNode node,
             Context p, Object value, Class<?> valueClass) {
-        Wrapper<?> wrapper = wrap(node.getLocation(), node.getText(), value,
-                valueClass);
-        p.addBindValue(wrapper);
+        Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
+                node.getText(), value, valueClass);
+        p.addBindValue(supplier.get());
         return null;
     }
 
@@ -294,9 +295,9 @@ public class NodePreparedSqlBuilder implements
                         location.getLineNumber(), location.getPosition(),
                         node.getText(), index);
             }
-            Wrapper<?> wrapper = wrap(node.getLocation(), node.getText(), v,
-                    v.getClass());
-            p.addBindValue(wrapper);
+            Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
+                    node.getText(), v, v.getClass());
+            p.addBindValue(supplier.get());
             p.appendRawSql(", ");
             p.appendFormattedSql(", ");
             index++;
@@ -605,11 +606,11 @@ public class NodePreparedSqlBuilder implements
                 "visitUnknownNode");
     }
 
-    protected Wrapper<?> wrap(SqlLocation location, String bindVariableText,
-            Object value, Class<?> valueClass) {
+    protected Supplier<Scalar<?, ?>> wrap(SqlLocation location,
+            String bindVariableText, Object value, Class<?> valueClass) {
         try {
-            return Wrappers.wrap(value, valueClass, config.getClassHelper());
-        } catch (WrapperException e) {
+            return Scalars.wrap(value, valueClass, config.getClassHelper());
+        } catch (ScalarException e) {
             throw new JdbcException(Message.DOMA2118, e, location.getSql(),
                     location.getLineNumber(), location.getPosition(),
                     bindVariableText, e);
@@ -628,7 +629,7 @@ public class NodePreparedSqlBuilder implements
 
         private final StringBuilder formattedSqlBuf = new StringBuilder(200);
 
-        private final List<PreparedSqlParameter<?>> parameters = new ArrayList<PreparedSqlParameter<?>>();
+        private final List<InParameter<?>> parameters = new ArrayList<>();
 
         private boolean available;
 
@@ -665,18 +666,21 @@ public class NodePreparedSqlBuilder implements
             return formattedSqlBuf;
         }
 
-        protected <T> void addBindValue(Wrapper<T> value) {
-            parameters.add(new BasicInParameter<T>(() -> value));
+        protected <BASIC, CONTAINER> void addBindValue(
+                Scalar<BASIC, CONTAINER> scalar) {
+            parameters.add(new ScalarInParameter<BASIC, CONTAINER>(scalar));
             rawSqlBuf.append("?");
-            formattedSqlBuf.append(value.accept(config.getDialect()
-                    .getSqlLogFormattingVisitor(), formattingFunction, null));
+            String formatted = scalar.getWrapper().accept(
+                    config.getDialect().getSqlLogFormattingVisitor(),
+                    formattingFunction, null);
+            formattedSqlBuf.append(formatted);
         }
 
-        protected void addAllParameters(List<PreparedSqlParameter<?>> values) {
+        protected void addAllParameters(List<InParameter<?>> values) {
             parameters.addAll(values);
         }
 
-        protected List<PreparedSqlParameter<?>> getParameters() {
+        protected List<InParameter<?>> getParameters() {
             return parameters;
         }
 

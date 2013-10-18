@@ -1,5 +1,6 @@
-package org.seasar.doma.internal.wrapper;
+package org.seasar.doma.internal.jdbc.scalar;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.seasar.doma.internal.util.AssertionUtil;
@@ -24,8 +25,8 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
     }
 
     @Override
-    public Class<?> getDomainClass() {
-        return null;
+    public Optional<Class<?>> getDomainClass() {
+        return Optional.empty();
     }
 
     @Override

@@ -1,12 +1,15 @@
-package org.seasar.doma.internal.wrapper;
+package org.seasar.doma.internal.jdbc.scalar;
 
+import java.util.Optional;
+
+import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.wrapper.Wrapper;
 
-public interface Scalar<BASIC, CONTAINER> {
+public interface Scalar<BASIC, CONTAINER> extends JdbcMappingHint {
 
     Class<BASIC> getBasicClass();
 
-    Class<?> getDomainClass();
+    Optional<Class<?>> getDomainClass();
 
     boolean isOptional();
 

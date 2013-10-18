@@ -21,8 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.JdbcMappingHint;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
@@ -33,7 +32,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class PreparedSqlParameterBinder implements
-        ParameterBinder<PreparedStatement, PreparedSqlParameter<?>> {
+        ParameterBinder<PreparedStatement, InParameter<?>> {
 
     protected final Query query;
 
@@ -44,19 +43,16 @@ public class PreparedSqlParameterBinder implements
 
     @Override
     public void bind(PreparedStatement preparedStatement,
-            List<? extends PreparedSqlParameter<?>> paramters)
-            throws SQLException {
+            List<? extends InParameter<?>> paramters) throws SQLException {
         assertNotNull(preparedStatement, paramters);
         int index = 1;
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
-        for (PreparedSqlParameter<?> parameter : paramters) {
+        for (InParameter<?> parameter : paramters) {
             SetValueFunction function = new SetValueFunction(preparedStatement,
                     index);
             Wrapper<?> wrapper = parameter.getWrapper();
-            // TODO
-            wrapper.accept(jdbcMappingVisitor, function, new JdbcMappingHint() {
-            });
+            wrapper.accept(jdbcMappingVisitor, function, parameter);
             index++;
         }
     }

@@ -23,17 +23,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
-import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.sql.ResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.SingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.SqlParameterVisitor;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModuleQuery;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -45,7 +44,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class CallableSqlParameterFetcher implements
-        ResultFetcher<CallableStatement, List<? extends CallableSqlParameter>> {
+        ResultFetcher<CallableStatement, List<? extends SqlParameter>> {
 
     protected final ModuleQuery query;
 
@@ -56,18 +55,17 @@ public class CallableSqlParameterFetcher implements
 
     @Override
     public void fetch(CallableStatement callableStatement,
-            List<? extends CallableSqlParameter> parameters)
-            throws SQLException {
+            List<? extends SqlParameter> parameters) throws SQLException {
         assertNotNull(callableStatement, parameters);
         FetchingVisitor fetchngVisitor = new FetchingVisitor(query,
                 callableStatement);
-        for (CallableSqlParameter parameter : parameters) {
+        for (SqlParameter parameter : parameters) {
             parameter.accept(fetchngVisitor, null);
         }
     }
 
     protected static class FetchingVisitor implements
-            CallableSqlParameterVisitor<Void, Void, SQLException> {
+            SqlParameterVisitor<Void, Void, SQLException> {
 
         protected final ModuleQuery query;
 
@@ -98,10 +96,8 @@ public class CallableSqlParameterFetcher implements
         public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter,
                 Void p) throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
-            // TODO
             wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index), new JdbcMappingHint() {
-            });
+                    callableStatement, index), parameter);
             parameter.update();
             index++;
             return null;
@@ -129,10 +125,8 @@ public class CallableSqlParameterFetcher implements
                 SingleResultParameter<BASIC, RESULT> parameter, Void p)
                 throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
-            // TODO
             wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index), new JdbcMappingHint() {
-            });
+                    callableStatement, index), parameter);
             index++;
             return null;
         }

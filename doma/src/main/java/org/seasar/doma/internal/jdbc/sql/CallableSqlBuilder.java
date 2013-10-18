@@ -24,6 +24,7 @@ import java.util.List;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -32,7 +33,7 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class CallableSqlBuilder
         implements
-        CallableSqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
+        SqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
 
     protected final Config config;
 
@@ -40,7 +41,7 @@ public class CallableSqlBuilder
 
     protected final ResultParameter<?> resultParameter;
 
-    protected final List<CallableSqlParameter> parameters;
+    protected final List<SqlParameter> parameters;
 
     protected final String moduleName;
 
@@ -49,13 +50,12 @@ public class CallableSqlBuilder
     protected boolean began;
 
     public CallableSqlBuilder(Config config, SqlKind kind, String moduleName,
-            List<CallableSqlParameter> parameters) {
+            List<SqlParameter> parameters) {
         this(config, kind, moduleName, parameters, null);
     }
 
     public CallableSqlBuilder(Config config, SqlKind kind, String moduleName,
-            List<CallableSqlParameter> parameters,
-            ResultParameter<?> resultParameter) {
+            List<SqlParameter> parameters, ResultParameter<?> resultParameter) {
         assertNotNull(config, kind, parameters, moduleName);
         this.config = config;
         this.kind = kind;
@@ -75,12 +75,12 @@ public class CallableSqlBuilder
         context.append("call ");
         context.append(moduleName);
         context.append("(");
-        for (CallableSqlParameter parameter : parameters) {
+        for (SqlParameter parameter : parameters) {
             parameter.accept(this, context);
         }
         context.cutBackIfNecessary();
         context.append(")}");
-        LinkedList<CallableSqlParameter> allParameters = new LinkedList<CallableSqlParameter>(
+        LinkedList<SqlParameter> allParameters = new LinkedList<SqlParameter>(
                 parameters);
         if (resultParameter != null) {
             allParameters.addFirst(resultParameter);
@@ -94,7 +94,6 @@ public class CallableSqlBuilder
             throws RuntimeException {
         Wrapper<BASIC> wrapper = parameter.getWrapper();
         p.appendRawSql("?, ");
-        // TODO
         p.appendFormattedSql(wrapper.accept(config.getDialect()
                 .getSqlLogFormattingVisitor(), formattingFunction, null));
         p.appendFormattedSql(", ");
@@ -153,7 +152,7 @@ public class CallableSqlBuilder
 
         private final StringBuilder formattedSqlBuf = new StringBuilder(200);
 
-        private final List<CallableSqlParameter> contextParameters = new ArrayList<CallableSqlParameter>();
+        private final List<SqlParameter> contextParameters = new ArrayList<>();
 
         protected void append(CharSequence sql) {
             appendRawSql(sql);
@@ -183,7 +182,7 @@ public class CallableSqlBuilder
             return formattedSqlBuf;
         }
 
-        protected void addParameter(CallableSqlParameter parameter) {
+        protected void addParameter(SqlParameter parameter) {
             contextParameters.add(parameter);
         }
 

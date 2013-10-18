@@ -15,10 +15,13 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.util.Optional;
+
 /**
  * @author nakamura-to
- *
+ * 
  */
 public interface JdbcMappingHint {
 
+    Optional<Class<?>> getDomainClass();
 }

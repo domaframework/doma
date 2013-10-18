@@ -23,8 +23,8 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Db2ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.Db2PagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -158,7 +158,7 @@ public class Db2Dialect extends StandardDialect {
         }
         String rawSql = "values nextval for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList());
     }
 
     @Override

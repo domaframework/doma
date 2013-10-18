@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.internal.jdbc.sql.SqlParameterVisitor;
+
 /**
  * SQLのパラメータを表します。
  * 
@@ -29,4 +31,7 @@ public interface SqlParameter {
      * @return パラメータの値を返します。
      */
     Object getValue();
+
+    <R, P, TH extends Throwable> R accept(
+            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH;
 }

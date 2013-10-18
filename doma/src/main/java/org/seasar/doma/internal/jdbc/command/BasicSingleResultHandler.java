@@ -28,7 +28,7 @@ public class BasicSingleResultHandler<BASIC> extends
 
     public BasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier,
             boolean primitive) {
-        super(() -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
                 supplier, primitive));
     }
 

@@ -55,7 +55,7 @@ public abstract class AbstractResultListParameter<ELEMENT> implements
 
     @Override
     public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitResultListParameter(this, p);
     }
 }

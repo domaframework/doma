@@ -15,13 +15,13 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.wrapper.Scalar;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -50,7 +50,7 @@ public class ScalarResultProvider<BASIC, CONTAINER> implements
     @Override
     public CONTAINER get(ResultSet resultSet) throws SQLException {
         Scalar<BASIC, CONTAINER> scalar = supplier.get();
-        fetcher.fetch(resultSet, scalar.getWrapper());
+        fetcher.fetch(resultSet, scalar);
         return scalar.get();
     }
 

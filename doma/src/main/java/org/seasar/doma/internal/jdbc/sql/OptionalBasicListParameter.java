@@ -15,14 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.jdbc.command.BasicResultProvider;
-import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -30,23 +26,12 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class OptionalBasicListParameter<BASIC> extends
-        AbstractListParameter<Optional<BASIC>> {
-
-    protected final Supplier<Wrapper<BASIC>> supplier;
+        ScalarListParameter<BASIC, Optional<BASIC>> {
 
     public OptionalBasicListParameter(Supplier<Wrapper<BASIC>> supplier,
             List<Optional<BASIC>> list, String name) {
-        super(list, name);
-        assertNotNull(supplier);
-        this.supplier = supplier;
-    }
-
-    @Override
-    public BasicResultProvider<BASIC, Optional<BASIC>> createResultProvider(
-            Query query) {
-        return new BasicResultProvider<>(
-                () -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
-                        supplier), query);
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
+                supplier), list, name);
     }
 
 }

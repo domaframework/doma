@@ -21,10 +21,8 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.query.AutoInsertQuery;
-import org.seasar.doma.jdbc.query.InsertQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -73,7 +71,7 @@ public class AutoInsertQueryTest extends TestCase {
         assertEquals(
                 "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());
@@ -99,7 +97,7 @@ public class AutoInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());
@@ -125,7 +123,7 @@ public class AutoInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());
@@ -151,7 +149,7 @@ public class AutoInsertQueryTest extends TestCase {
         PreparedSql sql = query.getSql();
         assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals(new BigDecimal(200), parameters.get(1).getWrapper().get());

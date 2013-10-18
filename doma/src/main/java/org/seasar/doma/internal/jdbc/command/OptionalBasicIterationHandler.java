@@ -30,7 +30,7 @@ public class OptionalBasicIterationHandler<RESULT, BASIC> extends
 
     public OptionalBasicIterationHandler(Supplier<Wrapper<BASIC>> supplier,
             IterationCallback<RESULT, Optional<BASIC>> iterationCallback) {
-        super(() -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
                 supplier), iterationCallback);
     }
 

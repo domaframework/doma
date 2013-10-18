@@ -17,7 +17,7 @@ package org.seasar.doma.jdbc.domain;
 
 import java.util.Optional;
 
-import org.seasar.doma.internal.wrapper.Scalar;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 
 /**
  * ドメイン型のメタタイプです。

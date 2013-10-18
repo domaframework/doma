@@ -15,20 +15,26 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import java.util.function.Supplier;
-
-import org.seasar.doma.wrapper.Wrapper;
-
 /**
  * @author taedium
  * 
  */
-public class BasicResultListParameter<BASIC> extends
-        ScalarResultListParameter<BASIC, BASIC> {
+public interface SqlParameterVisitor<R, P, TH extends Throwable> {
 
-    public BasicResultListParameter(Supplier<Wrapper<BASIC>> supplier) {
-        super(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
-                supplier, false));
-    }
+    <BASIC> R visitInParameter(InParameter<BASIC> parameter, P p) throws TH;
+
+    <BASIC> R visitOutParameter(OutParameter<BASIC> parameter, P p) throws TH;
+
+    <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> R visitInOutParameter(
+            INOUT parameter, P p) throws TH;
+
+    <ELEMENT> R visitListParameter(ListParameter<ELEMENT> parameter, P p)
+            throws TH;
+
+    <BASIC, RESULT> R visitSingleResultParameter(
+            SingleResultParameter<BASIC, RESULT> parameter, P p) throws TH;
+
+    <ELEMENT> R visitResultListParameter(
+            ResultListParameter<ELEMENT> parameter, P p) throws TH;
 
 }

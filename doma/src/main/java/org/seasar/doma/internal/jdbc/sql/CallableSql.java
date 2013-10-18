@@ -21,13 +21,14 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlParameter;
 
 /**
  * 
  * @author taedium
  * 
  */
-public class CallableSql implements Sql<CallableSqlParameter> {
+public class CallableSql implements Sql<SqlParameter> {
 
     protected final SqlKind kind;
 
@@ -35,11 +36,10 @@ public class CallableSql implements Sql<CallableSqlParameter> {
 
     protected final String formattedSql;
 
-    protected final List<CallableSqlParameter> parameters;
+    protected final List<SqlParameter> parameters;
 
     public CallableSql(SqlKind kind, CharSequence rawSql,
-            CharSequence formattedSql,
-            List<? extends CallableSqlParameter> parameters) {
+            CharSequence formattedSql, List<? extends SqlParameter> parameters) {
         if (kind == null) {
             throw new DomaNullPointerException("kind");
         }
@@ -79,7 +79,7 @@ public class CallableSql implements Sql<CallableSqlParameter> {
     }
 
     @Override
-    public List<CallableSqlParameter> getParameters() {
+    public List<SqlParameter> getParameters() {
         return parameters;
     }
 

@@ -15,14 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 
@@ -32,22 +29,11 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <DOMAIN>
  */
 public class OptionalDomainStreamHandler<RESULT, BASIC, DOMAIN> extends
-        AbstractStreamHandler<RESULT, Optional<DOMAIN>> {
-
-    protected final DomainType<BASIC, DOMAIN> domainType;
+        ScalarStreamHandler<RESULT, BASIC, Optional<DOMAIN>> {
 
     public OptionalDomainStreamHandler(DomainType<BASIC, DOMAIN> domainType,
             Function<Stream<Optional<DOMAIN>>, RESULT> mapper) {
-        super(mapper);
-        assertNotNull(domainType);
-        this.domainType = domainType;
-    }
-
-    @Override
-    protected ResultProvider<Optional<DOMAIN>> createResultProvider(
-            SelectQuery query) {
-        return new DomainResultProvider<BASIC, Optional<DOMAIN>>(
-                () -> domainType.createOptionalScalar(), query);
+        super(() -> domainType.createOptionalScalar(), mapper);
     }
 
 }

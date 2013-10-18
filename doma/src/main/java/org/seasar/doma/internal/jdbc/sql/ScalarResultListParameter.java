@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.command.ResultProvider;
 import org.seasar.doma.internal.jdbc.command.ScalarResultProvider;
-import org.seasar.doma.internal.wrapper.Scalar;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.query.Query;
 
 /**

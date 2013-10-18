@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.wrapper.Scalar;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.query.SelectQuery;
 

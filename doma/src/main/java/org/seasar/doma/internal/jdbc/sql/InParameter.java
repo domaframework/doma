@@ -15,7 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-public interface InParameter<BASIC> extends PreparedSqlParameter<BASIC>,
-        CallableSqlParameter {
+import org.seasar.doma.jdbc.JdbcMappingHint;
+import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.wrapper.Wrapper;
 
+public interface InParameter<BASIC> extends SqlParameter, JdbcMappingHint {
+
+    Wrapper<BASIC> getWrapper();
 }

@@ -53,7 +53,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("name like ").param(String.class, "S%");
         builder.sql("and");
         builder.sql("age > ").param(int.class, 20);
-        Emp emp = builder.getSingleResult(Emp.class);
+        Emp emp = builder.getEntitySingleResult(Emp.class);
         assertNull(emp);
     }
 
@@ -69,7 +69,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("age > ").param(int.class, 20);
         Map<String, Object> emp = builder
-                .getSingleResult(MapKeyNamingType.CAMEL_CASE);
+                .getMapSingleResult(MapKeyNamingType.CAMEL_CASE);
         assertNull(emp);
     }
 
@@ -80,7 +80,8 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa = ").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        PhoneNumber phoneNumber = builder.getSingleResult(PhoneNumber.class);
+        PhoneNumber phoneNumber = builder
+                .getScalarSingleResult(PhoneNumber.class);
         assertNull(phoneNumber);
     }
 
@@ -91,7 +92,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa = ").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        String result = builder.getSingleResult(String.class);
+        String result = builder.getScalarSingleResult(String.class);
         assertNull(result);
     }
 
@@ -107,7 +108,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
         try {
-            builder.getSingleResult(Object.class);
+            builder.getScalarSingleResult(Object.class);
             fail();
         } catch (DomaIllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -121,7 +122,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa = ").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        List<Emp> list = builder.getResultList(Emp.class);
+        List<Emp> list = builder.getEntityResultList(Emp.class);
         assertNotNull(list);
     }
 
@@ -133,7 +134,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
         List<Map<String, Object>> list = builder
-                .getResultList(MapKeyNamingType.CAMEL_CASE);
+                .getMapResultList(MapKeyNamingType.CAMEL_CASE);
         assertNotNull(list);
     }
 
@@ -144,7 +145,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa = ").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        List<PhoneNumber> list = builder.getResultList(PhoneNumber.class);
+        List<PhoneNumber> list = builder.getScalarResultList(PhoneNumber.class);
         assertNotNull(list);
     }
 
@@ -155,7 +156,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa = ").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        List<String> list = builder.getResultList(String.class);
+        List<String> list = builder.getScalarResultList(String.class);
         assertNotNull(list);
     }
 
@@ -166,7 +167,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa =").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        builder.iterate(Emp.class, new IterationCallback<Void, Emp>() {
+        builder.iterateAsEntity(Emp.class, new IterationCallback<Void, Emp>() {
 
             @Override
             public Void iterate(Emp target, IterationContext context) {
@@ -183,7 +184,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa =").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        builder.iterate(MapKeyNamingType.CAMEL_CASE,
+        builder.iterateAsMap(MapKeyNamingType.CAMEL_CASE,
                 new IterationCallback<Void, Map<String, Object>>() {
 
                     @Override
@@ -202,7 +203,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa =").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        builder.iterate(PhoneNumber.class,
+        builder.iterateAsScalar(PhoneNumber.class,
                 new IterationCallback<Void, PhoneNumber>() {
 
                     @Override
@@ -221,13 +222,14 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa =").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        builder.iterate(String.class, new IterationCallback<Void, String>() {
+        builder.iterateAsScalar(String.class,
+                new IterationCallback<Void, String>() {
 
-            @Override
-            public Void iterate(String target, IterationContext context) {
-                return null;
-            }
+                    @Override
+                    public Void iterate(String target, IterationContext context) {
+                        return null;
+                    }
 
-        });
+                });
     }
 }

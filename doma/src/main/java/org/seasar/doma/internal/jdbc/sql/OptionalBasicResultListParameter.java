@@ -28,7 +28,7 @@ public class OptionalBasicResultListParameter<BASIC> extends
         ScalarResultListParameter<BASIC, Optional<BASIC>> {
 
     public OptionalBasicResultListParameter(Supplier<Wrapper<BASIC>> supplier) {
-        super(() -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
                 supplier));
     }
 

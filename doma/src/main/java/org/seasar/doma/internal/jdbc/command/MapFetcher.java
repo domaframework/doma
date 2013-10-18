@@ -22,6 +22,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.jdbc.JdbcMappingHint;
@@ -35,6 +36,15 @@ import org.seasar.doma.wrapper.ObjectWrapper;
  */
 public class MapFetcher implements
         ResultFetcher<ResultSet, Map<String, Object>> {
+
+    protected final static JdbcMappingHint objectMappingHint = new JdbcMappingHint() {
+
+        @Override
+        public Optional<Class<?>> getDomainClass() {
+            return Optional.empty();
+        }
+
+    };
 
     protected final Query query;
 
@@ -62,9 +72,7 @@ public class MapFetcher implements
             String key = entry.getValue();
             GetValueFunction function = new GetValueFunction(resultSet, index);
             ObjectWrapper wrapper = new ObjectWrapper();
-            // TODO
-            wrapper.accept(jdbcMappingVisitor, function, new JdbcMappingHint() {
-            });
+            wrapper.accept(jdbcMappingVisitor, function, objectMappingHint);
             map.put(key, wrapper.get());
         }
     }

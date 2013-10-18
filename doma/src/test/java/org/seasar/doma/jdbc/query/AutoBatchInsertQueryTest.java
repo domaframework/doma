@@ -22,10 +22,8 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
-import org.seasar.doma.jdbc.query.BatchInsertQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -84,7 +82,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         assertEquals(
                 "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
                 sql.getRawSql());
-        List<PreparedSqlParameter<?>> parameters = sql.getParameters();
+        List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());

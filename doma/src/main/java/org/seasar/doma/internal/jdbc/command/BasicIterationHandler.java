@@ -29,7 +29,7 @@ public class BasicIterationHandler<RESULT, BASIC> extends
 
     public BasicIterationHandler(Supplier<Wrapper<BASIC>> supplier,
             IterationCallback<RESULT, BASIC> iterationCallback) {
-        super(() -> new org.seasar.doma.internal.wrapper.BasicScalar<>(
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
                 supplier, false), iterationCallback);
     }
 

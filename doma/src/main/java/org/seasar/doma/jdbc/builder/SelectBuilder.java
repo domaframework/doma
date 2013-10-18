@@ -18,26 +18,24 @@ package org.seasar.doma.jdbc.builder;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
-import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
-import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
-import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
-import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.MapIterationHandler;
 import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
 import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
-import org.seasar.doma.internal.wrapper.WrapperException;
-import org.seasar.doma.internal.wrapper.Wrappers;
+import org.seasar.doma.internal.jdbc.command.ScalarIterationHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarResultListHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
+import org.seasar.doma.internal.jdbc.scalar.ScalarException;
+import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
@@ -50,13 +48,10 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.SelectCommand;
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.jdbc.query.SqlSelectQuery;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * SELECT文を組み立て実行するクラスです。
@@ -226,15 +221,36 @@ public class SelectBuilder {
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
      */
-    public <R> R getSingleResult(Class<R> resultClass) {
+    public <R> R getEntitySingleResult(Class<R> resultClass) {
         if (resultClass == null) {
             throw new DomaNullPointerException("resultClass");
         }
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSingleResult");
         }
-        ResultSetHandler<R> singleResultHandler = createSingleResultHanlder(resultClass);
-        return execute(singleResultHandler);
+        if (!resultClass.isAnnotationPresent(Entity.class)) {
+            // TODO
+            throw new RuntimeException("resultClass");
+        }
+        EntityType<R> entityType = EntityTypeFactory.getEntityType(resultClass,
+                config.getClassHelper());
+        ResultSetHandler<R> handler = new EntitySingleResultHandler<R>(
+                entityType);
+        return execute(handler);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <R> R getScalarSingleResult(Class<R> resultClass) {
+        if (resultClass == null) {
+            throw new DomaNullPointerException("resultClass");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getSingleResult");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
+                resultClass);
+        ResultSetHandler<R> handler = new ScalarSingleResultHandler(supplier);
+        return execute(handler);
     }
 
     /**
@@ -259,7 +275,8 @@ public class SelectBuilder {
      *             上記以外でJDBCに関する例外が発生した場合
      * @since 1.17.0
      */
-    public Map<String, Object> getSingleResult(MapKeyNamingType mapKeyNamingType) {
+    public Map<String, Object> getMapSingleResult(
+            MapKeyNamingType mapKeyNamingType) {
         if (mapKeyNamingType == null) {
             throw new DomaNullPointerException("mapKeyNamingType");
         }
@@ -269,28 +286,6 @@ public class SelectBuilder {
         MapSingleResultHandler singleResultHandler = new MapSingleResultHandler(
                 mapKeyNamingType);
         return execute(singleResultHandler);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private <R> ResultSetHandler<R> createSingleResultHanlder(
-            Class<R> resultClass) {
-        if (resultClass.isAnnotationPresent(Entity.class)) {
-            EntityType<R> entityType = EntityTypeFactory.getEntityType(
-                    resultClass, config.getClassHelper());
-            return new EntitySingleResultHandler<R>(entityType);
-        } else if (resultClass.isAnnotationPresent(Domain.class)) {
-            DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
-                    resultClass, config.getClassHelper());
-            return new DomainSingleResultHandler(domainType);
-        } else {
-            DomainType<?, R> domainType = DomainTypeFactory
-                    .getExternalDomainType(resultClass, config.getClassHelper());
-            if (domainType != null) {
-                return new DomainSingleResultHandler(domainType);
-            }
-        }
-        return new BasicSingleResultHandler<R>(() -> createWrapper(
-                "resultClass", resultClass), resultClass.isPrimitive());
     }
 
     /**
@@ -318,15 +313,37 @@ public class SelectBuilder {
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
      */
-    public <R> List<R> getResultList(Class<R> resultClass) {
+    public <R> List<R> getEntityResultList(Class<R> resultClass) {
         if (resultClass == null) {
             throw new DomaNullPointerException("resultClass");
         }
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getResultList");
         }
-        ResultSetHandler<List<R>> resultListHandler = createResultListHanlder(resultClass);
-        return execute(resultListHandler);
+        if (!resultClass.isAnnotationPresent(Entity.class)) {
+            // TODO
+            throw new RuntimeException();
+        }
+        EntityType<R> entityType = EntityTypeFactory.getEntityType(resultClass,
+                config.getClassHelper());
+        ResultSetHandler<List<R>> handler = new EntityResultListHandler<R>(
+                entityType);
+        return execute(handler);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <R> List<R> getScalarResultList(Class<R> resultClass) {
+        if (resultClass == null) {
+            throw new DomaNullPointerException("resultClass");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getResultList");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
+                resultClass);
+        ResultSetHandler<List<R>> handler = new ScalarResultListHandler(
+                supplier);
+        return execute(handler);
     }
 
     /**
@@ -344,7 +361,7 @@ public class SelectBuilder {
      *             上記以外でJDBCに関する例外が発生した場合
      * @since 1.17.0
      */
-    public List<Map<String, Object>> getResultList(
+    public List<Map<String, Object>> getMapResultList(
             MapKeyNamingType mapKeyNamingType) {
         if (mapKeyNamingType == null) {
             throw new DomaNullPointerException("mapKeyNamingType");
@@ -355,28 +372,6 @@ public class SelectBuilder {
         MapResultListHandler resultListHandler = new MapResultListHandler(
                 mapKeyNamingType);
         return execute(resultListHandler);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private <R> ResultSetHandler<List<R>> createResultListHanlder(
-            Class<R> resultClass) {
-        if (resultClass.isAnnotationPresent(Entity.class)) {
-            EntityType<R> entityType = EntityTypeFactory.getEntityType(
-                    resultClass, config.getClassHelper());
-            return new EntityResultListHandler<R>(entityType);
-        } else if (resultClass.isAnnotationPresent(Domain.class)) {
-            DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
-                    resultClass, config.getClassHelper());
-            return new DomainResultListHandler(domainType);
-        } else {
-            DomainType<?, R> domainType = DomainTypeFactory
-                    .getExternalDomainType(resultClass, config.getClassHelper());
-            if (domainType != null) {
-                return new DomainResultListHandler(domainType);
-            }
-        }
-        return new BasicResultListHandler<R>(() -> createWrapper("resultClass",
-                resultClass));
     }
 
     /**
@@ -404,7 +399,31 @@ public class SelectBuilder {
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
      */
-    public <R, T> R iterate(Class<T> targetClass,
+    public <R, T> R iterateAsEntity(Class<T> targetClass,
+            IterationCallback<R, T> iterationCallback) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        if (iterationCallback == null) {
+            throw new DomaNullPointerException("iterationCallback");
+        }
+        if (!targetClass.isAnnotationPresent(Entity.class)) {
+            // TODO
+            throw new RuntimeException();
+        }
+
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("iterate");
+        }
+        EntityType<T> entityType = EntityTypeFactory.getEntityType(targetClass,
+                config.getClassHelper());
+        ResultSetHandler<R> iterationHandler = new EntityIterationHandler<R, T>(
+                entityType, iterationCallback);
+        return execute(iterationHandler);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <R, T> R iterateAsScalar(Class<T> targetClass,
             IterationCallback<R, T> iterationCallback) {
         if (targetClass == null) {
             throw new DomaNullPointerException("targetClass");
@@ -415,8 +434,10 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("iterate");
         }
-        ResultSetHandler<R> iterationHandler = createIterationHanlder(
-                targetClass, iterationCallback);
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
+                targetClass);
+        ResultSetHandler<R> iterationHandler = new ScalarIterationHandler(
+                supplier, iterationCallback);
         return execute(iterationHandler);
     }
 
@@ -436,7 +457,7 @@ public class SelectBuilder {
      *             上記以外でJDBCに関する例外が発生した場合
      * @since 1.17.0
      */
-    public <R> R iterate(MapKeyNamingType mapKeyNamingType,
+    public <R> R iterateAsMap(MapKeyNamingType mapKeyNamingType,
             IterationCallback<R, Map<String, Object>> iterationCallback) {
         if (mapKeyNamingType == null) {
             throw new DomaNullPointerException("mapKeyNamingType");
@@ -450,29 +471,6 @@ public class SelectBuilder {
         MapIterationHandler<R> iterationHandler = new MapIterationHandler<R>(
                 mapKeyNamingType, iterationCallback);
         return execute(iterationHandler);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private <R, T> ResultSetHandler<R> createIterationHanlder(
-            Class<T> targetClass, IterationCallback<R, T> iterationCallback) {
-        if (targetClass.isAnnotationPresent(Entity.class)) {
-            EntityType<T> entityType = EntityTypeFactory.getEntityType(
-                    targetClass, config.getClassHelper());
-            return new EntityIterationHandler<R, T>(entityType,
-                    iterationCallback);
-        } else if (targetClass.isAnnotationPresent(Domain.class)) {
-            DomainType<?, T> domainType = DomainTypeFactory.getDomainType(
-                    targetClass, config.getClassHelper());
-            return new DomainIterationHandler(domainType, iterationCallback);
-        } else {
-            DomainType<?, T> domainType = DomainTypeFactory
-                    .getExternalDomainType(targetClass, config.getClassHelper());
-            if (domainType != null) {
-                return new DomainIterationHandler(domainType, iterationCallback);
-            }
-        }
-        return new BasicIterationHandler<R, T>(() -> createWrapper(
-                "targetClass", targetClass), iterationCallback);
     }
 
     private <R> R execute(ResultSetHandler<R> resultSetHandler) {
@@ -612,12 +610,11 @@ public class SelectBuilder {
         return query.getSql();
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> Wrapper<T> createWrapper(String parameterName, Class<T> clazz) {
+    private <T> Supplier<Scalar<?, ?>> createScalarSupplier(
+            String parameterName, Class<T> clazz) {
         try {
-            return (Wrapper<T>) Wrappers.wrap(null, clazz,
-                    config.getClassHelper());
-        } catch (WrapperException e) {
+            return Scalars.wrap(null, clazz, config.getClassHelper());
+        } catch (ScalarException e) {
             throw new DomaIllegalArgumentException(parameterName,
                     Message.DOMA2204.getMessage(clazz, e));
         }

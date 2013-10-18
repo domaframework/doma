@@ -32,7 +32,7 @@ public class OptionalBasicResultListHandler<BASIC> extends
         ScalarResultListHandler<BASIC, Optional<BASIC>> {
 
     public OptionalBasicResultListHandler(Supplier<Wrapper<BASIC>> supplier) {
-        super(() -> new org.seasar.doma.internal.wrapper.OptionalBasicScalar<>(
+        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
                 supplier));
         assertNotNull(supplier);
     }

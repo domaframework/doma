@@ -24,11 +24,11 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.query.SelectQuery;
-import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium
@@ -45,11 +45,12 @@ public class BasicFetcherTest extends TestCase {
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        StringWrapper wrapper = new StringWrapper();
+        BasicScalar<String> scalar = new BasicScalar<String>(
+                () -> new org.seasar.doma.wrapper.StringWrapper(), false);
         ScalarFetcher fetcher = new ScalarFetcher(new MySelectQuery());
-        fetcher.fetch(resultSet, wrapper);
+        fetcher.fetch(resultSet, scalar);
 
-        assertEquals("hoge", wrapper.get());
+        assertEquals("hoge", scalar.getWrapper().get());
     }
 
     protected class MySelectQuery implements SelectQuery {

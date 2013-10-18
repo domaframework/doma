@@ -17,22 +17,33 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.jdbc.command.ScalarResultProvider;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
-public class BasicSingleResultParameter<BASIC> extends
-        ScalarSingleResultParameter<BASIC, BASIC> {
+public class ScalarListParameter<BASIC, CONTAINER> extends
+        AbstractListParameter<CONTAINER> {
 
-    public BasicSingleResultParameter(Supplier<Wrapper<BASIC>> supplier,
-            boolean primitive) {
-        super(new BasicScalar<>(supplier, primitive));
-        assertNotNull(supplier);
+    protected final Supplier<Scalar<BASIC, CONTAINER>> suppler;
+
+    public ScalarListParameter(Supplier<Scalar<BASIC, CONTAINER>> suppler,
+            List<CONTAINER> list, String name) {
+        super(list, name);
+        assertNotNull(suppler);
+        this.suppler = suppler;
+    }
+
+    @Override
+    public ScalarResultProvider<BASIC, CONTAINER> createResultProvider(
+            Query query) {
+        return new ScalarResultProvider<BASIC, CONTAINER>(suppler, query);
     }
 
 }
