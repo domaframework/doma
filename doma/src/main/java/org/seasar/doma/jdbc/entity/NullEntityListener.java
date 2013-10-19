@@ -19,33 +19,8 @@ package org.seasar.doma.jdbc.entity;
  * 何も行わない {@link EntityListener} の実装です。
  * 
  * @author taedium
- * @param <E>
+ * @param <ENTITY>
  *            エンティティの型
  */
-public class NullEntityListener<E> implements EntityListener<E> {
-
-    @Override
-    public void preInsert(E entity, PreInsertContext<E> context) {
-    }
-
-    @Override
-    public void preUpdate(E entity, PreUpdateContext<E> context) {
-    }
-
-    @Override
-    public void preDelete(E entity, PreDeleteContext<E> context) {
-    }
-
-    @Override
-    public void postInsert(E entity, PostInsertContext<E> context) {
-    }
-
-    @Override
-    public void postUpdate(E entity, PostUpdateContext<E> context) {
-    }
-
-    @Override
-    public void postDelete(E entity, PostDeleteContext<E> context) {
-    }
-
+public class NullEntityListener<ENTITY> implements EntityListener<ENTITY> {
 }

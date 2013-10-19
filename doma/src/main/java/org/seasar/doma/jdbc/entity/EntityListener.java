@@ -31,10 +31,10 @@ import org.seasar.doma.Update;
  * 
  * @author taedium
  * 
- * @param <E>
+ * @param <ENTITY>
  *            エンティティの型
  */
-public interface EntityListener<E> {
+public interface EntityListener<ENTITY> {
 
     /**
      * 挿入処理の前処理を行います。
@@ -48,7 +48,8 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void preInsert(E entity, PreInsertContext<E> context);
+    default void preInsert(ENTITY entity, PreInsertContext<ENTITY> context) {
+    }
 
     /**
      * 更新処理の前処理を行います。
@@ -62,7 +63,8 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void preUpdate(E entity, PreUpdateContext<E> context);
+    default void preUpdate(ENTITY entity, PreUpdateContext<ENTITY> context) {
+    }
 
     /**
      * 削除処理の前処理を行います。
@@ -76,7 +78,8 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void preDelete(E entity, PreDeleteContext<E> context);
+    default void preDelete(ENTITY entity, PreDeleteContext<ENTITY> context) {
+    }
 
     /**
      * 挿入処理の後処理を行います。
@@ -90,7 +93,8 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void postInsert(E entity, PostInsertContext<E> context);
+    default void postInsert(ENTITY entity, PostInsertContext<ENTITY> context) {
+    }
 
     /**
      * 更新処理の後処理を行います。
@@ -104,7 +108,8 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void postUpdate(E entity, PostUpdateContext<E> context);
+    default void postUpdate(ENTITY entity, PostUpdateContext<ENTITY> context) {
+    }
 
     /**
      * 削除処理の後処理を行います。
@@ -118,5 +123,6 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void postDelete(E entity, PostDeleteContext<E> context);
+    default void postDelete(ENTITY entity, PostDeleteContext<ENTITY> context) {
+    }
 }
