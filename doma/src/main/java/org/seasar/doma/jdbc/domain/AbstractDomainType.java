@@ -36,19 +36,9 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         Wrapper<BASIC> wrapper = wrapperSupplier.get();
 
         @Override
-        public Class<BASIC> getBasicClass() {
-            return wrapper.getBasicClass();
-        }
-
-        @Override
         public Optional<Class<?>> getDomainClass() {
             Class<?> c = AbstractDomainType.this.getDomainClass();
             return Optional.<Class<?>> of(c);
-        }
-
-        @Override
-        public boolean isOptional() {
-            return false;
         }
 
         @Override
@@ -84,19 +74,9 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         Wrapper<BASIC> wrapper = wrapperSupplier.get();
 
         @Override
-        public Class<BASIC> getBasicClass() {
-            return wrapper.getBasicClass();
-        }
-
-        @Override
         public Optional<Class<?>> getDomainClass() {
             Class<?> clazz = AbstractDomainType.this.getDomainClass();
             return Optional.<Class<?>> of(clazz);
-        }
-
-        @Override
-        public boolean isOptional() {
-            return true;
         }
 
         @SuppressWarnings("unchecked")

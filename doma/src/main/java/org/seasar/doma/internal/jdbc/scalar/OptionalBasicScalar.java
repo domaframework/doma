@@ -18,18 +18,8 @@ public class OptionalBasicScalar<BASIC> implements
     }
 
     @Override
-    public Class<BASIC> getBasicClass() {
-        return wrapper.getBasicClass();
-    }
-
-    @Override
     public Optional<Class<?>> getDomainClass() {
         return Optional.empty();
-    }
-
-    @Override
-    public boolean isOptional() {
-        return true;
     }
 
     @SuppressWarnings("unchecked")

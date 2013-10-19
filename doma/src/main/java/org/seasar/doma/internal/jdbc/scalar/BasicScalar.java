@@ -20,18 +20,8 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
     }
 
     @Override
-    public Class<BASIC> getBasicClass() {
-        return wrapper.getBasicClass();
-    }
-
-    @Override
     public Optional<Class<?>> getDomainClass() {
         return Optional.empty();
-    }
-
-    @Override
-    public boolean isOptional() {
-        return false;
     }
 
     @Override
