@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.sql.Statement;
@@ -27,10 +27,10 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
@@ -43,7 +43,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean nullExcluded;
 
-    protected GeneratedIdPropertyType<? super E, E, ?, ?, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<? super E, E, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 
@@ -91,39 +91,39 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     protected void prepareTargetPropertyType() {
         targetPropertyTypes = new ArrayList<>(entityType
                 .getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?, ?> p : entityType
+        for (EntityPropertyType<E, ?> propertyType : entityType
                 .getEntityPropertyTypes()) {
-            if (!p.isInsertable()) {
+            if (!propertyType.isInsertable()) {
                 continue;
             }
-            PropertyState<E, ?> accessor = p.createState();
-            accessor.load(entity);
-            if (p.isId()) {
-                if (p != generatedIdPropertyType
+            Property<E, ?> property = propertyType.createProperty();
+            property.load(entity);
+            if (propertyType.isId()) {
+                if (propertyType != generatedIdPropertyType
                         || generatedIdPropertyType
                                 .isIncluded(idGenerationConfig)) {
-                    targetPropertyTypes.add(p);
+                    targetPropertyTypes.add(propertyType);
                 }
                 if (generatedIdPropertyType == null
-                        && accessor.getWrapper().get() == null) {
+                        && property.getWrapper().get() == null) {
                     throw new JdbcException(Message.DOMA2020,
-                            entityType.getName(), p.getName());
+                            entityType.getName(), propertyType.getName());
                 }
                 continue;
             }
-            if (p.isVersion()) {
-                targetPropertyTypes.add(p);
+            if (propertyType.isVersion()) {
+                targetPropertyTypes.add(propertyType);
                 continue;
             }
             if (nullExcluded) {
-                if (accessor.getWrapper().get() == null) {
+                if (property.getWrapper().get() == null) {
                     continue;
                 }
             }
-            if (!isTargetPropertyName(p.getName())) {
+            if (!isTargetPropertyName(propertyType.getName())) {
                 continue;
             }
-            targetPropertyTypes.add(p);
+            targetPropertyTypes.add(propertyType);
         }
     }
 
@@ -147,16 +147,16 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            builder.appendSql(p.getColumnName());
+        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
+            builder.appendSql(propertyType.getColumnName());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            PropertyState<E, ?> accessor = p.createState();
-            accessor.load(entity);
-            builder.appendWrapper(accessor.getWrapper());
+        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
+            Property<E, ?> property = propertyType.createProperty();
+            property.load(entity);
+            builder.appendParameter(property);
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);

@@ -54,11 +54,11 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected PreparedSql sql;
 
-    protected List<EntityPropertyType<E, ?, ?>> targetPropertyTypes;
+    protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
 
-    protected List<EntityPropertyType<E, ?, ?>> idPropertyTypes;
+    protected List<EntityPropertyType<E, ?>> idPropertyTypes;
 
-    protected VersionPropertyType<? super E, E, ?, ?, ?> versionPropertyType;
+    protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
 
     protected boolean optimisticLockCheckRequired;
 

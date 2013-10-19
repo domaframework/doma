@@ -25,11 +25,16 @@ import org.seasar.doma.wrapper.Wrapper;
 /**
  * バージョンのプロパティ型です。
  * 
- * @author taedium
+ * @author nakamura-to
  * 
+ * @param <PARENT>
+ * @param <ENTITY>
+ * @param <PROPERTY>
+ * @param <BASIC>
+ * @param <DOMAIN>
  */
-public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
-        extends BasicPropertyType<PE, E, P, V, D> {
+public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Number, DOMAIN>
+        extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
 
     /**
      * インスタンスを構築します。
@@ -49,12 +54,12 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
      * @param columnName
      *            カラム名
      */
-    public VersionPropertyType(Class<E> entityClass,
-            Class<?> entityPropertyClass, Class<V> valueClass,
-            Supplier<Wrapper<V>> wrapperSupplier,
-            EntityPropertyType<PE, P, V> parentEntityPropertyType,
-            DomainType<V, D> domainType, String name, String columnName) {
-        super(entityClass, entityPropertyClass, valueClass, wrapperSupplier,
+    public VersionPropertyType(Class<ENTITY> entityClass,
+            Class<?> entityPropertyClass, Class<BASIC> basicClass,
+            Supplier<Wrapper<BASIC>> wrapperSupplier,
+            EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
+            DomainType<BASIC, DOMAIN> domainType, String name, String columnName) {
+        super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);
     }
@@ -75,7 +80,8 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
      *            バージョンの値
      * @return エンティティ
      */
-    public E setIfNecessary(EntityType<E> entityType, E entity, Number value) {
+    public ENTITY setIfNecessary(EntityType<ENTITY> entityType, ENTITY entity,
+            Number value) {
         return modify(entityType, entity, new ValueSetter(), value);
     }
 
@@ -88,7 +94,7 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
      *            エンティティ
      * @return エンティティ
      */
-    public E increment(EntityType<E> entityType, E entity) {
+    public ENTITY increment(EntityType<ENTITY> entityType, ENTITY entity) {
         return modify(entityType, entity, new Incrementer(), null);
     }
 

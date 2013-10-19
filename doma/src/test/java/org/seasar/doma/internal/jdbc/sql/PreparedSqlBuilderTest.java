@@ -20,9 +20,11 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -36,9 +38,15 @@ public class PreparedSqlBuilderTest extends TestCase {
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.SELECT);
         builder.appendSql("select * from aaa where name = ");
-        builder.appendWrapper(new StringWrapper("hoge"));
+        Wrapper<String> stringWrapper = new StringWrapper("hoge");
+        builder.appendParameter(new BasicScalar<String>(() -> stringWrapper,
+                false));
+
         builder.appendSql(" and salary = ");
-        builder.appendWrapper(new BigDecimalWrapper(new BigDecimal(100)));
+        Wrapper<BigDecimal> bigDecimalWrapper = new BigDecimalWrapper(
+                new BigDecimal(100));
+        builder.appendParameter(new BasicScalar<BigDecimal>(
+                () -> bigDecimalWrapper, false));
         PreparedSql sql = builder.build();
         assertEquals("select * from aaa where name = ? and salary = ?",
                 sql.toString());

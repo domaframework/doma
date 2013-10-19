@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.BasicPropertyType;
+import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -29,17 +29,17 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
-import org.seasar.doma.jdbc.entity.PropertyState;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
 
-    public BasicPropertyType<Object, Parent2Entity, Integer, Integer, Integer> $aaa = new BasicPropertyType<>(
+    public DefaultPropertyType<Object, Parent2Entity, Integer, Integer> $aaa = new DefaultPropertyType<>(
             Parent2Entity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "aaa", "AAA", true, true);
 
-    public BasicPropertyType<Object, Parent2Entity, Integer, Integer, Integer> $bbb = new BasicPropertyType<>(
+    public DefaultPropertyType<Object, Parent2Entity, Integer, Integer> $bbb = new DefaultPropertyType<>(
             Parent2Entity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "bbb", "BBB", true, true);
@@ -64,20 +64,20 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public EntityPropertyType<Parent2Entity, ?, ?> getEntityPropertyType(
+    public EntityPropertyType<Parent2Entity, ?> getEntityPropertyType(
             String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Parent2Entity, ?, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<Parent2Entity, ?>> getEntityPropertyTypes() {
 
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Parent2Entity, ?, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Parent2Entity, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -107,7 +107,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public VersionPropertyType<Object, Parent2Entity, ?, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, Parent2Entity, ?, ?> getVersionPropertyType() {
 
         return null;
     }
@@ -143,7 +143,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public List<EntityPropertyType<Parent2Entity, ?, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<Parent2Entity, ?>> getIdPropertyTypes() {
         return null;
     }
 
@@ -167,8 +167,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public Parent2Entity newEntity(
-            Map<String, PropertyState<Parent2Entity, ?>> args) {
+    public Parent2Entity newEntity(Map<String, Property<Parent2Entity, ?>> args) {
         return null;
     }
 

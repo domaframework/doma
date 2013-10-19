@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -29,6 +28,7 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -50,25 +50,25 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public EntityPropertyType<Emp, ?, ?> getEntityPropertyType(String name) {
+    public EntityPropertyType<Emp, ?> getEntityPropertyType(String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
 
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Emp, ?, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
 
         return null;
     }
@@ -104,7 +104,7 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public VersionPropertyType<Object, Emp, ?, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
 
         return null;
     }
@@ -153,7 +153,7 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public Emp newEntity(Map<String, PropertyState<Emp, ?>> args) {
+    public Emp newEntity(Map<String, Property<Emp, ?>> args) {
         return null;
     }
 

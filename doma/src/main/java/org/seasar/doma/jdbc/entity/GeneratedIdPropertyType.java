@@ -33,11 +33,15 @@ import org.seasar.doma.wrapper.Wrapper;
 /**
  * 生成される識別子のプロパティ型です。
  * 
- * @author taedium
+ * @author nakamura-to
  * 
+ * @param <PARENT>
+ * @param <ENTITY>
+ * @param <BASIC>
+ * @param <DOMAIN>
  */
-public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
-        extends BasicPropertyType<PE, E, P, V, D> {
+public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Number, DOMAIN>
+        extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
 
     /** 識別子のジェネレータ */
     protected final IdGenerator idGenerator;
@@ -49,7 +53,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
      *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
-     * @param valueClass
+     * @param basicClass
      *            値のクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
@@ -64,13 +68,13 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
      * @param idGenerator
      *            識別子のジェネレータ
      */
-    public GeneratedIdPropertyType(Class<E> entityClass,
-            Class<?> entityPropertyClass, Class<V> valueClass,
-            Supplier<Wrapper<V>> wrapperSupplier,
-            EntityPropertyType<PE, P, V> parentEntityPropertyType,
-            DomainType<V, D> domainType, String name, String columnName,
-            IdGenerator idGenerator) {
-        super(entityClass, entityPropertyClass, valueClass, wrapperSupplier,
+    public GeneratedIdPropertyType(Class<ENTITY> entityClass,
+            Class<?> entityPropertyClass, Class<BASIC> basicClass,
+            Supplier<Wrapper<BASIC>> wrapperSupplier,
+            EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
+            DomainType<BASIC, DOMAIN> domainType, String name,
+            String columnName, IdGenerator idGenerator) {
+        super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);
         if (idGenerator == null) {
@@ -165,7 +169,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
      *            識別子の生成に関する設定
      * @return エンティティ
      */
-    public E preInsert(EntityType<E> entityType, E entity,
+    public ENTITY preInsert(EntityType<ENTITY> entityType, ENTITY entity,
             IdGenerationConfig config) {
         return setValue(entityType, entity,
                 () -> idGenerator.generatePreInsert(config));
@@ -184,7 +188,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
      *            INSERT文を実行した文
      * @return エンティティ
      */
-    public E postInsert(EntityType<E> entityType, E entity,
+    public ENTITY postInsert(EntityType<ENTITY> entityType, ENTITY entity,
             IdGenerationConfig config, Statement statement) {
         return setValue(entityType, entity,
                 () -> idGenerator.generatePostInsert(config, statement));
@@ -201,7 +205,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
      *            値のサプライヤ
      * @return エンティティ
      */
-    protected E setValue(EntityType<E> entityType, E entity,
+    protected ENTITY setValue(EntityType<ENTITY> entityType, ENTITY entity,
             Supplier<Long> supplier) {
         Long value = supplier.get();
         if (value == null) {

@@ -24,14 +24,12 @@ package org.seasar.doma.jdbc.entity;
  * 
  * @author taedium
  * 
- * @param <E>
+ * @param <ENTITY>
  *            エンティティの型
- * @param <P>
- *            プロパティの型
- * @param <V>
- *            値の型
+ * @param <BASIC>
+ *            基本型
  */
-public interface EntityPropertyType<E, P, V> {
+public interface EntityPropertyType<ENTITY, BASIC> {
 
     /**
      * プロパティの名前を返します。
@@ -76,11 +74,11 @@ public interface EntityPropertyType<E, P, V> {
     boolean isUpdatable();
 
     /**
-     * プロパティのステートを作ります。
+     * プロパティを作ります。
      * 
-     * @return プロパティのステート
+     * @return プロパティ
      */
-    PropertyState<E, V> createState();
+    Property<ENTITY, BASIC> createProperty();
 
     /**
      * プロパティの値をコピーします。
@@ -92,6 +90,6 @@ public interface EntityPropertyType<E, P, V> {
      * @param src
      *            コピー元のエンティティ
      */
-    void copy(E dest, E src);
+    void copy(ENTITY dest, ENTITY src);
 
 }

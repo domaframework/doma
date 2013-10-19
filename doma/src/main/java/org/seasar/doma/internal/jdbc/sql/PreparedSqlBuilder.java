@@ -20,18 +20,15 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author taedium
- * 
- */
 public class PreparedSqlBuilder {
 
-    protected final List<BasicInParameter<?>> parameters = new ArrayList<BasicInParameter<?>>();
+    protected final List<BasicInParameter<?>> parameters = new ArrayList<>();
 
     protected final StringBuilder rawSql = new StringBuilder(200);
 
@@ -60,11 +57,12 @@ public class PreparedSqlBuilder {
         formattedSql.setLength(formattedSql.length() - length);
     }
 
-    public <T> void appendWrapper(Wrapper<T> wrapper) {
+    public <BASIC> void appendParameter(JdbcMappable<BASIC> parameter) {
         rawSql.append("?");
+        Wrapper<BASIC> wrapper = parameter.getWrapper();
         formattedSql.append(wrapper.accept(config.getDialect()
                 .getSqlLogFormattingVisitor(), formattingFunction, null));
-        parameters.add(new BasicInParameter<T>(() -> wrapper));
+        parameters.add(new BasicInParameter<BASIC>(() -> wrapper));
     }
 
     public PreparedSql build() {

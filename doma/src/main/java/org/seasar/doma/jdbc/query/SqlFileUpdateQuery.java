@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 
@@ -115,7 +115,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected EntityType<E> entityType;
 
-        protected VersionPropertyType<? super E, E, ?, ?, ?> versionPropertyType;
+        protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
 
         protected EntityHandler(String name, E entity, EntityType<E> entityType) {
             assertNotNull(name, entity, entityType);

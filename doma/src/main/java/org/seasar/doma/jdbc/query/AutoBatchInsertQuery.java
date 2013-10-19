@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.sql.Statement;
@@ -28,10 +29,10 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
@@ -42,7 +43,7 @@ import org.seasar.doma.message.Message;
 public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         BatchInsertQuery {
 
-    protected GeneratedIdPropertyType<? super E, E, ?, ?, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<? super E, E, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 
@@ -112,31 +113,31 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     protected void prepareTargetPropertyTypes() {
         targetPropertyTypes = new ArrayList<>(entityType
                 .getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?, ?> p : entityType
+        for (EntityPropertyType<E, ?> propertyType : entityType
                 .getEntityPropertyTypes()) {
-            if (!p.isInsertable()) {
+            if (!propertyType.isInsertable()) {
                 continue;
             }
-            if (p.isId()) {
-                if (p != generatedIdPropertyType
+            if (propertyType.isId()) {
+                if (propertyType != generatedIdPropertyType
                         || generatedIdPropertyType
                                 .isIncluded(idGenerationConfig)) {
-                    targetPropertyTypes.add(p);
+                    targetPropertyTypes.add(propertyType);
                 }
                 if (generatedIdPropertyType == null) {
-                    PropertyState<E, ?> accessor = p.createState();
-                    accessor.load(currentEntity);
-                    if (accessor.getWrapper().get() == null) {
+                    Property<E, ?> property = propertyType.createProperty();
+                    property.load(currentEntity);
+                    if (property.getWrapper().get() == null) {
                         throw new JdbcException(Message.DOMA2020,
-                                entityType.getName(), p.getName());
+                                entityType.getName(), propertyType.getName());
                     }
                 }
                 continue;
             }
-            if (!isTargetPropertyName(p.getName())) {
+            if (!isTargetPropertyName(propertyType.getName())) {
                 continue;
             }
-            targetPropertyTypes.add(p);
+            targetPropertyTypes.add(propertyType);
         }
     }
 
@@ -161,16 +162,16 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
+        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendSql(p.getColumnName());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            PropertyState<E, ?> accessor = p.createState();
-            accessor.load(currentEntity);
-            builder.appendWrapper(accessor.getWrapper());
+        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
+            Property<E, ?> property = propertyType.createProperty();
+            property.load(currentEntity);
+            builder.appendParameter(property);
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);

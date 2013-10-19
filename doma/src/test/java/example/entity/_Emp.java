@@ -26,7 +26,7 @@ import javax.annotation.Generated;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
-import org.seasar.doma.jdbc.entity.BasicPropertyType;
+import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -36,7 +36,7 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
-import org.seasar.doma.jdbc.entity.PropertyState;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 @Generated("")
@@ -47,22 +47,22 @@ public class _Emp extends AbstractEntityType<Emp> {
     private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<Emp> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(
             Emp.class, "originalStates");
 
-    public final AssignedIdPropertyType<Object, Emp, Integer, Integer, Object> id = new AssignedIdPropertyType<>(
+    public final AssignedIdPropertyType<Object, Emp, Integer, Object> id = new AssignedIdPropertyType<>(
             Emp.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "id", "ID");
 
-    public final BasicPropertyType<Object, Emp, String, String, Object> name = new BasicPropertyType<>(
+    public final DefaultPropertyType<Object, Emp, String, Object> name = new DefaultPropertyType<>(
             Emp.class, String.class, String.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
             "name", "NAME", true, true);
 
-    public final BasicPropertyType<Object, Emp, BigDecimal, BigDecimal, BigDecimal> salary = new BasicPropertyType<>(
+    public final DefaultPropertyType<Object, Emp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
             Emp.class, BigDecimal.class, BigDecimal.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null,
             "salary", "SALARY", true, true);
 
-    public final VersionPropertyType<Object, Emp, Integer, Integer, Integer> version = new VersionPropertyType<>(
+    public final VersionPropertyType<Object, Emp, Integer, Integer> version = new VersionPropertyType<>(
             Emp.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "version", "VERSION");
@@ -79,23 +79,23 @@ public class _Emp extends AbstractEntityType<Emp> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    private final List<EntityPropertyType<Emp, ?, ?>> __idPropertyTypes;
+    private final List<EntityPropertyType<Emp, ?>> __idPropertyTypes;
 
-    private final List<EntityPropertyType<Emp, ?, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyType<Emp, ?>> __entityPropertyTypes;
 
-    private final Map<String, EntityPropertyType<Emp, ?, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyType<Emp, ?>> __entityPropertyTypeMap;
 
     private _Emp() {
-        List<EntityPropertyType<Emp, ?, ?>> __idList = new ArrayList<>();
+        List<EntityPropertyType<Emp, ?>> __idList = new ArrayList<>();
         __idList.add(id);
         __idPropertyTypes = Collections.unmodifiableList(__idList);
-        List<EntityPropertyType<Emp, ?, ?>> __list = new ArrayList<>();
+        List<EntityPropertyType<Emp, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
         __list.add(salary);
         __list.add(version);
         __entityPropertyTypes = Collections.unmodifiableList(__list);
-        Map<String, EntityPropertyType<Emp, ?, ?>> __map = new HashMap<>();
+        Map<String, EntityPropertyType<Emp, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
         __map.put("salary", salary);
@@ -109,7 +109,7 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public Emp newEntity(Map<String, PropertyState<Emp, ?>> args) {
+    public Emp newEntity(Map<String, Property<Emp, ?>> args) {
         Emp entity = new Emp();
         args.values().forEach(v -> v.save(entity));
         return entity;
@@ -126,13 +126,12 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public EntityPropertyType<Emp, ?, ?> getEntityPropertyType(
-            String propertyName) {
+    public EntityPropertyType<Emp, ?> getEntityPropertyType(String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
 
@@ -156,17 +155,17 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Emp, ?, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<Object, Emp, ?, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
         return version;
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
         return __idPropertyTypes;
     }
 

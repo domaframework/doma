@@ -37,7 +37,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
-import org.seasar.doma.jdbc.entity.PropertyState;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -57,7 +57,7 @@ public class EntityResultProvider<ENTITY, CONTAINER> extends
 
     protected final JdbcMappingVisitor jdbcMappingVisitor;
 
-    protected Map<Integer, EntityPropertyType<ENTITY, ?, ?>> indexMap;
+    protected Map<Integer, EntityPropertyType<ENTITY, ?>> indexMap;
 
     /**
      * @param entityType
@@ -91,15 +91,14 @@ public class EntityResultProvider<ENTITY, CONTAINER> extends
         if (indexMap == null) {
             indexMap = createIndexMap(resultSet.getMetaData(), entityType);
         }
-        Map<String, PropertyState<ENTITY, ?>> states = new HashMap<>(
-                indexMap.size());
-        for (Map.Entry<Integer, EntityPropertyType<ENTITY, ?, ?>> entry : indexMap
+        Map<String, Property<ENTITY, ?>> states = new HashMap<>(indexMap.size());
+        for (Map.Entry<Integer, EntityPropertyType<ENTITY, ?>> entry : indexMap
                 .entrySet()) {
             Integer index = entry.getKey();
-            EntityPropertyType<ENTITY, ?, ?> propertyType = entry.getValue();
-            PropertyState<ENTITY, ?> state = propertyType.createState();
-            fetch(resultSet, state, index, jdbcMappingVisitor);
-            states.put(propertyType.getName(), state);
+            EntityPropertyType<ENTITY, ?> propertyType = entry.getValue();
+            Property<ENTITY, ?> property = propertyType.createProperty();
+            fetch(resultSet, property, index, jdbcMappingVisitor);
+            states.put(propertyType.getName(), property);
         }
         ENTITY entity = entityType.newEntity(states);
         if (!entityType.isImmutable()) {
@@ -108,18 +107,18 @@ public class EntityResultProvider<ENTITY, CONTAINER> extends
         return entity;
     }
 
-    protected HashMap<Integer, EntityPropertyType<ENTITY, ?, ?>> createIndexMap(
+    protected HashMap<Integer, EntityPropertyType<ENTITY, ?>> createIndexMap(
             ResultSetMetaData resultSetMeta, EntityType<ENTITY> entityType)
             throws SQLException {
-        HashMap<Integer, EntityPropertyType<ENTITY, ?, ?>> indexMap = new HashMap<>();
-        HashMap<String, EntityPropertyType<ENTITY, ?, ?>> columnNameMap = createColumnNameMap(entityType);
-        Set<EntityPropertyType<ENTITY, ?, ?>> unmappedPropertySet = resultMappingEnsured ? new HashSet<>(
+        HashMap<Integer, EntityPropertyType<ENTITY, ?>> indexMap = new HashMap<>();
+        HashMap<String, EntityPropertyType<ENTITY, ?>> columnNameMap = createColumnNameMap(entityType);
+        Set<EntityPropertyType<ENTITY, ?>> unmappedPropertySet = resultMappingEnsured ? new HashSet<>(
                 columnNameMap.values()) : Collections.emptySet();
         int count = resultSetMeta.getColumnCount();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
             String lowerCaseColumnName = columnName.toLowerCase();
-            EntityPropertyType<ENTITY, ?, ?> propertyType = columnNameMap
+            EntityPropertyType<ENTITY, ?> propertyType = columnNameMap
                     .get(lowerCaseColumnName);
             if (propertyType == null) {
                 if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
@@ -136,13 +135,13 @@ public class EntityResultProvider<ENTITY, CONTAINER> extends
         return indexMap;
     }
 
-    protected HashMap<String, EntityPropertyType<ENTITY, ?, ?>> createColumnNameMap(
+    protected HashMap<String, EntityPropertyType<ENTITY, ?>> createColumnNameMap(
             EntityType<ENTITY> entityType) {
-        List<EntityPropertyType<ENTITY, ?, ?>> propertyTypes = entityType
+        List<EntityPropertyType<ENTITY, ?>> propertyTypes = entityType
                 .getEntityPropertyTypes();
-        HashMap<String, EntityPropertyType<ENTITY, ?, ?>> result = new HashMap<>(
+        HashMap<String, EntityPropertyType<ENTITY, ?>> result = new HashMap<>(
                 propertyTypes.size());
-        for (EntityPropertyType<ENTITY, ?, ?> propertyType : propertyTypes) {
+        for (EntityPropertyType<ENTITY, ?> propertyType : propertyTypes) {
             String columnName = propertyType.getColumnName();
             result.put(columnName.toLowerCase(), propertyType);
         }
@@ -160,11 +159,11 @@ public class EntityResultProvider<ENTITY, CONTAINER> extends
     }
 
     protected void throwResultMappingException(
-            Set<EntityPropertyType<ENTITY, ?, ?>> unmappedPropertySet) {
+            Set<EntityPropertyType<ENTITY, ?>> unmappedPropertySet) {
         int size = unmappedPropertySet.size();
         List<String> unmappedPropertyNames = new ArrayList<>(size);
         List<String> expectedColumnNames = new ArrayList<>(size);
-        for (EntityPropertyType<ENTITY, ?, ?> propertyType : unmappedPropertySet) {
+        for (EntityPropertyType<ENTITY, ?> propertyType : unmappedPropertySet) {
             unmappedPropertyNames.add(propertyType.getName());
             expectedColumnNames.add(propertyType.getColumnName());
         }

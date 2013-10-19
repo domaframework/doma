@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -67,7 +67,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preUpdate() {
-        List<EntityPropertyType<E, ?, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
         AutoPreUpdateContext<E> context = new AutoPreUpdateContext<E>(
                 entityType, method, config, targetPropertyTypes);
         entityType.preUpdate(entity, context);
@@ -92,45 +92,45 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         }
     }
 
-    protected List<EntityPropertyType<E, ?, ?>> getTargetPropertyTypes() {
+    protected List<EntityPropertyType<E, ?>> getTargetPropertyTypes() {
         int capacity = entityType.getEntityPropertyTypes().size();
-        List<EntityPropertyType<E, ?, ?>> results = new ArrayList<>(capacity);
+        List<EntityPropertyType<E, ?>> results = new ArrayList<>(capacity);
         E originalStates = entityType.getOriginalStates(entity);
-        for (EntityPropertyType<E, ?, ?> p : entityType
+        for (EntityPropertyType<E, ?> propertyType : entityType
                 .getEntityPropertyTypes()) {
-            if (!p.isUpdatable()) {
+            if (!propertyType.isUpdatable()) {
                 continue;
             }
-            if (p.isId()) {
+            if (propertyType.isId()) {
                 continue;
             }
-            if (!versionIgnored && p.isVersion()) {
+            if (!versionIgnored && propertyType.isVersion()) {
                 continue;
             }
             if (nullExcluded) {
-                PropertyState<E, ?> accessor = p.createState();
-                accessor.load(entity);
-                if (accessor.getWrapper().get() == null) {
+                Property<E, ?> property = propertyType.createProperty();
+                property.load(entity);
+                if (property.getWrapper().get() == null) {
                     continue;
                 }
             }
             if (unchangedPropertyIncluded || originalStates == null
-                    || isChanged(originalStates, p)) {
-                String name = p.getName();
+                    || isChanged(originalStates, propertyType)) {
+                String name = propertyType.getName();
                 if (!isTargetPropertyName(name)) {
                     continue;
                 }
-                results.add(p);
+                results.add(propertyType);
             }
         }
         return results;
     }
 
     protected boolean isChanged(E originalStates,
-            EntityPropertyType<E, ?, ?> propertyType) {
-        Wrapper<?> originalWrapper = propertyType.createState()
+            EntityPropertyType<E, ?> propertyType) {
+        Wrapper<?> originalWrapper = propertyType.createProperty()
                 .load(originalStates).getWrapper();
-        Wrapper<?> wrapper = propertyType.createState().load(entity)
+        Wrapper<?> wrapper = propertyType.createProperty().load(entity)
                 .getWrapper();
         return !wrapper.hasEqualValue(originalWrapper.get());
     }
@@ -141,32 +141,32 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" set ");
-        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            PropertyState<E, ?> accessor = p.createState();
-            accessor.load(entity);
-            builder.appendSql(p.getColumnName());
+        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
+            Property<E, ?> property = propertyType.createProperty();
+            property.load(entity);
+            builder.appendSql(propertyType.getColumnName());
             builder.appendSql(" = ");
-            builder.appendWrapper(accessor.getWrapper());
+            builder.appendParameter(property);
             builder.appendSql(", ");
         }
         if (!versionIgnored && versionPropertyType != null) {
-            PropertyState<E, ?> accessor = versionPropertyType.createState();
-            accessor.load(entity);
+            Property<E, ?> property = versionPropertyType.createProperty();
+            property.load(entity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
-            builder.appendWrapper(accessor.getWrapper());
+            builder.appendParameter(property);
             builder.appendSql(" + 1");
         } else {
             builder.cutBackSql(2);
         }
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?, ?> p : idPropertyTypes) {
-                PropertyState<E, ?> accessor = p.createState();
-                accessor.load(entity);
-                builder.appendSql(p.getColumnName());
+            for (EntityPropertyType<E, ?> propertyType : idPropertyTypes) {
+                Property<E, ?> property = propertyType.createProperty();
+                property.load(entity);
+                builder.appendSql(propertyType.getColumnName());
                 builder.appendSql(" = ");
-                builder.appendWrapper(accessor.getWrapper());
+                builder.appendParameter(property);
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -177,11 +177,11 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            PropertyState<E, ?> accessor = versionPropertyType.createState();
-            accessor.load(entity);
+            Property<E, ?> property = versionPropertyType.createProperty();
+            property.load(entity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
-            builder.appendWrapper(accessor.getWrapper());
+            builder.appendParameter(property);
         }
         sql = builder.build();
     }
@@ -199,7 +199,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postUpdate() {
-        List<EntityPropertyType<E, ?, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
         if (!versionIgnored && versionPropertyType != null) {
             targetPropertyTypes.add(versionPropertyType);
         }
@@ -235,12 +235,12 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
         public AutoPreUpdateContext(EntityType<E> entityType, Method method,
                 Config config,
-                List<EntityPropertyType<E, ?, ?>> targetPropertyTypes) {
+                List<EntityPropertyType<E, ?>> targetPropertyTypes) {
             super(entityType, method, config);
             assertNotNull(targetPropertyTypes);
             changedPropertyNames = new HashSet<String>(
                     targetPropertyTypes.size());
-            for (EntityPropertyType<E, ?, ?> propertyType : targetPropertyTypes) {
+            for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
                 changedPropertyNames.add(propertyType.getName());
             }
         }
@@ -264,12 +264,12 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
         public AutoPostUpdateContext(EntityType<E> entityType, Method method,
                 Config config,
-                List<EntityPropertyType<E, ?, ?>> targetPropertyTypes) {
+                List<EntityPropertyType<E, ?>> targetPropertyTypes) {
             super(entityType, method, config);
             assertNotNull(targetPropertyTypes);
             changedPropertyNames = new HashSet<String>(
                     targetPropertyTypes.size());
-            for (EntityPropertyType<E, ?, ?> propertyType : targetPropertyTypes) {
+            for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
                 changedPropertyNames.add(propertyType.getName());
             }
         }

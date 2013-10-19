@@ -23,11 +23,15 @@ import org.seasar.doma.wrapper.Wrapper;
 /**
  * アプリケーションにより割り当てられる識別子のプロパティ型です。
  * 
- * @author taedium
+ * @author nakamura-to
  * 
+ * @param <PARENT>
+ * @param <ENTITY>
+ * @param <BASIC>
+ * @param <DOMAIN>
  */
-public class AssignedIdPropertyType<PE, E extends PE, P, V, D> extends
-        BasicPropertyType<PE, E, P, V, D> {
+public class AssignedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
+        extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
 
     /**
      * インスタンスを構築します。
@@ -36,7 +40,7 @@ public class AssignedIdPropertyType<PE, E extends PE, P, V, D> extends
      *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
-     * @param valueClass
+     * @param basicClass
      *            値のクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
@@ -49,12 +53,12 @@ public class AssignedIdPropertyType<PE, E extends PE, P, V, D> extends
      * @param columnName
      *            カラム名
      */
-    public AssignedIdPropertyType(Class<E> entityClass,
-            Class<?> entityPropertyClass, Class<V> valueClass,
-            Supplier<Wrapper<V>> wrapperSupplier,
-            EntityPropertyType<PE, P, V> parentEntityPropertyType,
-            DomainType<V, D> domainType, String name, String columnName) {
-        super(entityClass, entityPropertyClass, valueClass, wrapperSupplier,
+    public AssignedIdPropertyType(Class<ENTITY> entityClass,
+            Class<?> entityPropertyClass, Class<BASIC> basicClass,
+            Supplier<Wrapper<BASIC>> wrapperSupplier,
+            EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
+            DomainType<BASIC, DOMAIN> domainType, String name, String columnName) {
+        super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);
     }

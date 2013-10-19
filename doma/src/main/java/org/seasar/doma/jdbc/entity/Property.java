@@ -18,40 +18,40 @@ package org.seasar.doma.jdbc.entity;
 import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 
 /**
- * プロパティのアクセサです。
+ * プロパティです。
  * 
  * @author nakamura-to
  * 
- * @param <E>
+ * @param <ENTITY>
  *            エンティティの型
- * @param <V>
- *            値の型
+ * @param <BASIC>
+ *            基本型
  * @since 2.0.0
  */
-public interface PropertyState<E, V> extends JdbcMappable<V> {
+public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
 
     /**
-     * プロパティを返します。
+     * プロパティの値を返します。
      * 
-     * @return プロパティ
+     * @return プロパティの値
      */
     Object get();
 
     /**
-     * エンティティからこのアクセサへ値を読み込みます。
+     * エンティティからこのインスタンスへ値を読み込みます。
      * 
      * @param entity
      *            エンティティ
-     * @return このアクセサ
+     * @return このインスタンス
      */
-    PropertyState<E, V> load(E entity);
+    Property<ENTITY, BASIC> load(ENTITY entity);
 
     /**
-     * エンティティへこのアクセサが保持する値を保存します。
+     * エンティティへこのインスタンスが保持する値を保存します。
      * 
      * @param entity
-     * @return このアクセサ
+     * @return このインスタンス
      */
-    PropertyState<E, V> save(E entity);
+    Property<ENTITY, BASIC> save(ENTITY entity);
 
 }

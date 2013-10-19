@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.BasicPropertyType;
+import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -29,17 +29,17 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
-import org.seasar.doma.jdbc.entity.PropertyState;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
 
-    public BasicPropertyType<Object, Parent3Entity, Integer, Integer, Integer> $aaa = new BasicPropertyType<>(
+    public DefaultPropertyType<Object, Parent3Entity, Integer, Integer> $aaa = new DefaultPropertyType<>(
             Parent3Entity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "aaa", "AAA", true, true);
 
-    public BasicPropertyType<Object, Parent3Entity, Integer, Integer, Integer> $bbb = new BasicPropertyType<>(
+    public DefaultPropertyType<Object, Parent3Entity, Integer, Integer> $bbb = new DefaultPropertyType<>(
             Parent3Entity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "bbb", "BBB", true, true);
@@ -64,20 +64,20 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     }
 
     @Override
-    public EntityPropertyType<Parent3Entity, ?, ?> getEntityPropertyType(
+    public EntityPropertyType<Parent3Entity, ?> getEntityPropertyType(
             String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Parent3Entity, ?, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<Parent3Entity, ?>> getEntityPropertyTypes() {
 
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Parent3Entity, ?, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Parent3Entity, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -107,7 +107,7 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     }
 
     @Override
-    public VersionPropertyType<Object, Parent3Entity, ?, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, Parent3Entity, ?, ?> getVersionPropertyType() {
 
         return null;
     }
@@ -143,7 +143,7 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     }
 
     @Override
-    public List<EntityPropertyType<Parent3Entity, ?, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<Parent3Entity, ?>> getIdPropertyTypes() {
         return null;
     }
 
@@ -167,8 +167,7 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     }
 
     @Override
-    public Parent3Entity newEntity(
-            Map<String, PropertyState<Parent3Entity, ?>> args) {
+    public Parent3Entity newEntity(Map<String, Property<Parent3Entity, ?>> args) {
         return null;
     }
 
