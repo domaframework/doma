@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.command;
+package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
@@ -30,13 +30,13 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class RegisterOutParameterFunction implements JdbcMappingFunction {
+public class JdbcOutParameterGetter implements JdbcMappingFunction {
 
     protected final CallableStatement callableStatement;
 
     protected final int index;
 
-    public RegisterOutParameterFunction(CallableStatement callableStatement,
+    public JdbcOutParameterGetter(CallableStatement callableStatement,
             int index) {
         assertNotNull(callableStatement);
         assertTrue(index > 0, index);
@@ -47,10 +47,14 @@ public class RegisterOutParameterFunction implements JdbcMappingFunction {
     @Override
     public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
             throws SQLException {
+        if (wrapper == null) {
+            throw new DomaNullPointerException("wrapper");
+        }
         if (jdbcType == null) {
             throw new DomaNullPointerException("jdbcType");
         }
-        jdbcType.registerOutParameter(callableStatement, index);
+        V value = jdbcType.getValue(callableStatement, index);
+        wrapper.set(value);
         return null;
     }
 }

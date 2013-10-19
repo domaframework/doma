@@ -1,6 +1,7 @@
 package org.seasar.doma.it.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class SelectBuilderTest {
         builder.sql("where");
         builder.sql("EMPLOYEE_ID = ").param(int.class, 1);
         Map<String, Object> employee = builder
-                .getSingleResult(MapKeyNamingType.CAMEL_CASE);
+                .getMapSingleResult(MapKeyNamingType.CAMEL_CASE);
         assertNotNull(employee);
         assertNotNull(employee.get("employeeId"));
         assertNotNull(employee.get("employeeName"));
@@ -33,7 +34,7 @@ public class SelectBuilderTest {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
         List<Map<String, Object>> employees = builder
-                .getResultList(MapKeyNamingType.CAMEL_CASE);
+                .getMapResultList(MapKeyNamingType.CAMEL_CASE);
         assertNotNull(employees);
         assertEquals(14, employees.size());
     }
@@ -41,7 +42,7 @@ public class SelectBuilderTest {
     public void testIterate_Map() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
-        Integer result = builder.iterate(MapKeyNamingType.CAMEL_CASE,
+        Integer result = builder.iterateAsMap(MapKeyNamingType.CAMEL_CASE,
                 new IterationCallback<Integer, Map<String, Object>>() {
                     private int count;
 

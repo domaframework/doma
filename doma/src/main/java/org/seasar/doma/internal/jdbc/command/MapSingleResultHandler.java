@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public class MapSingleResultHandler extends
     @Override
     protected ResultProvider<Map<String, Object>> createResultProvider(
             SelectQuery query) {
-        return new MapResultProvider<>(query, keyNamingType, m -> m);
+        return new MapResultProvider<>(query, keyNamingType, map -> map);
     }
 
 }

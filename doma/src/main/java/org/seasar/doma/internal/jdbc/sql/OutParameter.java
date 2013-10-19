@@ -15,14 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import org.seasar.doma.jdbc.JdbcMappingHint;
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 import org.seasar.doma.jdbc.SqlParameter;
-import org.seasar.doma.wrapper.Wrapper;
 
-public interface OutParameter<BASIC> extends SqlParameter, JdbcMappingHint {
+public interface OutParameter<BASIC> extends SqlParameter, JdbcMappable<BASIC> {
 
-    Wrapper<BASIC> getWrapper();
-
-    void update();
+    void updateReference();
 
 }

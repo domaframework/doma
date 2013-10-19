@@ -15,8 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.jdbc.JdbcMappingHint;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 
 /**
  * プロパティのアクセサです。
@@ -29,7 +28,7 @@ import org.seasar.doma.wrapper.Wrapper;
  *            値の型
  * @since 2.0.0
  */
-public interface PropertyState<E, V> extends JdbcMappingHint {
+public interface PropertyState<E, V> extends JdbcMappable<V> {
 
     /**
      * プロパティを返します。
@@ -54,12 +53,5 @@ public interface PropertyState<E, V> extends JdbcMappingHint {
      * @return このアクセサ
      */
     PropertyState<E, V> save(E entity);
-
-    /**
-     * 値のラッパーを返します。
-     * 
-     * @return 値のラッパー
-     */
-    Wrapper<V> getWrapper();
 
 }

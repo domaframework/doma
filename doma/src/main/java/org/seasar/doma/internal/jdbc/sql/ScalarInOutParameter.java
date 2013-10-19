@@ -49,7 +49,7 @@ public class ScalarInOutParameter<BASIC, CONTAINER> implements
     }
 
     @Override
-    public void update() {
+    public void updateReference() {
         reference.set(scalar.get());
     }
 

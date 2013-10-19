@@ -13,15 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.internal.jdbc.command.JdbcMappable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
+ * 
  * @author nakamura-to
  * 
+ * @param <RESULT>
  */
-public interface SingleResultParameter<BASIC, RESULT> extends
-        ResultParameter<RESULT>, JdbcMappable<BASIC> {
+public abstract class AbstractResultProvider<RESULT> implements
+        ResultProvider<RESULT> {
+
+    protected <BASIC> void fetch(ResultSet resultSet,
+            JdbcMappable<BASIC> mappable, int index,
+            JdbcMappingVisitor jdbcMappingVisitor) throws SQLException {
+        Wrapper<?> wrapper = mappable.getWrapper();
+        wrapper.accept(jdbcMappingVisitor, new JdbcValueGetter(resultSet,
+                index), mappable);
+    }
 
 }

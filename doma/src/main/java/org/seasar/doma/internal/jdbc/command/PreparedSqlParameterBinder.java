@@ -24,15 +24,14 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 
  * @author taedium
  * 
  */
-public class PreparedSqlParameterBinder implements
-        ParameterBinder<PreparedStatement, InParameter<?>> {
+public class PreparedSqlParameterBinder extends
+        AbstractParameterBinder<PreparedStatement, InParameter<?>> {
 
     protected final Query query;
 
@@ -49,10 +48,8 @@ public class PreparedSqlParameterBinder implements
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         for (InParameter<?> parameter : paramters) {
-            SetValueFunction function = new SetValueFunction(preparedStatement,
-                    index);
-            Wrapper<?> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, function, parameter);
+            bindInParameter(preparedStatement, parameter, index,
+                    jdbcMappingVisitor);
             index++;
         }
     }

@@ -43,8 +43,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class CallableSqlParameterFetcher implements
-        ResultFetcher<CallableStatement, List<? extends SqlParameter>> {
+public class CallableSqlParameterFetcher {
 
     protected final ModuleQuery query;
 
@@ -53,7 +52,6 @@ public class CallableSqlParameterFetcher implements
         this.query = query;
     }
 
-    @Override
     public void fetch(CallableStatement callableStatement,
             List<? extends SqlParameter> parameters) throws SQLException {
         assertNotNull(callableStatement, parameters);
@@ -95,10 +93,8 @@ public class CallableSqlParameterFetcher implements
         @Override
         public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter,
                 Void p) throws SQLException {
-            Wrapper<BASIC> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index), parameter);
-            parameter.update();
+            fetchOutParameter(parameter);
+            parameter.updateReference();
             index++;
             return null;
         }
@@ -106,17 +102,16 @@ public class CallableSqlParameterFetcher implements
         @Override
         public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> Void visitInOutParameter(
                 INOUT parameter, Void p) throws SQLException {
-            visitOutParameter(parameter, p);
+            fetchOutParameter(parameter);
+            parameter.updateReference();
+            index++;
             return null;
         }
 
         @Override
         public <ELEMENT> Void visitListParameter(
                 ListParameter<ELEMENT> parameter, Void p) throws SQLException {
-            ResultProvider<ELEMENT> provider = parameter
-                    .createResultProvider(query);
-            consumeResultSet(parameter.getName(),
-                    resultSet -> parameter.add(provider.get(resultSet)));
+            fetchListParameter(parameter);
             return null;
         }
 
@@ -124,9 +119,7 @@ public class CallableSqlParameterFetcher implements
         public <BASIC, RESULT> Void visitSingleResultParameter(
                 SingleResultParameter<BASIC, RESULT> parameter, Void p)
                 throws SQLException {
-            Wrapper<BASIC> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index), parameter);
+            fetchOutParameter(parameter);
             index++;
             return null;
         }
@@ -135,8 +128,23 @@ public class CallableSqlParameterFetcher implements
         public <ELEMENT> Void visitResultListParameter(
                 ResultListParameter<ELEMENT> parameter, Void p)
                 throws SQLException {
-            visitListParameter(parameter, p);
+            fetchListParameter(parameter);
             return null;
+        }
+
+        protected <BASIC> void fetchOutParameter(JdbcMappable<BASIC> parameter)
+                throws SQLException {
+            Wrapper<?> wrapper = parameter.getWrapper();
+            wrapper.accept(jdbcMappingVisitor, new JdbcOutParameterGetter(
+                    callableStatement, index), parameter);
+        }
+
+        protected <ELEMENT> void fetchListParameter(
+                ListParameter<ELEMENT> parameter) throws SQLException {
+            ResultProvider<ELEMENT> provider = parameter
+                    .createResultProvider(query);
+            consumeResultSet(parameter.getName(),
+                    resultSet -> parameter.add(provider.get(resultSet)));
         }
 
         protected void consumeResultSet(String parameterName,
@@ -179,10 +187,10 @@ public class CallableSqlParameterFetcher implements
             }
         }
 
-        @FunctionalInterface
-        protected interface ResultSetConsumer {
-            void accept(ResultSet resultSet) throws SQLException;
-        }
+    }
 
+    @FunctionalInterface
+    protected interface ResultSetConsumer {
+        void accept(ResultSet resultSet) throws SQLException;
     }
 }

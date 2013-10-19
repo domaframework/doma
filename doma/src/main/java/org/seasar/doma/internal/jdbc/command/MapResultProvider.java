@@ -15,15 +15,19 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
 
 /***
@@ -33,11 +37,18 @@ import org.seasar.doma.jdbc.query.Query;
  * @param <MAP>
  * @param <CONTAINER>
  */
-public class MapResultProvider<CONTAINER> implements ResultProvider<CONTAINER> {
+public class MapResultProvider<CONTAINER> extends
+        AbstractResultProvider<CONTAINER> {
 
-    protected final MapFetcher fetcher;
+    protected final Query query;
+
+    protected final MapKeyNamingType keyNamingType;
 
     protected final Function<Map<String, Object>, CONTAINER> mapper;
+
+    protected final JdbcMappingVisitor jdbcMappingVisitor;
+
+    protected Map<Integer, String> indexMap;
 
     /**
      * 
@@ -48,20 +59,44 @@ public class MapResultProvider<CONTAINER> implements ResultProvider<CONTAINER> {
     public MapResultProvider(Query query, MapKeyNamingType keyNamingType,
             Function<Map<String, Object>, CONTAINER> mapper) {
         assertNotNull(query, keyNamingType);
-        this.fetcher = new MapFetcher(query, keyNamingType);
+        this.query = query;
+        this.keyNamingType = keyNamingType;
         this.mapper = mapper;
+        this.jdbcMappingVisitor = query.getConfig().getDialect()
+                .getJdbcMappingVisitor();
     }
 
     @Override
     public CONTAINER get(ResultSet resultSet) throws SQLException {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
-        fetcher.fetch(resultSet, map);
+        if (indexMap == null) {
+            indexMap = createIndexMap(resultSet.getMetaData());
+        }
+        for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
+            Integer index = entry.getKey();
+            String key = entry.getValue();
+            BasicScalar<Object> scalar = new BasicScalar<>(
+                    () -> new org.seasar.doma.wrapper.ObjectWrapper(), false);
+            fetch(resultSet, scalar, index, jdbcMappingVisitor);
+            map.put(key, scalar.get());
+        }
         return mapper.apply(map);
     }
 
     @Override
     public CONTAINER getDefault() {
         return mapper.apply(null);
+    }
+
+    protected HashMap<Integer, String> createIndexMap(
+            ResultSetMetaData resultSetMeta) throws SQLException {
+        HashMap<Integer, String> indexMap = new HashMap<Integer, String>();
+        int count = resultSetMeta.getColumnCount();
+        for (int i = 1; i < count + 1; i++) {
+            String columnName = resultSetMeta.getColumnLabel(i);
+            indexMap.put(i, keyNamingType.apply(columnName));
+        }
+        return indexMap;
     }
 
 }

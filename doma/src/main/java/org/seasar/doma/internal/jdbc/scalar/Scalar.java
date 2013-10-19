@@ -2,10 +2,9 @@ package org.seasar.doma.internal.jdbc.scalar;
 
 import java.util.Optional;
 
-import org.seasar.doma.jdbc.JdbcMappingHint;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 
-public interface Scalar<BASIC, CONTAINER> extends JdbcMappingHint {
+public interface Scalar<BASIC, CONTAINER> extends JdbcMappable<BASIC> {
 
     Class<BASIC> getBasicClass();
 
@@ -20,7 +19,5 @@ public interface Scalar<BASIC, CONTAINER> extends JdbcMappingHint {
     CONTAINER getDefault();
 
     void set(CONTAINER container);
-
-    Wrapper<BASIC> getWrapper();
 
 }
