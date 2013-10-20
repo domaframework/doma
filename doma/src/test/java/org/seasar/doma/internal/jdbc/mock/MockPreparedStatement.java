@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.mock;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -48,6 +48,7 @@ import org.seasar.doma.internal.util.AssertionUtil;
  * @author taedium
  * 
  */
+@SuppressWarnings({ "all", "deprecation" })
 public class MockPreparedStatement extends MockStatement implements
         PreparedStatement {
 
