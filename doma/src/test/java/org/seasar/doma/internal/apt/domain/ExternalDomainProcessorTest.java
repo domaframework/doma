@@ -30,7 +30,7 @@ public class ExternalDomainProcessorTest extends AptTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        addOption("-Atest=true");
+        addOption("-Adoma.test=true");
     }
 
     public void testNotDomainConverter() throws Exception {

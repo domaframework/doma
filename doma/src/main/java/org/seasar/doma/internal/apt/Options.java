@@ -27,25 +27,25 @@ import org.seasar.doma.internal.Artifact;
  */
 public final class Options {
 
-    public static final String TEST = "test";
+    public static final String TEST = "doma.test";
 
-    public static final String DEBUG = "debug";
+    public static final String DEBUG = "doma.debug";
 
-    public static final String DAO_PACKAGE = "dao.package";
+    public static final String DAO_PACKAGE = "doma.dao.package";
 
-    public static final String DAO_SUBPACKAGE = "dao.subpackage";
+    public static final String DAO_SUBPACKAGE = "doma.dao.subpackage";
 
-    public static final String DAO_SUFFIX = "dao.suffix";
+    public static final String DAO_SUFFIX = "doma.dao.suffix";
 
-    public static final String ENTITY_FIELD_PREFIX = "entity.field.prefix";
+    public static final String ENTITY_FIELD_PREFIX = "doma.entity.field.prefix";
 
-    public static final String EXPR_FUNCTIONS = "expr.functions";
+    public static final String EXPR_FUNCTIONS = "doma.expr.functions";
 
-    public static final String DOMAIN_CONVERTERS = "domain.converters";
+    public static final String DOMAIN_CONVERTERS = "doma.domain.converters";
 
-    public static final String SQL_VALIDATION = "sql.validation";
+    public static final String SQL_VALIDATION = "doma.sql.validation";
 
-    public static final String VERSION_VALIDATION = "version.validation";
+    public static final String VERSION_VALIDATION = "doma.version.validation";
 
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);

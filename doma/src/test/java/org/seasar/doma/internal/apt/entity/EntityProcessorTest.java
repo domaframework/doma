@@ -30,8 +30,8 @@ public class EntityProcessorTest extends AptTestCase {
         super.setUp();
         addSourcePath("src/test/java");
         addOption(
-                "-Atest=true",
-                "-Adomain.converters=org.seasar.doma.internal.apt.entity.DomainConvertersProvider");
+                "-Adoma.test=true",
+                "-Adoma.domain.converters=org.seasar.doma.internal.apt.entity.DomainConvertersProvider");
     }
 
     public void testEmp() throws Exception {

@@ -28,7 +28,7 @@ public class DaoProcessorTest extends AptTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        addOption("-Atest=true");
+        addOption("-Adoma.test=true");
     }
 
     public void testSqlFileSelectEntity() throws Exception {
@@ -668,7 +668,7 @@ public class DaoProcessorTest extends AptTestCase {
     }
 
     public void testSqlValidationSkip() throws Exception {
-        addOption("-Asql.validation=false");
+        addOption("-Adoma.sql.validation=false");
         Class<?> target = SqlValidationSkipDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);

@@ -28,7 +28,7 @@ public class DomainConvertersProcessorTest extends AptTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        addOption("-Atest=true");
+        addOption("-Adoma.test=true");
     }
 
     public void testDay() throws Exception {

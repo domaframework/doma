@@ -28,7 +28,7 @@ public class DomainProcessorTest extends AptTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        addOption("-Atest=true");
+        addOption("-Adoma.test=true");
     }
 
     public void testSalary() throws Exception {
@@ -196,7 +196,7 @@ public class DomainProcessorTest extends AptTestCase {
     }
 
     public void testVersionCheckSuppressed() throws Exception {
-        addOption("-Aversion.validation=false");
+        addOption("-Adoma.version.validation=false");
         Class<?> target = VersionCheckSuppressedDomain.class;
         DomainProcessor processor = new DomainProcessor();
         addProcessor(processor);
