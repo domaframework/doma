@@ -30,12 +30,12 @@ import org.seasar.doma.jdbc.entity.EntityType;
  * @author taedium
  * 
  */
-public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
+public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
         implements BatchInsertQuery {
 
     protected EntityHandler entityHandler;
 
-    public SqlFileBatchInsertQuery(Class<E> elementClass) {
+    public SqlFileBatchInsertQuery(Class<ELEMENT> elementClass) {
         super(elementClass, SqlKind.BATCH_INSERT);
     }
 
@@ -85,7 +85,7 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
     }
 
     @Override
-    public void setEntityType(EntityType<E> entityType) {
+    public void setEntityType(EntityType<ELEMENT> entityType) {
         entityHandler = new EntityHandler(entityType);
     }
 
@@ -96,15 +96,15 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
 
     protected class EntityHandler {
 
-        protected EntityType<E> entityType;
+        protected EntityType<ELEMENT> entityType;
 
-        protected EntityHandler(EntityType<E> entityType) {
+        protected EntityHandler(EntityType<ELEMENT> entityType) {
             assertNotNull(entityType);
             this.entityType = entityType;
         }
 
         protected void preInsert() {
-            SqlFileBatchPreInsertContext<E> context = new SqlFileBatchPreInsertContext<E>(
+            SqlFileBatchPreInsertContext<ELEMENT> context = new SqlFileBatchPreInsertContext<ELEMENT>(
                     entityType, method, config);
             entityType.preInsert(currentEntity, context);
             if (context.getNewEntity() != null) {
@@ -113,7 +113,7 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
         }
 
         protected void postInsert() {
-            SqlFileBatchPostInsertContext<E> context = new SqlFileBatchPostInsertContext<E>(
+            SqlFileBatchPostInsertContext<ELEMENT> context = new SqlFileBatchPostInsertContext<ELEMENT>(
                     entityType, method, config);
             entityType.postInsert(currentEntity, context);
             if (context.getNewEntity() != null) {

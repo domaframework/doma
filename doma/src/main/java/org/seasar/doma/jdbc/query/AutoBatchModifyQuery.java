@@ -35,19 +35,19 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
+public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
-    protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
+    protected List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes;
 
-    protected List<EntityPropertyType<E, ?>> idPropertyTypes;
+    protected List<EntityPropertyType<ENTITY, ?>> idPropertyTypes;
 
     protected String[] includedPropertyNames = EMPTY_STRINGS;
 
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected final EntityType<E> entityType;
+    protected final EntityType<ENTITY> entityType;
 
     protected Method method;
 
@@ -57,7 +57,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected String callerMethodName;
 
-    protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
+    protected VersionPropertyType<? super ENTITY, ENTITY, ?, ?> versionPropertyType;
 
     protected boolean optimisticLockCheckRequired;
 
@@ -69,15 +69,15 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected List<PreparedSql> sqls;
 
-    protected List<E> entities;
+    protected List<ENTITY> entities;
 
-    protected E currentEntity;
+    protected ENTITY currentEntity;
 
     protected int queryTimeout;
 
     protected int batchSize;
 
-    public AutoBatchModifyQuery(EntityType<E> entityType) {
+    public AutoBatchModifyQuery(EntityType<ENTITY> entityType) {
         assertNotNull(entityType);
         this.entityType = entityType;
     }
@@ -140,20 +140,20 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
         this.config = config;
     }
 
-    public void setEntities(Iterable<E> entities) {
+    public void setEntities(Iterable<ENTITY> entities) {
         assertNotNull(entities);
         if (entities instanceof Collection<?>) {
-            this.entities = new ArrayList<E>((Collection<E>) entities);
+            this.entities = new ArrayList<ENTITY>((Collection<ENTITY>) entities);
         } else {
-            this.entities = new ArrayList<E>();
-            for (E entity : entities) {
+            this.entities = new ArrayList<ENTITY>();
+            for (ENTITY entity : entities) {
                 this.entities.add(entity);
             }
         }
         this.sqls = new ArrayList<PreparedSql>(this.entities.size());
     }
 
-    public List<E> getEntities() {
+    public List<ENTITY> getEntities() {
         return entities;
     }
 

@@ -31,7 +31,7 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
  * @author taedium
  * 
  */
-public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
+public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
         implements BatchUpdateQuery {
 
     protected EntityHandler entityHandler;
@@ -40,7 +40,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public SqlFileBatchUpdateQuery(Class<E> elementClass) {
+    public SqlFileBatchUpdateQuery(Class<ELEMENT> elementClass) {
         super(elementClass, SqlKind.BATCH_UPDATE);
     }
 
@@ -100,7 +100,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
     }
 
     @Override
-    public void setEntityType(EntityType<E> entityType) {
+    public void setEntityType(EntityType<ELEMENT> entityType) {
         entityHandler = new EntityHandler(entityType);
     }
 
@@ -119,18 +119,18 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
 
     protected class EntityHandler {
 
-        protected EntityType<E> entityType;
+        protected EntityType<ELEMENT> entityType;
 
-        protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
+        protected VersionPropertyType<? super ELEMENT, ELEMENT, ?, ?> versionPropertyType;
 
-        protected EntityHandler(EntityType<E> entityType) {
+        protected EntityHandler(EntityType<ELEMENT> entityType) {
             assertNotNull(entityType);
             this.entityType = entityType;
             this.versionPropertyType = entityType.getVersionPropertyType();
         }
 
         protected void preUpdate() {
-            SqlFileBatchPreUpdateContext<E> context = new SqlFileBatchPreUpdateContext<E>(
+            SqlFileBatchPreUpdateContext<ELEMENT> context = new SqlFileBatchPreUpdateContext<ELEMENT>(
                     entityType, method, config);
             entityType.preUpdate(currentEntity, context);
             if (context.getNewEntity() != null) {
@@ -139,7 +139,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         }
 
         protected void postUpdate() {
-            SqlFileBatchPostUpdateContext<E> context = new SqlFileBatchPostUpdateContext<E>(
+            SqlFileBatchPostUpdateContext<ELEMENT> context = new SqlFileBatchPostUpdateContext<ELEMENT>(
                     entityType, method, config);
             entityType.postUpdate(currentEntity, context);
             if (context.getNewEntity() != null) {
@@ -158,8 +158,8 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         protected void incrementVersions() {
             if (versionPropertyType != null && !versionIgnored) {
                 for (int i = 0, size = elements.size(); i < size; i++) {
-                    E entity = elements.get(i);
-                    E newEntity = versionPropertyType.increment(entityType,
+                    ELEMENT entity = elements.get(i);
+                    ELEMENT newEntity = versionPropertyType.increment(entityType,
                             entity);
                     elements.set(i, newEntity);
                 }

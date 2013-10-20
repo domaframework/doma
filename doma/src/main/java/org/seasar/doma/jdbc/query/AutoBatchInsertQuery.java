@@ -41,16 +41,16 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
+public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> implements
         BatchInsertQuery {
 
-    protected GeneratedIdPropertyType<? super E, E, ?, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 
     protected boolean batchSupported = true;
 
-    public AutoBatchInsertQuery(EntityType<E> entityType) {
+    public AutoBatchInsertQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -86,7 +86,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void preInsert() {
-        AutoBatchPreInsertContext<E> context = new AutoBatchPreInsertContext<E>(
+        AutoBatchPreInsertContext<ENTITY> context = new AutoBatchPreInsertContext<ENTITY>(
                 entityType, method, config);
         entityType.preInsert(currentEntity, context);
         if (context.getNewEntity() != null) {
@@ -114,7 +114,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     protected void prepareTargetPropertyTypes() {
         targetPropertyTypes = new ArrayList<>(entityType
                 .getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?> propertyType : entityType
+        for (EntityPropertyType<ENTITY, ?> propertyType : entityType
                 .getEntityPropertyTypes()) {
             if (!propertyType.isInsertable()) {
                 continue;
@@ -126,7 +126,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                     targetPropertyTypes.add(propertyType);
                 }
                 if (generatedIdPropertyType == null) {
-                    Property<E, ?> property = propertyType.createProperty();
+                    Property<ENTITY, ?> property = propertyType.createProperty();
                     property.load(currentEntity);
                     if (property.getWrapper().get() == null) {
                         throw new JdbcException(Message.DOMA2020,
@@ -144,7 +144,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            E newEntity = generatedIdPropertyType.preInsert(entityType,
+            ENTITY newEntity = generatedIdPropertyType.preInsert(entityType,
                     currentEntity, idGenerationConfig);
             currentEntity = newEntity;
         }
@@ -164,14 +164,14 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
+        for (EntityPropertyType<ENTITY, ?> p : targetPropertyTypes) {
             builder.appendSql(p.getColumnName(dialect::applyQuote));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
-            Property<E, ?> property = propertyType.createProperty();
+        for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
+            Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(currentEntity);
             builder.appendParameter(property);
             builder.appendSql(", ");
@@ -190,7 +190,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     @Override
     public void generateId(Statement statement, int index) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            E newEntity = generatedIdPropertyType.postInsert(entityType,
+            ENTITY newEntity = generatedIdPropertyType.postInsert(entityType,
                     entities.get(index), idGenerationConfig, statement);
             entities.set(index, newEntity);
         }
@@ -206,7 +206,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void postInsert() {
-        AutoBatchPostInsertContext<E> context = new AutoBatchPostInsertContext<E>(
+        AutoBatchPostInsertContext<ENTITY> context = new AutoBatchPostInsertContext<ENTITY>(
                 entityType, method, config);
         entityType.postInsert(currentEntity, context);
         if (context.getNewEntity() != null) {

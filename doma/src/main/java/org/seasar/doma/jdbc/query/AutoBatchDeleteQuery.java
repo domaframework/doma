@@ -35,14 +35,14 @@ import org.seasar.doma.jdbc.entity.Property;
  * @author taedium
  * 
  */
-public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
+public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> implements
         BatchDeleteQuery {
 
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchDeleteQuery(EntityType<E> entityType) {
+    public AutoBatchDeleteQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -74,7 +74,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void preDelete() {
-        AutoBatchPreDeleteContext<E> context = new AutoBatchPreDeleteContext<E>(
+        AutoBatchPreDeleteContext<ENTITY> context = new AutoBatchPreDeleteContext<ENTITY>(
                 entityType, method, config);
         entityType.preDelete(currentEntity, context);
         if (context.getNewEntity() != null) {
@@ -98,8 +98,8 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> propertyType : idPropertyTypes) {
-                Property<E, ?> property = propertyType.createProperty();
+            for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
+                Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(currentEntity);
                 builder.appendSql(propertyType
                         .getColumnName(dialect::applyQuote));
@@ -115,7 +115,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Property<E, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyType.createProperty();
             property.load(currentEntity);
             builder.appendSql(versionPropertyType
                     .getColumnName(dialect::applyQuote));
@@ -136,7 +136,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void postDelete() {
-        AutoBatchPostDeleteContext<E> context = new AutoBatchPostDeleteContext<E>(
+        AutoBatchPostDeleteContext<ENTITY> context = new AutoBatchPostDeleteContext<ENTITY>(
                 entityType, method, config);
         entityType.postDelete(currentEntity, context);
         if (context.getNewEntity() != null) {

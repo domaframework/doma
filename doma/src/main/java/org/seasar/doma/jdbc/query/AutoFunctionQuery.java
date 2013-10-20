@@ -25,10 +25,10 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class AutoFunctionQuery<R> extends AutoModuleQuery implements
-        FunctionQuery<R> {
+public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements
+        FunctionQuery<RESULT> {
 
-    protected ResultParameter<R> resultParameter;
+    protected ResultParameter<RESULT> resultParameter;
 
     @Override
     public void prepare() {
@@ -50,12 +50,12 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
         setModuleName(functionName);
     }
 
-    public void setResultParameter(ResultParameter<R> parameter) {
+    public void setResultParameter(ResultParameter<RESULT> parameter) {
         this.resultParameter = parameter;
     }
 
     @Override
-    public R getResult() {
+    public RESULT getResult() {
         return resultParameter.getResult();
     }
 

@@ -36,14 +36,14 @@ import org.seasar.doma.jdbc.entity.Property;
  * @author taedium
  * 
  */
-public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
+public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> implements
         BatchUpdateQuery {
 
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchUpdateQuery(EntityType<E> entityType) {
+    public AutoBatchUpdateQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -76,7 +76,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void preUpdate() {
-        AutoBatchPreUpdateContext<E> context = new AutoBatchPreUpdateContext<E>(
+        AutoBatchPreUpdateContext<ENTITY> context = new AutoBatchPreUpdateContext<ENTITY>(
                 entityType, method, config);
         entityType.preUpdate(currentEntity, context);
         if (context.getNewEntity() != null) {
@@ -93,9 +93,9 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
+        targetPropertyTypes = new ArrayList<EntityPropertyType<ENTITY, ?>>(
                 entityType.getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<ENTITY, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -120,8 +120,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" set ");
-        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
-            Property<E, ?> property = propertyType.createProperty();
+        for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
+            Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(currentEntity);
             builder.appendSql(propertyType.getColumnName(dialect::applyQuote));
             builder.appendSql(" = ");
@@ -134,8 +134,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.cutBackSql(2);
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> propertyType : idPropertyTypes) {
-                Property<E, ?> property = propertyType.createProperty();
+            for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
+                Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(currentEntity);
                 builder.appendSql(propertyType
                         .getColumnName(dialect::applyQuote));
@@ -151,7 +151,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Property<E, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyType.createProperty();
             property.load(currentEntity);
             builder.appendSql(versionPropertyType
                     .getColumnName(dialect::applyQuote));
@@ -166,8 +166,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     public void incrementVersions() {
         if (versionPropertyType != null && !versionIgnored) {
             for (int i = 0, size = entities.size(); i < size; i++) {
-                E entity = entities.get(i);
-                E newEntity = versionPropertyType.increment(entityType, entity);
+                ENTITY entity = entities.get(i);
+                ENTITY newEntity = versionPropertyType.increment(entityType, entity);
                 entities.set(i, newEntity);
             }
         }
@@ -183,7 +183,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void postUpdate() {
-        AutoBatchPostUpdateContext<E> context = new AutoBatchPostUpdateContext<E>(
+        AutoBatchPostUpdateContext<ENTITY> context = new AutoBatchPostUpdateContext<ENTITY>(
                 entityType, method, config);
         entityType.postUpdate(currentEntity, context);
         if (context.getNewEntity() != null) {

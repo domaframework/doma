@@ -38,7 +38,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
+public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         UpdateQuery {
 
     protected boolean nullExcluded;
@@ -49,7 +49,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean unchangedPropertyIncluded;
 
-    public AutoUpdateQuery(EntityType<E> entityType) {
+    public AutoUpdateQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -68,8 +68,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preUpdate() {
-        List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
-        AutoPreUpdateContext<E> context = new AutoPreUpdateContext<E>(
+        List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        AutoPreUpdateContext<ENTITY> context = new AutoPreUpdateContext<ENTITY>(
                 entityType, method, config, targetPropertyTypes);
         entityType.preUpdate(entity, context);
         if (context.getNewEntity() != null) {
@@ -93,11 +93,11 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         }
     }
 
-    protected List<EntityPropertyType<E, ?>> getTargetPropertyTypes() {
+    protected List<EntityPropertyType<ENTITY, ?>> getTargetPropertyTypes() {
         int capacity = entityType.getEntityPropertyTypes().size();
-        List<EntityPropertyType<E, ?>> results = new ArrayList<>(capacity);
-        E originalStates = entityType.getOriginalStates(entity);
-        for (EntityPropertyType<E, ?> propertyType : entityType
+        List<EntityPropertyType<ENTITY, ?>> results = new ArrayList<>(capacity);
+        ENTITY originalStates = entityType.getOriginalStates(entity);
+        for (EntityPropertyType<ENTITY, ?> propertyType : entityType
                 .getEntityPropertyTypes()) {
             if (!propertyType.isUpdatable()) {
                 continue;
@@ -109,7 +109,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
                 continue;
             }
             if (nullExcluded) {
-                Property<E, ?> property = propertyType.createProperty();
+                Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
                 if (property.getWrapper().get() == null) {
                     continue;
@@ -127,8 +127,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         return results;
     }
 
-    protected boolean isChanged(E originalStates,
-            EntityPropertyType<E, ?> propertyType) {
+    protected boolean isChanged(ENTITY originalStates,
+            EntityPropertyType<ENTITY, ?> propertyType) {
         Wrapper<?> originalWrapper = propertyType.createProperty()
                 .load(originalStates).getWrapper();
         Wrapper<?> wrapper = propertyType.createProperty().load(entity)
@@ -143,8 +143,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" set ");
-        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
-            Property<E, ?> property = propertyType.createProperty();
+        for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
+            Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(entity);
             builder.appendSql(propertyType.getColumnName(dialect::applyQuote));
             builder.appendSql(" = ");
@@ -152,7 +152,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             builder.appendSql(", ");
         }
         if (!versionIgnored && versionPropertyType != null) {
-            Property<E, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyType.createProperty();
             property.load(entity);
             builder.appendSql(versionPropertyType
                     .getColumnName(dialect::applyQuote));
@@ -164,8 +164,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         }
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> propertyType : idPropertyTypes) {
-                Property<E, ?> property = propertyType.createProperty();
+            for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
+                Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
                 builder.appendSql(propertyType
                         .getColumnName(dialect::applyQuote));
@@ -181,7 +181,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Property<E, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyType.createProperty();
             property.load(entity);
             builder.appendSql(versionPropertyType
                     .getColumnName(dialect::applyQuote));
@@ -204,11 +204,11 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postUpdate() {
-        List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = getTargetPropertyTypes();
         if (!versionIgnored && versionPropertyType != null) {
             targetPropertyTypes.add(versionPropertyType);
         }
-        AutoPostUpdateContext<E> context = new AutoPostUpdateContext<E>(
+        AutoPostUpdateContext<ENTITY> context = new AutoPostUpdateContext<ENTITY>(
                 entityType, method, config, targetPropertyTypes);
         entityType.postUpdate(entity, context);
         if (context.getNewEntity() != null) {

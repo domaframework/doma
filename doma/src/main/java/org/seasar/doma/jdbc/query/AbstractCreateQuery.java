@@ -24,7 +24,7 @@ import org.seasar.doma.jdbc.Sql;
  * @author taedium
  * 
  */
-public abstract class AbstractCreateQuery<R> implements CreateQuery<R> {
+public abstract class AbstractCreateQuery<RESULT> implements CreateQuery<RESULT> {
 
     protected Config config;
 

@@ -37,9 +37,9 @@ import org.seasar.doma.jdbc.entity.EntityType;
  * @author taedium
  * 
  */
-public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
+public abstract class SqlFileBatchModifyQuery<ELEMENT> implements BatchModifyQuery {
 
-    protected final Class<E> elementClass;
+    protected final Class<ELEMENT> elementClass;
 
     protected final SqlKind kind;
 
@@ -67,13 +67,13 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected int batchSize;
 
-    protected List<E> elements;
+    protected List<ELEMENT> elements;
 
-    protected E currentEntity;
+    protected ELEMENT currentEntity;
 
     protected List<PreparedSql> sqls;
 
-    protected SqlFileBatchModifyQuery(Class<E> elementClass, SqlKind kind) {
+    protected SqlFileBatchModifyQuery(Class<ELEMENT> elementClass, SqlKind kind) {
         assertNotNull(elementClass, kind);
         this.elementClass = elementClass;
         this.kind = kind;
@@ -132,20 +132,20 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         this.parameterName = parameterName;
     }
 
-    public void setElements(Iterable<E> elements) {
+    public void setElements(Iterable<ELEMENT> elements) {
         assertNotNull(elements);
         if (elements instanceof Collection<?>) {
-            this.elements = new ArrayList<E>((Collection<E>) elements);
+            this.elements = new ArrayList<ELEMENT>((Collection<ELEMENT>) elements);
         } else {
-            this.elements = new ArrayList<E>();
-            for (E element : elements) {
+            this.elements = new ArrayList<ELEMENT>();
+            for (ELEMENT element : elements) {
                 this.elements.add(element);
             }
         }
         this.sqls = new ArrayList<PreparedSql>(this.elements.size());
     }
 
-    public List<E> getEntities() {
+    public List<ELEMENT> getEntities() {
         return elements;
     }
 
@@ -165,7 +165,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         this.batchSize = batchSize;
     }
 
-    public abstract void setEntityType(EntityType<E> entityType);
+    public abstract void setEntityType(EntityType<ELEMENT> entityType);
 
     @Override
     public PreparedSql getSql() {

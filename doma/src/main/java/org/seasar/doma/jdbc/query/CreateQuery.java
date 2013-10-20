@@ -22,7 +22,7 @@ import java.sql.SQLException;
  * @author taedium
  * 
  */
-public interface CreateQuery<R> extends Query {
+public interface CreateQuery<RESULT> extends Query {
 
-    R create(Connection connection) throws SQLException;
+    RESULT create(Connection connection) throws SQLException;
 }

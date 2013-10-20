@@ -32,7 +32,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public abstract class AutoModifyQuery<E> implements ModifyQuery {
+public abstract class AutoModifyQuery<ENTITY> implements ModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
@@ -40,13 +40,13 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected final EntityType<E> entityType;
+    protected final EntityType<ENTITY> entityType;
 
     protected Method method;
 
     protected Config config;
 
-    protected E entity;
+    protected ENTITY entity;
 
     protected String callerClassName;
 
@@ -54,11 +54,11 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected PreparedSql sql;
 
-    protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
+    protected List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes;
 
-    protected List<EntityPropertyType<E, ?>> idPropertyTypes;
+    protected List<EntityPropertyType<ENTITY, ?>> idPropertyTypes;
 
-    protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
+    protected VersionPropertyType<? super ENTITY, ENTITY, ?, ?> versionPropertyType;
 
     protected boolean optimisticLockCheckRequired;
 
@@ -70,7 +70,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected int queryTimeout;
 
-    protected AutoModifyQuery(EntityType<E> entityType) {
+    protected AutoModifyQuery(EntityType<ENTITY> entityType) {
         AssertionUtil.assertNotNull(entityType);
         this.entityType = entityType;
     }
@@ -130,11 +130,11 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
         this.config = config;
     }
 
-    public void setEntity(E entity) {
+    public void setEntity(ENTITY entity) {
         this.entity = entity;
     }
 
-    public E getEntity() {
+    public ENTITY getEntity() {
         return entity;
     }
 

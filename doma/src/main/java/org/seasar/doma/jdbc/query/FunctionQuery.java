@@ -19,7 +19,7 @@ package org.seasar.doma.jdbc.query;
  * @author taedium
  * 
  */
-public interface FunctionQuery<R> extends ModuleQuery {
+public interface FunctionQuery<RESULT> extends ModuleQuery {
 
-    R getResult();
+    RESULT getResult();
 }

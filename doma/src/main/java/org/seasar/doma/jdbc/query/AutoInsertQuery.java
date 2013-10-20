@@ -39,16 +39,16 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
+public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         InsertQuery {
 
     protected boolean nullExcluded;
 
-    protected GeneratedIdPropertyType<? super E, E, ?, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 
-    public AutoInsertQuery(EntityType<E> entityType) {
+    public AutoInsertQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -68,7 +68,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preInsert() {
-        AutoPreInsertContext<E> context = new AutoPreInsertContext<E>(
+        AutoPreInsertContext<ENTITY> context = new AutoPreInsertContext<ENTITY>(
                 entityType, method, config);
         entityType.preInsert(entity, context);
         if (context.getNewEntity() != null) {
@@ -92,12 +92,12 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     protected void prepareTargetPropertyType() {
         targetPropertyTypes = new ArrayList<>(entityType
                 .getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?> propertyType : entityType
+        for (EntityPropertyType<ENTITY, ?> propertyType : entityType
                 .getEntityPropertyTypes()) {
             if (!propertyType.isInsertable()) {
                 continue;
             }
-            Property<E, ?> property = propertyType.createProperty();
+            Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(entity);
             if (propertyType.isId()) {
                 if (propertyType != generatedIdPropertyType
@@ -130,7 +130,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
 
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            E newEntity = generatedIdPropertyType.preInsert(entityType, entity,
+            ENTITY newEntity = generatedIdPropertyType.preInsert(entityType, entity,
                     idGenerationConfig);
             entity = newEntity;
         }
@@ -149,14 +149,14 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
+        for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
             builder.appendSql(propertyType.getColumnName(dialect::applyQuote));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
-            Property<E, ?> property = propertyType.createProperty();
+        for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
+            Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(entity);
             builder.appendParameter(property);
             builder.appendSql(", ");
@@ -169,7 +169,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     @Override
     public void generateId(Statement statement) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            E newEntity = generatedIdPropertyType.postInsert(entityType,
+            ENTITY newEntity = generatedIdPropertyType.postInsert(entityType,
                     entity, idGenerationConfig, statement);
             entity = newEntity;
         }
@@ -181,7 +181,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postInsert() {
-        AutoPostInsertContext<E> context = new AutoPostInsertContext<E>(
+        AutoPostInsertContext<ENTITY> context = new AutoPostInsertContext<ENTITY>(
                 entityType, method, config);
         entityType.postInsert(entity, context);
         if (context.getNewEntity() != null) {

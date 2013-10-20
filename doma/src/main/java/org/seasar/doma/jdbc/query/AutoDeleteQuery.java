@@ -33,14 +33,14 @@ import org.seasar.doma.jdbc.entity.Property;
  * @author taedium
  * 
  */
-public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
+public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         DeleteQuery {
 
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoDeleteQuery(EntityType<E> entityType) {
+    public AutoDeleteQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -59,7 +59,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preDelete() {
-        AutoPreDeleteContext<E> context = new AutoPreDeleteContext<E>(
+        AutoPreDeleteContext<ENTITY> context = new AutoPreDeleteContext<ENTITY>(
                 entityType, method, config);
         entityType.preDelete(entity, context);
         if (context.getNewEntity() != null) {
@@ -83,8 +83,8 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> propertyType : idPropertyTypes) {
-                Property<E, ?> property = propertyType.createProperty();
+            for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
+                Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
                 builder.appendSql(propertyType
                         .getColumnName(dialect::applyQuote));
@@ -100,7 +100,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Property<E, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyType.createProperty();
             property.load(entity);
             builder.appendSql(versionPropertyType
                     .getColumnName(dialect::applyQuote));
@@ -116,7 +116,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postDelete() {
-        AutoPostDeleteContext<E> context = new AutoPostDeleteContext<E>(
+        AutoPostDeleteContext<ENTITY> context = new AutoPostDeleteContext<ENTITY>(
                 entityType, method, config);
         entityType.postDelete(entity, context);
         if (context.getNewEntity() != null) {
