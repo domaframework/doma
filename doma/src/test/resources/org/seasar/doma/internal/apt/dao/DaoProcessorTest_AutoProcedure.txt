@@ -62,7 +62,10 @@ public class AutoProcedureDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
+            __query.setCatalogName("");
+            __query.setSchemaName("");
             __query.setProcedureName("executeProcedure");
+            __query.setQuoteRequired(false);
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, arg1));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, arg2));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl");

@@ -62,7 +62,10 @@ public class ProcedureDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
+            __query.setCatalogName("");
+            __query.setSchemaName("");
             __query.setProcedureName("execute");
+            __query.setQuoteRequired(false);
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.MapListParameter(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, result, "result"));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, id));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ProcedureDaoImpl");

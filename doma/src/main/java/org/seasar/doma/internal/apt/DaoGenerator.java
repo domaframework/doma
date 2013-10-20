@@ -811,7 +811,10 @@ public class DaoGenerator extends AbstractGenerator {
                     m.getQueryClass().getSimpleName(), methodName);
             iprint("__query.setMethod(%1$s);%n", methodName);
             iprint("__query.setConfig(__config);%n");
+            iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
+            iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
             iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
+            iprint("__query.setQuoteRequired(%1$s);%n", m.isQuoteRequired());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
             m.getResultParameterMeta().accept(parameterGenerator, m);
             for (CallableSqlParameterMeta parameterMeta : m
@@ -848,8 +851,11 @@ public class DaoGenerator extends AbstractGenerator {
                             .getSimpleName(), methodName);
             iprint("__query.setMethod(%1$s);%n", methodName);
             iprint("__query.setConfig(__config);%n");
+            iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
+            iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
             iprint("__query.setProcedureName(\"%1$s\");%n",
                     m.getProcedureName());
+            iprint("__query.setQuoteRequired(%1$s);%n", m.isQuoteRequired());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
             for (CallableSqlParameterMeta parameterMeta : m
                     .getCallableSqlParameterMetas()) {

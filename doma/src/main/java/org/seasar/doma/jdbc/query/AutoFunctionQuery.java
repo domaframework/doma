@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.ResultParameter;
@@ -28,14 +28,13 @@ import org.seasar.doma.jdbc.SqlKind;
 public class AutoFunctionQuery<R> extends AutoModuleQuery implements
         FunctionQuery<R> {
 
-    protected String functionName;
-
     protected ResultParameter<R> resultParameter;
 
     @Override
     public void prepare() {
-        assertNotNull(config, functionName, resultParameter, callerClassName,
+        assertNotNull(config, moduleName, resultParameter, callerClassName,
                 callerMethodName);
+        prepareQualifiedName();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
@@ -43,12 +42,12 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
 
     protected void prepareSql() {
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                SqlKind.FUNCTION, functionName, parameters, resultParameter);
+                SqlKind.FUNCTION, qualifiedName, parameters, resultParameter);
         sql = builder.build();
     }
 
     public void setFunctionName(String functionName) {
-        this.functionName = functionName;
+        setModuleName(functionName);
     }
 
     public void setResultParameter(ResultParameter<R> parameter) {
@@ -58,11 +57,6 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
     @Override
     public R getResult() {
         return resultParameter.getResult();
-    }
-
-    @Override
-    public String getModuleName() {
-        return functionName;
     }
 
 }

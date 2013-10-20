@@ -25,7 +25,6 @@ import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.jdbc.Reference;
-import org.seasar.doma.jdbc.command.FunctionCommand;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
@@ -50,6 +49,8 @@ public class FunctionCommandTest extends TestCase {
 
         AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
         query.setConfig(runtimeConfig);
+        query.setCatalogName("xxx");
+        query.setSchemaName("yyy");
         query.setFunctionName("aaa");
         query.setResultParameter(new BasicSingleResultParameter<Integer>(
                 () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
@@ -71,6 +72,6 @@ public class FunctionCommandTest extends TestCase {
         assertEquals(new Integer(30), ccc.get());
 
         String sql = runtimeConfig.dataSource.connection.callableStatement.sql;
-        assertEquals("{? = call aaa(?, ?, ?)}", sql);
+        assertEquals("{? = call xxx.yyy.aaa(?, ?, ?)}", sql);
     }
 }

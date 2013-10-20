@@ -50,8 +50,20 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
         this.functionMirror = functionMirror;
     }
 
+    public String getCatalogName() {
+        return functionMirror.getCatalogValue();
+    }
+
+    public String getSchemaName() {
+        return functionMirror.getSchemaValue();
+    }
+
     public String getFunctionName() {
-        return functionMirror.getQualifiedName();
+        return functionMirror.getNameValue();
+    }
+
+    public boolean isQuoteRequired() {
+        return functionMirror.getQuoteValue();
     }
 
     public int getQueryTimeout() {

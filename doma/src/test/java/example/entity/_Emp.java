@@ -50,22 +50,22 @@ public class _Emp extends AbstractEntityType<Emp> {
     public final AssignedIdPropertyType<Object, Emp, Integer, Object> id = new AssignedIdPropertyType<>(
             Emp.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "id", "ID");
+            "id", "ID", false);
 
     public final DefaultPropertyType<Object, Emp, String, Object> name = new DefaultPropertyType<>(
             Emp.class, String.class, String.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
-            "name", "NAME", true, true);
+            "name", "NAME", true, true, false);
 
     public final DefaultPropertyType<Object, Emp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
             Emp.class, BigDecimal.class, BigDecimal.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null,
-            "salary", "SALARY", true, true);
+            "salary", "SALARY", true, true, false);
 
     public final VersionPropertyType<Object, Emp, Integer, Integer> version = new VersionPropertyType<>(
             Emp.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "version", "VERSION");
+            "version", "VERSION", false);
 
     private final String __name = "Emp";
 
@@ -74,8 +74,6 @@ public class _Emp extends AbstractEntityType<Emp> {
     private final String __schemaName = null;
 
     private final String __tableName = "EMP";
-
-    private final String __qualifiedTableName = "EMP";
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
@@ -170,11 +168,6 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public String getQualifiedTableName() {
-        return __qualifiedTableName;
-    }
-
-    @Override
     public void preInsert(Emp entity, PreInsertContext<Emp> context) {
     }
 
@@ -216,6 +209,11 @@ public class _Emp extends AbstractEntityType<Emp> {
     @Override
     public NamingType getNamingType() {
         return __namingType;
+    }
+
+    @Override
+    public boolean isQuoteRequired() {
+        return false;
     }
 
     public static _Emp getSingletonInternal() {

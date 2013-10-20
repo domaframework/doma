@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -44,6 +44,8 @@ public class TableMirror {
 
     protected AnnotationValue name;
 
+    protected AnnotationValue quote;
+
     protected TableMirror(AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
@@ -69,6 +71,8 @@ public class TableMirror {
                 result.schema = value;
             } else if ("name".equals(name)) {
                 result.name = value;
+            } else if ("quote".equals(name)) {
+                result.quote = value;
             }
         }
         return result;
@@ -96,6 +100,14 @@ public class TableMirror {
             throw new AptIllegalStateException("name");
         }
         return value;
+    }
+
+    public boolean getQuoteValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(quote);
+        if (value == null) {
+            throw new AptIllegalStateException("quote");
+        }
+        return value.booleanValue();
     }
 
 }

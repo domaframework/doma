@@ -52,15 +52,18 @@ public class AssignedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN
      *            プロパティの名前
      * @param columnName
      *            カラム名
+     * @param quoteRequired
+     *            カラム名に引用符が必要とされるかどうか
      */
     public AssignedIdPropertyType(Class<ENTITY> entityClass,
             Class<?> entityPropertyClass, Class<BASIC> basicClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
-            DomainType<BASIC, DOMAIN> domainType, String name, String columnName) {
+            DomainType<BASIC, DOMAIN> domainType, String name,
+            String columnName, boolean quoteRequired) {
         super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
                 parentEntityPropertyType, domainType, name, columnName, true,
-                true);
+                true, quoteRequired);
     }
 
     @Override

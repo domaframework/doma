@@ -66,4 +66,8 @@ public @interface Column {
      */
     boolean updatable() default true;
 
+    /**
+     * カラム名を引用符で囲むかどうかを示します。
+     */
+    boolean quote() default false;
 }

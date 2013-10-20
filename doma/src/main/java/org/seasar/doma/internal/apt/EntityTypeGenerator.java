@@ -41,7 +41,6 @@ import org.seasar.doma.internal.apt.meta.OriginalStatesMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -117,7 +116,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printCatalogNameField();
         printSchemaNameField();
         printTableNameField();
-        printQualifiedTableNameField();
+        printIsQuoteRequiredField();
         printNameField();
         printIdPropertyTypesField();
         printEntityPropertyTypesField();
@@ -217,7 +216,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
-                    iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __idGenerator);%n",
+                    iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", %15$s, __idGenerator);%n",
                     /* 1 */GeneratedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
                     /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -232,9 +231,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 11 */parentEntityBoxedTypeName,
                     /* 12 */pm.getFieldName(),
                     /* 13 */pm.getTypeElement().getQualifiedName(),
-                    /* 14 */domainTypeName);
+                    /* 14 */domainTypeName,
+                    /* 15 */pm.isColumnQuoteRequired());
                 } else {
-                    iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                    iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", %15$s);%n",
                     /* 1 */AssignedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
                     /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -249,10 +249,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 11 */parentEntityBoxedTypeName,
                     /* 12 */pm.getFieldName(),
                     /* 13 */pm.getTypeElement().getQualifiedName(),
-                    /* 14 */domainTypeName);
+                    /* 14 */domainTypeName,
+                    /* 15 */pm.isColumnQuoteRequired());
                 }
             } else if (pm.isVersion()) {
-                iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", %15$s);%n",
                 /* 1 */VersionPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
                 /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -267,9 +268,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 11 */parentEntityBoxedTypeName,
                 /* 12 */pm.getFieldName(),
                 /* 13 */pm.getTypeElement().getQualifiedName(),
-                /* 14 */domainTypeName);
+                /* 14 */domainTypeName,
+                /* 15 */pm.isColumnQuoteRequired());
             } else {
-                iprint("public final %1$s<%13$s, %2$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, %15$s.class, %3$s.class, () -> %9$s, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s);%n",
+                iprint("public final %1$s<%13$s, %2$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, %15$s.class, %3$s.class, () -> %9$s, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s, %17$s);%n",
                 /* 1 */DefaultPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
                 /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -286,7 +288,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 13 */parentEntityBoxedTypeName,
                 /* 14 */pm.getFieldName(),
                 /* 15 */pm.getTypeElement().getQualifiedName(),
-                /* 16 */domainTypeName);
+                /* 16 */domainTypeName,
+                /* 17 */pm.isColumnQuoteRequired());
             }
             print("%n");
         }
@@ -329,8 +332,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printQualifiedTableNameField() {
-        iprint("private final String __qualifiedTableName;%n");
+    protected void printIsQuoteRequiredField() {
+        iprint("private final boolean __isQuoteRequired;%n");
         print("%n");
     }
 
@@ -377,9 +380,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    __catalogName = \"%1$s\";%n", entityMeta.getCatalogName());
         iprint("    __schemaName = \"%1$s\";%n", entityMeta.getSchemaName());
         iprint("    __tableName = \"%1$s\";%n", entityMeta.getTableName());
-        iprint("    __qualifiedTableName = \"%1$s\";%n",
-                TableUtil.getQualifiedTableName(entityMeta.getCatalogName(),
-                        entityMeta.getSchemaName(), entityMeta.getTableName()));
+        iprint("    __isQuoteRequired = %1$s;%n", entityMeta.isQuoteRequired());
         iprint("    java.util.List<%1$s<%2$s, ?>> __idList = new java.util.ArrayList<>();%n",
                 EntityPropertyType.class.getName(),
                 entityMeta.getEntityTypeName());
@@ -413,7 +414,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printGetCatalogNameMethod();
         printGetSchemaNameMethod();
         printGetTableNameMethod();
-        printGetQualifiedTableNameMethod();
+        printIsQuoteRequiredMethod();
         printPreInsertMethod();
         printPreUpdateMethod();
         printPreDeleteMethod();
@@ -481,10 +482,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetQualifiedTableNameMethod() {
+    protected void printIsQuoteRequiredMethod() {
         iprint("@Override%n");
-        iprint("public String getQualifiedTableName() {%n");
-        iprint("    return __qualifiedTableName;%n");
+        iprint("public boolean isQuoteRequired() {%n");
+        iprint("    return __isQuoteRequired;%n");
         iprint("}%n");
         print("%n");
     }

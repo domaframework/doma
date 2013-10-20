@@ -133,7 +133,10 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method2);
             __query.setMethod(__method2);
             __query.setConfig(__config);
+            __query.setCatalogName("");
+            __query.setSchemaName("");
             __query.setProcedureName("procedure");
+            __query.setQuoteRequired(false);
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");
             __query.setCallerMethodName("procedure");
@@ -159,7 +162,10 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<example.entity.Emp>> __query = getQueryImplementors().createAutoFunctionQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
+            __query.setCatalogName("");
+            __query.setSchemaName("");
             __query.setFunctionName("function");
+            __query.setQuoteRequired(false);
             __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityResultListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), true));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");

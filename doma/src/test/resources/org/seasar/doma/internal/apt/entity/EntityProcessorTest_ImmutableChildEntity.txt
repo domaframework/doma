@@ -11,13 +11,13 @@ public final class _ImmutableChildEntity extends org.seasar.doma.jdbc.entity.Abs
     private static final _ImmutableChildEntity __singleton = new _ImmutableChildEntity();
 
     /** the aaa */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.ImmutableParentEntity, org.seasar.doma.internal.apt.entity.ImmutableChildEntity, java.lang.Integer, Object> $aaa = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableChildEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), org.seasar.doma.internal.apt.entity._ImmutableParentEntity.getSingletonInternal().$aaa, null, "aaa", "aaa", true, true);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.ImmutableParentEntity, org.seasar.doma.internal.apt.entity.ImmutableChildEntity, java.lang.Integer, Object> $aaa = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableChildEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), org.seasar.doma.internal.apt.entity._ImmutableParentEntity.getSingletonInternal().$aaa, null, "aaa", "aaa", true, true, false);
 
     /** the bbb */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.ImmutableParentEntity, org.seasar.doma.internal.apt.entity.ImmutableChildEntity, java.lang.Integer, Object> $bbb = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableChildEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), org.seasar.doma.internal.apt.entity._ImmutableParentEntity.getSingletonInternal().$bbb, null, "bbb", "bbb", true, true);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.ImmutableParentEntity, org.seasar.doma.internal.apt.entity.ImmutableChildEntity, java.lang.Integer, Object> $bbb = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableChildEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), org.seasar.doma.internal.apt.entity._ImmutableParentEntity.getSingletonInternal().$bbb, null, "bbb", "bbb", true, true, false);
 
     /** the ccc */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableChildEntity, java.lang.String, Object> $ccc = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableChildEntity.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "ccc", "ccc", true, true);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableChildEntity, java.lang.String, Object> $ccc = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableChildEntity.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "ccc", "ccc", true, true, false);
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.ImmutableChildEntity> __listener;
 
@@ -31,7 +31,7 @@ public final class _ImmutableChildEntity extends org.seasar.doma.jdbc.entity.Abs
 
     private final String __tableName;
 
-    private final String __qualifiedTableName;
+    private final boolean __isQuoteRequired;
 
     private final String __name;
 
@@ -49,7 +49,7 @@ public final class _ImmutableChildEntity extends org.seasar.doma.jdbc.entity.Abs
         __catalogName = "";
         __schemaName = "";
         __tableName = "ImmutableChildEntity";
-        __qualifiedTableName = "ImmutableChildEntity";
+        __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableChildEntity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableChildEntity, ?>> __list = new java.util.ArrayList<>(3);
         java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableChildEntity, ?>> __map = new java.util.HashMap<>(3);
@@ -95,8 +95,8 @@ public final class _ImmutableChildEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     @Override
-    public String getQualifiedTableName() {
-        return __qualifiedTableName;
+    public boolean isQuoteRequired() {
+        return __isQuoteRequired;
     }
 
     @Override

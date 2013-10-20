@@ -19,8 +19,6 @@ import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
-import org.seasar.doma.jdbc.query.AutoFunctionQuery;
-import org.seasar.doma.jdbc.query.FunctionQuery;
 
 /**
  * @author taedium

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -74,6 +75,9 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     /** 更新可能かどうか */
     protected final boolean updatable;
 
+    /** 引用符が必要とされるかどうか */
+    protected final boolean quoteRequired;
+
     /** プロパティのフィールド */
     protected final Field field;
 
@@ -103,13 +107,16 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
      *            挿入可能かどうか
      * @param updatable
      *            更新可能かどうか
+     * @param quoteRequired
+     *            カラム名に引用符が必要とされるかどうか
      */
     public DefaultPropertyType(Class<ENTITY> entityClass,
             Class<?> entityPropertyClass, Class<BASIC> basicClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
             DomainType<BASIC, DOMAIN> domainType, String name,
-            String columnName, boolean insertable, boolean updatable) {
+            String columnName, boolean insertable, boolean updatable,
+            boolean quoteRequired) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
         }
@@ -138,6 +145,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         this.columnName = columnName;
         this.insertable = insertable;
         this.updatable = updatable;
+        this.quoteRequired = quoteRequired;
         this.field = parentEntityPropertyType == null ? getField() : null;
         this.propertySupplier = createPropertySupplier();
     }
@@ -207,7 +215,19 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
 
     @Override
     public String getColumnName() {
-        return columnName;
+        return getColumnName(Function.<String> identity());
+    }
+
+    @Override
+    public String getColumnName(Function<String, String> quoteFunction) {
+        Function<String, String> mapper = quoteRequired ? quoteFunction
+                : Function.identity();
+        return mapper.apply(columnName);
+    }
+
+    @Override
+    public boolean isQuoteRequired() {
+        return quoteRequired;
     }
 
     @Override

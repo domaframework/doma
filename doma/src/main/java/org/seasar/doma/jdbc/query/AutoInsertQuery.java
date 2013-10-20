@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
@@ -142,13 +143,14 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareSql() {
+        Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.INSERT);
         builder.appendSql("insert into ");
-        builder.appendSql(entityType.getQualifiedTableName());
+        builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" (");
         for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
-            builder.appendSql(propertyType.getColumnName());
+            builder.appendSql(propertyType.getColumnName(dialect::applyQuote));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);

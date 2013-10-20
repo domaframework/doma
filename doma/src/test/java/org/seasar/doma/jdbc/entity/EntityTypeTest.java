@@ -13,18 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.query;
+package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.internal.jdbc.sql.CallableSql;
+import junit.framework.TestCase;
+import example.entity.Emp;
+import example.entity._Emp;
 
 /**
- * @author taedium
+ * @author nakamura-to
  * 
  */
-public interface ModuleQuery extends Query {
+public class EntityTypeTest extends TestCase {
 
-    @Override
-    CallableSql getSql();
-
-    String getQualifiedName();
+    public void test() throws Exception {
+        EntityType<Emp> entityType = _Emp.getSingletonInternal();
+        entityType.getQualifiedTableName();
+    }
 }

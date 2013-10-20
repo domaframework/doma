@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
@@ -27,11 +27,10 @@ import org.seasar.doma.jdbc.SqlKind;
 public class AutoProcedureQuery extends AutoModuleQuery implements
         ProcedureQuery {
 
-    protected String procedureName;
-
     @Override
     public void prepare() {
-        assertNotNull(config, procedureName, callerClassName, callerMethodName);
+        assertNotNull(config, moduleName, callerClassName, callerMethodName);
+        prepareQualifiedName();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
@@ -39,16 +38,12 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
 
     protected void prepareSql() {
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                SqlKind.PROCEDURE, procedureName, parameters);
+                SqlKind.PROCEDURE, qualifiedName, parameters);
         sql = builder.build();
     }
 
     public void setProcedureName(String procedureName) {
-        this.procedureName = procedureName;
+        setModuleName(procedureName);
     }
 
-    @Override
-    public String getModuleName() {
-        return procedureName;
-    }
 }

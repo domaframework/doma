@@ -155,7 +155,7 @@ public class CallableSqlParameterFetcher {
                         index);
                 if (resultSet == null) {
                     throw new JdbcException(Message.DOMA2137, index,
-                            parameterName, query.getModuleName());
+                            parameterName, query.getQualifiedName());
                 }
                 try {
                     while (resultSet.next()) {
@@ -174,7 +174,7 @@ public class CallableSqlParameterFetcher {
                 }
                 if (resultSet == null) {
                     throw new JdbcException(Message.DOMA2136, parameterName,
-                            query.getModuleName());
+                            query.getQualifiedName());
                 }
                 try {
                     while (resultSet.next()) {

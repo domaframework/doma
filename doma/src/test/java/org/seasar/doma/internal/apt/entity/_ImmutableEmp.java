@@ -86,12 +86,6 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public String getQualifiedTableName() {
-
-        return null;
-    }
-
-    @Override
     public String getSchemaName() {
 
         return null;
@@ -161,6 +155,11 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     @Override
     public ImmutableEmp newEntity(Map<String, Property<ImmutableEmp, ?>> args) {
         return null;
+    }
+
+    @Override
+    public boolean isQuoteRequired() {
+        return false;
     }
 
 }

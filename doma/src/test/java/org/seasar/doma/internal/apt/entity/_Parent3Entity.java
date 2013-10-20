@@ -37,12 +37,12 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     public DefaultPropertyType<Object, Parent3Entity, Integer, Integer> $aaa = new DefaultPropertyType<>(
             Parent3Entity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "aaa", "AAA", true, true);
+            "aaa", "AAA", true, true, false);
 
     public DefaultPropertyType<Object, Parent3Entity, Integer, Integer> $bbb = new DefaultPropertyType<>(
             Parent3Entity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "bbb", "BBB", true, true);
+            "bbb", "BBB", true, true, false);
 
     private _Parent3Entity() {
     }
@@ -148,11 +148,6 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     }
 
     @Override
-    public String getQualifiedTableName() {
-        return null;
-    }
-
-    @Override
     public NamingType getNamingType() {
         return null;
     }
@@ -171,4 +166,8 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
         return null;
     }
 
+    @Override
+    public boolean isQuoteRequired() {
+        return false;
+    }
 }

@@ -86,12 +86,6 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public String getQualifiedTableName() {
-
-        return null;
-    }
-
-    @Override
     public String getSchemaName() {
 
         return null;
@@ -155,6 +149,11 @@ public class _Emp extends AbstractEntityType<Emp> {
     @Override
     public Emp newEntity(Map<String, Property<Emp, ?>> args) {
         return null;
+    }
+
+    @Override
+    public boolean isQuoteRequired() {
+        return false;
     }
 
 }

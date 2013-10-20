@@ -117,7 +117,10 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             org.seasar.doma.jdbc.query.AutoFunctionQuery<java.lang.Integer> __query = getQueryImplementors().createAutoFunctionQuery(__method2);
             __query.setMethod(__method2);
             __query.setConfig(__config);
+            __query.setCatalogName("");
+            __query.setSchemaName("");
             __query.setFunctionName("execute");
+            __query.setQuoteRequired(false);
             __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, true));
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, id));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");

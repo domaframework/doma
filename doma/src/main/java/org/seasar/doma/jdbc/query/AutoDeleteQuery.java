@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
@@ -75,16 +76,18 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareSql() {
+        Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.DELETE);
         builder.appendSql("delete from ");
-        builder.appendSql(entityType.getQualifiedTableName());
+        builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<E, ?> propertyType : idPropertyTypes) {
                 Property<E, ?> property = propertyType.createProperty();
                 property.load(entity);
-                builder.appendSql(propertyType.getColumnName());
+                builder.appendSql(propertyType
+                        .getColumnName(dialect::applyQuote));
                 builder.appendSql(" = ");
                 builder.appendParameter(property);
                 builder.appendSql(" and ");
@@ -99,7 +102,8 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
             }
             Property<E, ?> property = versionPropertyType.createProperty();
             property.load(entity);
-            builder.appendSql(versionPropertyType.getColumnName());
+            builder.appendSql(versionPropertyType
+                    .getColumnName(dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property);
         }

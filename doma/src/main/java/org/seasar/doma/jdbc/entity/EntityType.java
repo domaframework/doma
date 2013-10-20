@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * エンティティのメタタイプです。
@@ -27,10 +28,10 @@ import java.util.Map;
  * 
  * @author taedium
  * 
- * @param <E>
+ * @param <ENTITY>
  *            エンティティの型
  */
-public interface EntityType<E> {
+public interface EntityType<ENTITY> {
 
     /**
      * エンティティがイミュータブルかどうかを返します。
@@ -76,6 +77,24 @@ public interface EntityType<E> {
     String getQualifiedTableName();
 
     /**
+     * 必要とされる場合、完全修飾されたテーブル名を返します。
+     * <p>
+     * カタログ、スキーマ、テーブル名は引用符で区切られます。
+     * 
+     * @param quoteFunction
+     *            引用符を適用する関数
+     * @return 完全修飾されたテーブル名
+     */
+    String getQualifiedTableName(Function<String, String> quoteFunction);
+
+    /**
+     * カタログ、スキーマ、テーブル名において引用符が必要とされるかどうかを返します。
+     * 
+     * @return 引用符が必要とされる場合 {@code true}
+     */
+    boolean isQuoteRequired();
+
+    /**
      * ネーミング規約を返します。
      * 
      * @return ネーミング規約
@@ -87,21 +106,21 @@ public interface EntityType<E> {
      * 
      * @return 自動生成される識別子のプロパティ型
      */
-    GeneratedIdPropertyType<? super E, E, ?, ?> getGeneratedIdPropertyType();
+    GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> getGeneratedIdPropertyType();
 
     /**
      * バージョンのプロパティ型を返します。
      * 
      * @return バージョンのプロパティ型
      */
-    VersionPropertyType<? super E, E, ?, ?> getVersionPropertyType();
+    VersionPropertyType<? super ENTITY, ENTITY, ?, ?> getVersionPropertyType();
 
     /**
      * 識別子のプロパティ型のリストを返します。
      * 
      * @return 識別子のプロパティ型のリスト
      */
-    List<EntityPropertyType<E, ?>> getIdPropertyTypes();
+    List<EntityPropertyType<ENTITY, ?>> getIdPropertyTypes();
 
     /**
      * 名前を指定してプロパティ型を返します。
@@ -110,14 +129,14 @@ public interface EntityType<E> {
      *            プロパティ名
      * @return プロパティ名、存在しない場合 {@code null}
      */
-    EntityPropertyType<E, ?> getEntityPropertyType(String __name);
+    EntityPropertyType<ENTITY, ?> getEntityPropertyType(String __name);
 
     /**
      * プロパティ型のリストを返します。
      * 
      * @return プロパティ型のリスト
      */
-    List<EntityPropertyType<E, ?>> getEntityPropertyTypes();
+    List<EntityPropertyType<ENTITY, ?>> getEntityPropertyTypes();
 
     /**
      * 新しいエンティティをインスタンス化します。
@@ -127,14 +146,14 @@ public interface EntityType<E> {
      * @return 新しいエンティティ
      * @since 1.34.0
      */
-    E newEntity(Map<String, Property<E, ?>> __args);
+    ENTITY newEntity(Map<String, Property<ENTITY, ?>> __args);
 
     /**
      * エンティティのクラスを返します。
      * 
      * @return エンティティのクラス
      */
-    Class<E> getEntityClass();
+    Class<ENTITY> getEntityClass();
 
     /**
      * 現在の状態を保存します。
@@ -142,7 +161,7 @@ public interface EntityType<E> {
      * @param entity
      *            現在の状態
      */
-    void saveCurrentStates(E entity);
+    void saveCurrentStates(ENTITY entity);
 
     /**
      * 元の状態を返します。
@@ -151,7 +170,7 @@ public interface EntityType<E> {
      *            元の状態
      * @return 元の状態、存在しない場合 {@code null}
      */
-    E getOriginalStates(E entity);
+    ENTITY getOriginalStates(ENTITY entity);
 
     /**
      * 挿入処理の前処理を行います。
@@ -161,7 +180,7 @@ public interface EntityType<E> {
      * @param context
      *            コンテキスト
      */
-    void preInsert(E entity, PreInsertContext<E> context);
+    void preInsert(ENTITY entity, PreInsertContext<ENTITY> context);
 
     /**
      * 更新処理の前処理を行います。
@@ -171,7 +190,7 @@ public interface EntityType<E> {
      * @param context
      *            コンテキスト
      */
-    void preUpdate(E entity, PreUpdateContext<E> context);
+    void preUpdate(ENTITY entity, PreUpdateContext<ENTITY> context);
 
     /**
      * 削除処理の前処理を行います。
@@ -181,7 +200,7 @@ public interface EntityType<E> {
      * @param context
      *            コンテキスト
      */
-    void preDelete(E entity, PreDeleteContext<E> context);
+    void preDelete(ENTITY entity, PreDeleteContext<ENTITY> context);
 
     /**
      * 挿入処理の後処理を行います。
@@ -191,7 +210,7 @@ public interface EntityType<E> {
      * @param context
      *            コンテキスト
      */
-    void postInsert(E entity, PostInsertContext<E> context);
+    void postInsert(ENTITY entity, PostInsertContext<ENTITY> context);
 
     /**
      * 更新処理の後処理を行います。
@@ -201,7 +220,7 @@ public interface EntityType<E> {
      * @param context
      *            コンテキスト
      */
-    void postUpdate(E entity, PostUpdateContext<E> context);
+    void postUpdate(ENTITY entity, PostUpdateContext<ENTITY> context);
 
     /**
      * 削除処理の後処理を行います。
@@ -211,5 +230,5 @@ public interface EntityType<E> {
      * @param context
      *            コンテキスト
      */
-    void postDelete(E entity, PostDeleteContext<E> context);
+    void postDelete(ENTITY entity, PostDeleteContext<ENTITY> context);
 }

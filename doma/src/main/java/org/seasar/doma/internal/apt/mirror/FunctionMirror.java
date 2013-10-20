@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -47,6 +47,8 @@ public class FunctionMirror {
 
     protected AnnotationValue name;
 
+    protected AnnotationValue quote;
+
     protected AnnotationValue queryTimeout;
 
     protected AnnotationValue mapKeyNaming;
@@ -54,10 +56,10 @@ public class FunctionMirror {
     protected AnnotationValue ensureResultMapping;
 
     protected FunctionMirror(AnnotationMirror annotationMirror,
-            String defaltName) {
-        assertNotNull(annotationMirror, defaltName);
+            String defaultName) {
+        assertNotNull(annotationMirror, defaultName);
         this.annotationMirror = annotationMirror;
-        this.defaultName = defaltName;
+        this.defaultName = defaultName;
     }
 
     public static FunctionMirror newInstance(ExecutableElement method,
@@ -81,6 +83,8 @@ public class FunctionMirror {
                 result.schema = value;
             } else if ("name".equals(name)) {
                 result.name = value;
+            } else if ("quote".equals(name)) {
+                result.quote = value;
             } else if ("queryTimeout".equals(name)) {
                 result.queryTimeout = value;
             } else if ("mapKeyNaming".equals(name)) {
@@ -92,30 +96,44 @@ public class FunctionMirror {
         return result;
     }
 
-    public String getQualifiedName() {
-        String catalogValue = AnnotationValueUtil.toString(this.catalog);
-        String schemaValue = AnnotationValueUtil.toString(this.schema);
-        String nameValue = AnnotationValueUtil.toString(this.name);
-
-        StringBuilder buf = new StringBuilder();
-        if (catalogValue != null && !catalogValue.isEmpty()) {
-            buf.append(catalogValue);
-            buf.append(".");
-        }
-        if (schemaValue != null && !schemaValue.isEmpty()) {
-            buf.append(schemaValue);
-            buf.append(".");
-        }
-        if (nameValue != null && !nameValue.isEmpty()) {
-            buf.append(nameValue);
-        } else {
-            buf.append(defaultName);
-        }
-        return buf.toString();
-    }
-
     public AnnotationValue getQueryTimeout() {
         return queryTimeout;
+    }
+
+    public AnnotationValue getMapKeyNaming() {
+        return mapKeyNaming;
+    }
+
+    public String getCatalogValue() {
+        String value = AnnotationValueUtil.toString(catalog);
+        if (value == null) {
+            throw new AptIllegalStateException("catalog");
+        }
+        return value;
+    }
+
+    public String getSchemaValue() {
+        String value = AnnotationValueUtil.toString(schema);
+        if (value == null) {
+            throw new AptIllegalStateException("schema");
+        }
+        return value;
+    }
+
+    public String getNameValue() {
+        String value = AnnotationValueUtil.toString(name);
+        if (value == null || value.isEmpty()) {
+            return defaultName;
+        }
+        return value;
+    }
+
+    public boolean getQuoteValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(quote);
+        if (value == null) {
+            throw new AptIllegalStateException("quote");
+        }
+        return value.booleanValue();
     }
 
     public int getQueryTimeoutValue() {
@@ -124,10 +142,6 @@ public class FunctionMirror {
             throw new AptIllegalStateException("queryTimeout");
         }
         return value.intValue();
-    }
-
-    public AnnotationValue getMapKeyNaming() {
-        return mapKeyNaming;
     }
 
     public MapKeyNamingType getMapKeyNamingValue() {

@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.function.Function;
+
+import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
 
 /**
  * {@link EntityType} の骨格実装です。
@@ -22,7 +25,7 @@ package org.seasar.doma.jdbc.entity;
  * @author taedium
  * 
  */
-public abstract class AbstractEntityType<E> implements EntityType<E> {
+public abstract class AbstractEntityType<ENTITY> implements EntityType<ENTITY> {
 
     /**
      * インスタンスを構築します。
@@ -30,4 +33,19 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
     protected AbstractEntityType() {
     }
 
+    @Override
+    public String getQualifiedTableName() {
+        return getQualifiedTableName(Function.<String> identity());
+    }
+
+    @Override
+    public String getQualifiedTableName(Function<String, String> quoteFunction) {
+        Function<String, String> mapper = isQuoteRequired() ? quoteFunction
+                : Function.identity();
+        String catalogName = getCatalogName();
+        String schemaName = getSchemaName();
+        String tableName = getTableName();
+        return DatabaseObjectUtil.getQualifiedName(mapper, catalogName, schemaName,
+                tableName);
+    }
 }

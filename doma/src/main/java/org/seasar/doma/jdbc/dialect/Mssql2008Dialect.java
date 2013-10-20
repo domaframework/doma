@@ -40,6 +40,12 @@ public class Mssql2008Dialect extends StandardDialect {
     /** 一意制約違反を表すエラーコード */
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 2627;
 
+    /** 開始の引用符 */
+    protected static final char OPEN_QUOTE = '[';
+
+    /** 終了の引用符 */
+    protected static final char CLOSE_QUOTE = ']';
+
     /**
      * インスタンスを構築します。
      */
@@ -167,6 +173,11 @@ public class Mssql2008Dialect extends StandardDialect {
     @Override
     public String getScriptBlockDelimiter() {
         return "GO";
+    }
+
+    @Override
+    public String applyQuote(String name) {
+        return OPEN_QUOTE + name + CLOSE_QUOTE;
     }
 
     @Override

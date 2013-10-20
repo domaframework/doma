@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.id;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.sql.DataSource;
 
@@ -54,8 +54,10 @@ public class IdGenerationConfig {
      *            識別子が属するエンティティ
      */
     public IdGenerationConfig(Config config, EntityType<?> entityType) {
-        this(config, entityType, entityType.getQualifiedTableName(), entityType
-                .getGeneratedIdPropertyType().getColumnName());
+        this(config, entityType, entityType.getQualifiedTableName(config
+                .getDialect()::applyQuote), entityType
+                .getGeneratedIdPropertyType().getColumnName(
+                        config.getDialect()::applyQuote));
     }
 
     /**

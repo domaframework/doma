@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,11 +38,11 @@ import org.seasar.doma.jdbc.entity.NamingType;
  */
 public class EntityMeta implements TypeElementMeta {
 
-    protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
+    protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
 
-    protected final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<String, EntityPropertyMeta>();
+    protected final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
 
-    protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<EntityPropertyMeta>();
+    protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
     protected final EntityMirror entityMirror;
 
@@ -231,6 +231,10 @@ public class EntityMeta implements TypeElementMeta {
         String tableName = tableMirror != null ? tableMirror.getNameValue()
                 : "";
         return !tableName.isEmpty() ? tableName : namingType.apply(entityName);
+    }
+
+    public boolean isQuoteRequired() {
+        return tableMirror != null ? tableMirror.getQuoteValue() : false;
     }
 
     public boolean isAbstract() {

@@ -40,8 +40,20 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
         this.procedureMirror = procedureMirror;
     }
 
+    public String getCatalogName() {
+        return procedureMirror.getCatalogValue();
+    }
+
+    public String getSchemaName() {
+        return procedureMirror.getSchemaValue();
+    }
+
     public String getProcedureName() {
-        return procedureMirror.getQualifiedName();
+        return procedureMirror.getNameValue();
+    }
+
+    public boolean isQuoteRequired() {
+        return procedureMirror.getQuoteValue();
     }
 
     public int getQueryTimeout() {

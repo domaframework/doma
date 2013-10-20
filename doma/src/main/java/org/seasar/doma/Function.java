@@ -102,6 +102,11 @@ public @interface Function {
     String name() default "";
 
     /**
+     * カタログ、スキーマ、ストアドファンクション名を引用符で囲むかどうかを示します。
+     */
+    boolean quote() default false;
+
+    /**
      * クエリタイムアウト（秒）です。
      * <p>
      * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。

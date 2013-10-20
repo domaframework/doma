@@ -594,4 +594,14 @@ public class EntityProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4233);
     }
+
+    public void testQuote() throws Exception {
+        Class<?> target = QuoteEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
 }

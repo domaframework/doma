@@ -11,7 +11,7 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
     private static final _TransientPropertyEntity __singleton = new _TransientPropertyEntity();
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class,  java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "id", "id");
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class,  java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "id", "id", false);
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> __listener;
 
@@ -25,7 +25,7 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
 
     private final String __tableName;
 
-    private final String __qualifiedTableName;
+    private final boolean __isQuoteRequired;
 
     private final String __name;
 
@@ -43,7 +43,7 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
         __catalogName = "";
         __schemaName = "";
         __tableName = "TransientPropertyEntity";
-        __qualifiedTableName = "TransientPropertyEntity";
+        __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __list = new java.util.ArrayList<>(1);
         java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __map = new java.util.HashMap<>(1);
@@ -85,8 +85,8 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
-    public String getQualifiedTableName() {
-        return __qualifiedTableName;
+    public boolean isQuoteRequired() {
+        return __isQuoteRequired;
     }
 
     @Override

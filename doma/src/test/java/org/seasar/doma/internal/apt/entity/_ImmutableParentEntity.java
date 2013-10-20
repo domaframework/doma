@@ -38,12 +38,12 @@ public class _ImmutableParentEntity extends
     public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
             ImmutableParentEntity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "aaa", "AAA", true, true);
+            "aaa", "AAA", true, true, false);
 
     public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
             ImmutableParentEntity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "bbb", "BBB", true, true);
+            "bbb", "BBB", true, true, false);
 
     private _ImmutableParentEntity() {
     }
@@ -149,11 +149,6 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public String getQualifiedTableName() {
-        return null;
-    }
-
-    @Override
     public NamingType getNamingType() {
         return null;
     }
@@ -173,4 +168,8 @@ public class _ImmutableParentEntity extends
         return null;
     }
 
+    @Override
+    public boolean isQuoteRequired() {
+        return false;
+    }
 }

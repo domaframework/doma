@@ -58,4 +58,9 @@ public @interface Table {
      * 指定しない場合、テーブル名は {@link Entity#naming()} に指定した列挙型 によって解決されます。
      */
     String name() default "";
+
+    /**
+     * カタログ、スキーマ、テーブル名を引用符で囲むかどうかを示します。
+     */
+    boolean quote() default false;
 }

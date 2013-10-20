@@ -28,6 +28,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
@@ -136,15 +137,16 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareSql() {
+        Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.UPDATE);
         builder.appendSql("update ");
-        builder.appendSql(entityType.getQualifiedTableName());
+        builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" set ");
         for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
             Property<E, ?> property = propertyType.createProperty();
             property.load(entity);
-            builder.appendSql(propertyType.getColumnName());
+            builder.appendSql(propertyType.getColumnName(dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property);
             builder.appendSql(", ");
@@ -152,7 +154,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         if (!versionIgnored && versionPropertyType != null) {
             Property<E, ?> property = versionPropertyType.createProperty();
             property.load(entity);
-            builder.appendSql(versionPropertyType.getColumnName());
+            builder.appendSql(versionPropertyType
+                    .getColumnName(dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property);
             builder.appendSql(" + 1");
@@ -164,7 +167,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             for (EntityPropertyType<E, ?> propertyType : idPropertyTypes) {
                 Property<E, ?> property = propertyType.createProperty();
                 property.load(entity);
-                builder.appendSql(propertyType.getColumnName());
+                builder.appendSql(propertyType
+                        .getColumnName(dialect::applyQuote));
                 builder.appendSql(" = ");
                 builder.appendParameter(property);
                 builder.appendSql(" and ");
@@ -179,7 +183,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             }
             Property<E, ?> property = versionPropertyType.createProperty();
             property.load(entity);
-            builder.appendSql(versionPropertyType.getColumnName());
+            builder.appendSql(versionPropertyType
+                    .getColumnName(dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property);
         }

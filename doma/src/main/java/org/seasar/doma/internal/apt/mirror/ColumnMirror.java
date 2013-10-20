@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -44,6 +44,8 @@ public class ColumnMirror {
 
     protected AnnotationValue updatable;
 
+    protected AnnotationValue quote;
+
     protected ColumnMirror(AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
@@ -69,6 +71,8 @@ public class ColumnMirror {
                 result.insertable = value;
             } else if ("updatable".equals(name)) {
                 result.updatable = value;
+            } else if ("quote".equals(name)) {
+                result.quote = value;
             }
         }
         return result;
@@ -88,6 +92,10 @@ public class ColumnMirror {
 
     public AnnotationValue getUpdatable() {
         return updatable;
+    }
+
+    public AnnotationValue getQuote() {
+        return quote;
     }
 
     public String getNameValue() {
@@ -110,6 +118,14 @@ public class ColumnMirror {
         Boolean value = AnnotationValueUtil.toBoolean(updatable);
         if (value == null) {
             throw new AptIllegalStateException("updatable");
+        }
+        return value.booleanValue();
+    }
+
+    public boolean getQuoteValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(quote);
+        if (value == null) {
+            throw new AptIllegalStateException("quote");
         }
         return value.booleanValue();
     }

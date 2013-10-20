@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.function.Function;
+
 /**
  * エンティティのプロパティ型を表します。
  * 
@@ -44,6 +46,22 @@ public interface EntityPropertyType<ENTITY, BASIC> {
      * @return カラム名
      */
     String getColumnName();
+
+    /**
+     * 必要とされる場合、引用符で囲まれたカラム名を返します。
+     * 
+     * @param quoteFunction
+     *            引用符を適用する関数
+     * @return 引用符で囲まれたカラム名
+     */
+    String getColumnName(Function<String, String> quoteFunction);
+
+    /**
+     * カラム名において引用符が必要とされるかどうかを返します。
+     * 
+     * @return 引用符が必要とされる場合 {@code true}
+     */
+    boolean isQuoteRequired();
 
     /**
      * 識別子かどうかを返します。

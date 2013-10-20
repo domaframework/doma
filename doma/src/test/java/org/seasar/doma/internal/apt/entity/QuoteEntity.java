@@ -13,18 +13,28 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.query;
+package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.internal.jdbc.sql.CallableSql;
+import org.seasar.doma.Column;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.Table;
 
 /**
  * @author taedium
  * 
  */
-public interface ModuleQuery extends Query {
+@Entity
+@Table(quote = true)
+public class QuoteEntity {
 
-    @Override
-    CallableSql getSql();
+    @Id
+    @Column(quote = true)
+    Integer id;
 
-    String getQualifiedName();
+    @Column(quote = true)
+    String name;
+
+    @Column(quote = true)
+    Integer version;
 }

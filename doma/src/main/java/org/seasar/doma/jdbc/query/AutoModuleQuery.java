@@ -18,8 +18,10 @@ package org.seasar.doma.jdbc.query;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSql;
+import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlParameter;
 
@@ -41,7 +43,24 @@ public abstract class AutoModuleQuery implements ModuleQuery {
 
     protected int queryTimeout;
 
+    protected String catalogName;
+
+    protected String schemaName;
+
+    protected String moduleName;
+
+    protected String qualifiedName;
+
+    protected boolean isQuoteRequired;
+
     protected final List<SqlParameter> parameters = new ArrayList<>();
+
+    protected void prepareQualifiedName() {
+        Function<String, String> mapper = isQuoteRequired ? config.getDialect()::applyQuote
+                : Function.identity();
+        qualifiedName = DatabaseObjectUtil.getQualifiedName(mapper,
+                catalogName, schemaName, moduleName);
+    }
 
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
@@ -65,12 +84,33 @@ public abstract class AutoModuleQuery implements ModuleQuery {
         this.callerMethodName = callerMethodName;
     }
 
+    public void setCatalogName(String catalogName) {
+        this.catalogName = catalogName;
+    }
+
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
+    }
+
+    protected void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public void setQuoteRequired(boolean isQuoteRequired) {
+        this.isQuoteRequired = isQuoteRequired;
+    }
+
     public void setQueryTimeout(int queryTimeout) {
         this.queryTimeout = queryTimeout;
     }
 
     public void addParameter(SqlParameter parameter) {
         parameters.add(parameter);
+    }
+
+    @Override
+    public String getQualifiedName() {
+        return qualifiedName;
     }
 
     @Override

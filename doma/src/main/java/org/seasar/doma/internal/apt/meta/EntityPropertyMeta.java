@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -181,6 +181,10 @@ public class EntityPropertyMeta {
 
     public boolean isColumnUpdatable() {
         return columnMirror != null ? columnMirror.getUpdatableValue() : true;
+    }
+
+    public boolean isColumnQuoteRequired() {
+        return columnMirror != null ? columnMirror.getQuoteValue() : false;
     }
 
     public boolean hasTypeParameter() {
