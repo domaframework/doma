@@ -24,14 +24,14 @@ import org.seasar.doma.jdbc.query.FunctionQuery;
  * @author taedium
  * 
  */
-public class FunctionCommand<R> extends ModuleCommand<R, FunctionQuery<R>> {
+public class FunctionCommand<RESULT> extends ModuleCommand<RESULT, FunctionQuery<RESULT>> {
 
-    public FunctionCommand(FunctionQuery<R> query) {
+    public FunctionCommand(FunctionQuery<RESULT> query) {
         super(query);
     }
 
     @Override
-    protected R executeInternal(CallableStatement callableStatement)
+    protected RESULT executeInternal(CallableStatement callableStatement)
             throws SQLException {
         callableStatement.execute();
         fetchParameters(callableStatement);

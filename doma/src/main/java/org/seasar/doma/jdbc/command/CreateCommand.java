@@ -27,16 +27,16 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class CreateCommand<R> implements Command<R, CreateQuery<R>> {
+public class CreateCommand<RESULT> implements Command<RESULT, CreateQuery<RESULT>> {
 
-    protected final CreateQuery<R> query;
+    protected final CreateQuery<RESULT> query;
 
-    public CreateCommand(CreateQuery<R> query) {
+    public CreateCommand(CreateQuery<RESULT> query) {
         this.query = query;
     }
 
     @Override
-    public R execute() {
+    public RESULT execute() {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
         try {

@@ -35,14 +35,14 @@ import org.seasar.doma.jdbc.query.ModifyQuery;
  * @author taedium
  * 
  */
-public abstract class ModifyCommand<Q extends ModifyQuery> implements
-        Command<Integer, Q> {
+public abstract class ModifyCommand<QUERY extends ModifyQuery> implements
+        Command<Integer, QUERY> {
 
-    protected final Q query;
+    protected final QUERY query;
 
     protected final PreparedSql sql;
 
-    protected ModifyCommand(Q query) {
+    protected ModifyCommand(QUERY query) {
         assertNotNull(query);
         this.query = query;
         this.sql = query.getSql();

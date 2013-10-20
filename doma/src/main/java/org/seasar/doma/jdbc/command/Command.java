@@ -21,8 +21,8 @@ import org.seasar.doma.jdbc.query.Query;
  * @author taedium
  * 
  */
-public interface Command<R, Q extends Query> {
+public interface Command<RESULT, QUERY extends Query> {
 
-    R execute();
+    RESULT execute();
 
 }

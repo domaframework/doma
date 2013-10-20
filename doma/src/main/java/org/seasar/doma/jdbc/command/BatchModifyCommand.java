@@ -37,12 +37,12 @@ import org.seasar.doma.jdbc.query.BatchModifyQuery;
  * @author taedium
  * 
  */
-public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
-        Command<int[], Q> {
+public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> implements
+        Command<int[], QUERY> {
 
-    protected final Q query;
+    protected final QUERY query;
 
-    protected BatchModifyCommand(Q query) {
+    protected BatchModifyCommand(QUERY query) {
         assertNotNull(query);
         this.query = query;
     }

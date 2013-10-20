@@ -34,15 +34,15 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public class SelectCommand<R> implements Command<R, SelectQuery> {
+public class SelectCommand<RESULT> implements Command<RESULT, SelectQuery> {
 
     protected final SelectQuery query;
 
     protected final PreparedSql sql;
 
-    protected final ResultSetHandler<R> resultSetHandler;
+    protected final ResultSetHandler<RESULT> resultSetHandler;
 
-    public SelectCommand(SelectQuery query, ResultSetHandler<R> resultSetHandler) {
+    public SelectCommand(SelectQuery query, ResultSetHandler<RESULT> resultSetHandler) {
         assertNotNull(query, resultSetHandler);
         this.query = query;
         this.sql = query.getSql();
@@ -50,7 +50,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
     }
 
     @Override
-    public R execute() {
+    public RESULT execute() {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
         try {
@@ -100,7 +100,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
         binder.bind(preparedStatement, sql.getParameters());
     }
 
-    protected R executeQuery(PreparedStatement preparedStatement)
+    protected RESULT executeQuery(PreparedStatement preparedStatement)
             throws SQLException {
         ResultSet resultSet = preparedStatement.executeQuery();
         try {

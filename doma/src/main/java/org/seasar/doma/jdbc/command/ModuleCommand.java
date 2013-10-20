@@ -34,21 +34,21 @@ import org.seasar.doma.jdbc.query.ModuleQuery;
  * @author taedium
  * 
  */
-public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
-        Command<R, Q> {
+public abstract class ModuleCommand<RESULT, QUERY extends ModuleQuery> implements
+        Command<RESULT, QUERY> {
 
-    protected final Q query;
+    protected final QUERY query;
 
     protected CallableSql sql;
 
-    protected ModuleCommand(Q query) {
+    protected ModuleCommand(QUERY query) {
         assertNotNull(query);
         this.query = query;
         this.sql = query.getSql();
     }
 
     @Override
-    public R execute() {
+    public RESULT execute() {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
         try {
@@ -73,7 +73,7 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
         }
     }
 
-    protected abstract R executeInternal(CallableStatement callableStatement)
+    protected abstract RESULT executeInternal(CallableStatement callableStatement)
             throws SQLException;
 
     protected void setupOptions(CallableStatement preparedStatement)
