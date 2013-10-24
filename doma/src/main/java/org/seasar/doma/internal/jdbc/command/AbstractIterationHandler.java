@@ -57,7 +57,7 @@ public abstract class AbstractIterationHandler<RESULT, TARGET> implements
             TARGET target = provider.get(resultSet);
             result = iterationCallback.iterate(target, context);
             if (context.isExited()) {
-                return result;
+                break;
             }
         }
         if (query.isResultEnsured() && !existent) {
