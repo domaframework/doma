@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.PostIterationCallback;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -50,14 +49,14 @@ public abstract class AbstractIterationHandler<RESULT, TARGET> implements
     public RESULT handle(ResultSet resultSet, SelectQuery query)
             throws SQLException {
         ResultProvider<TARGET> provider = createResultProvider(query);
-        IterationContext iterationContext = new IterationContext();
+        IterationContext context = new IterationContext();
         RESULT result = iterationCallback.defaultResult();
         boolean existent = false;
         while (resultSet.next()) {
             existent = true;
             TARGET target = provider.get(resultSet);
-            result = iterationCallback.iterate(target, iterationContext);
-            if (iterationContext.isExited()) {
+            result = iterationCallback.iterate(target, context);
+            if (context.isExited()) {
                 return result;
             }
         }
@@ -66,11 +65,7 @@ public abstract class AbstractIterationHandler<RESULT, TARGET> implements
             throw new NoResultException(query.getConfig()
                     .getExceptionSqlLogType(), sql);
         }
-        if (iterationCallback instanceof PostIterationCallback) {
-            result = ((PostIterationCallback<RESULT, TARGET>) iterationCallback)
-                    .postIterate(result, iterationContext);
-        }
-        return result;
+        return iterationCallback.postIterate(result, context);
     }
 
     protected abstract ResultProvider<TARGET> createResultProvider(

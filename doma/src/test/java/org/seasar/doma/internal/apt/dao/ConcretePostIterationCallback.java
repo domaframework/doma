@@ -15,15 +15,15 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.PostIterationCallback;
 
 /**
  * @author taedium
  * 
  */
 public class ConcretePostIterationCallback<R, T> implements
-        PostIterationCallback<R, T> {
+        IterationCallback<R, T> {
 
     @Override
     public R iterate(T target, IterationContext context) {

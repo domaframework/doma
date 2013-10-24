@@ -56,4 +56,18 @@ public interface IterationCallback<RESULT, TARGET> {
      * @return 任意の実行結果
      */
     RESULT iterate(TARGET target, IterationContext context);
+
+    /**
+     * {@code iterate} の実行後に呼び出され、任意の処理を実行します。
+     * 
+     * @param result
+     *            {@code iterate} の実行結果
+     * @param context
+     *            実行コンテキスト
+     * @return 実行結果
+     * @since 2.0.0
+     */
+    default RESULT postIterate(RESULT result, IterationContext context) {
+        return result;
+    }
 }
