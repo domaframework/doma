@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -92,9 +91,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
     protected void printClass() {
         iprint("/** */%n");
         printGenerated();
-        iprint("public final class %1$s extends %2$s<%3$s> {%n", simpleName,
-                AbstractEntityType.class.getName(),
-                entityMeta.getEntityTypeName());
+        iprint("public final class %1$s extends %2$s<%3$s> {%n",
+        /* 1 */simpleName,
+        /* 2 */AbstractEntityType.class.getName(),
+        /* 3 */entityMeta.getEntityTypeName());
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -133,10 +133,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
         if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
             OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
             iprint("private static final %1$s<%2$s> __originalStatesAccessor = new %1$s<>(%3$s.class, \"%4$s\");%n",
-                    OriginalStatesAccessor.class.getName(), osm
-                            .getTypeElement().getQualifiedName(), osm
-                            .getFieldEnclosingElement().getQualifiedName(), osm
-                            .getFieldElement().getSimpleName());
+            /* 1 */OriginalStatesAccessor.class.getName(),
+            /* 2 */osm.getTypeElement().getQualifiedName(),
+            /* 3 */osm.getFieldEnclosingElement().getQualifiedName(),
+            /* 4 */osm.getFieldElement().getSimpleName());
             print("%n");
         }
     }
@@ -152,53 +152,21 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printPropertyTypeFields() {
-        class Visitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
-
-            WrapperCtType wrapperCtType;
-
-            DomainCtType domainCtType;
-
-            @Override
-            protected Void defaultAction(CtType ctType, Void p)
-                    throws RuntimeException {
-                return assertUnreachable();
-            }
-
-            @Override
-            public Void visitOptionalCtType(OptionalCtType ctType, Void p)
-                    throws RuntimeException {
-                return ctType.getElementCtType().accept(this, p);
-            }
-
-            @Override
-            public Void visitBasicCtType(BasicCtType basicCtType, Void p)
-                    throws RuntimeException {
-                this.wrapperCtType = basicCtType.getWrapperCtType();
-                return null;
-            }
-
-            @Override
-            public Void visitDomainCtType(DomainCtType domainCtType, Void p)
-                    throws RuntimeException {
-                this.domainCtType = domainCtType;
-                this.wrapperCtType = domainCtType.getBasicType()
-                        .getWrapperCtType();
-                return null;
-            }
-        }
-
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            Visitor visitor = new Visitor();
+            EntityPropertyCtTypeVisitor visitor = new EntityPropertyCtTypeVisitor();
             pm.getCtType().accept(visitor, null);
+            BasicCtType basicCtType = visitor.basicCtType;
+            WrapperCtType wrapperCtType = visitor.wrapperCtType;
+            DomainCtType domainCtType = visitor.domainCtType;
+
             String newWrapperExpr;
-            if (visitor.wrapperCtType.getBasicCtType().isEnum()) {
+            if (basicCtType.isEnum()) {
                 newWrapperExpr = String.format("new %s(%s.class)",
-                        visitor.wrapperCtType.getTypeName(),
-                        visitor.wrapperCtType.getBasicCtType()
-                                .getBoxedTypeName());
+                        wrapperCtType.getTypeName(),
+                        basicCtType.getBoxedTypeName());
             } else {
                 newWrapperExpr = String.format("new %s()",
-                        visitor.wrapperCtType.getTypeName());
+                        wrapperCtType.getTypeName());
             }
             String parentEntityPropertyType = "null";
             String parentEntityBoxedTypeName = Object.class.getName();
@@ -209,9 +177,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
             }
             String domainType = "null";
             String domainTypeName = "Object";
-            if (visitor.domainCtType != null) {
-                domainType = visitor.domainCtType.getInstantiationCommand();
-                domainTypeName = visitor.domainCtType.getTypeName();
+            if (domainCtType != null) {
+                domainType = domainCtType.getInstantiationCommand();
+                domainTypeName = domainCtType.getTypeName();
             }
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isId()) {
@@ -219,8 +187,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", %15$s, __idGenerator);%n",
                     /* 1 */GeneratedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */visitor.wrapperCtType.getBasicCtType()
-                            .getBoxedTypeName(),
+                    /* 3 */basicCtType.getBoxedTypeName(),
                     /* 4 */pm.getName(),
                     /* 5 */pm.getColumnName(),
                     /* 6 */entityMeta.getEntityTypeName(),
@@ -237,8 +204,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", %15$s);%n",
                     /* 1 */AssignedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */visitor.wrapperCtType.getBasicCtType()
-                            .getBoxedTypeName(),
+                    /* 3 */basicCtType.getBoxedTypeName(),
                     /* 4 */pm.getName(),
                     /* 5 */pm.getColumnName(),
                     /* 6 */entityMeta.getEntityTypeName(),
@@ -256,8 +222,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", %15$s);%n",
                 /* 1 */VersionPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
-                /* 3 */visitor.wrapperCtType.getBasicCtType()
-                        .getBoxedTypeName(),
+                /* 3 */basicCtType.getBoxedTypeName(),
                 /* 4 */pm.getName(),
                 /* 5 */pm.getColumnName(),
                 /* 6 */entityMeta.getEntityTypeName(),
@@ -274,8 +239,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 iprint("public final %1$s<%13$s, %2$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, %15$s.class, %3$s.class, () -> %9$s, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s, %17$s);%n",
                 /* 1 */DefaultPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
-                /* 3 */visitor.wrapperCtType.getBasicCtType()
-                        .getBoxedTypeName(),
+                /* 3 */basicCtType.getBoxedTypeName(),
                 /* 4 */pm.getName(),
                 /* 5 */pm.getColumnName(),
                 /* 6 */pm.isColumnInsertable(),
@@ -385,13 +349,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 EntityPropertyType.class.getName(),
                 entityMeta.getEntityTypeName());
         iprint("    java.util.List<%1$s<%2$s, ?>> __list = new java.util.ArrayList<>(%3$s);%n",
-                EntityPropertyType.class.getName(), entityMeta
-                        .getEntityTypeName(), entityMeta.getAllPropertyMetas()
-                        .size());
+        /* 1 */EntityPropertyType.class.getName(),
+        /* 2 */entityMeta.getEntityTypeName(),
+        /* 3 */entityMeta.getAllPropertyMetas().size());
         iprint("    java.util.Map<String, %1$s<%2$s, ?>> __map = new java.util.HashMap<>(%3$s);%n",
-                EntityPropertyType.class.getName(), entityMeta
-                        .getEntityTypeName(), entityMeta.getAllPropertyMetas()
-                        .size());
+        /* 1 */EntityPropertyType.class.getName(),
+        /* 2 */entityMeta.getEntityTypeName(),
+        /* 3 */entityMeta.getAllPropertyMetas().size());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isId()) {
                 iprint("    __idList.add(%1$s);%n", pm.getFieldName());
@@ -780,6 +744,45 @@ public class EntityTypeGenerator extends AbstractGenerator {
             iprint("    __idGenerator.initialize();%n");
             iprint("}%n");
             return null;
+        }
+    }
+
+    protected class EntityPropertyCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected BasicCtType basicCtType;
+
+        protected WrapperCtType wrapperCtType;
+
+        protected DomainCtType domainCtType;
+
+        @Override
+        protected Void defaultAction(CtType ctType, Void p)
+                throws RuntimeException {
+            assertNotNull(basicCtType);
+            assertNotNull(wrapperCtType);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
+        @Override
+        public Void visitBasicCtType(BasicCtType basicCtType, Void p)
+                throws RuntimeException {
+            this.basicCtType = basicCtType;
+            this.wrapperCtType = basicCtType.getWrapperCtType();
+            return defaultAction(basicCtType, p);
+        }
+
+        @Override
+        public Void visitDomainCtType(DomainCtType domainCtType, Void p)
+                throws RuntimeException {
+            this.domainCtType = domainCtType;
+            return visitBasicCtType(domainCtType.getBasicCtType(), p);
         }
     }
 

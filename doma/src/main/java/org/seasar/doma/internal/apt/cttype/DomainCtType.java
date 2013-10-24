@@ -83,7 +83,7 @@ public class DomainCtType extends AbstractCtType {
         }
     }
 
-    public BasicCtType getBasicType() {
+    public BasicCtType getBasicCtType() {
         return basicCtType;
     }
 

@@ -1106,7 +1106,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainListParameterMeta(DomainListParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
                     DomainListParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1176,7 +1176,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainInOutParameterMeta(DomainInOutParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     DomainInOutParameter.class.getName(),
                     basicCtType.getBoxedTypeName(), domainCtType.getTypeName(),
@@ -1225,7 +1225,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainOutParameterMeta(DomainOutParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     DomainOutParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1273,7 +1273,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainInParameterMeta(DomainInParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     DomainInParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1319,7 +1319,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainResultListParameterMeta(
                 DomainResultListParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
                     DomainResultListParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1387,7 +1387,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainSingleResultParameterMeta(
                 DomainSingleResultParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
                     DomainSingleResultParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1611,7 +1611,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainInParameterMeta(
                 OptionalDomainInParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     OptionalDomainInParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1623,7 +1623,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainOutParameterMeta(
                 OptionalDomainOutParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     OptionalDomainOutParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1635,7 +1635,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainInOutParameterMeta(
                 OptionalDomainInOutParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     OptionalDomainInOutParameter.class.getName(),
                     basicCtType.getBoxedTypeName(), domainCtType.getTypeName(),
@@ -1647,7 +1647,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainListParameterMeta(
                 OptionalDomainListParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
                     OptionalDomainListParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1659,7 +1659,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainSingleResultParameterMeta(
                 OptionalDomainSingleResultParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
                     OptionalDomainSingleResultParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1671,7 +1671,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainResultListParameterMeta(
                 OptionalDomainResultListParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicType();
+            BasicCtType basicCtType = domainCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
                     OptionalDomainResultListParameter.class.getName(),
                     basicCtType.getTypeName(), domainCtType.getTypeName(),
@@ -1760,7 +1760,7 @@ public class DaoGenerator extends AbstractGenerator {
                     getDomainIterationHandlerName(optional), ctType
                             .getBoxedTypeName(), ctType
                             .getInstantiationCommand(), callbackParamName,
-                    commandName, methodName, ctType.getBasicType()
+                    commandName, methodName, ctType.getBasicCtType()
                             .getBoxedTypeName());
             return null;
         }
@@ -1911,7 +1911,7 @@ public class DaoGenerator extends AbstractGenerator {
                         getDomainStreamHandlerName(optional), ctType
                                 .getBoxedTypeName(), ctType
                                 .getInstantiationCommand(), functionParamName,
-                        commandName, methodName, ctType.getBasicType()
+                        commandName, methodName, ctType.getBasicCtType()
                                 .getBoxedTypeName());
                 return null;
             }
@@ -2050,7 +2050,7 @@ public class DaoGenerator extends AbstractGenerator {
             /* 5 */ctType.getBoxedTypeName(),
             /* 6 */commandName,
             /* 7 */methodName,
-            /* 8 */ctType.getBasicType().getBoxedTypeName());
+            /* 8 */ctType.getBasicCtType().getBoxedTypeName());
             return null;
         }
 
@@ -2144,7 +2144,7 @@ public class DaoGenerator extends AbstractGenerator {
                                     ctType.getBoxedTypeName(), ctType
                                             .getInstantiationCommand(),
                                     commandName, methodName, ctType
-                                            .getBasicType().getBoxedTypeName());
+                                            .getBasicCtType().getBoxedTypeName());
                             return null;
                         }
 

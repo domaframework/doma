@@ -326,7 +326,7 @@ public class EntityPropertyMetaFactory {
                     @Override
                     public Boolean visitDomainCtType(DomainCtType ctType, Void p)
                             throws RuntimeException {
-                        return ctType.getBasicType().accept(this, p);
+                        return ctType.getBasicCtType().accept(this, p);
                     }
 
                     @Override
