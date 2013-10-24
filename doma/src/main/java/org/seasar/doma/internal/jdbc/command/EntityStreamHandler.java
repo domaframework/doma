@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -45,7 +45,7 @@ public class EntityStreamHandler<RESULT, ENTITY> extends
     @Override
     protected ResultProvider<ENTITY> createResultProvider(SelectQuery query) {
         return new EntityResultProvider<>(entityType, query,
-                query.isResultMappingEnsured(), entity -> entity);
+                query.isResultMappingEnsured());
     }
 
 }

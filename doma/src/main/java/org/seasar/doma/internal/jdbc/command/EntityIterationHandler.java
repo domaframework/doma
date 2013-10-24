@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -40,7 +40,7 @@ public class EntityIterationHandler<RESULT, ENTITY> extends
     @Override
     protected ResultProvider<ENTITY> createResultProvider(SelectQuery query) {
         return new EntityResultProvider<>(entityType, query,
-                query.isResultMappingEnsured(), entity -> entity);
+                query.isResultMappingEnsured());
     }
 
 }

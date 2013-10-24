@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
@@ -37,14 +36,12 @@ import org.seasar.doma.jdbc.query.Query;
  * @param <MAP>
  * @param <CONTAINER>
  */
-public class MapResultProvider<CONTAINER> extends
-        AbstractResultProvider<CONTAINER> {
+public class MapResultProvider extends
+        AbstractResultProvider<Map<String, Object>> {
 
     protected final Query query;
 
     protected final MapKeyNamingType keyNamingType;
-
-    protected final Function<Map<String, Object>, CONTAINER> mapper;
 
     protected final JdbcMappingVisitor jdbcMappingVisitor;
 
@@ -54,20 +51,17 @@ public class MapResultProvider<CONTAINER> extends
      * 
      * @param query
      * @param keyNamingType
-     * @param mapper
      */
-    public MapResultProvider(Query query, MapKeyNamingType keyNamingType,
-            Function<Map<String, Object>, CONTAINER> mapper) {
+    public MapResultProvider(Query query, MapKeyNamingType keyNamingType) {
         assertNotNull(query, keyNamingType);
         this.query = query;
         this.keyNamingType = keyNamingType;
-        this.mapper = mapper;
         this.jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
     }
 
     @Override
-    public CONTAINER get(ResultSet resultSet) throws SQLException {
+    public Map<String, Object> get(ResultSet resultSet) throws SQLException {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         if (indexMap == null) {
             indexMap = createIndexMap(resultSet.getMetaData());
@@ -80,7 +74,7 @@ public class MapResultProvider<CONTAINER> extends
             fetch(resultSet, scalar, index, jdbcMappingVisitor);
             map.put(key, scalar.get());
         }
-        return mapper.apply(map);
+        return map;
     }
 
     protected HashMap<Integer, String> createIndexMap(

@@ -52,8 +52,8 @@ public class EntityResultProviderTest extends TestCase {
         resultSet.next();
 
         _Emp entityType = _Emp.getSingletonInternal();
-        EntityResultProvider<Emp, Emp> provider = new EntityResultProvider<Emp, Emp>(
-                entityType, new MySelectQuery(), false, entity -> entity);
+        EntityResultProvider<Emp> provider = new EntityResultProvider<>(
+                entityType, new MySelectQuery(), false);
         Emp emp = provider.get(resultSet);
 
         assertEquals(new Integer(1), emp.getId());

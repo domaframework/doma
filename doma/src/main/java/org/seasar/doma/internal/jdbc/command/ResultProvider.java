@@ -22,8 +22,8 @@ import java.sql.SQLException;
  * @author nakamura-to
  * 
  */
-public interface ResultProvider<R> {
+public interface ResultProvider<RESULT> {
 
-    R get(ResultSet resultSet) throws SQLException;
+    RESULT get(ResultSet resultSet) throws SQLException;
 
 }

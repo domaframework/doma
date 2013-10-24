@@ -41,9 +41,8 @@ public class MapListParameter extends
     }
 
     @Override
-    public MapResultProvider<Map<String, Object>> createResultProvider(
-            Query query) {
-        return new MapResultProvider<>(query, mapKeyNamingType, map -> map);
+    public MapResultProvider createResultProvider(Query query) {
+        return new MapResultProvider(query, mapKeyNamingType);
     }
 
 }

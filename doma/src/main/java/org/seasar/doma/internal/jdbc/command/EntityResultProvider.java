@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
@@ -44,16 +43,14 @@ import org.seasar.doma.jdbc.query.Query;
  * @author nakamura-to
  * 
  */
-public class EntityResultProvider<ENTITY, CONTAINER> extends
-        AbstractResultProvider<CONTAINER> {
+public class EntityResultProvider<ENTITY> extends
+        AbstractResultProvider<ENTITY> {
 
     protected final EntityType<ENTITY> entityType;
 
     protected final Query query;
 
     protected final boolean resultMappingEnsured;
-
-    protected final Function<ENTITY, CONTAINER> mapper;
 
     protected final JdbcMappingVisitor jdbcMappingVisitor;
 
@@ -62,23 +59,20 @@ public class EntityResultProvider<ENTITY, CONTAINER> extends
     /**
      * @param entityType
      * @param query
-     * @param mapper
      */
     public EntityResultProvider(EntityType<ENTITY> entityType, Query query,
-            boolean resultMappingEnsured, Function<ENTITY, CONTAINER> mapper) {
-        assertNotNull(entityType, query, mapper);
+            boolean resultMappingEnsured) {
+        assertNotNull(entityType, query);
         this.entityType = entityType;
         this.query = query;
         this.resultMappingEnsured = resultMappingEnsured;
-        this.mapper = mapper;
         this.jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
     }
 
     @Override
-    public CONTAINER get(ResultSet resultSet) throws SQLException {
-        ENTITY entity = build(resultSet);
-        return mapper.apply(entity);
+    public ENTITY get(ResultSet resultSet) throws SQLException {
+        return build(resultSet);
     }
 
     protected ENTITY build(ResultSet resultSet) throws SQLException {

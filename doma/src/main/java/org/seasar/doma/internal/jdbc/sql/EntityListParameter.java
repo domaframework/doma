@@ -47,9 +47,9 @@ public class EntityListParameter<ENTITY> extends AbstractListParameter<ENTITY> {
     }
 
     @Override
-    public EntityResultProvider<ENTITY, ENTITY> createResultProvider(Query query) {
+    public EntityResultProvider<ENTITY> createResultProvider(Query query) {
         return new EntityResultProvider<>(entityType, query,
-                resultMappingEnsured, entity -> entity);
+                resultMappingEnsured);
     }
 
 }
