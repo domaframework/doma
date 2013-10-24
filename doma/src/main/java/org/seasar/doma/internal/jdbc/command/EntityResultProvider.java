@@ -81,11 +81,6 @@ public class EntityResultProvider<ENTITY, CONTAINER> extends
         return mapper.apply(entity);
     }
 
-    @Override
-    public CONTAINER getDefault() {
-        return mapper.apply(null);
-    }
-
     protected ENTITY build(ResultSet resultSet) throws SQLException {
         assertNotNull(resultSet);
         if (indexMap == null) {

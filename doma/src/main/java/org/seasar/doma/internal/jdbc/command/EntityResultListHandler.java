@@ -15,10 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
@@ -27,17 +24,9 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class EntityResultListHandler<ENTITY> extends
         AbstractResultListHandler<ENTITY> {
 
-    protected final EntityType<ENTITY> entityType;
-
     public EntityResultListHandler(EntityType<ENTITY> entityType) {
-        assertNotNull(entityType);
-        this.entityType = entityType;
-    }
-
-    @Override
-    protected ResultProvider<ENTITY> createResultProvider(SelectQuery query) {
-        return new EntityResultProvider<>(entityType, query,
-                query.isResultMappingEnsured(), entity -> entity);
+        super(new EntityIterationHandler<>(entityType,
+                new ResultListCallback<ENTITY>()));
     }
 
 }

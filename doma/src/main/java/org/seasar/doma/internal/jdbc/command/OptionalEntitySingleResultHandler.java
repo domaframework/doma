@@ -15,12 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.Optional;
 
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 
@@ -31,18 +28,9 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class OptionalEntitySingleResultHandler<ENTITY> extends
         AbstractSingleResultHandler<Optional<ENTITY>> {
 
-    protected final EntityType<ENTITY> entityType;
-
     public OptionalEntitySingleResultHandler(EntityType<ENTITY> entityType) {
-        assertNotNull(entityType);
-        this.entityType = entityType;
-    }
-
-    @Override
-    protected ResultProvider<Optional<ENTITY>> createResultProvider(
-            SelectQuery query) {
-        return new EntityResultProvider<>(entityType, query,
-                query.isResultMappingEnsured(), Optional::ofNullable);
+        super(new EntityIterationHandler<>(entityType,
+                new OptionalSingleResultCallback<ENTITY>()));
     }
 
 }

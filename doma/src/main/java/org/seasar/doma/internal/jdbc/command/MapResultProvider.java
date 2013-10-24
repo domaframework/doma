@@ -83,11 +83,6 @@ public class MapResultProvider<CONTAINER> extends
         return mapper.apply(map);
     }
 
-    @Override
-    public CONTAINER getDefault() {
-        return mapper.apply(null);
-    }
-
     protected HashMap<Integer, String> createIndexMap(
             ResultSetMetaData resultSetMeta) throws SQLException {
         HashMap<Integer, String> indexMap = new HashMap<Integer, String>();

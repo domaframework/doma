@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,14 +28,15 @@ import java.util.stream.StreamSupport;
 
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author nakamura-to
  * 
  */
-public abstract class AbstractStreamHandler<RESULT, TARGET> extends
-        AbstractResultSetHandler<RESULT, TARGET> {
+public abstract class AbstractStreamHandler<RESULT, TARGET> implements
+        ResultSetHandler<RESULT> {
 
     protected final Function<Stream<TARGET>, RESULT> mapper;
 
@@ -57,6 +58,9 @@ public abstract class AbstractStreamHandler<RESULT, TARGET> extends
             throw e.getCause();
         }
     }
+
+    protected abstract ResultProvider<TARGET> createResultProvider(
+            SelectQuery query);
 
     protected static class ResultIterator<TARGET> implements Iterator<TARGET> {
 

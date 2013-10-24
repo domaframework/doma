@@ -27,12 +27,22 @@ import java.sql.ResultSet;
  * 
  * @author taedium
  * 
- * @param <R>
+ * @param <RESULT>
  *            戻り値の型
- * @param <T>
+ * @param <TARGET>
  *            処理対象の型。すなわち、基本型、ドメインクラス、エンティティクラス、もしくは {@code Map<String, Object>}
  */
-public interface IterationCallback<R, T> {
+public interface IterationCallback<RESULT, TARGET> {
+
+    /**
+     * デフォルトの戻り値を返します。
+     * 
+     * @return デフォルトの戻り値
+     * @since 2.0.0
+     */
+    default RESULT defaultResult() {
+        return null;
+    }
 
     /**
      * 処理対象のオブジェクト群を順に1件ずつ処理します。
@@ -45,5 +55,5 @@ public interface IterationCallback<R, T> {
      *            実行コンテキスト
      * @return 任意の実行結果
      */
-    R iterate(T target, IterationContext context);
+    RESULT iterate(TARGET target, IterationContext context);
 }

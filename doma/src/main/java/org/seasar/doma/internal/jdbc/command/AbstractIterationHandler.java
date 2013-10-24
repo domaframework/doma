@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,28 +25,34 @@ import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.PostIterationCallback;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
+ * 
  * @author nakamura-to
  * 
+ * @param <RESULT>
+ * @param <TARGET>
  */
-public abstract class AbstractIterationHandler<RESULT, TARGET> extends
-        AbstractResultSetHandler<RESULT, TARGET> {
+public abstract class AbstractIterationHandler<RESULT, TARGET> implements
+        ResultSetHandler<RESULT> {
 
     protected final IterationCallback<RESULT, TARGET> iterationCallback;
 
-    public AbstractIterationHandler(IterationCallback<RESULT, TARGET> iterationCallback) {
+    public AbstractIterationHandler(
+            IterationCallback<RESULT, TARGET> iterationCallback) {
         assertNotNull(iterationCallback);
         this.iterationCallback = iterationCallback;
     }
 
     @Override
-    public RESULT handle(ResultSet resultSet, SelectQuery query) throws SQLException {
+    public RESULT handle(ResultSet resultSet, SelectQuery query)
+            throws SQLException {
         ResultProvider<TARGET> provider = createResultProvider(query);
         IterationContext iterationContext = new IterationContext();
+        RESULT result = iterationCallback.defaultResult();
         boolean existent = false;
-        RESULT result = null;
         while (resultSet.next()) {
             existent = true;
             TARGET target = provider.get(resultSet);
@@ -67,4 +73,6 @@ public abstract class AbstractIterationHandler<RESULT, TARGET> extends
         return result;
     }
 
+    protected abstract ResultProvider<TARGET> createResultProvider(
+            SelectQuery query);
 }

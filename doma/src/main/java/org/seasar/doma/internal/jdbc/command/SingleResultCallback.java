@@ -17,36 +17,44 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import java.util.function.Supplier;
 
-import org.seasar.doma.jdbc.command.ResultSetHandler;
-import org.seasar.doma.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.IterationContext;
 
 /**
- * 
  * @author nakamura-to
  * 
- * @param <ELEMENT>
  */
-public abstract class AbstractResultListHandler<ELEMENT> implements
-        ResultSetHandler<List<ELEMENT>> {
+public class SingleResultCallback<TARGET> implements
+        IterationCallback<TARGET, TARGET> {
 
-    protected final ResultSetHandler<List<ELEMENT>> handler;
+    protected final Supplier<TARGET> supplier;
 
     /**
-     * @param handler
+     * @param supplier
      */
-    public AbstractResultListHandler(ResultSetHandler<List<ELEMENT>> handler) {
-        assertNotNull(handler);
-        this.handler = handler;
+    public SingleResultCallback() {
+        this(() -> null);
+    }
+
+    /**
+     * @param supplier
+     */
+    public SingleResultCallback(Supplier<TARGET> supplier) {
+        assertNotNull(supplier);
+        this.supplier = supplier;
     }
 
     @Override
-    public List<ELEMENT> handle(ResultSet resultSet, SelectQuery query)
-            throws SQLException {
-        return handler.handle(resultSet, query);
+    public TARGET defaultResult() {
+        return supplier.get();
+    }
+
+    @Override
+    public TARGET iterate(TARGET target, IterationContext context) {
+        context.exit();
+        return target;
     }
 
 }

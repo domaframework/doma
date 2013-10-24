@@ -26,13 +26,13 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * @author nakamura-to
  * 
- * @param <S>
- * @param <P>
+ * @param <STATEMENT>
+ * @param <PARAMETER>
  */
-public abstract class AbstractParameterBinder<S extends PreparedStatement, P extends SqlParameter>
-        implements ParameterBinder<S, P> {
+public abstract class AbstractParameterBinder<STATEMENT extends PreparedStatement, PARAMETER extends SqlParameter>
+        implements ParameterBinder<STATEMENT, PARAMETER> {
 
-    protected <BASIC> void bindInParameter(S statement,
+    protected <BASIC> void bindInParameter(STATEMENT statement,
             JdbcMappable<BASIC> parameter, int index,
             JdbcMappingVisitor jdbcMappingVisitor) throws SQLException {
         Wrapper<?> wrapper = parameter.getWrapper();

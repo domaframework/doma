@@ -26,5 +26,4 @@ public interface ResultProvider<R> {
 
     R get(ResultSet resultSet) throws SQLException;
 
-    R getDefault();
 }

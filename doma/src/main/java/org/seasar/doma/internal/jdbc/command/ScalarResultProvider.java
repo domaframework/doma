@@ -68,12 +68,6 @@ public class ScalarResultProvider<BASIC, CONTAINER> extends
         return scalar.get();
     }
 
-    @Override
-    public CONTAINER getDefault() {
-        Scalar<BASIC, CONTAINER> scalar = supplier.get();
-        return scalar.getDefault();
-    }
-
     protected void validateColumnCount(ResultSet resultSet) throws SQLException {
         int columnCount = getColumnCount(resultSet);
         if (columnCount != 1) {

@@ -15,12 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
@@ -29,16 +26,9 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class ScalarSingleResultHandler<BASIC, CONTAINER> extends
         AbstractSingleResultHandler<CONTAINER> {
 
-    protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
-
     public ScalarSingleResultHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
-        assertNotNull(supplier);
-        this.supplier = supplier;
-    }
-
-    @Override
-    protected ScalarResultProvider<BASIC, CONTAINER> createResultProvider(
-            SelectQuery query) {
-        return new ScalarResultProvider<>(supplier, query);
+        super(new ScalarIterationHandler<>(supplier,
+                new SingleResultCallback<CONTAINER>(() -> supplier.get()
+                        .getDefault())));
     }
 }

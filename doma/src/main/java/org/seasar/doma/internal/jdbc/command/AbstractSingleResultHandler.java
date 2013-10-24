@@ -15,35 +15,42 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
+ * 
  * @author nakamura-to
  * 
+ * @param <RESULT>
  */
-public abstract class AbstractSingleResultHandler<R> extends
-        AbstractResultSetHandler<R, R> {
+public abstract class AbstractSingleResultHandler<RESULT> implements
+        ResultSetHandler<RESULT> {
+
+    protected final ResultSetHandler<RESULT> handler;
+
+    /**
+     * @param handler
+     */
+    public AbstractSingleResultHandler(ResultSetHandler<RESULT> handler) {
+        assertNotNull(handler);
+        this.handler = handler;
+    }
 
     @Override
-    public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        ResultProvider<R> provider = createResultProvider(query);
-        R result = provider.getDefault();
+    public RESULT handle(ResultSet resultSet, SelectQuery query)
+            throws SQLException {
+        RESULT result = handler.handle(resultSet, query);
         if (resultSet.next()) {
-            result = provider.get(resultSet);
-            if (resultSet.next()) {
-                Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(query.getConfig()
-                        .getExceptionSqlLogType(), sql);
-            }
-        } else if (query.isResultEnsured()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
+            throw new NonUniqueResultException(query.getConfig()
                     .getExceptionSqlLogType(), sql);
         }
         return result;

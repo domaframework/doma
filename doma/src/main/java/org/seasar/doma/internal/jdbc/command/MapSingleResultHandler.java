@@ -15,12 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
@@ -29,17 +26,9 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class MapSingleResultHandler extends
         AbstractSingleResultHandler<Map<String, Object>> {
 
-    private final MapKeyNamingType keyNamingType;
-
     public MapSingleResultHandler(MapKeyNamingType keyNamingType) {
-        assertNotNull(keyNamingType);
-        this.keyNamingType = keyNamingType;
-    }
-
-    @Override
-    protected ResultProvider<Map<String, Object>> createResultProvider(
-            SelectQuery query) {
-        return new MapResultProvider<>(query, keyNamingType, map -> map);
+        super(new MapIterationHandler<>(keyNamingType,
+                new SingleResultCallback<Map<String, Object>>()));
     }
 
 }
