@@ -15,9 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
-import org.seasar.doma.jdbc.SqlNode;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 /**
  * @author taedium
@@ -42,17 +40,4 @@ public abstract class AbstractClauseNode extends AbstractSqlNode implements
         return wordNode;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(wordNode);
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        buf.append("]");
-        return buf.toString();
-    }
 }

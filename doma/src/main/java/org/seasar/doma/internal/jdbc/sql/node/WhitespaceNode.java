@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,20 +66,7 @@ public class WhitespaceNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof WhitespaceNodeVisitor<?, ?>) {
-            WhitespaceNodeVisitor<R, P> v = (WhitespaceNodeVisitor<R, P>) visitor;
-            return v.visitWhitespaceNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append("]");
-        return buf.toString();
+        return visitor.visitWhitespaceNode(this, p);
     }
 
     public static WhitespaceNode of(String whitespace) {

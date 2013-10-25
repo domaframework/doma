@@ -15,17 +15,16 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
+import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
  * @author taedium
  * 
  */
-public class StandardCountCalculatingTransformer implements
-        SelectStatementNodeVisitor<SqlNode, Void> {
+public class StandardCountCalculatingTransformer extends
+        SimpleSqlNodeVisitor<SqlNode, Void> {
 
     protected boolean processed;
 
@@ -38,12 +37,7 @@ public class StandardCountCalculatingTransformer implements
     }
 
     @Override
-    public SqlNode visitSelectStatementNode(SelectStatementNode node, Void p) {
-        return node;
-    }
-
-    @Override
-    public SqlNode visitUnknownNode(SqlNode node, Void p) {
+    protected SqlNode defaultAction(SqlNode node, Void p) {
         return node;
     }
 

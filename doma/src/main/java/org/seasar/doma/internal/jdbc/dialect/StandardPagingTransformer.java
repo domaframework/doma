@@ -15,9 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import static org.seasar.doma.internal.Constants.*;
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
+import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
@@ -25,7 +26,6 @@ import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.jdbc.JdbcException;
@@ -36,8 +36,8 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class StandardPagingTransformer implements
-        SelectStatementNodeVisitor<SqlNode, Void> {
+public class StandardPagingTransformer extends
+        SimpleSqlNodeVisitor<SqlNode, Void> {
 
     protected final long offset;
 
@@ -97,7 +97,8 @@ public class StandardPagingTransformer implements
         SelectClauseNode select = new SelectClauseNode("select");
         select.appendNode(new FragmentNode(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.appendNode(new FragmentNode(" ( select temp_.*, row_number() over( "));
+        from.appendNode(new FragmentNode(
+                " ( select temp_.*, row_number() over( "));
         from.appendNode(orderBy);
         from.appendNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME
                 + " from ( "));
@@ -130,8 +131,7 @@ public class StandardPagingTransformer implements
     }
 
     @Override
-    public SqlNode visitUnknownNode(SqlNode node, Void p) {
+    protected SqlNode defaultAction(SqlNode node, Void p) {
         return node;
     }
-
 }

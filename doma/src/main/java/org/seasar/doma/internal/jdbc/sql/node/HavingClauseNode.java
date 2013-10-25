@@ -37,10 +37,6 @@ public class HavingClauseNode extends AbstractClauseNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof HavingClauseNodeVisitor<?, ?>) {
-            HavingClauseNodeVisitor<R, P> v = (HavingClauseNodeVisitor<R, P>) visitor;
-            return v.visitHavingClauseNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitHavingClauseNode(this, p);
     }
 }

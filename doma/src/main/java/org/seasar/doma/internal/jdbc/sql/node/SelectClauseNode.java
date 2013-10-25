@@ -37,10 +37,6 @@ public class SelectClauseNode extends AbstractClauseNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof SelectClauseNodeVisitor<?, ?>) {
-            SelectClauseNodeVisitor<R, P> v = (SelectClauseNodeVisitor<R, P>) visitor;
-            return v.visitSelectClauseNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitSelectClauseNode(this, p);
     }
 }

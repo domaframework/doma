@@ -68,9 +68,4 @@ public class Mssql2008PagingTransformer extends StandardPagingTransformer {
         return result;
     }
 
-    @Override
-    public SqlNode visitUnknownNode(SqlNode node, Void p) {
-        return node;
-    }
-
 }

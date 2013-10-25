@@ -15,10 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
@@ -80,29 +79,7 @@ public class ParensNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof ParensNodeVisitor<?, ?>) {
-            ParensNodeVisitor<R, P> v = (ParensNodeVisitor<R, P>) visitor;
-            return v.visitParensNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitParensNode(this, p);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        if (openedParensNode != null) {
-            buf.append(openedParensNode);
-        }
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        if (closedParensNode != null) {
-            buf.append(closedParensNode);
-        }
-        buf.append("]");
-        return buf.toString();
-    }
 }

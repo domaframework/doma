@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
@@ -50,22 +50,7 @@ public class CommentNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof CommentNodeVisitor<?, ?>) {
-            CommentNodeVisitor<R, P> v = (CommentNodeVisitor<R, P>) visitor;
-            return v.visitCommentNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(comment);
-        buf.append("]");
-        return buf.toString();
+        return visitor.visitCommentNode(this, p);
     }
 
 }

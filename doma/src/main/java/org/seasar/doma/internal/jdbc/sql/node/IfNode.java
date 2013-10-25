@@ -15,10 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
@@ -58,25 +57,7 @@ public class IfNode extends AbstractSqlNode implements SpaceStrippingNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof IfNodeVisitor<?, ?>) {
-            IfNodeVisitor<R, P> v = (IfNodeVisitor<R, P>) visitor;
-            return v.visitIfNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(text);
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        buf.append("]");
-        return buf.toString();
+        return visitor.visitIfNode(this, p);
     }
 
 }

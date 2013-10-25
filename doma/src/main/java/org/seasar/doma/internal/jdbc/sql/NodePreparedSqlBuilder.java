@@ -35,63 +35,36 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
-import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.BindVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
-import org.seasar.doma.internal.jdbc.sql.node.CommentNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
-import org.seasar.doma.internal.jdbc.sql.node.ElseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
-import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
-import org.seasar.doma.internal.jdbc.sql.node.EndNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EolNode;
-import org.seasar.doma.internal.jdbc.sql.node.EolNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForBlockNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
-import org.seasar.doma.internal.jdbc.sql.node.FragmentNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.FromClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
-import org.seasar.doma.internal.jdbc.sql.node.IfBlockNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
-import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
-import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
-import org.seasar.doma.internal.jdbc.sql.node.OtherNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
-import org.seasar.doma.internal.jdbc.sql.node.ParensNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
-import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
-import org.seasar.doma.internal.jdbc.sql.node.WordNodeVisitor;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
@@ -103,33 +76,7 @@ import org.seasar.doma.message.Message;
  * 
  */
 public class NodePreparedSqlBuilder implements
-        SqlNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        AnonymousNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        BindVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        CommentNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        ElseifNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        ElseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        EmbeddedVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        EndNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        EolNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        ForBlockNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        ForNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        ForUpdateClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        FragmentNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        FromClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        GroupByClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        HavingClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        IfBlockNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        IfNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        LogicalOperatorNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        OrderByClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        OtherNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        ParensNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        SelectClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        SelectStatementNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        WhereClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        WhitespaceNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        WordNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
+        SqlNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
 
     protected static final Pattern clauseKeywordPattern = Pattern.compile(
             "(select|from|where|group by|having|order by|for update)",
@@ -598,12 +545,6 @@ public class NodePreparedSqlBuilder implements
         p.appendRawSql(eol);
         p.appendFormattedSql(eol);
         return null;
-    }
-
-    @Override
-    public Void visitUnknownNode(SqlNode node, Context p) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "visitUnknownNode");
     }
 
     protected Supplier<Scalar<?, ?>> wrap(SqlLocation location,

@@ -121,23 +121,7 @@ public class SelectStatementNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof SelectStatementNodeVisitor<?, ?>) {
-            SelectStatementNodeVisitor<R, P> v = (SelectStatementNodeVisitor<R, P>) visitor;
-            return v.visitSelectStatementNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitSelectStatementNode(this, p);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        buf.append("]");
-        return buf.toString();
-    }
 }

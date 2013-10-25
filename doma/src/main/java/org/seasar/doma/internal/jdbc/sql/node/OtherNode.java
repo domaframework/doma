@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,22 +65,7 @@ public class OtherNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof OtherNodeVisitor<?, ?>) {
-            OtherNodeVisitor<R, P> v = (OtherNodeVisitor<R, P>) visitor;
-            return v.visitOtherNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(other);
-        buf.append("]");
-        return buf.toString();
+        return visitor.visitOtherNode(this, p);
     }
 
     public static OtherNode of(String other) {

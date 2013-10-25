@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.jdbc.sql.node;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
@@ -33,23 +32,7 @@ public class AnonymousNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof AnonymousNodeVisitor<?, ?>) {
-            AnonymousNodeVisitor<R, P> v = (AnonymousNodeVisitor<R, P>) visitor;
-            return v.visitAnonymousNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitAnonymousNode(this, p);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        buf.append("]");
-        return buf.toString();
-    }
 }

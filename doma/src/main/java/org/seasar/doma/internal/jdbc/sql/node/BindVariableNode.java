@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
@@ -65,11 +65,7 @@ public class BindVariableNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof BindVariableNodeVisitor<?, ?>) {
-            BindVariableNodeVisitor<R, P> v = (BindVariableNodeVisitor<R, P>) visitor;
-            return v.visitBindVariableNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitBindVariableNode(this, p);
     }
 
     public WordNode getWordNode() {
@@ -94,25 +90,6 @@ public class BindVariableNode extends AbstractSqlNode {
 
     public boolean isParensNodeIgnored() {
         return parensNode != null;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(text);
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        if (wordNode != null) {
-            buf.append(wordNode);
-        } else if (parensNode != null) {
-            buf.append(parensNode);
-        }
-        buf.append("]");
-        return buf.toString();
     }
 
 }

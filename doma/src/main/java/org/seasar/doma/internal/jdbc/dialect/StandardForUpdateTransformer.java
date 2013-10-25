@@ -15,11 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
 
@@ -27,8 +26,8 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class StandardForUpdateTransformer implements
-        SelectStatementNodeVisitor<SqlNode, Void> {
+public class StandardForUpdateTransformer extends
+        SimpleSqlNodeVisitor<SqlNode, Void> {
 
     protected final SelectForUpdateType forUpdateType;
 
@@ -55,12 +54,7 @@ public class StandardForUpdateTransformer implements
     }
 
     @Override
-    public SqlNode visitSelectStatementNode(SelectStatementNode node, Void p) {
-        return node;
-    }
-
-    @Override
-    public SqlNode visitUnknownNode(SqlNode node, Void p) {
+    protected SqlNode defaultAction(SqlNode node, Void p) {
         return node;
     }
 

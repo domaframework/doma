@@ -61,7 +61,8 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
         } else {
             orderBy = new OrderByClauseNode("");
         }
-        orderBy.appendNode(new FragmentNode(" fetch first " + limit + " rows only"));
+        orderBy.appendNode(new FragmentNode(" fetch first " + limit
+                + " rows only"));
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
         if (node.getForUpdateClauseNode() != null) {
             orderBy.appendNode(new FragmentNode(" "));
@@ -76,11 +77,6 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
         result.setOrderByClauseNode(orderBy);
         result.setForUpdateClauseNode(forUpdate);
         return result;
-    }
-
-    @Override
-    public SqlNode visitUnknownNode(SqlNode node, Void p) {
-        return node;
     }
 
 }

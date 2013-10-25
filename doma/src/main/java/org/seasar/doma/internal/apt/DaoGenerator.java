@@ -2240,12 +2240,12 @@ public class DaoGenerator extends AbstractGenerator {
                                 Boolean optional) throws RuntimeException {
                             iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
                             /* 1 */commandClassName,
-                            /* 1 */resultBoxedTypeName,
-                            /* 1 */getEntityResultListHandlerName(optional),
-                            /* 1 */ctType.getTypeName(),
-                            /* 1 */ctType.getMetaTypeName(),
-                            /* 1 */commandName,
-                            /* 1 */methodName);
+                            /* 2 */resultBoxedTypeName,
+                            /* 3 */getEntityResultListHandlerName(optional),
+                            /* 4 */ctType.getTypeName(),
+                            /* 5 */ctType.getMetaTypeName(),
+                            /* 6 */commandName,
+                            /* 7 */methodName);
                             return null;
                         }
 

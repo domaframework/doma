@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -37,17 +37,13 @@ import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.BindVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
-import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
-import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
@@ -56,9 +52,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
-        EmbeddedVariableNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
-        ElseifNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void> {
+public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
     protected static final int SQL_MAX_LENGTH = 5000;
 
@@ -268,9 +262,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
     }
 
     @Override
-    public Void visitUnknownNode(SqlNode node, Void p) {
-        visitNode(node, p);
-        return null;
+    protected Void defaultAction(SqlNode node, Void p) {
+        return visitNode(node, p);
     }
 
     protected Void visitNode(SqlNode node, Void p) {

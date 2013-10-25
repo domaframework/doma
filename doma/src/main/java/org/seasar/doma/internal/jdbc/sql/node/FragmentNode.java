@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
@@ -50,21 +50,7 @@ public class FragmentNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof FragmentNodeVisitor<?, ?>) {
-            FragmentNodeVisitor<R, P> v = (FragmentNodeVisitor<R, P>) visitor;
-            return v.visitFragmentNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitFragmentNode(this, p);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(fragment);
-        buf.append("]");
-        return buf.toString();
-    }
 }

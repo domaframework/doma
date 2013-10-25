@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.jdbc.sql.node;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
@@ -44,24 +43,7 @@ public class LogicalOperatorNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof LogicalOperatorNodeVisitor<?, ?>) {
-            LogicalOperatorNodeVisitor<R, P> v = (LogicalOperatorNodeVisitor<R, P>) visitor;
-            return v.visitLogicalOperatorNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitLogicalOperatorNode(this, p);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(wordNode);
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        buf.append("]");
-        return buf.toString();
-    }
 }

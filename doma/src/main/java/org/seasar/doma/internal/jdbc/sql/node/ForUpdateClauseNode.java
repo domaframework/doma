@@ -37,11 +37,7 @@ public class ForUpdateClauseNode extends AbstractClauseNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof ForUpdateClauseNodeVisitor<?, ?>) {
-            ForUpdateClauseNodeVisitor<R, P> v = (ForUpdateClauseNodeVisitor<R, P>) visitor;
-            return v.visitForUpdateClauseNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
+        return visitor.visitForUpdateClauseNode(this, p);
     }
 
 }

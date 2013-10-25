@@ -15,6 +15,33 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
+import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
+import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.EndNode;
+import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
+import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
+import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
+import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
+import org.seasar.doma.internal.jdbc.sql.node.WordNode;
+
 /**
  * {@link SqlNode} へのビジターです。
  * <p>
@@ -29,15 +56,56 @@ package org.seasar.doma.jdbc;
  */
 public interface SqlNodeVisitor<R, P> {
 
-    /**
-     * 未知のノードを処理します。
-     * 
-     * @param node
-     *            ノード
-     * @param p
-     *            パラメータ
-     * @return 処理された値
-     */
-    R visitUnknownNode(SqlNode node, P p);
+    R visitAnonymousNode(AnonymousNode node, P p);
+
+    R visitBindVariableNode(BindVariableNode node, P p);
+
+    R visitCommentNode(CommentNode node, P p);
+
+    R visitElseifNode(ElseifNode node, P p);
+
+    R visitElseNode(ElseNode node, P p);
+
+    R visitEmbeddedVariableNode(EmbeddedVariableNode node, P p);
+
+    R visitEndNode(EndNode node, P p);
+
+    R visitEolNode(EolNode node, P p);
+
+    R visitForBlockNode(ForBlockNode node, P p);
+
+    R visitForNode(ForNode node, P p);
+
+    R visitForUpdateClauseNode(ForUpdateClauseNode node, P p);
+
+    R visitFragmentNode(FragmentNode node, P p);
+
+    R visitFromClauseNode(FromClauseNode node, P p);
+
+    R visitGroupByClauseNode(GroupByClauseNode node, P p);
+
+    R visitHavingClauseNode(HavingClauseNode node, P p);
+
+    R visitIfBlockNode(IfBlockNode node, P p);
+
+    R visitIfNode(IfNode node, P p);
+
+    R visitLogicalOperatorNode(LogicalOperatorNode node, P p);
+
+    R visitOrderByClauseNode(OrderByClauseNode node, P p);
+
+    R visitOtherNode(OtherNode node, P p);
+
+    R visitParensNode(ParensNode node, P p);
+
+    R visitSelectClauseNode(SelectClauseNode node, P p);
+
+    R visitSelectStatementNode(SelectStatementNode node, P p);
+
+    R visitWhereClauseNode(WhereClauseNode node, P p);
+
+    R visitWhitespaceNode(WhitespaceNode node, P p);
+
+    R visitWordNode(WordNode node, P p);
 
 }

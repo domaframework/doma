@@ -15,10 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 public class EmbeddedVariableNode extends AbstractSqlNode {
@@ -54,25 +53,7 @@ public class EmbeddedVariableNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof EmbeddedVariableNodeVisitor<?, ?>) {
-            EmbeddedVariableNodeVisitor<R, P> v = (EmbeddedVariableNodeVisitor<R, P>) visitor;
-            return v.visitEmbeddedVariableNode(this, p);
-        }
-        return visitor.visitUnknownNode(this, p);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        buf.append(getClass().getSimpleName());
-        buf.append(" ");
-        buf.append(text);
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        buf.append("]");
-        return buf.toString();
+        return visitor.visitEmbeddedVariableNode(this, p);
     }
 
 }
