@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +36,7 @@ import org.seasar.doma.jdbc.query.ModifyQuery;
  * 
  */
 public abstract class ModifyCommand<QUERY extends ModifyQuery> implements
-        Command<Integer, QUERY> {
+        Command<Integer> {
 
     protected final QUERY query;
 

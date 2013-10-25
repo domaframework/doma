@@ -65,17 +65,17 @@ public interface QueryImplementors {
 
     default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(
             Method method, EntityType<ENTITY> entityType) {
-        return new AutoDeleteQuery<ENTITY>(entityType);
+        return new AutoDeleteQuery<>(entityType);
     }
 
     default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
             Method method, EntityType<ENTITY> entityType) {
-        return new AutoInsertQuery<ENTITY>(entityType);
+        return new AutoInsertQuery<>(entityType);
     }
 
     default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
             Method method, EntityType<ENTITY> entityType) {
-        return new AutoUpdateQuery<ENTITY>(entityType);
+        return new AutoUpdateQuery<>(entityType);
     }
 
     default SqlFileDeleteQuery createSqlFileDeleteQuery(Method method) {
@@ -104,37 +104,37 @@ public interface QueryImplementors {
 
     default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
             Method method, EntityType<ENTITY> entityType) {
-        return new AutoBatchDeleteQuery<ENTITY>(entityType);
+        return new AutoBatchDeleteQuery<>(entityType);
     }
 
     default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
             Method method, EntityType<ENTITY> entityType) {
-        return new AutoBatchInsertQuery<ENTITY>(entityType);
+        return new AutoBatchInsertQuery<>(entityType);
     }
 
     default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
             Method method, EntityType<ENTITY> entityType) {
-        return new AutoBatchUpdateQuery<ENTITY>(entityType);
+        return new AutoBatchUpdateQuery<>(entityType);
     }
 
     default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(
             Method method, Class<ELEMENT> clazz) {
-        return new SqlFileBatchDeleteQuery<ELEMENT>(clazz);
+        return new SqlFileBatchDeleteQuery<>(clazz);
     }
 
     default <ELEMENT> SqlFileBatchInsertQuery<ELEMENT> createSqlFileBatchInsertQuery(
             Method method, Class<ELEMENT> clazz) {
-        return new SqlFileBatchInsertQuery<ELEMENT>(clazz);
+        return new SqlFileBatchInsertQuery<>(clazz);
     }
 
     default <ELEMENT> SqlFileBatchUpdateQuery<ELEMENT> createSqlFileBatchUpdateQuery(
             Method method, Class<ELEMENT> clazz) {
-        return new SqlFileBatchUpdateQuery<ELEMENT>(clazz);
+        return new SqlFileBatchUpdateQuery<>(clazz);
     }
 
     default <RESULT> AutoFunctionQuery<RESULT> createAutoFunctionQuery(
             Method method) {
-        return new AutoFunctionQuery<RESULT>();
+        return new AutoFunctionQuery<>();
     }
 
     default AutoProcedureQuery createAutoProcedureQuery(Method method) {

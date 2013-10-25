@@ -94,7 +94,7 @@ public interface CommandImplementors {
 
     default <RESULT> CreateCommand<RESULT> createCreateCommand(Method method,
             CreateQuery<RESULT> query) {
-        return new CreateCommand<RESULT>(query);
+        return new CreateCommand<>(query);
     }
 
     default ScriptCommand createScriptCommand(Method method, ScriptQuery query) {

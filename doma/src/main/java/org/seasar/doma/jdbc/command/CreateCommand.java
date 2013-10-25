@@ -27,7 +27,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class CreateCommand<RESULT> implements Command<RESULT, CreateQuery<RESULT>> {
+public class CreateCommand<RESULT> implements Command<RESULT> {
 
     protected final CreateQuery<RESULT> query;
 

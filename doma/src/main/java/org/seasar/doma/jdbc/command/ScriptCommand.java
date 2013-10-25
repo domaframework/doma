@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -31,13 +31,12 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.ScriptQuery;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
  * 
  */
-public class ScriptCommand implements Command<Void, SelectQuery> {
+public class ScriptCommand implements Command<Void> {
 
     protected final ScriptQuery query;
 

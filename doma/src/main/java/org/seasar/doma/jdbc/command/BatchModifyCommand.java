@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,8 +37,8 @@ import org.seasar.doma.jdbc.query.BatchModifyQuery;
  * @author taedium
  * 
  */
-public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> implements
-        Command<int[], QUERY> {
+public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery>
+        implements Command<int[]> {
 
     protected final QUERY query;
 

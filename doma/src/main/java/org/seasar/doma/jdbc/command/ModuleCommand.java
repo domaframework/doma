@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -34,8 +34,8 @@ import org.seasar.doma.jdbc.query.ModuleQuery;
  * @author taedium
  * 
  */
-public abstract class ModuleCommand<RESULT, QUERY extends ModuleQuery> implements
-        Command<RESULT, QUERY> {
+public abstract class ModuleCommand<RESULT, QUERY extends ModuleQuery>
+        implements Command<RESULT> {
 
     protected final QUERY query;
 
@@ -73,8 +73,8 @@ public abstract class ModuleCommand<RESULT, QUERY extends ModuleQuery> implement
         }
     }
 
-    protected abstract RESULT executeInternal(CallableStatement callableStatement)
-            throws SQLException;
+    protected abstract RESULT executeInternal(
+            CallableStatement callableStatement) throws SQLException;
 
     protected void setupOptions(CallableStatement preparedStatement)
             throws SQLException {

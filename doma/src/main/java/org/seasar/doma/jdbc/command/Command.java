@@ -15,13 +15,12 @@
  */
 package org.seasar.doma.jdbc.command;
 
-import org.seasar.doma.jdbc.query.Query;
 
 /**
  * @author taedium
  * 
  */
-public interface Command<RESULT, QUERY extends Query> {
+public interface Command<RESULT> {
 
     RESULT execute();
 

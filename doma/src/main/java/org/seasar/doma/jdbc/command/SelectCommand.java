@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public class SelectCommand<RESULT> implements Command<RESULT, SelectQuery> {
+public class SelectCommand<RESULT> implements Command<RESULT> {
 
     protected final SelectQuery query;
 
@@ -42,7 +42,8 @@ public class SelectCommand<RESULT> implements Command<RESULT, SelectQuery> {
 
     protected final ResultSetHandler<RESULT> resultSetHandler;
 
-    public SelectCommand(SelectQuery query, ResultSetHandler<RESULT> resultSetHandler) {
+    public SelectCommand(SelectQuery query,
+            ResultSetHandler<RESULT> resultSetHandler) {
         assertNotNull(query, resultSetHandler);
         this.query = query;
         this.sql = query.getSql();
