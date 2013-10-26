@@ -23,7 +23,7 @@ import org.seasar.doma.Domain;
  * @author taedium
  * 
  */
-@Domain(valueType = BigDecimal.class, factoryMethod = "of")
+@Domain(valueType = BigDecimal.class, factoryMethod = "of", acceptNull = true)
 public class OfSalary {
 
     private final BigDecimal value;

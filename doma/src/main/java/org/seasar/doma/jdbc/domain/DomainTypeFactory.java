@@ -39,10 +39,34 @@ public final class DomainTypeFactory {
     /**
      * {@link DomainType} のインスタンスを生成します。
      * 
-     * @param <V>
-     *            ドメインクラスが扱う値の型
-     * @param <D>
-     *            ドメインクラスの型
+     * @param <BASIC>
+     *            基本型
+     * @param <DOMAIN>
+     *            ドメイン型
+     * @param domainClass
+     *            ドメインクラス
+     * @return {@link DomainType} のインスタンス
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             ドメインクラスに {@link Domain} もしくは {@code EnumDomain} が注釈されていない場合
+     * @throws DomainTypeNotFoundException
+     *             ドメインクラスに対応するメタクラスが見つからない場合
+     * @since 2.0.0
+     */
+    public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getDomainType(
+            Class<DOMAIN> domainClass) {
+        return getDomainType(domainClass, new ClassHelper() {
+        });
+    }
+
+    /**
+     * {@link ClassHelper} を使って {@link DomainType} のインスタンスを生成します。
+     * 
+     * @param <BASIC>
+     *            基本型
+     * @param <DOMAIN>
+     *            ドメイン型
      * @param domainClass
      *            ドメインクラス
      * @param classHelper
@@ -56,7 +80,7 @@ public final class DomainTypeFactory {
      *             ドメインクラスに対応するメタクラスが見つからない場合
      * @since 1.27.0
      */
-    public static <V, D> DomainType<V, D> getDomainType(Class<D> domainClass,
+    public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getDomainType(Class<DOMAIN> domainClass,
             ClassHelper classHelper) {
         if (domainClass == null) {
             throw new DomaNullPointerException("domainClass");
@@ -71,7 +95,7 @@ public final class DomainTypeFactory {
         String domainTypeClassName = MetaTypeUtil.getMetaTypeName(domainClass
                 .getName());
         try {
-            Class<D> clazz = classHelper.forName(domainTypeClassName);
+            Class<DOMAIN> clazz = classHelper.forName(domainTypeClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
@@ -86,10 +110,32 @@ public final class DomainTypeFactory {
     /**
      * {@link DomainType} のインスタンスを生成します。
      * 
-     * @param <V>
-     *            ドメインクラスが扱う値の型
-     * @param <D>
-     *            ドメインクラスの型
+     * @param <BASIC>
+     *            基本型
+     * @param <DOMAIN>
+     *            ドメイン型
+     * @param domainClass
+     *            ドメインクラス
+     * @param classHelper
+     *            クラスヘルパー
+     * @return {@link DomainType} のインスタンス、存在しない場合 {@code null}
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @since 2.0.0
+     */
+    public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getExternalDomainType(
+            Class<DOMAIN> domainClass) {
+        return getExternalDomainType(domainClass, new ClassHelper() {
+        });
+    }
+
+    /**
+     * {@link ClassHelper} を使って {@link DomainType} のインスタンスを生成します。
+     * 
+     * @param <BASIC>
+     *            基本型
+     * @param <DOMAIN>
+     *            ドメイン型
      * @param domainClass
      *            ドメインクラス
      * @param classHelper
@@ -99,8 +145,8 @@ public final class DomainTypeFactory {
      *             引数が {@code null} の場合
      * @since 1.27.0
      */
-    public static <V, D> DomainType<V, D> getExternalDomainType(
-            Class<D> domainClass, ClassHelper classHelper) {
+    public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getExternalDomainType(
+            Class<DOMAIN> domainClass, ClassHelper classHelper) {
         if (domainClass == null) {
             throw new DomaNullPointerException("domainClass");
         }
@@ -110,7 +156,7 @@ public final class DomainTypeFactory {
         String domainTypeClassName = Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
                 + "." + MetaTypeUtil.getMetaTypeName(domainClass.getName());
         try {
-            Class<D> clazz = classHelper.forName(domainTypeClassName);
+            Class<DOMAIN> clazz = classHelper.forName(domainTypeClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {

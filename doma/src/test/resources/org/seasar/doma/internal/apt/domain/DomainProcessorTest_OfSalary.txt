@@ -28,7 +28,7 @@ public final class _OfSalary extends org.seasar.doma.jdbc.domain.AbstractDomainT
     }
 
     @Override
-    public Class<java.math.BigDecimal> getBasicClass() {
+    public Class<?> getBasicClass() {
         return java.math.BigDecimal.class;
     }
 

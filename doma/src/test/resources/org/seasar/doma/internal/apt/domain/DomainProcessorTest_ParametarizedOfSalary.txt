@@ -32,7 +32,7 @@ public final class _ParametarizedOfSalary<T, U> extends org.seasar.doma.jdbc.dom
     }
 
     @Override
-    public Class<java.math.BigDecimal> getBasicClass() {
+    public Class<?> getBasicClass() {
         return java.math.BigDecimal.class;
     }
 

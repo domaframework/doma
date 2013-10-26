@@ -23,7 +23,7 @@ import org.seasar.doma.Domain;
  * @author taedium
  * 
  */
-@Domain(valueType = BigDecimal.class)
+@Domain(valueType = BigDecimal.class, acceptNull = true)
 public class VersionCheckSuppressedDomain {
 
     private final BigDecimal value;

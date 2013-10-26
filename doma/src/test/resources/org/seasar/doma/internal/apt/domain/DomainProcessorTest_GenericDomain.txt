@@ -28,7 +28,7 @@ public final class _SpecificDomain extends org.seasar.doma.jdbc.domain.AbstractD
     }
 
     @Override
-    public Class<java.lang.Integer> getBasicClass() {
+    public Class<?> getBasicClass() {
         return java.lang.Integer.class;
     }
 

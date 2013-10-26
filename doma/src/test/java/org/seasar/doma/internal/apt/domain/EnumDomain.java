@@ -21,7 +21,7 @@ import org.seasar.doma.Domain;
  * @author taedium
  * 
  */
-@Domain(valueType = EnumDomain.JobType.class)
+@Domain(valueType = EnumDomain.JobType.class, acceptNull = true)
 public class EnumDomain {
 
     private final JobType jobType;

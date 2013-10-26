@@ -110,7 +110,8 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
         @Override
         public Optional<DOMAIN> get() {
             BASIC value = wrapper.get();
-            if (value == null) {
+            if (value == null
+                    && !AbstractDomainType.this.getBasicClass().isPrimitive()) {
                 return getDefaultInternal();
             }
             return Optional.of(newDomain(value));

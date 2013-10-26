@@ -179,8 +179,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
     protected void printGetBasicClassMethod() {
         iprint("@Override%n");
-        iprint("public Class<%1$s> getBasicClass() {%n", domainMeta
-                .getValueElement().getQualifiedName());
+        iprint("public Class<?> getBasicClass() {%n");
         iprint("    return %1$s.class;%n", domainMeta.getValueElement()
                 .getQualifiedName());
         iprint("}%n");

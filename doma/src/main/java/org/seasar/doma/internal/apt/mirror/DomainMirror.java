@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -45,6 +45,8 @@ public class DomainMirror {
 
     protected AnnotationValue accessorMethod;
 
+    protected AnnotationValue acceptNull;
+
     protected DomainMirror(AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
@@ -66,12 +68,12 @@ public class DomainMirror {
             AnnotationValue value = entry.getValue();
             if ("valueType".equals(name)) {
                 result.valueType = value;
-            }
-            if ("factoryMethod".equals(name)) {
+            } else if ("factoryMethod".equals(name)) {
                 result.factoryMethod = value;
-            }
-            if ("accessorMethod".equals(name)) {
+            } else if ("accessorMethod".equals(name)) {
                 result.accessorMethod = value;
+            } else if ("acceptNull".equals(name)) {
+                result.acceptNull = value;
             }
         }
         return result;
@@ -91,6 +93,10 @@ public class DomainMirror {
 
     public AnnotationValue getAccessorMethod() {
         return accessorMethod;
+    }
+
+    public AnnotationValue getAcceptNull() {
+        return acceptNull;
     }
 
     public TypeMirror getValueTypeValue() {
@@ -117,4 +123,11 @@ public class DomainMirror {
         return value;
     }
 
+    public boolean getAcceptNullValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(acceptNull);
+        if (value == null) {
+            throw new AptIllegalStateException("acceptNull");
+        }
+        return value.booleanValue();
+    }
 }

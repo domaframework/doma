@@ -30,7 +30,7 @@ public final class _ValueObject extends org.seasar.doma.jdbc.domain.AbstractDoma
     }
 
     @Override
-    public Class<java.lang.String> getBasicClass() {
+    public Class<?> getBasicClass() {
         return java.lang.String.class;
     }
 

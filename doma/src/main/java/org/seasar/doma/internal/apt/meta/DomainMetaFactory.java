@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -59,7 +59,8 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         DomainMeta domainMeta = new DomainMeta(classElement,
                 classElement.asType());
         domainMeta.setDomainMirror(domainMirror);
-        doWrapperType(classElement, domainMeta);
+        doWrapperCtType(classElement, domainMeta);
+        validateAcceptNull(classElement, domainMeta);
         validateClass(classElement, domainMeta);
         if (domainMeta.providesConstructor()) {
             validateConstructor(classElement, domainMeta);
@@ -70,9 +71,10 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         return domainMeta;
     }
 
-    protected void doWrapperType(TypeElement classElement, DomainMeta domainMeta) {
-        BasicCtType basicCtType = BasicCtType.newInstance(domainMeta.getValueType(),
-                env);
+    protected void doWrapperCtType(TypeElement classElement,
+            DomainMeta domainMeta) {
+        BasicCtType basicCtType = BasicCtType.newInstance(
+                domainMeta.getValueType(), env);
         if (basicCtType == null) {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(Message.DOMA4102, env, classElement,
@@ -80,6 +82,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                     domainMirror.getValueType(),
                     domainMirror.getValueTypeValue());
         }
+        domainMeta.setBasicCtType(basicCtType);
         domainMeta.setWrapperCtType(basicCtType.getWrapperCtType());
     }
 
@@ -106,6 +109,17 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(Message.DOMA4105, env, classElement,
                     domainMirror.getAnnotationMirror());
+        }
+    }
+
+    protected void validateAcceptNull(TypeElement classElement,
+            DomainMeta domainMeta) {
+        if (domainMeta.getBasicCtType().isPrimitive()
+                && domainMeta.getAcceptNull()) {
+            DomainMirror domainMirror = domainMeta.getDomainMirror();
+            throw new AptException(Message.DOMA4251, env, classElement,
+                    domainMirror.getAnnotationMirror(),
+                    domainMirror.getAcceptNull());
         }
     }
 

@@ -21,7 +21,7 @@ import org.seasar.doma.Domain;
  * @author taedium
  * 
  */
-@Domain(valueType = String.class, factoryMethod = "of")
+@Domain(valueType = String.class, factoryMethod = "of", acceptNull = true)
 enum OfJobType {
 
     SALESEMAN("01"), CLERK("02");

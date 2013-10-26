@@ -23,7 +23,7 @@ import org.seasar.doma.Domain;
  * @author taedium
  * 
  */
-@Domain(valueType = BigDecimal.class, factoryMethod = "of")
+@Domain(valueType = BigDecimal.class, factoryMethod = "of", acceptNull = true)
 public class ParametarizedOfSalary<T, U> {
 
     private final BigDecimal value;

@@ -37,10 +37,13 @@ public interface DomainType<BASIC, DOMAIN> {
 
     /**
      * 基本型のクラスを返します。
+     * <p>
+     * プリミティブ型を返す場合があるため、戻り値の型は {@code Class<BASIC>} ではなく {@code Class<?>}
+     * となっています。
      * 
      * @return 基本型のクラス
      */
-    Class<BASIC> getBasicClass();
+    Class<?> getBasicClass();
 
     /**
      * ドメイン型のクラスを返します。

@@ -402,6 +402,7 @@ public enum Message implements MessageResource {
     DOMA4248("Function型のパラメータを利用するには、load要素にLoadType.STREAMを設定しなければいけません。"),
     DOMA4249("Function型のパラメータは複数指定できません。"),
     DOMA4250("Streamの実型引数に抽象型のエンティティクラス[{0}]は指定できません。"),
+    DOMA4251("valueType要素にプリミティブ型を指定している場合、acceptNull要素にtrueを指定できません。"),
 
     DOMA4300("型[{0}]の処理中に例外が発生しました。注釈処理とは直接関係ない場所でコンパイルエラーがありませんか？"),
 

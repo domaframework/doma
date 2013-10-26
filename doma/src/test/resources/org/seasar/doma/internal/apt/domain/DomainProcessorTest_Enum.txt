@@ -28,7 +28,7 @@ public final class _EnumDomain extends org.seasar.doma.jdbc.domain.AbstractDomai
     }
 
     @Override
-    public Class<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> getBasicClass() {
+    public Class<?> getBasicClass() {
         return org.seasar.doma.internal.apt.domain.EnumDomain.JobType.class;
     }
 

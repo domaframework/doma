@@ -28,8 +28,8 @@ public final class _PrimitiveValueDomain extends org.seasar.doma.jdbc.domain.Abs
     }
 
     @Override
-    public Class<java.lang.Integer> getBasicClass() {
-        return java.lang.Integer.class;
+    public Class<?> getBasicClass() {
+        return int.class;
     }
 
     @Override

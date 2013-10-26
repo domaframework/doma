@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 import org.seasar.doma.Domain;
 
-@Domain(valueType = BigDecimal.class)
+@Domain(valueType = BigDecimal.class, acceptNull = true)
 public class Salary {
 
     private final BigDecimal value;

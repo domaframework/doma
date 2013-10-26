@@ -35,7 +35,7 @@ public final class _ParameterizedValueObject<T, U> extends org.seasar.doma.jdbc.
     }
 
     @Override
-    public Class<java.lang.String> getBasicClass() {
+    public Class<?> getBasicClass() {
         return java.lang.String.class;
     }
 

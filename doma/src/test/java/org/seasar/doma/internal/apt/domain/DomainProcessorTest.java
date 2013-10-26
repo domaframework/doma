@@ -244,4 +244,22 @@ public class DomainProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4106);
     }
 
+    public void testNullRejection() throws Exception {
+        Class<?> target = NullRejectionDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testIllegalAcceptNullDomain() throws Exception {
+        Class<?> target = IllegalAcceptNullDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertMessage(Message.DOMA4251);
+    }
 }

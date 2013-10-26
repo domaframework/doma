@@ -101,4 +101,13 @@ public @interface Domain {
      */
     String accessorMethod() default "getValue";
 
+    /**
+     * ファクトリメソッドで {@code null} を受け入れるかどうか。
+     * <p>
+     * {@code null} をドメインクラスで扱いたい場合 {@code true} を設定します。
+     * 
+     * @since 2.0.0
+     */
+    boolean acceptNull() default false;
+
 }
