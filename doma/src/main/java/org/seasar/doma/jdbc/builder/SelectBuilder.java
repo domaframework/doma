@@ -613,7 +613,7 @@ public class SelectBuilder {
     private <T> Supplier<Scalar<?, ?>> createScalarSupplier(
             String parameterName, Class<T> clazz) {
         try {
-            return Scalars.wrap(null, clazz, config.getClassHelper());
+            return Scalars.wrap(null, clazz, false, config.getClassHelper());
         } catch (ScalarException e) {
             throw new DomaIllegalArgumentException(parameterName,
                     Message.DOMA2204.getMessage(clazz, e));

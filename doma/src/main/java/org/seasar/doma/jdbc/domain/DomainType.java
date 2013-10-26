@@ -50,19 +50,36 @@ public interface DomainType<BASIC, DOMAIN> {
     Class<DOMAIN> getDomainClass();
 
     /**
-     * ドメインのホルダーを返します。
+     * スカラーを作成します。
      * 
-     * @return 値のホルダー
+     * @return スカラー
      * @since 2.0.0
      */
     Scalar<BASIC, DOMAIN> createScalar();
 
     /**
-     * {@link Optional} なドメインのホルダーを返します。
+     * 初期値を持ったスカラーを作成します。
      * 
-     * @return 値のホルダー
+     * @param 初期値
+     * @return スカラー
+     * @since 2.0.0
+     */
+    Scalar<BASIC, DOMAIN> createScalar(DOMAIN value);
+
+    /**
+     * {@link Optional} なスカラーを作成します。
+     * 
+     * @return スカラー
      * @since 2.0.0
      */
     Scalar<BASIC, Optional<DOMAIN>> createOptionalScalar();
 
+    /**
+     * 初期値を持った {@link Optional} なスカラーを作成します。
+     * 
+     * @param 初期値
+     * @return スカラー
+     * @since 2.0.0
+     */
+    Scalar<BASIC, Optional<DOMAIN>> createOptionalScalar(DOMAIN value);
 }

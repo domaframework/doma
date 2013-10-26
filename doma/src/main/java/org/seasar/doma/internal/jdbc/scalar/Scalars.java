@@ -35,26 +35,7 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.ArrayWrapper;
-import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.BigIntegerWrapper;
-import org.seasar.doma.wrapper.BlobWrapper;
-import org.seasar.doma.wrapper.BooleanWrapper;
-import org.seasar.doma.wrapper.ByteWrapper;
-import org.seasar.doma.wrapper.BytesWrapper;
-import org.seasar.doma.wrapper.ClobWrapper;
-import org.seasar.doma.wrapper.DateWrapper;
-import org.seasar.doma.wrapper.DoubleWrapper;
 import org.seasar.doma.wrapper.EnumWrapper;
-import org.seasar.doma.wrapper.FloatWrapper;
-import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.LongWrapper;
-import org.seasar.doma.wrapper.NClobWrapper;
-import org.seasar.doma.wrapper.ShortWrapper;
-import org.seasar.doma.wrapper.StringWrapper;
-import org.seasar.doma.wrapper.TimeWrapper;
-import org.seasar.doma.wrapper.TimestampWrapper;
-import org.seasar.doma.wrapper.UtilDateWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -65,21 +46,8 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public final class Scalars {
 
-    /**
-     * 値をラップします。
-     * 
-     * @param value
-     *            値
-     * @param valueClass
-     *            値クラス
-     * @param classHelper
-     *            クラスヘルパー
-     * @return ラッパー
-     * @throws ScalarException
-     *             ラップに失敗した場合
-     */
     public static Supplier<Scalar<?, ?>> wrap(Object value,
-            Class<?> valueClass, ClassHelper classHelper) {
+            Class<?> valueClass, boolean optional, ClassHelper classHelper) {
         assertNotNull(valueClass, classHelper);
         Class<?> boxedClass = ClassUtil
                 .toBoxedPrimitiveTypeIfPossible(valueClass);
@@ -88,11 +56,12 @@ public final class Scalars {
         if (Scalar.class.isAssignableFrom(boxedClass)) {
             return () -> (Scalar<?, ?>) value;
         }
-        Supplier<Scalar<?, ?>> result = wrapBasicObject(value, boxedClass);
+        Supplier<Scalar<?, ?>> result = wrapBasicObject(value, boxedClass,
+                optional, valueClass.isPrimitive());
         if (result == null) {
-            result = wrapDomainObject(value, boxedClass, classHelper);
+            result = wrapDomainObject(value, boxedClass, optional, classHelper);
             if (result == null) {
-                result = wrapEnumObject(value, boxedClass);
+                result = wrapEnumObject(value, boxedClass, optional);
                 if (result == null) {
                     throw new ScalarException(Message.DOMA1007,
                             valueClass.getName(), value);
@@ -109,91 +78,121 @@ public final class Scalars {
      *            値
      * @param valueClass
      *            値クラス
+     * @param optional
+     *            オプション型かどうか
+     * @param primitive
+     *            プリミティブかどうか
      * @return ラッパー、値が基本型（ただし列挙型を除く）でない場合 {@code null}
      */
     protected static Supplier<Scalar<?, ?>> wrapBasicObject(Object value,
-            Class<?> valueClass) {
+            Class<?> valueClass, boolean optional, boolean primitive) {
         assertNotNull(valueClass);
         if (valueClass == String.class) {
-            Wrapper<String> wrapper = new StringWrapper((String) value);
-            return () -> new BasicScalar<String>(() -> wrapper, false);
+            Supplier<Wrapper<String>> supplier = () -> new org.seasar.doma.wrapper.StringWrapper(
+                    (String) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Integer.class) {
-            IntegerWrapper wrapper = new IntegerWrapper((Integer) value);
-            return () -> new BasicScalar<Integer>(() -> wrapper, false);
+            Supplier<Wrapper<Integer>> supplier = () -> new org.seasar.doma.wrapper.IntegerWrapper(
+                    (Integer) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Long.class) {
-            LongWrapper wrapper = new LongWrapper((Long) value);
-            return () -> new BasicScalar<Long>(() -> wrapper, false);
+            Supplier<Wrapper<Long>> supplier = () -> new org.seasar.doma.wrapper.LongWrapper(
+                    (Long) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == BigDecimal.class) {
-            BigDecimalWrapper wrapper = new BigDecimalWrapper(
+            Supplier<Wrapper<BigDecimal>> supplier = () -> new org.seasar.doma.wrapper.BigDecimalWrapper(
                     (BigDecimal) value);
-            return () -> new BasicScalar<BigDecimal>(() -> wrapper, false);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == java.util.Date.class) {
-            UtilDateWrapper wrapper = new UtilDateWrapper(
+            Supplier<Wrapper<java.util.Date>> supplier = () -> new org.seasar.doma.wrapper.UtilDateWrapper(
                     (java.util.Date) value);
-            return () -> new BasicScalar<java.util.Date>(() -> wrapper, false);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Date.class) {
-            DateWrapper wrapper = new DateWrapper((Date) value);
-            return () -> new BasicScalar<Date>(() -> wrapper, false);
+            Supplier<Wrapper<Date>> supplier = () -> new org.seasar.doma.wrapper.DateWrapper(
+                    (Date) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Timestamp.class) {
-            TimestampWrapper wrapper = new TimestampWrapper((Timestamp) value);
-            return () -> new BasicScalar<Timestamp>(() -> wrapper, false);
+            Supplier<Wrapper<Timestamp>> supplier = () -> new org.seasar.doma.wrapper.TimestampWrapper(
+                    (Timestamp) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Time.class) {
-            TimeWrapper wrapper = new TimeWrapper((Time) value);
-            return () -> new BasicScalar<Time>(() -> wrapper, false);
+            Supplier<Wrapper<Time>> supplier = () -> new org.seasar.doma.wrapper.TimeWrapper(
+                    (Time) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Boolean.class) {
-            BooleanWrapper wrapper = new BooleanWrapper((Boolean) value);
-            return () -> new BasicScalar<Boolean>(() -> wrapper, false);
+            Supplier<Wrapper<Boolean>> supplier = () -> new org.seasar.doma.wrapper.BooleanWrapper(
+                    (Boolean) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Array.class) {
-            ArrayWrapper wrapper = new ArrayWrapper((Array) value);
-            return () -> new BasicScalar<Array>(() -> wrapper, false);
+            Supplier<Wrapper<Array>> supplier = () -> new org.seasar.doma.wrapper.ArrayWrapper(
+                    (Array) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == BigInteger.class) {
-            BigIntegerWrapper wrapper = new BigIntegerWrapper(
+            Supplier<Wrapper<BigInteger>> supplier = () -> new org.seasar.doma.wrapper.BigIntegerWrapper(
                     (BigInteger) value);
-            return () -> new BasicScalar<BigInteger>(() -> wrapper, false);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Blob.class) {
-            BlobWrapper wrapper = new BlobWrapper((Blob) value);
-            return () -> new BasicScalar<Blob>(() -> wrapper, false);
+            Supplier<Wrapper<Blob>> supplier = () -> new org.seasar.doma.wrapper.BlobWrapper(
+                    (Blob) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == byte[].class) {
-            BytesWrapper wrapper = new BytesWrapper((byte[]) value);
-            return () -> new BasicScalar<byte[]>(() -> wrapper, false);
+            Supplier<Wrapper<byte[]>> supplier = () -> new org.seasar.doma.wrapper.BytesWrapper(
+                    (byte[]) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Byte.class) {
-            ByteWrapper wrapper = new ByteWrapper((Byte) value);
-            return () -> new BasicScalar<Byte>(() -> wrapper, false);
+            Supplier<Wrapper<Byte>> supplier = () -> new org.seasar.doma.wrapper.ByteWrapper(
+                    (Byte) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Clob.class) {
-            ClobWrapper wrapper = new ClobWrapper((Clob) value);
-            return () -> new BasicScalar<Clob>(() -> wrapper, false);
+            Supplier<Wrapper<Clob>> supplier = () -> new org.seasar.doma.wrapper.ClobWrapper(
+                    (Clob) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Double.class) {
-            DoubleWrapper wrapper = new DoubleWrapper((Double) value);
-            return () -> new BasicScalar<Double>(() -> wrapper, false);
+            Supplier<Wrapper<Double>> supplier = () -> new org.seasar.doma.wrapper.DoubleWrapper(
+                    (Double) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Float.class) {
-            FloatWrapper wrapper = new FloatWrapper((Float) value);
-            return () -> new BasicScalar<Float>(() -> wrapper, false);
+            Supplier<Wrapper<Float>> supplier = () -> new org.seasar.doma.wrapper.FloatWrapper(
+                    (Float) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == NClob.class) {
-            NClobWrapper wrapper = new NClobWrapper((NClob) value);
-            return () -> new BasicScalar<NClob>(() -> wrapper, false);
+            Supplier<Wrapper<NClob>> supplier = () -> new org.seasar.doma.wrapper.NClobWrapper(
+                    (NClob) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Short.class) {
-            ShortWrapper wrapper = new ShortWrapper((Short) value);
-            return () -> new BasicScalar<Short>(() -> wrapper, false);
+            Supplier<Wrapper<Short>> supplier = () -> new org.seasar.doma.wrapper.ShortWrapper(
+                    (Short) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
         }
         return null;
+    }
+
+    protected static <BASIC> Supplier<Scalar<?, ?>> createBasicScalarSupplier(
+            Supplier<Wrapper<BASIC>> wrapperSupplier, boolean optional,
+            boolean primitive) {
+        if (optional) {
+            return () -> new OptionalBasicScalar<BASIC>(wrapperSupplier);
+        } else {
+            return () -> new BasicScalar<BASIC>(wrapperSupplier, primitive);
+        }
     }
 
     /**
@@ -203,15 +202,22 @@ public final class Scalars {
      *            値
      * @param valueClass
      *            値クラス
+     * @param optional
+     *            オプション型かどうか
      * @return ラッパー、値が列挙型でない場合 {@code null}
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected static Supplier<Scalar<?, ?>> wrapEnumObject(Object value,
-            Class<?> valueClass) {
+            Class<?> valueClass, boolean optional) {
         assertNotNull(valueClass);
         if (valueClass.isEnum() || Enum.class.isAssignableFrom(valueClass)) {
-            EnumWrapper<?> wrapper = new EnumWrapper(valueClass, (Enum) value);
-            return () -> new BasicScalar(() -> wrapper, false);
+            Supplier<EnumWrapper<?>> supplier = () -> new org.seasar.doma.wrapper.EnumWrapper(
+                    valueClass, (Enum) value);
+            if (optional) {
+                return () -> new OptionalBasicScalar(supplier);
+            } else {
+                return () -> new BasicScalar(supplier, false);
+            }
         }
         return null;
     }
@@ -223,12 +229,15 @@ public final class Scalars {
      *            値
      * @param valueClass
      *            値クラス
+     * @param optional
+     *            オプション型かどうか
      * @param classHelper
      *            クラスヘルパー
      * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
      */
     protected static <BASIC, DOMAIN> Supplier<Scalar<?, ?>> wrapDomainObject(
-            Object value, Class<DOMAIN> valueClass, ClassHelper classHelper) {
+            Object value, Class<DOMAIN> valueClass, boolean optional,
+            ClassHelper classHelper) {
         DomainType<BASIC, DOMAIN> domainType;
         if (valueClass.isAnnotationPresent(Domain.class)) {
             domainType = DomainTypeFactory.getDomainType(valueClass,
@@ -240,10 +249,11 @@ public final class Scalars {
         if (domainType == null) {
             return null;
         }
-        return () -> {
-            Scalar<BASIC, DOMAIN> scalar = domainType.createScalar();
-            scalar.set(scalar.cast(value));
-            return scalar;
-        };
+        DOMAIN domain = valueClass.cast(value);
+        if (optional) {
+            return () -> domainType.createOptionalScalar(domain);
+        } else {
+            return () -> domainType.createScalar(domain);
+        }
     }
 }

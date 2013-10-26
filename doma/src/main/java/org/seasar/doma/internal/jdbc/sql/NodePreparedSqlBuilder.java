@@ -550,7 +550,8 @@ public class NodePreparedSqlBuilder implements
     protected Supplier<Scalar<?, ?>> wrap(SqlLocation location,
             String bindVariableText, Object value, Class<?> valueClass) {
         try {
-            return Scalars.wrap(value, valueClass, config.getClassHelper());
+            return Scalars.wrap(value, valueClass, false,
+                    config.getClassHelper());
         } catch (ScalarException e) {
             throw new JdbcException(Message.DOMA2118, e, location.getSql(),
                     location.getLineNumber(), location.getPosition(),

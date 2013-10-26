@@ -23,17 +23,35 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
 
     @Override
     public DomainScalar createScalar() {
-        return new DomainScalar();
+        return new DomainScalar(wrapperSupplier.get());
+    }
+
+    @Override
+    public DomainScalar createScalar(DOMAIN value) {
+        Wrapper<BASIC> wrapper = wrapperSupplier.get();
+        wrapper.set(getBasicValue(value));
+        return new DomainScalar(wrapper);
     }
 
     @Override
     public OptionalDomainScalar createOptionalScalar() {
-        return new OptionalDomainScalar();
+        return new OptionalDomainScalar(wrapperSupplier.get());
+    }
+
+    @Override
+    public OptionalDomainScalar createOptionalScalar(DOMAIN value) {
+        Wrapper<BASIC> wrapper = wrapperSupplier.get();
+        wrapper.set(getBasicValue(value));
+        return new OptionalDomainScalar(wrapper);
     }
 
     protected class DomainScalar implements Scalar<BASIC, DOMAIN> {
 
-        Wrapper<BASIC> wrapper = wrapperSupplier.get();
+        protected final Wrapper<BASIC> wrapper;
+
+        protected DomainScalar(Wrapper<BASIC> wrapper) {
+            this.wrapper = wrapper;
+        }
 
         @Override
         public Optional<Class<?>> getDomainClass() {
@@ -71,7 +89,11 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
     protected class OptionalDomainScalar implements
             Scalar<BASIC, Optional<DOMAIN>> {
 
-        Wrapper<BASIC> wrapper = wrapperSupplier.get();
+        protected final Wrapper<BASIC> wrapper;
+
+        protected OptionalDomainScalar(Wrapper<BASIC> wrapper) {
+            this.wrapper = wrapper;
+        }
 
         @Override
         public Optional<Class<?>> getDomainClass() {
