@@ -18,7 +18,10 @@ package org.seasar.doma.jdbc.builder;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
@@ -27,12 +30,17 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
 import org.seasar.doma.internal.jdbc.command.MapIterationHandler;
 import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
 import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.MapStreamHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.ScalarIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ScalarResultListHandler;
 import org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarStreamHandler;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
@@ -72,7 +80,7 @@ import org.seasar.doma.message.Message;
  * builder.sql(&quot;name like &quot;).param(String.class, &quot;S%&quot;);
  * builder.sql(&quot;and&quot;);
  * builder.sql(&quot;age &gt; &quot;).param(int.class, 20);
- * Emp emp = builder.getSingleResult(Emp.class);
+ * Emp emp = builder.getEntitySingleResult(Emp.class);
  * </pre>
  * 
  * <h5>実行されるSQL</h5>
@@ -187,74 +195,190 @@ public class SelectBuilder {
     }
 
     /**
-     * 1件を返します。
-     * <p>
-     * 戻り値の型に指定できるのは、エンティティクラス、ドメインクラス、基本型のいずれかです。
+     * エンティティのインスタンスを1件返します。
      * <p>
      * 検索結果が存在しない場合は {@code null}を返しますが、
      * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
      * {@code null}を返す代わりに{@link NoResultException} をスローできます。
      * 
-     * @param <R>
-     *            戻り値の型
+     * @param <RESULT>
+     *            エンティティの型
      * @param resultClass
-     *            戻り値のクラス
+     *            エンティティクラス
      * @return 検索結果
      * 
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      * @throws DomaIllegalArgumentException
-     *             戻り値のクラスがエンティティクラス、ドメインクラス、基本型のいずれでもない場合
+     *             {@code resultClass} がエンティティクラスでない場合
      * @throws MappedPropertyNotFoundException
-     *             戻り値の型がエンティティクラスで、結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
-     * @throws NonSingleColumnException
-     *             戻り値の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
+     *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
      * @throws NoResultException
      *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
      *             を設定しており結果が存在しない場合
      * @throws ResultMappingException
      *             {@link SelectBuilder#ensureResultMapping(boolean)} に
-     *             {@code true} を設定しており戻り値の型がエンティティクラスやエンティティクラスを要素とする
-     *             {@link List} の場合で、マッピングされないエンティティプロパティが存在する場合
+     *             {@code true} を設定しており、マッピングされないエンティティプロパティが存在する場合
      * @throws NonUniqueResultException
      *             結果が2件以上返された場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
      */
-    public <R> R getEntitySingleResult(Class<R> resultClass) {
+    public <RESULT> RESULT getEntitySingleResult(Class<RESULT> resultClass) {
         if (resultClass == null) {
             throw new DomaNullPointerException("resultClass");
         }
-        if (query.getMethodName() == null) {
-            query.setCallerMethodName("getSingleResult");
-        }
         if (!resultClass.isAnnotationPresent(Entity.class)) {
-            // TODO
-            throw new RuntimeException("resultClass");
+            throw new DomaIllegalArgumentException("resultClass",
+                    Message.DOMA2219.getMessage(resultClass));
         }
-        EntityType<R> entityType = EntityTypeFactory.getEntityType(resultClass,
-                config.getClassHelper());
-        ResultSetHandler<R> handler = new EntitySingleResultHandler<R>(
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getEntitySingleResult");
+        }
+        EntityType<RESULT> entityType = EntityTypeFactory.getEntityType(
+                resultClass, config.getClassHelper());
+        EntitySingleResultHandler<RESULT> handler = new EntitySingleResultHandler<>(
                 entityType);
         return execute(handler);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <R> R getScalarSingleResult(Class<R> resultClass) {
+    /**
+     * エンティティのインスタンスを {@link Optional} でラップして1件返します。
+     * <p>
+     * 検索結果が存在しない場合は {@code Optional}を返しますが、
+     * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
+     * {@code null}を返す代わりに{@link NoResultException} をスローできます。
+     * 
+     * @param <RESULT>
+     *            エンティティの型
+     * @param resultClass
+     *            エンティティクラス
+     * @return 検索結果
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code resultClass} がエンティティクラスでない場合
+     * @throws MappedPropertyNotFoundException
+     *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws ResultMappingException
+     *             {@link SelectBuilder#ensureResultMapping(boolean)} に
+     *             {@code true} を設定しており、マッピングされないエンティティプロパティが存在する場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    public <RESULT> Optional<RESULT> getOptionalEntitySingleResult(
+            Class<RESULT> resultClass) {
         if (resultClass == null) {
             throw new DomaNullPointerException("resultClass");
         }
-        if (query.getMethodName() == null) {
-            query.setCallerMethodName("getSingleResult");
+        if (!resultClass.isAnnotationPresent(Entity.class)) {
+            throw new DomaIllegalArgumentException("resultClass",
+                    Message.DOMA2219.getMessage(resultClass));
         }
-        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
-                resultClass);
-        ResultSetHandler<R> handler = new ScalarSingleResultHandler(supplier);
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getOptionalEntitySingleResult");
+        }
+        EntityType<RESULT> entityType = EntityTypeFactory.getEntityType(
+                resultClass, config.getClassHelper());
+        OptionalEntitySingleResultHandler<RESULT> handler = new OptionalEntitySingleResultHandler<>(
+                entityType);
         return execute(handler);
     }
 
     /**
-     * {@code Map<String, Object>} として1件を返します。
+     * 基本型もしくはドメイン型のインスタンスを1件を返します。
+     * <p>
+     * 検索結果が存在しない場合は {@code null}を返しますが、
+     * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
+     * {@code null}を返す代わりに{@link NoResultException} をスローできます。
+     * 
+     * @param <RESULT>
+     *            基本型もしくはドメイン型
+     * @param resultClass
+     *            基本型もしくはドメイン型のクラス
+     * @return 検索結果
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code resultClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <RESULT> RESULT getScalarSingleResult(Class<RESULT> resultClass) {
+        if (resultClass == null) {
+            throw new DomaNullPointerException("resultClass");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getScalarSingleResult");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
+                resultClass, false);
+        ResultSetHandler<RESULT> handler = new ScalarSingleResultHandler(
+                supplier);
+        return execute(handler);
+    }
+
+    /**
+     * 基本型もしくはドメイン型のインスタンスを {@link Optional} でラップして1件を返します。
+     * <p>
+     * 検索結果が存在しない場合は {@code Optional}を返しますが、
+     * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
+     * {@code null}を返す代わりに{@link NoResultException} をスローできます。
+     * 
+     * @param <RESULT>
+     *            基本型もしくはドメイン型
+     * @param resultClass
+     *            基本型もしくはドメイン型のクラス
+     * @return 検索結果
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code resultClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <RESULT> Optional<RESULT> getOptionalScalarSingleResult(
+            Class<RESULT> resultClass) {
+        if (resultClass == null) {
+            throw new DomaNullPointerException("resultClass");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getOptionalScalarSingleResult");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
+                resultClass, true);
+        ResultSetHandler<Optional<RESULT>> handler = new ScalarSingleResultHandler(
+                supplier);
+        return execute(handler);
+    }
+
+    /**
+     * {@code Map<String, Object>} のインスタンスを1件返します。
      * <p>
      * 検索結果が存在しない場合は {@code null}を返しますが、
      * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
@@ -273,7 +397,7 @@ public class SelectBuilder {
      *             結果が2件以上返された場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
-     * @since 1.17.0
+     * @since 2.0.0
      */
     public Map<String, Object> getMapSingleResult(
             MapKeyNamingType mapKeyNamingType) {
@@ -281,73 +405,180 @@ public class SelectBuilder {
             throw new DomaNullPointerException("mapKeyNamingType");
         }
         if (query.getMethodName() == null) {
-            query.setCallerMethodName("getSingleResult");
+            query.setCallerMethodName("getMapSingleResult");
         }
-        MapSingleResultHandler singleResultHandler = new MapSingleResultHandler(
+        MapSingleResultHandler handler = new MapSingleResultHandler(
                 mapKeyNamingType);
-        return execute(singleResultHandler);
+        return execute(handler);
     }
 
     /**
-     * 複数件を返します。
+     * {@code Map<String, Object>} のインスタンスを {@link Optional} でラップして1件返します。
      * <p>
-     * 戻り値の型に指定できるのは、エンティティクラス、ドメインクラス、基本型のいずれかです。
+     * 検索結果が存在しない場合は {@code Optional}を返しますが、
+     * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
+     * {@code null}を返す代わりに {@link NoResultException} をスローできます。
+     * 
+     * @param mapKeyNamingType
+     *            マップのキーのネーミング規約
+     * @return 検索結果
+     * 
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    public Optional<Map<String, Object>> getOptionalMapSingleResult(
+            MapKeyNamingType mapKeyNamingType) {
+        if (mapKeyNamingType == null) {
+            throw new DomaNullPointerException("mapKeyNamingType");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getOptionalMapSingleResult");
+        }
+        OptionalMapSingleResultHandler handler = new OptionalMapSingleResultHandler(
+                mapKeyNamingType);
+        return execute(handler);
+    }
+
+    /**
+     * エンティティの複数件を返します。
      * <p>
      * 検索結果が存在しない場合は空のリストを返します。
      * 
-     * @param <R>
-     *            戻り値のリストの要素の型
-     * @param resultClass
-     *            戻り値のリストの要素のクラス
+     * @param <ELEMENT>
+     *            エンティティ型
+     * @param elementClass
+     *            エンティティ型のクラス
      * @return 検索結果
      * 
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @throws DomaIllegalArgumentException
-     *             戻り値のリストの要素のクラスがエンティティクラス、ドメインクラス、基本型のいずれでもない場合
+     *             {@code elementClass} がエンティティクラスでない場合
      * @throws MappedPropertyNotFoundException
-     *             戻り値のリストの要素の型がエンティティクラスで、
      *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
-     * @throws NonSingleColumnException
-     *             戻り値のリストの要素の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws ResultMappingException
+     *             {@link SelectBuilder#ensureResultMapping(boolean)} に
+     *             {@code true} を設定しており、マッピングされないエンティティプロパティが存在する場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
      */
-    public <R> List<R> getEntityResultList(Class<R> resultClass) {
-        if (resultClass == null) {
-            throw new DomaNullPointerException("resultClass");
+    public <ELEMENT> List<ELEMENT> getEntityResultList(
+            Class<ELEMENT> elementClass) {
+        if (elementClass == null) {
+            throw new DomaNullPointerException("elementClass");
+        }
+        if (!elementClass.isAnnotationPresent(Entity.class)) {
+            throw new DomaIllegalArgumentException("elementClass",
+                    Message.DOMA2219.getMessage(elementClass));
         }
         if (query.getMethodName() == null) {
-            query.setCallerMethodName("getResultList");
+            query.setCallerMethodName("getEntityResultList");
         }
-        if (!resultClass.isAnnotationPresent(Entity.class)) {
-            // TODO
-            throw new RuntimeException();
-        }
-        EntityType<R> entityType = EntityTypeFactory.getEntityType(resultClass,
-                config.getClassHelper());
-        ResultSetHandler<List<R>> handler = new EntityResultListHandler<R>(
+        EntityType<ELEMENT> entityType = EntityTypeFactory.getEntityType(
+                elementClass, config.getClassHelper());
+        ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<ELEMENT>(
                 entityType);
         return execute(handler);
     }
 
+    /**
+     * 基本型もしくはドメイン型のインスタンスを複数件返します。
+     * <p>
+     * 検索結果が存在しない場合は空のリストを返します。
+     * 
+     * @param <ELEMENT>
+     *            基本型もしくはドメイン型
+     * @param elementClass
+     *            基本型もしくはドメイン型のクラス
+     * @return 検索結果
+     * 
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code resultClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <R> List<R> getScalarResultList(Class<R> resultClass) {
-        if (resultClass == null) {
-            throw new DomaNullPointerException("resultClass");
+    public <ELEMENT> List<ELEMENT> getScalarResultList(
+            Class<ELEMENT> elementClass) {
+        if (elementClass == null) {
+            throw new DomaNullPointerException("elementClass");
         }
         if (query.getMethodName() == null) {
-            query.setCallerMethodName("getResultList");
+            query.setCallerMethodName("getScalarResultList");
         }
-        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
-                resultClass);
-        ResultSetHandler<List<R>> handler = new ScalarResultListHandler(
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("elementClass",
+                elementClass, false);
+        ResultSetHandler<List<ELEMENT>> handler = new ScalarResultListHandler(
                 supplier);
         return execute(handler);
     }
 
     /**
-     * {@code List<Map<String, Object>>} として 複数件を返します。
+     * 基本型もしくはドメイン型のインスタンスを {@link Optional} でラップして複数件返します。
+     * <p>
+     * 検索結果が存在しない場合は空のリストを返します。
+     * 
+     * @param <ELEMENT>
+     *            基本型もしくはドメイン型
+     * @param elementClass
+     *            基本型もしくはドメイン型のクラス
+     * @return 検索結果
+     * 
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code resultClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <ELEMENT> List<Optional<ELEMENT>> getOptionalScalarResultList(
+            Class<ELEMENT> elementClass) {
+        if (elementClass == null) {
+            throw new DomaNullPointerException("elementClass");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getOptionalScalarResultList");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("elementClass",
+                elementClass, true);
+        ResultSetHandler<List<Optional<ELEMENT>>> handler = new ScalarResultListHandler(
+                supplier);
+        return execute(handler);
+    }
+
+    /**
+     * {@code List<Map<String, Object>>} のインスタンスを複数件返します。
      * <p>
      * 検索結果が存在しない場合は空のリストを返します。
      * 
@@ -359,7 +590,7 @@ public class SelectBuilder {
      *             引数が {@code null} の場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
-     * @since 1.17.0
+     * @since 2.0.0
      */
     public List<Map<String, Object>> getMapResultList(
             MapKeyNamingType mapKeyNamingType) {
@@ -367,22 +598,20 @@ public class SelectBuilder {
             throw new DomaNullPointerException("mapKeyNamingType");
         }
         if (query.getMethodName() == null) {
-            query.setCallerMethodName("getResultList");
+            query.setCallerMethodName("getMapResultList");
         }
-        MapResultListHandler resultListHandler = new MapResultListHandler(
+        MapResultListHandler handler = new MapResultListHandler(
                 mapKeyNamingType);
-        return execute(resultListHandler);
+        return execute(handler);
     }
 
     /**
-     * 処理対象のオブジェクト群を順に1件ずつ処理します。
-     * <p>
-     * 処理対象の型に指定できるのは、エンティティクラス、ドメインクラス、基本型のいずれかです。
+     * 結果セットをエンティティのインスタンスとして1件ずつ処理します。
      * 
-     * @param <R>
+     * @param <RESULT>
      *            戻り値の型
-     * @param <T>
-     *            処理対象の型。すなわち、基本型、ドメインクラス、もしくはエンティティクラス
+     * @param <TARGET>
+     *            エンティティ型
      * @param targetClass
      *            処理対象のクラス
      * @param iterationCallback
@@ -391,40 +620,69 @@ public class SelectBuilder {
      * @throws DomaNullPointerException
      *             引数のいずれかが{@code null} の場合
      * @throws DomaIllegalArgumentException
-     *             処理対象のクラスがエンティティクラス、ドメインクラス、基本型のいずれでもない場合
+     *             処理対象のクラスがエンティティ型でない場合
      * @throws MappedPropertyNotFoundException
-     *             処理対象の型がエンティティクラスで、結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
-     * @throws NonSingleColumnException
-     *             処理対象の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
+     *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws ResultMappingException
+     *             {@link SelectBuilder#ensureResultMapping(boolean)} に
+     *             {@code true} を設定しており、マッピングされないエンティティプロパティが存在する場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
      */
-    public <R, T> R iterateAsEntity(Class<T> targetClass,
-            IterationCallback<R, T> iterationCallback) {
+    public <RESULT, TARGET> RESULT iterateAsEntity(Class<TARGET> targetClass,
+            IterationCallback<RESULT, TARGET> iterationCallback) {
         if (targetClass == null) {
             throw new DomaNullPointerException("targetClass");
+        }
+        if (!targetClass.isAnnotationPresent(Entity.class)) {
+            throw new DomaIllegalArgumentException("targetClass",
+                    Message.DOMA2219.getMessage(targetClass));
         }
         if (iterationCallback == null) {
             throw new DomaNullPointerException("iterationCallback");
         }
-        if (!targetClass.isAnnotationPresent(Entity.class)) {
-            // TODO
-            throw new RuntimeException();
-        }
-
         if (query.getMethodName() == null) {
-            query.setCallerMethodName("iterate");
+            query.setCallerMethodName("iterateAsEntity");
         }
-        EntityType<T> entityType = EntityTypeFactory.getEntityType(targetClass,
-                config.getClassHelper());
-        ResultSetHandler<R> iterationHandler = new EntityIterationHandler<R, T>(
+        EntityType<TARGET> entityType = EntityTypeFactory.getEntityType(
+                targetClass, config.getClassHelper());
+        EntityIterationHandler<RESULT, TARGET> handler = new EntityIterationHandler<>(
                 entityType, iterationCallback);
-        return execute(iterationHandler);
+        return execute(handler);
     }
 
+    /**
+     * 結果セットを基本型もしくはドメイン型のインスタンスとして1件ずつ処理します。
+     * 
+     * @param <RESULT>
+     *            戻り値の型
+     * @param <TARGET>
+     *            基本型もしくはドメイン型
+     * @param targetClass
+     *            基本型もしくはドメイン型のクラス
+     * @param iterationCallback
+     *            コールバック
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <R, T> R iterateAsScalar(Class<T> targetClass,
-            IterationCallback<R, T> iterationCallback) {
+    public <RESULT, TARGET> RESULT iterateAsScalar(Class<TARGET> targetClass,
+            IterationCallback<RESULT, TARGET> iterationCallback) {
         if (targetClass == null) {
             throw new DomaNullPointerException("targetClass");
         }
@@ -435,16 +693,61 @@ public class SelectBuilder {
             query.setCallerMethodName("iterate");
         }
         Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
-                targetClass);
-        ResultSetHandler<R> iterationHandler = new ScalarIterationHandler(
+                targetClass, false);
+        ResultSetHandler<RESULT> iterationHandler = new ScalarIterationHandler(
                 supplier, iterationCallback);
         return execute(iterationHandler);
     }
 
     /**
-     * 処理対象のオブジェクト群を {@code Map<String, Object>} として順に1件ずつ処理します。
+     * 結果セットを基本型もしくはドメイン型のインスタンスとして {@link Optional} でラップして1件ずつ処理します。
      * 
-     * @param <R>
+     * @param <RESULT>
+     *            戻り値の型
+     * @param <TARGET>
+     *            基本型もしくはドメイン型
+     * @param targetClass
+     *            基本型もしくはドメイン型のクラス
+     * @param iterationCallback
+     *            コールバック
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <RESULT, TARGET> RESULT iterateAsOptionalScalar(
+            Class<TARGET> targetClass,
+            IterationCallback<RESULT, Optional<TARGET>> iterationCallback) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        if (iterationCallback == null) {
+            throw new DomaNullPointerException("iterationCallback");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("iterateAsOptionalScalar");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
+                targetClass, true);
+        ResultSetHandler<RESULT> handler = new ScalarIterationHandler(supplier,
+                iterationCallback);
+        return execute(handler);
+    }
+
+    /**
+     * 結果セットを {@code Map<String, Object>} として1件ずつ処理します。
+     * 
+     * @param <RESULT>
      *            戻り値の型
      * @param mapKeyNamingType
      *            マップのキーのネーミング規約
@@ -455,10 +758,10 @@ public class SelectBuilder {
      *             引数のいずれかが{@code null} の場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
-     * @since 1.17.0
+     * @since 2.0.0
      */
-    public <R> R iterateAsMap(MapKeyNamingType mapKeyNamingType,
-            IterationCallback<R, Map<String, Object>> iterationCallback) {
+    public <RESULT> RESULT iterateAsMap(MapKeyNamingType mapKeyNamingType,
+            IterationCallback<RESULT, Map<String, Object>> iterationCallback) {
         if (mapKeyNamingType == null) {
             throw new DomaNullPointerException("mapKeyNamingType");
         }
@@ -466,21 +769,193 @@ public class SelectBuilder {
             throw new DomaNullPointerException("iterationCallback");
         }
         if (query.getMethodName() == null) {
-            query.setCallerMethodName("iterate");
+            query.setCallerMethodName("iterateAsMap");
         }
-        MapIterationHandler<R> iterationHandler = new MapIterationHandler<R>(
+        MapIterationHandler<RESULT> handler = new MapIterationHandler<>(
                 mapKeyNamingType, iterationCallback);
-        return execute(iterationHandler);
+        return execute(handler);
     }
 
-    private <R> R execute(ResultSetHandler<R> resultSetHandler) {
+    /**
+     * エンティティのインスタンスをストリームで処理します。
+     * 
+     * @param <RESULT>
+     *            戻り値の型
+     * @param <TARGET>
+     *            エンティティ型
+     * @param targetClass
+     *            エンティティ型のクラス
+     * @param mapper
+     *            マッパー
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             処理対象のクラスがエンティティ型でない場合
+     * @throws MappedPropertyNotFoundException
+     *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws ResultMappingException
+     *             {@link SelectBuilder#ensureResultMapping(boolean)} に
+     *             {@code true} を設定しており、マッピングされないエンティティプロパティが存在する場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    public <RESULT, TARGET> RESULT streamEntity(Class<TARGET> targetClass,
+            Function<Stream<TARGET>, RESULT> mapper) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        if (!targetClass.isAnnotationPresent(Entity.class)) {
+            throw new DomaIllegalArgumentException("targetClass",
+                    Message.DOMA2219.getMessage(targetClass));
+        }
+        if (mapper == null) {
+            throw new DomaNullPointerException("mapper");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("streamEntity");
+        }
+        EntityType<TARGET> entityType = EntityTypeFactory.getEntityType(
+                targetClass, config.getClassHelper());
+        ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(
+                entityType, mapper);
+        return execute(handler);
+    }
+
+    /**
+     * 結果セットを基本型もしくはドメイン型のインスタンスをストリームで処理します。
+     * 
+     * @param <RESULT>
+     *            戻り値の型
+     * @param <TARGET>
+     *            基本型もしくはドメイン型
+     * @param targetClass
+     *            基本型もしくはドメイン型のクラス
+     * @param iterationCallback
+     *            コールバック
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <RESULT, TARGET> RESULT streamScalar(Class<TARGET> targetClass,
+            Function<Stream<TARGET>, RESULT> mapper) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        if (mapper == null) {
+            throw new DomaNullPointerException("mapper");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("streamScalar");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("targetClass",
+                targetClass, false);
+        ResultSetHandler<RESULT> handler = new ScalarStreamHandler(supplier,
+                mapper);
+        return execute(handler);
+    }
+
+    /**
+     * 結果セットを基本型もしくはドメイン型のインスタンスを {@link Optional} でラップしてストリームで処理します。
+     * 
+     * @param <RESULT>
+     *            戻り値の型
+     * @param <TARGET>
+     *            基本型もしくはドメイン型
+     * @param targetClass
+     *            基本型もしくはドメイン型のクラス
+     * @param iterationCallback
+     *            コールバック
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws NonSingleColumnException
+     *             結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <RESULT, TARGET> RESULT streamOptionalScalar(
+            Class<TARGET> targetClass,
+            Function<Stream<Optional<TARGET>>, RESULT> mapper) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        if (mapper == null) {
+            throw new DomaNullPointerException("mapper");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("streamOptionalScalar");
+        }
+        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("targetClass",
+                targetClass, true);
+        ResultSetHandler<RESULT> handler = new ScalarStreamHandler(supplier,
+                mapper);
+        return execute(handler);
+    }
+
+    /**
+     * {@code Map<String, Object>} のインスタンスをストリームで処理します。
+     * 
+     * @param <RESULT>
+     *            戻り値の型
+     * @param mapKeyNamingType
+     *            マップのキーのネーミング規約
+     * @param iterationCallback
+     *            コールバック
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 2.0.0
+     */
+    public <RESULT> RESULT streamMap(MapKeyNamingType mapKeyNamingType,
+            Function<Stream<Map<String, Object>>, RESULT> mapper) {
+        if (mapKeyNamingType == null) {
+            throw new DomaNullPointerException("mapKeyNamingType");
+        }
+        if (mapper == null) {
+            throw new DomaNullPointerException("mapper");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("streamMap");
+        }
+        MapStreamHandler<RESULT> handler = new MapStreamHandler<>(
+                mapKeyNamingType, mapper);
+        return execute(handler);
+    }
+
+    private <RESULT> RESULT execute(ResultSetHandler<RESULT> resultSetHandler) {
         for (Param p : helper.getParams()) {
             query.addParameter(p.name, p.paramClass, p.param);
         }
         query.setSqlNode(helper.getSqlNode());
         query.prepare();
-        SelectCommand<R> command = new SelectCommand<R>(query, resultSetHandler);
-        R result = command.execute();
+        SelectCommand<RESULT> command = new SelectCommand<RESULT>(query,
+                resultSetHandler);
+        RESULT result = command.execute();
         query.complete();
         return result;
     }
@@ -610,10 +1085,10 @@ public class SelectBuilder {
         return query.getSql();
     }
 
-    private <T> Supplier<Scalar<?, ?>> createScalarSupplier(
-            String parameterName, Class<T> clazz) {
+    private Supplier<Scalar<?, ?>> createScalarSupplier(String parameterName,
+            Class<?> clazz, boolean optional) {
         try {
-            return Scalars.wrap(null, clazz, false, config.getClassHelper());
+            return Scalars.wrap(null, clazz, optional, config.getClassHelper());
         } catch (ScalarException e) {
             throw new DomaIllegalArgumentException(parameterName,
                     Message.DOMA2204.getMessage(clazz, e));
