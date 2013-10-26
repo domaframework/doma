@@ -33,7 +33,8 @@ import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
 public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
 

@@ -31,7 +31,7 @@ import org.seasar.doma.ExternalDomain;
  * <li>パッケージに属する。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;ExtenalDomain
@@ -52,12 +52,12 @@ import org.seasar.doma.ExternalDomain;
  * @see ExternalDomain
  * @see DomainConverters
  * 
- * @param <D>
- *            ドメインの型（任意の型）
- * @param <V>
- *            ドメインが扱う値の型（基本型）
+ * @param <DOMAIN>
+ *            ドメイン型
+ * @param <BASIC>
+ *            基本型
  */
-public interface DomainConverter<D, V> {
+public interface DomainConverter<DOMAIN, BASIC> {
 
     /**
      * ドメインから値へ変換します。
@@ -66,7 +66,7 @@ public interface DomainConverter<D, V> {
      *            ドメイン
      * @return 値
      */
-    V fromDomainToValue(D domain);
+    BASIC fromDomainToValue(DOMAIN domain);
 
     /**
      * 値からドメインへ変換します。
@@ -75,5 +75,5 @@ public interface DomainConverter<D, V> {
      *            値
      * @return ドメイン
      */
-    D fromValueToDomain(V value);
+    DOMAIN fromValueToDomain(BASIC value);
 }

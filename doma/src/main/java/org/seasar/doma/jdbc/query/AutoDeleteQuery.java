@@ -31,7 +31,8 @@ import org.seasar.doma.jdbc.entity.Property;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
 public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         DeleteQuery {

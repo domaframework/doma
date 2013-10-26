@@ -35,9 +35,11 @@ import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
- * 
+ * @param <ELEMENT>
+ *            リストの要素
  */
-public abstract class SqlFileBatchModifyQuery<ELEMENT> implements BatchModifyQuery {
+public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
+        BatchModifyQuery {
 
     protected final Class<ELEMENT> elementClass;
 
@@ -135,7 +137,8 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements BatchModifyQue
     public void setElements(Iterable<ELEMENT> elements) {
         assertNotNull(elements);
         if (elements instanceof Collection<?>) {
-            this.elements = new ArrayList<ELEMENT>((Collection<ELEMENT>) elements);
+            this.elements = new ArrayList<ELEMENT>(
+                    (Collection<ELEMENT>) elements);
         } else {
             this.elements = new ArrayList<ELEMENT>();
             for (ELEMENT element : elements) {

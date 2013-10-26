@@ -825,6 +825,11 @@ public class StandardDialect implements Dialect {
          *            エスケープ文字
          * @param wildcards
          *            ワイルドカード
+         * @param defaultWildcardReplacementPattern
+         *            デフォルトのワイルドカード置換パターン
+         * @param defaultReplacement
+         *            デフォルトのワイルドカード置換文字列正規表現
+         * 
          */
         protected StandardExpressionFunctions(char escapeChar,
                 char[] wildcards, Pattern defaultWildcardReplacementPattern,

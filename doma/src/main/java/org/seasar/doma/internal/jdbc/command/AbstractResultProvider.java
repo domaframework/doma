@@ -26,6 +26,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author nakamura-to
  * 
  * @param <RESULT>
+ *            結果
  */
 public abstract class AbstractResultProvider<RESULT> implements
         ResultProvider<RESULT> {
@@ -34,8 +35,8 @@ public abstract class AbstractResultProvider<RESULT> implements
             JdbcMappable<BASIC> mappable, int index,
             JdbcMappingVisitor jdbcMappingVisitor) throws SQLException {
         Wrapper<?> wrapper = mappable.getWrapper();
-        wrapper.accept(jdbcMappingVisitor, new JdbcValueGetter(resultSet,
-                index), mappable);
+        wrapper.accept(jdbcMappingVisitor,
+                new JdbcValueGetter(resultSet, index), mappable);
     }
 
 }

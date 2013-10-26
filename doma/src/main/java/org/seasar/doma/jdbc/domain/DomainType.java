@@ -63,7 +63,8 @@ public interface DomainType<BASIC, DOMAIN> {
     /**
      * 初期値を持ったスカラーを作成します。
      * 
-     * @param 初期値
+     * @param value
+     *            初期値
      * @return スカラー
      * @since 2.0.0
      */
@@ -80,7 +81,8 @@ public interface DomainType<BASIC, DOMAIN> {
     /**
      * 初期値を持った {@link Optional} なスカラーを作成します。
      * 
-     * @param 初期値
+     * @param value
+     *            初期値
      * @return スカラー
      * @since 2.0.0
      */

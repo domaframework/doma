@@ -30,6 +30,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author nakamura-to
  * 
  * @param <RESULT>
+ *            結果
  */
 public abstract class AbstractSingleResultHandler<RESULT> implements
         ResultSetHandler<RESULT> {

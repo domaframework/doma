@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * <p>
  * このアノテーションが注釈されるメソッドは、{@link Entity} が注釈されたインタフェースのメンバでなければいけません。
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity

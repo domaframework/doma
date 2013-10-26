@@ -10,7 +10,14 @@ compileTestJava {
     options.encoding = 'UTF-8'
     options.compilerArgs = ['-proc:none']
 }
- 
+
+javadoc {
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    options.docEncoding = 'UTF-8'
+    exclude '**/internal/**'
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Doma', 'Implementation-Version': version

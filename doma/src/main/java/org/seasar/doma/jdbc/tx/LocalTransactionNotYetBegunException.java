@@ -36,6 +36,8 @@ public class LocalTransactionNotYetBegunException extends JdbcException
      * 
      * @param message
      *            メッセージ
+     * @param args
+     *            メッセージの引数
      */
     public LocalTransactionNotYetBegunException(Message message, Object... args) {
         super(message, args);

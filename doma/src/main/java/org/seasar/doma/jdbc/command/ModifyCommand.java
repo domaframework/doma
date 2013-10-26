@@ -33,7 +33,8 @@ import org.seasar.doma.jdbc.query.ModifyQuery;
 
 /**
  * @author taedium
- * 
+ * @param <QUERY>
+ *            クエリ
  */
 public abstract class ModifyCommand<QUERY extends ModifyQuery> implements
         Command<Integer> {

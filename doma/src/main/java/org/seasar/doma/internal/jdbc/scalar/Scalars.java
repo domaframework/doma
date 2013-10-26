@@ -225,6 +225,10 @@ public final class Scalars {
     /**
      * ドメインクラスのオブジェクトをラップします。
      * 
+     * @param <BASIC>
+     *            基本型
+     * @param <DOMAIN>
+     *            ドメイン型
      * @param value
      *            値
      * @param valueClass

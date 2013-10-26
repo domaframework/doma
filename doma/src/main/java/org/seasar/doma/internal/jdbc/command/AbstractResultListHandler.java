@@ -29,6 +29,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author nakamura-to
  * 
  * @param <ELEMENT>
+ *            要素
  */
 public abstract class AbstractResultListHandler<ELEMENT> implements
         ResultSetHandler<List<ELEMENT>> {

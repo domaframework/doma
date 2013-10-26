@@ -31,7 +31,7 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
  * {@link GeneratedValue} と併わせて使用しなければいけません。
  * <p>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -53,47 +53,65 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
 public @interface TableGenerator {
 
     /**
-     * カタログ名です。
+     * カタログ名を返します。
+     * 
+     * @return カタログ名
      */
     String catalog() default "";
 
     /**
-     * シーケンス名です。
+     * シーケンス名を返します。
+     * 
+     * @return シーケンス名
      */
     String schema() default "";
 
     /**
-     * テーブル名です。
+     * テーブル名を返します。
+     * 
+     * @return テーブル名
      */
     String table() default "ID_GENERATOR";
 
     /**
-     * 主キーのカラムの名前です。
+     * 主キーのカラムの名前を返します。
+     * 
+     * @return 主キーのカラムの名前
      */
     String pkColumnName() default "PK";
 
     /**
-     * 生成される識別子を保持するカラムの名前です。
+     * 生成される識別子を保持するカラムの名前を返します。
+     * 
+     * @return 生成される識別子を保持するカラムの名前
      */
     String valueColumnName() default "VALUE";
 
     /**
-     * 主キーのカラムの値です。
+     * 主キーのカラムの値を返します。
+     * 
+     * @return 主キーのカラムの値
      */
     String pkColumnValue();
 
     /**
-     * 初期値です。
+     * 初期値を返します。
+     * 
+     * @return 初期値
      */
     long initialValue() default 1;
 
     /**
-     * 割り当てサイズです。
+     * 割り当てサイズを返します。
+     * 
+     * @return 割り当てサイズ
      */
     long allocationSize() default 1;
 
     /**
-     * ジェネレータの実装クラスです。
+     * ジェネレータの実装クラスを返します。
+     * 
+     * @return ジェネレータの実装クラス
      */
     Class<? extends TableIdGenerator> implementer() default BuiltinTableIdGenerator.class;
 }

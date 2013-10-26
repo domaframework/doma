@@ -290,7 +290,9 @@ public interface JdbcLogger {
      * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。
      * 
      * @param callerClassName
+     *            呼び出し元のクラス名
      * @param callerMethodName
+     *            呼び出し元のメソッド名
      * @param e
      *            {@link Connection#close()} 時に発生した {@link SQLException}
      */
@@ -301,7 +303,9 @@ public interface JdbcLogger {
      * {@link Statement#close()} 時に発生した {@link SQLException} を記録します。
      * 
      * @param callerClassName
+     *            呼び出し元のクラス名
      * @param callerMethodName
+     *            呼び出し元のメソッド名
      * @param e
      *            {@link Statement#close()} 時に発生した {@link SQLException}
      */
@@ -312,7 +316,9 @@ public interface JdbcLogger {
      * {@link ResultSet#close()} 時に発生した {@link SQLException} を記録します。
      * 
      * @param callerClassName
+     *            呼び出し元のクラス名
      * @param callerMethodName
+     *            呼び出し元のメソッド名
      * @param e
      *            {@link ResultSet#close()} 時に発生した {@link SQLException}
      */

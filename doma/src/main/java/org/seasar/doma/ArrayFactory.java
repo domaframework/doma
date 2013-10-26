@@ -37,7 +37,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * <li>戻り値の型は {@code Array} である。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -63,9 +63,11 @@ import org.seasar.doma.jdbc.JdbcException;
 public @interface ArrayFactory {
 
     /**
-     * 配列の要素がマッピングされる型のSQL名です。
+     * 配列の要素がマッピングされる型のSQL名を返します。。
      * <p>
      * この値は、 {@link Connection#createArrayOf(String, Object[])} の最初のパラメータに渡されます。
+     * 
+     * @return 配列の要素がマッピングされる型のSQL名
      */
     String typeName();
 }

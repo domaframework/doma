@@ -28,7 +28,9 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author nakamura-to
  * 
  * @param <BASIC>
+ *            基本型
  * @param <CONTAINER>
+ *            基本型のコンテナとなる型
  */
 public class ScalarOutParameter<BASIC, CONTAINER> implements
         OutParameter<BASIC> {

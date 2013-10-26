@@ -50,6 +50,7 @@ public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
      * エンティティへこのインスタンスが保持する値を保存します。
      * 
      * @param entity
+     *            エンティティ
      * @return このインスタンス
      */
     Property<ENTITY, BASIC> save(ENTITY entity);

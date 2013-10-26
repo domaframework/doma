@@ -39,7 +39,7 @@ import org.seasar.doma.jdbc.Config;
  * <li>スレッドセーフである。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -96,9 +96,11 @@ import org.seasar.doma.jdbc.Config;
 public @interface Delegate {
 
     /**
-     * 委譲先のクラスです。
+     * 委譲先のクラスを返します。
      * <p>
      * 指定できるクラスには制約があります。
+     * 
+     * @return 委譲先のクラス
      */
     Class<?> to();
 }

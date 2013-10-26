@@ -36,9 +36,13 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author nakamura-to
  * 
  * @param <PARENT>
+ *            親エンティティの型
  * @param <ENTITY>
+ *            エンティティの型
  * @param <BASIC>
+ *            プロパティの基本型
  * @param <DOMAIN>
+ *            プロパティのドメイン型
  */
 public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Number, DOMAIN>
         extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {

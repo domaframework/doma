@@ -19,13 +19,15 @@ package org.seasar.doma.jdbc;
  * イミュータブルなエンティティに対する更新や挿入の結果を表します。
  * 
  * @author taedium
+ * @param <ENTITY>
+ *            エンティティ
  * @since 1.34.0
  */
-public class Result<E> {
+public class Result<ENTITY> {
 
     private final int count;
 
-    private final E entity;
+    private final ENTITY entity;
 
     /**
      * インスタンスを構築します。
@@ -35,7 +37,7 @@ public class Result<E> {
      * @param entity
      *            エンティティ
      */
-    public Result(int count, E entity) {
+    public Result(int count, ENTITY entity) {
         this.count = count;
         this.entity = entity;
     }
@@ -54,7 +56,7 @@ public class Result<E> {
      * 
      * @return エンティティ
      */
-    public E getEntity() {
+    public ENTITY getEntity() {
         return entity;
     }
 

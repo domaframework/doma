@@ -19,7 +19,8 @@ package org.seasar.doma.wrapper;
  * {@link Wrapper} の骨格実装です。
  * 
  * @author taedium
- * 
+ * @param <BASIC>
+ *            基本型
  */
 public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
 
@@ -32,7 +33,8 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
     /**
      * クラスを指定してインスタンスを構築します。
      * 
-     * @param 基本型のクラス
+     * @param basicClass
+     *            基本型のクラス
      */
     protected AbstractWrapper(Class<BASIC> basicClass) {
         this.basicClass = basicClass;
@@ -41,7 +43,8 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
     /**
      * クラスと値を指定してインスタンスを構築します。
      * 
-     * @param 基本型のクラス
+     * @param basicClass
+     *            基本型のクラス
      * @param value
      *            値
      */

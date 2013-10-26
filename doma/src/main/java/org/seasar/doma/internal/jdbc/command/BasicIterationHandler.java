@@ -22,7 +22,10 @@ import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
- * 
+ * @param <RESULT>
+ *            結果
+ * @param <BASIC>
+ *            基本型
  */
 public class BasicIterationHandler<RESULT, BASIC> extends
         ScalarIterationHandler<RESULT, BASIC, BASIC> {

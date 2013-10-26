@@ -52,7 +52,7 @@ import java.lang.annotation.Target;
  * {@link GenerationType#TABLE} を指定した場合、 {@link TableGenerator} が必要です。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -77,7 +77,9 @@ import java.lang.annotation.Target;
 public @interface GeneratedValue {
 
     /**
-     * 識別子を自動生成する方法です。
+     * 識別子を自動生成する方法を返します。
+     * 
+     * @return 識別子を自動生成する方法
      */
     GenerationType strategy();
 }

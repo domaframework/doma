@@ -20,6 +20,12 @@ import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
  * @author taedium
+ * @param <RESULT>
+ *            結果
+ * @param <BASIC>
+ *            基本型
+ * @param <DOMAIN>
+ *            ドメイン型
  * 
  */
 public class DomainIterationHandler<RESULT, BASIC, DOMAIN> extends

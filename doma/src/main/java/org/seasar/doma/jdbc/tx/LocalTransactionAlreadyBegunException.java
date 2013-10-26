@@ -33,6 +33,9 @@ public class LocalTransactionAlreadyBegunException extends JdbcException
 
     /**
      * インスタンスを構築します。
+     * 
+     * @param transactionId
+     *            トランザクションID
      */
     public LocalTransactionAlreadyBegunException(String transactionId) {
         super(Message.DOMA2045, transactionId);

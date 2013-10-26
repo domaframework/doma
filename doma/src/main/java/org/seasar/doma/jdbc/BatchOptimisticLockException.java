@@ -49,6 +49,8 @@ public class BatchOptimisticLockException extends OptimisticLockException {
      *            ログタイプ
      * @param kind
      *            SQLの種別
+     * @param rawSql
+     *            未加工SQL
      * @param sqlFilePath
      *            SQLファイルのパス
      */

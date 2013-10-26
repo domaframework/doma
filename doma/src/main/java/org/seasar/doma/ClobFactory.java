@@ -35,7 +35,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * <li>戻り値の型は {@code Clob} である。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)

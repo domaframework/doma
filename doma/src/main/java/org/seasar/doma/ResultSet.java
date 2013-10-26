@@ -41,7 +41,7 @@ import org.seasar.doma.jdbc.ResultMappingException;
  * {@code Map<String, Object> } のいずれかでなければならない。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -69,11 +69,13 @@ import org.seasar.doma.jdbc.ResultMappingException;
 public @interface ResultSet {
 
     /**
-     * 結果がエンティティやエンティティのリストの場合、エンティティのすべてのプロパティに結果セットのカラムがマッピングされることを保証します。
+     * 結果がエンティティやエンティティのリストの場合、
+     * エンティティのすべてのプロパティに結果セットのカラムがマッピングされることを保証するかどうかを返します。
      * <p>
      * {@code true} の場合、マッピングされないプロパティが存在すれば、このアノテーションが注釈されたパラメータを持つメソッドから
      * {@link ResultMappingException} がスローされます。
      * 
+     * @return 保証するかどうか
      * @since 1.34.0
      */
     boolean ensureResultMapping() default false;

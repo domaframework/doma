@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  * <li>型は基本型もしくは ドメインクラスである。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)

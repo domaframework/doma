@@ -32,16 +32,10 @@ public class OptionalSingleResultCallback<TARGET> implements
 
     protected final Function<TARGET, Optional<TARGET>> mapper;
 
-    /**
-     * @param supplier
-     */
     public OptionalSingleResultCallback() {
         this(Optional::ofNullable);
     }
 
-    /**
-     * @param supplier
-     */
     public OptionalSingleResultCallback(
             Function<TARGET, Optional<TARGET>> mapper) {
         assertNotNull(mapper);

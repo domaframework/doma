@@ -22,9 +22,11 @@ import org.seasar.doma.jdbc.Sql;
 
 /**
  * @author taedium
- * 
+ * @param <RESULT>
+ *            結果
  */
-public abstract class AbstractCreateQuery<RESULT> implements CreateQuery<RESULT> {
+public abstract class AbstractCreateQuery<RESULT> implements
+        CreateQuery<RESULT> {
 
     protected Config config;
 

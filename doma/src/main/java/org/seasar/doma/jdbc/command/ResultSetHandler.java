@@ -22,7 +22,8 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author taedium
- * 
+ * @param <RESULT>
+ *            結果
  */
 public interface ResultSetHandler<RESULT> {
 

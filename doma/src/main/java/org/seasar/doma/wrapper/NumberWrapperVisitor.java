@@ -18,6 +18,14 @@ package org.seasar.doma.wrapper;
 /**
  * @author nakamura-to
  * @since 2.0.0
+ * @param <R>
+ *            戻り値
+ * @param <P>
+ *            1番目のパラメータ
+ * @param <Q>
+ *            2番目のパラメータ
+ * @param <TH>
+ *            例外
  */
 public interface NumberWrapperVisitor<R, P, Q, TH extends Throwable> extends
         WrapperVisitor<R, P, Q, TH> {

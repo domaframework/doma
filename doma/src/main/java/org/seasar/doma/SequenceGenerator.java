@@ -30,7 +30,7 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
  * {@link GeneratedValue} と併わせて使用しなければいけません。
  * <p>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -52,32 +52,44 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 public @interface SequenceGenerator {
 
     /**
-     * カタログ名です。
+     * カタログ名を返します。
+     * 
+     * @return カタログ名
      */
     String catalog() default "";
 
     /**
-     * スキーマ名です。
+     * スキーマ名を返します。
+     * 
+     * @return スキーマ名
      */
     String schema() default "";
 
     /**
-     * シーケンス名です。
+     * シーケンス名を返します。
+     * 
+     * @return シーケンス名
      */
     String sequence();
 
     /**
-     * 初期値です。
+     * 初期値を返します。
+     * 
+     * @return 初期値
      */
     long initialValue() default 1;
 
     /**
-     * 割り当てサイズです。
+     * 割り当てサイズを返します。
+     * 
+     * @return 割り当てサイズ
      */
     long allocationSize() default 1;
 
     /**
-     * ジェネレータの実装クラスです。
+     * ジェネレータの実装クラスを返します。
+     * 
+     * @return ジェネレータの実装クラス
      */
     Class<? extends SequenceIdGenerator> implementer() default BuiltinSequenceIdGenerator.class;
 }

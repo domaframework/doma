@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  * <li>スレッドセーフである。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;ExternalDomain

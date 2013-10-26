@@ -32,7 +32,9 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author nakamura-to
  * 
  * @param <RESULT>
+ *            結果
  * @param <TARGET>
+ *            反復処理対象
  */
 public abstract class AbstractIterationHandler<RESULT, TARGET> implements
         ResultSetHandler<RESULT> {

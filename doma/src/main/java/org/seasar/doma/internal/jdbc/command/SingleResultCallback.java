@@ -24,23 +24,18 @@ import org.seasar.doma.jdbc.IterationContext;
 
 /**
  * @author nakamura-to
- * 
+ * @param <TARGET>
+ *            処理対象
  */
 public class SingleResultCallback<TARGET> implements
         IterationCallback<TARGET, TARGET> {
 
     protected final Supplier<TARGET> supplier;
 
-    /**
-     * @param supplier
-     */
     public SingleResultCallback() {
         this(() -> null);
     }
 
-    /**
-     * @param supplier
-     */
     public SingleResultCallback(Supplier<TARGET> supplier) {
         assertNotNull(supplier);
         this.supplier = supplier;

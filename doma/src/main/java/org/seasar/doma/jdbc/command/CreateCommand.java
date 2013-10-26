@@ -25,7 +25,8 @@ import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
- * 
+ * @param <RESULT>
+ *            結果
  */
 public class CreateCommand<RESULT> implements Command<RESULT> {
 

@@ -80,8 +80,8 @@ public final class DomainTypeFactory {
      *             ドメインクラスに対応するメタクラスが見つからない場合
      * @since 1.27.0
      */
-    public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getDomainType(Class<DOMAIN> domainClass,
-            ClassHelper classHelper) {
+    public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getDomainType(
+            Class<DOMAIN> domainClass, ClassHelper classHelper) {
         if (domainClass == null) {
             throw new DomaNullPointerException("domainClass");
         }
@@ -116,8 +116,6 @@ public final class DomainTypeFactory {
      *            ドメイン型
      * @param domainClass
      *            ドメインクラス
-     * @param classHelper
-     *            クラスヘルパー
      * @return {@link DomainType} のインスタンス、存在しない場合 {@code null}
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合

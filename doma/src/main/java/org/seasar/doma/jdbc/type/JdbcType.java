@@ -41,13 +41,16 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * {@link ResultSet} から値を取得します。
      * 
      * @param resultSet
+     *            結果セット
      * @param index
+     *            インデックス
      * @return 値
      * @throws DomaNullPointerException
      *             {@code resultSet} が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
+     *             SQL例外
      */
     T getValue(ResultSet resultSet, int index) throws DomaNullPointerException,
             SQLException;
@@ -56,13 +59,17 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * {@link PreparedStatement} に値を設定します。
      * 
      * @param preparedStatement
+     *            文
      * @param index
+     *            インデックス
      * @param value
+     *            値
      * @throws DomaNullPointerException
      *             {@code preparedStatement} が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
+     *             SQL例外
      */
     void setValue(PreparedStatement preparedStatement, int index, T value)
             throws SQLException;
@@ -71,12 +78,15 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * {@link CallableStatement} にOUTパラメータを登録します。
      * 
      * @param callableStatement
+     *            文
      * @param index
+     *            インデックス
      * @throws DomaNullPointerException
      *             {@code callableStatement} が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
+     *             SQL例外
      */
     void registerOutParameter(CallableStatement callableStatement, int index)
             throws SQLException;
@@ -85,13 +95,16 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * {@link CallableStatement} から値を取得します。
      * 
      * @param callableStatement
+     *            文
      * @param index
+     *            インデックス
      * @return 値
      * @throws DomaNullPointerException
      *             {@code callableStatement} が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
+     *             SQL例外
      */
     T getValue(CallableStatement callableStatement, int index)
             throws SQLException;

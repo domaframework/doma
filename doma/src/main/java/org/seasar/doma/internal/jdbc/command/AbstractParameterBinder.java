@@ -27,7 +27,9 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author nakamura-to
  * 
  * @param <STATEMENT>
+ *            文
  * @param <PARAMETER>
+ *            パラメータ
  */
 public abstract class AbstractParameterBinder<STATEMENT extends PreparedStatement, PARAMETER extends SqlParameter>
         implements ParameterBinder<STATEMENT, PARAMETER> {
@@ -36,7 +38,7 @@ public abstract class AbstractParameterBinder<STATEMENT extends PreparedStatemen
             JdbcMappable<BASIC> parameter, int index,
             JdbcMappingVisitor jdbcMappingVisitor) throws SQLException {
         Wrapper<?> wrapper = parameter.getWrapper();
-        wrapper.accept(jdbcMappingVisitor, new JdbcValueSetter(statement,
-                index), parameter);
+        wrapper.accept(jdbcMappingVisitor,
+                new JdbcValueSetter(statement, index), parameter);
     }
 }

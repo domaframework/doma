@@ -33,7 +33,7 @@ import org.seasar.doma.jdbc.Reference;
  * <li>型は {@link Reference} である。 {@code Reference} の実型引数は、基本型もしくは ドメインクラスである。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)

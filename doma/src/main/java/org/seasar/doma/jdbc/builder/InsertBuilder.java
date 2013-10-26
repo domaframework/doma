@@ -30,8 +30,8 @@ import org.seasar.doma.jdbc.query.SqlInsertQuery;
  * <p>
  * このクラスはスレッドセーフではありません。
  * 
- * <h4>例</h4>
- * <h5>Java</h5>
+ * <h3>例</h3>
+ * <h4>Java</h4>
  * 
  * <pre>
  * InsertBuilder builder = InsertBuilder.newInstance(config);
@@ -43,7 +43,7 @@ import org.seasar.doma.jdbc.query.SqlInsertQuery;
  * builder.execute();
  * </pre>
  * 
- * <h5>実行されるSQL</h5>
+ * <h4>実行されるSQL</h4>
  * 
  * <pre>
  * insert into Emp

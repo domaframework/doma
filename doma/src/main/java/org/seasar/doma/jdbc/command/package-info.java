@@ -13,17 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.query;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-
 /**
- * @author taedium
- * @param <RESULT>
- *            結果
+ * クエリを実行するクラスやインタフェースを提供します。
  */
-public interface CreateQuery<RESULT> extends Query {
-
-    RESULT create(Connection connection) throws SQLException;
-}
+package org.seasar.doma.jdbc.command;

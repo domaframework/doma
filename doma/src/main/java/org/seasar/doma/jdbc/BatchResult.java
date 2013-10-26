@@ -22,13 +22,15 @@ import java.util.List;
  * イミュータブルなエンティティに対するバッチ更新やバッチ挿入の結果を表します。
  * 
  * @author taedium
+ * @param <ENTITY>
+ *            エンティティ
  * @since 1.34.0
  */
-public class BatchResult<E> {
+public class BatchResult<ENTITY> {
 
     private final int[] counts;
 
-    private final List<E> entities;
+    private final List<ENTITY> entities;
 
     /**
      * 
@@ -37,7 +39,7 @@ public class BatchResult<E> {
      * @param entities
      *            エンティティのリスト
      */
-    public BatchResult(int[] counts, List<E> entities) {
+    public BatchResult(int[] counts, List<ENTITY> entities) {
         this.counts = counts;
         this.entities = entities;
     }
@@ -57,7 +59,7 @@ public class BatchResult<E> {
      * 
      * @return エンティティのリスト
      */
-    public List<E> getEntities() {
+    public List<ENTITY> getEntities() {
         return entities;
     }
 

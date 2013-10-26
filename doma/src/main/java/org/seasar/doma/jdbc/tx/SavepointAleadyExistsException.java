@@ -33,6 +33,9 @@ public class SavepointAleadyExistsException extends JdbcException {
 
     /**
      * インスタンスを構築します。
+     * 
+     * @param savepointName
+     *            セーブポイントの名前
      */
     public SavepointAleadyExistsException(String savepointName) {
         super(Message.DOMA2059, savepointName);

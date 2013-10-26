@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * このアノテーションが注釈されるフィールドは、 エンティティクラスのメンバでなければいけません。
  * <p>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -50,24 +50,32 @@ import java.lang.annotation.Target;
 public @interface Column {
 
     /**
-     * カラム名です。
+     * カラム名を返します。
      * <p>
      * 指定しない場合、カラム名は {@link Entity#naming()} に指定した列挙型 によって解決されます。
+     * 
+     * @return カラム名
      */
     String name() default "";
 
     /**
-     * プロパティに対応するカラムをINSERT文に含めるかどうかを示します。
+     * プロパティに対応するカラムをINSERT文に含めるかどうかを返します。
+     * 
+     * @return カラムをINSERT文に含めるかどうか
      */
     boolean insertable() default true;
 
     /**
-     * プロパティに対応するカラムをUPDATE文のSET句に含めるかどうかを示します。
+     * プロパティに対応するカラムをUPDATE文のSET句に含めるかどうかを返します。
+     * 
+     * @return カラムをUPDATE文のSET句に含めるかどうか
      */
     boolean updatable() default true;
 
     /**
-     * カラム名を引用符で囲むかどうかを示します。
+     * カラム名を引用符で囲むかどうかを返します。
+     * 
+     * @return カラム名を引用符で囲むかどうか
      */
     boolean quote() default false;
 }

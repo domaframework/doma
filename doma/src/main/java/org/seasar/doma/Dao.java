@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.Config;
  * インタフェースのメンバメソッドには、メタアノテーション {@link DaoMethod}
  * でマークされたアノテーションのいずれかを指定しなければいけません。
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -59,6 +59,7 @@ import org.seasar.doma.jdbc.Config;
  * @see NClobFactory
  * @see Procedure
  * @see Select
+ * @see Script
  * @see Update
  */
 @Target(ElementType.TYPE)
@@ -66,7 +67,7 @@ import org.seasar.doma.jdbc.Config;
 public @interface Dao {
 
     /**
-     * Daoを実行する際の設定（ {@literal JDBC} の接続情報や {@literal RDBMS} の方言等）です。
+     * Daoを実行する際の設定（ {@literal JDBC} の接続情報や {@literal RDBMS} の方言等）を返します。
      * <p>
      * この要素に値を指定しないでデフォルトの値を使用する場合、 Daoの実装クラスには {@code Config} を受け取る
      * {@code public} なコンストラクタが生成されます。
@@ -74,6 +75,8 @@ public @interface Dao {
      * {@code Config}以外のクラスを指定する場合、そのクラスは、引数なしのpublicなコンストラクタを持つ具象クラスでなければいけません。
      * その場合、Daoの実装クラスには引数なしの {@code public} なコンストラクタが生成されます。
      * この要素に指定されたクラスは、そのコンストラクタの中でインスタンス化されます。
+     * 
+     * @return Daoを実行する際の設定
      */
     Class<? extends Config> config() default Config.class;
 

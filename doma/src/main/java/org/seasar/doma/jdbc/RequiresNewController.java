@@ -24,7 +24,7 @@ import org.seasar.doma.DomaNullPointerException;
  * の属性をもつトランザクションの最適な制御方法は、環境ごとに異なります。たとえば、Seasar2.4を利用している場合、
  * 次のような実装がふさわしいでしょう。
  * 
- * <h5>実装例</h5>
+ * <h3>実装例</h3>
  * 
  * <pre>
  * import org.seasar.doma.jdbc.RequiresNewController;

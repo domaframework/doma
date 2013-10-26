@@ -32,9 +32,6 @@ import org.seasar.doma.jdbc.query.Query;
 /***
  * 
  * @author nakamura-to
- * 
- * @param <MAP>
- * @param <CONTAINER>
  */
 public class MapResultProvider extends
         AbstractResultProvider<Map<String, Object>> {

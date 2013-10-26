@@ -44,7 +44,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * <li>戻り値の型は {@code int} である。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -78,23 +78,28 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 public @interface Update {
 
     /**
-     * SQLファイルにマッピングするかどうかを示します。
+     * SQLファイルにマッピングするかどうかを返します。
+     * 
+     * @return SQLファイルにマッピングするかどうか
      */
     boolean sqlFile() default false;
 
     /**
-     * クエリタイムアウト（秒）です。
+     * クエリタイムアウト（秒）を返します。
      * <p>
      * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
      * 
+     * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
 
     /**
-     * UPDATE文のSET句に {@code null} のプロパティに対応するカラムを除去するかどうかを示します。
+     * UPDATE文のSET句に {@code null} のプロパティに対応するカラムを除去するかどうかを返します。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * 
+     * @return カラムを除去するかどうか
      */
     boolean excludeNull() default false;
 
@@ -103,40 +108,49 @@ public @interface Update {
      * <p>
      * {@code true} の場合、更新条件にバージョン番号を含めません。
      * 
+     * @return バージョン番号を無視するかどうか
      * @since 1.7.0
      */
     boolean ignoreVersion() default false;
 
     /**
-     * UPDATE文のSET句に変更されていないプロパティに対応するカラムを含めるかどうかを示します。
+     * UPDATE文のSET句に変更されていないプロパティに対応するカラムを含めるかどうかを返します。
      * <p>
      * この要素に対する指定は、更新対象のエンティティが {@link OriginalStates} が注釈されたプロパティをもつ場合、かつ
      * {@link #sqlFile()} が {@code false} の場合にのみ有効です。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * 
+     * @return カラムを含めるかどうか
      */
     boolean includeUnchanged() default false;
 
     /**
-     * UPDATE文のSET句に含めるプロパティ名の配列です。
+     * UPDATE文のSET句に含めるプロパティ名の配列を返します。
      * <p>
      * ここに指定できるのは、カラム名ではなく更新対象エンティティクラスのプロパティ名です。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * 
+     * @return SET句に含めるプロパティ名の配列
      */
     String[] include() default {};
 
     /**
-     * UPDATE文のSET句から除外するプロパティ名の配列です。
+     * UPDATE文のSET句から除外するプロパティ名の配列を返します。
      * <p>
      * ここに指定できるのは、カラム名ではなく更新対象エンティティクラスのプロパティ名です。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * 
+     * @return SET句から除外するプロパティ名の配列
      */
     String[] exclude() default {};
 
     /**
-     * 更新結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを示します。
+     * 更新結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを返します。
+     * 
+     * @return {@link OptimisticLockException}を抑制するかどうか
      */
     boolean suppressOptimisticLockException() default false;
 

@@ -38,9 +38,13 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @author nakamura-to
  * 
  * @param <PARENT>
+ *            親エンティティの型
  * @param <ENTITY>
+ *            エンティティの型
  * @param <BASIC>
+ *            プロパティの基本型
  * @param <DOMAIN>
+ *            プロパティのドメイン型
  */
 public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         implements EntityPropertyType<ENTITY, BASIC> {
@@ -93,8 +97,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
      *            プロパティのクラス
      * @param basicClass
      *            値のクラス
-     * @param wrapperClass
-     *            ラッパーのクラス
+     * @param wrapperSupplier
+     *            ラッパーのサプライヤ
      * @param parentEntityPropertyType
      *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
      * @param domainType
@@ -253,6 +257,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     /**
      * エンティティに値を設定して返します。
      * 
+     * @param <VALUE>
+     *            値の型
      * @param entityType
      *            エンティティタイプ
      * @param entity
@@ -263,10 +269,10 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
      *            値
      * @return エンティティ
      */
-    protected <PARAM> ENTITY modify(EntityType<ENTITY> entityType,
+    protected <VALUE> ENTITY modify(EntityType<ENTITY> entityType,
             ENTITY entity,
-            WrapperVisitor<Void, PARAM, Void, RuntimeException> visitor,
-            PARAM value) {
+            WrapperVisitor<Void, VALUE, Void, RuntimeException> visitor,
+            VALUE value) {
         if (entityType.isImmutable()) {
             List<EntityPropertyType<ENTITY, ?>> propertyTypes = entityType
                     .getEntityPropertyTypes();

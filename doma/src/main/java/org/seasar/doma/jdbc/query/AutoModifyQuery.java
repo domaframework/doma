@@ -30,7 +30,8 @@ import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
 public abstract class AutoModifyQuery<ENTITY> implements ModifyQuery {
 

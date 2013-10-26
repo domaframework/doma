@@ -33,7 +33,9 @@ import org.seasar.doma.message.Message;
 public @interface Suppress {
 
     /**
-     * 抑制対象の警告メッセージです。
+     * 抑制対象の警告メッセージを返します。
+     * 
+     * @return 抑制対象の警告メッセージ
      */
     Message[] messages();
 }

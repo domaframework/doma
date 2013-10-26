@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.sql.Statement;
@@ -28,10 +29,11 @@ import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
- * 
+ * @param <ELEMENT>
+ *            リストの要素
  */
-public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
-        implements BatchInsertQuery {
+public class SqlFileBatchInsertQuery<ELEMENT> extends
+        SqlFileBatchModifyQuery<ELEMENT> implements BatchInsertQuery {
 
     protected EntityHandler entityHandler;
 

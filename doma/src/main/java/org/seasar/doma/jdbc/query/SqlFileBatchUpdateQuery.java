@@ -29,10 +29,11 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
  * @author taedium
- * 
+ * @param <ELEMENT>
+ *            リストの要素
  */
-public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
-        implements BatchUpdateQuery {
+public class SqlFileBatchUpdateQuery<ELEMENT> extends
+        SqlFileBatchModifyQuery<ELEMENT> implements BatchUpdateQuery {
 
     protected EntityHandler entityHandler;
 
@@ -159,8 +160,8 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
             if (versionPropertyType != null && !versionIgnored) {
                 for (int i = 0, size = elements.size(); i < size; i++) {
                     ELEMENT entity = elements.get(i);
-                    ELEMENT newEntity = versionPropertyType.increment(entityType,
-                            entity);
+                    ELEMENT newEntity = versionPropertyType.increment(
+                            entityType, entity);
                     elements.set(i, newEntity);
                 }
             }

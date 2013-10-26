@@ -21,7 +21,6 @@ import org.seasar.doma.internal.util.StringUtil;
  * マップのキーのネーミング規約を表します。
  * <p>
  * カラム名に規約を適用し、マップのキー名を求めます。
- * <ul>
  * 
  * @author taedium
  * @since 1.17.0

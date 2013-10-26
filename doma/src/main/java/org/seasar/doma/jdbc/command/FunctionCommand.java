@@ -22,9 +22,11 @@ import org.seasar.doma.jdbc.query.FunctionQuery;
 
 /**
  * @author taedium
- * 
+ * @param <RESULT>
+ *            結果
  */
-public class FunctionCommand<RESULT> extends ModuleCommand<RESULT, FunctionQuery<RESULT>> {
+public class FunctionCommand<RESULT> extends
+        ModuleCommand<RESULT, FunctionQuery<RESULT>> {
 
     public FunctionCommand(FunctionQuery<RESULT> query) {
         super(query);

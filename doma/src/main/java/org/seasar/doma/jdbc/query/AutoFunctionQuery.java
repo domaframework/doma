@@ -23,7 +23,8 @@ import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
- * 
+ * @param <RESULT>
+ *            結果
  */
 public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements
         FunctionQuery<RESULT> {

@@ -30,8 +30,8 @@ import org.seasar.doma.message.Message;
 /**
  * {@link SqlFileRepository} の骨格実装です。
  * <p>
- * SQLファイルの解析結果をキャッシュするには {@link #getSqlFileWithCacheControl(String, Dialect)}
- * を実装してください。
+ * SQLファイルの解析結果をキャッシュするには
+ * {@link #getSqlFileWithCacheControl(Method, String, Dialect)} を実装してください。
  * 
  * @author taedium
  * 

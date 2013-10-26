@@ -34,5 +34,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ParameterName {
 
+    /**
+     * パラメータの名前を返します。
+     * 
+     * @return パラメータの名前
+     */
     String value() default "";
 }

@@ -25,7 +25,7 @@ import org.seasar.doma.DomaNullPointerException;
  * <p>
  * {@link #get()}でインスタンスを取得し、メソッド呼び出しをチェインさせることができます。
  * 
- * <h5>例</h5>
+ * <h3>例</h3>
  * 
  * <pre>
  * SelectOptions options = SelectOptions.get().offset(10).limit(50).forUpdate();

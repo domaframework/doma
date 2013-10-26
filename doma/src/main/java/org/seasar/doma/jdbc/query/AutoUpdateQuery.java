@@ -36,7 +36,8 @@ import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
 public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         UpdateQuery {

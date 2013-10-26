@@ -39,10 +39,11 @@ import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
-public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> implements
-        BatchInsertQuery {
+public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
+        implements BatchInsertQuery {
 
     protected GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> generatedIdPropertyType;
 
@@ -126,7 +127,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> i
                     targetPropertyTypes.add(propertyType);
                 }
                 if (generatedIdPropertyType == null) {
-                    Property<ENTITY, ?> property = propertyType.createProperty();
+                    Property<ENTITY, ?> property = propertyType
+                            .createProperty();
                     property.load(currentEntity);
                     if (property.getWrapper().get() == null) {
                         throw new JdbcException(Message.DOMA2020,

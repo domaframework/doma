@@ -32,7 +32,10 @@ import org.seasar.doma.jdbc.query.ModuleQuery;
 
 /**
  * @author taedium
- * 
+ * @param <RESULT>
+ *            結果
+ * @param <QUERY>
+ *            クエリ
  */
 public abstract class ModuleCommand<RESULT, QUERY extends ModuleQuery>
         implements Command<RESULT> {

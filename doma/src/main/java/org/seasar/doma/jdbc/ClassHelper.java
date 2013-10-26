@@ -30,6 +30,8 @@ public interface ClassHelper {
     /**
      * 指定された文字列名を持つクラスまたはインタフェースに関連付けられた、{@link Class} オブジェクトを返します。
      * 
+     * @param <T>
+     *            クラスの型
      * @param className
      *            要求するクラスの完全指定の名前
      * @return 指定された名前を持つクラスの {@link Class} オブジェクト

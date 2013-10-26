@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  * {@code domain.converters} です。オプションの指定方法については、<a
  * href="http://doma.seasar.org/reference/apt.html">注釈処理</a>を参照ください。
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;DomainConverters({ SalaryConverter.class, DayConverter.class,
@@ -51,7 +51,9 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
 public @interface DomainConverters {
 
     /**
-     * {@code DomainConverter} のクラスの配列。
+     * {@code DomainConverter} のクラスの配列を返します。
+     * 
+     * @return {@code DomainConverter} のクラスの配列
      */
     Class<? extends DomainConverter<?, ?>>[] value() default {};
 }

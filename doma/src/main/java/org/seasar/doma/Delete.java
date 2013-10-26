@@ -43,7 +43,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <li>戻り値の型は {@code int} である。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -77,28 +77,35 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
 public @interface Delete {
 
     /**
-     * SQLファイルにマッピングするかどうかを示します。
+     * SQLファイルにマッピングするかどうかを返します。
+     * 
+     * @return SQLファイルにマッピングするかどうか
      */
     boolean sqlFile() default false;
 
     /**
-     * クエリタイムアウト（秒）です。
+     * クエリタイムアウト（秒）を返します。
      * <p>
      * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
      * 
+     * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
 
     /**
-     * 楽観的排他制御用のバージョン番号を無視するかどうかを示します。
+     * 楽観的排他制御用のバージョン番号を無視するかどうかを返します。
      * <p>
      * {@code true} の場合、削除条件にバージョン番号を含めません。
+     * 
+     * @return 楽観的排他制御用のバージョン番号を無視するかどうか
      */
     boolean ignoreVersion() default false;
 
     /**
-     * 削除結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを示します。
+     * 削除結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを返します。
+     * 
+     * @return {@link OptimisticLockException}を抑制するかどうか
      */
     boolean suppressOptimisticLockException() default false;
 

@@ -43,7 +43,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * <li>戻り値の型は {@code int} である。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -76,41 +76,50 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 public @interface Insert {
 
     /**
-     * SQLファイルにマッピングするかどうかを示します。
+     * SQLファイルにマッピングするかどうかを返します。
+     * 
+     * @return SQLファイルにマッピングするかどうか
      */
     boolean sqlFile() default false;
 
     /**
-     * クエリタイムアウト（秒）です。
+     * クエリタイムアウト（秒）を返します。
      * <p>
      * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
      * 
+     * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
 
     /**
-     * INSERT文で {@code null} のプロパティに対応するカラムを除去するかどうかを示します。
+     * INSERT文で {@code null} のプロパティに対応するカラムを除去するかどうかを返します。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * 
+     * @return カラムを除去するかどうか
      */
     boolean excludeNull() default false;
 
     /**
-     * INSERT文に含めるプロパティ名の配列です。
+     * INSERT文に含めるプロパティ名の配列を返します。
      * <p>
      * ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * 
+     * @return 含めるプロパティ名の配列
      */
     String[] include() default {};
 
     /**
-     * INSERT文から除去するプロパティ名の配列です。
+     * INSERT文から除去するプロパティ名の配列を返します。
      * <p>
      * ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * 
+     * @return 除去するプロパティ名の配列
      */
     String[] exclude() default {};
 }

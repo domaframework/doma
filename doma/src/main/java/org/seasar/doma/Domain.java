@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * </ul>
  * <p>
  * 
- * <h5>例1:コンストラクタで生成するケース</h5>
+ * <h3>例1:コンストラクタで生成するケース</h3>
  * 
  * <pre>
  * &#064;Domain(valueType = String.class)
@@ -53,7 +53,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * 
- * <h5>例2:ファクトリメソッドで生成するケース</h5>
+ * <h3>例2:ファクトリメソッドで生成するケース</h3>
  * 
  * <pre>
  * &#064;Domain(valueType = String.class, factoryMethod = &quot;of&quot;)
@@ -83,29 +83,35 @@ import java.lang.annotation.Target;
 public @interface Domain {
 
     /**
-     * ドメインクラスが扱う値型(基本型)。
+     * ドメインクラスが扱う値型(基本型)を返します。
+     * 
+     * @return ドメインクラスが扱う値型(基本型)
      */
     Class<?> valueType();
 
     /**
-     * ドメインクラスのファクトリメソッドの名前。
+     * ドメインクラスのファクトリメソッドの名前を返します。
      * <p>
      * デフォルトの値である {@code "new"} はコンストラクタで生成することを意味します。
      * 
+     * @return ドメインクラスのファクトリメソッドの名前
      * @since 1.12.0
      */
     String factoryMethod() default "new";
 
     /**
-     * ドメインクラスが扱う値に対するアクセッサーメソッドの名前。
+     * ドメインクラスが扱う値に対するアクセッサーメソッドの名前を返します。
+     * 
+     * @return ドメインクラスが扱う値に対するアクセッサーメソッドの名前
      */
     String accessorMethod() default "getValue";
 
     /**
-     * ファクトリメソッドで {@code null} を受け入れるかどうか。
+     * ファクトリメソッドで {@code null} を受け入れるかどうかを返します。
      * <p>
      * {@code null} をドメインクラスで扱いたい場合 {@code true} を設定します。
      * 
+     * @return ファクトリメソッドで {@code null} を受け入れるかどうか
      * @since 2.0.0
      */
     boolean acceptNull() default false;

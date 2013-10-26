@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * <li>'.sql'で終わる。ただし、'.sql'の前にハイフン区切りでRDBMSの名前を指定可能。
  * </ul>
  * 
- * <h5>SQLファイルのパスの例</h5>
+ * <h3>SQLファイルのパスの例</h3>
  * <p>
  * {@code META-INF/org/example/ExampleDao/selectAll.sql}
  * <p>
@@ -45,7 +45,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * <li>{@code -}（ハイフン）
  * <li>{@link Dialect#getName()} で返される値。
  * </ul>
- * <h5>RDBMS固有のSQLファイルのパスの例</h5>
+ * <h3>RDBMS固有のSQLファイルのパスの例</h3>
  * <p>
  * {@code META-INF/org/example/ExampleDao/selectAll-oracle.sql}
  * <p>

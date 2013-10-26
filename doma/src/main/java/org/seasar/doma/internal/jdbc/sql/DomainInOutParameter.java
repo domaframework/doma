@@ -20,6 +20,10 @@ import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
  * @author taedium
+ * @param <BASIC>
+ *            基本型
+ * @param <DOMAIN>
+ *            ドメイン型
  * 
  */
 public class DomainInOutParameter<BASIC, DOMAIN> extends

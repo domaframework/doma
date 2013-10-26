@@ -19,7 +19,8 @@ package org.seasar.doma.jdbc;
  * 値をSQLのログ用文字列に変換するフォーマッタです。
  * 
  * @author taedium
- * 
+ * @param <T>
+ *            値
  */
 public interface SqlLogFormatter<T> {
 

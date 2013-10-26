@@ -28,10 +28,13 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author nakamura-to
  * 
  * @param <PARENT>
+ *            親エンティティの型
  * @param <ENTITY>
- * @param <PROPERTY>
+ *            エンティティの型
  * @param <BASIC>
+ *            プロパティの基本型
  * @param <DOMAIN>
+ *            プロパティのドメイン型
  */
 public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Number, DOMAIN>
         extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
@@ -43,6 +46,8 @@ public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Nu
      *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
+     * @param basicClass
+     *            基本型のクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
      * @param parentEntityPropertyType

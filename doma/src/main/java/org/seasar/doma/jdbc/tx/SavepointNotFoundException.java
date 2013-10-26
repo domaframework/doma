@@ -36,6 +36,9 @@ public class SavepointNotFoundException extends JdbcException implements
 
     /**
      * インスタンスを構築します。
+     * 
+     * @param savepointName
+     *            セーブポイントの名前
      */
     public SavepointNotFoundException(String savepointName) {
         super(Message.DOMA2054, savepointName);

@@ -33,10 +33,11 @@ import org.seasar.doma.jdbc.entity.Property;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
-public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> implements
-        BatchDeleteQuery {
+public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
+        implements BatchDeleteQuery {
 
     protected boolean versionIgnored;
 

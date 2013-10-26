@@ -29,10 +29,11 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
  * @author taedium
- * 
+ * @param <ELEMENT>
+ *            リストの要素
  */
-public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
-        implements BatchDeleteQuery {
+public class SqlFileBatchDeleteQuery<ELEMENT> extends
+        SqlFileBatchModifyQuery<ELEMENT> implements BatchDeleteQuery {
 
     protected EntityHandler entityHandler;
 

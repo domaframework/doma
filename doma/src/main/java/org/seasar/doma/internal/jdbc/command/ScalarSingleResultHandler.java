@@ -21,6 +21,10 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 
 /**
  * @author taedium
+ * @param <BASIC>
+ *            基本型
+ * @param <CONTAINER>
+ *            基本型のコンテナ
  * 
  */
 public class ScalarSingleResultHandler<BASIC, CONTAINER> extends

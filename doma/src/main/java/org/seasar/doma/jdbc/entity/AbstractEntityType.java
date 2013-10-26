@@ -23,7 +23,8 @@ import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
  * {@link EntityType} の骨格実装です。
  * 
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
 public abstract class AbstractEntityType<ENTITY> implements EntityType<ENTITY> {
 
@@ -45,7 +46,7 @@ public abstract class AbstractEntityType<ENTITY> implements EntityType<ENTITY> {
         String catalogName = getCatalogName();
         String schemaName = getSchemaName();
         String tableName = getTableName();
-        return DatabaseObjectUtil.getQualifiedName(mapper, catalogName, schemaName,
-                tableName);
+        return DatabaseObjectUtil.getQualifiedName(mapper, catalogName,
+                schemaName, tableName);
     }
 }

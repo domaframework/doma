@@ -84,7 +84,9 @@ public interface Wrapper<BASIC> {
      * @param <R>
      *            戻り値の型
      * @param <P>
-     *            パラメータの型
+     *            1番目のパラメータの型
+     * @param <Q>
+     *            2番目のパラメータの型
      * @param <TH>
      *            例外の型
      * @param visitor

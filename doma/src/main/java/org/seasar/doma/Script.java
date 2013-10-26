@@ -37,7 +37,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * </ul>
  * <p>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -64,16 +64,20 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 public @interface Script {
 
     /**
-     * SQLのブロックの区切り文字です。
+     * SQLのブロックの区切り文字を返します。
      * <p>
      * SQLのブロックとはステートメントの集合です。一般的に、プロシージャーやトリガーの定義の終了を示すために使用されます。
      * <p>
      * 空文字が指定されている場合、 {@link Dialect#getScriptBlockDelimiter()} の値が使用されます。
+     * 
+     * @return SQLのブロックの区切り文字
      */
     String blockDelimiter() default "";
 
     /**
-     * スクリプトの実行中にエラーが発生した場合、即座に処理を終了するかどうかを示します。
+     * スクリプトの実行中にエラーが発生した場合、即座に処理を終了するかどうかを返します。
+     * 
+     * @return 即座に処理を終了するかどうか
      */
     boolean haltOnError() default true;
 }

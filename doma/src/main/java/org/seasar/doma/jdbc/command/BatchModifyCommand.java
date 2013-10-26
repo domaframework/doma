@@ -35,7 +35,8 @@ import org.seasar.doma.jdbc.query.BatchModifyQuery;
 
 /**
  * @author taedium
- * 
+ * @param <QUERY>
+ *            クエリ
  */
 public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery>
         implements Command<int[]> {

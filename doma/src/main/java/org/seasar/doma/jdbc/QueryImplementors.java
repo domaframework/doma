@@ -30,6 +30,7 @@ import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.BlobCreateQuery;
 import org.seasar.doma.jdbc.query.ClobCreateQuery;
 import org.seasar.doma.jdbc.query.NClobCreateQuery;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SqlDeleteQuery;
 import org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery;
 import org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery;

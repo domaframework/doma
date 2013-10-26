@@ -33,7 +33,7 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  * <li>引数なしの 非 {@code private} なコンストラクタを持つ。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity
@@ -60,7 +60,7 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  * <li>非 {@code private} なコンストラクタを持ち、コンストラクタのパラメータの型と名前は永続フィールドに対応する。
  * </ul>
  * 
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Entity(immutable = true)
@@ -102,7 +102,7 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
 public @interface Entity {
 
     /**
-     * リスナーです。
+     * リスナーを返します。
      * <p>
      * この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
      * <ul>
@@ -111,23 +111,27 @@ public @interface Entity {
      * </ul>
      * <p>
      * リスナーは、エンティティクラスごとに1つだけインスタンス化されます。
+     * 
+     * @return リスナー
      */
     @SuppressWarnings("rawtypes")
     Class<? extends EntityListener> listener() default NullEntityListener.class;
 
     /**
-     * ネーミング規約です。
+     * ネーミング規約を返します。
      * <p>
      * この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
      * <ul>
      * <li>継承している場合、親エンティティクラスの設定を引き継ぎます</li>
      * <li>継承していない場合、デフォルトの設定を使用します</li>
      * </ul>
+     * 
+     * @return ネーミング規約
      */
     NamingType naming() default NamingType.NONE;
 
     /**
-     * イミュータブルかどうかです。
+     * イミュータブルかどうかを返します。
      * <p>
      * この機能はEXPERIMETALな機能です。破壊的な仕様変更が行われる可能性があります。
      * <p>

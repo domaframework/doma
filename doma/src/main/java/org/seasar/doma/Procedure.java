@@ -43,7 +43,7 @@ import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
  * </ul>
  * <li>戻り値は {@code void} である。
  * </ul>
- * <h5>例:</h5>
+ * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -74,40 +74,50 @@ import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 public @interface Procedure {
 
     /**
-     * カタログ名です。
+     * カタログ名を返します。
+     * 
+     * @return カタログ名
      */
     String catalog() default "";
 
     /**
-     * スキーマ名です。
+     * スキーマ名を返します。
+     * 
+     * @return スキーマ名
      */
     String schema() default "";
 
     /**
-     * ストアドプロシージャーの名前です。
+     * ストアドプロシージャーの名前を返します。
      * <p>
      * 指定しない場合、注釈されたメソッドの名前が使用されます。
+     * 
+     * @return ストアドプロシージャーの名前
      */
     String name() default "";
 
     /**
-     * カタログ、スキーマ、ストアドプロシージャー名を引用符で囲むかどうかを示します。
+     * カタログ、スキーマ、ストアドプロシージャー名を引用符で囲むかどうかを返します。
+     * 
+     * @return 引用符で囲むかどうか
      */
     boolean quote() default false;
 
     /**
-     * クエリタイムアウト（秒）です。
+     * クエリタイムアウト（秒）を返します。
      * <p>
      * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
      * 
+     * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
 
     /**
-     * 結果セットを @code{Map<Object, String>} もしくは @code{List<Map<Object, String>>}
-     * として取得する場合のマップのキーに対するネーミング規約です。
+     * 結果セットを {@code Map<Object, String>} もしくは {@code List<Map<Object, String>>}
+     * として取得する場合のマップのキーに対するネーミング規約を返します。
      * 
+     * @return ネーミング規約
      * @since 1.7.0
      */
     MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;

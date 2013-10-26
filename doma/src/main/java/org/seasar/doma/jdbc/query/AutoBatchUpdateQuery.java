@@ -34,10 +34,11 @@ import org.seasar.doma.jdbc.entity.Property;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
-public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> implements
-        BatchUpdateQuery {
+public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
+        implements BatchUpdateQuery {
 
     protected boolean versionIgnored;
 
@@ -95,7 +96,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> i
     protected void prepareTargetPropertyTypes() {
         targetPropertyTypes = new ArrayList<EntityPropertyType<ENTITY, ?>>(
                 entityType.getEntityPropertyTypes().size());
-        for (EntityPropertyType<ENTITY, ?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<ENTITY, ?> p : entityType
+                .getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -167,7 +169,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY> i
         if (versionPropertyType != null && !versionIgnored) {
             for (int i = 0, size = entities.size(); i < size; i++) {
                 ENTITY entity = entities.get(i);
-                ENTITY newEntity = versionPropertyType.increment(entityType, entity);
+                ENTITY newEntity = versionPropertyType.increment(entityType,
+                        entity);
                 entities.set(i, newEntity);
             }
         }

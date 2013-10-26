@@ -66,8 +66,8 @@ import org.seasar.doma.message.Message;
  * <p>
  * このクラスはスレッドセーフではありません。
  * 
- * <h4>例</h4>
- * <h5>Java</h5>
+ * <h3>例</h3>
+ * <h4>Java</h4>
  * 
  * <pre>
  * SelectBuilder builder = SelectBuilder.newInstance(config);
@@ -83,7 +83,7 @@ import org.seasar.doma.message.Message;
  * Emp emp = builder.getEntitySingleResult(Emp.class);
  * </pre>
  * 
- * <h5>実行されるSQL</h5>
+ * <h4>実行されるSQL</h4>
  * 
  * <pre>
  * select
@@ -94,7 +94,7 @@ import org.seasar.doma.message.Message;
  * where
  * name like 'S%'
  * and
- * age > 20
+ * age &gt; 20
  * </pre>
  * 
  * @author taedium
@@ -835,8 +835,8 @@ public class SelectBuilder {
      *            基本型もしくはドメイン型
      * @param targetClass
      *            基本型もしくはドメイン型のクラス
-     * @param iterationCallback
-     *            コールバック
+     * @param mapper
+     *            マッパー
      * @return 任意の実行結果
      * @throws DomaNullPointerException
      *             引数のいずれかが{@code null} の場合
@@ -879,8 +879,8 @@ public class SelectBuilder {
      *            基本型もしくはドメイン型
      * @param targetClass
      *            基本型もしくはドメイン型のクラス
-     * @param iterationCallback
-     *            コールバック
+     * @param mapper
+     *            マッパー
      * @return 任意の実行結果
      * @throws DomaNullPointerException
      *             引数のいずれかが{@code null} の場合
@@ -922,8 +922,8 @@ public class SelectBuilder {
      *            戻り値の型
      * @param mapKeyNamingType
      *            マップのキーのネーミング規約
-     * @param iterationCallback
-     *            コールバック
+     * @param mapper
+     *            マッパー
      * @return 任意の実行結果
      * @throws DomaNullPointerException
      *             引数のいずれかが{@code null} の場合
@@ -1040,9 +1040,6 @@ public class SelectBuilder {
     /**
      * 呼び出し元のメソッド名です。
      * <p>
-     * 指定しない場合このSQLを生成するメソッド（{@link #getSingleResult(Class)},
-     * {@link #getResultList(Class)},{@link #iterate(Class, IterationCallback)},
-     * {@link #getSql()}）の名前が使用されます。
      * 
      * @param methodName
      *            呼び出し元のメソッド名

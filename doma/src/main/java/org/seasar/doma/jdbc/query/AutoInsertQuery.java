@@ -37,7 +37,8 @@ import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
- * 
+ * @param <ENTITY>
+ *            エンティティ
  */
 public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         InsertQuery {
@@ -130,8 +131,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            ENTITY newEntity = generatedIdPropertyType.preInsert(entityType, entity,
-                    idGenerationConfig);
+            ENTITY newEntity = generatedIdPropertyType.preInsert(entityType,
+                    entity, idGenerationConfig);
             entity = newEntity;
         }
     }
