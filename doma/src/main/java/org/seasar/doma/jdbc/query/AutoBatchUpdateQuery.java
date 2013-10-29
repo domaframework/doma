@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
@@ -67,11 +68,11 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         prepareTargetPropertyTypes();
         prepareSql();
         entities.set(0, currentEntity);
-        for (int i = 1; i < size; i++) {
-            currentEntity = entities.get(i);
+        for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext();) {
+            currentEntity = it.next();
             preUpdate();
             prepareSql();
-            entities.set(i, currentEntity);
+            it.set(currentEntity);
         }
         assertEquals(entities.size(), sqls.size());
     }
@@ -167,21 +168,21 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     @Override
     public void incrementVersions() {
         if (versionPropertyType != null && !versionIgnored) {
-            for (int i = 0, size = entities.size(); i < size; i++) {
-                ENTITY entity = entities.get(i);
+            for (ListIterator<ENTITY> it = entities.listIterator(); it
+                    .hasNext();) {
                 ENTITY newEntity = versionPropertyType.increment(entityType,
-                        entity);
-                entities.set(i, newEntity);
+                        it.next());
+                it.set(newEntity);
             }
         }
     }
 
     @Override
     public void complete() {
-        for (int i = 0, len = entities.size(); i < len; i++) {
-            currentEntity = entities.get(i);
+        for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext();) {
+            currentEntity = it.next();
             postUpdate();
-            entities.set(i, currentEntity);
+            it.set(currentEntity);
         }
     }
 

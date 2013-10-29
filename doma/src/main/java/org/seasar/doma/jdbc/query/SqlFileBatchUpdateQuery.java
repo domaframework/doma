@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
+import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
@@ -61,11 +62,11 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         prepareOptimisticLock();
         prepareSql();
         elements.set(0, currentEntity);
-        for (int i = 1; i < size; i++) {
-            currentEntity = elements.get(i);
+        for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext();) {
+            currentEntity = it.next();
             preUpdate();
             prepareSql();
-            elements.set(i, currentEntity);
+            it.set(currentEntity);
         }
         assertEquals(size, sqls.size());
     }
@@ -92,10 +93,11 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
     @Override
     public void complete() {
         if (entityHandler != null) {
-            for (int i = 0, len = elements.size(); i < len; i++) {
-                currentEntity = elements.get(i);
+            for (ListIterator<ELEMENT> it = elements.listIterator(); it
+                    .hasNext();) {
+                currentEntity = it.next();
                 entityHandler.postUpdate();
-                elements.set(i, currentEntity);
+                it.set(currentEntity);
             }
         }
     }
@@ -158,11 +160,11 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
 
         protected void incrementVersions() {
             if (versionPropertyType != null && !versionIgnored) {
-                for (int i = 0, size = elements.size(); i < size; i++) {
-                    ELEMENT entity = elements.get(i);
+                for (ListIterator<ELEMENT> it = elements.listIterator(); it
+                        .hasNext();) {
                     ELEMENT newEntity = versionPropertyType.increment(
-                            entityType, entity);
-                    elements.set(i, newEntity);
+                            entityType, it.next());
+                    it.set(newEntity);
                 }
             }
         }

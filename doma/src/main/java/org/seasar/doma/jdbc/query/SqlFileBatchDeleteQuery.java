@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
+import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
@@ -61,11 +62,11 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
         prepareOptimisticLock();
         prepareSql();
         elements.set(0, currentEntity);
-        for (int i = 1; i < size; i++) {
-            currentEntity = elements.get(i);
+        for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext();) {
+            currentEntity = it.next();
             preDelete();
             prepareSql();
-            elements.set(i, currentEntity);
+            it.set(currentEntity);
         }
         assertEquals(size, sqls.size());
     }
@@ -85,10 +86,11 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
     @Override
     public void complete() {
         if (entityHandler != null) {
-            for (int i = 0, len = elements.size(); i < len; i++) {
-                currentEntity = elements.get(i);
+            for (ListIterator<ELEMENT> it = elements.listIterator(); it
+                    .hasNext();) {
+                currentEntity = it.next();
                 entityHandler.postDelete();
-                elements.set(i, currentEntity);
+                it.set(currentEntity);
             }
         }
     }

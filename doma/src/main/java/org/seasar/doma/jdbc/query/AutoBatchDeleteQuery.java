@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
+import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
@@ -65,11 +66,11 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         prepareOptimisticLock();
         prepareSql();
         entities.set(0, currentEntity);
-        for (int i = 1; i < size; i++) {
-            currentEntity = entities.get(i);
+        for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext();) {
+            currentEntity = it.next();
             preDelete();
             prepareSql();
-            entities.set(i, currentEntity);
+            it.set(currentEntity);
         }
         assertEquals(size, sqls.size());
     }
@@ -129,10 +130,10 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     @Override
     public void complete() {
-        for (int i = 0, len = entities.size(); i < len; i++) {
-            currentEntity = entities.get(i);
+        for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext();) {
+            currentEntity = it.next();
             postDelete();
-            entities.set(i, currentEntity);
+            it.set(currentEntity);
         }
     }
 

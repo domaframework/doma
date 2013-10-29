@@ -21,6 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
@@ -74,13 +75,13 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         prepareVersionValue();
         prepareSql();
         entities.set(0, currentEntity);
-        for (int i = 1; i < size; i++) {
-            currentEntity = entities.get(i);
+        for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext();) {
+            currentEntity = it.next();
             preInsert();
             prepareIdValue();
             prepareVersionValue();
             prepareSql();
-            entities.set(i, currentEntity);
+            it.set(currentEntity);
         }
         currentEntity = null;
         assertEquals(entities.size(), sqls.size());
@@ -200,10 +201,10 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     @Override
     public void complete() {
-        for (int i = 0, len = entities.size(); i < len; i++) {
-            currentEntity = entities.get(i);
+        for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext();) {
+            currentEntity = it.next();
             postInsert();
-            entities.set(i, currentEntity);
+            it.set(currentEntity);
         }
     }
 

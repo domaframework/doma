@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -197,9 +198,10 @@ public abstract class AptTestCase extends AptinaTestCase {
                 if (parameterElements.size() != parameterClasses.length) {
                     continue;
                 }
-                for (int i = 0; i < parameterElements.size(); i++) {
-                    TypeMirror parameterType = parameterElements.get(i)
-                            .asType();
+                int i = 0;
+                for (Iterator<? extends VariableElement> it = parameterElements
+                        .iterator(); it.hasNext();) {
+                    TypeMirror parameterType = it.next().asType();
                     Class<?> parameterClass = parameterClasses[i];
                     if (!TypeMirrorUtil.isSameType(parameterType,
                             parameterClass, env)) {

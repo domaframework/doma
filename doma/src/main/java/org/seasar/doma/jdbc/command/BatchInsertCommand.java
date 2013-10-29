@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.command;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.BatchUniqueConstraintException;
@@ -42,12 +43,14 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
         }
         int sqlSize = sqls.size();
         int[] updatedRows = new int[sqlSize];
-        for (int i = 0; i < sqlSize; i++) {
-            PreparedSql sql = sqls.get(i);
+        int i = 0;
+        for (ListIterator<PreparedSql> it = sqls.listIterator(); it.hasNext();) {
+            PreparedSql sql = it.next();
             log(sql);
             bindParameters(preparedStatement, sql);
             updatedRows[i] = executeUpdate(preparedStatement, sql);
             query.generateId(preparedStatement, i);
+            i++;
         }
         return updatedRows;
     }

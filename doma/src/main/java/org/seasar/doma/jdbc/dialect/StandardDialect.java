@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -1118,9 +1119,11 @@ public class StandardDialect implements Dialect {
                 if (startKeywords.size() > keywords.size()) {
                     continue;
                 }
-                for (int i = 0; i < startKeywords.size(); i++) {
-                    String word1 = startKeywords.get(i);
-                    String word2 = keywords.get(i);
+                Iterator<String> startKeywordsIt = startKeywords.iterator();
+                Iterator<String> keywordsIt = keywords.iterator();
+                for (; startKeywordsIt.hasNext();) {
+                    String word1 = startKeywordsIt.next();
+                    String word2 = keywordsIt.next();
                     inBlock = word1.equalsIgnoreCase(word2);
                     if (!inBlock) {
                         break;
