@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
@@ -107,8 +106,7 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery>
         int[] updatedRows = new int[sqlSize];
         int i = 0;
         int pos = 0;
-        for (Iterator<PreparedSql> it = sqls.iterator(); it.hasNext();) {
-            PreparedSql sql = it.next();
+        for (PreparedSql sql : sqls) {
             log(sql);
             bindParameters(preparedStatement, sql);
             preparedStatement.addBatch();

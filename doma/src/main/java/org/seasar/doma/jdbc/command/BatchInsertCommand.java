@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc.command;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -44,8 +43,7 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
         int sqlSize = sqls.size();
         int[] updatedRows = new int[sqlSize];
         int i = 0;
-        for (Iterator<PreparedSql> it = sqls.iterator(); it.hasNext();) {
-            PreparedSql sql = it.next();
+        for (PreparedSql sql : sqls) {
             log(sql);
             bindParameters(preparedStatement, sql);
             updatedRows[i] = executeUpdate(preparedStatement, sql);
