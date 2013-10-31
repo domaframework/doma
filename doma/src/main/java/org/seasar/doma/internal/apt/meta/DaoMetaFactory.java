@@ -193,6 +193,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     protected void doMethodElement(ExecutableElement methodElement,
             DaoMeta daoMeta) {
+        if (methodElement.getModifiers().contains(Modifier.STATIC)) {
+            return;
+        }
         validateMethod(methodElement, daoMeta);
         QueryMeta queryMeta = createQueryMeta(methodElement, daoMeta);
         daoMeta.addQueryMeta(queryMeta);
