@@ -15,19 +15,17 @@
  */
 package org.seasar.doma.it.auto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
-import org.seasar.doma.it.dao.CompKeyEmployeeDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
-import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.dao.PersonDao;
-import org.seasar.doma.it.dao.PersonDaoImpl;
 import org.seasar.doma.it.entity.CompKeyEmployee;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.NoId;
@@ -42,7 +40,7 @@ import org.seasar.framework.unit.Seasar2;
 public class AutoBatchDeleteTest {
 
     public void test() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Employee employee = new Employee();
         employee.setEmployeeId(1);
         employee.setVersion(1);
@@ -61,7 +59,7 @@ public class AutoBatchDeleteTest {
     }
 
     public void testImmutable() throws Exception {
-        PersonDao dao = new PersonDaoImpl();
+        PersonDao dao = PersonDao.get();
         Person person = new Person(1, null, null, null, null, null, null, null,
                 1);
         Person person2 = new Person(2, null, null, null, null, null, null,
@@ -83,7 +81,7 @@ public class AutoBatchDeleteTest {
     }
 
     public void testIgnoreVersion() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Employee employee = new Employee();
         employee.setEmployeeId(1);
         employee.setVersion(99);
@@ -104,7 +102,7 @@ public class AutoBatchDeleteTest {
     }
 
     public void testCompositeKey() throws Exception {
-        CompKeyEmployeeDao dao = new CompKeyEmployeeDaoImpl();
+        CompKeyEmployeeDao dao = CompKeyEmployeeDao.get();
         CompKeyEmployee employee = new CompKeyEmployee();
         employee.setEmployeeId1(1);
         employee.setEmployeeId2(1);
@@ -126,7 +124,7 @@ public class AutoBatchDeleteTest {
     }
 
     public void testOptimisticLockException() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Employee employee1 = dao.selectById(1);
         employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(2);
@@ -142,7 +140,7 @@ public class AutoBatchDeleteTest {
     }
 
     public void testSuppressOptimisticLockException() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Employee employee1 = dao.selectById(1);
         employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(2);
@@ -155,7 +153,7 @@ public class AutoBatchDeleteTest {
     }
 
     public void testNoId() throws Exception {
-        NoIdDao dao = new NoIdDaoImpl();
+        NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();
         entity.setValue1(1);
         entity.setValue2(2);

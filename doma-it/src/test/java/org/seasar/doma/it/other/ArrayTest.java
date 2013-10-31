@@ -1,13 +1,13 @@
 package org.seasar.doma.it.other;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.SalEmpDao;
-import org.seasar.doma.it.dao.SalEmpDaoImpl;
 import org.seasar.doma.it.entity.SalEmp;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
@@ -17,7 +17,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 public class ArrayTest {
 
     public void testSelect() throws Exception {
-        SalEmpDao dao = new SalEmpDaoImpl();
+        SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();
         assertEquals(2, entities.size());
         SalEmp entity = entities.get(0);
@@ -31,7 +31,7 @@ public class ArrayTest {
     }
 
     public void testSelect_2DimesionalArray() throws Exception {
-        SalEmpDao dao = new SalEmpDaoImpl();
+        SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();
         assertEquals(2, entities.size());
         SalEmp entity = entities.get(0);
@@ -55,7 +55,7 @@ public class ArrayTest {
     }
 
     public void testInsert() throws Exception {
-        SalEmpDao dao = new SalEmpDaoImpl();
+        SalEmpDao dao = SalEmpDao.get();
         Integer[] array = new Integer[] { 10, 20, 30, 40 };
         SalEmp entity = new SalEmp();
         entity.setName("hoge");
@@ -69,7 +69,7 @@ public class ArrayTest {
     }
 
     public void testInsert_2DimesionalArray() throws Exception {
-        SalEmpDao dao = new SalEmpDaoImpl();
+        SalEmpDao dao = SalEmpDao.get();
         String[][] array = new String[][] { { "aaa", "bbb" }, { "ccc", "ddd" } };
         SalEmp entity = new SalEmp();
         entity.setName("hoge");
@@ -89,7 +89,7 @@ public class ArrayTest {
     }
 
     public void testUpdate() throws Exception {
-        SalEmpDao dao = new SalEmpDaoImpl();
+        SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();
         assertEquals(2, entities.size());
         SalEmp entity = entities.get(0);
@@ -106,7 +106,7 @@ public class ArrayTest {
     }
 
     public void testUpdate_2DimesionalArray() throws Exception {
-        SalEmpDao dao = new SalEmpDaoImpl();
+        SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();
         assertEquals(2, entities.size());
         SalEmp entity = entities.get(0);

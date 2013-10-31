@@ -15,25 +15,22 @@
  */
 package org.seasar.doma.it.auto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
-import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
-import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
-import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
-import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
-import org.seasar.doma.it.dao.SequenceStrategyDaoImpl;
 import org.seasar.doma.it.dao.TableStrategyDao;
-import org.seasar.doma.it.dao.TableStrategyDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
@@ -52,7 +49,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 public class AutoBatchInsertTest {
 
     public void test() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
         department.setDepartmentId(new Identity<Department>(99));
         department.setDepartmentNo(99);
@@ -83,13 +80,10 @@ public class AutoBatchInsertTest {
     }
 
     public void testImmutable() throws Exception {
-        DeptDao dao = new DeptDaoImpl();
-        Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null,
-                null);
-        Dept dept2 = new Dept(new Identity<Dept>(98), 98, "foo", null,
-                null);
-        BatchResult<Dept> result = dao.insert(Arrays.asList(dept,
-                dept2));
+        DeptDao dao = DeptDao.get();
+        Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null, null);
+        Dept dept2 = new Dept(new Identity<Dept>(98), 98, "foo", null, null);
+        BatchResult<Dept> result = dao.insert(Arrays.asList(dept, dept2));
         int[] counts = result.getCounts();
         assertEquals(2, counts.length);
         assertEquals(1, counts[0]);
@@ -117,7 +111,7 @@ public class AutoBatchInsertTest {
     }
 
     public void testCompositeKey() throws Exception {
-        CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl();
+        CompKeyDepartmentDao dao = CompKeyDepartmentDao.get();
         CompKeyDepartment department = new CompKeyDepartment();
         department.setDepartmentId1(99);
         department.setDepartmentId2(99);
@@ -152,7 +146,7 @@ public class AutoBatchInsertTest {
     }
 
     public void testIdNotAssigned() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
@@ -169,7 +163,7 @@ public class AutoBatchInsertTest {
 
     @Prerequisite("#ENV not in {'oracle'}")
     public void testId_Identity() throws Exception {
-        IdentityStrategyDao dao = new IdentityStrategyDaoImpl();
+        IdentityStrategyDao dao = IdentityStrategyDao.get();
         for (int i = 0; i < 110; i++) {
             IdentityStrategy entity = new IdentityStrategy();
             IdentityStrategy entity2 = new IdentityStrategy();
@@ -185,7 +179,7 @@ public class AutoBatchInsertTest {
 
     @Prerequisite("#ENV not in {'mysql', 'mssql2008', 'sqlite'}")
     public void testId_sequence() throws Exception {
-        SequenceStrategyDao dao = new SequenceStrategyDaoImpl();
+        SequenceStrategyDao dao = SequenceStrategyDao.get();
         for (int i = 0; i < 110; i++) {
             SequenceStrategy entity = new SequenceStrategy();
             SequenceStrategy entity2 = new SequenceStrategy();
@@ -203,7 +197,7 @@ public class AutoBatchInsertTest {
     // so ignore this test case
     @Prerequisite("#ENV not in {'sqlite'}")
     public void testId_table() throws Exception {
-        TableStrategyDao dao = new TableStrategyDaoImpl();
+        TableStrategyDao dao = TableStrategyDao.get();
         for (int i = 0; i < 110; i++) {
             TableStrategy entity = new TableStrategy();
             TableStrategy entity2 = new TableStrategy();
@@ -218,7 +212,7 @@ public class AutoBatchInsertTest {
     }
 
     public void testNoId() throws Exception {
-        NoIdDao dao = new NoIdDaoImpl();
+        NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();
         entity.setValue1(1);
         entity.setValue2(2);

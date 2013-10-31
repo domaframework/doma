@@ -15,13 +15,13 @@
  */
 package org.seasar.doma.it.sqlfile;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 import java.util.List;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.framework.unit.Seasar2;
@@ -30,7 +30,7 @@ import org.seasar.framework.unit.Seasar2;
 public class SqlFileSelectCountTest {
 
     public void test() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get().count();
         List<Employee> employees = dao.selectAll(options);
         assertEquals(14, employees.size());
@@ -38,7 +38,7 @@ public class SqlFileSelectCountTest {
     }
 
     public void testCountUnspecified() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get();
         List<Employee> employees = dao.selectAll(options);
         assertEquals(14, employees.size());
@@ -46,7 +46,7 @@ public class SqlFileSelectCountTest {
     }
 
     public void testWhere() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get().count();
         Employee employee = dao.selectById(1, options);
         assertNotNull(employee);
@@ -54,7 +54,7 @@ public class SqlFileSelectCountTest {
     }
 
     public void testLimitOffset() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get().limit(5).offset(3).count();
         List<Employee> employees = dao.selectAll(options);
         assertEquals(5, employees.size());

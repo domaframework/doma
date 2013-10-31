@@ -15,13 +15,12 @@
  */
 package org.seasar.doma.it.sqlfile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
-import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
@@ -33,7 +32,7 @@ import org.seasar.framework.unit.Seasar2;
 public class SqlFileUpdateTest {
 
     public void test() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
         department.setDepartmentId(new Identity<Department>(1));
         department.setDepartmentNo(1);
@@ -49,7 +48,7 @@ public class SqlFileUpdateTest {
     }
 
     public void testImmutable() throws Exception {
-        DeptDao dao = new DeptDaoImpl();
+        DeptDao dao = DeptDao.get();
         Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
         Result<Dept> result = dao.updateBySqlFile(dept);
         assertEquals(1, result.getCount());
@@ -63,7 +62,7 @@ public class SqlFileUpdateTest {
     }
 
     public void testOptimisticLockException() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
         department1.setDepartmentName("hoge");
         Department department2 = dao.selectById(1);
@@ -77,7 +76,7 @@ public class SqlFileUpdateTest {
     }
 
     public void testSuppressOptimisticLockException() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
         department1.setDepartmentName("hoge");
         Department department2 = dao.selectById(1);

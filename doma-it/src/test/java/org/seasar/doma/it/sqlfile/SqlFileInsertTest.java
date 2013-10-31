@@ -15,13 +15,11 @@
  */
 package org.seasar.doma.it.sqlfile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
-import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
@@ -32,7 +30,7 @@ import org.seasar.framework.unit.Seasar2;
 public class SqlFileInsertTest {
 
     public void test() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
         department.setDepartmentId(new Identity<Department>(99));
         department.setDepartmentNo(99);
@@ -46,9 +44,8 @@ public class SqlFileInsertTest {
     }
 
     public void testImmutable() throws Exception {
-        DeptDao dao = new DeptDaoImpl();
-        Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null,
-                null);
+        DeptDao dao = DeptDao.get();
+        Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null, null);
         Result<Dept> result = dao.insertBySqlFile(dept);
         assertEquals(1, result.getCount());
         dept = result.getEntity();

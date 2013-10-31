@@ -17,6 +17,7 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
+import org.seasar.doma.AccessLevel;
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
@@ -26,8 +27,12 @@ import org.seasar.doma.it.entity.Person;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
 
-@Dao(config = ItConfig.class)
+@Dao(config = ItConfig.class, accessLevel = AccessLevel.PACKAGE)
 public interface PersonDao {
+
+    static PersonDao get() {
+        return new PersonDaoImpl();
+    }
 
     @Select
     Person selectById(Integer employeeId);

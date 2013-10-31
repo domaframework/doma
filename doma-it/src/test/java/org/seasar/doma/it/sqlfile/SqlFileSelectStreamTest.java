@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -30,7 +29,7 @@ public class SqlFileSelectStreamTest {
 
     @Test
     public void testStreamAll() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Long count = dao.streamAll(stream -> stream
                 .filter(e -> e.getEmployeeName() != null)
                 .filter(e -> e.getEmployeeName().startsWith("S")).count());
@@ -39,7 +38,7 @@ public class SqlFileSelectStreamTest {
 
     @Test
     public void testStreamBySalary() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Long count = dao.streamBySalary(new BigDecimal(2000),
                 stream -> stream.count());
         assertEquals(new Long(6), count);

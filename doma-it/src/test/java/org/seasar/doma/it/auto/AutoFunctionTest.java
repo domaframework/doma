@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.it.auto;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 import java.sql.Time;
 import java.util.List;
@@ -23,9 +24,7 @@ import java.util.Map;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.FunctionDao;
-import org.seasar.doma.it.dao.FunctionDaoImpl;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.ResultMappingException;
@@ -37,31 +36,31 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 public class AutoFunctionTest {
 
     public void testNoParam() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         Integer result = dao.func_none_param();
         assertEquals(new Integer(10), result);
     }
 
     public void testOneParam() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         Integer result = dao.func_simpletype_param(new Integer(10));
         assertEquals(new Integer(20), result);
     }
 
     public void testOneParam_time() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         Time result = dao.func_simpletype_time_param(Time.valueOf("12:34:56"));
         assertEquals(Time.valueOf("12:34:56"), result);
     }
 
     public void testTwoParams() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         Integer result = dao.func_dto_param(new Integer(10), new Integer(20));
         assertEquals(new Integer(30), result);
     }
 
     public void testTwoParams_time() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         Time result = dao.func_dto_time_param(Time.valueOf("12:34:56"),
                 new Integer(20));
         assertEquals(Time.valueOf("12:34:56"), result);
@@ -69,14 +68,14 @@ public class AutoFunctionTest {
 
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         List<Employee> result = dao.func_resultset(new Integer(1));
         assertEquals(13, result.size());
     }
 
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet_check() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         try {
             dao.func_resultset_check(new Integer(1));
             fail();
@@ -87,14 +86,14 @@ public class AutoFunctionTest {
 
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet_nocheck() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         List<Employee> result = dao.func_resultset_nocheck(new Integer(1));
         assertEquals(13, result.size());
     }
 
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet_map() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         List<Map<String, Object>> result = dao
                 .func_resultset_map(new Integer(1));
         assertEquals(13, result.size());
@@ -102,20 +101,20 @@ public class AutoFunctionTest {
 
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSetAndUpdate() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         List<Employee> result = dao.func_resultset_update(new Integer(1));
         assertEquals(13, result.size());
-        DepartmentDao departmentDao = new DepartmentDaoImpl();
+        DepartmentDao departmentDao = DepartmentDao.get();
         Department department = departmentDao.selectById(new Integer(1));
         assertEquals("HOGE", department.getDepartmentName());
     }
 
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSetAndUpdate2() throws Exception {
-        FunctionDao dao = new FunctionDaoImpl();
+        FunctionDao dao = FunctionDao.get();
         List<Employee> result = dao.func_resultset_update2(new Integer(1));
         assertEquals(13, result.size());
-        DepartmentDao departmentDao = new DepartmentDaoImpl();
+        DepartmentDao departmentDao = DepartmentDao.get();
         Department department = departmentDao.selectById(new Integer(1));
         assertEquals("HOGE", department.getDepartmentName());
     }

@@ -15,20 +15,18 @@
  */
 package org.seasar.doma.it.auto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
-import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
-import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
-import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
@@ -44,7 +42,7 @@ import org.seasar.framework.unit.Seasar2;
 public class AutoBatchUpdateTest {
 
     public void test() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
         department.setDepartmentId(new Identity<Department>(1));
         department.setDepartmentNo(1);
@@ -77,11 +75,10 @@ public class AutoBatchUpdateTest {
     }
 
     public void testImmutable() throws Exception {
-        DeptDao dao = new DeptDaoImpl();
+        DeptDao dao = DeptDao.get();
         Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
         Dept dept2 = new Dept(new Identity<Dept>(2), 2, "foo", null, 1);
-        BatchResult<Dept> result = dao.update(Arrays.asList(dept,
-                dept2));
+        BatchResult<Dept> result = dao.update(Arrays.asList(dept, dept2));
         int[] counts = result.getCounts();
         assertEquals(2, counts.length);
         assertEquals(1, counts[0]);
@@ -108,7 +105,7 @@ public class AutoBatchUpdateTest {
     }
 
     public void testIncludeVersion() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
         department.setDepartmentId(new Identity<Department>(1));
         department.setDepartmentNo(1);
@@ -142,7 +139,7 @@ public class AutoBatchUpdateTest {
     }
 
     public void testCompositeKey() throws Exception {
-        CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl();
+        CompKeyDepartmentDao dao = CompKeyDepartmentDao.get();
         CompKeyDepartment department = new CompKeyDepartment();
         department.setDepartmentId1(1);
         department.setDepartmentId2(1);
@@ -178,7 +175,7 @@ public class AutoBatchUpdateTest {
     }
 
     public void testOptimisticLockException() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
         department1.setDepartmentName("hoge");
         Department department2 = dao.selectById(2);
@@ -194,7 +191,7 @@ public class AutoBatchUpdateTest {
     }
 
     public void testSuppressOptimisticLockException() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
         department1.setDepartmentName("hoge");
         Department department2 = dao.selectById(2);
@@ -207,7 +204,7 @@ public class AutoBatchUpdateTest {
     }
 
     public void testNoId() throws Exception {
-        NoIdDao dao = new NoIdDaoImpl();
+        NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();
         entity.setValue1(1);
         entity.setValue2(2);
@@ -223,7 +220,7 @@ public class AutoBatchUpdateTest {
     }
 
     public void testSqlExecutionSkip() throws Exception {
-        DepartmentDao dao = new DepartmentDaoImpl();
+        DepartmentDao dao = DepartmentDao.get();
         int[] result = dao.update(new ArrayList<Department>());
         assertEquals(0, result.length);
     }

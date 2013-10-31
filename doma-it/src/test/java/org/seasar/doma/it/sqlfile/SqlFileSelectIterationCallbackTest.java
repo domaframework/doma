@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.it.sqlfile;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -23,7 +24,6 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -35,7 +35,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testEntity() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Integer count = dao
                 .selectAll(new IterationCallback<Integer, Employee>() {
 
@@ -53,7 +53,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testEntity_limitOffset() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Integer count = dao.selectAll(
                 new IterationCallback<Integer, Employee>() {
 
@@ -71,7 +71,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testDomain() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         BigDecimal total = dao
                 .selectAllSalary(new IterationCallback<BigDecimal, BigDecimal>() {
 
@@ -91,7 +91,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testDomain_limitOffset() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         BigDecimal total = dao.selectAllSalary(
                 new IterationCallback<BigDecimal, BigDecimal>() {
 
@@ -111,7 +111,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testMap() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Integer count = dao
                 .selectAllAsMapList(new IterationCallback<Integer, Map<String, Object>>() {
 
@@ -129,7 +129,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testMap_limitOffset() throws Exception {
-        EmployeeDao dao = new EmployeeDaoImpl();
+        EmployeeDao dao = EmployeeDao.get();
         Integer count = dao.selectAllAsMapList(
                 new IterationCallback<Integer, Map<String, Object>>() {
 

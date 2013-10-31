@@ -19,6 +19,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.doma.AccessLevel;
 import org.seasar.doma.Dao;
 import org.seasar.doma.In;
 import org.seasar.doma.InOut;
@@ -31,8 +32,12 @@ import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.Reference;
 
-@Dao(config = ItConfig.class)
+@Dao(config = ItConfig.class, accessLevel = AccessLevel.PACKAGE)
 public interface ProcedureDao {
+
+    static ProcedureDao get() {
+        return new ProcedureDaoImpl();
+    }
 
     @Procedure
     void proc_none_param();

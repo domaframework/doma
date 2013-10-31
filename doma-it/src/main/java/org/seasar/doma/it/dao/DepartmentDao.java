@@ -17,6 +17,7 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
+import org.seasar.doma.AccessLevel;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
@@ -26,8 +27,12 @@ import org.seasar.doma.Update;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Department;
 
-@Dao(config = ItConfig.class)
+@Dao(config = ItConfig.class, accessLevel = AccessLevel.PACKAGE)
 public interface DepartmentDao {
+
+    static DepartmentDao get() {
+        return new DepartmentDaoImpl();
+    }
 
     @Select
     Department selectById(Integer departmentId);

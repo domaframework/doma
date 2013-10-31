@@ -19,6 +19,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.doma.AccessLevel;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Function;
 import org.seasar.doma.In;
@@ -26,8 +27,12 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Employee;
 
-@Dao(config = ItConfig.class)
+@Dao(config = ItConfig.class, accessLevel = AccessLevel.PACKAGE)
 public interface FunctionDao {
+
+    static FunctionDao get() {
+        return new FunctionDaoImpl();
+    }
 
     @Function
     Integer func_none_param();

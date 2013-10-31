@@ -16,11 +16,15 @@
 package org.seasar.doma.it.dao;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import javax.sql.DataSource;
+
+import org.seasar.doma.AccessLevel;
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
@@ -32,8 +36,20 @@ import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
-@Dao(config = ItConfig.class)
+@Dao(config = ItConfig.class, accessLevel = AccessLevel.PACKAGE)
 public interface EmployeeDao {
+
+    static EmployeeDao get() {
+        return new EmployeeDaoImpl();
+    }
+
+    static EmployeeDao get(Connection connection) {
+        return new EmployeeDaoImpl(connection);
+    }
+
+    static EmployeeDao get(DataSource dataSource) {
+        return new EmployeeDaoImpl(dataSource);
+    }
 
     @Select
     List<Employee> selectByExample(Employee e);
