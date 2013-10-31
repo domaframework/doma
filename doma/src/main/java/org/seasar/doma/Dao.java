@@ -80,4 +80,11 @@ public @interface Dao {
      */
     Class<? extends Config> config() default Config.class;
 
+    /**
+     * Daoの実装クラスのアクセスレベルを返します。
+     * 
+     * @return Daoの実装クラスのアクセスレベル
+     * @since 2.0.0
+     */
+    AccessLevel accessLevel() default AccessLevel.PUBLIC;
 }

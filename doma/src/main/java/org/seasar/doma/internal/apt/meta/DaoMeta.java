@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +24,7 @@ import java.util.List;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.AccessLevel;
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
 import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
@@ -99,6 +100,10 @@ public class DaoMeta implements TypeElementMeta {
 
     public TypeMirror getConfigType() {
         return daoMirror.getConfigValue();
+    }
+
+    public AccessLevel getAccessLevel() {
+        return daoMirror.getAccessLevelValue();
     }
 
     public AnnotateWithMirror getAnnotateWithMirror() {

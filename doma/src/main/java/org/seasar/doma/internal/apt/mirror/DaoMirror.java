@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -24,8 +24,10 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.AccessLevel;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -44,6 +46,8 @@ public class DaoMirror {
     protected final ProcessingEnvironment env;
 
     protected AnnotationValue config;
+
+    protected AnnotationValue accessLevel;
 
     protected TypeMirror configValue;
 
@@ -74,6 +78,8 @@ public class DaoMirror {
                 if (result.configValue == null) {
                     throw new AptIllegalStateException("config");
                 }
+            } else if ("accessLevel".equals(name)) {
+                result.accessLevel = value;
             }
         }
         return result;
@@ -87,12 +93,25 @@ public class DaoMirror {
         return config;
     }
 
+    public AnnotationValue getAccessLevel() {
+        return accessLevel;
+    }
+
     public TypeMirror getConfigValue() {
         TypeMirror value = AnnotationValueUtil.toType(config);
         if (value == null) {
             throw new AptIllegalStateException("config");
         }
         return value;
+    }
+
+    public AccessLevel getAccessLevelValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(accessLevel);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("accessLevel");
+        }
+        return AccessLevel.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public boolean hasUserDefinedConfig() {

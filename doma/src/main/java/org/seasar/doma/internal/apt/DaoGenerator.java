@@ -201,8 +201,11 @@ public class DaoGenerator extends AbstractGenerator {
             parentClassName = createQualifiedName(env, parentDaotElement,
                     fullpackage, subpackage, prefix, suffix);
         }
-        iprint("public class %1$s extends %2$s implements %3$s {%n",
-                simpleName, parentClassName, daoMeta.getDaoType());
+        iprint("%4$s class %1$s extends %2$s implements %3$s {%n",
+        /* 1 */simpleName,
+        /* 2 */parentClassName,
+        /* 3 */daoMeta.getDaoType(),
+        /* 4 */daoMeta.getAccessLevel().getModifier());
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
