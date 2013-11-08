@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -98,11 +98,11 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     }
 
     @SuppressWarnings("rawtypes")
-    public Class<? extends Command> getCommandClass() {
+    public Class<?> getCommandClass() {
         if (queryKind == null) {
             return null;
         }
-        return queryKind.getCommandClass();
+        return (Class<? extends Command>) queryKind.getCommandClass();
     }
 
     @Override

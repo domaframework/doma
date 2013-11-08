@@ -349,6 +349,21 @@ public enum QueryKind {
         }
 
     },
+
+    DEFAULT {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return null;
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return null;
+        }
+
+    },
     ;
 
     public abstract Class<? extends Query> getQueryClass();

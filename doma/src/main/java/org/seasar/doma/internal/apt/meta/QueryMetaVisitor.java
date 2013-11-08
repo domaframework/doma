@@ -43,4 +43,6 @@ public interface QueryMetaVisitor<R, P> {
 
     R visitDelegateQueryMeta(DelegateQueryMeta m, P p);
 
+    R visitDefaultQueryMeta(DefaultQueryMeta m, P p);
+
 }

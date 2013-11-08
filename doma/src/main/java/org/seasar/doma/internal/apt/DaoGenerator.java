@@ -60,6 +60,7 @@ import org.seasar.doma.internal.apt.meta.BasicSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
+import org.seasar.doma.internal.apt.meta.DefaultQueryMeta;
 import org.seasar.doma.internal.apt.meta.DelegateQueryMeta;
 import org.seasar.doma.internal.apt.meta.DomainInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainInParameterMeta;
@@ -977,6 +978,38 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("%1$s __result = ", resultMeta.getTypeName());
             }
             print("__delegate.%1$s(", m.getName());
+            for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
+                print("%1$s", parameterMeta.getName());
+                if (it.hasNext()) {
+                    print(", ");
+                }
+            }
+            print(");%n");
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
+            if (!"void".equals(resultMeta.getTypeName())) {
+                iprint("return __result;%n");
+            }
+
+            printThrowingStatements(m);
+            return null;
+        }
+
+        @Override
+        public Void visitDefaultQueryMeta(DefaultQueryMeta m, String methodName) {
+            printEnteringStatements(m);
+
+            QueryReturnMeta resultMeta = m.getReturnMeta();
+            if ("void".equals(resultMeta.getTypeName())) {
+                iprint("Object __result = null;%n");
+                iprint("");
+            } else {
+                iprint("%1$s __result = ", resultMeta.getTypeName());
+            }
+            print("%1$s.super.%2$s(", daoMeta.getDaoElement()
+                    .getQualifiedName(), m.getName());
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();

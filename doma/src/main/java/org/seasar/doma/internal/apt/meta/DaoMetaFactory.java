@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -215,6 +215,16 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                             foundAnnotationTypeElement.getQualifiedName(),
                             typeElement.getQualifiedName());
                 }
+                /*
+                 * TODO
+                 * 
+                 * eclipse JDT 1.0.0.v20131108-0105_BETA_JAVA8 has not yet
+                 * supported a 'isDefault' method.
+                 */
+                // if (methodElement.isDefault()) {
+                // throw new AptException(Message.DOMA4252, env,
+                // methodElement, typeElement.getQualifiedName());
+                // }
                 foundAnnotationTypeElement = typeElement;
             }
         }
