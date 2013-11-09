@@ -408,7 +408,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4086);
+        assertMessage(Message.DOMA4087);
     }
 
     public void testUnknownBindVariableSqlValidation() throws Exception {

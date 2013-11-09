@@ -210,7 +210,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                     declaredType, env);
             if (typeElement.getAnnotation(DaoMethod.class) != null) {
                 if (foundAnnotationTypeElement != null) {
-                    throw new AptException(Message.DOMA4086, env,
+                    throw new AptException(Message.DOMA4087, env,
                             methodElement,
                             foundAnnotationTypeElement.getQualifiedName(),
                             typeElement.getQualifiedName());
