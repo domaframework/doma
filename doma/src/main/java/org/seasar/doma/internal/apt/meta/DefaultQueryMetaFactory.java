@@ -20,11 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.MirroredTypeException;
-import javax.lang.model.type.TypeMirror;
-
-import org.seasar.doma.Delegate;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 
 /**
  * @author taedium
@@ -50,15 +45,6 @@ public class DefaultQueryMetaFactory extends
         doReturnType(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
         return queryMeta;
-    }
-
-    protected TypeMirror getTargetType(Delegate delegate) {
-        try {
-            delegate.to();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
-        }
-        throw new AptIllegalStateException("unreachable.");
     }
 
     @Override

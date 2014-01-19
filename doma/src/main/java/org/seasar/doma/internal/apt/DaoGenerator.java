@@ -61,7 +61,6 @@ import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
 import org.seasar.doma.internal.apt.meta.DefaultQueryMeta;
-import org.seasar.doma.internal.apt.meta.DelegateQueryMeta;
 import org.seasar.doma.internal.apt.meta.DomainInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainInParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainListParameterMeta;
@@ -222,7 +221,7 @@ public class DaoGenerator extends AbstractGenerator {
         int i = 0;
         for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
             QueryKind kind = queryMeta.getQueryKind();
-            if (kind != QueryKind.DELEGATE && kind != QueryKind.DEFAULT) {
+            if (kind != QueryKind.DEFAULT) {
                 iprint("private static final %1$s __method%2$s = %3$s.getDeclaredMethod(%4$s.class, \"%5$s\"",
                         Method.class.getName(), i, AbstractDao.class.getName(),
                         daoMeta.getDaoType(), queryMeta.getName());
@@ -958,44 +957,6 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
             iprint("return __result;%n");
-
-            printThrowingStatements(m);
-            return null;
-        }
-
-        @Override
-        public Void visitDelegateQueryMeta(DelegateQueryMeta m,
-                String methodName) {
-            printEnteringStatements(m);
-
-            iprint("%1$s __delegate = new %1$s(__config", m.getTo());
-            if (m.isDaoAware()) {
-                print(", this);%n");
-            } else {
-                print(");%n");
-            }
-            QueryReturnMeta resultMeta = m.getReturnMeta();
-            if ("void".equals(resultMeta.getTypeName())) {
-                iprint("Object __result = null;%n");
-                iprint("");
-            } else {
-                iprint("%1$s __result = ", resultMeta.getTypeName());
-            }
-            print("__delegate.%1$s(", m.getName());
-            for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
-                    .iterator(); it.hasNext();) {
-                QueryParameterMeta parameterMeta = it.next();
-                print("%1$s", parameterMeta.getName());
-                if (it.hasNext()) {
-                    print(", ");
-                }
-            }
-            print(");%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
-                    m.getName());
-            if (!"void".equals(resultMeta.getTypeName())) {
-                iprint("return __result;%n");
-            }
 
             printThrowingStatements(m);
             return null;

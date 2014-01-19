@@ -52,7 +52,6 @@ import org.seasar.doma.jdbc.Config;
  * @see BatchUpdate
  * @see BlobFactory
  * @see ClobFactory
- * @see Delegate
  * @see Delete
  * @see Function
  * @see Insert

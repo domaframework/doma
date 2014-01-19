@@ -335,20 +335,6 @@ public enum QueryKind {
         }
 
     },
-    DELEGATE {
-
-        @Override
-        public Class<? extends Query> getQueryClass() {
-            return null;
-        }
-
-        @SuppressWarnings("rawtypes")
-        @Override
-        public Class<? extends Command> getCommandClass() {
-            return null;
-        }
-
-    },
 
     DEFAULT {
 

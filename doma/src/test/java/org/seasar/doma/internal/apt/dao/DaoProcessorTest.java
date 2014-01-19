@@ -331,66 +331,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4188);
     }
 
-    public void testDelegate() throws Exception {
-        Class<?> target = DelegateDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertGeneratedSource(target);
-        assertTrue(getCompiledResult());
-    }
-
-    public void testDaoAwareDelegate() throws Exception {
-        Class<?> target = DaoAwareDelegateDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertGeneratedSource(target);
-        assertTrue(getCompiledResult());
-    }
-
-    public void testIllegalConstructorDelegate() throws Exception {
-        Class<?> target = IllegalConstructorDelegateDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4080);
-    }
-
-    public void testNoMethodDelegate() throws Exception {
-        Class<?> target = NoMethodDelegateDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4081);
-    }
-
-    public void testIllegalReturnTypeDelegate() throws Exception {
-        Class<?> target = IllegalReturnTypeDelegateDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4081);
-    }
-
-    public void testIllegalParameterTypeDelegate() throws Exception {
-        Class<?> target = IllegalParameterTypeDelegateDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4081);
-    }
-
     public void testIncludeAndExclude() throws Exception {
         Class<?> target = IncludeAndExcludeDao.class;
         DaoProcessor processor = new DaoProcessor();
