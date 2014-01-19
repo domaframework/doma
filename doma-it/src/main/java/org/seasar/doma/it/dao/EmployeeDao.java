@@ -33,8 +33,10 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.builder.SelectBuilder;
 
 @Dao(config = ItConfig.class, accessLevel = AccessLevel.PACKAGE)
 public interface EmployeeDao {
@@ -117,6 +119,13 @@ public interface EmployeeDao {
 
     @Select(load = LoadType.STREAM)
     <R> R streamBySalary(BigDecimal salary, Function<Stream<Employee>, R> mapper);
+
+    default List<Employee> selectWithBuilder() {
+        Config config = Config.get(this);
+        SelectBuilder builder = SelectBuilder.newInstance(config);
+        builder.sql("select * from Employee");
+        return builder.getEntityResultList(Employee.class);
+    }
 
     @Delete
     int delete(Employee entity);

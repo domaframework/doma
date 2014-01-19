@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.junit.runner.RunWith;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.it.ItConfig;
+import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -320,5 +321,11 @@ public class SelectBuilderTest {
         Optional<Employee> employee = builder.streamEntity(Employee.class,
                 stream -> stream.findFirst());
         assertEquals("SMITH", employee.get().getEmployeeName());
+    }
+
+    public void testSelectBuilderInDao() throws Exception {
+        EmployeeDao dao = EmployeeDao.get();
+        List<Employee> employees = dao.selectWithBuilder();
+        assertEquals(14, employees.size());
     }
 }

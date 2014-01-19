@@ -998,10 +998,7 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    // TODO
-    // eclipse JDT 1.0.0.v20131108-0105_BETA_JAVA8 has not yet
-    // supported a 'isDefault' method.
-    public void ignore_testDefaultMethod() throws Exception {
+    public void testDefaultMethod() throws Exception {
         Class<?> target = DefaultMethodDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);

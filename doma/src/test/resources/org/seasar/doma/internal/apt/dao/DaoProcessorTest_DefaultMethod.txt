@@ -8,8 +8,6 @@ public class DefaultMethodDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DefaultMethodDao.class, "execute", java.lang.String.class, java.lang.Integer.class);
-
     /** */
     public DefaultMethodDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());

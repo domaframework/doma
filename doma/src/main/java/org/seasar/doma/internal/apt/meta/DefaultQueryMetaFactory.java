@@ -40,23 +40,16 @@ public class DefaultQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        /*
-         * TODO
-         * 
-         * eclipse JDT 1.0.0.v20131108-0105_BETA_JAVA8 has not yet supported a
-         * 'isDefault' method.
-         */
-        // if (!method.isDefault()) {
-        // return null;
-        // }
-        // DefaultQueryMeta queryMeta = new DefaultQueryMeta(method);
-        // queryMeta.setQueryKind(QueryKind.DEFAULT);
-        // doTypeParameters(queryMeta, method, daoMeta);
-        // doParameters(queryMeta, method, daoMeta);
-        // doReturnType(queryMeta, method, daoMeta);
-        // doThrowTypes(queryMeta, method, daoMeta);
-        // return queryMeta;
-        return null;
+        if (!method.isDefault()) {
+            return null;
+        }
+        DefaultQueryMeta queryMeta = new DefaultQueryMeta(method);
+        queryMeta.setQueryKind(QueryKind.DEFAULT);
+        doTypeParameters(queryMeta, method, daoMeta);
+        doParameters(queryMeta, method, daoMeta);
+        doReturnType(queryMeta, method, daoMeta);
+        doThrowTypes(queryMeta, method, daoMeta);
+        return queryMeta;
     }
 
     protected TypeMirror getTargetType(Delegate delegate) {
