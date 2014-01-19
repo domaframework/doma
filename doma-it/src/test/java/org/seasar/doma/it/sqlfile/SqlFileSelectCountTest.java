@@ -20,6 +20,7 @@ import static junit.framework.Assert.assertNotNull;
 
 import java.util.List;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.entity.Employee;
@@ -29,6 +30,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class SqlFileSelectCountTest {
 
+    @Test
     public void test() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get().count();
@@ -37,6 +39,7 @@ public class SqlFileSelectCountTest {
         assertEquals(14, options.getCount());
     }
 
+    @Test
     public void testCountUnspecified() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get();
@@ -45,6 +48,7 @@ public class SqlFileSelectCountTest {
         assertEquals(-1, options.getCount());
     }
 
+    @Test
     public void testWhere() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get().count();
@@ -53,6 +57,7 @@ public class SqlFileSelectCountTest {
         assertEquals(1, options.getCount());
     }
 
+    @Test
     public void testLimitOffset() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         SelectOptions options = SelectOptions.get().limit(5).offset(3).count();

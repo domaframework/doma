@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -41,6 +42,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class AutoBatchUpdateTest {
 
+    @Test
     public void test() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -74,6 +76,7 @@ public class AutoBatchUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
+    @Test
     public void testImmutable() throws Exception {
         DeptDao dao = DeptDao.get();
         Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
@@ -104,6 +107,7 @@ public class AutoBatchUpdateTest {
         assertEquals(new Integer(2), dept.getVersion());
     }
 
+    @Test
     public void testIncludeVersion() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -174,6 +178,7 @@ public class AutoBatchUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
+    @Test
     public void testOptimisticLockException() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
@@ -190,6 +195,7 @@ public class AutoBatchUpdateTest {
         }
     }
 
+    @Test
     public void testSuppressOptimisticLockException() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
@@ -203,6 +209,7 @@ public class AutoBatchUpdateTest {
                 department3));
     }
 
+    @Test
     public void testNoId() throws Exception {
         NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();
@@ -219,6 +226,7 @@ public class AutoBatchUpdateTest {
         }
     }
 
+    @Test
     public void testSqlExecutionSkip() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         int[] result = dao.update(new ArrayList<Department>());

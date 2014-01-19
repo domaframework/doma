@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.ProcedureDao;
@@ -37,21 +38,25 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 @Prerequisite("#ENV not in {'hsqldb', 'h2', 'sqlite'}")
 public class AutoProcedureTest {
 
+    @Test
     public void testNoParam() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         dao.proc_none_param();
     }
 
+    @Test
     public void testOneParam() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         dao.proc_simpletype_param(10);
     }
 
+    @Test
     public void testOneParam_time() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         dao.proc_simpletype_time_param(Time.valueOf("12:34:56"));
     }
 
+    @Test
     public void testIn_InOut_Out() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         Integer param1 = 10;
@@ -63,6 +68,7 @@ public class AutoProcedureTest {
         assertEquals(new Integer(10), param3.get());
     }
 
+    @Test
     public void testIn_InOut_Out_time() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         Time param1 = Time.valueOf("12:34:56");
@@ -74,6 +80,7 @@ public class AutoProcedureTest {
         assertEquals(param1, param3.get());
     }
 
+    @Test
     public void testResultSet() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();
@@ -81,6 +88,7 @@ public class AutoProcedureTest {
         assertEquals(13, employees.size());
     }
 
+    @Test
     public void testResultSet_check() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();
@@ -92,6 +100,7 @@ public class AutoProcedureTest {
         }
     }
 
+    @Test
     public void testResultSet_nocheck() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();
@@ -99,6 +108,7 @@ public class AutoProcedureTest {
         assertEquals(13, employees.size());
     }
 
+    @Test
     public void testResultSet_map() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Map<String, Object>> employees = new ArrayList<Map<String, Object>>();
@@ -106,6 +116,7 @@ public class AutoProcedureTest {
         assertEquals(13, employees.size());
     }
 
+    @Test
     public void testResultSet_Out() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();
@@ -115,6 +126,7 @@ public class AutoProcedureTest {
         assertEquals(new Integer(14), count.get());
     }
 
+    @Test
     public void testResultSetAndUpdate() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();
@@ -125,6 +137,7 @@ public class AutoProcedureTest {
         assertEquals("HOGE", department.getDepartmentName());
     }
 
+    @Test
     public void testResultSetAndUpdate2() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();
@@ -135,6 +148,7 @@ public class AutoProcedureTest {
         assertEquals("HOGE", department.getDepartmentName());
     }
 
+    @Test
     public void testResultSets() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();
@@ -144,6 +158,7 @@ public class AutoProcedureTest {
         assertEquals(3, departments.size());
     }
 
+    @Test
     public void testResultSetAndUpdate_Out() throws Exception {
         ProcedureDao dao = ProcedureDao.get();
         List<Employee> employees = new ArrayList<Employee>();

@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DeptDao;
@@ -33,6 +34,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class SqlFileBatchUpdateTest {
 
+    @Test
     public void test() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -61,6 +63,7 @@ public class SqlFileBatchUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
+    @Test
     public void testImmutable() throws Exception {
         DeptDao dao = DeptDao.get();
         Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
@@ -86,6 +89,7 @@ public class SqlFileBatchUpdateTest {
         assertEquals(new Integer(2), dept2.getVersion());
     }
 
+    @Test
     public void testOptimisticLockException() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
@@ -102,6 +106,7 @@ public class SqlFileBatchUpdateTest {
         }
     }
 
+    @Test
     public void testSuppressOptimisticLockException() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.it.ItConfig;
@@ -22,6 +23,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class SelectBuilderTest {
 
+    @Test
     public void testGetScalarSingleResult() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -31,6 +33,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", name);
     }
 
+    @Test
     public void testGetScalarSingleResult_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -40,6 +43,7 @@ public class SelectBuilderTest {
         assertNull(name);
     }
 
+    @Test
     public void testGetOptionalScalarSingleResult() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -50,6 +54,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", name.get());
     }
 
+    @Test
     public void testGetOptionalScalarSingleResult_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -60,6 +65,7 @@ public class SelectBuilderTest {
         assertFalse(name.isPresent());
     }
 
+    @Test
     public void testGetScalarResultList() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -68,6 +74,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", list.get(0));
     }
 
+    @Test
     public void testGetScalarResultList_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select null from EMPLOYEE");
@@ -76,6 +83,7 @@ public class SelectBuilderTest {
         assertEquals(null, list.get(0));
     }
 
+    @Test
     public void testGetOptionalScalarResultList() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -85,6 +93,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", list.get(0).get());
     }
 
+    @Test
     public void testGetOptionalScalarResultList_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select null from EMPLOYEE");
@@ -94,6 +103,7 @@ public class SelectBuilderTest {
         assertFalse(list.get(0).isPresent());
     }
 
+    @Test
     public void testIterateAsScalar() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -103,6 +113,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", name);
     }
 
+    @Test
     public void testIterateAsScalar_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -112,6 +123,7 @@ public class SelectBuilderTest {
         assertNull(name);
     }
 
+    @Test
     public void testIterateAsOptionalScalar() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -122,6 +134,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", name.get());
     }
 
+    @Test
     public void testIterateAsOptionalScalar_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select null from EMPLOYEE");
@@ -132,6 +145,7 @@ public class SelectBuilderTest {
         assertFalse(name.isPresent());
     }
 
+    @Test
     public void testStreamScalar() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -142,6 +156,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", name.get());
     }
 
+    @Test
     public void testStreamScalar_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select null from EMPLOYEE");
@@ -152,6 +167,7 @@ public class SelectBuilderTest {
         assertFalse(name.isPresent());
     }
 
+    @Test
     public void testStreamOptionalScalar() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
@@ -162,6 +178,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", name.get().get());
     }
 
+    @Test
     public void testStreamOptionalScalar_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select null from EMPLOYEE");
@@ -172,6 +189,7 @@ public class SelectBuilderTest {
         assertFalse(name.get().isPresent());
     }
 
+    @Test
     public void testGetMapSingleResult() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -185,6 +203,7 @@ public class SelectBuilderTest {
         assertNotNull(employee.get("hiredate"));
     }
 
+    @Test
     public void testGetMapSingleResult_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -195,6 +214,7 @@ public class SelectBuilderTest {
         assertNull(employee);
     }
 
+    @Test
     public void testGetOptionalMapSingleResult() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -206,6 +226,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", employee.get().get("employeeName"));
     }
 
+    @Test
     public void testGetOptionalMapSingleResult_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -217,6 +238,7 @@ public class SelectBuilderTest {
         assertFalse(employee.isPresent());
     }
 
+    @Test
     public void testGetMapResultList() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -226,6 +248,7 @@ public class SelectBuilderTest {
         assertEquals(14, employees.size());
     }
 
+    @Test
     public void testIterateAsMap() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -242,6 +265,7 @@ public class SelectBuilderTest {
         assertEquals(14, result.intValue());
     }
 
+    @Test
     public void testStreamMap() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -250,6 +274,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", result.get().get("employeeName"));
     }
 
+    @Test
     public void testGetEntitySingleResult() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -260,6 +285,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", employee.getEmployeeName());
     }
 
+    @Test
     public void testGetEntitySingleResult_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -269,6 +295,7 @@ public class SelectBuilderTest {
         assertNull(employee);
     }
 
+    @Test
     public void testGetOptionalEntitySingleResult() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -280,6 +307,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", employee.get().getEmployeeName());
     }
 
+    @Test
     public void testGetOptionalEntitySingleResult_null() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -291,6 +319,7 @@ public class SelectBuilderTest {
         assertFalse(employee.isPresent());
     }
 
+    @Test
     public void testGetEntityResultList() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -299,6 +328,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", employees.get(0).getEmployeeName());
     }
 
+    @Test
     public void testIterateAsEntity() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -315,6 +345,7 @@ public class SelectBuilderTest {
         assertEquals(14, result.intValue());
     }
 
+    @Test
     public void testStreamEntity() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
@@ -323,6 +354,7 @@ public class SelectBuilderTest {
         assertEquals("SMITH", employee.get().getEmployeeName());
     }
 
+    @Test
     public void testSelectBuilderInDao() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         List<Employee> employees = dao.selectWithBuilder();

@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao;
@@ -37,6 +38,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class AutoDeleteTest {
 
+    @Test
     public void test() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Employee employee = new Employee();
@@ -49,6 +51,7 @@ public class AutoDeleteTest {
         assertNull(employee);
     }
 
+    @Test
     public void testImmutable() throws Exception {
         PersonDao dao = PersonDao.get();
         Person person = new Person(1, null, null, null, null, null, null, null,
@@ -62,6 +65,7 @@ public class AutoDeleteTest {
         assertNull(person);
     }
 
+    @Test
     public void testIgnoreVersion() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Employee employee = new Employee();
@@ -74,6 +78,7 @@ public class AutoDeleteTest {
         assertNull(employee);
     }
 
+    @Test
     public void testCompositeKey() throws Exception {
         CompKeyEmployeeDao dao = CompKeyEmployeeDao.get();
         CompKeyEmployee employee = new CompKeyEmployee();
@@ -87,6 +92,7 @@ public class AutoDeleteTest {
         assertNull(employee);
     }
 
+    @Test
     public void testOptimisticLockException() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Employee employee1 = dao.selectById(new Integer(1));
@@ -101,6 +107,7 @@ public class AutoDeleteTest {
         }
     }
 
+    @Test
     public void testSuppressOptimisticLockException() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Employee employee1 = dao.selectById(1);
@@ -111,6 +118,7 @@ public class AutoDeleteTest {
         dao.delete_suppressOptimisticLockException(employee2);
     }
 
+    @Test
     public void testNoId() throws Exception {
         NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();

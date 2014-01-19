@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -48,6 +49,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 @RunWith(Seasar2.class)
 public class AutoBatchInsertTest {
 
+    @Test
     public void test() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -79,6 +81,7 @@ public class AutoBatchInsertTest {
         assertEquals(new Integer(1), department.getVersion());
     }
 
+    @Test
     public void testImmutable() throws Exception {
         DeptDao dao = DeptDao.get();
         Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null, null);
@@ -110,6 +113,7 @@ public class AutoBatchInsertTest {
         assertEquals(new Integer(1), dept.getVersion());
     }
 
+    @Test
     public void testCompositeKey() throws Exception {
         CompKeyDepartmentDao dao = CompKeyDepartmentDao.get();
         CompKeyDepartment department = new CompKeyDepartment();
@@ -145,6 +149,7 @@ public class AutoBatchInsertTest {
         assertEquals(new Integer(1), department.getVersion());
     }
 
+    @Test
     public void testIdNotAssigned() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -161,6 +166,7 @@ public class AutoBatchInsertTest {
         }
     }
 
+    @Test
     @Prerequisite("#ENV not in {'oracle'}")
     public void testId_Identity() throws Exception {
         IdentityStrategyDao dao = IdentityStrategyDao.get();
@@ -177,6 +183,7 @@ public class AutoBatchInsertTest {
         }
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008', 'sqlite'}")
     public void testId_sequence() throws Exception {
         SequenceStrategyDao dao = SequenceStrategyDao.get();
@@ -195,6 +202,7 @@ public class AutoBatchInsertTest {
 
     // it seems that sqlite doesn't support requiresNew transaction
     // so ignore this test case
+    @Test
     @Prerequisite("#ENV not in {'sqlite'}")
     public void testId_table() throws Exception {
         TableStrategyDao dao = TableStrategyDao.get();
@@ -211,6 +219,7 @@ public class AutoBatchInsertTest {
         }
     }
 
+    @Test
     public void testNoId() throws Exception {
         NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();

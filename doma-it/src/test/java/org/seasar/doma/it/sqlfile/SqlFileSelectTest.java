@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.entity.Employee;
@@ -17,6 +18,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class SqlFileSelectTest {
 
+    @Test
     public void testEmbeddedVariable() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         List<Employee> list = dao.selectWithOptionalOrderBy("S",
@@ -31,30 +33,35 @@ public class SqlFileSelectTest {
         assertEquals(new Integer(1), list.get(1).getEmployeeId());
     }
 
+    @Test
     public void testNull() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Employee employee = dao.selectById(9);
         assertNull(employee.getManagerId());
     }
 
+    @Test
     public void testPrefixSearch() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         List<Employee> employees = dao.selectByNamePrefix("S");
         assertEquals(2, employees.size());
     }
 
+    @Test
     public void testInsideSearch() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         List<Employee> employees = dao.selectByNameInside("S");
         assertEquals(5, employees.size());
     }
 
+    @Test
     public void testSuffixSearch() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         List<Employee> employees = dao.selectByNameSuffix("S");
         assertEquals(3, employees.size());
     }
 
+    @Test
     public void testMap() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Map<String, Object> employee = dao.selectByIdAsMap(1);
@@ -64,18 +71,21 @@ public class SqlFileSelectTest {
         assertNotNull(employee.get("hiredate"));
     }
 
+    @Test
     public void testMapList() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         List<Map<String, Object>> employees = dao.selectAllAsMapList();
         assertEquals(14, employees.size());
     }
 
+    @Test
     public void testEnsureResultMappping_false() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         List<Employee> employees = dao.selectOnlyNameWithoutMappingCheck();
         assertEquals(14, employees.size());
     }
 
+    @Test
     public void testEnsureResultMappping_true() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         try {

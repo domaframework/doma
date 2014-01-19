@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.PersonDao;
@@ -16,6 +17,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class SqlFileBatchDeleteTest {
 
+    @Test
     public void test() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Employee employee = new Employee();
@@ -35,6 +37,7 @@ public class SqlFileBatchDeleteTest {
         assertNull(employee);
     }
 
+    @Test
     public void testImmutable() throws Exception {
         PersonDao dao = PersonDao.get();
         Person person = new Person(1, null, null, null, null, null, null, null,

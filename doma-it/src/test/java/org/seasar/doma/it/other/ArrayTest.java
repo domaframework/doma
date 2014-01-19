@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.SalEmpDao;
 import org.seasar.doma.it.entity.SalEmp;
@@ -16,6 +17,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 @Prerequisite("#ENV not in {'hsqldb', 'h2', 'mysql', 'oracle', 'db2', 'mssql2008', 'sqlite'}")
 public class ArrayTest {
 
+    @Test
     public void testSelect() throws Exception {
         SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();
@@ -30,6 +32,7 @@ public class ArrayTest {
                 array));
     }
 
+    @Test
     public void testSelect_2DimesionalArray() throws Exception {
         SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();
@@ -54,6 +57,7 @@ public class ArrayTest {
         assertEquals("lunch", array[1][1]);
     }
 
+    @Test
     public void testInsert() throws Exception {
         SalEmpDao dao = SalEmpDao.get();
         Integer[] array = new Integer[] { 10, 20, 30, 40 };
@@ -68,6 +72,7 @@ public class ArrayTest {
                 .getArray()));
     }
 
+    @Test
     public void testInsert_2DimesionalArray() throws Exception {
         SalEmpDao dao = SalEmpDao.get();
         String[][] array = new String[][] { { "aaa", "bbb" }, { "ccc", "ddd" } };
@@ -88,6 +93,7 @@ public class ArrayTest {
         assertEquals("ddd", array[1][1]);
     }
 
+    @Test
     public void testUpdate() throws Exception {
         SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();
@@ -105,6 +111,7 @@ public class ArrayTest {
                 .getArray())[0]);
     }
 
+    @Test
     public void testUpdate_2DimesionalArray() throws Exception {
         SalEmpDao dao = SalEmpDao.get();
         List<SalEmp> entities = dao.selectAll();

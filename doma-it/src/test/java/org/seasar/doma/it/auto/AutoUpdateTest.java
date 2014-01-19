@@ -18,6 +18,7 @@ package org.seasar.doma.it.auto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -36,6 +37,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class AutoUpdateTest {
 
+    @Test
     public void test() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = dao.selectById(1);
@@ -53,6 +55,7 @@ public class AutoUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
+    @Test
     public void testImmutable() throws Exception {
         DeptDao dao = DeptDao.get();
         Dept dept = dao.selectById(1);
@@ -72,6 +75,7 @@ public class AutoUpdateTest {
         assertEquals(new Integer(2), dept.getVersion());
     }
 
+    @Test
     public void testIgnoreVersion() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = dao.selectById(1);
@@ -90,6 +94,7 @@ public class AutoUpdateTest {
         assertEquals(new Integer(100), department.getVersion());
     }
 
+    @Test
     public void testExcludeNull() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = dao.selectById(1);
@@ -106,6 +111,7 @@ public class AutoUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
+    @Test
     public void testCompositeKey() throws Exception {
         CompKeyDepartmentDao dao = CompKeyDepartmentDao.get();
         CompKeyDepartment department = dao.selectById(1, 1);
@@ -125,6 +131,7 @@ public class AutoUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
+    @Test
     public void testOptimisticLockException() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
@@ -139,6 +146,7 @@ public class AutoUpdateTest {
         }
     }
 
+    @Test
     public void testSuppressOptimisticLockException() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department1 = dao.selectById(1);
@@ -150,6 +158,7 @@ public class AutoUpdateTest {
         assertEquals(0, rows);
     }
 
+    @Test
     public void testNoId() throws Exception {
         NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();
@@ -163,6 +172,7 @@ public class AutoUpdateTest {
         }
     }
 
+    @Test
     public void testSqlExecutionSkip() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = dao.selectById(1);

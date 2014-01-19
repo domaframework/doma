@@ -3,6 +3,7 @@ package org.seasar.doma.it.sqlfile;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.PersonDao;
@@ -14,6 +15,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class SqlFileDeleteTest {
 
+    @Test
     public void test() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Employee employee = new Employee();
@@ -26,6 +28,7 @@ public class SqlFileDeleteTest {
         assertNull(employee);
     }
 
+    @Test
     public void testImmutable() throws Exception {
         PersonDao dao = PersonDao.get();
         Person person = new Person(1, null, null, null, null, null, null, null,

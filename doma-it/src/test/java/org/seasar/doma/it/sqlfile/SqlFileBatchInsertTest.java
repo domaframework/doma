@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DeptDao;
@@ -31,6 +32,7 @@ import org.seasar.framework.unit.Seasar2;
 @RunWith(Seasar2.class)
 public class SqlFileBatchInsertTest {
 
+    @Test
     public void test() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -55,6 +57,7 @@ public class SqlFileBatchInsertTest {
         assertEquals(new Integer(98), department.getDepartmentNo());
     }
 
+    @Test
     public void testImmutable() throws Exception {
         DeptDao dao = DeptDao.get();
         Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null, null);

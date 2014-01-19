@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -47,6 +48,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 @RunWith(Seasar2.class)
 public class AutoInsertTest {
 
+    @Test
     public void test() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -66,6 +68,7 @@ public class AutoInsertTest {
         assertEquals(new Integer(1), department.getVersion());
     }
 
+    @Test
     public void testImmutable() throws Exception {
         DeptDao dao = DeptDao.get();
         Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge",
@@ -84,6 +87,7 @@ public class AutoInsertTest {
         assertEquals(new Integer(1), dept.getVersion());
     }
 
+    @Test
     public void test_UniqueConstraintException() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -100,6 +104,7 @@ public class AutoInsertTest {
         }
     }
 
+    @Test
     public void testExcludeNull() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -118,6 +123,7 @@ public class AutoInsertTest {
         assertEquals(new Integer(1), department.getVersion());
     }
 
+    @Test
     public void testCompositeKey() throws Exception {
         CompKeyDepartmentDao dao = CompKeyDepartmentDao.get();
         CompKeyDepartment department = new CompKeyDepartment();
@@ -138,6 +144,7 @@ public class AutoInsertTest {
         assertEquals(new Integer(1), department.getVersion());
     }
 
+    @Test
     public void testIdNotAssigned() throws Exception {
         DepartmentDao dao = DepartmentDao.get();
         Department department = new Department();
@@ -151,6 +158,7 @@ public class AutoInsertTest {
         }
     }
 
+    @Test
     @Prerequisite("#ENV not in {'oracle'}")
     public void testId_Identity() throws Exception {
         IdentityStrategyDao dao = IdentityStrategyDao.get();
@@ -161,6 +169,7 @@ public class AutoInsertTest {
         }
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008', 'sqlite'}")
     public void testId_sequence() throws Exception {
         SequenceStrategyDao dao = SequenceStrategyDao.get();
@@ -173,6 +182,7 @@ public class AutoInsertTest {
 
     // it seems that sqlite doesn't support requiresNew transaction
     // so ignore this test case
+    @Test
     @Prerequisite("#ENV not in {'sqlite'}")
     public void testId_table() throws Exception {
         TableStrategyDao dao = TableStrategyDao.get();
@@ -183,6 +193,7 @@ public class AutoInsertTest {
         }
     }
 
+    @Test
     public void testNoId() throws Exception {
         NoIdDao dao = NoIdDao.get();
         NoId entity = new NoId();

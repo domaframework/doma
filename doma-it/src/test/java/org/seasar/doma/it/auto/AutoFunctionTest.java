@@ -22,6 +22,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.FunctionDao;
@@ -35,30 +36,35 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 @Prerequisite("#ENV not in {'hsqldb', 'h2', 'db2', 'sqlite'}")
 public class AutoFunctionTest {
 
+    @Test
     public void testNoParam() throws Exception {
         FunctionDao dao = FunctionDao.get();
         Integer result = dao.func_none_param();
         assertEquals(new Integer(10), result);
     }
 
+    @Test
     public void testOneParam() throws Exception {
         FunctionDao dao = FunctionDao.get();
         Integer result = dao.func_simpletype_param(new Integer(10));
         assertEquals(new Integer(20), result);
     }
 
+    @Test
     public void testOneParam_time() throws Exception {
         FunctionDao dao = FunctionDao.get();
         Time result = dao.func_simpletype_time_param(Time.valueOf("12:34:56"));
         assertEquals(Time.valueOf("12:34:56"), result);
     }
 
+    @Test
     public void testTwoParams() throws Exception {
         FunctionDao dao = FunctionDao.get();
         Integer result = dao.func_dto_param(new Integer(10), new Integer(20));
         assertEquals(new Integer(30), result);
     }
 
+    @Test
     public void testTwoParams_time() throws Exception {
         FunctionDao dao = FunctionDao.get();
         Time result = dao.func_dto_time_param(Time.valueOf("12:34:56"),
@@ -66,6 +72,7 @@ public class AutoFunctionTest {
         assertEquals(Time.valueOf("12:34:56"), result);
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet() throws Exception {
         FunctionDao dao = FunctionDao.get();
@@ -73,6 +80,7 @@ public class AutoFunctionTest {
         assertEquals(13, result.size());
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet_check() throws Exception {
         FunctionDao dao = FunctionDao.get();
@@ -84,6 +92,7 @@ public class AutoFunctionTest {
         }
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet_nocheck() throws Exception {
         FunctionDao dao = FunctionDao.get();
@@ -91,6 +100,7 @@ public class AutoFunctionTest {
         assertEquals(13, result.size());
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet_map() throws Exception {
         FunctionDao dao = FunctionDao.get();
@@ -99,6 +109,7 @@ public class AutoFunctionTest {
         assertEquals(13, result.size());
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSetAndUpdate() throws Exception {
         FunctionDao dao = FunctionDao.get();
@@ -109,6 +120,7 @@ public class AutoFunctionTest {
         assertEquals("HOGE", department.getDepartmentName());
     }
 
+    @Test
     @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSetAndUpdate2() throws Exception {
         FunctionDao dao = FunctionDao.get();
