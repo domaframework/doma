@@ -3,7 +3,7 @@ Doma
 
 Doma is a Database access framework. 
 
-Doma uses [Annotation Processing Tool][apt] to generate source code and validate sql mappings in compile time.
+Doma uses [Annotation Processing Tool][apt] to generate source code and validate sql mappings at *compile time*.
 
 Versions
 --------
@@ -11,12 +11,14 @@ Versions
 <dl>
 	<dt>Doma 1</dt>
 	<dd>
-	安定版。Java 6 以上で動作する。<br />
+	Stable.<br />
+	Works on Java 6 and above.<br />
 	http://doma.seasar.org/</dd>
 	<dt>Doma 2</dt>
 	<dd>
-	開発版。Java 8 で動作する。<br />
-	2.0-beta-1 ブランチで開発中</dd>
+	Development in the master branch.<br />
+	Works on Java 8.<br />
+	</dd>
 </dl>
 
 Projects
@@ -24,9 +26,9 @@ Projects
 
 <dl>
 	<dt>doma</dt>
-	<dd>フレームワーク本体</dd>
+	<dd>Core</dd>
 	<dt>doma-it</dt>
-	<dd>各種 RDBMS を使った結合テスト用プロジェクト</dd>
+	<dd>Integration test</dd>
 </dl>
 
 Related Repositories
@@ -35,17 +37,17 @@ Related Repositories
 <dl>
 	<dt>doma-gen</dt>
 	<dd>
-	データベースのメタデータからコードを生成するツール<br />
+	Code generation tool<br />
 	https://github.com/seasarorg/doma-gen
 	</dd>
 	<dt>doma-tools</dt>
 	<dd>
-	Dao クラスと SQL ファイル の相互遷移を可能にする Eclipse プラグイン<br />
+	Eclipse plugins<br />
 	https://github.com/seasarorg/doma-tools
 	</dd>
 	<dt>doma-samples</dt>
 	<dd>
-	サンプル<br />
+	Samples<br />
 	https://github.com/seasarorg/doma-samples
 	</dd>
 </dl>
