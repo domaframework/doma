@@ -195,7 +195,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     }
 
     @Override
-    public Integer iterate(IterationCallback<Integer, Emp> callback) {
+    public Integer iterate(IterationCallback<Emp, Integer> callback) {
         SqlFileSelectQuery query = getQueryImplementors()
                 .createSqlFileSelectQuery(method6);
         query.setConfig(__config);
@@ -208,7 +208,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
                 .createSelectCommand(
                         method6,
                         query,
-                        new EntityIterationHandler<Integer, Emp>(_Emp
+                        new EntityIterationHandler<Emp, Integer>(_Emp
                                 .getSingletonInternal(), callback));
         return command.execute();
     }

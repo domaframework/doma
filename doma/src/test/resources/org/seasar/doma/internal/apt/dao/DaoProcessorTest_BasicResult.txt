@@ -171,7 +171,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     }
 
     @Override
-    public <R> R iterate(org.seasar.doma.jdbc.IterationCallback<R, java.lang.String> callback) {
+    public <R> R iterate(org.seasar.doma.jdbc.IterationCallback<java.lang.String, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.BasicResultDaoImpl", "iterate", callback);
         try {
             if (callback == null) {
@@ -189,7 +189,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.BasicResultDaoImpl", "iterate", __result);
@@ -201,7 +201,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     }
 
     @Override
-    public <R> R iterateOptional(org.seasar.doma.jdbc.IterationCallback<R, java.lang.String> callback) {
+    public <R> R iterateOptional(org.seasar.doma.jdbc.IterationCallback<java.lang.String, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.BasicResultDaoImpl", "iterateOptional", callback);
         try {
             if (callback == null) {
@@ -219,7 +219,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method5, __query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method5, __query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.BasicResultDaoImpl", "iterateOptional", __result);

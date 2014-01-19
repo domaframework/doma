@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -29,20 +29,20 @@ import org.seasar.doma.jdbc.IterationCallback;
 
 public class IterationCallbackCtType extends AbstractCtType {
 
-    protected AnyCtType returnCtType;
-
     protected CtType targetCtType;
+
+    protected AnyCtType returnCtType;
 
     public IterationCallbackCtType(TypeMirror type, ProcessingEnvironment env) {
         super(type, env);
     }
 
-    public AnyCtType getReturnCtType() {
-        return returnCtType;
-    }
-
     public CtType getTargetCtType() {
         return targetCtType;
+    }
+
+    public AnyCtType getReturnCtType() {
+        return returnCtType;
     }
 
     public boolean isRawType() {
@@ -71,8 +71,8 @@ public class IterationCallbackCtType extends AbstractCtType {
         List<? extends TypeMirror> typeArguments = iterationCallbackDeclaredType
                 .getTypeArguments();
         if (typeArguments.size() == 2) {
-            TypeMirror returnTypeMirror = typeArguments.get(0);
-            TypeMirror targetTypeMirror = typeArguments.get(1);
+            TypeMirror targetTypeMirror = typeArguments.get(0);
+            TypeMirror returnTypeMirror = typeArguments.get(1);
 
             callbackType.returnCtType = AnyCtType.newInstance(returnTypeMirror,
                     env);

@@ -64,9 +64,9 @@ public class DomainIterationHandlerTest extends TestCase {
         query.setMethod(method);
         query.prepare();
 
-        DomainIterationHandler<String, String, PhoneNumber> handler = new DomainIterationHandler<String, String, PhoneNumber>(
+        DomainIterationHandler<String, PhoneNumber, String> handler = new DomainIterationHandler<>(
                 _PhoneNumber.getSingletonInternal(),
-                new IterationCallback<String, PhoneNumber>() {
+                new IterationCallback<PhoneNumber, String>() {
 
                     private String result = "";
 
@@ -97,9 +97,9 @@ public class DomainIterationHandlerTest extends TestCase {
         query.setMethod(method);
         query.prepare();
 
-        DomainIterationHandler<String, String, PhoneNumber> handler = new DomainIterationHandler<String, String, PhoneNumber>(
+        DomainIterationHandler<String, PhoneNumber, String> handler = new DomainIterationHandler<>(
                 _PhoneNumber.getSingletonInternal(),
-                new IterationCallback<String, PhoneNumber>() {
+                new IterationCallback<PhoneNumber, String>() {
 
                     private String result = "";
 
@@ -130,9 +130,9 @@ public class DomainIterationHandlerTest extends TestCase {
         query.setResultEnsured(true);
         query.prepare();
 
-        DomainIterationHandler<String, String, PhoneNumber> handler = new DomainIterationHandler<String, String, PhoneNumber>(
+        DomainIterationHandler<String, PhoneNumber, String> handler = new DomainIterationHandler<>(
                 _PhoneNumber.getSingletonInternal(),
-                new IterationCallback<String, PhoneNumber>() {
+                new IterationCallback<PhoneNumber, String>() {
 
                     private String result = "";
 

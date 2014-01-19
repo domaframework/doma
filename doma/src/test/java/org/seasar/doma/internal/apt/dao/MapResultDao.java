@@ -41,6 +41,6 @@ public interface MapResultDao {
     List<Map<String, Object>> selectResultList();
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterate(IterationCallback<R, Map<String, Object>> callback);
+    <R> R iterate(IterationCallback<Map<String, Object>, R> callback);
 
 }

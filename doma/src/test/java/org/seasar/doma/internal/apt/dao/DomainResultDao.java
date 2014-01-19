@@ -45,8 +45,8 @@ public interface DomainResultDao {
     List<Optional<PhoneNumber>> selectOptionalResultList();
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterate(IterationCallback<R, PhoneNumber> callback);
+    <R> R iterate(IterationCallback<PhoneNumber, R> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterateOptional(IterationCallback<R, PhoneNumber> callback);
+    <R> R iterateOptional(IterationCallback<PhoneNumber, R> callback);
 }

@@ -30,6 +30,6 @@ public interface IterateWildcardTypeDao {
 
     @SuppressWarnings("rawtypes")
     @Select(load = LoadType.ITERATION)
-    <R> R select(IterationCallback<R, Height> callback);
+    <R> R select(IterationCallback<Height, R> callback);
 
 }

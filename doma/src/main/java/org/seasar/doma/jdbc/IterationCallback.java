@@ -27,12 +27,12 @@ import java.sql.ResultSet;
  * 
  * @author taedium
  * 
- * @param <RESULT>
- *            戻り値の型
  * @param <TARGET>
  *            処理対象の型。すなわち、基本型、ドメインクラス、エンティティクラス、もしくは {@code Map<String, Object>}
+ * @param <RESULT>
+ *            戻り値の型
  */
-public interface IterationCallback<RESULT, TARGET> {
+public interface IterationCallback<TARGET, RESULT> {
 
     /**
      * デフォルトの戻り値を返します。

@@ -608,10 +608,10 @@ public class SelectBuilder {
     /**
      * 結果セットをエンティティのインスタンスとして1件ずつ処理します。
      * 
-     * @param <RESULT>
-     *            戻り値の型
      * @param <TARGET>
      *            エンティティ型
+     * @param <RESULT>
+     *            戻り値の型
      * @param targetClass
      *            処理対象のクラス
      * @param iterationCallback
@@ -633,8 +633,8 @@ public class SelectBuilder {
      *             上記以外でJDBCに関する例外が発生した場合
      * @since 2.0.0
      */
-    public <RESULT, TARGET> RESULT iterateAsEntity(Class<TARGET> targetClass,
-            IterationCallback<RESULT, TARGET> iterationCallback) {
+    public <TARGET, RESULT> RESULT iterateAsEntity(Class<TARGET> targetClass,
+            IterationCallback<TARGET, RESULT> iterationCallback) {
         if (targetClass == null) {
             throw new DomaNullPointerException("targetClass");
         }
@@ -650,7 +650,7 @@ public class SelectBuilder {
         }
         EntityType<TARGET> entityType = EntityTypeFactory.getEntityType(
                 targetClass, config.getClassHelper());
-        EntityIterationHandler<RESULT, TARGET> handler = new EntityIterationHandler<>(
+        EntityIterationHandler<TARGET, RESULT> handler = new EntityIterationHandler<>(
                 entityType, iterationCallback);
         return execute(handler);
     }
@@ -658,10 +658,10 @@ public class SelectBuilder {
     /**
      * 結果セットを基本型もしくはドメイン型のインスタンスとして1件ずつ処理します。
      * 
-     * @param <RESULT>
-     *            戻り値の型
      * @param <TARGET>
      *            基本型もしくはドメイン型
+     * @param <RESULT>
+     *            戻り値の型
      * @param targetClass
      *            基本型もしくはドメイン型のクラス
      * @param iterationCallback
@@ -681,8 +681,8 @@ public class SelectBuilder {
      * @since 2.0.0
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <RESULT, TARGET> RESULT iterateAsScalar(Class<TARGET> targetClass,
-            IterationCallback<RESULT, TARGET> iterationCallback) {
+    public <TARGET, RESULT> RESULT iterateAsScalar(Class<TARGET> targetClass,
+            IterationCallback<TARGET, RESULT> iterationCallback) {
         if (targetClass == null) {
             throw new DomaNullPointerException("targetClass");
         }
@@ -702,10 +702,10 @@ public class SelectBuilder {
     /**
      * 結果セットを基本型もしくはドメイン型のインスタンスとして {@link Optional} でラップして1件ずつ処理します。
      * 
-     * @param <RESULT>
-     *            戻り値の型
      * @param <TARGET>
      *            基本型もしくはドメイン型
+     * @param <RESULT>
+     *            戻り値の型
      * @param targetClass
      *            基本型もしくはドメイン型のクラス
      * @param iterationCallback
@@ -725,7 +725,7 @@ public class SelectBuilder {
      * @since 2.0.0
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <RESULT, TARGET> RESULT iterateAsOptionalScalar(
+    public <TARGET, RESULT> RESULT iterateAsOptionalScalar(
             Class<TARGET> targetClass,
             IterationCallback<RESULT, Optional<TARGET>> iterationCallback) {
         if (targetClass == null) {
@@ -761,7 +761,7 @@ public class SelectBuilder {
      * @since 2.0.0
      */
     public <RESULT> RESULT iterateAsMap(MapKeyNamingType mapKeyNamingType,
-            IterationCallback<RESULT, Map<String, Object>> iterationCallback) {
+            IterationCallback<Map<String, Object>, RESULT> iterationCallback) {
         if (mapKeyNamingType == null) {
             throw new DomaNullPointerException("mapKeyNamingType");
         }

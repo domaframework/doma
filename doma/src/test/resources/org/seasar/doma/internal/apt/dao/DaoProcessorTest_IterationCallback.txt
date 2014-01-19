@@ -61,7 +61,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
     }
 
     @Override
-    public java.lang.Integer iterateByIdAndName(java.lang.Integer id, java.lang.String name, org.seasar.doma.jdbc.IterationCallback<java.lang.Integer, org.seasar.doma.internal.apt.entity.Emp> callback) {
+    public java.lang.Integer iterateByIdAndName(java.lang.Integer id, java.lang.String name, org.seasar.doma.jdbc.IterationCallback<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAndName", id, name, callback);
         try {
             if (callback == null) {
@@ -81,7 +81,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<java.lang.Integer, org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), callback));
             java.lang.Integer __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAndName", __result);
@@ -93,7 +93,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
     }
 
     @Override
-    public <R> R iterateById(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<R, example.domain.PhoneNumber> callback) {
+    public <R> R iterateById(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<example.domain.PhoneNumber, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateById", id, callback);
         try {
             if (callback == null) {
@@ -112,7 +112,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<R, java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateById", __result);
@@ -124,7 +124,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
     }
 
     @Override
-    public <R extends java.lang.Number> R iterate(org.seasar.doma.jdbc.IterationCallback<R, java.lang.String> callback) {
+    public <R extends java.lang.Number> R iterate(org.seasar.doma.jdbc.IterationCallback<java.lang.String, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterate", callback);
         try {
             if (callback == null) {
@@ -142,7 +142,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterate", __result);
@@ -172,7 +172,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<java.lang.String, org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<org.seasar.doma.internal.apt.entity.Emp, java.lang.String>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), callback));
             java.lang.String __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateWithHogeIterationCallback", __result);
@@ -184,7 +184,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
     }
 
     @Override
-    public <R> R iterateByIdAsMap(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<R, java.util.Map<java.lang.String, java.lang.Object>> callback) {
+    public <R> R iterateByIdAsMap(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<java.util.Map<java.lang.String, java.lang.Object>, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAsMap", id, callback);
         try {
             if (callback == null) {

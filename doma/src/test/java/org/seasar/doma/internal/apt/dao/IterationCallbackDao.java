@@ -35,18 +35,18 @@ public interface IterationCallbackDao {
 
     @Select(load = LoadType.ITERATION)
     Integer iterateByIdAndName(Integer id, String name,
-            IterationCallback<Integer, Emp> callback);
+            IterationCallback<Emp, Integer> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterateById(Integer id, IterationCallback<R, PhoneNumber> callback);
+    <R> R iterateById(Integer id, IterationCallback<PhoneNumber, R> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R extends Number> R iterate(IterationCallback<R, String> callback);
+    <R extends Number> R iterate(IterationCallback<String, R> callback);
 
     @Select(load = LoadType.ITERATION)
     String iterateWithHogeIterationCallback(HogeIterationCallback callback);
 
     @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R iterateByIdAsMap(Integer id,
-            IterationCallback<R, Map<String, Object>> callback);
+            IterationCallback<Map<String, Object>, R> callback);
 }

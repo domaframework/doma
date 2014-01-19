@@ -26,11 +26,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class OptionalBasicIterationHandler<RESULT, BASIC> extends
-        ScalarIterationHandler<RESULT, BASIC, Optional<BASIC>> {
+public class OptionalBasicIterationHandler<BASIC, RESULT> extends
+        ScalarIterationHandler<BASIC, Optional<BASIC>, RESULT> {
 
     public OptionalBasicIterationHandler(Supplier<Wrapper<BASIC>> supplier,
-            IterationCallback<RESULT, Optional<BASIC>> iterationCallback) {
+            IterationCallback<Optional<BASIC>, RESULT> iterationCallback) {
         super(() -> new OptionalBasicScalar<>(supplier), iterationCallback);
     }
 

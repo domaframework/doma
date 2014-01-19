@@ -23,7 +23,7 @@ import org.seasar.doma.jdbc.IterationContext;
  * @author taedium
  * 
  */
-public class HogeIterationCallback implements IterationCallback<String, Emp> {
+public class HogeIterationCallback implements IterationCallback<Emp, String> {
 
     @Override
     public String iterate(Emp target, IterationContext iterationContext) {

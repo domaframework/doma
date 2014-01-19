@@ -29,6 +29,6 @@ import org.seasar.doma.jdbc.IterationCallback;
 public interface IterateRawTypeDao {
 
     @Select(load = LoadType.ITERATION)
-    <R> R select(IterationCallback<R, Height<?>> callback);
+    <R> R select(IterationCallback<Height<?>, R> callback);
 
 }

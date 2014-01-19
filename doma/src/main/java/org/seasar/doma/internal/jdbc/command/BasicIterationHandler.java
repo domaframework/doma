@@ -28,11 +28,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <BASIC>
  *            基本型
  */
-public class BasicIterationHandler<RESULT, BASIC> extends
-        ScalarIterationHandler<RESULT, BASIC, BASIC> {
+public class BasicIterationHandler<BASIC, RESULT> extends
+        ScalarIterationHandler<BASIC, BASIC, RESULT> {
 
     public BasicIterationHandler(Supplier<Wrapper<BASIC>> supplier,
-            IterationCallback<RESULT, BASIC> iterationCallback) {
+            IterationCallback<BASIC, RESULT> iterationCallback) {
         super(() -> new BasicScalar<>(supplier, false), iterationCallback);
     }
 

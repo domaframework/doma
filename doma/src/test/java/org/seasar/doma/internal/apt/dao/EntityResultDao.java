@@ -41,6 +41,6 @@ public interface EntityResultDao {
     List<Emp> selectResultList();
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterate(IterationCallback<R, Emp> callback);
+    <R> R iterate(IterationCallback<Emp, R> callback);
 
 }

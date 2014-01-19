@@ -23,7 +23,7 @@ import org.seasar.doma.jdbc.IterationContext;
  * 
  */
 public class ConcretePostIterationCallback<R, T> implements
-        IterationCallback<R, T> {
+        IterationCallback<T, R> {
 
     @Override
     public R iterate(T target, IterationContext context) {

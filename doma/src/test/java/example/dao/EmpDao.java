@@ -49,7 +49,7 @@ public interface EmpDao {
     List<Emp> selectByExample(Emp emp);
 
     @Select(load = LoadType.ITERATION)
-    Integer iterate(IterationCallback<Integer, Emp> callback);
+    Integer iterate(IterationCallback<Emp, Integer> callback);
 
     @Insert
     int insert(Emp entity);

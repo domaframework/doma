@@ -25,13 +25,13 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public class EntityIterationHandler<RESULT, ENTITY> extends
-        AbstractIterationHandler<RESULT, ENTITY> {
+public class EntityIterationHandler<ENTITY, RESULT> extends
+        AbstractIterationHandler<ENTITY, RESULT> {
 
     protected final EntityType<ENTITY> entityType;
 
     public EntityIterationHandler(EntityType<ENTITY> entityType,
-            IterationCallback<RESULT, ENTITY> iterationCallback) {
+            IterationCallback<ENTITY, RESULT> iterationCallback) {
         super(iterationCallback);
         assertNotNull(entityType);
         this.entityType = entityType;

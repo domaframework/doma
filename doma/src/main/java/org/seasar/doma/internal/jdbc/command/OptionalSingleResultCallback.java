@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import static java.util.Optional.ofNullable;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Optional;
@@ -27,8 +28,10 @@ import org.seasar.doma.jdbc.IterationContext;
  * @author nakamura-to
  * 
  */
+// TODO
+@SuppressWarnings("unused")
 public class OptionalSingleResultCallback<TARGET> implements
-        IterationCallback<Optional<TARGET>, TARGET> {
+        IterationCallback<TARGET, Optional<TARGET>> {
 
     protected final Function<TARGET, Optional<TARGET>> mapper;
 

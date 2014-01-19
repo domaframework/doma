@@ -27,13 +27,13 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public class ScalarIterationHandler<RESULT, BASIC, CONTAINER> extends
-        AbstractIterationHandler<RESULT, CONTAINER> {
+public class ScalarIterationHandler<BASIC, CONTAINER, RESULT> extends
+        AbstractIterationHandler<CONTAINER, RESULT> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
     public ScalarIterationHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier,
-            IterationCallback<RESULT, CONTAINER> iterationCallback) {
+            IterationCallback<CONTAINER, RESULT> iterationCallback) {
         super(iterationCallback);
         assertNotNull(supplier);
         this.supplier = supplier;

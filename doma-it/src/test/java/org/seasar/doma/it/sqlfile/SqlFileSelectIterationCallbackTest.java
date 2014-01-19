@@ -37,7 +37,7 @@ public class SqlFileSelectIterationCallbackTest {
     public void testEntity() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Integer count = dao
-                .selectAll(new IterationCallback<Integer, Employee>() {
+                .selectAll(new IterationCallback<Employee, Integer>() {
 
                     int count;
 
@@ -55,7 +55,7 @@ public class SqlFileSelectIterationCallbackTest {
     public void testEntity_limitOffset() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Integer count = dao.selectAll(
-                new IterationCallback<Integer, Employee>() {
+                new IterationCallback<Employee, Integer>() {
 
                     int count;
 
@@ -113,7 +113,7 @@ public class SqlFileSelectIterationCallbackTest {
     public void testMap() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Integer count = dao
-                .selectAllAsMapList(new IterationCallback<Integer, Map<String, Object>>() {
+                .selectAllAsMapList(new IterationCallback<Map<String, Object>, Integer>() {
 
                     int count;
 
@@ -131,7 +131,7 @@ public class SqlFileSelectIterationCallbackTest {
     public void testMap_limitOffset() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
         Integer count = dao.selectAllAsMapList(
-                new IterationCallback<Integer, Map<String, Object>>() {
+                new IterationCallback<Map<String, Object>, Integer>() {
 
                     int count;
 

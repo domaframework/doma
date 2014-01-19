@@ -65,9 +65,9 @@ public class EntityIterationHandlerTest extends TestCase {
         query.setMethod(method);
         query.prepare();
 
-        EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
+        EntityIterationHandler<Emp, Integer> handler = new EntityIterationHandler<>(
                 _Emp.getSingletonInternal(),
-                new IterationCallback<Integer, Emp>() {
+                new IterationCallback<Emp, Integer>() {
 
                     private int count;
 
@@ -100,9 +100,9 @@ public class EntityIterationHandlerTest extends TestCase {
         query.setMethod(method);
         query.prepare();
 
-        EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
+        EntityIterationHandler<Emp, Integer> handler = new EntityIterationHandler<>(
                 _Emp.getSingletonInternal(),
-                new IterationCallback<Integer, Emp>() {
+                new IterationCallback<Emp, Integer>() {
 
                     private int count;
 
@@ -135,9 +135,9 @@ public class EntityIterationHandlerTest extends TestCase {
         query.setResultEnsured(true);
         query.prepare();
 
-        EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
+        EntityIterationHandler<Emp, Integer> handler = new EntityIterationHandler<>(
                 _Emp.getSingletonInternal(),
-                new IterationCallback<Integer, Emp>() {
+                new IterationCallback<Emp, Integer>() {
 
                     private int count;
 

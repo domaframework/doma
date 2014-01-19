@@ -167,7 +167,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("aaa =").param(String.class, "aaa");
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
-        builder.iterateAsEntity(Emp.class, new IterationCallback<Void, Emp>() {
+        builder.iterateAsEntity(Emp.class, new IterationCallback<Emp, Void>() {
 
             @Override
             public Void iterate(Emp target, IterationContext context) {
@@ -185,7 +185,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
         builder.iterateAsMap(MapKeyNamingType.CAMEL_CASE,
-                new IterationCallback<Void, Map<String, Object>>() {
+                new IterationCallback<Map<String, Object>, Void>() {
 
                     @Override
                     public Void iterate(Map<String, Object> target,
@@ -204,7 +204,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
         builder.iterateAsScalar(PhoneNumber.class,
-                new IterationCallback<Void, PhoneNumber>() {
+                new IterationCallback<PhoneNumber, Void>() {
 
                     @Override
                     public Void iterate(PhoneNumber target,
@@ -223,7 +223,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
         builder.iterateAsScalar(String.class,
-                new IterationCallback<Void, String>() {
+                new IterationCallback<String, Void>() {
 
                     @Override
                     public Void iterate(String target, IterationContext context) {

@@ -43,8 +43,8 @@ public interface ParameterizedDomainResultDao {
     List<Optional<Height<String>>> selectOptionalResultList();
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterate(IterationCallback<R, Height<String>> callback);
+    <R> R iterate(IterationCallback<Height<String>, R> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterateOptional(IterationCallback<R, Height<String>> callback);
+    <R> R iterateOptional(IterationCallback<Height<String>, R> callback);
 }

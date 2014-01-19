@@ -230,7 +230,7 @@ public class SelectBuilderTest {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
         Integer result = builder.iterateAsMap(MapKeyNamingType.CAMEL_CASE,
-                new IterationCallback<Integer, Map<String, Object>>() {
+                new IterationCallback<Map<String, Object>, Integer>() {
                     private int count;
 
                     public Integer iterate(Map<String, Object> target,
@@ -303,7 +303,7 @@ public class SelectBuilderTest {
         SelectBuilder builder = SelectBuilder.newInstance(new ItConfig());
         builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
         Integer result = builder.iterateAsEntity(Employee.class,
-                new IterationCallback<Integer, Employee>() {
+                new IterationCallback<Employee, Integer>() {
                     private int count;
 
                     public Integer iterate(Employee target,

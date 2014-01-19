@@ -28,12 +28,12 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * 
  */
 public class MapIterationHandler<RESULT> extends
-        AbstractIterationHandler<RESULT, Map<String, Object>> {
+        AbstractIterationHandler<Map<String, Object>, RESULT> {
 
     private final MapKeyNamingType keyNamingType;
 
     public MapIterationHandler(MapKeyNamingType keyNamingType,
-            IterationCallback<RESULT, Map<String, Object>> iterationCallback) {
+            IterationCallback<Map<String, Object>, RESULT> iterationCallback) {
         super(iterationCallback);
         assertNotNull(keyNamingType);
         this.keyNamingType = keyNamingType;

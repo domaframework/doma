@@ -140,7 +140,7 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
     }
 
     @Override
-    public <R> R iterate(org.seasar.doma.jdbc.IterationCallback<R, java.util.Map<java.lang.String, java.lang.Object>> callback) {
+    public <R> R iterate(org.seasar.doma.jdbc.IterationCallback<java.util.Map<java.lang.String, java.lang.Object>, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "iterate", callback);
         try {
             if (callback == null) {

@@ -55,7 +55,7 @@ public class IterationCallbackOptionalParameterDaoImpl extends org.seasar.doma.i
     }
 
     @Override
-    public <R> R iterateById(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<R, java.util.Optional<example.domain.PhoneNumber>> callback) {
+    public <R> R iterateById(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<java.util.Optional<example.domain.PhoneNumber>, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterateById", id, callback);
         try {
             if (callback == null) {
@@ -74,7 +74,7 @@ public class IterationCallbackOptionalParameterDaoImpl extends org.seasar.doma.i
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainIterationHandler<R, java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainIterationHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterateById", __result);
@@ -86,7 +86,7 @@ public class IterationCallbackOptionalParameterDaoImpl extends org.seasar.doma.i
     }
 
     @Override
-    public <R extends java.lang.Number> R iterate(org.seasar.doma.jdbc.IterationCallback<R, java.util.Optional<java.lang.String>> callback) {
+    public <R extends java.lang.Number> R iterate(org.seasar.doma.jdbc.IterationCallback<java.util.Optional<java.lang.String>, R> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterate", callback);
         try {
             if (callback == null) {
@@ -104,7 +104,7 @@ public class IterationCallbackOptionalParameterDaoImpl extends org.seasar.doma.i
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalBasicIterationHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalBasicIterationHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.IterationCallbackOptionalParameterDaoImpl", "iterate", __result);

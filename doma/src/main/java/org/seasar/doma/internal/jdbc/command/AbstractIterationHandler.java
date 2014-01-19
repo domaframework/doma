@@ -36,13 +36,13 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <TARGET>
  *            反復処理対象
  */
-public abstract class AbstractIterationHandler<RESULT, TARGET> implements
+public abstract class AbstractIterationHandler<TARGET, RESULT> implements
         ResultSetHandler<RESULT> {
 
-    protected final IterationCallback<RESULT, TARGET> iterationCallback;
+    protected final IterationCallback<TARGET, RESULT> iterationCallback;
 
     public AbstractIterationHandler(
-            IterationCallback<RESULT, TARGET> iterationCallback) {
+            IterationCallback<TARGET, RESULT> iterationCallback) {
         assertNotNull(iterationCallback);
         this.iterationCallback = iterationCallback;
     }

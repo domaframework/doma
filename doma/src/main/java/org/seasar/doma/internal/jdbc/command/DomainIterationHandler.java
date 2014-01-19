@@ -28,11 +28,11 @@ import org.seasar.doma.jdbc.domain.DomainType;
  *            ドメイン型
  * 
  */
-public class DomainIterationHandler<RESULT, BASIC, DOMAIN> extends
-        ScalarIterationHandler<RESULT, BASIC, DOMAIN> {
+public class DomainIterationHandler<BASIC, DOMAIN, RESULT> extends
+        ScalarIterationHandler<BASIC, DOMAIN, RESULT> {
 
     public DomainIterationHandler(DomainType<BASIC, DOMAIN> domainType,
-            IterationCallback<RESULT, DOMAIN> iterationCallback) {
+            IterationCallback<DOMAIN, RESULT> iterationCallback) {
         super(() -> domainType.createScalar(), iterationCallback);
     }
 

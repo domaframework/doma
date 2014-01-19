@@ -30,6 +30,6 @@ import org.seasar.doma.jdbc.IterationCallback;
 public interface IterateAbstractEntityDao {
 
     @Select(load = LoadType.ITERATION)
-    <R> R selectById(IterationCallback<R, AbstractEntity> callback);
+    <R> R selectById(IterationCallback<AbstractEntity, R> callback);
 
 }

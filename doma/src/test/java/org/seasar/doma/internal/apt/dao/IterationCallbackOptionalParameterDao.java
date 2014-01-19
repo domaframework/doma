@@ -33,9 +33,9 @@ public interface IterationCallbackOptionalParameterDao {
 
     @Select(load = LoadType.ITERATION)
     <R> R iterateById(Integer id,
-            IterationCallback<R, Optional<PhoneNumber>> callback);
+            IterationCallback<Optional<PhoneNumber>, R> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R extends Number> R iterate(IterationCallback<R, Optional<String>> callback);
+    <R extends Number> R iterate(IterationCallback<Optional<String>, R> callback);
 
 }

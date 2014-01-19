@@ -26,7 +26,7 @@ import org.seasar.doma.jdbc.IterationContext;
  * 
  */
 public class ResultListCallback<ELEMENT> implements
-        IterationCallback<List<ELEMENT>, ELEMENT> {
+        IterationCallback<ELEMENT, List<ELEMENT>> {
 
     protected final List<ELEMENT> resultList = new ArrayList<>();
 

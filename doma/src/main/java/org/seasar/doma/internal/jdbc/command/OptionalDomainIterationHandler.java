@@ -27,11 +27,11 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * @param <RESULT>
  * @param <DOMAIN>
  */
-public class OptionalDomainIterationHandler<RESULT, BASIC, DOMAIN> extends
-        ScalarIterationHandler<RESULT, BASIC, Optional<DOMAIN>> {
+public class OptionalDomainIterationHandler<BASIC, DOMAIN, RESULT> extends
+        ScalarIterationHandler<BASIC, Optional<DOMAIN>, RESULT> {
 
     public OptionalDomainIterationHandler(DomainType<BASIC, DOMAIN> domainType,
-            IterationCallback<RESULT, Optional<DOMAIN>> iterationCallback) {
+            IterationCallback<Optional<DOMAIN>, RESULT> iterationCallback) {
         super(() -> domainType.createOptionalScalar(), iterationCallback);
     }
 

@@ -43,8 +43,8 @@ public interface BasicResultDao {
     List<Optional<String>> selectOptionalResultList();
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterate(IterationCallback<R, String> callback);
+    <R> R iterate(IterationCallback<String, R> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R> R iterateOptional(IterationCallback<R, String> callback);
+    <R> R iterateOptional(IterationCallback<String, R> callback);
 }

@@ -72,11 +72,11 @@ public interface EmployeeDao {
     List<Map<String, Object>> selectAllAsMapList();
 
     @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
-    <R> R selectAllAsMapList(IterationCallback<R, Map<String, Object>> callback);
+    <R> R selectAllAsMapList(IterationCallback<Map<String, Object>, R> callback);
 
     @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R selectAllAsMapList(
-            IterationCallback<R, Map<String, Object>> callback,
+            IterationCallback<Map<String, Object>, R> callback,
             SelectOptions options);
 
     @Select
@@ -101,17 +101,17 @@ public interface EmployeeDao {
     List<Employee> selectOnlyNameWithoutMappingCheck();
 
     @Select(load = LoadType.ITERATION)
-    <R> R selectAll(IterationCallback<R, Employee> callback);
+    <R> R selectAll(IterationCallback<Employee, R> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R> R selectAll(IterationCallback<R, Employee> callback,
+    <R> R selectAll(IterationCallback<Employee, R> callback,
             SelectOptions options);
 
     @Select(load = LoadType.ITERATION)
-    <R> R selectAllSalary(IterationCallback<R, BigDecimal> callback);
+    <R> R selectAllSalary(IterationCallback<BigDecimal, R> callback);
 
     @Select(load = LoadType.ITERATION)
-    <R> R selectAllSalary(IterationCallback<R, BigDecimal> callback,
+    <R> R selectAllSalary(IterationCallback<BigDecimal, R> callback,
             SelectOptions options);
 
     @Select(load = LoadType.STREAM)
