@@ -24,7 +24,7 @@ import org.seasar.doma.jdbc.query.ProcedureQuery;
  * @author taedium
  * 
  */
-public class ProcedureCommand extends ModuleCommand<Void, ProcedureQuery> {
+public class ProcedureCommand extends ModuleCommand<ProcedureQuery, Void> {
 
     public ProcedureCommand(ProcedureQuery query) {
         super(query);
