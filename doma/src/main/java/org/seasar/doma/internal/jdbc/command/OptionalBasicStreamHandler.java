@@ -20,6 +20,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -34,8 +35,7 @@ public class OptionalBasicStreamHandler<RESULT, BASIC> extends
 
     public OptionalBasicStreamHandler(Supplier<Wrapper<BASIC>> supplier,
             Function<Stream<Optional<BASIC>>, RESULT> mapper) {
-        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
-                supplier), mapper);
+        super(() -> new OptionalBasicScalar<>(supplier), mapper);
     }
 
 }

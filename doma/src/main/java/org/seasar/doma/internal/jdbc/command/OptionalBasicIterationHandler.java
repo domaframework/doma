@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.command;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -30,8 +31,7 @@ public class OptionalBasicIterationHandler<RESULT, BASIC> extends
 
     public OptionalBasicIterationHandler(Supplier<Wrapper<BASIC>> supplier,
             IterationCallback<RESULT, Optional<BASIC>> iterationCallback) {
-        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
-                supplier), iterationCallback);
+        super(() -> new OptionalBasicScalar<>(supplier), iterationCallback);
     }
 
 }

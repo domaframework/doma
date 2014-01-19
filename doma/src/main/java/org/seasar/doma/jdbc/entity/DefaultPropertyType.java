@@ -25,6 +25,8 @@ import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
@@ -169,12 +171,10 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         }
         if (entityPropertyClass == Optional.class) {
             return () -> new DefaultProperty<Optional<BASIC>>(
-                    new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
-                            wrapperSupplier));
+                    new OptionalBasicScalar<>(wrapperSupplier));
         } else {
-            return () -> new DefaultProperty<BASIC>(
-                    new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
-                            wrapperSupplier, field.getClass().isPrimitive()));
+            return () -> new DefaultProperty<BASIC>(new BasicScalar<>(
+                    wrapperSupplier, field.getClass().isPrimitive()));
         }
     }
 

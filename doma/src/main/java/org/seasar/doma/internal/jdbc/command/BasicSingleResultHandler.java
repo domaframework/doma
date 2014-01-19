@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.function.Supplier;
 
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -28,8 +29,7 @@ public class BasicSingleResultHandler<BASIC> extends
 
     public BasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier,
             boolean primitive) {
-        super(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
-                supplier, primitive));
+        super(() -> new BasicScalar<>(supplier, primitive));
     }
 
 }

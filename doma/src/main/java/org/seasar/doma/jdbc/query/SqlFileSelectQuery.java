@@ -33,6 +33,7 @@ import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.wrapper.LongWrapper;
 
 /**
  * @author taedium
@@ -119,8 +120,8 @@ public class SqlFileSelectQuery implements SelectQuery {
         query.sqlNode = sqlFile.getSqlNode();
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
-                new BasicSingleResultHandler<Long>(
-                        () -> new org.seasar.doma.wrapper.LongWrapper(), true));
+                new BasicSingleResultHandler<Long>(() -> new LongWrapper(),
+                        true));
         long count = command.execute();
         query.complete();
         SelectOptionsAccessor.setCountSize(options, count);

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -30,8 +31,7 @@ public class OptionalBasicListParameter<BASIC> extends
 
     public OptionalBasicListParameter(Supplier<Wrapper<BASIC>> supplier,
             List<Optional<BASIC>> list, String name) {
-        super(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
-                supplier), list, name);
+        super(() -> new OptionalBasicScalar<>(supplier), list, name);
     }
 
 }

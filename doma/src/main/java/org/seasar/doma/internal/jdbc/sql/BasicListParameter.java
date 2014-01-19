@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -29,8 +30,7 @@ public class BasicListParameter<BASIC> extends
 
     public BasicListParameter(Supplier<Wrapper<BASIC>> supplier,
             List<BASIC> list, String name) {
-        super(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
-                supplier, false), list, name);
+        super(() -> new BasicScalar<>(supplier, false), list, name);
     }
 
 }

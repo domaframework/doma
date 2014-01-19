@@ -28,6 +28,7 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.wrapper.ObjectWrapper;
 
 /***
  * 
@@ -67,7 +68,7 @@ public class MapResultProvider extends
             Integer index = entry.getKey();
             String key = entry.getValue();
             BasicScalar<Object> scalar = new BasicScalar<>(
-                    () -> new org.seasar.doma.wrapper.ObjectWrapper(), false);
+                    () -> new ObjectWrapper(), false);
             fetch(resultSet, scalar, index, jdbcMappingVisitor);
             map.put(key, scalar.get());
         }

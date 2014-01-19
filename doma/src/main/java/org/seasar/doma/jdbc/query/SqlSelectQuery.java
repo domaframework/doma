@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -32,6 +32,7 @@ import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.wrapper.LongWrapper;
 
 /**
  * @author taedium
@@ -144,8 +145,8 @@ public class SqlSelectQuery implements SelectQuery {
         query.sqlNode = sqlNode;
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
-                new BasicSingleResultHandler<Long>(
-                        () -> new org.seasar.doma.wrapper.LongWrapper(), true));
+                new BasicSingleResultHandler<Long>(() -> new LongWrapper(),
+                        true));
         long count = command.execute();
         query.complete();
         SelectOptionsAccessor.setCountSize(options, count);
