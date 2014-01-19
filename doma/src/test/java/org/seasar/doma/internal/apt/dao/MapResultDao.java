@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.LoadType;
+import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
@@ -40,7 +40,7 @@ public interface MapResultDao {
     @Select
     List<Map<String, Object>> selectResultList();
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R> R iterate(IterationCallback<Map<String, Object>, R> callback);
 
 }

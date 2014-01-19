@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.LoadType;
+import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 @Dao(config = MyConfig.class)
 public interface IterateRawTypeDao {
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R> R select(IterationCallback<Height<?>, R> callback);
 
 }

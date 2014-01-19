@@ -28,8 +28,8 @@ import org.seasar.doma.AccessLevel;
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
-import org.seasar.doma.LoadType;
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Employee;
@@ -71,10 +71,10 @@ public interface EmployeeDao {
     @Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     List<Map<String, Object>> selectAllAsMapList();
 
-    @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    @Select(resultHandler = ResultHandlerType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R selectAllAsMapList(IterationCallback<Map<String, Object>, R> callback);
 
-    @Select(load = LoadType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    @Select(resultHandler = ResultHandlerType.ITERATION, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R selectAllAsMapList(
             IterationCallback<Map<String, Object>, R> callback,
             SelectOptions options);
@@ -100,24 +100,24 @@ public interface EmployeeDao {
     @Select(ensureResultMapping = false)
     List<Employee> selectOnlyNameWithoutMappingCheck();
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R> R selectAll(IterationCallback<Employee, R> callback);
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R> R selectAll(IterationCallback<Employee, R> callback,
             SelectOptions options);
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R> R selectAllSalary(IterationCallback<BigDecimal, R> callback);
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R> R selectAllSalary(IterationCallback<BigDecimal, R> callback,
             SelectOptions options);
 
-    @Select(load = LoadType.STREAM)
+    @Select(resultHandler = ResultHandlerType.STREAM)
     <R> R streamAll(Function<Stream<Employee>, R> mapper);
 
-    @Select(load = LoadType.STREAM)
+    @Select(resultHandler = ResultHandlerType.STREAM)
     <R> R streamBySalary(BigDecimal salary, Function<Stream<Employee>, R> mapper);
 
     default List<Employee> selectWithBuilder() {

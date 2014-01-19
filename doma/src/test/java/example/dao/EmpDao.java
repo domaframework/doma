@@ -21,7 +21,7 @@ import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
-import org.seasar.doma.LoadType;
+import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.Script;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
@@ -48,7 +48,7 @@ public interface EmpDao {
     @Select
     List<Emp> selectByExample(Emp emp);
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     Integer iterate(IterationCallback<Emp, Integer> callback);
 
     @Insert

@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.LoadType;
+import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.entity.Emp;
@@ -34,20 +34,20 @@ import example.domain.PhoneNumber;
 @Dao(config = MyConfig.class)
 public interface StreamDao {
 
-    @Select(load = LoadType.STREAM)
+    @Select(resultHandler = ResultHandlerType.STREAM)
     Integer selectByIdAndName(Integer id, String name,
             Function<Stream<Emp>, Integer> mapper);
 
-    @Select(load = LoadType.STREAM)
+    @Select(resultHandler = ResultHandlerType.STREAM)
     <R> R selectById(Integer id, Function<Stream<PhoneNumber>, R> mapper);
 
-    @Select(load = LoadType.STREAM)
+    @Select(resultHandler = ResultHandlerType.STREAM)
     <R extends Number> R select(Function<Stream<String>, R> mapper);
 
-    @Select(load = LoadType.STREAM)
+    @Select(resultHandler = ResultHandlerType.STREAM)
     String selectWithHogeFunction(HogeFunction mapper);
 
-    @Select(load = LoadType.STREAM, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    @Select(resultHandler = ResultHandlerType.STREAM, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R selectByIdAsMap(Integer id,
             Function<Stream<Map<String, Object>>, R> callback);
 

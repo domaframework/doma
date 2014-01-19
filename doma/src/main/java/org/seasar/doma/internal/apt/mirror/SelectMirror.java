@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -25,8 +25,8 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.LoadType;
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -40,7 +40,7 @@ public class SelectMirror {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected AnnotationValue load;
+    protected AnnotationValue resultHandler;
 
     protected AnnotationValue ensureResult;
 
@@ -58,8 +58,8 @@ public class SelectMirror {
         this.annotationMirror = annotationMirror;
     }
 
-    public AnnotationValue getLoad() {
-        return load;
+    public AnnotationValue getResultHandler() {
+        return resultHandler;
     }
 
     public AnnotationValue getEnsureResult() {
@@ -110,12 +110,14 @@ public class SelectMirror {
         return value.intValue();
     }
 
-    public LoadType getLoadTypeValue() {
-        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(load);
+    public ResultHandlerType getResultHandlerValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(resultHandler);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("load");
+            throw new AptIllegalStateException("resultHandler");
         }
-        return LoadType.valueOf(enumConstant.getSimpleName().toString());
+        return ResultHandlerType.valueOf(enumConstant.getSimpleName()
+                .toString());
     }
 
     public boolean getEnsureResultValue() {
@@ -162,8 +164,8 @@ public class SelectMirror {
                 .getElementValuesWithDefaults(annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("load".equals(name)) {
-                result.load = value;
+            if ("resultHandler".equals(name)) {
+                result.resultHandler = value;
             } else if ("ensureResult".equals(name)) {
                 result.ensureResult = value;
             } else if ("ensureResultMapping".equals(name)) {

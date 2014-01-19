@@ -123,12 +123,12 @@ public @interface Select {
     int maxRows() default -1;
 
     /**
-     * 検索結果をエンティティなどのマッピング対象オブジェクトへロードする方法を返します。
+     * 検索検索を扱う方法を返します。
      * 
-     * @return ロードする方法
+     * @return 検索結果を処理する方法
      * @since 2.0.0
      */
-    LoadType load() default LoadType.BULK;
+    ResultHandlerType resultHandler() default ResultHandlerType.SINGLE_OR_LIST;
 
     /**
      * 結果が少なくとも1件以上存在することを保証するかどうかを返します。

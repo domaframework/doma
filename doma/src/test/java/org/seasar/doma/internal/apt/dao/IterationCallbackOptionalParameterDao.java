@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.dao;
 import java.util.Optional;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.LoadType;
+import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
@@ -31,11 +31,11 @@ import example.domain.PhoneNumber;
 @Dao(config = MyConfig.class)
 public interface IterationCallbackOptionalParameterDao {
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R> R iterateById(Integer id,
             IterationCallback<Optional<PhoneNumber>, R> callback);
 
-    @Select(load = LoadType.ITERATION)
+    @Select(resultHandler = ResultHandlerType.ITERATION)
     <R extends Number> R iterate(IterationCallback<Optional<String>, R> callback);
 
 }

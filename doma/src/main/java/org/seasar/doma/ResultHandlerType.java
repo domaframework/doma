@@ -15,31 +15,30 @@
  */
 package org.seasar.doma;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.seasar.doma.jdbc.IterationCallback;
 
 /**
- * 検索結果をエンティティなどのマッピング対象オブジェクトへロードする方法です。
+ * 検索結果を扱う方法です。
  * 
  * @author nakamura-to
  * @since 2.0.0
  */
-public enum LoadType {
+public enum ResultHandlerType {
 
     /**
-     * 一括でロードします。結果が複数件ある場合は {@link List} に蓄積します。
+     * 結果を1件もしくは複数件へ変換します。
      */
-    BULK,
+    SINGLE_OR_LIST,
 
     /**
-     * {@link IterationCallback} を使って1件ずつ反復的にロードします。
+     * {@link IterationCallback} を使って1件ずつ反復的に処理します。
      */
     ITERATION,
 
     /**
-     * {@link Stream} を使ってロードします。
+     * {@link Stream} を使って処理します。
      */
     STREAM
 }
