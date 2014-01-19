@@ -32,6 +32,9 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     /** the version */
     public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class,  java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "version", "version", false);
 
+    /** the object */
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Object, Object> $object = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.lang.Object.class, java.lang.Object.class, () -> new org.seasar.doma.wrapper.ObjectWrapper(), null, null, "object", "object", true, true, false);
+
     private final org.seasar.doma.internal.apt.entity.EmpListener __listener;
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
@@ -64,8 +67,8 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
         __tableName = "Emp";
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __idList = new java.util.ArrayList<>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __list = new java.util.ArrayList<>(4);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __map = new java.util.HashMap<>(4);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __list = new java.util.ArrayList<>(5);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __map = new java.util.HashMap<>(5);
         __idList.add($id);
         __list.add($id);
         __map.put("id", $id);
@@ -75,6 +78,8 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
         __map.put("salary", $salary);
         __list.add($version);
         __map.put("version", $version);
+        __list.add($object);
+        __map.put("object", $object);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
@@ -194,6 +199,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
         $name.copy(__currentStates, __entity);
         $salary.copy(__currentStates, __entity);
         $version.copy(__currentStates, __entity);
+        $object.copy(__currentStates, __entity);
         __originalStatesAccessor.set(__entity, __currentStates);
     }
 

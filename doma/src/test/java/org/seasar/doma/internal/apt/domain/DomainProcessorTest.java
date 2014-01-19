@@ -262,4 +262,15 @@ public class DomainProcessorTest extends AptTestCase {
         compile();
         assertMessage(Message.DOMA4251);
     }
+
+    public void testObjectDomain() throws Exception {
+        Class<?> target = ObjectDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
 }

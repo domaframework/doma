@@ -50,6 +50,7 @@ import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ObjectWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
@@ -199,6 +200,10 @@ public final class Scalars {
         if (valueClass == Short.class) {
             Supplier<Wrapper<Short>> supplier = () -> new ShortWrapper(
                     (Short) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
+        }
+        if (valueClass == Object.class) {
+            Supplier<Wrapper<Object>> supplier = () -> new ObjectWrapper(value);
             return createBasicScalarSupplier(supplier, optional, primitive);
         }
         return null;

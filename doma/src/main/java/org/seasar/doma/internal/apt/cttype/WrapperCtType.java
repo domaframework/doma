@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -54,6 +55,7 @@ import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ObjectWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
@@ -153,6 +155,9 @@ public class WrapperCtType extends AbstractCtType {
             }
             if (Double.class.getName().equals(name)) {
                 return DoubleWrapper.class;
+            }
+            if (Object.class.getName().equals(name)) {
+                return ObjectWrapper.class;
             }
             if (TypeMirrorUtil.isAssignable(t, BigDecimal.class, env)) {
                 return BigDecimalWrapper.class;

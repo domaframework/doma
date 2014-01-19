@@ -49,6 +49,8 @@ public class Emp {
     @Version
     Integer version;
 
+    Object object;
+
     @Transient
     String temp;
 
@@ -90,12 +92,12 @@ public class Emp {
         this.version = version;
     }
 
-    public String getTemp() {
-        return temp;
+    public Object getObject() {
+        return object;
     }
 
-    public void setTemp(String temp) {
-        this.temp = temp;
+    public void setObject(Object object) {
+        this.object = object;
     }
 
     public int add(int a, int b) {

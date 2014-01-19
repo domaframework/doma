@@ -108,7 +108,7 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("bbb = ").param(int.class, 100);
         try {
-            builder.getScalarSingleResult(Object.class);
+            builder.getScalarSingleResult(Class.class);
             fail();
         } catch (DomaIllegalArgumentException e) {
             System.out.println(e.getMessage());
