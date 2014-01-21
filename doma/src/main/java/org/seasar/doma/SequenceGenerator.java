@@ -28,7 +28,6 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
  * <p>
  * このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。 このアノテーションは {@link Id} 、
  * {@link GeneratedValue} と併わせて使用しなければいけません。
- * <p>
  * 
  * <h3>例:</h3>
  * 

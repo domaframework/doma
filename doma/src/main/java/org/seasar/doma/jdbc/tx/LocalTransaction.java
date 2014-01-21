@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -435,7 +435,6 @@ public class LocalTransaction {
 
     /**
      * 指定されたセーブポイントが設定されたあとに行われたすべての変更をロールバックします。
-     * <p>
      * <p>
      * このメソッドを呼び出す前に {@link #begin()} または
      * {@link #begin(TransactionIsolationLevel)}

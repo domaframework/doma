@@ -26,7 +26,6 @@ import org.seasar.doma.jdbc.JdbcLogger;
  * ただし、例外が発生した場合、接続は閉じられます。
  * <p>
  * このクラスはスレッドセーフです。
- * <p>
  * 
  * <pre>
  * KeepAliveLocalTransaction tx = AppConfig.getKeepAliveLocalTransaction();

@@ -33,7 +33,6 @@ import java.lang.annotation.Target;
  * <li>{@code accessorMethod} 要素に指定した名前の非 {@code private} なメソッドを持つ。このメソッドは、
  * {@code valueType} 要素に指定した型を戻り値とし、パラメータは受け取らない。
  * </ul>
- * <p>
  * 
  * <h3>例1:コンストラクタで生成するケース</h3>
  * 

@@ -173,7 +173,6 @@ public interface Config {
     /**
      * バッチサイズを返します。
      * <p>
-     * <p>
      * {@literal 1} 以下の値は、 {@literal 1} とみなされます。
      * 
      * {@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。

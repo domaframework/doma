@@ -31,7 +31,6 @@ import java.lang.annotation.Target;
  * </ul>
  * <p>
  * このアノテーションを直接的であれ間接的であれDaoインタフェースに注釈する場合、{@link Dao#config()} に値を設定してはいけません。
- * <p>
  * 
  * <h3>例:直接的に注釈する方法</h3>
  * <a href="http://code.google.com/p/google-guice/">Guice</a>

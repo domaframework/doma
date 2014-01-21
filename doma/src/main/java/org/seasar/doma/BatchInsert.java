@@ -39,7 +39,6 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * <li>戻り値の型は {@code int[]} である。
  * </ul>
  * 
- * <p>
  * <h3>例:</h3>
  * 
  * <pre>

@@ -36,7 +36,6 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 検索処理を示します。
  * <p>
  * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * <p>
  * 
  * <h3>例:</h3>
  * 

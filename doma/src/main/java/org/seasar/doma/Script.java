@@ -35,7 +35,6 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * <li>パラメータは受け取らない。
  * <li>戻り値の型は {@code void} である。
  * </ul>
- * <p>
  * 
  * <h3>例:</h3>
  * 

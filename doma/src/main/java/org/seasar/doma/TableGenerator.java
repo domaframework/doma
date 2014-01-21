@@ -26,10 +26,9 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
 /**
  * テーブルを利用する識別子ジェネレータを示します。
  * <p>
- * <p>
+ * 
  * このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。 このアノテーションは {@link Id} 、
  * {@link GeneratedValue} と併わせて使用しなければいけません。
- * <p>
  * 
  * <h3>例:</h3>
  * 

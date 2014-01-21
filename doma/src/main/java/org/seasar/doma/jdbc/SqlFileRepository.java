@@ -40,7 +40,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * <p>
  * このインタフェースの実装クラスは、まず、RDBMS固有のSQLファイルがあるかどうか調べ、あればそちらを使用しなければいけません。
  * RDBMS固有のSQLファイルのパスは、 '.sql'の直前に次の2種類の文字列を挿入することで求められます。
- * <p>
+ * 
  * <ul>
  * <li>{@code -}（ハイフン）
  * <li>{@link Dialect#getName()} で返される値。
@@ -48,7 +48,6 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * <h3>RDBMS固有のSQLファイルのパスの例</h3>
  * <p>
  * {@code META-INF/org/example/ExampleDao/selectAll-oracle.sql}
- * <p>
  * 
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
