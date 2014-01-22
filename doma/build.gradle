@@ -8,7 +8,6 @@ apply plugin: 'maven'
 sourceCompatibility = jdkVersion
 targetCompatibility = jdkVersion
 group = 'org.seasar.doma'
-version = '2.0-beta-1'
 
 compileJava {
     doFirst {
