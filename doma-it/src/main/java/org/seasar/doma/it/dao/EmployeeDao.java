@@ -83,7 +83,7 @@ public interface EmployeeDao {
     List<Employee> selectByNamePrefix(String employeeName);
 
     @Select
-    List<Employee> selectByNameInside(String employeeName);
+    List<Employee> selectByNameInfix(String employeeName);
 
     @Select
     List<Employee> selectByNameSuffix(String employeeName);

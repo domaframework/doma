@@ -50,7 +50,7 @@ public class SqlFileSelectTest {
     @Test
     public void testInsideSearch() throws Exception {
         EmployeeDao dao = EmployeeDao.get();
-        List<Employee> employees = dao.selectByNameInside("S");
+        List<Employee> employees = dao.selectByNameInfix("S");
         assertEquals(5, employees.size());
     }
 
