@@ -119,6 +119,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         } else {
             if (!isBindableIterable(typeDeclaration)) {
                 String sql = getSql(location);
+                env.getMessager().printMessage(Kind.NOTE,
+                        parameterTypeMap.toString());
                 throw new AptException(Message.DOMA4161, env, methodElement,
                         path, sql, location.getLineNumber(),
                         location.getPosition(), variableName,

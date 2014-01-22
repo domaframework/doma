@@ -19,6 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 
 /**
@@ -85,6 +86,20 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
     public Boolean getSuppressOptimisticLockException() {
         return batchModifyMirror.getSuppressOptimisticLockExceptionValue();
+    }
+
+    @Override
+    public void addBindableParameterCtType(final String parameterName,
+            CtType bindableParameterCtType) {
+        bindableParameterCtType.accept(new BindableParameterCtTypeVisitor(
+                parameterName) {
+
+            @Override
+            public Void visitIterableCtType(IterableCtType ctType, Void p)
+                    throws RuntimeException {
+                return ctType.getElementCtType().accept(this, p);
+            }
+        }, null);
     }
 
     @Override

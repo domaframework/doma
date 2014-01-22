@@ -65,6 +65,9 @@ public interface EmployeeDao {
     @Select
     Employee selectById(Integer employeeId, SelectOptions options);
 
+    @Select
+    List<Employee> selectByNames(List<String> names);
+
     @Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     Map<String, Object> selectByIdAsMap(Integer employeeId);
 

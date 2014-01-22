@@ -26,7 +26,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.jdbc.command.Command;
@@ -121,30 +120,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public void addBindableParameterCtType(final String parameterName,
             CtType bindableParameterCtType) {
-        bindableParameterCtType.accept(
-                new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                    @Override
-                    protected Void defaultAction(CtType ctType, Void p)
-                            throws RuntimeException {
-                        bindableParameterTypeMap.put(parameterName,
-                                ctType.getTypeMirror());
-                        return null;
-                    }
-
-                    @Override
-                    public Void visitIterableCtType(IterableCtType ctType,
-                            Void p) throws RuntimeException {
-                        return ctType.getElementCtType().accept(this, p);
-                    }
-
-                    @Override
-                    public Void visitOptionalCtType(OptionalCtType ctType,
-                            Void p) throws RuntimeException {
-                        return ctType.getElementCtType().accept(this, p);
-                    }
-
-                }, null);
+        bindableParameterCtType.accept(new BindableParameterCtTypeVisitor(
+                parameterName), null);
     }
 
     @Override
@@ -177,5 +154,29 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     @Override
     public boolean isVarArgs() {
         return this.executableElement.isVarArgs();
+    }
+
+    protected class BindableParameterCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final String parameterName;
+
+        protected BindableParameterCtTypeVisitor(String parameterName) {
+            this.parameterName = parameterName;
+        }
+
+        @Override
+        protected Void defaultAction(CtType ctType, Void p)
+                throws RuntimeException {
+            bindableParameterTypeMap.put(parameterName, ctType.getTypeMirror());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
     }
 }

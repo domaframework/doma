@@ -1,0 +1,1 @@
+select * from EMPLOYEE where EMPLOYEE_NAME in /*names*/('aaa', 'bbb')
