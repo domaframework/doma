@@ -113,7 +113,7 @@ uploadArchives {
                 developer {
                     id 'nakamura-to'
                     name 'Toshihiro Nakamura'
-                    email 'toshihiro.nakamura <at> gmail.com'
+                    email 'toshihiro.nakamura@gmail.com'
                 }
             }
         }
