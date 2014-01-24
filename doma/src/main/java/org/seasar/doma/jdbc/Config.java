@@ -143,4 +143,10 @@ public interface Config {
      */
     int getBatchSize();
 
+    /**
+     * Entityに定義が存在しないカラムが結果セットに含まれていた場合に、無視するかどうかを示すフラグです。
+     * @return Entityに定義が存在しないカラムを無視するならば true, そうでなければ false.
+     */
+    boolean ignoreUnknownColumn();
+
 }

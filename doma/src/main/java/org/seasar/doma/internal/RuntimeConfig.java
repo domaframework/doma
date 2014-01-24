@@ -108,4 +108,9 @@ public class RuntimeConfig implements Config {
         return config.getBatchSize();
     }
 
+    @Override
+    public boolean ignoreUnknownColumn() {
+        return config.ignoreUnknownColumn();
+    }
+
 }
