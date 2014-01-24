@@ -19,6 +19,7 @@
 		<replaceregexp
 			match="/${domaJarPattern}"
 			replace="/\1${newVersion}\2" encoding="UTF-8" flags="g">
+			<fileset dir="../doma-it" includes=".factorypath" />
 			<fileset dir="../doma-tutorial" includes=".classpath" />
 			<fileset dir="../doma-tutorial" includes=".factorypath" />
 			<fileset dir="../doma-jpetstore" includes=".classpath" />
