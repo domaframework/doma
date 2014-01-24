@@ -118,10 +118,13 @@ public class EntityBuilder<E> {
                 if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
                     continue;
                 }
-                throwMappedPropertyNotFoundException(columnName);
+                if (!query.getConfig().ignoreUnknownColumn()) {
+                    throwMappedPropertyNotFoundException(columnName);
+                }
+            } else {
+                unmappedPropertySet.remove(propertyType);
+                indexMap.put(i, propertyType);
             }
-            unmappedPropertySet.remove(propertyType);
-            indexMap.put(i, propertyType);
         }
         if (resultMappingEnsured && !unmappedPropertySet.isEmpty()) {
             throwResultMappingException(unmappedPropertySet);

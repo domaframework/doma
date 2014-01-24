@@ -108,4 +108,9 @@ public abstract class DomaAbstractConfig implements Config {
     public int getBatchSize() {
         return 10;
     }
+
+    @Override
+    public boolean ignoreUnknownColumn() {
+        return false;
+    }
 }

@@ -110,6 +110,11 @@ public class MockConfig implements Config {
         return 10;
     }
 
+    @Override
+    public boolean ignoreUnknownColumn() {
+        return false;
+    }
+
     public MockDataSource getMockDataSource() {
         return dataSource;
     }
