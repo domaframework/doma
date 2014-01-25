@@ -4,47 +4,16 @@
 	<property name="domaJarPattern" value="(doma-)(?:\d*\.\d*\.\d*(?:-RC\d)?(?:-SNAPSHOT)?)((?:-sources)?\.jar)" />
 
 	<target name="update">
-		<delete>
-			<fileset dir="../doma-jpetstore">
-				<include name="src/main/webapp/WEB-INF/lib/*" />
-				<include name="libsrc/*" />
-				<filename regex="${domaJarPattern}"/>
-			</fileset>
-			<fileset dir="../doma-tutorial">
-				<include name="lib/*" />
-				<include name="libsrc/*" />
-				<filename regex="${domaJarPattern}" />
-			</fileset>
-		</delete>
 		<replaceregexp
 			match="/${domaJarPattern}"
 			replace="/\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="../doma-it" includes=".factorypath" />
-			<fileset dir="../doma-tutorial" includes=".classpath" />
-			<fileset dir="../doma-tutorial" includes=".factorypath" />
-			<fileset dir="../doma-jpetstore" includes=".classpath" />
-			<fileset dir="../doma-jpetstore" includes=".factorypath" />
 		</replaceregexp>
 		<replaceregexp
 			match="(&lt;artifactId&gt;doma[^&lt;]*?&lt;/artifactId&gt;\s+&lt;version&gt;)(?:[^&lt;]+)(&lt;/version&gt;)"
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="." includes="**/pom.xml" />
 			<fileset dir="../doma-it" includes="**/pom.xml" />
-			<fileset dir="../doma-gen" includes="**/pom.xml" />
-			<fileset dir="../doma-gen-it" includes="**/pom.xml" />
-			<fileset dir="../doma-jpetstore" includes="**/pom.xml" />
-			<fileset dir="../doma-tutorial" includes="**/pom.xml" />
-		</replaceregexp>
-		<replaceregexp
-			match="('org.seasar.doma:doma:)(?:[^']+)(')"
-			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
-			<fileset dir="../doma-tutorial" includes="**/build.gradle" />
-		</replaceregexp>
-		<replaceregexp
-			match="(private static final String VERSION = &quot;)[^&quot;]*(&quot;)"
-			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
-			<fileset dir="." includes="**/Artifact.java" />
-			<fileset dir="../doma-gen" includes="**/Artifact.java" />
 		</replaceregexp>
 	</target>
 
@@ -72,11 +41,5 @@
 				<exclude name="**/download/**"/>
 			</zipfileset>
 		</zip>
-		<ant dir="../doma-tutorial" antfile="build-dist.xml" target="dist">
-			<property name="zipDir" value="../doma/${zipDir}"/>
-		</ant>
-		<ant dir="../doma-jpetstore" antfile="build-dist.xml" target="dist">
-			<property name="zipDir" value="../doma/${zipDir}"/>
-		</ant>
 	</target>
 </project>
