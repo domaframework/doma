@@ -34,6 +34,14 @@
 			<timezone>+9</timezone>
 		</developer>
 	</developers>
+	<contributors>
+		<contributor>
+			<name>Taichi Uragami</name>
+		</contributor>
+		<contributor>
+			<name>Manabu Nakamura</name>
+		</contributor>
+	</contributors>
 
 	<!-- Environment Settings -->
 	<issueManagement>
