@@ -42,6 +42,7 @@
 				<li>使用するアプリケーションサーバやフレームワークに依存した仕方でのクラスの取得</li>
 				<li>例外メッセージに含めるSQLのタイプ</li>
 				<li>クエリ時に使用するパラメータ（タイムアウト、最大件数、フェッチ件数、バッチサイズ）</li>
+				<li>Entityに定義が存在しないカラムが結果セットに含まれていた場合に無視するかどうか</li>
 			</ul>
 		</section>
 		<section name="設定クラスの作成">
@@ -221,6 +222,12 @@
 					バッチサイズをあらわす、<code>int</code>を<code>getBatchSize</code>メソッドで返します。
 					この値は、Daoインタフェースの<code>@BatchUpdate</code>などが注釈されたバッチ系のメソッドの実行に使用されます。
 				</p>
+				<h4>Entityに定義が存在しないカラムが結果セットに含まれていた場合に無視するかどうか</h4>
+				<p>
+					無視するかどうかをあらわす<code>boolean</code>を<code>ignoreUnknownColumn</code>メソッドで返します。
+					<code>true</code>を返すと、<code>org.seasar.doma.jdbc.MappedPropertyNotFoundException</code>のスローを抑制できます。
+					この値は、Daoインタフェースの<code>@Select</code>が注釈されたメソッドの実行に使用されます。
+				</p>
 			</subsection>
 			<subsection name="DomaAbstractConfigを継承する場合">
 				<p>
@@ -282,6 +289,10 @@
 					<tr>
 						<td>バッチ更新のバッチサイズの設定</td>
 						<td><code>10</code></td>
+					</tr>
+					<tr>
+						<td>Entityに定義が存在しないカラムが結果セットに含まれていた場合に無視するかどうか</td>
+						<td><code>false</code></td>
 					</tr>
 				</table>
 			</subsection>
