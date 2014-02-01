@@ -23,6 +23,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.WrapException;
@@ -650,17 +652,8 @@ public class ExpressionEvaluator implements
                     location.getExpression(), location.getPosition(),
                     targetClass.getName(), method.getName(), cause);
         }
-        if (target != null) {
-            Type genericType = method.getGenericReturnType();
-            if (genericType instanceof TypeVariable) {
-                Class<?> typeArgument = GenericsUtil.inferTypeArgument(
-                        target.getClass(), (TypeVariable<?>) genericType);
-                if (typeArgument != null) {
-                    return new EvaluationResult(value, typeArgument);
-                }
-            }
-        }
-        return new EvaluationResult(value, method.getReturnType());
+        return createEvaluationResult(target, value, method.getReturnType(),
+                method.getGenericReturnType());
     }
 
     @Override
@@ -746,8 +739,27 @@ public class ExpressionEvaluator implements
                     location.getExpression(), location.getPosition(), target
                             .getClass().getName(), field.getName(), cause);
         }
+        return createEvaluationResult(target, value, field.getType(),
+                field.getGenericType());
+    }
+
+    protected EvaluationResult createEvaluationResult(Object target,
+            Object value, Class<?> valueClass, Type genericType) {
+        if (value instanceof Optional<?>) {
+            Optional<?> optional = (Optional<?>) value;
+            if (genericType instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) genericType;
+                Type[] typeArguments = parameterizedType
+                        .getActualTypeArguments();
+                if (typeArguments.length > 0
+                        && typeArguments[0] instanceof Class) {
+                    Object elementValue = optional.orElse(null);
+                    return new EvaluationResult(elementValue,
+                            (Class<?>) typeArguments[0]);
+                }
+            }
+        }
         if (target != null) {
-            Type genericType = field.getGenericType();
             if (genericType instanceof TypeVariable) {
                 Class<?> typeArgument = GenericsUtil.inferTypeArgument(
                         target.getClass(), (TypeVariable<?>) genericType);
@@ -756,7 +768,7 @@ public class ExpressionEvaluator implements
                 }
             }
         }
-        return new EvaluationResult(value, field.getType());
+        return new EvaluationResult(value, valueClass);
     }
 
     @Override

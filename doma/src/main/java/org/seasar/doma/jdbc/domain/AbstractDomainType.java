@@ -128,7 +128,7 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements
 
         @Override
         public void set(Optional<DOMAIN> optional) {
-            if (optional.isPresent()) {
+            if (optional != null && optional.isPresent()) {
                 wrapper.set(getBasicValue(optional.get()));
             } else {
                 wrapper.set(null);

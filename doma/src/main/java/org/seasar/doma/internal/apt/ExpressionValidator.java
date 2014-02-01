@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import org.seasar.doma.internal.apt.decl.ConstructorDeclaration;
 import org.seasar.doma.internal.apt.decl.FieldDeclaration;
 import org.seasar.doma.internal.apt.decl.MethodDeclaration;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
+import org.seasar.doma.internal.apt.decl.TypeParameterDeclaration;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
@@ -402,7 +403,7 @@ public class ExpressionValidator implements
             TypeDeclaration returnTypeDeclaration = methodDeclaration
                     .getReturnTypeDeclaration();
             if (returnTypeDeclaration != null) {
-                return returnTypeDeclaration;
+                return extractElementIfOptional(returnTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
@@ -446,7 +447,7 @@ public class ExpressionValidator implements
             TypeDeclaration returnTypeDeclaration = methodDeclaration
                     .getReturnTypeDeclaration();
             if (returnTypeDeclaration != null) {
-                return returnTypeDeclaration;
+                return extractElementIfOptional(returnTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
@@ -530,13 +531,13 @@ public class ExpressionValidator implements
         TypeDeclaration typeDeclaration = node.getTargetObjectNode().accept(
                 this, p);
         String fieldName = node.getFieldName();
-        FieldDeclaration fieldDeclarations = typeDeclaration
+        FieldDeclaration fieldDeclaration = typeDeclaration
                 .getFieldDeclaration(fieldName);
-        if (fieldDeclarations != null) {
-            TypeDeclaration fieldTypeDeclaration = fieldDeclarations
+        if (fieldDeclaration != null) {
+            TypeDeclaration fieldTypeDeclaration = fieldDeclaration
                     .getTypeDeclaration();
             if (fieldTypeDeclaration != null) {
-                return fieldTypeDeclaration;
+                return extractElementIfOptional(fieldTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
@@ -560,19 +561,35 @@ public class ExpressionValidator implements
         TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
                 typeElement.asType(), env);
         String fieldName = node.getFieldName();
-        FieldDeclaration fieldDeclarations = typeDeclaration
+        FieldDeclaration fieldDeclaration = typeDeclaration
                 .getStaticFieldDeclaration(fieldName);
-        if (fieldDeclarations != null) {
-            TypeDeclaration fieldTypeDeclaration = fieldDeclarations
+        if (fieldDeclaration != null) {
+            TypeDeclaration fieldTypeDeclaration = fieldDeclaration
                     .getTypeDeclaration();
             if (fieldTypeDeclaration != null) {
-                return fieldTypeDeclaration;
+                return extractElementIfOptional(fieldTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(Message.DOMA4148, env, methodElement,
                 location.getExpression(), location.getPosition(), className,
                 fieldName);
+    }
+
+    protected TypeDeclaration extractElementIfOptional(
+            TypeDeclaration typeDeclaration) {
+        if (!typeDeclaration.isOptionalType()) {
+            return typeDeclaration;
+        }
+        TypeParameterDeclaration typeParameterDeclaration = typeDeclaration
+                .getTypeParameterDeclarations()
+                .stream()
+                .findFirst()
+                .orElseThrow(
+                        () -> new AptIllegalStateException(typeDeclaration
+                                .toString()));
+        return TypeDeclaration.newTypeDeclaration(
+                typeParameterDeclaration.getActualType(), env);
     }
 
     @Override

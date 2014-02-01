@@ -18,16 +18,21 @@ package org.seasar.doma.it.auto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DeptDao;
 import org.seasar.doma.it.dao.NoIdDao;
+import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.NoId;
+import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
@@ -179,4 +184,26 @@ public class AutoUpdateTest {
         int result = dao.update(department);
         assertEquals(0, result);
     }
+
+    @Test
+    public void testOptional() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker worker = dao.selectById(Optional.of(1));
+        worker.employeeName = Optional.of("hoge");
+        int result = dao.update(worker);
+        assertEquals(1, result);
+        assertEquals(new Integer(2), worker.version.get());
+
+        worker = dao.selectById(Optional.of(1));
+        assertEquals(new Integer(7369), worker.employeeNo.get());
+        assertEquals(new Integer(2), worker.version.get());
+        assertEquals("hoge", worker.employeeName.get());
+        assertEquals(0,
+                worker.salary.get().getValue().compareTo(new BigDecimal("800")));
+        assertEquals(java.sql.Date.valueOf("1980-12-17"), worker.hiredate.get());
+        assertEquals(Integer.valueOf(13), worker.managerId.get());
+        assertEquals(Integer.valueOf(2), worker.departmentId.get().getValue());
+        assertEquals(Integer.valueOf(1), worker.addressId.get());
+    }
+
 }

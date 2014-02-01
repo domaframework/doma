@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.apt.decl;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,9 +24,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -129,8 +132,18 @@ public class TypeDeclaration {
         }
     }
 
+    public boolean isOptionalType() {
+        return TypeMirrorUtil.isSameType(type, Optional.class, env);
+    }
+
     public int getNumberPriority() {
         return numberPriority;
+    }
+
+    public List<TypeParameterDeclaration> getTypeParameterDeclarations() {
+        Optional<List<TypeParameterDeclaration>> typeParameterDeclarations = typeParameterDeclarationsMap
+                .values().stream().findFirst();
+        return typeParameterDeclarations.orElse(Collections.emptyList());
     }
 
     public List<ConstructorDeclaration> getConstructorDeclarations(
@@ -460,6 +473,11 @@ public class TypeDeclaration {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return type.toString();
+    }
+
     public static TypeDeclaration newTypeDeclaration(Class<?> clazz,
             ProcessingEnvironment env) {
         assertNotNull(clazz);
@@ -470,7 +488,7 @@ public class TypeDeclaration {
             ProcessingEnvironment env) {
         assertNotNull(type, env);
         TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
-        Map<String, List<TypeParameterDeclaration>> map = new HashMap<String, List<TypeParameterDeclaration>>();
+        Map<String, List<TypeParameterDeclaration>> map = new LinkedHashMap<String, List<TypeParameterDeclaration>>();
         gatherTypeParameterDeclarations(type, map, env);
         TypeDeclaration typeDeclaration = new TypeDeclaration();
         typeDeclaration.type = type;

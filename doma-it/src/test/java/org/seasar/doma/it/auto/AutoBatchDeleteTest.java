@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +28,12 @@ import org.seasar.doma.it.dao.CompKeyEmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.PersonDao;
+import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.entity.CompKeyEmployee;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.Person;
+import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
@@ -175,4 +178,25 @@ public class AutoBatchDeleteTest {
             assertEquals(Message.DOMA2022, expected.getMessageResource());
         }
     }
+
+    @Test
+    public void testOptional() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker employee = new Worker();
+        employee.employeeId = Optional.of(1);
+        employee.version = Optional.of(1);
+        Worker employee2 = new Worker();
+        employee2.employeeId = Optional.of(2);
+        employee2.version = Optional.of(1);
+        int[] result = dao.delete(Arrays.asList(employee, employee2));
+        assertEquals(2, result.length);
+        assertEquals(1, result[0]);
+        assertEquals(1, result[1]);
+
+        employee = dao.selectById(Optional.of(1));
+        assertNull(employee);
+        employee = dao.selectById(Optional.of(2));
+        assertNull(employee);
+    }
+
 }

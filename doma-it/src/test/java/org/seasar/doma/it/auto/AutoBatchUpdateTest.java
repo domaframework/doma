@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,11 +29,13 @@ import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DeptDao;
 import org.seasar.doma.it.dao.NoIdDao;
+import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.NoId;
+import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
@@ -232,4 +235,33 @@ public class AutoBatchUpdateTest {
         int[] result = dao.update(new ArrayList<Department>());
         assertEquals(0, result.length);
     }
+
+    @Test
+    public void testOptional() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker worker = new Worker();
+        worker.employeeId = Optional.of(1);
+        worker.employeeNo = Optional.of(5555);
+        worker.version = Optional.of(1);
+        Worker worker2 = new Worker();
+        worker2.employeeId = Optional.of(2);
+        worker2.employeeNo = Optional.of(6666);
+        worker2.version = Optional.of(1);
+        int[] result = dao.update(Arrays.asList(worker, worker2));
+        assertEquals(2, result.length);
+        assertEquals(1, result[0]);
+        assertEquals(1, result[1]);
+        assertEquals(new Integer(2), worker.version.get());
+        assertEquals(new Integer(2), worker2.version.get());
+
+        worker = dao.selectById(Optional.of(1));
+        assertEquals(new Integer(1), worker.employeeId.get());
+        assertEquals(new Integer(5555), worker.employeeNo.get());
+        assertEquals(new Integer(2), worker.version.get());
+        worker = dao.selectById(Optional.of(2));
+        assertEquals(new Integer(2), worker.employeeId.get());
+        assertEquals(new Integer(6666), worker.employeeNo.get());
+        assertEquals(new Integer(2), worker.version.get());
+    }
+
 }

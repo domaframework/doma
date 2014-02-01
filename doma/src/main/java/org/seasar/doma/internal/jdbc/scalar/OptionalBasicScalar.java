@@ -40,7 +40,11 @@ public class OptionalBasicScalar<BASIC> implements
 
     @Override
     public void set(Optional<BASIC> optional) {
-        wrapper.set(optional.orElse(null));
+        if (optional == null) {
+            wrapper.set(null);
+        } else {
+            wrapper.set(optional.orElse(null));
+        }
     }
 
     @Override

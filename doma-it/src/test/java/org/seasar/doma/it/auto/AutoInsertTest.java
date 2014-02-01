@@ -16,9 +16,12 @@
 package org.seasar.doma.it.auto;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
+
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +32,7 @@ import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.TableStrategyDao;
+import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Location;
 import org.seasar.doma.it.entity.CompKeyDepartment;
@@ -38,6 +42,7 @@ import org.seasar.doma.it.entity.IdentityStrategy;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.TableStrategy;
+import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.UniqueConstraintException;
@@ -202,4 +207,26 @@ public class AutoInsertTest {
         int result = dao.insert(entity);
         assertEquals(1, result);
     }
+
+    @Test
+    public void testOptional() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker worker = new Worker();
+        worker.employeeId = Optional.of(9999);
+        worker.employeeNo = Optional.of(9999);
+        int result = dao.insert(worker);
+        assertEquals(1, result);
+        assertEquals(new Integer(1), worker.version.get());
+
+        worker = dao.selectById(Optional.of(9999));
+        assertEquals(new Integer(9999), worker.employeeNo.get());
+        assertEquals(new Integer(1), worker.version.get());
+        assertFalse(worker.employeeName.isPresent());
+        assertFalse(worker.salary.isPresent());
+        assertFalse(worker.hiredate.isPresent());
+        assertFalse(worker.managerId.isPresent());
+        assertFalse(worker.departmentId.isPresent());
+        assertFalse(worker.addressId.isPresent());
+    }
+
 }

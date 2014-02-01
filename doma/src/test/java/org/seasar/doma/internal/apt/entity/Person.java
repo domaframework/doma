@@ -13,19 +13,32 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.dao;
+package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.internal.apt.entity.Person;
+import java.util.Optional;
 
-/**
- * 
- * @author taedium
- * 
- */
-public interface ExpressionValidationDao {
+import org.seasar.doma.GeneratedValue;
+import org.seasar.doma.GenerationType;
+import org.seasar.doma.Id;
+import org.seasar.doma.SequenceGenerator;
 
-    void testEmp(Emp emp);
+public class Person {
 
-    void testPerson(Person person);
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequence = "PERSON_ID")
+    Integer id;
+
+    Optional<String> name;
+
+    static Optional<String> staticName;
+
+    public Optional<String> getName() {
+        return name;
+    }
+
+    public static Optional<String> getStaticName() {
+        return staticName;
+    }
+
 }

@@ -16,10 +16,12 @@
 package org.seasar.doma.internal.expr;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import junit.framework.TestCase;
 
@@ -41,6 +43,37 @@ public class ExpressionEvaluatorTest extends TestCase {
         EvaluationResult result = evaluator.invokeMethod(location, method,
                 "abcde", String.class, paramTypes, new Object[] { 2, 4 });
         assertEquals("cd", result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testInvokeMethod_optional() throws Exception {
+        Method method = Person.class.getMethod("getOptionalName");
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Person person = new Person();
+        person.optionalName = Optional.of("aaa");
+        EvaluationResult result = evaluator.invokeMethod(location, method,
+                person, Person.class, new Class[] {}, new Object[] {});
+        assertEquals("aaa", result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testInvokeMethod_optional_empty() throws Exception {
+        Method method = Person.class.getMethod("getOptionalName");
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Person person = new Person();
+        person.optionalName = Optional.empty();
+        EvaluationResult result = evaluator.invokeMethod(location, method,
+                person, Person.class, new Class[] {}, new Object[] {});
+        assertEquals(null, result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testInvokeMethod_static_optional() throws Exception {
+        Method method = Person.class.getMethod("getStaticOptionalName");
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult result = evaluator.invokeMethod(location, method,
+                null, Person.class, new Class[] {}, new Object[] {});
+        assertEquals("foo", result.getValue());
         assertEquals(String.class, result.getValueClass());
     }
 
@@ -145,4 +178,56 @@ public class ExpressionEvaluatorTest extends TestCase {
         assertEquals("bc", result.getValue());
         assertEquals(String.class, result.getValueClass());
     }
+
+    public void testGetFieldValue() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("name");
+        Person person = new Person();
+        person.name = "aaa";
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertEquals("aaa", result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optional() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("optionalName");
+        Person person = new Person();
+        person.optionalName = Optional.of("aaa");
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertEquals("aaa", result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optional_empty() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("optionalName");
+        Person person = new Person();
+        person.optionalName = Optional.empty();
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertEquals(null, result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_static() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("staticName");
+        EvaluationResult result = evaluator
+                .getFieldValue(location, field, null);
+        assertEquals("hoge", result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_static_optional() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("staticOptionalName");
+        EvaluationResult result = evaluator
+                .getFieldValue(location, field, null);
+        assertEquals("foo", result.getValue());
+        assertEquals(String.class, result.getValueClass());
+    }
+
 }

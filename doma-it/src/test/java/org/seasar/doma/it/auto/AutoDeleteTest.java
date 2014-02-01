@@ -19,16 +19,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.PersonDao;
+import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.entity.CompKeyEmployee;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.Person;
+import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
@@ -131,4 +135,18 @@ public class AutoDeleteTest {
             assertEquals(Message.DOMA2022, expected.getMessageResource());
         }
     }
+
+    @Test
+    public void testOptional() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker employee = new Worker();
+        employee.employeeId = Optional.of(1);
+        employee.version = Optional.of(1);
+        int result = dao.delete(employee);
+        assertEquals(1, result);
+
+        employee = dao.selectById(Optional.of(1));
+        assertNull(employee);
+    }
+
 }

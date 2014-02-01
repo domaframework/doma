@@ -1,17 +1,23 @@
 package org.seasar.doma.it.sqlfile;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
+import org.seasar.doma.it.dao.WorkerDao;
+import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.framework.unit.Seasar2;
 
@@ -94,5 +100,38 @@ public class SqlFileSelectTest {
         } catch (ResultMappingException expected) {
             System.err.print(expected);
         }
+    }
+
+    @Test
+    public void testOptional() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker worker = dao.selectById(Optional.of(9));
+        assertEquals(Integer.valueOf(9), worker.employeeId.get());
+        assertEquals(Integer.valueOf(7839), worker.employeeNo.get());
+        assertEquals("KING", worker.employeeName.get());
+        assertFalse(worker.managerId.isPresent());
+        assertEquals(java.sql.Date.valueOf("1981-11-17"), worker.hiredate.get());
+        assertEquals(0, new BigDecimal("5000").compareTo(worker.salary.get()
+                .getValue()));
+        assertEquals(Integer.valueOf(1), worker.departmentId.get().getValue());
+        assertEquals(Integer.valueOf(9), worker.addressId.get());
+        assertEquals(Integer.valueOf(1), worker.version.get());
+    }
+
+    @Test
+    public void testOptional_expression() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker worker = new Worker();
+        worker.employeeNo = Optional.of(7801);
+        worker.managerId = Optional.empty();
+        worker.salary = Optional.of(new Salary("3000"));
+
+        List<Worker> workers = dao.selectByExample(worker);
+        assertEquals(14, workers.size());
+
+        worker.managerId = Optional.of(1);
+
+        workers = dao.selectByExample(worker);
+        assertEquals(3, workers.size());
     }
 }

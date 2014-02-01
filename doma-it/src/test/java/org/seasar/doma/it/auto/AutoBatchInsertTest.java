@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +33,7 @@ import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.TableStrategyDao;
+import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
@@ -40,6 +42,7 @@ import org.seasar.doma.it.entity.IdentityStrategy;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.TableStrategy;
+import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
@@ -232,5 +235,31 @@ public class AutoBatchInsertTest {
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
+    }
+
+    @Test
+    public void testOptional() throws Exception {
+        WorkerDao dao = WorkerDao.get();
+        Worker worker = new Worker();
+        worker.employeeId = Optional.of(9998);
+        worker.employeeNo = Optional.of(9998);
+        Worker worker2 = new Worker();
+        worker2.employeeId = Optional.of(9999);
+        worker2.employeeNo = Optional.of(9999);
+        int[] result = dao.insert(Arrays.asList(worker, worker2));
+        assertEquals(2, result.length);
+        assertEquals(1, result[0]);
+        assertEquals(1, result[1]);
+        assertEquals(new Integer(1), worker.version.get());
+        assertEquals(new Integer(1), worker2.version.get());
+
+        worker = dao.selectById(Optional.of(9998));
+        assertEquals(new Integer(9998), worker.employeeId.get());
+        assertEquals(new Integer(9998), worker.employeeNo.get());
+        assertEquals(new Integer(1), worker.version.get());
+        worker = dao.selectById(Optional.of(9999));
+        assertEquals(new Integer(9999), worker.employeeId.get());
+        assertEquals(new Integer(9999), worker.employeeNo.get());
+        assertEquals(new Integer(1), worker.version.get());
     }
 }
