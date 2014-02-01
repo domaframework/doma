@@ -13,6 +13,9 @@
 				配布ファイルはEclipseのプロジェクト形式です。
 				<a href="extension/doma_tools.html">Doma Tools</a>は更新サイトからダウンロードできるEclipseプラグインです。
 			</p>
+			<p>
+				ここには、それぞれのライブラリやサンプルの最新版を記載しています。
+			</p>
 			<table>
 				<tr>
 					<th>Doma本体</th>
@@ -22,7 +25,7 @@
 					<th>Doma Tools (更新サイト)</th>
 				</tr>
 				<tr>
-					<td><a href="download/2013-09-28/doma-1.35.0.zip">doma-1.35.0</a></td>
+					<td><a href="download/2014-02-01/doma-1.36.0.zip">doma-1.36.0</a></td>
 					<td><a href="download/2013-09-28/doma-tutorial-1.35.0.zip">doma-tutorial-1.35.0</a></td>
 					<td><a href="download/2013-09-28/doma-jpetstore-1.35.0.zip">doma-jpetstore-1.35.0</a></td>
 					<td><a href="download/2013-09-28/doma-gen-1.35.0.zip">doma-gen-1.35.0</a></td>
