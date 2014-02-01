@@ -30,7 +30,6 @@
 			<id>taedium</id>
 			<name>NAKAMURA Toshihiro</name>
 			<email></email>
-			<url>http://d.hatena.ne.jp/taedium/</url>
 			<timezone>+9</timezone>
 		</developer>
 	</developers>
@@ -72,9 +71,9 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:https://www.seasar.org/svn/doma/trunk/doma/</connection>
-		<developerConnection>scm:svn:https://www.seasar.org/svn/doma/trunk/doma/</developerConnection>
-		<url>http://svn.seasar.org/browse/?root=doma</url>
+		<connection>scm:git:git@github.com:seasarorg/doma.git</connection>
+		<developerConnection>scm:git:git@github.com:seasarorg/doma.git</developerConnection>
+		<url>https://github.com/seasarorg/doma</url>
 	</scm>
 	<repositories>
 		<repository>
@@ -107,8 +106,8 @@
 		</site>
 	</distributionManagement>
 	<ciManagement>
-		<system>hudson</system>
-		<url>https://www.seasar.org/hudson/job/doma-it/</url>
+		<system>jenkins</system>
+		<url>https://www.seasar.org/ci/job/doma-it/</url>
 	</ciManagement>
 
 	<!-- Build Settings -->
