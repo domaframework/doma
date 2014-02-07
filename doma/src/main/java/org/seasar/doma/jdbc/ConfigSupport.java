@@ -19,22 +19,22 @@ package org.seasar.doma.jdbc;
  * @author nakamura-to
  * 
  */
-class ConfigSupport {
+public final class ConfigSupport {
 
-    static SqlFileRepository defaultSqlFileRepository = new GreedyCacheSqlFileRepository();
+    public static SqlFileRepository defaultSqlFileRepository = new GreedyCacheSqlFileRepository();
 
-    static JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
+    public static JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
 
-    static RequiresNewController defaultRequiresNewController = new RequiresNewController() {
+    public static RequiresNewController defaultRequiresNewController = new RequiresNewController() {
     };
 
-    static ClassHelper defaultClassHelper = new ClassHelper() {
+    public static ClassHelper defaultClassHelper = new ClassHelper() {
     };
 
-    static CommandImplementors defaultCommandImplementors = new CommandImplementors() {
+    public static CommandImplementors defaultCommandImplementors = new CommandImplementors() {
     };
 
-    static QueryImplementors defaultQueryImplementors = new QueryImplementors() {
+    public static QueryImplementors defaultQueryImplementors = new QueryImplementors() {
     };
 
 }
