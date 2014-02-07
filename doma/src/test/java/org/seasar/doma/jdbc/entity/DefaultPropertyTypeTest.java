@@ -17,6 +17,8 @@ package org.seasar.doma.jdbc.entity;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.wrapper.StringWrapper;
+
 /**
  * @author nakamura-to
  * 
@@ -30,8 +32,8 @@ public class DefaultPropertyTypeTest extends TestCase {
         boolean isQuoteRequired = true;
         DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
                 DefaultPropertyTypeTest.class, String.class, String.class,
-                org.seasar.doma.wrapper.StringWrapper::new, null, null, "hoge",
-                "hoge", true, true, isQuoteRequired);
+                () -> new StringWrapper(), null, null, "hoge", "hoge", true,
+                true, isQuoteRequired);
         assertEquals("hoge", propertyType.getColumnName());
         assertEquals("[hoge]", propertyType.getColumnName(s -> "[" + s + "]"));
     }
@@ -40,8 +42,8 @@ public class DefaultPropertyTypeTest extends TestCase {
         boolean isQuoteRequired = false;
         DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
                 DefaultPropertyTypeTest.class, String.class, String.class,
-                org.seasar.doma.wrapper.StringWrapper::new, null, null, "hoge",
-                "hoge", true, true, isQuoteRequired);
+                () -> new StringWrapper(), null, null, "hoge", "hoge", true,
+                true, isQuoteRequired);
         assertEquals("hoge", propertyType.getColumnName());
         assertEquals("hoge", propertyType.getColumnName(s -> "[" + s + "]"));
     }
