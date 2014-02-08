@@ -24,7 +24,7 @@ import java.sql.Statement;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
+import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
@@ -69,7 +69,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <ul>
  * <li> {@link DomaNullPointerException} パラメータに {@code null} を渡した場合
  * <li> {@link SqlFileNotFoundException} SQLファイルが見つからなかった場合
- * <li> {@link MappedPropertyNotFoundException}
+ * <li> {@link UnknownColumnException}
  * 結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
  * <li> {@link NonUniqueResultException} 戻り値の型が {@code List}
  * でない場合で、かつ結果が2件以上返された場合

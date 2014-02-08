@@ -47,7 +47,7 @@ import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
+import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
@@ -211,7 +211,7 @@ public class SelectBuilder {
      *             引数が{@code null} の場合
      * @throws DomaIllegalArgumentException
      *             {@code resultClass} がエンティティクラスでない場合
-     * @throws MappedPropertyNotFoundException
+     * @throws UnknownColumnException
      *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
      * @throws NoResultException
      *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
@@ -259,7 +259,7 @@ public class SelectBuilder {
      *             引数が{@code null} の場合
      * @throws DomaIllegalArgumentException
      *             {@code resultClass} がエンティティクラスでない場合
-     * @throws MappedPropertyNotFoundException
+     * @throws UnknownColumnException
      *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
      * @throws NoResultException
      *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
@@ -462,7 +462,7 @@ public class SelectBuilder {
      *             引数が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             {@code elementClass} がエンティティクラスでない場合
-     * @throws MappedPropertyNotFoundException
+     * @throws UnknownColumnException
      *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
      * @throws NoResultException
      *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
@@ -621,7 +621,7 @@ public class SelectBuilder {
      *             引数のいずれかが{@code null} の場合
      * @throws DomaIllegalArgumentException
      *             処理対象のクラスがエンティティ型でない場合
-     * @throws MappedPropertyNotFoundException
+     * @throws UnknownColumnException
      *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
      * @throws NoResultException
      *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
@@ -792,7 +792,7 @@ public class SelectBuilder {
      *             引数のいずれかが{@code null} の場合
      * @throws DomaIllegalArgumentException
      *             処理対象のクラスがエンティティ型でない場合
-     * @throws MappedPropertyNotFoundException
+     * @throws UnknownColumnException
      *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
      * @throws NoResultException
      *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}

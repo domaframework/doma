@@ -16,8 +16,10 @@
 package org.seasar.doma.jdbc;
 
 /**
- * @author nakamura-to
+ * {@link Config} が返すインタフェースのデフォルト実装を提供します。
  * 
+ * @author nakamura-to
+ * @since 2.0.0
  */
 public final class ConfigSupport {
 
@@ -35,6 +37,9 @@ public final class ConfigSupport {
     };
 
     public static QueryImplementors defaultQueryImplementors = new QueryImplementors() {
+    };
+
+    public static UnknownColumnHandler defaultUnknownColumnHandler = new UnknownColumnHandler() {
     };
 
 }

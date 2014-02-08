@@ -18,17 +18,17 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.Message;
 
 /**
- * 結果セットに含まれたカラムにマッピングされたプロパティが見つからない場合にスローされます。
+ * 結果セットに未知のカラムが存在する場合、つまりプロパティへマッピングできない場合にスローされます。
  * <p>
  * 
  * @author taedium
  * 
  */
-public class MappedPropertyNotFoundException extends JdbcException {
+public class UnknownColumnException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
-    /** プロパティにマッピングされなかったカラム名 */
+    /** 未知のカラム名 */
     protected final String columnName;
 
     /** マッピングを期待されるプロパティの名前 */
@@ -55,7 +55,7 @@ public class MappedPropertyNotFoundException extends JdbcException {
      * @param logType
      *            ログタイプ
      * @param columnName
-     *            プロパティにマッピングされなかったカラム名
+     *            未知のカラム名
      * @param expectedPropertyName
      *            マッピングを期待されるプロパティの名前
      * @param entityClassName
@@ -69,7 +69,7 @@ public class MappedPropertyNotFoundException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public MappedPropertyNotFoundException(ExceptionSqlLogType logType,
+    public UnknownColumnException(ExceptionSqlLogType logType,
             String columnName, String expectedPropertyName,
             String entityClassName, SqlKind kind, String rawSql,
             String formattedSql, String sqlFilePath) {
@@ -105,9 +105,9 @@ public class MappedPropertyNotFoundException extends JdbcException {
     }
 
     /**
-     * プロパティにマッピングされなかったカラム名を返します。
+     * 未知のカラム名を返します。
      * 
-     * @return プロパティにマッピングされなかったカラム名
+     * @return 未知のカラム名
      */
     public String getColumnName() {
         return columnName;

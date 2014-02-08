@@ -21,10 +21,10 @@ import junit.framework.TestCase;
  * @author taedium
  * 
  */
-public class MappedPropertyNotFoundExceptionTest extends TestCase {
+public class UnknownColumnExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        MappedPropertyNotFoundException e = new MappedPropertyNotFoundException(
+        UnknownColumnException e = new UnknownColumnException(
                 ExceptionSqlLogType.FORMATTED_SQL, "aaa", "bbb", "ccc",
                 SqlKind.SELECT, "ddd", "eee", "fff");
         System.out.println(e.getMessage());

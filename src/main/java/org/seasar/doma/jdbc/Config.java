@@ -135,6 +135,16 @@ public interface Config {
     }
 
     /**
+     * 未知のカラムのハンドラを返します。
+     * 
+     * @return 未知のカラムのハンドラ
+     * @since 2.0.0
+     */
+    default UnknownColumnHandler getUnknownColumnHandler() {
+        return ConfigSupport.defaultUnknownColumnHandler;
+    }
+
+    /**
      * 最大行数の制限値を返します。
      * <p>
      * 0以下の値は、 {@link Statement#setMaxRows(int)}へは渡されません。

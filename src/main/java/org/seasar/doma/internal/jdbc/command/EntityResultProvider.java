@@ -30,12 +30,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -54,6 +53,8 @@ public class EntityResultProvider<ENTITY> extends
 
     protected final JdbcMappingVisitor jdbcMappingVisitor;
 
+    protected final UnknownColumnHandler unknownColumnHandler;
+
     protected Map<Integer, EntityPropertyType<ENTITY, ?>> indexMap;
 
     /**
@@ -68,6 +69,7 @@ public class EntityResultProvider<ENTITY> extends
         this.resultMappingEnsured = resultMappingEnsured;
         this.jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
+        this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
     }
 
     @Override
@@ -113,7 +115,8 @@ public class EntityResultProvider<ENTITY> extends
                 if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
                     continue;
                 }
-                throwMappedPropertyNotFoundException(columnName);
+                unknownColumnHandler.handle(query, entityType,
+                        lowerCaseColumnName);
             }
             unmappedPropertySet.remove(propertyType);
             indexMap.put(i, propertyType);
@@ -135,16 +138,6 @@ public class EntityResultProvider<ENTITY> extends
             result.put(columnName.toLowerCase(), propertyType);
         }
         return result;
-    }
-
-    protected void throwMappedPropertyNotFoundException(String columnName) {
-        Sql<?> sql = query.getSql();
-        NamingType namingType = entityType.getNamingType();
-        throw new MappedPropertyNotFoundException(query.getConfig()
-                .getExceptionSqlLogType(), columnName,
-                namingType.revert(columnName), entityType.getEntityClass()
-                        .getName(), sql.getKind(), sql.getRawSql(),
-                sql.getFormattedSql(), sql.getSqlFilePath());
     }
 
     protected void throwResultMappingException(
