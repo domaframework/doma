@@ -1,1 +1,0 @@
-select EMPLOYEE_NAME from EMPLOYEE

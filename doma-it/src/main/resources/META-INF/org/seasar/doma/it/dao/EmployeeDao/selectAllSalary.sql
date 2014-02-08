@@ -1,1 +1,0 @@
-select salary from EMPLOYEE order by salary

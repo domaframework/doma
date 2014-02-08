@@ -1,1 +1,0 @@
-select * from SAL_EMP order by NAME

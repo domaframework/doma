@@ -1,1 +1,0 @@
-select * from ADDRESS where ADDRESS_ID = /* id */0

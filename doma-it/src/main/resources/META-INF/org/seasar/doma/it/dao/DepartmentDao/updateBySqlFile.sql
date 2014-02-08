@@ -1,1 +1,0 @@
-update DEPARTMENT set DEPARTMENT_NAME = /*entity.departmentName*/'aaa', VERSION = /*entity.version*/0 + 1 where DEPARTMENT_ID = /*entity.departmentId*/1 and VERSION = /*entity.version*/0

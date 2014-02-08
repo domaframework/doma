@@ -10,13 +10,13 @@ eclipse {
 
 task eclipseSettings(type: Copy) {
   from rootProject.files(
-    "src/eclipse/org.eclipse.jdt.ui.prefs")
+    "eclipse/org.eclipse.jdt.ui.prefs")
   into project.file('.settings/')
   outputs.upToDateWhen { false }
 }
 
 task eclipseJdtPrepare(type: Copy) {
-  from rootProject.file("src/eclipse/org.eclipse.jdt.core.prefs")
+  from rootProject.file("eclipse/org.eclipse.jdt.core.prefs")
   into project.file(".settings/")
   outputs.upToDateWhen { false }
 }

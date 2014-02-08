@@ -1,1 +1,0 @@
-select * from EMPLOYEE where EMPLOYEE_ID = /* id */0

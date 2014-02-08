@@ -1,1 +1,0 @@
-select * from EMPLOYEE where SALARY > /* salary */0 order by EMPLOYEE_ID
