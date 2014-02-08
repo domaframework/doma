@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.ResultHandlerType;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.Select;
 
 /**
@@ -26,7 +26,7 @@ import org.seasar.doma.Select;
 @Dao(config = MyConfig.class)
 public interface ConcretePostIterationCallbackDao {
 
-    @Select(resultHandler = ResultHandlerType.ITERATION)
+    @Select(strategy = SelectStrategyType.ITERATE)
     <R extends Number> R iterate(
             ConcretePostIterationCallback<R, String> callback);
 

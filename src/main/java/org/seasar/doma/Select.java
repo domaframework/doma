@@ -24,13 +24,13 @@ import java.sql.Statement;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.UnknownColumnException;
 
 /**
  * 検索処理を示します。
@@ -69,8 +69,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <ul>
  * <li> {@link DomaNullPointerException} パラメータに {@code null} を渡した場合
  * <li> {@link SqlFileNotFoundException} SQLファイルが見つからなかった場合
- * <li> {@link UnknownColumnException}
- * 結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+ * <li> {@link UnknownColumnException} 結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
  * <li> {@link NonUniqueResultException} 戻り値の型が {@code List}
  * でない場合で、かつ結果が2件以上返された場合
  * <li> {@link NonSingleColumnException} 戻り値の型が、基本型やドメインクラスもしくは基本型やドメインクラスの
@@ -122,12 +121,12 @@ public @interface Select {
     int maxRows() default -1;
 
     /**
-     * 検索検索を扱う方法を返します。
+     * 検索結果を扱う戦略を返します。
      * 
-     * @return 検索結果を処理する方法
+     * @return 検索結果を扱う戦略
      * @since 2.0.0
      */
-    ResultHandlerType resultHandler() default ResultHandlerType.SINGLE_OR_LIST;
+    SelectStrategyType strategy() default SelectStrategyType.RETURN;
 
     /**
      * 結果が少なくとも1件以上存在することを保証するかどうかを返します。

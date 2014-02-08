@@ -20,22 +20,22 @@ import java.util.stream.Stream;
 import org.seasar.doma.jdbc.IterationCallback;
 
 /**
- * 検索結果を扱う方法です。
+ * 検索結果を扱う戦略です。
  * 
  * @author nakamura-to
  * @since 2.0.0
  */
-public enum ResultHandlerType {
+public enum SelectStrategyType {
 
     /**
-     * 結果を1件もしくは複数件へ変換します。
+     * 結果を戻り値で取得します。
      */
-    SINGLE_OR_LIST,
+    RETURN,
 
     /**
      * {@link IterationCallback} を使って1件ずつ反復的に処理します。
      */
-    ITERATION,
+    ITERATE,
 
     /**
      * {@link Stream} を使って処理します。

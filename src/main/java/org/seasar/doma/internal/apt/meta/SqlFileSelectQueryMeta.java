@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.ResultHandlerType;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
@@ -118,8 +118,8 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         return selectMirror.getQueryTimeoutValue();
     }
 
-    public ResultHandlerType getResultHandlerType() {
-        return selectMirror.getResultHandlerValue();
+    public SelectStrategyType getSelectStrategyType() {
+        return selectMirror.getStrategyValue();
     }
 
     public boolean getEnsureResult() {

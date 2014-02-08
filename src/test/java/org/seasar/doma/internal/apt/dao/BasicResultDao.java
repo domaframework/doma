@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.ResultHandlerType;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.IterationCallback;
 
@@ -42,9 +42,9 @@ public interface BasicResultDao {
     @Select
     List<Optional<String>> selectOptionalResultList();
 
-    @Select(resultHandler = ResultHandlerType.ITERATION)
+    @Select(strategy = SelectStrategyType.ITERATE)
     <R> R iterate(IterationCallback<String, R> callback);
 
-    @Select(resultHandler = ResultHandlerType.ITERATION)
+    @Select(strategy = SelectStrategyType.ITERATE)
     <R> R iterateOptional(IterationCallback<String, R> callback);
 }

@@ -21,7 +21,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.ResultHandlerType;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
@@ -92,7 +92,7 @@ public class SqlFileSelectQueryMetaFactory extends
             }
         }
 
-        if (queryMeta.getResultHandlerType() == ResultHandlerType.ITERATION) {
+        if (queryMeta.getSelectStrategyType() == SelectStrategyType.ITERATE) {
             if (queryMeta.getIterationCallbackCtType() == null) {
                 throw new AptException(Message.DOMA4056, env, method);
             }
@@ -101,11 +101,11 @@ public class SqlFileSelectQueryMetaFactory extends
                 SelectMirror selectMirror = queryMeta.getSelectMirror();
                 throw new AptException(Message.DOMA4057, env, method,
                         selectMirror.getAnnotationMirror(),
-                        selectMirror.getResultHandler());
+                        selectMirror.getStrategy());
             }
         }
 
-        if (queryMeta.getResultHandlerType() == ResultHandlerType.STREAM) {
+        if (queryMeta.getSelectStrategyType() == SelectStrategyType.STREAM) {
             if (queryMeta.getFunctionCtType() == null) {
                 throw new AptException(Message.DOMA4247, env, method);
             }
@@ -114,7 +114,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 SelectMirror selectMirror = queryMeta.getSelectMirror();
                 throw new AptException(Message.DOMA4248, env, method,
                         selectMirror.getAnnotationMirror(),
-                        selectMirror.getResultHandler());
+                        selectMirror.getStrategy());
             }
         }
     }
@@ -125,7 +125,7 @@ public class SqlFileSelectQueryMetaFactory extends
         final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
 
-        if (queryMeta.getResultHandlerType() == ResultHandlerType.ITERATION) {
+        if (queryMeta.getSelectStrategyType() == SelectStrategyType.ITERATE) {
             IterationCallbackCtType iterationCallbackCtType = queryMeta
                     .getIterationCallbackCtType();
             AnyCtType returnCtType = iterationCallbackCtType.getReturnCtType();
@@ -135,7 +135,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(Message.DOMA4055, env, method,
                         returnMeta.getType(), returnCtType.getBoxedTypeName());
             }
-        } else if (queryMeta.getResultHandlerType() == ResultHandlerType.STREAM) {
+        } else if (queryMeta.getSelectStrategyType() == SelectStrategyType.STREAM) {
             FunctionCtType functionCtType = queryMeta.getFunctionCtType();
             AnyCtType returnCtType = functionCtType.getReturnCtType();
             if (returnCtType == null

@@ -29,7 +29,7 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.ResultHandlerType;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -454,7 +454,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             QueryReturnMeta returnMeta = m.getReturnMeta();
 
-            if (m.getResultHandlerType() == ResultHandlerType.SINGLE_OR_LIST) {
+            if (m.getSelectStrategyType() == SelectStrategyType.RETURN) {
                 CtType returnCtType = returnMeta.getCtType();
                 returnCtType.accept(new SqlFileSelectQueryReturnCtTypeVisitor(
                         m, methodName), false);
@@ -465,13 +465,13 @@ public class DaoGenerator extends AbstractGenerator {
                         qualifiedName, m.getName());
                 iprint("return __result;%n");
             } else {
-                if (m.getResultHandlerType() == ResultHandlerType.ITERATION) {
+                if (m.getSelectStrategyType() == SelectStrategyType.ITERATE) {
                     IterationCallbackCtType callbackCtType = m
                             .getIterationCallbackCtType();
                     callbackCtType.getTargetCtType().accept(
                             new SqlFileSelectQueryCallbackCtTypeVisitor(m,
                                     methodName), false);
-                } else if (m.getResultHandlerType() == ResultHandlerType.STREAM) {
+                } else if (m.getSelectStrategyType() == SelectStrategyType.STREAM) {
                     FunctionCtType functionCtType = m.getFunctionCtType();
                     functionCtType.getTargetCtType().accept(
                             new SqlFileSelectQueryFunctionCtTypeVisitor(m,

@@ -26,8 +26,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.ResultHandlerType;
 import org.seasar.doma.Select;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -40,7 +40,7 @@ public class SelectMirror {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected AnnotationValue resultHandler;
+    protected AnnotationValue strategy;
 
     protected AnnotationValue ensureResult;
 
@@ -58,8 +58,8 @@ public class SelectMirror {
         this.annotationMirror = annotationMirror;
     }
 
-    public AnnotationValue getResultHandler() {
-        return resultHandler;
+    public AnnotationValue getStrategy() {
+        return strategy;
     }
 
     public AnnotationValue getEnsureResult() {
@@ -110,13 +110,13 @@ public class SelectMirror {
         return value.intValue();
     }
 
-    public ResultHandlerType getResultHandlerValue() {
+    public SelectStrategyType getStrategyValue() {
         VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(resultHandler);
+                .toEnumConstant(strategy);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("resultHandler");
+            throw new AptIllegalStateException("strategy");
         }
-        return ResultHandlerType.valueOf(enumConstant.getSimpleName()
+        return SelectStrategyType.valueOf(enumConstant.getSimpleName()
                 .toString());
     }
 
@@ -164,8 +164,8 @@ public class SelectMirror {
                 .getElementValuesWithDefaults(annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("resultHandler".equals(name)) {
-                result.resultHandler = value;
+            if ("strategy".equals(name)) {
+                result.strategy = value;
             } else if ("ensureResult".equals(name)) {
                 result.ensureResult = value;
             } else if ("ensureResultMapping".equals(name)) {
