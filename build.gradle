@@ -48,7 +48,11 @@ test {
     scanForTestClasses = false
     includes = ['**/*Test.class']
 }
- 
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.10'
+}
+
 repositories {
     mavenCentral()
     maven {url 'http://maven.seasar.org/maven2'}
