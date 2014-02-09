@@ -19,12 +19,16 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.function.Supplier;
 
+import org.seasar.doma.FetchType;
+import org.seasar.doma.internal.jdbc.command.ResultSetIterator.SQLRuntimeException;
+import org.seasar.doma.internal.util.IteratorUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
+import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
@@ -48,26 +52,33 @@ public abstract class AbstractIterationHandler<TARGET, RESULT> implements
     }
 
     @Override
-    public RESULT handle(ResultSet resultSet, SelectQuery query)
-            throws SQLException {
+    public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
+            ResultSetRowIndexConsumer consumer) throws SQLException {
         ResultProvider<TARGET> provider = createResultProvider(query);
-        IterationContext context = new IterationContext();
-        RESULT result = iterationCallback.defaultResult();
-        boolean existent = false;
-        while (resultSet.next()) {
-            existent = true;
-            TARGET target = provider.get(resultSet);
-            result = iterationCallback.iterate(target, context);
-            if (context.isExited()) {
-                break;
+        Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query,
+                consumer, provider);
+        try {
+            if (query.getFetchType() == FetchType.EAGER) {
+                // consume ResultSet
+                Iterator<TARGET> it = IteratorUtil.copy(iterator);
+                return () -> iterate(it);
+            } else {
+                RESULT result = iterate(iterator);
+                return () -> result;
             }
+        } catch (SQLRuntimeException e) {
+            throw e.getCause();
         }
-        if (query.isResultEnsured() && !existent) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
+    }
+
+    protected RESULT iterate(Iterator<TARGET> iterator) {
+        IterationContext context = new IterationContext();
+        RESULT candidate = iterationCallback.defaultResult();
+        while (!context.isExited() && iterator.hasNext()) {
+            TARGET target = iterator.next();
+            candidate = iterationCallback.iterate(target, context);
         }
-        return iterationCallback.postIterate(result, context);
+        return iterationCallback.postIterate(candidate, context);
     }
 
     protected abstract ResultProvider<TARGET> createResultProvider(

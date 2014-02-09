@@ -29,8 +29,9 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -447,6 +448,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
             iprint("__query.setResultMappingEnsured(%1$s);%n",
                     m.getEnsureResultMapping());
+            if (m.getSelectStrategyType() == SelectStrategyType.RETURN) {
+                iprint("__query.setFetchType(%1$s.%2$s);%n",
+                        FetchType.class.getName(), FetchType.LAZY);
+            } else {
+                iprint("__query.setFetchType(%1$s.%2$s);%n",
+                        FetchType.class.getName(), m.getFetchType());
+            }
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
             iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());

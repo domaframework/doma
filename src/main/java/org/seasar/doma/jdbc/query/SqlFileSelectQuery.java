@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
@@ -60,6 +61,8 @@ public class SqlFileSelectQuery implements SelectQuery {
     protected boolean resultEnsured;
 
     protected boolean resultMappingEnsured;
+
+    protected FetchType fetchType;
 
     protected int fetchSize;
 
@@ -193,6 +196,15 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     public void setResultMappingEnsured(boolean resultMappingEnsured) {
         this.resultMappingEnsured = resultMappingEnsured;
+    }
+
+    @Override
+    public FetchType getFetchType() {
+        return fetchType;
+    }
+
+    public void setFetchType(FetchType fetchType) {
+        this.fetchType = fetchType;
     }
 
     @Override

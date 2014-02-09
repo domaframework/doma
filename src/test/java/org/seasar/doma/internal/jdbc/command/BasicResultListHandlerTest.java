@@ -26,7 +26,6 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
@@ -63,7 +62,8 @@ public class BasicResultListHandlerTest extends TestCase {
 
         BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
                 () -> new org.seasar.doma.wrapper.StringWrapper());
-        List<String> results = handler.handle(resultSet, query);
+        List<String> results = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
         assertEquals(2, results.size());
         assertEquals("aaa", results.get(0));
         assertEquals("bbb", results.get(1));
@@ -89,33 +89,11 @@ public class BasicResultListHandlerTest extends TestCase {
         BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
                 () -> new org.seasar.doma.wrapper.StringWrapper());
         try {
-            handler.handle(resultSet, query);
+            handler.handle(resultSet, query, (i, next) -> {
+            });
             fail();
         } catch (NonSingleColumnException expected) {
         }
     }
 
-    public void testHandle_NoResultException() throws Exception {
-        MockResultSetMetaData metaData = new MockResultSetMetaData();
-        metaData.columns.add(new ColumnMetaData("x"));
-        MockResultSet resultSet = new MockResultSet(metaData);
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setMethod(method);
-        query.setResultEnsured(true);
-        query.prepare();
-
-        BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
-                () -> new org.seasar.doma.wrapper.StringWrapper());
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NoResultException expected) {
-        }
-    }
 }

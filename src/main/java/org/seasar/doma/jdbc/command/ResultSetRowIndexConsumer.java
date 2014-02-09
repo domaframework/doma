@@ -13,32 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
-
-import java.util.stream.Stream;
-
-import org.seasar.doma.jdbc.IterationCallback;
+package org.seasar.doma.jdbc.command;
 
 /**
- * 検索結果を扱う戦略です。
- * 
  * @author nakamura-to
- * @since 2.0.0
+ *
  */
-public enum SelectStrategyType {
+@FunctionalInterface
+public interface ResultSetRowIndexConsumer {
 
-    /**
-     * 結果を戻り値で取得します。
-     */
-    RETURN,
-
-    /**
-     * {@link IterationCallback} を使って1件ずつ反復的に処理します。
-     */
-    ITERATE,
-
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM;
+    void accept(Long index, Boolean next);
 }

@@ -26,7 +26,6 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.domain.PhoneNumber;
@@ -65,33 +64,12 @@ public class DomainResultListHandlerTest extends TestCase {
 
         DomainResultListHandler<String, PhoneNumber> handler = new DomainResultListHandler<String, PhoneNumber>(
                 _PhoneNumber.getSingletonInternal());
-        List<PhoneNumber> results = handler.handle(resultSet, query);
+        List<PhoneNumber> results = handler.handle(resultSet, query,
+                (i, next) -> {
+                }).get();
         assertEquals(2, results.size());
         assertEquals("01-2345-6789", results.get(0).getValue());
         assertEquals("12-3456-7890", results.get(1).getValue());
     }
 
-    public void testHandle_NoResultException() throws Exception {
-        MockResultSetMetaData metaData = new MockResultSetMetaData();
-        metaData.columns.add(new ColumnMetaData("x"));
-        MockResultSet resultSet = new MockResultSet(metaData);
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setMethod(method);
-        query.setResultEnsured(true);
-        query.prepare();
-
-        DomainResultListHandler<String, PhoneNumber> handler = new DomainResultListHandler<String, PhoneNumber>(
-                _PhoneNumber.getSingletonInternal());
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NoResultException expected) {
-        }
-    }
 }

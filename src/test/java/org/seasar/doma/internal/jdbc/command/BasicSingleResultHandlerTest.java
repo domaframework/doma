@@ -25,7 +25,6 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
@@ -62,7 +61,8 @@ public class BasicSingleResultHandlerTest extends TestCase {
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
                 () -> new org.seasar.doma.wrapper.StringWrapper(), false);
-        String result = handler.handle(resultSet, query);
+        String result = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
         assertEquals("aaa", result);
     }
 
@@ -85,7 +85,8 @@ public class BasicSingleResultHandlerTest extends TestCase {
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
                 () -> new org.seasar.doma.wrapper.StringWrapper(), false);
         try {
-            handler.handle(resultSet, query);
+            handler.handle(resultSet, query, (i, next) -> {
+            });
             fail();
         } catch (NonUniqueResultException ignore) {
         }
@@ -110,31 +111,10 @@ public class BasicSingleResultHandlerTest extends TestCase {
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
                 () -> new org.seasar.doma.wrapper.StringWrapper(), false);
         try {
-            handler.handle(resultSet, query);
+            handler.handle(resultSet, query, (i, next) -> {
+            });
             fail();
         } catch (NonSingleColumnException ignore) {
-        }
-    }
-
-    public void testHandle_NoResultException() throws Exception {
-        MockResultSet resultSet = new MockResultSet();
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setMethod(method);
-        query.setResultEnsured(true);
-        query.prepare();
-
-        BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                () -> new org.seasar.doma.wrapper.StringWrapper(), false);
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NoResultException expected) {
         }
     }
 

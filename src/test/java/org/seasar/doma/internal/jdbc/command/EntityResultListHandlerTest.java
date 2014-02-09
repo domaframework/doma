@@ -26,7 +26,6 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
@@ -66,7 +65,8 @@ public class EntityResultListHandlerTest extends TestCase {
 
         EntityResultListHandler<Emp> handler = new EntityResultListHandler<Emp>(
                 _Emp.getSingletonInternal());
-        List<Emp> entities = handler.handle(resultSet, query);
+        List<Emp> entities = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
 
         assertEquals(2, entities.size());
         Emp emp = entities.get(0);
@@ -77,28 +77,4 @@ public class EntityResultListHandlerTest extends TestCase {
         assertEquals("bbb", emp.getName());
     }
 
-    public void testHandle_NoResultException() throws Exception {
-        MockResultSetMetaData metaData = new MockResultSetMetaData();
-        metaData.columns.add(new ColumnMetaData("id"));
-        metaData.columns.add(new ColumnMetaData("name"));
-        MockResultSet resultSet = new MockResultSet(metaData);
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setResultEnsured(true);
-        query.setMethod(method);
-        query.prepare();
-
-        EntityResultListHandler<Emp> handler = new EntityResultListHandler<Emp>(
-                _Emp.getSingletonInternal());
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NoResultException expected) {
-        }
-    }
 }

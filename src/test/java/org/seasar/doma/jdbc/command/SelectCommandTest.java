@@ -138,4 +138,36 @@ public class SelectCommandTest extends TestCase {
         assertEquals(new BigDecimal(5000), bindValue.getValue());
         assertEquals(1, bindValue.getIndex());
     }
+
+    public void testExecute_NoResultException() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("id"));
+        metaData.columns.add(new ColumnMetaData("name"));
+        metaData.columns.add(new ColumnMetaData("salary"));
+        metaData.columns.add(new ColumnMetaData("version"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+        runtimeConfig.dataSource.connection = new MockConnection(
+                new MockPreparedStatement(resultSet));
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.addParameter("name", String.class, "hoge");
+        query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
+        query.setMethod(getClass().getMethod(getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setResultEnsured(true);
+        query.prepare();
+
+        SelectCommand<Emp> command = new SelectCommand<Emp>(query,
+                new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        try {
+            command.execute();
+            fail();
+        } catch (Exception expected) {
+        }
+    }
+
 }

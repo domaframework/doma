@@ -17,8 +17,9 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
@@ -120,6 +121,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public SelectStrategyType getSelectStrategyType() {
         return selectMirror.getStrategyValue();
+    }
+
+    public FetchType getFetchType() {
+        return selectMirror.getFetchValue();
     }
 
     public boolean getEnsureResult() {

@@ -27,7 +27,6 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.domain.PhoneNumber;
@@ -77,7 +76,8 @@ public class DomainIterationHandlerTest extends TestCase {
                         return result;
                     }
                 });
-        String result = handler.handle(resultSet, query);
+        String result = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
         assertEquals("01-2345-678912-3456-7890", result);
     }
 
@@ -111,42 +111,9 @@ public class DomainIterationHandlerTest extends TestCase {
                         return result;
                     }
                 });
-        String result = handler.handle(resultSet, query);
+        String result = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
         assertEquals("01-2345-6789", result);
     }
 
-    public void testHandle_NoResultException() throws Exception {
-        MockResultSetMetaData metaData = new MockResultSetMetaData();
-        metaData.columns.add(new ColumnMetaData("name"));
-        MockResultSet resultSet = new MockResultSet(metaData);
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setMethod(method);
-        query.setResultEnsured(true);
-        query.prepare();
-
-        DomainIterationHandler<String, PhoneNumber, String> handler = new DomainIterationHandler<>(
-                _PhoneNumber.getSingletonInternal(),
-                new IterationCallback<PhoneNumber, String>() {
-
-                    private String result = "";
-
-                    @Override
-                    public String iterate(PhoneNumber target,
-                            IterationContext iterationContext) {
-                        result += target.getValue();
-                        return result;
-                    }
-                });
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NoResultException expected) {
-        }
-    }
 }

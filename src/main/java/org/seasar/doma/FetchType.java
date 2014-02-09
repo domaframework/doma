@@ -15,30 +15,25 @@
  */
 package org.seasar.doma;
 
-import java.util.stream.Stream;
-
-import org.seasar.doma.jdbc.IterationCallback;
-
 /**
- * 検索結果を扱う戦略です。
+ * 検索の結果セットを即時に全て取得するか、遅延で少しづつ取得するかを示します。
  * 
  * @author nakamura-to
  * @since 2.0.0
  */
-public enum SelectStrategyType {
+public enum FetchType {
 
     /**
-     * 結果を戻り値で取得します。
+     * 即時に全て取得します。
+     * <p>
+     * メモリの使用量が増え、DBへの接続時間は短くなります。
      */
-    RETURN,
+    EAGER,
 
     /**
-     * {@link IterationCallback} を使って1件ずつ反復的に処理します。
+     * 遅延で少しづつ必要なだけを取得します。
+     * <p>
+     * メモリの使用量は減り、DBへの接続時間は長くなります。
      */
-    ITERATE,
-
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM;
+    LAZY;
 }

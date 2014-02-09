@@ -25,7 +25,6 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
@@ -64,7 +63,8 @@ public class DomainSingleResultHandlerTest extends TestCase {
 
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
                 _PhoneNumber.getSingletonInternal());
-        PhoneNumber result = handler.handle(resultSet, query);
+        PhoneNumber result = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
         assertEquals("01-2345-6789", result.getValue());
     }
 
@@ -87,31 +87,10 @@ public class DomainSingleResultHandlerTest extends TestCase {
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
                 _PhoneNumber.getSingletonInternal());
         try {
-            handler.handle(resultSet, query);
+            handler.handle(resultSet, query, (i, next) -> {
+            });
             fail();
         } catch (NonUniqueResultException expected) {
-        }
-    }
-
-    public void testHandle_NoResultException() throws Exception {
-        MockResultSet resultSet = new MockResultSet();
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setMethod(method);
-        query.setResultEnsured(true);
-        query.prepare();
-
-        DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
-                _PhoneNumber.getSingletonInternal());
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NoResultException expected) {
         }
     }
 

@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
+import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
@@ -47,13 +48,13 @@ import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -979,6 +980,16 @@ public class SelectBuilder {
      */
     public void ensureResultMapping(boolean ensureResultMapping) {
         query.setResultMappingEnsured(ensureResultMapping);
+    }
+
+    /**
+     * フェッチのタイプを設定します。
+     * 
+     * @param fetchType
+     *            フェッチのタイプ
+     */
+    public void fetch(FetchType fetchType) {
+        query.setFetchType(fetchType);
     }
 
     /**

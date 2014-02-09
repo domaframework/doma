@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -143,6 +144,11 @@ public class ScalarResultProviderTest extends TestCase {
         @Override
         public boolean isResultMappingEnsured() {
             return false;
+        }
+
+        @Override
+        public FetchType getFetchType() {
+            return FetchType.LAZY;
         }
 
         @Override

@@ -129,6 +129,14 @@ public @interface Select {
     SelectStrategyType strategy() default SelectStrategyType.RETURN;
 
     /**
+     * フェッチのタイプを返します。
+     * 
+     * @return フェッチのタイプを返します。
+     * @since 2.0.0
+     */
+    FetchType fetch() default FetchType.LAZY;
+
+    /**
      * 結果が少なくとも1件以上存在することを保証するかどうかを返します。
      * <p>
      * {@code true} の場合に結果が存在しなければ、このアノテーションが注釈されたメソッドから

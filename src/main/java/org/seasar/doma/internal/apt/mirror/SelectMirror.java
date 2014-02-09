@@ -25,6 +25,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
+import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.SelectStrategyType;
@@ -41,6 +42,8 @@ public class SelectMirror {
     protected final AnnotationMirror annotationMirror;
 
     protected AnnotationValue strategy;
+
+    protected AnnotationValue fetch;
 
     protected AnnotationValue ensureResult;
 
@@ -60,6 +63,10 @@ public class SelectMirror {
 
     public AnnotationValue getStrategy() {
         return strategy;
+    }
+
+    public AnnotationValue getFetch() {
+        return fetch;
     }
 
     public AnnotationValue getEnsureResult() {
@@ -120,6 +127,15 @@ public class SelectMirror {
                 .toString());
     }
 
+    public FetchType getFetchValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(fetch);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("fetch");
+        }
+        return FetchType.valueOf(enumConstant.getSimpleName().toString());
+    }
+
     public boolean getEnsureResultValue() {
         Boolean value = AnnotationValueUtil.toBoolean(ensureResult);
         if (value == null) {
@@ -166,6 +182,8 @@ public class SelectMirror {
             AnnotationValue value = entry.getValue();
             if ("strategy".equals(name)) {
                 result.strategy = value;
+            } else if ("fetch".equals(name)) {
+                result.fetch = value;
             } else if ("ensureResult".equals(name)) {
                 result.ensureResult = value;
             } else if ("ensureResultMapping".equals(name)) {

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
+import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -32,6 +33,8 @@ public interface SelectQuery extends Query {
     boolean isResultEnsured();
 
     boolean isResultMappingEnsured();
+
+    FetchType getFetchType();
 
     int getFetchSize();
 

@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.query;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
@@ -63,6 +64,11 @@ public class CountQuery implements SelectQuery {
     @Override
     public boolean isResultMappingEnsured() {
         return false;
+    }
+
+    @Override
+    public FetchType getFetchType() {
+        return FetchType.LAZY;
     }
 
     @Override

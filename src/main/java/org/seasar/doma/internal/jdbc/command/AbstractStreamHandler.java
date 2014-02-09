@@ -20,15 +20,19 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.FetchType;
+import org.seasar.doma.internal.jdbc.command.ResultSetIterator.SQLRuntimeException;
+import org.seasar.doma.internal.util.IteratorUtil;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
+import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
@@ -50,14 +54,25 @@ public abstract class AbstractStreamHandler<RESULT, TARGET> implements
     }
 
     @Override
-    public RESULT handle(ResultSet resultSet, SelectQuery query)
-            throws SQLException {
+    public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
+            ResultSetRowIndexConsumer consumer) throws SQLException {
         ResultProvider<TARGET> provider = createResultProvider(query);
-        Spliterator<TARGET> spliterator = Spliterators.spliteratorUnknownSize(
-                new ResultIterator<>(resultSet, query, provider), 0);
-        Stream<TARGET> stream = StreamSupport.stream(spliterator, false);
+        Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query,
+                consumer, provider);
         try {
-            return mapper.apply(stream);
+            if (query.getFetchType() == FetchType.EAGER) {
+                // consume ResultSet
+                List<TARGET> list = IteratorUtil.toList(iterator);
+                Stream<TARGET> stream = list.stream();
+                return () -> mapper.apply(stream);
+            } else {
+                Spliterator<TARGET> spliterator = Spliterators
+                        .spliteratorUnknownSize(iterator, 0);
+                Stream<TARGET> stream = StreamSupport
+                        .stream(spliterator, false);
+                RESULT result = mapper.apply(stream);
+                return () -> result;
+            }
         } catch (SQLRuntimeException e) {
             throw e.getCause();
         }
@@ -66,63 +81,4 @@ public abstract class AbstractStreamHandler<RESULT, TARGET> implements
     protected abstract ResultProvider<TARGET> createResultProvider(
             SelectQuery query);
 
-    protected static class ResultIterator<TARGET> implements Iterator<TARGET> {
-
-        protected final ResultSet resultSet;
-
-        protected final SelectQuery query;
-
-        protected final ResultProvider<TARGET> provider;
-
-        protected boolean invoked = false;
-
-        public ResultIterator(ResultSet resultSet, SelectQuery query,
-                ResultProvider<TARGET> provider) {
-            assertNotNull(resultSet, query, provider);
-            this.resultSet = resultSet;
-            this.query = query;
-            this.provider = provider;
-        }
-
-        @Override
-        public boolean hasNext() {
-            boolean existent;
-            try {
-                existent = resultSet.next();
-            } catch (SQLException e) {
-                throw new SQLRuntimeException(e);
-            }
-            if (!invoked) {
-                if (query.isResultEnsured() && !existent) {
-                    Sql<?> sql = query.getSql();
-                    throw new NoResultException(query.getConfig()
-                            .getExceptionSqlLogType(), sql);
-                }
-                invoked = true;
-            }
-            return existent;
-        }
-
-        @Override
-        public TARGET next() {
-            try {
-                return provider.get(resultSet);
-            } catch (SQLException e) {
-                throw new SQLRuntimeException(e);
-            }
-        }
-    }
-
-    @SuppressWarnings("serial")
-    protected static class SQLRuntimeException extends RuntimeException {
-
-        protected SQLRuntimeException(SQLException cause) {
-            super(cause);
-        }
-
-        @Override
-        public SQLException getCause() {
-            return (SQLException) super.getCause();
-        }
-    }
 }

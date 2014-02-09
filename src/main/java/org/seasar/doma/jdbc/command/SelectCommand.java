@@ -21,11 +21,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -53,6 +56,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
 
     @Override
     public RESULT execute() {
+        Supplier<RESULT> supplier = null;
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
         try {
@@ -62,7 +66,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
                 log();
                 setupOptions(preparedStatement);
                 bindParameters(preparedStatement);
-                return executeQuery(preparedStatement);
+                supplier = executeQuery(preparedStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
                 throw new SqlExecutionException(query.getConfig()
@@ -75,6 +79,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         } finally {
             JdbcUtil.close(connection, query.getConfig().getJdbcLogger());
         }
+        return supplier.get();
     }
 
     protected void log() {
@@ -102,14 +107,24 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         binder.bind(preparedStatement, sql.getParameters());
     }
 
-    protected RESULT executeQuery(PreparedStatement preparedStatement)
+    protected Supplier<RESULT> executeQuery(PreparedStatement preparedStatement)
             throws SQLException {
         ResultSet resultSet = preparedStatement.executeQuery();
         try {
-            return resultSetHandler.handle(resultSet, query);
+            return handleResultSet(resultSet);
         } finally {
             JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger());
         }
     }
 
+    protected Supplier<RESULT> handleResultSet(ResultSet resultSet)
+            throws SQLException {
+        return resultSetHandler.handle(resultSet, query, (index, next) -> {
+            if (index == -1 && !next && query.isResultEnsured()) {
+                Sql<?> sql = query.getSql();
+                throw new NoResultException(query.getConfig()
+                        .getExceptionSqlLogType(), sql);
+            }
+        });
+    }
 }

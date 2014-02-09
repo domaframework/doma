@@ -20,8 +20,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.seasar.doma.jdbc.command.ResultSetHandler;
+import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
@@ -45,9 +47,10 @@ public abstract class AbstractResultListHandler<ELEMENT> implements
     }
 
     @Override
-    public List<ELEMENT> handle(ResultSet resultSet, SelectQuery query)
+    public Supplier<List<ELEMENT>> handle(ResultSet resultSet,
+            SelectQuery query, ResultSetRowIndexConsumer consumer)
             throws SQLException {
-        return handler.handle(resultSet, query);
+        return handler.handle(resultSet, query, consumer);
     }
 
 }

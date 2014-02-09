@@ -1,0 +1,1 @@
+select * from aaa where name = /*name*/'name' and salary = /*salary*/100

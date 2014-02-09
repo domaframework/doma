@@ -65,6 +65,7 @@ public class ParameterizedParamDaoImpl extends org.seasar.doma.internal.jdbc.dao
             __query.setCallerMethodName("select");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

@@ -77,6 +77,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerMethodName("iterateByIdAndName");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -108,6 +109,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerMethodName("iterateById");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -138,6 +140,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerMethodName("iterate");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -168,6 +171,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerMethodName("iterateWithHogeIterationCallback");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -199,6 +203,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerMethodName("iterateByIdAsMap");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

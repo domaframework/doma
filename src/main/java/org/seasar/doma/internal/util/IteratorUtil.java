@@ -13,32 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.util;
 
-import java.util.stream.Stream;
-
-import org.seasar.doma.jdbc.IterationCallback;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * 検索結果を扱う戦略です。
- * 
  * @author nakamura-to
- * @since 2.0.0
+ *
  */
-public enum SelectStrategyType {
+public final class IteratorUtil {
 
-    /**
-     * 結果を戻り値で取得します。
-     */
-    RETURN,
+    public static <T> List<T> toList(Iterator<T> iterator) {
+        List<T> list = new LinkedList<>();
+        iterator.forEachRemaining(list::add);
+        return list;
+    }
 
-    /**
-     * {@link IterationCallback} を使って1件ずつ反復的に処理します。
-     */
-    ITERATE,
-
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM;
+    public static <T> Iterator<T> copy(Iterator<T> iterator) {
+        List<T> list = toList(iterator);
+        return list.iterator();
+    }
 }

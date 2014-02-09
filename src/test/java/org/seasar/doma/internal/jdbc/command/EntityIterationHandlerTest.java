@@ -27,7 +27,6 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
@@ -79,7 +78,8 @@ public class EntityIterationHandlerTest extends TestCase {
                     }
 
                 });
-        Integer result = handler.handle(resultSet, query);
+        Integer result = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
         assertEquals(new Integer(2), result);
     }
 
@@ -115,44 +115,9 @@ public class EntityIterationHandlerTest extends TestCase {
                     }
 
                 });
-        Integer result = handler.handle(resultSet, query);
+        Integer result = handler.handle(resultSet, query, (i, next) -> {
+        }).get();
         assertEquals(new Integer(1), result);
     }
 
-    public void testHandle_NoResultException() throws Exception {
-        MockResultSetMetaData metaData = new MockResultSetMetaData();
-        metaData.columns.add(new ColumnMetaData("id"));
-        metaData.columns.add(new ColumnMetaData("name"));
-        MockResultSet resultSet = new MockResultSet(metaData);
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setMethod(method);
-        query.setResultEnsured(true);
-        query.prepare();
-
-        EntityIterationHandler<Emp, Integer> handler = new EntityIterationHandler<>(
-                _Emp.getSingletonInternal(),
-                new IterationCallback<Emp, Integer>() {
-
-                    private int count;
-
-                    @Override
-                    public Integer iterate(Emp target,
-                            IterationContext iterationContext) {
-                        count++;
-                        return count;
-                    }
-
-                });
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NoResultException expected) {
-        }
-    }
 }
