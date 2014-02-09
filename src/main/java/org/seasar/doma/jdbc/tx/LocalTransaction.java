@@ -210,7 +210,8 @@ public class LocalTransaction {
             release(context, callerMethodName);
             throw new JdbcException(Message.DOMA2056, e, e);
         }
-        if (transactionIsolationLevel != null) {
+        if (transactionIsolationLevel != null
+                && transactionIsolationLevel != TransactionIsolationLevel.DEFAULT) {
             int level = transactionIsolationLevel.getLevel();
             try {
                 connection.setTransactionIsolation(level);

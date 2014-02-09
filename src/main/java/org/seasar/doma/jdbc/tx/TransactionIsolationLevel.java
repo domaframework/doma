@@ -35,7 +35,9 @@ public enum TransactionIsolationLevel {
     REPEATABLE_READ(Connection.TRANSACTION_REPEATABLE_READ),
 
     /** @see Connection#TRANSACTION_SERIALIZABLE */
-    SERIALIZABLE(Connection.TRANSACTION_SERIALIZABLE);
+    SERIALIZABLE(Connection.TRANSACTION_SERIALIZABLE),
+
+    DEFAULT(-1);
 
     private int level;
 
