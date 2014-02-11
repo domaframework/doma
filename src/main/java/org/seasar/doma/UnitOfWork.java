@@ -21,6 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.tx.TransactionAttribute;
 import org.seasar.doma.jdbc.tx.TransactionIsolationLevel;
 
 /**
@@ -33,6 +34,13 @@ import org.seasar.doma.jdbc.tx.TransactionIsolationLevel;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface UnitOfWork {
+
+    /**
+     * トランザクション属性です。
+     * 
+     * @return トランザクション属性
+     */
+    TransactionAttribute attribute() default TransactionAttribute.REQURED;
 
     /**
      * トランザクション分離レベルです。

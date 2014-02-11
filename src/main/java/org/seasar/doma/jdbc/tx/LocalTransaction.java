@@ -284,6 +284,40 @@ public class LocalTransaction {
     }
 
     /**
+     * ローカルトランザクションを中断します。
+     * 
+     * @return　中断されたトランザクションを表すトランザクションコンテキスト
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     */
+    public LocalTransactionContext suspend() {
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (!isActiveInternal(context)) {
+            throw new LocalTransactionNotYetBegunException(Message.DOMA2046);
+        }
+        localTxContextHolder.set(null);
+        return context;
+    }
+
+    /**
+     * ローカルトランザクションを再開します。
+     * <p>
+     * アクティブなローカルトランザクションが存在する場合、そのトランザクションをロールバックします。
+     * <p>
+     * このメソッドは、例外をスローしません。
+     * 
+     * @param context
+     *            　中断されたトランザクションを表すトランザクションコンテキスト
+     */
+    public void resume(LocalTransactionContext context) {
+        LocalTransactionContext currentContext = localTxContextHolder.get();
+        if (isActiveInternal(currentContext)) {
+            rollbackInternal("resume");
+        }
+        localTxContextHolder.set(context);
+    }
+
+    /**
      * ローカルトランザクションをロールバックします。
      * <p>
      * ローカルトランザクションが開始されていない場合、何もおこないません。
@@ -578,4 +612,28 @@ public class LocalTransaction {
     protected boolean isActiveInternal(LocalTransactionContext context) {
         return context != null;
     }
+
+    /**
+     * 現在のトランザクションをロールバックすることを予約します。
+     */
+    public void setRollbackOnly() {
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (isActiveInternal(context)) {
+            context.setRollbackOnly();
+        }
+    }
+
+    /**
+     * 現在のトランザクションがロールバックされるように予約されているかどうかを返します。
+     * 
+     * @return ロールバックされる場合 {@code true}
+     */
+    public boolean isRollbackOnly() {
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (isActiveInternal(context)) {
+            return context.isRollbackOnly();
+        }
+        return false;
+    }
+
 }

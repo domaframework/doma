@@ -32,7 +32,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.1.0
  */
-final class LocalTransactionContext {
+public class LocalTransactionContext {
 
     private final List<String> savepointNames = new ArrayList<String>();
 
@@ -47,6 +47,8 @@ final class LocalTransactionContext {
     private Function<Connection, LocalTransactionalConnection> connectionInitializer;
 
     private String id;
+
+    private boolean rollbackOnly;
 
     LocalTransactionContext(Supplier<Connection> connectionSupplier) {
         assertNotNull(connectionSupplier);
@@ -110,6 +112,14 @@ final class LocalTransactionContext {
 
     String getId() {
         return id;
+    }
+
+    void setRollbackOnly() {
+        this.rollbackOnly = true;
+    }
+
+    boolean isRollbackOnly() {
+        return rollbackOnly;
     }
 
 }
