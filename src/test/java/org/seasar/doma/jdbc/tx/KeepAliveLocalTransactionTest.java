@@ -33,18 +33,18 @@ public class KeepAliveLocalTransactionTest extends TestCase {
 
     private final MockConnection connection = new MockConnection();
 
-    private final MockDataSource dataSource = new MockDataSource(connection);
-
-    private final ThreadLocal<LocalTransactionContext> connectionHolder = new ThreadLocal<LocalTransactionContext>();
+    private final LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+            new MockDataSource(connection));
 
     private final UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
 
-    private final KeepAliveLocalTransaction transaction = new KeepAliveLocalTransaction(
-            dataSource, connectionHolder, jdbcLogger);
+    private final KeepAliveLocalTransaction transaction = dataSource
+            .getKeepAliveLocalTransaction(jdbcLogger);
 
     public void testBegin() throws Exception {
         transaction.begin();
         assertTrue(transaction.isActive());
+        dataSource.getConnection();
         assertFalse(connection.autoCommit);
         assertEquals(TransactionIsolationLevel.READ_COMMITTED.getLevel(),
                 connection.isolationLevel);
@@ -52,11 +52,11 @@ public class KeepAliveLocalTransactionTest extends TestCase {
 
     public void testBeginImlicitDefaultTransactionIsolationLevel()
             throws Exception {
-        LocalTransaction transaction = new LocalTransaction(dataSource,
-                connectionHolder, jdbcLogger,
-                TransactionIsolationLevel.SERIALIZABLE);
+        LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(
+                jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
         transaction.begin();
         assertTrue(transaction.isActive());
+        dataSource.getConnection();
         assertFalse(connection.autoCommit);
         assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(),
                 connection.isolationLevel);
@@ -65,6 +65,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
     public void testBeginWithTransactionIsolationLevel() throws Exception {
         transaction.begin(TransactionIsolationLevel.SERIALIZABLE);
         assertTrue(transaction.isActive());
+        dataSource.getConnection();
         assertFalse(connection.autoCommit);
         assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(),
                 connection.isolationLevel);
@@ -90,22 +91,13 @@ public class KeepAliveLocalTransactionTest extends TestCase {
             }
 
         };
-        MockDataSource dataSource = new MockDataSource(connection);
-        ThreadLocal<LocalTransactionContext> connectionHolder = new ThreadLocal<LocalTransactionContext>();
-        UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger() {
-
-            @Override
-            public void logLocalTransactionBegun(String callerClassName,
-                    String callerMethodName, String transactionId) {
-                fail();
-            }
-
-        };
-        LocalTransaction transaction = new LocalTransaction(dataSource,
-                connectionHolder, jdbcLogger);
-
+        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+                new MockDataSource(connection));
+        LocalTransaction transaction = dataSource
+                .getKeepAliveLocalTransaction(jdbcLogger);
         try {
             transaction.begin();
+            dataSource.getConnection();
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -123,22 +115,13 @@ public class KeepAliveLocalTransactionTest extends TestCase {
             }
 
         };
-        MockDataSource dataSource = new MockDataSource(connection);
-        ThreadLocal<LocalTransactionContext> connectionHolder = new ThreadLocal<LocalTransactionContext>();
-        UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger() {
-
-            @Override
-            public void logLocalTransactionBegun(String callerClassName,
-                    String callerMethodName, String transactionId) {
-                fail();
-            }
-
-        };
-        LocalTransaction transaction = new LocalTransaction(dataSource,
-                connectionHolder, jdbcLogger);
-
+        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+                new MockDataSource(connection));
+        LocalTransaction transaction = dataSource
+                .getKeepAliveLocalTransaction(jdbcLogger);
         try {
             transaction.begin(TransactionIsolationLevel.READ_COMMITTED);
+            dataSource.getConnection();
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -255,12 +238,21 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         }
     }
 
-    public void testCommit() {
+    public void testCommit() throws Exception {
         transaction.begin();
+        dataSource.getConnection();
         transaction.commit();
         assertFalse(transaction.isActive());
         assertFalse(connection.autoCommit);
         assertTrue(connection.committed);
+    }
+
+    public void testCommit_ConnectionUnused() throws Exception {
+        transaction.begin();
+        transaction.commit();
+        assertFalse(transaction.isActive());
+        assertTrue(connection.autoCommit);
+        assertFalse(connection.committed);
     }
 
     public void testCommit_notYetBegun() throws Exception {
@@ -272,12 +264,21 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         }
     }
 
-    public void testRollback() {
+    public void testRollback() throws Exception {
         transaction.begin();
+        dataSource.getConnection();
         transaction.rollback();
         assertFalse(transaction.isActive());
         assertFalse(connection.autoCommit);
         assertTrue(connection.rolledback);
+    }
+
+    public void testRollback_ConnectionUnused() throws Exception {
+        transaction.begin();
+        transaction.rollback();
+        assertFalse(transaction.isActive());
+        assertTrue(connection.autoCommit);
+        assertFalse(connection.rolledback);
     }
 
     public void testRollback_notYetBegun() throws Exception {
@@ -313,10 +314,10 @@ public class KeepAliveLocalTransactionTest extends TestCase {
     }
 
     public void testInitAndDestory() throws Exception {
-        assertNull(connectionHolder.get());
+        assertNull(transaction.localTxContextHolder.get());
         transaction.init();
-        assertNotNull(connectionHolder.get());
+        assertNotNull(transaction.localTxContextHolder.get());
         transaction.destroy();
-        assertNull(connectionHolder.get());
+        assertNull(transaction.localTxContextHolder.get());
     }
 }

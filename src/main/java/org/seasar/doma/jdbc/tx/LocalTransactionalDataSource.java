@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.PrintWriter;
 import java.sql.Connection;

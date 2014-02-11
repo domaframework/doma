@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.Savepoint;
@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -30,31 +34,52 @@ import java.util.Map;
  */
 final class LocalTransactionContext {
 
-    private final LocalTransactionalConnection connection;
-
-    private int transactionIsolationLevel = Connection.TRANSACTION_NONE;
-
     private final List<String> savepointNames = new ArrayList<String>();
 
     private final Map<String, Savepoint> savepointMap = new HashMap<String, Savepoint>();
 
+    private final Supplier<Connection> connectionSupplier;
+
+    private Connection connection;
+
+    private LocalTransactionalConnection localTxConnection;
+
+    private Function<Connection, LocalTransactionalConnection> connectionInitializer;
+
     private String id;
 
-    LocalTransactionContext(LocalTransactionalConnection connection) {
-        assertNotNull(connection);
-        this.connection = connection;
+    LocalTransactionContext(Supplier<Connection> connectionSupplier) {
+        assertNotNull(connectionSupplier);
+        this.connectionSupplier = connectionSupplier;
+    }
+
+    void begin(
+            Function<Connection, LocalTransactionalConnection> connectionInitializer) {
+        assertNotNull(connectionInitializer);
+        id = String.valueOf(System.identityHashCode(connectionInitializer));
+        this.connectionInitializer = connectionInitializer;
+    }
+
+    void end() {
+        id = null;
+        connectionInitializer = null;
     }
 
     LocalTransactionalConnection getConnection() {
-        return connection;
+        if (localTxConnection == null) {
+            if (connection == null) {
+                connection = connectionSupplier.get();
+            }
+            if (connectionInitializer == null) {
+                throw new LocalTransactionNotYetBegunException(Message.DOMA2048);
+            }
+            localTxConnection = connectionInitializer.apply(connection);
+        }
+        return localTxConnection;
     }
 
-    int getTransactionIsolationLevel() {
-        return transactionIsolationLevel;
-    }
-
-    void setTransactionIsolationLevel(int transactionIsolationLevel) {
-        this.transactionIsolationLevel = transactionIsolationLevel;
+    boolean hasConnection() {
+        return connection != null;
     }
 
     Savepoint getSavepoint(String savepointName) {
@@ -87,7 +112,4 @@ final class LocalTransactionContext {
         return id;
     }
 
-    void setId(String id) {
-        this.id = id;
-    }
 }

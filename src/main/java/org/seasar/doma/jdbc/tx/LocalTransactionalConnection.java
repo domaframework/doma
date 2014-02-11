@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -50,16 +51,24 @@ class LocalTransactionalConnection implements Connection {
     /** コネクション */
     private final Connection connection;
 
+    private final int preservedTransactionIsolation;
+
     /**
      * インスタンスを構築します。
      * 
      * @param connection
      *            コネクション
      */
-    public LocalTransactionalConnection(Connection connection) {
+    public LocalTransactionalConnection(Connection connection,
+            int preservedTransactionIsolation) {
         assertNotNull(connection);
         assertTrue(!(connection instanceof LocalTransactionalConnection));
         this.connection = connection;
+        this.preservedTransactionIsolation = preservedTransactionIsolation;
+    }
+
+    protected int getPreservedTransactionIsolation() {
+        return this.preservedTransactionIsolation;
     }
 
     /**
