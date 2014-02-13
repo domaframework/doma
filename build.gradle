@@ -85,6 +85,12 @@ signing {
     sign configurations.archives
 }
 
+gradle.taskGraph.whenReady {taskGraph ->
+    if (!taskGraph.hasTask(uploadArchives)) {
+        signArchives.onlyIf { false }
+    }
+}
+
 // uploading artifacts
 uploadArchives {
     repositories.mavenDeployer {
