@@ -3,20 +3,46 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Doma's documentation!
+Domaのドキュメントへようこそ！
 ================================
 
-Contents:
+目次:
 
 .. toctree::
    :maxdepth: 2
 
+   getting-started
+   config
+   basic
+   domain
+   entity
+   dao
+   query
+   sql
+   tx
+   apt
+   build
+
+FAQ
+==================
+
+.. toctree::
+   :maxdepth: 1
+
+   faq
+
+移行ガイド
+==================
+
+.. toctree::
+   :maxdepth: 1
+
+   migration
 
 
-Indices and tables
+索引と検索
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 
