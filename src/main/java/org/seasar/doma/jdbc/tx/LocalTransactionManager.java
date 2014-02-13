@@ -68,7 +68,26 @@ public class LocalTransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        requiredInternal(toSupplier(block));
+        requiredInternal(toSupplier(block), TransactionIsolationLevel.DEFAULT);
+    }
+
+    /**
+     * トランザクション属性がREQUIREDであるトランザクションを実行します。
+     * 
+     * @param block
+     *            トランザクション内で実行する処理
+     * @param isolationLevel
+     *            トランザクション分離レベル
+     */
+    public void required(Runnable block,
+            TransactionIsolationLevel isolationLevel) {
+        if (block == null) {
+            throw new DomaNullPointerException("block");
+        }
+        if (isolationLevel == null) {
+            throw new DomaNullPointerException("isolationLevel");
+        }
+        requiredInternal(toSupplier(block), isolationLevel);
     }
 
     /**
@@ -84,15 +103,38 @@ public class LocalTransactionManager {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
         }
-        return requiredInternal(supplier);
+        return requiredInternal(supplier, TransactionIsolationLevel.DEFAULT);
     }
 
-    protected <RESULT> RESULT requiredInternal(Supplier<RESULT> supplier) {
-        assertNotNull(supplier);
+    /**
+     * トランザクション属性がREQUIREDであるトランザクションを実行します。
+     * 
+     * @param <RESULT>
+     *            結果の型
+     * @param supplier
+     *            トランザクション内で実行する処理
+     * @param isolationLevel
+     *            トランザクション分離レベル
+     * @return 処理の結果
+     */
+    public <RESULT> RESULT required(Supplier<RESULT> supplier,
+            TransactionIsolationLevel isolationLevel) {
+        if (supplier == null) {
+            throw new DomaNullPointerException("supplier");
+        }
+        if (isolationLevel == null) {
+            throw new DomaNullPointerException("isolationLevel");
+        }
+        return requiredInternal(supplier, isolationLevel);
+    }
+
+    protected <RESULT> RESULT requiredInternal(Supplier<RESULT> supplier,
+            TransactionIsolationLevel isolationLevel) {
+        assertNotNull(supplier, isolationLevel);
         if (transaction.isActive()) {
             return supplier.get();
         } else {
-            return executeInTransaction(supplier);
+            return executeInTransaction(supplier, isolationLevel);
         }
     }
 
@@ -106,7 +148,27 @@ public class LocalTransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        requiresNewInternal(toSupplier(block));
+        requiresNewInternal(toSupplier(block),
+                TransactionIsolationLevel.DEFAULT);
+    }
+
+    /**
+     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
+     * 
+     * @param block
+     *            トランザクション内で実行する処理
+     * @param isolationLevel
+     *            トランザクション分離レベル
+     */
+    public void requiresNew(Runnable block,
+            TransactionIsolationLevel isolationLevel) {
+        if (block == null) {
+            throw new DomaNullPointerException("block");
+        }
+        if (isolationLevel == null) {
+            throw new DomaNullPointerException("isolationLevel");
+        }
+        requiresNewInternal(toSupplier(block), isolationLevel);
     }
 
     /**
@@ -122,20 +184,43 @@ public class LocalTransactionManager {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
         }
-        return requiresNewInternal(supplier);
+        return requiresNewInternal(supplier, TransactionIsolationLevel.DEFAULT);
     }
 
-    protected <RESULT> RESULT requiresNewInternal(Supplier<RESULT> supplier) {
-        assertNotNull(supplier);
+    /**
+     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
+     * 
+     * @param <RESULT>
+     *            結果の型
+     * @param supplier
+     *            トランザクション内で実行する処理
+     * @param isolationLevel
+     *            トランザクション分離レベル
+     * @return 処理の結果
+     */
+    public <RESULT> RESULT requiresNew(Supplier<RESULT> supplier,
+            TransactionIsolationLevel isolationLevel) {
+        if (supplier == null) {
+            throw new DomaNullPointerException("supplier");
+        }
+        if (isolationLevel == null) {
+            throw new DomaNullPointerException("isolationLevel");
+        }
+        return requiresNewInternal(supplier, isolationLevel);
+    }
+
+    protected <RESULT> RESULT requiresNewInternal(Supplier<RESULT> supplier,
+            TransactionIsolationLevel isolationLevel) {
+        assertNotNull(supplier, isolationLevel);
         if (transaction.isActive()) {
             LocalTransactionContext context = transaction.suspend();
             try {
-                return executeInTransaction(supplier);
+                return executeInTransaction(supplier, isolationLevel);
             } finally {
                 transaction.resume(context);
             }
         } else {
-            return executeInTransaction(supplier);
+            return executeInTransaction(supplier, isolationLevel);
         }
     }
 
@@ -149,7 +234,27 @@ public class LocalTransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        notSupportedInternal(toSupplier(block));
+        notSupportedInternal(toSupplier(block),
+                TransactionIsolationLevel.DEFAULT);
+    }
+
+    /**
+     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
+     * 
+     * @param block
+     *            トランザクション内で実行する処理
+     * @param isolationLevel
+     *            トランザクション分離レベル
+     */
+    public void notSupported(Runnable block,
+            TransactionIsolationLevel isolationLevel) {
+        if (block == null) {
+            throw new DomaNullPointerException("block");
+        }
+        if (isolationLevel == null) {
+            throw new DomaNullPointerException("isolationLevel");
+        }
+        notSupportedInternal(toSupplier(block), isolationLevel);
     }
 
     /**
@@ -165,15 +270,38 @@ public class LocalTransactionManager {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
         }
-        return notSupportedInternal(supplier);
+        return notSupportedInternal(supplier, TransactionIsolationLevel.DEFAULT);
     }
 
-    protected <RESULT> RESULT notSupportedInternal(Supplier<RESULT> supplier) {
-        assertNotNull(supplier);
+    /**
+     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
+     * 
+     * @param <RESULT>
+     *            結果の型
+     * @param supplier
+     *            トランザクション内で実行する処理
+     * @param isolationLevel
+     *            トランザクション分離レベル
+     * @return 処理の結果
+     */
+    public <RESULT> RESULT notSupported(Supplier<RESULT> supplier,
+            TransactionIsolationLevel isolationLevel) {
+        if (supplier == null) {
+            throw new DomaNullPointerException("supplier");
+        }
+        if (isolationLevel == null) {
+            throw new DomaNullPointerException("isolationLevel");
+        }
+        return notSupportedInternal(supplier, isolationLevel);
+    }
+
+    protected <RESULT> RESULT notSupportedInternal(Supplier<RESULT> supplier,
+            TransactionIsolationLevel isolationLevel) {
+        assertNotNull(supplier, isolationLevel);
         if (transaction.isActive()) {
             LocalTransactionContext context = transaction.suspend();
             try {
-                return executeInTransaction(supplier);
+                return executeInTransaction(supplier, isolationLevel);
             } finally {
                 transaction.resume(context);
             }
@@ -212,11 +340,14 @@ public class LocalTransactionManager {
      *            結果の型
      * @param supplier
      *            トランザクション内で実行する処理
+     * @param isolationLevel
+     *            トランザクション分離レベル
      * @return 処理の結果
      */
-    protected <RESULT> RESULT executeInTransaction(Supplier<RESULT> supplier) {
-        assertNotNull(supplier);
-        transaction.begin();
+    protected <RESULT> RESULT executeInTransaction(Supplier<RESULT> supplier,
+            TransactionIsolationLevel isolationLevel) {
+        assertNotNull(supplier, isolationLevel);
+        transaction.begin(isolationLevel);
         try {
             RESULT result = supplier.get();
             if (!transaction.isRollbackOnly()) {
