@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.JdbcException;
 
 /**
  * ローカルトランザクションのマネージャーです。
@@ -357,6 +358,81 @@ public class LocalTransactionManager {
         } finally {
             transaction.rollback();
         }
+    }
+
+    /**
+     * ローカルトランザクションのセーブポイントを作成します。
+     * <p>
+     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
+     * 
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     * @throws SavepointAleadyExistsException
+     *             セーブポイントがすでに存在する場合
+     * @throws JdbcException
+     *             セーブポイントの作成に失敗した場合
+     */
+    public void setSavepoint(String savepointName) {
+        transaction.setSavepoint(savepointName);
+    }
+
+    /**
+     * このローカルトランザクションでセーブポイントを保持しているかどうかを返します。
+     * <p>
+     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
+     * 
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     * @return セーブポイントを保持している場合 {@code true}
+     */
+    public boolean hasSavepoint(String savepointName) {
+        return transaction.hasSavepoint(savepointName);
+    }
+
+    /**
+     * ローカルトランザクションから指定されたセーブポイントと以降のセーブポイントを削除します。
+     * <p>
+     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
+     * 
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     * @throws JdbcException
+     *             セーブポイントの削除に失敗した場合
+     */
+    public void releaseSavepoint(String savepointName) {
+        transaction.releaseSavepoint(savepointName);
+    }
+
+    /**
+     * 指定されたセーブポイントが設定されたあとに行われたすべての変更をロールバックします。
+     * <p>
+     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
+     * 
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws SavepointNotFoundException
+     *             セーブポイントが見つからない場合
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     * @throws JdbcException
+     *             セーブポイントへのロールバックに失敗した場合
+     */
+    public void rollback(String savepointName) {
+        transaction.rollback(savepointName);
     }
 
 }
