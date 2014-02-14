@@ -3,3 +3,4 @@ org.seasar.doma.internal.apt.ExternalDomainProcessor
 org.seasar.doma.internal.apt.DomainConvertersProcessor
 org.seasar.doma.internal.apt.EntityProcessor
 org.seasar.doma.internal.apt.DaoProcessor
+org.seasar.doma.internal.apt.SingletonConfigProcessor

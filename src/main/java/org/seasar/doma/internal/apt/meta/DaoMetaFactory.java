@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
 import org.seasar.doma.DaoMethod;
+import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
@@ -52,6 +54,7 @@ import org.seasar.doma.internal.apt.mirror.DaoMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
 
 /**
@@ -108,20 +111,46 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 throw new AptIllegalStateException(
                         "failed to convert to TypeElement.");
             }
-            if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
-                throw new AptException(Message.DOMA4163, env,
+            validateUserDefinedConfig(configElement, daoMeta, daoMirror);
+        }
+    }
+
+    protected void validateUserDefinedConfig(TypeElement configElement,
+            DaoMeta daoMeta, DaoMirror daoMirror) {
+        if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new AptException(Message.DOMA4163, env,
+                    daoMeta.getDaoElement(), daoMirror.getAnnotationMirror(),
+                    daoMirror.getConfig(), configElement.getQualifiedName());
+        }
+        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                configElement, env);
+        if (constructor == null
+                || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
+            throw new AptException(Message.DOMA4164, env,
+                    daoMeta.getDaoElement(), daoMirror.getAnnotationMirror(),
+                    daoMirror.getConfig(), configElement.getQualifiedName());
+        }
+        SingletonConfig singletonConfig = configElement
+                .getAnnotation(SingletonConfig.class);
+        if (singletonConfig != null) {
+            String methodName = singletonConfig.method();
+            boolean present = ElementFilter
+                    .methodsIn(configElement.getEnclosedElements())
+                    .stream()
+                    .filter(m -> m.getModifiers().containsAll(
+                            EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
+                    .filter(m -> TypeMirrorUtil.isAssignable(m.getReturnType(),
+                            Config.class, env))
+                    .filter(m -> m.getParameters().isEmpty())
+                    .filter(m -> m.getSimpleName().toString()
+                            .equals(methodName)).findAny().isPresent();
+            if (present) {
+                daoMeta.setSingletonMethodName(methodName);
+            } else {
+                throw new AptException(Message.DOMA4255, env,
                         daoMeta.getDaoElement(),
                         daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
-                        configElement.getQualifiedName());
-            }
-            ExecutableElement constructor = ElementUtil.getNoArgConstructor(
-                    configElement, env);
-            if (constructor == null
-                    || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-                throw new AptException(Message.DOMA4164, env,
-                        daoMeta.getDaoElement(),
-                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
-                        configElement.getQualifiedName());
+                        configElement.getQualifiedName(), methodName);
             }
         }
     }
