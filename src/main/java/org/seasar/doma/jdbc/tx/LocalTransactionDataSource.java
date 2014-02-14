@@ -38,7 +38,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.1.0
  */
-public final class LocalTransactionalDataSource implements DataSource {
+public final class LocalTransactionDataSource implements DataSource {
 
     /** コネクションのホルダー */
     private final ThreadLocal<LocalTransactionContext> localTxContextHolder = new ThreadLocal<LocalTransactionContext>();
@@ -52,7 +52,7 @@ public final class LocalTransactionalDataSource implements DataSource {
      * @param dataSource
      *            データソース
      */
-    public LocalTransactionalDataSource(DataSource dataSource) {
+    public LocalTransactionDataSource(DataSource dataSource) {
         assertNotNull(dataSource);
         this.dataSource = dataSource;
     }

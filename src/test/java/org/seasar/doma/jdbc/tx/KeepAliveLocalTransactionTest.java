@@ -33,7 +33,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
 
     private final MockConnection connection = new MockConnection();
 
-    private final LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+    private final LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
             new MockDataSource(connection));
 
     private final UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
@@ -91,7 +91,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
             }
 
         };
-        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+        LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
         LocalTransaction transaction = dataSource
                 .getKeepAliveLocalTransaction(jdbcLogger);
@@ -115,7 +115,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
             }
 
         };
-        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+        LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
         LocalTransaction transaction = dataSource
                 .getKeepAliveLocalTransaction(jdbcLogger);

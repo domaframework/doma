@@ -228,7 +228,7 @@ public class LocalTransaction {
                 closeConnection(connection);
                 throw new JdbcException(Message.DOMA2041, e, e);
             }
-            return new LocalTransactionalConnection(connection,
+            return new LocalTransactionConnection(connection,
                     transactionIsolation);
         });
         jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
@@ -267,7 +267,7 @@ public class LocalTransaction {
             throw new LocalTransactionNotYetBegunException(Message.DOMA2046);
         }
         if (context.hasConnection()) {
-            LocalTransactionalConnection connection = context.getConnection();
+            LocalTransactionConnection connection = context.getConnection();
             try {
                 connection.commit();
                 jdbcLogger.logLocalTransactionCommitted(className, "commit",
@@ -343,7 +343,7 @@ public class LocalTransaction {
             return;
         }
         if (context.hasConnection()) {
-            LocalTransactionalConnection connection = context.getConnection();
+            LocalTransactionConnection connection = context.getConnection();
             String id = context.getId();
             try {
                 connection.rollback();
@@ -395,7 +395,7 @@ public class LocalTransaction {
             rollbackInternal("setSavepoint");
             throw new SavepointAleadyExistsException(savepointName);
         }
-        LocalTransactionalConnection connection = context.getConnection();
+        LocalTransactionConnection connection = context.getConnection();
         try {
             savepoint = connection.setSavepoint(savepointName);
         } catch (SQLException e) {
@@ -465,7 +465,7 @@ public class LocalTransaction {
             rollbackInternal("releaseSavepoint");
             throw new SavepointNotFoundException(savepointName);
         }
-        LocalTransactionalConnection connection = context.getConnection();
+        LocalTransactionConnection connection = context.getConnection();
         try {
             connection.releaseSavepoint(savepoint);
         } catch (SQLException e) {
@@ -511,7 +511,7 @@ public class LocalTransaction {
             rollbackInternal("rollback");
             throw new SavepointNotFoundException(savepointName);
         }
-        LocalTransactionalConnection connection = context.getConnection();
+        LocalTransactionConnection connection = context.getConnection();
         try {
             connection.rollback(savepoint);
         } catch (SQLException e) {
@@ -567,7 +567,7 @@ public class LocalTransaction {
         if (!context.hasConnection()) {
             return;
         }
-        LocalTransactionalConnection connection = context.getConnection();
+        LocalTransactionConnection connection = context.getConnection();
         int isolationLevel = connection.getPreservedTransactionIsolation();
         if (isolationLevel != Connection.TRANSACTION_NONE) {
             try {

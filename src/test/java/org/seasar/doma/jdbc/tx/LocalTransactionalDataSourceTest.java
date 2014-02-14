@@ -28,7 +28,7 @@ public class LocalTransactionalDataSourceTest extends TestCase {
 
     public void testGetConnection() throws Exception {
         UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
-        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+        LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource());
         dataSource.getLocalTransaction(jdbcLogger).begin();
         dataSource.getConnection();
@@ -36,7 +36,7 @@ public class LocalTransactionalDataSourceTest extends TestCase {
     }
 
     public void testGetConnection_notYetBegun() throws Exception {
-        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+        LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource());
         try {
             dataSource.getConnection();
