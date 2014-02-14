@@ -297,7 +297,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("protected %1$s(%2$s config) {%n", simpleName,
                         Config.class.getName());
                 indent();
-                iprint("super(config);%n", daoMeta.getConfigType());
+                iprint("super(config);%n");
                 unindent();
                 iprint("}%n");
                 print("%n");
@@ -310,8 +310,7 @@ public class DaoGenerator extends AbstractGenerator {
                             simpleName, Config.class.getName(),
                             Connection.class.getName());
                     indent();
-                    iprint("super(config, connection);%n",
-                            daoMeta.getConfigType());
+                    iprint("super(config, connection);%n");
                     unindent();
                     iprint("}%n");
                     print("%n");
@@ -323,8 +322,7 @@ public class DaoGenerator extends AbstractGenerator {
                             simpleName, Config.class.getName(),
                             DataSource.class.getName());
                     indent();
-                    iprint("super(config, dataSource);%n",
-                            daoMeta.getConfigType());
+                    iprint("super(config, dataSource);%n");
                     unindent();
                     iprint("}%n");
                     print("%n");
