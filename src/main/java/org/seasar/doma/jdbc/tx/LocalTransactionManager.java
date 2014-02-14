@@ -69,73 +69,73 @@ public class LocalTransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        requiredInternal(toSupplier(block), TransactionIsolationLevel.DEFAULT);
+        requiredInternal(TransactionIsolationLevel.DEFAULT, toSupplier(block));
     }
 
     /**
      * トランザクション属性がREQUIREDであるトランザクションを実行します。
      * 
-     * @param block
-     *            トランザクション内で実行する処理
      * @param isolationLevel
      *            トランザクション分離レベル
+     * @param block
+     *            トランザクション内で実行する処理
      */
-    public void required(Runnable block,
-            TransactionIsolationLevel isolationLevel) {
-        if (block == null) {
-            throw new DomaNullPointerException("block");
-        }
+    public void required(TransactionIsolationLevel isolationLevel,
+            Runnable block) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
-        requiredInternal(toSupplier(block), isolationLevel);
+        if (block == null) {
+            throw new DomaNullPointerException("block");
+        }
+        requiredInternal(isolationLevel, toSupplier(block));
     }
 
     /**
      * トランザクション属性がREQUIREDであるトランザクションを実行します。
      * 
-     * @param <RESULT>
-     *            結果の型
      * @param supplier
      *            トランザクション内で実行する処理
+     * @param <RESULT>
+     *            結果の型
      * @return 処理の結果
      */
     public <RESULT> RESULT required(Supplier<RESULT> supplier) {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
         }
-        return requiredInternal(supplier, TransactionIsolationLevel.DEFAULT);
+        return requiredInternal(TransactionIsolationLevel.DEFAULT, supplier);
     }
 
     /**
      * トランザクション属性がREQUIREDであるトランザクションを実行します。
      * 
-     * @param <RESULT>
-     *            結果の型
-     * @param supplier
-     *            トランザクション内で実行する処理
      * @param isolationLevel
      *            トランザクション分離レベル
+     * @param supplier
+     *            トランザクション内で実行する処理
+     * @param <RESULT>
+     *            結果の型
      * @return 処理の結果
      */
-    public <RESULT> RESULT required(Supplier<RESULT> supplier,
-            TransactionIsolationLevel isolationLevel) {
-        if (supplier == null) {
-            throw new DomaNullPointerException("supplier");
-        }
+    public <RESULT> RESULT required(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
-        return requiredInternal(supplier, isolationLevel);
+        if (supplier == null) {
+            throw new DomaNullPointerException("supplier");
+        }
+        return requiredInternal(isolationLevel, supplier);
     }
 
-    protected <RESULT> RESULT requiredInternal(Supplier<RESULT> supplier,
-            TransactionIsolationLevel isolationLevel) {
-        assertNotNull(supplier, isolationLevel);
+    protected <RESULT> RESULT requiredInternal(
+            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+        assertNotNull(isolationLevel, supplier);
         if (transaction.isActive()) {
             return supplier.get();
         } else {
-            return executeInTransaction(supplier, isolationLevel);
+            return executeInTransaction(isolationLevel, supplier);
         }
     }
 
@@ -149,79 +149,79 @@ public class LocalTransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        requiresNewInternal(toSupplier(block),
-                TransactionIsolationLevel.DEFAULT);
+        requiresNewInternal(TransactionIsolationLevel.DEFAULT,
+                toSupplier(block));
     }
 
     /**
      * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     * 
-     * @param block
-     *            トランザクション内で実行する処理
+     *
      * @param isolationLevel
      *            トランザクション分離レベル
+     * @param block
+     *            トランザクション内で実行する処理
      */
-    public void requiresNew(Runnable block,
-            TransactionIsolationLevel isolationLevel) {
-        if (block == null) {
-            throw new DomaNullPointerException("block");
-        }
+    public void requiresNew(TransactionIsolationLevel isolationLevel,
+            Runnable block) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
-        requiresNewInternal(toSupplier(block), isolationLevel);
+        if (block == null) {
+            throw new DomaNullPointerException("block");
+        }
+        requiresNewInternal(isolationLevel, toSupplier(block));
     }
 
     /**
      * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
      * 
-     * @param <RESULT>
-     *            結果の型
      * @param supplier
      *            トランザクション内で実行する処理
+     * @param <RESULT>
+     *            結果の型
      * @return 処理の結果
      */
     public <RESULT> RESULT requiresNew(Supplier<RESULT> supplier) {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
         }
-        return requiresNewInternal(supplier, TransactionIsolationLevel.DEFAULT);
+        return requiresNewInternal(TransactionIsolationLevel.DEFAULT, supplier);
     }
 
     /**
      * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
      * 
-     * @param <RESULT>
-     *            結果の型
-     * @param supplier
-     *            トランザクション内で実行する処理
      * @param isolationLevel
      *            トランザクション分離レベル
+     * @param supplier
+     *            トランザクション内で実行する処理
+     * @param <RESULT>
+     *            結果の型
      * @return 処理の結果
      */
-    public <RESULT> RESULT requiresNew(Supplier<RESULT> supplier,
-            TransactionIsolationLevel isolationLevel) {
-        if (supplier == null) {
-            throw new DomaNullPointerException("supplier");
-        }
+    public <RESULT> RESULT requiresNew(
+            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
-        return requiresNewInternal(supplier, isolationLevel);
+        if (supplier == null) {
+            throw new DomaNullPointerException("supplier");
+        }
+        return requiresNewInternal(isolationLevel, supplier);
     }
 
-    protected <RESULT> RESULT requiresNewInternal(Supplier<RESULT> supplier,
-            TransactionIsolationLevel isolationLevel) {
-        assertNotNull(supplier, isolationLevel);
+    protected <RESULT> RESULT requiresNewInternal(
+            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+        assertNotNull(isolationLevel, supplier);
         if (transaction.isActive()) {
             LocalTransactionContext context = transaction.suspend();
             try {
-                return executeInTransaction(supplier, isolationLevel);
+                return executeInTransaction(isolationLevel, supplier);
             } finally {
                 transaction.resume(context);
             }
         } else {
-            return executeInTransaction(supplier, isolationLevel);
+            return executeInTransaction(isolationLevel, supplier);
         }
     }
 
@@ -235,74 +235,74 @@ public class LocalTransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        notSupportedInternal(toSupplier(block),
-                TransactionIsolationLevel.DEFAULT);
+        notSupportedInternal(TransactionIsolationLevel.DEFAULT,
+                toSupplier(block));
     }
 
     /**
      * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
      * 
-     * @param block
-     *            トランザクション内で実行する処理
      * @param isolationLevel
      *            トランザクション分離レベル
+     * @param block
+     *            トランザクション内で実行する処理
      */
-    public void notSupported(Runnable block,
-            TransactionIsolationLevel isolationLevel) {
-        if (block == null) {
-            throw new DomaNullPointerException("block");
-        }
+    public void notSupported(TransactionIsolationLevel isolationLevel,
+            Runnable block) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
-        notSupportedInternal(toSupplier(block), isolationLevel);
+        if (block == null) {
+            throw new DomaNullPointerException("block");
+        }
+        notSupportedInternal(isolationLevel, toSupplier(block));
     }
 
     /**
      * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
      * 
-     * @param <RESULT>
-     *            結果の型
      * @param supplier
      *            トランザクション内で実行する処理
+     * @param <RESULT>
+     *            結果の型
      * @return 処理の結果
      */
     public <RESULT> RESULT notSupported(Supplier<RESULT> supplier) {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
         }
-        return notSupportedInternal(supplier, TransactionIsolationLevel.DEFAULT);
+        return notSupportedInternal(TransactionIsolationLevel.DEFAULT, supplier);
     }
 
     /**
      * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
      * 
-     * @param <RESULT>
-     *            結果の型
-     * @param supplier
-     *            トランザクション内で実行する処理
      * @param isolationLevel
      *            トランザクション分離レベル
+     * @param supplier
+     *            トランザクション内で実行する処理
+     * @param <RESULT>
+     *            結果の型
      * @return 処理の結果
      */
-    public <RESULT> RESULT notSupported(Supplier<RESULT> supplier,
-            TransactionIsolationLevel isolationLevel) {
-        if (supplier == null) {
-            throw new DomaNullPointerException("supplier");
-        }
+    public <RESULT> RESULT notSupported(
+            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
-        return notSupportedInternal(supplier, isolationLevel);
+        if (supplier == null) {
+            throw new DomaNullPointerException("supplier");
+        }
+        return notSupportedInternal(isolationLevel, supplier);
     }
 
-    protected <RESULT> RESULT notSupportedInternal(Supplier<RESULT> supplier,
-            TransactionIsolationLevel isolationLevel) {
-        assertNotNull(supplier, isolationLevel);
+    protected <RESULT> RESULT notSupportedInternal(
+            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+        assertNotNull(isolationLevel, supplier);
         if (transaction.isActive()) {
             LocalTransactionContext context = transaction.suspend();
             try {
-                return executeInTransaction(supplier, isolationLevel);
+                return executeInTransaction(isolationLevel, supplier);
             } finally {
                 transaction.resume(context);
             }
@@ -337,17 +337,17 @@ public class LocalTransactionManager {
     /**
      * トランザクション内で実行します。
      * 
-     * @param <RESULT>
-     *            結果の型
-     * @param supplier
-     *            トランザクション内で実行する処理
      * @param isolationLevel
      *            トランザクション分離レベル
+     * @param supplier
+     *            トランザクション内で実行する処理
+     * @param <RESULT>
+     *            結果の型
      * @return 処理の結果
      */
-    protected <RESULT> RESULT executeInTransaction(Supplier<RESULT> supplier,
-            TransactionIsolationLevel isolationLevel) {
-        assertNotNull(supplier, isolationLevel);
+    protected <RESULT> RESULT executeInTransaction(
+            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+        assertNotNull(isolationLevel, supplier);
         transaction.begin(isolationLevel);
         try {
             RESULT result = supplier.get();
