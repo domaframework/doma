@@ -1,4 +1,4 @@
-Doma
+Doma [![Build Status](https://travis-ci.org/seasarorg/doma.png?branch=master)](https://travis-ci.org/seasarorg/doma)
 ========================================
 
 Doma is a Database access framework. 
