@@ -117,22 +117,25 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     protected void validateUserDefinedConfig(TypeElement configElement,
             DaoMeta daoMeta, DaoMirror daoMirror) {
-        if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AptException(Message.DOMA4163, env,
-                    daoMeta.getDaoElement(), daoMirror.getAnnotationMirror(),
-                    daoMirror.getConfig(), configElement.getQualifiedName());
-        }
-        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
-                configElement, env);
-        if (constructor == null
-                || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-            throw new AptException(Message.DOMA4164, env,
-                    daoMeta.getDaoElement(), daoMirror.getAnnotationMirror(),
-                    daoMirror.getConfig(), configElement.getQualifiedName());
-        }
         SingletonConfig singletonConfig = configElement
                 .getAnnotation(SingletonConfig.class);
-        if (singletonConfig != null) {
+        if (singletonConfig == null) {
+            if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
+                throw new AptException(Message.DOMA4163, env,
+                        daoMeta.getDaoElement(),
+                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
+                        configElement.getQualifiedName());
+            }
+            ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                    configElement, env);
+            if (constructor == null
+                    || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
+                throw new AptException(Message.DOMA4164, env,
+                        daoMeta.getDaoElement(),
+                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
+                        configElement.getQualifiedName());
+            }
+        } else {
             String methodName = singletonConfig.method();
             boolean present = ElementFilter
                     .methodsIn(configElement.getEnclosedElements())
