@@ -9,4 +9,4 @@ env:
   - secure: Pv033EL3mxGfrl837lPDI/qfhdyKJ8pBSw2qaKXcCExrrb7uUgcanVc1XZbT8XgsiP3H9JFc287aXt2Z3ANWwtG79Wi3KjTsXkrI/p11qi7XIivUwaer2rCM06Y314RE3JDvcMS/vgSJ6UBW7RVqxgL+qcVZdbD8QnFqH6zjsIo=
 
 after_success: 
-  - "./gradlew uploadArchives -PsonatypeUsername=SONATYPE_USERNAME -PsonatypePassword=SONATYPE_PASSWORD"
+  - "./gradlew uploadArchives -PsonatypeUsername=$SONATYPE_USERNAME -PsonatypePassword=$SONATYPE_PASSWORD"
