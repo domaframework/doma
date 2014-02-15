@@ -6,6 +6,7 @@ apply plugin: 'maven'
 
 // project information
 version = '2.0-beta-2-SNAPSHOT'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 sourceCompatibility = jdkVersion
 targetCompatibility = jdkVersion
 group = 'org.seasar.doma'
@@ -82,13 +83,8 @@ artifacts {
 
 // sign artifacts
 signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives') }
     sign configurations.archives
-}
-
-gradle.taskGraph.whenReady {taskGraph ->
-    if (!taskGraph.hasTask(uploadArchives) || version.endsWith('-SNAPSHOT')) {
-        signArchives.onlyIf { false }
-    }
 }
 
 // uploading artifacts
