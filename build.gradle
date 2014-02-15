@@ -102,6 +102,11 @@ uploadArchives {
                     userName : sonatypeUsername,
                     password : sonatypePassword)
         }
+        snapshotRepository (url : sonatypeSnapshotUrl) {
+            authentication (
+                    userName : sonatypeUsername,
+                    password : sonatypePassword)
+        }
         pom.project {
             name project.name
             packaging 'jar'
