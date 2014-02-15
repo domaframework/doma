@@ -86,7 +86,7 @@ signing {
 }
 
 gradle.taskGraph.whenReady {taskGraph ->
-    if (!taskGraph.hasTask(uploadArchives)) {
+    if (!taskGraph.hasTask(uploadArchives) || version.endsWith('-SNAPSHOT')) {
         signArchives.onlyIf { false }
     }
 }
