@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -52,9 +50,13 @@ public final class LocalTransactionDataSource implements DataSource {
      * 
      * @param dataSource
      *            データソース
+     * @throws DomaNullPointerException
+     *             {@code dataSource} が {@code null} の場合
      */
     public LocalTransactionDataSource(DataSource dataSource) {
-        assertNotNull(dataSource);
+        if (dataSource == null) {
+            throw new DomaNullPointerException("dataSource");
+        }
         this.dataSource = dataSource;
     }
 
@@ -67,9 +69,13 @@ public final class LocalTransactionDataSource implements DataSource {
      *            JDBCのユーザー
      * @param password
      *            JDBCのパスワード
+     * @throws DomaNullPointerException
+     *             {@code url} が {@code null} の場合
      */
     public LocalTransactionDataSource(String url, String user, String password) {
-        assertNotNull(url);
+        if (url == null) {
+            throw new DomaNullPointerException("url");
+        }
         SimpleDataSource simpleDataSource = new SimpleDataSource();
         simpleDataSource.setUrl(url);
         if (user != null) {
