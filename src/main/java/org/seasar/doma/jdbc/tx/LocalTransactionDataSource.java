@@ -27,6 +27,7 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.SimpleDataSource;
 import org.seasar.doma.message.Message;
 
 /**
@@ -55,6 +56,29 @@ public final class LocalTransactionDataSource implements DataSource {
     public LocalTransactionDataSource(DataSource dataSource) {
         assertNotNull(dataSource);
         this.dataSource = dataSource;
+    }
+
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param url
+     *            JDBCのURL
+     * @param user
+     *            JDBCのユーザー
+     * @param password
+     *            JDBCのパスワード
+     */
+    public LocalTransactionDataSource(String url, String user, String password) {
+        assertNotNull(url);
+        SimpleDataSource simpleDataSource = new SimpleDataSource();
+        simpleDataSource.setUrl(url);
+        if (user != null) {
+            simpleDataSource.setUser(user);
+        }
+        if (password != null) {
+            simpleDataSource.setPassword(password);
+        }
+        this.dataSource = simpleDataSource;
     }
 
     /**
