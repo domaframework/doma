@@ -1,0 +1,2 @@
+sphinx==1.2.1
+livereload==2.1.0
