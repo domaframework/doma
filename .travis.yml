@@ -10,3 +10,7 @@ env:
 
 after_success: 
   - ./gradlew uploadArchives -s -PsonatypeUsername=$SONATYPE_USERNAME -PsonatypePassword=$SONATYPE_PASSWORD
+
+branches:
+  only:
+    - master
