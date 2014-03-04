@@ -1,27 +1,15 @@
 Doma [![Build Status](https://travis-ci.org/domaframework/doma.png?branch=master)](https://travis-ci.org/domaframework/doma)
 ========================================
 
-Doma is a Database access framework. 
+Doma is a Database access framework for Java 8. 
 
 Doma uses [Annotation Processing Tool][apt] to generate source code and validate sql mappings at *compile time*.
 
-Versions
+Notice
 --------
 
-<dl>
-	<dt>Doma 1</dt>
-	<dd>
-	Stable.<br />
-	Development in the `1.x` branch.<br />
-	Works on Java 6 and above.<br />
-	http://doma.seasar.org/</dd>
-	<dt>Doma 2</dt>
-	<dd>
-	Unstable.<br />
-	Development in the `master` branch.<br />
-	Works on Java 8.<br />
-	</dd>
-</dl>
+- This is Doma 2.
+- The old version Doma 1  is maintained at [seasarorg/doma](https://github.com/seasarorg/doma). 
 
 License
 -------
