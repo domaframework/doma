@@ -2,15 +2,50 @@
 基本型
 ==================
 
+Domaでは、データベースのカラムにマッピング可能なJavaの型を基本型と呼びます。
 
 種類
 ==================
 
-Optional型
-------------------
+基本型には以下の種類があります。
+
+* プリミティブ型とそのラッパー型（ただし ``char`` と ``java.lang.Character`` は除く）
+* 列挙型
+* byte[]
+* java.lang.String
+* java.lang.Object
+* java.math.BigDecimal
+* java.math.BigInteger
+* java.sql.Date
+* java.sql.Time
+* java.sql.Timestamp
+* java.sql.Array
+* java.sql.Blob
+* java.sql.Clob
+* java.util.Date
+* プリミティブ型を除く上記の型を要素とするjava.util.Optional
 
 日付/時刻型
 ------------------
+
+日付と時刻の型の違いについて説明します。
+
+java.sql.Date
+  SQL標準のDATE型 (日付のみ)を表します。
+
+java.sql.Time
+  SQL標準のDATE型 (日付のみ)を表します。
+
+java.sql.Timestamp
+  SQL標準のTIMESTAMP型 (日付と時刻)を表します。RDBMSがサポートしている場合ナノ秒を保持します。
+
+java.util.Date
+  SQL標準のTIMESTAMP型 (日付と時刻)を表します。ナノ秒を保持しません。
+
+Optional型
+------------------
+
+``java.util.Optional`` は他の基本型と異なり、ドメインクラスの値の型としては使用できません。
 
 利用例
 ==================
@@ -26,7 +61,7 @@ Optional型
       @Id
       Integer employeeId;
 
-      String employeeName;
+      Optional<String> employeeName;
 
       @Version
       Long versionNo;
@@ -64,7 +99,7 @@ Daoクラス
 
       @Select
       Employee selectById(Integer employeeId);
-      
+
       @Select
       List<String> selectAllName();
   }
