@@ -239,10 +239,17 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printConstructors() {
         if (daoMeta.hasUserDefinedConfig()) {
+            String singletonMethodName = daoMeta.getSingletonMethodName();
+
             iprint("/** */%n");
             iprint("public %1$s() {%n", simpleName);
             indent();
-            iprint("super(new %1$s());%n", daoMeta.getConfigType());
+            if (singletonMethodName == null) {
+                iprint("super(new %1$s());%n", daoMeta.getConfigType());
+            } else {
+                iprint("super(%1$s.%2$s());%n", daoMeta.getConfigType(),
+                        singletonMethodName);
+            }
             unindent();
             iprint("}%n");
             print("%n");
@@ -257,8 +264,13 @@ public class DaoGenerator extends AbstractGenerator {
                     iprint("public %1$s(%2$s connection) {%n", simpleName,
                             Connection.class.getName());
                     indent();
-                    iprint("super(new %1$s(), connection);%n",
-                            daoMeta.getConfigType());
+                    if (singletonMethodName == null) {
+                        iprint("super(new %1$s(), connection);%n",
+                                daoMeta.getConfigType());
+                    } else {
+                        iprint("super(%1$s.%2$s(), connection);%n",
+                                daoMeta.getConfigType(), singletonMethodName);
+                    }
                     unindent();
                     iprint("}%n");
                     print("%n");
@@ -268,8 +280,13 @@ public class DaoGenerator extends AbstractGenerator {
                     iprint("public %1$s(%2$s dataSource) {%n", simpleName,
                             DataSource.class.getName());
                     indent();
-                    iprint("super(new %1$s(), dataSource);%n",
-                            daoMeta.getConfigType());
+                    if (singletonMethodName == null) {
+                        iprint("super(new %1$s(), dataSource);%n",
+                                daoMeta.getConfigType());
+                    } else {
+                        iprint("super(%1$s.%2$s(), dataSource);%n",
+                                daoMeta.getConfigType(), singletonMethodName);
+                    }
                     unindent();
                     iprint("}%n");
                     print("%n");
@@ -280,7 +297,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("protected %1$s(%2$s config) {%n", simpleName,
                         Config.class.getName());
                 indent();
-                iprint("super(config);%n", daoMeta.getConfigType());
+                iprint("super(config);%n");
                 unindent();
                 iprint("}%n");
                 print("%n");
@@ -293,8 +310,7 @@ public class DaoGenerator extends AbstractGenerator {
                             simpleName, Config.class.getName(),
                             Connection.class.getName());
                     indent();
-                    iprint("super(config, connection);%n",
-                            daoMeta.getConfigType());
+                    iprint("super(config, connection);%n");
                     unindent();
                     iprint("}%n");
                     print("%n");
@@ -306,8 +322,7 @@ public class DaoGenerator extends AbstractGenerator {
                             simpleName, Config.class.getName(),
                             DataSource.class.getName());
                     indent();
-                    iprint("super(config, dataSource);%n",
-                            daoMeta.getConfigType());
+                    iprint("super(config, dataSource);%n");
                     unindent();
                     iprint("}%n");
                     print("%n");

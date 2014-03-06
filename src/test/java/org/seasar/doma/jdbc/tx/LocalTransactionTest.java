@@ -33,7 +33,7 @@ public class LocalTransactionTest extends TestCase {
 
     private final MockConnection connection = new MockConnection();
 
-    private final LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+    private final LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
             new MockDataSource(connection));
 
     private final UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
@@ -92,7 +92,7 @@ public class LocalTransactionTest extends TestCase {
             }
 
         };
-        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+        LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
         LocalTransaction transaction = dataSource
                 .getLocalTransaction(jdbcLogger);
@@ -117,7 +117,7 @@ public class LocalTransactionTest extends TestCase {
             }
 
         };
-        LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+        LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
         LocalTransaction transaction = dataSource
                 .getLocalTransaction(jdbcLogger);

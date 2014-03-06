@@ -46,7 +46,7 @@ import java.util.concurrent.Executor;
  * @author taedium
  * @since 1.1.0
  */
-class LocalTransactionalConnection implements Connection {
+class LocalTransactionConnection implements Connection {
 
     /** コネクション */
     private final Connection connection;
@@ -59,10 +59,10 @@ class LocalTransactionalConnection implements Connection {
      * @param connection
      *            コネクション
      */
-    public LocalTransactionalConnection(Connection connection,
+    public LocalTransactionConnection(Connection connection,
             int preservedTransactionIsolation) {
         assertNotNull(connection);
-        assertTrue(!(connection instanceof LocalTransactionalConnection));
+        assertTrue(!(connection instanceof LocalTransactionConnection));
         this.connection = connection;
         this.preservedTransactionIsolation = preservedTransactionIsolation;
     }

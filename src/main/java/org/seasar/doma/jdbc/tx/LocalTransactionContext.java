@@ -42,9 +42,9 @@ public class LocalTransactionContext {
 
     private Connection connection;
 
-    private LocalTransactionalConnection localTxConnection;
+    private LocalTransactionConnection localTxConnection;
 
-    private Function<Connection, LocalTransactionalConnection> connectionInitializer;
+    private Function<Connection, LocalTransactionConnection> connectionInitializer;
 
     private String id;
 
@@ -56,7 +56,7 @@ public class LocalTransactionContext {
     }
 
     void begin(
-            Function<Connection, LocalTransactionalConnection> connectionInitializer) {
+            Function<Connection, LocalTransactionConnection> connectionInitializer) {
         assertNotNull(connectionInitializer);
         id = String.valueOf(System.identityHashCode(connectionInitializer));
         this.connectionInitializer = connectionInitializer;
@@ -67,7 +67,7 @@ public class LocalTransactionContext {
         connectionInitializer = null;
     }
 
-    LocalTransactionalConnection getConnection() {
+    LocalTransactionConnection getConnection() {
         if (localTxConnection == null) {
             if (connection == null) {
                 connection = connectionSupplier.get();

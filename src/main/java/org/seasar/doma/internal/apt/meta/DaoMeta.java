@@ -53,6 +53,8 @@ public class DaoMeta implements TypeElementMeta {
 
     protected ParentDaoMeta parentDaoMeta;
 
+    protected String singletonMethodName;
+
     public DaoMeta(DaoMirror daoMirror) {
         assertNotNull(daoMirror);
         this.daoMirror = daoMirror;
@@ -146,6 +148,14 @@ public class DaoMeta implements TypeElementMeta {
 
     public void setParentDaoMeta(ParentDaoMeta parentDaoMeta) {
         this.parentDaoMeta = parentDaoMeta;
+    }
+
+    public String getSingletonMethodName() {
+        return singletonMethodName;
+    }
+
+    public void setSingletonMethodName(String singletonMethodName) {
+        this.singletonMethodName = singletonMethodName;
     }
 
 }

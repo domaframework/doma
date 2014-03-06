@@ -24,6 +24,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.tx.LocalTransactionManager;
 import org.seasar.doma.message.Message;
 
 /**
@@ -142,6 +143,20 @@ public interface Config {
      */
     default UnknownColumnHandler getUnknownColumnHandler() {
         return ConfigSupport.defaultUnknownColumnHandler;
+    }
+
+    /**
+     * ローカルトランザクションマネジャーを返します。
+     * <p>
+     * デフォルトの実装では {@link UnsupportedOperationException} をスローします。
+     * 
+     * @return ローカルトランザクションマネジャー
+     * @throws UnsupportedOperationException
+     *             JTAトランザクションを使うなどでローカルトランザクションをサポートしない場合
+     * @since 2.0.0
+     */
+    default LocalTransactionManager getLocalTransactionManager() {
+        throw new UnsupportedOperationException();
     }
 
     /**

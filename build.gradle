@@ -6,6 +6,7 @@ apply plugin: 'maven'
 
 // project information
 version = '2.0-beta-2-SNAPSHOT'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 sourceCompatibility = jdkVersion
 targetCompatibility = jdkVersion
 group = 'org.seasar.doma'
@@ -50,7 +51,7 @@ test {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.10'
+    gradleVersion = '1.11'
 }
 
 repositories {
@@ -82,6 +83,7 @@ artifacts {
 
 // sign artifacts
 signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives') }
     sign configurations.archives
 }
 
@@ -92,6 +94,11 @@ uploadArchives {
             signing.signPom(deployment)
         }
         repository (url : sonatypeUrl) {
+            authentication (
+                    userName : sonatypeUsername,
+                    password : sonatypePassword)
+        }
+        snapshotRepository (url : sonatypeSnapshotUrl) {
             authentication (
                     userName : sonatypeUsername,
                     password : sonatypePassword)

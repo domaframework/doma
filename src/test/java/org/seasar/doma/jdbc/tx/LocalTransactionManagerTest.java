@@ -31,7 +31,7 @@ public class LocalTransactionManagerTest extends TestCase {
 
     private final MockConnection connection = new MockConnection();
 
-    private final LocalTransactionalDataSource dataSource = new LocalTransactionalDataSource(
+    private final LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
             new MockDataSource(connection));
 
     private final UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger() {

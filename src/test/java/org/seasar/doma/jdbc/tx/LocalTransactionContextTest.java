@@ -30,7 +30,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConnection;
 public class LocalTransactionContextTest extends TestCase {
 
     public void testReleaseAndGetSavepoint() throws Exception {
-        try (LocalTransactionalConnection connection = new LocalTransactionalConnection(
+        try (LocalTransactionConnection connection = new LocalTransactionConnection(
                 new MockConnection(), Connection.TRANSACTION_READ_COMMITTED)) {
             LocalTransactionContext context = new LocalTransactionContext(
                     () -> connection);

@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,6 +25,7 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.SimpleDataSource;
 import org.seasar.doma.message.Message;
 
 /**
@@ -38,7 +37,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.1.0
  */
-public final class LocalTransactionalDataSource implements DataSource {
+public final class LocalTransactionDataSource implements DataSource {
 
     /** コネクションのホルダー */
     private final ThreadLocal<LocalTransactionContext> localTxContextHolder = new ThreadLocal<LocalTransactionContext>();
@@ -51,10 +50,41 @@ public final class LocalTransactionalDataSource implements DataSource {
      * 
      * @param dataSource
      *            データソース
+     * @throws DomaNullPointerException
+     *             {@code dataSource} が {@code null} の場合
      */
-    public LocalTransactionalDataSource(DataSource dataSource) {
-        assertNotNull(dataSource);
+    public LocalTransactionDataSource(DataSource dataSource) {
+        if (dataSource == null) {
+            throw new DomaNullPointerException("dataSource");
+        }
         this.dataSource = dataSource;
+    }
+
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param url
+     *            JDBCのURL
+     * @param user
+     *            JDBCのユーザー
+     * @param password
+     *            JDBCのパスワード
+     * @throws DomaNullPointerException
+     *             {@code url} が {@code null} の場合
+     */
+    public LocalTransactionDataSource(String url, String user, String password) {
+        if (url == null) {
+            throw new DomaNullPointerException("url");
+        }
+        SimpleDataSource simpleDataSource = new SimpleDataSource();
+        simpleDataSource.setUrl(url);
+        if (user != null) {
+            simpleDataSource.setUser(user);
+        }
+        if (password != null) {
+            simpleDataSource.setPassword(password);
+        }
+        this.dataSource = simpleDataSource;
     }
 
     /**

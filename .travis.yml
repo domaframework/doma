@@ -1,0 +1,16 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+env:
+  global:
+  - secure: s+jBZ2p90tlBQuG2oASQEQcwQerZgFpStco2zZJuFyISQ/IHgT45unelQKsX9yddhT+EBFrgnqdihdo9j7IdWwXutcAMtW43xLQ2NPDbt6xJt1DK+yOOKpyOeONFP7pGK7wTxKP0kt9V8+lxCgbsGmKC1FMIoSI+L6r3PYXRgeA=
+  - secure: Pv033EL3mxGfrl837lPDI/qfhdyKJ8pBSw2qaKXcCExrrb7uUgcanVc1XZbT8XgsiP3H9JFc287aXt2Z3ANWwtG79Wi3KjTsXkrI/p11qi7XIivUwaer2rCM06Y314RE3JDvcMS/vgSJ6UBW7RVqxgL+qcVZdbD8QnFqH6zjsIo=
+
+after_success: 
+  - ./gradlew uploadArchives -s -PsonatypeUsername=$SONATYPE_USERNAME -PsonatypePassword=$SONATYPE_PASSWORD
+
+branches:
+  only:
+    - master
