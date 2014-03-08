@@ -19,7 +19,7 @@ Domaのドキュメントへようこそ！
    dao
    sql
    expression
-   tx
+   transaction
    annotation-processing
    build
 

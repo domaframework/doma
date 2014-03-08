@@ -214,9 +214,7 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
   }
 
 これで外部ドメイン定義は完成ですが、これだけではまだ利用できません。
-外部ドメインの定義は注釈処理のオプションで指定する必要があります。
-
-注釈処理のオプションで指定する前段階として、外部ドメイン定義を ``@DomainConverters`` で登録します。
+外部ドメイン定義を ``@DomainConverters`` へ登録します。
 ``@DomainConverters`` には複数の外部ドメイン定義を登録可能です。
 
 .. code-block:: java
@@ -225,9 +223,8 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
   public class DomainConvertersProvider {
   }
 
-そして、 ``@DomainConverters`` が注釈されたクラスの完全修飾名を注釈処理のオプションに指定します。
+そして最後に、 ``@DomainConverters`` が注釈されたクラスの完全修飾名を :doc:`annotation-processing` のオプションに指定します。
 オプションのkeyは、 ``doma.domain.converters`` です。
-オプションの指定の仕方については :doc:`apt` を参照してください。
 
 型パラメータを利用する方法
 ----------------------------------------
