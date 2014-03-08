@@ -17,8 +17,8 @@ Domaのドキュメントへようこそ！
    domain
    entity
    dao
-   query-builder
    sql
+   expression
    tx
    annotation-processing
    build

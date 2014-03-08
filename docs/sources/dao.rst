@@ -1,5 +1,5 @@
 ==================
-Dao
+Daoインタフェース
 ==================
 
 Data Access Object （Dao） はデータベースアクセスのためのインタフェースです。
@@ -16,19 +16,27 @@ Daoは ``@Dao`` が注釈されたインタフェースとして定義します�
 
 アノテーションを使って以下のクエリを定義できます。
 
-* :doc:`query/select`
-* :doc:`query/insert`
-* :doc:`query/update`
-* :doc:`query/delete`
-* :doc:`query/batch-insert`
-* :doc:`query/batch-update`
-* :doc:`query/batch-delete`
-* :doc:`query/function`
-* :doc:`query/procedure`
-* :doc:`query/factory`
-* :doc:`query/script`
+.. toctree::
+   :maxdepth: 1
 
-Javaコードで任意のクエリを組み立てるには `デフォルトメソッド`_ の中で :doc:`query/builder` を使用してください。
+   query/select
+   query/insert
+   query/update
+   query/delete
+   query/batch-insert
+   query/batch-update
+   query/batch-delete
+   query/function
+   query/procedure
+   query/factory
+   query/script
+
+Javaコードで任意のクエリを組み立てるには `デフォルトメソッド`_ の中でクエリビルダを使用してください。
+
+.. toctree::
+   :maxdepth: 1
+
+   query/builder
 
 デフォルトメソッド
 ==================

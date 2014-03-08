@@ -2,15 +2,600 @@
 SQL
 ==================
 
+SQLは、ファイルに記述してDaoのメソッドにマッピングできます。
+SQLのブロックコメント ``/* */`` や行コメント ``--`` を使用することで、バインド変数や動的なSQLのための条件分岐を表現できます。
+
+SQLのツールでそのままそのSQLを実行できるように、バインド変数にはテスト用のデータを指定します。
+テスト用のデータは、実行時には使用されません。
+
+たとえば、SQLファイルには次のようなSQL文が格納されます。
+
+.. code-block:: sql
+
+  select * from employee where employee_id = /* employeeId */99
+
+ここでは、ブロックコメントで囲まれた ``employeeId`` がDaoインタフェースのメソッドのパラメータに対応し、
+直後の ``99`` はテスト用の条件になります。
+
+対応するDaoインタフェースのメソッドは次のとおりです。
+
+.. code-block:: java
+
+  Employee selectById(employeeId);
 
 アノテーション
-==================
+==============
+
+SQLファイルとDaoのメソッドのマッピングは次のアノテーションで示します。
+
+* @Select
+* @Insert(sqlFile = true)
+* @Update(sqlFile = true)
+* @Delete(sqlFile = true)
+* @BatchInsert(sqlFile = true)
+* @BatchUpdate(sqlFile = true)
+* @BaatchDelete(sqlFile = true)
 
 SQLファイル
-==================
+===========
+
+エンコーディング
+----------------
+
+SQLファイルのエンコーディングはUTF-8でなければいけません。
+
+配置場所
+--------
+
+SQLファイルはクラスパスが通った META-INF ディレクトリ以下に配置しなければいけません。
+
+ファイル名の形式
+----------------
+
+ファイル名は、次の形式でなければいけません。
+
+::
+
+ META-INF/Daoのクラスの完全修飾名をディレクトリに変換したもの/Daoのメソッド名.sql
+
+例えば、 Daoのクラスが ``aaa.bbb.EmployeeDao`` でマッピングしたいメソッドが
+``selectById`` の場合、パス名は次のようになります。
+
+::
+
+  META-INF/aaa/bbb/EmployeeDao/selectById.sql
+
+DBMSに対応する必要があり特定のRDBMSでは別のSQLファイルを使いたい場合、拡張子 .sql
+の前にハイフン区切りでRDBMS名を入れることで、優先的に使用するファイルを指示できます。
+たとえば、PostgreSQL専用のSQLファイルは次の名前にします。
+::
+
+  META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql
+
+この例ではPostgreSQLを使用している場合に限り、META-INF/aaa/bbb/EmployeeDao/selectById.sql
+よりも META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql が優先的に使用されます。
+
+RDBMS名は、 ``Dialect`` の ``getName`` メソッドの値が使用されます。
+あらかじめ用意された ``Dialect`` についてそれぞれのRDBMS名を以下の表に示します。
+
++----------------------------+-----------------------------------------------+----------+
+| データベース               | 方言クラスの名前                              | RDBMS名  |
++============================+===============================================+==========+
+| DB2                        | org.seasar.doma.jdbc.dialect.Db2Dialect       | db2      |
++----------------------------+-----------------------------------------------+----------+
+| H2 Database Engine 1.2.126 | org.seasar.doma.jdbc.dialect.H212126Dialect   | h2       |
++----------------------------+-----------------------------------------------+----------+
+| H2 Database                | org.seasar.doma.jdbc.dialect.H2Dialect        | h2       |
++----------------------------+-----------------------------------------------+----------+
+| HSQLDB                     | org.seasar.doma.jdbc.dialect.HsqldbDialect    | hsqldb   |
++----------------------------+-----------------------------------------------+----------+
+| Microsoft SQL Server 2008  | org.seasar.doma.jdbc.dialect.Mssql2008Dialect | mssql    |
++----------------------------+-----------------------------------------------+----------+
+| Microsoft SQL Server       | org.seasar.doma.jdbc.dialect.MssqlDialect     | mssql    |
++----------------------------+-----------------------------------------------+----------+
+| MySQL                      | org.seasar.doma.jdbc.dialect.MySqlDialect     | mysql    |
++----------------------------+-----------------------------------------------+----------+
+| Oracle Database            | org.seasar.doma.jdbc.dialect.OracleDialect    | oracle   |
++----------------------------+-----------------------------------------------+----------+
+| PostgreSQL                 | org.seasar.doma.jdbc.dialect.PostgresDialect  | postgres |
++----------------------------+-----------------------------------------------+----------+
+| SQLite                     | org.seasar.doma.jdbc.dialect.SqliteDialect    | sqlite   |
++----------------------------+-----------------------------------------------+----------+
 
 SQLコメント
-==================
+===========
 
-式言語
-==================
+SQLコメント中に式を記述することで値のバインディングや条件分岐を行います。
+Domaに解釈されるSQLコメントを *式コメント* と呼びます。
+
+バインド変数コメント
+--------------------
+
+バインド変数を示す式コメントを *バインド変数* コメントと呼びます。
+バインド変数は、 ``java.sql.PreparedStatement`` を介してSQLに設定されます。
+
+バインド変数は ``/*～*/`` というブロックコメントで囲んで示します。
+バインド変数の名前はDaoメソッドのパラメータ名に対応します。
+対応するパラメータの型は :doc:`basic` もしくは :doc:`domain` でなければいけません。
+バインド変数コメントの直後にはテスト用データを指定する必要があります。
+ただし、テスト用データは実行時には使用されません。
+
+基本型もしくはドメインクラス型のパラメータ
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Daoインタフェースのメソッドのパラメータが :doc:`basic` もしくは :doc:`domain` の場合、
+このパラメータは1つのバインド変数を表現できます。
+バインド変数コメントはバインド変数を埋め込みたい場所に記述し、
+バインド変数コメントの直後にはテスト用データを指定しなければいけません。
+Daoインタフェースのメソッドと対応するSQLの例は次のとおりです。
+
+.. code-block:: java
+
+   Employee selectById(Integer employeeId);
+
+.. code-block:: sql
+
+   select * from employee where employee_id = /* employeeId */99
+
+Iterable型のパラメータ
+~~~~~~~~~~~~~~~~~~~~~~
+
+Daoインタフェースのメソッドのパラメータが ``java.lang.Iterable`` のサブタイプの場合、
+このパラメータは、 IN句内の複数のバインド変数を表現できます。
+ただし、 ``java.lang.Iterable`` のサブタイプの実型引数は :doc:`basic` もしくは :doc:`domain` でなければいけません。
+バインド変数コメントはINキーワードの直後に置き、
+バインド変数コメントの直後には括弧つきでテスト用データを指定しなければいけません。
+Daoインタフェースのメソッドと対応するSQLの例は次のとおりです。
+
+.. code-block:: java
+
+  List<Employee> selectByIdList(List<Integer> employeeIdList);
+
+.. code-block:: sql
+
+  select * from employee where employee_id in /* employeeIdList */(1,2,3)
+
+
+任意の型のパラメータ
+~~~~~~~~~~~~~~~~~~~~
+
+Daoインタフェースのメソッドのパラメータが :doc:`basic` もしくは :doc:`domain` でない場合、
+パラメータは複数のバインド変数コメントに対応します。
+バインド変数コメントの中では、ドット ``.`` を使用し任意の型のフィールドやメソッドにアクセスできます。
+Daoインタフェースのメソッドと対応するSQLの例は次のとおりです。
+
+``EmployeeDto`` クラスには、 ``employeeName`` フィールドや ``salary`` フィールドが存在するものとします。
+
+.. code-block:: java
+
+  List<Employee> selectByNameAndSalary(EmployeeDto dto);
+
+.. code-block:: sql
+
+  select * from employee
+  where
+  employee_name = /* dto.employeeName */'abc' 
+  and
+  salary = /* dto.salary */1234
+
+フィールドにアクセスする代わりにpublicなメソッドを呼び出すことも可能です。
+
+.. code-block:: sql
+
+  select * from employee
+  where
+  salary = /* dto.getTaxedSalary() */1234
+
+埋め込み変数コメント
+--------------------
+
+埋め込み変数を示す式コメントを埋め込み変数コメントと呼びます。
+埋め込み変数の値はSQLを組み立てる際にSQLの一部として直接埋め込まれます。
+
+SQLインジェクションを防ぐため、埋め込み変数の値に以下の値を含めることは禁止しています。
+
+* シングルクォテーション
+* セミコロン
+* 行コメント
+* ブロックコメント
+
+埋め込み変数は ``/*#～*/`` というブロックコメントで示します。
+埋め込み変数の名前はDaoメソッドのパラメータ名にマッピングされます。
+埋め込み変数は ``ORDER BY`` 句などSQLの一部をプログラムで組み立てたい場合に使用できます。
+Daoのメソッドと対応するSQLの例は次のとおりです。
+
+.. code-block:: java
+
+  List<Employee> selectAll(BigDecimal salary, String orderyBy);
+
+.. code-block:: sql
+
+  select * from employee where salary > /* salary */100 /*# orderBy */
+
+Daoの呼び出し例は次の通りです。
+
+.. code-block:: java
+
+  EmployeeDao dao = new EmployeeDaoImpl();
+  BigDecimal salary = new BigDecimal(1000);
+  String orderBy = "order by salary asc, employee_name";
+  List<Employee> list = dao.selectAll(salary, orderBy);
+
+発行されるSQLは次のようになります。
+
+.. code-block:: sql
+
+  select * from employee where salary > ? order by salary asc, employee_name
+
+条件コメント
+------------
+
+ifとend
+~~~~~~~
+
+条件分岐を示す式コメントを条件コメントと呼びます。
+構文は次のとおりです。
+
+.. code-block:: sql
+
+  /*%if 条件式*/ ～ /*%end*/
+
+条件式は結果が ``boolean`` もしくは ``java.lang.Boolean`` 型と評価される式でなければいけません。
+例を示します。
+
+.. code-block:: sql
+
+  select * from employee where 
+  /*%if employeeId != null */
+      employee_id = /* employeeId */99
+  /*%end*/
+
+上記のSQL文は ``employeeId`` が ``null`` でない場合、 次のような準備された文に変換されます。
+
+.. code-block:: sql
+
+  select * from employee where employee_id = ?
+
+このSQL文は ``employeeId`` が ``null`` の場合に次のような準備された文に変換されます。
+
+.. code-block:: sql
+
+  select * from employee
+
+``if`` の条件が成り立たない場合に ``if`` の外にある WHERE句が出力されないのは、
+`条件コメントにおけるWHEREやHAVINGの自動除去`_ 機能が働いているためです。
+
+条件コメントにおけるWHEREやHAVINGの自動除去
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+条件コメントを使用した場合、条件の前にある ``WHERE`` や ``HAVING`` について自動で出力の要/不要を判定します。
+たとえば、次のようなSQLで ``employeeId`` が ``null`` の場合、
+
+.. code-block:: sql
+
+  select * from employee where 
+  /*%if employeeId != null */
+      employee_id = /* employeeId */99
+  /*%end*/
+
+``/*%if ～*/`` の前の ``where`` は自動で除去され、次のSQLが生成されます。
+
+
+.. code-block:: sql
+
+  select * from employee
+
+条件コメントにおけるANDやORの自動除去
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+条件コメントを使用した場合、条件の後ろにつづく ``AND`` や ``OR`` について自動で出力の要/不要を判定します。
+たとえば、次のようなSQLで ``employeeId`` が ``null`` の場合、
+
+.. code-block:: sql
+
+  select * from employee where 
+  /*%if employeeId != null */
+      employee_id = /* employeeId */99
+  /*%end*/
+  and employeeName like 's%'
+
+``/*%end*/`` の後ろの and は自動で除去され、次のSQLが生成されます。
+
+.. code-block:: sql
+
+  select * from employee where employeeName like 's%'
+
+elseifとelse
+~~~~~~~~~~~~
+
+``/*%if 条件式*/`` と ``/*%end*/`` の間では、 ``elseif`` や ``else`` を表す次の構文も使用できます。
+
+* /\*%elseif 条件式\*/
+* /\*%else\*/
+
+例を示します。
+
+.. code-block:: sql
+
+  select 
+    * 
+  from
+    employee 
+  where 
+  /*%if employeeId != null */
+    employee_id = /* employeeId */9999
+  /*%elseif department_id != null */ 
+    and
+    department_id = /* departmentId */99
+  /*%else*/
+    and
+    department_id is null
+  /*%end*/
+
+上のSQLは、 ``employeeId != null``  が成立するとき実際は次のSQLに変換されます。
+
+.. code-block:: sql
+
+  select 
+    * 
+  from
+    employee 
+  where 
+    employee_id = ?
+
+``employeeId == null && department_id != null`` が成立するとき、実際は次のSQLに変換されます。
+``department_id`` の直前の ``AND`` は自動で除去されるため出力されません。
+
+.. code-block:: sql
+
+  select 
+    * 
+  from
+    employee 
+  where 
+    department_id = ?
+
+``employeeId == null && department_id == null`` が成立するとき、実際は次のSQLに変換されます。
+``department_id`` の直前の ``AND`` は自動で除去されるため出力されません。
+
+.. code-block:: sql
+
+  select 
+    * 
+  from
+    employee 
+  where 
+    department_id is null
+
+過去との互換性のため、 ``/*%if 条件式*/`` と ``/*%end*/`` の間では、
+行コメントを使用した次の構文も使用できます。
+特に理由がない限り、ブロックコメントの ``/*%elseif 条件式*/`` や ``/*%else*/`` を使用してください。
+
+* --elseif 条件式--
+* --else
+
+``elseif`` や ``else`` を行コメントで表した場合の例を示します。
+
+.. code-block:: sql
+
+  select 
+    * 
+  from
+    employee 
+  where 
+  /*%if employeeId != null */
+    employee_id = /* employeeId */9999
+  --elseif department_id != null -- department_id = /* departmentId */99
+  --else department_id is null
+  /*%end */
+
+.. warning::
+
+  この機能は Doma 2.0.0 の正式リリースまでに削除されます。
+
+ネストした条件コメント
+~~~~~~~~~~~~~~~~~~~~~~
+
+条件コメントはネストさせることができます。
+
+.. code-block:: sql
+
+  select * from employee where 
+  /*%if employeeId != null */
+    employee_id = /* employeeId */99
+    /*%if employeeName != null */ 
+      and
+      employee_name = /* employeeName */'hoge'
+    /*%else*/
+      and
+      employee_name is null
+    /*%end*/
+  /*%end*/
+
+条件コメントにおける制約
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+条件コメントの ``if`` と ``end`` はSQLの同じ節に含まれなければいけません。
+節とは、 SELECT節、FROM節、WHERE節、GROUP BY節、HAVING節、ORDER BY節などです。
+次の例では、 ``if`` がFROM節にあり ``end`` がWHERE節にあるため不正です。
+
+.. code-block:: sql
+
+  select * from employee /*%if employeeId != null */ 
+  where employee_id = /* employeeId */99 /*%end*/
+
+また、 ``if`` と ``end`` は同じレベルの文に含まれなければいけません。
+次の例では、 ``if`` が括弧の外にありendが括弧の内側にあるので不正です。
+
+.. code-block:: sql
+
+  select * from employee
+  where employee_id in /*%if departmentId != null */(...  /*%end*/ ...)
+
+繰り返しコメント
+----------------
+
+forとend
+~~~~~~~~
+
+繰り返しを示す式コメントを繰り返しコメントと呼びます。
+構文は次のとおりです。
+
+::
+
+  /*%for 識別子 : 式*/ ～ /*%end*/
+
+識別子は、繰り返される要素を指す変数です。
+式は ``java.lang.Iterable`` 型として評価される式でなければいけません。
+例を示します。
+
+.. code-block:: sql
+
+  select * from employee where
+  /*%for name : names */
+  employee_name like /* name */'hoge'
+    /*%if name_has_next */
+  /*# "or" */
+    /*%end */
+  /*%end*/
+
+上記のSQL文は、 ``names`` が3つの要素からなるリストを表す場合、次のような準備された文に変換されます。
+
+.. code-block:: sql
+
+  select * from employee where
+  employee_name like ? 
+  or
+  employee_name like ?
+  or
+  employee_name like ?
+
+item_has_nextとitem_index
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``/*%for 識別子 : 式*/`` から ``/*%end*/`` までの内側では次の2つの特別な変数を使用できます。
+
+* item_has_next
+* item_index
+
+``item`` は識別子を表します。つまり、 ``for`` の識別子が ``name`` の場合
+この変数はそれぞれ ``name_has_next`` と ``name_index`` となります。
+
+``item_has_next`` は次の繰り返し要素が存在するかどうかを示す ``boolean`` の値です。
+
+``item_index`` は繰り返しのindexを表す ``int`` の値です。値は0始まりです。
+
+繰り返しコメントにおけるWHEREやHAVINGの自動除去
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+繰り返しコメントを使用した場合、コメントの前にあるWHEREやHAVINGについて自動で出力の要/不要を判定します。
+たとえば、次のようなSQLでnamesのsizeが0の場合（繰り返しが行われない場合）、
+
+.. code-block:: sql
+
+  select * from employee where 
+  /*%for name : names */
+  employee_name like /* name */'hoge'
+    /*%if name_has_next */
+  /*# "or" */
+    /*%end */
+  /*%end*/
+
+``/*%for ～*/`` の前の ``where`` は自動で除去され、次のSQLが生成されます。
+
+.. code-block:: sql
+
+  select * from employee
+
+繰り返しコメントにおけるANDやORの自動除去
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+繰り返しコメントを使用した場合、コメントの後ろにつづく ``AND`` や ``OR`` について自動で出力の要/不要を判定します。
+たとえば、次のようなSQLで ``names`` の ``size`` が0の場合（繰り返しが行われない場合）、
+
+.. code-block:: sql
+
+  select * from employee where 
+  /*%for name : names */
+  employee_name like /* name */'hoge'
+    /*%if name_has_next */
+  /*# "or" */
+    /*%end */
+  /*%end*/
+  or
+  salary > 1000
+
+``/*%end*/`` の後ろの ``or`` は自動で除去され、次のSQLが生成されます。
+
+.. code-block:: sql
+
+  select * from employee where salary > 1000
+
+繰り返しコメントにおける制約
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+繰り返しコメントのforとendはSQLの同じ節に含まれなければいけません。
+節とは、SELECT節、FROM節、WHERE節、GROUP BY節、HAVING節、ORDER BY節などです。
+
+また、 ``for`` と ``end`` は同じレベルの文に含まれなければいけません。
+つまり、括弧の外で ``for`` 、括弧の内側で ``end`` という記述は認められません。
+
+通常のブロックコメント
+----------------------
+
+``/*`` の直後に続く3文字目がJavaの識別子の先頭で使用できない文字
+（ただし、空白および式で特別な意味をもつ ``%``、``#``、 ``@``、 ``"``、 ``'`` は除く）の場合、
+それは通常のブロックコメントだとみなされます。
+
+たとえば、次の例はすべて通常のブロックコメントです。
+
+.. code-block:: sql
+
+  /**～*/
+  /*+～*/
+  /*=～*/
+  /*:～*/
+  /*;～*/
+  /*(～*/
+  /*)～*/
+  /*&～*/
+
+一方、次の例はすべて式コメントだとみなされます。
+
+.. code-block:: sql
+
+  /* ～*/ ...--3文字目が空白であるため式コメントです。
+  /*a～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるため式コメントです。
+  /*$～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるため式コメントです。
+  /*%～*/ ...--3文字目が条件コメントや繰り返しコメントの始まりを表す「%」であるため式コメントです。
+  /*#～*/ ...--3文字目が埋め込み変数コメントを表す「#」であるため式コメントです。
+  /*@～*/ ...--3文字目が組み込み関数もしくはクラス名を表す「@」であるため式コメントです。
+  /*"～*/ ...--3文字目が文字列リテラルの引用符を表す「"」であるため式コメントです。
+  /*'～*/ ...--3文字目が文字リテラルの引用符を表す「'」であるため式コメントです。
+
+特に理由がない場合、通常のブロックコメントには ``/**～*/`` を使用するのがよいでしょう。
+
+通常の行コメント
+----------------
+
+``--`` の直後に ``elseif`` や ``else`` がつづかない場合、それは通常の行コメントだとみなされます。
+
+たとえば、次の例は通常の行コメントだとみなされます。
+
+.. code-block:: sql
+
+  -- aaa
+  ---aaa
+
+一方、次の例はすべて式コメントだとみなされます。
+
+.. code-block:: sql
+
+  --elseif ～ --
+  --else
+
+特に理由がない場合、通常の行コメントは使用しないか、 ``---`` を使用するのがいいでしょう。
+
+.. warning::
+
+  この制約は Doma 2.0.0 の正式リリースまでに削除されます。
