@@ -17,10 +17,10 @@ Domaのドキュメントへようこそ！
    domain
    entity
    dao
-   query
+   query-builder
    sql
    tx
-   apt
+   annotation-processing
    build
 
 FAQ
