@@ -23,26 +23,12 @@ Domaのドキュメントへようこそ！
    annotation-processing
    build
 
-FAQ
-==================
+Domaについて
+============
 
 .. toctree::
    :maxdepth: 1
 
    faq
-
-移行ガイド
-==================
-
-.. toctree::
-   :maxdepth: 1
-
-   migration
-
-
-索引と検索
-==================
-
-* :ref:`genindex`
-* :ref:`search`
+   changelog
 
