@@ -17,14 +17,6 @@
 検索では、 **SQLファイルが必須** です。
 検索系のSQLを自動生成する機能はありません。
 
-検索結果を受ける型には以下のものを使用できます。
-
-* :doc:`../basic`
-* :doc:`../domain`
-* :doc:`../entity`
-* java.util.Map<String, Object>
-* 複数件の場合は、上記の型を要素とするjava.util.List
-
 .. note::
 
   エンティティクラスを利用する場合、エンティティクラスは **検索結果に応じて** 作成する必要があります。
@@ -40,11 +32,12 @@
 ==============
 
 問い合わせ条件にはメソッドのパラメータを使用します。
-利用できるパラメータの型には以下のものが使用できます。
+利用できるパラメータの型は以下のものです。
 
 * :doc:`../basic`
 * :doc:`../domain`
 * 任意の型
+* :doc:`../basic` や :doc:`../domain` や任意の型を要素とするjava.util.Optional
 * :doc:`../basic` や :doc:`../domain` を要素とするjava.util.Iterable
 
 パラメータの数に制限はありません。
@@ -54,7 +47,7 @@
 基本型やドメインクラスを使った問い合わせ
 ----------------------------------------
 
-メソッドにパラメータに :doc:`../basic` や :doc:`../domain` を定義します。
+メソッドやパラメータに :doc:`../basic` や :doc:`../domain` を定義します。
 
 .. code-block:: java
 
@@ -83,7 +76,7 @@ SQLコメントではメソッドのパラメータ名を参照します。
 
   select * from employee where employee_name = /* employee.name */'hoge' and salary > /* employee.getSalary() */100
 
-パラメータを指定できます。
+パラメータは複数指定できます。
 
 .. code-block:: java
 
@@ -108,6 +101,12 @@ Iterableを使ったIN句へのマッピング
 ==========
 
 複数件を検索するには、メソッドの戻り値の型を ``java.util.List`` にします。
+``List`` の要素の型には次のものが使用できます。
+
+* :doc:`../basic`
+* :doc:`../domain`
+* :doc:`../entity`
+* java.util.Map<String, Object>
 
 .. code-block:: java
 
@@ -126,14 +125,15 @@ Iterableを使ったIN句へのマッピング
 * :doc:`../domain`
 * :doc:`../entity`
 * java.util.Map<String, Object>
+* 上記の型のいずれかを要素とするjava.util.Optional
 
 .. code-block:: java
 
   @Select
   Employee selectByNameAndSalary(String name, BigDecimal salary);
 
-結果が0件のときは ``null`` が返されます。
-ただし、 `検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+戻り値の型が ``Optional`` でなく、かつ、結果が0件のときは ``null`` が返されます。
+`検索結果の保証`_ を有効にした場合は、戻り値の型に関係なく結果が0件ならば例外がスローされます。
 
 結果が2件以上存在するときは、 ``NonUniqueResultException`` がスローされます。
 

@@ -23,7 +23,6 @@ Domaでは、データベースのカラムにマッピング可能なJavaの型
 * java.sql.Blob
 * java.sql.Clob
 * java.util.Date
-* プリミティブ型を除く上記の型を要素とするjava.util.Optional
 
 日付/時刻型
 ------------------
@@ -42,11 +41,6 @@ java.sql.Timestamp
 java.util.Date
   SQL標準のTIMESTAMP型 (日付と時刻)を表します。ナノ秒を保持しません。
 
-Optional型
-------------------
-
-``java.util.Optional`` は他の基本型と異なり、ドメインクラスの値の型としては使用できません。
-
 利用例
 ==================
 
@@ -54,7 +48,7 @@ Optional型
 ------------------
 
 .. code-block:: java
-  
+
   @Entity
   public class Employee {
 
