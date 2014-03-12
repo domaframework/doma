@@ -9,7 +9,7 @@ Domaのドキュメントへようこそ！
 目次:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    getting-started
    config
