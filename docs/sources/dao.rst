@@ -14,29 +14,9 @@ Daoは ``@Dao`` が注釈されたインタフェースとして定義します�
 クエリ定義
 ==================
 
-アノテーションを使って以下のクエリを定義できます。
+アノテーションを使って :doc:`query/index` を定義できます。
 
-.. toctree::
-   :maxdepth: 1
-
-   query/select
-   query/insert
-   query/update
-   query/delete
-   query/batch-insert
-   query/batch-update
-   query/batch-delete
-   query/function
-   query/procedure
-   query/factory
-   query/script
-
-Javaコードで任意のクエリを組み立てるには `デフォルトメソッド`_ の中でクエリビルダを使用してください。
-
-.. toctree::
-   :maxdepth: 1
-
-   query/builder
+Javaコードで任意のクエリを組み立てるには `デフォルトメソッド`_ の中で :doc:`query-builder/index` を使用してください。
 
 デフォルトメソッド
 ==================
@@ -107,3 +87,4 @@ Daoインタフェースはエンティティクラスと1対1で結びついて
       @Update
       int updateAddress(Address address);
   }
+

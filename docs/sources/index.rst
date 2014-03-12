@@ -17,6 +17,8 @@ Domaのドキュメントへようこそ！
    domain
    entity
    dao
+   query/index
+   query-builder/index
    sql
    expression
    transaction
