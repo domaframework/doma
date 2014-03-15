@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Deque;
 import java.util.Iterator;
@@ -33,6 +33,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
@@ -175,6 +176,10 @@ public class SqlParser {
                 parseForBlockComment();
                 break;
             }
+            case EXPAND_BLOCK_COMMENT: {
+                parseExpandBlockComment();
+                break;
+            }
             case UNION_WORD:
             case EXCEPT_WORD:
             case MINUS_WORD:
@@ -198,10 +203,6 @@ public class SqlParser {
             case DELIMITER:
             case EOF: {
                 break outer;
-            }
-            default: {
-                assertUnreachable();
-                break;
             }
             }
         }
@@ -489,6 +490,16 @@ public class SqlParser {
         push(forNode);
     }
 
+    protected void parseExpandBlockComment() {
+        String alias = tokenType.extract(token);
+        if (alias.isEmpty()) {
+            alias = "\"\"";
+        }
+        ExpandNode node = new ExpandNode(getLocation(), alias, token);
+        appendNode(node);
+        push(node);
+    }
+
     protected void parseOther() {
         appendNode(OtherNode.of(token));
     }
@@ -583,6 +594,10 @@ public class SqlParser {
         return peek() instanceof BindVariableNode;
     }
 
+    protected boolean isAfterExpandNode() {
+        return peek() instanceof ExpandNode;
+    }
+
     protected void appendNode(SqlNode node) {
         if (isAfterBindVariableNode()) {
             BindVariableNode bindVariableNode = pop();
@@ -605,6 +620,20 @@ public class SqlParser {
                 throw new JdbcException(Message.DOMA2110, sql,
                         tokenizer.getLineNumber(), tokenizer.getPosition(),
                         bindVariableNode.getText());
+            }
+        } else if (isAfterExpandNode()) {
+            ExpandNode expandNode = pop();
+            if (node instanceof OtherNode) {
+                OtherNode otherNode = (OtherNode) node;
+                if (!otherNode.getOther().equals("*")) {
+                    throw new JdbcException(Message.DOMA2143, sql,
+                            tokenizer.getLineNumber(), tokenizer.getPosition(),
+                            expandNode.getText());
+                }
+            } else {
+                throw new JdbcException(Message.DOMA2143, sql,
+                        tokenizer.getLineNumber(), tokenizer.getPosition(),
+                        expandNode.getText());
             }
         } else {
             peek().appendNode(node);

@@ -41,6 +41,7 @@ import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
@@ -64,16 +65,20 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
     protected final String path;
 
+    protected final boolean expandable;
+
     protected final ExpressionValidator expressionValidator;
 
     public SqlValidator(ProcessingEnvironment env,
             ExecutableElement methodElement,
-            Map<String, TypeMirror> parameterTypeMap, String path) {
+            Map<String, TypeMirror> parameterTypeMap, String path,
+            boolean expandable) {
         assertNotNull(env, methodElement, parameterTypeMap, path);
         this.env = env;
         this.methodElement = methodElement;
         this.parameterTypeMap = parameterTypeMap;
         this.path = path;
+        this.expandable = expandable;
         expressionValidator = new ExpressionValidator(env, methodElement,
                 parameterTypeMap);
     }
@@ -261,6 +266,17 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                     originalIndexType);
         }
         return null;
+    }
+
+    @Override
+    public Void visitExpandNode(ExpandNode node, Void p) {
+        if (!expandable) {
+            SqlLocation location = node.getLocation();
+            String sql = getSql(location);
+            throw new AptException(Message.DOMA4257, env, methodElement, path,
+                    sql, location.getLineNumber(), location.getPosition());
+        }
+        return visitNode(node, p);
     }
 
     @Override

@@ -455,6 +455,10 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.setOptions(%1$s);%n",
                         m.getSelectOptionsParameterName());
             }
+            if (m.getEntityCtType() != null) {
+                iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
+                        m.getEntityCtType().getMetaTypeName());
+            }
 
             printAddParameterStatements(m.getParameterMetas());
 

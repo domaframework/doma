@@ -71,6 +71,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setMethod(__method0);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/StreamDao/selectByIdAndName.sql");
+            __query.setEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.StreamDaoImpl");

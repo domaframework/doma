@@ -252,6 +252,54 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    public void testExpand() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        String testSql = "select /*%expand*/* from aaa";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, node -> Arrays.asList("bbb", "ccc"))
+                .build(sqlNode);
+        assertEquals("select bbb, ccc from aaa", sql.getRawSql());
+        assertEquals("select bbb, ccc from aaa", sql.getFormattedSql());
+    }
+
+    public void testExpand_alias() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        String testSql = "select /*%expand \"a\"*/* from aaa a";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, node -> Arrays.asList("bbb", "ccc"))
+                .build(sqlNode);
+        assertEquals("select a.bbb, a.ccc from aaa a", sql.getRawSql());
+        assertEquals("select a.bbb, a.ccc from aaa a", sql.getFormattedSql());
+    }
+
+    public void testExpand_notAsteriskChar() throws Exception {
+        String testSql = "select /*%expand*/+ from aaa";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2143, expected.getMessageResource());
+        }
+    }
+
+    public void testExpand_word() throws Exception {
+        String testSql = "select /*%expand*/'hoge' from aaa";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2143, expected.getMessageResource());
+        }
+    }
+
     public void testIf() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));

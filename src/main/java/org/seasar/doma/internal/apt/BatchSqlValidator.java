@@ -44,8 +44,9 @@ public class BatchSqlValidator extends SqlValidator {
 
     public BatchSqlValidator(ProcessingEnvironment env,
             ExecutableElement methodElement,
-            Map<String, TypeMirror> parameterTypeMap, String path) {
-        super(env, methodElement, parameterTypeMap, path);
+            Map<String, TypeMirror> parameterTypeMap, String path,
+            boolean expandable) {
+        super(env, methodElement, parameterTypeMap, path, expandable);
         suppress = methodElement.getAnnotation(Suppress.class);
     }
 

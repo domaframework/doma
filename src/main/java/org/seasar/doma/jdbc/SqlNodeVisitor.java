@@ -23,6 +23,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
@@ -71,6 +72,8 @@ public interface SqlNodeVisitor<R, P> {
     R visitEndNode(EndNode node, P p);
 
     R visitEolNode(EolNode node, P p);
+
+    R visitExpandNode(ExpandNode node, P p);
 
     R visitForBlockNode(ForBlockNode node, P p);
 

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -62,7 +62,8 @@ public class SqlFileSelectQueryMetaFactory extends
         doParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFiles(queryMeta, method, daoMeta);
+        doSqlFiles(queryMeta, method, daoMeta,
+                queryMeta.getEntityCtType() != null);
         return queryMeta;
     }
 
@@ -145,8 +146,8 @@ public class SqlFileSelectQueryMetaFactory extends
                         returnMeta.getType(), returnCtType.getBoxedTypeName());
             }
         } else {
-            returnMeta.getCtType().accept(new ReturnCtTypeVisitor(returnMeta),
-                    null);
+            returnMeta.getCtType().accept(
+                    new ReturnCtTypeVisitor(queryMeta, returnMeta), null);
         }
     }
 
@@ -263,6 +264,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(Message.DOMA4158, env,
                         parameterMeta.getElement(), ctType.getTypeName());
             }
+            queryMeta.setEntityCtType(ctType);
             return null;
         }
 
@@ -366,6 +368,7 @@ public class SqlFileSelectQueryMetaFactory extends
                     throw new AptException(Message.DOMA4250, env,
                             parameterMeta.getElement(), ctType.getTypeName());
                 }
+                queryMeta.setEntityCtType(ctType);
                 return null;
             }
 
@@ -412,9 +415,13 @@ public class SqlFileSelectQueryMetaFactory extends
     protected class ReturnCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
+        protected SqlFileSelectQueryMeta queryMeta;
+
         protected QueryReturnMeta returnMeta;
 
-        protected ReturnCtTypeVisitor(QueryReturnMeta returnMeta) {
+        protected ReturnCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
+                QueryReturnMeta returnMeta) {
+            this.queryMeta = queryMeta;
             this.returnMeta = returnMeta;
         }
 
@@ -444,6 +451,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(Message.DOMA4154, env,
                         returnMeta.getElement(), ctType.getQualifiedName());
             }
+            queryMeta.setEntityCtType(ctType);
             return null;
         }
 
@@ -460,7 +468,8 @@ public class SqlFileSelectQueryMetaFactory extends
                 defaultAction(ctType, p);
             }
             ctType.getElementCtType().accept(
-                    new ReturnIterableElementCtTypeVisitor(returnMeta), p);
+                    new ReturnIterableElementCtTypeVisitor(queryMeta,
+                            returnMeta), p);
             return null;
         }
 
@@ -481,9 +490,13 @@ public class SqlFileSelectQueryMetaFactory extends
     protected class ReturnIterableElementCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
+        protected SqlFileSelectQueryMeta queryMeta;
+
         protected QueryReturnMeta returnMeta;
 
-        protected ReturnIterableElementCtTypeVisitor(QueryReturnMeta returnMeta) {
+        protected ReturnIterableElementCtTypeVisitor(
+                SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+            this.queryMeta = queryMeta;
             this.returnMeta = returnMeta;
         }
 
@@ -519,6 +532,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(Message.DOMA4155, env,
                         returnMeta.getElement(), ctType.getTypeMirror());
             }
+            queryMeta.setEntityCtType(ctType);
             return null;
         }
 

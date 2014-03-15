@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import org.seasar.doma.internal.util.StringUtil;
 
@@ -101,6 +102,17 @@ public enum SqlTokenType {
             assertNotNull(token);
             assertTrue(token.length() >= 8);
             return token.substring(6, token.length() - 2);
+        }
+
+    },
+
+    EXPAND_BLOCK_COMMENT {
+
+        @Override
+        public String extract(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 11);
+            return token.substring(9, token.length() - 2);
         }
 
     },

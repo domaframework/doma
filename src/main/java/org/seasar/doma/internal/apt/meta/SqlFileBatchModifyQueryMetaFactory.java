@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -61,7 +61,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         doParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFiles(queryMeta, method, daoMeta);
+        doSqlFiles(queryMeta, method, daoMeta, false);
         return queryMeta;
     }
 
@@ -161,8 +161,10 @@ public class SqlFileBatchModifyQueryMetaFactory extends
 
     @Override
     protected SqlValidator createSqlValidator(ExecutableElement method,
-            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath) {
-        return new BatchSqlValidator(env, method, parameterTypeMap, sqlFilePath);
+            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath,
+            boolean expandable) {
+        return new BatchSqlValidator(env, method, parameterTypeMap,
+                sqlFilePath, expandable);
     }
 
 }

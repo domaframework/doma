@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.File;
 
@@ -50,7 +50,7 @@ public class SqlFileScriptQueryMetaFactory extends
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFiles(queryMeta, method, daoMeta);
+        doSqlFiles(queryMeta, method, daoMeta, false);
         return queryMeta;
     }
 
@@ -87,7 +87,7 @@ public class SqlFileScriptQueryMetaFactory extends
 
     @Override
     protected void doSqlFiles(SqlFileScriptQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
+            ExecutableElement method, DaoMeta daoMeta, boolean expandable) {
         String filePath = ScriptFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString(), queryMeta.getName());
         File file = getFile(queryMeta, method, filePath);

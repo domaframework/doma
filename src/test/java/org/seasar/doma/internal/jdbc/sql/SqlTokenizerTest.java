@@ -15,7 +15,35 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.*;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.AND_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BIND_VARIABLE_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DELIMITER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.END_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOL;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXCEPT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXPAND_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FOR_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FOR_UPDATE_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FROM_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.GROUP_BY_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.HAVING_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.QUOTE;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SELECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.UNION_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHERE_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHITESPACE;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WORD;
 import junit.framework.TestCase;
 
 import org.seasar.doma.jdbc.JdbcException;
@@ -413,6 +441,42 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals("bbb", tokenizer.getToken());
         assertEquals(END_BLOCK_COMMENT, tokenizer.next());
         assertEquals("/*%end*/", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testExpandBlockComment() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("select /*%expand*/* from");
+        assertEquals(SELECT_WORD, tokenizer.next());
+        assertEquals("select", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(EXPAND_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*%expand*/", tokenizer.getToken());
+        assertEquals(OTHER, tokenizer.next());
+        assertEquals("*", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(FROM_WORD, tokenizer.next());
+        assertEquals("from", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testExpandBlockComment_alias() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("select /*%expand e*/* from");
+        assertEquals(SELECT_WORD, tokenizer.next());
+        assertEquals("select", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(EXPAND_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*%expand e*/", tokenizer.getToken());
+        assertEquals(OTHER, tokenizer.next());
+        assertEquals("*", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(FROM_WORD, tokenizer.next());
+        assertEquals("from", tokenizer.getToken());
         assertEquals(EOF, tokenizer.next());
         assertNull(tokenizer.getToken());
     }

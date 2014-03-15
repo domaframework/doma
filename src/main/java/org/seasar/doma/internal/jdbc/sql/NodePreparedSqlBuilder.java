@@ -21,6 +21,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +45,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
@@ -90,6 +93,8 @@ public class NodePreparedSqlBuilder implements
 
     protected final ExpressionEvaluator evaluator;
 
+    protected final Function<ExpandNode, List<String>> columnsExpander;
+
     public NodePreparedSqlBuilder(Config config, SqlKind kind,
             String sqlFilePath) {
         this(config, kind, sqlFilePath,
@@ -99,11 +104,24 @@ public class NodePreparedSqlBuilder implements
 
     public NodePreparedSqlBuilder(Config config, SqlKind kind,
             String sqlFilePath, ExpressionEvaluator evaluator) {
-        assertNotNull(config, kind, evaluator);
+        this(config, kind, sqlFilePath, evaluator,
+                new Function<ExpandNode, List<String>>() {
+                    @Override
+                    public List<String> apply(ExpandNode node) {
+                        throw new UnsupportedOperationException();
+                    }
+                });
+    }
+
+    public NodePreparedSqlBuilder(Config config, SqlKind kind,
+            String sqlFilePath, ExpressionEvaluator evaluator,
+            Function<ExpandNode, List<String>> columnsExpander) {
+        assertNotNull(config, kind, evaluator, columnsExpander);
         this.config = config;
         this.kind = kind;
         this.sqlFilePath = sqlFilePath;
         this.evaluator = evaluator;
+        this.columnsExpander = columnsExpander;
     }
 
     public PreparedSql build(SqlNode sqlNode) {
@@ -544,6 +562,22 @@ public class NodePreparedSqlBuilder implements
         String eol = node.getEol();
         p.appendRawSql(eol);
         p.appendFormattedSql(eol);
+        return null;
+    }
+
+    @Override
+    public Void visitExpandNode(ExpandNode node, Context p) {
+        EvaluationResult evalResult = p.evaluate(node.getLocation(),
+                node.getAlias());
+        String alias = evalResult.getValue().toString();
+        String prefix = alias.isEmpty() ? "" : alias + ".";
+        StringJoiner joiner = new StringJoiner(", ");
+        for (String column : columnsExpander.apply(node)) {
+            joiner.add(prefix + column);
+        }
+        String joined = joiner.toString();
+        p.appendRawSql(joined);
+        p.appendFormattedSql(joined);
         return null;
     }
 

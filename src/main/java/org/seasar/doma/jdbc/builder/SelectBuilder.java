@@ -239,6 +239,7 @@ public class SelectBuilder {
         }
         EntityType<RESULT> entityType = EntityTypeFactory.getEntityType(
                 resultClass, config.getClassHelper());
+        query.setEntityType(entityType);
         EntitySingleResultHandler<RESULT> handler = new EntitySingleResultHandler<>(
                 entityType);
         return execute(handler);
@@ -288,6 +289,7 @@ public class SelectBuilder {
         }
         EntityType<RESULT> entityType = EntityTypeFactory.getEntityType(
                 resultClass, config.getClassHelper());
+        query.setEntityType(entityType);
         OptionalEntitySingleResultHandler<RESULT> handler = new OptionalEntitySingleResultHandler<>(
                 entityType);
         return execute(handler);
@@ -489,6 +491,7 @@ public class SelectBuilder {
         }
         EntityType<ELEMENT> entityType = EntityTypeFactory.getEntityType(
                 elementClass, config.getClassHelper());
+        query.setEntityType(entityType);
         ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<ELEMENT>(
                 entityType);
         return execute(handler);
@@ -651,6 +654,7 @@ public class SelectBuilder {
         }
         EntityType<TARGET> entityType = EntityTypeFactory.getEntityType(
                 targetClass, config.getClassHelper());
+        query.setEntityType(entityType);
         EntityIterationHandler<TARGET, RESULT> handler = new EntityIterationHandler<>(
                 entityType, iterationCallback);
         return execute(handler);
@@ -822,6 +826,7 @@ public class SelectBuilder {
         }
         EntityType<TARGET> entityType = EntityTypeFactory.getEntityType(
                 targetClass, config.getClassHelper());
+        query.setEntityType(entityType);
         ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(
                 entityType, mapper);
         return execute(handler);

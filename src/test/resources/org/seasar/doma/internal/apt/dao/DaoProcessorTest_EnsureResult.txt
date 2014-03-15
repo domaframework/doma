@@ -66,6 +66,7 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnsureResultDao/selectById.sql");
             __query.setOptions(options);
+            __query.setEntityType(example.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultDaoImpl");
             __query.setCallerMethodName("selectById");
@@ -99,6 +100,7 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnsureResultDao/selectByNameAndSalary.sql");
             __query.setOptions(options);
+            __query.setEntityType(example.entity._Emp.getSingletonInternal());
             __query.addParameter("name", java.lang.String.class, name);
             __query.addParameter("salary", java.math.BigDecimal.class, salary);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultDaoImpl");

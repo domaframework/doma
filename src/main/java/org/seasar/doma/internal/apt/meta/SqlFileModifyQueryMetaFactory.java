@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -53,7 +53,7 @@ public class SqlFileModifyQueryMetaFactory extends
         doParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFiles(queryMeta, method, daoMeta);
+        doSqlFiles(queryMeta, method, daoMeta, false);
         return queryMeta;
     }
 

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
 
     protected void doSqlFiles(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
+            DaoMeta daoMeta, boolean expandable) {
         if (!Options.getSqlValidation(env)) {
             return;
         }
@@ -76,7 +76,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
                         sqlFilePath, sql);
                 SqlValidator validator = createSqlValidator(method,
-                        queryMeta.getBindableParameterTypeMap(), sqlFilePath);
+                        queryMeta.getBindableParameterTypeMap(), sqlFilePath,
+                        expandable);
                 validator.validate(sqlNode);
                 queryMeta.addFileName(fileName);
             }
@@ -151,7 +152,9 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
 
     protected SqlValidator createSqlValidator(ExecutableElement method,
-            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath) {
-        return new SqlValidator(env, method, parameterTypeMap, sqlFilePath);
+            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath,
+            boolean expandable) {
+        return new SqlValidator(env, method, parameterTypeMap, sqlFilePath,
+                expandable);
     }
 }

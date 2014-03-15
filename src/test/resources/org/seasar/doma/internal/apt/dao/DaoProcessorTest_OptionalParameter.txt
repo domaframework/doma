@@ -67,6 +67,7 @@ public class OptionalParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/OptionalParameterDao/selectById.sql");
             __query.setOptions(options);
+            __query.setEntityType(example.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id.orElse(null));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.OptionalParameterDaoImpl");
             __query.setCallerMethodName("selectById");

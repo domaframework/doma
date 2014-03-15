@@ -15,8 +15,41 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.*;
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.AND_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BIND_VARIABLE_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.CLOSED_PARENS;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DELIMITER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EMBEDDED_VARIABLE_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.END_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOL;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXCEPT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXPAND_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FOR_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FOR_UPDATE_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FROM_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.GROUP_BY_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.HAVING_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPENED_PARENS;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.QUOTE;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SELECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.UNION_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHERE_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHITESPACE;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WORD;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.nio.CharBuffer;
 
@@ -373,6 +406,22 @@ public class SqlTokenizer {
                                                 }
                                             }
                                         }
+                                    } else if (buf.hasRemaining()) {
+                                        char c8 = buf.get();
+                                        if (buf.hasRemaining()) {
+                                            char c9 = buf.get();
+                                            if (c4 == 'e' && c5 == 'x'
+                                                    && c6 == 'p' && c7 == 'a'
+                                                    && c8 == 'n' && c9 == 'd') {
+                                                if (isBlockCommentDirectiveTerminated()) {
+                                                    type = EXPAND_BLOCK_COMMENT;
+                                                }
+                                            } else {
+                                                buf.position(buf.position() - 6);
+                                            }
+                                        } else {
+                                            buf.position(buf.position() - 5);
+                                        }
                                     } else {
                                         buf.position(buf.position() - 4);
                                     }
@@ -389,7 +438,8 @@ public class SqlTokenizer {
                     if (type != IF_BLOCK_COMMENT && type != FOR_BLOCK_COMMENT
                             && type != END_BLOCK_COMMENT
                             && type != ELSE_BLOCK_COMMENT
-                            && type != ELSEIF_BLOCK_COMMENT) {
+                            && type != ELSEIF_BLOCK_COMMENT
+                            && type != EXPAND_BLOCK_COMMENT) {
                         int pos = buf.position() - lineStartPosition;
                         throw new JdbcException(Message.DOMA2119, sql,
                                 lineNumber, pos);

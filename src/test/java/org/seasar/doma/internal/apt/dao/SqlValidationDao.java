@@ -42,4 +42,6 @@ public interface SqlValidationDao {
 
     void testFor_noTypeArgument(@SuppressWarnings("rawtypes") List names);
 
+    void testExpand(String name);
+
 }

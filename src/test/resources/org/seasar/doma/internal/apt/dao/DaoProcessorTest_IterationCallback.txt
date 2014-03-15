@@ -71,6 +71,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMethod(__method0);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/IterationCallbackDao/iterateByIdAndName.sql");
+            __query.setEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
@@ -167,6 +168,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setMethod(__method3);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/IterationCallbackDao/iterateWithHogeIterationCallback.sql");
+            __query.setEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
             __query.setCallerMethodName("iterateWithHogeIterationCallback");
             __query.setResultEnsured(false);

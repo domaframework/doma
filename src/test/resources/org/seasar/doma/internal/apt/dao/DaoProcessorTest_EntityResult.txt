@@ -66,6 +66,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMethod(__method0);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EntityResultDao/selectSingleResult.sql");
+            __query.setEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl");
             __query.setCallerMethodName("selectSingleResult");
             __query.setResultEnsured(false);
@@ -122,6 +123,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMethod(__method2);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EntityResultDao/selectResultList.sql");
+            __query.setEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl");
             __query.setCallerMethodName("selectResultList");
             __query.setResultEnsured(false);
@@ -153,6 +155,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMethod(__method3);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EntityResultDao/iterate.sql");
+            __query.setEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl");
             __query.setCallerMethodName("iterate");
             __query.setResultEnsured(false);

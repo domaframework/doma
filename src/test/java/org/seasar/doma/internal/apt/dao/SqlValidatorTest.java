@@ -49,7 +49,7 @@ public class SqlValidatorTest extends AptTestCase {
                 "testBindVariable", String.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
         SqlParser parser = new SqlParser(
                 "select * from emp where name = /* name */'aaa'");
         SqlNode sqlNode = parser.parse();
@@ -66,7 +66,7 @@ public class SqlValidatorTest extends AptTestCase {
                 "testBindVariable_list", List.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
         SqlParser parser = new SqlParser(
                 "select * from emp where name in /* names */('aaa')");
         SqlNode sqlNode = parser.parse();
@@ -82,7 +82,7 @@ public class SqlValidatorTest extends AptTestCase {
                 "testEmbeddedVariable", String.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
         SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
         SqlNode sqlNode = parser.parse();
         sqlNode.accept(validator, null);
@@ -98,7 +98,7 @@ public class SqlValidatorTest extends AptTestCase {
                 "testFor", List.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
         SqlParser parser = new SqlParser(
                 "select * from emp where name = /*%for e : names*/ /*e*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
         SqlNode sqlNode = parser.parse();
@@ -114,7 +114,7 @@ public class SqlValidatorTest extends AptTestCase {
                 "testFor", List.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
         SqlParser parser = new SqlParser(
                 "select * from emp where name = /*%for e : names*/ /*x*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
         SqlNode sqlNode = parser.parse();
@@ -136,7 +136,7 @@ public class SqlValidatorTest extends AptTestCase {
                 "testFor_notIterable", Iterator.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
         SqlParser parser = new SqlParser(
                 "select * from emp where name = /*%for e : names*/ /*e*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
         SqlNode sqlNode = parser.parse();
@@ -158,7 +158,7 @@ public class SqlValidatorTest extends AptTestCase {
                 "testFor_noTypeArgument", List.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
         SqlParser parser = new SqlParser(
                 "select * from emp where name = /*%for e : names*/ /*e*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
         SqlNode sqlNode = parser.parse();
@@ -168,6 +168,46 @@ public class SqlValidatorTest extends AptTestCase {
         } catch (AptException expected) {
             System.out.println(expected.getMessage());
             assertEquals(Message.DOMA4150, expected.getMessageResource());
+        }
+    }
+
+    public void testExpand() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        addCompilationUnit(StringWrapper.class);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testExpand", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", true);
+        SqlParser parser = new SqlParser(
+                "select /*%expand*/* from emp where name = /* name */'aaa'");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+    }
+
+    public void testExpand_notExpandable() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        addCompilationUnit(StringWrapper.class);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testExpand", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false);
+        SqlParser parser = new SqlParser(
+                "select /*%expand*/* from emp where name = /* name */'aaa'");
+        SqlNode sqlNode = parser.parse();
+        try {
+            sqlNode.accept(validator, null);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA4257, expected.getMessageResource());
         }
     }
 

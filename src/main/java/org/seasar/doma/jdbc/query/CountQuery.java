@@ -16,17 +16,25 @@
 package org.seasar.doma.jdbc.query;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
+import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -55,6 +63,8 @@ public class CountQuery implements SelectQuery {
     protected int queryTimeout;
 
     protected Method method;
+
+    protected EntityType<?> entityType;
 
     @Override
     public boolean isResultEnsured() {
@@ -119,8 +129,20 @@ public class CountQuery implements SelectQuery {
                 config.getDialect().getExpressionFunctions(),
                 config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, null, evaluator);
+                SqlKind.SELECT, null, evaluator, this::expandColumns);
         sql = sqlBuilder.build(transformedSqlNode);
+    }
+
+    protected List<String> expandColumns(ExpandNode node) {
+        if (entityType == null) {
+            SqlLocation location = node.getLocation();
+            throw new JdbcException(Message.DOMA2144, location.getSql(),
+                    location.getLineNumber(), location.getPosition());
+        }
+        Dialect dialect = config.getDialect();
+        return entityType.getEntityPropertyTypes().stream()
+                .map(p -> p.getColumnName(dialect::applyQuote))
+                .collect(Collectors.toList());
     }
 
     @Override

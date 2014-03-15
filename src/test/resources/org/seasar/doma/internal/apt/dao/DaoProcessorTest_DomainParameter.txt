@@ -60,6 +60,7 @@ public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
             __query.setMethod(__method0);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DomainParameterDao/select.sql");
+            __query.setEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.addParameter("phoneNumber", example.domain.PhoneNumber.class, phoneNumber);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl");
             __query.setCallerMethodName("select");

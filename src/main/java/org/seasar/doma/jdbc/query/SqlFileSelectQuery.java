@@ -19,7 +19,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
@@ -27,13 +29,19 @@ import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
+import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
 
 /**
@@ -72,6 +80,8 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected Method method;
 
+    protected EntityType<?> entityType;
+
     @Override
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
@@ -101,8 +111,21 @@ public class SqlFileSelectQuery implements SelectQuery {
                 config.getDialect().getExpressionFunctions(),
                 config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, sqlFile.getPath(), evaluator);
+                SqlKind.SELECT, sqlFile.getPath(), evaluator,
+                this::expandColumns);
         sql = sqlBuilder.build(sqlNode);
+    }
+
+    protected List<String> expandColumns(ExpandNode node) {
+        if (entityType == null) {
+            SqlLocation location = node.getLocation();
+            throw new JdbcException(Message.DOMA2144, location.getSql(),
+                    location.getLineNumber(), location.getPosition());
+        }
+        Dialect dialect = config.getDialect();
+        return entityType.getEntityPropertyTypes().stream()
+                .map(p -> p.getColumnName(dialect::applyQuote))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -121,6 +144,7 @@ public class SqlFileSelectQuery implements SelectQuery {
         query.parameters = parameters;
         query.queryTimeout = queryTimeout;
         query.sqlNode = sqlFile.getSqlNode();
+        query.entityType = entityType;
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
                 new BasicSingleResultHandler<Long>(() -> new LongWrapper(),
@@ -240,6 +264,10 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     public void setMethod(Method method) {
         this.method = method;
+    }
+
+    public void setEntityType(EntityType<?> entityType) {
+        this.entityType = entityType;
     }
 
     @Override

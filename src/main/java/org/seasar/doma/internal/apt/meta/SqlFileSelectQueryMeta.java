@@ -20,6 +20,7 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
@@ -44,6 +45,8 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     protected String selectOptionsParameterName;
 
     protected SelectOptionsCtType selectOptionsCtType;
+
+    protected EntityCtType entityCtType;
 
     public SqlFileSelectQueryMeta(ExecutableElement method) {
         super(method);
@@ -97,6 +100,14 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public void setSelectOptionsCtType(SelectOptionsCtType selectOptionsCtType) {
         this.selectOptionsCtType = selectOptionsCtType;
+    }
+
+    public EntityCtType getEntityCtType() {
+        return entityCtType;
+    }
+
+    public void setEntityCtType(EntityCtType entityCtType) {
+        this.entityCtType = entityCtType;
     }
 
     void setSelectMirror(SelectMirror selectMirror) {

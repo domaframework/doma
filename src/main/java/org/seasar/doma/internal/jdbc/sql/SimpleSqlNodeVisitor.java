@@ -23,6 +23,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
@@ -91,6 +92,11 @@ public class SimpleSqlNodeVisitor<R, P> implements SqlNodeVisitor<R, P> {
 
     @Override
     public R visitEolNode(EolNode node, P p) {
+        return defaultAction(node, p);
+    }
+
+    @Override
+    public R visitExpandNode(ExpandNode node, P p) {
         return defaultAction(node, p);
     }
 
