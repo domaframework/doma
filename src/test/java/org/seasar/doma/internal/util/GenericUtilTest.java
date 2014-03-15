@@ -17,7 +17,6 @@ package org.seasar.doma.internal.util;
 
 import java.lang.reflect.TypeVariable;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
@@ -29,15 +28,15 @@ public class GenericUtilTest extends TestCase {
     public void testFieldType() throws Exception {
         Class<?> arg1 = GenericsUtil.inferTypeArgument(Bbb1.class,
                 (TypeVariable<?>) Aaa1.class.getField("t1").getGenericType());
-        Assert.assertEquals(String.class, arg1);
+        assertEquals(String.class, arg1);
 
         Class<?> arg2 = GenericsUtil.inferTypeArgument(Bbb1.class,
                 (TypeVariable<?>) Aaa1.class.getField("t2").getGenericType());
-        Assert.assertEquals(Integer.class, arg2);
+        assertEquals(Integer.class, arg2);
 
         Class<?> arg3 = GenericsUtil.inferTypeArgument(Bbb1.class,
                 (TypeVariable<?>) Aaa1.class.getField("t3").getGenericType());
-        Assert.assertNull(arg3);
+        assertNull(arg3);
     }
 
     public void testInterfaceReturnType() throws Exception {
@@ -45,19 +44,19 @@ public class GenericUtilTest extends TestCase {
         Class<?> arg = GenericsUtil.inferTypeArgument(Ccc2.class,
                 (TypeVariable<?>) Aaa2.class.getMethod("m1", Object.class)
                         .getGenericReturnType());
-        Assert.assertNull(arg);
+        assertNull(arg);
 
         // type argument T2 is generic
         arg = GenericsUtil.inferTypeArgument(Ccc2.class,
                 (TypeVariable<?>) Aaa2.class.getMethod("m2", Object.class)
                         .getGenericReturnType());
-        Assert.assertNull(arg);
+        assertNull(arg);
 
         // type argument T3 is concrete
         arg = GenericsUtil.inferTypeArgument(Ccc2.class,
                 (TypeVariable<?>) Aaa2.class.getMethod("m3", Object.class)
                         .getGenericReturnType());
-        Assert.assertEquals(Boolean.class, arg);
+        assertEquals(Boolean.class, arg);
     }
 
     public void testClassReturnType() throws Exception {
@@ -65,13 +64,13 @@ public class GenericUtilTest extends TestCase {
         Class<?> arg = GenericsUtil.inferTypeArgument(Ccc2.class,
                 (TypeVariable<?>) Bbb2.class.getMethod("m1", Object.class)
                         .getGenericReturnType());
-        Assert.assertEquals(String.class, arg);
+        assertEquals(String.class, arg);
 
         // type argument T2 is generic
         arg = GenericsUtil.inferTypeArgument(Ccc2.class,
                 (TypeVariable<?>) Bbb2.class.getMethod("m2", Object.class)
                         .getGenericReturnType());
-        Assert.assertNull(arg);
+        assertNull(arg);
     }
 
     public static class Aaa1<T1, T2, T3> {
