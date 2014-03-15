@@ -97,25 +97,6 @@ Iterableを使ったIN句へのマッピング
 
   select * from employee where employee_name in /* names */('aaa','bbb','ccc')
 
-複数件検索
-==========
-
-複数件を検索するには、メソッドの戻り値の型を ``java.util.List`` にします。
-``List`` の要素の型には次のものが使用できます。
-
-* :doc:`../basic`
-* :doc:`../domain`
-* :doc:`../entity`
-* java.util.Map<String, Object>
-
-.. code-block:: java
-
-  @Select
-  List<Employee> selectByNameAndSalary(String name, Salary salary);
-
-結果が0件のときは ``null`` ではなく空のListが返されます。
-ただし、 `検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
-
 1件検索
 ========
 
@@ -136,6 +117,25 @@ Iterableを使ったIN句へのマッピング
 `検索結果の保証`_ を有効にした場合は、戻り値の型に関係なく結果が0件ならば例外がスローされます。
 
 結果が2件以上存在するときは、 ``NonUniqueResultException`` がスローされます。
+
+複数件検索
+==========
+
+複数件を検索するには、メソッドの戻り値の型を ``java.util.List`` にします。
+``List`` の要素の型には次のものが使用できます。
+
+* :doc:`../basic`
+* :doc:`../domain`
+* :doc:`../entity`
+* java.util.Map<String, Object>
+
+.. code-block:: java
+
+  @Select
+  List<Employee> selectByNameAndSalary(String name, Salary salary);
+
+結果が0件のときは ``null`` ではなく空のListが返されます。
+ただし、 `検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
 
 イテレート検索
 ==============
