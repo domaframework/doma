@@ -208,6 +208,12 @@ class LocalTransactionConnection implements Connection {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        if (iface == null) {
+            return false;
+        }
+        if (iface.isAssignableFrom(getClass())) {
+            return true;
+        }
         return connection.isWrapperFor(iface);
     }
 
@@ -340,8 +346,15 @@ class LocalTransactionConnection implements Connection {
         connection.setTypeMap(map);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
+        if (iface == null) {
+            throw new SQLException("iface must not be null");
+        }
+        if (iface.isAssignableFrom(getClass())) {
+            return (T) this;
+        }
         return connection.unwrap(iface);
     }
 

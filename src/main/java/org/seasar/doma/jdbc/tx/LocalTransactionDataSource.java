@@ -136,6 +136,12 @@ public final class LocalTransactionDataSource implements DataSource {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        if (iface == null) {
+            return false;
+        }
+        if (iface.isAssignableFrom(getClass())) {
+            return true;
+        }
         return dataSource.isWrapperFor(iface);
     }
 
@@ -149,8 +155,15 @@ public final class LocalTransactionDataSource implements DataSource {
         dataSource.setLogWriter(out);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
+        if (iface == null) {
+            throw new SQLException("iface must not be null");
+        }
+        if (iface.isAssignableFrom(getClass())) {
+            return (T) this;
+        }
         return dataSource.unwrap(iface);
     }
 

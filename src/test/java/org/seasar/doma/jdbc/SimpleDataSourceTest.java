@@ -17,6 +17,8 @@ package org.seasar.doma.jdbc;
 
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import junit.framework.TestCase;
 
 /**
@@ -49,4 +51,21 @@ public class SimpleDataSourceTest extends TestCase {
             e.printStackTrace();
         }
     }
+
+    public void testIsWrapperFor() throws Exception {
+        DataSource dataSource = new SimpleDataSource();
+        assertTrue(dataSource.isWrapperFor(SimpleDataSource.class));
+        assertFalse(dataSource.isWrapperFor(Runnable.class));
+    }
+
+    public void testUnwrap() throws Exception {
+        DataSource dataSource = new SimpleDataSource();
+        assertNotNull(dataSource.unwrap(SimpleDataSource.class));
+        try {
+            dataSource.unwrap(Runnable.class);
+            fail();
+        } catch (SQLException ignored) {
+        }
+    }
+
 }

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.dao;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -70,12 +70,19 @@ class NeverClosedConnectionProvider implements DataSource {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return false;
+        return iface != null && iface.isAssignableFrom(getClass());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
-        throw new SQLException("unwrap method is unsupported.");
+        if (iface == null) {
+            throw new SQLException("iface must not be null");
+        }
+        if (iface.isAssignableFrom(getClass())) {
+            return (T) this;
+        }
+        throw new SQLException("cannot unwrap to " + iface.getName());
     }
 
     @Override

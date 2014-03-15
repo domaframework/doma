@@ -206,12 +206,19 @@ public class SimpleDataSource implements DataSource {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return false;
+        return iface != null && iface.isAssignableFrom(getClass());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
-        throw new SQLException("unwrap method is unsupported.");
+        if (iface == null) {
+            throw new SQLException("iface must not be null");
+        }
+        if (iface.isAssignableFrom(getClass())) {
+            return (T) this;
+        }
+        throw new SQLException("cannot unwrap to " + iface.getName());
     }
 
     @SuppressWarnings("all")
