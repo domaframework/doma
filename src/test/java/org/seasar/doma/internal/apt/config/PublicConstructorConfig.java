@@ -26,9 +26,13 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  *
  */
 @SingletonConfig
-public class MethodNotFoundConfig implements Config {
+public class PublicConstructorConfig implements Config {
 
-    private MethodNotFoundConfig() {
+    public PublicConstructorConfig() {
+    }
+
+    public static PublicConstructorConfig singleton() {
+        return new PublicConstructorConfig();
     }
 
     @Override

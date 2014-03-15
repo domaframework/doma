@@ -51,4 +51,23 @@ public class SingletonConfigProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4254);
     }
 
+    public void testPublicConstructorConfig() throws Exception {
+        Class<?> target = PublicConstructorConfig.class;
+        SingletonConfigProcessor processor = new SingletonConfigProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4256);
+    }
+
+    public void testValidConfig() throws Exception {
+        Class<?> target = ValidConfig.class;
+        SingletonConfigProcessor processor = new SingletonConfigProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
 }

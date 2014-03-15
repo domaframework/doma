@@ -64,12 +64,30 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         if (mirror == null) {
             throw new AptIllegalStateException("mirror must not be null");
         }
+        validateClass(typeElement, mirror);
+        validateConstructors(typeElement);
+        validateMethod(typeElement, mirror.getMethodValue());
+    }
+
+    protected void validateClass(TypeElement typeElement,
+            SingletonConfigMirror mirror) {
         if (!TypeMirrorUtil.isAssignable(typeElement.asType(), Config.class,
                 processingEnv)) {
             throw new AptException(Message.DOMA4253, processingEnv,
                     typeElement, mirror.getAnnotationMirror());
         }
-        String methodName = mirror.getMethodValue();
+    }
+
+    protected void validateConstructors(TypeElement typeElement) {
+        ElementFilter.constructorsIn(typeElement.getEnclosedElements())
+                .stream()
+                .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
+                .findAny().ifPresent(c -> {
+                    throw new AptException(Message.DOMA4256, processingEnv, c);
+                });
+    }
+
+    protected void validateMethod(TypeElement typeElement, String methodName) {
         Optional<ExecutableElement> method = ElementFilter
                 .methodsIn(typeElement.getEnclosedElements())
                 .stream()

@@ -406,6 +406,7 @@ public enum Message implements MessageResource {
     DOMA4253("org.seasar.doma.Configのサブタイプ以外には注釈できません。"),
     DOMA4254("メソッド[{0}]が見つかりません。メソッドの修飾子はpublic static、戻り値の型はこのクラス[{1}]、パラメータの数は0、でなければいけません。"),
     DOMA4255("クラス[{0}]にメソッド[{1}]が見つかりません。"),
+    DOMA4256("@SingletonConfigを注釈したクラスのコンストラクタはprivateでなければいけません。"),
 
     DOMA4300("型[{0}]の処理中に例外が発生しました。注釈処理とは直接関係ない場所でコンパイルエラーがありませんか？"),
 

@@ -26,9 +26,9 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  *
  */
 @SingletonConfig
-public class MethodNotFoundConfig implements Config {
+public class ValidConfig implements Config {
 
-    private MethodNotFoundConfig() {
+    private ValidConfig() {
     }
 
     @Override
@@ -41,4 +41,7 @@ public class MethodNotFoundConfig implements Config {
         return null;
     }
 
+    public static ValidConfig singleton() {
+        return new ValidConfig();
+    }
 }
