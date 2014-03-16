@@ -2,6 +2,9 @@
 検索
 ===============
 
+.. contents:: 目次
+   :depth: 3
+
 検索を行うには、 ``@Select`` をDaoのメソッドに注釈します。
 
 .. code-block:: java

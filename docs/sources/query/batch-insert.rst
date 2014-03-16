@@ -2,6 +2,9 @@
 バッチ挿入
 ==================
 
+.. contents:: 目次
+   :depth: 3
+
 バッチ挿入を行うには、 ``@BatchInsert`` をDaoのメソッドに注釈します。
 
 .. code-block:: java

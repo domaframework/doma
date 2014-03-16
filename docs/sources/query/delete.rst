@@ -2,6 +2,9 @@
 削除
 ==================
 
+.. contents:: 目次
+   :depth: 3
+
 削除を行うには、 ``@Delete`` をDaoのメソッドに注釈します。
 
 .. code-block:: java

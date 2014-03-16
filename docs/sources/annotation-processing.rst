@@ -2,6 +2,9 @@
 注釈処理
 ============================
 
+.. contents:: 目次
+   :depth: 3
+
 `Pluggable Annotation Processing API <https://www.jcp.org/en/jsr/detail?id=269>`_
 を利用すると、ソースコードの自動生成や検証を **コンパイル時** に行うことができます。
 

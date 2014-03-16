@@ -2,6 +2,9 @@
 バッチ削除
 ==================
 
+.. contents:: 目次
+   :depth: 3
+
 バッチ削除を行うには、 ``@BatchDelete`` をDaoのメソッドに注釈します。
 
 .. code-block:: java

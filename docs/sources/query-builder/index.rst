@@ -2,6 +2,9 @@
 クエリビルダ
 ============
 
+.. contents:: 目次
+   :depth: 3
+
 ``org.seasar.doma.jdbc.builder`` パッケージでは、
 プログラムでSQLを組み立てるためのクエリビルダを提供しています。
 

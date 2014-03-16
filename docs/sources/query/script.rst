@@ -2,6 +2,9 @@
 スクリプト
 ==================
 
+.. contents:: 目次
+   :depth: 3
+
 SQLスクリプトの実行を行うには、 ``@Script`` をDaoのメソッドに注釈します。
 
 .. code-block:: java

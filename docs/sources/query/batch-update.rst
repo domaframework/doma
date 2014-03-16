@@ -2,6 +2,9 @@
 バッチ更新
 ==================
 
+.. contents:: 目次
+   :depth: 3
+
 バッチ更新を行うには、 ``@BatchUpdate`` をDaoのメソッドに注釈します。
 
 .. code-block:: java
