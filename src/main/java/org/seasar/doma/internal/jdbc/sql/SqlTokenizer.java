@@ -21,9 +21,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.CLOSED_PARENS;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DELIMITER;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_BLOCK_COMMENT;
-import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_BLOCK_COMMENT;
-import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EMBEDDED_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.END_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
@@ -219,25 +217,7 @@ public class SqlTokenizer {
 
     protected void peekEightChars(char c, char c2, char c3, char c4, char c5,
             char c6, char c7, char c8) {
-        if ((c == '-') && (c2 == '-') && (c3 == 'e') && (c4 == 'l')
-                && (c5 == 's') && (c6 == 'e') && c7 == 'i' && c8 == 'f') {
-            type = ELSEIF_LINE_COMMENT;
-            if (isWordTerminated()) {
-                while (buf.hasRemaining()) {
-                    char c9 = buf.get();
-                    if (c9 == '-') {
-                        if (buf.hasRemaining()) {
-                            char c10 = buf.get();
-                            if (c10 == '-') {
-                                return;
-                            }
-                        }
-                    }
-                }
-                int pos = buf.position() - lineStartPosition;
-                throw new JdbcException(Message.DOMA2103, sql, lineNumber, pos);
-            }
-        } else if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R')
+        if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R')
                 && (c3 == 'o' || c3 == 'O') && (c4 == 'u' || c4 == 'U')
                 && (c5 == 'p' || c5 == 'P') && (isWhitespace(c6))
                 && (c7 == 'b' || c7 == 'B') && (c8 == 'y' || c8 == 'Y')) {
@@ -277,12 +257,6 @@ public class SqlTokenizer {
                 && (c3 == 'v' || c3 == 'V') && (c4 == 'i' || c4 == 'I')
                 && (c5 == 'n' || c5 == 'N') && (c6 == 'g' || c6 == 'G')) {
             type = HAVING_WORD;
-            if (isWordTerminated()) {
-                return;
-            }
-        } else if ((c == '-') && (c2 == '-') && (c3 == 'e') && (c4 == 'l')
-                && (c5 == 's') && (c6 == 'e')) {
-            type = ELSE_LINE_COMMENT;
             if (isWordTerminated()) {
                 return;
             }

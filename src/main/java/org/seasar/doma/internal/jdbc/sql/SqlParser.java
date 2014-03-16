@@ -156,16 +156,8 @@ public class SqlParser {
                 parseElseifBlockComment();
                 break;
             }
-            case ELSEIF_LINE_COMMENT: {
-                parseElseifLineComment();
-                break;
-            }
             case ELSE_BLOCK_COMMENT: {
                 parseElseBlockComment();
-                break;
-            }
-            case ELSE_LINE_COMMENT: {
-                parseElseLineComment();
                 break;
             }
             case END_BLOCK_COMMENT: {
@@ -403,23 +395,6 @@ public class SqlParser {
         push(node);
     }
 
-    protected void parseElseifLineComment() {
-        if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2106, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
-        }
-        removeNodesTo(IfBlockNode.class);
-        IfBlockNode ifBlockNode = peek();
-        if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2108, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
-        }
-        String expression = tokenType.extract(token);
-        ElseifNode node = new ElseifNode(getLocation(), expression, token);
-        ifBlockNode.addElseifNode(node);
-        push(node);
-    }
-
     protected void parseElseBlockComment() {
         if (!isInIfBlockNode()) {
             throw new JdbcException(Message.DOMA2140, sql,
@@ -429,22 +404,6 @@ public class SqlParser {
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
             throw new JdbcException(Message.DOMA2141, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
-        }
-        ElseNode node = new ElseNode(token);
-        ifBlockNode.setElseNode(node);
-        push(node);
-    }
-
-    protected void parseElseLineComment() {
-        if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2105, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
-        }
-        removeNodesTo(IfBlockNode.class);
-        IfBlockNode ifBlockNode = peek();
-        if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2107, sql,
                     tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         ElseNode node = new ElseNode(token);

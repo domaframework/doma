@@ -318,7 +318,7 @@ public class SqlParserTest extends TestCase {
     public void testIf_fromClause() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("type", new Value(String.class, "a"));
-        String testSql = "select * from /*%if type == \"a\"*/aaa--else bbb/*%end*/";
+        String testSql = "select * from /*%if type == \"a\"*/aaa/*%else*/ bbb/*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
@@ -330,7 +330,7 @@ public class SqlParserTest extends TestCase {
     public void testIf_selectClause() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("type", new Value(String.class, "a"));
-        String testSql = "select /*%if type == \"a\"*/aaa --else bbb /*%end*/from ccc";
+        String testSql = "select /*%if type == \"a\"*/aaa /*%else*/ bbb /*%end*/from ccc";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
@@ -355,7 +355,7 @@ public class SqlParserTest extends TestCase {
     public void testIf_removeAnd() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, null));
-        String testSql = "select * from aaa where \n/*%if name != null*/bbb = /*name*/'ccc' \n--else\n --comment\nand ddd is null\n /*%end*/";
+        String testSql = "select * from aaa where \n/*%if name != null*/bbb = /*name*/'ccc' \n/*%else*/\n --comment\nand ddd is null\n /*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
@@ -396,20 +396,6 @@ public class SqlParserTest extends TestCase {
         assertEquals(0, sql.getParameters().size());
     }
 
-    public void testElseifLine() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new Value(String.class, ""));
-        String testSql = "select * from aaa where /*%if name == null*/bbb is null--elseif name ==\"\"--bbb = /*name*/'ccc'/*%end*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator).build(sqlNode);
-        assertEquals("select * from aaa where bbb = ?", sql.getRawSql());
-        assertEquals("select * from aaa where bbb = ''", sql.getFormattedSql());
-        assertEquals(1, sql.getParameters().size());
-        assertEquals("", sql.getParameters().get(0).getWrapper().get());
-    }
-
     public void testElseifBlock() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, ""));
@@ -423,21 +409,6 @@ public class SqlParserTest extends TestCase {
                 sql.getFormattedSql());
         assertEquals(1, sql.getParameters().size());
         assertEquals("", sql.getParameters().get(0).getWrapper().get());
-    }
-
-    public void testElseLine() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new Value(String.class, "hoge"));
-        String testSql = "select * from aaa where /*%if name == null*/bbb is null--elseif name == \"\"----else bbb = /*name*/'ccc'/*%end*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator).build(sqlNode);
-        assertEquals("select * from aaa where  bbb = ?", sql.getRawSql());
-        assertEquals("select * from aaa where  bbb = 'hoge'",
-                sql.getFormattedSql());
-        assertEquals(1, sql.getParameters().size());
-        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
     }
 
     public void testElseBlock() throws Exception {

@@ -78,17 +78,6 @@ public class JdbcExceptionTest extends TestCase {
         }
     }
 
-    public void testElseifCommentNotClosed() throws Exception {
-        SqlParser parser = new SqlParser("select * from aaa --elseif bbb");
-        try {
-            parser.parse();
-            fail();
-        } catch (JdbcException e) {
-            System.out.println(e.getMessage());
-            assertEquals(Message.DOMA2103, e.getMessageResource());
-        }
-    }
-
     public void testIfCommentNotFoundForEndComment() throws Exception {
         SqlParser parser = new SqlParser("select * from aaa/*%end*/ ");
         try {
@@ -109,54 +98,6 @@ public class JdbcExceptionTest extends TestCase {
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
             assertEquals(Message.DOMA2104, e.getMessageResource());
-        }
-    }
-
-    public void testIfCommentNotFoundForElseComment() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb = ccc--else ddd = eee");
-        try {
-            parser.parse();
-            fail();
-        } catch (JdbcException e) {
-            System.out.println(e.getMessage());
-            assertEquals(Message.DOMA2105, e.getMessageResource());
-        }
-    }
-
-    public void testIfCommentNotFoundForElseifComment() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb = ccc--elseif true--ddd = eee");
-        try {
-            parser.parse();
-            fail();
-        } catch (JdbcException e) {
-            System.out.println(e.getMessage());
-            assertEquals(Message.DOMA2106, e.getMessageResource());
-        }
-    }
-
-    public void testElseCommentDuplicated() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where /*%if true*/bbb = ccc--else --else ddd = eee");
-        try {
-            parser.parse();
-            fail();
-        } catch (JdbcException e) {
-            System.out.println(e.getMessage());
-            assertEquals(Message.DOMA2107, e.getMessageResource());
-        }
-    }
-
-    public void testElseifCommentFollowsElseComment() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where /*%if true*/bbb = ccc--else ddd = eee --elseif ture--");
-        try {
-            parser.parse();
-            fail();
-        } catch (JdbcException e) {
-            System.out.println(e.getMessage());
-            assertEquals(Message.DOMA2108, e.getMessageResource());
         }
     }
 

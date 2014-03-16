@@ -19,8 +19,6 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.AND_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BIND_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DELIMITER;
-import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_LINE_COMMENT;
-import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.END_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOL;
@@ -380,36 +378,6 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals(" ", tokenizer.getToken());
         assertEquals(IF_BLOCK_COMMENT, tokenizer.next());
         assertEquals("/*%if true*/", tokenizer.getToken());
-        assertEquals(WORD, tokenizer.next());
-        assertEquals("bbb", tokenizer.getToken());
-        assertEquals(EOF, tokenizer.next());
-        assertNull(tokenizer.getToken());
-    }
-
-    public void testElseifLineComment() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer("where --elseif true--bbb");
-        assertEquals(WHERE_WORD, tokenizer.next());
-        assertEquals("where", tokenizer.getToken());
-        assertEquals(WHITESPACE, tokenizer.next());
-        assertEquals(" ", tokenizer.getToken());
-        assertEquals(ELSEIF_LINE_COMMENT, tokenizer.next());
-        assertEquals("--elseif true--", tokenizer.getToken());
-        assertEquals(WORD, tokenizer.next());
-        assertEquals("bbb", tokenizer.getToken());
-        assertEquals(EOF, tokenizer.next());
-        assertNull(tokenizer.getToken());
-    }
-
-    public void testElseLineComment() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer("where --else bbb");
-        assertEquals(WHERE_WORD, tokenizer.next());
-        assertEquals("where", tokenizer.getToken());
-        assertEquals(WHITESPACE, tokenizer.next());
-        assertEquals(" ", tokenizer.getToken());
-        assertEquals(ELSE_LINE_COMMENT, tokenizer.next());
-        assertEquals("--else", tokenizer.getToken());
-        assertEquals(WHITESPACE, tokenizer.next());
-        assertEquals(" ", tokenizer.getToken());
         assertEquals(WORD, tokenizer.next());
         assertEquals("bbb", tokenizer.getToken());
         assertEquals(EOF, tokenizer.next());

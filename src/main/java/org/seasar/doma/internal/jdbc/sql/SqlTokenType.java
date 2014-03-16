@@ -34,19 +34,6 @@ public enum SqlTokenType {
 
     LINE_COMMENT,
 
-    ELSEIF_LINE_COMMENT {
-
-        @Override
-        public String extract(String token) {
-            assertNotNull(token);
-            assertTrue(token.length() >= 10);
-            return token.substring(8, token.length() - 2);
-        }
-
-    },
-
-    ELSE_LINE_COMMENT,
-
     BLOCK_COMMENT,
 
     BIND_VARIABLE_BLOCK_COMMENT {
