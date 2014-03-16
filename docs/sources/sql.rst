@@ -379,32 +379,6 @@ elseifとelse
   where 
     department_id is null
 
-過去との互換性のため、 ``/*%if 条件式*/`` と ``/*%end*/`` の間では、
-行コメントを使用した次の構文も使用できます。
-特に理由がない限り、ブロックコメントの ``/*%elseif 条件式*/`` や ``/*%else*/`` を使用してください。
-
-* --elseif 条件式--
-* --else
-
-``elseif`` や ``else`` を行コメントで表した場合の例を示します。
-
-.. code-block:: sql
-
-  select 
-    * 
-  from
-    employee 
-  where 
-  /*%if employeeId != null */
-    employee_id = /* employeeId */9999
-  --elseif department_id != null -- department_id = /* departmentId */99
-  --else department_id is null
-  /*%end */
-
-.. warning::
-
-  この機能は Doma 2.0.0 の正式リリースまでに削除されます。
-
 ネストした条件コメント
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -645,24 +619,7 @@ SQL上でテーブルにエイリアスを指定する場合、
 通常の行コメント
 ----------------
 
-``--`` の直後に ``elseif`` や ``else`` がつづかない場合、それは通常の行コメントだとみなされます。
+``--`` は通常の行コメントだとみなされます。
 
-たとえば、次の例は通常の行コメントだとみなされます。
+Domaでは行コメントを特別に解釈することはありません。
 
-.. code-block:: sql
-
-  -- aaa
-  ---aaa
-
-一方、次の例はすべて式コメントだとみなされます。
-
-.. code-block:: sql
-
-  --elseif ～ --
-  --else
-
-特に理由がない場合、通常の行コメントは使用しないか、 ``---`` を使用するのがいいでしょう。
-
-.. warning::
-
-  この制約は Doma 2.0.0 の正式リリースまでに削除されます。
