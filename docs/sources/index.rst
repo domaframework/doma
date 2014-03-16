@@ -3,10 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Domaのドキュメントへようこそ！
-================================
+Welcome to Doma
+===============
 
-目次:
+Doma は Java 8 対応のDBアクセスライブラリです。
+
+注釈処理を使用して **コンパイル時** にコードの生成やコードの検証を行ったり、
+データベース上のカラムの値をドメインクラスと呼ばれるJavaオブジェクトにマッピングしたりと
+個性的な機能を提供します。
+
+このドキュメントは複数のセクションから成ります。
+
+* `ユーザードキュメント`_
+* `Domaについて`_
+
+ユーザードキュメント
+====================
 
 .. toctree::
    :maxdepth: 2
