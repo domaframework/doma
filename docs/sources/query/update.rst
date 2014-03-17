@@ -48,23 +48,29 @@ SQL自動生成におけるバージョン番号と楽観的排他制御
 楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、
 1増分して更新されます。
 このときの更新件数が0件の場合、楽観的排他制御の失敗を示す
-org.seasar.doma.jdbc.OptimisticLockExceptionがスローされます。
-また、更新件数が0件でない場合、OptimisticLockExceptionはスローされず、
-エンティティのバージョンプロパティの値が1増分されます。
+``OptimisticLockException`` がスローされます。
+また、更新件数が0件でない場合、 ``OptimisticLockException`` はスローされず、
 
-@UpdateのignoreVersion要素がtrueの場合、
+ignoreVersion
+~~~~~~~~~~~~~
+
+エンティティのバージョンプロパティの値が1増分されます。
+``@Update`` の ``ignoreVersion`` 要素がtrueの場合、
 バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。
 バージョン番号はアプリケーションで設定した値で更新されます。
-この場合、更新件数が0件であっても、OptimisticLockExceptionはスローされません。
+この場合、更新件数が0件であっても、 ``OptimisticLockException`` はスローされません。
 
 .. code-block:: java
 
   @Update(ignoreVersion = true)
   int update(Employee employee);
 
-@UpdateのsuppressOptimisticLockException要素がtrueの場合、
-@Versionが注釈されたプロパティがあればバージョン番号は更新条件に含まれ増分もされますが、
-更新件数が0件であってもOptimisticLockExceptionはスローされません。
+suppressOptimisticLockException`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``@Update`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
+``@Version`` が注釈されたプロパティがあればバージョン番号は更新条件に含まれ増分もされますが、
+更新件数が0件であっても ``OptimisticLockException`` はスローされません。
 ただし、エンティティのバージョンプロパティの値は1増分されます。
 
 .. code-block:: java
@@ -78,14 +84,15 @@ org.seasar.doma.jdbc.OptimisticLockExceptionがスローされます。
 updatable
 ~~~~~~~~~
 
-エンティティクラスに@Columnが注釈されたプロパティがある場合、
-@Columnのupdatable要素がfalseのものは更新対象外です。
+エンティティクラスに ``@Column`` が注釈されたプロパティがある場合、
+``@Column`` の ``updatable`` 要素がfalseのものは更新対象外です。
 
 exclude
 ~~~~~~~
 
-@Updateのexclude要素に指定されたプロパティを更新対象外とします。
-プロパティがこの要素に指定されていれば、@Columnのupdatable要素がtrueであっても更新対象外です。
+``@Update`` の ``exclude`` 要素に指定されたプロパティを更新対象外とします。
+プロパティがこの要素に指定されていれば、 ``@Column`` の ``updatable``
+要素が ``true`` であっても更新対象外です。
 
 .. code-block:: java
 
@@ -95,10 +102,11 @@ exclude
 include
 ~~~~~~~
 
-@Updateのinclude要素に指定されたプロパティのみを削除対象とします。
-@Updateのinclude要素とexclude要素の両方に
+``@Update`` の ``include`` 要素に指定されたプロパティのみを削除対象とします。
+``@Update`` の ``include`` 要素と ``exclude`` 要素の両方に
 同じプロパティが指定された場合、そのプロパティは更新対象外になります。
-プロパティがこの要素に指定されていても、@Columnのupdatable要素がfalseであれば更新対象外です。
+プロパティがこの要素に指定されていても、 ``@Column`` の ``updatable``
+要素が ``false`` であれば更新対象外です。
 
 .. code-block:: java
 
@@ -108,9 +116,11 @@ include
 excludeNull
 ~~~~~~~~~~~
 
-@UpdateのexcludeNull要素がtrueの場合、 値がnullのプロパティを削除対象外とします。
-この要素がtrueの場合、@Columnのupdatable要素がtrueであったり、
-@Updateのinclude要素にプロパティが指定されていても、値がnullであれば更新対象外です。
+``@Update`` の ``excludeNull`` 要素が ``true`` の場合、
+値が ``null`` のプロパティを削除対象外とします。
+この要素が ``true`` の場合、 ``@Column`` の ``updatable`` 要素が ``true`` であったり、
+``@Update`` の ``include`` 要素にプロパティが指定されていても、
+値が ``null`` であれば更新対象外です。
 
 .. code-block:: java
 
@@ -120,12 +130,13 @@ excludeNull
 includeUnchanged
 ~~~~~~~~~~~~~~~~
 
-この要素は、更新対象のエンティティクラスに@OriginalStatesが注釈されたプロパティがある場合にのみ有効です。
+この要素は、更新対象のエンティティクラスに
+``@OriginalStates`` が注釈されたプロパティがある場合にのみ有効です。
 
 この要素がtrueの場合、エンティティの全プロパティが更新対象となります。
 つまり、全プロパティに対応するカラムがUPDATE文のSET句に含まれます。
 
-この要素がfalseの場合、
+この要素が ``false`` の場合、
 エンティティが取得されてから実際に変更されたプロパティのみが更新対象になります。
 つまり、変更されたプロパティに対応するカラムのみがUPDATE文のSET句に含まれます。
 
@@ -137,15 +148,15 @@ includeUnchanged
 SQLファイルによる更新
 =====================
 
-SQLファイルによる更新を行うには、@UpdateのsqlFile要素にtrueを設定し、
+SQLファイルによる更新を行うには、 ``@Update`` の ``sqlFile`` 要素に ``true`` を設定し、
 メソッドに対応するSQLファイルを用意します。
 
-戻り値の型はintでなければいけません。
+戻り値の型は ``int`` でなければいけません。
 戻り値は更新件数を返します。
 パラメータには任意の型が使用できます。
 指定できるパラメータの数に制限はありません。
-パラメータの型が基本型もしくはドメインクラスの場合、引数をnullにできます。
-それ以外の型の場合、引数はnullであってはいけません。
+パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
+それ以外の型の場合、引数は ``null`` であってはいけません。
 
 .. code-block:: java
 
@@ -160,7 +171,8 @@ SQLファイルによる更新を行うには、@UpdateのsqlFile要素にtrue�
   where id = /* employee.id */0
 
 SQLファイルによる更新では、
-@Updateのexclude要素、include要素、 excludeNull要素、includeUnchanged要素は参照されません。
+``@Update`` の ``exclude`` 要素、 ``include`` 要素、  ``excludeNull`` 要素、
+``includeUnchanged`` 要素は参照されません。
 
 SQLファイルにおけるバージョン番号と楽観的排他制御
 -------------------------------------------------
@@ -180,12 +192,16 @@ WHERE句でバージョンを番号を指定しSET句でバージョン番号を
   update EMPLOYEE set DELETE_FLAG = 1, VERSION = /* employee.version */1 + 1
   where ID = /* employee.id */1 and VERSION = /* employee.version */1
 
-このSQLの更新件数が0件の場合、楽観的排他制御の失敗を示すorg.seasar.doma.jdbc.OptimisticLockExceptionがスローされます。
-更新件数が0件でない場合、OptimisticLockExceptionはスローされず、
+このSQLの更新件数が0件の場合、楽観的排他制御の失敗を示す
+``OptimisticLockException`` がスローされます。
+更新件数が0件でない場合、 ``OptimisticLockException`` はスローされず、
 エンティティのバージョンプロパティの値が1増分されます。
 
-@UpdateのignoreVersion要素がtrueの場合、
-更新件数が0件であっても、OptimisticLockExceptionはスローされません。
+ignoreVersion
+~~~~~~~~~~~~~
+
+``@Update`` の ``ignoreVersion`` 要素が ``true`` の場合、
+更新件数が0件であっても、 ``OptimisticLockException`` はスローされません。
 また、エンティティのバージョンプロパティの値は変更されません。
 
 .. code-block:: java
@@ -193,8 +209,11 @@ WHERE句でバージョンを番号を指定しSET句でバージョン番号を
   @Update(sqlFile = true, ignoreVersion = true)
   int update(Employee employee);
 
-@UpdateのsuppressOptimisticLockException要素がtrueの場合、
-更新件数が0件であっても、OptimisticLockExceptionはスローされません。
+suppressOptimisticLockException
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``@Update`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
+更新件数が0件であっても、 ``OptimisticLockException`` はスローされません。
 ただし、エンティティのバージョンプロパティの値は1増分されます。
 
 .. code-block:: java
