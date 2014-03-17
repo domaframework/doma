@@ -90,7 +90,7 @@ Gradle
 .. code-block:: groovy
 
   def aptGeneratePath = 'build/apt_generated'
-  compileJava.options.compilerArgs = ['-s', aptGeneratePath, '-Adao.subpackage=impl', '-Adao.suffix=Impl']
+  compileJava.options.compilerArgs = ['-s', aptGeneratePath, '-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
 
 Maven
 =====
