@@ -196,11 +196,29 @@ SELECT時のフェッチサイズをあらわす ``int`` を ``getFetchSize`` �
 この値は :doc:`query/batch-insert` 、:doc:`query/batch-update` 、:doc:`query/batch-delete`
 においてデフォルト値として使われます。
 
+JDBC ドライバのロード
+=====================
+
+.. _service provider: http://docs.oracle.com/javase/7/docs/technotes/guides/jar/jar.html#Service%20Provider
+.. _tomcat driver: http://tomcat.apache.org/tomcat-7.0-doc/jndi-datasource-examples-howto.html#DriverManager,_the_service_provider_mechanism_and_memory_leaks
+
+クラスパスが通っていれば JDBC ドライバは
+`サービスプロバイダメカニズム <service provider_>`_ により自動でロードされます。
+
+.. warning::
+
+  実行環境によっては、 JDBC ドライバが自動でロードされないことがあります。
+  たとえば Tomcat 上では WEB-INF/lib に配置された
+  `JDBC ドライバは自動でロードされません <tomcat driver_>`_ 。
+  そのような環境においては、その環境に応じた適切は方法を採ってください。
+  たとえば Tomcat 上で動作させるためのには、上記のリンク先の指示に従って
+  ``ServletContextListener`` を利用したロードとアンロードを行ってください。
+
 定義と利用例
-==================
+============
 
 シンプル
-------------------
+--------
 
 シンプルな定義は次の場合に適しています。
 
@@ -342,28 +360,4 @@ Daoにはそのアノテーションを注釈してください。
       Employee selectById(Integer id);
   }
 
-JDBCドライバのロード
-====================
-
-
-通常、クラスパスが通っていればJDBCドライバはサービスプロバイダメカニズムにより自動でロードされます。
-
-しかし、たとえばTomcatではWEB-INF/libの下のJDBCドライバを自動でロードしません。
-自動でロードされない条件下では、 ``Class.forName`` を使ってJDBCドライバをロードしてください。
-
-``Class.forName`` を実行する場所は、設定クラスのstatic初期化子が1つの候補です。
-たとえば、H2 DatabaseのJDBCドライバを明示的にロードする場合には次のようにします。
-
-.. code-block:: java
-
-  public class AppConfig implements Config {
-      static {
-          try {
-              Class.forName("org.h2.Driver");
-          } catch (ClassNotFoundException e) {
-              throw new RuntimeException(e);
-          }
-      }
-      ...
-  }
 
