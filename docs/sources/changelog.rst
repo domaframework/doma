@@ -33,7 +33,8 @@ Doma 1.36.0 からの変更点の内、主なものを示しています。
   このクラスが提供していた実装は ``ClassHelper`` のデフォルトメソッドで提供されるようになりました。
 
 * ``NullRequiresNewController`` が削除されました。
-  このクラスが提供していた実装は ``RequiresNewController`` のデフォルトメソッドで提供されるようになりました。
+  このクラスが提供していた実装は ``RequiresNewController``
+  のデフォルトメソッドで提供されるようになりました。
 
 基本型
 ======
@@ -60,15 +61,10 @@ Daoインタフェース
 
 * ``java.util.Stream`` を使った検索ができるようになりました。
 
-* ``@Delegate`` が廃止になり代わりにデフォルトメソッドが使えるようになりました。
+* ``@Delegate`` が廃止になり、代わりにデフォルトメソッドが使えるようになりました。
 
-* ``IterationCallback`` を使った検索方法が変わりました。
-  ``@Select`` の ``iterate`` 要素の代わりに ``strategy`` 要素を使って示す必要があります。
-
-*  ``java.util.Function`` に合わせて ``IterationCallback`` の型パラメータの順番を入れ替えました。
-
-* ``PostIterationCallback`` が削除されました。
-  このクラスが提供していた実装は ``IterationCallback`` のデフォルトメソッドで提供されるようになりました。
+* ``IterationCallback`` を使った検索が禁止されました。
+  代わりに ``java.util.Stream`` を使った検索をしてください。
 
 SQLに関する変更
 ===============
