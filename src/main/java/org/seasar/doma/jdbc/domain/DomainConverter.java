@@ -19,8 +19,7 @@ import org.seasar.doma.DomainConverters;
 import org.seasar.doma.ExternalDomain;
 
 /**
- * 任意の型の値を <a href="http://doma.seasar.org/reference/basic.html">基本型</a>
- * の値と相互に変換します。つまり 、任意の型をドメインクラスとして扱うことを可能にします。
+ * 任意の型の値を基本型の値と相互に変換します。つまり 、任意の型をドメインクラスとして扱うことを可能にします。
  * <p>
  * 通常、このインタフェースの実装クラスには {@link ExternalDomain} を注釈します。また、 実装クラスは
  * {@link DomainConverters} に登録して使用します。

@@ -29,8 +29,7 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  * {@link ExternalDomain} が注釈されていないければいけません。
  * 
  * このアノテーションが注釈されたクラスの完全修飾名は、注釈処理のオプションに登録する必要があります。オプションのキーは
- * {@code domain.converters} です。オプションの指定方法については、<a
- * href="http://doma.seasar.org/reference/apt.html">注釈処理</a>を参照ください。
+ * {@code doma.domain.converters} です。
  * 
  * <h3>例:</h3>
  * 

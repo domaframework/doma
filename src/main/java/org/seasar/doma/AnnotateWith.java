@@ -32,56 +32,6 @@ import java.lang.annotation.Target;
  * <p>
  * このアノテーションを直接的であれ間接的であれDaoインタフェースに注釈する場合、{@link Dao#config()} に値を設定してはいけません。
  * 
- * <h3>例:直接的に注釈する方法</h3>
- * <a href="http://code.google.com/p/google-guice/">Guice</a>
- * のアノテーションを注釈するには次のように記述します。
- * 
- * <pre>
- * &#064;Dao
- * &#064;AnnotateWith(annotations = {
- *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR, type = Inject.class),
- *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = Named.class, elements = &quot;\&quot;sales\&quot;&quot;) })
- * public interface EmployeeDao {
- *     ...
- * }
- * </pre>
- * 
- * 実装クラスは次のようになります。
- * 
- * <pre>
- * public class EmployeeDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements example.EmployeeDao {
- * 
- *     &#064;com.google.inject.Inject()
- *     public EmployeeDaoImpl(@com.google.inject.name.Named(&quot;sales&quot;) org.seasar.doma.jdbc.Config config) {
- *         super(new org.seasar.doma.jdbc.ConfigProxy(config));
- *     }
- *     ...
- * }
- * </pre>
- * 
- * <h3>例:間接的に注釈する方法</h3>
- * {@code AnnotateWith} を任意のアノテーションに注釈し、そのアノテーションをDaoに注釈することも可能です。 たとえば、ここでは、
- * {@code GuiceConfig} というアノテーションに {@code AnnotateWith} を注釈する例を示します。
- * 
- * <pre>
- * &#064;AnnotateWith(annotations = {
- *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR, type = Inject.class),
- *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = Named.class, elements = &quot;\&quot;sales\&quot;&quot;) })
- * public &#064;interface GuiceConfig {
- *     ...
- * }
- * </pre>
- * 
- * {@code GuiceConfig} をDaoに注釈すれば、{@code AnnotateWith}を直接注釈した場合と同様の実装クラスが生成されます。
- * 
- * <pre>
- * &#064;Dao
- * &#064;GuiceConfig
- * public interface EmployeeDao {
- *     ...
- * }
- * </pre>
- * 
  * @author taedium
  * 
  */

@@ -42,6 +42,7 @@ import java.lang.annotation.Target;
  * <li>java.math.BigInteger</li>
  * <li>java.math.BigDecimal</li>
  * <li>上に示した型にマッピングされたドメインクラス</li>
+ * <li>上に示した型を要素とするjava.util.Optional</li>
  * </ul>
  * 
  * 

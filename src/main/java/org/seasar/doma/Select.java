@@ -60,8 +60,8 @@ import org.seasar.doma.jdbc.UnknownColumnException;
  *     &#064;Select
  *     List&lt;Employee&gt; selectByExample(Employee example);
  *     
- *     &#064;Select(load = LoadType.ITERATE)
- *     &lt;R&gt; R selectSalary(Integer departmentId, IterationCallback&lt;R, BigDecimal&gt; callback);
+ *     &#064;Select(strategy = SelectStrategyType.STREAM)
+ *     &lt;R&gt; R selectSalary(Integer departmentId, Function&lt;Stream&lt;BigDecimal&gt;, R&gt; mapper);
  * }
  * </pre>
  * 

@@ -30,8 +30,6 @@ import org.seasar.doma.message.Message;
 /**
  * JDBCに関する設定です。
  * <p>
- * このインタフェースの実装は、引数なしの {@code public} なコンストラクタを持たなければいけません。
- * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 
  * @author taedium
