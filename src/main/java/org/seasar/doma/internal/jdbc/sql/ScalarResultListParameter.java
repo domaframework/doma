@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.jdbc.command.ResultProvider;
-import org.seasar.doma.internal.jdbc.command.ScalarResultProvider;
+import org.seasar.doma.internal.jdbc.command.ObjectProvider;
+import org.seasar.doma.internal.jdbc.command.ScalarProvider;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -42,8 +42,8 @@ public class ScalarResultListParameter<BASIC, CONTAINER> extends
     }
 
     @Override
-    public ResultProvider<CONTAINER> createResultProvider(Query query) {
-        return new ScalarResultProvider<>(supplier, query);
+    public ObjectProvider<CONTAINER> createObjectProvider(Query query) {
+        return new ScalarProvider<>(supplier, query);
     }
 
     @Override

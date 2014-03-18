@@ -33,8 +33,8 @@ import org.seasar.doma.jdbc.query.Query;
  * @author nakamura-to
  * 
  */
-public class ScalarResultProvider<BASIC, CONTAINER> extends
-        AbstractResultProvider<CONTAINER> {
+public class ScalarProvider<BASIC, CONTAINER> extends
+        AbstractObjectProvider<CONTAINER> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
@@ -49,7 +49,7 @@ public class ScalarResultProvider<BASIC, CONTAINER> extends
      * @param supplier
      * @param query
      */
-    public ScalarResultProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier,
+    public ScalarProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier,
             Query query) {
         assertNotNull(supplier, query);
         this.supplier = supplier;

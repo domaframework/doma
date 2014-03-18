@@ -43,8 +43,8 @@ public class MapStreamHandler<RESULT> extends
     }
 
     @Override
-    protected MapResultProvider createResultProvider(SelectQuery query) {
-        return new MapResultProvider(query, keyNamingType);
+    protected MapProvider createObjectProvider(SelectQuery query) {
+        return new MapProvider(query, keyNamingType);
     }
 
 }

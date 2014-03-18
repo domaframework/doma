@@ -38,14 +38,14 @@ public class ResultSetIterator<TARGET> implements Iterator<TARGET> {
 
     protected final ResultSetRowIndexConsumer consumer;
 
-    protected final ResultProvider<TARGET> provider;
+    protected final ObjectProvider<TARGET> provider;
 
     protected boolean next;
 
     protected long index = -1;
 
     public ResultSetIterator(ResultSet resultSet, SelectQuery query,
-            ResultSetRowIndexConsumer consumer, ResultProvider<TARGET> provider)
+            ResultSetRowIndexConsumer consumer, ObjectProvider<TARGET> provider)
             throws SQLException {
         assertNotNull(resultSet, query, consumer, provider);
         this.resultSet = resultSet;

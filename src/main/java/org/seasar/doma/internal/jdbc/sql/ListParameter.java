@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import org.seasar.doma.internal.jdbc.command.ResultProvider;
+import org.seasar.doma.internal.jdbc.command.ObjectProvider;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -27,7 +27,7 @@ public interface ListParameter<ELEMENT> extends SqlParameter {
 
     String getName();
 
-    ResultProvider<ELEMENT> createResultProvider(Query query);
+    ObjectProvider<ELEMENT> createObjectProvider(Query query);
 
     void add(ELEMENT element);
 

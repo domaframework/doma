@@ -141,8 +141,8 @@ public class CallableSqlParameterFetcher {
 
         protected <ELEMENT> void fetchListParameter(
                 ListParameter<ELEMENT> parameter) throws SQLException {
-            ResultProvider<ELEMENT> provider = parameter
-                    .createResultProvider(query);
+            ObjectProvider<ELEMENT> provider = parameter
+                    .createObjectProvider(query);
             consumeResultSet(parameter.getName(),
                     resultSet -> parameter.add(provider.get(resultSet)));
         }

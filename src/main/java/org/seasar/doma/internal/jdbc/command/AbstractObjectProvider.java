@@ -25,11 +25,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * @author nakamura-to
  * 
- * @param <RESULT>
- *            結果
+ * @param <TARGET>
+ *            提供する型
  */
-public abstract class AbstractResultProvider<RESULT> implements
-        ResultProvider<RESULT> {
+public abstract class AbstractObjectProvider<TARGET> implements
+        ObjectProvider<TARGET> {
 
     protected <BASIC> void fetch(ResultSet resultSet,
             JdbcMappable<BASIC> mappable, int index,

@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.command.EntityResultProvider;
+import org.seasar.doma.internal.jdbc.command.EntityProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -48,8 +48,8 @@ public class EntityResultListParameter<ENTITY> extends
     }
 
     @Override
-    public EntityResultProvider<ENTITY> createResultProvider(Query query) {
-        return new EntityResultProvider<>(entityType, query,
+    public EntityProvider<ENTITY> createObjectProvider(Query query) {
+        return new EntityProvider<>(entityType, query,
                 resultMappingEnsured);
     }
 

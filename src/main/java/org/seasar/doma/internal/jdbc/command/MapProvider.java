@@ -34,8 +34,8 @@ import org.seasar.doma.wrapper.ObjectWrapper;
  * 
  * @author nakamura-to
  */
-public class MapResultProvider extends
-        AbstractResultProvider<Map<String, Object>> {
+public class MapProvider extends
+        AbstractObjectProvider<Map<String, Object>> {
 
     protected final Query query;
 
@@ -50,7 +50,7 @@ public class MapResultProvider extends
      * @param query
      * @param keyNamingType
      */
-    public MapResultProvider(Query query, MapKeyNamingType keyNamingType) {
+    public MapProvider(Query query, MapKeyNamingType keyNamingType) {
         assertNotNull(query, keyNamingType);
         this.query = query;
         this.keyNamingType = keyNamingType;

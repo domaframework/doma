@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.jdbc.command.MapResultProvider;
+import org.seasar.doma.internal.jdbc.command.MapProvider;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -41,8 +41,8 @@ public class MapListParameter extends
     }
 
     @Override
-    public MapResultProvider createResultProvider(Query query) {
-        return new MapResultProvider(query, mapKeyNamingType);
+    public MapProvider createObjectProvider(Query query) {
+        return new MapProvider(query, mapKeyNamingType);
     }
 
 }

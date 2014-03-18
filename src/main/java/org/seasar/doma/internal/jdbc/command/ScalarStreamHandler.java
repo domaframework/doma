@@ -48,9 +48,9 @@ public class ScalarStreamHandler<BASIC, CONTAINER, RESULT> extends
     }
 
     @Override
-    protected ScalarResultProvider<BASIC, CONTAINER> createResultProvider(
+    protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(
             SelectQuery query) {
-        return new ScalarResultProvider<>(supplier, query);
+        return new ScalarProvider<>(supplier, query);
     }
 
 }

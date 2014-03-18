@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.jdbc.command.ScalarResultProvider;
+import org.seasar.doma.internal.jdbc.command.ScalarProvider;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -41,9 +41,9 @@ public class ScalarListParameter<BASIC, CONTAINER> extends
     }
 
     @Override
-    public ScalarResultProvider<BASIC, CONTAINER> createResultProvider(
+    public ScalarProvider<BASIC, CONTAINER> createObjectProvider(
             Query query) {
-        return new ScalarResultProvider<BASIC, CONTAINER>(suppler, query);
+        return new ScalarProvider<BASIC, CONTAINER>(suppler, query);
     }
 
 }

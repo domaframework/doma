@@ -39,7 +39,7 @@ import example.domain._PhoneNumber;
  * @author taedium
  * 
  */
-public class ScalarResultProviderTest extends TestCase {
+public class ScalarProviderTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
@@ -50,7 +50,7 @@ public class ScalarResultProviderTest extends TestCase {
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        ScalarResultProvider<String, String> provider = new ScalarResultProvider<>(
+        ScalarProvider<String, String> provider = new ScalarProvider<>(
                 () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<String>(
                         () -> new org.seasar.doma.wrapper.StringWrapper(),
                         false), new MySelectQuery());
@@ -66,7 +66,7 @@ public class ScalarResultProviderTest extends TestCase {
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        ScalarResultProvider<String, Optional<String>> provider = new ScalarResultProvider<>(
+        ScalarProvider<String, Optional<String>> provider = new ScalarProvider<>(
                 () -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<String>(
                         () -> new org.seasar.doma.wrapper.StringWrapper()),
                 new MySelectQuery());
@@ -85,7 +85,7 @@ public class ScalarResultProviderTest extends TestCase {
         DomainType<String, PhoneNumber> domainType = _PhoneNumber
                 .getSingletonInternal();
 
-        ScalarResultProvider<String, PhoneNumber> provider = new ScalarResultProvider<>(
+        ScalarProvider<String, PhoneNumber> provider = new ScalarProvider<>(
                 () -> domainType.createScalar(), new MySelectQuery());
         PhoneNumber result = provider.get(resultSet);
 
@@ -102,7 +102,7 @@ public class ScalarResultProviderTest extends TestCase {
         DomainType<String, PhoneNumber> domainType = _PhoneNumber
                 .getSingletonInternal();
 
-        ScalarResultProvider<String, Optional<PhoneNumber>> provider = new ScalarResultProvider<>(
+        ScalarProvider<String, Optional<PhoneNumber>> provider = new ScalarProvider<>(
                 () -> domainType.createOptionalScalar(), new MySelectQuery());
         Optional<PhoneNumber> result = provider.get(resultSet);
 

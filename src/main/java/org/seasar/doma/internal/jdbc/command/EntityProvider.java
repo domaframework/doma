@@ -42,8 +42,8 @@ import org.seasar.doma.jdbc.query.Query;
  * @author nakamura-to
  * 
  */
-public class EntityResultProvider<ENTITY> extends
-        AbstractResultProvider<ENTITY> {
+public class EntityProvider<ENTITY> extends
+        AbstractObjectProvider<ENTITY> {
 
     protected final EntityType<ENTITY> entityType;
 
@@ -61,7 +61,7 @@ public class EntityResultProvider<ENTITY> extends
      * @param entityType
      * @param query
      */
-    public EntityResultProvider(EntityType<ENTITY> entityType, Query query,
+    public EntityProvider(EntityType<ENTITY> entityType, Query query,
             boolean resultMappingEnsured) {
         assertNotNull(entityType, query);
         this.entityType = entityType;

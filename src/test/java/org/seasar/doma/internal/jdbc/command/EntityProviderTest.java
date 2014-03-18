@@ -38,7 +38,7 @@ import example.entity._Emp;
  * @author taedium
  * 
  */
-public class EntityResultProviderTest extends TestCase {
+public class EntityProviderTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
@@ -53,7 +53,7 @@ public class EntityResultProviderTest extends TestCase {
         resultSet.next();
 
         _Emp entityType = _Emp.getSingletonInternal();
-        EntityResultProvider<Emp> provider = new EntityResultProvider<>(
+        EntityProvider<Emp> provider = new EntityProvider<>(
                 entityType, new MySelectQuery(), false);
         Emp emp = provider.get(resultSet);
 

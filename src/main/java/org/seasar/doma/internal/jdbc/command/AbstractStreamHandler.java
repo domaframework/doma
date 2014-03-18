@@ -56,7 +56,7 @@ public abstract class AbstractStreamHandler<TARGET, RESULT> implements
     @Override
     public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
             ResultSetRowIndexConsumer consumer) throws SQLException {
-        ResultProvider<TARGET> provider = createResultProvider(query);
+        ObjectProvider<TARGET> provider = createObjectProvider(query);
         Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query,
                 consumer, provider);
         try {
@@ -78,7 +78,7 @@ public abstract class AbstractStreamHandler<TARGET, RESULT> implements
         }
     }
 
-    protected abstract ResultProvider<TARGET> createResultProvider(
+    protected abstract ObjectProvider<TARGET> createObjectProvider(
             SelectQuery query);
 
 }

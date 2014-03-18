@@ -38,8 +38,8 @@ public class EntityIterationHandler<ENTITY, RESULT> extends
     }
 
     @Override
-    protected ResultProvider<ENTITY> createResultProvider(SelectQuery query) {
-        return new EntityResultProvider<>(entityType, query,
+    protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
+        return new EntityProvider<>(entityType, query,
                 query.isResultMappingEnsured());
     }
 
