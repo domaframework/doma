@@ -30,7 +30,6 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
@@ -93,19 +92,6 @@ public class SqlFileSelectQueryMetaFactory extends
             }
         }
 
-        if (queryMeta.getSelectStrategyType() == SelectStrategyType.ITERATE) {
-            if (queryMeta.getIterationCallbackCtType() == null) {
-                throw new AptException(Message.DOMA4056, env, method);
-            }
-        } else {
-            if (queryMeta.getIterationCallbackCtType() != null) {
-                SelectMirror selectMirror = queryMeta.getSelectMirror();
-                throw new AptException(Message.DOMA4057, env, method,
-                        selectMirror.getAnnotationMirror(),
-                        selectMirror.getStrategy());
-            }
-        }
-
         if (queryMeta.getSelectStrategyType() == SelectStrategyType.STREAM) {
             if (queryMeta.getFunctionCtType() == null) {
                 throw new AptException(Message.DOMA4247, env, method);
@@ -126,17 +112,7 @@ public class SqlFileSelectQueryMetaFactory extends
         final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
 
-        if (queryMeta.getSelectStrategyType() == SelectStrategyType.ITERATE) {
-            IterationCallbackCtType iterationCallbackCtType = queryMeta
-                    .getIterationCallbackCtType();
-            AnyCtType returnCtType = iterationCallbackCtType.getReturnCtType();
-            if (returnCtType == null
-                    || !env.getTypeUtils().isSameType(returnMeta.getType(),
-                            returnCtType.getTypeMirror())) {
-                throw new AptException(Message.DOMA4055, env, method,
-                        returnMeta.getType(), returnCtType.getBoxedTypeName());
-            }
-        } else if (queryMeta.getSelectStrategyType() == SelectStrategyType.STREAM) {
+        if (queryMeta.getSelectStrategyType() == SelectStrategyType.STREAM) {
             FunctionCtType functionCtType = queryMeta.getFunctionCtType();
             AnyCtType returnCtType = functionCtType.getReturnCtType();
             if (returnCtType == null
@@ -170,22 +146,6 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitIterationCallbackCtType(
-                IterationCallbackCtType ctType, Void p) throws RuntimeException {
-            if (queryMeta.getIterationCallbackCtType() != null) {
-                throw new AptException(Message.DOMA4054, env,
-                        parameterMeta.getElement());
-            }
-            ctType.getTargetCtType().accept(
-                    new ParamIterationCallbackTargetCtTypeVisitor(queryMeta,
-                            parameterMeta), null);
-            queryMeta.setIterationCallbackCtType(ctType);
-            queryMeta
-                    .setIterationCallbackParameterName(parameterMeta.getName());
-            return null;
-        }
-
-        @Override
         public Void visitFunctionCtType(FunctionCtType ctType, Void p)
                 throws RuntimeException {
             if (queryMeta.getFunctionCtType() != null) {
@@ -209,93 +169,6 @@ public class SqlFileSelectQueryMetaFactory extends
             }
             queryMeta.setSelectOptionsCtType(ctType);
             queryMeta.setSelectOptionsParameterName(parameterMeta.getName());
-            return null;
-        }
-    }
-
-    /**
-     * 
-     * @author nakamura-to
-     * 
-     */
-    protected class ParamIterationCallbackTargetCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
-
-        protected SqlFileSelectQueryMeta queryMeta;
-
-        protected QueryParameterMeta parameterMeta;
-
-        protected ParamIterationCallbackTargetCtTypeVisitor(
-                SqlFileSelectQueryMeta queryMeta,
-                QueryParameterMeta parameterMeta) {
-            this.queryMeta = queryMeta;
-            this.parameterMeta = parameterMeta;
-        }
-
-        @Override
-        protected Void defaultAction(CtType type, Void p)
-                throws RuntimeException {
-            throw new AptException(Message.DOMA4058, env,
-                    queryMeta.getExecutableElement());
-        }
-
-        @Override
-        public Void visitBasicCtType(BasicCtType ctType, Void p)
-                throws RuntimeException {
-            return null;
-        }
-
-        @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
-                throws RuntimeException {
-            return null;
-        }
-
-        @Override
-        public Void visitMapCtType(MapCtType ctType, Void p)
-                throws RuntimeException {
-            return null;
-        }
-
-        @Override
-        public Void visitEntityCtType(EntityCtType ctType, Void p)
-                throws RuntimeException {
-            if (ctType.isAbstract()) {
-                throw new AptException(Message.DOMA4158, env,
-                        parameterMeta.getElement(), ctType.getTypeName());
-            }
-            queryMeta.setEntityCtType(ctType);
-            return null;
-        }
-
-        @Override
-        public Void visitOptionalCtType(OptionalCtType ctType, Void p)
-                throws RuntimeException {
-            Boolean valid = ctType.getElementCtType().accept(
-                    new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
-
-                        @Override
-                        protected Boolean defaultAction(CtType ctType, Void p)
-                                throws RuntimeException {
-                            return false;
-                        }
-
-                        @Override
-                        public Boolean visitBasicCtType(BasicCtType ctType,
-                                Void p) throws RuntimeException {
-                            return true;
-                        }
-
-                        @Override
-                        public Boolean visitDomainCtType(DomainCtType ctType,
-                                Void p) throws RuntimeException {
-                            return true;
-                        }
-
-                    }, null);
-            if (Boolean.FALSE == valid) {
-                defaultAction(ctType, null);
-            }
             return null;
         }
     }

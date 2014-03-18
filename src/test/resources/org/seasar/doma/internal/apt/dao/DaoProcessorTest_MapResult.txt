@@ -14,7 +14,7 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
 
     private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.MapResultDao.class, "selectResultList");
 
-    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.MapResultDao.class, "iterate", org.seasar.doma.jdbc.IterationCallback.class);
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.MapResultDao.class, "stream", java.util.function.Function.class);
 
     /** */
     public MapResultDaoImpl() {
@@ -143,18 +143,18 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
     }
 
     @Override
-    public <R> R iterate(org.seasar.doma.jdbc.IterationCallback<java.util.Map<java.lang.String, java.lang.Object>, R> callback) {
-        entering("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "iterate", callback);
+    public <R> R stream(java.util.function.Function<java.util.stream.Stream<java.util.Map<java.lang.String, java.lang.Object>>, R> mapper) {
+        entering("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "stream", mapper);
         try {
-            if (callback == null) {
-                throw new org.seasar.doma.DomaNullPointerException("callback");
+            if (mapper == null) {
+                throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/MapResultDao/iterate.sql");
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/MapResultDao/stream.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.MapResultDaoImpl");
-            __query.setCallerMethodName("iterate");
+            __query.setCallerMethodName("stream");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
             __query.setFetchType(org.seasar.doma.FetchType.LAZY);
@@ -162,13 +162,13 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapIterationHandler<R>(org.seasar.doma.MapKeyNamingType.NONE, callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<R>(org.seasar.doma.MapKeyNamingType.NONE, mapper));
             R __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "iterate", __result);
+            exiting("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "stream", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "iterate", __e);
+            throwing("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "stream", __e);
             throw __e;
         }
     }

@@ -28,17 +28,14 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
-import org.seasar.doma.internal.jdbc.command.MapIterationHandler;
 import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
 import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.MapStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.ScalarIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ScalarResultListHandler;
 import org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.ScalarStreamHandler;
@@ -46,7 +43,6 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
@@ -606,178 +602,6 @@ public class SelectBuilder {
         }
         MapResultListHandler handler = new MapResultListHandler(
                 mapKeyNamingType);
-        return execute(handler);
-    }
-
-    /**
-     * 結果セットをエンティティのインスタンスとして1件ずつ処理します。
-     * 
-     * @param <TARGET>
-     *            エンティティ型
-     * @param <RESULT>
-     *            戻り値の型
-     * @param targetClass
-     *            処理対象のクラス
-     * @param iterationCallback
-     *            コールバック
-     * @return 任意の実行結果
-     * @throws DomaNullPointerException
-     *             引数のいずれかが{@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             処理対象のクラスがエンティティ型でない場合
-     * @throws UnknownColumnException
-     *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
-     * @throws NoResultException
-     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
-     *             を設定しており結果が存在しない場合
-     * @throws ResultMappingException
-     *             {@link SelectBuilder#ensureResultMapping(boolean)} に
-     *             {@code true} を設定しており、マッピングされないエンティティプロパティが存在する場合
-     * @throws JdbcException
-     *             上記以外でJDBCに関する例外が発生した場合
-     * @since 2.0.0
-     */
-    public <TARGET, RESULT> RESULT iterateAsEntity(Class<TARGET> targetClass,
-            IterationCallback<TARGET, RESULT> iterationCallback) {
-        if (targetClass == null) {
-            throw new DomaNullPointerException("targetClass");
-        }
-        if (!targetClass.isAnnotationPresent(Entity.class)) {
-            throw new DomaIllegalArgumentException("targetClass",
-                    Message.DOMA2219.getMessage(targetClass));
-        }
-        if (iterationCallback == null) {
-            throw new DomaNullPointerException("iterationCallback");
-        }
-        if (query.getMethodName() == null) {
-            query.setCallerMethodName("iterateAsEntity");
-        }
-        EntityType<TARGET> entityType = EntityTypeFactory.getEntityType(
-                targetClass, config.getClassHelper());
-        query.setEntityType(entityType);
-        EntityIterationHandler<TARGET, RESULT> handler = new EntityIterationHandler<>(
-                entityType, iterationCallback);
-        return execute(handler);
-    }
-
-    /**
-     * 結果セットを基本型もしくはドメイン型のインスタンスとして1件ずつ処理します。
-     * 
-     * @param <TARGET>
-     *            基本型もしくはドメイン型
-     * @param <RESULT>
-     *            戻り値の型
-     * @param targetClass
-     *            基本型もしくはドメイン型のクラス
-     * @param iterationCallback
-     *            コールバック
-     * @return 任意の実行結果
-     * @throws DomaNullPointerException
-     *             引数のいずれかが{@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
-     * @throws NonSingleColumnException
-     *             結果セットに複数のカラムが含まれている場合
-     * @throws NoResultException
-     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
-     *             を設定しており結果が存在しない場合
-     * @throws JdbcException
-     *             上記以外でJDBCに関する例外が発生した場合
-     * @since 2.0.0
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <TARGET, RESULT> RESULT iterateAsScalar(Class<TARGET> targetClass,
-            IterationCallback<TARGET, RESULT> iterationCallback) {
-        if (targetClass == null) {
-            throw new DomaNullPointerException("targetClass");
-        }
-        if (iterationCallback == null) {
-            throw new DomaNullPointerException("iterationCallback");
-        }
-        if (query.getMethodName() == null) {
-            query.setCallerMethodName("iterate");
-        }
-        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
-                targetClass, false);
-        ResultSetHandler<RESULT> iterationHandler = new ScalarIterationHandler(
-                supplier, iterationCallback);
-        return execute(iterationHandler);
-    }
-
-    /**
-     * 結果セットを基本型もしくはドメイン型のインスタンスとして {@link Optional} でラップして1件ずつ処理します。
-     * 
-     * @param <TARGET>
-     *            基本型もしくはドメイン型
-     * @param <RESULT>
-     *            戻り値の型
-     * @param targetClass
-     *            基本型もしくはドメイン型のクラス
-     * @param iterationCallback
-     *            コールバック
-     * @return 任意の実行結果
-     * @throws DomaNullPointerException
-     *             引数のいずれかが{@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
-     * @throws NonSingleColumnException
-     *             結果セットに複数のカラムが含まれている場合
-     * @throws NoResultException
-     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
-     *             を設定しており結果が存在しない場合
-     * @throws JdbcException
-     *             上記以外でJDBCに関する例外が発生した場合
-     * @since 2.0.0
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <TARGET, RESULT> RESULT iterateAsOptionalScalar(
-            Class<TARGET> targetClass,
-            IterationCallback<RESULT, Optional<TARGET>> iterationCallback) {
-        if (targetClass == null) {
-            throw new DomaNullPointerException("targetClass");
-        }
-        if (iterationCallback == null) {
-            throw new DomaNullPointerException("iterationCallback");
-        }
-        if (query.getMethodName() == null) {
-            query.setCallerMethodName("iterateAsOptionalScalar");
-        }
-        Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass",
-                targetClass, true);
-        ResultSetHandler<RESULT> handler = new ScalarIterationHandler(supplier,
-                iterationCallback);
-        return execute(handler);
-    }
-
-    /**
-     * 結果セットを {@code Map<String, Object>} として1件ずつ処理します。
-     * 
-     * @param <RESULT>
-     *            戻り値の型
-     * @param mapKeyNamingType
-     *            マップのキーのネーミング規約
-     * @param iterationCallback
-     *            コールバック
-     * @return 任意の実行結果
-     * @throws DomaNullPointerException
-     *             引数のいずれかが{@code null} の場合
-     * @throws JdbcException
-     *             上記以外でJDBCに関する例外が発生した場合
-     * @since 2.0.0
-     */
-    public <RESULT> RESULT iterateAsMap(MapKeyNamingType mapKeyNamingType,
-            IterationCallback<Map<String, Object>, RESULT> iterationCallback) {
-        if (mapKeyNamingType == null) {
-            throw new DomaNullPointerException("mapKeyNamingType");
-        }
-        if (iterationCallback == null) {
-            throw new DomaNullPointerException("iterationCallback");
-        }
-        if (query.getMethodName() == null) {
-            query.setCallerMethodName("iterateAsMap");
-        }
-        MapIterationHandler<RESULT> handler = new MapIterationHandler<>(
-                mapKeyNamingType, iterationCallback);
         return execute(handler);
     }
 

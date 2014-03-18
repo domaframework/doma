@@ -19,13 +19,15 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -195,7 +197,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     }
 
     @Override
-    public Integer iterate(IterationCallback<Emp, Integer> callback) {
+    public Integer stream(Function<Stream<Emp>, Integer> mapper) {
         SqlFileSelectQuery query = getQueryImplementors()
                 .createSqlFileSelectQuery(method6);
         query.setConfig(__config);
@@ -208,8 +210,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
                 .createSelectCommand(
                         method6,
                         query,
-                        new EntityIterationHandler<Emp, Integer>(_Emp
-                                .getSingletonInternal(), callback));
+                        new EntityStreamHandler<Integer, Emp>(_Emp
+                                .getSingletonInternal(), mapper));
         return command.execute();
     }
 

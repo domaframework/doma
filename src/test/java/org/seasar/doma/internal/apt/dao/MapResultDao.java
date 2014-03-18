@@ -18,11 +18,12 @@ package org.seasar.doma.internal.apt.dao;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.Select;
-import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.SelectStrategyType;
 
 /**
  * @author nakamura-to
@@ -40,7 +41,7 @@ public interface MapResultDao {
     @Select
     List<Map<String, Object>> selectResultList();
 
-    @Select(strategy = SelectStrategyType.ITERATE)
-    <R> R iterate(IterationCallback<Map<String, Object>, R> callback);
+    @Select(strategy = SelectStrategyType.STREAM)
+    <R> R stream(Function<Stream<Map<String, Object>>, R> mapper);
 
 }

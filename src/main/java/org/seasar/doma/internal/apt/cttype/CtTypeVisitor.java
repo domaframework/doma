@@ -29,9 +29,6 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
     R visitEntityCtType(EntityCtType ctType, P p) throws TH;
 
-    R visitIterationCallbackCtType(IterationCallbackCtType ctType, P p)
-            throws TH;
-
     R visitIterableCtType(IterableCtType ctType, P p) throws TH;
 
     R visitReferenceCtType(ReferenceCtType ctType, P p) throws TH;

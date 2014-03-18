@@ -23,8 +23,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.IterationCallback;
-import org.seasar.doma.jdbc.IterationContext;
 
 import example.domain.PhoneNumber;
 import example.entity.Emp;
@@ -160,76 +158,4 @@ public class SelectBuilderTest extends TestCase {
         assertNotNull(list);
     }
 
-    public void testIterate_Entity() throws Exception {
-        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
-        builder.sql("select * from Emp");
-        builder.sql("where");
-        builder.sql("aaa =").param(String.class, "aaa");
-        builder.sql("and");
-        builder.sql("bbb = ").param(int.class, 100);
-        builder.iterateAsEntity(Emp.class, new IterationCallback<Emp, Void>() {
-
-            @Override
-            public Void iterate(Emp target, IterationContext context) {
-                return null;
-            }
-
-        });
-    }
-
-    public void testIterate_Map() throws Exception {
-        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
-        builder.sql("select * from Emp");
-        builder.sql("where");
-        builder.sql("aaa =").param(String.class, "aaa");
-        builder.sql("and");
-        builder.sql("bbb = ").param(int.class, 100);
-        builder.iterateAsMap(MapKeyNamingType.CAMEL_CASE,
-                new IterationCallback<Map<String, Object>, Void>() {
-
-                    @Override
-                    public Void iterate(Map<String, Object> target,
-                            IterationContext context) {
-                        return null;
-                    }
-
-                });
-    }
-
-    public void testIterate_Domain() throws Exception {
-        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
-        builder.sql("select ccc from Emp");
-        builder.sql("where");
-        builder.sql("aaa =").param(String.class, "aaa");
-        builder.sql("and");
-        builder.sql("bbb = ").param(int.class, 100);
-        builder.iterateAsScalar(PhoneNumber.class,
-                new IterationCallback<PhoneNumber, Void>() {
-
-                    @Override
-                    public Void iterate(PhoneNumber target,
-                            IterationContext context) {
-                        return null;
-                    }
-
-                });
-    }
-
-    public void testIterate_Basic() throws Exception {
-        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
-        builder.sql("select ccc from Emp");
-        builder.sql("where");
-        builder.sql("aaa =").param(String.class, "aaa");
-        builder.sql("and");
-        builder.sql("bbb = ").param(int.class, 100);
-        builder.iterateAsScalar(String.class,
-                new IterationCallback<String, Void>() {
-
-                    @Override
-                    public Void iterate(String target, IterationContext context) {
-                        return null;
-                    }
-
-                });
-    }
 }

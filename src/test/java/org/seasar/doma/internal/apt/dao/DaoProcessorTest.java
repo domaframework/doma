@@ -211,26 +211,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testIterationCallback() throws Exception {
-        Class<?> target = IterationCallbackDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertGeneratedSource(target);
-        assertTrue(getCompiledResult());
-    }
-
-    public void testIllegalTargetTypeIterationCallback() throws Exception {
-        Class<?> target = IllegalTargetTypeIterationCallbackDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4058);
-    }
-
     public void testAutoFunction() throws Exception {
         Class<?> target = AutoFunctionDao.class;
         DaoProcessor processor = new DaoProcessor();
@@ -518,16 +498,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4157);
     }
 
-    public void testIterateAbstractEntity() throws Exception {
-        Class<?> target = IterateAbstractEntityDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4158);
-    }
-
     public void testEmpDtoParameter() throws Exception {
         Class<?> target = EmpDtoParameterDao.class;
         DaoProcessor processor = new DaoProcessor();
@@ -718,26 +688,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4213);
     }
 
-    public void testIterateWildcardTypeParam() throws Exception {
-        Class<?> target = IterateWildcardTypeDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4216);
-    }
-
-    public void testIterateRawTypeParam() throws Exception {
-        Class<?> target = IterateRawTypeDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4217);
-    }
-
     public void testReferenceRawTypeParam() throws Exception {
         Class<?> target = ReferenceRawTypeParamDao.class;
         DaoProcessor processor = new DaoProcessor();
@@ -790,16 +740,6 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testEnsureResultMapping() throws Exception {
         Class<?> target = EnsureResultMappingDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertGeneratedSource(target);
-        assertTrue(getCompiledResult());
-    }
-
-    public void testConcretePostIterationCallback() throws Exception {
-        Class<?> target = ConcretePostIterationCallbackDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
@@ -900,16 +840,6 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testStreamOptionalParameter() throws Exception {
         Class<?> target = StreamOptionalParameterDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertGeneratedSource(target);
-        assertTrue(getCompiledResult());
-    }
-
-    public void testIterationCallbackOptionalParameter() throws Exception {
-        Class<?> target = IterationCallbackOptionalParameterDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

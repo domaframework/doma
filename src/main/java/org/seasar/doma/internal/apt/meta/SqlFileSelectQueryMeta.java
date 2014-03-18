@@ -22,7 +22,6 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
-import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
 
@@ -33,10 +32,6 @@ import org.seasar.doma.internal.apt.mirror.SelectMirror;
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected SelectMirror selectMirror;
-
-    protected String iterationCallbackParameterName;
-
-    protected IterationCallbackCtType iterationCallbackCtType;
 
     protected String functionParameterName;
 
@@ -50,24 +45,6 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public SqlFileSelectQueryMeta(ExecutableElement method) {
         super(method);
-    }
-
-    public String getIterationCallbackParameterName() {
-        return iterationCallbackParameterName;
-    }
-
-    public void setIterationCallbackParameterName(
-            String iterationCallbackPrameterName) {
-        this.iterationCallbackParameterName = iterationCallbackPrameterName;
-    }
-
-    public IterationCallbackCtType getIterationCallbackCtType() {
-        return iterationCallbackCtType;
-    }
-
-    public void setIterationCallbackCtType(
-            IterationCallbackCtType iterationCallbackCtType) {
-        this.iterationCallbackCtType = iterationCallbackCtType;
     }
 
     public String getFunctionParameterName() {

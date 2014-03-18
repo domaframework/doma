@@ -17,12 +17,13 @@ package org.seasar.doma.internal.apt.dao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.Select;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.jdbc.IterationCallback;
 
 /**
  * @author nakamura-to
@@ -40,7 +41,7 @@ public interface EntityResultDao {
     @Select
     List<Emp> selectResultList();
 
-    @Select(strategy = SelectStrategyType.ITERATE)
-    <R> R iterate(IterationCallback<Emp, R> callback);
+    @Select(strategy = SelectStrategyType.STREAM)
+    <R> R stream(Function<Stream<Emp>, R> mapper);
 
 }

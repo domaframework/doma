@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.annotation.Annotation;
 
@@ -32,7 +32,6 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
@@ -136,23 +135,6 @@ public class QueryParameterMeta {
                 .newInstance(type, env);
         if (selectOptionsCtType != null) {
             return selectOptionsCtType;
-        }
-
-        IterationCallbackCtType iterationCallbackCtType = IterationCallbackCtType
-                .newInstance(type, env);
-        if (iterationCallbackCtType != null) {
-            if (iterationCallbackCtType.isRawType()) {
-                throw new AptException(Message.DOMA4110, env, parameterElement,
-                        qualifiedName);
-            }
-            if (iterationCallbackCtType.isWildcardType()) {
-                throw new AptException(Message.DOMA4112, env, parameterElement,
-                        qualifiedName);
-            }
-            iterationCallbackCtType.getTargetCtType().accept(
-                    new IterationCallbackTargetCtTypeVisitor(parameterElement),
-                    null);
-            return iterationCallbackCtType;
         }
 
         FunctionCtType functionCtType = FunctionCtType.newInstance(type, env);
@@ -357,36 +339,6 @@ public class QueryParameterMeta {
             }
             if (ctType.isWildcardType()) {
                 throw new AptException(Message.DOMA4239, env, parameterElement,
-                        ctType.getQualifiedName());
-            }
-            return null;
-        }
-    }
-
-    /**
-     * 
-     * @author nakamura-to
-     * 
-     */
-    protected class IterationCallbackTargetCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
-
-        protected final VariableElement parameterElement;
-
-        protected IterationCallbackTargetCtTypeVisitor(
-                VariableElement parameterElement) {
-            this.parameterElement = parameterElement;
-        }
-
-        @Override
-        public Void visitDomainCtType(final DomainCtType ctType, Void p)
-                throws RuntimeException {
-            if (ctType.isRawType()) {
-                throw new AptException(Message.DOMA4216, env, parameterElement,
-                        ctType.getQualifiedName());
-            }
-            if (ctType.isWildcardType()) {
-                throw new AptException(Message.DOMA4217, env, parameterElement,
                         ctType.getQualifiedName());
             }
             return null;

@@ -56,12 +56,6 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements
     }
 
     @Override
-    public R visitIterationCallbackCtType(IterationCallbackCtType ctType, P p)
-            throws TH {
-        return defaultAction(ctType, p);
-    }
-
-    @Override
     public R visitIterableCtType(IterableCtType ctType, P p) throws TH {
         return defaultAction(ctType, p);
     }

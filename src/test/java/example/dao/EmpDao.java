@@ -17,15 +17,16 @@ package example.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
-import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.Script;
 import org.seasar.doma.Select;
+import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.Update;
-import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
 import example.entity.Emp;
@@ -48,8 +49,8 @@ public interface EmpDao {
     @Select
     List<Emp> selectByExample(Emp emp);
 
-    @Select(strategy = SelectStrategyType.ITERATE)
-    Integer iterate(IterationCallback<Emp, Integer> callback);
+    @Select(strategy = SelectStrategyType.STREAM)
+    Integer stream(Function<Stream<Emp>, Integer> mapper);
 
     @Insert
     int insert(Emp entity);

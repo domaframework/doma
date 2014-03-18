@@ -1,1 +1,0 @@
-select * from hoge where id = /*id*/1 and /*name*/'a'

@@ -16,9 +16,7 @@ public class DomainResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
 
     private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DomainResultDao.class, "selectOptionalResultList");
 
-    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DomainResultDao.class, "iterate", org.seasar.doma.jdbc.IterationCallback.class);
-
-    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DomainResultDao.class, "iterateOptional", org.seasar.doma.jdbc.IterationCallback.class);
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.DomainResultDao.class, "stream", java.util.function.Function.class);
 
     /** */
     public DomainResultDaoImpl() {
@@ -175,18 +173,18 @@ public class DomainResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     }
 
     @Override
-    public <R> R iterate(org.seasar.doma.jdbc.IterationCallback<example.domain.PhoneNumber, R> callback) {
-        entering("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "iterate", callback);
+    public <R> R stream(java.util.function.Function<java.util.stream.Stream<example.domain.PhoneNumber>, R> mapper) {
+        entering("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "stream", mapper);
         try {
-            if (callback == null) {
-                throw new org.seasar.doma.DomaNullPointerException("callback");
+            if (mapper == null) {
+                throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
             __query.setMethod(__method4);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DomainResultDao/iterate.sql");
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DomainResultDao/stream.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl");
-            __query.setCallerMethodName("iterate");
+            __query.setCallerMethodName("stream");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
             __query.setFetchType(org.seasar.doma.FetchType.LAZY);
@@ -194,44 +192,13 @@ public class DomainResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<R, java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), mapper));
             R __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "iterate", __result);
+            exiting("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "stream", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "iterate", __e);
-            throw __e;
-        }
-    }
-
-    @Override
-    public <R> R iterateOptional(org.seasar.doma.jdbc.IterationCallback<example.domain.PhoneNumber, R> callback) {
-        entering("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "iterateOptional", callback);
-        try {
-            if (callback == null) {
-                throw new org.seasar.doma.DomaNullPointerException("callback");
-            }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method5);
-            __query.setMethod(__method5);
-            __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DomainResultDao/iterateOptional.sql");
-            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl");
-            __query.setCallerMethodName("iterateOptional");
-            __query.setResultEnsured(false);
-            __query.setResultMappingEnsured(false);
-            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
-            __query.setQueryTimeout(-1);
-            __query.setMaxRows(-1);
-            __query.setFetchSize(-1);
-            __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method5, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), callback));
-            R __result = __command.execute();
-            __query.complete();
-            exiting("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "iterateOptional", __result);
-            return __result;
-        } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "iterateOptional", __e);
+            throwing("org.seasar.doma.internal.apt.dao.DomainResultDaoImpl", "stream", __e);
             throw __e;
         }
     }

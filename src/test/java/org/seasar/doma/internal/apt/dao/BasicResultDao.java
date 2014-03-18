@@ -17,11 +17,12 @@ package org.seasar.doma.internal.apt.dao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.Select;
-import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.SelectStrategyType;
 
 /**
  * @author nakamura-to
@@ -42,9 +43,7 @@ public interface BasicResultDao {
     @Select
     List<Optional<String>> selectOptionalResultList();
 
-    @Select(strategy = SelectStrategyType.ITERATE)
-    <R> R iterate(IterationCallback<String, R> callback);
+    @Select(strategy = SelectStrategyType.STREAM)
+    <R> R stream(Function<Stream<String>, R> mapper);
 
-    @Select(strategy = SelectStrategyType.ITERATE)
-    <R> R iterateOptional(IterationCallback<String, R> callback);
 }

@@ -17,8 +17,6 @@ package org.seasar.doma;
 
 import java.util.stream.Stream;
 
-import org.seasar.doma.jdbc.IterationCallback;
-
 /**
  * 検索結果を扱う戦略です。
  * 
@@ -31,12 +29,6 @@ public enum SelectStrategyType {
      * 結果を戻り値で取得します。
      */
     RETURN,
-
-    /**
-     * {@link IterationCallback} を使って1件ずつ反復的に処理します。
-     */
-    ITERATE,
-
     /**
      * {@link Stream} を使って処理します。
      */

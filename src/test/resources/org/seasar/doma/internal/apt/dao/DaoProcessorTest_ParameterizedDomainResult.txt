@@ -16,9 +16,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
 
     private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "selectOptionalResultList");
 
-    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "iterate", org.seasar.doma.jdbc.IterationCallback.class);
-
-    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "iterateOptional", org.seasar.doma.jdbc.IterationCallback.class);
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDao.class, "stream", java.util.function.Function.class);
 
     /** */
     public ParameterizedDomainResultDaoImpl() {
@@ -175,8 +173,8 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
     }
 
     @Override
-    public <R> R iterate(org.seasar.doma.jdbc.IterationCallback<org.seasar.doma.internal.apt.dao.Height<java.lang.String>, R> callback) {
-        entering("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterate", callback);
+    public <R> R stream(java.util.function.Function<java.util.stream.Stream<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>, R> callback) {
+        entering("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "stream", callback);
         try {
             if (callback == null) {
                 throw new org.seasar.doma.DomaNullPointerException("callback");
@@ -184,9 +182,9 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
             __query.setMethod(__method4);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/iterate.sql");
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/stream.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
-            __query.setCallerMethodName("iterate");
+            __query.setCallerMethodName("stream");
             __query.setResultEnsured(false);
             __query.setResultMappingEnsured(false);
             __query.setFetchType(org.seasar.doma.FetchType.LAZY);
@@ -194,44 +192,13 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>, R>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<R, java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
             R __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterate", __result);
+            exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "stream", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterate", __e);
-            throw __e;
-        }
-    }
-
-    @Override
-    public <R> R iterateOptional(org.seasar.doma.jdbc.IterationCallback<org.seasar.doma.internal.apt.dao.Height<java.lang.String>, R> callback) {
-        entering("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterateOptional", callback);
-        try {
-            if (callback == null) {
-                throw new org.seasar.doma.DomaNullPointerException("callback");
-            }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method5);
-            __query.setMethod(__method5);
-            __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/ParameterizedDomainResultDao/iterateOptional.sql");
-            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl");
-            __query.setCallerMethodName("iterateOptional");
-            __query.setResultEnsured(false);
-            __query.setResultMappingEnsured(false);
-            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
-            __query.setQueryTimeout(-1);
-            __query.setMaxRows(-1);
-            __query.setFetchSize(-1);
-            __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method5, __query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>, R>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
-            R __result = __command.execute();
-            __query.complete();
-            exiting("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterateOptional", __result);
-            return __result;
-        } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "iterateOptional", __e);
+            throwing("org.seasar.doma.internal.apt.dao.ParameterizedDomainResultDaoImpl", "stream", __e);
             throw __e;
         }
     }
