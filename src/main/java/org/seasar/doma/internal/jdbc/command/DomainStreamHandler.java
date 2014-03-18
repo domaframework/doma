@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * @param <RESULT>
  * @param <DOMAIN>
  */
-public class DomainStreamHandler<RESULT, BASIC, DOMAIN> extends
-        ScalarStreamHandler<RESULT, BASIC, DOMAIN> {
+public class DomainStreamHandler<BASIC, DOMAIN, RESULT> extends
+        ScalarStreamHandler<BASIC, DOMAIN, RESULT> {
 
     public DomainStreamHandler(DomainType<BASIC, DOMAIN> domainType,
             Function<Stream<DOMAIN>, RESULT> mapper) {

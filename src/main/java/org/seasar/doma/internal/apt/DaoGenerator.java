@@ -1780,7 +1780,7 @@ public class DaoGenerator extends AbstractGenerator {
                             public Void visitEnumWrapperCtType(
                                     EnumWrapperCtType ctType, Void p)
                                     throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%2$s, %4$s>(() -> new %5$s(%6$s.class), %7$s));%n",
+                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%4$s, %2$s>(() -> new %5$s(%6$s.class), %7$s));%n",
                                 /* 1 */commandClassName,
                                 /* 2 */resultMeta.getBoxedTypeName(),
                                 /* 3 */getBasicStreamHandlerName(optional),
@@ -1799,7 +1799,7 @@ public class DaoGenerator extends AbstractGenerator {
                             public Void visitWrapperCtType(
                                     WrapperCtType ctType, Void p)
                                     throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s::new, %6$s));%n",
+                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s::new, %6$s));%n",
                                 /* 1 */commandClassName,
                                 /* 2 */resultMeta.getBoxedTypeName(),
                                 /* 3 */getBasicStreamHandlerName(optional),
@@ -1820,7 +1820,7 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                     throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %9$s, %4$s>(%5$s, %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */getDomainStreamHandlerName(optional),
@@ -1852,7 +1852,7 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
                     throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s.getSingletonInternal(), %6$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */getEntityStreamHandlerName(optional),

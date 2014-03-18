@@ -165,7 +165,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<R, org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<org.seasar.doma.internal.apt.entity.Emp, R>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EntityResultDaoImpl", "stream", __result);

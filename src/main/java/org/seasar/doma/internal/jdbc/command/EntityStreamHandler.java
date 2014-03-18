@@ -30,8 +30,8 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  * @param <ENTITY>
  */
-public class EntityStreamHandler<RESULT, ENTITY> extends
-        AbstractStreamHandler<RESULT, ENTITY> {
+public class EntityStreamHandler<ENTITY, RESULT> extends
+        AbstractStreamHandler<ENTITY, RESULT> {
 
     protected final EntityType<ENTITY> entityType;
 

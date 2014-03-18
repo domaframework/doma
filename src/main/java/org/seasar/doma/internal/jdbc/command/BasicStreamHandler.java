@@ -29,8 +29,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <RESULT>
  * @param <BASIC>
  */
-public class BasicStreamHandler<RESULT, BASIC> extends
-        ScalarStreamHandler<RESULT, BASIC, BASIC> {
+public class BasicStreamHandler<BASIC, RESULT> extends
+        ScalarStreamHandler<BASIC, BASIC, RESULT> {
 
     public BasicStreamHandler(Supplier<Wrapper<BASIC>> supplier,
             Function<Stream<BASIC>, RESULT> mapper) {

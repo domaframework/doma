@@ -192,7 +192,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<R, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.BasicResultDaoImpl", "stream", __result);

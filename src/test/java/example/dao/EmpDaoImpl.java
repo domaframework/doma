@@ -210,7 +210,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
                 .createSelectCommand(
                         method6,
                         query,
-                        new EntityStreamHandler<Integer, Emp>(_Emp
+                        new EntityStreamHandler<Emp, Integer>(_Emp
                                 .getSingletonInternal(), mapper));
         return command.execute();
     }

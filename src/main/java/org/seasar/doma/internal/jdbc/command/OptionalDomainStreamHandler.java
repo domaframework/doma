@@ -28,8 +28,8 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * @param <RESULT>
  * @param <DOMAIN>
  */
-public class OptionalDomainStreamHandler<RESULT, BASIC, DOMAIN> extends
-        ScalarStreamHandler<RESULT, BASIC, Optional<DOMAIN>> {
+public class OptionalDomainStreamHandler<BASIC, DOMAIN, RESULT> extends
+        ScalarStreamHandler<BASIC, Optional<DOMAIN>, RESULT> {
 
     public OptionalDomainStreamHandler(DomainType<BASIC, DOMAIN> domainType,
             Function<Stream<Optional<DOMAIN>>, RESULT> mapper) {

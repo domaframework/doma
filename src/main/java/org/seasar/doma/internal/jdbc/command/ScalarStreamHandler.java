@@ -28,15 +28,15 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * 
  * @author nakamura-to
  * 
- * @param <RESULT>
- *            結果
  * @param <BASIC>
  *            基本型
  * @param <CONTAINER>
  *            基本型のコンテナ
+ * @param <RESULT>
+ *            結果
  */
-public class ScalarStreamHandler<RESULT, BASIC, CONTAINER> extends
-        AbstractStreamHandler<RESULT, CONTAINER> {
+public class ScalarStreamHandler<BASIC, CONTAINER, RESULT> extends
+        AbstractStreamHandler<CONTAINER, RESULT> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 

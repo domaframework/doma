@@ -38,12 +38,12 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 /**
  * @author nakamura-to
  * 
- * @param <RESULT>
- *            結果
  * @param <TARGET>
  *            処理対象
+ * @param <RESULT>
+ *            結果
  */
-public abstract class AbstractStreamHandler<RESULT, TARGET> implements
+public abstract class AbstractStreamHandler<TARGET, RESULT> implements
         ResultSetHandler<RESULT> {
 
     protected final Function<Stream<TARGET>, RESULT> mapper;

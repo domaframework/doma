@@ -30,8 +30,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <RESULT>
  * @param <BASIC>
  */
-public class OptionalBasicStreamHandler<RESULT, BASIC> extends
-        ScalarStreamHandler<RESULT, BASIC, Optional<BASIC>> {
+public class OptionalBasicStreamHandler<BASIC, RESULT> extends
+        ScalarStreamHandler<BASIC, Optional<BASIC>, RESULT> {
 
     public OptionalBasicStreamHandler(Supplier<Wrapper<BASIC>> supplier,
             Function<Stream<Optional<BASIC>>, RESULT> mapper) {

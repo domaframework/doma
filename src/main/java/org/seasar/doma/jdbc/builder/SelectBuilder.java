@@ -633,7 +633,7 @@ public class SelectBuilder {
      *             上記以外でJDBCに関する例外が発生した場合
      * @since 2.0.0
      */
-    public <RESULT, TARGET> RESULT streamEntity(Class<TARGET> targetClass,
+    public <TARGET, RESULT> RESULT streamEntity(Class<TARGET> targetClass,
             Function<Stream<TARGET>, RESULT> mapper) {
         if (targetClass == null) {
             throw new DomaNullPointerException("targetClass");
