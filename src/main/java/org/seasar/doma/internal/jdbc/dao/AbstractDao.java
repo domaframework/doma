@@ -137,15 +137,27 @@ public abstract class AbstractDao implements ConfigProvider {
         }
         if (config.getCommandImplementors() == null) {
             throw new ConfigException(config.getClass().getName(),
-                    "getCommandFactory");
+                    "getCommandImplementors");
         }
         if (config.getQueryImplementors() == null) {
             throw new ConfigException(config.getClass().getName(),
-                    "getQueryFactory");
+                    "getQueryImplementors");
         }
         if (config.getExceptionSqlLogType() == null) {
             throw new ConfigException(config.getClass().getName(),
                     "getExceptionSqlLogType");
+        }
+        if (config.getRequiresNewController() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getRequiresNewController");
+        }
+        if (config.getClassHelper() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getClassHelper");
+        }
+        if (config.getUnknownColumnHandler() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getUnknownColumnHandler");
         }
     }
 
