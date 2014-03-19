@@ -108,7 +108,7 @@ clone されたディレクトリに移動します。
 
 .. code-block:: bash
 
-  $ cd simple-boilerplate.git
+  $ cd simple-boilerplate
 
 次のコマンドで Eclipse 用の設定ファイルを生成します。
 
@@ -116,8 +116,18 @@ clone されたディレクトリに移動します。
 
   $ ./gradlew eclipse
 
+.. note::
+
+  Windows 環境では ``./gradlew eclipse`` とする代わりに ``gradlew eclipse`` としてください。
+
+.. note::
+
+  環境変数 ``JAVA_HOME`` に JDK 8 をインストールしたディレクトリを設定しておいてください。
+  gradlew の実行に必要です。
+
+
 Eclipse のメニューからFile > Import... を実行し
-'Existing Projects into Workspace' を選んで simple-boilerplateをインポートします。
+'Existing Projects into Workspace' を選んで simple-boilerplate をインポートします。
 
 .. image:: images/import.png
    :width: 80 %
