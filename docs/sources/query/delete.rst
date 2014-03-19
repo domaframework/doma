@@ -111,6 +111,7 @@ SQLファイルにおけるバージョン番号と楽観的排他制御
 たとえば、下記のSQLのように、WHERE句でバージョンを番号を指定しなければいけません。
 
 .. code-block:: sql
+
   delete from EMPLOYEE where ID = /* employee.id */1 and VERSION = /* employee.version */1
 
 このSQLの削除件数が0件の場合、楽観的排他制御の失敗を示す ``OptimisticLockException`` がスローされます。
