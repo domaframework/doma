@@ -33,6 +33,19 @@ Gradle
       compile "org.seasar.doma:doma:2.0.0"
   }
 
+Doma の SNAPSHOT を参照したい場合は、
+repositories を次のように書き換えてください。
+
+.. code-block:: groovy
+
+  repositories {
+      mavenCentral()
+      maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
+  }
+
+Doma の SNAPSHOT は `Travis-CI <https://travis-ci.org/domaframework/doma>`_
+でビルドが成功されるたびに作成されリポジトリに配置されます。
+
 Maven
 ==================
 
