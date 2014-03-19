@@ -1,16 +1,11 @@
 language: java
-
-jdk:
-  - oraclejdk8
-
+jdk: oraclejdk8
 env:
   global:
-  - secure: s+jBZ2p90tlBQuG2oASQEQcwQerZgFpStco2zZJuFyISQ/IHgT45unelQKsX9yddhT+EBFrgnqdihdo9j7IdWwXutcAMtW43xLQ2NPDbt6xJt1DK+yOOKpyOeONFP7pGK7wTxKP0kt9V8+lxCgbsGmKC1FMIoSI+L6r3PYXRgeA=
-  - secure: Pv033EL3mxGfrl837lPDI/qfhdyKJ8pBSw2qaKXcCExrrb7uUgcanVc1XZbT8XgsiP3H9JFc287aXt2Z3ANWwtG79Wi3KjTsXkrI/p11qi7XIivUwaer2rCM06Y314RE3JDvcMS/vgSJ6UBW7RVqxgL+qcVZdbD8QnFqH6zjsIo=
-
-after_success: 
-  - ./gradlew uploadArchives -s -PsonatypeUsername=$SONATYPE_USERNAME -PsonatypePassword=$SONATYPE_PASSWORD
-
+  - secure: FhfRtrajYQsSpgA82xnabWW6C+y5mW4hXaHJm/G4fZx1+kX8Wts/8xs6ifn8E+HHE5+tSfLkyOkgUy/ZiJK5es/6/rK3QuysFNYedr2lJgkLg777O4EKpQg2ScYtM6ovVIucIY86lreDktuks8amHOQcQ3bvURxmTycNqUUcnp0=
+  - secure: KL4LGjLgrOGa5Hj897Ocu0ACZimk4x/YycbxJc/OVQLY3jxNPgX3cxB0SGpQXl4MwH9VQwku+iXz8TRmJb9BWVAMDObKwGkynTd1vfiX+yGLm57G2mlsHi3Gbbs9HCZUK7EYU2SzMu1Ak33xTCYcJHeDqHSVssa3Do/9h7g1oxo=
+after_success:
+- "./gradlew uploadArchives -s -PsonatypeUsername=$SONATYPE_USERNAME -PsonatypePassword=$SONATYPE_PASSWORD"
 branches:
   only:
-    - master
+  - master
