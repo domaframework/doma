@@ -6,12 +6,10 @@
 Welcome to Doma
 ===============
 
-Doma は Java のDBアクセスライブラリです。
+Doma は Java のDBアクセスフレームワークです。
 
 Doma のバージョンには 1 と 2 がありますが、
 このドキュメントは **バージョン 2** を対象としています。
-Doma 2 はオープンソースであり、コードは `GitHub で <https://github.com/domaframework/doma/>`_ ホストされています。
-バージョン 1 については http://doma.seasar.org/ を参照してください。
 
 Doma 2 には以下の特徴があります。
 
@@ -23,11 +21,12 @@ Doma 2 には以下の特徴があります。
 
 このドキュメントは複数のセクションから成ります。
 
-* `ユーザードキュメント`_
-* `Domaについて`_
+* `User Documentation`_
+* `About Doma`_
+* `Links`_
 
-ユーザードキュメント
-====================
+User Documentation
+==================
 
 .. toctree::
    :maxdepth: 2
@@ -46,12 +45,19 @@ Doma 2 には以下の特徴があります。
    annotation-processing
    build
 
-Domaについて
-============
+About Doma
+==========
 
 .. toctree::
    :maxdepth: 1
 
-   faq
    changelog
+   faq
+
+Links
+=====
+
+* `GitHub repository <https://github.com/domaframework/doma>`_
+* `Examples <https://github.com/domaframework/simple-examples>`_
+* `Doma 1 <http://doma.seasar.org/>`_
 
