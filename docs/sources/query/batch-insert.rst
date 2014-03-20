@@ -13,7 +13,9 @@
   public interface EmployeeDao {
       @BatchInsert
       int[] insert(List<Employee> employees);
-      ...
+
+      @BatchInsert
+      BatchResult<ImmutableEmployee> insert(List<ImmutableEmployee> employees);
   }
 
 デフォルトでは、INSERT文が自動生成されます。
@@ -23,10 +25,18 @@
 挿入の実行前にエンティティリスナーの ``preInsert`` メソッドをエンティティごとに呼び出します。
 また、挿入の実行後にエンティティリスナーの ``postInsert`` メソッドをエンティティごとに呼び出します。
 
+戻り値
+======
+
+パラメータ ``Iterable`` のサブタイプの要素がイミュータブルなエンティティクラスの場合、
+戻り値はそのエンティティクラスを要素とする ``org.seasar.doma.BatchResult``
+でなければいけません。
+
+上記の条件を満たさないない場合、戻り値は各更新処理の更新件数を表す ``int[]`` でなければいけません。
+
 SQLの自動生成によるバッチ挿入
 =============================
 
-戻り値の型は ``int[]`` でなければいけません。
 パラメータの型は :doc:`../entity` 要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
 指定できるパラメータの数は1つです。
 引数は ``null`` であってはいけません。
@@ -90,7 +100,9 @@ SQLファイルによるバッチ挿入を行うには、 ``@BatchInsert`` の `
   @BatchInsert(sqlFile = true)
   int[] insert(List<Employee> employees);
 
-戻り値の型は ``int[]`` でなければいけません。
+  @BatchInsert(sqlFile = true)
+  BatchResult<ImmutableEmployee> insert(List<ImmutableEmployee> employees);
+
 パラメータは任意の型を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
 指定できるパラメータの数は1つです。
 引数は ``null`` であってはいけません。

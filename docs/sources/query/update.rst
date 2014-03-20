@@ -13,7 +13,9 @@
   public interface EmployeeDao {
       @Update
       int update(Employee employee);
-      ...
+
+      @Update
+      Result<ImmutableEmployee> update(ImmutableEmployee employee);
   }
 
 デフォルトでは、UPDATE文が自動生成されます。
@@ -23,11 +25,18 @@
 更新の実行前にエンティティリスナーの ``preUpdate`` メソッドを呼び出されます。
 また、更新の実行後にエンティティリスナーの ``postUpdate`` メソッドを呼び出されます。
 
+戻り値
+======
+
+パラメータがイミュータブルなエンティティクラスの場合、
+戻り値はそのエンティティクラスを要素とする ``org.seasar.doma.Result``
+でなければいけません。
+
+上記の条件を満たさないない場合、戻り値は更新件数を表す ``int`` でなければいけません。
+
 SQLの自動生成による更新
 =======================
 
-戻り値の型は ``int`` でなければいけません。
-戻り値は更新件数を返します。
 パラメータの型はエンティティクラスでなければいけません。
 指定できるパラメータの数は1つです。
 引数は ``null`` であってはいけません。
@@ -36,6 +45,9 @@ SQLの自動生成による更新
 
   @Update
   int update(Employee employee);
+
+  @Update
+  Result<ImmutableEmployee> update(ImmutableEmployee employee);
 
 SQL自動生成におけるバージョン番号と楽観的排他制御
 -------------------------------------------------
@@ -151,8 +163,6 @@ SQLファイルによる更新
 SQLファイルによる更新を行うには、 ``@Update`` の ``sqlFile`` 要素に ``true`` を設定し、
 メソッドに対応するSQLファイルを用意します。
 
-戻り値の型は ``int`` でなければいけません。
-戻り値は更新件数を返します。
 パラメータには任意の型が使用できます。
 指定できるパラメータの数に制限はありません。
 パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
@@ -162,6 +172,9 @@ SQLファイルによる更新を行うには、 ``@Update`` の ``sqlFile`` 要
 
   @Update(sqlFile = true)
   int update(Employee employee);
+
+  @Update(sqlFile = true)
+  Result<ImmutableEmployee> update(ImmutableEmployee employee);
 
 たとえば、上記のメソッドに対応するSQLは次のように記述します。
 

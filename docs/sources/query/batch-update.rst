@@ -13,7 +13,9 @@
   public interface EmployeeDao {
       @BatchUpdate
       int[] update(List<Employee> employees);
-      ...
+
+      @BatchUpdate
+      BatchResult<ImmutableEmployee> update(List<ImmutableEmployee> employees);
   }
 
 デフォルトでは、UPDATE文が自動生成されます。
@@ -23,10 +25,18 @@
 更新の実行前にエンティティリスナーの ``preUpdate`` メソッドがエンティティごとに呼び出されます。
 また、更新の実行後にエンティティリスナーの ``postUpdate`` メソッドがエンティティごとに呼び出されます。
 
+戻り値
+======
+
+パラメータ ``Iterable`` のサブタイプの要素がイミュータブルなエンティティクラスの場合、
+戻り値はそのエンティティクラスを要素とする ``org.seasar.doma.BatchResult``
+でなければいけません。
+
+上記の条件を満たさないない場合、戻り値は各更新処理の更新件数を表す ``int[]`` でなければいけません。
+
 SQLの自動生成によるバッチ更新
 =============================
 
-戻り値の型は ``int[]`` でなければいけません。
 パラメータの型は :doc:`../entity` を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
 指定できるパラメータの数は1つです。
 引数は ``null`` であってはいけません。
@@ -122,7 +132,9 @@ SQLファイルによるバッチ更新を行うには、
   @BatchUpdate(sqlFile = true)
   int[] update(List<Employee> employees);
 
-戻り値の型は ``int[]`` でなければいけません。
+  @BatchUpdate
+  BatchResult<ImmutableEmployee> update(List<ImmutableEmployee> employees);
+
 パラメータは任意の型を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
 指定できるパラメータの数は1つです。
 引数は ``null`` であってはいけません。

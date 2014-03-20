@@ -13,7 +13,9 @@
   public interface EmployeeDao {
       @Insert
       int insert(Employee employee);
-      ...
+
+      @Insert
+      Result<ImmutableEmployee> insert(ImmutableEmployee employee);
   }
 
 デフォルトでは、INSERT文が自動生成されます。
@@ -23,11 +25,18 @@
 挿入の実行前にエンティティリスナーの ``preInsert`` メソッドが呼び出されます。
 また、挿入の実行後にエンティティリスナーの ``postInsert`` メソッドが呼び出されます。
 
+戻り値
+======
+
+パラメータがイミュータブルなエンティティクラスの場合、
+戻り値はそのエンティティクラスを要素とする ``org.seasar.doma.Result``
+でなければいけません。
+
+上記の条件を満たさないない場合、戻り値は更新件数を表す ``int`` でなければいけません。
+
 SQLの自動生成による挿入
 =======================
 
-戻り値の型は ``int`` でなければいけません。
-戻り値は更新件数を返します。
 パラメータの型はエンティティクラスでなければいけません。
 指定できるパラメータの数は1つです。
 引数はnullであってはいけません。
@@ -36,6 +45,9 @@ SQLの自動生成による挿入
 
   @Insert
   int insert(Employee employee);
+
+  @Insert
+  Result<ImmutableEmployee> insert(ImmutableEmployee employee);
 
 識別子
 ------
@@ -105,8 +117,6 @@ SQLファイルによる挿入
 SQLファイルによる挿入を行うには、 ``@Insert`` の ``sqlFile`` 要素に ``true`` を設定し、
 メソッドに対応するSQLファイルを用意します。
 
-戻り値の型は ``int`` でなければいけません。
-戻り値は更新件数を返します。
 パラメータには任意の型が使用できます。
 指定できるパラメータの数に制限はありません。
 パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
@@ -116,6 +126,9 @@ SQLファイルによる挿入を行うには、 ``@Insert`` の ``sqlFile`` 要
 
   @Insert(sqlFile = true)
   int insert(Employee employee);
+
+  @Insert(sqlFile = true)
+  Result<ImmutableEmployee> insert(ImmutableEmployee employee);
 
 たとえば、上記のメソッドに対応するSQLは次のように記述します。
 
