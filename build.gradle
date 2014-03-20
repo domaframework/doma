@@ -106,7 +106,7 @@ uploadArchives {
         pom.project {
             name project.name
             packaging 'jar'
-            description 'Java Database Access Framework'
+            description 'Domain Oriented Database Mapping Framework for Java 8'
             url projectUrl
             licenses {
                 license {
