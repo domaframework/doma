@@ -19,6 +19,10 @@
 パラメータには、パラメータの種別を示す ``@In`` 、 ``@InOut`` 、 ``@Out`` 、
 ``@ResultSet`` のいずれかのアノテーションが必須です。
 パラメータは複数指定できます。
+
+戻り値
+======
+
 戻り値は ``void`` でなければいけません。
 
 プロシージャー名
@@ -55,6 +59,9 @@ INパラメータは、 ``@In`` をメソッドのパラメータに注釈して
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../basic` または :doc:`../domain` を要素とするjava.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
 
 パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
 それ以外の型の場合、引数は ``null`` であってはいけません。
@@ -81,6 +88,9 @@ INOUTパラメータは、 ``@InOut`` をメソッドのパラメータに注釈
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../basic` または :doc:`../domain` を要素とするjava.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
 
 引数は ``null`` であってはいけません。
 
@@ -109,6 +119,9 @@ OUTパラメータは、 ``@Out`` をメソッドのパラメータに注釈し�
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../basic` または :doc:`../domain` を要素とするjava.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
 
 引数は ``null`` であってはいけません。
 
@@ -135,9 +148,12 @@ OUTパラメータは、 ``@Out`` をメソッドのパラメータに注釈し�
 
 * :doc:`../basic`
 * :doc:`../domain`
-* :doc:`../basic` または :doc:`../domain` を要素とするjava.util.Optional
 * :doc:`../entity`
 * java.util.Map<String, Object>
+* :doc:`../basic` または :doc:`../domain` を要素とするjava.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
 
 引数は ``null`` であってはいけません。
 

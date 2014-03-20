@@ -97,6 +97,9 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 * :doc:`basic`
 * :doc:`domain`
 * 上記のいずれかを要素の型とするjava.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
 
 .. code-block:: java
 

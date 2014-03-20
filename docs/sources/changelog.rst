@@ -54,10 +54,14 @@ Doma 1.36.0 からの変更点の内、主なものを示しています。
 * プロパティに基本型やドメインクラスを要素とする
   ``java.util.Optional`` を定義できるようになりました。
 
+* プロパティに ``java.util.OptionalInt`` 、 ``java.util.OptionalLong`` ,
+  ``java.util.OptionalDouble`` を定義できるようになりました。
+
 Daoインタフェース
 =================
 
-* パラメータや戻り値の型に ``java.util.Optional`` が利用できるようになりました。
+* パラメータや戻り値の型に ``java.util.Optional`` 、 ``java.util.OptionalInt`` 、
+  ``java.util.OptionalLong`` , ``java.util.OptionalDouble`` を定義できるようになりました。
 
 * ``java.util.Stream`` を使った検索ができるようになりました。
 
