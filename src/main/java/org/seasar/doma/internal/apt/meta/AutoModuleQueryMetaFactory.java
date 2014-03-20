@@ -30,6 +30,9 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.ResultSetMirror;
@@ -217,6 +220,24 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             return ctType.getElementCtType().accept(this, true);
         }
 
+        @Override
+        public CallableSqlParameterMeta visitOptionalIntCtType(
+                OptionalIntCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalIntListParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalLongCtType(
+                OptionalLongCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalLongListParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalDoubleCtType(
+                OptionalDoubleCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalDoubleListParameterMeta(parameterMeta.getName());
+        }
+
     }
 
     /**
@@ -265,6 +286,24 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         public CallableSqlParameterMeta visitOptionalCtType(
                 OptionalCtType ctType, Boolean p) throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalIntCtType(
+                OptionalIntCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalIntInParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalLongCtType(
+                OptionalLongCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalLongInParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalDoubleCtType(
+                OptionalDoubleCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalDoubleInParameterMeta(parameterMeta.getName());
         }
 
     }
@@ -350,6 +389,24 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             return ctType.getElementCtType().accept(this, true);
         }
 
+        @Override
+        public CallableSqlParameterMeta visitOptionalIntCtType(
+                OptionalIntCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalIntOutParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalLongCtType(
+                OptionalLongCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalLongOutParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalDoubleCtType(
+                OptionalDoubleCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalDoubleOutParameterMeta(parameterMeta.getName());
+        }
+
     }
 
     /**
@@ -432,5 +489,24 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 OptionalCtType ctType, Boolean p) throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
         }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalIntCtType(
+                OptionalIntCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalIntInOutParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalLongCtType(
+                OptionalLongCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalLongInOutParameterMeta(parameterMeta.getName());
+        }
+
+        @Override
+        public CallableSqlParameterMeta visitOptionalDoubleCtType(
+                OptionalDoubleCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalDoubleInOutParameterMeta(parameterMeta.getName());
+        }
+
     }
 }

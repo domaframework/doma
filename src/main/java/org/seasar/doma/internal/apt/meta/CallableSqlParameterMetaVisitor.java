@@ -84,4 +84,49 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visitOptionalDomainResultListParameterMeta(
             OptionalDomainResultListParameterMeta m, P p);
+
+    R visitOptionalIntInParameterMeta(OptionalIntInParameterMeta m, P p);
+
+    R visitOptionalIntOutParameterMeta(OptionalIntOutParameterMeta m, P p);
+
+    R visitOptionalIntInOutParameterMeta(OptionalIntInOutParameterMeta m, P p);
+
+    R visitOptionalIntListParameterMeta(OptionalIntListParameterMeta m, P p);
+
+    R visitOptionalIntSingleResultParameterMeta(
+            OptionalIntSingleResultParameterMeta m, P p);
+
+    R visitOptionalIntResultListParameterMeta(
+            OptionalIntResultListParameterMeta m, P p);
+
+    R visitOptionalLongInParameterMeta(OptionalLongInParameterMeta m, P p);
+
+    R visitOptionalLongOutParameterMeta(OptionalLongOutParameterMeta m, P p);
+
+    R visitOptionalLongInOutParameterMeta(OptionalLongInOutParameterMeta m, P p);
+
+    R visitOptionalLongListParameterMeta(OptionalLongListParameterMeta m, P p);
+
+    R visitOptionalLongSingleResultParameterMeta(
+            OptionalLongSingleResultParameterMeta m, P p);
+
+    R visitOptionalLongResultListParameterMeta(
+            OptionalLongResultListParameterMeta m, P p);
+
+    R visitOptionalDoubleInParameterMeta(OptionalDoubleInParameterMeta m, P p);
+
+    R visitOptionalDoubleOutParameterMeta(OptionalDoubleOutParameterMeta m, P p);
+
+    R visitOptionalDoubleInOutParameterMeta(OptionalDoubleInOutParameterMeta m,
+            P p);
+
+    R visitOptionalDoubleListParameterMeta(OptionalDoubleListParameterMeta m,
+            P p);
+
+    R visitOptionalDoubleSingleResultParameterMeta(
+            OptionalDoubleSingleResultParameterMeta m, P p);
+
+    R visitOptionalDoubleResultListParameterMeta(
+            OptionalDoubleResultListParameterMeta m, P p);
+
 }

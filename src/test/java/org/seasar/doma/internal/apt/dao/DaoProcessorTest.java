@@ -888,4 +888,34 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testOptionalInt() throws Exception {
+        Class<?> target = OptionalIntDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOptionalLong() throws Exception {
+        Class<?> target = OptionalLongDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOptionalDouble() throws Exception {
+        Class<?> target = OptionalDoubleDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
 }

@@ -43,7 +43,14 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
     R visitOptionalCtType(OptionalCtType ctType, P p) throws TH;
 
+    R visitOptionalIntCtType(OptionalIntCtType ctType, P p) throws TH;
+
+    R visitOptionalLongCtType(OptionalLongCtType ctType, P p) throws TH;
+
+    R visitOptionalDoubleCtType(OptionalDoubleCtType ctType, P p) throws TH;
+
     R visitFunctionCtType(FunctionCtType ctType, P p) throws TH;
 
     R visitStreamCtType(StreamCtType ctType, P p) throws TH;
+
 }

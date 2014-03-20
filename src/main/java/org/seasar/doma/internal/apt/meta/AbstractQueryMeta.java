@@ -27,6 +27,9 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.query.Query;
@@ -175,6 +178,24 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         @Override
         public Void visitOptionalCtType(OptionalCtType ctType, Void p)
                 throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
+        @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Void p) throws RuntimeException {
             return ctType.getElementCtType().accept(this, p);
         }
 

@@ -32,6 +32,9 @@ import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
@@ -277,6 +280,25 @@ public class SqlFileSelectQueryMetaFactory extends
                 }
                 return null;
             }
+
+            @Override
+            public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                    throws RuntimeException {
+                return null;
+            }
+
+            @Override
+            public Void visitOptionalLongCtType(OptionalLongCtType ctType,
+                    Void p) throws RuntimeException {
+                return null;
+            }
+
+            @Override
+            public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                    Void p) throws RuntimeException {
+                return null;
+            }
+
         }
     }
 
@@ -353,6 +375,25 @@ public class SqlFileSelectQueryMetaFactory extends
                     new ReturnOptionalElementCtTypeVisitor(returnMeta), p);
             return null;
         }
+
+        @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Void p) throws RuntimeException {
+            return null;
+        }
+
     }
 
     /**
@@ -414,6 +455,24 @@ public class SqlFileSelectQueryMetaFactory extends
                 throws RuntimeException {
             ctType.getElementCtType().accept(
                     new ReturnOptionalElementCtTypeVisitor(returnMeta), p);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Void p) throws RuntimeException {
             return null;
         }
 

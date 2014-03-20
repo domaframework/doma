@@ -15,9 +15,12 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
@@ -66,22 +69,24 @@ public class ReferenceCtType extends AbstractCtType {
                 .getTypeArguments();
         if (typeArguments.size() == 1) {
             referenceCtType.referentTypeMirror = typeArguments.get(0);
-            referenceCtType.referentType = OptionalCtType.newInstance(
-                    referenceCtType.referentTypeMirror, env);
-            if (referenceCtType.referentType == null) {
-                referenceCtType.referentType = DomainCtType.newInstance(
-                        referenceCtType.referentTypeMirror, env);
-                if (referenceCtType.referentType == null) {
-                    referenceCtType.referentType = BasicCtType.newInstance(
-                            referenceCtType.referentTypeMirror, env);
-                    if (referenceCtType.referentType == null) {
-                        referenceCtType.referentType = AnyCtType.newInstance(
-                                referenceCtType.referentTypeMirror, env);
-                    }
-                }
-            }
+            referenceCtType.referentType = buildCtTypeSuppliers(
+                    referenceCtType.referentTypeMirror, env).stream()
+                    .map(Supplier::get).filter(Objects::nonNull).findFirst()
+                    .get();
         }
         return referenceCtType;
+    }
+
+    protected static List<Supplier<CtType>> buildCtTypeSuppliers(
+            TypeMirror typeMirror, ProcessingEnvironment env) {
+        return Arrays.<Supplier<CtType>> asList(
+                () -> OptionalCtType.newInstance(typeMirror, env),
+                () -> OptionalIntCtType.newInstance(typeMirror, env),
+                () -> OptionalLongCtType.newInstance(typeMirror, env),
+                () -> OptionalDoubleCtType.newInstance(typeMirror, env),
+                () -> DomainCtType.newInstance(typeMirror, env),
+                () -> BasicCtType.newInstance(typeMirror, env),
+                () -> AnyCtType.newInstance(typeMirror, env));
     }
 
     protected static DeclaredType getReferenceDeclaredType(TypeMirror type,

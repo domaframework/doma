@@ -604,4 +604,35 @@ public class EntityProcessorTest extends AptTestCase {
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
+
+    public void testOptionalInt() throws Exception {
+        Class<?> target = OptionalIntEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOptionalLong() throws Exception {
+        Class<?> target = OptionalLongEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOptionalDouble() throws Exception {
+        Class<?> target = OptionalDoubleEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
 }

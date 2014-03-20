@@ -29,6 +29,9 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
@@ -767,6 +770,24 @@ public class EntityTypeGenerator extends AbstractGenerator {
         @Override
         public Void visitOptionalCtType(OptionalCtType ctType, Void p)
                 throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
+        @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(this, p);
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Void p) throws RuntimeException {
             return ctType.getElementCtType().accept(this, p);
         }
 

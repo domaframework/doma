@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 import junit.framework.TestCase;
 
@@ -75,6 +78,48 @@ public class ExpressionEvaluatorTest extends TestCase {
                 null, Person.class, new Class[] {}, new Object[] {});
         assertEquals("foo", result.getValue());
         assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testInvokeMethod_optionalInt() throws Exception {
+        Method method = Person.class.getMethod("getAge");
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Person person = new Person();
+        person.age = OptionalInt.of(10);
+        EvaluationResult result = evaluator.invokeMethod(location, method,
+                person, Person.class, new Class[] {}, new Object[] {});
+        assertEquals(Integer.valueOf(10), result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
+    }
+
+    public void testInvokeMethod_optionalInt_empty() throws Exception {
+        Method method = Person.class.getMethod("getAge");
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Person person = new Person();
+        person.age = OptionalInt.empty();
+        EvaluationResult result = evaluator.invokeMethod(location, method,
+                person, Person.class, new Class[] {}, new Object[] {});
+        assertNull(result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
+    }
+
+    public void testInvokeMethod_static_optionalInt() throws Exception {
+        Method method = Person.class.getMethod("getStaticAge");
+        Person.staticAge = OptionalInt.of(10);
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult result = evaluator.invokeMethod(location, method,
+                null, Person.class, new Class[] {}, new Object[] {});
+        assertEquals(Integer.valueOf(10), result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
+    }
+
+    public void testInvokeMethod_static_optionalInt_empty() throws Exception {
+        Method method = Person.class.getMethod("getStaticAge");
+        Person.staticAge = OptionalInt.empty();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult result = evaluator.invokeMethod(location, method,
+                null, Person.class, new Class[] {}, new Object[] {});
+        assertNull(result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
     }
 
     public void testFindMethod() throws Exception {
@@ -228,6 +273,92 @@ public class ExpressionEvaluatorTest extends TestCase {
                 .getFieldValue(location, field, null);
         assertEquals("foo", result.getValue());
         assertEquals(String.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_static_optionalInt() throws Exception {
+        Person.staticAge = OptionalInt.of(10);
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("staticAge");
+        EvaluationResult result = evaluator
+                .getFieldValue(location, field, null);
+        assertEquals(Integer.valueOf(10), result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_static_optionalInt_empty() throws Exception {
+        Person.staticAge = OptionalInt.empty();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("staticAge");
+        EvaluationResult result = evaluator
+                .getFieldValue(location, field, null);
+        assertNull(result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optionalInt() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("age");
+        Person person = new Person();
+        person.age = OptionalInt.of(10);
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertEquals(Integer.valueOf(10), result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optionalInt_empty() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("age");
+        Person person = new Person();
+        person.age = OptionalInt.empty();
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertNull(result.getValue());
+        assertEquals(Integer.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optionalLong() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("salary");
+        Person person = new Person();
+        person.salary = OptionalLong.of(10L);
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertEquals(Long.valueOf(10L), result.getValue());
+        assertEquals(Long.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optionalLong_empty() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("salary");
+        Person person = new Person();
+        person.salary = OptionalLong.empty();
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertNull(result.getValue());
+        assertEquals(Long.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optionalDouble() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("temperature");
+        Person person = new Person();
+        person.temperature = OptionalDouble.of(10L);
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertEquals(Double.valueOf(10d), result.getValue());
+        assertEquals(Double.class, result.getValueClass());
+    }
+
+    public void testGetFieldValue_optionalDouble_empty() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Field field = Person.class.getField("temperature");
+        Person person = new Person();
+        person.temperature = OptionalDouble.empty();
+        EvaluationResult result = evaluator.getFieldValue(location, field,
+                person);
+        assertNull(result.getValue());
+        assertEquals(Double.class, result.getValueClass());
     }
 
 }

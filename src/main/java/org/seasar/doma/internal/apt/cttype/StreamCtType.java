@@ -15,9 +15,12 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -64,32 +67,26 @@ public class StreamCtType extends AbstractCtType {
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.size() > 0) {
             streamCtType.elementTypeMirror = typeArgs.get(0);
-            streamCtType.elementCtType = EntityCtType.newInstance(
-                    streamCtType.elementTypeMirror, env);
-            if (streamCtType.elementCtType == null) {
-                streamCtType.elementCtType = OptionalCtType.newInstance(
-                        streamCtType.elementTypeMirror, env);
-                if (streamCtType.elementCtType == null) {
-                    streamCtType.elementCtType = DomainCtType.newInstance(
-                            streamCtType.elementTypeMirror, env);
-                    if (streamCtType.elementCtType == null) {
-                        streamCtType.elementCtType = BasicCtType.newInstance(
-                                streamCtType.elementTypeMirror, env);
-                        if (streamCtType.elementCtType == null) {
-                            streamCtType.elementCtType = MapCtType.newInstance(
-                                    streamCtType.elementTypeMirror, env);
-                            if (streamCtType.elementCtType == null) {
-                                streamCtType.elementCtType = AnyCtType
-                                        .newInstance(
-                                                streamCtType.elementTypeMirror,
-                                                env);
-                            }
-                        }
-                    }
-                }
-            }
+            streamCtType.elementCtType = buildCtTypeSuppliers(
+                    streamCtType.elementTypeMirror, env).stream()
+                    .map(Supplier::get).filter(Objects::nonNull).findFirst()
+                    .get();
         }
         return streamCtType;
+    }
+
+    protected static List<Supplier<CtType>> buildCtTypeSuppliers(
+            TypeMirror typeMirror, ProcessingEnvironment env) {
+        return Arrays.<Supplier<CtType>> asList(
+                () -> EntityCtType.newInstance(typeMirror, env),
+                () -> OptionalCtType.newInstance(typeMirror, env),
+                () -> OptionalIntCtType.newInstance(typeMirror, env),
+                () -> OptionalLongCtType.newInstance(typeMirror, env),
+                () -> OptionalDoubleCtType.newInstance(typeMirror, env),
+                () -> DomainCtType.newInstance(typeMirror, env),
+                () -> BasicCtType.newInstance(typeMirror, env),
+                () -> MapCtType.newInstance(typeMirror, env),
+                () -> AnyCtType.newInstance(typeMirror, env));
     }
 
     @Override

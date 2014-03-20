@@ -35,6 +35,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.WrapException;
@@ -758,6 +761,21 @@ public class ExpressionEvaluator implements
                             (Class<?>) typeArguments[0]);
                 }
             }
+        } else if (value instanceof OptionalInt) {
+            OptionalInt optional = (OptionalInt) value;
+            Integer nullable = optional.isPresent() ? optional.getAsInt()
+                    : null;
+            return new EvaluationResult(nullable, Integer.class);
+        } else if (value instanceof OptionalLong) {
+            OptionalLong optional = (OptionalLong) value;
+            Long nullable = optional.isPresent() ? Long.valueOf(optional
+                    .getAsLong()) : null;
+            return new EvaluationResult(nullable, Long.class);
+        } else if (value instanceof OptionalDouble) {
+            OptionalDouble optional = (OptionalDouble) value;
+            Double nullable = optional.isPresent() ? Double.valueOf(optional
+                    .getAsDouble()) : null;
+            return new EvaluationResult(nullable, Double.class);
         }
         if (target != null) {
             if (genericType instanceof TypeVariable) {

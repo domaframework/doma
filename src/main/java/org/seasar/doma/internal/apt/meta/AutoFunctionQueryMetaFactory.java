@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -28,6 +28,9 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 import org.seasar.doma.message.Message;
@@ -137,6 +140,24 @@ public class AutoFunctionQueryMetaFactory extends
             return ctType.getElementCtType().accept(this, true);
         }
 
+        @Override
+        public ResultParameterMeta visitOptionalIntCtType(
+                OptionalIntCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalIntSingleResultParameterMeta();
+        }
+
+        @Override
+        public ResultParameterMeta visitOptionalLongCtType(
+                OptionalLongCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalLongSingleResultParameterMeta();
+        }
+
+        @Override
+        public ResultParameterMeta visitOptionalDoubleCtType(
+                OptionalDoubleCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalDoubleSingleResultParameterMeta();
+        }
+
     }
 
     /**
@@ -204,5 +225,24 @@ public class AutoFunctionQueryMetaFactory extends
                 Boolean p) throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
         }
+
+        @Override
+        public ResultParameterMeta visitOptionalIntCtType(
+                OptionalIntCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalIntResultListParameterMeta();
+        }
+
+        @Override
+        public ResultParameterMeta visitOptionalLongCtType(
+                OptionalLongCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalLongResultListParameterMeta();
+        }
+
+        @Override
+        public ResultParameterMeta visitOptionalDoubleCtType(
+                OptionalDoubleCtType ctType, Boolean p) throws RuntimeException {
+            return new OptionalDoubleResultListParameterMeta();
+        }
+
     }
 }

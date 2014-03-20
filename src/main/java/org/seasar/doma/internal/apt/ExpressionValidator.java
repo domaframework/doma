@@ -22,6 +22,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -403,7 +407,7 @@ public class ExpressionValidator implements
             TypeDeclaration returnTypeDeclaration = methodDeclaration
                     .getReturnTypeDeclaration();
             if (returnTypeDeclaration != null) {
-                return extractElementIfOptional(returnTypeDeclaration);
+                return convertIfOptional(returnTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
@@ -447,7 +451,7 @@ public class ExpressionValidator implements
             TypeDeclaration returnTypeDeclaration = methodDeclaration
                     .getReturnTypeDeclaration();
             if (returnTypeDeclaration != null) {
-                return extractElementIfOptional(returnTypeDeclaration);
+                return convertIfOptional(returnTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
@@ -537,7 +541,7 @@ public class ExpressionValidator implements
             TypeDeclaration fieldTypeDeclaration = fieldDeclaration
                     .getTypeDeclaration();
             if (fieldTypeDeclaration != null) {
-                return extractElementIfOptional(fieldTypeDeclaration);
+                return convertIfOptional(fieldTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
@@ -567,7 +571,7 @@ public class ExpressionValidator implements
             TypeDeclaration fieldTypeDeclaration = fieldDeclaration
                     .getTypeDeclaration();
             if (fieldTypeDeclaration != null) {
-                return extractElementIfOptional(fieldTypeDeclaration);
+                return convertIfOptional(fieldTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
@@ -576,20 +580,25 @@ public class ExpressionValidator implements
                 fieldName);
     }
 
-    protected TypeDeclaration extractElementIfOptional(
-            TypeDeclaration typeDeclaration) {
-        if (!typeDeclaration.isOptionalType()) {
-            return typeDeclaration;
+    protected TypeDeclaration convertIfOptional(TypeDeclaration typeDeclaration) {
+        if (typeDeclaration.is(Optional.class)) {
+            TypeParameterDeclaration typeParameterDeclaration = typeDeclaration
+                    .getTypeParameterDeclarations()
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(
+                            () -> new AptIllegalStateException(typeDeclaration
+                                    .toString()));
+            return TypeDeclaration.newTypeDeclaration(
+                    typeParameterDeclaration.getActualType(), env);
+        } else if (typeDeclaration.is(OptionalInt.class)) {
+            return TypeDeclaration.newTypeDeclaration(Integer.class, env);
+        } else if (typeDeclaration.is(OptionalLong.class)) {
+            return TypeDeclaration.newTypeDeclaration(Long.class, env);
+        } else if (typeDeclaration.is(OptionalDouble.class)) {
+            return TypeDeclaration.newTypeDeclaration(Double.class, env);
         }
-        TypeParameterDeclaration typeParameterDeclaration = typeDeclaration
-                .getTypeParameterDeclarations()
-                .stream()
-                .findFirst()
-                .orElseThrow(
-                        () -> new AptIllegalStateException(typeDeclaration
-                                .toString()));
-        return TypeDeclaration.newTypeDeclaration(
-                typeParameterDeclaration.getActualType(), env);
+        return typeDeclaration;
     }
 
     @Override

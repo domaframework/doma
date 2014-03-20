@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -27,6 +30,9 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
@@ -156,6 +162,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         this.propertySupplier = createPropertySupplier();
     }
 
+    @SuppressWarnings("unchecked")
     private Supplier<Property<ENTITY, BASIC>> createPropertySupplier() {
         if (parentEntityPropertyType != null) {
             return () -> new ParentProperty();
@@ -172,6 +179,15 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         if (entityPropertyClass == Optional.class) {
             return () -> new DefaultProperty<Optional<BASIC>>(
                     new OptionalBasicScalar<>(wrapperSupplier));
+        } else if (entityPropertyClass == OptionalInt.class) {
+            return () -> new DefaultProperty<OptionalInt>(
+                    (Scalar<BASIC, OptionalInt>) new OptionalIntScalar());
+        } else if (entityPropertyClass == OptionalLong.class) {
+            return () -> new DefaultProperty<OptionalLong>(
+                    (Scalar<BASIC, OptionalLong>) new OptionalLongScalar());
+        } else if (entityPropertyClass == OptionalDouble.class) {
+            return () -> new DefaultProperty<OptionalDouble>(
+                    (Scalar<BASIC, OptionalDouble>) new OptionalDoubleScalar());
         } else {
             return () -> new DefaultProperty<BASIC>(new BasicScalar<>(
                     wrapperSupplier, field.getClass().isPrimitive()));

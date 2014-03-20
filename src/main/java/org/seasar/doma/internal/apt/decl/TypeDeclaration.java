@@ -132,8 +132,8 @@ public class TypeDeclaration {
         }
     }
 
-    public boolean isOptionalType() {
-        return TypeMirrorUtil.isSameType(type, Optional.class, env);
+    public boolean is(Class<?> clazz) {
+        return TypeMirrorUtil.isSameType(type, clazz, env);
     }
 
     public int getNumberPriority() {

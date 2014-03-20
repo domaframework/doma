@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -36,6 +36,9 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.BatchResult;
@@ -99,6 +102,24 @@ public class QueryReturnMeta {
             optionalCtType.getElementCtType().accept(
                     new OptionalElementCtTypeVisitor(methodElement), null);
             return optionalCtType;
+        }
+
+        OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(
+                type, env);
+        if (optionalIntCtType != null) {
+            return optionalIntCtType;
+        }
+
+        OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(
+                type, env);
+        if (optionalLongCtType != null) {
+            return optionalLongCtType;
+        }
+
+        OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType
+                .newInstance(type, env);
+        if (optionalDoubleCtType != null) {
+            return optionalDoubleCtType;
         }
 
         DomainCtType domainCtType = DomainCtType.newInstance(type, env);

@@ -33,6 +33,9 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
@@ -111,6 +114,24 @@ public class QueryParameterMeta {
             optionalCtType.getElementCtType().accept(
                     new OptionalElementCtTypeVisitor(parameterElement), null);
             return optionalCtType;
+        }
+
+        OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(
+                type, env);
+        if (optionalIntCtType != null) {
+            return optionalIntCtType;
+        }
+
+        OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(
+                type, env);
+        if (optionalLongCtType != null) {
+            return optionalLongCtType;
+        }
+
+        OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType
+                .newInstance(type, env);
+        if (optionalDoubleCtType != null) {
+            return optionalDoubleCtType;
         }
 
         final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
@@ -265,6 +286,24 @@ public class QueryParameterMeta {
         @Override
         public Boolean visitOptionalCtType(OptionalCtType ctType, Void p)
                 throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Void p) throws RuntimeException {
             return true;
         }
 

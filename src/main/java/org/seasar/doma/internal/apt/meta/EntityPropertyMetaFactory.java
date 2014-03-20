@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -35,6 +36,9 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
@@ -68,7 +72,7 @@ public class EntityPropertyMetaFactory {
         EntityPropertyMeta propertyMeta = new EntityPropertyMeta(entityElement,
                 fieldElement, entityMeta.getNamingType(),
                 entityElement.equals(entityMeta.getEntityElement()), env);
-        doDataType(propertyMeta, fieldElement, entityMeta);
+        doCtType(propertyMeta, fieldElement, entityMeta);
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
@@ -76,9 +80,13 @@ public class EntityPropertyMetaFactory {
         return propertyMeta;
     }
 
-    protected void doDataType(EntityPropertyMeta propertyMeta,
+    protected void doCtType(EntityPropertyMeta propertyMeta,
             final VariableElement fieldElement, EntityMeta entityMeta) {
-        final TypeMirror type = fieldElement.asType();
+        CtType ctType = resolveCtType(fieldElement, fieldElement.asType());
+        propertyMeta.setCtType(ctType);
+    }
+
+    protected CtType resolveCtType(VariableElement fieldElement, TypeMirror type) {
         final OptionalCtType optionalCtType = OptionalCtType.newInstance(type,
                 env);
         if (optionalCtType != null) {
@@ -90,30 +98,47 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(Message.DOMA4233, env, fieldElement,
                         optionalCtType.getQualifiedName());
             }
-            propertyMeta.setCtType(optionalCtType);
-        } else {
-            final DomainCtType domainCtType = DomainCtType.newInstance(type,
-                    env);
-            if (domainCtType != null) {
-                if (domainCtType.isRawType()) {
-                    throw new AptException(Message.DOMA4204, env, fieldElement,
-                            domainCtType.getQualifiedName());
-                }
-                if (domainCtType.isWildcardType()) {
-                    throw new AptException(Message.DOMA4205, env, fieldElement,
-                            domainCtType.getQualifiedName());
-                }
-                propertyMeta.setCtType(domainCtType);
-            } else {
-                BasicCtType basicCtType = BasicCtType.newInstance(type, env);
-                if (basicCtType != null) {
-                    propertyMeta.setCtType(basicCtType);
-                } else {
-                    throw new AptException(Message.DOMA4096, env, fieldElement,
-                            type);
-                }
-            }
+            return optionalCtType;
         }
+
+        OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(
+                type, env);
+        if (optionalIntCtType != null) {
+            return optionalIntCtType;
+        }
+
+        OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(
+                type, env);
+        if (optionalLongCtType != null) {
+            return optionalLongCtType;
+        }
+
+        OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType
+                .newInstance(type, env);
+        if (optionalDoubleCtType != null) {
+            return optionalDoubleCtType;
+        }
+
+        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
+        if (domainCtType != null) {
+            if (domainCtType.isRawType()) {
+                throw new AptException(Message.DOMA4204, env, fieldElement,
+                        domainCtType.getQualifiedName());
+            }
+            if (domainCtType.isWildcardType()) {
+                throw new AptException(Message.DOMA4205, env, fieldElement,
+                        domainCtType.getQualifiedName());
+            }
+            return domainCtType;
+        }
+
+        BasicCtType basicCtType = BasicCtType.newInstance(type, env);
+        if (basicCtType != null) {
+            return basicCtType;
+        } else {
+            throw new AptException(Message.DOMA4096, env, fieldElement, type);
+        }
+
     }
 
     protected void doName(EntityPropertyMeta propertyMeta,
@@ -321,6 +346,27 @@ public class EntityPropertyMetaFactory {
                     public Boolean visitOptionalCtType(OptionalCtType ctType,
                             Void p) throws RuntimeException {
                         return ctType.getElementCtType().accept(this, p);
+                    }
+
+                    @Override
+                    public Boolean visitOptionalIntCtType(
+                            OptionalIntCtType ctType, Void p)
+                            throws RuntimeException {
+                        return true;
+                    }
+
+                    @Override
+                    public Boolean visitOptionalLongCtType(
+                            OptionalLongCtType ctType, Void p)
+                            throws RuntimeException {
+                        return true;
+                    }
+
+                    @Override
+                    public Boolean visitOptionalDoubleCtType(
+                            OptionalDoubleCtType ctType, Void p)
+                            throws RuntimeException {
+                        return true;
                     }
 
                     @Override

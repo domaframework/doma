@@ -15,9 +15,12 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
@@ -70,32 +73,26 @@ public class IterableCtType extends AbstractCtType {
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.size() > 0) {
             iterableCtType.elementTypeMirror = typeArgs.get(0);
-            iterableCtType.elementCtType = EntityCtType.newInstance(
-                    iterableCtType.elementTypeMirror, env);
-            if (iterableCtType.elementCtType == null) {
-                iterableCtType.elementCtType = OptionalCtType.newInstance(
-                        iterableCtType.elementTypeMirror, env);
-                if (iterableCtType.elementCtType == null) {
-                    iterableCtType.elementCtType = DomainCtType.newInstance(
-                            iterableCtType.elementTypeMirror, env);
-                    if (iterableCtType.elementCtType == null) {
-                        iterableCtType.elementCtType = BasicCtType.newInstance(
-                                iterableCtType.elementTypeMirror, env);
-                        if (iterableCtType.elementCtType == null) {
-                            iterableCtType.elementCtType = MapCtType.newInstance(
-                                    iterableCtType.elementTypeMirror, env);
-                            if (iterableCtType.elementCtType == null) {
-                                iterableCtType.elementCtType = AnyCtType
-                                        .newInstance(
-                                                iterableCtType.elementTypeMirror,
-                                                env);
-                            }
-                        }
-                    }
-                }
-            }
+            iterableCtType.elementCtType = buildCtTypeSuppliers(
+                    iterableCtType.elementTypeMirror, env).stream()
+                    .map(Supplier::get).filter(Objects::nonNull).findFirst()
+                    .get();
         }
         return iterableCtType;
+    }
+
+    protected static List<Supplier<CtType>> buildCtTypeSuppliers(
+            TypeMirror typeMirror, ProcessingEnvironment env) {
+        return Arrays.<Supplier<CtType>> asList(
+                () -> EntityCtType.newInstance(typeMirror, env),
+                () -> OptionalCtType.newInstance(typeMirror, env),
+                () -> OptionalIntCtType.newInstance(typeMirror, env),
+                () -> OptionalLongCtType.newInstance(typeMirror, env),
+                () -> OptionalDoubleCtType.newInstance(typeMirror, env),
+                () -> DomainCtType.newInstance(typeMirror, env),
+                () -> BasicCtType.newInstance(typeMirror, env),
+                () -> MapCtType.newInstance(typeMirror, env),
+                () -> AnyCtType.newInstance(typeMirror, env));
     }
 
     @Override

@@ -92,6 +92,22 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements
     }
 
     @Override
+    public R visitOptionalIntCtType(OptionalIntCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
+    @Override
+    public R visitOptionalLongCtType(OptionalLongCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
+    @Override
+    public R visitOptionalDoubleCtType(OptionalDoubleCtType ctType, P p)
+            throws TH {
+        return defaultAction(ctType, p);
+    }
+
+    @Override
     public R visitFunctionCtType(FunctionCtType ctType, P p) throws TH {
         return defaultAction(ctType, p);
     }

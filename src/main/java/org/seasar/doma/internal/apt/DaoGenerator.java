@@ -41,6 +41,9 @@ import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
@@ -83,6 +86,24 @@ import org.seasar.doma.internal.apt.meta.OptionalDomainListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDomainOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDomainResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDomainSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDoubleInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDoubleInParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDoubleListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDoubleOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDoubleResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalDoubleSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalIntInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalIntInParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalIntListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalIntOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalIntResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalIntSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalLongInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalLongInParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalLongListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalLongOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalLongResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalLongSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ParentDaoMeta;
 import org.seasar.doma.internal.apt.meta.QueryKind;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
@@ -112,7 +133,16 @@ import org.seasar.doma.internal.jdbc.command.OptionalBasicStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDomainStreamHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalDoubleResultListHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalDoubleSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalDoubleStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalIntResultListHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalIntSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalIntStreamHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalLongResultListHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalLongSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalLongStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
@@ -143,6 +173,24 @@ import org.seasar.doma.internal.jdbc.sql.OptionalDomainListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDomainOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDomainResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDomainSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDoubleListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDoubleOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDoubleResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalDoubleSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalIntInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalIntInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalIntListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalIntOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalIntResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalIntSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalLongInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalLongInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalLongListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalLongOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalLongResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalLongSingleResultParameter;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
@@ -1082,6 +1130,36 @@ public class DaoGenerator extends AbstractGenerator {
                                     return null;
                                 }
 
+                                @Override
+                                public Void visitOptionalIntCtType(
+                                        OptionalIntCtType ctType, Void p)
+                                        throws RuntimeException {
+                                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsInt() : null);%n",
+                                    /* 1 */parameterMeta.getName(),
+                                    /* 2 */Integer.class.getName());
+                                    return null;
+                                }
+
+                                @Override
+                                public Void visitOptionalLongCtType(
+                                        OptionalLongCtType ctType, Void p)
+                                        throws RuntimeException {
+                                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsLong() : null);%n",
+                                    /* 1 */parameterMeta.getName(),
+                                    /* 2 */Long.class.getName());
+                                    return null;
+                                }
+
+                                @Override
+                                public Void visitOptionalDoubleCtType(
+                                        OptionalDoubleCtType ctType, Void p)
+                                        throws RuntimeException {
+                                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsDouble() : null);%n",
+                                    /* 1 */parameterMeta.getName(),
+                                    /* 2 */Double.class.getName());
+                                    return null;
+                                }
+
                             }, null);
                 }
             }
@@ -1728,6 +1806,160 @@ public class DaoGenerator extends AbstractGenerator {
             return null;
         }
 
+        @Override
+        public Void visitOptionalIntInOutParameterMeta(
+                OptionalIntInOutParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalIntInOutParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalIntInParameterMeta(
+                OptionalIntInParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalIntInParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalIntListParameterMeta(
+                OptionalIntListParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s, \"%2$s\"));%n",
+            /* 1 */OptionalIntListParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        public Void visitOptionalIntOutParameterMeta(
+                OptionalIntOutParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalIntOutParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalIntSingleResultParameterMeta(
+                OptionalIntSingleResultParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.setResultParameter(new %1$s());%n",
+            /* 1 */OptionalIntSingleResultParameter.class.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalIntResultListParameterMeta(
+                OptionalIntResultListParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.setResultParameter(new %1$s());%n",
+            /* 1 */OptionalIntResultListParameter.class.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongOutParameterMeta(
+                OptionalLongOutParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalLongOutParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongSingleResultParameterMeta(
+                OptionalLongSingleResultParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.setResultParameter(new %1$s());%n",
+            /* 1 */OptionalLongSingleResultParameter.class.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongResultListParameterMeta(
+                OptionalLongResultListParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.setResultParameter(new %1$s());%n",
+            /* 1 */OptionalLongResultListParameter.class.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongInOutParameterMeta(
+                OptionalLongInOutParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalLongInOutParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongInParameterMeta(
+                OptionalLongInParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalLongInParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongListParameterMeta(
+                OptionalLongListParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s, \"%2$s\"));%n",
+            /* 1 */OptionalLongListParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        public Void visitOptionalDoubleOutParameterMeta(
+                OptionalDoubleOutParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalDoubleOutParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleSingleResultParameterMeta(
+                OptionalDoubleSingleResultParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.setResultParameter(new %1$s());%n",
+            /* 1 */OptionalDoubleSingleResultParameter.class.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleResultListParameterMeta(
+                OptionalDoubleResultListParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.setResultParameter(new %1$s());%n",
+            /* 1 */OptionalDoubleResultListParameter.class.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleInOutParameterMeta(
+                OptionalDoubleInOutParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalDoubleInOutParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleInParameterMeta(
+                OptionalDoubleInParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s));%n",
+            /* 1 */OptionalDoubleInParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleListParameterMeta(
+                OptionalDoubleListParameterMeta m, AutoModuleQueryMeta p) {
+            iprint("__query.addParameter(new %1$s(%2$s, \"%2$s\"));%n",
+            /* 1 */OptionalDoubleListParameter.class.getName(),
+            /* 2 */m.getName());
+            return null;
+        }
+
     }
 
     /**
@@ -1868,6 +2100,45 @@ public class DaoGenerator extends AbstractGenerator {
             public Void visitOptionalCtType(OptionalCtType ctType,
                     Boolean optional) throws RuntimeException {
                 return ctType.getElementCtType().accept(this, true);
+            }
+
+            @Override
+            public Void visitOptionalIntCtType(OptionalIntCtType ctType,
+                    Boolean p) throws RuntimeException {
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+                /* 1 */commandClassName,
+                /* 2 */resultMeta.getBoxedTypeName(),
+                /* 3 */OptionalIntStreamHandler.class.getName(),
+                /* 4 */functionParamName,
+                /* 5 */commandName,
+                /* 6 */methodName);
+                return null;
+            }
+
+            @Override
+            public Void visitOptionalLongCtType(OptionalLongCtType ctType,
+                    Boolean p) throws RuntimeException {
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+                /* 1 */commandClassName,
+                /* 2 */resultMeta.getBoxedTypeName(),
+                /* 3 */OptionalLongStreamHandler.class.getName(),
+                /* 4 */functionParamName,
+                /* 5 */commandName,
+                /* 6 */methodName);
+                return null;
+            }
+
+            @Override
+            public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                    Boolean p) throws RuntimeException {
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+                /* 1 */commandClassName,
+                /* 2 */resultMeta.getBoxedTypeName(),
+                /* 3 */OptionalDoubleStreamHandler.class.getName(),
+                /* 4 */functionParamName,
+                /* 5 */commandName,
+                /* 6 */methodName);
+                return null;
             }
 
             protected String getBasicStreamHandlerName(Boolean optional) {
@@ -2015,6 +2286,42 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */OptionalIntSingleResultHandler.class.getName(),
+            /* 4 */commandName,
+            /* 5 */methodName);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */OptionalLongSingleResultHandler.class.getName(),
+            /* 4 */commandName,
+            /* 5 */methodName);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Boolean p) throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */OptionalDoubleSingleResultHandler.class.getName(),
+            /* 4 */commandName,
+            /* 5 */methodName);
+            return null;
+        }
+
+        @Override
         public Void visitIterableCtType(final IterableCtType iterableCtType,
                 final Boolean __) throws RuntimeException {
             iterableCtType.getElementCtType().accept(
@@ -2116,6 +2423,48 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitOptionalCtType(OptionalCtType ctType,
                                 Boolean __) throws RuntimeException {
                             return ctType.getElementCtType().accept(this, true);
+                        }
+
+                        @Override
+                        public Void visitOptionalIntCtType(
+                                OptionalIntCtType ctType, Boolean p)
+                                throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+                            /* 1 */commandClassName,
+                            /* 2 */resultBoxedTypeName,
+                                    /* 3 */OptionalIntResultListHandler.class
+                                            .getName(),
+                                    /* 4 */commandName,
+                                    /* 5 */methodName);
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitOptionalLongCtType(
+                                OptionalLongCtType ctType, Boolean p)
+                                throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+                            /* 1 */commandClassName,
+                            /* 2 */resultBoxedTypeName,
+                            /* 3 */OptionalLongResultListHandler.class
+                                    .getName(),
+                            /* 4 */commandName,
+                            /* 5 */methodName);
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitOptionalDoubleCtType(
+                                OptionalDoubleCtType ctType, Boolean p)
+                                throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+                            /* 1 */commandClassName,
+                            /* 2 */resultBoxedTypeName,
+                            /* 3 */OptionalDoubleResultListHandler.class
+                                    .getName(),
+                            /* 4 */commandName,
+                            /* 5 */methodName);
+                            return null;
                         }
 
                     }, false);

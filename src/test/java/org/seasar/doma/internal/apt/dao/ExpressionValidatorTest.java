@@ -487,6 +487,55 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isTextType());
     }
 
+    public void testFieldAccess_optionalInt() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPerson", Person.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("person.age").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
+    }
+
+    public void testFieldAccess_optionalLong() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPerson", Person.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("person.salary").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
+    }
+
+    public void testFieldAccess_optionalDouble() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPerson", Person.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("person.temperature")
+                .parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
+    }
+
     public void testFieldAccess_static_optional() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
@@ -501,6 +550,22 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionNode node = new ExpressionParser("person.staticName").parse();
         TypeDeclaration result = validator.validate(node);
         assertTrue(result.isTextType());
+    }
+
+    public void testFieldAccess_static_optionalInt() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPerson", Person.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("person.staticAge").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
     }
 
     public void testMethodAccess() throws Exception {
@@ -535,6 +600,22 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isTextType());
     }
 
+    public void testMethodAccess_optionalInt() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPerson", Person.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("person.getAge()").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
+    }
+
     public void testMethodAccess_static_optional() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
@@ -550,6 +631,23 @@ public class ExpressionValidatorTest extends AptTestCase {
                 .parse();
         TypeDeclaration result = validator.validate(node);
         assertTrue(result.isTextType());
+    }
+
+    public void testMethodAccess_static_optionalInt() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPerson", Person.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("person.getStaticAge()")
+                .parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
     }
 
     public void testConstructorAccess() throws Exception {

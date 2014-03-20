@@ -16,6 +16,9 @@
 package org.seasar.doma.internal.apt.entity;
 
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
@@ -41,4 +44,19 @@ public class Person {
         return staticName;
     }
 
+    OptionalInt age;
+
+    static OptionalInt staticAge;
+
+    public OptionalInt getAge() {
+        return age;
+    }
+
+    public static OptionalInt getStaticAge() {
+        return staticAge;
+    }
+
+    OptionalLong salary;
+
+    OptionalDouble temperature;
 }
