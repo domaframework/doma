@@ -2,40 +2,38 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'signing'
 apply plugin: 'maven'
- 
 
-// project information
+group = 'org.seasar.doma'
 version = '2.0-beta-2-SNAPSHOT'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+ext.encoding = 'UTF-8'
 sourceCompatibility = jdkVersion
 targetCompatibility = jdkVersion
-group = 'org.seasar.doma'
 
 compileJava {
     doFirst {
         ant.replaceregexp(
             match: /(private static final String VERSION = ")[^"]*(")/,
             replace: "\\1${version}\\2",
-            encoding: 'UTF-8', 
+            encoding: encoding, 
             flags: 'g') {
                 fileset(dir: '.') {
                     include(name: '**/Artifact.java')
                 }
             }
     }
-
-    options.encoding = 'UTF-8'
+    options.encoding = encoding
 }
- 
+
 compileTestJava {
-    options.encoding = 'UTF-8'
+    options.encoding = encoding
     options.compilerArgs = ['-proc:none']
 }
 
 javadoc {
-    options.encoding = 'UTF-8'
-    options.charSet = 'UTF-8'
-    options.docEncoding = 'UTF-8'
+    options.encoding = encoding
+    options.charSet = encoding
+    options.docEncoding = encoding
     exclude '**/internal/**'
 }
 
@@ -43,11 +41,6 @@ jar {
     manifest {
         attributes 'Implementation-Title': 'Doma', 'Implementation-Version': version
     }
-}
- 
-test {
-    scanForTestClasses = false
-    includes = ['**/*Test.class']
 }
 
 task wrapper(type: Wrapper) {
@@ -58,12 +51,11 @@ repositories {
     mavenCentral()
     maven {url 'http://maven.seasar.org/maven2'}
 }
- 
+
 dependencies {
     testCompile 'org.seasar.aptina:aptina-unit:1.0.0'
 }
 
-// creating jars
 task sourcesJar (type : Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
@@ -74,20 +66,17 @@ task javadocJar (type : Jar, dependsOn : javadoc) {
     from javadoc.destinationDir
 }
 
-// collect artifacts to be signed
 artifacts {
     archives jar
     archives sourcesJar
     archives javadocJar
 }
 
-// sign artifacts
 signing {
     required { isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives') }
     sign configurations.archives
 }
 
-// uploading artifacts
 uploadArchives {
     repositories.mavenDeployer {
         beforeDeployment {MavenDeployment deployment ->
