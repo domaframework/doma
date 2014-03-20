@@ -22,6 +22,7 @@ Doma 2 には以下の特徴があります。
 このドキュメントは複数のセクションから成ります。
 
 * `User Documentation`_
+* `Developer Documentation`_
 * `About Doma`_
 * `Links`_
 
@@ -44,6 +45,15 @@ User Documentation
    transaction
    annotation-processing
    build
+
+Developer Documentation
+=======================
+
+.. toctree::
+   :maxdepth: 2
+
+   development
+   integration-test
 
 About Doma
 ==========
