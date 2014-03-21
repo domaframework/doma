@@ -21,6 +21,15 @@ compileJava {
                     include(name: '**/Artifact.java')
                 }
             }
+        ant.replaceregexp(
+            match: /("org.seasar.doma:doma:)[^"]*(")/,
+            replace: "\\1${version}\\2",
+            encoding: encoding, 
+            flags: 'g') {
+                fileset(dir: 'docs/sources') {
+                    include(name: '**/*.rst')
+                }
+            }
     }
     options.encoding = encoding
 }

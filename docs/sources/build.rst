@@ -30,7 +30,7 @@ Gradle
   }
 
   dependencies {
-      compile "org.seasar.doma:doma:2.0.0"
+      compile "org.seasar.doma:doma:2.0-beta-3-SNAPSHOT"
   }
 
 Doma の SNAPSHOT を参照したい場合は、
