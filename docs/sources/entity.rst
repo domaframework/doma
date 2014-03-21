@@ -85,7 +85,7 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
       @Version
       final Integer version;
 
-      public Employee(id, name, version) {
+      public Employee(Integer id, String name, Integer version) {
           this.id = id;
           this.name = name;
           this.version = version;
@@ -121,7 +121,7 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 
 * :doc:`basic`
 * :doc:`domain`
-* 上記のいずれかを要素の型とするjava.util.Optional
+* :doc:`basic` または :doc:`entity` のいずれかを要素とするjava.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
@@ -157,7 +157,7 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 カラム名は `ネーミング規約`_ により解決されます。
 
 識別子
-------------------
+------
 
 識別子(主キー)であることを指定するには、 ``@Id`` を使います。
 
@@ -176,9 +176,22 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
   @Id
   Integer id2;
 
+識別子の自動生成
+~~~~~~~~~~~~~~~~
 
-IDENTITYを使った識別子の自動採番
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+識別子を自動生成するには ``@GeneratedValue`` を注釈して示します。
+フィールドの型は以下のいずれかでなければいけません。
+
+* java.lang.Number のサブタイプ
+* java.lang.Number のサブタイプを値とする :doc:`domain`
+* 上記のいずれかを要素の型とする java.util.Optional
+* OptionalInt
+* OptionalLong
+* OptionalDouble
+* 数値のプリミティブ型
+
+IDENTITYを使った識別子の自動生成
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 データベースのIDENTITY自動生成機能を利用する方法です。
 RDBMSによってはサポートされていません。
@@ -190,8 +203,8 @@ RDBMSによってはサポートされていません。
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer id;
 
-シーケンスを使った識別子の自動採番
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+シーケンスを使った識別子の自動生成
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 データベースのシーケンスを利用する方法です。
 RDBMSによってはサポートされていません。
@@ -208,7 +221,7 @@ RDBMSによってはサポートされていません。
   Integer id;
 
 テーブルを使った識別子の自動採番
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 生成される識別子をテーブルで管理する方法です。
 すべてのRDBMSで利用できます。
@@ -238,9 +251,12 @@ RDBMSによってはサポートされていません。
 楽観的排他制御用のバージョンは ``@Version`` を注釈して示します。
 フィールドの型は以下のいずれかでなければいけません。
 
-* ``java.lang.Number`` のサブタイプ
-* ``java.lang.Number`` のサブタイプを値とするドメイン
-* 上記のいずれかを要素の型とする ``java.util.Optional``
+* java.lang.Number のサブタイプ
+* java.lang.Number のサブタイプを値とする :doc:`domain`
+* 上記のいずれかを要素の型とする java.util.Optional
+* OptionalInt
+* OptionalLong
+* OptionalDouble
 * 数値のプリミティブ型
 
 .. code-block:: java
