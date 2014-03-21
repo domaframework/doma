@@ -24,15 +24,6 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
  * 任意のクラスをドメインクラスとして扱うことを示します。
- * <p>
- * 注釈されたクラスは次の制約を満たす必要があります。
- * <ul>
- * <li>{@link DomainConverter} のサブタイプである。
- * <li>トップレベルのクラスである。
- * <li>引数なしの {@code public} なコンストラクタを持つ。
- * <li>具象クラスである。
- * <li>スレッドセーフである。
- * </ul>
  * 
  * <h3>例:</h3>
  * 
@@ -49,6 +40,8 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  *     }
  * }
  * </pre>
+ * 
+ * 注釈されたクラスはスレッドセーフでなければいけません。
  * 
  * @author taedium
  * @since 1.25.0

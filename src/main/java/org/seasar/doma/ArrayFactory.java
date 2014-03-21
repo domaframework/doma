@@ -29,14 +29,6 @@ import org.seasar.doma.jdbc.JdbcException;
  * <p>
  * このアノテーションが注釈されるメソッドは、 Daoインタフェースのメンバでなければいけません。
  * 
- * 注釈されるメソッドは、次の制約を満たす必要があります。
- * <ul>
- * <li>パラメータを1つだけ受け取る。
- * <li>パラメータの型は配列である。この配列は {@link Connection#createArrayOf(String, Object[])}
- * の2番目のパラメータに渡される。
- * <li>戻り値の型は {@code Array} である。
- * </ul>
- * 
  * <h3>例:</h3>
  * 
  * <pre>

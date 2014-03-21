@@ -20,18 +20,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.Reference;
-
 /**
  * ストアドファンクションやストアドプロシージャーへのOUTパラメータを示します。
  * <p>
  * このアノテーションが注釈されるパラメータは、 {@link Function} もしくは {@link Procedure}
  * が注釈されたメソッドのパラメータでなければいけません。
- * 
- * 注釈されるパラメータは、次の制約を満たす必要があります。
- * <ul>
- * <li>型は {@link Reference} である。 {@code Reference} の実型引数は、基本型もしくは ドメインクラスである。
- * </ul>
  * 
  * <h3>例:</h3>
  * 

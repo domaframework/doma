@@ -26,26 +26,6 @@ import java.lang.annotation.Target;
  * このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。 このアノテーションは {@link Id}
  * と併わせて使用しなければいけません。
  * <p>
- * 注釈されるフィールドの型は、以下のいずれかでなければいけません。
- * <ul>
- * <li>byte</li>
- * <li>short</li>
- * <li>int</li>
- * <li>long</li>
- * <li>double</li>
- * <li>float</li>
- * <li>java.lang.Byte</li>
- * <li>java.lang.Short</li>
- * <li>java.lang.Integer</li>
- * <li>java.lang.Long</li>
- * <li>java.lang.Double</li>
- * <li>java.lang.Float</li>
- * <li>java.math.BigInteger</li>
- * <li>java.math.BigDecimal</li>
- * <li>上に示した型にマッピングされたドメインクラス</li>
- * <li>上に示した型を要素とするjava.util.Optional</li>
- * </ul>
- * <p>
  * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
  * <ul>
  * <li> {@link GenerationType#SEQUENCE} を指定した場合、{@link SequenceGenerator} が必要です。

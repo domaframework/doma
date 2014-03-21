@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
-import java.util.List;
 
 import org.seasar.doma.jdbc.ResultMappingException;
 
@@ -34,12 +33,6 @@ import org.seasar.doma.jdbc.ResultMappingException;
  * <p>
  * このアノテーションが注釈されるパラメータは、 {@link Function} もしくは {@link Procedure}
  * が注釈されたメソッドのパラメータでなければいけません。
- * 
- * 注釈されるパラメータは、次の制約を満たす必要があります。
- * <ul>
- * <li>型は {@link List} である。 {@code List} の実型引数は、基本型、 ドメインクラス 、エンティティクラス、もしくは
- * {@code Map<String, Object> } のいずれかでなければならない。
- * </ul>
  * 
  * <h3>例:</h3>
  * 

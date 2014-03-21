@@ -20,39 +20,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
-import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.ResultMappingException;
+import org.seasar.doma.jdbc.UnknownColumnException;
 
 /**
  * ストアドファンクションの呼び出しを示します。
  * <p>
  * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * 
- * 注釈されるメソッドは、次の制約を満たす必要があります。
- * <ul>
- * <li>パラメータは0個以上である。
- * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
- * {@link ResultSet} のいずれかのアノテーションが指定される。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
- * <ul>
- * <li>{@code In}は、INパラメータを表す。
- * <li> {@code InOut}は、INOUTパラメータを表す。
- * <li> {@code Out}は、 OUTパラメータを表す。
- * <li> {@code ResultSet} は、カーソルのOUTパラメータ、もしくはストアドファンクションが返す結果セットを表す。
- * </ul>
- * <li>戻り値の型には次のいずれかを指定できる。
- * <ul>
- * <li>{@code void}
- * <li>基本型。
- * <li>ドメインクラス。
- * <li>{@link List}。実型引数は、基本型、ドメインクラス、エンティティクラス、もしくは {@code Map<String, Object>}
- * のいずれかでなければならない。ただし、戻り値を{@code List}
- * にできるのは、ストアドファンクションがカーソルをファンクションの実行結果として返す場合のみである。
- * </ul>
- * </ul>
  * 
  * <h3>例:</h3>
  * 

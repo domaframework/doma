@@ -30,19 +30,6 @@ import org.seasar.doma.jdbc.UnknownColumnException;
  * <p>
  * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * 
- * 注釈されるメソッドは、次の制約を満たす必要があります。
- * <ul>
- * <li>パラメータは0個以上である。
- * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
- * {@link ResultSet} のいずれかのアノテーションが指定される。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
- * <ul>
- * <li> {@code In}は、INパラメータを表す。
- * <li> {@code InOut}は、INOUTパラメータを表す。
- * <li> {@code Out}は、 OUTパラメータを表す。
- * <li> {@code ResultSet} は、カーソルのOUTパラメータ、もしくはストアドファンクションが返す結果セットを表す。
- * </ul>
- * <li>戻り値は {@code void} である。
- * </ul>
  * <h3>例:</h3>
  * 
  * <pre>

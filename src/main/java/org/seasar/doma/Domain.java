@@ -22,17 +22,6 @@ import java.lang.annotation.Target;
 
 /**
  * ドメインクラスを示します。ドメインクラスとは、カラムに対応付け可能な値クラスです。
- * <p>
- * 注釈されたクラスは、 次の制約を満たす必要があります。
- * <ul>
- * <li>トップレベルのクラスまたは列挙型である。
- * <li>{@code valueType} 要素に指定した型を引数とする非 {@code private} なコンストラクタを持ち、
- * {@code factoryMethod} 要素が {@code "new"} である。もしくは、{@code factoryMethod}
- * 要素に指定した名前の{@code static} で非 {@code private} なメソッドを持ち、戻り値は注釈された型であり、 パラメータは
- * {@code valueType} 要素に指定した型である。
- * <li>{@code accessorMethod} 要素に指定した名前の非 {@code private} なメソッドを持つ。このメソッドは、
- * {@code valueType} 要素に指定した型を戻り値とし、パラメータは受け取らない。
- * </ul>
  * 
  * <h3>例1:コンストラクタで生成するケース</h3>
  * 
