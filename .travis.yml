@@ -6,6 +6,3 @@ env:
   - secure: KL4LGjLgrOGa5Hj897Ocu0ACZimk4x/YycbxJc/OVQLY3jxNPgX3cxB0SGpQXl4MwH9VQwku+iXz8TRmJb9BWVAMDObKwGkynTd1vfiX+yGLm57G2mlsHi3Gbbs9HCZUK7EYU2SzMu1Ak33xTCYcJHeDqHSVssa3Do/9h7g1oxo=
 after_success:
 - "./gradlew uploadArchives -s -PsonatypeUsername=$SONATYPE_USERNAME -PsonatypePassword=$SONATYPE_PASSWORD"
-branches:
-  only:
-  - master
