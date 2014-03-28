@@ -27,6 +27,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
@@ -171,6 +172,22 @@ public class QueryParameterMeta {
             functionCtType.getTargetCtType().accept(
                     new FunctionTargetCtTypeVisitor(parameterElement), null);
             return functionCtType;
+        }
+
+        CollectorCtType collectorCtType = CollectorCtType
+                .newInstance(type, env);
+        if (collectorCtType != null) {
+            if (collectorCtType.isRawType()) {
+                throw new AptException(Message.DOMA4258, env, parameterElement,
+                        qualifiedName);
+            }
+            if (collectorCtType.isWildcardType()) {
+                throw new AptException(Message.DOMA4259, env, parameterElement,
+                        qualifiedName);
+            }
+            collectorCtType.getTargetCtType().accept(
+                    new CollectorTargetCtTypeVisitor(parameterElement), null);
+            return collectorCtType;
         }
 
         ReferenceCtType referenceCtType = ReferenceCtType
@@ -422,6 +439,35 @@ public class QueryParameterMeta {
                 }
                 return null;
             }
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class CollectorTargetCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final VariableElement parameterElement;
+
+        protected CollectorTargetCtTypeVisitor(VariableElement parameterElement) {
+            this.parameterElement = parameterElement;
+        }
+
+        @Override
+        public Void visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4260, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4261, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            return null;
         }
     }
 

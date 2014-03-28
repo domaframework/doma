@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.util;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -220,14 +220,15 @@ public final class TypeMirrorUtil {
 
             @Override
             public Void visitWildcard(WildcardType t, StringBuilder p) {
+                p.append("?");
                 TypeMirror extendsBound = t.getExtendsBound();
                 if (extendsBound != null) {
-                    p.append("? extends ");
+                    p.append(" extends ");
                     extendsBound.accept(this, p);
                 }
                 TypeMirror superBound = t.getSuperBound();
                 if (superBound != null) {
-                    p.append("? super ");
+                    p.append(" super ");
                     superBound.accept(this, p);
                 }
                 return null;

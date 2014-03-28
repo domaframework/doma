@@ -186,6 +186,48 @@ Iterableを使ったIN句へのマッピング
 
 `検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
 
+コレクト検索
+============
+
+検索結果を ``java.util.Collector`` で処理したい場合は、コレクト検索を利用できます。
+
+コレクト検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectStrategyType.COLLECT`` を設定し、
+メソッドのパラメータに ``java.stream.Collector<TARGET, ACCUMULATION, RESULT>`` もしくは
+``java.stream.Collector<TARGET, ?, RESULT>`` のサブタイプを定義します。
+
+.. code-block:: java
+
+  @Select(strategy = SelectStrategyType.COLLECT)
+  <RESULT> RESULT selectBySalary(BigDecimal salary, Collector<Employee, ?, RESULT> collector);
+
+呼び出し元は ``Collector`` のインスタンスを渡します。
+
+.. code-block:: java
+
+  EmployeeDao dao = new EmployeeDaoImpl();
+  Map<Integer, List<Employee>> result =
+      dao.selectBySalary(salary, Collectors.groupingBy(Employee::getDepartmentId));
+
+``Collector<TARGET, ACCUMULATION, RESULT>`` の型パラメータ ``TARGET`` は次のいずれかでなければいけません。
+
+* :doc:`../basic`
+* :doc:`../domain`
+* :doc:`../entity`
+* java.util.Map<String, Object>
+* :doc:`../basic` もしくは :doc:`../domain` のいずれかを要素とするjava.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
+
+型パラメータ ``RESULT`` はDaoのメソッドの戻り値に合わせなければいけません。
+
+`検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+
+.. note::
+
+  コレクト検索はストリーム検索のショートカットです。
+  ストリーム検索で得られる ``Stream`` オブジェクトの ``collect`` メソッドを使って同等のことができます。
+
 検索オプションを利用した検索
 ============================
 

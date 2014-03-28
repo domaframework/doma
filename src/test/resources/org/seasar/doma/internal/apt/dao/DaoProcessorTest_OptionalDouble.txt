@@ -16,11 +16,13 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
 
     private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "selectAllAge", java.util.function.Function.class);
 
-    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "getSingleResult", java.util.OptionalDouble.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "selectAllAge", java.util.stream.Collector.class);
 
-    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "getResultList");
+    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "getSingleResult", java.util.OptionalDouble.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
 
-    private static final java.lang.reflect.Method __method6 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "execute", java.util.OptionalDouble.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
+    private static final java.lang.reflect.Method __method6 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "getResultList");
+
+    private static final java.lang.reflect.Method __method7 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalDoubleDao.class, "execute", java.util.OptionalDouble.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
 
     /** */
     public OptionalDoubleDaoImpl() {
@@ -189,6 +191,37 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
     }
 
     @Override
+    public <R> R selectAllAge(java.util.stream.Collector<java.util.OptionalDouble, ?, R> mapper) {
+        entering("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "selectAllAge", mapper);
+        try {
+            if (mapper == null) {
+                throw new org.seasar.doma.DomaNullPointerException("mapper");
+            }
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            __query.setMethod(__method4);
+            __query.setConfig(__config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/OptionalDoubleDao/selectAllAge.sql");
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl");
+            __query.setCallerMethodName("selectAllAge");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleCollectorHandler<R>(mapper));
+            R __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "selectAllAge", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "selectAllAge", __e);
+            throw __e;
+        }
+    }
+
+    @Override
     public java.util.OptionalDouble getSingleResult(java.util.OptionalDouble in, org.seasar.doma.jdbc.Reference<java.util.OptionalDouble> inout, org.seasar.doma.jdbc.Reference<java.util.OptionalDouble> out, java.util.List<java.util.OptionalDouble> resultSet) {
         entering("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "getSingleResult", in, inout, out, resultSet);
         try {
@@ -204,8 +237,8 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             if (resultSet == null) {
                 throw new org.seasar.doma.DomaNullPointerException("resultSet");
             }
-            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.OptionalDouble> __query = getQueryImplementors().createAutoFunctionQuery(__method4);
-            __query.setMethod(__method4);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.OptionalDouble> __query = getQueryImplementors().createAutoFunctionQuery(__method5);
+            __query.setMethod(__method5);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
@@ -220,7 +253,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setCallerMethodName("getSingleResult");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.FunctionCommand<java.util.OptionalDouble> __command = getCommandImplementors().createFunctionCommand(__method4, __query);
+            org.seasar.doma.jdbc.command.FunctionCommand<java.util.OptionalDouble> __command = getCommandImplementors().createFunctionCommand(__method5, __query);
             java.util.OptionalDouble __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "getSingleResult", __result);
@@ -235,8 +268,8 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
     public java.util.List<java.util.OptionalDouble> getResultList() {
         entering("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "getResultList");
         try {
-            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<java.util.OptionalDouble>> __query = getQueryImplementors().createAutoFunctionQuery(__method5);
-            __query.setMethod(__method5);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<java.util.OptionalDouble>> __query = getQueryImplementors().createAutoFunctionQuery(__method6);
+            __query.setMethod(__method6);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
@@ -247,7 +280,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setCallerMethodName("getResultList");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.OptionalDouble>> __command = getCommandImplementors().createFunctionCommand(__method5, __query);
+            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.OptionalDouble>> __command = getCommandImplementors().createFunctionCommand(__method6, __query);
             java.util.List<java.util.OptionalDouble> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "getResultList", __result);
@@ -274,8 +307,8 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             if (resultSet == null) {
                 throw new org.seasar.doma.DomaNullPointerException("resultSet");
             }
-            org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method6);
-            __query.setMethod(__method6);
+            org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method7);
+            __query.setMethod(__method7);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
@@ -289,7 +322,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method6, __query);
+            org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method7, __query);
             __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl", "execute", null);

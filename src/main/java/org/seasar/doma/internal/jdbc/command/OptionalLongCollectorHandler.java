@@ -13,31 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.jdbc.command;
 
+import java.util.OptionalLong;
 import java.util.stream.Collector;
-import java.util.stream.Stream;
+
+import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 
 /**
- * 検索結果を扱う戦略です。
  * 
  * @author nakamura-to
- * @since 2.0.0
+ * 
+ * @param <RESULT>
  */
-public enum SelectStrategyType {
+public class OptionalLongCollectorHandler<RESULT> extends
+        ScalarCollectorHandler<Long, OptionalLong, RESULT> {
 
-    /**
-     * 結果を戻り値で取得します。
-     */
-    RETURN,
+    public OptionalLongCollectorHandler(
+            Collector<OptionalLong, ?, RESULT> collector) {
+        super(() -> new OptionalLongScalar(), collector);
+    }
 
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM,
-
-    /**
-     * {@link Collector} を使って処理します。
-     */
-    COLLECT;
 }

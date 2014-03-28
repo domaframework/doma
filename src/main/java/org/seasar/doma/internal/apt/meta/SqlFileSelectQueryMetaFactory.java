@@ -25,6 +25,7 @@ import org.seasar.doma.SelectStrategyType;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
@@ -99,6 +100,10 @@ public class SqlFileSelectQueryMetaFactory extends
             if (queryMeta.getFunctionCtType() == null) {
                 throw new AptException(Message.DOMA4247, env, method);
             }
+        } else if (queryMeta.getSelectStrategyType() == SelectStrategyType.COLLECT) {
+            if (queryMeta.getCollectorCtType() == null) {
+                throw new AptException(Message.DOMA4266, env, method);
+            }
         } else {
             if (queryMeta.getFunctionCtType() != null) {
                 SelectMirror selectMirror = queryMeta.getSelectMirror();
@@ -122,6 +127,15 @@ public class SqlFileSelectQueryMetaFactory extends
                     || !env.getTypeUtils().isSameType(returnMeta.getType(),
                             returnCtType.getTypeMirror())) {
                 throw new AptException(Message.DOMA4246, env, method,
+                        returnMeta.getType(), returnCtType.getBoxedTypeName());
+            }
+        } else if (queryMeta.getSelectStrategyType() == SelectStrategyType.COLLECT) {
+            CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
+            AnyCtType returnCtType = collectorCtType.getReturnCtType();
+            if (returnCtType == null
+                    || !env.getTypeUtils().isSameType(returnMeta.getType(),
+                            returnCtType.getTypeMirror())) {
+                throw new AptException(Message.DOMA4265, env, method,
                         returnMeta.getType(), returnCtType.getBoxedTypeName());
             }
         } else {
@@ -160,6 +174,21 @@ public class SqlFileSelectQueryMetaFactory extends
                             parameterMeta), null);
             queryMeta.setFunctionCtType(ctType);
             queryMeta.setFunctionParameterName(parameterMeta.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitCollectorCtType(CollectorCtType ctType, Void p)
+                throws RuntimeException {
+            if (queryMeta.getCollectorCtType() != null) {
+                throw new AptException(Message.DOMA4264, env,
+                        parameterMeta.getElement());
+            }
+            ctType.getTargetCtType().accept(
+                    new ParamCollectorTargetCtTypeVisitor(queryMeta,
+                            parameterMeta), null);
+            queryMeta.setCollectorCtType(ctType);
+            queryMeta.setCollectorParameterName(parameterMeta.getName());
             return null;
         }
 
@@ -299,6 +328,106 @@ public class SqlFileSelectQueryMetaFactory extends
                 return null;
             }
 
+        }
+    }
+
+    protected class ParamCollectorTargetCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected SqlFileSelectQueryMeta queryMeta;
+
+        protected QueryParameterMeta parameterMeta;
+
+        protected ParamCollectorTargetCtTypeVisitor(
+                SqlFileSelectQueryMeta queryMeta,
+                QueryParameterMeta parameterMeta) {
+            this.queryMeta = queryMeta;
+            this.parameterMeta = parameterMeta;
+        }
+
+        @Override
+        protected Void defaultAction(CtType ctType, Void p)
+                throws RuntimeException {
+            throw new AptException(Message.DOMA4262, env,
+                    queryMeta.getExecutableElement());
+        }
+
+        @Override
+        public Void visitBasicCtType(BasicCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitMapCtType(MapCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitEntityCtType(EntityCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isAbstract()) {
+                throw new AptException(Message.DOMA4263, env,
+                        parameterMeta.getElement(), ctType.getTypeName());
+            }
+            queryMeta.setEntityCtType(ctType);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                throws RuntimeException {
+            Boolean valid = ctType.getElementCtType().accept(
+                    new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
+
+                        @Override
+                        protected Boolean defaultAction(CtType ctType, Void p)
+                                throws RuntimeException {
+                            return false;
+                        }
+
+                        @Override
+                        public Boolean visitBasicCtType(BasicCtType ctType,
+                                Void p) throws RuntimeException {
+                            return true;
+                        }
+
+                        @Override
+                        public Boolean visitDomainCtType(DomainCtType ctType,
+                                Void p) throws RuntimeException {
+                            return true;
+                        }
+
+                    }, null);
+            if (Boolean.FALSE == valid) {
+                defaultAction(ctType, null);
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Void p) throws RuntimeException {
+            return null;
         }
     }
 

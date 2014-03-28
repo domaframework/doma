@@ -16,11 +16,13 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
 
     private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "selectAllAge", java.util.function.Function.class);
 
-    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "getSingleResult", java.util.OptionalInt.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "selectAllAge", java.util.stream.Collector.class);
 
-    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "getResultList");
+    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "getSingleResult", java.util.OptionalInt.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
 
-    private static final java.lang.reflect.Method __method6 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "execute", java.util.OptionalInt.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
+    private static final java.lang.reflect.Method __method6 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "getResultList");
+
+    private static final java.lang.reflect.Method __method7 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.dao.OptionalIntDao.class, "execute", java.util.OptionalInt.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class, java.util.List.class);
 
     /** */
     public OptionalIntDaoImpl() {
@@ -189,6 +191,37 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     }
 
     @Override
+    public <R> R selectAllAge(java.util.stream.Collector<java.util.OptionalInt, ?, R> mapper) {
+        entering("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "selectAllAge", mapper);
+        try {
+            if (mapper == null) {
+                throw new org.seasar.doma.DomaNullPointerException("mapper");
+            }
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            __query.setMethod(__method4);
+            __query.setConfig(__config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/OptionalIntDao/selectAllAge.sql");
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl");
+            __query.setCallerMethodName("selectAllAge");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.OptionalIntCollectorHandler<R>(mapper));
+            R __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "selectAllAge", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "selectAllAge", __e);
+            throw __e;
+        }
+    }
+
+    @Override
     public java.util.OptionalInt getSingleResult(java.util.OptionalInt in, org.seasar.doma.jdbc.Reference<java.util.OptionalInt> inout, org.seasar.doma.jdbc.Reference<java.util.OptionalInt> out, java.util.List<java.util.OptionalInt> resultSet) {
         entering("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "getSingleResult", in, inout, out, resultSet);
         try {
@@ -204,8 +237,8 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             if (resultSet == null) {
                 throw new org.seasar.doma.DomaNullPointerException("resultSet");
             }
-            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.OptionalInt> __query = getQueryImplementors().createAutoFunctionQuery(__method4);
-            __query.setMethod(__method4);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.OptionalInt> __query = getQueryImplementors().createAutoFunctionQuery(__method5);
+            __query.setMethod(__method5);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
@@ -220,7 +253,7 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setCallerMethodName("getSingleResult");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.FunctionCommand<java.util.OptionalInt> __command = getCommandImplementors().createFunctionCommand(__method4, __query);
+            org.seasar.doma.jdbc.command.FunctionCommand<java.util.OptionalInt> __command = getCommandImplementors().createFunctionCommand(__method5, __query);
             java.util.OptionalInt __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "getSingleResult", __result);
@@ -235,8 +268,8 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     public java.util.List<java.util.OptionalInt> getResultList() {
         entering("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "getResultList");
         try {
-            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<java.util.OptionalInt>> __query = getQueryImplementors().createAutoFunctionQuery(__method5);
-            __query.setMethod(__method5);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<java.util.OptionalInt>> __query = getQueryImplementors().createAutoFunctionQuery(__method6);
+            __query.setMethod(__method6);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
@@ -247,7 +280,7 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setCallerMethodName("getResultList");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.OptionalInt>> __command = getCommandImplementors().createFunctionCommand(__method5, __query);
+            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.OptionalInt>> __command = getCommandImplementors().createFunctionCommand(__method6, __query);
             java.util.List<java.util.OptionalInt> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "getResultList", __result);
@@ -274,8 +307,8 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             if (resultSet == null) {
                 throw new org.seasar.doma.DomaNullPointerException("resultSet");
             }
-            org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method6);
-            __query.setMethod(__method6);
+            org.seasar.doma.jdbc.query.AutoProcedureQuery __query = getQueryImplementors().createAutoProcedureQuery(__method7);
+            __query.setMethod(__method7);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
@@ -289,7 +322,7 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);
             __query.prepare();
-            org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method6, __query);
+            org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method7, __query);
             __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.OptionalIntDaoImpl", "execute", null);

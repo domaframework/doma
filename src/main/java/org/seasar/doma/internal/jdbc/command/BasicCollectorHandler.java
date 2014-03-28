@@ -13,31 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.jdbc.command;
 
+import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Stream;
+
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * 検索結果を扱う戦略です。
  * 
  * @author nakamura-to
- * @since 2.0.0
+ * 
+ * @param <RESULT>
+ * @param <BASIC>
  */
-public enum SelectStrategyType {
+public class BasicCollectorHandler<BASIC, RESULT> extends
+        ScalarCollectorHandler<BASIC, BASIC, RESULT> {
 
-    /**
-     * 結果を戻り値で取得します。
-     */
-    RETURN,
+    public BasicCollectorHandler(Supplier<Wrapper<BASIC>> supplier,
+            Collector<BASIC, ?, RESULT> collector) {
+        super(() -> new BasicScalar<>(supplier, false), collector);
+    }
 
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM,
-
-    /**
-     * {@link Collector} を使って処理します。
-     */
-    COLLECT;
 }
