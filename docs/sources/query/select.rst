@@ -198,7 +198,7 @@ Iterableを使ったIN句へのマッピング
 .. code-block:: java
 
   @Select(strategy = SelectStrategyType.COLLECT)
-  Map<Integer, List<Employee>> selectBySalary(BigDecimal salary, Collector<Employee, ?, BigDecimal> collector);
+  <RESULT> RESULT selectBySalary(BigDecimal salary, Collector<Employee, ?, RESULT> collector);
 
 呼び出し元は ``Collector`` のインスタンスを渡します。
 
