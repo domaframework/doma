@@ -20,6 +20,7 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
@@ -36,6 +37,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     protected String functionParameterName;
 
     protected FunctionCtType functionCtType;
+
+    protected String collectorParameterName;
+
+    protected CollectorCtType collectorCtType;
 
     protected String selectOptionsParameterName;
 
@@ -61,6 +66,22 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public void setFunctionCtType(FunctionCtType functionCtType) {
         this.functionCtType = functionCtType;
+    }
+
+    public String getCollectorParameterName() {
+        return collectorParameterName;
+    }
+
+    public void setCollectorParameterName(String collectorParameterName) {
+        this.collectorParameterName = collectorParameterName;
+    }
+
+    public CollectorCtType getCollectorCtType() {
+        return collectorCtType;
+    }
+
+    public void setCollectorCtType(CollectorCtType collectorCtType) {
+        this.collectorCtType = collectorCtType;
     }
 
     public String getSelectOptionsParameterName() {

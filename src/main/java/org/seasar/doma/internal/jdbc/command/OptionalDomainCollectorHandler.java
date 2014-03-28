@@ -13,31 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.jdbc.command;
 
+import java.util.Optional;
 import java.util.stream.Collector;
-import java.util.stream.Stream;
+
+import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
- * 検索結果を扱う戦略です。
  * 
  * @author nakamura-to
- * @since 2.0.0
+ * 
+ * @param <RESULT>
+ * @param <DOMAIN>
  */
-public enum SelectStrategyType {
+public class OptionalDomainCollectorHandler<BASIC, DOMAIN, RESULT> extends
+        ScalarCollectorHandler<BASIC, Optional<DOMAIN>, RESULT> {
 
-    /**
-     * 結果を戻り値で取得します。
-     */
-    RETURN,
+    public OptionalDomainCollectorHandler(DomainType<BASIC, DOMAIN> domainType,
+            Collector<Optional<DOMAIN>, ?, RESULT> collector) {
+        super(() -> domainType.createOptionalScalar(), collector);
+    }
 
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM,
-
-    /**
-     * {@link Collector} を使って処理します。
-     */
-    COLLECT;
 }

@@ -13,31 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.jdbc.command;
 
+import java.util.OptionalInt;
 import java.util.stream.Collector;
-import java.util.stream.Stream;
+
+import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
 
 /**
- * 検索結果を扱う戦略です。
  * 
  * @author nakamura-to
- * @since 2.0.0
+ * 
+ * @param <RESULT>
  */
-public enum SelectStrategyType {
+public class OptionalIntCollectorHandler<RESULT> extends
+        ScalarCollectorHandler<Integer, OptionalInt, RESULT> {
 
-    /**
-     * 結果を戻り値で取得します。
-     */
-    RETURN,
+    public OptionalIntCollectorHandler(Collector<OptionalInt, ?, RESULT> mapper) {
+        super(() -> new OptionalIntScalar(), mapper);
+    }
 
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM,
-
-    /**
-     * {@link Collector} を使って処理します。
-     */
-    COLLECT;
 }

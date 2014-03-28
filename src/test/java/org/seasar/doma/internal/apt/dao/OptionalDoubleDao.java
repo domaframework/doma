@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.dao;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
@@ -50,6 +51,9 @@ public interface OptionalDoubleDao {
 
     @Select(strategy = SelectStrategyType.STREAM)
     <R> R selectAllAge(Function<Stream<OptionalDouble>, R> mapper);
+
+    @Select(strategy = SelectStrategyType.COLLECT)
+    <R> R selectAllAge(Collector<OptionalDouble, ?, R> mapper);
 
     @org.seasar.doma.Function
     OptionalDouble getSingleResult(@In OptionalDouble in,

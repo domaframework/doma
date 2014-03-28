@@ -31,6 +31,8 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
     R visitIterableCtType(IterableCtType ctType, P p) throws TH;
 
+    R visitCollectorCtType(CollectorCtType ctType, P p) throws TH;
+
     R visitReferenceCtType(ReferenceCtType ctType, P p) throws TH;
 
     R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p) throws TH;

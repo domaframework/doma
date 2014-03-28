@@ -13,31 +13,28 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.apt.dao;
 
+import java.util.Optional;
 import java.util.stream.Collector;
-import java.util.stream.Stream;
+
+import org.seasar.doma.Dao;
+import org.seasar.doma.Select;
+import org.seasar.doma.SelectStrategyType;
+
+import example.domain.PhoneNumber;
 
 /**
- * 検索結果を扱う戦略です。
+ * @author taedium
  * 
- * @author nakamura-to
- * @since 2.0.0
  */
-public enum SelectStrategyType {
+@Dao(config = MyConfig.class)
+public interface CollectorOptionalParameterDao {
 
-    /**
-     * 結果を戻り値で取得します。
-     */
-    RETURN,
+    @Select(strategy = SelectStrategyType.COLLECT)
+    <R> R selectById(Integer id,
+            Collector<Optional<PhoneNumber>, ?, R> collector);
 
-    /**
-     * {@link Stream} を使って処理します。
-     */
-    STREAM,
-
-    /**
-     * {@link Collector} を使って処理します。
-     */
-    COLLECT;
+    @Select(strategy = SelectStrategyType.COLLECT)
+    <R extends Number> R select(Collector<Optional<String>, ?, R> mapper);
 }

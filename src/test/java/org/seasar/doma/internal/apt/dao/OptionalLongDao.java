@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.dao;
 import java.util.List;
 import java.util.OptionalLong;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
@@ -50,6 +51,9 @@ public interface OptionalLongDao {
 
     @Select(strategy = SelectStrategyType.STREAM)
     <R> R selectAllAge(Function<Stream<OptionalLong>, R> mapper);
+
+    @Select(strategy = SelectStrategyType.COLLECT)
+    <R> R selectAllAge(Collector<OptionalLong, ?, R> mapper);
 
     @org.seasar.doma.Function
     OptionalLong getSingleResult(@In OptionalLong in,
