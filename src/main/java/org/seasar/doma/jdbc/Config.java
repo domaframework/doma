@@ -144,6 +144,15 @@ public interface Config {
     }
 
     /**
+     * マップのキーのネーミング規約のコントローラを返します。
+     * 
+     * @return マップのキーのネーミング規約のコントローラ
+     */
+    default MapKeyNaming getMapKeyNaming() {
+        return ConfigSupport.defaultMapKeyNaming;
+    }
+
+    /**
      * トランザクションマネジャーを返します。
      * <p>
      * デフォルトの実装では {@link UnsupportedOperationException} をスローします。

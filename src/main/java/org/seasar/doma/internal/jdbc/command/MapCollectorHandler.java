@@ -32,18 +32,18 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class MapCollectorHandler<RESULT> extends
         AbstractCollectorHandler<Map<String, Object>, RESULT> {
 
-    private final MapKeyNamingType keyNamingType;
+    private final MapKeyNamingType mapKeyNamingType;
 
     public MapCollectorHandler(MapKeyNamingType keyNamingType,
             Collector<Map<String, Object>, ?, RESULT> collector) {
         super(collector);
         assertNotNull(keyNamingType);
-        this.keyNamingType = keyNamingType;
+        this.mapKeyNamingType = keyNamingType;
     }
 
     @Override
     protected MapProvider createObjectProvider(SelectQuery query) {
-        return new MapProvider(query, keyNamingType);
+        return new MapProvider(query, mapKeyNamingType);
     }
 
 }

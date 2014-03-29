@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -27,6 +28,7 @@ import java.util.Map;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.ObjectWrapper;
 
@@ -34,12 +36,11 @@ import org.seasar.doma.wrapper.ObjectWrapper;
  * 
  * @author nakamura-to
  */
-public class MapProvider extends
-        AbstractObjectProvider<Map<String, Object>> {
+public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
     protected final Query query;
 
-    protected final MapKeyNamingType keyNamingType;
+    protected final MapKeyNamingType mapKeyNamingType;
 
     protected final JdbcMappingVisitor jdbcMappingVisitor;
 
@@ -48,12 +49,12 @@ public class MapProvider extends
     /**
      * 
      * @param query
-     * @param keyNamingType
+     * @param mapKeyNamingType
      */
-    public MapProvider(Query query, MapKeyNamingType keyNamingType) {
-        assertNotNull(query, keyNamingType);
+    public MapProvider(Query query, MapKeyNamingType mapKeyNamingType) {
+        assertNotNull(query, mapKeyNamingType);
         this.query = query;
-        this.keyNamingType = keyNamingType;
+        this.mapKeyNamingType = mapKeyNamingType;
         this.jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
     }
@@ -77,11 +78,14 @@ public class MapProvider extends
 
     protected HashMap<Integer, String> createIndexMap(
             ResultSetMetaData resultSetMeta) throws SQLException {
+        MapKeyNaming naming = query.getConfig().getMapKeyNaming();
+        Method method = query.getMethod();
         HashMap<Integer, String> indexMap = new HashMap<Integer, String>();
         int count = resultSetMeta.getColumnCount();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
-            indexMap.put(i, keyNamingType.apply(columnName));
+            String key = naming.apply(method, mapKeyNamingType, columnName);
+            indexMap.put(i, key);
         }
         return indexMap;
     }

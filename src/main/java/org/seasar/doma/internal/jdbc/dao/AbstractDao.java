@@ -159,6 +159,10 @@ public abstract class AbstractDao implements ConfigProvider {
             throw new ConfigException(config.getClass().getName(),
                     "getUnknownColumnHandler");
         }
+        if (config.getMapKeyNaming() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getMapKeyNaming");
+        }
     }
 
     @Override
