@@ -324,8 +324,7 @@ SQL ファイルの新規作成を行うためのダイアログが次のよう�
 
   @Test
   public void testSelectByAge() {
-      LocalTransactionManager tm = AppConfig.singleton()
-              .getLocalTransactionManager();
+      TransactionManager tm = AppConfig.singleton().getTransactionManager();
       tm.required(() -> {
           List<Employee> employees = dao.selectByAge(35);
           assertEquals(2, employees.size());
@@ -368,8 +367,7 @@ JUnit を実行し、このコードが動作することを確認してくだ�
 
   @Test
   public void testInsert() {
-      LocalTransactionManager tm = AppConfig.singleton()
-              .getLocalTransactionManager();
+      TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
       Employee employee = new Employee();
 
@@ -425,8 +423,7 @@ JUnit を実行し、このコードが動作することを確認してくだ�
 
   @Test
   public void testUpdate() {
-      LocalTransactionManager tm = AppConfig.singleton()
-              .getLocalTransactionManager();
+      TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
       // 最初のトランザクション
       // 検索して age フィールドを更新している
@@ -483,8 +480,7 @@ JUnit を実行し、このコードが動作することを確認してくだ�
 
   @Test
   public void testDelete() {
-      LocalTransactionManager tm = AppConfig.singleton()
-              .getLocalTransactionManager();
+      TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
       // 最初のトランザクション
       // 削除を実行している

@@ -36,7 +36,7 @@ Domaは、ローカルトランザクションをサポートします。
 
       private final LocalTransactionDataSource dataSource;
 
-      private final LocalTransactionManager transactionManager;
+      private final TransactionManager transactionManager;
 
       private AppConfig() {
           dialect = new H2Dialect();
@@ -57,7 +57,7 @@ Domaは、ローカルトランザクションをサポートします。
       }
 
       @Override
-      public LocalTransactionManager getLocalTransactionManager() {
+      public TransactionManager getTransactionManager() {
           return transactionManager;
       }
 
@@ -87,7 +87,7 @@ Domaは、ローカルトランザクションをサポートします。
 トランザクションの開始と終了
 ----------------------------
 
-トランザクションは ``LocalTransactionManager`` の以下のメソッドのいずれかを使って開始します。
+トランザクションは ``TransactionManager`` の以下のメソッドのいずれかを使って開始します。
 
 * required
 * requiresNew
@@ -97,8 +97,7 @@ Domaは、ローカルトランザクションをサポートします。
 
 .. code-block:: java
 
-  LocalTransactionManager tm = AppConfig.singleton()
-          .getLocalTransactionManager();
+  TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
   tm.required(() -> {
       Employee employee = dao.selectById(1);
@@ -117,8 +116,7 @@ Domaは、ローカルトランザクションをサポートします。
 
 .. code-block:: java
 
-  LocalTransactionManager tm = AppConfig.singleton()
-          .getLocalTransactionManager();
+  TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
   tm.required(() -> {
       Employee employee = dao.selectById(1);
@@ -136,8 +134,7 @@ Domaは、ローカルトランザクションをサポートします。
 
 .. code-block:: java
 
-  LocalTransactionManager tm = AppConfig.singleton()
-          .getLocalTransactionManager();
+  TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
   tm.required(() -> {
       // 検索して更新

@@ -19,7 +19,7 @@ Doma 1.36.0 からの変更点の内、主なものを示しています。
 
 * ``Config`` の実装クラスをシングルトンとして扱えるように ``@SingletonConfig`` が追加されました。
 
-* トランザクション処理を簡易化するために ``LocalTransactionManage`` が追加されました。
+* トランザクション処理を簡易化するために ``TransactionManage`` が追加されました。
 
 * クエリをカスタマイズ可能にするために ``QueryImplementors`` と ``CommandImplementors`` が追加されました。
 

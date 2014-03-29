@@ -145,14 +145,14 @@ REQUIRES_NEW 属性のトランザクションとの連動
 ローカルトランザクションマネージャー
 ------------------------------------
 
-``LocalTransactionManager`` を ``getLocalTransactionManager`` メソッドで返してください。
-``getLocalTransactionManager`` メソッドは、デフォルトで
+``LocalTransactionManager`` を ``getTransactionManager`` メソッドで返してください。
+``getTransactionManager`` メソッドは、デフォルトで
 ``UnsupportedOperationException`` をスローします。
 
 .. note::
 
   この項目は設定必須ではありませんが、
-  ローカルトランザクションを利用したい場合は設定してください。
+  ``org.seasar.doma.jdbc.tx.TransactionManage`` のインタフェースでトランザクションを利用したい場合は設定してください。
   設定方法については :doc:`transaction` を参照してください。
 
 Command の実装
@@ -238,7 +238,7 @@ JDBC ドライバのロード
 
       private final LocalTransactionDataSource dataSource;
 
-      private final LocalTransactionManager transactionManager;
+      private final TransactionManager transactionManager;
 
       private AppConfig() {
           dialect = new H2Dialect();
@@ -259,7 +259,7 @@ JDBC ドライバのロード
       }
 
       @Override
-      public LocalTransactionManager getLocalTransactionManager() {
+      public TransactionManager getTransactionManager() {
           return transactionManager;
       }
 
