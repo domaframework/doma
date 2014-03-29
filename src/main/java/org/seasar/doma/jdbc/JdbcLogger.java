@@ -205,7 +205,7 @@ public interface JdbcLogger {
      *            {@link Connection#rollback()} 時に発生した {@link SQLException}
      * @since 2.0.0
      */
-    void logLocalTransactionRollbackFailure(String callerClassName,
+    void logTransactionRollbackFailure(String callerClassName,
             String callerMethodName, String transactionId, SQLException e);
 
     /**

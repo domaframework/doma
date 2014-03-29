@@ -350,7 +350,7 @@ public class LocalTransaction {
                 jdbcLogger.logTransactionRolledback(className,
                         callerMethodName, id);
             } catch (SQLException ignored) {
-                jdbcLogger.logLocalTransactionRollbackFailure(className,
+                jdbcLogger.logTransactionRollbackFailure(className,
                         callerMethodName, id, ignored);
             } finally {
                 end(callerMethodName);

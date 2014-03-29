@@ -142,7 +142,7 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     }
 
     @Override
-    public void logLocalTransactionRollbackFailure(String callerClassName,
+    public void logTransactionRollbackFailure(String callerClassName,
             String callerMethodName, String transactionId, SQLException e) {
         logger.logp(level, callerClassName, callerMethodName,
                 Message.DOMA2070.getMessage(transactionId));
