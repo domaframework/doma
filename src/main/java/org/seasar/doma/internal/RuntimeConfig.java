@@ -28,7 +28,9 @@ import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
+import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.tx.TransactionManager;
 
 /**
  * @author taedium
@@ -99,6 +101,16 @@ public class RuntimeConfig implements Config {
     @Override
     public ExceptionSqlLogType getExceptionSqlLogType() {
         return config.getExceptionSqlLogType();
+    }
+
+    @Override
+    public UnknownColumnHandler getUnknownColumnHandler() {
+        return config.getUnknownColumnHandler();
+    }
+
+    @Override
+    public TransactionManager getTransactionManager() {
+        return config.getTransactionManager();
     }
 
     @Override
