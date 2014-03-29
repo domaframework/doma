@@ -374,7 +374,7 @@ public class LocalTransaction {
      *             引数が {@code null} の場合
      * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
-     * @throws SavepointAleadyExistsException
+     * @throws SavepointAlreadyExistsException
      *             セーブポイントがすでに存在する場合
      * @throws JdbcException
      *             セーブポイントの作成に失敗した場合
@@ -393,7 +393,7 @@ public class LocalTransaction {
         Savepoint savepoint = context.getSavepoint(savepointName);
         if (savepoint != null) {
             rollbackInternal("setSavepoint");
-            throw new SavepointAleadyExistsException(savepointName);
+            throw new SavepointAlreadyExistsException(savepointName);
         }
         LocalTransactionConnection connection = context.getConnection();
         try {

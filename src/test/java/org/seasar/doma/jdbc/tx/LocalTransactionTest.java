@@ -146,7 +146,7 @@ public class LocalTransactionTest extends TestCase {
         try {
             transaction.setSavepoint("hoge");
             fail();
-        } catch (SavepointAleadyExistsException expected) {
+        } catch (SavepointAlreadyExistsException expected) {
             System.out.println(expected.getMessage());
         }
     }

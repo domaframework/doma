@@ -187,7 +187,7 @@ public interface TransactionManager {
      *             引数が {@code null} の場合
      * @throws TransactionNotYetBegunException
      *             トランザクションがまだ開始されていない場合
-     * @throws SavepointAleadyExistsException
+     * @throws SavepointAlreadyExistsException
      *             セーブポイントがすでに存在する場合
      * @throws JdbcException
      *             セーブポイントの作成に失敗した場合

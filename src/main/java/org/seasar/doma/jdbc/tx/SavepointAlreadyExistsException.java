@@ -24,7 +24,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.1.0
  */
-public class SavepointAleadyExistsException extends JdbcException {
+public class SavepointAlreadyExistsException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class SavepointAleadyExistsException extends JdbcException {
      * @param savepointName
      *            セーブポイントの名前
      */
-    public SavepointAleadyExistsException(String savepointName) {
+    public SavepointAlreadyExistsException(String savepointName) {
         super(Message.DOMA2059, savepointName);
         this.savepointName = savepointName;
     }
