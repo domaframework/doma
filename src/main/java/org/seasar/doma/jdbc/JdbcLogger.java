@@ -20,8 +20,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.seasar.doma.jdbc.tx.LocalTransaction;
-
 /**
  * JDBCに関する処理を記録するロガーです。
  * <p>
@@ -107,10 +105,7 @@ public interface JdbcLogger {
     void logSql(String callerClassName, String callerMethodName, Sql<?> sql);
 
     /**
-     * ローカルトランザクションの開始を記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
+     * トランザクションの開始を記録します。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -118,16 +113,13 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
-     * @since 1.1.0
+     * @since 2.0.0
      */
-    void logLocalTransactionBegun(String callerClassName,
-            String callerMethodName, String transactionId);
+    void logTransactionBegun(String callerClassName, String callerMethodName,
+            String transactionId);
 
     /**
-     * ローカルトランザクションの終了を記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
+     * トランザクションの終了を記録します。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -135,16 +127,13 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
-     * @since 1.2.0
+     * @since 2.0.0
      */
-    void logLocalTransactionEnded(String callerClassName,
-            String callerMethodName, String transactionId);
+    void logTransactionEnded(String callerClassName, String callerMethodName,
+            String transactionId);
 
     /**
-     * ローカルトランザクションのコミットを記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
+     * トランザクションのコミットを記録します。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -152,16 +141,13 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
-     * @since 1.1.0
+     * @since 2.0.0
      */
-    void logLocalTransactionCommitted(String callerClassName,
+    void logTransactionCommitted(String callerClassName,
             String callerMethodName, String transactionId);
 
     /**
-     * ローカルトランザクションのセーブポイントの作成を記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
+     * トランザクションのセーブポイントの作成を記録します。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -171,16 +157,13 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @param savepointName
      *            セーブポイントの名前
-     * @since 1.1.0
+     * @since 2.0.0
      */
-    void logLocalTransactionSavepointCreated(String callerClassName,
+    void logTransactionSavepointCreated(String callerClassName,
             String callerMethodName, String transactionId, String savepointName);
 
     /**
-     * ローカルトランザクションのセーブポイントの削除を記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
+     * トランザクションのロールバックを記録します。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -188,35 +171,13 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
-     * @param savepointName
-     *            セーブポイントの名前
-     * @since 1.1.0
+     * @since 2.0.0
      */
-    void logLocalTransactionSavepointReleased(String callerClassName,
-            String callerMethodName, String transactionId, String savepointName);
-
-    /**
-     * ローカルトランザクションのロールバックを記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
-     * 
-     * @param callerClassName
-     *            呼び出し元のクラス名
-     * @param callerMethodName
-     *            呼び出し元のメソッド名
-     * @param transactionId
-     *            トランザクションの識別子
-     * @since 1.1.0
-     */
-    void logLocalTransactionRolledback(String callerClassName,
+    void logTransactionRolledback(String callerClassName,
             String callerMethodName, String transactionId);
 
     /**
-     * ローカルトランザクションのセーブポイントのロールバックを記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
+     * トランザクションのセーブポイントのロールバックを記録します。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -226,16 +187,13 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @param savepointName
      *            セーブポイントの名前
-     * @since 1.1.0
+     * @since 2.0.0
      */
-    void logLocalTransactionSavepointRolledback(String callerClassName,
+    void logTransactionSavepointRolledback(String callerClassName,
             String callerMethodName, String transactionId, String savepointName);
 
     /**
-     * ローカルトランザクションのロールバックの失敗を記録します。
-     * <p>
-     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
-     * を使用しない場合、このメソッドが呼び出されることはありません。
+     * トランザクションのロールバックの失敗を記録します。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -245,7 +203,7 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @param e
      *            {@link Connection#rollback()} 時に発生した {@link SQLException}
-     * @since 1.2.0
+     * @since 2.0.0
      */
     void logLocalTransactionRollbackFailure(String callerClassName,
             String callerMethodName, String transactionId, SQLException e);

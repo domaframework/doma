@@ -21,12 +21,12 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * ローカルトランザクションがまだ開始されていない場合にスローされる例外です。
+ * トランザクションがまだ開始されていない場合にスローされる例外です。
  * 
- * @author taedium
- * @since 1.1.0
+ * @author nakamura-to
+ * @since 2.0.0
  */
-public class LocalTransactionNotYetBegunException extends JdbcException
+public class TransactionNotYetBegunException extends JdbcException
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class LocalTransactionNotYetBegunException extends JdbcException
      * @param args
      *            メッセージの引数
      */
-    public LocalTransactionNotYetBegunException(Message message, Object... args) {
+    public TransactionNotYetBegunException(Message message, Object... args) {
         super(message, args);
     }
 

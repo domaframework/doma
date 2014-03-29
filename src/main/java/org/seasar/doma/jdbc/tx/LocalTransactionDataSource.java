@@ -93,7 +93,7 @@ public final class LocalTransactionDataSource implements DataSource {
      * このメソッドを実行する前にローカルトランザクションを開始しておかなければいけません。
      * 
      * @see LocalTransaction
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      */
     @Override
@@ -107,7 +107,7 @@ public final class LocalTransactionDataSource implements DataSource {
      * このメソッドを実行する前にローカルトランザクションを開始しておかなければいけません。
      * 
      * @see LocalTransaction
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      */
     @Override
@@ -119,7 +119,7 @@ public final class LocalTransactionDataSource implements DataSource {
     private Connection getConnectionInternal() {
         LocalTransactionContext context = localTxContextHolder.get();
         if (context == null) {
-            throw new LocalTransactionNotYetBegunException(Message.DOMA2048);
+            throw new TransactionNotYetBegunException(Message.DOMA2048);
         }
         return context.getConnection();
     }

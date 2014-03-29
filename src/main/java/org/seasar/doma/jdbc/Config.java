@@ -24,7 +24,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.Query;
-import org.seasar.doma.jdbc.tx.LocalTransactionManager;
+import org.seasar.doma.jdbc.tx.TransactionManager;
 import org.seasar.doma.message.Message;
 
 /**
@@ -144,16 +144,16 @@ public interface Config {
     }
 
     /**
-     * ローカルトランザクションマネジャーを返します。
+     * トランザクションマネジャーを返します。
      * <p>
      * デフォルトの実装では {@link UnsupportedOperationException} をスローします。
      * 
-     * @return ローカルトランザクションマネジャー
+     * @return トランザクションマネジャー
      * @throws UnsupportedOperationException
-     *             JTAトランザクションを使うなどでローカルトランザクションをサポートしない場合
+     *             {@link TransactionManager} のインタフェースを使ったトランザクションをサポートしない場合
      * @since 2.0.0
      */
-    default LocalTransactionManager getLocalTransactionManager() {
+    default TransactionManager getTransactionManager() {
         throw new UnsupportedOperationException();
     }
 

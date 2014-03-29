@@ -76,7 +76,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         try {
             transaction.begin();
             fail();
-        } catch (LocalTransactionAlreadyBegunException expected) {
+        } catch (TransactionAlreadyBegunException expected) {
             System.out.println(expected.getMessage());
         }
     }
@@ -152,7 +152,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         try {
             transaction.setSavepoint("hoge");
             fail();
-        } catch (LocalTransactionNotYetBegunException expected) {
+        } catch (TransactionNotYetBegunException expected) {
             System.out.println(expected.getMessage());
         }
     }
@@ -180,7 +180,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         try {
             transaction.hasSavepoint("hoge");
             fail();
-        } catch (LocalTransactionNotYetBegunException expected) {
+        } catch (TransactionNotYetBegunException expected) {
             System.out.println(expected.getMessage());
         }
     }
@@ -212,7 +212,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         try {
             transaction.releaseSavepoint("hoge");
             fail();
-        } catch (LocalTransactionNotYetBegunException expected) {
+        } catch (TransactionNotYetBegunException expected) {
             System.out.println(expected.getMessage());
         }
     }
@@ -259,7 +259,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         try {
             transaction.commit();
             fail();
-        } catch (LocalTransactionNotYetBegunException expected) {
+        } catch (TransactionNotYetBegunException expected) {
             System.out.println(expected.getMessage());
         }
     }
@@ -297,7 +297,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
     public void testRollbackSavepoint_notYetBegun() throws Exception {
         try {
             transaction.rollback("hoge");
-        } catch (LocalTransactionNotYetBegunException expected) {
+        } catch (TransactionNotYetBegunException expected) {
             System.out.println(expected.getMessage());
         }
     }

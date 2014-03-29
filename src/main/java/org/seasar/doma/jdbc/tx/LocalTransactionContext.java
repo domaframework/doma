@@ -73,7 +73,7 @@ public class LocalTransactionContext {
                 connection = connectionSupplier.get();
             }
             if (connectionInitializer == null) {
-                throw new LocalTransactionNotYetBegunException(Message.DOMA2048);
+                throw new TransactionNotYetBegunException(Message.DOMA2048);
             }
             localTxConnection = connectionInitializer.apply(connection);
         }

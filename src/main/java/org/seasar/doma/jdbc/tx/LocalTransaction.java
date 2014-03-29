@@ -151,7 +151,7 @@ public class LocalTransaction {
      * を呼び出し、ローカルトランザクションを終了する必要があります。同一スレッド内であれば、 異なるインスタンスの {@link #commit()}
      * もしくは {@link #rollback()} でも構いません。
      * 
-     * @throws LocalTransactionAlreadyBegunException
+     * @throws TransactionAlreadyBegunException
      *             ローカルトランザクションがすでに開始されている場合
      * @throws JdbcException
      *             トランザクションの開始に失敗した場合
@@ -171,7 +171,7 @@ public class LocalTransaction {
      *            トランザクション分離レベル
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
-     * @throws LocalTransactionAlreadyBegunException
+     * @throws TransactionAlreadyBegunException
      *             ローカルトランザクションがすでに開始されている場合
      * @throws JdbcException
      *             トランザクションの開始に失敗した場合
@@ -199,7 +199,7 @@ public class LocalTransaction {
         if (isActiveInternal(context)) {
             String id = context.getId();
             rollbackInternal(callerMethodName);
-            throw new LocalTransactionAlreadyBegunException(id);
+            throw new TransactionAlreadyBegunException(id);
         }
         context = getLocalTransactionContext();
         context.begin((connection) -> {
@@ -231,7 +231,7 @@ public class LocalTransaction {
             return new LocalTransactionConnection(connection,
                     transactionIsolation);
         });
-        jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
+        jdbcLogger.logTransactionBegun(className, callerMethodName,
                 context.getId());
     }
 
@@ -256,7 +256,7 @@ public class LocalTransaction {
      * を呼び出し、ローカルトランザクションを開始しておく必要があります。 同一スレッド内であれば、 異なるインスタンスの
      * {@link #begin()} または {@link #begin(TransactionIsolationLevel)} でも構いません。
      * 
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @throws JdbcException
      *             コミットに失敗した場合
@@ -264,13 +264,13 @@ public class LocalTransaction {
     public void commit() {
         LocalTransactionContext context = localTxContextHolder.get();
         if (!isActiveInternal(context)) {
-            throw new LocalTransactionNotYetBegunException(Message.DOMA2046);
+            throw new TransactionNotYetBegunException(Message.DOMA2046);
         }
         if (context.hasConnection()) {
             LocalTransactionConnection connection = context.getConnection();
             try {
                 connection.commit();
-                jdbcLogger.logLocalTransactionCommitted(className, "commit",
+                jdbcLogger.logTransactionCommitted(className, "commit",
                         context.getId());
             } catch (SQLException e) {
                 rollbackInternal("commit");
@@ -287,13 +287,13 @@ public class LocalTransaction {
      * ローカルトランザクションを中断します。
      * 
      * @return　中断されたトランザクションを表すトランザクションコンテキスト
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      */
     public LocalTransactionContext suspend() {
         LocalTransactionContext context = localTxContextHolder.get();
         if (!isActiveInternal(context)) {
-            throw new LocalTransactionNotYetBegunException(Message.DOMA2046);
+            throw new TransactionNotYetBegunException(Message.DOMA2046);
         }
         localTxContextHolder.set(null);
         return context;
@@ -347,7 +347,7 @@ public class LocalTransaction {
             String id = context.getId();
             try {
                 connection.rollback();
-                jdbcLogger.logLocalTransactionRolledback(className,
+                jdbcLogger.logTransactionRolledback(className,
                         callerMethodName, id);
             } catch (SQLException ignored) {
                 jdbcLogger.logLocalTransactionRollbackFailure(className,
@@ -372,7 +372,7 @@ public class LocalTransaction {
      *            セーブポイントの名前
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @throws SavepointAleadyExistsException
      *             セーブポイントがすでに存在する場合
@@ -386,7 +386,7 @@ public class LocalTransaction {
         }
         LocalTransactionContext context = localTxContextHolder.get();
         if (!isActiveInternal(context)) {
-            throw new LocalTransactionNotYetBegunException(Message.DOMA2053,
+            throw new TransactionNotYetBegunException(Message.DOMA2053,
                     savepointName);
         }
         String id = context.getId();
@@ -403,7 +403,7 @@ public class LocalTransaction {
             throw new JdbcException(Message.DOMA2051, e, savepointName, e);
         }
         context.addSavepoint(savepointName, savepoint);
-        jdbcLogger.logLocalTransactionSavepointCreated(className,
+        jdbcLogger.logTransactionSavepointCreated(className,
                 "setSavepoint", id, savepointName);
     }
 
@@ -414,7 +414,7 @@ public class LocalTransaction {
      *            セーブポイントの名前
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @return セーブポイントを保持している場合 {@code ture}
      * @since 1.2.0
@@ -426,7 +426,7 @@ public class LocalTransaction {
         }
         LocalTransactionContext context = localTxContextHolder.get();
         if (!isActiveInternal(context)) {
-            throw new LocalTransactionNotYetBegunException(Message.DOMA2057,
+            throw new TransactionNotYetBegunException(Message.DOMA2057,
                     savepointName);
         }
         return context.getSavepoint(savepointName) != null;
@@ -444,7 +444,7 @@ public class LocalTransaction {
      *            セーブポイントの名前
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @throws JdbcException
      *             セーブポイントの削除に失敗した場合
@@ -456,7 +456,7 @@ public class LocalTransaction {
         }
         LocalTransactionContext context = localTxContextHolder.get();
         if (!isActiveInternal(context)) {
-            throw new LocalTransactionNotYetBegunException(Message.DOMA2061,
+            throw new TransactionNotYetBegunException(Message.DOMA2061,
                     savepointName);
         }
         String id = context.getId();
@@ -472,7 +472,7 @@ public class LocalTransaction {
             rollbackInternal("releaseSavepoint");
             throw new JdbcException(Message.DOMA2060, e, savepointName, e);
         }
-        jdbcLogger.logLocalTransactionSavepointCreated(className,
+        jdbcLogger.logTransactionSavepointCreated(className,
                 "setSavepoint", id, savepointName);
     }
 
@@ -490,7 +490,7 @@ public class LocalTransaction {
      *             引数が {@code null} の場合
      * @throws SavepointNotFoundException
      *             セーブポイントが見つからない場合
-     * @throws LocalTransactionNotYetBegunException
+     * @throws TransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @throws JdbcException
      *             セーブポイントへのロールバックに失敗した場合
@@ -502,7 +502,7 @@ public class LocalTransaction {
         }
         LocalTransactionContext context = localTxContextHolder.get();
         if (!isActiveInternal(context)) {
-            throw new LocalTransactionNotYetBegunException(Message.DOMA2062,
+            throw new TransactionNotYetBegunException(Message.DOMA2062,
                     savepointName);
         }
         String id = context.getId();
@@ -518,7 +518,7 @@ public class LocalTransaction {
             rollbackInternal("rollback");
             throw new JdbcException(Message.DOMA2052, e, savepointName, e);
         }
-        jdbcLogger.logLocalTransactionSavepointRolledback(className,
+        jdbcLogger.logTransactionSavepointRolledback(className,
                 "rollback", id, savepointName);
     }
 
@@ -543,7 +543,7 @@ public class LocalTransaction {
     protected void endInternal(LocalTransactionContext context,
             String callerMethodName) {
         release(context, callerMethodName);
-        jdbcLogger.logLocalTransactionEnded(className, callerMethodName,
+        jdbcLogger.logTransactionEnded(className, callerMethodName,
                 context.getId());
     }
 

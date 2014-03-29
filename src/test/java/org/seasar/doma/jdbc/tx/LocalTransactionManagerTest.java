@@ -37,13 +37,13 @@ public class LocalTransactionManagerTest extends TestCase {
     private final UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger() {
 
         @Override
-        public void logLocalTransactionBegun(String callerClassName,
+        public void logTransactionBegun(String callerClassName,
                 String callerMethodName, String transactionId) {
             LocalTransactionManagerTest.counter++;
         }
 
         @Override
-        public void logLocalTransactionEnded(String callerClassName,
+        public void logTransactionEnded(String callerClassName,
                 String callerMethodName, String transactionId) {
             LocalTransactionManagerTest.counter--;
         }
@@ -60,7 +60,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testRequired_blcok() throws Exception {
-        LocalTransactionManager manager = new LocalTransactionManager(
+        TransactionManager manager = new LocalTransactionManager(
                 transaction);
         StringBuilder log = new StringBuilder();
         log.append(LocalTransactionManagerTest.counter);
@@ -85,7 +85,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testRequiresNew_blcok() throws Exception {
-        LocalTransactionManager manager = new LocalTransactionManager(
+        TransactionManager manager = new LocalTransactionManager(
                 transaction);
         StringBuilder log = new StringBuilder();
         log.append(LocalTransactionManagerTest.counter);
@@ -110,7 +110,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testNotSupported_block() throws Exception {
-        LocalTransactionManager manager = new LocalTransactionManager(
+        TransactionManager manager = new LocalTransactionManager(
                 transaction);
         StringBuilder log = new StringBuilder();
         log.append(LocalTransactionManagerTest.counter);
