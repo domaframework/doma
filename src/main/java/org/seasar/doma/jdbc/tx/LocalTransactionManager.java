@@ -20,17 +20,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.JdbcException;
 
 /**
  * ローカルトランザクションのマネージャーです。
- * <p>
- * ローカルトランザクションを使った操作を簡易化するAPIを提供します。
  * 
  * @author nakamura-to
  * @since 2.0.0
  */
-public class LocalTransactionManager {
+public class LocalTransactionManager implements TransactionManager {
 
     /**
      * ローカルトランザクション
@@ -50,21 +47,7 @@ public class LocalTransactionManager {
         this.transaction = transaction;
     }
 
-    /**
-     * ローカルトランザクションを返します。
-     * 
-     * @return ローカルトランザクション
-     */
-    public LocalTransaction getLocalTransaction() {
-        return transaction;
-    }
-
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param block
-     *            トランザクション内で実行する処理
-     */
+    @Override
     public void required(Runnable block) {
         if (block == null) {
             throw new DomaNullPointerException("block");
@@ -72,14 +55,7 @@ public class LocalTransactionManager {
         requiredInternal(TransactionIsolationLevel.DEFAULT, toSupplier(block));
     }
 
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param block
-     *            トランザクション内で実行する処理
-     */
+    @Override
     public void required(TransactionIsolationLevel isolationLevel,
             Runnable block) {
         if (isolationLevel == null) {
@@ -91,15 +67,7 @@ public class LocalTransactionManager {
         requiredInternal(isolationLevel, toSupplier(block));
     }
 
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
+    @Override
     public <RESULT> RESULT required(Supplier<RESULT> supplier) {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
@@ -107,17 +75,7 @@ public class LocalTransactionManager {
         return requiredInternal(TransactionIsolationLevel.DEFAULT, supplier);
     }
 
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
+    @Override
     public <RESULT> RESULT required(TransactionIsolationLevel isolationLevel,
             Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
@@ -139,12 +97,7 @@ public class LocalTransactionManager {
         }
     }
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     * 
-     * @param block
-     *            トランザクション内で実行する処理
-     */
+    @Override
     public void requiresNew(Runnable block) {
         if (block == null) {
             throw new DomaNullPointerException("block");
@@ -153,14 +106,7 @@ public class LocalTransactionManager {
                 toSupplier(block));
     }
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     *
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param block
-     *            トランザクション内で実行する処理
-     */
+    @Override
     public void requiresNew(TransactionIsolationLevel isolationLevel,
             Runnable block) {
         if (isolationLevel == null) {
@@ -172,15 +118,7 @@ public class LocalTransactionManager {
         requiresNewInternal(isolationLevel, toSupplier(block));
     }
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     * 
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
+    @Override
     public <RESULT> RESULT requiresNew(Supplier<RESULT> supplier) {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
@@ -188,17 +126,7 @@ public class LocalTransactionManager {
         return requiresNewInternal(TransactionIsolationLevel.DEFAULT, supplier);
     }
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
+    @Override
     public <RESULT> RESULT requiresNew(
             TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
@@ -225,12 +153,7 @@ public class LocalTransactionManager {
         }
     }
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param block
-     *            トランザクション内で実行する処理
-     */
+    @Override
     public void notSupported(Runnable block) {
         if (block == null) {
             throw new DomaNullPointerException("block");
@@ -239,14 +162,7 @@ public class LocalTransactionManager {
                 toSupplier(block));
     }
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param block
-     *            トランザクション内で実行する処理
-     */
+    @Override
     public void notSupported(TransactionIsolationLevel isolationLevel,
             Runnable block) {
         if (isolationLevel == null) {
@@ -258,15 +174,7 @@ public class LocalTransactionManager {
         notSupportedInternal(isolationLevel, toSupplier(block));
     }
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
+    @Override
     public <RESULT> RESULT notSupported(Supplier<RESULT> supplier) {
         if (supplier == null) {
             throw new DomaNullPointerException("supplier");
@@ -274,17 +182,7 @@ public class LocalTransactionManager {
         return notSupportedInternal(TransactionIsolationLevel.DEFAULT, supplier);
     }
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
+    @Override
     public <RESULT> RESULT notSupported(
             TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
@@ -318,18 +216,12 @@ public class LocalTransactionManager {
         };
     }
 
-    /**
-     * 現在のトランザクションをロールバックすることを予約します。
-     */
+    @Override
     public void setRollbackOnly() {
         transaction.setRollbackOnly();
     }
 
-    /**
-     * 現在のトランザクションがロールバックされるように予約されているかどうかを返します。
-     * 
-     * @return ロールバックされる場合 {@code true}
-     */
+    @Override
     public boolean isRollbackOnly() {
         return transaction.isRollbackOnly();
     }
@@ -360,77 +252,22 @@ public class LocalTransactionManager {
         }
     }
 
-    /**
-     * ローカルトランザクションのセーブポイントを作成します。
-     * <p>
-     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws LocalTransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
-     * @throws SavepointAleadyExistsException
-     *             セーブポイントがすでに存在する場合
-     * @throws JdbcException
-     *             セーブポイントの作成に失敗した場合
-     */
+    @Override
     public void setSavepoint(String savepointName) {
         transaction.setSavepoint(savepointName);
     }
 
-    /**
-     * このローカルトランザクションでセーブポイントを保持しているかどうかを返します。
-     * <p>
-     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws LocalTransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
-     * @return セーブポイントを保持している場合 {@code true}
-     */
+    @Override
     public boolean hasSavepoint(String savepointName) {
         return transaction.hasSavepoint(savepointName);
     }
 
-    /**
-     * ローカルトランザクションから指定されたセーブポイントと以降のセーブポイントを削除します。
-     * <p>
-     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws LocalTransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
-     * @throws JdbcException
-     *             セーブポイントの削除に失敗した場合
-     */
+    @Override
     public void releaseSavepoint(String savepointName) {
         transaction.releaseSavepoint(savepointName);
     }
 
-    /**
-     * 指定されたセーブポイントが設定されたあとに行われたすべての変更をロールバックします。
-     * <p>
-     * このメソッドを呼び出す前にローカルトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws SavepointNotFoundException
-     *             セーブポイントが見つからない場合
-     * @throws LocalTransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
-     * @throws JdbcException
-     *             セーブポイントへのロールバックに失敗した場合
-     */
+    @Override
     public void rollback(String savepointName) {
         transaction.rollback(savepointName);
     }

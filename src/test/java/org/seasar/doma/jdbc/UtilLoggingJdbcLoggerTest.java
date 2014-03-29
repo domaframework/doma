@@ -37,16 +37,16 @@ public class UtilLoggingJdbcLoggerTest extends TestCase {
 
     public void testLogLocalTransactionBegun() throws Exception {
         UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
-        logger.logLocalTransactionBegun("ddd", "eee", "fff");
+        logger.logTransactionBegun("ddd", "eee", "fff");
     }
 
     public void testLogLocalTransactionCommitted() throws Exception {
         UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
-        logger.logLocalTransactionCommitted("ddd", "eee", "fff");
+        logger.logTransactionCommitted("ddd", "eee", "fff");
     }
 
     public void testLogLocalTransactionRolledback() throws Exception {
         UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
-        logger.logLocalTransactionRolledback("ddd", "eee", "fff");
+        logger.logTransactionRolledback("ddd", "eee", "fff");
     }
 }

@@ -21,13 +21,13 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * ローカルトランザクションがすでに開始されている場合にスローされる例外です。
+ * トランザクションがすでに開始されている場合にスローされる例外です。
  * 
- * @author taedium
- * @since 1.1.0
+ * @author nakamura-to
+ * @since 2.0.0
  */
-public class LocalTransactionAlreadyBegunException extends JdbcException
-        implements Serializable {
+public class TransactionAlreadyBegunException extends JdbcException implements
+        Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class LocalTransactionAlreadyBegunException extends JdbcException
      * @param transactionId
      *            トランザクションID
      */
-    public LocalTransactionAlreadyBegunException(String transactionId) {
+    public TransactionAlreadyBegunException(String transactionId) {
         super(Message.DOMA2045, transactionId);
     }
 

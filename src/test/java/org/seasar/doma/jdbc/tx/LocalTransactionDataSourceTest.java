@@ -45,7 +45,7 @@ public class LocalTransactionDataSourceTest extends TestCase {
         try {
             dataSource.getConnection();
             fail();
-        } catch (LocalTransactionNotYetBegunException expected) {
+        } catch (TransactionNotYetBegunException expected) {
             System.out.println(expected.getMessage());
         }
     }

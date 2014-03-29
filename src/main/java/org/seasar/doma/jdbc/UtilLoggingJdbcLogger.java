@@ -99,49 +99,42 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     }
 
     @Override
-    public void logLocalTransactionBegun(String callerClassName,
+    public void logTransactionBegun(String callerClassName,
             String callerMethodName, String transactionId) {
         logger.logp(level, callerClassName, callerMethodName,
                 Message.DOMA2063.getMessage(transactionId));
     }
 
     @Override
-    public void logLocalTransactionEnded(String callerClassName,
+    public void logTransactionEnded(String callerClassName,
             String callerMethodName, String transactionId) {
         logger.logp(level, callerClassName, callerMethodName,
                 Message.DOMA2064.getMessage(transactionId));
     }
 
     @Override
-    public void logLocalTransactionSavepointCreated(String callerClassName,
+    public void logTransactionSavepointCreated(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
         logger.logp(level, callerClassName, callerMethodName,
                 Message.DOMA2065.getMessage(transactionId, savepointName));
     }
 
     @Override
-    public void logLocalTransactionSavepointReleased(String callerClassName,
-            String callerMethodName, String transactionId, String savepointName) {
-        logger.logp(level, callerClassName, callerMethodName,
-                Message.DOMA2066.getMessage(transactionId, savepointName));
-    }
-
-    @Override
-    public void logLocalTransactionCommitted(String callerClassName,
+    public void logTransactionCommitted(String callerClassName,
             String callerMethodName, String transactionId) {
         logger.logp(level, callerClassName, callerMethodName,
                 Message.DOMA2067.getMessage(transactionId));
     }
 
     @Override
-    public void logLocalTransactionRolledback(String callerClassName,
+    public void logTransactionRolledback(String callerClassName,
             String callerMethodName, String transactionId) {
         logger.logp(level, callerClassName, callerMethodName,
                 Message.DOMA2068.getMessage(transactionId));
     }
 
     @Override
-    public void logLocalTransactionSavepointRolledback(String callerClassName,
+    public void logTransactionSavepointRolledback(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
         logger.logp(level, callerClassName, callerMethodName,
                 Message.DOMA2069.getMessage(transactionId, savepointName));

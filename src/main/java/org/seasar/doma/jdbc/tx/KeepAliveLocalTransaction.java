@@ -141,7 +141,7 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
     @Override
     protected void endInternal(LocalTransactionContext context,
             String callerMethodName) {
-        jdbcLogger.logLocalTransactionEnded(className, callerMethodName,
+        jdbcLogger.logTransactionEnded(className, callerMethodName,
                 context.getId());
     }
 
