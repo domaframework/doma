@@ -426,5 +426,7 @@ List<Employee> selectAll();
 
 ``MapKeyNamingType.CAMEL_CASE`` は、カラム名をキャメルケースに変換することを示します。
 そのほかにカラム名を大文字や小文字に変換する規約があります。
-指定しない場合は変換は行われません。
+
+最終的な変換結果は、ここに指定した値と :doc:`../config` に指定された
+``MapKeyNaming`` の実装により決まります。
 
