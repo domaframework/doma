@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.sql.DataSource;
 
@@ -24,6 +24,7 @@ import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
@@ -98,6 +99,11 @@ public class RuntimeConfig implements Config {
     @Override
     public ExceptionSqlLogType getExceptionSqlLogType() {
         return config.getExceptionSqlLogType();
+    }
+
+    @Override
+    public MapKeyNaming getMapKeyNaming() {
+        return config.getMapKeyNaming();
     }
 
     @Override
