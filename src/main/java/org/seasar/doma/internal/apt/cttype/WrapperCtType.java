@@ -27,6 +27,9 @@ import java.sql.Date;
 import java.sql.NClob;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
@@ -53,6 +56,9 @@ import org.seasar.doma.wrapper.DoubleWrapper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
 import org.seasar.doma.wrapper.ObjectWrapper;
@@ -176,6 +182,15 @@ public class WrapperCtType extends AbstractCtType {
             }
             if (TypeMirrorUtil.isAssignable(t, java.util.Date.class, env)) {
                 return UtilDateWrapper.class;
+            }
+            if (TypeMirrorUtil.isAssignable(t, LocalTime.class, env)) {
+                return LocalTimeWrapper.class;
+            }
+            if (TypeMirrorUtil.isAssignable(t, LocalDateTime.class, env)) {
+                return LocalDateTimeWrapper.class;
+            }
+            if (TypeMirrorUtil.isAssignable(t, LocalDate.class, env)) {
+                return LocalDateWrapper.class;
             }
             if (TypeMirrorUtil.isAssignable(t, Array.class, env)) {
                 return ArrayWrapper.class;

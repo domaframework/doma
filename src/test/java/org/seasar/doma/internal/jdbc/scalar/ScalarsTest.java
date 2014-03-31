@@ -24,6 +24,9 @@ import java.sql.Date;
 import java.sql.NClob;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -81,6 +84,12 @@ public class ScalarsTest extends TestCase {
         assertNotNull(Scalars.wrap(Timestamp.valueOf("2009-01-23 12:34:56"),
                 Timestamp.class, false, classHelper));
         assertNotNull(Scalars.wrap(new java.util.Date(), java.util.Date.class,
+                false, classHelper));
+        assertNotNull(Scalars.wrap(LocalDate.of(2009, 01, 23), LocalDate.class,
+                false, classHelper));
+        assertNotNull(Scalars.wrap(LocalDateTime.of(2009, 01, 23, 12, 34, 56),
+                LocalDateTime.class, false, classHelper));
+        assertNotNull(Scalars.wrap(LocalTime.of(12, 34, 56), LocalTime.class,
                 false, classHelper));
         assertNotNull(Scalars.wrap(null, Array.class, false, classHelper));
         assertNotNull(Scalars.wrap(null, Blob.class, false, classHelper));

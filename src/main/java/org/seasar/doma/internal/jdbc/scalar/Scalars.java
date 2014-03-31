@@ -27,6 +27,9 @@ import java.sql.Date;
 import java.sql.NClob;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.function.Supplier;
 
 import org.seasar.doma.Domain;
@@ -48,6 +51,9 @@ import org.seasar.doma.wrapper.DoubleWrapper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
 import org.seasar.doma.wrapper.ObjectWrapper;
@@ -130,6 +136,21 @@ public final class Scalars {
         if (valueClass == java.util.Date.class) {
             Supplier<Wrapper<java.util.Date>> supplier = () -> new UtilDateWrapper(
                     (java.util.Date) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
+        }
+        if (valueClass == LocalDate.class) {
+            Supplier<Wrapper<LocalDate>> supplier = () -> new LocalDateWrapper(
+                    (LocalDate) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
+        }
+        if (valueClass == LocalTime.class) {
+            Supplier<Wrapper<LocalTime>> supplier = () -> new LocalTimeWrapper(
+                    (LocalTime) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
+        }
+        if (valueClass == LocalDateTime.class) {
+            Supplier<Wrapper<LocalDateTime>> supplier = () -> new LocalDateTimeWrapper(
+                    (LocalDateTime) value);
             return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Date.class) {
