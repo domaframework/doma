@@ -49,6 +49,12 @@ public final class JdbcTypes {
 
     public static final IntegerType INTEGER = new IntegerType();
 
+    public static final LocalDateType LOCAL_DATE = new LocalDateType();
+
+    public static final LocalDateTimeType LOCAL_DATE_TIME = new LocalDateTimeType();
+
+    public static final LocalTimeType LOCAL_TIME = new LocalTimeType();
+
     public static final LongType LONG = new LongType();
 
     public static final NClobType NCLOB = new NClobType();

@@ -19,6 +19,9 @@ Domaでは、データベースのカラムにマッピング可能なJavaの型
 * java.lang.Object
 * java.math.BigDecimal
 * java.math.BigInteger
+* java.time.LocalDate
+* java.time.LocalTime
+* java.time.LocalDateTime
 * java.sql.Date
 * java.sql.Time
 * java.sql.Timestamp
@@ -32,11 +35,20 @@ Domaでは、データベースのカラムにマッピング可能なJavaの型
 
 日付と時刻の型の違いについて説明します。
 
+java.time.LocalDate
+  SQL標準のDATE型 (日付のみ)を表します。
+
+java.time.LocalTime
+  SQL標準のTIME型 (時刻のみ)を表します。
+
+java.time.LocalDateTime
+  SQL標準のTIMESTAMP型 (日付と時刻)を表します。RDBMSがサポートしている場合ナノ秒を保持します。
+
 java.sql.Date
   SQL標準のDATE型 (日付のみ)を表します。
 
 java.sql.Time
-  SQL標準のDATE型 (日付のみ)を表します。
+  SQL標準のTIME型 (時刻のみ)を表します。
 
 java.sql.Timestamp
   SQL標準のTIMESTAMP型 (日付と時刻)を表します。RDBMSがサポートしている場合ナノ秒を保持します。

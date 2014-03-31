@@ -21,6 +21,9 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -30,6 +33,7 @@ import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -45,6 +49,9 @@ import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
 import org.seasar.doma.wrapper.BooleanWrapper;
 import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.UtilDateWrapper;
@@ -276,6 +283,18 @@ public class OracleDialect extends StandardDialect {
         /** {@link java.util.Date}用日付フォーマッタ */
         protected UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
 
+        /** {@link LocalDate}用日付フォーマッタ */
+        protected LocalDateFormatter localDateFormatter = new LocalDateFormatter(
+                dateFormatter);
+
+        /** {@link LocalDateTime}用タイムスタンプフォーマッタ */
+        protected LocalDateTimeFormatter localDateTimeFormatter = new LocalDateTimeFormatter(
+                timestampFormatter);
+
+        /** {@link LocalTime}用時刻フォーマッタ */
+        protected LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(
+                timeFormatter);
+
         @Override
         public String visitBooleanWrapper(BooleanWrapper wrapper,
                 SqlLogFormattingFunction p, Void q) throws RuntimeException {
@@ -286,6 +305,24 @@ public class OracleDialect extends StandardDialect {
         public String visitDateWrapper(DateWrapper wrapper,
                 SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, dateFormatter);
+        }
+
+        @Override
+        public String visitLocalDateWrapper(LocalDateWrapper wrapper,
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+            return p.apply(wrapper, localDateFormatter);
+        }
+
+        @Override
+        public String visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper,
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+            return p.apply(wrapper, localDateTimeFormatter);
+        }
+
+        @Override
+        public String visitLocalTimeWrapper(LocalTimeWrapper wrapper,
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+            return p.apply(wrapper, localTimeFormatter);
         }
 
         @Override
@@ -375,6 +412,81 @@ public class OracleDialect extends StandardDialect {
                 SimpleDateFormat dateFormat = new SimpleDateFormat(
                         "yyyy-MM-dd HH:mm:ss.SSS");
                 return "timestamp'" + dateFormat.format(value) + "'";
+            }
+        }
+
+        /**
+         * {@link LocalDate} をdateリテラルへ変換するフォーマッタです。
+         * 
+         * @author nakamura-to
+         * @since 2.0.0
+         */
+        protected static class LocalDateFormatter implements
+                SqlLogFormatter<LocalDate> {
+
+            protected final DateFormatter delegate;
+
+            protected LocalDateFormatter(DateFormatter delegate) {
+                AssertionUtil.assertNotNull(delegate);
+                this.delegate = delegate;
+            }
+
+            @Override
+            public String convertToLogFormat(LocalDate value) {
+                if (value == null) {
+                    return "null";
+                }
+                return delegate.convertToLogFormat(Date.valueOf(value));
+            }
+        }
+
+        /**
+         * {@link LocalDateTime} をtimestampリテラルへ変換するフォーマッタです。
+         * 
+         * @author nakamura-to
+         * @since 2.0.0
+         */
+        protected static class LocalDateTimeFormatter implements
+                SqlLogFormatter<LocalDateTime> {
+
+            protected final TimestampFormatter delegate;
+
+            protected LocalDateTimeFormatter(TimestampFormatter delegate) {
+                AssertionUtil.assertNotNull(delegate);
+                this.delegate = delegate;
+            }
+
+            @Override
+            public String convertToLogFormat(LocalDateTime value) {
+                if (value == null) {
+                    return "null";
+                }
+                return delegate.convertToLogFormat(Timestamp.valueOf(value));
+            }
+        }
+
+        /**
+         * {@link LocalTime} をtimeリテラルへ変換するフォーマッタです。
+         * 
+         * @author nakamura-to
+         * @since 2.0.0
+         */
+        protected static class LocalTimeFormatter implements
+                SqlLogFormatter<LocalTime> {
+
+            protected final TimeFormatter delegate;
+
+            protected LocalTimeFormatter(TimeFormatter delegate) {
+                AssertionUtil.assertNotNull(delegate);
+                this.delegate = delegate;
+            }
+
+            @Override
+            public String convertToLogFormat(LocalTime value) {
+                if (value == null) {
+                    return "null";
+                }
+                return delegate.convertToLogFormat(Time.valueOf(value));
             }
         }
 

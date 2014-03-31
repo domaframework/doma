@@ -86,6 +86,21 @@ public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
         return null;
     }
 
+    default R visitLocalDateWrapper(LocalDateWrapper wrapper, P p, Q q)
+            throws TH {
+        return null;
+    }
+
+    default R visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper, P p, Q q)
+            throws TH {
+        return null;
+    }
+
+    default R visitLocalTimeWrapper(LocalTimeWrapper wrapper, P p, Q q)
+            throws TH {
+        return null;
+    }
+
     default R visitLongWrapper(LongWrapper wrapper, P p, Q q) throws TH {
         return null;
     }

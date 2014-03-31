@@ -66,6 +66,9 @@ import org.seasar.doma.wrapper.DoubleWrapper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
 import org.seasar.doma.wrapper.ObjectWrapper;
@@ -565,6 +568,24 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
+        public Void visitLocalDateWrapper(LocalDateWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.LOCAL_DATE);
+        }
+
+        @Override
+        public Void visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.LOCAL_DATE_TIME);
+        }
+
+        @Override
+        public Void visitLocalTimeWrapper(LocalTimeWrapper wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.LOCAL_TIME);
+        }
+
+        @Override
         public Void visitLongWrapper(LongWrapper wrapper,
                 JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.LONG);
@@ -700,6 +721,24 @@ public class StandardDialect implements Dialect {
         public String visitIntegerWrapper(IntegerWrapper wrapper,
                 SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.INTEGER);
+        }
+
+        @Override
+        public String visitLocalDateWrapper(LocalDateWrapper wrapper,
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.LOCAL_DATE);
+        }
+
+        @Override
+        public String visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper,
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.LOCAL_DATE_TIME);
+        }
+
+        @Override
+        public String visitLocalTimeWrapper(LocalTimeWrapper wrapper,
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.LOCAL_TIME);
         }
 
         @Override
