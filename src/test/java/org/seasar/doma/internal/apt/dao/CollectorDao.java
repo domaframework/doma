@@ -26,7 +26,7 @@ import java.util.stream.Collector;
 import org.seasar.doma.Dao;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.entity.Emp;
 
 import example.domain.PhoneNumber;
@@ -38,20 +38,20 @@ import example.domain.PhoneNumber;
 @Dao(config = MyConfig.class)
 public interface CollectorDao {
 
-    @Select(strategy = SelectStrategyType.COLLECT)
+    @Select(strategy = SelectType.COLLECT)
     Integer selectByIdAndName(Integer id, String name,
             Collector<Emp, ?, Integer> collector);
 
-    @Select(strategy = SelectStrategyType.COLLECT)
+    @Select(strategy = SelectType.COLLECT)
     <R> R selectById(Integer id, Collector<PhoneNumber, ?, R> collector);
 
-    @Select(strategy = SelectStrategyType.COLLECT)
+    @Select(strategy = SelectType.COLLECT)
     <R extends Number> R select(Collector<String, ?, R> collector);
 
-    @Select(strategy = SelectStrategyType.COLLECT)
+    @Select(strategy = SelectType.COLLECT)
     String selectWithHogeCollector(HogeCollector collector);
 
-    @Select(strategy = SelectStrategyType.COLLECT, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    @Select(strategy = SelectType.COLLECT, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     <R> R selectByIdAsMap(Integer id,
             Collector<Map<String, Object>, ?, R> collector);
 

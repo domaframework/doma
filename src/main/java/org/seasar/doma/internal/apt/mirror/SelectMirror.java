@@ -28,7 +28,7 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -117,13 +117,13 @@ public class SelectMirror {
         return value.intValue();
     }
 
-    public SelectStrategyType getStrategyValue() {
+    public SelectType getStrategyValue() {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(strategy);
         if (enumConstant == null) {
             throw new AptIllegalStateException("strategy");
         }
-        return SelectStrategyType.valueOf(enumConstant.getSimpleName()
+        return SelectType.valueOf(enumConstant.getSimpleName()
                 .toString());
     }
 

@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 
 /**
  * @author nakamura-to
@@ -41,7 +41,7 @@ public interface MapResultDao {
     @Select
     List<Map<String, Object>> selectResultList();
 
-    @Select(strategy = SelectStrategyType.STREAM)
+    @Select(strategy = SelectType.STREAM)
     <R> R stream(Function<Stream<Map<String, Object>>, R> mapper);
 
 }

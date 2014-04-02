@@ -21,7 +21,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
@@ -96,11 +96,11 @@ public class SqlFileSelectQueryMetaFactory extends
             }
         }
 
-        if (queryMeta.getSelectStrategyType() == SelectStrategyType.STREAM) {
+        if (queryMeta.getSelectStrategyType() == SelectType.STREAM) {
             if (queryMeta.getFunctionCtType() == null) {
                 throw new AptException(Message.DOMA4247, env, method);
             }
-        } else if (queryMeta.getSelectStrategyType() == SelectStrategyType.COLLECT) {
+        } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
             if (queryMeta.getCollectorCtType() == null) {
                 throw new AptException(Message.DOMA4266, env, method);
             }
@@ -120,7 +120,7 @@ public class SqlFileSelectQueryMetaFactory extends
         final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
 
-        if (queryMeta.getSelectStrategyType() == SelectStrategyType.STREAM) {
+        if (queryMeta.getSelectStrategyType() == SelectType.STREAM) {
             FunctionCtType functionCtType = queryMeta.getFunctionCtType();
             AnyCtType returnCtType = functionCtType.getReturnCtType();
             if (returnCtType == null
@@ -129,7 +129,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(Message.DOMA4246, env, method,
                         returnMeta.getType(), returnCtType.getBoxedTypeName());
             }
-        } else if (queryMeta.getSelectStrategyType() == SelectStrategyType.COLLECT) {
+        } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
             CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
             AnyCtType returnCtType = collectorCtType.getReturnCtType();
             if (returnCtType == null

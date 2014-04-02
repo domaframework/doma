@@ -126,7 +126,7 @@ public @interface Select {
      * @return 検索結果を扱う戦略
      * @since 2.0.0
      */
-    SelectStrategyType strategy() default SelectStrategyType.RETURN;
+    SelectType strategy() default SelectType.RETURN;
 
     /**
      * フェッチのタイプを返します。

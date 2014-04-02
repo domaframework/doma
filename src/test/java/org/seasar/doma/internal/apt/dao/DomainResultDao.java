@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 
 import example.domain.PhoneNumber;
 
@@ -45,7 +45,7 @@ public interface DomainResultDao {
     @Select
     List<Optional<PhoneNumber>> selectOptionalResultList();
 
-    @Select(strategy = SelectStrategyType.STREAM)
+    @Select(strategy = SelectType.STREAM)
     <R> R stream(Function<Stream<PhoneNumber>, R> mapper);
 
 }

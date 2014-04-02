@@ -25,7 +25,7 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Script;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -49,7 +49,7 @@ public interface EmpDao {
     @Select
     List<Emp> selectByExample(Emp emp);
 
-    @Select(strategy = SelectStrategyType.STREAM)
+    @Select(strategy = SelectType.STREAM)
     Integer stream(Function<Stream<Emp>, Integer> mapper);
 
     @Insert

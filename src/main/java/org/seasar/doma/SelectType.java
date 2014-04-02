@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  * @author nakamura-to
  * @since 2.0.0
  */
-public enum SelectStrategyType {
+public enum SelectType {
 
     /**
      * 結果を戻り値で取得します。

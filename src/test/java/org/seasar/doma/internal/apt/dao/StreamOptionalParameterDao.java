@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.Select;
 
 import example.domain.PhoneNumber;
@@ -32,11 +32,11 @@ import example.domain.PhoneNumber;
 @Dao(config = MyConfig.class)
 public interface StreamOptionalParameterDao {
 
-    @Select(strategy = SelectStrategyType.STREAM)
+    @Select(strategy = SelectType.STREAM)
     <R> R selectById(Integer id,
             Function<Stream<Optional<PhoneNumber>>, R> mapper);
 
-    @Select(strategy = SelectStrategyType.STREAM)
+    @Select(strategy = SelectType.STREAM)
     <R extends Number> R select(Function<Stream<Optional<String>>, R> mapper);
 
 }

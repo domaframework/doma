@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.entity.Emp;
 
 /**
@@ -41,7 +41,7 @@ public interface EntityResultDao {
     @Select
     List<Emp> selectResultList();
 
-    @Select(strategy = SelectStrategyType.STREAM)
+    @Select(strategy = SelectType.STREAM)
     <R> R stream(Function<Stream<Emp>, R> mapper);
 
 }
