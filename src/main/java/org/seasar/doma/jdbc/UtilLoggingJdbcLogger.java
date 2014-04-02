@@ -74,12 +74,6 @@ public class UtilLoggingJdbcLogger extends AbstractJdbcLogger<Level> {
 
     @Override
     protected void log(Level level, String callerClassName,
-            String callerMethodName, Supplier<String> messageSupplier) {
-        logger.logp(level, callerClassName, callerMethodName, messageSupplier);
-    }
-
-    @Override
-    protected void log(Level level, String callerClassName,
             String callerMethodName, Throwable throwable,
             Supplier<String> messageSupplier) {
         logger.logp(level, callerClassName, callerMethodName, throwable,

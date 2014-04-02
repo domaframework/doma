@@ -22,15 +22,23 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.message.Message;
 
 /**
+ * JDBCに関するロガーの骨格実装です。
+ * 
  * @author nakamura-to
  * @since 2.0.0
+ * @param <LEVEL>
+ *            ログレベル
  */
 public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
 
+    /** デフォルトのログレベル */
     protected LEVEL defaultLevel;
 
     /**
      * ログレベルを指定してインスタンスを構築します。
+     * 
+     * @param level
+     *            ログレベル
      */
     protected AbstractJdbcLogger(LEVEL level) {
         if (level == null) {
@@ -38,21 +46,6 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
         }
         this.defaultLevel = level;
     }
-
-    /**
-     * ログ出力します。
-     * 
-     * @param level
-     *            ログレベル
-     * @param callerClassName
-     *            呼び出し元のクラス名
-     * @param callerMethodName
-     *            呼び出し元のメソッド名
-     * @param messageSupplier
-     *            メッセージのサプライヤ
-     */
-    protected abstract void log(LEVEL level, String callerClassName,
-            String callerMethodName, Supplier<String> messageSupplier);
 
     /**
      * 例外をログ出力します。
@@ -82,7 +75,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logDaoMethodEntering(String callerClassName,
             String callerMethodName, Object args[], LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -95,7 +88,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logDaoMethodExiting(String callerClassName,
             String callerMethodName, Object result, LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -108,7 +101,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logDaoMethodThrowing(String callerClassName,
             String callerMethodName, RuntimeException e, LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -121,7 +114,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logSqlExecutionSkipping(String callerClassName,
             String callerMethodName, SqlExecutionSkipCause cause, LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -137,7 +130,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
 
     protected void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql, LEVEL level, Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -150,7 +143,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logTransactionBegun(String callerClassName,
             String callerMethodName, String transactionId, LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -163,7 +156,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logTransactionEnded(String callerClassName,
             String callerMethodName, String transactionId, LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -177,7 +170,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logTransactionSavepointCreated(String callerClassName,
             String callerMethodName, String transactionId,
             String savepointName, LEVEL level, Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -191,7 +184,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logTransactionCommitted(String callerClassName,
             String callerMethodName, String transactionId, LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -205,7 +198,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logTransactionRolledback(String callerClassName,
             String callerMethodName, String transactionId, LEVEL level,
             Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
@@ -219,7 +212,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     protected void logTransactionSavepointRolledback(String callerClassName,
             String callerMethodName, String transactionId,
             String savepointName, LEVEL level, Supplier<String> messageSupplier) {
-        log(level, callerClassName, callerMethodName, messageSupplier);
+        log(level, callerClassName, callerMethodName, null, messageSupplier);
     }
 
     @Override
