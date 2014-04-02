@@ -20,7 +20,7 @@ import java.util.stream.Collector;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 
 import example.domain.PhoneNumber;
 
@@ -31,10 +31,10 @@ import example.domain.PhoneNumber;
 @Dao(config = MyConfig.class)
 public interface CollectorOptionalParameterDao {
 
-    @Select(strategy = SelectStrategyType.COLLECT)
+    @Select(strategy = SelectType.COLLECT)
     <R> R selectById(Integer id,
             Collector<Optional<PhoneNumber>, ?, R> collector);
 
-    @Select(strategy = SelectStrategyType.COLLECT)
+    @Select(strategy = SelectType.COLLECT)
     <R extends Number> R select(Collector<Optional<String>, ?, R> mapper);
 }

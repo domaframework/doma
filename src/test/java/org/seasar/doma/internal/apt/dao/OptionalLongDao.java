@@ -28,7 +28,7 @@ import org.seasar.doma.Out;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.Select;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.jdbc.Reference;
 
 import example.entity.Emp;
@@ -49,10 +49,10 @@ public interface OptionalLongDao {
     @Select
     List<OptionalLong> selectAllAge();
 
-    @Select(strategy = SelectStrategyType.STREAM)
+    @Select(strategy = SelectType.STREAM)
     <R> R selectAllAge(Function<Stream<OptionalLong>, R> mapper);
 
-    @Select(strategy = SelectStrategyType.COLLECT)
+    @Select(strategy = SelectType.COLLECT)
     <R> R selectAllAge(Collector<OptionalLong, ?, R> mapper);
 
     @org.seasar.doma.Function

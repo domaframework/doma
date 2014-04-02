@@ -153,13 +153,13 @@ Iterableを使ったIN句へのマッピング
 
 全件を一度に ``java.util.List`` で受け取るのではなく ``java.util.Stream`` で扱いたい場合は、ストリーム検索を利用できます。
 
-ストリーム検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectStrategyType.STREAM`` を設定し、
+ストリーム検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectType.STREAM`` を設定し、
 メソッドのパラメータに ``java.util.Function<Stream<TARGET>, RESULT>`` もしくは
 ``java.util.Function<Stream<TARGET>, RESULT>`` のサブタイプを定義します。
 
 .. code-block:: java
 
-  @Select(strategy = SelectStrategyType.STREAM)
+  @Select(strategy = SelectType.STREAM)
   BigDecimal selectByNameAndSalary(String name, BigDecimal salary, Function<Stream<Employee>, BigDecimal> mapper);
 
 呼び出し元はストリームを受け取って結果を返すラムダ式を渡します。
@@ -191,13 +191,13 @@ Iterableを使ったIN句へのマッピング
 
 検索結果を ``java.util.Collector`` で処理したい場合は、コレクト検索を利用できます。
 
-コレクト検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectStrategyType.COLLECT`` を設定し、
+コレクト検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectType.COLLECT`` を設定し、
 メソッドのパラメータに ``java.stream.Collector<TARGET, ACCUMULATION, RESULT>`` もしくは
 ``java.stream.Collector<TARGET, ?, RESULT>`` のサブタイプを定義します。
 
 .. code-block:: java
 
-  @Select(strategy = SelectStrategyType.COLLECT)
+  @Select(strategy = SelectType.COLLECT)
   <RESULT> RESULT selectBySalary(BigDecimal salary, Collector<Employee, ?, RESULT> collector);
 
 呼び出し元は ``Collector`` のインスタンスを渡します。

@@ -31,7 +31,7 @@ import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.SelectStrategyType;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -517,7 +517,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
             iprint("__query.setResultMappingEnsured(%1$s);%n",
                     m.getEnsureResultMapping());
-            if (m.getSelectStrategyType() == SelectStrategyType.RETURN) {
+            if (m.getSelectStrategyType() == SelectType.RETURN) {
                 iprint("__query.setFetchType(%1$s.%2$s);%n",
                         FetchType.class.getName(), FetchType.LAZY);
             } else {
@@ -531,7 +531,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             QueryReturnMeta returnMeta = m.getReturnMeta();
 
-            if (m.getSelectStrategyType() == SelectStrategyType.RETURN) {
+            if (m.getSelectStrategyType() == SelectType.RETURN) {
                 CtType returnCtType = returnMeta.getCtType();
                 returnCtType.accept(new SqlFileSelectQueryReturnCtTypeVisitor(
                         m, methodName), false);
@@ -542,12 +542,12 @@ public class DaoGenerator extends AbstractGenerator {
                         qualifiedName, m.getName());
                 iprint("return __result;%n");
             } else {
-                if (m.getSelectStrategyType() == SelectStrategyType.STREAM) {
+                if (m.getSelectStrategyType() == SelectType.STREAM) {
                     FunctionCtType functionCtType = m.getFunctionCtType();
                     functionCtType.getTargetCtType().accept(
                             new SqlFileSelectQueryFunctionCtTypeVisitor(m,
                                     methodName), null);
-                } else if (m.getSelectStrategyType() == SelectStrategyType.COLLECT) {
+                } else if (m.getSelectStrategyType() == SelectType.COLLECT) {
                     CollectorCtType collectorCtType = m.getCollectorCtType();
                     collectorCtType.getTargetCtType().accept(
                             new SqlFileSelectQueryCollectorCtTypeVisitor(m,
