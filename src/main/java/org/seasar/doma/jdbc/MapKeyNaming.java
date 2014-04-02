@@ -32,18 +32,17 @@ public interface MapKeyNaming {
      * マップのキーのネーミング規約を適用します。
      * 
      * @param method
-     *            メソッド
+     *            Daoのメソッド、クエリビルダを使った場合には {@code null}
      * @param mapKeyNamingType
      *            マップのキーのネーミング規約
      * @param text
      *            規約が適用される文字列
      * @return 規約が適用された文字列
+     * @throws DomaNullPointerException
+     *             {@code mapKeyNamingType} もしくは {@code text} が {@code null} の場合
      */
     default String apply(Method method, MapKeyNamingType mapKeyNamingType,
             String text) {
-        if (method == null) {
-            throw new DomaNullPointerException("method");
-        }
         if (mapKeyNamingType == null) {
             throw new DomaNullPointerException("mapKeyNamingType");
         }
