@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -78,11 +79,12 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
     protected HashMap<Integer, String> createIndexMap(
             ResultSetMetaData resultSetMeta) throws SQLException {
         MapKeyNaming naming = query.getConfig().getMapKeyNaming();
+        Method method = query.getMethod();
         HashMap<Integer, String> indexMap = new HashMap<Integer, String>();
         int count = resultSetMeta.getColumnCount();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
-            String key = naming.apply(mapKeyNamingType, columnName);
+            String key = naming.apply(method, mapKeyNamingType, columnName);
             indexMap.put(i, key);
         }
         return indexMap;
