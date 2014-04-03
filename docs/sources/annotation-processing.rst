@@ -85,14 +85,8 @@ Gradle
 ======
 
 ``compileJava.options.compilerArgs`` に指定します。
-以下の例では、'-Adao.subpackage=impl' と '-Adao.suffix=Impl' が注釈処理のオプション指定です。
 
 .. code-block:: groovy
 
-  def aptGeneratePath = 'build/apt_generated'
-  compileJava.options.compilerArgs = ['-s', aptGeneratePath, '-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
+  compileJava.options.compilerArgs = ['-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
 
-Maven
-=====
-
-TODO
