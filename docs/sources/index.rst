@@ -61,6 +61,7 @@ About Doma
 .. toctree::
    :maxdepth: 1
 
+   release-notes
    changelog
    faq
 
