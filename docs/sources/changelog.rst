@@ -66,12 +66,12 @@ Daoインタフェース
 * パラメータや戻り値の型に ``java.util.Optional`` 、 ``java.util.OptionalInt`` 、
   ``java.util.OptionalLong`` , ``java.util.OptionalDouble`` を定義できるようになりました。
 
-* ``java.util.Stream`` を使った検索ができるようになりました。
+* ``java.util.stream.Stream`` を使った検索ができるようになりました。
 
 * ``@Delegate`` が廃止になり、代わりにデフォルトメソッドが使えるようになりました。
 
 * ``IterationCallback`` を使った検索が禁止されました。
-  代わりに ``java.util.Stream`` を使った検索をしてください。
+  代わりに ``java.util.stream.Stream`` を使った検索をしてください。
 
 SQLに関する変更
 ===============

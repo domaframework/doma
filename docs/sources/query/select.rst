@@ -151,7 +151,7 @@ Iterableを使ったIN句へのマッピング
 ストリーム検索
 ==============
 
-全件を一度に ``java.util.List`` で受け取るのではなく ``java.util.Stream`` で扱いたい場合は、ストリーム検索を利用できます。
+全件を一度に ``java.util.List`` で受け取るのではなく ``java.util.stream.Stream`` で扱いたい場合は、ストリーム検索を利用できます。
 
 ストリーム検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectType.STREAM`` を設定し、
 メソッドのパラメータに ``java.util.Function<Stream<TARGET>, RESULT>`` もしくは
