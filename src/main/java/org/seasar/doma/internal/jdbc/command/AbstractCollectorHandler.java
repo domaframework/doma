@@ -15,22 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.function.Supplier;
-import java.util.stream.Collector;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import org.seasar.doma.FetchType;
-import org.seasar.doma.internal.jdbc.command.ResultSetIterator.SQLRuntimeException;
-import org.seasar.doma.internal.util.IteratorUtil;
+import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -46,39 +35,17 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public abstract class AbstractCollectorHandler<TARGET, RESULT> implements
         ResultSetHandler<RESULT> {
 
-    protected final Collector<TARGET, ?, RESULT> collector;
+    protected final ResultSetHandler<RESULT> handler;
 
-    public AbstractCollectorHandler(Collector<TARGET, ?, RESULT> collector) {
-        assertNotNull(collector);
-        this.collector = collector;
+    public AbstractCollectorHandler(ResultSetHandler<RESULT> handler) {
+        AssertionUtil.assertNotNull(handler);
+        this.handler = handler;
     }
 
     @Override
     public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
             ResultSetRowIndexConsumer consumer) throws SQLException {
-        ObjectProvider<TARGET> provider = createObjectProvider(query);
-        Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query,
-                consumer, provider);
-        try {
-            if (query.getFetchType() == FetchType.EAGER) {
-                // consume ResultSet
-                List<TARGET> list = IteratorUtil.toList(iterator);
-                Stream<TARGET> stream = list.stream();
-                return () -> stream.collect(collector);
-            } else {
-                Spliterator<TARGET> spliterator = Spliterators
-                        .spliteratorUnknownSize(iterator, 0);
-                Stream<TARGET> stream = StreamSupport
-                        .stream(spliterator, false);
-                RESULT result = stream.collect(collector);
-                return () -> result;
-            }
-        } catch (SQLRuntimeException e) {
-            throw e.getCause();
-        }
+        return handler.handle(resultSet, query, consumer);
     }
-
-    protected abstract ObjectProvider<TARGET> createObjectProvider(
-            SelectQuery query);
 
 }

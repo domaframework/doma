@@ -15,12 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.stream.Collector;
 
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 
@@ -32,19 +29,9 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class EntityCollectorHandler<ENTITY, RESULT> extends
         AbstractCollectorHandler<ENTITY, RESULT> {
 
-    protected final EntityType<ENTITY> entityType;
-
     public EntityCollectorHandler(EntityType<ENTITY> entityType,
             Collector<ENTITY, ?, RESULT> collector) {
-        super(collector);
-        assertNotNull(entityType);
-        this.entityType = entityType;
-    }
-
-    @Override
-    protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
-        return new EntityProvider<>(entityType, query,
-                query.isResultMappingEnsured());
+        super(new EntityStreamHandler<>(entityType, s -> s.collect(collector)));
     }
 
 }

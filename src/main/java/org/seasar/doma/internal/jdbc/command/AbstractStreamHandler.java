@@ -63,8 +63,7 @@ public abstract class AbstractStreamHandler<TARGET, RESULT> implements
             if (query.getFetchType() == FetchType.EAGER) {
                 // consume ResultSet
                 List<TARGET> list = IteratorUtil.toList(iterator);
-                Stream<TARGET> stream = list.stream();
-                return () -> mapper.apply(stream);
+                return () -> mapper.apply(list.stream());
             } else {
                 Spliterator<TARGET> spliterator = Spliterators
                         .spliteratorUnknownSize(iterator, 0);

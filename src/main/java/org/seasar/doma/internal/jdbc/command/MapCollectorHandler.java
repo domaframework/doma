@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.Map;
 import java.util.stream.Collector;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 
@@ -32,18 +29,10 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class MapCollectorHandler<RESULT> extends
         AbstractCollectorHandler<Map<String, Object>, RESULT> {
 
-    private final MapKeyNamingType mapKeyNamingType;
-
-    public MapCollectorHandler(MapKeyNamingType keyNamingType,
+    public MapCollectorHandler(MapKeyNamingType mapKeyNamingType,
             Collector<Map<String, Object>, ?, RESULT> collector) {
-        super(collector);
-        assertNotNull(keyNamingType);
-        this.mapKeyNamingType = keyNamingType;
-    }
-
-    @Override
-    protected MapProvider createObjectProvider(SelectQuery query) {
-        return new MapProvider(query, mapKeyNamingType);
+        super(new MapStreamHandler<>(mapKeyNamingType,
+                s -> s.collect(collector)));
     }
 
 }

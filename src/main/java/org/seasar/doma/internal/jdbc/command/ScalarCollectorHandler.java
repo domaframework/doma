@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
-import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * 
@@ -37,19 +34,9 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class ScalarCollectorHandler<BASIC, CONTAINER, RESULT> extends
         AbstractCollectorHandler<CONTAINER, RESULT> {
 
-    protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
-
     public ScalarCollectorHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier,
             Collector<CONTAINER, ?, RESULT> collector) {
-        super(collector);
-        assertNotNull(supplier);
-        this.supplier = supplier;
-    }
-
-    @Override
-    protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(
-            SelectQuery query) {
-        return new ScalarProvider<>(supplier, query);
+        super(new ScalarStreamHandler<>(supplier, s -> s.collect(collector)));
     }
 
 }
