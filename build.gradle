@@ -39,6 +39,10 @@ compileTestJava {
     options.compilerArgs = ['-proc:none']
 }
 
+test {
+    maxHeapSize = '1g'
+}
+
 javadoc {
     options.encoding = encoding
     options.charSet = encoding
