@@ -635,4 +635,14 @@ public class EntityProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testBytesProperty() throws Exception {
+        Class<?> target = BytesPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
 }
