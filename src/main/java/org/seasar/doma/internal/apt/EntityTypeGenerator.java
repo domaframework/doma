@@ -200,7 +200,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 10 */parentEntityPropertyType,
                     /* 11 */parentEntityBoxedTypeName,
                     /* 12 */pm.getFieldName(),
-                    /* 13 */pm.getTypeElement().getQualifiedName(),
+                    /* 13 */pm.getBoxedClassName(),
                     /* 14 */domainTypeName,
                     /* 15 */pm.isColumnQuoteRequired());
                 } else {
@@ -217,7 +217,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 10 */parentEntityPropertyType,
                     /* 11 */parentEntityBoxedTypeName,
                     /* 12 */pm.getFieldName(),
-                    /* 13 */pm.getTypeElement().getQualifiedName(),
+                    /* 13 */pm.getBoxedClassName(),
                     /* 14 */domainTypeName,
                     /* 15 */pm.isColumnQuoteRequired());
                 }
@@ -235,7 +235,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 10 */parentEntityPropertyType,
                 /* 11 */parentEntityBoxedTypeName,
                 /* 12 */pm.getFieldName(),
-                /* 13 */pm.getTypeElement().getQualifiedName(),
+                /* 13 */pm.getBoxedClassName(),
                 /* 14 */domainTypeName,
                 /* 15 */pm.isColumnQuoteRequired());
             } else {
@@ -254,7 +254,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 12 */parentEntityPropertyType,
                 /* 13 */parentEntityBoxedTypeName,
                 /* 14 */pm.getFieldName(),
-                /* 15 */pm.getTypeElement().getQualifiedName(),
+                /* 15 */pm.getBoxedClassName(),
                 /* 16 */domainTypeName,
                 /* 17 */pm.isColumnQuoteRequired());
             }
