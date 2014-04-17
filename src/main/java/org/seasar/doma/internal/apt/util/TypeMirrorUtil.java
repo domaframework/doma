@@ -471,4 +471,69 @@ public final class TypeMirrorUtil {
             return null;
         }
     }
+
+    public static String getClassName(TypeMirror typeMirror,
+            final ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
+        StringBuilder p = new StringBuilder();
+        typeMirror.accept(new TypeKindVisitor6<Void, StringBuilder>() {
+
+            @Override
+            public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
+                p.append("void");
+                return null;
+            }
+
+            @Override
+            public Void visitPrimitive(PrimitiveType t, StringBuilder p) {
+                p.append(t.getKind().name().toLowerCase());
+                return null;
+            }
+
+            @Override
+            public Void visitArray(ArrayType t, StringBuilder p) {
+                t.getComponentType().accept(this, p);
+                p.append("[]");
+                return null;
+            }
+
+            @Override
+            public Void visitDeclared(DeclaredType t, StringBuilder p) {
+                TypeElement e = toTypeElement(t, env);
+                if (e != null) {
+                    p.append(e.getQualifiedName());
+                }
+                return null;
+            }
+
+        }, p);
+
+        return p.length() > 0 ? p.toString() : Object.class.getName();
+    }
+
+    public static String getBoxedClassName(TypeMirror typeMirror,
+            final ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
+        switch (typeMirror.getKind()) {
+        case BOOLEAN:
+            return Boolean.class.getName();
+        case BYTE:
+            return Byte.class.getName();
+        case SHORT:
+            return Short.class.getName();
+        case INT:
+            return Integer.class.getName();
+        case LONG:
+            return Long.class.getName();
+        case FLOAT:
+            return Float.class.getName();
+        case DOUBLE:
+            return Double.class.getName();
+        case CHAR:
+            return Character.class.getName();
+        default:
+            return getClassName(typeMirror, env);
+        }
+    }
+
 }
