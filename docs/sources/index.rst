@@ -70,5 +70,6 @@ Links
 
 * `GitHub repository <https://github.com/domaframework/doma>`_
 * `Examples <https://github.com/domaframework/simple-examples>`_
+* `Doma-Gen <http://doma-gen.readthedocs.org/>`_
 * `Doma 1 <http://doma.seasar.org/>`_
 
