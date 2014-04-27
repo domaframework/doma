@@ -184,6 +184,11 @@ Dao インタフェースのメソッドと対応する SQL の例は次のと�
 
   select * from employee where employee_id in /* employeeIdList */(1,2,3)
 
+``Iterable`` が空であるとき、IN句の括弧内の値は ``null`` になります。
+
+.. code-block:: sql
+
+  select * from employee where employee_id in (null)
 
 任意の型のパラメータ
 ~~~~~~~~~~~~~~~~~~~~
