@@ -67,6 +67,8 @@ public final class JdbcTypes {
 
     public static final StringType STRING = new StringType();
 
+    public static final SQLXMLType SQLXML = new SQLXMLType();
+
     public static final TimeType TIME = new TimeType();
 
     public static final TimestampType TIMESTAMP = new TimestampType();

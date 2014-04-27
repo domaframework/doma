@@ -25,6 +25,7 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
 import java.sql.NClob;
+import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -57,6 +58,7 @@ import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
 import org.seasar.doma.wrapper.ObjectWrapper;
+import org.seasar.doma.wrapper.SQLXMLWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
@@ -221,6 +223,11 @@ public final class Scalars {
         if (valueClass == Short.class) {
             Supplier<Wrapper<Short>> supplier = () -> new ShortWrapper(
                     (Short) value);
+            return createBasicScalarSupplier(supplier, optional, primitive);
+        }
+        if (valueClass == SQLXML.class) {
+            Supplier<Wrapper<SQLXML>> supplier = () -> new SQLXMLWrapper(
+                    (SQLXML) value);
             return createBasicScalarSupplier(supplier, optional, primitive);
         }
         if (valueClass == Object.class) {

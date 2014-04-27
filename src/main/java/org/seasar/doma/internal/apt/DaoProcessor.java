@@ -37,6 +37,7 @@ import org.seasar.doma.internal.apt.meta.DaoMetaFactory;
 import org.seasar.doma.internal.apt.meta.DefaultQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.NClobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.SQLXMLCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileScriptQueryMetaFactory;
@@ -74,6 +75,7 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
         factories.add(new BlobCreateQueryMetaFactory(processingEnv));
         factories.add(new ClobCreateQueryMetaFactory(processingEnv));
         factories.add(new NClobCreateQueryMetaFactory(processingEnv));
+        factories.add(new SQLXMLCreateQueryMetaFactory(processingEnv));
         return factories;
     }
 

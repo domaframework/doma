@@ -25,6 +25,7 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
 import java.sql.NClob;
+import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -62,6 +63,7 @@ import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
 import org.seasar.doma.wrapper.ObjectWrapper;
+import org.seasar.doma.wrapper.SQLXMLWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
@@ -203,6 +205,9 @@ public class WrapperCtType extends AbstractCtType {
             }
             if (TypeMirrorUtil.isAssignable(t, Clob.class, env)) {
                 return ClobWrapper.class;
+            }
+            if (TypeMirrorUtil.isAssignable(t, SQLXML.class, env)) {
+                return SQLXMLWrapper.class;
             }
             return null;
         }
