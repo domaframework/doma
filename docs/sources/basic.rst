@@ -28,6 +28,7 @@ Domaでは、データベースのカラムにマッピング可能なJavaの型
 * java.sql.Array
 * java.sql.Blob
 * java.sql.Clob
+* java.sql.SQLXML
 * java.util.Date
 
 日付/時刻型

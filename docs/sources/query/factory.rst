@@ -12,6 +12,7 @@ Daoのメソッドに次のアノテーションを注釈します。
 * java.sql.Blobを生成するには、@BlobFactory
 * java.sql.Clobを生成するには、@ClobFactory
 * java.sql.NClobを生成するには、@NClobFactory
+* java.sql.SQLXMLを生成するには、@SQLXMLFactory
 
 Arrayの生成
 ===========
@@ -56,3 +57,12 @@ NClobの生成
   @NClobFactory
   NClob createNClob();
 
+SQLXMLの生成
+============
+
+戻り値の型は ``java.sql.SQLXML`` 、パラメータの数は0でなければいけません。
+
+.. code-block:: java
+
+  @SQLXMLFactory
+  SQLXML createSQLXML();
