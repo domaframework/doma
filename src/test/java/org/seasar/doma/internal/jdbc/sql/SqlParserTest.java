@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -93,6 +94,20 @@ public class SqlParserTest extends TestCase {
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
+    }
+
+    public void testBindVariable_in_empty_iterable() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(List.class, Collections.emptyList()));
+        String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa where ename in (null)", sql.getRawSql());
+        assertEquals("select * from aaa where ename in (null)",
+                sql.getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
     }
 
     public void testBindVariable_endsWithBindVariableComment() throws Exception {

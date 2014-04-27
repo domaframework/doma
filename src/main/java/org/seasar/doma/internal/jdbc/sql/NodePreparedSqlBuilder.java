@@ -267,7 +267,10 @@ public class NodePreparedSqlBuilder implements
             p.appendFormattedSql(", ");
             index++;
         }
-        if (index > 0) {
+        if (index == 0) {
+            p.appendRawSql("null");
+            p.appendFormattedSql("null");
+        } else {
             p.cutBackSqlBuf(2);
             p.cutBackFormattedSqlBuf(2);
         }
