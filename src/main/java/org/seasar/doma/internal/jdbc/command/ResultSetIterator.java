@@ -73,6 +73,9 @@ public class ResultSetIterator<TARGET> implements Iterator<TARGET> {
         }
         consumer.accept(index, next);
         index++;
+        if (query.getMaxRows() > 0 && index == query.getMaxRows()) {
+            query.getConfig().getMaxRowsLimitHandler().handle(query);
+        }
         return result;
     }
 

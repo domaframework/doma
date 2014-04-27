@@ -26,6 +26,8 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.jdbc.MaxRowsLimitHandler;
+import org.seasar.doma.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
@@ -37,7 +39,17 @@ import example.entity._Emp;
  */
 public class EntityResultListHandlerTest extends TestCase {
 
-    private final MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig() {
+        public MaxRowsLimitHandler getMaxRowsLimitHandler() {
+            return new MaxRowsLimitHandler() {
+
+                @Override
+                public void handle(SelectQuery query) {
+                    throw new MaxRowsLimitException();
+                }
+            };
+        }
+    };
 
     private Method method;
 
@@ -77,4 +89,37 @@ public class EntityResultListHandlerTest extends TestCase {
         assertEquals("bbb", emp.getName());
     }
 
+    public void testMaxRowsLimit() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("id"));
+        metaData.columns.add(new ColumnMetaData("name"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+        resultSet.rows.add(new RowData(1, "aaa"));
+        resultSet.rows.add(new RowData(2, "bbb"));
+        resultSet.rows.add(new RowData(3, "bbb"));
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setMethod(method);
+        query.setMaxRows(2);
+        query.prepare();
+
+        EntityResultListHandler<Emp> handler = new EntityResultListHandler<Emp>(
+                _Emp.getSingletonInternal());
+        try {
+            handler.handle(resultSet, query, (i, next) -> {
+            }).get();
+            fail();
+        } catch (MaxRowsLimitException e) {
+            assertEquals(2, resultSet.getRowIndex());
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class MaxRowsLimitException extends RuntimeException {
+    }
 }

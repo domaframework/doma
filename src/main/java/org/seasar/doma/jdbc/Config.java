@@ -144,6 +144,16 @@ public interface Config {
     }
 
     /**
+     * 検索結果が最大行数の制限値に達した場合に呼び出されるハンドラを返します。
+     * 
+     * @return 検索結果が最大行数の制限値に達した場合に呼び出されるハンドラ
+     * @since 2.0.0
+     */
+    default MaxRowsLimitHandler getMaxRowsLimitHandler() {
+        return ConfigSupport.defaultMaxRowsLimitHandler;
+    }
+
+    /**
      * マップのキーのネーミング規約のコントローラを返します。
      * 
      * @return マップのキーのネーミング規約のコントローラ
