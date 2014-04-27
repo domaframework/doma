@@ -40,6 +40,7 @@ import org.seasar.doma.jdbc.query.BlobCreateQuery;
 import org.seasar.doma.jdbc.query.ClobCreateQuery;
 import org.seasar.doma.jdbc.query.NClobCreateQuery;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.SQLXMLCreateQuery;
 import org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery;
 import org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery;
 import org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery;
@@ -326,6 +327,20 @@ public enum QueryKind {
         @Override
         public Class<? extends Query> getQueryClass() {
             return NClobCreateQuery.class;
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return CreateCommand.class;
+        }
+
+    },
+    SQLXML_FACTORY {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return SQLXMLCreateQuery.class;
         }
 
         @SuppressWarnings("rawtypes")

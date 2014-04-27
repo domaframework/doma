@@ -121,6 +121,10 @@ public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
         return null;
     }
 
+    default R visitSQLXMLWrapper(SQLXMLWrapper wrapper, P p, Q q) throws TH {
+        return null;
+    }
+
     default R visitTimestampWrapper(TimestampWrapper wrapper, P p, Q q)
             throws TH {
         return null;
