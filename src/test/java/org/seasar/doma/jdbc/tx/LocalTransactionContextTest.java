@@ -43,11 +43,11 @@ public class LocalTransactionContextTest extends TestCase {
             Savepoint savepoint = context.releaseAndGetSavepoint("3");
             assertEquals("3", savepoint.getSavepointName());
 
-            assertNull(context.getSavepoint("1"));
-            assertNull(context.getSavepoint("2"));
+            assertNotNull(context.getSavepoint("1"));
+            assertNotNull(context.getSavepoint("2"));
             assertNull(context.getSavepoint("3"));
-            assertNotNull(context.getSavepoint("4"));
-            assertNotNull(context.getSavepoint("5"));
+            assertNull(context.getSavepoint("4"));
+            assertNull(context.getSavepoint("5"));
         }
     }
 
