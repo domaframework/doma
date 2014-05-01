@@ -102,11 +102,14 @@ public class LocalTransactionContext {
             return null;
         }
         int pos = savepointNames.lastIndexOf(savepointName);
-        List<String> subList = savepointNames.subList(0, pos + 1);
-        for (String name : subList) {
-            savepointMap.remove(name);
+        if (pos > -1) {
+            List<String> subList = savepointNames.subList(pos,
+                    savepointNames.size());
+            for (String name : subList) {
+                savepointMap.remove(name);
+            }
+            subList.clear();
         }
-        subList.clear();
         return result;
     }
 
