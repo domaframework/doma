@@ -31,7 +31,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.TypeKindVisitor6;
+import javax.lang.model.util.TypeKindVisitor8;
 
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
@@ -85,7 +85,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isPrimitiveIntArray(TypeMirror typeMirror) {
-        return typeMirror.accept(new TypeKindVisitor6<Boolean, Void>(false) {
+        return typeMirror.accept(new TypeKindVisitor8<Boolean, Void>(false) {
 
             @Override
             public Boolean visitArray(ArrayType t, Void p) {
