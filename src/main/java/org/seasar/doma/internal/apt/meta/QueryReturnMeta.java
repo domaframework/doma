@@ -25,7 +25,7 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.TypeKindVisitor6;
+import javax.lang.model.util.TypeKindVisitor8;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
@@ -161,7 +161,7 @@ public class QueryReturnMeta {
     }
 
     public boolean isPrimitiveIntArray() {
-        return type.accept(new TypeKindVisitor6<Boolean, Void>(false) {
+        return type.accept(new TypeKindVisitor8<Boolean, Void>(false) {
 
             @Override
             public Boolean visitArray(ArrayType t, Void p) {

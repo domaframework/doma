@@ -40,7 +40,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.SimpleTypeVisitor6;
+import javax.lang.model.util.SimpleTypeVisitor8;
 
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -114,7 +114,7 @@ public class WrapperCtType extends AbstractCtType {
     }
 
     protected static class WrapperTypeMappingVisitor extends
-            SimpleTypeVisitor6<Class<?>, Void> {
+            SimpleTypeVisitor8<Class<?>, Void> {
 
         protected final ProcessingEnvironment env;
 

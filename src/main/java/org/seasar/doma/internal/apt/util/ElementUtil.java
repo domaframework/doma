@@ -32,8 +32,8 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleElementVisitor6;
-import javax.lang.model.util.SimpleTypeVisitor6;
+import javax.lang.model.util.SimpleElementVisitor8;
+import javax.lang.model.util.SimpleTypeVisitor8;
 
 import org.seasar.doma.ParameterName;
 
@@ -95,7 +95,7 @@ public final class ElementUtil {
             ProcessingEnvironment env) {
         assertNotNull(element, env);
         return element.asType().accept(
-                new SimpleTypeVisitor6<ExecutableType, Void>() {
+                new SimpleTypeVisitor8<ExecutableType, Void>() {
 
                     @Override
                     public ExecutableType visitExecutable(ExecutableType t,
@@ -108,7 +108,7 @@ public final class ElementUtil {
     public static TypeElement toTypeElement(Element element,
             ProcessingEnvironment env) {
         assertNotNull(element, env);
-        return element.accept(new SimpleElementVisitor6<TypeElement, Void>() {
+        return element.accept(new SimpleElementVisitor8<TypeElement, Void>() {
 
             @Override
             public TypeElement visitType(TypeElement e, Void p) {

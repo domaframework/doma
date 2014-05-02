@@ -34,9 +34,9 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
-import javax.lang.model.util.SimpleElementVisitor6;
-import javax.lang.model.util.SimpleTypeVisitor6;
-import javax.lang.model.util.TypeKindVisitor6;
+import javax.lang.model.util.SimpleElementVisitor8;
+import javax.lang.model.util.SimpleTypeVisitor8;
+import javax.lang.model.util.TypeKindVisitor8;
 import javax.lang.model.util.Types;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -54,7 +54,7 @@ public final class TypeMirrorUtil {
         if (element == null) {
             return null;
         }
-        return element.accept(new SimpleElementVisitor6<TypeElement, Void>() {
+        return element.accept(new SimpleElementVisitor8<TypeElement, Void>() {
 
             @Override
             public TypeElement visitType(TypeElement e, Void p) {
@@ -67,7 +67,7 @@ public final class TypeMirrorUtil {
     public static DeclaredType toDeclaredType(TypeMirror typeMirror,
             ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
-        return typeMirror.accept(new SimpleTypeVisitor6<DeclaredType, Void>() {
+        return typeMirror.accept(new SimpleTypeVisitor8<DeclaredType, Void>() {
 
             @Override
             public DeclaredType visitDeclared(DeclaredType t, Void p) {
@@ -80,7 +80,7 @@ public final class TypeMirrorUtil {
     public static TypeVariable toTypeVariable(TypeMirror typeMirror,
             ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
-        return typeMirror.accept(new SimpleTypeVisitor6<TypeVariable, Void>() {
+        return typeMirror.accept(new SimpleTypeVisitor8<TypeVariable, Void>() {
 
             @Override
             public TypeVariable visitTypeVariable(TypeVariable t, Void p) {
@@ -173,7 +173,7 @@ public final class TypeMirrorUtil {
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
         StringBuilder p = new StringBuilder();
-        typeMirror.accept(new TypeKindVisitor6<Void, StringBuilder>() {
+        typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
             @Override
             public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
@@ -274,7 +274,7 @@ public final class TypeMirrorUtil {
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
         StringBuilder p = new StringBuilder();
-        typeMirror.accept(new TypeKindVisitor6<Void, StringBuilder>() {
+        typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
             @Override
             public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
@@ -395,7 +395,7 @@ public final class TypeMirrorUtil {
     public static TypeMirror boxIfPrimitive(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror);
-        return typeMirror.accept(new TypeKindVisitor6<TypeMirror, Void>() {
+        return typeMirror.accept(new TypeKindVisitor8<TypeMirror, Void>() {
 
             @Override
             public TypeMirror visitPrimitive(PrimitiveType t, Void p) {
@@ -476,7 +476,7 @@ public final class TypeMirrorUtil {
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
         StringBuilder p = new StringBuilder();
-        typeMirror.accept(new TypeKindVisitor6<Void, StringBuilder>() {
+        typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
             @Override
             public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {

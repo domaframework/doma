@@ -24,7 +24,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.SimpleAnnotationValueVisitor6;
+import javax.lang.model.util.SimpleAnnotationValueVisitor8;
 
 /**
  * @author taedium
@@ -37,7 +37,7 @@ public final class AnnotationValueUtil {
             return null;
         }
         final List<String> results = new ArrayList<String>();
-        value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
+        value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
             public Void visitArray(List<? extends AnnotationValue> values,
@@ -63,7 +63,7 @@ public final class AnnotationValueUtil {
             return null;
         }
         final List<TypeMirror> results = new ArrayList<TypeMirror>();
-        value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
+        value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
             public Void visitArray(List<? extends AnnotationValue> values,
@@ -89,7 +89,7 @@ public final class AnnotationValueUtil {
             return null;
         }
         final List<AnnotationMirror> results = new ArrayList<AnnotationMirror>();
-        value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
+        value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
             public Void visitArray(List<? extends AnnotationValue> values,
@@ -115,7 +115,7 @@ public final class AnnotationValueUtil {
             return null;
         }
         final List<VariableElement> results = new ArrayList<VariableElement>();
-        value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
+        value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
             public Void visitArray(List<? extends AnnotationValue> values,
@@ -140,7 +140,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        return value.accept(new SimpleAnnotationValueVisitor6<Boolean, Void>() {
+        return value.accept(new SimpleAnnotationValueVisitor8<Boolean, Void>() {
 
             @Override
             public Boolean visitBoolean(boolean b, Void p) {
@@ -154,7 +154,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        return value.accept(new SimpleAnnotationValueVisitor6<Integer, Void>() {
+        return value.accept(new SimpleAnnotationValueVisitor8<Integer, Void>() {
 
             @Override
             public Integer visitInt(int i, Void p) {
@@ -168,7 +168,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        return value.accept(new SimpleAnnotationValueVisitor6<Long, Void>() {
+        return value.accept(new SimpleAnnotationValueVisitor8<Long, Void>() {
 
             @Override
             public Long visitLong(long l, Void p) {
@@ -182,7 +182,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        return value.accept(new SimpleAnnotationValueVisitor6<String, Void>() {
+        return value.accept(new SimpleAnnotationValueVisitor8<String, Void>() {
 
             @Override
             public String visitString(String s, Void p) {
@@ -197,7 +197,7 @@ public final class AnnotationValueUtil {
             return null;
         }
         return value.accept(
-                new SimpleAnnotationValueVisitor6<TypeMirror, Void>() {
+                new SimpleAnnotationValueVisitor8<TypeMirror, Void>() {
 
                     @Override
                     public TypeMirror visitType(TypeMirror t, Void p) {
@@ -212,7 +212,7 @@ public final class AnnotationValueUtil {
             return null;
         }
         return value.accept(
-                new SimpleAnnotationValueVisitor6<AnnotationMirror, Void>() {
+                new SimpleAnnotationValueVisitor8<AnnotationMirror, Void>() {
 
                     @Override
                     public AnnotationMirror visitAnnotation(AnnotationMirror a,
@@ -228,7 +228,7 @@ public final class AnnotationValueUtil {
             return null;
         }
         return value.accept(
-                new SimpleAnnotationValueVisitor6<VariableElement, Void>() {
+                new SimpleAnnotationValueVisitor8<VariableElement, Void>() {
 
                     @Override
                     public VariableElement visitEnumConstant(VariableElement c,
