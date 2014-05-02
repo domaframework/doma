@@ -159,10 +159,6 @@ public abstract class AbstractDao implements ConfigProvider {
             throw new ConfigException(config.getClass().getName(),
                     "getUnknownColumnHandler");
         }
-        if (config.getMaxRowsLimitHandler() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getMaxRowsLimitHandler");
-        }
         if (config.getMapKeyNaming() == null) {
             throw new ConfigException(config.getClass().getName(),
                     "getMapKeyNaming");

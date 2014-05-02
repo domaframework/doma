@@ -42,9 +42,6 @@ public final class ConfigSupport {
     public static UnknownColumnHandler defaultUnknownColumnHandler = new UnknownColumnHandler() {
     };
 
-    public static MaxRowsLimitHandler defaultMaxRowsLimitHandler = new MaxRowsLimitHandler() {
-    };
-
     public static MapKeyNaming defaultMapKeyNaming = new MapKeyNaming() {
     };
 }

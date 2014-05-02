@@ -25,7 +25,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.MapKeyNaming;
-import org.seasar.doma.jdbc.MaxRowsLimitHandler;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
@@ -107,11 +106,6 @@ public class RuntimeConfig implements Config {
     @Override
     public UnknownColumnHandler getUnknownColumnHandler() {
         return config.getUnknownColumnHandler();
-    }
-
-    @Override
-    public MaxRowsLimitHandler getMaxRowsLimitHandler() {
-        return config.getMaxRowsLimitHandler();
     }
 
     @Override

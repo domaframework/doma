@@ -1309,8 +1309,4 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
     }
 
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
 }
