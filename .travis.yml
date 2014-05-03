@@ -13,4 +13,4 @@ env:
   - secure: A376fnvLFnEHLcGju1UU8VQOkHaeB4ib5I8e+CdunZmhaU2x6gHfQElbyYLuASOKurq5S0DhzBQYciGnsARnhu4ur+W2YCw001ar02EYNDd0CA0t2Hcsx5c8X9GgUE2ZwEdAFJPZHtOjnV2/8xEf3In5QzduLAEYZIRZD2AJONA=
   - secure: ZtNxg0Vb1Z+Mt9cAfF2v7dgH6fWjcX6wADS5z3n2gXeS0W2BxyCtgvJ3SWSXygBGEht01tJQbCMhcgcoRvPW658v3ezc7ffhtEFmmycjLliOePt5TH7wprNVlumSnApv0P7bgRgxgQL4PqQztwQmQ+O9X1joHdjRpIs3fqfWK6E=
 after_success:
-- .publish.sh
+- ./publish.sh
