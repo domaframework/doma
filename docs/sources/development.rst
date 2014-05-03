@@ -53,13 +53,6 @@ Continuous Integration の実行には `Travis CI`_ を利用しています。
 
   https://travis-ci.org/domaframework/doma
 
-Maven SNAPSHOT リポジトリへのアップロード
------------------------------------------
-
-Travis CI 上でのビルドが成功すると SNAPSHOT が 以下の Maven リポジトリへアップロードされます。
-
-  https://oss.sonatype.org/content/repositories/snapshots/
-
 ドキュメント
 ============
 
