@@ -10,5 +10,11 @@ env:
   - secure: ZtNxg0Vb1Z+Mt9cAfF2v7dgH6fWjcX6wADS5z3n2gXeS0W2BxyCtgvJ3SWSXygBGEht01tJQbCMhcgcoRvPW658v3ezc7ffhtEFmmycjLliOePt5TH7wprNVlumSnApv0P7bgRgxgQL4PqQztwQmQ+O9X1joHdjRpIs3fqfWK6E=
 before_script:
 - "echo $PASSPHRASE | gpg --output $SIGNING_SECRETKEYRINGFILE --batch --passphrase-fd 0 --decrypt encrypted-maven.gpg"
-after_success:
-- "./gradlew uploadArchives -s -PsonatypeUsername=$SONATYPE_USERNAME -PsonatypePassword=$SONATYPE_PASSWORD -Psigning.keyId=$SIGNING_KEYID -Psigning.password=$SIGNING_PASSWORD -Psigning.secretKeyRingFile=$SIGNING_SECRETKEYRINGFILE"
+after_success:>-
+  [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'deploy' ]] &&
+  ./gradlew uploadArchives -s
+  -PsonatypeUsername=$SONATYPE_USERNAME
+  -PsonatypePassword=$SONATYPE_PASSWORD
+  -Psigning.keyId=$SIGNING_KEYID
+  -Psigning.password=$SIGNING_PASSWORD
+  -Psigning.secretKeyRingFile=$SIGNING_SECRETKEYRINGFILE
