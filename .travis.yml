@@ -12,13 +12,5 @@ env:
   - secure: aUAq4P0vQWcD3+yG4Ool0tc8uAN3+eWEG8/xn2aXfAcP+vAr6p8lgG889+AFs8wlWoAfVErDEpVR2NBPiZLRLEInPVeb7NXV80mAo40K55J0Qk+XIiBLIziTBTZy07/BcWyC4DqzQYxEmSoRJrMiZw3W4k/kbJXojOZBYfP2Ij4=
   - secure: A376fnvLFnEHLcGju1UU8VQOkHaeB4ib5I8e+CdunZmhaU2x6gHfQElbyYLuASOKurq5S0DhzBQYciGnsARnhu4ur+W2YCw001ar02EYNDd0CA0t2Hcsx5c8X9GgUE2ZwEdAFJPZHtOjnV2/8xEf3In5QzduLAEYZIRZD2AJONA=
   - secure: ZtNxg0Vb1Z+Mt9cAfF2v7dgH6fWjcX6wADS5z3n2gXeS0W2BxyCtgvJ3SWSXygBGEht01tJQbCMhcgcoRvPW658v3ezc7ffhtEFmmycjLliOePt5TH7wprNVlumSnApv0P7bgRgxgQL4PqQztwQmQ+O9X1joHdjRpIs3fqfWK6E=
-before_script:
-- "echo $PASSPHRASE | gpg --output $SIGNING_SECRETKEYRINGFILE --batch --passphrase-fd 0 --decrypt encrypted-maven.gpg"
-after_success: >-
-  [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'deploy' ]] &&
-  ./gradlew uploadArchives -s
-  -PsonatypeUsername=$SONATYPE_USERNAME
-  -PsonatypePassword=$SONATYPE_PASSWORD
-  -Psigning.keyId=$SIGNING_KEYID
-  -Psigning.password=$SIGNING_PASSWORD
-  -Psigning.secretKeyRingFile=$SIGNING_SECRETKEYRINGFILE
+after_success:
+- .publish.sh
