@@ -3,7 +3,6 @@ jdk: oraclejdk8
 branches:
   only:
     - master
-    - deploy
 env:
   global:
   - secure: CaKpWYFOCS+z38wN2mdYG3SKtlU1dujJaJpS762LWHIGE4cHfBfMoWrmZmHc8Ba+Ofkqe+tskpyUotpKaUqUl8c7HvovRqwXRcBl+K3XVhSFQfb8DVl3MB+K15Cw4vqgiXl1KchDd/ijr3NYNfRVth4HypKXhkXDgjT10ChUgYI=
