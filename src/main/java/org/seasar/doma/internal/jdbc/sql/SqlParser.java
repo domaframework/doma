@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.AppendableSqlNode;
+import org.seasar.doma.internal.jdbc.sql.node.BinaryOperatorNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
@@ -97,6 +98,14 @@ public class SqlParser {
             case WORD:
             case QUOTE: {
                 parseWord();
+                break;
+            }
+            case EQ_OP: {
+                parseBinaryOp(BinaryOperatorNode.OpKind.EQ);
+                break;
+            }
+            case NE_OP: {
+                parseBinaryOp(BinaryOperatorNode.OpKind.NE);
                 break;
             }
             case SELECT_WORD: {
@@ -310,6 +319,13 @@ public class SqlParser {
         push(node);
     }
 
+    protected void parseBinaryOp(BinaryOperatorNode.OpKind opKind) {
+        String op = tokenType.extract(token);
+        BinaryOperatorNode node = new BinaryOperatorNode(op, opKind);
+        appendNode(node);
+        push(node);
+    }
+
     protected void parseWord() {
         WordNode node = new WordNode(token);
         appendNode(node);
@@ -504,6 +520,24 @@ public class SqlParser {
         return false;
     }
 
+    protected boolean isInConditionalClauseNode() {
+        for (SqlNode node : nodeStack) {
+            if (node instanceof SelectStatementNode) {
+                return false;
+            }
+            if (node instanceof SelectClauseNode) {
+                return true;
+            }
+            if (node instanceof WhereClauseNode) {
+                return true;
+            }
+            if (node instanceof HavingClauseNode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected boolean isInIfBlockNode() {
         for (SqlNode node : nodeStack) {
             if (node instanceof ParensNode) {
@@ -553,6 +587,10 @@ public class SqlParser {
         return peek() instanceof BindVariableNode;
     }
 
+    protected boolean isAfterBinaryOperatorNode() {
+        return peek() instanceof BinaryOperatorNode;
+    }
+
     protected boolean isAfterExpandNode() {
         return peek() instanceof ExpandNode;
     }
@@ -593,6 +631,20 @@ public class SqlParser {
                 throw new JdbcException(Message.DOMA2143, sql,
                         tokenizer.getLineNumber(), tokenizer.getPosition(),
                         expandNode.getText());
+            }
+        } else if (isAfterBinaryOperatorNode()) {
+            if (node instanceof WhitespaceNode) {
+                peek().appendNode(node);
+            } else {
+                BinaryOperatorNode binaryOperatorNode = pop();
+                if (node instanceof BindVariableNode
+                        && isInConditionalClauseNode()) {
+                    BindVariableNode bindVariableNode = (BindVariableNode) node;
+                    bindVariableNode.setOpKind(binaryOperatorNode.getOpKind());
+                    binaryOperatorNode.appendNode(bindVariableNode);
+                } else {
+                    peek().appendNode(node);
+                }
             }
         } else {
             peek().appendNode(node);

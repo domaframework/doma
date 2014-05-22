@@ -26,6 +26,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EMBEDDED_VARIABLE_B
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.END_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOL;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EQ_OP;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXCEPT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXPAND_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FOR_BLOCK_COMMENT;
@@ -37,6 +38,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.NE_OP;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPENED_PARENS;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
@@ -324,7 +326,10 @@ public class SqlTokenizer {
     }
 
     protected void peekTwoChars(char c, char c2) {
-        if ((c == 'o' || c == 'O') && (c2 == 'r' || c2 == 'R')) {
+        if ((c == '<' && c2 == '>') || (c == '!' && c2 == '=')) {
+            type = NE_OP;
+            return;
+        } else if ((c == 'o' || c == 'O') && (c2 == 'r' || c2 == 'R')) {
             type = OR_WORD;
             if (isWordTerminated()) {
                 return;
@@ -461,6 +466,8 @@ public class SqlTokenizer {
     protected void peekOneChar(char c) {
         if (isWhitespace(c)) {
             type = WHITESPACE;
+        } else if (c == '=') {
+            type = EQ_OP;
         } else if (c == '(') {
             type = OPENED_PARENS;
         } else if (c == ')') {

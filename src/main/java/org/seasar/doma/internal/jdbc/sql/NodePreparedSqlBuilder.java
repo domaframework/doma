@@ -37,6 +37,8 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
+import org.seasar.doma.internal.jdbc.sql.node.BinaryOperatorNode;
+import org.seasar.doma.internal.jdbc.sql.node.BinaryOperatorNode.OpKind;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
@@ -246,7 +248,7 @@ public class NodePreparedSqlBuilder implements
             Context p, Object value, Class<?> valueClass) {
         Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
                 node.getText(), value, valueClass);
-        p.addBindValue(supplier.get());
+        p.addBindValue(supplier.get(), node.getOpKind());
         return null;
     }
 
@@ -262,7 +264,7 @@ public class NodePreparedSqlBuilder implements
             }
             Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
                     node.getText(), v, v.getClass());
-            p.addBindValue(supplier.get());
+            p.addBindValue(supplier.get(), null);
             p.appendRawSql(", ");
             p.appendFormattedSql(", ");
             index++;
@@ -520,6 +522,24 @@ public class NodePreparedSqlBuilder implements
     }
 
     @Override
+    public Void visitBinaryOperatorNode(BinaryOperatorNode node, Context p) {
+        BinaryOperatorContext context = new BinaryOperatorContext(p);
+        context.setAvailable(true);
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, context);
+        }
+        if (!context.isBindValueEvaluatedAsNull()) {
+            String op = node.getOp();
+            p.appendRawSql(op);
+            p.appendFormattedSql(op);
+        }
+        p.appendRawSql(context.getSqlBuf());
+        p.appendFormattedSql(context.getFormattedSqlBuf());
+        p.addAllParameters(context.getParameters());
+        return null;
+    }
+
+    @Override
     public Void visitWordNode(WordNode node, Context p) {
         p.setAvailable(true);
         String word = node.getWord();
@@ -646,7 +666,8 @@ public class NodePreparedSqlBuilder implements
         }
 
         protected <BASIC, CONTAINER> void addBindValue(
-                Scalar<BASIC, CONTAINER> scalar) {
+                Scalar<BASIC, CONTAINER> scalar,
+                BinaryOperatorNode.OpKind opKind) {
             parameters.add(new ScalarInParameter<BASIC, CONTAINER>(scalar));
             rawSqlBuf.append("?");
             String formatted = scalar.getWrapper().accept(
@@ -694,6 +715,42 @@ public class NodePreparedSqlBuilder implements
         @Override
         public String toString() {
             return rawSqlBuf.toString();
+        }
+    }
+
+    protected static class BinaryOperatorContext extends Context {
+
+        private boolean evaluatedAsNull;
+
+        public BinaryOperatorContext(Context parent) {
+            super(parent);
+        }
+
+        @Override
+        protected <BASIC, CONTAINER> void addBindValue(
+                Scalar<BASIC, CONTAINER> scalar, OpKind opKind) {
+            if (scalar.getWrapper().get() == null && opKind != null) {
+                String sql = toSql(opKind);
+                appendRawSql(sql);
+                appendFormattedSql(sql);
+                evaluatedAsNull = true;
+            } else {
+                super.addBindValue(scalar, opKind);
+            }
+        }
+
+        private String toSql(OpKind opKind) {
+            switch (opKind) {
+            case EQ:
+                return " is null";
+            case NE:
+                return " is not null";
+            }
+            throw new AssertionError("unreachable");
+        }
+
+        protected boolean isBindValueEvaluatedAsNull() {
+            return evaluatedAsNull;
         }
     }
 }
