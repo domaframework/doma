@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
+import org.seasar.doma.internal.jdbc.sql.node.BinaryOperatorNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
@@ -147,6 +148,11 @@ public class SimpleSqlNodeVisitor<R, P> implements SqlNodeVisitor<R, P> {
 
     @Override
     public R visitLogicalOperatorNode(LogicalOperatorNode node, P p) {
+        return defaultAction(node, p);
+    }
+
+    @Override
+    public R visitBinaryOperatorNode(BinaryOperatorNode node, P p) {
         return defaultAction(node, p);
     }
 

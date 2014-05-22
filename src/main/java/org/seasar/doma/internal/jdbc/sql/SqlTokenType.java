@@ -138,6 +138,10 @@ public enum SqlTokenType {
 
     OTHER,
 
+    EQ_OP,
+
+    NE_OP,
+
     WHITESPACE,
 
     EOL,

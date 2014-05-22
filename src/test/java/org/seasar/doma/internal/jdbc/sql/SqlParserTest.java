@@ -110,6 +110,42 @@ public class SqlParserTest extends TestCase {
         assertEquals(0, sql.getParameters().size());
     }
 
+    public void testBindVariable_rewriting_eq() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, null));
+        evaluator.add("salary", new Value(BigDecimal.class, null));
+        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals(
+                "select * from aaa where ename   is null and sal   is null",
+                sql.getRawSql());
+        assertEquals(
+                "select * from aaa where ename   is null and sal   is null",
+                sql.getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
+    public void testBindVariable_rewriting_ne() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, null));
+        evaluator.add("salary", new Value(BigDecimal.class, null));
+        String testSql = "select * from aaa where ename <> /*name*/'aaa' and sal != /*salary*/-2000";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals(
+                "select * from aaa where ename   is not null and sal   is not null",
+                sql.getRawSql());
+        assertEquals(
+                "select * from aaa where ename   is not null and sal   is not null",
+                sql.getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
     public void testBindVariable_endsWithBindVariableComment() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));

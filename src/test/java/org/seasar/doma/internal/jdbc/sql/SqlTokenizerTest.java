@@ -22,6 +22,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DELIMITER;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.END_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOL;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EQ_OP;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXCEPT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EXPAND_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.FOR_BLOCK_COMMENT;
@@ -33,6 +34,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.NE_OP;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
@@ -276,6 +278,30 @@ public class SqlTokenizerTest extends TestCase {
         SqlTokenizer tokenizer = new SqlTokenizer("or");
         assertEquals(OR_WORD, tokenizer.next());
         assertEquals("or", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testEq() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("=");
+        assertEquals(EQ_OP, tokenizer.next());
+        assertEquals("=", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testNe() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("<>");
+        assertEquals(NE_OP, tokenizer.next());
+        assertEquals("<>", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testNe2() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("!=");
+        assertEquals(NE_OP, tokenizer.next());
+        assertEquals("!=", tokenizer.getToken());
         assertEquals(EOF, tokenizer.next());
         assertNull(tokenizer.getToken());
     }

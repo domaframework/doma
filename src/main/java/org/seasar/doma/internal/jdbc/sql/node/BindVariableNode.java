@@ -34,6 +34,8 @@ public class BindVariableNode extends AbstractSqlNode {
 
     protected ParensNode parensNode;
 
+    protected BinaryOperatorNode.OpKind opKind;
+
     public BindVariableNode(SqlLocation location, String variableName,
             String text) {
         assertNotNull(location, variableName, text);
@@ -90,6 +92,14 @@ public class BindVariableNode extends AbstractSqlNode {
 
     public boolean isParensNodeIgnored() {
         return parensNode != null;
+    }
+
+    public BinaryOperatorNode.OpKind getOpKind() {
+        return opKind;
+    }
+
+    public void setOpKind(BinaryOperatorNode.OpKind opKind) {
+        this.opKind = opKind;
     }
 
 }
