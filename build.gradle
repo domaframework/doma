@@ -1,14 +1,37 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
-apply plugin: 'signing'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group = 'org.seasar.doma'
-version = '2.0-beta-5-SNAPSHOT'
+version = '2.0-beta-6'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 ext.encoding = 'UTF-8'
 sourceCompatibility = jdkVersion
 targetCompatibility = jdkVersion
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+    }
+}
+
+apply plugin: 'bintray'
+
+bintray {
+    user = bintrayUser
+    key = bintrayApiKey
+    publications = [ 'mavenJava'  ]
+    pkg {
+        repo = 'maven'
+        userOrg = 'domaframework'
+        name = 'doma'
+        licenses = [ 'Apache-2.0' ]
+    }
+    dryRun = false
+}
 
 compileJava {
     doFirst {
@@ -85,52 +108,56 @@ artifacts {
     archives javadocJar
 }
 
-signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives') }
-    sign configurations.archives
+task gpg(dependsOn: bintrayUpload ) << {
+    def uri = "https://api.bintray.com/gpg/domaframework/maven/doma/versions/$version"
+    def client = new groovyx.net.http.RESTClient(uri)
+    client.auth.basic(bintrayUser, bintrayApiKey)
+    println "Executing a request to '$uri'"
+    def response = client.post([
+        requestContentType: groovyx.net.http.ContentType.JSON,
+        body: "{ \"passphrase\": \"$bintrayPassphrase\" }"
+    ])
+    println "Received response: ${response.getData()}"
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        beforeDeployment {MavenDeployment deployment ->
-            signing.signPom(deployment)
+def pomConfig = {
+    licenses {
+        license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/license/LICENSE-2.0.txt'
+            distribution 'repo'
         }
-        repository (url : sonatypeUrl) {
-            authentication (
-                    userName : sonatypeUsername,
-                    password : sonatypePassword)
+    }
+    scm {
+        url githubUrl
+        connection "scm:git:${githubUrl}"
+        developerConnection "scm:git:${githubUrl}"
+    }
+    developers {
+        developer {
+            id 'nakamura-to'
+            name 'Toshihiro Nakamura'
+            email 'toshihiro.nakamura@gmail.com'
         }
-        snapshotRepository (url : sonatypeSnapshotUrl) {
-            authentication (
-                    userName : sonatypeUsername,
-                    password : sonatypePassword)
-        }
-        pom.project {
-            name project.name
-            packaging 'jar'
-            description 'Domain Oriented Database Mapping Framework for Java 8'
-            url projectUrl
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/license/LICENSE-2.0.txt'
-                    distribution 'repo'
-                }
-            }
-            scm {
-                url githubUrl
-                connection "scm:git:${githubUrl}"
-                developerConnection "scm:git:${githubUrl}"
-            }
-            developers {
-                developer {
-                    id 'nakamura-to'
-                    name 'Toshihiro Nakamura'
-                    email 'toshihiro.nakamura@gmail.com'
-                }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom.withXml {
+                def root = asNode()
+                root.appendNode( 'name', project.name )
+                root.appendNode( 'description', 'Domain Oriented Database Mapping Framework for Java 8' )
+                root.appendNode( 'url', projectUrl )
+                root.children().last() + pomConfig
             }
         }
     }
 }
 
 apply from:'eclipse.gradle'
+
