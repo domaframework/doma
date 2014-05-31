@@ -69,7 +69,8 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     public void logDaoMethodEntering(String callerClassName,
             String callerMethodName, Object... args) {
         logDaoMethodEntering(callerClassName, callerMethodName, args,
-                defaultLevel, () -> "ENTRY");
+                defaultLevel, () -> Message.DOMA2220.getMessage(
+                        callerClassName, callerMethodName));
     }
 
     protected void logDaoMethodEntering(String callerClassName,
@@ -82,7 +83,8 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     public void logDaoMethodExiting(String callerClassName,
             String callerMethodName, Object result) {
         logDaoMethodExiting(callerClassName, callerMethodName, result,
-                defaultLevel, () -> "RETURN " + result);
+                defaultLevel, () -> Message.DOMA2221.getMessage(
+                        callerClassName, callerMethodName));
     }
 
     protected void logDaoMethodExiting(String callerClassName,
@@ -95,7 +97,9 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     public void logDaoMethodThrowing(String callerClassName,
             String callerMethodName, RuntimeException e) {
         logDaoMethodThrowing(callerClassName, callerMethodName, e,
-                defaultLevel, () -> "THROW " + e);
+                defaultLevel, () -> Message.DOMA2222.getMessage(
+                        callerClassName, callerMethodName, e.getClass()
+                                .getName()));
     }
 
     protected void logDaoMethodThrowing(String callerClassName,
@@ -108,7 +112,8 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     public void logSqlExecutionSkipping(String callerClassName,
             String callerMethodName, SqlExecutionSkipCause cause) {
         logSqlExecutionSkipping(callerClassName, callerMethodName, cause,
-                defaultLevel, cause::name);
+                defaultLevel, () -> Message.DOMA2223.getMessage(
+                        callerClassName, callerMethodName, cause.name()));
     }
 
     protected void logSqlExecutionSkipping(String callerClassName,
