@@ -38,7 +38,7 @@ public class UtilLoggingJdbcLogger extends AbstractJdbcLogger<Level> {
      * <p>
      * ログレベルは {@link Level#INFO} になります。
      * <p>
-     * ロガーは {@link Logger#getGlobal()} になります。
+     * ロガーの名前は {@link UtilLoggingJdbcLogger} の完全修飾名になります。
      */
     public UtilLoggingJdbcLogger() {
         this(Level.INFO);
@@ -47,13 +47,13 @@ public class UtilLoggingJdbcLogger extends AbstractJdbcLogger<Level> {
     /**
      * ログレベルを指定してインスタンスを構築します。
      * <p>
-     * ロガーは {@link Logger#getGlobal()} になります。
+     * ロガーの名前は {@link UtilLoggingJdbcLogger} の完全修飾名になります。
      * 
      * @param level
      *            ログレベル
      */
     public UtilLoggingJdbcLogger(Level level) {
-        this(level, Logger.getGlobal());
+        this(level, Logger.getLogger(UtilLoggingJdbcLogger.class.getName()));
     }
 
     /**
