@@ -41,7 +41,8 @@ public class SqlSelectQuery extends AbstractSelectQuery {
                 .transformSelectSqlNode(sqlNode, options);
         buildSql((evaluator, expander) -> {
             NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                    config, SqlKind.SELECT, null, evaluator, expander);
+                    config, SqlKind.SELECT, null, evaluator, sqlLogType,
+                    expander);
             return sqlBuilder.build(transformedSqlNode);
         });
 

@@ -24,6 +24,7 @@ import java.sql.Statement;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.ResultMappingException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 
 /**
@@ -121,4 +122,12 @@ public @interface Function {
      * @since 1.34.0
      */
     boolean ensureResultMapping() default false;
+
+    /**
+     * SQLのログの出力形式を返します。
+     * 
+     * @return SQLログの出力形式
+     * @since 2.0.0
+     */
+    SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

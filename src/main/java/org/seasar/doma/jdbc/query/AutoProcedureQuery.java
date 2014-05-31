@@ -38,7 +38,7 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
 
     protected void prepareSql() {
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                SqlKind.PROCEDURE, qualifiedName, parameters);
+                SqlKind.PROCEDURE, qualifiedName, parameters, sqlLogType);
         sql = builder.build();
     }
 

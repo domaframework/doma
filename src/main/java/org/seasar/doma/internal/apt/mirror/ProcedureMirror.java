@@ -30,6 +30,7 @@ import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -52,6 +53,8 @@ public class ProcedureMirror {
     protected String defaultName;
 
     protected AnnotationValue mapKeyNaming;
+
+    protected AnnotationValue sqlLog;
 
     protected ProcedureMirror(AnnotationMirror annotationMirror,
             String defaultName) {
@@ -87,6 +90,8 @@ public class ProcedureMirror {
                 result.queryTimeout = value;
             } else if ("mapKeyNaming".equals(name)) {
                 result.mapKeyNaming = value;
+            } else if ("sqlLog".equals(name)) {
+                result.sqlLog = value;
             }
         }
         return result;
@@ -98,6 +103,10 @@ public class ProcedureMirror {
 
     public AnnotationValue getMapKeyNaming() {
         return mapKeyNaming;
+    }
+
+    public AnnotationValue getSqlLog() {
+        return sqlLog;
     }
 
     public String getCatalogValue() {
@@ -148,6 +157,15 @@ public class ProcedureMirror {
         }
         return MapKeyNamingType
                 .valueOf(enumConstant.getSimpleName().toString());
+    }
+
+    public SqlLogType getSqlLogValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(sqlLog);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("sqlLog");
+        }
+        return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
     }
 
 }

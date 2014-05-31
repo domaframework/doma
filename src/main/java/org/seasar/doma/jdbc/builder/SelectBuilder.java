@@ -50,6 +50,7 @@ import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.SelectCommand;
@@ -113,6 +114,7 @@ public class SelectBuilder {
         this.query = new SqlSelectQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
+        this.query.setSqlLogType(SqlLogType.FORMATTED);
         this.paramIndex = new ParamIndex();
     }
 
@@ -858,6 +860,19 @@ public class SelectBuilder {
      */
     public void queryTimeout(int queryTimeout) {
         query.setQueryTimeout(queryTimeout);
+    }
+
+    /**
+     * SQLのログの出力形式を設定します。
+     * 
+     * @param sqlLogType
+     *            SQLのログの出力形式
+     */
+    public void sqlLogType(SqlLogType sqlLogType) {
+        if (sqlLogType == null) {
+            throw new DomaNullPointerException("sqlLogType");
+        }
+        query.setSqlLogType(sqlLogType);
     }
 
     /**

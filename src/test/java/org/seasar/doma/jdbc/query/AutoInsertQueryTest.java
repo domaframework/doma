@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -47,6 +48,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         InsertQuery insertQuery = query;
@@ -65,6 +67,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSql();
@@ -92,6 +95,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.setNullExcluded(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSql();
@@ -118,6 +122,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.setIncludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSql();
@@ -144,6 +149,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.setExcludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSql();

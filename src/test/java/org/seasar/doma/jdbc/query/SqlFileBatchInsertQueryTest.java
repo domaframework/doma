@@ -25,6 +25,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
 
@@ -57,6 +58,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         BatchInsertQuery batchInsertQuery = query;
@@ -84,6 +86,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);

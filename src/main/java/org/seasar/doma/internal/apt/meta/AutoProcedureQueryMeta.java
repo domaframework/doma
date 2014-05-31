@@ -19,6 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -63,6 +64,10 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
     @Override
     public MapKeyNamingType getMapKeyNamingType() {
         return procedureMirror.getMapKeyNamingValue();
+    }
+
+    public SqlLogType getSqlLogType() {
+        return procedureMirror.getSqlLogValue();
     }
 
     @Override

@@ -23,6 +23,7 @@ import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
@@ -70,6 +71,8 @@ public abstract class AutoModifyQuery<ENTITY> implements ModifyQuery {
     protected SqlExecutionSkipCause sqlExecutionSkipCause = SqlExecutionSkipCause.STATE_UNCHANGED;
 
     protected int queryTimeout;
+
+    protected SqlLogType sqlLogType;
 
     protected AutoModifyQuery(EntityType<ENTITY> entityType) {
         AssertionUtil.assertNotNull(entityType);
@@ -159,6 +162,10 @@ public abstract class AutoModifyQuery<ENTITY> implements ModifyQuery {
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
+    public void setSqlLogType(SqlLogType sqlLogType) {
+        this.sqlLogType = sqlLogType;
+    }
+
     @Override
     public PreparedSql getSql() {
         return sql;
@@ -202,6 +209,11 @@ public abstract class AutoModifyQuery<ENTITY> implements ModifyQuery {
     @Override
     public int getQueryTimeout() {
         return queryTimeout;
+    }
+
+    @Override
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
     }
 
     @Override

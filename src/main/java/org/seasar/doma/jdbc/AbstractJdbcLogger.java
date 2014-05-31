@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.message.Message;
 
 /**
@@ -125,17 +126,26 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     @Override
     public void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql) {
-        logSql(callerClassName,
-                callerMethodName,
-                sql,
-                defaultLevel,
+        logSql(callerClassName, callerMethodName, sql, defaultLevel,
                 () -> Message.DOMA2076.getMessage(sql.getSqlFilePath(),
-                        sql.getFormattedSql()));
+                        getSqlText(sql)));
     }
 
     protected void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql, LEVEL level, Supplier<String> messageSupplier) {
         log(level, callerClassName, callerMethodName, null, messageSupplier);
+    }
+
+    protected String getSqlText(Sql<?> sql) {
+        switch (sql.getSqlLogType()) {
+        case RAW:
+            return sql.getRawSql();
+        case FORMATTED:
+            return sql.getFormattedSql();
+        case NONE:
+            return "";
+        }
+        return AssertionUtil.assertUnreachable();
     }
 
     @Override

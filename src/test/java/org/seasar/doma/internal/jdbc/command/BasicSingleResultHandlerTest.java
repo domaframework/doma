@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 /**
@@ -57,6 +58,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
@@ -80,6 +82,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
@@ -106,6 +109,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(

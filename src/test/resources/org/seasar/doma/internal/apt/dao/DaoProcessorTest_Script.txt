@@ -66,6 +66,7 @@ public class ScriptDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setCallerMethodName("createTables");
             __query.setBlockDelimiter("");
             __query.setHaltOnError(true);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.ScriptCommand __command = getCommandImplementors().createScriptCommand(__method0, __query);
             __command.execute();
@@ -89,6 +90,7 @@ public class ScriptDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setCallerMethodName("dropTables");
             __query.setBlockDelimiter("GO");
             __query.setHaltOnError(false);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.ScriptCommand __command = getCommandImplementors().createScriptCommand(__method1, __query);
             __command.execute();

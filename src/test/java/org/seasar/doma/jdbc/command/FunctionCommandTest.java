@@ -25,6 +25,7 @@ import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.jdbc.Reference;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
@@ -61,6 +62,7 @@ public class FunctionCommandTest extends TestCase {
                 new Reference<Integer>()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         Integer result = new FunctionCommand<Integer>(query).execute();
         query.complete();

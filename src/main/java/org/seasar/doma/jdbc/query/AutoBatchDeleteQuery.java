@@ -95,7 +95,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected void prepareSql() {
         Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.BATCH_DELETE);
+                SqlKind.BATCH_DELETE, sqlLogType);
         builder.appendSql("delete from ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         if (idPropertyTypes.size() > 0) {

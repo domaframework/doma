@@ -73,6 +73,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, true));
             int __result = __command.execute();
@@ -97,6 +98,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
@@ -127,6 +129,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.FunctionCommand<java.lang.Integer> __command = getCommandImplementors().createFunctionCommand(__method2, __query);
             int __result = __command.execute();

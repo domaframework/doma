@@ -24,6 +24,7 @@ import java.sql.Statement;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
@@ -110,4 +111,12 @@ public @interface Insert {
      * @return 除去するプロパティ名の配列
      */
     String[] exclude() default {};
+
+    /**
+     * SQLのログの出力形式を返します。
+     * 
+     * @return SQLログの出力形式
+     * @since 2.0.0
+     */
+    SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

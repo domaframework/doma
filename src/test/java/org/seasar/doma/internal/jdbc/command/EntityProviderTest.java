@@ -29,6 +29,7 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 import example.entity.Emp;
@@ -53,8 +54,8 @@ public class EntityProviderTest extends TestCase {
         resultSet.next();
 
         _Emp entityType = _Emp.getSingletonInternal();
-        EntityProvider<Emp> provider = new EntityProvider<>(
-                entityType, new MySelectQuery(), false);
+        EntityProvider<Emp> provider = new EntityProvider<>(entityType,
+                new MySelectQuery(), false);
         Emp emp = provider.get(resultSet);
 
         assertEquals(new Integer(1), emp.getId());
@@ -131,6 +132,11 @@ public class EntityProviderTest extends TestCase {
 
         @Override
         public Method getMethod() {
+            return null;
+        }
+
+        @Override
+        public SqlLogType getSqlLogType() {
             return null;
         }
 

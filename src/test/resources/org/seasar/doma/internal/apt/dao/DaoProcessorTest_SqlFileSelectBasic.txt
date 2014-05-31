@@ -71,6 +71,7 @@ public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.internal.jdbc.dao
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, false));
             java.lang.String __result = __command.execute();
@@ -105,6 +106,7 @@ public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.internal.jdbc.dao
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.BasicResultListHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new));
             java.util.List<java.lang.String> __result = __command.execute();

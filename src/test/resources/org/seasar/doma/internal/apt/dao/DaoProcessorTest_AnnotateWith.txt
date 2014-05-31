@@ -35,6 +35,7 @@ public class AnnotateWithDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AnnotateWithDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setNullExcluded(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();

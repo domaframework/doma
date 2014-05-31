@@ -36,6 +36,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -76,6 +77,8 @@ public abstract class AbstractSelectQuery implements SelectQuery {
     protected EntityType<?> entityType;
 
     protected PreparedSql sql;
+
+    protected SqlLogType sqlLogType;
 
     protected AbstractSelectQuery() {
     }
@@ -134,6 +137,7 @@ public abstract class AbstractSelectQuery implements SelectQuery {
         query.setOptions(options);
         query.setSqlNode(sqlNode);
         query.setEntityType(entityType);
+        query.setSqlLogType(sqlLogType);
         query.addParameters(parameters);
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
@@ -249,6 +253,14 @@ public abstract class AbstractSelectQuery implements SelectQuery {
 
     public void setMethod(Method method) {
         this.method = method;
+    }
+
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
+    }
+
+    public void setSqlLogType(SqlLogType sqlLogType) {
+        this.sqlLogType = sqlLogType;
     }
 
     public void setEntityType(EntityType<?> entityType) {

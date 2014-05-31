@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -36,6 +37,7 @@ public class AutoFunctionQueryTest extends TestCase {
                 () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         FunctionQuery<Integer> functionQuery = query;

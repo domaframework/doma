@@ -20,7 +20,7 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.command.BatchInsertCommand;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
 
 import example.entity.Emp;
@@ -52,6 +52,7 @@ public class BatchInsertCommandTest extends TestCase {
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         int[] rows = new BatchInsertCommand(query).execute();
         query.complete();

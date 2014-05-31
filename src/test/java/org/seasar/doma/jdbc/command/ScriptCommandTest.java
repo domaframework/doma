@@ -23,7 +23,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockStatement;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.jdbc.ScriptException;
-import org.seasar.doma.jdbc.command.ScriptCommand;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
 /**
@@ -41,6 +41,7 @@ public class ScriptCommandTest extends TestCase {
                 getName()));
         query.setBlockDelimiter("");
         query.prepare();
+        query.setSqlLogType(SqlLogType.FORMATTED);
         ScriptCommand command = new ScriptCommand(query);
         command.execute();
     }
@@ -64,6 +65,7 @@ public class ScriptCommandTest extends TestCase {
                 getName()));
         query.setBlockDelimiter("");
         query.setHaltOnError(true);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         ScriptCommand command = new ScriptCommand(query);
         try {

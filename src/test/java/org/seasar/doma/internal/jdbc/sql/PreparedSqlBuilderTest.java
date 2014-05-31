@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
@@ -36,7 +37,7 @@ public class PreparedSqlBuilderTest extends TestCase {
 
     public void testAppend() throws Exception {
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.SELECT);
+                SqlKind.SELECT, SqlLogType.FORMATTED);
         builder.appendSql("select * from aaa where name = ");
         Wrapper<String> stringWrapper = new StringWrapper("hoge");
         builder.appendParameter(new BasicScalar<String>(() -> stringWrapper,
@@ -54,7 +55,7 @@ public class PreparedSqlBuilderTest extends TestCase {
 
     public void testCutBackSql() {
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.SELECT);
+                SqlKind.SELECT, SqlLogType.FORMATTED);
         builder.appendSql("select * from aaa where name = ");
         builder.cutBackSql(14);
         PreparedSql sql = builder.build();

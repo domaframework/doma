@@ -68,6 +68,7 @@ public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.FunctionDaoImpl");
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createFunctionCommand(__method0, __query);
             java.util.List<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();

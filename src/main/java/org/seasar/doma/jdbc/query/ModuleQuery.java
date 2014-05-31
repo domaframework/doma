@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.query;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSql;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -27,4 +28,6 @@ public interface ModuleQuery extends Query {
     CallableSql getSql();
 
     String getQualifiedName();
+
+    SqlLogType getSqlLogType();
 }

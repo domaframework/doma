@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonSingleColumnException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 /**
@@ -58,6 +59,7 @@ public class BasicResultListHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
@@ -84,6 +86,7 @@ public class BasicResultListHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.setMethod(method);
         query.setResultEnsured(true);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         BasicResultListHandler<String> handler = new BasicResultListHandler<String>(

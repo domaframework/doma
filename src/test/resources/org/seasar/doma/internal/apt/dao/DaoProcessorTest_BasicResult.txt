@@ -76,6 +76,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, false));
             java.lang.String __result = __command.execute();
@@ -104,6 +105,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalBasicSingleResultHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, false));
             java.util.Optional<java.lang.String> __result = __command.execute();
@@ -132,6 +134,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicResultListHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new));
             java.util.List<java.lang.String> __result = __command.execute();
@@ -160,6 +163,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalBasicResultListHandler<java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new));
             java.util.List<java.util.Optional<java.lang.String>> __result = __command.execute();
@@ -191,6 +195,7 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, mapper));
             R __result = __command.execute();

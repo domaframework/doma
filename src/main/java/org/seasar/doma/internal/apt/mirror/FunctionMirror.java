@@ -30,6 +30,7 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -54,6 +55,8 @@ public class FunctionMirror {
     protected AnnotationValue mapKeyNaming;
 
     protected AnnotationValue ensureResultMapping;
+
+    protected AnnotationValue sqlLog;
 
     protected FunctionMirror(AnnotationMirror annotationMirror,
             String defaultName) {
@@ -91,6 +94,8 @@ public class FunctionMirror {
                 result.mapKeyNaming = value;
             } else if ("ensureResultMapping".equals(name)) {
                 result.ensureResultMapping = value;
+            } else if ("sqlLog".equals(name)) {
+                result.sqlLog = value;
             }
         }
         return result;
@@ -102,6 +107,10 @@ public class FunctionMirror {
 
     public AnnotationValue getMapKeyNaming() {
         return mapKeyNaming;
+    }
+
+    public AnnotationValue getSqlLog() {
+        return sqlLog;
     }
 
     public String getCatalogValue() {
@@ -160,6 +169,15 @@ public class FunctionMirror {
             throw new AptIllegalStateException("ensureResultMapping");
         }
         return value.booleanValue();
+    }
+
+    public SqlLogType getSqlLogValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(sqlLog);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("sqlLog");
+        }
+        return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
     }
 
 }

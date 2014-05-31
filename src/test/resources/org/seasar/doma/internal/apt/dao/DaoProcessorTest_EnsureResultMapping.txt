@@ -80,6 +80,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
             example.entity.Emp __result = __command.execute();
@@ -115,6 +116,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
             java.util.List<example.entity.Emp> __result = __command.execute();
@@ -145,6 +147,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");
             __query.setCallerMethodName("procedure");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method2, __query);
             __command.execute();
@@ -175,6 +178,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");
             __query.setCallerMethodName("function");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<example.entity.Emp>> __command = getCommandImplementors().createFunctionCommand(__method3, __query);
             java.util.List<example.entity.Emp> __result = __command.execute();

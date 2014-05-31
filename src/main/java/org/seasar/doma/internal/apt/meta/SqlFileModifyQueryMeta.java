@@ -19,6 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -70,6 +71,10 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
     public Boolean getSuppressOptimisticLockException() {
         return modifyMirror.getSuppressOptimisticLockExceptionValue();
+    }
+
+    public SqlLogType getSqlLogType() {
+        return modifyMirror.getSqlLogValue();
     }
 
     @Override

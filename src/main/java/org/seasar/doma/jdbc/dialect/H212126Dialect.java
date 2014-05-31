@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -140,7 +141,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call identity()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override
@@ -151,7 +152,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call next value for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override

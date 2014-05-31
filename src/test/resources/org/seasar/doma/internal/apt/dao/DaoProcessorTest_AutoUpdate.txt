@@ -66,6 +66,7 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl");
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setNullExcluded(false);
             __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();

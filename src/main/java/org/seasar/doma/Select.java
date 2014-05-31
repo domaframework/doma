@@ -30,6 +30,7 @@ import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 
 /**
@@ -166,4 +167,12 @@ public @interface Select {
      * @since 1.7.0
      */
     MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
+
+    /**
+     * SQLのログの出力形式を返します。
+     * 
+     * @return SQLログの出力形式
+     * @since 2.0.0
+     */
+    SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

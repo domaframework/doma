@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -52,6 +53,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         BatchDeleteQuery batchDeleteQuery = query;
@@ -75,6 +77,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
@@ -112,6 +115,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         query.setVersionIgnored(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);

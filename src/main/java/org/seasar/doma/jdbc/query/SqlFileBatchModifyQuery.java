@@ -31,6 +31,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
@@ -68,6 +69,8 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
     protected int queryTimeout;
 
     protected int batchSize;
+
+    protected SqlLogType sqlLogType;
 
     protected List<ELEMENT> elements;
 
@@ -108,7 +111,7 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
                         .getDialect().getExpressionFunctions(),
                 config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                kind, sqlFile.getPath(), evaluator);
+                kind, sqlFile.getPath(), evaluator, sqlLogType);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
         sqls.add(sql);
     }
@@ -168,6 +171,10 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
         this.batchSize = batchSize;
     }
 
+    public void setSqlLogType(SqlLogType sqlLogType) {
+        this.sqlLogType = sqlLogType;
+    }
+
     public abstract void setEntityType(EntityType<ELEMENT> entityType);
 
     @Override
@@ -223,6 +230,11 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
     @Override
     public int getBatchSize() {
         return batchSize;
+    }
+
+    @Override
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
     }
 
     @Override

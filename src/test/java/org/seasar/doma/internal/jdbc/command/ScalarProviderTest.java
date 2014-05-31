@@ -29,6 +29,7 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
@@ -176,6 +177,11 @@ public class ScalarProviderTest extends TestCase {
 
         @Override
         public Method getMethod() {
+            return null;
+        }
+
+        @Override
+        public SqlLogType getSqlLogType() {
             return null;
         }
 

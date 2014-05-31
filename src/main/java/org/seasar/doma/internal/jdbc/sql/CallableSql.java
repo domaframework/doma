@@ -21,6 +21,7 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 
 /**
@@ -38,8 +39,11 @@ public class CallableSql implements Sql<SqlParameter> {
 
     protected final List<SqlParameter> parameters;
 
+    protected final SqlLogType sqlLogType;
+
     public CallableSql(SqlKind kind, CharSequence rawSql,
-            CharSequence formattedSql, List<? extends SqlParameter> parameters) {
+            CharSequence formattedSql, List<? extends SqlParameter> parameters,
+            SqlLogType sqlLogType) {
         if (kind == null) {
             throw new DomaNullPointerException("kind");
         }
@@ -52,10 +56,14 @@ public class CallableSql implements Sql<SqlParameter> {
         if (parameters == null) {
             throw new DomaNullPointerException("parameters");
         }
+        if (sqlLogType == null) {
+            throw new DomaNullPointerException("sqlLogType");
+        }
         this.kind = kind;
         this.rawSql = rawSql.toString().trim();
         this.formattedSql = formattedSql.toString().trim();
         this.parameters = Collections.unmodifiableList(parameters);
+        this.sqlLogType = sqlLogType;
     }
 
     @Override
@@ -81,6 +89,11 @@ public class CallableSql implements Sql<SqlParameter> {
     @Override
     public List<SqlParameter> getParameters() {
         return parameters;
+    }
+
+    @Override
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
     }
 
     @Override

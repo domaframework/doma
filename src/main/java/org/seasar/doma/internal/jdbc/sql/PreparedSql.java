@@ -21,6 +21,7 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * 
@@ -39,9 +40,11 @@ public class PreparedSql implements Sql<InParameter<?>> {
 
     protected final List<InParameter<?>> parameters;
 
+    protected final SqlLogType sqlLogType;
+
     public PreparedSql(SqlKind kind, CharSequence rawSql,
             CharSequence formattedSql, String sqlFilePath,
-            List<? extends InParameter<?>> parameters) {
+            List<? extends InParameter<?>> parameters, SqlLogType sqlLogType) {
         if (kind == null) {
             throw new DomaNullPointerException("kind");
         }
@@ -54,11 +57,15 @@ public class PreparedSql implements Sql<InParameter<?>> {
         if (parameters == null) {
             throw new DomaNullPointerException("parameters");
         }
+        if (sqlLogType == null) {
+            throw new DomaNullPointerException("sqlLogType");
+        }
         this.kind = kind;
         this.rawSql = rawSql.toString().trim();
         this.formattedSql = formattedSql.toString().trim();
         this.sqlFilePath = sqlFilePath;
         this.parameters = Collections.unmodifiableList(parameters);
+        this.sqlLogType = sqlLogType;
     }
 
     @Override
@@ -84,6 +91,11 @@ public class PreparedSql implements Sql<InParameter<?>> {
     @Override
     public List<InParameter<?>> getParameters() {
         return parameters;
+    }
+
+    @Override
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
     }
 
     @Override

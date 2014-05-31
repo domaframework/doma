@@ -23,6 +23,7 @@ import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.sql.CallableSql;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 
 /**
@@ -54,6 +55,8 @@ public abstract class AutoModuleQuery implements ModuleQuery {
     protected boolean isQuoteRequired;
 
     protected final List<SqlParameter> parameters = new ArrayList<>();
+
+    protected SqlLogType sqlLogType;
 
     protected void prepareQualifiedName() {
         Function<String, String> mapper = isQuoteRequired ? config.getDialect()::applyQuote
@@ -104,6 +107,14 @@ public abstract class AutoModuleQuery implements ModuleQuery {
         this.queryTimeout = queryTimeout;
     }
 
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+
+    public void setSqlLogType(SqlLogType sqlLogType) {
+        this.sqlLogType = sqlLogType;
+    }
+
     public void addParameter(SqlParameter parameter) {
         parameters.add(parameter);
     }
@@ -143,8 +154,9 @@ public abstract class AutoModuleQuery implements ModuleQuery {
         return method;
     }
 
-    public void setMethod(Method method) {
-        this.method = method;
+    @Override
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
     }
 
 }

@@ -25,6 +25,7 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -146,6 +147,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public MapKeyNamingType getMapKeyNamingType() {
         return selectMirror.getMapKeyNamingValue();
+    }
+
+    public SqlLogType getSqlLogType() {
+        return selectMirror.getSqlLogValue();
     }
 
     @Override

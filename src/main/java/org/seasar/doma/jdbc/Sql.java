@@ -71,4 +71,10 @@ public interface Sql<P extends SqlParameter> {
      */
     List<P> getParameters();
 
+    /**
+     * SQLのログの表示形式を返します。
+     * 
+     * @return SQLのログの表示形式
+     */
+    SqlLogType getSqlLogType();
 }

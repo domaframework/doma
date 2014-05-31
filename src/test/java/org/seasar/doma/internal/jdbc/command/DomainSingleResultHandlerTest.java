@@ -26,6 +26,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.domain.PhoneNumber;
@@ -59,6 +60,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
@@ -82,6 +84,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(

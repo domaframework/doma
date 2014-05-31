@@ -119,7 +119,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected void prepareSql() {
         Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.BATCH_UPDATE);
+                SqlKind.BATCH_UPDATE, sqlLogType);
         builder.appendSql("update ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" set ");

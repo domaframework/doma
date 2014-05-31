@@ -31,6 +31,7 @@ import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -173,7 +174,7 @@ public class PostgresDialect extends StandardDialect {
         buf.append("_seq')");
         String rawSql = buf.toString();
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override
@@ -184,7 +185,7 @@ public class PostgresDialect extends StandardDialect {
         }
         String rawSql = "select nextval('" + qualifiedSequenceName + "')";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override

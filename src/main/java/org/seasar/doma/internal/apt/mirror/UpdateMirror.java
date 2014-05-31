@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -67,6 +67,8 @@ public class UpdateMirror extends ModifyMirror {
                 result.include = value;
             } else if ("exclude".equals(name)) {
                 result.exclude = value;
+            } else if ("sqlLog".equals(name)) {
+                result.sqlLog = value;
             }
         }
         return result;

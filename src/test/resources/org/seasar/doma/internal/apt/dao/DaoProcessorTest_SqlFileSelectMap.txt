@@ -75,6 +75,7 @@ public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.MapSingleResultHandler(org.seasar.doma.MapKeyNamingType.CAMEL_CASE));
             java.util.Map<java.lang.String, java.lang.Object> __result = __command.execute();
@@ -109,6 +110,7 @@ public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.MapResultListHandler(org.seasar.doma.MapKeyNamingType.NONE));
             java.util.List<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();

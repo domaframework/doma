@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -41,4 +42,5 @@ public interface BatchModifyQuery extends Query {
 
     int getBatchSize();
 
+    SqlLogType getSqlLogType();
 }

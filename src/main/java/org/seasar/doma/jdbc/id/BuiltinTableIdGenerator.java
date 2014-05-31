@@ -29,6 +29,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -105,11 +106,12 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 null,
                 Arrays.asList(
                         new BasicInParameter<Long>(() -> allocationSizeWrapper),
-                        new BasicInParameter<String>(() -> pkColumnValueWrapper)));
+                        new BasicInParameter<String>(() -> pkColumnValueWrapper)),
+                SqlLogType.FORMATTED);
         selectSql = new PreparedSql(SqlKind.SELECT, createSelectRawSql(),
                 createSelectFormattedSql(), null,
                 Arrays.asList(new BasicInParameter<String>(
-                        () -> pkColumnValueWrapper)));
+                        () -> pkColumnValueWrapper)), SqlLogType.FORMATTED);
     }
 
     /**
