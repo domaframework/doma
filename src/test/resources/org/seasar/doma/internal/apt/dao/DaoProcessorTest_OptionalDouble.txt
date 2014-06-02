@@ -87,6 +87,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
             example.entity.Emp __result = __command.execute();
@@ -119,6 +120,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.OptionalDouble> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleSingleResultHandler());
             java.util.OptionalDouble __result = __command.execute();
@@ -147,6 +149,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.OptionalDouble>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleResultListHandler());
             java.util.List<java.util.OptionalDouble> __result = __command.execute();
@@ -178,6 +181,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleStreamHandler<R>(mapper));
             R __result = __command.execute();
@@ -209,6 +213,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleCollectorHandler<R>(mapper));
             R __result = __command.execute();
@@ -252,6 +257,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl");
             __query.setCallerMethodName("getSingleResult");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.FunctionCommand<java.util.OptionalDouble> __command = getCommandImplementors().createFunctionCommand(__method5, __query);
             java.util.OptionalDouble __result = __command.execute();
@@ -279,6 +285,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl");
             __query.setCallerMethodName("getResultList");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.OptionalDouble>> __command = getCommandImplementors().createFunctionCommand(__method6, __query);
             java.util.List<java.util.OptionalDouble> __result = __command.execute();
@@ -321,6 +328,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.OptionalDoubleDaoImpl");
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.ProcedureCommand __command = getCommandImplementors().createProcedureCommand(__method7, __query);
             __command.execute();

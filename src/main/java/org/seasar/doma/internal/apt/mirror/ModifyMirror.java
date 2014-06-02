@@ -15,15 +15,17 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -48,6 +50,8 @@ public abstract class ModifyMirror {
     protected AnnotationValue include;
 
     protected AnnotationValue exclude;
+
+    protected AnnotationValue sqlLog;
 
     protected ModifyMirror(AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
@@ -90,6 +94,10 @@ public abstract class ModifyMirror {
         return exclude;
     }
 
+    public AnnotationValue getSqlLog() {
+        return sqlLog;
+    }
+
     public int getQueryTimeoutValue() {
         Integer value = AnnotationValueUtil.toInteger(queryTimeout);
         if (value == null) {
@@ -120,6 +128,15 @@ public abstract class ModifyMirror {
 
     public List<String> getExcludeValue() {
         return AnnotationValueUtil.toStringList(exclude);
+    }
+
+    public SqlLogType getSqlLogValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(sqlLog);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("sqlLog");
+        }
+        return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public boolean getSqlFileValue() {

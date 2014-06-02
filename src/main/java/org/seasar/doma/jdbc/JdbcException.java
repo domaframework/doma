@@ -67,14 +67,14 @@ public class JdbcException extends DomaException {
      * @return ログ用SQL
      * @since 1.22.0
      */
-    protected static String choiceSql(ExceptionSqlLogType logType,
-            String rawSql, String formattedSql) {
+    protected static String choiceSql(SqlLogType logType, String rawSql,
+            String formattedSql) {
         switch (logType) {
-        case RAW_SQL:
+        case RAW:
             return rawSql;
-        case FORMATTED_SQL:
+        case FORMATTED:
             return formattedSql;
-        case EMPTY:
+        case NONE:
             return "";
         default:
             throw new AssertionError("unreachable");

@@ -66,6 +66,7 @@ public class AutoDeleteDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl");
             __query.setCallerMethodName("delete");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();

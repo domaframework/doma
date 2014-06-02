@@ -13,40 +13,37 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * 例外メッセージに含めるSQLログのタイプです。
+ * SQLのログの出力形式です。
  * 
- * @author taedium
- * @since 1.22.0
+ * @author nakamura-to
+ * @since 2.0.0
  */
-public enum ExceptionSqlLogType {
+public enum SqlLogType {
 
     /**
      * 未加工SQL。
-     * 
      * <p>
-     * SQLが例外メッセージに含まれます。SQL中のバインドパラメータは {@code ?} で表されます。
+     * SQL中のバインドパラメータは {@code ?} で表されます。
      */
-    RAW_SQL,
+    RAW,
 
     /**
      * フォーマット済みSQL。
      * 
      * <p>
-     * SQLが例外メッセージに含まれます。 SQL中のバインドパラメータはフォーマットされて表されます。 フォーマットには
+     * SQL中のバインドパラメータはフォーマットされて表されます。 フォーマットには
      * {@link Dialect#getSqlLogFormattingVisitor()} が返すオブジェクトが使用されます。
      */
-    FORMATTED_SQL,
+    FORMATTED,
 
     /**
-     * 空文字。
-     * 
-     * <p>
-     * SQLは例外メッセージに含まれません。
+     * 無出力。
      */
-    EMPTY
+    NONE
 }

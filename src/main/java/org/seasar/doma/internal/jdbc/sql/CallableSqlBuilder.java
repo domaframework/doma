@@ -24,6 +24,7 @@ import java.util.List;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -31,8 +32,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class CallableSqlBuilder
-        implements
+public class CallableSqlBuilder implements
         SqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
 
     protected final Config config;
@@ -45,23 +45,27 @@ public class CallableSqlBuilder
 
     protected final String moduleName;
 
+    protected final SqlLogType sqlLogType;
+
     protected final SqlLogFormattingFunction formattingFunction;
 
     protected boolean began;
 
     public CallableSqlBuilder(Config config, SqlKind kind, String moduleName,
-            List<SqlParameter> parameters) {
-        this(config, kind, moduleName, parameters, null);
+            List<SqlParameter> parameters, SqlLogType sqlLogType) {
+        this(config, kind, moduleName, parameters, sqlLogType, null);
     }
 
     public CallableSqlBuilder(Config config, SqlKind kind, String moduleName,
-            List<SqlParameter> parameters, ResultParameter<?> resultParameter) {
-        assertNotNull(config, kind, parameters, moduleName);
+            List<SqlParameter> parameters, SqlLogType sqlLogType,
+            ResultParameter<?> resultParameter) {
+        assertNotNull(config, kind, parameters, moduleName, sqlLogType);
         this.config = config;
         this.kind = kind;
         this.resultParameter = resultParameter;
         this.parameters = parameters;
         this.moduleName = moduleName;
+        this.sqlLogType = sqlLogType;
         this.formattingFunction = new ConvertToLogFormatFunction();
     }
 
@@ -86,7 +90,7 @@ public class CallableSqlBuilder
             allParameters.addFirst(resultParameter);
         }
         return new CallableSql(kind, context.getSqlBuf(),
-                context.getFormattedSqlBuf(), allParameters);
+                context.getFormattedSqlBuf(), allParameters, sqlLogType);
     }
 
     @Override

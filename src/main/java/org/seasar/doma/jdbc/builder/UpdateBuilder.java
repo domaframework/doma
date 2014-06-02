@@ -21,6 +21,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.command.UpdateCommand;
 import org.seasar.doma.jdbc.query.SqlUpdateQuery;
@@ -72,6 +73,7 @@ public class UpdateBuilder {
         this.query = new SqlUpdateQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
+        this.query.setSqlLogType(SqlLogType.FORMATTED);
         this.paramIndex = new ParamIndex();
     }
 
@@ -201,6 +203,19 @@ public class UpdateBuilder {
             throw new DomaNullPointerException("className");
         }
         query.setCallerClassName(className);
+    }
+
+    /**
+     * SQLのログの出力形式を設定します。
+     * 
+     * @param sqlLogType
+     *            SQLのログの出力形式
+     */
+    public void sqlLogType(SqlLogType sqlLogType) {
+        if (sqlLogType == null) {
+            throw new DomaNullPointerException("sqlLogType");
+        }
+        query.setSqlLogType(sqlLogType);
     }
 
     /**

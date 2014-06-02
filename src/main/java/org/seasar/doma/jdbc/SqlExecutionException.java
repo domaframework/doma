@@ -55,7 +55,7 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(ExceptionSqlLogType logType, Sql<?> sql,
+    public SqlExecutionException(SqlLogType logType, Sql<?> sql,
             Throwable cause, Throwable rootCause) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
                 sql.getSqlFilePath(), cause, rootCause);
@@ -79,7 +79,7 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(ExceptionSqlLogType logType, SqlKind kind,
+    public SqlExecutionException(SqlLogType logType, SqlKind kind,
             String rawSql, String formattedSql, String sqlFilePath,
             Throwable cause, Throwable rootCause) {
         super(Message.DOMA2009, cause, sqlFilePath, choiceSql(logType, rawSql,

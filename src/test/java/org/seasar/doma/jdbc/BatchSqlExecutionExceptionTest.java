@@ -25,8 +25,8 @@ public class BatchSqlExecutionExceptionTest extends TestCase {
 
     public void test() throws Exception {
         BatchSqlExecutionException e = new BatchSqlExecutionException(
-                ExceptionSqlLogType.FORMATTED_SQL, SqlKind.UPDATE, "aaa",
-                "bbb", new Exception(), new RuntimeException());
+                SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb",
+                new Exception(), new RuntimeException());
         assertSame(SqlKind.UPDATE, e.getKind());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getSqlFilePath());

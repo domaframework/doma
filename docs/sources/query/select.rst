@@ -430,3 +430,15 @@ List<Employee> selectAll();
 最終的な変換結果は、ここに指定した値と :doc:`../config` に指定された
 ``MapKeyNaming`` の実装により決まります。
 
+SQL のログ出力形式
+==================
+
+``@Select`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+
+.. code-block:: java
+
+  @Select(sqlLog = SqlLogType.RAW)
+  List<Employee> selectById(Integer id);
+
+``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+

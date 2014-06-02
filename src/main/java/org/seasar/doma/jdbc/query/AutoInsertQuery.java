@@ -146,7 +146,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     protected void prepareSql() {
         Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.INSERT);
+                SqlKind.INSERT, sqlLogType);
         builder.appendSql("insert into ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" (");

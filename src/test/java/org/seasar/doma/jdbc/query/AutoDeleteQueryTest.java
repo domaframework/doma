@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -44,6 +45,7 @@ public class AutoDeleteQueryTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         DeleteQuery deleteQuery = query;
@@ -63,6 +65,7 @@ public class AutoDeleteQueryTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSql();
@@ -88,6 +91,7 @@ public class AutoDeleteQueryTest extends TestCase {
         query.setVersionIgnored(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         PreparedSql sql = query.getSql();

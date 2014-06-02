@@ -31,6 +31,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
@@ -64,6 +65,7 @@ public class SelectCommandTest extends TestCase {
         query.setMethod(getClass().getMethod(getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
@@ -107,6 +109,7 @@ public class SelectCommandTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(getClass().getMethod(getName()));
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
@@ -159,6 +162,7 @@ public class SelectCommandTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setResultEnsured(true);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,

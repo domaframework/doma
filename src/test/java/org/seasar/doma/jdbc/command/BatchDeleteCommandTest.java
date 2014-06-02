@@ -20,7 +20,7 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.command.BatchDeleteCommand;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 
 import example.entity.Emp;
@@ -52,6 +52,7 @@ public class BatchDeleteCommandTest extends TestCase {
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         int[] rows = new BatchDeleteCommand(query).execute();
         query.complete();

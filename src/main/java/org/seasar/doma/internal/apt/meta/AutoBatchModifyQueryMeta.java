@@ -21,6 +21,7 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -84,6 +85,10 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
     public List<String> getExclude() {
         return batchModifyMirror.getExcludeValue();
+    }
+
+    public SqlLogType getSqlLogType() {
+        return batchModifyMirror.getSqlLogValue();
     }
 
     @Override

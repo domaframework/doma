@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.query;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -35,4 +36,5 @@ public interface ModifyQuery extends Query {
 
     SqlExecutionSkipCause getSqlExecutionSkipCause();
 
+    SqlLogType getSqlLogType();
 }

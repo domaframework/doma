@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.wrapper.Wrapper;
 
 public class PreparedSqlBuilder {
@@ -40,10 +41,13 @@ public class PreparedSqlBuilder {
 
     protected final SqlLogFormattingFunction formattingFunction;
 
-    public PreparedSqlBuilder(Config config, SqlKind kind) {
-        assertNotNull(config, kind);
+    protected final SqlLogType sqlLogType;
+
+    public PreparedSqlBuilder(Config config, SqlKind kind, SqlLogType sqlLogType) {
+        assertNotNull(config, kind, sqlLogType);
         this.config = config;
         this.kind = kind;
+        this.sqlLogType = sqlLogType;
         this.formattingFunction = new ConvertToLogFormatFunction();
     }
 
@@ -66,6 +70,7 @@ public class PreparedSqlBuilder {
     }
 
     public PreparedSql build() {
-        return new PreparedSql(kind, rawSql, formattedSql, null, parameters);
+        return new PreparedSql(kind, rawSql, formattedSql, null, parameters,
+                sqlLogType);
     }
 }

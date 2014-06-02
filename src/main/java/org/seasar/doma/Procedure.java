@@ -23,6 +23,7 @@ import java.sql.Statement;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 
 /**
@@ -108,4 +109,12 @@ public @interface Procedure {
      * @since 1.7.0
      */
     MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
+
+    /**
+     * SQLのログの出力形式を返します。
+     * 
+     * @return SQLログの出力形式
+     * @since 2.0.0
+     */
+    SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

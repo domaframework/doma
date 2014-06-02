@@ -37,7 +37,7 @@ public class BatchOptimisticLockException extends OptimisticLockException {
      * @param sql
      *            SQL
      */
-    public BatchOptimisticLockException(ExceptionSqlLogType logType, Sql<?> sql) {
+    public BatchOptimisticLockException(SqlLogType logType, Sql<?> sql) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getSqlFilePath());
     }
 
@@ -54,8 +54,8 @@ public class BatchOptimisticLockException extends OptimisticLockException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public BatchOptimisticLockException(ExceptionSqlLogType logType,
-            SqlKind kind, String rawSql, String sqlFilePath) {
+    public BatchOptimisticLockException(SqlLogType logType, SqlKind kind,
+            String rawSql, String sqlFilePath) {
         super(Message.DOMA2028, kind, choiceSql(logType, rawSql, rawSql),
                 sqlFilePath);
     }

@@ -29,6 +29,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.ScriptQuery;
 
@@ -57,7 +58,7 @@ public class ScriptCommand implements Command<Void> {
                 for (String sqlText = reader.readSql(); sqlText != null; sqlText = reader
                         .readSql()) {
                     ScriptSql sql = new ScriptSql(sqlText,
-                            query.getScriptFilePath());
+                            query.getScriptFilePath(), query.getSqlLogType());
                     Statement statement = JdbcUtil.createStatement(connection);
                     try {
                         log(sql);
@@ -110,10 +111,14 @@ public class ScriptCommand implements Command<Void> {
 
         protected final String sqlFilePath;
 
-        public ScriptSql(String rawSql, String sqlFilePath) {
-            assertNotNull(rawSql, sqlFilePath);
+        protected final SqlLogType sqlLogType;
+
+        public ScriptSql(String rawSql, String sqlFilePath,
+                SqlLogType sqlLogType) {
+            assertNotNull(rawSql, sqlFilePath, sqlLogType);
             this.rawSql = rawSql;
             this.sqlFilePath = sqlFilePath;
+            this.sqlLogType = sqlLogType;
         }
 
         @Override
@@ -139,6 +144,11 @@ public class ScriptCommand implements Command<Void> {
         @Override
         public List<SqlParameter> getParameters() {
             return Collections.emptyList();
+        }
+
+        @Override
+        public SqlLogType getSqlLogType() {
+            return sqlLogType;
         }
 
     }

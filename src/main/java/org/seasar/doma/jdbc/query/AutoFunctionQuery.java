@@ -43,7 +43,8 @@ public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements
 
     protected void prepareSql() {
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                SqlKind.FUNCTION, qualifiedName, parameters, resultParameter);
+                SqlKind.FUNCTION, qualifiedName, parameters, sqlLogType,
+                resultParameter);
         sql = builder.build();
     }
 

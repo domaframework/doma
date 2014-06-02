@@ -65,6 +65,7 @@ public class SqlFileInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.InsertCommand __command = getCommandImplementors().createInsertCommand(__method0, __query);
             int __result = __command.execute();

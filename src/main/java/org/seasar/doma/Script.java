@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.doma.jdbc.ScriptFileNotFoundException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -73,4 +74,12 @@ public @interface Script {
      * @return 即座に処理を終了するかどうか
      */
     boolean haltOnError() default true;
+
+    /**
+     * SQLのログの出力形式を返します。
+     * 
+     * @return SQLログの出力形式
+     * @since 2.0.0
+     */
+    SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

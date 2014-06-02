@@ -69,10 +69,9 @@ public class UnknownColumnException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public UnknownColumnException(ExceptionSqlLogType logType,
-            String columnName, String expectedPropertyName,
-            String entityClassName, SqlKind kind, String rawSql,
-            String formattedSql, String sqlFilePath) {
+    public UnknownColumnException(SqlLogType logType, String columnName,
+            String expectedPropertyName, String entityClassName, SqlKind kind,
+            String rawSql, String formattedSql, String sqlFilePath) {
         super(Message.DOMA2002, columnName, expectedPropertyName,
                 entityClassName, sqlFilePath, choiceSql(logType, rawSql,
                         formattedSql));

@@ -21,7 +21,7 @@ import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.OptimisticLockException;
-import org.seasar.doma.jdbc.command.BatchUpdateCommand;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 
 import example.entity.Emp;
@@ -53,6 +53,7 @@ public class BatchUpdateCommandTest extends TestCase {
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         int[] rows = new BatchUpdateCommand(query).execute();
         query.complete();
@@ -81,6 +82,7 @@ public class BatchUpdateCommandTest extends TestCase {
         query.setEntities(Arrays.asList(emp));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         BatchUpdateCommand command = new BatchUpdateCommand(query);
         try {
@@ -107,6 +109,7 @@ public class BatchUpdateCommandTest extends TestCase {
         query.setOptimisticLockExceptionSuppressed(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         new BatchUpdateCommand(query).execute();
         query.complete();

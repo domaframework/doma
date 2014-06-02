@@ -79,7 +79,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     protected void prepareSql() {
         Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.DELETE);
+                SqlKind.DELETE, sqlLogType);
         builder.appendSql("delete from ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         if (idPropertyTypes.size() > 0) {

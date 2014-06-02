@@ -527,6 +527,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
             iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
             iprint("__query.prepare();%n");
 
             QueryReturnMeta returnMeta = m.getReturnMeta();
@@ -591,6 +593,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setBlockDelimiter(\"%1$s\");%n",
                     m.getBlockDelimiter());
             iprint("__query.setHaltOnError(%1$s);%n", m.getHaltOnError());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
             iprint("__query.prepare();%n");
             iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
             /* 1 */m.getCommandClass().getName(),
@@ -623,6 +627,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
 
             Boolean excludeNull = m.getExcludeNull();
             if (excludeNull != null) {
@@ -705,6 +711,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
 
             if (m.getEntityParameterName() != null
                     && m.getEntityCtType() != null) {
@@ -771,6 +779,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
 
             Boolean ignoreVersion = m.getIgnoreVersion();
             if (ignoreVersion != null) {
@@ -846,6 +856,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
 
             if (m.getEntityType() != null) {
                 iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
@@ -917,6 +929,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
             /* 1 */m.getCommandClass().getName(),
@@ -958,6 +972,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
             iprint("__query.prepare();%n");
             iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
             /* 1 */m.getCommandClass().getName(),

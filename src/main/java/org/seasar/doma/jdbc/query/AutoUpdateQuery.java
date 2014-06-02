@@ -140,7 +140,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     protected void prepareSql() {
         Dialect dialect = config.getDialect();
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.UPDATE);
+                SqlKind.UPDATE, sqlLogType);
         builder.appendSql("update ");
         builder.appendSql(entityType.getQualifiedTableName(dialect::applyQuote));
         builder.appendSql(" set ");

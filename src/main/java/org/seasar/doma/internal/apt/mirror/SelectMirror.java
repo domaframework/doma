@@ -32,6 +32,7 @@ import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -56,6 +57,8 @@ public class SelectMirror {
     protected AnnotationValue maxRows;
 
     protected AnnotationValue mapKeyNaming;
+
+    protected AnnotationValue sqlLog;
 
     protected SelectMirror(AnnotationMirror annotationMirror) {
         this.annotationMirror = annotationMirror;
@@ -93,6 +96,10 @@ public class SelectMirror {
         return mapKeyNaming;
     }
 
+    public AnnotationValue getSqlLog() {
+        return sqlLog;
+    }
+
     public int getQueryTimeoutValue() {
         Integer value = AnnotationValueUtil.toInteger(queryTimeout);
         if (value == null) {
@@ -123,8 +130,7 @@ public class SelectMirror {
         if (enumConstant == null) {
             throw new AptIllegalStateException("strategy");
         }
-        return SelectType.valueOf(enumConstant.getSimpleName()
-                .toString());
+        return SelectType.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public FetchType getFetchValue() {
@@ -162,6 +168,15 @@ public class SelectMirror {
                 .valueOf(enumConstant.getSimpleName().toString());
     }
 
+    public SqlLogType getSqlLogValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(sqlLog);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("sqlLog");
+        }
+        return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
+    }
+
     public AnnotationMirror getAnnotationMirror() {
         return annotationMirror;
     }
@@ -196,6 +211,8 @@ public class SelectMirror {
                 result.maxRows = value;
             } else if ("mapKeyNaming".equals(name)) {
                 result.mapKeyNaming = value;
+            } else if ("sqlLog".equals(name)) {
+                result.sqlLog = value;
             }
         }
         return result;

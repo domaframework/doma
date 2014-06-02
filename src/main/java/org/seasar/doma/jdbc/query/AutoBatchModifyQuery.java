@@ -26,6 +26,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
@@ -77,6 +78,8 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
     protected int queryTimeout;
 
     protected int batchSize;
+
+    protected SqlLogType sqlLogType;
 
     public AutoBatchModifyQuery(EntityType<ENTITY> entityType) {
         assertNotNull(entityType);
@@ -182,6 +185,10 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
+    public void setSqlLogType(SqlLogType sqlLogType) {
+        this.sqlLogType = sqlLogType;
+    }
+
     @Override
     public PreparedSql getSql() {
         return sqls.get(0);
@@ -235,6 +242,11 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
     @Override
     public int getBatchSize() {
         return batchSize;
+    }
+
+    @Override
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
     }
 
     @Override

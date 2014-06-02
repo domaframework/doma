@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.mirror.ScriptMirror;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -45,6 +46,10 @@ public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
     public String getBlockDelimiter() {
         return scriptMirror.getBlockDelimiterValue();
+    }
+
+    public SqlLogType getSqlLogType() {
+        return scriptMirror.getSqlLogValue();
     }
 
     @Override

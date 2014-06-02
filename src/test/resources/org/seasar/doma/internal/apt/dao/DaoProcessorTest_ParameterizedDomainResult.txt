@@ -76,6 +76,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             org.seasar.doma.internal.apt.dao.Height<java.lang.String> __result = __command.execute();
@@ -104,6 +105,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __result = __command.execute();
@@ -132,6 +134,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             java.util.List<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __result = __command.execute();
@@ -160,6 +163,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             java.util.List<java.util.Optional<org.seasar.doma.internal.apt.dao.Height<java.lang.String>>> __result = __command.execute();
@@ -191,6 +195,7 @@ public class ParameterizedDomainResultDaoImpl extends org.seasar.doma.internal.j
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
             org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>, R>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal(), callback));
             R __result = __command.execute();

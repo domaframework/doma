@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -144,7 +145,7 @@ public class MssqlDialect extends Mssql2008Dialect {
         }
         String rawSql = "select next value for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override

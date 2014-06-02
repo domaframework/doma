@@ -146,7 +146,7 @@ public class JdbcExceptionTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(int.class, 1));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, "dummyPath", evaluator);
+                SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
         try {
             builder.build(sqlNode);
             fail();
@@ -163,7 +163,7 @@ public class JdbcExceptionTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(List.class, Arrays.asList(1, null)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, "dummyPath", evaluator);
+                SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
         try {
             builder.build(sqlNode);
             fail();

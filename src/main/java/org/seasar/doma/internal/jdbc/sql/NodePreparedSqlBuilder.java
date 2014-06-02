@@ -70,6 +70,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.Message;
@@ -93,18 +94,22 @@ public class NodePreparedSqlBuilder implements
 
     protected final ExpressionEvaluator evaluator;
 
+    protected final SqlLogType sqlLogType;
+
     protected final Function<ExpandNode, List<String>> columnsExpander;
 
     public NodePreparedSqlBuilder(Config config, SqlKind kind,
             String sqlFilePath) {
         this(config, kind, sqlFilePath,
                 new ExpressionEvaluator(config.getDialect()
-                        .getExpressionFunctions(), config.getClassHelper()));
+                        .getExpressionFunctions(), config.getClassHelper()),
+                SqlLogType.FORMATTED);
     }
 
     public NodePreparedSqlBuilder(Config config, SqlKind kind,
-            String sqlFilePath, ExpressionEvaluator evaluator) {
-        this(config, kind, sqlFilePath, evaluator,
+            String sqlFilePath, ExpressionEvaluator evaluator,
+            SqlLogType sqlLogType) {
+        this(config, kind, sqlFilePath, evaluator, sqlLogType,
                 new Function<ExpandNode, List<String>>() {
                     @Override
                     public List<String> apply(ExpandNode node) {
@@ -115,12 +120,14 @@ public class NodePreparedSqlBuilder implements
 
     public NodePreparedSqlBuilder(Config config, SqlKind kind,
             String sqlFilePath, ExpressionEvaluator evaluator,
+            SqlLogType sqlLogType,
             Function<ExpandNode, List<String>> columnsExpander) {
         assertNotNull(config, kind, evaluator, columnsExpander);
         this.config = config;
         this.kind = kind;
         this.sqlFilePath = sqlFilePath;
         this.evaluator = evaluator;
+        this.sqlLogType = sqlLogType;
         this.columnsExpander = columnsExpander;
     }
 
@@ -130,7 +137,7 @@ public class NodePreparedSqlBuilder implements
         sqlNode.accept(this, context);
         return new PreparedSql(kind, context.getSqlBuf(),
                 context.getFormattedSqlBuf(), sqlFilePath,
-                context.getParameters());
+                context.getParameters(), sqlLogType);
     }
 
     @Override

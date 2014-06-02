@@ -162,3 +162,15 @@ SQLファイルによる挿入では、識別子の自動設定やバージョ�
 この指定は、SQLファイルの使用の有無に関係なく適用されます。
 ``queryTimeout`` 要素に値を指定しない場合、
 :doc:`../config` に指定されたクエリタイムアウトが使用されます。
+
+SQL のログ出力形式
+==================
+
+``@Insert`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+
+.. code-block:: java
+
+  @Insert(sqlLog = SqlLogType.RAW)
+  int insert(Employee employee);
+
+``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。

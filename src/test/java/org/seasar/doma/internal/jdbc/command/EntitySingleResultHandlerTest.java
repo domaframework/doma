@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
@@ -51,6 +52,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(getClass().getMethod(getName()));
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
@@ -76,6 +78,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(getClass().getMethod(getName()));
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(

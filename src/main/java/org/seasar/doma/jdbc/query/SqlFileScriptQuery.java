@@ -15,7 +15,9 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -26,6 +28,7 @@ import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * @author taedium
@@ -47,6 +50,8 @@ public class SqlFileScriptQuery implements ScriptQuery {
     protected URL scriptFileUrl;
 
     protected Method method;
+
+    protected SqlLogType sqlLogType;
 
     public void setConfig(Config config) {
         this.config = config;
@@ -70,6 +75,10 @@ public class SqlFileScriptQuery implements ScriptQuery {
 
     public void setHaltOnError(boolean haltOnError) {
         this.haltOnError = haltOnError;
+    }
+
+    public void setSqlLogType(SqlLogType sqlLogType) {
+        this.sqlLogType = sqlLogType;
     }
 
     @Override
@@ -148,6 +157,10 @@ public class SqlFileScriptQuery implements ScriptQuery {
     @Override
     public Method getMethod() {
         return method;
+    }
+
+    public SqlLogType getSqlLogType() {
+        return sqlLogType;
     }
 
     public void setMethod(Method method) {

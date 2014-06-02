@@ -25,7 +25,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
 import org.seasar.doma.jdbc.OptimisticLockException;
-import org.seasar.doma.jdbc.command.DeleteCommand;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 
 import example.entity.Emp;
@@ -53,6 +53,7 @@ public class DeleteCommandTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         int rows = new DeleteCommand(query).execute();
         query.complete();
@@ -83,6 +84,7 @@ public class DeleteCommandTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         DeleteCommand command = new DeleteCommand(query);
         try {
@@ -107,6 +109,7 @@ public class DeleteCommandTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setOptimisticLockExceptionSuppressed(true);
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         new DeleteCommand(query).execute();
         query.complete();

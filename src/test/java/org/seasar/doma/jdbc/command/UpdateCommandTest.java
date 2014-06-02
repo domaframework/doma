@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.OptimisticLockException;
-import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 
 import example.entity.Emp;
@@ -50,6 +50,7 @@ public class UpdateCommandTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         int rows = new UpdateCommand(query).execute();
         query.complete();
@@ -83,6 +84,7 @@ public class UpdateCommandTest extends TestCase {
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         UpdateCommand command = new UpdateCommand(query);
         try {
@@ -109,6 +111,7 @@ public class UpdateCommandTest extends TestCase {
         query.setOptimisticLockExceptionSuppressed(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
         new UpdateCommand(query).execute();
         query.complete();

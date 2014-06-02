@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.mirror;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
 
@@ -59,6 +59,8 @@ public class DeleteMirror extends ModifyMirror {
                 result.ignoreVersion = value;
             } else if ("suppressOptimisticLockException".equals(name)) {
                 result.suppressOptimisticLockException = value;
+            } else if ("sqlLog".equals(name)) {
+                result.sqlLog = value;
             }
         }
         return result;

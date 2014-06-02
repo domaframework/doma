@@ -20,12 +20,12 @@ import javax.sql.DataSource;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
@@ -56,7 +56,7 @@ public class MockConfig implements Config {
     protected QueryImplementors queryImplementors = new QueryImplementors() {
     };
 
-    protected ExceptionSqlLogType exceptionSqlLogType = ExceptionSqlLogType.FORMATTED_SQL;
+    protected SqlLogType exceptionSqlLogType = SqlLogType.FORMATTED;
 
     @Override
     public DataSource getDataSource() {
@@ -104,8 +104,8 @@ public class MockConfig implements Config {
     }
 
     @Override
-    public ExceptionSqlLogType getExceptionSqlLogType() {
-        return ExceptionSqlLogType.FORMATTED_SQL;
+    public SqlLogType getExceptionSqlLogType() {
+        return SqlLogType.FORMATTED;
     }
 
     @Override

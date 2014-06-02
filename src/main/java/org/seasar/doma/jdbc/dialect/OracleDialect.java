@@ -43,6 +43,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormatter;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -192,7 +193,7 @@ public class OracleDialect extends StandardDialect {
         String rawSql = "select " + qualifiedSequenceName
                 + ".nextval from dual";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList());
+                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override
