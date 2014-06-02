@@ -181,3 +181,15 @@ SQLスクリプトの実行を行うには、 ``@Script`` をDaoのメソッド�
 区切り文字の後ろには何も記述しないようにしてください。
 つまり、区切り文字だけの行としなければいけません。
 
+SQL のログ出力形式
+==================
+
+``@Script`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+
+.. code-block:: java
+
+  @Script(sqlLog = SqlLogType.RAW)
+  void createTable();
+
+``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+

@@ -172,3 +172,15 @@ suppressOptimisticLockException
 この設定は、SQLファイルの使用の有無に関係なく適用されます。
 ``batchSize`` 要素に値を指定しない場合、 :doc:`../config` に指定されたバッチサイズが使用されます。
 
+
+SQL のログ出力形式
+==================
+
+``@BatchDelete`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+
+.. code-block:: java
+
+  @BatchDelete(sqlLog = SqlLogType.RAW)
+  int[] delete(List<Employee> employees);
+
+``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。

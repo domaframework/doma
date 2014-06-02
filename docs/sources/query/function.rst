@@ -253,3 +253,15 @@ OUTパラメータは、 ``@Out`` をメソッドのパラメータに注釈し�
 最終的な変換結果は、ここに指定した値と :doc:`../config` に指定された
 ``MapKeyNaming`` の実装により決まります。
 
+SQL のログ出力形式
+==================
+
+``@Function`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+
+.. code-block:: java
+
+  @Function(sqlLog = SqlLogType.RAW)
+  void execute(@In Integer id);
+
+``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+

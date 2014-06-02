@@ -154,3 +154,14 @@ SQLファイルによるバッチ挿入では、識別子の自動設定やバ�
 この指定は、SQLファイルの使用の有無に関係なく適用されます。
 ``batchSize`` 要素に値を指定しない場合、  :doc:`../config` に指定されたバッチサイズが使用されます。
 
+SQL のログ出力形式
+==================
+
+``@BatchInsert`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+
+.. code-block:: java
+
+  @BatchInsert(sqlLog = SqlLogType.RAW)
+  int insert(Employee employee);
+
+``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
