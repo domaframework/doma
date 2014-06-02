@@ -47,7 +47,7 @@ public class NonUniqueResultException extends JdbcException {
      * @param sql
      *            SQL
      */
-    public NonUniqueResultException(ExceptionSqlLogType logType, Sql<?> sql) {
+    public NonUniqueResultException(SqlLogType logType, Sql<?> sql) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
                 sql.getSqlFilePath());
     }
@@ -66,7 +66,7 @@ public class NonUniqueResultException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public NonUniqueResultException(ExceptionSqlLogType logType, SqlKind kind,
+    public NonUniqueResultException(SqlLogType logType, SqlKind kind,
             String rawSql, String formattedSql, String sqlFilePath) {
         super(Message.DOMA2001, sqlFilePath, choiceSql(logType, rawSql,
                 formattedSql));

@@ -47,7 +47,7 @@ public class NonSingleColumnException extends JdbcException {
      * @param sql
      *            SQL
      */
-    public NonSingleColumnException(ExceptionSqlLogType logType, Sql<?> sql) {
+    public NonSingleColumnException(SqlLogType logType, Sql<?> sql) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
                 sql.getSqlFilePath());
     }
@@ -66,7 +66,7 @@ public class NonSingleColumnException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public NonSingleColumnException(ExceptionSqlLogType logType, SqlKind kind,
+    public NonSingleColumnException(SqlLogType logType, SqlKind kind,
             String rawSql, String formattedSql, String sqlFilePath) {
         super(Message.DOMA2006, sqlFilePath, choiceSql(logType, rawSql,
                 formattedSql));

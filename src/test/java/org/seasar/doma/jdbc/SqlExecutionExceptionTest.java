@@ -25,8 +25,8 @@ public class SqlExecutionExceptionTest extends TestCase {
 
     public void test() throws Exception {
         SqlExecutionException e = new SqlExecutionException(
-                ExceptionSqlLogType.FORMATTED_SQL, SqlKind.UPDATE, "aaa",
-                "bbb", "ccc", new Exception(), new RuntimeException());
+                SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb", "ccc",
+                new Exception(), new RuntimeException());
         System.out.println(e.getMessage());
         assertSame(SqlKind.UPDATE, e.getKind());
         assertEquals("aaa", e.getRawSql());

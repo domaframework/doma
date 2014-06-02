@@ -129,8 +129,8 @@ public interface Config {
      * @return SQLログのタイプ
      * @since 1.22.0
      */
-    default ExceptionSqlLogType getExceptionSqlLogType() {
-        return ExceptionSqlLogType.FORMATTED_SQL;
+    default SqlLogType getExceptionSqlLogType() {
+        return SqlLogType.FORMATTED;
     }
 
     /**

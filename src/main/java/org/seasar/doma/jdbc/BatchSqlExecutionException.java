@@ -42,7 +42,7 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      * @param rootCause
      *            根本原因
      */
-    public BatchSqlExecutionException(ExceptionSqlLogType logType, Sql<?> sql,
+    public BatchSqlExecutionException(SqlLogType logType, Sql<?> sql,
             Throwable cause, Throwable rootCause) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getSqlFilePath(),
                 cause, rootCause);
@@ -64,8 +64,8 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      * @param rootCause
      *            根本原因
      */
-    public BatchSqlExecutionException(ExceptionSqlLogType logType,
-            SqlKind kind, String rawSql, String sqlFilePath, Throwable cause,
+    public BatchSqlExecutionException(SqlLogType logType, SqlKind kind,
+            String rawSql, String sqlFilePath, Throwable cause,
             Throwable rootCause) {
         super(Message.DOMA2030, kind, choiceSql(logType, rawSql, rawSql), null,
                 sqlFilePath, cause, rootCause);

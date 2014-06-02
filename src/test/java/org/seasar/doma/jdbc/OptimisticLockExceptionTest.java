@@ -25,8 +25,7 @@ public class OptimisticLockExceptionTest extends TestCase {
 
     public void test() throws Exception {
         OptimisticLockException e = new OptimisticLockException(
-                ExceptionSqlLogType.FORMATTED_SQL, SqlKind.UPDATE, "aaa",
-                "bbb", "ccc");
+                SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb", "ccc");
         System.out.println(e.getMessage());
         assertSame(SqlKind.UPDATE, e.getKind());
         assertEquals("aaa", e.getRawSql());

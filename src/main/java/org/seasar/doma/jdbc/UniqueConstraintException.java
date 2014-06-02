@@ -50,7 +50,7 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(ExceptionSqlLogType logType, Sql<?> sql,
+    public UniqueConstraintException(SqlLogType logType, Sql<?> sql,
             Throwable cause) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
                 sql.getSqlFilePath(), cause);
@@ -72,7 +72,7 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(ExceptionSqlLogType logType, SqlKind kind,
+    public UniqueConstraintException(SqlLogType logType, SqlKind kind,
             String rawSql, String formattedSql, String sqlFilePath,
             Throwable cause) {
         super(Message.DOMA2004, sqlFilePath, choiceSql(logType, rawSql,

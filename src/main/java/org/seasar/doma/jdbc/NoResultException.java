@@ -47,7 +47,7 @@ public class NoResultException extends JdbcException {
      * @param sql
      *            SQL
      */
-    public NoResultException(ExceptionSqlLogType logType, Sql<?> sql) {
+    public NoResultException(SqlLogType logType, Sql<?> sql) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
                 sql.getSqlFilePath());
     }
@@ -66,8 +66,8 @@ public class NoResultException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public NoResultException(ExceptionSqlLogType logType, SqlKind kind,
-            String rawSql, String formattedSql, String sqlFilePath) {
+    public NoResultException(SqlLogType logType, SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath) {
         super(Message.DOMA2005, sqlFilePath, choiceSql(logType, rawSql,
                 formattedSql));
         this.kind = kind;

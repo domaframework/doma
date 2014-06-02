@@ -70,8 +70,8 @@ public class ResultMappingException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public ResultMappingException(ExceptionSqlLogType logType,
-            String entityClassName, List<String> unmappedPropertyNames,
+    public ResultMappingException(SqlLogType logType, String entityClassName,
+            List<String> unmappedPropertyNames,
             List<String> expectedColumnNames, SqlKind kind, String rawSql,
             String formattedSql, String sqlFilePath) {
         super(Message.DOMA2216, entityClassName, unmappedPropertyNames,

@@ -50,7 +50,7 @@ public class OptimisticLockException extends JdbcException {
      * @param sql
      *            SQL
      */
-    public OptimisticLockException(ExceptionSqlLogType logType, Sql<?> sql) {
+    public OptimisticLockException(SqlLogType logType, Sql<?> sql) {
         this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
                 sql.getSqlFilePath());
     }
@@ -69,7 +69,7 @@ public class OptimisticLockException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public OptimisticLockException(ExceptionSqlLogType logType, SqlKind kind,
+    public OptimisticLockException(SqlLogType logType, SqlKind kind,
             String rawSql, String formattedSql, String sqlFilePath) {
         super(Message.DOMA2003, sqlFilePath, choiceSql(logType, rawSql,
                 formattedSql));
