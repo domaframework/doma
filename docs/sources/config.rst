@@ -127,7 +127,7 @@ REQUIRES_NEW 属性のトランザクションとの連動
 例外メッセージに含めるSQLの種別
 -------------------------------
 
-例外メッセージに含めるSQLのタイプをあらわす ``ExceptionSqlLogType``
+例外メッセージに含めるSQLのタイプをあらわす ``SqlLogType``
 を ``getExceptionSqlLogType`` メソッドで返してください。
 この値は、Doma がスローする例外にどのような形式のSQLを含めるかを決定します。
 
