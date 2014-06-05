@@ -271,7 +271,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     }
 
     /**
-     * エンティティに値を設定して返します。
+     * 必要ならばエンティティに値を設定して返します。
      * 
      * @param <VALUE>
      *            値の型
@@ -283,11 +283,11 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
      *            ビジター
      * @param value
      *            値
-     * @return エンティティ
+     * @return 値が変更されたエンティティもしくは変更されていないエンティティ
      */
-    protected <VALUE> ENTITY modify(EntityType<ENTITY> entityType,
+    protected <VALUE> ENTITY modifyIfNecessary(EntityType<ENTITY> entityType,
             ENTITY entity,
-            WrapperVisitor<Void, VALUE, Void, RuntimeException> visitor,
+            WrapperVisitor<Boolean, VALUE, Void, RuntimeException> visitor,
             VALUE value) {
         if (entityType.isImmutable()) {
             List<EntityPropertyType<ENTITY, ?>> propertyTypes = entityType
@@ -298,7 +298,11 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
                 if (propertyType == this) {
-                    property.getWrapper().accept(visitor, value, null);
+                    Boolean modified = property.getWrapper().accept(visitor,
+                            value, null);
+                    if (modified == Boolean.FALSE) {
+                        return entity;
+                    }
                 }
                 args.put(propertyType.getName(), property);
             }
@@ -306,7 +310,11 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         } else {
             Property<ENTITY, ?> property = createProperty();
             property.load(entity);
-            property.getWrapper().accept(visitor, value, null);
+            Boolean modified = property.getWrapper().accept(visitor, value,
+                    null);
+            if (modified == Boolean.FALSE) {
+                return entity;
+            }
             property.save(entity);
             return entity;
         }
