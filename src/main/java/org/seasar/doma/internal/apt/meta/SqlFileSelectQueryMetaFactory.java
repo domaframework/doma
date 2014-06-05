@@ -501,7 +501,8 @@ public class SqlFileSelectQueryMetaFactory extends
         public Void visitOptionalCtType(OptionalCtType ctType, Void p)
                 throws RuntimeException {
             ctType.getElementCtType().accept(
-                    new ReturnOptionalElementCtTypeVisitor(returnMeta), p);
+                    new ReturnOptionalElementCtTypeVisitor(queryMeta,
+                            returnMeta), p);
             return null;
         }
 
@@ -583,7 +584,8 @@ public class SqlFileSelectQueryMetaFactory extends
         public Void visitOptionalCtType(OptionalCtType ctType, Void p)
                 throws RuntimeException {
             ctType.getElementCtType().accept(
-                    new ReturnOptionalElementCtTypeVisitor(returnMeta), p);
+                    new ReturnOptionalElementCtTypeVisitor(queryMeta,
+                            returnMeta), p);
             return null;
         }
 
@@ -615,9 +617,13 @@ public class SqlFileSelectQueryMetaFactory extends
     protected class ReturnOptionalElementCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
+        protected SqlFileSelectQueryMeta queryMeta;
+
         protected QueryReturnMeta returnMeta;
 
-        protected ReturnOptionalElementCtTypeVisitor(QueryReturnMeta returnMeta) {
+        protected ReturnOptionalElementCtTypeVisitor(
+                SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+            this.queryMeta = queryMeta;
             this.returnMeta = returnMeta;
         }
 
@@ -653,6 +659,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(Message.DOMA4234, env,
                         returnMeta.getElement(), ctType.getTypeMirror());
             }
+            queryMeta.setEntityCtType(ctType);
             return null;
         }
     }
