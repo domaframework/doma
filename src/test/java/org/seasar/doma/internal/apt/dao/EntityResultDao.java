@@ -39,6 +39,9 @@ public interface EntityResultDao {
     Optional<Emp> selectOptionalSingleResult();
 
     @Select
+    Optional<Emp> selectOptionalSingleResultWithExpansion();
+
+    @Select
     List<Emp> selectResultList();
 
     @Select(strategy = SelectType.STREAM)
