@@ -90,7 +90,7 @@ public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Nu
      */
     public ENTITY setIfNecessary(EntityType<ENTITY> entityType, ENTITY entity,
             Number value) {
-        return modify(entityType, entity, new ValueSetter(), value);
+        return modifyIfNecessary(entityType, entity, new ValueSetter(), value);
     }
 
     /**
@@ -103,31 +103,32 @@ public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Nu
      * @return エンティティ
      */
     public ENTITY increment(EntityType<ENTITY> entityType, ENTITY entity) {
-        return modify(entityType, entity, new Incrementer(), null);
+        return modifyIfNecessary(entityType, entity, new Incrementer(), null);
     }
 
     protected static class ValueSetter implements
-            NumberWrapperVisitor<Void, Number, Void, RuntimeException> {
+            NumberWrapperVisitor<Boolean, Number, Void, RuntimeException> {
 
         @Override
-        public <V extends Number> Void visitNumberWrapper(
+        public <V extends Number> Boolean visitNumberWrapper(
                 NumberWrapper<V> wrapper, Number value, Void q) {
             Number currentValue = wrapper.get();
             if (currentValue == null || currentValue.intValue() < 0) {
                 wrapper.set(value);
+                return true;
             }
-            return null;
+            return false;
         }
     }
 
     protected static class Incrementer implements
-            NumberWrapperVisitor<Void, Void, Void, RuntimeException> {
+            NumberWrapperVisitor<Boolean, Void, Void, RuntimeException> {
 
         @Override
-        public <V extends Number> Void visitNumberWrapper(
+        public <V extends Number> Boolean visitNumberWrapper(
                 NumberWrapper<V> wrapper, Void p, Void q) {
             wrapper.increment();
-            return null;
+            return true;
         }
     }
 

@@ -177,7 +177,7 @@ public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extend
      */
     public ENTITY preInsert(EntityType<ENTITY> entityType, ENTITY entity,
             IdGenerationConfig config) {
-        return setValue(entityType, entity,
+        return setIfNecessary(entityType, entity,
                 () -> idGenerator.generatePreInsert(config));
     }
 
@@ -196,12 +196,12 @@ public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extend
      */
     public ENTITY postInsert(EntityType<ENTITY> entityType, ENTITY entity,
             IdGenerationConfig config, Statement statement) {
-        return setValue(entityType, entity,
+        return setIfNecessary(entityType, entity,
                 () -> idGenerator.generatePostInsert(config, statement));
     }
 
     /**
-     * エンティティに値を設定して返します。
+     * 必要であれば識別子を設定します。
      * 
      * @param entityType
      *            エンティティタイプ
@@ -211,27 +211,29 @@ public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extend
      *            値のサプライヤ
      * @return エンティティ
      */
-    protected ENTITY setValue(EntityType<ENTITY> entityType, ENTITY entity,
-            Supplier<Long> supplier) {
-        Long value = supplier.get();
-        if (value == null) {
-            return entity;
-        }
-        return modify(entityType, entity, new ValueSetter(), value);
+    protected ENTITY setIfNecessary(EntityType<ENTITY> entityType,
+            ENTITY entity, Supplier<Long> supplier) {
+        return modifyIfNecessary(entityType, entity, new ValueSetter(),
+                supplier);
     }
 
-    protected static class ValueSetter implements
-            NumberWrapperVisitor<Void, Number, Void, RuntimeException> {
+    protected static class ValueSetter
+            implements
+            NumberWrapperVisitor<Boolean, Supplier<Long>, Void, RuntimeException> {
 
         @Override
-        public <V extends Number> Void visitNumberWrapper(
-                NumberWrapper<V> wrapper, Number value, Void q)
+        public <V extends Number> Boolean visitNumberWrapper(
+                NumberWrapper<V> wrapper, Supplier<Long> valueSupplier, Void q)
                 throws RuntimeException {
             Number currentValue = wrapper.get();
             if (currentValue == null || currentValue.intValue() < 0) {
-                wrapper.set(value);
+                Long value = valueSupplier.get();
+                if (value != null) {
+                    wrapper.set(value);
+                    return true;
+                }
             }
-            return null;
+            return false;
         }
     }
 
