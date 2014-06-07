@@ -148,6 +148,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
             if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
+            entityType.saveCurrentStates(currentEntity);
         }
 
         protected void prepareOptimisticLock() {

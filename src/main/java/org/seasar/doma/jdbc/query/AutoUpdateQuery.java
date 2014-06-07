@@ -215,6 +215,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
+        entityType.saveCurrentStates(entity);
     }
 
     public void setNullExcluded(boolean nullExcluded) {

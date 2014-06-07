@@ -193,6 +193,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
+        entityType.saveCurrentStates(currentEntity);
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
