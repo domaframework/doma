@@ -116,4 +116,50 @@ public class UpdateCommandTest extends TestCase {
         new UpdateCommand(query).execute();
         query.complete();
     }
+
+    public void testExecute_OriginalStates() throws Exception {
+        Emp emp = new Emp();
+        emp.setId(1);
+        emp.setName("hoge");
+        emp.setVersion(10);
+
+        Emp states = new Emp();
+        states.setId(1);
+        states.setName("foo");
+        states.setVersion(10);
+
+        emp.originalStates = states;
+
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setEntity(emp);
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.prepare();
+        int rows = new UpdateCommand(query).execute();
+        query.complete();
+
+        assertEquals(1, rows);
+        String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
+        assertEquals(
+                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql);
+
+        List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
+        assertEquals(4, bindValues.size());
+        assertEquals("hoge", bindValues.get(0).getValue());
+        assertEquals(new Integer(10), bindValues.get(1).getValue());
+        assertEquals(new Integer(1), bindValues.get(2).getValue());
+        assertEquals(new Integer(10), bindValues.get(3).getValue());
+
+        Emp updatedStates = emp.originalStates;
+        assertEquals(new Integer(1), updatedStates.getId());
+        assertEquals("hoge", updatedStates.getName());
+        assertNull(updatedStates.getSalary());
+        assertEquals(new Integer(11), updatedStates.getVersion());
+    }
+
 }
