@@ -406,6 +406,7 @@ public enum Message implements MessageResource {
     DOMA4264("Collector型のパラメータは複数指定できません。"),
     DOMA4265("戻り値の型[{0}]とCollectorの3番目の実型引数の型[{1}]が一致していません。"),
     DOMA4266("@Selectのstrategy要素にSelectStrategyType.COLLECTを設定した場合、Collector型のパラメータが必要です。"),
+    DOMA4267("java.util.List内のjava.util.Optionalに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス。"),
 
     DOMA4300("型[{0}]の処理中に例外が発生しました。注釈処理とは直接関係ない場所でコンパイルエラーがありませんか？"),
 
