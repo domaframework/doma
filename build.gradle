@@ -90,6 +90,8 @@ signing {
     sign configurations.archives
 }
 
+build.dependsOn install
+
 uploadArchives {
     repositories.mavenDeployer {
         beforeDeployment {MavenDeployment deployment ->
