@@ -948,4 +948,24 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testOptionalEntityList() throws Exception {
+        Class<?> target = OptionalEntityListDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4267);
+    }
+
+    public void testOptionalMapList() throws Exception {
+        Class<?> target = OptionalMapListDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4267);
+    }
+
 }
