@@ -20,30 +20,14 @@ JDK のインストール
 Eclipse のインストール
 ======================
 
-.. _Eclipse Standard 4.3.2: http://www.eclipse.org/downloads/packages/eclipse-standard-432/keplersr2
+.. _Eclipse Standard 4.4: http://www.eclipse.org/downloads/
 
-`Eclipse Standard 4.3.2`_ をインストールしてください。
+`Eclipse Standard 4.4`_ をインストールしてください。
 
 .. note::
 
-  Eclipse IDE for Java EE Developers など他のパッケージでも動作すると思われますが
+  Eclipse IDE for Java EE Developers など他のパッケージでも動作しますが
   このドキュメントでは Eclipse Standard を対象とします。
-
-Eclipse Support for Java 8 のインストール
------------------------------------------
-
-Eclipse メニューバーから Help > Install New Software... と進み、
-'Work With' のテキストボックスに次のURLを入力してください。
-
-::
-
-  http://build.eclipse.org/eclipse/builds/4P/siteDir/updates/4.3-P-builds
-
-以下の図のようにインストール可能なプラグインの候補が表示されるので
-Eclipse Java 8 Support (for Kepler SR2) にチェックをつけてダイアログを進め
-インスートルを完了してください。
-
-.. image:: images/install-eclipse-java8-support.png
 
 Eclipse プラグイン Doma Tools のインストール
 ============================================
