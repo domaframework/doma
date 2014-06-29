@@ -54,7 +54,9 @@ Doma Tools の最新バージョンにチェックをつけてダイアログを
 Doma Tools は、 SQL ファイルの更新をフックして注釈処理を実行します。
 そのためには、 SQL ファイルを Eclipse 内で開く必要があります。
 
-``.sql`` の拡張子をもつファイルを Text Editor に関連づけてください。
+メニューバーから Eclipse > 環境設定... もしくは Window > Preference と選択し、設定画面を開いてください。
+
+以下の図が示すように ``.sql`` の拡張子をもつファイルを Text Editor に関連づけてください。
 
 .. image:: images/sql-file-association.png
    :width: 80 %
