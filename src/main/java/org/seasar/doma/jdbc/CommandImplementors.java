@@ -68,6 +68,8 @@ public interface CommandImplementors {
     /**
      * {@link Select} に対応したコマンドを作成します。
      * 
+     * @param <RESULT>
+     *            検索結果の型
      * @param method
      *            Dao メソッド
      * @param query
@@ -165,6 +167,8 @@ public interface CommandImplementors {
     /**
      * {@link Function} に対応したコマンドを作成します。
      * 
+     * @param <RESULT>
+     *            戻り値
      * @param method
      *            Dao メソッド
      * @param query
@@ -194,6 +198,8 @@ public interface CommandImplementors {
      * {@link ArrayFactory}、{@link BlobFactory}、{@link ClobFactory}、
      * {@link NClobFactory}、{@link SQLXMLFactory} に対応したコマンドを作成します。
      * 
+     * @param <RESULT>
+     *            戻り値
      * @param method
      *            Dao メソッド
      * @param query
