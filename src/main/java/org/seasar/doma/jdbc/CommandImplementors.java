@@ -17,6 +17,21 @@ package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 
+import org.seasar.doma.ArrayFactory;
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.BlobFactory;
+import org.seasar.doma.ClobFactory;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Function;
+import org.seasar.doma.Insert;
+import org.seasar.doma.NClobFactory;
+import org.seasar.doma.Procedure;
+import org.seasar.doma.SQLXMLFactory;
+import org.seasar.doma.Script;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.command.BatchUpdateCommand;
@@ -50,53 +65,155 @@ import org.seasar.doma.jdbc.query.UpdateQuery;
  */
 public interface CommandImplementors {
 
+    /**
+     * {@link Select} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @param resultSetHandler
+     *            結果セットのハンドラ
+     * @return コマンド
+     */
     default <RESULT> SelectCommand<RESULT> createSelectCommand(Method method,
             SelectQuery query, ResultSetHandler<RESULT> resultSetHandler) {
         return new SelectCommand<>(query, resultSetHandler);
     }
 
+    /**
+     * {@link Delete} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default DeleteCommand createDeleteCommand(Method method, DeleteQuery query) {
         return new DeleteCommand(query);
     }
 
+    /**
+     * {@link Insert} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default InsertCommand createInsertCommand(Method method, InsertQuery query) {
         return new InsertCommand(query);
     }
 
+    /**
+     * {@link Update} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default UpdateCommand createUpdateCommand(Method method, UpdateQuery query) {
         return new UpdateCommand(query);
     }
 
+    /**
+     * {@link BatchDelete} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default BatchDeleteCommand createBatchDeleteCommand(Method method,
             BatchDeleteQuery query) {
         return new BatchDeleteCommand(query);
     }
 
+    /**
+     * {@link BatchInsert} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default BatchInsertCommand createBatchInsertCommand(Method method,
             BatchInsertQuery query) {
         return new BatchInsertCommand(query);
     }
 
+    /**
+     * {@link BatchUpdate} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default BatchUpdateCommand createBatchUpdateCommand(Method method,
             BatchUpdateQuery query) {
         return new BatchUpdateCommand(query);
     }
 
+    /**
+     * {@link Function} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default <RESULT> FunctionCommand<RESULT> createFunctionCommand(
             Method method, FunctionQuery<RESULT> query) {
         return new FunctionCommand<>(query);
     }
 
+    /**
+     * {@link Procedure} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default ProcedureCommand createProcedureCommand(Method method,
             ProcedureQuery query) {
         return new ProcedureCommand(query);
     }
 
+    /**
+     * {@link ArrayFactory}、{@link BlobFactory}、{@link ClobFactory}、
+     * {@link NClobFactory}、{@link SQLXMLFactory} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default <RESULT> CreateCommand<RESULT> createCreateCommand(Method method,
             CreateQuery<RESULT> query) {
         return new CreateCommand<>(query);
     }
 
+    /**
+     * {@link Script} に対応したコマンドを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @return コマンド
+     */
     default ScriptCommand createScriptCommand(Method method, ScriptQuery query) {
         return new ScriptCommand(query);
     }
