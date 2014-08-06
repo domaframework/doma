@@ -125,4 +125,12 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4203);
     }
 
+    public void testBytesConversion() throws Exception {
+        ExternalDomainProcessor processor = new ExternalDomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(UUIDConverter.class);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
 }
