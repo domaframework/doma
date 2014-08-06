@@ -101,7 +101,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
         printGenerated();
         iprint("public final class %1$s extends %2$s<%3$s, %4$s> {%n",
                 simpleMetaTypeName, AbstractDomainType.class.getName(),
-                domainMeta.getValueElement().getQualifiedName(), domainTypeName);
+                domainMeta.getValueTypeName(), domainTypeName);
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -129,8 +129,8 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
         iprint("private %1$s() {%n", simpleName);
         if (domainMeta.getWrapperCtType().getBasicCtType().isEnum()) {
             iprint("    super(() -> new %1$s(%2$s.class));%n", domainMeta
-                    .getWrapperCtType().getTypeName(), domainMeta
-                    .getValueElement().getQualifiedName());
+                    .getWrapperCtType().getTypeName(),
+                    domainMeta.getValueTypeName());
             iprint("}%n");
         } else {
             iprint("    super(() -> new %1$s());%n", domainMeta
@@ -154,7 +154,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
         }
         iprint("@Override%n");
         iprint("protected %1$s newDomain(%2$s value) {%n", domainTypeName,
-                domainMeta.getValueElement().getQualifiedName());
+                domainMeta.getValueTypeName());
         if (parametarized) {
             iprint("    return (%1$s) converter.fromValueToDomain(value);%n",
                     domainTypeName);
@@ -167,8 +167,8 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
     protected void printGetBasicValueMethod() {
         iprint("@Override%n");
-        iprint("protected %1$s getBasicValue(%2$s domain) {%n", domainMeta
-                .getValueElement().getQualifiedName(), domainTypeName);
+        iprint("protected %1$s getBasicValue(%2$s domain) {%n",
+                domainMeta.getValueTypeName(), domainTypeName);
         iprint("    if (domain == null) {%n");
         iprint("        return null;%n");
         iprint("    }%n");
@@ -180,8 +180,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     protected void printGetBasicClassMethod() {
         iprint("@Override%n");
         iprint("public Class<?> getBasicClass() {%n");
-        iprint("    return %1$s.class;%n", domainMeta.getValueElement()
-                .getQualifiedName());
+        iprint("    return %1$s.class;%n", domainMeta.getValueTypeName());
         iprint("}%n");
         print("%n");
     }

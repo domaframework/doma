@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 
@@ -31,7 +31,7 @@ public class ExternalDomainMeta implements TypeElementMeta {
 
     protected WrapperCtType wrapperCtType;
 
-    protected TypeElement valueElement;
+    protected String valueTypeName;
 
     protected TypeElement domainElement;
 
@@ -52,12 +52,12 @@ public class ExternalDomainMeta implements TypeElementMeta {
         this.wrapperCtType = wrapperCtType;
     }
 
-    public TypeElement getValueElement() {
-        return valueElement;
+    public String getValueTypeName() {
+        return valueTypeName;
     }
 
-    public void setValueElement(TypeElement valueElement) {
-        this.valueElement = valueElement;
+    public void setValueTypeName(String valueTypeName) {
+        this.valueTypeName = valueTypeName;
     }
 
     public TypeElement getDomainElement() {
