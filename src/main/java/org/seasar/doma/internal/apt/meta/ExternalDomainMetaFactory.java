@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -144,16 +145,13 @@ public class ExternalDomainMetaFactory implements
 
     protected void doValueType(TypeElement convElement, TypeMirror valueType,
             ExternalDomainMeta meta) {
-        TypeElement valueElement = TypeMirrorUtil.toTypeElement(valueType, env);
-        if (valueElement == null) {
-            throw new AptIllegalStateException(valueType.toString());
-        }
-        meta.setValueElement(valueElement);
+        String valueTypeName = TypeMirrorUtil.getTypeName(valueType, env);
+        meta.setValueTypeName(valueTypeName);
 
         BasicCtType basicCtType = BasicCtType.newInstance(valueType, env);
         if (basicCtType == null) {
             throw new AptException(Message.DOMA4194, env, convElement,
-                    valueElement.getQualifiedName());
+                    valueTypeName);
         }
         meta.setWrapperCtType(basicCtType.getWrapperCtType());
     }
