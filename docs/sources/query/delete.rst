@@ -64,8 +64,8 @@ ignoreVersion
   @Delete(includeVersion = true)
   int delete(Employee employee);
 
-spressOptimisticLockException
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+suppressOptimisticLockException
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``@Delete`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
 バージョン番号は削除条件に含まれます。
