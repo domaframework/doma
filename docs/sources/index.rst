@@ -4,6 +4,7 @@
    contain the root `toctree` directive.
 
 .. image:: images/doma.png
+   :align: right
 
 Welcome to Doma
 ===============
