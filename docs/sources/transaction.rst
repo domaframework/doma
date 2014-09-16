@@ -91,7 +91,7 @@ Domaは、ローカルトランザクションをサポートします。
 
 * required
 * requiresNew
-* suppress
+* notSupported
 
 トランザクション内で行う処理はラムダ式として渡します。
 
