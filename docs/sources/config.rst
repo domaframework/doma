@@ -160,7 +160,7 @@ REQUIRES_NEW 属性のトランザクションとの連動
 .. note::
 
   この項目は設定必須ではありませんが、
-  ``org.seasar.doma.jdbc.tx.TransactionManage`` のインタフェースでトランザクションを利用したい場合は設定してください。
+  ``org.seasar.doma.jdbc.tx.TransactionManager`` のインタフェースでトランザクションを利用したい場合は設定してください。
   設定方法については :doc:`transaction` を参照してください。
 
 Command の実装
