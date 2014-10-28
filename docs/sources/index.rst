@@ -4,7 +4,10 @@
    contain the root `toctree` directive.
 
 .. image:: images/doma.png
+   :height: 200px
+   :width: 200px
    :align: right
+   :target: https://github.com/domaframework/doma
 
 Welcome to Doma
 ===============
