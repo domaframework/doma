@@ -10,6 +10,14 @@ Getting Started
 
 開発環境のセットアップ方法と基本的なデータベースアクセスの実行方法を紹介します。
 
+.. _IntelliJ Doma support plugin: https://github.com/siosio/DomaSupport
+
+.. note::
+
+  このドキュメントでは、IDE として Eclipse を用いますが、
+  Eclipse の代わりに IntelliJ IDEA を利用して開発することも可能です。
+  IntelliJ IDEA を利用する場合は、 `IntelliJ Doma support plugin`_ の併用をお奨めします。
+
 JDK のインストール
 ==================
 
