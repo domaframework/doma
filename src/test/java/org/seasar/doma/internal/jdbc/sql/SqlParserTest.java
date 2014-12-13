@@ -280,6 +280,18 @@ public class SqlParserTest extends TestCase {
         assertEquals("select bbb, ccc from aaa", sql.getFormattedSql());
     }
 
+    public void testExpand_withSpace() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        String testSql = "select /*%expand */* from aaa";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, SqlLogType.FORMATTED,
+                node -> Arrays.asList("bbb", "ccc")).build(sqlNode);
+        assertEquals("select bbb, ccc from aaa", sql.getRawSql());
+        assertEquals("select bbb, ccc from aaa", sql.getFormattedSql());
+    }
+
     public void testExpand_alias() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         String testSql = "select /*%expand \"a\"*/* from aaa a";
