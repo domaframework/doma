@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
@@ -131,7 +132,7 @@ public class JdbcExceptionTest extends TestCase {
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 SqlKind.SELECT, "dummyPath");
         try {
-            builder.build(sqlNode);
+            builder.build(sqlNode, Function.identity());
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
@@ -148,7 +149,7 @@ public class JdbcExceptionTest extends TestCase {
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
         try {
-            builder.build(sqlNode);
+            builder.build(sqlNode, Function.identity());
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
@@ -165,7 +166,7 @@ public class JdbcExceptionTest extends TestCase {
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
         try {
-            builder.build(sqlNode);
+            builder.build(sqlNode, Function.identity());
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());

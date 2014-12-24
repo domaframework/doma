@@ -131,13 +131,13 @@ public class NodePreparedSqlBuilder implements
         this.columnsExpander = columnsExpander;
     }
 
-    public PreparedSql build(SqlNode sqlNode) {
-        assertNotNull(sqlNode);
+    public PreparedSql build(SqlNode sqlNode, Function<String, String> commenter) {
+        assertNotNull(sqlNode, commenter);
         Context context = new Context(config, evaluator);
         sqlNode.accept(this, context);
         return new PreparedSql(kind, context.getSqlBuf(),
                 context.getFormattedSqlBuf(), sqlFilePath,
-                context.getParameters(), sqlLogType);
+                context.getParameters(), sqlLogType, commenter);
     }
 
     @Override

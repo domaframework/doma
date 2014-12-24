@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
@@ -52,7 +53,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where ename = ? and sal = ?",
                 sql.getRawSql());
         assertEquals("select * from aaa where ename = 'hoge' and sal = 10000",
@@ -71,7 +73,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where phone = ?", sql.getRawSql());
         assertEquals("select * from aaa where phone = '01-2345-6789'",
                 sql.getFormattedSql());
@@ -88,7 +91,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where ename in (?, ?)", sql.getRawSql());
         assertEquals("select * from aaa where ename in ('hoge', 'foo')",
                 sql.getFormattedSql());
@@ -104,7 +108,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where ename in (null)", sql.getRawSql());
         assertEquals("select * from aaa where ename in (null)",
                 sql.getFormattedSql());
@@ -200,7 +205,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where ename = ? and sal = ?",
                 sql.getRawSql());
         assertEquals("select * from aaa where ename = 'BBB' and sal = 10000",
@@ -222,7 +228,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals(
                 "select * from aaa where ename = ? and sal = ? order by name asc, salary",
                 sql.getRawSql());
@@ -245,7 +252,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where ename = ? and sal = ?",
                 sql.getRawSql());
         assertEquals("select * from aaa where ename = 'hoge' and sal = 10000",
@@ -275,7 +283,8 @@ public class SqlParserTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator, SqlLogType.FORMATTED,
-                node -> Arrays.asList("bbb", "ccc")).build(sqlNode);
+                node -> Arrays.asList("bbb", "ccc")).build(sqlNode,
+                Function.identity());
         assertEquals("select bbb, ccc from aaa", sql.getRawSql());
         assertEquals("select bbb, ccc from aaa", sql.getFormattedSql());
     }
@@ -287,7 +296,8 @@ public class SqlParserTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator, SqlLogType.FORMATTED,
-                node -> Arrays.asList("bbb", "ccc")).build(sqlNode);
+                node -> Arrays.asList("bbb", "ccc")).build(sqlNode,
+                Function.identity());
         assertEquals("select bbb, ccc from aaa", sql.getRawSql());
         assertEquals("select bbb, ccc from aaa", sql.getFormattedSql());
     }
@@ -299,7 +309,8 @@ public class SqlParserTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator, SqlLogType.FORMATTED,
-                node -> Arrays.asList("bbb", "ccc")).build(sqlNode);
+                node -> Arrays.asList("bbb", "ccc")).build(sqlNode,
+                Function.identity());
         assertEquals("select a.bbb, a.ccc from aaa a", sql.getRawSql());
         assertEquals("select a.bbb, a.ccc from aaa a", sql.getFormattedSql());
     }
@@ -335,7 +346,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where bbb = 'hoge'",
                 sql.getFormattedSql());
@@ -350,7 +362,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa", sql.getFormattedSql());
     }
@@ -362,7 +375,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select aaa from ccc", sql.getRawSql());
         assertEquals("select aaa from ccc", sql.getFormattedSql());
     }
@@ -374,7 +388,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa", sql.getFormattedSql());
         assertEquals(0, sql.getParameters().size());
@@ -387,7 +402,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where \n\n --comment\n ddd is null",
                 sql.getRawSql());
         assertEquals("select * from aaa where \n\n --comment\n ddd is null",
@@ -402,7 +418,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where bbb = ? and ddd = eee",
                 sql.getRawSql());
         assertEquals("select * from aaa where bbb = 'hoge' and ddd = eee",
@@ -418,7 +435,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa", sql.getFormattedSql());
         assertEquals(0, sql.getParameters().size());
@@ -431,7 +449,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where \nbbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where \nbbb = ''",
                 sql.getFormattedSql());
@@ -446,7 +465,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where  bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where  bbb = 'hoge'",
                 sql.getFormattedSql());
@@ -460,7 +480,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa union all select * from bbb",
                 sql.getRawSql());
     }
@@ -473,7 +494,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals(
                 "select aaa.deptname, count(*) from aaa join bbb on aaa.id = bbb.id where aaa.name = ? group by aaa.deptname having count(*) > ? order by aaa.name for update bbb",
                 sql.getRawSql());
@@ -495,7 +517,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("update aaa set no = ?, set name = ? where id = ?",
                 sql.getRawSql());
         assertEquals(
@@ -520,7 +543,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals(
                 "select * from aaa where name = ? or name = ? or name = ?",
                 sql.getRawSql());
@@ -541,7 +565,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa", sql.getFormattedSql());
         assertEquals(0, sql.getParameters().size());
@@ -555,7 +580,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where   salary > 100", sql.getRawSql());
         assertEquals("select * from aaa where   salary > 100",
                 sql.getFormattedSql());
@@ -573,7 +599,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals(
                 "select * from aaa where name0 = ? or name1 = ? or name2 = ?",
                 sql.getRawSql());
@@ -656,7 +683,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select * from aaa where (\n\n ddd is null\n )",
                 sql.getRawSql());
         assertEquals("select * from aaa where (\n\n ddd is null\n )",
@@ -669,7 +697,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser("select rank()");
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select rank()", sql.getRawSql());
     }
 
@@ -678,7 +707,8 @@ public class SqlParserTest extends TestCase {
         SqlParser parser = new SqlParser("select rank(   )");
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode);
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
         assertEquals("select rank(   )", sql.getRawSql());
     }
 

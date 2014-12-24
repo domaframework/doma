@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,24 +38,16 @@ import org.seasar.doma.jdbc.entity.EntityType;
  * @param <ELEMENT>
  *            リストの要素
  */
-public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
-        BatchModifyQuery {
+public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
+        implements BatchModifyQuery {
 
     protected final Class<ELEMENT> elementClass;
 
     protected final SqlKind kind;
 
-    protected Method method;
-
-    protected Config config;
-
     protected String sqlFilePath;
 
     protected String parameterName;
-
-    protected String callerClassName;
-
-    protected String callerMethodName;
 
     protected SqlFile sqlFile;
 
@@ -65,8 +56,6 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
     protected boolean executable;
 
     protected SqlExecutionSkipCause sqlExecutionSkipCause = SqlExecutionSkipCause.BATCH_TARGET_NONEXISTENT;
-
-    protected int queryTimeout;
 
     protected int batchSize;
 
@@ -86,8 +75,8 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, sqlFilePath, parameterName,
-                callerClassName, callerMethodName, elements, sqls);
+        super.prepare();
+        assertNotNull(method, sqlFilePath, parameterName, elements, sqls);
     }
 
     protected void prepareSqlFile() {
@@ -112,21 +101,8 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
                 config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, sqlFile.getPath(), evaluator, sqlLogType);
-        PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
+        PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
         sqls.add(sql);
-    }
-
-    @Override
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
-
-    public void setConfig(Config config) {
-        this.config = config;
     }
 
     public void setSqlFilePath(String sqlFilePath) {
@@ -155,18 +131,6 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
         return elements;
     }
 
-    public void setCallerClassName(String callerClassName) {
-        this.callerClassName = callerClassName;
-    }
-
-    public void setCallerMethodName(String callerMethodName) {
-        this.callerMethodName = callerMethodName;
-    }
-
-    public void setQueryTimeout(int queryTimeout) {
-        this.queryTimeout = queryTimeout;
-    }
-
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
     }
@@ -180,16 +144,6 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
     @Override
     public PreparedSql getSql() {
         return sqls.get(0);
-    }
-
-    @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
     }
 
     @Override
@@ -220,11 +174,6 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> implements
     @Override
     public SqlExecutionSkipCause getSqlExecutionSkipCause() {
         return sqlExecutionSkipCause;
-    }
-
-    @Override
-    public int getQueryTimeout() {
-        return queryTimeout;
     }
 
     @Override

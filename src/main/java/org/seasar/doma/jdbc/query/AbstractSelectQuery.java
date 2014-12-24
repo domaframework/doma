@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,6 @@ import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
@@ -48,15 +46,10 @@ import org.seasar.doma.wrapper.LongWrapper;
  * @author nakamura-to
  *
  */
-public abstract class AbstractSelectQuery implements SelectQuery {
+public abstract class AbstractSelectQuery extends AbstractQuery implements
+        SelectQuery {
 
     protected final Map<String, Value> parameters = new HashMap<String, Value>();
-
-    protected Config config;
-
-    protected String callerClassName;
-
-    protected String callerMethodName;
 
     protected SelectOptions options = SelectOptions.get();
 
@@ -70,10 +63,6 @@ public abstract class AbstractSelectQuery implements SelectQuery {
 
     protected int maxRows;
 
-    protected int queryTimeout;
-
-    protected Method method;
-
     protected EntityType<?> entityType;
 
     protected PreparedSql sql;
@@ -85,7 +74,7 @@ public abstract class AbstractSelectQuery implements SelectQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName);
+        super.prepare();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
@@ -149,33 +138,6 @@ public abstract class AbstractSelectQuery implements SelectQuery {
     }
 
     @Override
-    public Config getConfig() {
-        return config;
-    }
-
-    public void setConfig(Config config) {
-        this.config = config;
-    }
-
-    @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    public void setCallerClassName(String callerClassName) {
-        this.callerClassName = callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
-    }
-
-    public void setCallerMethodName(String callerMethodName) {
-        this.callerMethodName = callerMethodName;
-    }
-
-    @Override
     public SelectOptions getOptions() {
         return options;
     }
@@ -236,23 +198,6 @@ public abstract class AbstractSelectQuery implements SelectQuery {
 
     public void setMaxRows(int maxRows) {
         this.maxRows = maxRows;
-    }
-
-    @Override
-    public int getQueryTimeout() {
-        return queryTimeout;
-    }
-
-    public void setQueryTimeout(int queryTimeout) {
-        this.queryTimeout = queryTimeout;
-    }
-
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
     }
 
     public SqlLogType getSqlLogType() {

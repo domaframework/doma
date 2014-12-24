@@ -19,13 +19,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
-import java.lang.reflect.Method;
 import java.net.URL;
 
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -33,15 +31,9 @@ import org.seasar.doma.jdbc.SqlLogType;
 /**
  * @author taedium
  */
-public class SqlFileScriptQuery implements ScriptQuery {
-
-    protected Config config;
+public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
 
     protected String scriptFilePath;
-
-    protected String callerClassName;
-
-    protected String callerMethodName;
 
     protected String blockDelimiter;
 
@@ -49,24 +41,10 @@ public class SqlFileScriptQuery implements ScriptQuery {
 
     protected URL scriptFileUrl;
 
-    protected Method method;
-
     protected SqlLogType sqlLogType;
-
-    public void setConfig(Config config) {
-        this.config = config;
-    }
 
     public void setScriptFilePath(String scriptFilePath) {
         this.scriptFilePath = scriptFilePath;
-    }
-
-    public void setCallerClassName(String callerClassName) {
-        this.callerClassName = callerClassName;
-    }
-
-    public void setCallerMethodName(String callerMethodName) {
-        this.callerMethodName = callerMethodName;
     }
 
     public void setBlockDelimiter(String blockDelimiter) {
@@ -83,8 +61,8 @@ public class SqlFileScriptQuery implements ScriptQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(config, scriptFilePath, callerClassName,
-                callerMethodName, blockDelimiter);
+        super.prepare();
+        assertNotNull(scriptFilePath, blockDelimiter);
         assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
         assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
 
@@ -106,21 +84,6 @@ public class SqlFileScriptQuery implements ScriptQuery {
 
     @Override
     public void complete() {
-    }
-
-    @Override
-    public Config getConfig() {
-        return config;
-    }
-
-    @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
     }
 
     @Override
@@ -154,17 +117,8 @@ public class SqlFileScriptQuery implements ScriptQuery {
         return haltOnError;
     }
 
-    @Override
-    public Method getMethod() {
-        return method;
-    }
-
     public SqlLogType getSqlLogType() {
         return sqlLogType;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
     }
 
 }

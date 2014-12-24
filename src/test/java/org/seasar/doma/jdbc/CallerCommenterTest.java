@@ -13,21 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.query;
+package org.seasar.doma.jdbc;
 
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.SQLException;
+import junit.framework.TestCase;
 
-/**
- * @author taedium
- * 
- */
-public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-    @Override
-    public Blob create(Connection connection) throws SQLException {
-        return connection.createBlob();
+public class CallerCommenterTest extends TestCase {
+
+    private CallerCommenter commenter = new CallerCommenter();
+
+    public void testComment() throws Exception {
+        CommentContext context = new CommentContext("class", "method",
+                new MockConfig(), null);
+        String actual = commenter.comment("select * from emp", context);
+        assertEquals("/** class.method */\nselect * from emp", actual);
     }
 
 }

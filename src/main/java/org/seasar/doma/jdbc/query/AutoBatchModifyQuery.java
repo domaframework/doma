@@ -17,13 +17,11 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -37,7 +35,8 @@ import org.seasar.doma.message.Message;
  * @param <ENTITY>
  *            エンティティ
  */
-public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
+public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
+        implements BatchModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
@@ -50,14 +49,6 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
     protected final EntityType<ENTITY> entityType;
-
-    protected Method method;
-
-    protected Config config;
-
-    protected String callerClassName;
-
-    protected String callerMethodName;
 
     protected VersionPropertyType<? super ENTITY, ENTITY, ?, ?> versionPropertyType;
 
@@ -74,8 +65,6 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
     protected List<ENTITY> entities;
 
     protected ENTITY currentEntity;
-
-    protected int queryTimeout;
 
     protected int batchSize;
 
@@ -131,19 +120,6 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
         return true;
     }
 
-    @Override
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
-
-    public void setConfig(Config config) {
-        this.config = config;
-    }
-
     public void setEntities(Iterable<ENTITY> entities) {
         assertNotNull(entities);
         if (entities instanceof Collection<?>) {
@@ -159,18 +135,6 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
 
     public List<ENTITY> getEntities() {
         return entities;
-    }
-
-    public void setCallerClassName(String callerClassName) {
-        this.callerClassName = callerClassName;
-    }
-
-    public void setCallerMethodName(String callerMethodName) {
-        this.callerMethodName = callerMethodName;
-    }
-
-    public void setQueryTimeout(int queryTimeout) {
-        this.queryTimeout = queryTimeout;
     }
 
     public void setBatchSize(int batchSize) {
@@ -195,23 +159,8 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
     }
 
     @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
-    }
-
-    @Override
     public List<PreparedSql> getSqls() {
         return sqls;
-    }
-
-    @Override
-    public Config getConfig() {
-        return config;
     }
 
     @Override
@@ -232,11 +181,6 @@ public abstract class AutoBatchModifyQuery<ENTITY> implements BatchModifyQuery {
     @Override
     public SqlExecutionSkipCause getSqlExecutionSkipCause() {
         return executionSkipCause;
-    }
-
-    @Override
-    public int getQueryTimeout() {
-        return queryTimeout;
     }
 
     @Override

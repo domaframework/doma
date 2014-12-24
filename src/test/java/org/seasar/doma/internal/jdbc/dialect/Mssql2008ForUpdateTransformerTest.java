@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
+import java.util.function.Function;
+
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -39,7 +41,7 @@ public class Mssql2008ForUpdateTransformerTest extends TestCase {
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(sqlNode);
+        PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
 
@@ -52,10 +54,11 @@ public class Mssql2008ForUpdateTransformerTest extends TestCase {
         SqlNode sqlNode = transformer.transform(originalSqlNode);
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
-        sqlBuilder.build(sqlNode);
+        sqlBuilder.build(sqlNode, Function.identity());
         sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
                 SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(originalSqlNode);
+        PreparedSql sql = sqlBuilder
+                .build(originalSqlNode, Function.identity());
         assertEquals(original, sql.getRawSql());
     }
 
@@ -67,7 +70,7 @@ public class Mssql2008ForUpdateTransformerTest extends TestCase {
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(sqlNode);
+        PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
 }

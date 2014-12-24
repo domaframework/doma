@@ -21,13 +21,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
-import java.util.List;
+import java.util.function.Function;
 
 import org.seasar.doma.internal.jdbc.command.ScriptReader;
+import org.seasar.doma.internal.jdbc.sql.AbstractSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.ScriptException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
@@ -50,20 +51,21 @@ public class ScriptCommand implements Command<Void> {
 
     @Override
     public Void execute() {
-        Connection connection = JdbcUtil.getConnection(query.getConfig()
-                .getDataSource());
+        Config config = query.getConfig();
+        Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
             ScriptReader reader = new ScriptReader(query);
             try {
-                for (String sqlText = reader.readSql(); sqlText != null; sqlText = reader
+                for (String script = reader.readSql(); script != null; script = reader
                         .readSql()) {
-                    ScriptSql sql = new ScriptSql(sqlText,
-                            query.getScriptFilePath(), query.getSqlLogType());
+                    ScriptSql sql = new ScriptSql(script,
+                            query.getScriptFilePath(), query.getSqlLogType(),
+                            query::comment);
                     Statement statement = JdbcUtil.createStatement(connection);
                     try {
                         log(sql);
                         setupOptions(statement);
-                        statement.execute(sqlText);
+                        statement.execute(script);
                     } catch (Exception e) {
                         if (query.getHaltOnError()) {
                             throw new ScriptException(e, sql,
@@ -74,15 +76,14 @@ public class ScriptCommand implements Command<Void> {
                                     reader.getLineNumber());
                         }
                     } finally {
-                        JdbcUtil.close(statement, query.getConfig()
-                                .getJdbcLogger());
+                        JdbcUtil.close(statement, config.getJdbcLogger());
                     }
                 }
             } finally {
                 reader.close();
             }
         } finally {
-            JdbcUtil.close(connection, query.getConfig().getJdbcLogger());
+            JdbcUtil.close(connection, config.getJdbcLogger());
         }
         throwSavedScriptExceptionIfExists();
         return null;
@@ -105,50 +106,12 @@ public class ScriptCommand implements Command<Void> {
         }
     }
 
-    protected static class ScriptSql implements Sql<SqlParameter> {
-
-        protected final String rawSql;
-
-        protected final String sqlFilePath;
-
-        protected final SqlLogType sqlLogType;
+    protected static class ScriptSql extends AbstractSql<SqlParameter> {
 
         public ScriptSql(String rawSql, String sqlFilePath,
-                SqlLogType sqlLogType) {
-            assertNotNull(rawSql, sqlFilePath, sqlLogType);
-            this.rawSql = rawSql;
-            this.sqlFilePath = sqlFilePath;
-            this.sqlLogType = sqlLogType;
-        }
-
-        @Override
-        public SqlKind getKind() {
-            return SqlKind.SCRIPT;
-        }
-
-        @Override
-        public String getRawSql() {
-            return rawSql;
-        }
-
-        @Override
-        public String getFormattedSql() {
-            return rawSql;
-        }
-
-        @Override
-        public String getSqlFilePath() {
-            return sqlFilePath;
-        }
-
-        @Override
-        public List<SqlParameter> getParameters() {
-            return Collections.emptyList();
-        }
-
-        @Override
-        public SqlLogType getSqlLogType() {
-            return sqlLogType;
+                SqlLogType sqlLogType, Function<String, String> converter) {
+            super(SqlKind.SCRIPT, rawSql, rawSql, sqlFilePath, Collections
+                    .emptyList(), sqlLogType, converter);
         }
 
     }

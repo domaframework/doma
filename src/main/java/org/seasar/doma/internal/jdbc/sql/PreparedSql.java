@@ -15,11 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
-import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 
@@ -28,79 +26,21 @@ import org.seasar.doma.jdbc.SqlLogType;
  * @author taedium
  * 
  */
-public class PreparedSql implements Sql<InParameter<?>> {
-
-    protected final SqlKind kind;
-
-    protected final String rawSql;
-
-    protected final String formattedSql;
-
-    protected final String sqlFilePath;
-
-    protected final List<InParameter<?>> parameters;
-
-    protected final SqlLogType sqlLogType;
+public class PreparedSql extends AbstractSql<InParameter<?>> {
 
     public PreparedSql(SqlKind kind, CharSequence rawSql,
             CharSequence formattedSql, String sqlFilePath,
             List<? extends InParameter<?>> parameters, SqlLogType sqlLogType) {
-        if (kind == null) {
-            throw new DomaNullPointerException("kind");
-        }
-        if (rawSql == null) {
-            throw new DomaNullPointerException("rawSql");
-        }
-        if (formattedSql == null) {
-            throw new DomaNullPointerException("formattedSql");
-        }
-        if (parameters == null) {
-            throw new DomaNullPointerException("parameters");
-        }
-        if (sqlLogType == null) {
-            throw new DomaNullPointerException("sqlLogType");
-        }
-        this.kind = kind;
-        this.rawSql = rawSql.toString().trim();
-        this.formattedSql = formattedSql.toString().trim();
-        this.sqlFilePath = sqlFilePath;
-        this.parameters = Collections.unmodifiableList(parameters);
-        this.sqlLogType = sqlLogType;
+        this(kind, rawSql, formattedSql, sqlFilePath, parameters, sqlLogType,
+                Function.identity());
     }
 
-    @Override
-    public SqlKind getKind() {
-        return kind;
-    }
-
-    @Override
-    public String getRawSql() {
-        return rawSql;
-    }
-
-    @Override
-    public String getFormattedSql() {
-        return formattedSql;
-    }
-
-    @Override
-    public String getSqlFilePath() {
-        return sqlFilePath;
-    }
-
-    @Override
-    public List<InParameter<?>> getParameters() {
-        return parameters;
-    }
-
-    @Override
-    public SqlLogType getSqlLogType() {
-        return sqlLogType;
-    }
-
-    @Override
-    public String toString() {
-        return rawSql;
+    public PreparedSql(SqlKind kind, CharSequence rawSql,
+            CharSequence formattedSql, String sqlFilePath,
+            List<? extends InParameter<?>> parameters, SqlLogType sqlLogType,
+            Function<String, String> commenter) {
+        super(kind, rawSql, formattedSql, sqlFilePath, parameters, sqlLogType,
+                commenter);
     }
 
 }

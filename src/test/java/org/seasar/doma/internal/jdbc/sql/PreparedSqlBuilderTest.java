@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import java.math.BigDecimal;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
@@ -48,7 +49,7 @@ public class PreparedSqlBuilderTest extends TestCase {
                 new BigDecimal(100));
         builder.appendParameter(new BasicScalar<BigDecimal>(
                 () -> bigDecimalWrapper, false));
-        PreparedSql sql = builder.build();
+        PreparedSql sql = builder.build(Function.identity());
         assertEquals("select * from aaa where name = ? and salary = ?",
                 sql.toString());
     }
@@ -58,7 +59,7 @@ public class PreparedSqlBuilderTest extends TestCase {
                 SqlKind.SELECT, SqlLogType.FORMATTED);
         builder.appendSql("select * from aaa where name = ");
         builder.cutBackSql(14);
-        PreparedSql sql = builder.build();
+        PreparedSql sql = builder.build(Function.identity());
         assertEquals("select * from aaa", sql.toString());
     }
 }
