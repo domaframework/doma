@@ -47,8 +47,8 @@ public class CountQuery extends AbstractSelectQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(sqlNode);
         super.prepare();
+        assertNotNull(sqlNode);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CountQuery extends AbstractSelectQuery {
             NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                     config, SqlKind.SELECT, null, evaluator, sqlLogType,
                     expander);
-            return sqlBuilder.build(transformedSqlNode);
+            return sqlBuilder.build(transformedSqlNode, this::comment);
         });
     }
 

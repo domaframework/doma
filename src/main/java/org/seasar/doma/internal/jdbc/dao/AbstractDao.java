@@ -163,6 +163,10 @@ public abstract class AbstractDao implements ConfigProvider {
             throw new ConfigException(config.getClass().getName(),
                     "getMapKeyNaming");
         }
+        if (config.getCommenter() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getCommenter");
+        }
     }
 
     @Override

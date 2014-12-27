@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import java.lang.reflect.Method;
-
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 
 /**
@@ -25,43 +22,8 @@ import org.seasar.doma.jdbc.Sql;
  * @param <RESULT>
  *            結果
  */
-public abstract class AbstractCreateQuery<RESULT> implements
-        CreateQuery<RESULT> {
-
-    protected Config config;
-
-    protected String callerClassName;
-
-    protected String callerMethodName;
-
-    protected Method method;
-
-    public void setConfig(Config config) {
-        this.config = config;
-    }
-
-    public void setCallerClassName(String callerClassName) {
-        this.callerClassName = callerClassName;
-    }
-
-    public void setCallerMethodName(String callerMethodName) {
-        this.callerMethodName = callerMethodName;
-    }
-
-    @Override
-    public Config getConfig() {
-        return config;
-    }
-
-    @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
-    }
+public abstract class AbstractCreateQuery<RESULT> extends AbstractQuery
+        implements CreateQuery<RESULT> {
 
     @Override
     public int getQueryTimeout() {
@@ -75,14 +37,6 @@ public abstract class AbstractCreateQuery<RESULT> implements
 
     @Override
     public void complete() {
-    }
-
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
     }
 
 }

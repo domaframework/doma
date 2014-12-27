@@ -167,6 +167,16 @@ public interface Config {
     }
 
     /**
+     * SQLのコメンターを返します。
+     * 
+     * @return SQLのコメンター
+     * @since 2.1.0
+     */
+    default Commenter getCommenter() {
+        return ConfigSupport.defaultCommenter;
+    }
+
+    /**
      * 最大行数の制限値を返します。
      * <p>
      * 0以下の値は、 {@link Statement#setMaxRows(int)}へは渡されません。

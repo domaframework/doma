@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Array;
 import java.sql.Connection;
@@ -33,8 +33,8 @@ public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
     @Override
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName, typeName,
-                elements);
+        super.prepare();
+        assertNotNull(typeName, elements);
     }
 
     public String getTypeName() {

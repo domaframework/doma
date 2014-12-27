@@ -56,8 +56,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, entityType, entity, callerClassName,
-                callerMethodName);
+        super.prepare();
+        assertNotNull(method, entityType, entity);
         preUpdate();
         prepareIdAndVersionPropertyTypes();
         validateIdExistent();
@@ -189,7 +189,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
             builder.appendSql(" = ");
             builder.appendParameter(property);
         }
-        sql = builder.build();
+        sql = builder.build(this::comment);
     }
 
     @Override

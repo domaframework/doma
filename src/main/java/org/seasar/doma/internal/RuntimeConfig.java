@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.CommandImplementors;
+import org.seasar.doma.jdbc.Commenter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.MapKeyNaming;
@@ -111,6 +112,11 @@ public class RuntimeConfig implements Config {
     @Override
     public TransactionManager getTransactionManager() {
         return config.getTransactionManager();
+    }
+
+    @Override
+    public Commenter getCommenter() {
+        return config.getCommenter();
     }
 
     @Override

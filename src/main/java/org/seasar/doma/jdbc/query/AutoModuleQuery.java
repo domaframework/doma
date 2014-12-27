@@ -15,14 +15,12 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSql;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 
@@ -30,19 +28,10 @@ import org.seasar.doma.jdbc.SqlParameter;
  * @author taedium
  * 
  */
-public abstract class AutoModuleQuery implements ModuleQuery {
-
-    protected Config config;
-
-    protected String callerClassName;
-
-    protected String callerMethodName;
-
-    protected Method method;
+public abstract class AutoModuleQuery extends AbstractQuery implements
+        ModuleQuery {
 
     protected CallableSql sql;
-
-    protected int queryTimeout;
 
     protected String catalogName;
 
@@ -75,18 +64,6 @@ public abstract class AutoModuleQuery implements ModuleQuery {
     public void complete() {
     }
 
-    public void setConfig(Config config) {
-        this.config = config;
-    }
-
-    public void setCallerClassName(String callerClassName) {
-        this.callerClassName = callerClassName;
-    }
-
-    public void setCallerMethodName(String callerMethodName) {
-        this.callerMethodName = callerMethodName;
-    }
-
     public void setCatalogName(String catalogName) {
         this.catalogName = catalogName;
     }
@@ -103,14 +80,6 @@ public abstract class AutoModuleQuery implements ModuleQuery {
         this.isQuoteRequired = isQuoteRequired;
     }
 
-    public void setQueryTimeout(int queryTimeout) {
-        this.queryTimeout = queryTimeout;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
-
     public void setSqlLogType(SqlLogType sqlLogType) {
         this.sqlLogType = sqlLogType;
     }
@@ -125,33 +94,8 @@ public abstract class AutoModuleQuery implements ModuleQuery {
     }
 
     @Override
-    public Config getConfig() {
-        return config;
-    }
-
-    @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
-    }
-
-    @Override
-    public int getQueryTimeout() {
-        return queryTimeout;
-    }
-
-    @Override
     public CallableSql getSql() {
         return sql;
-    }
-
-    @Override
-    public Method getMethod() {
-        return method;
     }
 
     @Override

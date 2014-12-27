@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,11 +24,6 @@ import java.sql.SQLException;
  * 
  */
 public class ClobCreateQuery extends AbstractCreateQuery<Clob> {
-
-    @Override
-    public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName);
-    }
 
     @Override
     public Clob create(Connection connection) throws SQLException {

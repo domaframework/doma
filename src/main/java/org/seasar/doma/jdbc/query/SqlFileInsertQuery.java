@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.sql.Statement;
@@ -41,8 +41,8 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, sqlFilePath, callerClassName,
-                callerMethodName);
+        super.prepare();
+        assertNotNull(method, sqlFilePath);
         preInsert();
         prepareOptions();
         prepareSql();

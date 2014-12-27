@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLXML;
@@ -26,11 +24,6 @@ import java.sql.SQLXML;
  * @since 2.0.0
  */
 public class SQLXMLCreateQuery extends AbstractCreateQuery<SQLXML> {
-
-    @Override
-    public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName);
-    }
 
     @Override
     public SQLXML create(Connection connection) throws SQLException {

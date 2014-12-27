@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,7 +24,6 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
@@ -36,25 +34,16 @@ import org.seasar.doma.jdbc.entity.EntityType;
  * @author taedium
  * 
  */
-public abstract class SqlFileModifyQuery implements ModifyQuery {
+public abstract class SqlFileModifyQuery extends AbstractQuery implements
+        ModifyQuery {
 
     protected final SqlKind kind;
-
-    protected Method method;
-
-    protected Config config;
 
     protected String sqlFilePath;
 
     protected final Map<String, Value> parameters = new LinkedHashMap<String, Value>();
 
-    protected String callerClassName;
-
-    protected String callerMethodName;
-
     protected PreparedSql sql;
-
-    protected int queryTimeout;
 
     protected boolean optimisticLockCheckRequired;
 
@@ -79,20 +68,7 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
                 config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, sqlFile.getPath(), evaluator, sqlLogType);
-        sql = sqlBuilder.build(sqlFile.getSqlNode());
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
-
-    @Override
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setConfig(Config config) {
-        this.config = config;
+        sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
     }
 
     public void setSqlFilePath(String sqlFilePath) {
@@ -108,18 +84,6 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         parameters.put(name, new Value(type, value));
     }
 
-    public void setCallerClassName(String callerClassName) {
-        this.callerClassName = callerClassName;
-    }
-
-    public void setCallerMethodName(String callerMethodName) {
-        this.callerMethodName = callerMethodName;
-    }
-
-    public void setQueryTimeout(int queryTimeout) {
-        this.queryTimeout = queryTimeout;
-    }
-
     public void setSqlLogType(SqlLogType sqlLogType) {
         this.sqlLogType = sqlLogType;
     }
@@ -127,21 +91,6 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     @Override
     public PreparedSql getSql() {
         return sql;
-    }
-
-    @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
-    }
-
-    @Override
-    public Config getConfig() {
-        return config;
     }
 
     @Override
@@ -157,11 +106,6 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     @Override
     public SqlExecutionSkipCause getSqlExecutionSkipCause() {
         return null;
-    }
-
-    @Override
-    public int getQueryTimeout() {
-        return queryTimeout;
     }
 
     @Override

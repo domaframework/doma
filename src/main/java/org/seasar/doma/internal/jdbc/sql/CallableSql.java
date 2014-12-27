@@ -15,11 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
-import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
@@ -29,76 +27,13 @@ import org.seasar.doma.jdbc.SqlParameter;
  * @author taedium
  * 
  */
-public class CallableSql implements Sql<SqlParameter> {
-
-    protected final SqlKind kind;
-
-    protected final String rawSql;
-
-    protected final String formattedSql;
-
-    protected final List<SqlParameter> parameters;
-
-    protected final SqlLogType sqlLogType;
+public class CallableSql extends AbstractSql<SqlParameter> {
 
     public CallableSql(SqlKind kind, CharSequence rawSql,
             CharSequence formattedSql, List<? extends SqlParameter> parameters,
-            SqlLogType sqlLogType) {
-        if (kind == null) {
-            throw new DomaNullPointerException("kind");
-        }
-        if (rawSql == null) {
-            throw new DomaNullPointerException("rawSql");
-        }
-        if (formattedSql == null) {
-            throw new DomaNullPointerException("formattedSql");
-        }
-        if (parameters == null) {
-            throw new DomaNullPointerException("parameters");
-        }
-        if (sqlLogType == null) {
-            throw new DomaNullPointerException("sqlLogType");
-        }
-        this.kind = kind;
-        this.rawSql = rawSql.toString().trim();
-        this.formattedSql = formattedSql.toString().trim();
-        this.parameters = Collections.unmodifiableList(parameters);
-        this.sqlLogType = sqlLogType;
-    }
-
-    @Override
-    public SqlKind getKind() {
-        return kind;
-    }
-
-    @Override
-    public String getRawSql() {
-        return rawSql;
-    }
-
-    @Override
-    public String getFormattedSql() {
-        return formattedSql;
-    }
-
-    @Override
-    public String getSqlFilePath() {
-        return null;
-    }
-
-    @Override
-    public List<SqlParameter> getParameters() {
-        return parameters;
-    }
-
-    @Override
-    public SqlLogType getSqlLogType() {
-        return sqlLogType;
-    }
-
-    @Override
-    public String toString() {
-        return rawSql;
+            SqlLogType sqlLogType, Function<String, String> converter) {
+        super(kind, rawSql, formattedSql, null, parameters, sqlLogType,
+                converter);
     }
 
 }

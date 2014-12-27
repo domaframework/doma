@@ -114,5 +114,10 @@ public class CallableSqlParameterBinderTest extends TestCase {
             return null;
         }
 
+        @Override
+        public String comment(String sql) {
+            return sql;
+        }
+
     }
 }

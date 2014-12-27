@@ -41,4 +41,7 @@ public interface Query {
     void prepare();
 
     void complete();
+
+    String comment(String sql);
+
 }

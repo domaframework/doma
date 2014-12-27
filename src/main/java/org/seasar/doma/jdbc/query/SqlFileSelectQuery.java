@@ -35,8 +35,8 @@ public class SqlFileSelectQuery extends AbstractSelectQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(sqlFilePath);
         super.prepare();
+        assertNotNull(sqlFilePath);
     }
 
     protected void prepareSql() {
@@ -48,7 +48,7 @@ public class SqlFileSelectQuery extends AbstractSelectQuery {
             NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                     config, SqlKind.SELECT, sqlFilePath, evaluator, sqlLogType,
                     expander);
-            return sqlBuilder.build(transformedSqlNode);
+            return sqlBuilder.build(transformedSqlNode, this::comment);
         });
     }
 

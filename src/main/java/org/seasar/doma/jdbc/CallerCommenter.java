@@ -13,21 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.query;
-
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.SQLException;
+package org.seasar.doma.jdbc;
 
 /**
- * @author taedium
+ * SQLの呼び出し元に関するコメンターです。
  * 
+ * @author nakamura-to
+ * @since 2.1.0
  */
-public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
+public class CallerCommenter implements Commenter {
 
     @Override
-    public Blob create(Connection connection) throws SQLException {
-        return connection.createBlob();
+    public String comment(String sql, CommentContext context) {
+        return String.format("/** %s.%s */%n%s", context.getClassName(),
+                context.getMethodName(), sql);
     }
-
 }

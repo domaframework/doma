@@ -55,8 +55,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, entityType, entity, callerClassName,
-                callerMethodName);
+        super.prepare();
+        assertNotNull(method, entityType, entity);
         executable = true;
         preInsert();
         prepareIdAndVersionPropertyTypes();
@@ -164,7 +164,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         }
         builder.cutBackSql(2);
         builder.appendSql(")");
-        sql = builder.build();
+        sql = builder.build(this::comment);
     }
 
     @Override

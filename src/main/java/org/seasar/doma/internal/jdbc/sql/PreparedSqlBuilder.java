@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 import org.seasar.doma.jdbc.Config;
@@ -69,8 +70,10 @@ public class PreparedSqlBuilder {
         parameters.add(new BasicInParameter<BASIC>(() -> wrapper));
     }
 
-    public PreparedSql build() {
+    public PreparedSql build(Function<String, String> commenter) {
+        assertNotNull(commenter);
         return new PreparedSql(kind, rawSql, formattedSql, null, parameters,
-                sqlLogType);
+                sqlLogType, commenter);
     }
+
 }

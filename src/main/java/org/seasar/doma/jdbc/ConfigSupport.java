@@ -44,4 +44,11 @@ public final class ConfigSupport {
 
     public static MapKeyNaming defaultMapKeyNaming = new MapKeyNaming() {
     };
+
+    /**
+     * @since 2.1.0
+     */
+    public static Commenter defaultCommenter = new Commenter() {
+    };
+
 }

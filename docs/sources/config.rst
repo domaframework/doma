@@ -163,6 +163,20 @@ REQUIRES_NEW 属性のトランザクションとの連動
   ``org.seasar.doma.jdbc.tx.TransactionManager`` のインタフェースでトランザクションを利用したい場合は設定してください。
   設定方法については :doc:`transaction` を参照してください。
 
+SQLの識別子の追記
+------------------------------------
+
+``Commenter`` を ``getCommenter`` メソッドで返してください。
+``Commenter`` はSQLの識別子（QLの発行箇所等を特定するための文字列）をSQLコメントとして追記するためのインタフェースです。
+
+実装クラスには次のものがあります。
+
+* org.seasar.doma.jdbc.CallerCommenter
+
+``CallerCommenter`` は、SQLの呼び出し元のクラス名とメソッド名を識別子として使用します。
+
+デフォルトの実装では、 識別子を追記しません。
+
 Command の実装
 --------------
 

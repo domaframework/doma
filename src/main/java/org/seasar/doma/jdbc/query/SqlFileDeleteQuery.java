@@ -45,8 +45,8 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, sqlFilePath, callerClassName,
-                callerMethodName);
+        super.prepare();
+        assertNotNull(method, sqlFilePath);
         preDelete();
         prepareOptions();
         prepareOptimisticLock();

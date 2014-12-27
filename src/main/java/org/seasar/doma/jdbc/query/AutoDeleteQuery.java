@@ -47,8 +47,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, entityType, callerClassName,
-                callerMethodName);
+        super.prepare();
+        assertNotNull(method, entityType);
         executable = true;
         preDelete();
         prepareIdAndVersionPropertyTypes();
@@ -108,7 +108,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
             builder.appendSql(" = ");
             builder.appendParameter(property);
         }
-        sql = builder.build();
+        sql = builder.build(this::comment);
     }
 
     @Override

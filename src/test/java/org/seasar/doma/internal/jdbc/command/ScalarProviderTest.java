@@ -185,5 +185,10 @@ public class ScalarProviderTest extends TestCase {
             return null;
         }
 
+        @Override
+        public String comment(String sql) {
+            return sql;
+        }
+
     }
 }

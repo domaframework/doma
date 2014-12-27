@@ -50,8 +50,8 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, callerClassName, callerMethodName,
-                entities, sqls);
+        super.prepare();
+        assertNotNull(method, entities, sqls);
         int size = entities.size();
         if (size == 0) {
             return;
@@ -124,7 +124,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             builder.appendSql(" = ");
             builder.appendParameter(property);
         }
-        PreparedSql sql = builder.build();
+        PreparedSql sql = builder.build(this::comment);
         sqls.add(sql);
     }
 

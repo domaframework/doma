@@ -33,8 +33,8 @@ public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements
 
     @Override
     public void prepare() {
-        assertNotNull(config, moduleName, resultParameter, callerClassName,
-                callerMethodName);
+        super.prepare();
+        assertNotNull(moduleName, resultParameter);
         prepareQualifiedName();
         prepareOptions();
         prepareSql();
@@ -45,7 +45,7 @@ public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
                 SqlKind.FUNCTION, qualifiedName, parameters, sqlLogType,
                 resultParameter);
-        sql = builder.build();
+        sql = builder.build(this::comment);
     }
 
     public void setFunctionName(String functionName) {

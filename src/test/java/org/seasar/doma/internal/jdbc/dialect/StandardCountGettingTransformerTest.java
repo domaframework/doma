@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
+import java.util.function.Function;
+
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -37,7 +39,7 @@ public class StandardCountGettingTransformerTest extends TestCase {
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(sqlNode);
+        PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
 
@@ -48,7 +50,7 @@ public class StandardCountGettingTransformerTest extends TestCase {
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(sqlNode);
+        PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
 }

@@ -29,7 +29,8 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
 
     @Override
     public void prepare() {
-        assertNotNull(config, moduleName, callerClassName, callerMethodName);
+        super.prepare();
+        assertNotNull(moduleName);
         prepareQualifiedName();
         prepareOptions();
         prepareSql();
@@ -39,7 +40,7 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
     protected void prepareSql() {
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
                 SqlKind.PROCEDURE, qualifiedName, parameters, sqlLogType);
-        sql = builder.build();
+        sql = builder.build(this::comment);
     }
 
     public void setProcedureName(String procedureName) {

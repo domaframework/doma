@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
@@ -69,7 +70,8 @@ public class CallableSqlBuilder implements
         this.formattingFunction = new ConvertToLogFormatFunction();
     }
 
-    public CallableSql build() {
+    public CallableSql build(Function<String, String> commenter) {
+        assertNotNull(commenter);
         Context context = new Context();
         context.append("{");
         if (resultParameter != null) {
@@ -90,7 +92,8 @@ public class CallableSqlBuilder implements
             allParameters.addFirst(resultParameter);
         }
         return new CallableSql(kind, context.getSqlBuf(),
-                context.getFormattedSqlBuf(), allParameters, sqlLogType);
+                context.getFormattedSqlBuf(), allParameters, sqlLogType,
+                commenter);
     }
 
     @Override
