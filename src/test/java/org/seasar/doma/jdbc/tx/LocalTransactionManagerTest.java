@@ -134,4 +134,20 @@ public class LocalTransactionManagerTest extends TestCase {
         assertEquals("aaa", result);
     }
 
+    public void testNotSupported_in_tx() throws Exception {
+        LocalTransactionManager manager = new LocalTransactionManager(
+                transaction);
+        StringBuilder log = new StringBuilder();
+        log.append(LocalTransactionManagerTest.counter);
+        manager.required(() -> {
+            log.append(LocalTransactionManagerTest.counter);
+            manager.notSupported(() -> {
+                log.append(LocalTransactionManagerTest.counter);
+            });
+            log.append(LocalTransactionManagerTest.counter);
+        });
+        log.append(LocalTransactionManagerTest.counter);
+        assertEquals("01110", log.toString());
+    }
+
 }

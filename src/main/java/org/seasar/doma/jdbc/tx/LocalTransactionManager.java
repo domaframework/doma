@@ -200,7 +200,7 @@ public class LocalTransactionManager implements TransactionManager {
         if (transaction.isActive()) {
             LocalTransactionContext context = transaction.suspend();
             try {
-                return executeInTransaction(isolationLevel, supplier);
+                return supplier.get();
             } finally {
                 transaction.resume(context);
             }
