@@ -26,7 +26,7 @@ v2.0.0: 2014-07-02
 * ``UnitOfWork`` を削除しました
 
 v2.0-beta-5: 2014-06-07
-======================
+========================
 
 * ``List<Optional<Emp>>`` や ``List<Optional<Map<String, Object>>>`` を戻り値とする
   Dao メソッドは注釈処理でコンパイルエラーにしました
@@ -39,7 +39,7 @@ v2.0-beta-5: 2014-06-07
 * SQL実行時にSQLファイルのパスがログに出力されない問題を修正しました
 
 v2.0-beta-4: 2014-05-04
-======================
+========================
 
 * Pluggable Annotation Processing API の Visitor を Java 8 用のものへバージョンアップしました
 * 空の ``java.util.Iterable`` を IN 句にバインドする場合は SQL の ``null`` として扱うようにしました
@@ -49,7 +49,7 @@ v2.0-beta-4: 2014-05-04
 * Entity のプロパティの型を byte 配列にすると注釈処理に失敗する不具合を修正しました
 
 v2.0-beta-3: 2014-04-03
-======================
+========================
 
 * 検索結果を ``java.util.stream.Collector`` で処理できるようにしました。
 * ``LocalTransactionManager`` から ``TransactionManager`` インタフェースを抽出しました。
