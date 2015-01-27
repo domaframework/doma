@@ -121,7 +121,7 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 
 * :doc:`basic`
 * :doc:`domain`
-* :doc:`basic` または :doc:`entity` のいずれかを要素とするjava.util.Optional
+* :doc:`basic` または :doc:`domain` のいずれかを要素とするjava.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
