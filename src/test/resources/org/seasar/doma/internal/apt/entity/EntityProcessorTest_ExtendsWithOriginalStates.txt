@@ -21,7 +21,7 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     /** the ccc */
     public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity, java.lang.String, Object> $ccc = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "ccc", "ccc", true, true, false);
 
-    private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> __listener;
+    private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity>> __listenerSupplier;
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
@@ -44,7 +44,7 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity, ?>> __entityPropertyTypeMap;
 
     private _OriginalStatesChildEntity() {
-        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity>();
+        __listenerSupplier = () -> ListenerHolder.listener;
         __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "OriginalStatesChildEntity";
@@ -101,33 +101,51 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
         return __isQuoteRequired;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preUpdate(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preDelete(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preDelete(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postInsert(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postUpdate(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postDelete(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postDelete(entity, context);
     }
 
@@ -194,6 +212,10 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
      */
     public static _OriginalStatesChildEntity newInstance() {
         return new _OriginalStatesChildEntity();
+    }
+
+    private static class ListenerHolder {
+        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

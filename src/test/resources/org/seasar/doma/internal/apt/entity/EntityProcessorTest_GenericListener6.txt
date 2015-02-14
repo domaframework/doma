@@ -10,7 +10,7 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
 
     private static final _GenericListener6Entity __singleton = new _GenericListener6Entity();
 
-    private final org.seasar.doma.internal.apt.entity.GenericListener6<org.seasar.doma.internal.apt.entity.GenericListener6Entity> __listener;
+    private final java.util.function.Supplier<org.seasar.doma.internal.apt.entity.GenericListener6<org.seasar.doma.internal.apt.entity.GenericListener6Entity>> __listenerSupplier;
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
@@ -33,7 +33,7 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> __entityPropertyTypeMap;
 
     private _GenericListener6Entity() {
-        __listener = new org.seasar.doma.internal.apt.entity.GenericListener6<org.seasar.doma.internal.apt.entity.GenericListener6Entity>();
+        __listenerSupplier = () -> ListenerHolder.listener;
         __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "GenericListener6Entity";
@@ -84,33 +84,51 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
         return __isQuoteRequired;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        Class __listenerClass = org.seasar.doma.internal.apt.entity.GenericListener6.class;
+        org.seasar.doma.internal.apt.entity.GenericListener6 __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preUpdate(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        Class __listenerClass = org.seasar.doma.internal.apt.entity.GenericListener6.class;
+        org.seasar.doma.internal.apt.entity.GenericListener6 __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preDelete(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        Class __listenerClass = org.seasar.doma.internal.apt.entity.GenericListener6.class;
+        org.seasar.doma.internal.apt.entity.GenericListener6 __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preDelete(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postInsert(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        Class __listenerClass = org.seasar.doma.internal.apt.entity.GenericListener6.class;
+        org.seasar.doma.internal.apt.entity.GenericListener6 __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postUpdate(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        Class __listenerClass = org.seasar.doma.internal.apt.entity.GenericListener6.class;
+        org.seasar.doma.internal.apt.entity.GenericListener6 __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postDelete(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        Class __listenerClass = org.seasar.doma.internal.apt.entity.GenericListener6.class;
+        org.seasar.doma.internal.apt.entity.GenericListener6 __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postDelete(entity, context);
     }
 
@@ -172,6 +190,10 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
      */
     public static _GenericListener6Entity newInstance() {
         return new _GenericListener6Entity();
+    }
+
+    private static class ListenerHolder {
+        private static org.seasar.doma.internal.apt.entity.GenericListener6<org.seasar.doma.internal.apt.entity.GenericListener6Entity> listener = new org.seasar.doma.internal.apt.entity.GenericListener6<>();
     }
 
 }

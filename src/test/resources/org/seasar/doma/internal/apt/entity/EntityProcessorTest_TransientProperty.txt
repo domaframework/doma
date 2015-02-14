@@ -13,7 +13,7 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
     /** the id */
     public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class,  java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "id", "id", false);
 
-    private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> __listener;
+    private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.TransientPropertyEntity>> __listenerSupplier;
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
@@ -36,7 +36,7 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __entityPropertyTypeMap;
 
     private _TransientPropertyEntity() {
-        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.TransientPropertyEntity>();
+        __listenerSupplier = () -> ListenerHolder.listener;
         __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "TransientPropertyEntity";
@@ -89,33 +89,51 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
         return __isQuoteRequired;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preUpdate(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preDelete(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preDelete(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postInsert(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postUpdate(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postDelete(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postDelete(entity, context);
     }
 
@@ -177,6 +195,10 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
      */
     public static _TransientPropertyEntity newInstance() {
         return new _TransientPropertyEntity();
+    }
+
+    private static class ListenerHolder {
+        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }
