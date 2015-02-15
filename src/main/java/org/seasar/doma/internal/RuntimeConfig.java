@@ -25,6 +25,7 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Commenter;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ConfigException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.QueryImplementors;
@@ -150,7 +151,13 @@ public class RuntimeConfig implements Config {
     @Override
     public <ENTITY, LISTENER extends EntityListener<ENTITY>> LISTENER getEntityListener(
             Class<LISTENER> listenerClass, Supplier<LISTENER> listenerSupplier) {
-        return config.getEntityListener(listenerClass, listenerSupplier);
+        LISTENER listener = config.getEntityListener(listenerClass,
+                listenerSupplier);
+        if (listener == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getEntityListener");
+        }
+        return listener;
     }
 
 }
