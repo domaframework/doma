@@ -218,6 +218,16 @@ SELECT時のフェッチサイズをあらわす ``int`` を ``getFetchSize`` �
 この値は :doc:`query/batch-insert` 、:doc:`query/batch-update` 、:doc:`query/batch-delete`
 においてデフォルト値として使われます。
 
+エンティティリスナーの取得
+--------------------------
+
+``EntityListener`` を ``getEntityListener`` メソッドで返して下さい。
+``getEntityListener`` メソッドは ``EntityListener`` 実装クラスの ``Class`` と ``EntityListener`` 実装クラスのインスタンスを返す ``Supplier``
+を引数に取り、デフォルトの実装では ``Supplier.get`` メソッドを実行して得たインスタンスを返します。
+
+``EntityListener`` 実装クラスのインスタンスをDIコンテナから取得したいなど、
+インスタンス取得方法をカスタマイズする場合は設定してください。
+
 JDBC ドライバのロード
 =====================
 
