@@ -28,7 +28,7 @@ public final class _OptionalEntity extends org.seasar.doma.jdbc.entity.AbstractE
     /** the version */
     public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.Long, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class,  java.util.Optional.class, java.lang.Long.class, () -> new org.seasar.doma.wrapper.LongWrapper(), null, null, "version", "version", false);
 
-    private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OptionalEntity> __listener;
+    private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OptionalEntity>> __listenerSupplier;
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
@@ -51,7 +51,7 @@ public final class _OptionalEntity extends org.seasar.doma.jdbc.entity.AbstractE
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, ?>> __entityPropertyTypeMap;
 
     private _OptionalEntity() {
-        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OptionalEntity>();
+        __listenerSupplier = () -> ListenerHolder.listener;
         __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "OptionalEntity";
@@ -115,33 +115,51 @@ public final class _OptionalEntity extends org.seasar.doma.jdbc.entity.AbstractE
         return __isQuoteRequired;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.OptionalEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.OptionalEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preUpdate(org.seasar.doma.internal.apt.entity.OptionalEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.OptionalEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void preDelete(org.seasar.doma.internal.apt.entity.OptionalEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.OptionalEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.preDelete(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postInsert(org.seasar.doma.internal.apt.entity.OptionalEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.OptionalEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postInsert(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postUpdate(org.seasar.doma.internal.apt.entity.OptionalEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.OptionalEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postUpdate(entity, context);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void postDelete(org.seasar.doma.internal.apt.entity.OptionalEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.OptionalEntity> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
         __listener.postDelete(entity, context);
     }
 
@@ -203,6 +221,10 @@ public final class _OptionalEntity extends org.seasar.doma.jdbc.entity.AbstractE
      */
     public static _OptionalEntity newInstance() {
         return new _OptionalEntity();
+    }
+
+    private static class ListenerHolder {
+        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OptionalEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

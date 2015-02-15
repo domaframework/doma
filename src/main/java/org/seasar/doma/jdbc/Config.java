@@ -17,12 +17,14 @@ package org.seasar.doma.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.function.Supplier;
 
 import javax.sql.DataSource;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.tx.TransactionManager;
 import org.seasar.doma.message.Message;
@@ -226,6 +228,29 @@ public interface Config {
      */
     default int getBatchSize() {
         return 0;
+    }
+
+    /**
+     * {@link EntityListener} のインスタンスを取得します。
+     * <p>
+     * デフォルトの実装では単純に {@link Supplier#get()} を実行して取得したインスタンスを返します。
+     * 
+     * {@link EntityListener} をDIコンテナで管理したい場合などはこのメソッドをオーバーライドし、
+     * DIコンテナから取得したインスタンスを返すようにしてください。
+     * 
+     * @param listenerClass
+     *            {@link EntityListener} の実装クラス
+     * @param listenerSupplier
+     *            {@link EntityListener} のインスタンスを返す {@link Supplier}
+     * @param <ENTITY>
+     *            エンティティの型
+     * @param <LISTENER>
+     *            リスナーの型
+     * @return {@link EntityListener} のインスタンス
+     */
+    default <ENTITY, LISTENER extends EntityListener<ENTITY>> LISTENER getEntityListener(
+            Class<LISTENER> listenerClass, Supplier<LISTENER> listenerSupplier) {
+        return listenerSupplier.get();
     }
 
     /**

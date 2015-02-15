@@ -104,6 +104,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printFields();
         printConstructor();
         printMethods();
+        printListenerHolder();
         unindent();
         iprint("}%n");
     }
@@ -113,7 +114,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printOriginalStatesAccessorField();
         printIdGeneratorField();
         printPropertyTypeFields();
-        printListenerField();
+        printListenerSupplierField();
         printNamingTypeField();
         printImmutableField();
         printCatalogNameField();
@@ -262,14 +263,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
         }
     }
 
-    protected void printListenerField() {
+    protected void printListenerSupplierField() {
         if (entityMeta.isGenericEntityListener()) {
-            iprint("private final %1$s<%2$s> __listener;%n", entityMeta
-                    .getEntityListenerElement().getQualifiedName(),
+            iprint("private final java.util.function.Supplier<%1$s<%2$s>> __listenerSupplier;%n",
+                    entityMeta.getEntityListenerElement().getQualifiedName(),
                     entityMeta.getEntityTypeName());
         } else {
-            iprint("private final %1$s __listener;%n", entityMeta
-                    .getEntityListenerElement().getQualifiedName());
+            iprint("private final java.util.function.Supplier<%1$s> __listenerSupplier;%n",
+                    entityMeta.getEntityListenerElement().getQualifiedName());
         }
         print("%n");
     }
@@ -332,14 +333,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printConstructor() {
         iprint("private %1$s() {%n", simpleName);
-        if (entityMeta.isGenericEntityListener()) {
-            iprint("    __listener = new %1$s<%2$s>();%n", entityMeta
-                    .getEntityListenerElement().getQualifiedName(),
-                    entityMeta.getEntityTypeName());
-        } else {
-            iprint("    __listener = new %1$s();%n", entityMeta
-                    .getEntityListenerElement().getQualifiedName());
-        }
+        iprint("    __listenerSupplier = () -> ListenerHolder.listener;%n");
         iprint("    __namingType = %1$s.%2$s;%n", NamingType.class.getName(),
                 entityMeta.getNamingType().name());
         iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
@@ -458,60 +452,72 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printPreInsertMethod() {
+        iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void preInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreInsertContext.class.getName());
+        printDeclareListener();
         iprint("    __listener.preInsert(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
 
     protected void printPreUpdateMethod() {
+        iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void preUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreUpdateContext.class.getName());
+        printDeclareListener();
         iprint("    __listener.preUpdate(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
 
     protected void printPreDeleteMethod() {
+        iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void preDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreDeleteContext.class.getName());
+        printDeclareListener();
         iprint("    __listener.preDelete(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
 
     protected void printPostInsertMethod() {
+        iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void postInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostInsertContext.class.getName());
+        printDeclareListener();
         iprint("    __listener.postInsert(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
 
     protected void printPostUpdateMethod() {
+        iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void postUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostUpdateContext.class.getName());
+        printDeclareListener();
         iprint("    __listener.postUpdate(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
 
     protected void printPostDeleteMethod() {
+        iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void postDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostDeleteContext.class.getName());
+        printDeclareListener();
         iprint("    __listener.postDelete(entity, context);%n");
         iprint("}%n");
         print("%n");
@@ -697,6 +703,27 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    return new %1$s();%n", simpleName);
         iprint("}%n");
         print("%n");
+    }
+
+    protected void printListenerHolder() {
+        iprint("private static class ListenerHolder {%n");
+        if (entityMeta.isGenericEntityListener()) {
+            iprint("    private static %1$s<%2$s> listener = new %1$s<>();%n",
+                    entityMeta.getEntityListenerElement().getQualifiedName(),
+                    entityMeta.getEntityTypeName());
+        } else {
+            iprint("    private static %1$s listener = new %1$s();%n",
+                    entityMeta.getEntityListenerElement().getQualifiedName());
+        }
+        iprint("}%n");
+        print("%n");
+    }
+
+    private void printDeclareListener() {
+        iprint("    Class __listenerClass = %1$s.class;%n", entityMeta
+                .getEntityListenerElement().getQualifiedName());
+        iprint("    %1$s __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);%n",
+                entityMeta.getEntityListenerElement().getQualifiedName());
     }
 
     protected class IdGeneratorGenerator implements
