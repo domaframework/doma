@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 
 /**
  * @author taedium
- * 
+ *
  */
 public class StringUtilTest extends TestCase {
 
@@ -44,6 +44,7 @@ public class StringUtilTest extends TestCase {
         assertEquals("aaa_bbb_ccc",
                 StringUtil.fromCamelCaseToSnakeCase("aaaBbbCcc"));
         assertEquals("abc", StringUtil.fromCamelCaseToSnakeCase("abc"));
+        assertEquals("aa1_bbb_ccc", StringUtil.fromCamelCaseToSnakeCase("aa1BbbCcc"));
     }
 
     public void testIsWhitespace() throws Exception {
