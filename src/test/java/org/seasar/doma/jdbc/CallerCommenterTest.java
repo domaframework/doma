@@ -27,7 +27,7 @@ public class CallerCommenterTest extends TestCase {
         CommentContext context = new CommentContext("class", "method",
                 new MockConfig(), null);
         String actual = commenter.comment("select * from emp", context);
-        assertEquals("/** class.method */\nselect * from emp", actual);
+        assertEquals("/** class.method */" + System.lineSeparator() + "select * from emp", actual);
     }
 
 }
