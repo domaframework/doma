@@ -19,15 +19,15 @@ import java.nio.CharBuffer;
 
 /**
  * {@link String} のユーティリティクラスです。
- *
+ * 
  * @author taedium
- *
+ * 
  */
 public final class StringUtil {
 
     /**
      * 先頭の文字を大文字に変換します。
-     *
+     * 
      * @param text
      *            文字列
      * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
@@ -44,7 +44,7 @@ public final class StringUtil {
 
     /**
      * 先頭の文字を小文字に変換します。
-     *
+     * 
      * @param text
      *            文字列
      * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
@@ -61,7 +61,7 @@ public final class StringUtil {
 
     /**
      * アンダースコア区切りの文字列をキャメルケースの文字列に変換します。
-     *
+     * 
      * @param text
      *            文字列
      * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
@@ -86,7 +86,7 @@ public final class StringUtil {
 
     /**
      * キャメルケースをアンダースコア区切りの大文字に変換します。
-     *
+     * 
      * @param text
      *            文字列
      * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
@@ -115,7 +115,7 @@ public final class StringUtil {
 
     /**
      * 文字列が空白文字だけからなるかどうかを返します。
-     *
+     * 
      * @param text
      *            文字列
      * @return 文字列が空白文字のみを含む場合 {@code true}
