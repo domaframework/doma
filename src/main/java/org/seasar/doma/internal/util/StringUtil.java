@@ -104,7 +104,7 @@ public final class StringUtil {
             buf.mark();
             if (buf.hasRemaining()) {
                 char c2 = buf.get();
-                if (Character.isLowerCase(c) && Character.isUpperCase(c2)) {
+                if ((Character.isLowerCase(c) || Character.isDigit(c)) && Character.isUpperCase(c2)) {
                     result.append("_");
                 }
                 buf.reset();
