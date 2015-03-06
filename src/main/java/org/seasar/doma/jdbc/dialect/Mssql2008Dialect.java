@@ -125,7 +125,7 @@ public class Mssql2008Dialect extends StandardDialect {
 
     @Override
     public String getName() {
-        return "mssql2008";
+        return "mssql";
     }
 
     @Override
