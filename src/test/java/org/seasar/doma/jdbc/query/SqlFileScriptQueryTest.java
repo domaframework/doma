@@ -62,7 +62,7 @@ public class SqlFileScriptQueryTest extends TestCase {
         assertEquals("aaa", query.getClassName());
         assertEquals("bbb", query.getMethodName());
         assertEquals(
-                "META-INF/org/seasar/doma/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific-mssql2008.script",
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific-mssql.script",
                 query.getScriptFilePath());
         assertNotNull(query.getScriptFileUrl());
         assertEquals("GO", query.getBlockDelimiter());
