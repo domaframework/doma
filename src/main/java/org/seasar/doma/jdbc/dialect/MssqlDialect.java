@@ -40,12 +40,13 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class MssqlDialect extends Mssql2008Dialect {
 
+    private boolean pagingForceOffsetFetch;
     /**
      * インスタンスを構築します。
      */
     public MssqlDialect() {
         this(new MssqlJdbcMappingVisitor(), new MssqlSqlLogFormattingVisitor(),
-                new MssqlExpressionFunctions());
+                new MssqlExpressionFunctions(), false);
     }
 
     /**
@@ -56,7 +57,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new MssqlSqlLogFormattingVisitor(),
-                new MssqlExpressionFunctions());
+                new MssqlExpressionFunctions(), false);
     }
 
     /**
@@ -68,7 +69,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      */
     public MssqlDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new MssqlJdbcMappingVisitor(), sqlLogFormattingVisitor,
-                new MssqlExpressionFunctions());
+                new MssqlExpressionFunctions(), false);
     }
 
     /**
@@ -79,7 +80,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      */
     public MssqlDialect(ExpressionFunctions expressionFunctions) {
         this(new MssqlJdbcMappingVisitor(), new MssqlSqlLogFormattingVisitor(),
-                expressionFunctions);
+                expressionFunctions, false);
     }
 
     /**
@@ -95,7 +96,7 @@ public class MssqlDialect extends Mssql2008Dialect {
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new MssqlExpressionFunctions());
+                new MssqlExpressionFunctions(), false);
     }
 
     /**
@@ -113,7 +114,29 @@ public class MssqlDialect extends Mssql2008Dialect {
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions, false);
+    }
+    
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
+     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Wrapper} をJDBCの型とマッピングするビジター
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Wrapper}
+     *            をログ用のフォーマットされた文字列へと変換するビジター
+     * @param expressionFunctions
+     *            SQLのコメント式で利用可能な関数群
+     * @param pagingForceOffsetFetch
+     *            ページングを行う際、常に OFFSET-FETCH で行うかどうか
+     */
+    public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
+            SqlLogFormattingVisitor sqlLogFormattingVisitor,
+            ExpressionFunctions expressionFunctions, 
+            boolean pagingForceOffsetFetch) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
+        this.pagingForceOffsetFetch = pagingForceOffsetFetch;
     }
 
     @Override
@@ -133,7 +156,7 @@ public class MssqlDialect extends Mssql2008Dialect {
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
         MssqlPagingTransformer transformer = new MssqlPagingTransformer(offset,
-                limit);
+                limit, this.pagingForceOffsetFetch);
         return transformer.transform(sqlNode);
     }
 
