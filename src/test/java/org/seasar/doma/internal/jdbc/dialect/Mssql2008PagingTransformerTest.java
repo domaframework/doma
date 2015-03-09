@@ -59,7 +59,7 @@ public class Mssql2008PagingTransformerTest extends TestCase {
     }
 
     public void testLimitOnly() throws Exception {
-        String expected = "select top 10 emp.id from emp order by emp.id";
+        String expected = "select top (10) emp.id from emp order by emp.id";
         Mssql2008PagingTransformer transformer = new Mssql2008PagingTransformer(
                 -1, 10);
         SqlParser parser = new SqlParser(
