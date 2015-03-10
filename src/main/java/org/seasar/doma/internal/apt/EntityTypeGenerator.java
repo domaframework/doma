@@ -610,7 +610,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         .getAllPropertyMetasInCtorArgsOrder().iterator(); it
                         .hasNext();) {
                     EntityPropertyMeta propertyMeta = it.next();
-                    iprint("        (%1$s)__args.get(\"%2$s\").get()",
+                    iprint("        (%1$s)(__args.containsKey(\"%2$s\") ? __args.get(\"%2$s\").get() : null)",
                             TypeMirrorUtil.boxIfPrimitive(
                                     propertyMeta.getType(), env),
                             propertyMeta.getName());

@@ -15,9 +15,15 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
 import junit.framework.TestCase;
 import example.entity.Emp;
+import example.entity.ImmutableEmp;
 import example.entity._Emp;
+import example.entity._ImmutableEmp;
 
 /**
  * @author nakamura-to
@@ -28,5 +34,31 @@ public class EntityTypeTest extends TestCase {
     public void test() throws Exception {
         EntityType<Emp> entityType = _Emp.getSingletonInternal();
         entityType.getQualifiedTableName();
+    }
+
+    public void testImmutable_newEntity() throws Exception {
+        ImmutableEmp emp = new ImmutableEmp(99, "hoge", BigDecimal.ONE, 1);
+        EntityType<ImmutableEmp> entityType = _ImmutableEmp
+                .getSingletonInternal();
+        Map<String, Property<ImmutableEmp, ?>> args = new HashMap<>();
+
+        EntityPropertyType<ImmutableEmp, ?> idType = entityType
+                .getEntityPropertyType("id");
+        Property<ImmutableEmp, ?> id = idType.createProperty();
+        id.load(emp);
+        args.put(idType.getName(), id);
+
+        EntityPropertyType<ImmutableEmp, ?> salaryType = entityType
+                .getEntityPropertyType("salary");
+        Property<ImmutableEmp, ?> salary = salaryType.createProperty();
+        salary.load(emp);
+        args.put(salaryType.getName(), salary);
+
+        ImmutableEmp newEmp = entityType.newEntity(args);
+
+        assertEquals(Integer.valueOf(99), newEmp.getId());
+        assertNull(newEmp.getName());
+        assertEquals(BigDecimal.ONE, newEmp.getSalary());
+        assertNull(newEmp.getVersion());
     }
 }
