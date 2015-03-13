@@ -10,9 +10,9 @@ public final class _NamingType3Entity extends org.seasar.doma.jdbc.entity.Abstra
 
     private static final _NamingType3Entity __singleton = new _NamingType3Entity();
 
-    private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.NamingType3Entity>> __listenerSupplier;
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
 
-    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
+    private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.NamingType3Entity>> __listenerSupplier;
 
     private final boolean __immutable;
 
@@ -34,12 +34,11 @@ public final class _NamingType3Entity extends org.seasar.doma.jdbc.entity.Abstra
 
     private _NamingType3Entity() {
         __listenerSupplier = () -> ListenerHolder.listener;
-        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "NamingType3Entity";
         __catalogName = "";
         __schemaName = "";
-        __tableName = "NamingType3Entity";
+        __tableName = "";
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType3Entity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType3Entity, ?>> __list = new java.util.ArrayList<>(0);
@@ -76,6 +75,14 @@ public final class _NamingType3Entity extends org.seasar.doma.jdbc.entity.Abstra
 
     @Override
     public String getTableName() {
+        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+    }
+
+    @Override
+    public String getTableName(java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
+        if (__tableName.isEmpty()) {
+            return namingFunction.apply(__namingType, __name);
+        }
         return __tableName;
     }
 

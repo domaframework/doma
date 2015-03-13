@@ -71,7 +71,7 @@ public class EntityPropertyMeta {
     public EntityPropertyMeta(TypeElement entityElement,
             VariableElement propertyElement, NamingType namingType,
             boolean ownProperty, ProcessingEnvironment env) {
-        assertNotNull(entityElement, propertyElement, namingType, env);
+        assertNotNull(entityElement, propertyElement, env);
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
         this.entityMetaTypeName = MetaUtil.getMetaTypeName(entityTypeName);
@@ -165,9 +165,7 @@ public class EntityPropertyMeta {
     }
 
     public String getColumnName() {
-        String columnName = columnMirror != null ? columnMirror.getNameValue()
-                : "";
-        return !columnName.isEmpty() ? columnName : namingType.apply(name);
+        return columnMirror != null ? columnMirror.getNameValue() : "";
     }
 
     public boolean isColumnInsertable() {

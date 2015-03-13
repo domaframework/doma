@@ -10,18 +10,18 @@ public final class _QuoteEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
 
     private static final _QuoteEntity __singleton = new _QuoteEntity();
 
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
+
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "id", "id", true);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "id", "", __namingType, true);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "name", "name", true, true, true);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "name", "", __namingType, true, true, true);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "version", "version", true, true, true);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "version", "", __namingType, true, true, true);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.QuoteEntity>> __listenerSupplier;
-
-    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
     private final boolean __immutable;
 
@@ -43,12 +43,11 @@ public final class _QuoteEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
 
     private _QuoteEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
-        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "QuoteEntity";
         __catalogName = "";
         __schemaName = "";
-        __tableName = "QuoteEntity";
+        __tableName = "";
         __isQuoteRequired = true;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, ?>> __list = new java.util.ArrayList<>(3);
@@ -92,6 +91,14 @@ public final class _QuoteEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
 
     @Override
     public String getTableName() {
+        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+    }
+
+    @Override
+    public String getTableName(java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
+        if (__tableName.isEmpty()) {
+            return namingFunction.apply(__namingType, __name);
+        }
         return __tableName;
     }
 

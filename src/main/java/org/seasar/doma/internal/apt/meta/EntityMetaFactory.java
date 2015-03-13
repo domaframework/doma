@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,7 +124,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     protected NamingType resolveNamingType(TypeElement classElement) {
-        NamingType result = NamingType.NONE;
+        NamingType result = null;
         for (AnnotationValue value : getEntityElementValueList(classElement,
                 "naming")) {
             if (value != null) {

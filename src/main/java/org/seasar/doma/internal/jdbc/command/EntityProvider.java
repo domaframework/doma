@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
@@ -42,8 +43,7 @@ import org.seasar.doma.jdbc.query.Query;
  * @author nakamura-to
  * 
  */
-public class EntityProvider<ENTITY> extends
-        AbstractObjectProvider<ENTITY> {
+public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
     protected final EntityType<ENTITY> entityType;
 
@@ -129,12 +129,13 @@ public class EntityProvider<ENTITY> extends
 
     protected HashMap<String, EntityPropertyType<ENTITY, ?>> createColumnNameMap(
             EntityType<ENTITY> entityType) {
+        Naming naming = query.getConfig().getNaming();
         List<EntityPropertyType<ENTITY, ?>> propertyTypes = entityType
                 .getEntityPropertyTypes();
         HashMap<String, EntityPropertyType<ENTITY, ?>> result = new HashMap<>(
                 propertyTypes.size());
         for (EntityPropertyType<ENTITY, ?> propertyType : propertyTypes) {
-            String columnName = propertyType.getColumnName();
+            String columnName = propertyType.getColumnName(naming::apply);
             result.put(columnName.toLowerCase(), propertyType);
         }
         return result;
@@ -142,12 +143,13 @@ public class EntityProvider<ENTITY> extends
 
     protected void throwResultMappingException(
             Set<EntityPropertyType<ENTITY, ?>> unmappedPropertySet) {
+        Naming naming = query.getConfig().getNaming();
         int size = unmappedPropertySet.size();
         List<String> unmappedPropertyNames = new ArrayList<>(size);
         List<String> expectedColumnNames = new ArrayList<>(size);
         for (EntityPropertyType<ENTITY, ?> propertyType : unmappedPropertySet) {
             unmappedPropertyNames.add(propertyType.getName());
-            expectedColumnNames.add(propertyType.getColumnName());
+            expectedColumnNames.add(propertyType.getColumnName(naming::apply));
         }
         Sql<?> sql = query.getSql();
         throw new ResultMappingException(query.getConfig()

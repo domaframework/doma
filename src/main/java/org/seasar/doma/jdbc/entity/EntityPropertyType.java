@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -48,13 +49,44 @@ public interface EntityPropertyType<ENTITY, BASIC> {
     String getColumnName();
 
     /**
-     * 必要とされる場合、引用符で囲まれたカラム名を返します。
+     * カラム名を返します。
+     * <p>
+     * ネーミング規約が適用されます。
      * 
      * @param quoteFunction
      *            引用符を適用する関数
      * @return 引用符で囲まれたカラム名
      */
     String getColumnName(Function<String, String> quoteFunction);
+
+    /**
+     * カラム名を返します。
+     * <p>
+     * ネーミング規約が適用されます。
+     * 
+     * @param namingFunction
+     *            ネーミング規約を適用する関数
+     * @return カラム名
+     * @since 2.2.0
+     */
+    String getColumnName(BiFunction<NamingType, String, String> namingFunction);
+
+    /**
+     * カラム名を返します。
+     * <p>
+     * ネーミング規約が適用されます。
+     * <p>
+     * 引用符が適用されます。
+     * 
+     * @param namingFunction
+     *            ネーミング規約を適用する関数
+     * @param quoteFunction
+     *            引用符を適用する関数
+     * @return カラム名
+     * @since 2.2.0
+     */
+    String getColumnName(BiFunction<NamingType, String, String> namingFunction,
+            Function<String, String> quoteFunction);
 
     /**
      * カラム名において引用符が必要とされるかどうかを返します。

@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.MapKeyNaming;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
@@ -121,6 +122,11 @@ public class RuntimeConfig implements Config {
     @Override
     public Commenter getCommenter() {
         return config.getCommenter();
+    }
+
+    @Override
+    public Naming getNaming() {
+        return config.getNaming();
     }
 
     @Override

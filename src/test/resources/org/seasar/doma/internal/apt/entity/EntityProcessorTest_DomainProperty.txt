@@ -10,6 +10,8 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
 
     private static final _DomainPropertyEntity __singleton = new _DomainPropertyEntity();
 
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
+
     private final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
     {
         __idGenerator.setQualifiedSequenceName("SEQ");
@@ -19,17 +21,15 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Identifier> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.entity.Identifier.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, org.seasar.doma.internal.apt.entity._Identifier.getSingletonInternal(), "id", "id", false, __idGenerator);
+    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Identifier> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.entity.Identifier.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, org.seasar.doma.internal.apt.entity._Identifier.getSingletonInternal(), "id", "", __namingType, false, __idGenerator);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.entity.Name.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, org.seasar.doma.internal.apt.entity._Name.getSingletonInternal(), "name", "name", true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.entity.Name.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, org.seasar.doma.internal.apt.entity._Name.getSingletonInternal(), "name", "", __namingType, true, true, false);
 
     /** the ver */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Ver> $ver = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class,  org.seasar.doma.internal.apt.entity.Ver.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, org.seasar.doma.internal.apt.entity._Ver.getSingletonInternal(), "ver", "ver", false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Ver> $ver = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class,  org.seasar.doma.internal.apt.entity.Ver.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, org.seasar.doma.internal.apt.entity._Ver.getSingletonInternal(), "ver", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.DomainPropertyEntity>> __listenerSupplier;
-
-    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
     private final boolean __immutable;
 
@@ -51,12 +51,11 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
 
     private _DomainPropertyEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
-        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "DomainPropertyEntity";
         __catalogName = "";
         __schemaName = "";
-        __tableName = "DomainPropertyEntity";
+        __tableName = "";
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __list = new java.util.ArrayList<>(3);
@@ -100,6 +99,14 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
 
     @Override
     public String getTableName() {
+        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+    }
+
+    @Override
+    public String getTableName(java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
+        if (__tableName.isEmpty()) {
+            return namingFunction.apply(__namingType, __name);
+        }
         return __tableName;
     }
 

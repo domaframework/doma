@@ -12,6 +12,8 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<org.seasar.doma.internal.apt.entity.Emp> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(org.seasar.doma.internal.apt.entity.Emp.class, "originalStates");
 
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
+
     private final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
     {
         __idGenerator.setQualifiedSequenceName("EMP_ID");
@@ -21,23 +23,21 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     }
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "id", "id", false, __idGenerator);
+    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "id", "", __namingType, false, __idGenerator);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "name", "name", true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "name", "", __namingType, true, true, false);
 
     /** the salary */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal, Object> $salary = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.math.BigDecimal.class, java.math.BigDecimal.class, () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null, "salary", "SALARY", false, false, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal, Object> $salary = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.math.BigDecimal.class, java.math.BigDecimal.class, () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null, "salary", "SALARY", __namingType, false, false, false);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class,  java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "version", "version", false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class,  java.lang.Integer.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null, "version", "", __namingType, false);
 
     /** the object */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Object, Object> $object = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.lang.Object.class, java.lang.Object.class, () -> new org.seasar.doma.wrapper.ObjectWrapper(), null, null, "object", "object", true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Emp, java.lang.Object, Object> $object = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Emp.class, java.lang.Object.class, java.lang.Object.class, () -> new org.seasar.doma.wrapper.ObjectWrapper(), null, null, "object", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.internal.apt.entity.EmpListener> __listenerSupplier;
-
-    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
     private final boolean __immutable;
 
@@ -59,12 +59,11 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     private _Emp() {
         __listenerSupplier = () -> ListenerHolder.listener;
-        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "Emp";
         __catalogName = "";
         __schemaName = "AAA";
-        __tableName = "Emp";
+        __tableName = "";
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __list = new java.util.ArrayList<>(5);
@@ -112,6 +111,14 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     @Override
     public String getTableName() {
+        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+    }
+
+    @Override
+    public String getTableName(java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
+        if (__tableName.isEmpty()) {
+            return namingFunction.apply(__namingType, __name);
+        }
         return __tableName;
     }
 

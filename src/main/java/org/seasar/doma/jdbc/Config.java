@@ -146,6 +146,16 @@ public interface Config {
     }
 
     /**
+     * ネーミング規約のコントローラを返します。
+     * 
+     * @return ネーミング規約のコントローラ
+     * @since 2.2.0
+     */
+    default Naming getNaming() {
+        return ConfigSupport.defaultNaming;
+    }
+
+    /**
      * マップのキーのネーミング規約のコントローラを返します。
      * 
      * @return マップのキーのネーミング規約のコントローラ

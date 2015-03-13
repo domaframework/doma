@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import javax.annotation.Generated;
 
@@ -44,25 +45,27 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
     private static _ImmutableEmp singleton = new _ImmutableEmp();
 
+    private final NamingType __namingType = NamingType.UPPER_CASE;
+
     public final AssignedIdPropertyType<Object, ImmutableEmp, Integer, Object> id = new AssignedIdPropertyType<>(
             ImmutableEmp.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "id", "ID", false);
+            "id", "ID", __namingType, false);
 
     public final DefaultPropertyType<Object, ImmutableEmp, String, Object> name = new DefaultPropertyType<>(
             ImmutableEmp.class, String.class, String.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
-            "name", "NAME", true, true, false);
+            "name", "NAME", __namingType, true, true, false);
 
     public final DefaultPropertyType<Object, ImmutableEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
             ImmutableEmp.class, BigDecimal.class, BigDecimal.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null,
-            "salary", "SALARY", true, true, false);
+            "salary", "SALARY", __namingType, true, true, false);
 
     public final VersionPropertyType<Object, ImmutableEmp, Integer, Integer> version = new VersionPropertyType<>(
             ImmutableEmp.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "version", "VERSION", false);
+            "version", "VERSION", __namingType, false);
 
     private final String __name = "Emp";
 
@@ -71,8 +74,6 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     private final String __schemaName = null;
 
     private final String __tableName = "EMP";
-
-    private final NamingType __namingType = NamingType.UPPER_CASE;
 
     private final List<EntityPropertyType<ImmutableEmp, ?>> __idPropertyTypes;
 
@@ -201,6 +202,15 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
     @Override
     public String getTableName() {
+        return __tableName;
+    }
+
+    @Override
+    public String getTableName(
+            BiFunction<NamingType, String, String> namingFunction) {
+        if (__tableName.isEmpty()) {
+            return namingFunction.apply(getNamingType(), getName());
+        }
         return __tableName;
     }
 

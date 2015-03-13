@@ -20,8 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import example.entity.Dept;
 import example.entity.Emp;
 import example.entity.ImmutableEmp;
+import example.entity._Dept;
 import example.entity._Emp;
 import example.entity._ImmutableEmp;
 
@@ -33,7 +35,7 @@ public class EntityTypeTest extends TestCase {
 
     public void test() throws Exception {
         EntityType<Emp> entityType = _Emp.getSingletonInternal();
-        entityType.getQualifiedTableName();
+        entityType.getName();
     }
 
     public void testImmutable_newEntity() throws Exception {
@@ -61,4 +63,36 @@ public class EntityTypeTest extends TestCase {
         assertEquals(BigDecimal.ONE, newEmp.getSalary());
         assertNull(newEmp.getVersion());
     }
+
+    public void testGetTableName() throws Exception {
+        EntityType<Dept> entityType = _Dept.getSingletonInternal();
+        assertEquals("DEPT", entityType.getTableName());
+    }
+
+    public void testGetTableName_naming() throws Exception {
+        EntityType<Dept> entityType = _Dept.getSingletonInternal();
+        assertEquals("dept", entityType.getTableName((namingType, text) -> text
+                .toLowerCase()));
+    }
+
+    public void testGetQualifiedName() throws Exception {
+        EntityType<Dept> entityType = _Dept.getSingletonInternal();
+        assertEquals("CATA.DEPT", entityType.getQualifiedTableName());
+    }
+
+    public void testGetQualifiedName_quote() throws Exception {
+        EntityType<Dept> entityType = _Dept.getSingletonInternal();
+        assertEquals("[CATA].[DEPT]",
+                entityType.getQualifiedTableName(text -> "[" + text + "]"));
+    }
+
+    public void testGetQualifiedName_naming_quote() throws Exception {
+        EntityType<Dept> entityType = _Dept.getSingletonInternal();
+        assertEquals(
+                "[CATA].[dept]",
+                entityType.getQualifiedTableName(
+                        (namingType, text) -> text.toLowerCase(), text -> "["
+                                + text + "]"));
+    }
+
 }

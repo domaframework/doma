@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -34,15 +35,17 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
+    private final NamingType __namingType = NamingType.UPPER_CASE;
+
     public DefaultPropertyType<Object, ParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
             ParentEntity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "aaa", "AAA", true, true, false);
+            "aaa", "AAA", __namingType, true, true, false);
 
     public DefaultPropertyType<Object, ParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
             ParentEntity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "bbb", "BBB", true, true, false);
+            "bbb", "BBB", __namingType, true, true, false);
 
     private _ParentEntity() {
     }
@@ -101,6 +104,13 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
     @Override
     public String getTableName() {
+
+        return null;
+    }
+
+    @Override
+    public String getTableName(
+            BiFunction<NamingType, String, String> namingFunction) {
 
         return null;
     }

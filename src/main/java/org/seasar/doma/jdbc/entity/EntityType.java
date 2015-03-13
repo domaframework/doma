@@ -17,7 +17,10 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import org.seasar.doma.Entity;
 
 /**
  * エンティティのメタタイプです。
@@ -70,6 +73,18 @@ public interface EntityType<ENTITY> {
     String getTableName();
 
     /**
+     * テーブル名を返します。
+     * <p>
+     * ネーミング規約が適用されます。
+     * 
+     * @param namingFunction
+     *            ネーミング規約を適用する関数
+     * @return テーブル名
+     * @since 2.2.0
+     */
+    String getTableName(BiFunction<NamingType, String, String> namingFunction);
+
+    /**
      * 完全修飾されたテーブル名を返します。
      * 
      * @return 完全修飾されたテーブル名
@@ -77,7 +92,7 @@ public interface EntityType<ENTITY> {
     String getQualifiedTableName();
 
     /**
-     * 必要とされる場合、完全修飾されたテーブル名を返します。
+     * 完全修飾されたテーブル名を返します。
      * <p>
      * カタログ、スキーマ、テーブル名は引用符で区切られます。
      * 
@@ -88,6 +103,24 @@ public interface EntityType<ENTITY> {
     String getQualifiedTableName(Function<String, String> quoteFunction);
 
     /**
+     * 完全修飾されたテーブル名を返します。
+     * <p>
+     * テーブル名には、ネーミング規約が適用されます。
+     * <p>
+     * カタログ、スキーマ、テーブル名は引用符で区切られます。
+     * 
+     * @param namingFunction
+     *            ネーミング規約を適用する関数
+     * @param quoteFunction
+     *            引用符を適用する関数
+     * @return 完全修飾されたテーブル名
+     * @since 2.2.0
+     */
+    String getQualifiedTableName(
+            BiFunction<NamingType, String, String> namingFunction,
+            Function<String, String> quoteFunction);
+
+    /**
      * カタログ、スキーマ、テーブル名において引用符が必要とされるかどうかを返します。
      * 
      * @return 引用符が必要とされる場合 {@code true}
@@ -96,6 +129,8 @@ public interface EntityType<ENTITY> {
 
     /**
      * ネーミング規約を返します。
+     * <p>
+     * {@link Entity#naming()} に指定された値を返します。指定されていない場合は {@literal null} を返します。
      * 
      * @return ネーミング規約
      */
