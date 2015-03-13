@@ -62,6 +62,10 @@ public enum NamingType {
      * スネークケースの大文字に変換します。
      * <p>
      * たとえば、<code>aaaBbb</code> を <code>AAA_BBB</code> に変換します。
+     * <p>
+     * 2.2.0 から、入力値において数字の直後に大文字が続く箇所はアンダースコアの挿入対象になりました。
+     * 
+     * たとえば、<code>aaa3Bbb</code> を <code>AAA3_BBB</code> に変換します。
      */
     SNAKE_UPPER_CASE {
 
@@ -88,6 +92,10 @@ public enum NamingType {
      * スネークケースの小文字に変換します。
      * <p>
      * たとえば、<code>aaaBbb</code> を <code>aaa_bbb</code> に変換します。
+     * <p>
+     * 2.2.0 から、入力値において数字の直後に大文字が続く箇所はアンダースコアの挿入対象になりました。
+     * 
+     * たとえば、<code>aaa3Bbb</code> を <code>aaa3_bbb</code> に変換します。
      */
     SNAKE_LOWER_CASE {
 
@@ -97,6 +105,66 @@ public enum NamingType {
                 throw new DomaNullPointerException("text");
             }
             String s = StringUtil.fromCamelCaseToSnakeCase(text);
+            return s.toLowerCase();
+        }
+
+        @Override
+        public String revert(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return StringUtil.fromSnakeCaseToCamelCase(text);
+        }
+
+    },
+
+    /**
+     * スネークケースの大文字に変換します。ただし、アンダースコアを挿入する判断が厳格ではありません。具体的には、
+     * 入力値において数字の直後に大文字が続く箇所にアンダースコアを挿入しません。
+     * <p>
+     * この定義は、2.1.0 以前の {@link NamingType#SNAKE_UPPER_CASE} と同じ挙動をし、
+     * 過去との互換性のためだけに存在します。
+     * 
+     * @since 2.2.0
+     */
+    LENIENT_SNAKE_UPPER_CASE {
+
+        @Override
+        public String apply(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            String s = StringUtil.fromCamelCaseToSnakeCaseWithLenient(text);
+            return s.toUpperCase();
+        }
+
+        @Override
+        public String revert(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return StringUtil.fromSnakeCaseToCamelCase(text);
+        }
+
+    },
+
+    /**
+     * スネークケースの小文字に変換します。ただし、アンダースコアを挿入する判断が厳格ではありません。具体的には、
+     * 入力値において数字の直後に大文字が続く箇所にアンダースコアを挿入しません。
+     * <p>
+     * この定義は、2.1.0 以前の {@link NamingType#SNAKE_LOWER_CASE} と同じ挙動をし、
+     * 過去との互換性のためだけに存在します。
+     * 
+     * @since 2.2.0
+     */
+    LENIENT_SNAKE_LOWER_CASE {
+
+        @Override
+        public String apply(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            String s = StringUtil.fromCamelCaseToSnakeCaseWithLenient(text);
             return s.toLowerCase();
         }
 

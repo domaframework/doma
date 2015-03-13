@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.util;
 
 import java.nio.CharBuffer;
+import java.util.function.Function;
 
 /**
  * {@link String} のユーティリティクラスです。
@@ -85,7 +86,9 @@ public final class StringUtil {
     }
 
     /**
-     * キャメルケースをアンダースコア区切りの大文字に変換します。
+     * キャメルケースをアンダースコア区切りに変換します。
+     * <p>
+     * 数字の直後に大文字が続く場合、アンダースコア区切りの対象となります。
      * 
      * @param text
      *            文字列
@@ -93,8 +96,34 @@ public final class StringUtil {
      *         {@code text} が空文字の場合は空文字を返します。
      */
     public static String fromCamelCaseToSnakeCase(String text) {
+        return fromCamelCaseToSnakeCaseInternal(text, false);
+    }
+
+    /**
+     * キャメルケースをアンダースコア区切りに変換します。
+     * <p>
+     * 数字の直後に大文字が続く場合、アンダースコア区切りの対象となりません。
+     * 
+     * @param text
+     *            文字列
+     * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
+     *         {@code text} が空文字の場合は空文字を返します。
+     */
+    public static String fromCamelCaseToSnakeCaseWithLenient(String text) {
+        return fromCamelCaseToSnakeCaseInternal(text, true);
+    }
+
+    private static String fromCamelCaseToSnakeCaseInternal(String text,
+            boolean lenient) {
         if (isNullOrEmpty(text)) {
             return text;
+        }
+        Function<Character, Boolean> isNotUpperCase;
+        if (lenient) {
+            isNotUpperCase = Character::isLowerCase;
+        } else {
+            isNotUpperCase = c -> Character.isLowerCase(c)
+                    || Character.isDigit(c);
         }
         StringBuilder result = new StringBuilder();
         CharBuffer buf = CharBuffer.wrap(text);
@@ -104,7 +133,7 @@ public final class StringUtil {
             buf.mark();
             if (buf.hasRemaining()) {
                 char c2 = buf.get();
-                if ((Character.isLowerCase(c) || Character.isDigit(c)) && Character.isUpperCase(c2)) {
+                if (isNotUpperCase.apply(c) && Character.isUpperCase(c2)) {
                     result.append("_");
                 }
                 buf.reset();
