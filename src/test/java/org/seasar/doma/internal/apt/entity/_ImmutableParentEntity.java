@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -35,15 +36,17 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 public class _ImmutableParentEntity extends
         AbstractEntityType<ImmutableParentEntity> {
 
+    private final NamingType __namingType = NamingType.UPPER_CASE;
+
     public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
             ImmutableParentEntity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "aaa", "AAA", true, true, false);
+            "aaa", "AAA", __namingType, true, true, false);
 
     public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
             ImmutableParentEntity.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "bbb", "BBB", true, true, false);
+            "bbb", "BBB", __namingType, true, true, false);
 
     private _ImmutableParentEntity() {
     }
@@ -103,6 +106,13 @@ public class _ImmutableParentEntity extends
 
     @Override
     public String getTableName() {
+
+        return null;
+    }
+
+    @Override
+    public String getTableName(
+            BiFunction<NamingType, String, String> namingFunction) {
 
         return null;
     }

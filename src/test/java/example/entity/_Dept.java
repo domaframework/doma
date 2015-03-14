@@ -15,7 +15,6 @@
  */
 package example.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,64 +40,47 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 @Generated("")
-public class _Emp extends AbstractEntityType<Emp> {
+public class _Dept extends AbstractEntityType<Dept> {
 
-    private static _Emp singleton = new _Emp();
+    private static _Dept singleton = new _Dept();
 
-    private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<Emp> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(
-            Emp.class, "originalStates");
+    private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 
-    private final NamingType __namingType = NamingType.UPPER_CASE;
-
-    public final AssignedIdPropertyType<Object, Emp, Integer, Object> id = new AssignedIdPropertyType<>(
-            Emp.class, Integer.class, Integer.class,
+    public final AssignedIdPropertyType<Object, Dept, Integer, Object> id = new AssignedIdPropertyType<>(
+            Dept.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "id", "ID", __namingType, false);
 
-    public final DefaultPropertyType<Object, Emp, String, Object> name = new DefaultPropertyType<>(
-            Emp.class, String.class, String.class,
+    public final DefaultPropertyType<Object, Dept, String, Object> name = new DefaultPropertyType<>(
+            Dept.class, String.class, String.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
             "name", "NAME", __namingType, true, true, false);
 
-    public final DefaultPropertyType<Object, Emp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
-            Emp.class, BigDecimal.class, BigDecimal.class,
-            () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null,
-            "salary", "SALARY", __namingType, true, true, false);
+    private final String __name = "Dept";
 
-    public final VersionPropertyType<Object, Emp, Integer, Integer> version = new VersionPropertyType<>(
-            Emp.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "version", "VERSION", __namingType, false);
-
-    private final String __name = "Emp";
-
-    private final String __catalogName = null;
+    private final String __catalogName = "CATA";
 
     private final String __schemaName = null;
 
     private final String __tableName = "";
 
-    private final List<EntityPropertyType<Emp, ?>> __idPropertyTypes;
+    private final List<EntityPropertyType<Dept, ?>> __idPropertyTypes;
 
-    private final List<EntityPropertyType<Emp, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyType<Dept, ?>> __entityPropertyTypes;
 
-    private final Map<String, EntityPropertyType<Emp, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyType<Dept, ?>> __entityPropertyTypeMap;
 
-    private _Emp() {
-        List<EntityPropertyType<Emp, ?>> __idList = new ArrayList<>();
+    private _Dept() {
+        List<EntityPropertyType<Dept, ?>> __idList = new ArrayList<>();
         __idList.add(id);
         __idPropertyTypes = Collections.unmodifiableList(__idList);
-        List<EntityPropertyType<Emp, ?>> __list = new ArrayList<>();
+        List<EntityPropertyType<Dept, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
-        __list.add(salary);
-        __list.add(version);
         __entityPropertyTypes = Collections.unmodifiableList(__list);
-        Map<String, EntityPropertyType<Emp, ?>> __map = new HashMap<>();
+        Map<String, EntityPropertyType<Dept, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
-        __map.put("salary", salary);
-        __map.put("version", version);
         __entityPropertyTypeMap = Collections.unmodifiableMap(__map);
     }
 
@@ -108,15 +90,15 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public Emp newEntity(Map<String, Property<Emp, ?>> args) {
-        Emp entity = new Emp();
+    public Dept newEntity(Map<String, Property<Dept, ?>> args) {
+        Dept entity = new Dept();
         args.values().forEach(v -> v.save(entity));
         return entity;
     }
 
     @Override
-    public Class<Emp> getEntityClass() {
-        return Emp.class;
+    public Class<Dept> getEntityClass() {
+        return Dept.class;
     }
 
     @Override
@@ -125,71 +107,61 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<Dept, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public EntityPropertyType<Emp, ?> getEntityPropertyType(String propertyName) {
+    public EntityPropertyType<Dept, ?> getEntityPropertyType(String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
 
     @Override
-    public void saveCurrentStates(Emp __entity) {
-        Emp __currentStates = new Emp();
-        id.copy(__currentStates, __entity);
-        name.copy(__currentStates, __entity);
-        salary.copy(__currentStates, __entity);
-        version.copy(__currentStates, __entity);
-        __originalStatesAccessor.set(__entity, __currentStates);
+    public void saveCurrentStates(Dept __entity) {
     }
 
     @Override
-    public Emp getOriginalStates(Emp entity) {
-        if (entity.originalStates instanceof Emp) {
-            Emp originalStates = (Emp) entity.originalStates;
-            return originalStates;
-        }
+    public Dept getOriginalStates(Dept entity) {
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Dept, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
-        return version;
+    public VersionPropertyType<Object, Dept, ?, ?> getVersionPropertyType() {
+        return null;
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<Dept, ?>> getIdPropertyTypes() {
         return __idPropertyTypes;
     }
 
     @Override
-    public void preInsert(Emp entity, PreInsertContext<Emp> context) {
+    public void preInsert(Dept entity, PreInsertContext<Dept> context) {
     }
 
     @Override
-    public void preUpdate(Emp entity, PreUpdateContext<Emp> context) {
+    public void preUpdate(Dept entity, PreUpdateContext<Dept> context) {
     }
 
     @Override
-    public void preDelete(Emp entity, PreDeleteContext<Emp> context) {
+    public void preDelete(Dept entity, PreDeleteContext<Dept> context) {
     }
 
     @Override
-    public void postInsert(Emp entity, PostInsertContext<Emp> context) {
+    public void postInsert(Dept entity, PostInsertContext<Dept> context) {
     }
 
     @Override
-    public void postUpdate(Emp entity, PostUpdateContext<Emp> context) {
+    public void postUpdate(Dept entity, PostUpdateContext<Dept> context) {
     }
 
     @Override
-    public void postDelete(Emp entity, PostDeleteContext<Emp> context) {
+    public void postDelete(Dept entity, PostDeleteContext<Dept> context) {
     }
 
     @Override
@@ -223,10 +195,10 @@ public class _Emp extends AbstractEntityType<Emp> {
 
     @Override
     public boolean isQuoteRequired() {
-        return false;
+        return true;
     }
 
-    public static _Emp getSingletonInternal() {
+    public static _Dept getSingletonInternal() {
         return singleton;
     }
 }

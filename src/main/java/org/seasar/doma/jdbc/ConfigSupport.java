@@ -42,6 +42,11 @@ public final class ConfigSupport {
     public static UnknownColumnHandler defaultUnknownColumnHandler = new UnknownColumnHandler() {
     };
 
+    /**
+     * @since 2.2.0
+     */
+    public static Naming defaultNaming = Naming.DEFAULT;
+
     public static MapKeyNaming defaultMapKeyNaming = new MapKeyNaming() {
     };
 

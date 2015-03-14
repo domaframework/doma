@@ -32,6 +32,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -108,9 +109,10 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
             throw new JdbcException(Message.DOMA2144, location.getSql(),
                     location.getLineNumber(), location.getPosition());
         }
+        Naming naming = config.getNaming();
         Dialect dialect = config.getDialect();
         return entityType.getEntityPropertyTypes().stream()
-                .map(p -> p.getColumnName(dialect::applyQuote))
+                .map(p -> p.getColumnName(naming::apply, dialect::applyQuote))
                 .collect(Collectors.toList());
     }
 

@@ -228,9 +228,7 @@ public class EntityMeta implements TypeElementMeta {
     }
 
     public String getTableName() {
-        String tableName = tableMirror != null ? tableMirror.getNameValue()
-                : "";
-        return !tableName.isEmpty() ? tableName : namingType.apply(entityName);
+        return tableMirror != null ? tableMirror.getNameValue() : "";
     }
 
     public boolean isQuoteRequired() {

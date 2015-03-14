@@ -54,9 +54,10 @@ public class IdGenerationConfig {
      *            識別子が属するエンティティ
      */
     public IdGenerationConfig(Config config, EntityType<?> entityType) {
-        this(config, entityType, entityType.getQualifiedTableName(config
-                .getDialect()::applyQuote), entityType
-                .getGeneratedIdPropertyType().getColumnName(
+        this(config, entityType, entityType.getQualifiedTableName(
+                config.getNaming()::apply, config.getDialect()::applyQuote),
+                entityType.getGeneratedIdPropertyType().getColumnName(
+                        config.getNaming()::apply,
                         config.getDialect()::applyQuote));
     }
 

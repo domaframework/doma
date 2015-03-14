@@ -69,6 +69,8 @@ public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extend
      *            プロパティの名前
      * @param columnName
      *            カラム名
+     * @param namingType
+     *            ネーミング規約
      * @param idGenerator
      *            識別子のジェネレータ
      * @param quoteRequired
@@ -79,10 +81,11 @@ public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extend
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
             DomainType<BASIC, DOMAIN> domainType, String name,
-            String columnName, boolean quoteRequired, IdGenerator idGenerator) {
+            String columnName, NamingType namingType, boolean quoteRequired,
+            IdGenerator idGenerator) {
         super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
-                parentEntityPropertyType, domainType, name, columnName, true,
-                true, quoteRequired);
+                parentEntityPropertyType, domainType, name, columnName,
+                namingType, true, true, quoteRequired);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");
         }

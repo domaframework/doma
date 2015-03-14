@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -36,6 +37,7 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
@@ -81,6 +83,9 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     /** カラム名 */
     protected final String columnName;
 
+    /** ネーミング規約 */
+    protected final NamingType namingType;
+
     /** 挿入可能かどうか */
     protected final boolean insertable;
 
@@ -115,6 +120,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
      *            プロパティの名前
      * @param columnName
      *            カラム名
+     * @param namingType
+     *            ネーミング規約
      * @param insertable
      *            挿入可能かどうか
      * @param updatable
@@ -127,8 +134,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
             DomainType<BASIC, DOMAIN> domainType, String name,
-            String columnName, boolean insertable, boolean updatable,
-            boolean quoteRequired) {
+            String columnName, NamingType namingType, boolean insertable,
+            boolean updatable, boolean quoteRequired) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
         }
@@ -155,6 +162,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         this.domainType = domainType;
         this.name = name;
         this.columnName = columnName;
+        this.namingType = namingType;
         this.insertable = insertable;
         this.updatable = updatable;
         this.quoteRequired = quoteRequired;
@@ -240,9 +248,23 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
 
     @Override
     public String getColumnName(Function<String, String> quoteFunction) {
-        Function<String, String> mapper = quoteRequired ? quoteFunction
-                : Function.identity();
-        return mapper.apply(columnName);
+        return getColumnName(Naming.DEFAULT::apply, quoteFunction);
+    }
+
+    @Override
+    public String getColumnName(
+            BiFunction<NamingType, String, String> namingFunction) {
+        return getColumnName(namingFunction, Function.identity());
+    }
+
+    public String getColumnName(
+            BiFunction<NamingType, String, String> namingFunction,
+            Function<String, String> quoteFunction) {
+        String columnName = this.columnName;
+        if (columnName.isEmpty()) {
+            columnName = namingFunction.apply(namingType, name);
+        }
+        return quoteRequired ? quoteFunction.apply(columnName) : columnName;
     }
 
     @Override

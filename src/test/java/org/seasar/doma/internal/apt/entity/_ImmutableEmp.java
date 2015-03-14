@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -93,6 +94,13 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
     @Override
     public String getTableName() {
+
+        return null;
+    }
+
+    @Override
+    public String getTableName(
+            BiFunction<NamingType, String, String> namingFunction) {
 
         return null;
     }

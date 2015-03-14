@@ -42,11 +42,12 @@ public interface UnknownColumnHandler {
     default void handle(Query query, EntityType<?> entityType,
             String unknownColumnName) {
         Sql<?> sql = query.getSql();
+        Naming naming = query.getConfig().getNaming();
         NamingType namingType = entityType.getNamingType();
         throw new UnknownColumnException(query.getConfig()
-                .getExceptionSqlLogType(), unknownColumnName,
-                namingType.revert(unknownColumnName), entityType
-                        .getEntityClass().getName(), sql.getKind(),
-                sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
+                .getExceptionSqlLogType(), unknownColumnName, naming.revert(
+                namingType, unknownColumnName), entityType.getEntityClass()
+                .getName(), sql.getKind(), sql.getRawSql(),
+                sql.getFormattedSql(), sql.getSqlFilePath());
     }
 }

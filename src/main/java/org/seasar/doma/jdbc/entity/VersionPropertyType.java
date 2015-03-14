@@ -58,6 +58,8 @@ public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Nu
      *            プロパティの名前
      * @param columnName
      *            カラム名
+     * @param namingType
+     *            ネーミング規約
      * @param quoteRequired
      *            カラム名に引用符が必要とされるかどうか
      */
@@ -66,10 +68,10 @@ public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Nu
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
             DomainType<BASIC, DOMAIN> domainType, String name,
-            String columnName, boolean quoteRequired) {
+            String columnName, NamingType namingType, boolean quoteRequired) {
         super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
-                parentEntityPropertyType, domainType, name, columnName, true,
-                true, quoteRequired);
+                parentEntityPropertyType, domainType, name, columnName,
+                namingType, true, true, quoteRequired);
     }
 
     @Override
