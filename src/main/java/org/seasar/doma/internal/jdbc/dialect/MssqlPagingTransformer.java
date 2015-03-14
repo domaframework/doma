@@ -22,7 +22,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-
 /**
  * @author taedium
  * 
@@ -31,7 +30,8 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
 
     private boolean forceOffsetFetch;
 
-    public MssqlPagingTransformer(long offset, long limit, boolean forceOffsetFetch) {
+    public MssqlPagingTransformer(long offset, long limit,
+            boolean forceOffsetFetch) {
         super(offset, limit);
         this.forceOffsetFetch = forceOffsetFetch;
     }
@@ -42,7 +42,7 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
             return node;
         }
         processed = true;
-        
+
         if (!forceOffsetFetch && offset <= 0) {
             return super.appendTopNode(node);
         }
@@ -54,7 +54,7 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
 
         OrderByClauseNode orderBy = new OrderByClauseNode(
                 originalOrderBy.getWordNode());
-        
+
         for (SqlNode child : originalOrderBy.getChildren()) {
             orderBy.appendNode(child);
         }
@@ -70,10 +70,6 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
             orderBy.appendNode(new FragmentNode(" rows only"));
         }
 
-        if (node.getForUpdateClauseNode() != null) {
-            orderBy.appendNode(new FragmentNode(" "));
-        }
-
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());
         result.setFromClauseNode(node.getFromClauseNode());
@@ -82,6 +78,7 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(orderBy);
         result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 

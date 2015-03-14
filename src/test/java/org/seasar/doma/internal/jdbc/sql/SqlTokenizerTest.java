@@ -33,6 +33,8 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPENED_PARENS;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
@@ -260,6 +262,18 @@ public class SqlTokenizerTest extends TestCase {
         SqlTokenizer tokenizer = new SqlTokenizer("for update");
         assertEquals(FOR_UPDATE_WORD, tokenizer.next());
         assertEquals("for update", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testOption() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("option (");
+        assertEquals(OPTION_WORD, tokenizer.next());
+        assertEquals("option", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(OPENED_PARENS, tokenizer.next());
+        assertEquals("(", tokenizer.getToken());
         assertEquals(EOF, tokenizer.next());
         assertNull(tokenizer.getToken());
     }

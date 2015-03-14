@@ -15,9 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import static org.seasar.doma.internal.Constants.*;
+import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
 
-import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
@@ -71,16 +70,13 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
             long bias = offset < 0 ? 0 : offset;
             where.appendNode(new FragmentNode(String.valueOf(bias + limit)));
         }
-        ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
-        if (forUpdate != null) {
-            where.appendNode(new FragmentNode(" "));
-        }
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);
         result.setFromClauseNode(from);
         result.setWhereClauseNode(where);
-        result.setForUpdateClauseNode(forUpdate);
+        result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

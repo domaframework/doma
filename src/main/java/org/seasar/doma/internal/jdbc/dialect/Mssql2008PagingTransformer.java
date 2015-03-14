@@ -69,6 +69,7 @@ public class Mssql2008PagingTransformer extends StandardPagingTransformer {
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(node.getOrderByClauseNode());
         result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

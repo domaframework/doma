@@ -64,7 +64,7 @@ public class OracleForUpdateTransformer extends StandardForUpdateTransformer {
             break;
         }
         }
-        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(" for update");
+        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode("for update");
         forUpdate.appendNode(new FragmentNode(buf.toString()));
 
         SelectStatementNode result = new SelectStatementNode();
@@ -75,6 +75,7 @@ public class OracleForUpdateTransformer extends StandardForUpdateTransformer {
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(node.getOrderByClauseNode());
         result.setForUpdateClauseNode(forUpdate);
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

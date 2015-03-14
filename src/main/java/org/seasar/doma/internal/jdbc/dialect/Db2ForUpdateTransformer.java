@@ -39,7 +39,7 @@ public class Db2ForUpdateTransformer extends StandardForUpdateTransformer {
         processed = true;
 
         ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(
-                " for update with rs");
+                "for update with rs");
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());
@@ -49,6 +49,7 @@ public class Db2ForUpdateTransformer extends StandardForUpdateTransformer {
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(node.getOrderByClauseNode());
         result.setForUpdateClauseNode(forUpdate);
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

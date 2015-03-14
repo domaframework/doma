@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Deque;
 import java.util.Iterator;
@@ -43,6 +43,7 @@ import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
+import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
@@ -126,6 +127,10 @@ public class SqlParser {
             }
             case FOR_UPDATE_WORD: {
                 parseForUpdateWord();
+                break;
+            }
+            case OPTION_WORD: {
+                parseOptionWord();
                 break;
             }
             case AND_WORD:
@@ -302,6 +307,20 @@ public class SqlParser {
             appendNode(node);
         }
         push(node);
+    }
+
+    protected void parseOptionWord() {
+        validate();
+        OptionClauseNode node = new OptionClauseNode(token);
+        if (isInSelectStatementNode()) {
+            removeNodesTo(SelectStatementNode.class);
+            SelectStatementNode selectStatementNode = peek();
+            selectStatementNode.setOptionClauseNode(node);
+        } else {
+            appendNode(node);
+        }
+        push(node);
+
     }
 
     protected void parseLogicalWord() {
@@ -556,6 +575,10 @@ public class SqlParser {
 
     protected boolean isAfterExpandNode() {
         return peek() instanceof ExpandNode;
+    }
+
+    protected boolean isAfterOrderByClauseNode() {
+        return peek() instanceof OrderByClauseNode;
     }
 
     protected void appendNode(SqlNode node) {

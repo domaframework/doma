@@ -56,6 +56,7 @@ import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
+import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
@@ -65,6 +66,7 @@ import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
+import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
@@ -473,6 +475,16 @@ public class NodePreparedSqlBuilder implements
     }
 
     @Override
+    public Void visitOptionClauseNode(OptionClauseNode node, Context p) {
+        WordNode wordNode = node.getWordNode();
+        wordNode.accept(this, p);
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
+        return null;
+    }
+
+    @Override
     public Void visitOrderByClauseNode(OrderByClauseNode node, Context p) {
         WordNode wordNode = node.getWordNode();
         wordNode.accept(this, p);
@@ -530,6 +542,7 @@ public class NodePreparedSqlBuilder implements
     public Void visitWordNode(WordNode node, Context p) {
         p.setAvailable(true);
         String word = node.getWord();
+        p.appendWhitespaceIfNecessary();
         p.appendRawSql(word);
         p.appendFormattedSql(word);
         return null;
@@ -605,6 +618,8 @@ public class NodePreparedSqlBuilder implements
 
     protected static class Context {
 
+        private static final char WHITESPACE = ' ';
+
         private final Config config;
 
         private final ExpressionEvaluator evaluator;
@@ -626,6 +641,21 @@ public class NodePreparedSqlBuilder implements
         protected Context(Config config, ExpressionEvaluator evaluator) {
             this.config = config;
             this.evaluator = evaluator;
+        }
+
+        protected void appendWhitespaceIfNecessary() {
+            if (endsWithWordPart()) {
+                rawSqlBuf.append(WHITESPACE);
+                formattedSqlBuf.append(WHITESPACE);
+            }
+        }
+
+        protected boolean endsWithWordPart() {
+            if (rawSqlBuf.length() == 0) {
+                return false;
+            }
+            char c = rawSqlBuf.charAt(rawSqlBuf.length() - 1);
+            return SqlTokenUtil.isWordPart(c);
         }
 
         protected void appendRawSql(CharSequence sql) {

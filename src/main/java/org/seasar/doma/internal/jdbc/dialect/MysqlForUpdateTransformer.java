@@ -38,7 +38,7 @@ public class MysqlForUpdateTransformer extends StandardForUpdateTransformer {
         }
         processed = true;
 
-        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(" for update");
+        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode("for update");
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());
@@ -48,6 +48,7 @@ public class MysqlForUpdateTransformer extends StandardForUpdateTransformer {
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(node.getOrderByClauseNode());
         result.setForUpdateClauseNode(forUpdate);
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }
