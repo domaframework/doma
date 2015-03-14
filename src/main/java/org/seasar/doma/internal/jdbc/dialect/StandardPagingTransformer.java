@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
@@ -118,15 +117,13 @@ public class StandardPagingTransformer extends
             where.appendNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
             where.appendNode(new FragmentNode(String.valueOf(bias + limit)));
         }
-        ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
-        if (forUpdate != null) {
-            where.appendNode(new FragmentNode(" "));
-        }
+
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);
         result.setFromClauseNode(from);
         result.setWhereClauseNode(where);
-        result.setForUpdateClauseNode(forUpdate);
+        result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 

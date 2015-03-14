@@ -38,6 +38,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPENED_PARENS;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
@@ -52,6 +53,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.nio.CharBuffer;
 
 import org.seasar.doma.internal.expr.util.ExpressionUtil;
+import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
@@ -233,6 +235,13 @@ public class SqlTokenizer {
             if (isWordTerminated()) {
                 return;
             }
+        } else if ((c == 'o' || c == 'O') && (c2 == 'p' || c2 == 'P')
+                && (c3 == 't' || c3 == 'T') && (c4 == 'i' || c4 == 'I')
+                && (c5 == 'o' || c5 == 'O') && (c6 == 'n' || c6 == 'N')
+                && (isWhitespace(c7)) && (c8 == '(')) {
+            type = OPTION_WORD;
+            buf.position(buf.position() - 2);
+            return;
         }
         buf.position(buf.position() - 1);
         peekSevenChars(c, c2, c3, c4, c5, c6, c7);
@@ -577,41 +586,11 @@ public class SqlTokenizer {
     }
 
     protected boolean isWordPart(char c) {
-        if (Character.isWhitespace(c)) {
-            return false;
-        }
-        switch (c) {
-        case '=':
-        case '<':
-        case '>':
-        case '-':
-        case ',':
-        case '/':
-        case '*':
-        case '+':
-        case '(':
-        case ')':
-        case ';':
-            return false;
-        default:
-            return true;
-        }
+        return SqlTokenUtil.isWordPart(c);
     }
 
     protected boolean isWhitespace(char c) {
-        switch (c) {
-        case '\u0009':
-        case '\u000B':
-        case '\u000C':
-        case '\u001C':
-        case '\u001D':
-        case '\u001E':
-        case '\u001F':
-        case '\u0020':
-            return true;
-        default:
-            return false;
-        }
+        return SqlTokenUtil.isWhitespace(c);
     }
 
 }

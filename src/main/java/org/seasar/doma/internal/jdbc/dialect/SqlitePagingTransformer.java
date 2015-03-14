@@ -57,10 +57,6 @@ public class SqlitePagingTransformer extends StandardPagingTransformer {
         orderBy.appendNode(new FragmentNode(" offset "));
         orderBy.appendNode(new FragmentNode(offset));
 
-        if (node.getForUpdateClauseNode() != null) {
-            orderBy.appendNode(new FragmentNode(" "));
-        }
-
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());
         result.setFromClauseNode(node.getFromClauseNode());
@@ -69,6 +65,7 @@ public class SqlitePagingTransformer extends StandardPagingTransformer {
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(orderBy);
         result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

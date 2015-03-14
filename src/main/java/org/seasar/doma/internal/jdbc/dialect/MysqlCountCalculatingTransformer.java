@@ -48,6 +48,7 @@ public class MysqlCountCalculatingTransformer extends
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(node.getOrderByClauseNode());
         result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

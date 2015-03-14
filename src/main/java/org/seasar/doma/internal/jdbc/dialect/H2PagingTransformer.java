@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
@@ -58,10 +57,6 @@ public class H2PagingTransformer extends H212126PagingTransformer {
             orderBy.appendNode(new FragmentNode(" offset "));
             orderBy.appendNode(new FragmentNode(String.valueOf(offset)));
         }
-        ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
-        if (node.getForUpdateClauseNode() != null) {
-            orderBy.appendNode(new FragmentNode(" "));
-        }
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());
@@ -70,7 +65,8 @@ public class H2PagingTransformer extends H212126PagingTransformer {
         result.setGroupByClauseNode(node.getGroupByClauseNode());
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(orderBy);
-        result.setForUpdateClauseNode(forUpdate);
+        result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

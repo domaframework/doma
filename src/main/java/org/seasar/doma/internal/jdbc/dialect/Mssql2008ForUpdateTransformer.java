@@ -59,6 +59,7 @@ public class Mssql2008ForUpdateTransformer extends StandardForUpdateTransformer 
         result.setGroupByClauseNode(node.getGroupByClauseNode());
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(node.getOrderByClauseNode());
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 }

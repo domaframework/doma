@@ -64,6 +64,7 @@ public class StandardCountGettingTransformer extends
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);
         result.setFromClauseNode(from);
+        result.setOptionClauseNode(node.getOptionClauseNode());
         return result;
     }
 

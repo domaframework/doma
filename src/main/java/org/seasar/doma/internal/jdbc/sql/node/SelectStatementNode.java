@@ -40,6 +40,8 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     protected ForUpdateClauseNode forUpdateClauseNode;
 
+    protected OptionClauseNode optionClauseNode;
+
     public SelectClauseNode getSelectClauseNode() {
         return selectClauseNode;
     }
@@ -101,6 +103,15 @@ public class SelectStatementNode extends AbstractSqlNode {
     public void setForUpdateClauseNode(ForUpdateClauseNode forUpdateClauseNode) {
         this.forUpdateClauseNode = forUpdateClauseNode;
         appendNodeInternal(forUpdateClauseNode);
+    }
+
+    public OptionClauseNode getOptionClauseNode() {
+        return optionClauseNode;
+    }
+
+    public void setOptionClauseNode(OptionClauseNode optionClauseNode) {
+        this.optionClauseNode = optionClauseNode;
+        appendNodeInternal(optionClauseNode);
     }
 
     @Override

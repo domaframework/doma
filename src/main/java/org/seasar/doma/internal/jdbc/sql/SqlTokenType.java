@@ -122,6 +122,8 @@ public enum SqlTokenType {
 
     FOR_UPDATE_WORD,
 
+    OPTION_WORD,
+
     AND_WORD,
 
     OR_WORD,
