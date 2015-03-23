@@ -17,8 +17,6 @@ package org.seasar.doma.internal;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.function.Supplier;
-
 import javax.sql.DataSource;
 
 import org.seasar.doma.jdbc.ClassHelper;
@@ -26,6 +24,7 @@ import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Commenter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
+import org.seasar.doma.jdbc.EntityListenerProvider;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.Naming;
@@ -35,7 +34,6 @@ import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.tx.TransactionManager;
 
 /**
@@ -155,15 +153,12 @@ public class RuntimeConfig implements Config {
     }
 
     @Override
-    public <ENTITY, LISTENER extends EntityListener<ENTITY>> LISTENER getEntityListener(
-            Class<LISTENER> listenerClass, Supplier<LISTENER> listenerSupplier) {
-        LISTENER listener = config.getEntityListener(listenerClass,
-                listenerSupplier);
-        if (listener == null) {
+    public EntityListenerProvider getEntityListenerProvider() {
+        EntityListenerProvider provider = config.getEntityListenerProvider();
+        if (provider == null) {
             throw new ConfigException(config.getClass().getName(),
-                    "getEntityListener");
+                    "getEntityListenerProvider");
         }
-        return listener;
+        return provider;
     }
-
 }

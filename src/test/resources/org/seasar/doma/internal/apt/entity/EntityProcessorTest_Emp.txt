@@ -131,7 +131,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         Class __listenerClass = org.seasar.doma.internal.apt.entity.EmpListener.class;
-        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.preInsert(entity, context);
     }
 
@@ -139,7 +139,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     @Override
     public void preUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         Class __listenerClass = org.seasar.doma.internal.apt.entity.EmpListener.class;
-        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.preUpdate(entity, context);
     }
 
@@ -147,7 +147,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     @Override
     public void preDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         Class __listenerClass = org.seasar.doma.internal.apt.entity.EmpListener.class;
-        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.preDelete(entity, context);
     }
 
@@ -155,7 +155,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     @Override
     public void postInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         Class __listenerClass = org.seasar.doma.internal.apt.entity.EmpListener.class;
-        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.postInsert(entity, context);
     }
 
@@ -163,7 +163,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     @Override
     public void postUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         Class __listenerClass = org.seasar.doma.internal.apt.entity.EmpListener.class;
-        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.postUpdate(entity, context);
     }
 
@@ -171,7 +171,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     @Override
     public void postDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         Class __listenerClass = org.seasar.doma.internal.apt.entity.EmpListener.class;
-        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.internal.apt.entity.EmpListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.postDelete(entity, context);
     }
 

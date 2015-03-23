@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.function.Supplier;
 
 import javax.sql.DataSource;
 
@@ -241,26 +240,13 @@ public interface Config {
     }
 
     /**
-     * {@link EntityListener} のインスタンスを取得します。
-     * <p>
-     * デフォルトの実装では単純に {@link Supplier#get()} を実行して取得したインスタンスを返します。
+     * {@link EntityListener} のプロバイダを返します。
      * 
-     * {@link EntityListener} をDIコンテナで管理したい場合などはこのメソッドをオーバーライドし、
-     * DIコンテナから取得したインスタンスを返すようにしてください。
-     * 
-     * @param listenerClass
-     *            {@link EntityListener} の実装クラス
-     * @param listenerSupplier
-     *            {@link EntityListener} のインスタンスを返す {@link Supplier}
-     * @param <ENTITY>
-     *            エンティティの型
-     * @param <LISTENER>
-     *            リスナーの型
-     * @return {@link EntityListener} のインスタンス
+     * @return {@link EntityListener} のプロバイダ
+     * @since 2.2.0
      */
-    default <ENTITY, LISTENER extends EntityListener<ENTITY>> LISTENER getEntityListener(
-            Class<LISTENER> listenerClass, Supplier<LISTENER> listenerSupplier) {
-        return listenerSupplier.get();
+    default EntityListenerProvider getEntityListenerProvider() {
+        return ConfigSupport.defaultEntityListenerProvider;
     }
 
     /**

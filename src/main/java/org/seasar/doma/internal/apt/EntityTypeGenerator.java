@@ -746,7 +746,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     private void printDeclareListener() {
         iprint("    Class __listenerClass = %1$s.class;%n", entityMeta
                 .getEntityListenerElement().getQualifiedName());
-        iprint("    %1$s __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);%n",
+        iprint("    %1$s __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);%n",
                 entityMeta.getEntityListenerElement().getQualifiedName());
     }
 

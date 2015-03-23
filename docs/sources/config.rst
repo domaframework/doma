@@ -244,12 +244,15 @@ SELECT時のフェッチサイズをあらわす ``int`` を ``getFetchSize`` �
 エンティティリスナーの取得
 --------------------------
 
-``EntityListener`` を ``getEntityListener`` メソッドで返して下さい。
-``getEntityListener`` メソッドは ``EntityListener`` 実装クラスの ``Class`` と ``EntityListener`` 実装クラスのインスタンスを返す ``Supplier``
-を引数に取り、デフォルトの実装では ``Supplier.get`` メソッドを実行して得たインスタンスを返します。
+``EntityListenerProvider`` を ``getEntityListenerProvider`` メソッドで返して下さい。
+
+``EntityListenerProvider`` の ``get`` メソッドは ``EntityListener`` 実装クラスの ``Class`` と ``EntityListener`` 実装クラスのインスタンスを返す ``Supplier``
+を引数に取り ``EntityListener`` のインスタンスを返します。
+デフォルトの実装では ``Supplier.get`` メソッドを実行して得たインスタンスを返します。
 
 ``EntityListener`` 実装クラスのインスタンスをDIコンテナから取得したいなど、
-インスタンス取得方法をカスタマイズする場合は設定してください。
+インスタンス取得方法をカスタマイズする場合は ``EntityListenerProvider`` を実装したクラスを作成し、
+``getEntityListenerProvider`` メソッドでそのインスタンスを返すよう設定してください。
 
 JDBC ドライバのロード
 =====================

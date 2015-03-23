@@ -111,7 +111,7 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.preInsert(entity, context);
     }
 
@@ -119,7 +119,7 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     @Override
     public void preUpdate(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.preUpdate(entity, context);
     }
 
@@ -127,7 +127,7 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     @Override
     public void preDelete(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.preDelete(entity, context);
     }
 
@@ -135,7 +135,7 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     @Override
     public void postInsert(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.postInsert(entity, context);
     }
 
@@ -143,7 +143,7 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     @Override
     public void postUpdate(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.postUpdate(entity, context);
     }
 
@@ -151,7 +151,7 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     @Override
     public void postDelete(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListener(__listenerClass, __listenerSupplier);
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
         __listener.postDelete(entity, context);
     }
 

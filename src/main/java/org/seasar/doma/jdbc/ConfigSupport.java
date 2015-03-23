@@ -56,4 +56,9 @@ public final class ConfigSupport {
     public static Commenter defaultCommenter = new Commenter() {
     };
 
+    /**
+     * @since 2.2.0
+     */
+    public static EntityListenerProvider defaultEntityListenerProvider = new EntityListenerProvider() {
+    };
 }
