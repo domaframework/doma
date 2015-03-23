@@ -15,14 +15,13 @@
  */
 package org.seasar.doma.internal;
 
-import java.util.function.Supplier;
-
 import javax.sql.DataSource;
 
 import junit.framework.TestCase;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
+import org.seasar.doma.jdbc.EntityListenerProvider;
 import org.seasar.doma.jdbc.SimpleDataSource;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
@@ -38,17 +37,17 @@ public class RuntimeConfigTest extends TestCase {
         Config originalConfig = new MockConfig() {
 
             @Override
-            public <ENTITY, LISTENER extends EntityListener<ENTITY>> LISTENER getEntityListener(
-                    Class<LISTENER> listenerClass,
-                    Supplier<LISTENER> listenerSupplier) {
-                return listenerSupplier.get();
+            public EntityListenerProvider getEntityListenerProvider() {
+                return new EntityListenerProvider() {
+                };
             }
         };
 
         RuntimeConfig runtimeConfig = new RuntimeConfig(originalConfig);
 
-        MockEntityListener entityListener = runtimeConfig.getEntityListener(
-                MockEntityListener.class, MockEntityListener::new);
+        MockEntityListener entityListener = runtimeConfig
+                .getEntityListenerProvider().get(MockEntityListener.class,
+                        MockEntityListener::new);
         assertNotNull(entityListener);
     }
 
@@ -56,9 +55,7 @@ public class RuntimeConfigTest extends TestCase {
         Config originalConfig = new MockConfig() {
 
             @Override
-            public <ENTITY, LISTENER extends EntityListener<ENTITY>> LISTENER getEntityListener(
-                    Class<LISTENER> listenerClass,
-                    Supplier<LISTENER> listenerSupplier) {
+            public EntityListenerProvider getEntityListenerProvider() {
                 return null;
             }
         };
@@ -66,12 +63,12 @@ public class RuntimeConfigTest extends TestCase {
         RuntimeConfig runtimeConfig = new RuntimeConfig(originalConfig);
 
         try {
-            runtimeConfig.getEntityListener(MockEntityListener.class,
-                    MockEntityListener::new);
+            runtimeConfig.getEntityListenerProvider().get(
+                    MockEntityListener.class, MockEntityListener::new);
             fail();
         } catch (ConfigException e) {
             assertEquals(originalConfig.getClass().getName(), e.getClassName());
-            assertEquals("getEntityListener", e.getMethodName());
+            assertEquals("getEntityListenerProvider", e.getMethodName());
         }
     }
 
