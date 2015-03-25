@@ -273,4 +273,41 @@ public class DomainProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testInterface() throws Exception {
+        Class<?> target = InterfaceDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testInterfaceFactoryOfAttributeMustNotBeNew() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(InterfaceNew.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4268);
+    }
+
+    public void testInterfaceMustNotBeInner() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(InterfaceOuter.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4269);
+    }
+
+    public void testAnnotationMustNotBeDomainClass() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(AnnotationDomain.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4105);
+    }
+
 }
