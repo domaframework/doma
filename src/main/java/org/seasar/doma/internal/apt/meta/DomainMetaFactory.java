@@ -105,6 +105,13 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             if (classElement.getNestingKind().isNested()) {
                 throw new AptException(Message.DOMA4179, env, classElement);
             }
+        } else if (classElement.getKind() == ElementKind.INTERFACE) {
+            if (domainMeta.providesConstructor()) {
+                throw new AptException(Message.DOMA4268, env, classElement);
+            }
+            if (classElement.getNestingKind().isNested()) {
+                throw new AptException(Message.DOMA4269, env, classElement);
+            }
         } else {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(Message.DOMA4105, env, classElement,
