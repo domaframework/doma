@@ -2,6 +2,28 @@
 リリースノート
 ==============
 
+v2.2.0: 2015-03-28
+======================
+
+* `GH58 <https://github.com/domaframework/doma/pull/58>`_
+  StringUtilのfromCamelCaseToSnakeCaseで、カラム名に数字が含まれている場合意図している結果にならない
+* `GH59 <https://github.com/domaframework/doma/pull/59>`_
+  Windows環境でテストが失敗する問題を修正
+* `GH60 <https://github.com/domaframework/doma/pull/60>`_
+  Mssql2008Dialect の getName() が返す値を変更しました
+* `GH61 <https://github.com/domaframework/doma/pull/61>`_
+  SQL Server 2012 から追加された OFFSET-FETCH をページング処理に使う
+* `GH64 <https://github.com/domaframework/doma/pull/64>`_
+  イミュータブルなエンティティの取得でNullPointerException が発生するバグを修正しました
+* `GH66 <https://github.com/domaframework/doma/pull/66>`_
+  ネーミング規約の適用をコンパイル時から実行時に変更
+* `GH67 <https://github.com/domaframework/doma/pull/67>`_
+  SQL Server の OPTION 句が存在するとページングが正しく実行されない問題を修正しました
+* `GH70 <https://github.com/domaframework/doma/pull/70>`_
+  EntityListenerの取得はEntityListenerProviderを介するようにしました
+* `GH71 <https://github.com/domaframework/doma/pull/71>`_
+  インターフェースにも@Domainで注釈できるようにしました
+
 v2.1.0: 2014-12-30
 ======================
 
