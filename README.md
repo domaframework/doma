@@ -1,4 +1,4 @@
-Doma [![Build Status](https://travis-ci.org/domaframework/doma.png?branch=master)](https://travis-ci.org/domaframework/doma)
+Doma [![Build Status](https://travis-ci.org/domaframework/doma.png?branch=master)](https://travis-ci.org/domaframework/doma) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.seasar.doma/doma/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.seasar.doma/doma)
 ========================================
 
 [![Join the chat at https://gitter.im/domaframework/doma](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/domaframework/doma?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
