@@ -166,7 +166,7 @@ Iterableを使ったIN句へのマッピング
 
 .. code-block:: java
 
-  EmployeeDao dao = new EmployeeDao();
+  EmployeeDao dao = new EmployeeDaoImpl();
   BigDecimal result = dao.selectByNameAndSalary(name, salary, stream -> {
       return ...;
   });
@@ -263,7 +263,7 @@ Iterableを使ったIN句へのマッピング
 .. code-block:: java
 
   SelectOptions options = SelectOptions.get().offset(5).limit(10);
-  EmployeeDao dao = new EmployeeDao();
+  EmployeeDao dao = new EmployeeDaoImpl();
   List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);
 
 ページングは、ファイルに記述されているオリジナルのSQLを書き換え実行することで実現されています。
@@ -300,7 +300,7 @@ SelectOptionsのインスタンスをDaoのメソッドに渡します。
 .. code-block:: java
 
   SelectOptions options = SelectOptions.get().forUpdate();
-  EmployeeDao dao = new EmployeeDao();
+  EmployeeDao dao = new EmployeeDaoImpl();
   List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);
 
 ``SelectOptions`` には、ロック対象のテーブルやカラムのエイリアスを指定できる ``forUpdate`` メソッドや、
@@ -349,7 +349,7 @@ SelectOptionsのインスタンスをDaoのメソッドに渡します。
 .. code-block:: java
 
   SelectOptions options = SelectOptions.get().offset(5).limit(10).count();
-  EmployeeDao dao = new EmployeeDao();
+  EmployeeDao dao = new EmployeeDaoImpl();
   List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);
   long count = options.getCount();
 
