@@ -22,7 +22,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
-import example.entity._Emp;
+import example.entity._IdGeneratedEmp;
 
 /**
  * @author taedium
@@ -38,11 +38,11 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
 
         BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                _Emp.getSingletonInternal(), "EMP", "ID");
+                _IdGeneratedEmp.getSingletonInternal());
         Long value = identityIdGenerator.generatePostInsert(idGenerationConfig,
                 config.dataSource.connection.preparedStatement);
         assertEquals(new Long(11), value);
-        assertEquals("select currval('EMP_ID_seq')",
+        assertEquals("select currval('\"CATA\".\"EMP_ID_seq\"')",
                 config.dataSource.connection.preparedStatement.sql);
     }
 

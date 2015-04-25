@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -39,12 +40,6 @@ public class IdGenerationConfig {
     /** 識別子が属するエンティティ */
     protected final EntityType<?> entityType;
 
-    /** 識別子が属するエンティティに対応するテーブルの完全修飾名 */
-    protected final String qualifiedTableName;
-
-    /** 識別子にマッピングされたカラムの名前 */
-    protected final String idColumnName;
-
     /**
      * インスタンスを構築します。
      * 
@@ -54,32 +49,9 @@ public class IdGenerationConfig {
      *            識別子が属するエンティティ
      */
     public IdGenerationConfig(Config config, EntityType<?> entityType) {
-        this(config, entityType, entityType.getQualifiedTableName(
-                config.getNaming()::apply, config.getDialect()::applyQuote),
-                entityType.getGeneratedIdPropertyType().getColumnName(
-                        config.getNaming()::apply,
-                        config.getDialect()::applyQuote));
-    }
-
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param config
-     *            JDBCの設定
-     * @param entityType
-     *            識別子が属するエンティティ
-     * @param qualifiedTableName
-     *            識別子が属するエンティティに対応するテーブルの完全修飾名
-     * @param idColumnName
-     *            識別子にマッピングされたカラムの名前
-     */
-    protected IdGenerationConfig(Config config, EntityType<?> entityType,
-            String qualifiedTableName, String idColumnName) {
-        assertNotNull(config, entityType, qualifiedTableName, idColumnName);
+        assertNotNull(config, entityType);
         this.config = config;
         this.entityType = entityType;
-        this.qualifiedTableName = qualifiedTableName;
-        this.idColumnName = idColumnName;
     }
 
     public DataSource getDataSource() {
@@ -102,6 +74,10 @@ public class IdGenerationConfig {
         return config.getRequiresNewController();
     }
 
+    public Naming getNaming() {
+        return config.getNaming();
+    }
+
     public int getFetchSize() {
         return config.getFetchSize();
     }
@@ -116,14 +92,6 @@ public class IdGenerationConfig {
 
     public EntityType<?> getEntityType() {
         return entityType;
-    }
-
-    public String getQualifiedTableName() {
-        return qualifiedTableName;
-    }
-
-    public String getIdColumnName() {
-        return idColumnName;
     }
 
 }

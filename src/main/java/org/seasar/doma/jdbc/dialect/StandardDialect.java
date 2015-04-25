@@ -46,6 +46,7 @@ import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -432,8 +433,8 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) {
+    public Sql<?> getIdentitySelectSql(String catalogName, String schemaName,
+            String tableName, String columnName, boolean isQuoteRequired) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getIdentitySelectSql");
     }

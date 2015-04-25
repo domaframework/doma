@@ -28,7 +28,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
-import example.entity._Emp;
+import example.entity._IdGeneratedEmp;
 
 /**
  * @author taedium
@@ -63,7 +63,7 @@ public class BuiltinTableIdGeneratorTest extends TestCase {
         idGenerator.setAllocationSize(1);
         idGenerator.initialize();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                _Emp.getSingletonInternal(), "EMP", "ID");
+                _IdGeneratedEmp.getSingletonInternal());
         Long value = idGenerator.generatePreInsert(idGenerationConfig);
         assertEquals(new Long(10), value);
         assertEquals("update aaa set VALUE = VALUE + ? where PK = ?",

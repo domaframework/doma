@@ -127,10 +127,11 @@ public class SqliteDialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) {
-        if (qualifiedTableName == null) {
-            throw new DomaNullPointerException("qualifiedTableName");
+    public PreparedSql getIdentitySelectSql(String catalogName,
+            String schemaName, String tableName, String columnName,
+            boolean isQuoteRequired) {
+        if (tableName == null) {
+            throw new DomaNullPointerException("tableName");
         }
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
