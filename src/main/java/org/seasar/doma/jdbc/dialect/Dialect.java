@@ -147,15 +147,23 @@ public interface Dialect {
      * <p>
      * {@link #supportsIdentity()} が {@code true} を返す場合にのみ呼び出し可能です。
      * 
-     * @param qualifiedTableName
-     *            テーブルの完全修飾名
+     * @param catalogName
+     *            カタログの名前
+     * @param schemaName
+     *            スキーマの名前
+     * @param tableName
+     *            テーブルの名前
      * @param columnName
      *            IDENTITYカラムの名前
+     * @param isQuoteRequired
+     *            引用符が必要かどうか
      * @return IDENTITYを取得するためのSQL
      * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
+     *             {@code tableName} と {@code columnName} のいずれかが {@code null}
+     *             の場合
      */
-    Sql<?> getIdentitySelectSql(String qualifiedTableName, String columnName);
+    Sql<?> getIdentitySelectSql(String catalogName, String schemaName,
+            String tableName, String columnName, boolean isQuoteRequired);
 
     /**
      * シーケンスの次の値を取得するためのSQLを返します。

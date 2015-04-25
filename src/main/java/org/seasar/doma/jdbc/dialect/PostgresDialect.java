@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collections;
+import java.util.function.Function;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
@@ -26,6 +27,7 @@ import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -159,19 +161,22 @@ public class PostgresDialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) {
-        if (qualifiedTableName == null) {
-            throw new DomaNullPointerException("qualifiedTableName");
+    public PreparedSql getIdentitySelectSql(String catalogName,
+            String schemaName, String tableName, String columnName,
+            boolean isQuoteRequired) {
+        if (tableName == null) {
+            throw new DomaNullPointerException("tableName");
         }
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }
+        String qualifiedTableName = DatabaseObjectUtil.getQualifiedName(
+                isQuoteRequired ? this::applyQuote : Function.identity(),
+                catalogName, schemaName, tableName + "_" + columnName + "_seq");
         StringBuilder buf = new StringBuilder(64);
         buf.append("select currval('");
         buf.append(qualifiedTableName);
-        buf.append('_').append(columnName);
-        buf.append("_seq')");
+        buf.append("')");
         String rawSql = buf.toString();
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
                 Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);

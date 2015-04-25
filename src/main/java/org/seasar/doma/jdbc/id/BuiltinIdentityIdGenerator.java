@@ -21,7 +21,9 @@ import java.sql.Statement;
 
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 
 /**
@@ -94,10 +96,16 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
      *             識別子の取得に失敗した場合
      */
     protected long getGeneratedValue(IdGenerationConfig config) {
-        String qualifiedTableName = config.getQualifiedTableName();
-        String idColumnName = config.getIdColumnName();
-        Sql<?> sql = config.getDialect().getIdentitySelectSql(
-                qualifiedTableName, idColumnName);
+        Naming naming = config.getNaming();
+        EntityType<?> entityType = config.getEntityType();
+        String catalogName = entityType.getCatalogName();
+        String schemaName = entityType.getSchemaName();
+        String tableName = entityType.getTableName(naming::apply);
+        String idColumnName = entityType.getGeneratedIdPropertyType()
+                .getColumnName(naming::apply);
+        Sql<?> sql = config.getDialect().getIdentitySelectSql(catalogName,
+                schemaName, tableName, idColumnName,
+                entityType.isQuoteRequired());
         return getGeneratedValue(config, sql);
     }
 
