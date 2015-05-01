@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -33,6 +34,7 @@ import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
@@ -60,9 +62,13 @@ import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateStatementNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
@@ -100,6 +106,8 @@ public class NodePreparedSqlBuilder implements
 
     protected final Function<ExpandNode, List<String>> columnsExpander;
 
+    protected final BiConsumer<PopulateNode, SqlContext> valuesPopulater;
+
     public NodePreparedSqlBuilder(Config config, SqlKind kind,
             String sqlFilePath) {
         this(config, kind, sqlFilePath,
@@ -124,13 +132,28 @@ public class NodePreparedSqlBuilder implements
             String sqlFilePath, ExpressionEvaluator evaluator,
             SqlLogType sqlLogType,
             Function<ExpandNode, List<String>> columnsExpander) {
-        assertNotNull(config, kind, evaluator, columnsExpander);
+        this(config, kind, sqlFilePath, evaluator, sqlLogType, columnsExpander,
+                new BiConsumer<PopulateNode, SqlContext>() {
+                    @Override
+                    public void accept(PopulateNode node, SqlContext context) {
+                        throw new UnsupportedOperationException();
+                    }
+                });
+    }
+
+    public NodePreparedSqlBuilder(Config config, SqlKind kind,
+            String sqlFilePath, ExpressionEvaluator evaluator,
+            SqlLogType sqlLogType,
+            Function<ExpandNode, List<String>> columnsExpander,
+            BiConsumer<PopulateNode, SqlContext> valuesPopulater) {
+        assertNotNull(config, kind, evaluator, columnsExpander, valuesPopulater);
         this.config = config;
         this.kind = kind;
         this.sqlFilePath = sqlFilePath;
         this.evaluator = evaluator;
         this.sqlLogType = sqlLogType;
         this.columnsExpander = columnsExpander;
+        this.valuesPopulater = valuesPopulater;
     }
 
     public PreparedSql build(SqlNode sqlNode, Function<String, String> commenter) {
@@ -539,6 +562,58 @@ public class NodePreparedSqlBuilder implements
     }
 
     @Override
+    public Void visitUpdateStatementNode(UpdateStatementNode node, Context p) {
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitUpdateClauseNode(UpdateClauseNode node, Context p) {
+        WordNode wordNode = node.getWordNode();
+        wordNode.accept(this, p);
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitSetClauseNode(SetClauseNode node, Context p) {
+        WordNode wordNode = node.getWordNode();
+        wordNode.accept(this, p);
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitPopulateNode(PopulateNode node, Context p) {
+        valuesPopulater.accept(node, new SqlContext() {
+
+            @Override
+            public void cutBackSql(int length) {
+                p.cutBackSqlBuf(length);
+                p.cutBackFormattedSqlBuf(length);
+            }
+
+            @Override
+            public void appendSql(String sql) {
+                p.appendRawSql(sql);
+                p.appendFormattedSql(sql);
+            }
+
+            @Override
+            public <BASIC> void appendParameter(JdbcMappable<BASIC> parameter) {
+                p.appendParameter(new BasicInParameter<>(parameter::getWrapper));
+            }
+        });
+        return null;
+    }
+
+    @Override
     public Void visitWordNode(WordNode node, Context p) {
         p.setAvailable(true);
         String word = node.getWord();
@@ -684,9 +759,19 @@ public class NodePreparedSqlBuilder implements
 
         protected <BASIC, CONTAINER> void addBindValue(
                 Scalar<BASIC, CONTAINER> scalar) {
-            parameters.add(new ScalarInParameter<BASIC, CONTAINER>(scalar));
+            appendParameterInternal(new ScalarInParameter<BASIC, CONTAINER>(
+                    scalar));
+        }
+
+        protected <BASIC> void appendParameter(InParameter<BASIC> parameter) {
+            appendParameterInternal(parameter);
+        }
+
+        protected <BASIC> void appendParameterInternal(
+                InParameter<BASIC> parameter) {
+            parameters.add(parameter);
             rawSqlBuf.append("?");
-            String formatted = scalar.getWrapper().accept(
+            String formatted = parameter.getWrapper().accept(
                     config.getDialect().getSqlLogFormattingVisitor(),
                     formattingFunction, null);
             formattedSqlBuf.append(formatted);

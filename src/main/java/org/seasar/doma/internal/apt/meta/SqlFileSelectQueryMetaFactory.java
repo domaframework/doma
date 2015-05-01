@@ -65,8 +65,7 @@ public class SqlFileSelectQueryMetaFactory extends
         doParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFiles(queryMeta, method, daoMeta,
-                queryMeta.getEntityCtType() != null);
+        doSqlFiles(queryMeta, method, daoMeta, queryMeta.isExpandable(), false);
         return queryMeta;
     }
 

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import java.util.List;
+
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
@@ -69,12 +71,32 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
         return modifyMirror.getIgnoreVersionValue();
     }
 
+    public Boolean getExcludeNull() {
+        return modifyMirror.getExcludeNullValue();
+    }
+
     public Boolean getSuppressOptimisticLockException() {
         return modifyMirror.getSuppressOptimisticLockExceptionValue();
     }
 
+    public Boolean getIncludeUnchanged() {
+        return modifyMirror.getIncludeUnchangedValue();
+    }
+
+    public List<String> getInclude() {
+        return modifyMirror.getIncludeValue();
+    }
+
+    public List<String> getExclude() {
+        return modifyMirror.getExcludeValue();
+    }
+
     public SqlLogType getSqlLogType() {
         return modifyMirror.getSqlLogValue();
+    }
+
+    public boolean isPopulatable() {
+        return entityCtType != null && queryKind == QueryKind.SQLFILE_UPDATE;
     }
 
     @Override

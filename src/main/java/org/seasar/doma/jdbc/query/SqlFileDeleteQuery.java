@@ -47,6 +47,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     public void prepare() {
         super.prepare();
         assertNotNull(method, sqlFilePath);
+        executable = true;
         preDelete();
         prepareOptions();
         prepareOptimisticLock();

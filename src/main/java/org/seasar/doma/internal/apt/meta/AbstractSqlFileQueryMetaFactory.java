@@ -53,7 +53,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
 
     protected void doSqlFiles(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta, boolean expandable) {
+            DaoMeta daoMeta, boolean expandable, boolean populatable) {
         if (!Options.getSqlValidation(env)) {
             return;
         }
@@ -77,7 +77,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                         sqlFilePath, sql);
                 SqlValidator validator = createSqlValidator(method,
                         queryMeta.getBindableParameterTypeMap(), sqlFilePath,
-                        expandable);
+                        expandable, populatable);
                 validator.validate(sqlNode);
                 queryMeta.addFileName(fileName);
             }
@@ -153,8 +153,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
     protected SqlValidator createSqlValidator(ExecutableElement method,
             Map<String, TypeMirror> parameterTypeMap, String sqlFilePath,
-            boolean expandable) {
+            boolean expandable, boolean populatable) {
         return new SqlValidator(env, method, parameterTypeMap, sqlFilePath,
-                expandable);
+                expandable, populatable);
     }
 }

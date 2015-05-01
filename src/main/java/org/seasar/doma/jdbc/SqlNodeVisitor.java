@@ -38,8 +38,12 @@ import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateStatementNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
@@ -104,9 +108,17 @@ public interface SqlNodeVisitor<R, P> {
 
     R visitParensNode(ParensNode node, P p);
 
+    R visitPopulateNode(PopulateNode node, P p);
+
     R visitSelectClauseNode(SelectClauseNode node, P p);
 
     R visitSelectStatementNode(SelectStatementNode node, P p);
+
+    R visitSetClauseNode(SetClauseNode node, P p);
+
+    R visitUpdateClauseNode(UpdateClauseNode node, P p);
+
+    R visitUpdateStatementNode(UpdateStatementNode node, P p);
 
     R visitWhereClauseNode(WhereClauseNode node, P p);
 

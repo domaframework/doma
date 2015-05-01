@@ -18,7 +18,6 @@ package org.seasar.doma.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +32,6 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -51,6 +49,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     protected boolean unchangedPropertyIncluded;
 
+    protected UpdateQueryHelper<ENTITY> helper;
+
     public AutoUpdateQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
@@ -59,6 +59,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     public void prepare() {
         super.prepare();
         assertNotNull(method, entityType, entity);
+        setupHelper();
         preUpdate();
         prepareIdAndVersionPropertyTypes();
         validateIdExistent();
@@ -69,8 +70,16 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         assertNotNull(sql);
     }
 
+    protected void setupHelper() {
+        helper = new UpdateQueryHelper<ENTITY>(config, entityType,
+                includedPropertyNames, excludedPropertyNames, nullExcluded,
+                versionIgnored, optimisticLockExceptionSuppressed,
+                unchangedPropertyIncluded);
+    }
+
     protected void preUpdate() {
-        List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = helper
+                .getTargetPropertyTypes(entity);
         AutoPreUpdateContext<ENTITY> context = new AutoPreUpdateContext<ENTITY>(
                 entityType, method, config, targetPropertyTypes);
         entityType.preUpdate(entity, context);
@@ -88,54 +97,11 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     }
 
     protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = getTargetPropertyTypes();
+        targetPropertyTypes = helper.getTargetPropertyTypes(entity);
         if (!targetPropertyTypes.isEmpty()) {
             executable = true;
             sqlExecutionSkipCause = null;
         }
-    }
-
-    protected List<EntityPropertyType<ENTITY, ?>> getTargetPropertyTypes() {
-        int capacity = entityType.getEntityPropertyTypes().size();
-        List<EntityPropertyType<ENTITY, ?>> results = new ArrayList<>(capacity);
-        ENTITY originalStates = entityType.getOriginalStates(entity);
-        for (EntityPropertyType<ENTITY, ?> propertyType : entityType
-                .getEntityPropertyTypes()) {
-            if (!propertyType.isUpdatable()) {
-                continue;
-            }
-            if (propertyType.isId()) {
-                continue;
-            }
-            if (!versionIgnored && propertyType.isVersion()) {
-                continue;
-            }
-            if (nullExcluded) {
-                Property<ENTITY, ?> property = propertyType.createProperty();
-                property.load(entity);
-                if (property.getWrapper().get() == null) {
-                    continue;
-                }
-            }
-            if (unchangedPropertyIncluded || originalStates == null
-                    || isChanged(originalStates, propertyType)) {
-                String name = propertyType.getName();
-                if (!isTargetPropertyName(name)) {
-                    continue;
-                }
-                results.add(propertyType);
-            }
-        }
-        return results;
-    }
-
-    protected boolean isChanged(ENTITY originalStates,
-            EntityPropertyType<ENTITY, ?> propertyType) {
-        Wrapper<?> originalWrapper = propertyType.createProperty()
-                .load(originalStates).getWrapper();
-        Wrapper<?> wrapper = propertyType.createProperty().load(entity)
-                .getWrapper();
-        return !wrapper.hasEqualValue(originalWrapper.get());
     }
 
     protected void prepareSql() {
@@ -147,26 +113,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         builder.appendSql(entityType.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         builder.appendSql(" set ");
-        for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-            Property<ENTITY, ?> property = propertyType.createProperty();
-            property.load(entity);
-            builder.appendSql(propertyType.getColumnName(naming::apply,
-                    dialect::applyQuote));
-            builder.appendSql(" = ");
-            builder.appendParameter(property);
-            builder.appendSql(", ");
-        }
-        if (!versionIgnored && versionPropertyType != null) {
-            Property<ENTITY, ?> property = versionPropertyType.createProperty();
-            property.load(entity);
-            builder.appendSql(versionPropertyType.getColumnName(naming::apply,
-                    dialect::applyQuote));
-            builder.appendSql(" = ");
-            builder.appendParameter(property);
-            builder.appendSql(" + 1");
-        } else {
-            builder.cutBackSql(2);
-        }
+        helper.populateValues(entity, targetPropertyTypes, versionPropertyType,
+                builder);
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
@@ -209,7 +157,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     }
 
     protected void postUpdate() {
-        List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = helper
+                .getTargetPropertyTypes(entity);
         if (!versionIgnored && versionPropertyType != null) {
             targetPropertyTypes.add(versionPropertyType);
         }

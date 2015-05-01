@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class PreparedSqlBuilder {
+public class PreparedSqlBuilder implements SqlContext {
 
     protected final List<BasicInParameter<?>> parameters = new ArrayList<>();
 

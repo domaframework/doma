@@ -26,9 +26,11 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -123,4 +125,134 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         query.prepare();
         assertFalse(query.isExecutable());
     }
+
+    public void testPopulate() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
+
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
+        emp2.setVersion(200);
+
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
+                Emp.class);
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                "testPopulate"));
+        query.setParameterName("e");
+        query.setElements(Arrays.asList(emp1, emp2));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.setEntityType(_Emp.getSingletonInternal());
+        query.prepare();
+
+        assertEquals(2, query.getSqls().size());
+        Sql<?> sql = query.getSql();
+        assertEquals(
+                "update aaa set NAME = ?, SALARY = ?, VERSION = ? + 1 where id = ?",
+                sql.getRawSql());
+    }
+
+    public void testPopulate_include() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
+
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
+        emp2.setVersion(200);
+
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
+                Emp.class);
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                "testPopulate"));
+        query.setParameterName("e");
+        query.setElements(Arrays.asList(emp1, emp2));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.setEntityType(_Emp.getSingletonInternal());
+        query.setIncludedPropertyNames("name");
+        query.prepare();
+
+        assertEquals(2, query.getSqls().size());
+        Sql<?> sql = query.getSql();
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
+                sql.getRawSql());
+    }
+
+    public void testPopulate_exclude() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
+
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
+        emp2.setVersion(200);
+
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
+                Emp.class);
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                "testPopulate"));
+        query.setParameterName("e");
+        query.setElements(Arrays.asList(emp1, emp2));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.setEntityType(_Emp.getSingletonInternal());
+        query.setExcludedPropertyNames("name");
+        query.prepare();
+
+        assertEquals(2, query.getSqls().size());
+        Sql<?> sql = query.getSql();
+        assertEquals("update aaa set SALARY = ?, VERSION = ? + 1 where id = ?",
+                sql.getRawSql());
+    }
+
+    public void testPopulate_ignoreVersion() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
+
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
+        emp2.setVersion(200);
+
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
+                Emp.class);
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                "testPopulate"));
+        query.setParameterName("e");
+        query.setElements(Arrays.asList(emp1, emp2));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.setEntityType(_Emp.getSingletonInternal());
+        query.setVersionIgnored(true);
+        query.prepare();
+
+        assertEquals(2, query.getSqls().size());
+        Sql<?> sql = query.getSql();
+        assertEquals(
+                "update aaa set NAME = ?, SALARY = ?, VERSION = ? where id = ?",
+                sql.getRawSql());
+    }
+
 }

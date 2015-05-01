@@ -38,9 +38,12 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.POPULATE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.QUOTE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SELECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SET_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.UNION_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.UPDATE_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHERE_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHITESPACE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WORD;
@@ -278,6 +281,22 @@ public class SqlTokenizerTest extends TestCase {
         assertNull(tokenizer.getToken());
     }
 
+    public void testUpdate() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("update");
+        assertEquals(UPDATE_WORD, tokenizer.next());
+        assertEquals("update", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testSet() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("set");
+        assertEquals(SET_WORD, tokenizer.next());
+        assertEquals("set", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
     public void testAnd() throws Exception {
         SqlTokenizer tokenizer = new SqlTokenizer("and");
         assertEquals(AND_WORD, tokenizer.next());
@@ -459,6 +478,30 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals(" ", tokenizer.getToken());
         assertEquals(FROM_WORD, tokenizer.next());
         assertEquals("from", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testPopulateBlockComment() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("set /*%populate*/ id = id");
+        assertEquals(SET_WORD, tokenizer.next());
+        assertEquals("set", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(POPULATE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*%populate*/", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("id", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(OTHER, tokenizer.next());
+        assertEquals("=", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("id", tokenizer.getToken());
         assertEquals(EOF, tokenizer.next());
         assertNull(tokenizer.getToken());
     }

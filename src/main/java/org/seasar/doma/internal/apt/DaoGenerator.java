@@ -721,9 +721,32 @@ public class DaoGenerator extends AbstractGenerator {
                         m.getEntityCtType().getBoxedMetaTypeName());
             }
 
+            Boolean excludeNull = m.getExcludeNull();
+            if (excludeNull != null) {
+                iprint("__query.setNullExcluded(%1$s);%n", excludeNull);
+            }
+
             Boolean ignoreVersion = m.getIgnoreVersion();
             if (ignoreVersion != null) {
                 iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+            }
+
+            List<String> include = m.getInclude();
+            if (include != null) {
+                iprint("__query.setIncludedPropertyNames(%1$s);%n",
+                        toCSVFormat(include));
+            }
+
+            List<String> exclude = m.getExclude();
+            if (exclude != null) {
+                iprint("__query.setExcludedPropertyNames(%1$s);%n",
+                        toCSVFormat(m.getExclude()));
+            }
+
+            Boolean includeUnchanged = m.getIncludeUnchanged();
+            if (includeUnchanged != null) {
+                iprint("__query.setUnchangedPropertyIncluded(%1$s);%n",
+                        includeUnchanged);
             }
 
             Boolean suppressOptimisticLockException = m
@@ -867,6 +890,18 @@ public class DaoGenerator extends AbstractGenerator {
             Boolean ignoreVersion = m.getIgnoreVersion();
             if (ignoreVersion != null) {
                 iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+            }
+
+            List<String> include = m.getInclude();
+            if (include != null) {
+                iprint("__query.setIncludedPropertyNames(%1$s);%n",
+                        toCSVFormat(include));
+            }
+
+            List<String> exclude = m.getExclude();
+            if (exclude != null) {
+                iprint("__query.setExcludedPropertyNames(%1$s);%n",
+                        toCSVFormat(exclude));
             }
 
             Boolean suppressOptimisticLockException = m

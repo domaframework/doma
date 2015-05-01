@@ -45,6 +45,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
@@ -67,18 +68,21 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
     protected final boolean expandable;
 
+    protected final boolean populatable;
+
     protected final ExpressionValidator expressionValidator;
 
     public SqlValidator(ProcessingEnvironment env,
             ExecutableElement methodElement,
             Map<String, TypeMirror> parameterTypeMap, String path,
-            boolean expandable) {
+            boolean expandable, boolean populatable) {
         assertNotNull(env, methodElement, parameterTypeMap, path);
         this.env = env;
         this.methodElement = methodElement;
         this.parameterTypeMap = parameterTypeMap;
         this.path = path;
         this.expandable = expandable;
+        this.populatable = populatable;
         expressionValidator = new ExpressionValidator(env, methodElement,
                 parameterTypeMap);
     }
@@ -274,6 +278,17 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             SqlLocation location = node.getLocation();
             String sql = getSql(location);
             throw new AptException(Message.DOMA4257, env, methodElement, path,
+                    sql, location.getLineNumber(), location.getPosition());
+        }
+        return visitNode(node, p);
+    }
+
+    @Override
+    public Void visitPopulateNode(PopulateNode node, Void p) {
+        if (!populatable) {
+            SqlLocation location = node.getLocation();
+            String sql = getSql(location);
+            throw new AptException(Message.DOMA4270, env, methodElement, path,
                     sql, location.getLineNumber(), location.getPosition());
         }
         return visitNode(node, p);

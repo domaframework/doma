@@ -24,7 +24,8 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class SelectStatementNode extends AbstractSqlNode {
+public class SelectStatementNode extends AbstractSqlNode implements
+        WhereClauseAwareNode {
 
     protected SelectClauseNode selectClauseNode;
 
@@ -60,10 +61,12 @@ public class SelectStatementNode extends AbstractSqlNode {
         appendNodeInternal(fromClauseNode);
     }
 
+    @Override
     public WhereClauseNode getWhereClauseNode() {
         return whereClauseNode;
     }
 
+    @Override
     public void setWhereClauseNode(WhereClauseNode whereClauseNode) {
         this.whereClauseNode = whereClauseNode;
         appendNodeInternal(whereClauseNode);

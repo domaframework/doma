@@ -18,12 +18,16 @@ package org.seasar.doma.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.sql.SqlContext;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
@@ -37,6 +41,8 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public abstract class SqlFileModifyQuery extends AbstractQuery implements
         ModifyQuery {
 
+    protected static final String[] EMPTY_STRINGS = new String[] {};
+
     protected final SqlKind kind;
 
     protected String sqlFilePath;
@@ -48,6 +54,14 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements
     protected boolean optimisticLockCheckRequired;
 
     protected SqlLogType sqlLogType;
+
+    protected String[] includedPropertyNames = EMPTY_STRINGS;
+
+    protected String[] excludedPropertyNames = EMPTY_STRINGS;
+
+    protected boolean executable;
+
+    protected SqlExecutionSkipCause sqlExecutionSkipCause = SqlExecutionSkipCause.STATE_UNCHANGED;
 
     protected SqlFileModifyQuery(SqlKind kind) {
         assertNotNull(kind);
@@ -67,8 +81,17 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements
                 config.getDialect().getExpressionFunctions(),
                 config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                kind, sqlFile.getPath(), evaluator, sqlLogType);
+                kind, sqlFile.getPath(), evaluator, sqlLogType,
+                this::expandColumns, this::populateValues);
         sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
+    }
+
+    protected List<String> expandColumns(ExpandNode node) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected void populateValues(PopulateNode node, SqlContext context) {
+        throw new UnsupportedOperationException();
     }
 
     public void setSqlFilePath(String sqlFilePath) {
@@ -88,6 +111,14 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements
         this.sqlLogType = sqlLogType;
     }
 
+    public void setIncludedPropertyNames(String... includedPropertyNames) {
+        this.includedPropertyNames = includedPropertyNames;
+    }
+
+    public void setExcludedPropertyNames(String... excludedPropertyNames) {
+        this.excludedPropertyNames = excludedPropertyNames;
+    }
+
     @Override
     public PreparedSql getSql() {
         return sql;
@@ -100,12 +131,12 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements
 
     @Override
     public boolean isExecutable() {
-        return true;
+        return executable;
     }
 
     @Override
     public SqlExecutionSkipCause getSqlExecutionSkipCause() {
-        return null;
+        return sqlExecutionSkipCause;
     }
 
     @Override
