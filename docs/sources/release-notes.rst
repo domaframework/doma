@@ -2,6 +2,14 @@
 リリースノート
 ==============
 
+v2.3.0: 2015-05-23
+======================
+
+* `GH74 <https://github.com/domaframework/doma/pull/74>`_
+  PostgresDialectでID生成エラーが発生する問題を修正
+* `GH75 <https://github.com/domaframework/doma/pull/75>`_
+  SQLファイルでUPDATE文のSET句を自動生成
+
 v2.2.0: 2015-03-28
 ======================
 
@@ -81,4 +89,3 @@ v2.0-beta-3: 2014-04-03
   を基本型として使用できるようにしました。
 * ``JdbcLogger`` の実装の差し替えを容易にするために ``AbstractJdbcLogger`` を追加しました。
 * ``SelectStrategyType`` の名前を ``SelectType`` に変更しました。
-
