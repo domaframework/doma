@@ -34,6 +34,8 @@
 
 上記の条件を満たさないない場合、戻り値は更新件数を表す ``int`` でなければいけません。
 
+.. _auto-update:
+
 SQLの自動生成による更新
 =======================
 
@@ -163,6 +165,37 @@ SQLファイルによる更新
 SQLファイルによる更新を行うには、 ``@Update`` の ``sqlFile`` 要素に ``true`` を設定し、
 メソッドに対応するSQLファイルを用意します。
 
+.. note::
+
+  SQLファイルによる更新は、 :ref:`populate` の利用有無によりルールが異なります。
+
+更新カラムリスト生成コメントを使用する場合
+-------------------------------------------------
+
+最初のパラメータの型はエンティティクラスでなければいけません。
+指定できるパラメータの数に制限はありません。
+パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
+それ以外の型の場合、引数は ``null`` であってはいけません。
+
+.. code-block:: java
+
+  @Update(sqlFile = true)
+  int update(Employee employee, BigDecimal salary);
+
+  @Update(sqlFile = true)
+  Result<ImmutableEmployee> update(ImmutableEmployee employee, , BigDecimal salary);
+
+たとえば、上記のメソッドに対応するSQLは次のように記述します。
+
+.. code-block:: sql
+
+  update employee set /*%populate*/ id = id where salary > /* salary */0
+
+更新対象プロパティの制御に関するルールは、 :ref:`auto-update` と同じです。
+
+更新カラムリスト生成コメントを使用しない場合
+-------------------------------------------------
+
 パラメータには任意の型が使用できます。
 指定できるパラメータの数に制限はありません。
 パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
@@ -188,7 +221,7 @@ SQLファイルによる更新では、
 ``includeUnchanged`` 要素は参照されません。
 
 SQLファイルにおけるバージョン番号と楽観的排他制御
--------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 次の条件を満たす場合に、楽観的排他制御が行われます。
 
@@ -211,7 +244,7 @@ WHERE句でバージョンを番号を指定しSET句でバージョン番号を
 エンティティのバージョンプロパティの値が1増分されます。
 
 ignoreVersion
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 ``@Update`` の ``ignoreVersion`` 要素が ``true`` の場合、
 更新件数が0件であっても、 ``OptimisticLockException`` はスローされません。
@@ -223,7 +256,7 @@ ignoreVersion
   int update(Employee employee);
 
 suppressOptimisticLockException
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``@Update`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
 更新件数が0件であっても、 ``OptimisticLockException`` はスローされません。
