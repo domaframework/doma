@@ -61,7 +61,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         doParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFiles(queryMeta, method, daoMeta, false);
+        doSqlFiles(queryMeta, method, daoMeta, false, queryMeta.isPopulatable());
         return queryMeta;
     }
 
@@ -162,9 +162,9 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     @Override
     protected SqlValidator createSqlValidator(ExecutableElement method,
             Map<String, TypeMirror> parameterTypeMap, String sqlFilePath,
-            boolean expandable) {
+            boolean expandable, boolean populatable) {
         return new BatchSqlValidator(env, method, parameterTypeMap,
-                sqlFilePath, expandable);
+                sqlFilePath, expandable, populatable);
     }
 
 }

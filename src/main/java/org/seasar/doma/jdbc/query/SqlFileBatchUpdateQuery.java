@@ -19,12 +19,16 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
+import org.seasar.doma.internal.jdbc.sql.SqlContext;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
@@ -56,10 +60,12 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         executable = true;
         sqlExecutionSkipCause = null;
         currentEntity = elements.get(0);
+        initEntityHandler();
         preUpdate();
         prepareSqlFile();
         prepareOptions();
         prepareOptimisticLock();
+        prepareTargetPropertyTypes();
         prepareSql();
         elements.set(0, currentEntity);
         for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext();) {
@@ -71,10 +77,30 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         assertEquals(size, sqls.size());
     }
 
+    protected void initEntityHandler() {
+        if (entityHandler != null) {
+            entityHandler.init();
+        }
+    }
+
     protected void preUpdate() {
         if (entityHandler != null) {
             entityHandler.preUpdate();
         }
+    }
+
+    protected void prepareTargetPropertyTypes() {
+        if (entityHandler != null) {
+            entityHandler.prepareTargetPropertyTypes();
+        }
+    }
+
+    @Override
+    protected void populateValues(PopulateNode node, SqlContext context) {
+        if (entityHandler == null) {
+            throw new UnsupportedOperationException();
+        }
+        entityHandler.populateValues(context);
     }
 
     protected void prepareOptimisticLock() {
@@ -126,10 +152,20 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
 
         protected VersionPropertyType<? super ELEMENT, ELEMENT, ?, ?> versionPropertyType;
 
+        protected List<EntityPropertyType<ELEMENT, ?>> targetPropertyTypes;
+
+        protected BatchUpdateQueryHelper<ELEMENT> helper;
+
         protected EntityHandler(EntityType<ELEMENT> entityType) {
             assertNotNull(entityType);
             this.entityType = entityType;
             this.versionPropertyType = entityType.getVersionPropertyType();
+        }
+
+        protected void init() {
+            helper = new BatchUpdateQueryHelper<>(config, entityType,
+                    includedPropertyNames, excludedPropertyNames,
+                    versionIgnored, optimisticLockExceptionSuppressed);
         }
 
         protected void preUpdate() {
@@ -139,6 +175,10 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
             if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
+        }
+
+        protected void prepareTargetPropertyTypes() {
+            targetPropertyTypes = helper.getTargetPropertyTypes();
         }
 
         protected void postUpdate() {
@@ -169,6 +209,12 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
                 }
             }
         }
+
+        protected void populateValues(SqlContext context) {
+            helper.populateValues(currentEntity, targetPropertyTypes,
+                    versionPropertyType, context);
+        }
+
     }
 
     protected static class SqlFileBatchPreUpdateContext<E> extends

@@ -42,9 +42,12 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.POPULATE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.QUOTE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SELECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SET_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.UNION_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.UPDATE_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHERE_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHITESPACE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WORD;
@@ -276,6 +279,13 @@ public class SqlTokenizer {
             if (isWordTerminated()) {
                 return;
             }
+        } else if ((c == 'u' || c == 'U') && (c2 == 'p' || c2 == 'P')
+                && (c3 == 'd' || c3 == 'D') && (c4 == 'a' || c4 == 'A')
+                && (c5 == 't' || c5 == 'T') && (c6 == 'e' || c6 == 'E')) {
+            type = UPDATE_WORD;
+            if (isWordTerminated()) {
+                return;
+            }
         }
         buf.position(buf.position() - 1);
         peekFiveChars(c, c2, c3, c4, c5);
@@ -324,6 +334,12 @@ public class SqlTokenizer {
         if ((c == 'a' || c == 'A') && (c2 == 'n' || c2 == 'N')
                 && (c3 == 'd' || c3 == 'D')) {
             type = AND_WORD;
+            if (isWordTerminated()) {
+                return;
+            }
+        } else if ((c == 's' || c == 'S') && (c2 == 'e' || c2 == 'E')
+                && (c3 == 't' || c3 == 'T')) {
+            type = SET_WORD;
             if (isWordTerminated()) {
                 return;
             }
@@ -399,6 +415,27 @@ public class SqlTokenizer {
                                                 if (isBlockCommentDirectiveTerminated()) {
                                                     type = EXPAND_BLOCK_COMMENT;
                                                 }
+                                            } else if (buf.hasRemaining()) {
+                                                char c10 = buf.get();
+                                                if (buf.hasRemaining()) {
+                                                    char c11 = buf.get();
+                                                    if (c4 == 'p' && c5 == 'o'
+                                                            && c6 == 'p'
+                                                            && c7 == 'u'
+                                                            && c8 == 'l'
+                                                            && c9 == 'a'
+                                                            && c10 == 't'
+                                                            && c11 == 'e') {
+                                                        if (isBlockCommentDirectiveTerminated()) {
+                                                            type = POPULATE_BLOCK_COMMENT;
+                                                        }
+                                                    } else {
+                                                        buf.position(buf
+                                                                .position() - 8);
+                                                    }
+                                                } else {
+                                                    buf.position(buf.position() - 7);
+                                                }
                                             } else {
                                                 buf.position(buf.position() - 6);
                                             }
@@ -422,7 +459,8 @@ public class SqlTokenizer {
                             && type != END_BLOCK_COMMENT
                             && type != ELSE_BLOCK_COMMENT
                             && type != ELSEIF_BLOCK_COMMENT
-                            && type != EXPAND_BLOCK_COMMENT) {
+                            && type != EXPAND_BLOCK_COMMENT
+                            && type != POPULATE_BLOCK_COMMENT) {
                         int pos = buf.position() - lineStartPosition;
                         throw new JdbcException(Message.DOMA2119, sql,
                                 lineNumber, pos);

@@ -26,6 +26,9 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.sql.SqlContext;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
@@ -40,6 +43,8 @@ import org.seasar.doma.jdbc.entity.EntityType;
  */
 public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
         implements BatchModifyQuery {
+
+    protected static final String[] EMPTY_STRINGS = new String[] {};
 
     protected final Class<ELEMENT> elementClass;
 
@@ -60,6 +65,10 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
     protected int batchSize;
 
     protected SqlLogType sqlLogType;
+
+    protected String[] includedPropertyNames = EMPTY_STRINGS;
+
+    protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
     protected List<ELEMENT> elements;
 
@@ -100,9 +109,18 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
                         .getDialect().getExpressionFunctions(),
                 config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                kind, sqlFile.getPath(), evaluator, sqlLogType);
+                kind, sqlFile.getPath(), evaluator, sqlLogType,
+                this::expandColumns, this::populateValues);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
         sqls.add(sql);
+    }
+
+    protected List<String> expandColumns(ExpandNode node) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected void populateValues(PopulateNode node, SqlContext context) {
+        throw new UnsupportedOperationException();
     }
 
     public void setSqlFilePath(String sqlFilePath) {
@@ -137,6 +155,14 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
 
     public void setSqlLogType(SqlLogType sqlLogType) {
         this.sqlLogType = sqlLogType;
+    }
+
+    public void setIncludedPropertyNames(String... includedPropertyNames) {
+        this.includedPropertyNames = includedPropertyNames;
+    }
+
+    public void setExcludedPropertyNames(String... excludedPropertyNames) {
+        this.excludedPropertyNames = excludedPropertyNames;
     }
 
     public abstract void setEntityType(EntityType<ELEMENT> entityType);

@@ -19,7 +19,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
@@ -46,6 +45,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected boolean optimisticLockExceptionSuppressed;
 
+    protected BatchUpdateQueryHelper<ENTITY> helper;
+
     public AutoBatchUpdateQuery(EntityType<ENTITY> entityType) {
         super(entityType);
     }
@@ -61,6 +62,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         executable = true;
         executionSkipCause = null;
         currentEntity = entities.get(0);
+        setupHelper();
         preUpdate();
         prepareIdAndVersionPropertyTypes();
         validateIdExistent();
@@ -76,6 +78,12 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             it.set(currentEntity);
         }
         assertEquals(entities.size(), sqls.size());
+    }
+
+    protected void setupHelper() {
+        helper = new BatchUpdateQueryHelper<>(config, entityType,
+                includedPropertyNames, excludedPropertyNames, versionIgnored,
+                optimisticLockExceptionSuppressed);
     }
 
     protected void preUpdate() {
@@ -96,25 +104,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = new ArrayList<EntityPropertyType<ENTITY, ?>>(
-                entityType.getEntityPropertyTypes().size());
-        for (EntityPropertyType<ENTITY, ?> p : entityType
-                .getEntityPropertyTypes()) {
-            if (!p.isUpdatable()) {
-                continue;
-            }
-            if (p.isId()) {
-                continue;
-            }
-            if (p.isVersion()) {
-                targetPropertyTypes.add(p);
-                continue;
-            }
-            if (!isTargetPropertyName(p.getName())) {
-                continue;
-            }
-            targetPropertyTypes.add(p);
-        }
+        targetPropertyTypes = helper.getTargetPropertyTypes();
     }
 
     protected void prepareSql() {
@@ -126,19 +116,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql(entityType.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         builder.appendSql(" set ");
-        for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-            Property<ENTITY, ?> property = propertyType.createProperty();
-            property.load(currentEntity);
-            builder.appendSql(propertyType.getColumnName(naming::apply,
-                    dialect::applyQuote));
-            builder.appendSql(" = ");
-            builder.appendParameter(property);
-            if (propertyType.isVersion() && !versionIgnored) {
-                builder.appendSql(" + 1");
-            }
-            builder.appendSql(", ");
-        }
-        builder.cutBackSql(2);
+        helper.populateValues(currentEntity, targetPropertyTypes,
+                versionPropertyType, builder);
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {

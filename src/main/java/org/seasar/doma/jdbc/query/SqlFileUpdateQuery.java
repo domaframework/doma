@@ -18,11 +18,15 @@ package org.seasar.doma.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
+import org.seasar.doma.internal.jdbc.sql.SqlContext;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
@@ -35,9 +39,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
     protected EntityHandler<?> entityHandler;
 
+    protected boolean nullExcluded;
+
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
+
+    protected boolean unchangedPropertyIncluded;
 
     public SqlFileUpdateQuery() {
         super(SqlKind.UPDATE);
@@ -47,17 +55,39 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     public void prepare() {
         super.prepare();
         assertNotNull(method, sqlFilePath);
+        initEntityHandler();
         preUpdate();
         prepareOptimisticLock();
         prepareOptions();
+        prepareTargetPropertyTypes();
         prepareSql();
         assertNotNull(sql);
+    }
+
+    protected void initEntityHandler() {
+        if (entityHandler != null) {
+            entityHandler.init();
+        }
     }
 
     protected void preUpdate() {
         if (entityHandler != null) {
             entityHandler.preUpdate();
         }
+    }
+
+    protected void prepareTargetPropertyTypes() {
+        if (entityHandler != null) {
+            entityHandler.prepareTargetPropertyTypes();
+        }
+    }
+
+    @Override
+    protected void populateValues(PopulateNode node, SqlContext context) {
+        if (entityHandler == null) {
+            throw new UnsupportedOperationException();
+        }
+        entityHandler.populateValues(context);
     }
 
     protected void prepareOptimisticLock() {
@@ -94,8 +124,8 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         entityHandler = new EntityHandler<E>(name, entity, entityType);
     }
 
-    public void setVersionIncluded(boolean versionIncluded) {
-        this.versionIgnored |= versionIncluded;
+    public void setNullExcluded(boolean nullExcluded) {
+        this.nullExcluded = nullExcluded;
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
@@ -105,6 +135,10 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     public void setOptimisticLockExceptionSuppressed(
             boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
+    }
+
+    public void setUnchangedPropertyIncluded(Boolean unchangedPropertyIncluded) {
+        this.unchangedPropertyIncluded = unchangedPropertyIncluded;
     }
 
     protected class EntityHandler<E> {
@@ -117,12 +151,23 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
 
+        protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
+
+        protected UpdateQueryHelper<E> helper;
+
         protected EntityHandler(String name, E entity, EntityType<E> entityType) {
             assertNotNull(name, entity, entityType);
             this.name = name;
             this.entity = entity;
             this.entityType = entityType;
             this.versionPropertyType = entityType.getVersionPropertyType();
+        }
+
+        protected void init() {
+            helper = new UpdateQueryHelper<E>(config, entityType,
+                    includedPropertyNames, excludedPropertyNames, nullExcluded,
+                    versionIgnored, optimisticLockExceptionSuppressed,
+                    unchangedPropertyIncluded);
         }
 
         protected void preUpdate() {
@@ -134,6 +179,14 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
                 addParameterInternal(name, entityType.getEntityClass(), entity);
             }
 
+        }
+
+        protected void prepareTargetPropertyTypes() {
+            targetPropertyTypes = helper.getTargetPropertyTypes(entity);
+            if (!targetPropertyTypes.isEmpty()) {
+                executable = true;
+                sqlExecutionSkipCause = null;
+            }
         }
 
         protected void postUpdate() {
@@ -159,6 +212,12 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
                 entity = versionPropertyType.increment(entityType, entity);
             }
         }
+
+        protected void populateValues(SqlContext context) {
+            helper.populateValues(entity, targetPropertyTypes,
+                    versionPropertyType, context);
+        }
+
     }
 
     protected static class SqlFilePreUpdateContext<E> extends

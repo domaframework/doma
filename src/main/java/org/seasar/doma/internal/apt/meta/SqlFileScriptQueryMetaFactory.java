@@ -50,7 +50,7 @@ public class SqlFileScriptQueryMetaFactory extends
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFiles(queryMeta, method, daoMeta, false);
+        doSqlFiles(queryMeta, method, daoMeta, false, false);
         return queryMeta;
     }
 
@@ -87,7 +87,8 @@ public class SqlFileScriptQueryMetaFactory extends
 
     @Override
     protected void doSqlFiles(SqlFileScriptQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta, boolean expandable) {
+            ExecutableElement method, DaoMeta daoMeta, boolean expandable,
+            boolean populatable) {
         String filePath = ScriptFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString(), queryMeta.getName());
         File file = getFile(queryMeta, method, filePath);

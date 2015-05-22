@@ -33,6 +33,8 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         InsertQuery {
 
+    protected boolean nullExcluded;
+
     protected EntityHandler<?> entityHandler;
 
     public SqlFileInsertQuery() {
@@ -43,6 +45,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     public void prepare() {
         super.prepare();
         assertNotNull(method, sqlFilePath);
+        executable = true;
         preInsert();
         prepareOptions();
         prepareSql();
@@ -78,6 +81,10 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     public <E> void setEntityAndEntityType(String name, E entity,
             EntityType<E> entityType) {
         entityHandler = new EntityHandler<E>(name, entity, entityType);
+    }
+
+    public void setNullExcluded(boolean nullExcluded) {
+        this.nullExcluded = nullExcluded;
     }
 
     protected class EntityHandler<E> {

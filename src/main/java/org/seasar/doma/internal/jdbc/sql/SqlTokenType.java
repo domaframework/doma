@@ -104,6 +104,17 @@ public enum SqlTokenType {
 
     },
 
+    POPULATE_BLOCK_COMMENT {
+
+        @Override
+        public String extract(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 13);
+            return token.substring(11, token.length() - 2);
+        }
+
+    },
+
     END_BLOCK_COMMENT,
 
     DELIMITER,
@@ -135,6 +146,10 @@ public enum SqlTokenType {
     EXCEPT_WORD,
 
     INTERSECT_WORD,
+
+    UPDATE_WORD,
+
+    SET_WORD,
 
     WORD,
 

@@ -153,6 +153,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         return selectMirror.getSqlLogValue();
     }
 
+    public boolean isExpandable() {
+        return entityCtType != null;
+    }
+
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
         return visitor.visitSqlFileSelectQueryMeta(this, p);

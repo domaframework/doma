@@ -208,7 +208,7 @@ Dao インタフェースのメソッドと対応する SQL の例は次のと�
 
   select * from employee
   where
-  employee_name = /* dto.employeeName */'abc' 
+  employee_name = /* dto.employeeName */'abc'
   and
   salary = /* dto.salary */1234
 
@@ -279,7 +279,7 @@ ifとend
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeId != null */
       employee_id = /* employeeId */99
   /*%end*/
@@ -307,7 +307,7 @@ ifとend
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeId != null */
       employee_id = /* employeeId */99
   /*%end*/
@@ -327,7 +327,7 @@ ifとend
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeId != null */
       employee_id = /* employeeId */99
   /*%end*/
@@ -351,14 +351,14 @@ elseifとelse
 
 .. code-block:: sql
 
-  select 
-    * 
+  select
+    *
   from
-    employee 
-  where 
+    employee
+  where
   /*%if employeeId != null */
     employee_id = /* employeeId */9999
-  /*%elseif department_id != null */ 
+  /*%elseif department_id != null */
     and
     department_id = /* departmentId */99
   /*%else*/
@@ -370,11 +370,11 @@ elseifとelse
 
 .. code-block:: sql
 
-  select 
-    * 
+  select
+    *
   from
-    employee 
-  where 
+    employee
+  where
     employee_id = ?
 
 ``employeeId == null && department_id != null`` が成立するとき、実際は次の SQL に変換されます。
@@ -382,11 +382,11 @@ elseifとelse
 
 .. code-block:: sql
 
-  select 
-    * 
+  select
+    *
   from
-    employee 
-  where 
+    employee
+  where
     department_id = ?
 
 ``employeeId == null && department_id == null`` が成立するとき、実際は次の SQL に変換されます。
@@ -394,11 +394,11 @@ elseifとelse
 
 .. code-block:: sql
 
-  select 
-    * 
+  select
+    *
   from
-    employee 
-  where 
+    employee
+  where
     department_id is null
 
 ネストした条件コメント
@@ -408,10 +408,10 @@ elseifとelse
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeId != null */
     employee_id = /* employeeId */99
-    /*%if employeeName != null */ 
+    /*%if employeeName != null */
       and
       employee_name = /* employeeName */'hoge'
     /*%else*/
@@ -429,7 +429,7 @@ elseifとelse
 
 .. code-block:: sql
 
-  select * from employee /*%if employeeId != null */ 
+  select * from employee /*%if employeeId != null */
   where employee_id = /* employeeId */99 /*%end*/
 
 また、 ``if`` と ``end`` は同じレベルの文に含まれなければいけません。
@@ -472,7 +472,7 @@ forとend
 .. code-block:: sql
 
   select * from employee where
-  employee_name like ? 
+  employee_name like ?
   or
   employee_name like ?
   or
@@ -502,7 +502,7 @@ item_has_nextとitem_index
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%for name : names */
   employee_name like /* name */'hoge'
     /*%if name_has_next */
@@ -525,7 +525,7 @@ item_has_nextとitem_index
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%for name : names */
   employee_name like /* name */'hoge'
     /*%if name_has_next */
@@ -550,14 +550,14 @@ item_has_nextとitem_index
 また、 ``for`` と ``end`` は同じレベルの文に含まれなければいけません。
 つまり、括弧の外で ``for`` 、括弧の内側で ``end`` という記述は認められません。
 
-カラムリスト展開コメント
-------------------------
+選択カラムリスト展開コメント
+----------------------------
 
 expand
 ~~~~~~
 
 SELECT節のアスタリスク ``*`` を :doc:`entity` の定義を
-参照して自動でカラムのリストに展開する式をカラムリスト展開コメントと呼びます。
+参照して自動でカラムのリストに展開する式を選択カラムリスト展開コメントと呼びます。
 構文は次のとおりです。
 
 ::
@@ -593,7 +593,7 @@ SELECT節のアスタリスク ``*`` を :doc:`entity` の定義を
   select id, name, age from employee
 
 SQL 上でテーブルにエイリアスを指定する場合、
-カラムリスト展開コメントにも同じエイリアスを指定してください。
+選択カラムリスト展開コメントにも同じエイリアスを指定してください。
 
 .. code-block:: sql
 
@@ -604,6 +604,49 @@ SQL 上でテーブルにエイリアスを指定する場合、
 .. code-block:: sql
 
   select e.id, e.name, e.age from employee e
+
+.. _populate:
+
+更新カラムリスト生成コメント
+-----------------------------
+
+populate
+~~~~~~~~
+
+UPDATE文のSET節 を :doc:`entity` の定義を
+参照して自動で生成する式を更新カラムリスト生成コメントと呼びます。
+構文は次のとおりです。
+
+::
+
+  /*%populate*/
+
+
+例を示します。
+
+.. code-block:: sql
+
+  update employee set /*%populate*/ id = id where age < 30
+
+上記のSQL文への入力が次のような :doc:`entity` にマッピングされているものとします。
+
+.. code-block:: java
+
+   @Entity
+   public class Employee {
+       Integer id;
+       String name;
+       Integer age;
+   }
+
+このとき、 SQL は以下のように変換されます。
+
+.. code-block:: sql
+
+  update employee set id = ?, name = ?, age = ? where age < 30
+
+更新カラムリスト生成コメントは、 ``/*%populate*/`` からWHERE句までをカラムリストで置き換えます。
+つまり、元のSQLにあった ``id = id`` の記述は最終的なSQLからは削除されます。
 
 通常のブロックコメント
 ----------------------
@@ -649,4 +692,3 @@ SQL 上でテーブルにエイリアスを指定する場合、
 ``--`` は通常の行コメントだとみなされます。
 
 Domaでは行コメントを特別に解釈することはありません。
-

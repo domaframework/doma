@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.BatchSqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -49,7 +50,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
-                "aaa/bbbDao/ccc.sql", false);
+                "aaa/bbbDao/ccc.sql", false, false);
         SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
         SqlNode sqlNode = parser.parse();
         sqlNode.accept(validator, null);
@@ -66,7 +67,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
-                "aaa/bbbDao/ccc.sql", false);
+                "aaa/bbbDao/ccc.sql", false, false);
         SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
         SqlNode sqlNode = parser.parse();
         sqlNode.accept(validator, null);
@@ -82,7 +83,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
-                "aaa/bbbDao/ccc.sql", false);
+                "aaa/bbbDao/ccc.sql", false, false);
         SqlParser parser = new SqlParser(
                 "select * from emp where /*%if true*/ id = 1 /*%end */");
         SqlNode sqlNode = parser.parse();
@@ -100,7 +101,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
-                "aaa/bbbDao/ccc.sql", false);
+                "aaa/bbbDao/ccc.sql", false, false);
         SqlParser parser = new SqlParser(
                 "select * from emp where /*%if true*/ id = 1 /*%end */");
         SqlNode sqlNode = parser.parse();
@@ -118,7 +119,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
-                "aaa/bbbDao/ccc.sql", false);
+                "aaa/bbbDao/ccc.sql", false, false);
         SqlParser parser = new SqlParser(
                 "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
         SqlNode sqlNode = parser.parse();
@@ -136,11 +137,51 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
-                "aaa/bbbDao/ccc.sql", false);
+                "aaa/bbbDao/ccc.sql", false, false);
         SqlParser parser = new SqlParser(
                 "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
         SqlNode sqlNode = parser.parse();
         sqlNode.accept(validator, null);
         assertNoMessage();
     }
+
+    public void testPopulate() throws Exception {
+        Class<?> target = BatchSqlValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPopulate", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        BatchSqlValidator validator = new BatchSqlValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                "aaa/bbbDao/ccc.sql", false, true);
+        SqlParser parser = new SqlParser("update emp set /*%populate*/ id = id");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+        assertNoMessage();
+    }
+
+    public void testPopulate_noPopulatable() throws Exception {
+        Class<?> target = BatchSqlValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testPopulate", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        BatchSqlValidator validator = new BatchSqlValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                "aaa/bbbDao/ccc.sql", false, false);
+        SqlParser parser = new SqlParser("update emp set /*%populate*/ id = id");
+        SqlNode sqlNode = parser.parse();
+        try {
+            sqlNode.accept(validator, null);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA4270, expected.getMessageResource());
+        }
+    }
+
 }

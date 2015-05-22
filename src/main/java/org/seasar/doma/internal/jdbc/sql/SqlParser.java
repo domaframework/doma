@@ -47,9 +47,14 @@ import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhereClauseAwareNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
@@ -133,6 +138,14 @@ public class SqlParser {
                 parseOptionWord();
                 break;
             }
+            case UPDATE_WORD: {
+                parseUpdateWord();
+                break;
+            }
+            case SET_WORD: {
+                parseSetWord();
+                break;
+            }
             case AND_WORD:
             case OR_WORD: {
                 parseLogicalWord();
@@ -176,6 +189,10 @@ public class SqlParser {
             }
             case EXPAND_BLOCK_COMMENT: {
                 parseExpandBlockComment();
+                break;
+            }
+            case POPULATE_BLOCK_COMMENT: {
+                parsePopulateBlockComment();
                 break;
             }
             case UNION_WORD:
@@ -247,10 +264,10 @@ public class SqlParser {
     protected void parseWhereWord() {
         validate();
         WhereClauseNode node = new WhereClauseNode(token);
-        if (isInSelectStatementNode()) {
-            removeNodesTo(SelectStatementNode.class);
-            SelectStatementNode selectStatementNode = peek();
-            selectStatementNode.setWhereClauseNode(node);
+        if (isInWhereClauseAwareNode()) {
+            removeNodesTo(WhereClauseAwareNode.class);
+            WhereClauseAwareNode whereClauseAwareNode = peek();
+            whereClauseAwareNode.setWhereClauseNode(node);
         } else {
             appendNode(node);
         }
@@ -321,6 +338,29 @@ public class SqlParser {
         }
         push(node);
 
+    }
+
+    protected void parseUpdateWord() {
+        validate();
+        UpdateStatementNode updateStatementNode = new UpdateStatementNode();
+        appendNode(updateStatementNode);
+        push(updateStatementNode);
+        UpdateClauseNode updateClauseNode = new UpdateClauseNode(token);
+        updateStatementNode.setUpdateClauseNode(updateClauseNode);
+        push(updateClauseNode);
+    }
+
+    protected void parseSetWord() {
+        validate();
+        SetClauseNode node = new SetClauseNode(token);
+        if (isInUpdateStatementNode()) {
+            removeNodesTo(UpdateStatementNode.class);
+            UpdateStatementNode updateStatementNode = peek();
+            updateStatementNode.setSetClauseNode(node);
+        } else {
+            appendNode(node);
+        }
+        push(node);
     }
 
     protected void parseLogicalWord() {
@@ -479,6 +519,12 @@ public class SqlParser {
         push(node);
     }
 
+    protected void parsePopulateBlockComment() {
+        PopulateNode node = new PopulateNode(getLocation(), token);
+        appendNode(node);
+        push(node);
+    }
+
     protected void parseOther() {
         appendNode(OtherNode.of(token));
     }
@@ -518,6 +564,30 @@ public class SqlParser {
                 return false;
             }
             if (node instanceof SelectStatementNode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isInWhereClauseAwareNode() {
+        for (SqlNode node : nodeStack) {
+            if (node instanceof ParensNode) {
+                return false;
+            }
+            if (node instanceof WhereClauseAwareNode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isInUpdateStatementNode() {
+        for (SqlNode node : nodeStack) {
+            if (node instanceof ParensNode) {
+                return false;
+            }
+            if (node instanceof UpdateStatementNode) {
                 return true;
             }
         }

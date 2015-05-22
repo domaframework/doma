@@ -48,4 +48,6 @@ public interface BatchSqlValidationDao {
 
     @Suppress(messages = { Message.DOMA4181, Message.DOMA4182 })
     void testIfAndEmbeddedVariableSuppressed(String orderBy);
+
+    void testPopulate(String name);
 }

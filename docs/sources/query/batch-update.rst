@@ -34,6 +34,8 @@
 
 上記の条件を満たさないない場合、戻り値は各更新処理の更新件数を表す ``int[]`` でなければいけません。
 
+.. _auto-batch-update:
+
 SQLの自動生成によるバッチ更新
 =============================
 
@@ -127,6 +129,40 @@ SQLファイルによるバッチ更新を行うには、
 ``@BatchUpdate`` の ``sqlFile`` 要素に ``true`` を設定し、
 メソッドに対応するSQLファイルを用意します。
 
+.. note::
+
+  SQLファイルによるバッチ更新は、 :ref:`populate` の利用有無によりルールが異なります。
+
+更新カラムリスト生成コメントを使用する場合
+-------------------------------------------------
+
+.. code-block:: java
+
+  @BatchUpdate(sqlFile = true)
+  int[] update(List<Employee> employees);
+
+  @BatchUpdate
+  BatchResult<ImmutableEmployee> update(List<ImmutableEmployee> employees);
+
+パラメータの型は :doc:`../entity` を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
+指定できるパラメータの数は1つです。
+引数は ``null`` であってはいけません。
+戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
+配列のそれぞれの要素が更新された件数を返します。
+
+たとえば、上記のメソッドに対応するSQLは次のように記述します。
+
+.. code-block:: sql
+
+  update employee set /*%populate*/ id = id where name = /* employees.name */'hoge'
+
+SQLファイル上では、パラメータの名前は ``Iterable`` のサブタイプの要素を指します。
+
+更新対象プロパティの制御に関するルールは、 :ref:`auto-batch-update` と同じです。
+
+更新カラムリスト生成コメントを使用しない場合
+-------------------------------------------------
+
 .. code-block:: java
 
   @BatchUpdate(sqlFile = true)
@@ -154,7 +190,7 @@ SQLファイルによるバッチ更新では、バージョン番号の自動�
 また、 ``@BatchUpdate`` の ``exclude`` 要素、 ``include`` 要素は参照されません。
 
 SQLファイルにおけるバージョン番号と楽観的排他制御
--------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 次の条件を満たす場合に、楽観的排他制御が行われます。
 
@@ -184,7 +220,7 @@ WHERE句でバージョンを番号を指定しSET句でバージョン番号を
 はスローされず、エンティティのバージョンプロパティの値が1増分されます。
 
 ignoreVersion
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 ``@BatchUpdate`` の ``ignoreVersion`` 要素が ``true`` の場合、
 更新件数が0件または複数件であっても、 ``BatchOptimisticLockException`` はスローされません。
@@ -196,7 +232,7 @@ ignoreVersion
   int[] update(List<Employee> employees);
 
 suppressOptimisticLockException
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``@BatchUpdate`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
 更新件数が0件または複数件であっても ``BatchOptimisticLockException`` はスローされません。
@@ -251,4 +287,3 @@ SQL のログ出力形式
   int[] update(List<Employee> employees);
 
 ``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
-

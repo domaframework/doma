@@ -56,10 +56,10 @@ public interface ImmutableEmpDao {
     @Insert(sqlFile = true)
     Result<ImmutableEmp> insert2(ImmutableEmp emp);
 
-    @Delete(sqlFile = true)
+    @Update(sqlFile = true)
     Result<ImmutableEmp> update2(ImmutableEmp emp);
 
-    @Update(sqlFile = true)
+    @Delete(sqlFile = true)
     Result<ImmutableEmp> delete2(ImmutableEmp emp);
 
     @BatchInsert(sqlFile = true)
