@@ -82,6 +82,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertEquals(null, parameters.get(1).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
         assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public void testPopulate_states() throws Exception {
@@ -111,11 +112,13 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
         assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public void testPopulate_excludeNull() throws Exception {
         Emp emp = new Emp();
         emp.setId(10);
+        emp.setName("hoge");
         emp.setVersion(100);
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
@@ -131,12 +134,14 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update aaa set VERSION = ? + 1 where id = ?",
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
-        assertEquals(2, parameters.size());
-        assertEquals(new Integer(100), parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+        assertEquals(3, parameters.size());
+        assertEquals("hoge", parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public void testPopulate_excludeNull_updateNullableInPreUpdate()
@@ -166,6 +171,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertEquals("hoge", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
         assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public void testPopulate_ignoreVersion() throws Exception {
@@ -195,6 +201,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
         assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public void testPopulate_include() throws Exception {
@@ -224,6 +231,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
         assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public void testPopulate_exclude() throws Exception {
@@ -254,6 +262,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
         assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
         assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public void testPopulate_IsExecutable() throws Exception {
@@ -272,6 +281,34 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         assertFalse(query.isExecutable());
+    }
+
+    public void testNonEntity() throws Exception {
+        SqlFileUpdateQuery query = new SqlFileUpdateQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testNonEntity.sql");
+        query.setConfig(runtimeConfig);
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.addParameter("id", Integer.class, Integer.valueOf(10));
+        query.addParameter("name", String.class, "aaa");
+        query.addParameter("version", Integer.class, Integer.valueOf(100));
+        query.prepare();
+
+        UpdateQuery updateQuery = query;
+        PreparedSql sql = updateQuery.getSql();
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
+                sql.getRawSql());
+        assertEquals(
+                "update aaa set NAME = 'aaa', VERSION = 100 + 1 where id = 10",
+                sql.getFormattedSql());
+        List<? extends InParameter<?>> parameters = sql.getParameters();
+        assertEquals(3, parameters.size());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertTrue(query.isExecutable());
     }
 
     public static class PreUpdate implements EntityType<Emp> {

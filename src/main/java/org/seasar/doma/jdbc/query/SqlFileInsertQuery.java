@@ -45,9 +45,9 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     public void prepare() {
         super.prepare();
         assertNotNull(method, sqlFilePath);
-        executable = true;
         preInsert();
         prepareOptions();
+        prepareExecutable();
         prepareSql();
         assertNotNull(sql);
     }
@@ -56,6 +56,11 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         if (entityHandler != null) {
             entityHandler.preInsert();
         }
+    }
+
+    protected void prepareExecutable() {
+        executable = true;
+        sqlExecutionSkipCause = null;
     }
 
     @Override
