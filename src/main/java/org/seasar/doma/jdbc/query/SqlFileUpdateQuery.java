@@ -60,6 +60,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         prepareOptimisticLock();
         prepareOptions();
         prepareTargetPropertyTypes();
+        prepareExecutable();
         prepareSql();
         assertNotNull(sql);
     }
@@ -79,6 +80,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     protected void prepareTargetPropertyTypes() {
         if (entityHandler != null) {
             entityHandler.prepareTargetPropertyTypes();
+        }
+    }
+
+    protected void prepareExecutable() {
+        if (entityHandler == null || entityHandler.hasTargetPropertyTypes()) {
+            executable = true;
+            sqlExecutionSkipCause = null;
         }
     }
 
@@ -183,10 +191,11 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected void prepareTargetPropertyTypes() {
             targetPropertyTypes = helper.getTargetPropertyTypes(entity);
-            if (!targetPropertyTypes.isEmpty()) {
-                executable = true;
-                sqlExecutionSkipCause = null;
-            }
+        }
+
+        protected boolean hasTargetPropertyTypes() {
+            return targetPropertyTypes != null
+                    && !targetPropertyTypes.isEmpty();
         }
 
         protected void postUpdate() {

@@ -47,10 +47,10 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     public void prepare() {
         super.prepare();
         assertNotNull(method, sqlFilePath);
-        executable = true;
         preDelete();
         prepareOptions();
         prepareOptimisticLock();
+        prepareExecutable();
         prepareSql();
         assertNotNull(sql);
     }
@@ -65,6 +65,11 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         if (entityHandler != null) {
             entityHandler.prepareOptimisticLock();
         }
+    }
+
+    protected void prepareExecutable() {
+        executable = true;
+        sqlExecutionSkipCause = null;
     }
 
     @Override
