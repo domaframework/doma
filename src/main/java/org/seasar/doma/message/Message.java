@@ -18,6 +18,7 @@ package org.seasar.doma.message;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.seasar.doma.internal.message.MessageResourceBundle;
@@ -447,17 +448,31 @@ public enum Message implements MessageResource {
 
     protected String getSimpleMessageInternal(Object... args) {
         try {
-            ResourceBundle bundle = ResourceBundle
-                    .getBundle(MessageResourceBundle.class.getName());
+            boolean falledBack = false;
+            ResourceBundle bundle;
+            try {
+                bundle = ResourceBundle.getBundle(MessageResourceBundle.class
+                        .getName());
+            } catch (MissingResourceException ignored) {
+                falledBack = true;
+                bundle = new MessageResourceBundle();
+            }
             String code = name();
             String pattern = bundle.getString(code);
-            return MessageFormat.format(pattern, args);
+            String message = MessageFormat.format(pattern, args);
+            return falledBack ? "(This is a fallback message) " + message
+                    : message;
         } catch (Throwable throwable) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             throwable.printStackTrace(pw);
+            StringBuilder arguments = new StringBuilder();
+            for (Object a : args) {
+                arguments.append(a);
+                arguments.append(", ");
+            }
             return "[DOMA9001] Failed to get a message because of following error : "
-                    + sw;
+                    + sw + " : " + arguments;
         }
     }
 }
