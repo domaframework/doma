@@ -63,6 +63,8 @@ public final class JdbcTypes {
 
     public static final ObjectType OBJECT = new ObjectType();
 
+    public static final PortableObjectType PORTABLE_OBJECT = new PortableObjectType();
+
     public static final ShortType SHORT = new ShortType();
 
     public static final StringType STRING = new StringType();
