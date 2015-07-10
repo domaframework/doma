@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -44,7 +44,7 @@ public class BatchSqlValidator extends SqlValidator {
 
     public BatchSqlValidator(ProcessingEnvironment env,
             ExecutableElement methodElement,
-            Map<String, TypeMirror> parameterTypeMap, String path,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap, String path,
             boolean expandable, boolean populatable) {
         super(env, methodElement, parameterTypeMap, path, expandable,
                 populatable);

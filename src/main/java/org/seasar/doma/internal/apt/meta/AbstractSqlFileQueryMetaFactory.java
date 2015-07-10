@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -152,8 +152,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
 
     protected SqlValidator createSqlValidator(ExecutableElement method,
-            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath,
-            boolean expandable, boolean populatable) {
+            LinkedHashMap<String, TypeMirror> parameterTypeMap,
+            String sqlFilePath, boolean expandable, boolean populatable) {
         return new SqlValidator(env, method, parameterTypeMap, sqlFilePath,
                 expandable, populatable);
     }

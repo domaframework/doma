@@ -17,11 +17,10 @@ package org.seasar.doma.internal.apt;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -214,9 +213,9 @@ public abstract class AptTestCase extends AptinaTestCase {
         return null;
     }
 
-    protected Map<String, TypeMirror> createParameterTypeMap(
+    protected LinkedHashMap<String, TypeMirror> createParameterTypeMap(
             ExecutableElement methodElement) {
-        Map<String, TypeMirror> result = new HashMap<String, TypeMirror>();
+        LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<String, TypeMirror>();
         for (VariableElement parameter : methodElement.getParameters()) {
             String name = parameter.getSimpleName().toString();
             TypeMirror type = parameter.asType();

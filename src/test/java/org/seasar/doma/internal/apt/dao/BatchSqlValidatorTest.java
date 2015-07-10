@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
@@ -47,7 +47,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
 
         ExecutableElement methodElement = createMethodElement(target,
                 "testEmbeddedVariable", String.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, false);
@@ -64,7 +64,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
 
         ExecutableElement methodElement = createMethodElement(target,
                 "testEmbeddedVariableSuppressed", String.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, false);
@@ -80,7 +80,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
         compile();
 
         ExecutableElement methodElement = createMethodElement(target, "testIf");
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, false);
@@ -98,7 +98,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
 
         ExecutableElement methodElement = createMethodElement(target,
                 "testIfSuppressed");
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, false);
@@ -116,7 +116,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
 
         ExecutableElement methodElement = createMethodElement(target,
                 "testIfAndEmbeddedVariable", String.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, false);
@@ -134,7 +134,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
 
         ExecutableElement methodElement = createMethodElement(target,
                 "testIfAndEmbeddedVariableSuppressed", String.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, false);
@@ -152,7 +152,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
 
         ExecutableElement methodElement = createMethodElement(target,
                 "testPopulate", String.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, true);
@@ -169,7 +169,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
 
         ExecutableElement methodElement = createMethodElement(target,
                 "testPopulate", String.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         BatchSqlValidator validator = new BatchSqlValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 "aaa/bbbDao/ccc.sql", false, false);

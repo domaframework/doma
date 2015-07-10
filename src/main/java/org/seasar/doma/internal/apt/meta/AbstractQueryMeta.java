@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
@@ -50,7 +49,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected QueryKind queryKind;
 
-    protected Map<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<String, TypeMirror>();
+    protected LinkedHashMap<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<String, TypeMirror>();
 
     protected QueryReturnMeta returnMeta;
 
@@ -117,7 +116,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     }
 
     @Override
-    public Map<String, TypeMirror> getBindableParameterTypeMap() {
+    public LinkedHashMap<String, TypeMirror> getBindableParameterTypeMap() {
         return bindableParameterTypeMap;
     }
 

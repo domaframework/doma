@@ -119,6 +119,10 @@ public class ExpressionValidator implements
         parameterTypeMap.put(parameterName, parameterType);
     }
 
+    public void addValidatedParameterName(String name) {
+        validatedParameterNames.add(name);
+    }
+
     public Set<String> getValidatedParameterNames() {
         return validatedParameterNames;
     }
