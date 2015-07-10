@@ -17,8 +17,9 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -62,7 +63,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
     protected final ExecutableElement methodElement;
 
-    protected final Map<String, TypeMirror> parameterTypeMap;
+    protected final LinkedHashMap<String, TypeMirror> parameterTypeMap;
 
     protected final String path;
 
@@ -74,7 +75,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
     public SqlValidator(ProcessingEnvironment env,
             ExecutableElement methodElement,
-            Map<String, TypeMirror> parameterTypeMap, String path,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap, String path,
             boolean expandable, boolean populatable) {
         assertNotNull(env, methodElement, parameterTypeMap, path);
         this.env = env;
@@ -290,6 +291,10 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             String sql = getSql(location);
             throw new AptException(Message.DOMA4270, env, methodElement, path,
                     sql, location.getLineNumber(), location.getPosition());
+        }
+        Iterator<String> it = parameterTypeMap.keySet().iterator();
+        if (it.hasNext()) {
+            expressionValidator.addValidatedParameterName(it.next());
         }
         return visitNode(node, p);
     }

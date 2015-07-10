@@ -17,8 +17,8 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -161,8 +161,8 @@ public class SqlFileBatchModifyQueryMetaFactory extends
 
     @Override
     protected SqlValidator createSqlValidator(ExecutableElement method,
-            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath,
-            boolean expandable, boolean populatable) {
+            LinkedHashMap<String, TypeMirror> parameterTypeMap,
+            String sqlFilePath, boolean expandable, boolean populatable) {
         return new BatchSqlValidator(env, method, parameterTypeMap,
                 sqlFilePath, expandable, populatable);
     }
