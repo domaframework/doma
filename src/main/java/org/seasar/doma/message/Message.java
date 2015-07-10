@@ -448,19 +448,19 @@ public enum Message implements MessageResource {
 
     protected String getSimpleMessageInternal(Object... args) {
         try {
-            boolean falledBack = false;
+            boolean fallback = false;
             ResourceBundle bundle;
             try {
                 bundle = ResourceBundle.getBundle(MessageResourceBundle.class
                         .getName());
             } catch (MissingResourceException ignored) {
-                falledBack = true;
+                fallback = true;
                 bundle = new MessageResourceBundle();
             }
             String code = name();
             String pattern = bundle.getString(code);
             String message = MessageFormat.format(pattern, args);
-            return falledBack ? "(This is a fallback message) " + message
+            return fallback ? "(This is a fallback message) " + message
                     : message;
         } catch (Throwable throwable) {
             StringWriter sw = new StringWriter();
