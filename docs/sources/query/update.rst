@@ -64,11 +64,11 @@ SQL自動生成におけるバージョン番号と楽観的排他制御
 このときの更新件数が0件の場合、楽観的排他制御の失敗を示す
 ``OptimisticLockException`` がスローされます。
 また、更新件数が0件でない場合、 ``OptimisticLockException`` はスローされず、
+エンティティのバージョンプロパティの値が1増分されます。
 
 ignoreVersion
 ~~~~~~~~~~~~~
 
-エンティティのバージョンプロパティの値が1増分されます。
 ``@Update`` の ``ignoreVersion`` 要素がtrueの場合、
 バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。
 バージョン番号はアプリケーションで設定した値で更新されます。
@@ -79,8 +79,8 @@ ignoreVersion
   @Update(ignoreVersion = true)
   int update(Employee employee);
 
-suppressOptimisticLockException`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+suppressOptimisticLockException
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``@Update`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
 ``@Version`` が注釈されたプロパティがあればバージョン番号は更新条件に含まれ増分もされますが、
