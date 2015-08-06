@@ -257,15 +257,15 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     }
 
     @Override
-    public void logTransactionIsolationSettingFailuer(String callerClassName,
+    public void logTransactionIsolationSettingFailure(String callerClassName,
             String callerMethodName, int transactionIsolationLevel,
             SQLException e) {
-        logTransactionIsolationSettingFailuer(callerClassName,
+        logTransactionIsolationSettingFailure(callerClassName,
                 callerMethodName, transactionIsolationLevel, e, defaultLevel,
                 () -> Message.DOMA2072.getMessage(transactionIsolationLevel));
     }
 
-    protected void logTransactionIsolationSettingFailuer(
+    protected void logTransactionIsolationSettingFailure(
             String callerClassName, String callerMethodName,
             int transactionIsolationLevel, SQLException e, LEVEL level,
             Supplier<String> messageSupplier) {
