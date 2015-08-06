@@ -573,7 +573,7 @@ public class LocalTransaction {
             try {
                 connection.setTransactionIsolation(isolationLevel);
             } catch (SQLException ignored) {
-                jdbcLogger.logTransactionIsolationSettingFailuer(className,
+                jdbcLogger.logTransactionIsolationSettingFailure(className,
                         callerMethodName, isolationLevel, ignored);
             }
         }
