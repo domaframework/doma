@@ -165,6 +165,19 @@ public class H2Dialect extends H212126Dialect {
      */
     public static class H2ExpressionFunctions extends
             H212126ExpressionFunctions {
+
+        public H2ExpressionFunctions() {
+            super();
+        }
+
+        public H2ExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected H2ExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
 }

@@ -228,6 +228,19 @@ public class MysqlDialect extends StandardDialect {
      */
     public static class MysqlExpressionFunctions extends
             StandardExpressionFunctions {
+
+        public MysqlExpressionFunctions() {
+            super();
+        }
+
+        public MysqlExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected MysqlExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
     /**

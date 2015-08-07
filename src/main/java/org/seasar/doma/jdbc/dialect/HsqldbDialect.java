@@ -218,6 +218,19 @@ public class HsqldbDialect extends StandardDialect {
      */
     public static class HsqldbExpressionFunctions extends
             StandardExpressionFunctions {
+
+        public HsqldbExpressionFunctions() {
+            super();
+        }
+
+        public HsqldbExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected HsqldbExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
 }

@@ -199,6 +199,19 @@ public class SqliteDialect extends StandardDialect {
      */
     public static class SqliteExpressionFunctions extends
             StandardExpressionFunctions {
+
+        public SqliteExpressionFunctions() {
+            super();
+        }
+
+        public SqliteExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected SqliteExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
 }

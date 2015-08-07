@@ -266,6 +266,19 @@ public class PostgresDialect extends StandardDialect {
      */
     public static class PostgresExpressionFunctions extends
             StandardExpressionFunctions {
+
+        public PostgresExpressionFunctions() {
+            super();
+        }
+
+        public PostgresExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected PostgresExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
     /**

@@ -219,6 +219,15 @@ public class Mssql2008Dialect extends StandardDialect {
         public Mssql2008ExpressionFunctions() {
             super(DEFAULT_WILDCARDS);
         }
+
+        public Mssql2008ExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected Mssql2008ExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
     /**

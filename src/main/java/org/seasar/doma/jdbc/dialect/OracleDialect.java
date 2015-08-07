@@ -508,6 +508,14 @@ public class OracleDialect extends StandardDialect {
             super(DEFAULT_WILDCARDS);
         }
 
+        public OracleExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected OracleExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
     /**
