@@ -41,6 +41,7 @@ import org.seasar.doma.wrapper.Wrapper;
 public class MssqlDialect extends Mssql2008Dialect {
 
     private boolean pagingForceOffsetFetch;
+
     /**
      * インスタンスを構築します。
      */
@@ -114,9 +115,10 @@ public class MssqlDialect extends Mssql2008Dialect {
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions, false);
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions,
+                false);
     }
-    
+
     /**
      * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
      * {@link ExpressionFunctions} を指定してインスタンスを構築します。
@@ -133,7 +135,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
-            ExpressionFunctions expressionFunctions, 
+            ExpressionFunctions expressionFunctions,
             boolean pagingForceOffsetFetch) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
         this.pagingForceOffsetFetch = pagingForceOffsetFetch;
@@ -209,6 +211,19 @@ public class MssqlDialect extends Mssql2008Dialect {
      */
     public static class MssqlExpressionFunctions extends
             Mssql2008ExpressionFunctions {
+
+        public MssqlExpressionFunctions() {
+            super();
+        }
+
+        public MssqlExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected MssqlExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
     /**

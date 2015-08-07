@@ -228,6 +228,14 @@ public class Db2Dialect extends StandardDialect {
             super(DEFAULT_WILDCARDS);
         }
 
+        public Db2ExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected Db2ExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
     /**

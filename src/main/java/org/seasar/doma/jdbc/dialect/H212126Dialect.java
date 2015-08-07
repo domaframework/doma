@@ -230,6 +230,19 @@ public class H212126Dialect extends StandardDialect {
      */
     public static class H212126ExpressionFunctions extends
             StandardExpressionFunctions {
+
+        public H212126ExpressionFunctions() {
+            super();
+        }
+
+        public H212126ExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        protected H212126ExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
 }
