@@ -240,7 +240,7 @@ public interface JdbcLogger {
      *            {@link SQLException}
      * @since 1.2.0
      */
-    void logTransactionIsolationSettingFailuer(String callerClassName,
+    void logTransactionIsolationSettingFailure(String callerClassName,
             String callerMethodName, int transactionIsolationLevel,
             SQLException e);
 
