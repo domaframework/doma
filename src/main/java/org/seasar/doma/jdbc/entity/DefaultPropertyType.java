@@ -35,6 +35,8 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
 import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
 import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.jdbc.Naming;
@@ -371,6 +373,11 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         }
 
         @Override
+        public InParameter<BASIC> asInParameter() {
+            return delegate.asInParameter();
+        }
+
+        @Override
         public Wrapper<BASIC> getWrapper() {
             return delegate.getWrapper();
         }
@@ -420,6 +427,11 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
                         wrapException.getCause(), entityClass.getName(), name);
             }
             return this;
+        }
+
+        @Override
+        public InParameter<BASIC> asInParameter() {
+            return new ScalarInParameter<>(scalar);
         }
 
         @Override

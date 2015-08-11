@@ -123,7 +123,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
                 builder.appendSql(propertyType.getColumnName(naming::apply,
                         dialect::applyQuote));
                 builder.appendSql(" = ");
-                builder.appendParameter(property);
+                builder.appendParameter(property.asInParameter());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -139,7 +139,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
             builder.appendSql(versionPropertyType.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(" = ");
-            builder.appendParameter(property);
+            builder.appendParameter(property.asInParameter());
         }
         sql = builder.build(this::comment);
     }
