@@ -58,7 +58,7 @@ public class ScalarInParameter<BASIC, CONTAINER> implements InParameter<BASIC> {
 
     @Override
     public Optional<Class<?>> getDomainClass() {
-        return Optional.empty();
+        return scalar.getDomainClass();
     }
 
     @Override
