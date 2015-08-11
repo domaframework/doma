@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.internal.jdbc.command.JdbcMappable;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 
 /**
  * プロパティです。
@@ -54,5 +55,13 @@ public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
      * @return このインスタンス
      */
     Property<ENTITY, BASIC> save(ENTITY entity);
+
+    /**
+     * このプロパティを入力用パラメータとして返します。
+     * 
+     * @return 入力用パラメータ
+     * @since 2.4.0
+     */
+    InParameter<BASIC> asInParameter();
 
 }
