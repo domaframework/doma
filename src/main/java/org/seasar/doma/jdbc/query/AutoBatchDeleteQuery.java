@@ -109,7 +109,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
                 builder.appendSql(propertyType.getColumnName(naming::apply,
                         dialect::applyQuote));
                 builder.appendSql(" = ");
-                builder.appendParameter(property);
+                builder.appendParameter(property.asInParameter());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -125,7 +125,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             builder.appendSql(versionPropertyType.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(" = ");
-            builder.appendParameter(property);
+            builder.appendParameter(property.asInParameter());
         }
         PreparedSql sql = builder.build(this::comment);
         sqls.add(sql);
