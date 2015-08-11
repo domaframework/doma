@@ -145,7 +145,7 @@ public class UpdateQueryHelper<E> {
             context.appendSql(propertyType.getColumnName(naming::apply,
                     dialect::applyQuote));
             context.appendSql(" = ");
-            context.appendParameter(property.asInParameter());
+            context.appendParameter(property);
             context.appendSql(", ");
         }
         if (!versionIgnored && versionPropertyType != null) {
@@ -154,7 +154,7 @@ public class UpdateQueryHelper<E> {
             context.appendSql(versionPropertyType.getColumnName(naming::apply,
                     dialect::applyQuote));
             context.appendSql(" = ");
-            context.appendParameter(property.asInParameter());
+            context.appendParameter(property);
             context.appendSql(" + 1");
         } else {
             context.cutBackSql(2);

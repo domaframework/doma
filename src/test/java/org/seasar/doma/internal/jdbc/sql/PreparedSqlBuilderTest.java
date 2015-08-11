@@ -21,16 +21,12 @@ import java.util.function.Function;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.ClassHelper;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
-
-import example.domain.PhoneNumber;
 
 /**
  * @author taedium
@@ -45,31 +41,17 @@ public class PreparedSqlBuilderTest extends TestCase {
                 SqlKind.SELECT, SqlLogType.FORMATTED);
         builder.appendSql("select * from aaa where name = ");
         Wrapper<String> stringWrapper = new StringWrapper("hoge");
-        builder.appendParameter(new BasicInParameter<String>(
-                () -> stringWrapper));
+        builder.appendParameter(new BasicScalar<String>(() -> stringWrapper,
+                false));
 
         builder.appendSql(" and salary = ");
         Wrapper<BigDecimal> bigDecimalWrapper = new BigDecimalWrapper(
                 new BigDecimal(100));
-        builder.appendParameter(new BasicInParameter<BigDecimal>(
-                () -> bigDecimalWrapper));
+        builder.appendParameter(new BasicScalar<BigDecimal>(
+                () -> bigDecimalWrapper, false));
         PreparedSql sql = builder.build(Function.identity());
         assertEquals("select * from aaa where name = ? and salary = ?",
                 sql.toString());
-    }
-
-    public void testAppendParameter_domain() throws Exception {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.SELECT, SqlLogType.FORMATTED);
-        builder.appendSql("select * from aaa where phoneNumber = ");
-        DomainType<String, PhoneNumber> phoneNumberType = DomainTypeFactory
-                .getDomainType(PhoneNumber.class, new ClassHelper() {
-                });
-        PhoneNumber phoneNumber = new PhoneNumber("03-1234-5678");
-        builder.appendParameter(new DomainInParameter<String, PhoneNumber>(
-                phoneNumberType, phoneNumber));
-        PreparedSql sql = builder.build(Function.identity());
-        assertEquals("select * from aaa where phoneNumber = ?", sql.toString());
     }
 
     public void testCutBackSql() {

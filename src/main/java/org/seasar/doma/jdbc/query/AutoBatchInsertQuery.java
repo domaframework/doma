@@ -180,7 +180,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
             Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(currentEntity);
-            builder.appendParameter(property.asInParameter());
+            builder.appendParameter(property);
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
