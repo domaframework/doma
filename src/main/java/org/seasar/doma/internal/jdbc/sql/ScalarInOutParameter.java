@@ -55,7 +55,7 @@ public class ScalarInOutParameter<BASIC, CONTAINER> implements
 
     @Override
     public Optional<Class<?>> getDomainClass() {
-        return Optional.empty();
+        return scalar.getDomainClass();
     }
 
     @Override
