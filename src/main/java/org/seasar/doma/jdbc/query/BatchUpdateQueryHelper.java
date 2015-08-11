@@ -113,7 +113,7 @@ public class BatchUpdateQueryHelper<E> {
             context.appendSql(propertyType.getColumnName(naming::apply,
                     dialect::applyQuote));
             context.appendSql(" = ");
-            context.appendParameter(property.asInParameter());
+            context.appendParameter(property);
             if (propertyType.isVersion() && !versionIgnored) {
                 context.appendSql(" + 1");
             }

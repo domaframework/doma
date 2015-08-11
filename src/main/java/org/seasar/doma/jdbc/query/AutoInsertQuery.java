@@ -163,7 +163,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
             Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(entity);
-            builder.appendParameter(property.asInParameter());
+            builder.appendParameter(property);
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);

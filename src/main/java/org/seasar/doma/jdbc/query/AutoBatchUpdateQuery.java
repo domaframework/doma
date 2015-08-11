@@ -126,7 +126,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
                 builder.appendSql(propertyType.getColumnName(naming::apply,
                         dialect::applyQuote));
                 builder.appendSql(" = ");
-                builder.appendParameter(property.asInParameter());
+                builder.appendParameter(property);
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -142,7 +142,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             builder.appendSql(versionPropertyType.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(" = ");
-            builder.appendParameter(property.asInParameter());
+            builder.appendParameter(property);
         }
         PreparedSql sql = builder.build(this::comment);
         sqls.add(sql);

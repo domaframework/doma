@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
@@ -29,7 +30,7 @@ import org.seasar.doma.wrapper.Wrapper;
 
 public class PreparedSqlBuilder implements SqlContext {
 
-    protected final List<InParameter<?>> parameters = new ArrayList<>();
+    protected final List<BasicInParameter<?>> parameters = new ArrayList<>();
 
     protected final StringBuilder rawSql = new StringBuilder(200);
 
@@ -61,12 +62,12 @@ public class PreparedSqlBuilder implements SqlContext {
         formattedSql.setLength(formattedSql.length() - length);
     }
 
-    public <BASIC> void appendParameter(InParameter<BASIC> parameter) {
+    public <BASIC> void appendParameter(JdbcMappable<BASIC> parameter) {
         rawSql.append("?");
         Wrapper<BASIC> wrapper = parameter.getWrapper();
         formattedSql.append(wrapper.accept(config.getDialect()
                 .getSqlLogFormattingVisitor(), formattingFunction, null));
-        parameters.add(parameter);
+        parameters.add(new BasicInParameter<BASIC>(() -> wrapper));
     }
 
     public PreparedSql build(Function<String, String> commenter) {

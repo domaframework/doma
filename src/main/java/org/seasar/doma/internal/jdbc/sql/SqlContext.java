@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 
 /**
  * @author nakamura-to
@@ -22,7 +23,7 @@ package org.seasar.doma.internal.jdbc.sql;
  */
 public interface SqlContext {
 
-    <BASIC> void appendParameter(InParameter<BASIC> parameter);
+    <BASIC> void appendParameter(JdbcMappable<BASIC> parameter);
 
     void appendSql(String sql);
 

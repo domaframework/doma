@@ -34,6 +34,7 @@ import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.jdbc.command.JdbcMappable;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
@@ -605,8 +606,8 @@ public class NodePreparedSqlBuilder implements
             }
 
             @Override
-            public <BASIC> void appendParameter(InParameter<BASIC> parameter) {
-                p.appendParameter(parameter);
+            public <BASIC> void appendParameter(JdbcMappable<BASIC> parameter) {
+                p.appendParameter(new BasicInParameter<>(parameter::getWrapper));
             }
         });
         return null;
