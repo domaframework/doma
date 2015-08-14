@@ -2,6 +2,24 @@
 リリースノート
 ==============
 
+v2.4.0: 2015-08-14
+======================
+
+* `GH81 <https://github.com/domaframework/doma/pull/81>`_
+  リソースバンドルが取得できない場合はデフォルトのリソースバンドルにフォールバックする
+* `GH84 <https://github.com/domaframework/doma/pull/84>`_
+  populate を使ったメソッドで DOMA4122 が出る問題を修正
+* `GH86 <https://github.com/domaframework/doma/pull/86>`_
+  Version number spec is different from the document
+* `GH87 <https://github.com/domaframework/doma/pull/87>`_
+  StandardExpressionFunctionsのサブクラスにpublicなコンストラクタを追加
+* `GH88 <https://github.com/domaframework/doma/pull/88>`_
+  JdbcLoggerのメソッドのtypoを修正。 Failuer -> Failure
+* `GH89 <https://github.com/domaframework/doma/pull/89>`_
+  PortableObjectTypeをジェネリクスにして、String等をvalueTypeとして指定できるように
+* `GH93 <https://github.com/domaframework/doma/pull/93>`_
+  JdbcMappingHint#getDomainClass() がドメインクラスを返さない問題を修正
+
 v2.3.1: 2015-05-30
 ======================
 
