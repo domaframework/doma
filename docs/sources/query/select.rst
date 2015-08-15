@@ -354,7 +354,7 @@ SelectOptionsのインスタンスをDaoのメソッドに渡します。
   long count = options.getCount();
 
 集計件数は、Daoのメソッド呼出し後に ``SelectOptions`` の ``getCount`` メソッドを使って取得します。
-メソッド呼び出しの前に ``count`` メソッドを実行していない場合、 ``getCount`` メソッドは ``-`` 1を返します。
+メソッド呼び出しの前に ``count`` メソッドを実行していない場合、 ``getCount`` メソッドは ``-1`` を返します。
 
 検索結果の保証
 ==============
@@ -398,8 +398,10 @@ SelectOptionsのインスタンスをDaoのメソッドに渡します。
 
 ``@Select`` の ``fetchSize`` 要素にフェッチサイズを指定できます。
 
-@Select(fetchSize = 20)
-List<Employee> selectAll();
+.. code-block:: java
+
+  @Select(fetchSize = 20)
+  List<Employee> selectAll();
 
 値を指定しない場合、 :doc:`../config` に指定されたフェッチサイズが使用されます。
 
