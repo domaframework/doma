@@ -616,7 +616,9 @@ public class NodePreparedSqlBuilder implements
     public Void visitWordNode(WordNode node, Context p) {
         p.setAvailable(true);
         String word = node.getWord();
-        p.appendWhitespaceIfNecessary();
+        if (node.isReserved()) {
+            p.appendWhitespaceIfNecessary();
+        }
         p.appendRawSql(word);
         p.appendFormattedSql(word);
         return null;
