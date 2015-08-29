@@ -30,13 +30,24 @@ public class WordNode extends AbstractSqlNode {
 
     protected final String word;
 
+    protected final boolean reserved;
+
     public WordNode(String word) {
+        this(word, false);
+    }
+
+    public WordNode(String word, boolean reserved) {
         assertNotNull(word);
         this.word = word;
+        this.reserved = reserved;
     }
 
     public String getWord() {
         return word;
+    }
+
+    public boolean isReserved() {
+        return reserved;
     }
 
     @Override

@@ -229,7 +229,7 @@ public class SqlParser {
     protected void parseSetOperatorWord() {
         validate();
         AnonymousNode node = new AnonymousNode();
-        node.appendNode(new WordNode(token));
+        node.appendNode(new WordNode(token, true));
         if (isInSelectStatementNode()) {
             removeNodesTo(SelectStatementNode.class);
             pop();

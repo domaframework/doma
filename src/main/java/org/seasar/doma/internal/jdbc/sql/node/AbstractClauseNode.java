@@ -27,7 +27,7 @@ public abstract class AbstractClauseNode extends AbstractSqlNode implements
     protected final WordNode wordNode;
 
     protected AbstractClauseNode(String word) {
-        this(new WordNode(word));
+        this(new WordNode(word, true));
     }
 
     protected AbstractClauseNode(WordNode wordNode) {

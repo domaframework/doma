@@ -425,4 +425,16 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         }
     }
 
+    public void testEmbeddedVariable_issue_95() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("envPrefix", new Value(String.class, "prefix_"));
+        String testSql = "select * from /*#envPrefix*/SCHEMA.TABLE";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
+        assertEquals("select * from prefix_SCHEMA.TABLE", sql.getRawSql());
+    }
+
 }

@@ -27,7 +27,7 @@ public class LogicalOperatorNode extends AbstractSqlNode {
     protected final WordNode wordNode;
 
     public LogicalOperatorNode(String word) {
-        this(new WordNode(word));
+        this(new WordNode(word, true));
     }
 
     protected LogicalOperatorNode(WordNode wordNode) {
