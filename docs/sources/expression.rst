@@ -20,7 +20,7 @@
   値の存在の有無を確認する場合は、 ``/*%if optional.isPresent() */`` とする替わりに
   ``/*%if optional != null */`` としてください。
 
-  ``java.util.OptionalInt`` 、 ``java.util.OptionalInt`` 、 ``java.util.OptionalInt``
+  ``java.util.OptionalInt`` 、 ``java.util.OptionalDouble`` 、 ``java.util.OptionalLong``
   についても同様です。
 
 リテラル
