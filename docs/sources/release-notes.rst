@@ -5,20 +5,20 @@
 v2.4.0: 2015-08-14
 ======================
 
-* `GH81 <https://github.com/domaframework/doma/pull/81>`_
-  リソースバンドルが取得できない場合はデフォルトのリソースバンドルにフォールバックする
-* `GH84 <https://github.com/domaframework/doma/pull/84>`_
-  populate を使ったメソッドで DOMA4122 が出る問題を修正
-* `GH86 <https://github.com/domaframework/doma/pull/86>`_
-  Version number spec is different from the document
-* `GH87 <https://github.com/domaframework/doma/pull/87>`_
-  StandardExpressionFunctionsのサブクラスにpublicなコンストラクタを追加
-* `GH88 <https://github.com/domaframework/doma/pull/88>`_
-  JdbcLoggerのメソッドのtypoを修正。 Failuer -> Failure
-* `GH89 <https://github.com/domaframework/doma/pull/89>`_
-  PortableObjectTypeをジェネリクスにして、String等をvalueTypeとして指定できるように
 * `GH93 <https://github.com/domaframework/doma/pull/93>`_
   JdbcMappingHint#getDomainClass() がドメインクラスを返さない問題を修正
+* `GH89 <https://github.com/domaframework/doma/pull/89>`_
+  PortableObjectTypeをジェネリクスにして、String等をvalueTypeとして指定できるように
+* `GH88 <https://github.com/domaframework/doma/pull/88>`_
+  JdbcLoggerのメソッドのtypoを修正。 Failuer -> Failure
+* `GH87 <https://github.com/domaframework/doma/pull/87>`_
+  StandardExpressionFunctionsのサブクラスにpublicなコンストラクタを追加
+* `GH86 <https://github.com/domaframework/doma/pull/86>`_
+  Version number spec is different from the document
+* `GH84 <https://github.com/domaframework/doma/pull/84>`_
+  populate を使ったメソッドで DOMA4122 が出る問題を修正
+* `GH81 <https://github.com/domaframework/doma/pull/81>`_
+  リソースバンドルが取得できない場合はデフォルトのリソースバンドルにフォールバックする
 
 v2.3.1: 2015-05-30
 ======================
@@ -29,44 +29,44 @@ v2.3.1: 2015-05-30
 v2.3.0: 2015-05-23
 ======================
 
-* `GH74 <https://github.com/domaframework/doma/pull/74>`_
-  PostgresDialectでID生成エラーが発生する問題を修正
 * `GH75 <https://github.com/domaframework/doma/pull/75>`_
   SQLファイルでUPDATE文のSET句を自動生成
+* `GH74 <https://github.com/domaframework/doma/pull/74>`_
+  PostgresDialectでID生成エラーが発生する問題を修正
 
 v2.2.0: 2015-03-28
 ======================
 
-* `GH58 <https://github.com/domaframework/doma/pull/58>`_
-  StringUtilのfromCamelCaseToSnakeCaseで、カラム名に数字が含まれている場合意図している結果にならない
-* `GH59 <https://github.com/domaframework/doma/pull/59>`_
-  Windows環境でテストが失敗する問題を修正
-* `GH60 <https://github.com/domaframework/doma/pull/60>`_
-  Mssql2008Dialect の getName() が返す値を変更しました
-* `GH61 <https://github.com/domaframework/doma/pull/61>`_
-  SQL Server 2012 から追加された OFFSET-FETCH をページング処理に使う
-* `GH64 <https://github.com/domaframework/doma/pull/64>`_
-  イミュータブルなエンティティの取得でNullPointerException が発生するバグを修正しました
-* `GH66 <https://github.com/domaframework/doma/pull/66>`_
-  ネーミング規約の適用をコンパイル時から実行時に変更
-* `GH67 <https://github.com/domaframework/doma/pull/67>`_
-  SQL Server の OPTION 句が存在するとページングが正しく実行されない問題を修正しました
-* `GH70 <https://github.com/domaframework/doma/pull/70>`_
-  EntityListenerの取得はEntityListenerProviderを介するようにしました
 * `GH71 <https://github.com/domaframework/doma/pull/71>`_
   インターフェースにも@Domainで注釈できるようにしました
+* `GH70 <https://github.com/domaframework/doma/pull/70>`_
+  EntityListenerの取得はEntityListenerProviderを介するようにしました
+* `GH67 <https://github.com/domaframework/doma/pull/67>`_
+  SQL Server の OPTION 句が存在するとページングが正しく実行されない問題を修正しました
+* `GH66 <https://github.com/domaframework/doma/pull/66>`_
+  ネーミング規約の適用をコンパイル時から実行時に変更
+* `GH64 <https://github.com/domaframework/doma/pull/64>`_
+  イミュータブルなエンティティの取得でNullPointerException が発生するバグを修正しました
+* `GH61 <https://github.com/domaframework/doma/pull/61>`_
+  SQL Server 2012 から追加された OFFSET-FETCH をページング処理に使う
+* `GH60 <https://github.com/domaframework/doma/pull/60>`_
+  Mssql2008Dialect の getName() が返す値を変更しました
+* `GH59 <https://github.com/domaframework/doma/pull/59>`_
+  Windows環境でテストが失敗する問題を修正
+* `GH58 <https://github.com/domaframework/doma/pull/58>`_
+  StringUtilのfromCamelCaseToSnakeCaseで、カラム名に数字が含まれている場合意図している結果にならない
 
 v2.1.0: 2014-12-30
 ======================
 
-* `GH48 <https://github.com/domaframework/doma/pull/48>`_
-  `/*%expand` と `*/` の間のスペースはaliasとみなさないようにしました
-* `GH49 <https://github.com/domaframework/doma/pull/49>`_
-  Gradleのプロジェクトの名前を"doma"に設定しました
-* `GH50 <https://github.com/domaframework/doma/pull/50>`_
-  SQLコメントを使ってSQLに識別子を追記できるようにしました
 * `GH51 <https://github.com/domaframework/doma/issues/51>`_
   LocalTransactionManager#notSupported()が新規のトランザクションを作成する不具合を修正しました
+* `GH50 <https://github.com/domaframework/doma/pull/50>`_
+  SQLコメントを使ってSQLに識別子を追記できるようにしました
+* `GH49 <https://github.com/domaframework/doma/pull/49>`_
+  Gradleのプロジェクトの名前を"doma"に設定しました
+* `GH48 <https://github.com/domaframework/doma/pull/48>`_
+  `/*%expand` と `*/` の間のスペースはaliasとみなさないようにしました
 
 v2.0.1: 2014-08-06
 ======================
