@@ -411,6 +411,11 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
+    public boolean supportsIdentityReservation() {
+        return false;
+    }
+
+    @Override
     public boolean includesIdentityColumn() {
         return false;
     }
@@ -437,6 +442,14 @@ public class StandardDialect implements Dialect {
             String tableName, String columnName, boolean isQuoteRequired) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getIdentitySelectSql");
+    }
+
+    @Override
+    public Sql<?> getIdentityReservationSql(String catalogName,
+            String schemaName, String tableName, String columnName,
+            boolean isQuoteRequired, int reservationSize) {
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
+                "getIdentityReservationSql");
     }
 
     @Override

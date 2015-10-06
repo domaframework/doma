@@ -40,6 +40,9 @@ public class IdGenerationConfig {
     /** 識別子が属するエンティティ */
     protected final EntityType<?> entityType;
 
+    /** 識別子プロバイダ */
+    protected final IdProvider idProvider;
+
     /**
      * インスタンスを構築します。
      * 
@@ -49,9 +52,25 @@ public class IdGenerationConfig {
      *            識別子が属するエンティティ
      */
     public IdGenerationConfig(Config config, EntityType<?> entityType) {
-        assertNotNull(config, entityType);
+        this(config, entityType, new UnavailableIdProvider());
+    }
+
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param config
+     *            JDBCの設定
+     * @param entityType
+     *            識別子が属するエンティティ
+     * @param idProvider
+     *            識別子プロバイダ
+     */
+    public IdGenerationConfig(Config config, EntityType<?> entityType,
+            IdProvider idProvider) {
+        assertNotNull(config, entityType, idProvider);
         this.config = config;
         this.entityType = entityType;
+        this.idProvider = idProvider;
     }
 
     public DataSource getDataSource() {
@@ -94,4 +113,20 @@ public class IdGenerationConfig {
         return entityType;
     }
 
+    public IdProvider getIdProvider() {
+        return idProvider;
+    }
+
+    protected static class UnavailableIdProvider implements IdProvider {
+        @Override
+        public boolean isAvailable() {
+            return false;
+        }
+
+        @Override
+        public long get() {
+            throw new UnsupportedOperationException();
+        }
+
+    }
 }
