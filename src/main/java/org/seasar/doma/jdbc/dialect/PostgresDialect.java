@@ -31,6 +31,7 @@ import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -170,16 +171,47 @@ public class PostgresDialect extends StandardDialect {
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }
-        String qualifiedTableName = DatabaseObjectUtil.getQualifiedName(
-                isQuoteRequired ? this::applyQuote : Function.identity(),
-                catalogName, schemaName, tableName + "_" + columnName + "_seq");
+        String identityTableName = createIdentityTableName(catalogName,
+                schemaName, tableName, columnName, isQuoteRequired);
         StringBuilder buf = new StringBuilder(64);
         buf.append("select currval('");
-        buf.append(qualifiedTableName);
+        buf.append(identityTableName);
         buf.append("')");
         String rawSql = buf.toString();
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
                 Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
+    }
+
+    @Override
+    public Sql<?> getIdentityReservationSql(String catalogName,
+            String schemaName, String tableName, String columnName,
+            boolean isQuoteRequired, int reservationSize) {
+        if (tableName == null) {
+            throw new DomaNullPointerException("tableName");
+        }
+        if (columnName == null) {
+            throw new DomaNullPointerException("columnName");
+        }
+        String identityTableName = createIdentityTableName(catalogName,
+                schemaName, tableName, columnName, isQuoteRequired);
+        StringBuilder buf = new StringBuilder(64);
+        buf.append("select nextval('");
+        buf.append(identityTableName);
+        buf.append("') from generate_series(1, ");
+        buf.append(reservationSize);
+        buf.append(")");
+        String rawSql = buf.toString();
+        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
+                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
+    }
+
+    protected String createIdentityTableName(String catalogName,
+            String schemaName, String tableName, String columnName,
+            boolean isQuoteRequired) {
+        String qualifiedTableName = DatabaseObjectUtil.getQualifiedName(
+                isQuoteRequired ? this::applyQuote : Function.identity(),
+                catalogName, schemaName, tableName + "_" + columnName + "_seq");
+        return qualifiedTableName;
     }
 
     @Override
@@ -200,6 +232,11 @@ public class PostgresDialect extends StandardDialect {
 
     @Override
     public boolean supportsSequence() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsIdentityReservation() {
         return true;
     }
 

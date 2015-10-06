@@ -142,6 +142,8 @@ public interface Dialect {
      */
     boolean supportsResultSetReturningAsOutParameter();
 
+    boolean supportsIdentityReservation();
+
     /**
      * データベースで生成されたIDENTITYを取得するためのSQLを返します。
      * <p>
@@ -164,6 +166,32 @@ public interface Dialect {
      */
     Sql<?> getIdentitySelectSql(String catalogName, String schemaName,
             String tableName, String columnName, boolean isQuoteRequired);
+
+    /**
+     * データベースのIDENTITYを予約するためのSQLを返します。
+     * <p>
+     * {@link #supportsIdentityReservation()} が {@code true} を返す場合にのみ呼び出し可能です。
+     * 
+     * @param catalogName
+     *            カタログの名前
+     * @param schemaName
+     *            スキーマの名前
+     * @param tableName
+     *            テーブルの名前
+     * @param columnName
+     *            IDENTITYカラムの名前
+     * @param isQuoteRequired
+     *            引用符が必要かどうか
+     * @param reservationSize
+     *            予約サイズ
+     * @return IDENTITYを予約するためのSQL
+     * @throws DomaNullPointerException
+     *             {@code tableName} と {@code columnName} のいずれかが {@code null}
+     *             の場合
+     */
+    Sql<?> getIdentityReservationSql(String catalogName, String schemaName,
+            String tableName, String columnName, boolean isQuoteRequired,
+            int reservationSize);
 
     /**
      * シーケンスの次の値を取得するためのSQLを返します。
