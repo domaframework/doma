@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Collections;
 
 import junit.framework.TestCase;
 
@@ -29,7 +30,12 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UnknownColumnException;
+import org.seasar.doma.jdbc.UnknownColumnHandler;
+import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 import example.entity.Emp;
@@ -40,8 +46,6 @@ import example.entity._Emp;
  * 
  */
 public class EntityProviderTest extends TestCase {
-
-    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testGetEntity() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -55,7 +59,52 @@ public class EntityProviderTest extends TestCase {
 
         _Emp entityType = _Emp.getSingletonInternal();
         EntityProvider<Emp> provider = new EntityProvider<>(entityType,
-                new MySelectQuery(), false);
+                new MySelectQuery(new MockConfig()), false);
+        Emp emp = provider.get(resultSet);
+
+        assertEquals(new Integer(1), emp.getId());
+        assertEquals("aaa", emp.getName());
+        assertEquals(new BigDecimal(10), emp.getSalary());
+        assertEquals(new Integer(100), emp.getVersion());
+    }
+
+    public void testGetEntity_UnknownColumnException() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("id"));
+        metaData.columns.add(new ColumnMetaData("name"));
+        metaData.columns.add(new ColumnMetaData("salary"));
+        metaData.columns.add(new ColumnMetaData("version"));
+        metaData.columns.add(new ColumnMetaData("unknown"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+        resultSet.rows
+                .add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
+        resultSet.next();
+
+        _Emp entityType = _Emp.getSingletonInternal();
+        EntityProvider<Emp> provider = new EntityProvider<>(entityType,
+                new MySelectQuery(new MockConfig()), false);
+        try {
+            provider.get(resultSet);
+            fail();
+        } catch (UnknownColumnException expected) {
+        }
+    }
+
+    public void testGetEntity_EmptyUnknownColumnHandler() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("id"));
+        metaData.columns.add(new ColumnMetaData("name"));
+        metaData.columns.add(new ColumnMetaData("salary"));
+        metaData.columns.add(new ColumnMetaData("version"));
+        metaData.columns.add(new ColumnMetaData("unknown"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+        resultSet.rows
+                .add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
+        resultSet.next();
+
+        _Emp entityType = _Emp.getSingletonInternal();
+        EntityProvider<Emp> provider = new EntityProvider<>(entityType,
+                new MySelectQuery(new EmptyUnknownColumnHandlerConfig()), false);
         Emp emp = provider.get(resultSet);
 
         assertEquals(new Integer(1), emp.getId());
@@ -66,6 +115,12 @@ public class EntityProviderTest extends TestCase {
 
     protected class MySelectQuery implements SelectQuery {
 
+        private final Config config;
+
+        MySelectQuery(Config config) {
+            this.config = config;
+        }
+
         @Override
         public SelectOptions getOptions() {
             return SelectOptions.get();
@@ -73,7 +128,7 @@ public class EntityProviderTest extends TestCase {
 
         @Override
         public Config getConfig() {
-            return runtimeConfig;
+            return config;
         }
 
         @Override
@@ -88,7 +143,8 @@ public class EntityProviderTest extends TestCase {
 
         @Override
         public PreparedSql getSql() {
-            return null;
+            return new PreparedSql(SqlKind.SELECT, "dummy", "dummy", "dummy",
+                    Collections.emptyList(), SqlLogType.FORMATTED);
         }
 
         @Override
@@ -143,6 +199,22 @@ public class EntityProviderTest extends TestCase {
         @Override
         public String comment(String sql) {
             return sql;
+        }
+
+    }
+
+    protected static class EmptyUnknownColumnHandler implements
+            UnknownColumnHandler {
+        @Override
+        public void handle(Query query, EntityType<?> entityType,
+                String unknownColumnName) {
+        }
+    }
+
+    protected static class EmptyUnknownColumnHandlerConfig extends MockConfig {
+        @Override
+        public UnknownColumnHandler getUnknownColumnHandler() {
+            return new EmptyUnknownColumnHandler();
         }
 
     }

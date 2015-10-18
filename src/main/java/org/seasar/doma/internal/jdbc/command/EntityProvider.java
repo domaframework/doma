@@ -117,9 +117,10 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
                 }
                 unknownColumnHandler.handle(query, entityType,
                         lowerCaseColumnName);
+            } else {
+                unmappedPropertySet.remove(propertyType);
+                indexMap.put(i, propertyType);
             }
-            unmappedPropertySet.remove(propertyType);
-            indexMap.put(i, propertyType);
         }
         if (resultMappingEnsured && !unmappedPropertySet.isEmpty()) {
             throwResultMappingException(unmappedPropertySet);
