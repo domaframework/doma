@@ -2,6 +2,12 @@
 リリースノート
 ==============
 
+v2.5.1: 2015-11-01
+======================
+
+* `GH102 <https://github.com/domaframework/doma/pull/102>`_
+  UnknownColumnHandler の handle() を空実装にすると NullPointerException が発生する問題を修正
+
 v2.5.0: 2015-10-10
 ======================
 
