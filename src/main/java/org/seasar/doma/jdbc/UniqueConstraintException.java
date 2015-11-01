@@ -75,8 +75,8 @@ public class UniqueConstraintException extends JdbcException {
     public UniqueConstraintException(SqlLogType logType, SqlKind kind,
             String rawSql, String formattedSql, String sqlFilePath,
             Throwable cause) {
-        super(Message.DOMA2004, sqlFilePath, choiceSql(logType, rawSql,
-                formattedSql), cause);
+        super(Message.DOMA2004, cause, sqlFilePath, choiceSql(logType, rawSql,
+                formattedSql));
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
