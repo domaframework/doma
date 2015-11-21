@@ -67,7 +67,7 @@ public class ProcedureDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setProcedureName("execute");
             __query.setQuoteRequired(false);
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.MapListParameter(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, result, "result"));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, id));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter<>(org.seasar.doma.wrapper.IntegerWrapper::new, id));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ProcedureDaoImpl");
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);

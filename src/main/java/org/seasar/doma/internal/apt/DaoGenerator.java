@@ -674,8 +674,9 @@ public class DaoGenerator extends AbstractGenerator {
             if (entityCtType != null && entityCtType.isImmutable()) {
                 iprint("int __count = __command.execute();%n");
                 iprint("__query.complete();%n");
-                iprint("%1$s __result = new %1$s(__count, __query.getEntity());%n",
-                        m.getReturnMeta().getTypeName());
+                iprint("%1$s __result = new %2$s<>(__count, __query.getEntity());%n",
+                        m.getReturnMeta().getTypeName(), m.getReturnMeta()
+                                .getCtType().getQualifiedName());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
@@ -766,9 +767,10 @@ public class DaoGenerator extends AbstractGenerator {
             if (entityCtType != null && entityCtType.isImmutable()) {
                 iprint("int __count = __command.execute();%n");
                 iprint("__query.complete();%n");
-                iprint("%1$s __result = new %1$s(__count, __query.getEntity(%2$s.class));%n",
-                        m.getReturnMeta().getTypeName(),
-                        entityCtType.getBoxedTypeName());
+                iprint("%1$s __result = new %2$s<>(__count, __query.getEntity(%3$s.class));%n",
+                /* 1 */m.getReturnMeta().getTypeName(),
+                /* 2 */m.getReturnMeta().getCtType().getQualifiedName(),
+                /* 3 */entityCtType.getBoxedTypeName());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
@@ -839,8 +841,9 @@ public class DaoGenerator extends AbstractGenerator {
             if (entityCtType != null && entityCtType.isImmutable()) {
                 iprint("int[] __counts = __command.execute();%n");
                 iprint("__query.complete();%n");
-                iprint("%1$s __result = new %1$s(__counts, __query.getEntities());%n",
-                        m.getReturnMeta().getTypeName());
+                iprint("%1$s __result = new %2$s<>(__counts, __query.getEntities());%n",
+                        m.getReturnMeta().getTypeName(), m.getReturnMeta()
+                                .getCtType().getQualifiedName());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
@@ -921,8 +924,9 @@ public class DaoGenerator extends AbstractGenerator {
             if (entityCtType != null && entityCtType.isImmutable()) {
                 iprint("int[] __counts = __command.execute();%n");
                 iprint("__query.complete();%n");
-                iprint("%1$s __result = new %1$s(__counts, __query.getEntities());%n",
-                        m.getReturnMeta().getTypeName());
+                iprint("%1$s __result = new %2$s<>(__counts, __query.getEntities());%n",
+                        m.getReturnMeta().getTypeName(), m.getReturnMeta()
+                                .getCtType().getQualifiedName());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
@@ -1252,23 +1256,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class), %4$s, \"%4$s\"));%n",
                             /* 1 */BasicListParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 5 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s, \"%4$s\"));%n",
+                            iprint("__query.addParameter(new %1$s<>(%2$s::new, %3$s, \"%3$s\"));%n",
                             /* 1 */BasicListParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1280,13 +1282,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainListParameterMeta(DomainListParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s, \"%3$s\"));%n",
             /* 1 */DomainListParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1294,12 +1293,11 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListParameterMeta(EntityListParameterMeta m,
                 AutoModuleQueryMeta p) {
             EntityCtType entityCtType = m.getEntityCtType();
-            iprint("__query.addParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s, \"%4$s\", %5$s));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s.getSingletonInternal(), %3$s, \"%3$s\", %4$s));%n",
             /* 1 */EntityListParameter.class.getName(),
-            /* 2 */entityCtType.getTypeName(),
-            /* 3 */entityCtType.getMetaTypeName(),
-            /* 4 */m.getName(),
-            /* 5 */m.getEnsureResultMapping());
+            /* 2 */entityCtType.getMetaTypeName(),
+            /* 3 */m.getName(),
+            /* 4 */m.getEnsureResultMapping());
             return null;
         }
 
@@ -1325,23 +1323,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class), %4$s));%n",
                             /* 1 */BasicInOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 5 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(%2$s::new, %3$s));%n",
                             /* 1 */BasicInOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1353,13 +1349,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainInOutParameterMeta(DomainInOutParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             /* 1 */DomainInOutParameter.class.getName(),
-            /* 2 */basicCtType.getBoxedTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1374,23 +1367,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class), %4$s));%n",
                             /* 1 */BasicOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 5 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(%2$s::new, %3$s));%n",
                             /* 1 */BasicOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1402,13 +1393,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainOutParameterMeta(DomainOutParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             /* 1 */DomainOutParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1423,23 +1411,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%5$s>(() -> new %2$s(%3$s.class, %4$s)));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class, %4$s)));%n",
                             /* 1 */BasicInParameter.class.getName(),
                             /* 2 */ctType.getTypeName(),
                             /* 3 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 4 */m.getName(),
-                            /* 5 */ctType.getBasicCtType().getBoxedTypeName());
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%4$s>(%2$s::new, %3$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(%2$s::new, %3$s));%n",
                             /* 1 */BasicInParameter.class.getName(),
                             /* 2 */ctType.getTypeName(),
-                            /* 3 */m.getName(),
-                            /* 4 */ctType.getBasicCtType().getBoxedTypeName());
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1451,13 +1437,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainInParameterMeta(DomainInParameterMeta m,
                 AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             /* 1 */DomainInParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1472,21 +1455,19 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(() -> new %2$s(%3$s.class)));%n",
                             /* 1 */BasicResultListParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s::new));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(%2$s::new));%n",
                             /* 1 */BasicResultListParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName());
+                            /* 2 */ctType.getTypeName());
                             return null;
                         }
 
@@ -1498,12 +1479,9 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainResultListParameterMeta(
                 DomainResultListParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
+            iprint("__query.setResultParameter(new %1$s<>(%2$s));%n",
             /* 1 */DomainResultListParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand());
+            /* 2 */domainCtType.getInstantiationCommand());
             return null;
         }
 
@@ -1511,11 +1489,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityResultListParameterMeta(
                 EntityResultListParameterMeta m, AutoModuleQueryMeta p) {
             EntityCtType entityCtType = m.getEntityCtType();
-            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s));%n",
+            iprint("__query.setResultParameter(new %1$s<>(%2$s.getSingletonInternal(), %3$s));%n",
             /* 1 */EntityResultListParameter.class.getName(),
-            /* 2 */entityCtType.getTypeName(),
-            /* 3 */entityCtType.getMetaTypeName(),
-            /* 4 */m.getEnsureResultMapping());
+            /* 2 */entityCtType.getMetaTypeName(),
+            /* 3 */m.getEnsureResultMapping());
             return null;
         }
 
@@ -1541,22 +1518,20 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), false));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(() -> new %2$s(%3$s.class), false));%n",
                             /* 1 */BasicSingleResultParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(%2$s::new, %3$s));%n",
                             /* 1 */BasicSingleResultParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */basicCtType.isPrimitive());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */basicCtType.isPrimitive());
                             return null;
                         }
 
@@ -1568,12 +1543,9 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainSingleResultParameterMeta(
                 DomainSingleResultParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
+            iprint("__query.setResultParameter(new %1$s<>(%2$s));%n",
             /* 1 */DomainSingleResultParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand());
+            /* 2 */domainCtType.getInstantiationCommand());
             return null;
         }
 
@@ -1588,23 +1560,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%5$s>(() -> new %2$s(%3$s.class), %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class), %4$s));%n",
                             /* 1 */OptionalBasicInParameter.class.getName(),
                             /* 2 */ctType.getTypeName(),
                             /* 3 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 4 */m.getName(),
-                            /* 5 */ctType.getBasicCtType().getBoxedTypeName());
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%4$s>(%2$s::new, %3$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(%2$s::new, %3$s));%n",
                             /* 1 */OptionalBasicInParameter.class.getName(),
                             /* 2 */ctType.getTypeName(),
-                            /* 3 */m.getName(),
-                            /* 4 */ctType.getBasicCtType().getBoxedTypeName());
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1625,23 +1595,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class), %4$s));%n",
                             /* 1 */OptionalBasicOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 5 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(), %3$s));%n",
                             /* 1 */OptionalBasicOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1661,23 +1629,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class), %4$s));%n",
                             /* 1 */OptionalBasicInOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 5 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(), %3$s));%n",
                             /* 1 */OptionalBasicInOutParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1696,23 +1662,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(%3$s.class), %4$s, \"%4$s\"));%n",
                             /* 1 */OptionalBasicListParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 5 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 4 */m.getName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s, \"%4$s\"));%n",
+                            iprint("__query.addParameter(new %1$s<>(() -> new %2$s(), %3$s, \"%3$s\"));%n",
                             /* 1 */OptionalBasicListParameter.class.getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */m.getName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */m.getName());
                             return null;
                         }
 
@@ -1731,23 +1695,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(() -> new %2$s(%3$s.class)));%n",
                             /* 1 */OptionalBasicSingleResultParameter.class
                                     .getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s()));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(() -> new %2$s()));%n",
                             /* 1 */OptionalBasicSingleResultParameter.class
                                     .getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName());
+                            /* 2 */ctType.getTypeName());
                             return null;
                         }
 
@@ -1766,23 +1728,21 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(() -> new %2$s(%3$s.class)));%n",
                             /* 1 */OptionalBasicResultListParameter.class
                                     .getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName(),
-                            /* 4 */ctType.getBasicCtType().getQualifiedName());
+                            /* 2 */ctType.getTypeName(),
+                            /* 3 */ctType.getBasicCtType().getQualifiedName());
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s()));%n",
+                            iprint("__query.setResultParameter(new %1$s<>(() -> new %2$s()));%n",
                             /* 1 */OptionalBasicResultListParameter.class
                                     .getName(),
-                            /* 2 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 3 */ctType.getTypeName());
+                            /* 2 */ctType.getTypeName());
                             return null;
                         }
 
@@ -1794,13 +1754,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainInParameterMeta(
                 OptionalDomainInParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             /* 1 */OptionalDomainInParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1808,13 +1765,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainOutParameterMeta(
                 OptionalDomainOutParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             /* 1 */OptionalDomainOutParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1822,13 +1776,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainInOutParameterMeta(
                 OptionalDomainInOutParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             /* 1 */OptionalDomainInOutParameter.class.getName(),
-            /* 2 */basicCtType.getBoxedTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1836,13 +1787,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainListParameterMeta(
                 OptionalDomainListParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
+            iprint("__query.addParameter(new %1$s<>(%2$s, %3$s, \"%3$s\"));%n",
             /* 1 */OptionalDomainListParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand(),
-            /* 5 */m.getName());
+            /* 2 */domainCtType.getInstantiationCommand(),
+            /* 3 */m.getName());
             return null;
         }
 
@@ -1850,12 +1798,9 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainSingleResultParameterMeta(
                 OptionalDomainSingleResultParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
+            iprint("__query.setResultParameter(new %1$s<>(%4$s));%n",
             /* 1 */OptionalDomainSingleResultParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand());
+            /* 2 */domainCtType.getInstantiationCommand());
             return null;
         }
 
@@ -1863,12 +1808,9 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitOptionalDomainResultListParameterMeta(
                 OptionalDomainResultListParameterMeta m, AutoModuleQueryMeta p) {
             DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
-            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
+            iprint("__query.setResultParameter(new %1$s<>(%2$s));%n",
             /* 1 */OptionalDomainResultListParameter.class.getName(),
-            /* 2 */basicCtType.getTypeName(),
-            /* 3 */domainCtType.getTypeName(),
-            /* 4 */domainCtType.getInstantiationCommand());
+            /* 2 */domainCtType.getInstantiationCommand());
             return null;
         }
 
@@ -2078,18 +2020,16 @@ public class DaoGenerator extends AbstractGenerator {
                             public Void visitEnumWrapperCtType(
                                     EnumWrapperCtType ctType, Void p)
                                     throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%4$s, %2$s>(() -> new %5$s(%6$s.class), %7$s));%n",
+                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<>(() -> new %4$s(%5$s.class), %6$s));%n",
                                 /* 1 */commandClassName,
                                 /* 2 */resultMeta.getBoxedTypeName(),
                                 /* 3 */getBasicStreamHandlerName(optional),
-                                /* 4 */ctType.getBasicCtType()
-                                        .getBoxedTypeName(),
-                                /* 5 */ctType.getTypeName(),
-                                /* 6 */ctType.getBasicCtType()
+                                /* 4 */ctType.getTypeName(),
+                                /* 5 */ctType.getBasicCtType()
                                         .getQualifiedName(),
-                                /* 7 */functionParamName,
-                                /* 8 */commandName,
-                                /* 9 */methodName);
+                                /* 6 */functionParamName,
+                                /* 7 */commandName,
+                                /* 8 */methodName);
                                 return null;
                             }
 
@@ -2097,16 +2037,14 @@ public class DaoGenerator extends AbstractGenerator {
                             public Void visitWrapperCtType(
                                     WrapperCtType ctType, Void p)
                                     throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s::new, %6$s));%n",
+                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(%4$s::new, %5$s));%n",
                                 /* 1 */commandClassName,
                                 /* 2 */resultMeta.getBoxedTypeName(),
                                 /* 3 */getBasicStreamHandlerName(optional),
-                                /* 4 */ctType.getBasicCtType()
-                                        .getBoxedTypeName(),
-                                /* 5 */ctType.getTypeName(),
-                                /* 6 */functionParamName,
-                                /* 7 */commandName,
-                                /* 8 */methodName);
+                                /* 4 */ctType.getTypeName(),
+                                /* 5 */functionParamName,
+                                /* 6 */commandName,
+                                /* 7 */methodName);
                                 return null;
                             }
 
@@ -2118,16 +2056,14 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                     throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(%4$s, %5$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */getDomainStreamHandlerName(optional),
-                /* 4 */ctType.getBoxedTypeName(),
-                /* 5 */ctType.getInstantiationCommand(),
-                /* 6 */functionParamName,
-                /* 7 */commandName,
-                /* 8 */methodName,
-                /* 9 */ctType.getBasicCtType().getBoxedTypeName());
+                /* 4 */ctType.getInstantiationCommand(),
+                /* 5 */functionParamName,
+                /* 6 */commandName,
+                /* 7 */methodName);
                 return null;
             }
 
@@ -2135,7 +2071,7 @@ public class DaoGenerator extends AbstractGenerator {
             public Void visitMapCtType(MapCtType ctType, Boolean optional)
                     throws RuntimeException {
                 MapKeyNamingType namingType = m.getMapKeyNamingType();
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<>(%4$s.%5$s, %6$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */getMapStreamHandlerName(optional),
@@ -2150,15 +2086,14 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
                     throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(%4$s.getSingletonInternal(), %5$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */getEntityStreamHandlerName(optional),
-                /* 4 */ctType.getTypeName(),
-                /* 5 */ctType.getMetaTypeName(),
-                /* 6 */functionParamName,
-                /* 7 */commandName,
-                /* 8 */methodName);
+                /* 4 */ctType.getMetaTypeName(),
+                /* 5 */functionParamName,
+                /* 6 */commandName,
+                /* 7 */methodName);
                 return null;
             }
 
@@ -2171,7 +2106,7 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitOptionalIntCtType(OptionalIntCtType ctType,
                     Boolean p) throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */OptionalIntStreamHandler.class.getName(),
@@ -2184,7 +2119,7 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitOptionalLongCtType(OptionalLongCtType ctType,
                     Boolean p) throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */OptionalLongStreamHandler.class.getName(),
@@ -2197,7 +2132,7 @@ public class DaoGenerator extends AbstractGenerator {
             @Override
             public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
                     Boolean p) throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
                 /* 1 */commandClassName,
                 /* 2 */resultMeta.getBoxedTypeName(),
                 /* 3 */OptionalDoubleStreamHandler.class.getName(),
@@ -2271,31 +2206,29 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%4$s, %2$s>(() -> new %5$s(%6$s.class), %7$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<>(() -> new %4$s(%5$s.class), %6$s));%n",
                             /* 1 */commandClassName,
                             /* 2 */resultMeta.getBoxedTypeName(),
                             /* 3 */getBasicCollectorHandlerName(optional),
-                            /* 4 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 5 */ctType.getTypeName(),
-                            /* 6 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 7 */collectorParamName,
-                            /* 8 */commandName,
-                            /* 9 */methodName);
+                            /* 4 */ctType.getTypeName(),
+                            /* 5 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 6 */collectorParamName,
+                            /* 7 */commandName,
+                            /* 8 */methodName);
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s::new, %6$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(%4$s::new, %5$s));%n",
                             /* 1 */commandClassName,
                             /* 2 */resultMeta.getBoxedTypeName(),
                             /* 3 */getBasicCollectorHandlerName(optional),
-                            /* 4 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 5 */ctType.getTypeName(),
-                            /* 6 */collectorParamName,
-                            /* 7 */commandName,
-                            /* 8 */methodName);
+                            /* 4 */ctType.getTypeName(),
+                            /* 5 */collectorParamName,
+                            /* 6 */commandName,
+                            /* 7 */methodName);
                             return null;
                         }
 
@@ -2307,16 +2240,14 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(%4$s, %5$s));%n",
             /* 1 */commandClassName,
             /* 2 */resultMeta.getBoxedTypeName(),
             /* 3 */getDomainCollectorHandlerName(optional),
-            /* 4 */ctType.getBoxedTypeName(),
-            /* 5 */ctType.getInstantiationCommand(),
-            /* 6 */collectorParamName,
-            /* 7 */commandName,
-            /* 8 */methodName,
-            /* 9 */ctType.getBasicCtType().getBoxedTypeName());
+            /* 4 */ctType.getInstantiationCommand(),
+            /* 5 */collectorParamName,
+            /* 6 */commandName,
+            /* 7 */methodName);
             return null;
         }
 
@@ -2324,7 +2255,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitMapCtType(MapCtType ctType, Boolean optional)
                 throws RuntimeException {
             MapKeyNamingType namingType = m.getMapKeyNamingType();
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<>(%4$s.%5$s, %6$s));%n",
             /* 1 */commandClassName,
             /* 2 */resultMeta.getBoxedTypeName(),
             /* 3 */getMapCollectorHandlerName(optional),
@@ -2339,15 +2270,14 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s.getSingletonInternal(), %6$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(%4$s.getSingletonInternal(), %5$s));%n",
             /* 1 */commandClassName,
             /* 2 */resultMeta.getBoxedTypeName(),
             /* 3 */getEntityCollectorHandlerName(optional),
-            /* 4 */ctType.getTypeName(),
-            /* 5 */ctType.getMetaTypeName(),
-            /* 6 */collectorParamName,
-            /* 7 */commandName,
-            /* 8 */methodName);
+            /* 4 */ctType.getMetaTypeName(),
+            /* 5 */collectorParamName,
+            /* 6 */commandName,
+            /* 7 */methodName);
             return null;
         }
 
@@ -2360,7 +2290,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
             /* 1 */commandClassName,
             /* 2 */resultMeta.getBoxedTypeName(),
             /* 3 */OptionalIntCollectorHandler.class.getName(),
@@ -2373,7 +2303,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
             /* 1 */commandClassName,
             /* 2 */resultMeta.getBoxedTypeName(),
             /* 3 */OptionalLongCollectorHandler.class.getName(),
@@ -2386,7 +2316,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
                 Boolean p) throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
             /* 1 */commandClassName,
             /* 2 */resultMeta.getBoxedTypeName(),
             /* 3 */OptionalDoubleCollectorHandler.class.getName(),
@@ -2457,30 +2387,28 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperCtType(
                                 EnumWrapperCtType ctType, Void p)
                                 throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%6$s>(() -> new %4$s(%5$s.class), false));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(() -> new %4$s(%5$s.class), false));%n",
                             /* 1 */commandClassName,
                             /* 2 */resultBoxedTypeName,
                             /* 3 */getBasicSingleResultHandlerName(optional),
                             /* 4 */ctType.getTypeName(),
                             /* 5 */ctType.getBasicCtType().getQualifiedName(),
-                            /* 6 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 7 */commandName,
-                            /* 8 */methodName);
+                            /* 6 */commandName,
+                            /* 7 */methodName);
                             return null;
                         }
 
                         @Override
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%6$s>(%4$s::new, %5$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(%4$s::new, %5$s));%n",
                             /* 1 */commandClassName,
                             /* 2 */resultBoxedTypeName,
                             /* 3 */getBasicSingleResultHandlerName(optional),
                             /* 4 */ctType.getTypeName(),
                             /* 5 */basicCtType.isPrimitive(),
-                            /* 6 */ctType.getBasicCtType().getBoxedTypeName(),
-                            /* 7 */commandName,
-                            /* 8 */methodName);
+                            /* 6 */commandName,
+                            /* 7 */methodName);
                             return null;
                         }
 
@@ -2492,15 +2420,13 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %5$s>(%4$s));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
             /* 1 */commandClassName,
             /* 2 */resultBoxedTypeName,
             /* 3 */getDomainSingleResultHandlerName(optional),
             /* 4 */ctType.getInstantiationCommand(),
-            /* 5 */ctType.getBoxedTypeName(),
-            /* 6 */commandName,
-            /* 7 */methodName,
-            /* 8 */ctType.getBasicCtType().getBoxedTypeName());
+            /* 5 */commandName,
+            /* 6 */methodName);
             return null;
         }
 
@@ -2522,14 +2448,13 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
                 throws RuntimeException {
-            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s.getSingletonInternal()));%n",
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s.getSingletonInternal()));%n",
             /* 1 */commandClassName,
             /* 2 */resultBoxedTypeName,
             /* 3 */getEntitySingleResultHandlerName(optional),
             /* 4 */ctType.getMetaTypeName(),
-            /* 5 */ctType.getBoxedTypeName(),
-            /* 6 */commandName,
-            /* 7 */methodName);
+            /* 5 */commandName,
+            /* 6 */methodName);
             return null;
         }
 
@@ -2591,19 +2516,16 @@ public class DaoGenerator extends AbstractGenerator {
                                         public Void visitEnumWrapperCtType(
                                                 EnumWrapperCtType ctType, Void p)
                                                 throws RuntimeException {
-                                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s>(() -> new %5$s(%6$s.class)));%n",
+                                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<>(() -> new %4$s(%5$s.class)));%n",
                                                     /* 1 */commandClassName,
                                                     /* 2 */resultBoxedTypeName,
                                                     /* 3 */getBasicResultListHandlerName(optional),
-                                                    /* 4 */ctType
-                                                            .getBasicCtType()
-                                                            .getBoxedTypeName(),
-                                                    /* 5 */ctType.getTypeName(),
-                                                    /* 6 */ctType
+                                                    /* 4 */ctType.getTypeName(),
+                                                    /* 5 */ctType
                                                             .getBasicCtType()
                                                             .getQualifiedName(),
-                                                    /* 7 */commandName,
-                                                    /* 8 */methodName);
+                                                    /* 6 */commandName,
+                                                    /* 7 */methodName);
                                             return null;
                                         }
 
@@ -2611,16 +2533,13 @@ public class DaoGenerator extends AbstractGenerator {
                                         public Void visitWrapperCtType(
                                                 WrapperCtType ctType, Void p)
                                                 throws RuntimeException {
-                                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s::new));%n",
+                                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s::new));%n",
                                                     /* 1 */commandClassName,
                                                     /* 2 */resultBoxedTypeName,
                                                     /* 3 */getBasicResultListHandlerName(optional),
-                                                    /* 4 */ctType
-                                                            .getBasicCtType()
-                                                            .getBoxedTypeName(),
-                                                    /* 5 */ctType.getTypeName(),
-                                                    /* 6 */commandName,
-                                                    /* 7 */methodName);
+                                                    /* 4 */ctType.getTypeName(),
+                                                    /* 5 */commandName,
+                                                    /* 6 */methodName);
                                             return null;
                                         }
 
@@ -2632,15 +2551,13 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitDomainCtType(DomainCtType ctType,
                                 Boolean optional) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %4$s>(%5$s));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s));%n",
                             /* 1 */commandClassName,
                             /* 2 */resultBoxedTypeName,
                             /* 3 */getDomainResultListHandlerName(optional),
-                            /* 4 */ctType.getBoxedTypeName(),
-                            /* 5 */ctType.getInstantiationCommand(),
-                            /* 6 */commandName,
-                            /* 7 */methodName,
-                            /* 8 */ctType.getBasicCtType().getBoxedTypeName());
+                            /* 4 */ctType.getInstantiationCommand(),
+                            /* 5 */commandName,
+                            /* 6 */methodName);
                             return null;
                         }
 
@@ -2662,14 +2579,13 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitEntityCtType(EntityCtType ctType,
                                 Boolean optional) throws RuntimeException {
-                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<>(%4$s.getSingletonInternal()));%n",
                             /* 1 */commandClassName,
                             /* 2 */resultBoxedTypeName,
                             /* 3 */getEntityResultListHandlerName(optional),
-                            /* 4 */ctType.getTypeName(),
-                            /* 5 */ctType.getMetaTypeName(),
-                            /* 6 */commandName,
-                            /* 7 */methodName);
+                            /* 4 */ctType.getMetaTypeName(),
+                            /* 5 */commandName,
+                            /* 6 */methodName);
                             return null;
                         }
 
