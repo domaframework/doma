@@ -2,6 +2,14 @@
 リリースノート
 ==============
 
+v2.6.0: 2015-11-21
+======================
+
+* `GH107 <https://github.com/domaframework/doma/pull/107>`_
+  注釈処理で生成されるコードが冗長な型引数を含む問題を修正
+* `GH105 <https://github.com/domaframework/doma/pull/105>`_
+  Fix cause position in UniqueConstraintException's constructor
+
 v2.5.1: 2015-11-01
 ======================
 
