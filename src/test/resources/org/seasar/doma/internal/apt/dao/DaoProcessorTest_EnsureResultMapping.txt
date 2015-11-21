@@ -82,7 +82,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(example.entity._Emp.getSingletonInternal()));
             example.entity.Emp __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl", "selectById", __result);
@@ -118,7 +118,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<>(example.entity._Emp.getSingletonInternal()));
             java.util.List<example.entity.Emp> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl", "selectByNameAndSalary", __result);
@@ -143,7 +143,7 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setSchemaName("");
             __query.setProcedureName("procedure");
             __query.setQuoteRequired(false);
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");
             __query.setCallerMethodName("procedure");
             __query.setQueryTimeout(-1);
@@ -173,8 +173,8 @@ public class EnsureResultMappingDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setSchemaName("");
             __query.setFunctionName("function");
             __query.setQuoteRequired(false);
-            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityResultListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), true));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<example.entity.Emp>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityResultListParameter<>(example.entity._Emp.getSingletonInternal(), true));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<>(example.entity._Emp.getSingletonInternal(), emp, "emp", true));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultMappingDaoImpl");
             __query.setCallerMethodName("function");
             __query.setQueryTimeout(-1);

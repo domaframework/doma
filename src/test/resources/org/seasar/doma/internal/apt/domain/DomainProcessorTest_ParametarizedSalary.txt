@@ -20,7 +20,7 @@ public final class _ParametarizedSalary<T, U> extends org.seasar.doma.jdbc.domai
 
     @Override
     protected org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U> newDomain(java.math.BigDecimal value) {
-        return new org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>(value);
+        return new org.seasar.doma.internal.apt.domain.ParametarizedSalary<>(value);
     }
 
     @Override
