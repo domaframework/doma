@@ -70,7 +70,7 @@ public class ParameterizedReturnDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.dao.Height<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.Integer, org.seasar.doma.internal.apt.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.dao._Height.<java.lang.String>getSingletonInternal()));
             org.seasar.doma.internal.apt.dao.Height<java.lang.String> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ParameterizedReturnDaoImpl", "select", __result);
