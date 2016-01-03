@@ -84,7 +84,7 @@ public class CollectorDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityCollectorHandler<>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), collector));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityCollectorHandler<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), collector));
             java.lang.Integer __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.CollectorDaoImpl", "selectByIdAndName", __result);
@@ -117,7 +117,7 @@ public class CollectorDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainCollectorHandler<>(example.domain._PhoneNumber.getSingletonInternal(), collector));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainCollectorHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), collector));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.CollectorDaoImpl", "selectById", __result);
@@ -149,7 +149,7 @@ public class CollectorDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicCollectorHandler<>(org.seasar.doma.wrapper.StringWrapper::new, collector));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicCollectorHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, collector));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.CollectorDaoImpl", "select", __result);
@@ -181,7 +181,7 @@ public class CollectorDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.BasicCollectorHandler<>(org.seasar.doma.wrapper.StringWrapper::new, collector));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.BasicCollectorHandler<java.lang.String, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, collector));
             java.lang.String __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.CollectorDaoImpl", "selectWithHogeCollector", __result);
@@ -214,7 +214,7 @@ public class CollectorDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.MapCollectorHandler<>(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, collector));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.MapCollectorHandler<R>(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, collector));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.CollectorDaoImpl", "selectByIdAsMap", __result);

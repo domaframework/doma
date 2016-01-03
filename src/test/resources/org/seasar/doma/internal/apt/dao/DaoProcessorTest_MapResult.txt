@@ -166,7 +166,7 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<>(org.seasar.doma.MapKeyNamingType.NONE, mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<R>(org.seasar.doma.MapKeyNamingType.NONE, mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.MapResultDaoImpl", "stream", __result);

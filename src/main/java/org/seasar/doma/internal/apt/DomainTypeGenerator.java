@@ -150,17 +150,12 @@ public class DomainTypeGenerator extends AbstractGenerator {
             iprint("    }%n");
         }
         if (domainMeta.providesConstructor()) {
-            String domainClassName = domainMeta.getTypeElement()
-                    .getQualifiedName().toString();
-            String simpleTypeName = domainMeta.isParametarized() ? domainClassName
-                    + "<>"
-                    : domainClassName;
             if (primitive) {
                 iprint("    return new %1$s(%2$s.unbox(value));%n",
-                /* 1 */simpleTypeName, BoxedPrimitiveUtil.class.getName());
+                /* 1 */typeName, BoxedPrimitiveUtil.class.getName());
             } else {
                 iprint("    return new %1$s(value);%n",
-                /* 1 */simpleTypeName);
+                /* 1 */typeName);
             }
         } else {
             if (primitive) {
