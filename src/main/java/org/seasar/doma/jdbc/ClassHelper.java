@@ -42,7 +42,7 @@ public interface ClassHelper {
     default <T> Class<T> forName(String className) throws Exception {
         try {
             @SuppressWarnings("unchecked")
-            Class<T> clazz = (Class<T>) Class.forName(className);
+            Class<T> clazz = (Class<T>) Thread.currentThread().getContextClassLoader().loadClass(className);
             return clazz;
         } catch (ClassNotFoundException e) {
             throw new WrapException(e);
