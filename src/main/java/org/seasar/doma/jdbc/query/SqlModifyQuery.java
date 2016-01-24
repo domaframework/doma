@@ -90,6 +90,10 @@ public abstract class SqlModifyQuery extends AbstractQuery implements
         parameters.put(name, new Value(type, value));
     }
 
+    public void clearParameters() {
+        parameters.clear();
+    }
+
     public void setSqlLogType(SqlLogType sqlLogType) {
         this.sqlLogType = sqlLogType;
     }

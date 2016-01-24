@@ -33,6 +33,27 @@ import example.entity.Emp;
  */
 public class SelectBuilderTest extends TestCase {
 
+    public void testGetSql() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select");
+        builder.sql("id").sql(",");
+        builder.sql("name").sql(",");
+        builder.sql("salary");
+        builder.sql("from Emp");
+        builder.sql("where");
+        builder.sql("name like ").param(String.class, "S%");
+        builder.sql("and");
+        builder.sql("age > ").param(int.class, 20);
+
+        String sql = String.format("select%n" + "id,%n" + "name,%n"
+                + "salary%n" + "from Emp%n" + "where%n" + "name like ?%n"
+                + "and%n" + "age > ?");
+        assertEquals(sql, builder.getSql().getRawSql());
+
+        Emp emp = builder.getEntitySingleResult(Emp.class);
+        assertNull(emp);
+    }
+
     public void testRmoveLast() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
         builder.sql("aaa").sql("bbb");

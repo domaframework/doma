@@ -164,15 +164,20 @@ public class UpdateBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
+        prepare();
+        UpdateCommand command = new UpdateCommand(query);
+        int result = command.execute();
+        query.complete();
+        return result;
+    }
+
+    private void prepare() {
+        query.clearParameters();
         for (Param p : helper.getParams()) {
             query.addParameter(p.name, p.paramClass, p.param);
         }
         query.setSqlNode(helper.getSqlNode());
         query.prepare();
-        UpdateCommand command = new UpdateCommand(query);
-        int result = command.execute();
-        query.complete();
-        return result;
     }
 
     /**
@@ -244,8 +249,7 @@ public class UpdateBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSql");
         }
-        query.setSqlNode(helper.getSqlNode());
-        query.prepare();
+        prepare();
         return query.getSql();
     }
 

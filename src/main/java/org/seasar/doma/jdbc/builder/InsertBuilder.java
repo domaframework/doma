@@ -160,15 +160,20 @@ public class InsertBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
+        prepare();
+        InsertCommand command = new InsertCommand(query);
+        int result = command.execute();
+        query.complete();
+        return result;
+    }
+
+    private void prepare() {
+        query.clearParameters();
         for (Param p : helper.getParams()) {
             query.addParameter(p.name, p.paramClass, p.param);
         }
         query.setSqlNode(helper.getSqlNode());
         query.prepare();
-        InsertCommand command = new InsertCommand(query);
-        int result = command.execute();
-        query.complete();
-        return result;
     }
 
     /**
@@ -240,8 +245,7 @@ public class InsertBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSql");
         }
-        query.setSqlNode(helper.getSqlNode());
-        query.prepare();
+        prepare();
         return query.getSql();
     }
 
