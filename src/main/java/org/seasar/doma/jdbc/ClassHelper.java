@@ -39,11 +39,15 @@ public interface ClassHelper {
      *             例外
      * @see Class#forName(String)
      */
+    @SuppressWarnings("unchecked")
     default <T> Class<T> forName(String className) throws Exception {
         try {
-            @SuppressWarnings("unchecked")
-            Class<T> clazz = (Class<T>) Class.forName(className);
-            return clazz;
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            if (classLoader == null) {
+                return (Class<T>) Class.forName(className);
+            } else {
+                return (Class<T>) classLoader.loadClass(className);
+            }
         } catch (ClassNotFoundException e) {
             throw new WrapException(e);
         }
