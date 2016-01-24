@@ -34,4 +34,20 @@ public class InsertBuilderTest extends TestCase {
         builder.param(int.class, 100).sql(")");
         builder.execute();
     }
+
+    public void testGetSql() throws Exception {
+        InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
+        builder.sql("insert into Emp");
+        builder.sql("(name, salary)");
+        builder.sql("values (");
+        builder.param(String.class, "SMITH").sql(", ");
+        builder.param(int.class, 100).sql(")");
+
+        String sql = String.format("insert into Emp%n" + "(name, salary)%n"
+                + "values (?, ?)");
+        assertEquals(sql, builder.getSql().getRawSql());
+
+        builder.execute();
+    }
+
 }

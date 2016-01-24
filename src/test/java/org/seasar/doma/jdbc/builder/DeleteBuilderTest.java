@@ -34,4 +34,20 @@ public class DeleteBuilderTest extends TestCase {
         builder.sql("salary = ").param(int.class, 10);
         builder.execute();
     }
+
+    public void testGetSql() throws Exception {
+        DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
+        builder.sql("delete from Emp");
+        builder.sql("where");
+        builder.sql("name = ").param(String.class, "aaa");
+        builder.sql("and");
+        builder.sql("salary = ").param(int.class, 10);
+
+        String sql = String.format("delete from Emp%n" + "where%n"
+                + "name = ?%n" + "and%n" + "salary = ?");
+        assertEquals(sql, builder.getSql().getRawSql());
+
+        builder.execute();
+    }
+
 }

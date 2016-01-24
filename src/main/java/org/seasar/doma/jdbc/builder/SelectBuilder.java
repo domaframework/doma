@@ -780,16 +780,21 @@ public class SelectBuilder {
     }
 
     private <RESULT> RESULT execute(ResultSetHandler<RESULT> resultSetHandler) {
-        for (Param p : helper.getParams()) {
-            query.addParameter(p.name, p.paramClass, p.param);
-        }
-        query.setSqlNode(helper.getSqlNode());
-        query.prepare();
+        prepare();
         SelectCommand<RESULT> command = new SelectCommand<RESULT>(query,
                 resultSetHandler);
         RESULT result = command.execute();
         query.complete();
         return result;
+    }
+
+    private void prepare() {
+        query.clearParameters();
+        for (Param p : helper.getParams()) {
+            query.addParameter(p.name, p.paramClass, p.param);
+        }
+        query.setSqlNode(helper.getSqlNode());
+        query.prepare();
     }
 
     /**
@@ -932,8 +937,7 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSql");
         }
-        query.setSqlNode(helper.getSqlNode());
-        query.prepare();
+        prepare();
         return query.getSql();
     }
 

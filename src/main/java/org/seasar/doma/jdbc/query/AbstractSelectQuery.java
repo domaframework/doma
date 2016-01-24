@@ -157,6 +157,10 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
         this.parameters.putAll(parameters);
     }
 
+    public void clearParameters() {
+        this.parameters.clear();
+    }
+
     @Override
     public boolean isResultEnsured() {
         return resultEnsured;
