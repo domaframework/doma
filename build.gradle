@@ -47,6 +47,7 @@ javadoc {
     options.encoding = encoding
     options.charSet = encoding
     options.docEncoding = encoding
+    options.links 'http://docs.oracle.com/javase/jp/8/docs/api/'
     exclude '**/internal/**'
 }
 
