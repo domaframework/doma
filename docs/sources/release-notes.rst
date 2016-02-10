@@ -2,6 +2,18 @@
 リリースノート
 ==============
 
+v2.6.2: 2016-02-11
+======================
+
+* `GH118 <https://github.com/domaframework/doma/pull/118>`_
+  SQLコメント カラムリスト展開コメント リンク修正
+* `GH117 <https://github.com/domaframework/doma/pull/117>`_
+  リンクに関連したJavadoc生成オプションを追加しました
+* `GH116 <https://github.com/domaframework/doma/pull/116>`_
+  クエリビルダのgetSql()の呼び出しでエラーが発生しないように修正
+* `GH115 <https://github.com/domaframework/doma/pull/115>`_
+  Spring Boot DevToolsに対応
+
 v2.6.1: 2016-01-11
 ======================
 
