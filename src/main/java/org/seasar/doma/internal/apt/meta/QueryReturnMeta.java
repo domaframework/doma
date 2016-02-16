@@ -40,6 +40,7 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
@@ -82,6 +83,11 @@ public class QueryReturnMeta {
             iterableCtType.getElementCtType().accept(
                     new IterableElementCtTypeVisitor(methodElement), null);
             return iterableCtType;
+        }
+
+        StreamCtType streamCtType = StreamCtType.newInstance(type, env);
+        if (streamCtType != null) {
+            return streamCtType;
         }
 
         EntityCtType entityCtType = EntityCtType.newInstance(type, env);

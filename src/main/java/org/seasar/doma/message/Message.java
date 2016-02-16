@@ -412,6 +412,11 @@ public enum Message implements MessageResource {
     DOMA4268("インターフェースに@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。"),
     DOMA4269("@Domainが注釈されたインターフェースはトップレベルのインターフェースでなければいけません。"),
     DOMA4270("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%populate */の式が使用されていますが、SET句の自動生成ができません。メソッドに@Updateまたは@BatchUpdateが注釈され、第一引数がエンティティクラスにマッピングされていることを確認してください。SQL[{1}]"),
+    DOMA4271("戻り値のjava.util.stream.Streamに対する実型引数の型[{0}]はサポートされていません。"),
+    DOMA4272("戻り値のjava.util.stream.Streamに対する実型引数のエンティティクラス[{0}]は抽象型であってはいけません。"),
+    DOMA4273("java.util.stream.Stream内のjava.util.Optionalに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス。"),
+    /** Streamをアプリケーションでクローズしなければいけないことを示す警告メッセージ */
+    DOMA4274("java.util.stream.StreamがDaoメソッドから返されます。アプリケーションで必ずStreamをクローズしてください。この警告を抑制するには、メソッドに@Suppress(messages = '{ Message.DOMA4274 }')と注釈してください。"),
 
     DOMA4300("型[{0}]の処理中に例外が発生しました。注釈処理とは直接関係ない場所でコンパイルエラーがありませんか？"),
 

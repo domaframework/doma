@@ -49,6 +49,8 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected EntityCtType entityCtType;
 
+    protected boolean resultStream;
+
     public SqlFileSelectQueryMeta(ExecutableElement method) {
         super(method);
     }
@@ -155,6 +157,14 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public boolean isExpandable() {
         return entityCtType != null;
+    }
+
+    public boolean isResultStream() {
+        return resultStream;
+    }
+
+    public void setResultStream(boolean resultStream) {
+        this.resultStream = resultStream;
     }
 
     @Override

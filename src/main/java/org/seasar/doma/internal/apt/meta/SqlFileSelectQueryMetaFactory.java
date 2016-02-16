@@ -20,9 +20,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.SelectType;
+import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
@@ -442,10 +445,14 @@ public class SqlFileSelectQueryMetaFactory extends
 
         protected QueryReturnMeta returnMeta;
 
+        protected Suppress suppress;
+
         protected ReturnCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryReturnMeta returnMeta) {
             this.queryMeta = queryMeta;
             this.returnMeta = returnMeta;
+            this.suppress = queryMeta.getExecutableElement().getAnnotation(
+                    Suppress.class);
         }
 
         @Override
@@ -497,6 +504,20 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
+        public Void visitStreamCtType(StreamCtType ctType, Void p)
+                throws RuntimeException {
+            if (!isSuppressed(Message.DOMA4274)) {
+                Notifier.notify(env, Kind.WARNING, Message.DOMA4274,
+                        returnMeta.getElement());
+            }
+            queryMeta.setResultStream(true);
+            ctType.getElementCtType()
+                    .accept(new ReturnStreamElementCtTypeVisitor(queryMeta,
+                            returnMeta), p);
+            return null;
+        }
+
+        @Override
         public Void visitOptionalCtType(OptionalCtType ctType, Void p)
                 throws RuntimeException {
             ctType.getElementCtType().accept(
@@ -521,6 +542,17 @@ public class SqlFileSelectQueryMetaFactory extends
         public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
                 Void p) throws RuntimeException {
             return null;
+        }
+
+        protected boolean isSuppressed(Message message) {
+            if (suppress != null) {
+                for (Message suppressMessage : suppress.messages()) {
+                    if (suppressMessage == message) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
     }
@@ -613,6 +645,89 @@ public class SqlFileSelectQueryMetaFactory extends
      * @author nakamura-to
      * 
      */
+    protected class ReturnStreamElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected SqlFileSelectQueryMeta queryMeta;
+
+        protected QueryReturnMeta returnMeta;
+
+        protected ReturnStreamElementCtTypeVisitor(
+                SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+            this.queryMeta = queryMeta;
+            this.returnMeta = returnMeta;
+        }
+
+        @Override
+        protected Void defaultAction(CtType type, Void p)
+                throws RuntimeException {
+            throw new AptException(Message.DOMA4271, env,
+                    returnMeta.getElement(), type.getTypeName());
+        }
+
+        @Override
+        public Void visitBasicCtType(BasicCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitMapCtType(MapCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitEntityCtType(EntityCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isAbstract()) {
+                throw new AptException(Message.DOMA4272, env,
+                        returnMeta.getElement(), ctType.getTypeMirror());
+            }
+            queryMeta.setEntityCtType(ctType);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                throws RuntimeException {
+            ctType.getElementCtType().accept(
+                    new ReturnStreamOptionalElementCtTypeVisitor(queryMeta,
+                            returnMeta), p);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Void p) throws RuntimeException {
+            return null;
+        }
+
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
     protected class ReturnOptionalElementCtTypeVisitor extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -676,6 +791,44 @@ public class SqlFileSelectQueryMetaFactory extends
         protected QueryReturnMeta returnMeta;
 
         protected ReturnListOptionalElementCtTypeVisitor(
+                SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+            this.queryMeta = queryMeta;
+            this.returnMeta = returnMeta;
+        }
+
+        @Override
+        protected Void defaultAction(CtType type, Void p)
+                throws RuntimeException {
+            throw new AptException(Message.DOMA4267, env,
+                    returnMeta.getElement(), type.getTypeName());
+        }
+
+        @Override
+        public Void visitBasicCtType(BasicCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class ReturnStreamOptionalElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected SqlFileSelectQueryMeta queryMeta;
+
+        protected QueryReturnMeta returnMeta;
+
+        protected ReturnStreamOptionalElementCtTypeVisitor(
                 SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
             this.queryMeta = queryMeta;
             this.returnMeta = returnMeta;

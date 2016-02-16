@@ -153,7 +153,12 @@ Iterableを使ったIN句へのマッピング
 
 全件を一度に ``java.util.List`` で受け取るのではなく ``java.util.stream.Stream`` で扱いたい場合は、ストリーム検索を利用できます。
 
-ストリーム検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectType.STREAM`` を設定し、
+ストリーム検索には、 ``Stream`` を ``java.util.Function`` へ渡す方法と戻り値で返す方法の2種類があります。
+
+Functionへ渡す方法
+---------------------------
+
+``@Select`` の ``strategy`` 要素に ``SelectType.STREAM`` を設定し、
 メソッドのパラメータに ``java.util.Function<Stream<TARGET>, RESULT>`` もしくは
 ``java.util.Function<Stream<TARGET>, RESULT>`` のサブタイプを定義します。
 
@@ -185,6 +190,56 @@ Iterableを使ったIN句へのマッピング
 型パラメータ ``RESULT`` はDaoのメソッドの戻り値に合わせなければいけません。
 
 `検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+
+戻り値で返す方法
+---------------------------
+
+メソッドの戻り値の型を ``java.util.stream.Stream`` にします。
+``Stream`` の要素の型には次のものが使用できます。
+
+* :doc:`../basic`
+* :doc:`../domain`
+* :doc:`../entity`
+* java.util.Map<String, Object>
+* :doc:`../basic` もしくは :doc:`../domain` のいずれかを要素とするjava.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
+
+.. code-block:: java
+
+  @Select
+  Stream<Employee> selectByNameAndSalary(String name, BigDecimal salary);
+
+呼び出し元です。
+
+.. code-block:: java
+
+  EmployeeDao dao = new EmployeeDaoImpl();
+  try (Stream<Employee> stream = dao.selectByNameAndSalary(name, salary)) {
+    ...
+  }
+
+`検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+
+.. warning::
+
+  リソースの解放漏れを防ぐためにストリームは必ずクローズしてください。
+  ストリームをクローズしないと、 ``java.sql.ResultSet`` 、
+  ``java.sql.PreparedStatement`` 、 ``java.sql.Connection`` のクローズが行われません。
+
+.. note::
+
+  戻り値で返す方法はリソース解放漏れのリスクがあるため、特に理由がない限りは、
+  Functionへ渡す方法の採用を検討してください。
+  注意を促すためにDaoのメソッドに対して警告メッセージを表示します。
+  警告を抑制するには以下のように ``@Suppress`` を指定してください。
+
+  .. code-block:: java
+
+    @Select
+    @Suppress(messages = { Message.DOMA4274 })
+    Stream<Employee> selectByNameAndSalary(String name, BigDecimal salary);
 
 コレクト検索
 ============
@@ -225,7 +280,7 @@ Iterableを使ったIN句へのマッピング
 
 .. note::
 
-  コレクト検索はストリーム検索のショートカットです。
+  コレクト検索はストリーム検索のFunctionに渡す方法のショートカットです。
   ストリーム検索で得られる ``Stream`` オブジェクトの ``collect`` メソッドを使って同等のことができます。
 
 検索オプションを利用した検索

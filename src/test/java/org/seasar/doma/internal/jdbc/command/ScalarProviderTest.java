@@ -190,5 +190,10 @@ public class ScalarProviderTest extends TestCase {
             return sql;
         }
 
+        @Override
+        public boolean isResultStream() {
+            return false;
+        }
+
     }
 }

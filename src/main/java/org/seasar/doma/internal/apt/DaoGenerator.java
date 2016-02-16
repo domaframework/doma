@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -529,6 +530,9 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
             iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
                     .getClass().getName(), m.getSqlLogType());
+            if (m.isResultStream()) {
+                iprint("__query.setResultStream(true);%n");
+            }
             iprint("__query.prepare();%n");
 
             QueryReturnMeta returnMeta = m.getReturnMeta();
@@ -2061,173 +2065,196 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitStreamCtType(StreamCtType ctType, Void p)
                 throws RuntimeException {
-            ctType.getElementCtType().accept(new StreamCtTypeVisitor(), false);
+            ctType.getElementCtType().accept(
+                    new StreamElementCtTypeVisitor(m, methodName,
+                            resultMeta.getBoxedTypeName(), commandClassName,
+                            commandName, functionParamName), false);
+            return null;
+        }
+    }
+
+    protected class StreamElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
+
+        protected final SqlFileSelectQueryMeta m;
+
+        protected final String methodName;
+
+        protected final String resultBoxedTypeName;
+
+        protected final String commandClassName;
+
+        protected final String commandName;
+
+        protected final String functionParamName;
+
+        public StreamElementCtTypeVisitor(SqlFileSelectQueryMeta m,
+                String methodName, String resultBoxedTypeName,
+                String commandClassName, String commandName,
+                String functionParamName) {
+            this.m = m;
+            this.methodName = methodName;
+            this.resultBoxedTypeName = resultBoxedTypeName;
+            this.commandClassName = commandClassName;
+            this.commandName = commandName;
+            this.functionParamName = functionParamName;
+        }
+
+        @Override
+        public Void visitBasicCtType(BasicCtType ctType, final Boolean optional)
+                throws RuntimeException {
+            ctType.getWrapperCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType ctType, Void p)
+                                throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%4$s, %2$s>(() -> new %5$s(%6$s.class), %7$s));%n",
+                            /* 1 */commandClassName,
+                            /* 2 */resultBoxedTypeName,
+                            /* 3 */getBasicStreamHandlerName(optional),
+                            /* 4 */ctType.getBasicCtType().getBoxedTypeName(),
+                            /* 5 */ctType.getTypeName(),
+                            /* 6 */ctType.getBasicCtType().getQualifiedName(),
+                            /* 7 */functionParamName,
+                            /* 8 */commandName,
+                            /* 9 */methodName);
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s::new, %6$s));%n",
+                            /* 1 */commandClassName,
+                            /* 2 */resultBoxedTypeName,
+                            /* 3 */getBasicStreamHandlerName(optional),
+                            /* 4 */ctType.getBasicCtType().getBoxedTypeName(),
+                            /* 5 */ctType.getTypeName(),
+                            /* 6 */functionParamName,
+                            /* 7 */commandName,
+                            /* 8 */methodName);
+                            return null;
+                        }
+
+                    }, null);
+
             return null;
         }
 
-        protected class StreamCtTypeVisitor extends
-                SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
+        @Override
+        public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */getDomainStreamHandlerName(optional),
+            /* 4 */ctType.getBoxedTypeName(),
+            /* 5 */ctType.getInstantiationCommand(),
+            /* 6 */functionParamName,
+            /* 7 */commandName,
+            /* 8 */methodName,
+            /* 9 */ctType.getBasicCtType().getBoxedTypeName());
+            return null;
+        }
 
-            @Override
-            public Void visitBasicCtType(BasicCtType ctType,
-                    final Boolean optional) throws RuntimeException {
-                ctType.getWrapperCtType()
-                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+        @Override
+        public Void visitMapCtType(MapCtType ctType, Boolean optional)
+                throws RuntimeException {
+            MapKeyNamingType namingType = m.getMapKeyNamingType();
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */getMapStreamHandlerName(optional),
+            /* 4 */namingType.getDeclaringClass().getName(),
+            /* 5 */namingType.name(),
+            /* 6 */functionParamName,
+            /* 7 */commandName,
+            /* 8 */methodName);
+            return null;
+        }
 
-                            @Override
-                            public Void visitEnumWrapperCtType(
-                                    EnumWrapperCtType ctType, Void p)
-                                    throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%8$s(%9$s, __query, new %3$s<%4$s, %2$s>(() -> new %5$s(%6$s.class), %7$s));%n",
-                                /* 1 */commandClassName,
-                                /* 2 */resultMeta.getBoxedTypeName(),
-                                /* 3 */getBasicStreamHandlerName(optional),
-                                /* 4 */ctType.getBasicCtType()
-                                        .getBoxedTypeName(),
-                                /* 5 */ctType.getTypeName(),
-                                /* 6 */ctType.getBasicCtType()
-                                        .getQualifiedName(),
-                                /* 7 */functionParamName,
-                                /* 8 */commandName,
-                                /* 9 */methodName);
-                                return null;
-                            }
+        @Override
+        public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s.getSingletonInternal(), %6$s));%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */getEntityStreamHandlerName(optional),
+            /* 4 */ctType.getTypeName(),
+            /* 5 */ctType.getMetaTypeName(),
+            /* 6 */functionParamName,
+            /* 7 */commandName,
+            /* 8 */methodName);
+            return null;
+        }
 
-                            @Override
-                            public Void visitWrapperCtType(
-                                    WrapperCtType ctType, Void p)
-                                    throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s::new, %6$s));%n",
-                                /* 1 */commandClassName,
-                                /* 2 */resultMeta.getBoxedTypeName(),
-                                /* 3 */getBasicStreamHandlerName(optional),
-                                /* 4 */ctType.getBasicCtType()
-                                        .getBoxedTypeName(),
-                                /* 5 */ctType.getTypeName(),
-                                /* 6 */functionParamName,
-                                /* 7 */commandName,
-                                /* 8 */methodName);
-                                return null;
-                            }
+        @Override
+        public Void visitOptionalCtType(OptionalCtType ctType, Boolean optional)
+                throws RuntimeException {
+            return ctType.getElementCtType().accept(this, true);
+        }
 
-                        }, null);
+        @Override
+        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */OptionalIntStreamHandler.class.getName(),
+            /* 4 */functionParamName,
+            /* 5 */commandName,
+            /* 6 */methodName);
+            return null;
+        }
 
-                return null;
+        @Override
+        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */OptionalLongStreamHandler.class.getName(),
+            /* 4 */functionParamName,
+            /* 5 */commandName,
+            /* 6 */methodName);
+            return null;
+        }
+
+        @Override
+        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
+                Boolean p) throws RuntimeException {
+            iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+            /* 1 */commandClassName,
+            /* 2 */resultBoxedTypeName,
+            /* 3 */OptionalDoubleStreamHandler.class.getName(),
+            /* 4 */functionParamName,
+            /* 5 */commandName,
+            /* 6 */methodName);
+            return null;
+        }
+
+        protected String getBasicStreamHandlerName(Boolean optional) {
+            if (Boolean.TRUE == optional) {
+                return OptionalBasicStreamHandler.class.getName();
             }
+            return BasicStreamHandler.class.getName();
+        }
 
-            @Override
-            public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
-                    throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
-                /* 1 */commandClassName,
-                /* 2 */resultMeta.getBoxedTypeName(),
-                /* 3 */getDomainStreamHandlerName(optional),
-                /* 4 */ctType.getBoxedTypeName(),
-                /* 5 */ctType.getInstantiationCommand(),
-                /* 6 */functionParamName,
-                /* 7 */commandName,
-                /* 8 */methodName,
-                /* 9 */ctType.getBasicCtType().getBoxedTypeName());
-                return null;
+        protected String getDomainStreamHandlerName(Boolean optional) {
+            if (Boolean.TRUE == optional) {
+                return OptionalDomainStreamHandler.class.getName();
             }
+            return DomainStreamHandler.class.getName();
+        }
 
-            @Override
-            public Void visitMapCtType(MapCtType ctType, Boolean optional)
-                    throws RuntimeException {
-                MapKeyNamingType namingType = m.getMapKeyNamingType();
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
-                /* 1 */commandClassName,
-                /* 2 */resultMeta.getBoxedTypeName(),
-                /* 3 */getMapStreamHandlerName(optional),
-                /* 4 */namingType.getDeclaringClass().getName(),
-                /* 5 */namingType.name(),
-                /* 6 */functionParamName,
-                /* 7 */commandName,
-                /* 8 */methodName);
-                return null;
-            }
+        protected String getMapStreamHandlerName(Boolean optional) {
+            return MapStreamHandler.class.getName();
+        }
 
-            @Override
-            public Void visitEntityCtType(EntityCtType ctType, Boolean optional)
-                    throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s.getSingletonInternal(), %6$s));%n",
-                /* 1 */commandClassName,
-                /* 2 */resultMeta.getBoxedTypeName(),
-                /* 3 */getEntityStreamHandlerName(optional),
-                /* 4 */ctType.getTypeName(),
-                /* 5 */ctType.getMetaTypeName(),
-                /* 6 */functionParamName,
-                /* 7 */commandName,
-                /* 8 */methodName);
-                return null;
-            }
-
-            @Override
-            public Void visitOptionalCtType(OptionalCtType ctType,
-                    Boolean optional) throws RuntimeException {
-                return ctType.getElementCtType().accept(this, true);
-            }
-
-            @Override
-            public Void visitOptionalIntCtType(OptionalIntCtType ctType,
-                    Boolean p) throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
-                /* 1 */commandClassName,
-                /* 2 */resultMeta.getBoxedTypeName(),
-                /* 3 */OptionalIntStreamHandler.class.getName(),
-                /* 4 */functionParamName,
-                /* 5 */commandName,
-                /* 6 */methodName);
-                return null;
-            }
-
-            @Override
-            public Void visitOptionalLongCtType(OptionalLongCtType ctType,
-                    Boolean p) throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
-                /* 1 */commandClassName,
-                /* 2 */resultMeta.getBoxedTypeName(),
-                /* 3 */OptionalLongStreamHandler.class.getName(),
-                /* 4 */functionParamName,
-                /* 5 */commandName,
-                /* 6 */methodName);
-                return null;
-            }
-
-            @Override
-            public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
-                    Boolean p) throws RuntimeException {
-                iprint("%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
-                /* 1 */commandClassName,
-                /* 2 */resultMeta.getBoxedTypeName(),
-                /* 3 */OptionalDoubleStreamHandler.class.getName(),
-                /* 4 */functionParamName,
-                /* 5 */commandName,
-                /* 6 */methodName);
-                return null;
-            }
-
-            protected String getBasicStreamHandlerName(Boolean optional) {
-                if (Boolean.TRUE == optional) {
-                    return OptionalBasicStreamHandler.class.getName();
-                }
-                return BasicStreamHandler.class.getName();
-            }
-
-            protected String getDomainStreamHandlerName(Boolean optional) {
-                if (Boolean.TRUE == optional) {
-                    return OptionalDomainStreamHandler.class.getName();
-                }
-                return DomainStreamHandler.class.getName();
-            }
-
-            protected String getMapStreamHandlerName(Boolean optional) {
-                return MapStreamHandler.class.getName();
-            }
-
-            protected String getEntityStreamHandlerName(Boolean optional) {
-                return EntityStreamHandler.class.getName();
-            }
+        protected String getEntityStreamHandlerName(Boolean optional) {
+            return EntityStreamHandler.class.getName();
         }
     }
 
@@ -2722,6 +2749,16 @@ public class DaoGenerator extends AbstractGenerator {
                         }
 
                     }, false);
+            return null;
+        }
+
+        @Override
+        public Void visitStreamCtType(StreamCtType ctType, Boolean __)
+                throws RuntimeException {
+            ctType.getElementCtType().accept(
+                    new StreamElementCtTypeVisitor(m, methodName,
+                            resultBoxedTypeName, commandClassName, commandName,
+                            Function.class.getName() + ".identity()"), false);
             return null;
         }
 

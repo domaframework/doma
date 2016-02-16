@@ -608,6 +608,36 @@ public class SelectBuilder {
     }
 
     /**
+     * エンティティのストリームを返します。
+     * <p>
+     * ストリームはアプリケーションでクローズしなければいけません。
+     * 
+     * @param <TARGET>
+     *            エンティティ型
+     * @param targetClass
+     *            エンティティ型のクラス
+     * @return エンティティのストリーム
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             処理対象のクラスがエンティティ型でない場合
+     * @throws JdbcException
+     *             JDBCに関する例外が発生した場合
+     * @since 2.7.0
+     */
+    public <TARGET> Stream<TARGET> streamEntity(Class<TARGET> targetClass) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        if (!targetClass.isAnnotationPresent(Entity.class)) {
+            throw new DomaIllegalArgumentException("targetClass",
+                    Message.DOMA2219.getMessage(targetClass));
+        }
+        query.setResultStream(true);
+        return streamEntityInternal(targetClass, Function.identity());
+    }
+
+    /**
      * エンティティのインスタンスをストリームで処理します。
      * 
      * @param <RESULT>
@@ -647,6 +677,11 @@ public class SelectBuilder {
         if (mapper == null) {
             throw new DomaNullPointerException("mapper");
         }
+        return streamEntityInternal(targetClass, mapper);
+    }
+
+    protected <TARGET, RESULT> RESULT streamEntityInternal(
+            Class<TARGET> targetClass, Function<Stream<TARGET>, RESULT> mapper) {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("streamEntity");
         }
@@ -656,6 +691,32 @@ public class SelectBuilder {
         ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(
                 entityType, mapper);
         return execute(handler);
+    }
+
+    /**
+     * 基本型もしくはドメイン型のストリームを返します。
+     * <p>
+     * ストリームはアプリケーションでクローズしなければいけません。
+     * 
+     * @param <TARGET>
+     *            基本型もしくはドメイン型
+     * @param targetClass
+     *            基本型もしくはドメイン型のクラス
+     * @return 基本型もしくはドメイン型のストリーム
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws JdbcException
+     *             JDBCに関する例外が発生した場合
+     * @since 2.7.0
+     */
+    public <TARGET> Stream<TARGET> streamScalar(Class<TARGET> targetClass) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        query.setResultStream(true);
+        return streamScalarInternal(targetClass, Function.identity());
     }
 
     /**
@@ -683,7 +744,6 @@ public class SelectBuilder {
      *             上記以外でJDBCに関する例外が発生した場合
      * @since 2.0.0
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <RESULT, TARGET> RESULT streamScalar(Class<TARGET> targetClass,
             Function<Stream<TARGET>, RESULT> mapper) {
         if (targetClass == null) {
@@ -692,6 +752,12 @@ public class SelectBuilder {
         if (mapper == null) {
             throw new DomaNullPointerException("mapper");
         }
+        return streamScalarInternal(targetClass, mapper);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    protected <RESULT, TARGET> RESULT streamScalarInternal(
+            Class<TARGET> targetClass, Function<Stream<TARGET>, RESULT> mapper) {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("streamScalar");
         }
@@ -703,7 +769,36 @@ public class SelectBuilder {
     }
 
     /**
+     * 基本型もしくはドメイン型をラップした {@code Optional} のストリームを返します。
+     * <p>
+     * ストリームはアプリケーションでクローズしなければいけません。
+     * 
+     * @param <TARGET>
+     *            基本型もしくはドメイン型
+     * @param targetClass
+     *            基本型もしくはドメイン型のクラス
+     * @return {@code Optional} のストリーム
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code targetClass} が基本型もしくはドメイン型のクラスでない場合
+     * @throws JdbcException
+     *             JDBCに関する例外が発生した場合
+     * @since 2.7.0
+     */
+    public <TARGET> Stream<Optional<TARGET>> streamOptionalScalar(
+            Class<TARGET> targetClass) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        query.setResultStream(true);
+        return streamOptionalScalarInternal(targetClass, Function.identity());
+    }
+
+    /**
      * 結果セットを基本型もしくはドメイン型のインスタンスを {@link Optional} でラップしてストリームで処理します。
+     * <p>
+     * ストリームはアプリケーションでクローズしなければいけません。
      * 
      * @param <RESULT>
      *            戻り値の型
@@ -727,7 +822,6 @@ public class SelectBuilder {
      *             上記以外でJDBCに関する例外が発生した場合
      * @since 2.0.0
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <RESULT, TARGET> RESULT streamOptionalScalar(
             Class<TARGET> targetClass,
             Function<Stream<Optional<TARGET>>, RESULT> mapper) {
@@ -737,6 +831,13 @@ public class SelectBuilder {
         if (mapper == null) {
             throw new DomaNullPointerException("mapper");
         }
+        return streamOptionalScalarInternal(targetClass, mapper);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    protected <RESULT, TARGET> RESULT streamOptionalScalarInternal(
+            Class<TARGET> targetClass,
+            Function<Stream<Optional<TARGET>>, RESULT> mapper) {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("streamOptionalScalar");
         }
@@ -745,6 +846,29 @@ public class SelectBuilder {
         ResultSetHandler<RESULT> handler = new ScalarStreamHandler(supplier,
                 mapper);
         return execute(handler);
+    }
+
+    /**
+     * {@code Map<String, Object>} のストリームを返します。
+     * <p>
+     * ストリームはアプリケーションでクローズしなければいけません。
+     * 
+     * @param mapKeyNamingType
+     *            マップのキーのネーミング規約
+     * @return {@code Map<String, Object>} のストリーム
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws JdbcException
+     *             JDBCに関する例外が発生した場合
+     * @since 2.7.0
+     */
+    public Stream<Map<String, Object>> streamMap(
+            MapKeyNamingType mapKeyNamingType) {
+        if (mapKeyNamingType == null) {
+            throw new DomaNullPointerException("mapKeyNamingType");
+        }
+        query.setResultStream(true);
+        return streamMapInternal(mapKeyNamingType, Function.identity());
     }
 
     /**
@@ -771,6 +895,12 @@ public class SelectBuilder {
         if (mapper == null) {
             throw new DomaNullPointerException("mapper");
         }
+        return streamMapInternal(mapKeyNamingType, mapper);
+    }
+
+    protected <RESULT> RESULT streamMapInternal(
+            MapKeyNamingType mapKeyNamingType,
+            Function<Stream<Map<String, Object>>, RESULT> mapper) {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("streamMap");
         }

@@ -42,4 +42,6 @@ public interface SelectQuery extends Query {
     int getMaxRows();
 
     SqlLogType getSqlLogType();
+
+    boolean isResultStream();
 }
