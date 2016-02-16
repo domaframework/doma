@@ -22,7 +22,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
+import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
@@ -73,11 +75,12 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
                         .getExceptionSqlLogType(), sql, e,
                         dialect.getRootCause(e));
             } finally {
-                JdbcUtil.close(preparedStatement, query.getConfig()
-                        .getJdbcLogger());
+                close(supplier, () -> JdbcUtil.close(preparedStatement, query
+                        .getConfig().getJdbcLogger()));
             }
         } finally {
-            JdbcUtil.close(connection, query.getConfig().getJdbcLogger());
+            close(supplier, () -> JdbcUtil.close(connection, query.getConfig()
+                    .getJdbcLogger()));
         }
         return supplier.get();
     }
@@ -109,11 +112,14 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
 
     protected Supplier<RESULT> executeQuery(PreparedStatement preparedStatement)
             throws SQLException {
+        Supplier<RESULT> supplier = null;
         ResultSet resultSet = preparedStatement.executeQuery();
         try {
-            return handleResultSet(resultSet);
+            supplier = handleResultSet(resultSet);
+            return supplier;
         } finally {
-            JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger());
+            close(supplier, () -> JdbcUtil.close(resultSet, query.getConfig()
+                    .getJdbcLogger()));
         }
     }
 
@@ -127,4 +133,21 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
             }
         });
     }
+
+    protected void close(Supplier<RESULT> supplier, Runnable closeHandler) {
+        if (supplier != null && query.isResultStream()
+                && query.getFetchType() == FetchType.LAZY) {
+            RESULT result = supplier.get();
+            if (result instanceof Stream) {
+                @SuppressWarnings("resource")
+                Stream<?> stream = (Stream<?>) result;
+                stream.onClose(closeHandler);
+            } else {
+                closeHandler.run();
+            }
+        } else {
+            closeHandler.run();
+        }
+    }
+
 }

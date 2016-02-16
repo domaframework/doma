@@ -201,6 +201,11 @@ public class EntityProviderTest extends TestCase {
             return sql;
         }
 
+        @Override
+        public boolean isResultStream() {
+            return false;
+        }
+
     }
 
     protected static class EmptyUnknownColumnHandler implements

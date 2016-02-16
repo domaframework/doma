@@ -70,6 +70,8 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
 
     protected SqlLogType sqlLogType;
 
+    protected boolean resultStream;
+
     protected AbstractSelectQuery() {
     }
 
@@ -212,6 +214,14 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
 
     public void setSqlLogType(SqlLogType sqlLogType) {
         this.sqlLogType = sqlLogType;
+    }
+
+    public boolean isResultStream() {
+        return resultStream;
+    }
+
+    public void setResultStream(boolean resultStream) {
+        this.resultStream = resultStream;
     }
 
     public void setEntityType(EntityType<?> entityType) {
