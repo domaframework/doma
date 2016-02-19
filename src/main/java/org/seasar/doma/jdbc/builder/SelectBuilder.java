@@ -114,6 +114,7 @@ public class SelectBuilder {
         this.query = new SqlSelectQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
+        this.query.setFetchType(FetchType.LAZY);
         this.query.setSqlLogType(SqlLogType.FORMATTED);
         this.paramIndex = new ParamIndex();
     }
