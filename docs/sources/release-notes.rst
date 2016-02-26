@@ -2,6 +2,18 @@
 リリースノート
 ==============
 
+v2.7.0: 2016-02-27
+======================
+
+* `GH125 <https://github.com/domaframework/doma/pull/125>`_
+  SelectBuilder のデフォルトの FetchType を Lazy に設定
+* `GH124 <https://github.com/domaframework/doma/pull/124>`_
+  間違った警告メッセージを修正
+* `GH122 <https://github.com/domaframework/doma/pull/122>`_
+  検索用メソッドの戻り値の型を Stream とすることを認めた
+* `GH121 <https://github.com/domaframework/doma/pull/121>`_
+  includeの説明が間違っていたのを修正
+
 v2.6.2: 2016-02-11
 ======================
 
