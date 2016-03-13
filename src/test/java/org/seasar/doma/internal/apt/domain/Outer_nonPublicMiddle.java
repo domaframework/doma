@@ -19,20 +19,28 @@ import java.math.BigDecimal;
 
 import org.seasar.doma.Domain;
 
-public class Outer {
+/**
+ * @author nakamura-to
+ *
+ */
+public class Outer_nonPublicMiddle {
 
-    @Domain(valueType = BigDecimal.class)
-    public static class Inner {
+    static class Middle {
 
-        private final BigDecimal value;
+        @Domain(valueType = BigDecimal.class)
+        public static class Inner {
 
-        public Inner(BigDecimal value) {
-            this.value = value;
-        }
+            private final BigDecimal value;
 
-        public BigDecimal getValue() {
-            return value;
+            public Inner(BigDecimal value) {
+                this.value = value;
+            }
+
+            public BigDecimal getValue() {
+                return value;
+            }
         }
 
     }
+
 }

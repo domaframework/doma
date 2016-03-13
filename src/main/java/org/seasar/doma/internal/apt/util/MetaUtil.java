@@ -15,10 +15,12 @@
  */
 package org.seasar.doma.internal.apt.util;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.Constants;
-import org.seasar.doma.internal.util.ClassUtil;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+
+import org.seasar.doma.internal.Conventions;
 
 /**
  * @author taedium
@@ -26,38 +28,28 @@ import org.seasar.doma.internal.util.ClassUtil;
  */
 public class MetaUtil {
 
-    public static String getMetaTypeName(String typeName) {
-        assertNotNull(typeName);
-        String qualifiedName = typeName;
-        String suffix = "";
-        int pos = typeName.indexOf('<');
-        if (pos == -1) {
-            qualifiedName = typeName;
-        } else {
-            qualifiedName = typeName.substring(0, pos);
-            suffix = typeName.substring(pos);
-        }
-        String packageName = ClassUtil.getPackageName(qualifiedName);
-        String simpleName = ClassUtil.getSimpleName(qualifiedName);
-        String base = "";
-        if (packageName != null && packageName.length() > 0) {
-            base = packageName + ".";
-        }
-        return base + Constants.METATYPE_PREFIX + simpleName + suffix;
+    public static String toFullMetaName(TypeElement originalTypeElement,
+            ProcessingEnvironment env) {
+        assertNotNull(originalTypeElement, env);
+        String binaryName = ElementUtil.getBinaryName(originalTypeElement, env);
+        return Conventions.toFullMetaName(binaryName);
     }
 
-    public static String getSimpleMetaTypeName(String typeName) {
-        assertNotNull(typeName);
-        String qualifiedName = typeName;
-        String suffix = "";
-        int pos = typeName.indexOf('<');
-        if (pos == -1) {
-            qualifiedName = typeName;
-        } else {
-            qualifiedName = typeName.substring(0, pos);
-            suffix = typeName.substring(pos);
-        }
-        String simpleName = ClassUtil.getSimpleName(qualifiedName);
-        return Constants.METATYPE_PREFIX + simpleName + suffix;
+    public static String toFullMetaName(String originalBinaryName) {
+        assertNotNull(originalBinaryName);
+        return Conventions.toFullMetaName(originalBinaryName);
     }
+
+    public static String toSimpleMetaName(TypeElement originalTypeElement,
+            ProcessingEnvironment env) {
+        assertNotNull(originalTypeElement, env);
+        return Conventions.toSimpleMetaName(ElementUtil.getBinaryName(
+                originalTypeElement, env));
+    }
+
+    public static String toSimpleMetaName(String originalBinaryName) {
+        assertNotNull(originalBinaryName);
+        return Conventions.toSimpleMetaName(originalBinaryName);
+    }
+
 }

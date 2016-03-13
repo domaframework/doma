@@ -19,7 +19,11 @@ import java.math.BigDecimal;
 
 import org.seasar.doma.Domain;
 
-public class Outer {
+/**
+ * @author nakamura-to
+ *
+ */
+public class Outer__illegalName {
 
     @Domain(valueType = BigDecimal.class)
     public static class Inner {
@@ -35,4 +39,5 @@ public class Outer {
         }
 
     }
+
 }

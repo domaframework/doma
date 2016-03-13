@@ -21,8 +21,8 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
@@ -92,7 +92,7 @@ public final class DomainTypeFactory {
             throw new DomaIllegalArgumentException("domainClass",
                     Message.DOMA2205.getMessage(domainClass.getName()));
         }
-        String domainTypeClassName = MetaTypeUtil.getMetaTypeName(domainClass
+        String domainTypeClassName = Conventions.toFullMetaName(domainClass
                 .getName());
         try {
             Class<DOMAIN> clazz = classHelper.forName(domainTypeClassName);
@@ -152,7 +152,7 @@ public final class DomainTypeFactory {
             throw new DomaNullPointerException("classHelper");
         }
         String domainTypeClassName = Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
-                + "." + MetaTypeUtil.getMetaTypeName(domainClass.getName());
+                + "." + Conventions.toFullMetaName(domainClass.getName());
         try {
             Class<DOMAIN> clazz = classHelper.forName(domainTypeClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");

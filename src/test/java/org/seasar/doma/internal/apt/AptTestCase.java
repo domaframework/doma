@@ -47,8 +47,8 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.Message;
 
@@ -112,7 +112,7 @@ public abstract class AptTestCase extends AptinaTestCase {
         if (originalClass.isAnnotationPresent(Entity.class)
                 || originalClass.isAnnotationPresent(Domain.class)
                 || originalClass.isAnnotationPresent(ExternalDomain.class)) {
-            return MetaTypeUtil.getMetaTypeName(originalClass.getName());
+            return MetaUtil.toFullMetaName(originalClass.getName());
         }
         throw new AssertionFailedError("annotation not found.");
     }
@@ -121,6 +121,9 @@ public abstract class AptTestCase extends AptinaTestCase {
         List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
         if (diagnostics.size() == 1) {
             Message m = extractMessage(diagnostics.get(0));
+            if (m == null) {
+                fail();
+            }
             if (message == m) {
                 return;
             }

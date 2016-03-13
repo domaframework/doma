@@ -15,11 +15,14 @@
  */
 package org.seasar.doma.internal.util;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.seasar.doma.internal.WrapException;
 
@@ -85,22 +88,37 @@ public final class ClassUtil {
         }
     }
 
-    public static String getPackageName(String qualifiedName) {
-        assertNotNull(qualifiedName);
-        int pos = qualifiedName.lastIndexOf('.');
+    public static String getPackageName(String binaryName) {
+        assertNotNull(binaryName);
+        int pos = binaryName.lastIndexOf('.');
         if (pos < 0) {
             return "";
         }
-        return qualifiedName.substring(0, pos);
+        return binaryName.substring(0, pos);
     }
 
-    public static String getSimpleName(String qualifiedName) {
-        assertNotNull(qualifiedName);
-        int pos = qualifiedName.lastIndexOf('.');
-        if (pos < 0) {
-            return qualifiedName;
+    public static List<String> getEnclosingNames(String binaryName) {
+        assertNotNull(binaryName);
+        String packageExcludedName = getLastPart(binaryName, '.');
+        List<String> names = Arrays.asList(packageExcludedName.split("\\$"));
+        if (names.size() <= 1) {
+            return Collections.emptyList();
         }
-        return qualifiedName.substring(pos + 1);
+        return names.subList(0, names.size() - 1);
+    }
+
+    public static String getSimpleName(String binaryName) {
+        assertNotNull(binaryName);
+        String packageExcludedName = getLastPart(binaryName, '.');
+        return getLastPart(packageExcludedName, '$');
+    }
+
+    private static String getLastPart(String text, char ch) {
+        int pos = text.lastIndexOf(ch);
+        if (pos < 0) {
+            return text;
+        }
+        return text.substring(pos + 1);
     }
 
     public static Class<?> toBoxedPrimitiveTypeIfPossible(Class<?> clazz) {

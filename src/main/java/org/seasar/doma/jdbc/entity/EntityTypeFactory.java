@@ -20,8 +20,8 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
+import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
@@ -65,7 +65,7 @@ public final class EntityTypeFactory {
             throw new DomaIllegalArgumentException("entityClass",
                     Message.DOMA2206.getMessage("entityClass"));
         }
-        String entityTypeClassName = MetaTypeUtil.getMetaTypeName(entityClass
+        String entityTypeClassName = Conventions.toFullMetaName(entityClass
                 .getName());
         try {
             Class<E> clazz = classHelper.forName(entityTypeClassName);

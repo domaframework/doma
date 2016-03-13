@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,6 +28,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
+import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.Message;
@@ -44,7 +45,7 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final TypeElement typeElement;
 
-    protected final String qualifiedName;
+    protected final String canonicalName;
 
     protected final String packageName;
 
@@ -72,24 +73,25 @@ public abstract class AbstractGenerator implements Generator {
         this.subpackage = subpackage;
         this.prefix = prefix;
         this.suffix = suffix;
-        this.qualifiedName = createQualifiedName(env, typeElement, fullpackage,
+        this.canonicalName = createCanonicalName(env, typeElement, fullpackage,
                 subpackage, prefix, suffix);
-        this.packageName = ClassUtil.getPackageName(qualifiedName);
-        this.simpleName = ClassUtil.getSimpleName(qualifiedName);
+        this.packageName = ClassUtil.getPackageName(canonicalName);
+        this.simpleName = ClassUtil.getSimpleName(canonicalName);
         Filer filer = env.getFiler();
         JavaFileObject file = filer
-                .createSourceFile(qualifiedName, typeElement);
+                .createSourceFile(canonicalName, typeElement);
         formatter = new Formatter(new BufferedWriter(file.openWriter()));
     }
 
-    protected String createQualifiedName(ProcessingEnvironment env,
+    protected String createCanonicalName(ProcessingEnvironment env,
             TypeElement typeElement, String fullpackage, String subpackage,
             String prefix, String suffix) {
         String qualifiedNamePrefix = getQualifiedNamePrefix(env, typeElement,
                 fullpackage, subpackage);
-        return qualifiedNamePrefix + prefix
-                + ElementUtil.getPackageExcludedBinaryName(typeElement, env)
-                + suffix;
+        String binaryName = Conventions.normalizeBinaryName(ElementUtil
+                .getBinaryName(typeElement, env));
+        String infix = ClassUtil.getSimpleName(binaryName);
+        return qualifiedNamePrefix + prefix + infix + suffix;
     }
 
     protected String getQualifiedNamePrefix(ProcessingEnvironment env,
@@ -138,7 +140,7 @@ public abstract class AbstractGenerator implements Generator {
         if (ioException != null) {
             formatter.close();
             throw new AptException(Message.DOMA4079, env, typeElement,
-                    ioException, qualifiedName, ioException);
+                    ioException, canonicalName, ioException);
         }
     }
 

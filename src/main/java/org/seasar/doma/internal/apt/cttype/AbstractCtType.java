@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
@@ -42,8 +42,6 @@ public abstract class AbstractCtType implements CtType {
 
     protected final String metaTypeName;
 
-    protected final String boxedMetaTypeName;
-
     protected final TypeElement typeElement;
 
     protected final String packageName;
@@ -58,8 +56,7 @@ public abstract class AbstractCtType implements CtType {
         this.env = env;
         this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
         this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(typeMirror, env);
-        this.metaTypeName = MetaUtil.getMetaTypeName(typeName);
-        this.boxedMetaTypeName = MetaUtil.getMetaTypeName(boxedTypeName);
+        this.metaTypeName = getMetaTypeName(typeMirror, env);
         this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             qualifiedName = typeElement.getQualifiedName().toString();
@@ -71,6 +68,26 @@ public abstract class AbstractCtType implements CtType {
             packageName = "";
             packageExcludedBinaryName = typeName;
         }
+    }
+
+    private static String getMetaTypeName(TypeMirror typeMirror,
+            ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
+        String typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+        if (typeElement == null) {
+            return typeName;
+        }
+        return MetaUtil.toFullMetaName(typeElement, env)
+                + makeTypeParamDecl(typeName);
+    }
+
+    private static String makeTypeParamDecl(String typeName) {
+        int pos = typeName.indexOf("<");
+        if (pos == -1) {
+            return "";
+        }
+        return typeName.substring(pos);
     }
 
     @Override
@@ -96,11 +113,6 @@ public abstract class AbstractCtType implements CtType {
     @Override
     public String getMetaTypeName() {
         return metaTypeName;
-    }
-
-    @Override
-    public String getBoxedMetaTypeName() {
-        return boxedMetaTypeName;
     }
 
     @Override

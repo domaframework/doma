@@ -93,8 +93,53 @@ public class DomainProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(Outer.class);
         compile();
+        assertGeneratedSource(Outer.Inner.class);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testInner_deep() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_deepInner.class);
+        compile();
+        assertGeneratedSource(Outer_deepInner.Middle.Inner.class);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testInner_nonStatic() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonStaticInner.class);
+        compile();
         assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4179);
+        assertMessage(Message.DOMA4275);
+    }
+
+    public void testInner_nonPublic() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonPublicInner.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4275);
+    }
+
+    public void testInner_illegalName() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer__illegalName.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4277);
+    }
+
+    public void testMiddle_nonPublic() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonPublicMiddle.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4275);
     }
 
     public void testPackagePrivate() throws Exception {
@@ -292,13 +337,13 @@ public class DomainProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4268);
     }
 
-    public void testInterfaceMustNotBeInner() throws Exception {
+    public void testInterfaceInner() throws Exception {
         DomainProcessor processor = new DomainProcessor();
         addProcessor(processor);
         addCompilationUnit(InterfaceOuter.class);
         compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4269);
+        assertGeneratedSource(InterfaceOuter.Inner.class);
+        assertTrue(getCompiledResult());
     }
 
     public void testAnnotationMustNotBeDomainClass() throws Exception {

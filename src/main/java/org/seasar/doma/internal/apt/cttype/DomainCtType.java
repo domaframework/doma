@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -103,11 +104,6 @@ public class DomainCtType extends AbstractCtType {
     @Override
     public String getMetaTypeName() {
         return normalize(metaTypeName);
-    }
-
-    @Override
-    public String getBoxedMetaTypeName() {
-        return normalize(boxedMetaTypeName);
     }
 
     protected String normalize(String name) {

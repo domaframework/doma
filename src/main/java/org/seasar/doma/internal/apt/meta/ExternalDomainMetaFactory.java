@@ -18,17 +18,22 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
@@ -120,8 +125,7 @@ public class ExternalDomainMetaFactory implements
             throw new AptIllegalStateException(domainType.toString());
         }
         if (domainElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4199, env, convElement,
-                    domainElement.getQualifiedName());
+            validateEnclosingElement(domainElement);
         }
         PackageElement pkgElement = env.getElementUtils().getPackageOf(
                 domainElement);
@@ -141,6 +145,36 @@ public class ExternalDomainMetaFactory implements
             }
         }
         meta.setDomainElement(domainElement);
+    }
+
+    protected void validateEnclosingElement(Element element) {
+        TypeElement typeElement = ElementUtil.toTypeElement(element, env);
+        if (typeElement == null) {
+            return;
+        }
+        String simpleName = typeElement.getSimpleName().toString();
+        if (simpleName.contains("$")
+                || simpleName
+                        .contains(Constants.BINARY_NAME_ENCLOSING_DELIMITER)) {
+            throw new AptException(Message.DOMA4280, env, typeElement,
+                    typeElement.getQualifiedName());
+        }
+        NestingKind nestingKind = typeElement.getNestingKind();
+        if (nestingKind == NestingKind.TOP_LEVEL) {
+            return;
+        } else if (nestingKind == NestingKind.MEMBER) {
+            Set<Modifier> modifiers = typeElement.getModifiers();
+            if (modifiers.containsAll(Arrays.asList(Modifier.STATIC,
+                    Modifier.PUBLIC))) {
+                validateEnclosingElement(typeElement.getEnclosingElement());
+            } else {
+                throw new AptException(Message.DOMA4278, env, typeElement,
+                        typeElement.getQualifiedName());
+            }
+        } else {
+            throw new AptException(Message.DOMA4279, env, typeElement,
+                    typeElement.getQualifiedName());
+        }
     }
 
     protected void doValueType(TypeElement convElement, TypeMirror valueType,

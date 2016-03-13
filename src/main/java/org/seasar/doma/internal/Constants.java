@@ -39,4 +39,6 @@ public final class Constants {
 
     public static final String EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE = "__";
 
+    public static final String BINARY_NAME_ENCLOSING_DELIMITER = "__";
+
 }
