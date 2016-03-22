@@ -251,7 +251,7 @@ public class DaoGenerator extends AbstractGenerator {
         ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
         if (parentDaoMeta != null) {
             TypeElement parentDaotElement = parentDaoMeta.getDaoElement();
-            parentClassName = createQualifiedName(env, parentDaotElement,
+            parentClassName = createCanonicalName(env, parentDaotElement,
                     fullpackage, subpackage, prefix, suffix);
         }
         iprint("%4$s class %1$s extends %2$s implements %3$s {%n",
@@ -513,7 +513,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             printAddParameterStatements(m.getParameterMetas());
 
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
             iprint("__query.setResultMappingEnsured(%1$s);%n",
@@ -544,8 +544,8 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("%1$s __result = __command.execute();%n",
                         returnMeta.getTypeName());
                 iprint("__query.complete();%n");
-                iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
-                        qualifiedName, m.getName());
+                iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
+                        m.getName());
                 iprint("return __result;%n");
             } else {
                 if (m.getSelectStrategyType() == SelectType.STREAM) {
@@ -562,14 +562,14 @@ public class DaoGenerator extends AbstractGenerator {
                 if ("void".equals(returnMeta.getTypeName())) {
                     iprint("__command.execute();%n");
                     iprint("__query.complete();%n");
-                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
-                            qualifiedName, m.getName());
+                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName,
+                            m.getName());
                 } else {
                     iprint("%1$s __result = __command.execute();%n",
                             returnMeta.getTypeName());
                     iprint("__query.complete();%n");
                     iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
-                            qualifiedName, m.getName());
+                            canonicalName, m.getName());
                     iprint("return __result;%n");
                 }
             }
@@ -592,7 +592,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setScriptFilePath(\"%1$s\");%n",
                     ScriptFileUtil.buildPath(daoMeta.getDaoElement()
                             .getQualifiedName().toString(), m.getName()));
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setBlockDelimiter(\"%1$s\");%n",
                     m.getBlockDelimiter());
@@ -606,7 +606,7 @@ public class DaoGenerator extends AbstractGenerator {
             /* 3 */methodName);
             iprint("__command.execute();%n");
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName,
                     m.getName());
 
             printThrowingStatements(m);
@@ -621,14 +621,14 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
             /* 1 */m.getQueryClass().getName(),
-            /* 2 */m.getEntityCtType().getBoxedTypeName(),
-            /* 3 */m.getEntityCtType().getBoxedMetaTypeName(),
+            /* 2 */m.getEntityCtType().getTypeName(),
+            /* 3 */m.getEntityCtType().getMetaTypeName(),
             /* 4 */m.getQueryClass().getSimpleName(),
             /* 5 */methodName);
             iprint("__query.setMethod(%1$s);%n", methodName);
             iprint("__query.setConfig(__config);%n");
             iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
@@ -686,7 +686,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.complete();%n");
             }
 
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             iprint("return __result;%n");
 
@@ -712,7 +712,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             printAddParameterStatements(m.getParameterMetas());
 
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
@@ -722,7 +722,7 @@ public class DaoGenerator extends AbstractGenerator {
                     && m.getEntityCtType() != null) {
                 iprint("__query.setEntityAndEntityType(\"%1$s\", %2$s, %3$s.getSingletonInternal());%n",
                         m.getEntityParameterName(), m.getEntityParameterName(),
-                        m.getEntityCtType().getBoxedMetaTypeName());
+                        m.getEntityCtType().getMetaTypeName());
             }
 
             Boolean excludeNull = m.getExcludeNull();
@@ -779,7 +779,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.complete();%n");
             }
 
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             iprint("return __result;%n");
 
@@ -795,14 +795,14 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
             /* 1 */m.getQueryClass().getName(),
-            /* 2 */m.getEntityCtType().getBoxedTypeName(),
-            /* 3 */m.getEntityCtType().getBoxedMetaTypeName(),
+            /* 2 */m.getEntityCtType().getTypeName(),
+            /* 3 */m.getEntityCtType().getMetaTypeName(),
             /* 4 */m.getQueryClass().getSimpleName(),
             /* 5 */methodName);
             iprint("__query.setMethod(%1$s);%n", methodName);
             iprint("__query.setConfig(__config);%n");
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
@@ -851,7 +851,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.complete();%n");
             }
 
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             iprint("return __result;%n");
 
@@ -879,7 +879,7 @@ public class DaoGenerator extends AbstractGenerator {
                             .getQualifiedName().toString(), m.getName()));
             iprint("__query.setParameterName(\"%1$s\");%n",
                     m.getElementsParameterName());
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
@@ -888,7 +888,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             if (m.getEntityType() != null) {
                 iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
-                        m.getEntityType().getBoxedMetaTypeName());
+                        m.getEntityType().getMetaTypeName());
             }
 
             Boolean ignoreVersion = m.getIgnoreVersion();
@@ -933,7 +933,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.complete();%n");
             }
 
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             iprint("return __result;%n");
 
@@ -965,7 +965,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .getCallableSqlParameterMetas()) {
                 parameterMeta.accept(parameterGenerator, m);
             }
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
@@ -979,7 +979,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s __result = __command.execute();%n",
                     returnMeta.getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             iprint("return __result;%n");
 
@@ -1008,7 +1008,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .getCallableSqlParameterMetas()) {
                 parameterMeta.accept(parameterGenerator, m);
             }
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
@@ -1020,7 +1020,7 @@ public class DaoGenerator extends AbstractGenerator {
             /* 3 */methodName);
             iprint("__command.execute();%n");
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName,
                     m.getName());
 
             printThrowingStatements(m);
@@ -1040,7 +1040,7 @@ public class DaoGenerator extends AbstractGenerator {
             /* 3 */methodName);
             iprint("__query.setMethod(%1$s);%n", methodName);
             iprint("__query.setConfig(__config);%n");
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
@@ -1051,7 +1051,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s __result = __command.execute();%n",
                     resultMeta.getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             iprint("return __result;%n");
 
@@ -1072,7 +1072,7 @@ public class DaoGenerator extends AbstractGenerator {
             /* 3 */methodName);
             iprint("__query.setMethod(%1$s);%n", methodName);
             iprint("__query.setConfig(__config);%n");
-            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setTypeName(\"%1$s\");%n", m.getArrayTypeName());
             iprint("__query.setElements(%1$s);%n", m.getParameterName());
@@ -1085,7 +1085,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s __result = __command.execute();%n",
                     resultMeta.getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             iprint("return __result;%n");
 
@@ -1115,7 +1115,7 @@ public class DaoGenerator extends AbstractGenerator {
                 }
             }
             print(");%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());
             if (!"void".equals(resultMeta.getTypeName())) {
                 iprint("return __result;%n");
@@ -1126,7 +1126,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         protected void printEnteringStatements(QueryMeta m) {
-            iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
+            iprint("entering(\"%1$s\", \"%2$s\"", canonicalName, m.getName());
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
@@ -1138,8 +1138,8 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         protected void printArrayCreateEnteringStatements(ArrayCreateQueryMeta m) {
-            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
-                    qualifiedName, m.getName(), m.getParameterName());
+            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n", canonicalName,
+                    m.getName(), m.getParameterName());
             iprint("try {%n");
             indent();
         }
@@ -1148,7 +1148,7 @@ public class DaoGenerator extends AbstractGenerator {
             unindent();
             iprint("} catch (%1$s __e) {%n", RuntimeException.class.getName());
             indent();
-            iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", qualifiedName,
+            iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", canonicalName,
                     m.getName());
             iprint("throw __e;%n");
             unindent();
@@ -2554,7 +2554,7 @@ public class DaoGenerator extends AbstractGenerator {
             /* 2 */resultBoxedTypeName,
             /* 3 */getEntitySingleResultHandlerName(optional),
             /* 4 */ctType.getMetaTypeName(),
-            /* 5 */ctType.getBoxedTypeName(),
+            /* 5 */ctType.getTypeName(),
             /* 6 */commandName,
             /* 7 */methodName);
             return null;

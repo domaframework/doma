@@ -34,8 +34,6 @@ public interface CtType {
 
     String getMetaTypeName();
 
-    String getBoxedMetaTypeName();
-
     String getQualifiedName();
 
     String getPackageName();

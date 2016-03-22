@@ -74,7 +74,7 @@ public class EntityPropertyMeta {
         assertNotNull(entityElement, propertyElement, env);
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
-        this.entityMetaTypeName = MetaUtil.getMetaTypeName(entityTypeName);
+        this.entityMetaTypeName = MetaUtil.toFullMetaName(entityElement, env);
         this.namingType = namingType;
         this.type = propertyElement.asType();
         this.typeName = TypeMirrorUtil.getTypeName(type, env);

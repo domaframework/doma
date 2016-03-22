@@ -19,6 +19,7 @@ import junit.framework.AssertionFailedError;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.ExternalDomainProcessor;
+import org.seasar.doma.internal.apt.domain.NestingValueObjectConverter.NestingValueObject;
 import org.seasar.doma.message.Message;
 
 /**
@@ -74,8 +75,18 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(NestingValueObjectConverter.class);
         compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4199);
+
+        String generatedClassName = "__.org.seasar.doma.internal.apt.domain._"
+                + NestingValueObjectConverter.class.getSimpleName() + "__"
+                + NestingValueObject.class.getSimpleName();
+        try {
+            assertEqualsGeneratedSource(getExpectedContent(),
+                    generatedClassName);
+        } catch (AssertionFailedError error) {
+            System.out.println(getGeneratedSource(generatedClassName));
+            throw error;
+        }
+        assertTrue(getCompiledResult());
     }
 
     public void testValueObjectConverter() throws Exception {

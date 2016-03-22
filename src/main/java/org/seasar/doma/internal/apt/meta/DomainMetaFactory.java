@@ -17,13 +17,17 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
@@ -33,10 +37,12 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
 
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.mirror.DomainMirror;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -93,7 +99,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                 throw new AptException(Message.DOMA4132, env, classElement);
             }
             if (classElement.getNestingKind().isNested()) {
-                throw new AptException(Message.DOMA4179, env, classElement);
+                validateEnclosingElement(classElement);
             }
         } else if (classElement.getKind() == ElementKind.ENUM) {
             if (domainMeta.providesConstructor()) {
@@ -103,19 +109,49 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                         domainMirror.getFactoryMethod());
             }
             if (classElement.getNestingKind().isNested()) {
-                throw new AptException(Message.DOMA4179, env, classElement);
+                validateEnclosingElement(classElement);
             }
         } else if (classElement.getKind() == ElementKind.INTERFACE) {
             if (domainMeta.providesConstructor()) {
                 throw new AptException(Message.DOMA4268, env, classElement);
             }
             if (classElement.getNestingKind().isNested()) {
-                throw new AptException(Message.DOMA4269, env, classElement);
+                validateEnclosingElement(classElement);
             }
         } else {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(Message.DOMA4105, env, classElement,
                     domainMirror.getAnnotationMirror());
+        }
+    }
+
+    protected void validateEnclosingElement(Element element) {
+        TypeElement typeElement = ElementUtil.toTypeElement(element, env);
+        if (typeElement == null) {
+            return;
+        }
+        String simpleName = typeElement.getSimpleName().toString();
+        if (simpleName.contains("$")
+                || simpleName
+                        .contains(Constants.BINARY_NAME_ENCLOSING_DELIMITER)) {
+            throw new AptException(Message.DOMA4277, env, typeElement,
+                    typeElement.getQualifiedName());
+        }
+        NestingKind nestingKind = typeElement.getNestingKind();
+        if (nestingKind == NestingKind.TOP_LEVEL) {
+            return;
+        } else if (nestingKind == NestingKind.MEMBER) {
+            Set<Modifier> modifiers = typeElement.getModifiers();
+            if (modifiers.containsAll(Arrays.asList(Modifier.STATIC,
+                    Modifier.PUBLIC))) {
+                validateEnclosingElement(typeElement.getEnclosingElement());
+            } else {
+                throw new AptException(Message.DOMA4275, env, typeElement,
+                        typeElement.getQualifiedName());
+            }
+        } else {
+            throw new AptException(Message.DOMA4276, env, typeElement,
+                    typeElement.getQualifiedName());
         }
     }
 

@@ -40,9 +40,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
     protected final String domainTypeName;
 
-    protected final String metaTypeName;
-
-    protected final String simpleMetaTypeName;
+    protected final String simpleMetaClassName;
 
     protected final String typeParamDecl;
 
@@ -58,9 +56,8 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
         this.domainMeta = domainMeta;
         this.domainTypeName = TypeMirrorUtil.getTypeName(domainMeta
                 .getDomainElement().asType(), env);
-        this.metaTypeName = MetaUtil.getMetaTypeName(domainTypeName);
-        this.simpleMetaTypeName = MetaUtil
-                .getSimpleMetaTypeName(domainTypeName);
+        this.simpleMetaClassName = MetaUtil.toSimpleMetaName(typeElement,
+                env);
         this.typeParamDecl = makeTypeParamDecl(domainTypeName);
         this.parametarized = !domainMeta.getDomainElement().getTypeParameters()
                 .isEmpty();
@@ -99,9 +96,9 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
             iprint(" */%n");
         }
         printGenerated();
-        iprint("public final class %1$s extends %2$s<%3$s, %4$s> {%n",
-                simpleMetaTypeName, AbstractDomainType.class.getName(),
-                domainMeta.getValueTypeName(), domainTypeName);
+        iprint("public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
+                simpleMetaClassName, AbstractDomainType.class.getName(),
+                domainMeta.getValueTypeName(), domainTypeName, typeParamDecl);
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -209,12 +206,13 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
         iprint(" */%n");
         if (parametarized) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
-            iprint("public static %1$s %2$s getSingletonInternal() {%n",
-                    typeParamDecl, simpleMetaTypeName);
-            iprint("    return (%1$s) singleton;%n", simpleMetaTypeName);
+            iprint("public static %1$s %2$s%1$s getSingletonInternal() {%n",
+                    typeParamDecl, simpleMetaClassName);
+            iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl,
+                    simpleMetaClassName);
         } else {
             iprint("public static %1$s getSingletonInternal() {%n",
-                    simpleMetaTypeName);
+                    simpleMetaClassName);
             iprint("    return singleton;%n");
         }
         iprint("}%n");

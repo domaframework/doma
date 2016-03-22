@@ -322,7 +322,6 @@ public enum Message implements MessageResource {
     DOMA4174("列挙型以外には注釈できません"),
     DOMA4176("アクセッサメソッド[{0}]が見つかりません。アクセッサメソッドは、型[{1}]を戻り値とする非privateで引数なしのインスタンスメソッドでなければいけません。"),
     DOMA4177("ファクトリメソッド[{0}]が見つかりません。ファクトリメソッドは、型[{1}]を戻り値とし型[{2}]をパラメータにもつ、非privateなstaticメソッドでなければいけません。"),
-    DOMA4179("@Domainが注釈されたクラスはトップレベルのクラスでなければいけません。"),
     /** SQLファイルに埋め込み変数コメントが含まれていることを示す警告メッセージ */
     DOMA4181("SQLファイル[{0}]に埋め込み変数コメントが含まれています。バッチの中で実行されるSQLは一定であるため、埋め込み変数コメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(messages = '{ Message.DOMA4181 }')と注釈してください。"),
     /** SQLファイルに条件コメントが含まれていることを示す警告メッセージ */
@@ -343,7 +342,6 @@ public enum Message implements MessageResource {
     DOMA4196("型[{0}]が@ExternalDomainで注釈されていません。"),
     DOMA4197("org.seasar.doma.jdbc.domain.DomainConverterの第1型引数に指定された型[{0}]のパッケージがデフォルトパッケージです。サポートされていません。"),
     DOMA4198("@ExternalDomainが注釈されたクラスはトップレベルでなければいけません。"),
-    DOMA4199("org.seasar.doma.jdbc.domain.DomainConverterの第1型引数に指定された型[{0}]はトップレベルでなければいけません。"),
     DOMA4200("注釈処理のオプション domain.converters で指定されたクラス[{0}]が見つかりません。"),
     DOMA4201("注釈処理のオプション domain.converters で指定されたクラス[{0}]に@DomainConvertersが注釈されていません。"),
     DOMA4202("org.seasar.doma.jdbc.entity.EntityListenerの型引数が解決されていません。"),
@@ -410,13 +408,18 @@ public enum Message implements MessageResource {
     DOMA4266("@Selectのstrategy要素にSelectStrategyType.COLLECTを設定した場合、Collector型のパラメータが必要です。"),
     DOMA4267("java.util.List内のjava.util.Optionalに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス。"),
     DOMA4268("インターフェースに@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。"),
-    DOMA4269("@Domainが注釈されたインターフェースはトップレベルのインターフェースでなければいけません。"),
     DOMA4270("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%populate */の式が使用されていますが、SET句の自動生成ができません。メソッドに@Updateまたは@BatchUpdateが注釈され、第一引数がエンティティクラスにマッピングされていることを確認してください。SQL[{1}]"),
     DOMA4271("戻り値のjava.util.stream.Streamに対する実型引数の型[{0}]はサポートされていません。"),
     DOMA4272("戻り値のjava.util.stream.Streamに対する実型引数のエンティティクラス[{0}]は抽象型であってはいけません。"),
     DOMA4273("java.util.stream.Stream内のjava.util.Optionalに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス。"),
     /** Streamをアプリケーションでクローズしなければいけないことを示す警告メッセージ */
     DOMA4274("java.util.stream.StreamがDaoメソッドから返されます。アプリケーションで必ずStreamをクローズしてください。この警告を抑制するには、メソッドに@Suppress(messages = '{ Message.DOMA4274 }')と注釈してください。"),
+    DOMA4275("型[{0}]がpublicかつstaticでありません。ドメインクラスもしくはドメインクラスを囲む型はpublicかつstaticでなければいけません。"),
+    DOMA4276("型[{0}]がローカルクラスもしくは無名クラスです。ドメインクラスもしくはドメインクラスを囲む型はトップレベルもしくはメンバでなければいけません。"),
+    DOMA4277("型[{0}]の単純名に\"$\"または\"__\"が含まれています。ドメインクラスもしくはドメインクラスを囲む型はこれらの文字列を単純名に含んではいけません。"),
+    DOMA4278("型[{0}]がpublicかつstaticでありません。DomainConverterの第1型引数に指定された型もしくはその型を囲む型はpublicかつstaticでなければいけません。"),
+    DOMA4279("型[{0}]がローカルクラスもしくは無名クラスです。DomainConverterの第1型引数に指定された型もしくはその型を囲む型はトップレベルもしくはメンバでなければいけません。"),
+    DOMA4280("型[{0}]の単純名に\"$\"または\"__\"が含まれています。DomainConverterの第1型引数に指定された型もしくはその型を囲む型はこれらの文字列を単純名に含んではいけません。"),
 
     DOMA4300("型[{0}]の処理中に例外が発生しました。注釈処理とは直接関係ない場所でコンパイルエラーがありませんか？"),
 
