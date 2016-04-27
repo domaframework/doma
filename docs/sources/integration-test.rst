@@ -22,7 +22,7 @@
 
 .. code-block:: bash
 
-  $ git clone git@github.com:domaframework/doma-it.git
+  $ git clone https://github.com/domaframework/doma-it.git
 
 ビルド
 ======
