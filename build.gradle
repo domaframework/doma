@@ -68,7 +68,7 @@ repositories {
 }
 
 dependencies {
-    testCompile 'org.seasar.aptina:aptina-unit:1.0.0'
+    testCompile 'junit:junit:3.8.2'
 }
 
 task sourcesJar (type : Jar) {
