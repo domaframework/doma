@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.commons.util;
+package org.seasar.aptina.unit;
 
 import java.util.Iterator;
 
@@ -22,7 +22,7 @@ import java.util.Iterator;
  * 
  * @author koichik
  */
-public class StringUtils {
+class StringUtils {
 
     private StringUtils() {
     }
@@ -139,8 +139,8 @@ public class StringUtils {
                 throw new IllegalArgumentException("elements1 > elements2");
             }
             final CharSequence element2 = it.next();
-            buf.append(element1).append(separator1).append(element2).append(
-                separator2);
+            buf.append(element1).append(separator1).append(element2)
+                    .append(separator2);
         }
         if (it.hasNext()) {
             throw new IllegalArgumentException("elements1 < elements2");

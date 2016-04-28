@@ -58,17 +58,10 @@ import javax.tools.JavaFileObject.Kind;
 
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
-
-import org.seasar.aptina.commons.util.AssertionUtils;
-import org.seasar.aptina.commons.util.DiagnosticUtils;
-import org.seasar.aptina.commons.util.ElementUtils;
-import org.seasar.aptina.commons.util.TypeMirrorUtils;
-
 import static java.util.Arrays.*;
-
-import static org.seasar.aptina.commons.util.AssertionUtils.*;
-import static org.seasar.aptina.commons.util.CollectionUtils.*;
-import static org.seasar.aptina.commons.util.IOUtils.*;
+import static org.seasar.aptina.unit.AssertionUtils.*;
+import static org.seasar.aptina.unit.CollectionUtils.*;
+import static org.seasar.aptina.unit.IOUtils.*;
 
 /**
  * {@link Processor} をテストするための抽象クラスです．

@@ -31,9 +31,7 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.JavaFileObject.Kind;
 
-import org.seasar.aptina.commons.util.IOUtils;
-
-import static org.seasar.aptina.commons.util.CollectionUtils.*;
+import static org.seasar.aptina.unit.CollectionUtils.*;
 
 /**
  * {@link Processor}をテストする環境用の{@link JavaFileManager}の実装です。

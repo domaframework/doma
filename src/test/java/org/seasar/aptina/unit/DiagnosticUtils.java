@@ -13,22 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.commons.util;
+package org.seasar.aptina.unit;
+
+import static org.seasar.aptina.unit.AssertionUtils.assertNotNull;
+import static org.seasar.aptina.unit.CollectionUtils.newArrayList;
 
 import java.util.List;
 
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-import static org.seasar.aptina.commons.util.AssertionUtils.*;
-import static org.seasar.aptina.commons.util.CollectionUtils.*;
-
 /**
  * {@link Diagnostic} を扱うユーティリティです．
  * 
  * @author koichik
  */
-public class DiagnosticUtils {
+class DiagnosticUtils {
 
     private DiagnosticUtils() {
     }

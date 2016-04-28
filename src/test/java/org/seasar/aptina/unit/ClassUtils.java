@@ -13,17 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.commons.util;
+package org.seasar.aptina.unit;
 
-import static org.seasar.aptina.commons.util.AssertionUtils.*;
-import static org.seasar.aptina.commons.util.StringUtils.*;
+import static org.seasar.aptina.unit.AssertionUtils.assertNotNull;
+import static org.seasar.aptina.unit.StringUtils.isEmpty;
 
 /**
  * クラスを扱うユーティリティです．
  * 
  * @author koichik
  */
-public class ClassUtils {
+class ClassUtils {
 
     private ClassUtils() {
     }

@@ -13,7 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.commons.util;
+package org.seasar.aptina.unit;
+
+import static java.util.Collections.unmodifiableMap;
+import static org.seasar.aptina.unit.AssertionUtils.assertNotEmpty;
+import static org.seasar.aptina.unit.AssertionUtils.assertNotNull;
+import static org.seasar.aptina.unit.CollectionUtils.newArrayList;
+import static org.seasar.aptina.unit.CollectionUtils.newHashMap;
+import static org.seasar.aptina.unit.ElementUtils.getTypeElement;
 
 import java.util.List;
 import java.util.Map;
@@ -24,12 +31,6 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-import static java.util.Collections.*;
-
-import static org.seasar.aptina.commons.util.AssertionUtils.*;
-import static org.seasar.aptina.commons.util.CollectionUtils.*;
-import static org.seasar.aptina.commons.util.ElementUtils.*;
-
 /*
  * {@link TypeMirror} のインスタンスを手に入れる都合により，このクラスのテストケースは Aptina Unit に存在します．
  */
@@ -38,7 +39,7 @@ import static org.seasar.aptina.commons.util.ElementUtils.*;
  * 
  * @author koichik
  */
-public class TypeMirrorUtils {
+class TypeMirrorUtils {
 
     /** プリミティブ型の名前と {@link TypeKind} のマップです． */
     public static final Map<String, TypeKind> PRIMITIVE_TYPES;
@@ -76,10 +77,10 @@ public class TypeMirrorUtils {
         assertNotNull("elementUtils", elementUtils);
         assertNotNull("clazz", clazz);
         if (clazz.isArray()) {
-            return toArrayType(typeUtils, getTypeMirror(
-                typeUtils,
-                elementUtils,
-                clazz.getComponentType()));
+            return toArrayType(
+                    typeUtils,
+                    getTypeMirror(typeUtils, elementUtils,
+                            clazz.getComponentType()));
         }
         return getTypeMirror(typeUtils, elementUtils, clazz.getName());
     }
@@ -105,22 +106,17 @@ public class TypeMirrorUtils {
         assertNotNull("elementUtils", elementUtils);
         assertNotEmpty("className", className);
         if (className.endsWith("[]")) {
-            final String componentTypeName = className.substring(0, className
-                .length() - 2);
-            return toArrayType(typeUtils, getTypeMirror(
-                typeUtils,
-                elementUtils,
-                componentTypeName));
+            final String componentTypeName = className.substring(0,
+                    className.length() - 2);
+            return toArrayType(typeUtils,
+                    getTypeMirror(typeUtils, elementUtils, componentTypeName));
         }
         if (className.startsWith("[") && className.endsWith(";")) {
             final int pos = className.indexOf("L");
-            final String componentTypeName = className.substring(
-                pos + 1,
-                className.length() - 1);
-            TypeMirror typeMirror = getTypeMirror(
-                typeUtils,
-                elementUtils,
-                componentTypeName);
+            final String componentTypeName = className.substring(pos + 1,
+                    className.length() - 1);
+            TypeMirror typeMirror = getTypeMirror(typeUtils, elementUtils,
+                    componentTypeName);
             for (int i = 0; i < pos; ++i) {
                 typeMirror = toArrayType(typeUtils, typeMirror);
             }
@@ -176,10 +172,8 @@ public class TypeMirrorUtils {
         assertNotNull("types", types);
         final List<TypeMirror> typeMirrors = newArrayList();
         for (final Class<?> type : types) {
-            final TypeMirror typeMirror = getTypeMirror(
-                typeUtils,
-                elementUtils,
-                type);
+            final TypeMirror typeMirror = getTypeMirror(typeUtils,
+                    elementUtils, type);
             if (typeMirror == null) {
                 throw new IllegalArgumentException("unknown type : " + type);
             }
@@ -208,10 +202,8 @@ public class TypeMirrorUtils {
         assertNotNull("typeNames", typeNames);
         final List<TypeMirror> typeMirrors = newArrayList();
         for (final String typeName : typeNames) {
-            final TypeMirror typeMirror = getTypeMirror(
-                typeUtils,
-                elementUtils,
-                typeName);
+            final TypeMirror typeMirror = getTypeMirror(typeUtils,
+                    elementUtils, typeName);
             if (typeMirror == null) {
                 throw new IllegalArgumentException("unknown type : " + typeName);
             }

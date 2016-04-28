@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.commons.util;
+package org.seasar.aptina.unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import java.util.Map;
  * 
  * @author koichik
  */
-public class CollectionUtils {
+class CollectionUtils {
 
     private CollectionUtils() {
     }

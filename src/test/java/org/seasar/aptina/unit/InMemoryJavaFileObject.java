@@ -28,8 +28,6 @@ import java.nio.charset.Charset;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 
-import org.seasar.aptina.commons.util.IOUtils;
-
 /**
  * 生成されたリソースをメモリ上に保持する{@link JavaFileObject}の実装です。
  * 

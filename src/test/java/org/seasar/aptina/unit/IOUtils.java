@@ -13,7 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.commons.util;
+package org.seasar.aptina.unit;
+
+import static org.seasar.aptina.unit.AssertionUtils.assertEquals;
 
 import java.io.Closeable;
 import java.io.File;
@@ -25,14 +27,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
-import static org.seasar.aptina.commons.util.AssertionUtils.*;
-
 /**
  * 入出力を扱うユーティリティです．
  * 
  * @author koichik
  */
-public class IOUtils {
+class IOUtils {
 
     private IOUtils() {
     }

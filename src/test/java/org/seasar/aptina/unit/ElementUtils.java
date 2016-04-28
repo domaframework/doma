@@ -13,7 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.commons.util;
+package org.seasar.aptina.unit;
+
+import static org.seasar.aptina.unit.AssertionUtils.assertNotEmpty;
+import static org.seasar.aptina.unit.AssertionUtils.assertNotNull;
+import static org.seasar.aptina.unit.ClassUtils.getQualifiedNameArray;
+import static org.seasar.aptina.unit.CollectionUtils.newArrayList;
+import static org.seasar.aptina.unit.StringUtils.join;
+import static org.seasar.aptina.unit.TypeMirrorUtils.toTypeNameList;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -30,12 +37,6 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 
-import static org.seasar.aptina.commons.util.AssertionUtils.*;
-import static org.seasar.aptina.commons.util.ClassUtils.*;
-import static org.seasar.aptina.commons.util.CollectionUtils.*;
-import static org.seasar.aptina.commons.util.StringUtils.*;
-import static org.seasar.aptina.commons.util.TypeMirrorUtils.*;
-
 /*
  * {@link Element} のインスタンスを手に入れる都合により，このクラスのテストケースは Aptina Unit に存在します．
  */
@@ -44,7 +45,7 @@ import static org.seasar.aptina.commons.util.TypeMirrorUtils.*;
  * 
  * @author koichik
  */
-public class ElementUtils {
+class ElementUtils {
 
     private ElementUtils() {
     }
@@ -126,7 +127,7 @@ public class ElementUtils {
         assertNotNull("typeElement", typeElement);
         assertNotEmpty("fieldName", fieldName);
         for (final VariableElement variableElement : ElementFilter
-            .fieldsIn(typeElement.getEnclosedElements())) {
+                .fieldsIn(typeElement.getEnclosedElements())) {
             if (fieldName.equals(variableElement.getSimpleName().toString())) {
                 return variableElement;
             }
@@ -145,7 +146,7 @@ public class ElementUtils {
             final TypeElement typeElement) {
         assertNotNull("typeElement", typeElement);
         for (final ExecutableElement executableElement : ElementFilter
-            .constructorsIn(typeElement.getEnclosedElements())) {
+                .constructorsIn(typeElement.getEnclosedElements())) {
             if (executableElement.getParameters().size() == 0) {
                 return executableElement;
             }
@@ -171,7 +172,7 @@ public class ElementUtils {
         assertNotNull("typeElement", typeElement);
         assertNotNull("parameterTypes", parameterTypes);
         for (final ExecutableElement executableElement : ElementFilter
-            .constructorsIn(typeElement.getEnclosedElements())) {
+                .constructorsIn(typeElement.getEnclosedElements())) {
             if (isSameTypes(parameterTypes, executableElement.getParameters())) {
                 return executableElement;
             }
@@ -200,9 +201,9 @@ public class ElementUtils {
         assertNotNull("typeElement", typeElement);
         assertNotNull("parameterTypeNames", parameterTypeNames);
         for (final ExecutableElement executableElement : ElementFilter
-            .constructorsIn(typeElement.getEnclosedElements())) {
-            if (isSameTypes(parameterTypeNames, executableElement
-                .getParameters())) {
+                .constructorsIn(typeElement.getEnclosedElements())) {
+            if (isSameTypes(parameterTypeNames,
+                    executableElement.getParameters())) {
                 return executableElement;
             }
         }
@@ -223,9 +224,9 @@ public class ElementUtils {
         assertNotNull("typeElement", typeElement);
         assertNotEmpty("methodName", methodName);
         for (final ExecutableElement executableElement : ElementFilter
-            .methodsIn(typeElement.getEnclosedElements())) {
+                .methodsIn(typeElement.getEnclosedElements())) {
             if (!methodName
-                .equals(executableElement.getSimpleName().toString())) {
+                    .equals(executableElement.getSimpleName().toString())) {
                 continue;
             }
             if (executableElement.getParameters().size() == 0) {
@@ -257,9 +258,9 @@ public class ElementUtils {
         assertNotEmpty("methodName", methodName);
         assertNotNull("parameterTypes", parameterTypes);
         for (final ExecutableElement executableElement : ElementFilter
-            .methodsIn(typeElement.getEnclosedElements())) {
+                .methodsIn(typeElement.getEnclosedElements())) {
             if (!methodName
-                .equals(executableElement.getSimpleName().toString())) {
+                    .equals(executableElement.getSimpleName().toString())) {
                 continue;
             }
             if (isSameTypes(parameterTypes, executableElement.getParameters())) {
@@ -294,13 +295,13 @@ public class ElementUtils {
         assertNotEmpty("methodName", methodName);
         assertNotNull("parameterTypeNames", parameterTypeNames);
         for (final ExecutableElement executableElement : ElementFilter
-            .methodsIn(typeElement.getEnclosedElements())) {
+                .methodsIn(typeElement.getEnclosedElements())) {
             if (!methodName
-                .equals(executableElement.getSimpleName().toString())) {
+                    .equals(executableElement.getSimpleName().toString())) {
                 continue;
             }
-            if (isSameTypes(parameterTypeNames, executableElement
-                .getParameters())) {
+            if (isSameTypes(parameterTypeNames,
+                    executableElement.getParameters())) {
                 return executableElement;
             }
         }
@@ -333,9 +334,9 @@ public class ElementUtils {
     public static AnnotationMirror getAnnotationMirror(final Element element,
             final String annotationClassName) {
         for (final AnnotationMirror annotationMirror : element
-            .getAnnotationMirrors()) {
+                .getAnnotationMirrors()) {
             final DeclaredType annotationType = annotationMirror
-                .getAnnotationType();
+                    .getAnnotationType();
             if (annotationType.toString().equals(annotationClassName)) {
                 return annotationMirror;
             }
@@ -355,9 +356,8 @@ public class ElementUtils {
             final List<? extends VariableElement> variableElements) {
         assertNotNull("parameterTypes", parameterTypes);
         assertNotNull("variableElements", variableElements);
-        return isSameTypes(
-            getQualifiedNameArray(parameterTypes),
-            variableElements);
+        return isSameTypes(getQualifiedNameArray(parameterTypes),
+                variableElements);
     }
 
     /**
@@ -376,10 +376,8 @@ public class ElementUtils {
             return false;
         }
         for (int i = 0; i < typeNames.length; ++i) {
-            if (!typeNames[i].equals(variableElements
-                .get(i)
-                .asType()
-                .toString())) {
+            if (!typeNames[i].equals(variableElements.get(i).asType()
+                    .toString())) {
                 return false;
             }
         }
@@ -422,7 +420,7 @@ public class ElementUtils {
             if (bounds.size() > 1
                     || bounds.get(0).toString() == "java.lang.Object") {
                 buf.append(" extends ").append(
-                    join(toTypeNameList(bounds), " & "));
+                        join(toTypeNameList(bounds), " & "));
             }
             parameterPrefix = ", ";
         }
@@ -443,10 +441,8 @@ public class ElementUtils {
             return "";
         }
         final StringBuilder buf = new StringBuilder(64);
-        buf
-            .append("<")
-            .append(join(toSimpleNameList(typeParameters), ", "))
-            .append(">");
+        buf.append("<").append(join(toSimpleNameList(typeParameters), ", "))
+                .append(">");
         return new String(buf);
     }
 
