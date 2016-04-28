@@ -35,7 +35,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -1355,7 +1354,6 @@ public abstract class AptinaTestCase extends TestCase {
      * 
      * @author koichik
      */
-    @SupportedSourceVersion(SourceVersion.RELEASE_6)
     @SupportedAnnotationTypes("*")
     class AptinaUnitProcessor extends AbstractProcessor {
 
@@ -1364,6 +1362,11 @@ public abstract class AptinaTestCase extends TestCase {
                 final ProcessingEnvironment processingEnvironment) {
             super.init(processingEnvironment);
             AptinaTestCase.this.processingEnvironment = processingEnvironment;
+        }
+
+        @Override
+        public SourceVersion getSupportedSourceVersion() {
+            return SourceVersion.latest();
         }
 
         @Override
