@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 
@@ -23,6 +23,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.meta.ExternalDomainMeta;
 import org.seasar.doma.internal.apt.meta.ExternalDomainMetaFactory;
 
@@ -34,6 +35,10 @@ import org.seasar.doma.internal.apt.meta.ExternalDomainMetaFactory;
 @SupportedOptions({ Options.VERSION_VALIDATION, Options.TEST, Options.DEBUG })
 public class ExternalDomainProcessor extends
         AbstractGeneratingProcessor<ExternalDomainMeta> {
+
+    public ExternalDomainProcessor() {
+        super(ExternalDomain.class);
+    }
 
     @Override
     protected ExternalDomainMetaFactory createTypeElementMetaFactory() {

@@ -25,6 +25,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMetaFactory;
@@ -53,6 +54,10 @@ import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
         Options.DAO_SUBPACKAGE, Options.DAO_SUFFIX, Options.EXPR_FUNCTIONS,
         Options.SQL_VALIDATION, Options.VERSION_VALIDATION })
 public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
+
+    public DaoProcessor() {
+        super(Dao.class);
+    }
 
     @Override
     protected TypeElementMetaFactory<DaoMeta> createTypeElementMetaFactory() {

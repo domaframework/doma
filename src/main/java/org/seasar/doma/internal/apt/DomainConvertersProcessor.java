@@ -24,6 +24,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
+import org.seasar.doma.DomainConverters;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.mirror.DomainConvertersMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -38,6 +39,7 @@ import org.seasar.doma.message.Message;
 public class DomainConvertersProcessor extends AbstractProcessor {
 
     public DomainConvertersProcessor() {
+        super(DomainConverters.class);
     }
 
     @Override

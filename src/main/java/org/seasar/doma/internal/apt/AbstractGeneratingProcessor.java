@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -34,7 +35,9 @@ import org.seasar.doma.message.Message;
 public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
         extends AbstractProcessor {
 
-    protected AbstractGeneratingProcessor() {
+    protected AbstractGeneratingProcessor(
+            Class<? extends Annotation> supportedAnnotationType) {
+        super(supportedAnnotationType);
     }
 
     @Override
