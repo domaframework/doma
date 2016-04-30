@@ -28,6 +28,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -141,8 +142,13 @@ public class EntityMeta implements TypeElementMeta {
         }
         List<EntityPropertyMeta> results = new ArrayList<EntityPropertyMeta>();
         for (VariableElement param : constructor.getParameters()) {
-            results.add(allPropertyMetaMap
-                    .get(param.getSimpleName().toString()));
+            String name = param.getSimpleName().toString();
+            ParameterName parameterName = param
+                    .getAnnotation(ParameterName.class);
+            if (parameterName != null) {
+                name = parameterName.value();
+            }
+            results.add(allPropertyMetaMap.get(name));
         }
         return results;
     }

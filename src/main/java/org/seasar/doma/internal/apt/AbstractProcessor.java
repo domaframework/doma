@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.lang.annotation.Annotation;
 import java.util.function.Consumer;
 
 import javax.lang.model.SourceVersion;
@@ -30,7 +31,11 @@ import org.seasar.doma.message.Message;
 public abstract class AbstractProcessor extends
         javax.annotation.processing.AbstractProcessor {
 
-    protected AbstractProcessor() {
+    protected Class<? extends Annotation> supportedAnnotationType;
+
+    protected AbstractProcessor(
+            Class<? extends Annotation> supportedAnnotationType) {
+        this.supportedAnnotationType = supportedAnnotationType;
     }
 
     @Override
@@ -40,6 +45,11 @@ public abstract class AbstractProcessor extends
 
     protected void handleTypeElement(TypeElement typeElement,
             Consumer<TypeElement> handler) {
+        Annotation annotation = typeElement
+                .getAnnotation(supportedAnnotationType);
+        if (annotation == null) {
+            return;
+        }
         if (Options.isDebugEnabled(processingEnv)) {
             Notifier.debug(processingEnv, Message.DOMA4090, getClass()
                     .getName(), typeElement.getQualifiedName());
@@ -66,5 +76,4 @@ public abstract class AbstractProcessor extends
                     .getName(), typeElement.getQualifiedName());
         }
     }
-
 }

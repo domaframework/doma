@@ -43,6 +43,7 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
 import org.seasar.doma.OriginalStates;
+import org.seasar.doma.ParameterName;
 import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -591,6 +592,11 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             int validCount = 0;
             for (VariableElement param : constructor.getParameters()) {
                 String name = param.getSimpleName().toString();
+                ParameterName parameterName = param
+                        .getAnnotation(ParameterName.class);
+                if (parameterName != null) {
+                    name = parameterName.value();
+                }
                 TypeMirror paramType = param.asType();
                 TypeMirror propertyType = types.get(name);
                 if (propertyType == null) {

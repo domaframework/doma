@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 
@@ -23,6 +23,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
@@ -35,6 +36,10 @@ import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
 @SupportedOptions({ Options.ENTITY_FIELD_PREFIX, Options.DOMAIN_CONVERTERS,
         Options.VERSION_VALIDATION, Options.TEST, Options.DEBUG })
 public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
+
+    public EntityProcessor() {
+        super(Entity.class);
+    }
 
     @Override
     protected EntityMetaFactory createTypeElementMetaFactory() {

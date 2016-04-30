@@ -27,6 +27,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 
+import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.internal.apt.mirror.SingletonConfigMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
@@ -41,6 +42,7 @@ import org.seasar.doma.message.Message;
 public class SingletonConfigProcessor extends AbstractProcessor {
 
     public SingletonConfigProcessor() {
+        super(SingletonConfig.class);
     }
 
     @Override
