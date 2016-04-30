@@ -100,7 +100,10 @@ public abstract class AbstractGenerator implements Generator {
             return fullpackage + ".";
         }
         String packageName = ElementUtil.getPackageName(typeElement, env);
-        String base = packageName + ".";
+        String base = "";
+        if (packageName != null && packageName.length() > 0) {
+            base = packageName + ".";
+        }
         if (subpackage != null) {
             return base + subpackage + ".";
         }
