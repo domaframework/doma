@@ -14,7 +14,7 @@ Doma の開発
 
 .. code-block:: bash
 
-  $ git clone git@github.com:domaframework/doma.git
+  $ git clone https://github.com/domaframework/doma.git
 
 ビルド
 ======

@@ -96,7 +96,7 @@ GitHub から simple-boilerplate を clone してください。
 
 .. code-block:: bash
 
-  $ git clone git@github.com:domaframework/simple-boilerplate.git
+  $ git clone https://github.com/domaframework/simple-boilerplate.git
 
 clone されたディレクトリに移動します。
 
