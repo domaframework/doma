@@ -291,12 +291,18 @@ public class DaoGenerator extends AbstractGenerator {
     protected void printConstructors() {
         if (daoMeta.hasUserDefinedConfig()) {
             String singletonMethodName = daoMeta.getSingletonMethodName();
+            String singletonFieldName = daoMeta.getSingletonFieldName();
 
             iprint("/** */%n");
             iprint("public %1$s() {%n", simpleName);
             indent();
             if (singletonMethodName == null) {
-                iprint("super(new %1$s());%n", daoMeta.getConfigType());
+                if (singletonFieldName == null) {
+                    iprint("super(new %1$s());%n", daoMeta.getConfigType());
+                } else {
+                    iprint("super(%1$s.%2$s);%n", daoMeta.getConfigType(),
+                            singletonFieldName);
+                }
             } else {
                 iprint("super(%1$s.%2$s());%n", daoMeta.getConfigType(),
                         singletonMethodName);
@@ -316,8 +322,13 @@ public class DaoGenerator extends AbstractGenerator {
                             Connection.class.getName());
                     indent();
                     if (singletonMethodName == null) {
-                        iprint("super(new %1$s(), connection);%n",
-                                daoMeta.getConfigType());
+                        if (singletonFieldName == null) {
+                            iprint("super(new %1$s(), connection);%n",
+                                    daoMeta.getConfigType());
+                        } else {
+                            iprint("super(%1$s.%2$s, connection);%n",
+                                    daoMeta.getConfigType(), singletonFieldName);
+                        }
                     } else {
                         iprint("super(%1$s.%2$s(), connection);%n",
                                 daoMeta.getConfigType(), singletonMethodName);
@@ -332,8 +343,13 @@ public class DaoGenerator extends AbstractGenerator {
                             DataSource.class.getName());
                     indent();
                     if (singletonMethodName == null) {
-                        iprint("super(new %1$s(), dataSource);%n",
-                                daoMeta.getConfigType());
+                        if (singletonFieldName == null) {
+                            iprint("super(new %1$s(), dataSource);%n",
+                                    daoMeta.getConfigType());
+                        } else {
+                            iprint("super(%1$s.%2$s, dataSource);%n",
+                                    daoMeta.getConfigType(), singletonFieldName);
+                        }
                     } else {
                         iprint("super(%1$s.%2$s(), dataSource);%n",
                                 daoMeta.getConfigType(), singletonMethodName);
@@ -544,8 +560,8 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("%1$s __result = __command.execute();%n",
                         returnMeta.getTypeName());
                 iprint("__query.complete();%n");
-                iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
-                        m.getName());
+                iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
+                        canonicalName, m.getName());
                 iprint("return __result;%n");
             } else {
                 if (m.getSelectStrategyType() == SelectType.STREAM) {
@@ -562,8 +578,8 @@ public class DaoGenerator extends AbstractGenerator {
                 if ("void".equals(returnMeta.getTypeName())) {
                     iprint("__command.execute();%n");
                     iprint("__query.complete();%n");
-                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName,
-                            m.getName());
+                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
+                            canonicalName, m.getName());
                 } else {
                     iprint("%1$s __result = __command.execute();%n",
                             returnMeta.getTypeName());
@@ -1138,8 +1154,8 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         protected void printArrayCreateEnteringStatements(ArrayCreateQueryMeta m) {
-            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n", canonicalName,
-                    m.getName(), m.getParameterName());
+            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
+                    canonicalName, m.getName(), m.getParameterName());
             iprint("try {%n");
             indent();
         }

@@ -55,6 +55,8 @@ public class DaoMeta implements TypeElementMeta {
 
     protected String singletonMethodName;
 
+    protected String singletonFieldName;
+
     public DaoMeta(DaoMirror daoMirror) {
         assertNotNull(daoMirror);
         this.daoMirror = daoMirror;
@@ -156,6 +158,14 @@ public class DaoMeta implements TypeElementMeta {
 
     public void setSingletonMethodName(String singletonMethodName) {
         this.singletonMethodName = singletonMethodName;
+    }
+
+    public String getSingletonFieldName() {
+        return singletonFieldName;
+    }
+
+    public void setSingletonFieldName(String singletonFieldName) {
+        this.singletonFieldName = singletonFieldName;
     }
 
 }

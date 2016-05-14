@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.processing.Filer;
@@ -34,6 +35,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -62,6 +64,8 @@ import org.seasar.doma.message.Message;
  * 
  */
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
+
+    protected static final String SINGLETON_CONFIG_FIELD_NAME = "INSTANCE";
 
     protected final ProcessingEnvironment env;
 
@@ -130,10 +134,25 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                     configElement, env);
             if (constructor == null
                     || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-                throw new AptException(Message.DOMA4164, env,
-                        daoMeta.getDaoElement(),
-                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
-                        configElement.getQualifiedName());
+                Optional<VariableElement> field = ElementFilter
+                        .fieldsIn(configElement.getEnclosedElements())
+                        .stream()
+                        .filter(e -> e.getSimpleName().contentEquals(
+                                SINGLETON_CONFIG_FIELD_NAME))
+                        .filter(e -> e.getModifiers().containsAll(
+                                EnumSet.of(Modifier.STATIC, Modifier.PUBLIC,
+                                        Modifier.FINAL)))
+                        .filter(e -> TypeMirrorUtil.isAssignable(e.asType(),
+                                Config.class, env)).findFirst();
+                if (field.isPresent()) {
+                    daoMeta.setSingletonFieldName(SINGLETON_CONFIG_FIELD_NAME);
+                } else {
+                    throw new AptException(Message.DOMA4164, env,
+                            daoMeta.getDaoElement(),
+                            daoMirror.getAnnotationMirror(),
+                            daoMirror.getConfig(),
+                            configElement.getQualifiedName());
+                }
             }
         } else {
             String methodName = singletonConfig.method();
