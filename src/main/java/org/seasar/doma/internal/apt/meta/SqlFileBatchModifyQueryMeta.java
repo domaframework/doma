@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
@@ -39,8 +40,8 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected BatchModifyMirror batchModifyMirror;
 
-    public SqlFileBatchModifyQueryMeta(ExecutableElement method) {
-        super(method);
+    public SqlFileBatchModifyQueryMeta(ExecutableElement method, TypeElement dao) {
+        super(method, dao);
     }
 
     public EntityCtType getEntityType() {

@@ -174,10 +174,10 @@ public class ExpressionValidator implements
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(Message.DOMA4116, env, methodElement,
-                location.getExpression(), location.getPosition(),
-                node.getExpression(), node.getLeftNode().toString(),
-                left.getBinaryName(), node.getRightNode().toString(),
-                right.getBinaryName());
+                new Object[] { location.getExpression(),
+                        location.getPosition(), node.getExpression(),
+                        node.getLeftNode().toString(), left.getBinaryName(),
+                        node.getRightNode().toString(), right.getBinaryName() });
     }
 
     protected TypeDeclaration handleNullUnavailableComparisonOperation(
@@ -187,18 +187,18 @@ public class ExpressionValidator implements
         if (left.isNullType() || right.isNullType()) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4139, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression());
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getExpression() });
         }
         if (left.isSameType(right)) {
             return TypeDeclaration.newBooleanTypeDeclaration(env);
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(Message.DOMA4116, env, methodElement,
-                location.getExpression(), location.getPosition(),
-                node.getExpression(), node.getLeftNode().toString(),
-                left.getBinaryName(), node.getRightNode().toString(),
-                right.getBinaryName());
+                new Object[] { location.getExpression(),
+                        location.getPosition(), node.getExpression(),
+                        node.getLeftNode().toString(), left.getBinaryName(),
+                        node.getRightNode().toString(), right.getBinaryName() });
     }
 
     @Override
@@ -217,17 +217,21 @@ public class ExpressionValidator implements
         TypeDeclaration right = node.getRightNode().accept(this, p);
         if (!left.isBooleanType()) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4117, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression(), node.getLeftNode().toString(),
-                    left.getBinaryName());
+            throw new AptException(
+                    Message.DOMA4117,
+                    env,
+                    methodElement,
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getExpression(),
+                            node.getLeftNode().toString(), left.getBinaryName() });
         }
         if (!right.isBooleanType()) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4118, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression(), node.getRightNode().toString(),
-                    right.getBinaryName());
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getExpression(),
+                            node.getRightNode().toString(),
+                            right.getBinaryName() });
         }
         return TypeDeclaration.newBooleanTypeDeclaration(env);
     }
@@ -240,9 +244,9 @@ public class ExpressionValidator implements
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(Message.DOMA4119, env, methodElement,
-                location.getExpression(), location.getPosition(),
-                node.getExpression(), node.getNode().toString(),
-                result.getBinaryName());
+                new Object[] { location.getExpression(),
+                        location.getPosition(), node.getExpression(),
+                        node.getNode().toString(), result.getBinaryName() });
     }
 
     @Override
@@ -254,10 +258,13 @@ public class ExpressionValidator implements
                 return left.emulateConcatOperation(right);
             }
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4126, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression(), node.getLeftNode().toString(),
-                    left.getBinaryName());
+            throw new AptException(
+                    Message.DOMA4126,
+                    env,
+                    methodElement,
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getExpression(),
+                            node.getLeftNode().toString(), left.getBinaryName() });
         }
         return handleArithmeticOperatorNode(node, left, right, p);
     }
@@ -298,17 +305,21 @@ public class ExpressionValidator implements
             TypeDeclaration right, Void p) {
         if (!left.isNumberType()) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4120, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression(), node.getLeftNode().toString(),
-                    left.getBinaryName());
+            throw new AptException(
+                    Message.DOMA4120,
+                    env,
+                    methodElement,
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getExpression(),
+                            node.getLeftNode().toString(), left.getBinaryName() });
         }
         if (!right.isNumberType()) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4121, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression(), node.getRightNode().toString(),
-                    right.getBinaryName());
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getExpression(),
+                            node.getRightNode().toString(),
+                            right.getBinaryName() });
         }
         return left.emulateArithmeticOperation(right);
     }
@@ -338,7 +349,8 @@ public class ExpressionValidator implements
         if (typeElement == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4138, env, methodElement,
-                    location.getExpression(), location.getPosition(), className);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), className });
         }
         TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
                 typeElement.asType(), env);
@@ -349,7 +361,8 @@ public class ExpressionValidator implements
             String signature = createConstructorSignature(className,
                     parameterTypeDeclarations);
             throw new AptException(Message.DOMA4115, env, methodElement,
-                    location.getExpression(), location.getPosition(), signature);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), signature });
         }
         if (constructorDeclarations.size() == 1) {
             return typeDeclaration;
@@ -358,7 +371,8 @@ public class ExpressionValidator implements
         String signature = createConstructorSignature(className,
                 parameterTypeDeclarations);
         throw new AptException(Message.DOMA4127, env, methodElement,
-                location.getExpression(), location.getPosition(), signature);
+                new Object[] { location.getExpression(),
+                        location.getPosition(), signature });
     }
 
     protected String createConstructorSignature(String className,
@@ -402,9 +416,10 @@ public class ExpressionValidator implements
             String methodSignature = createMethodSignature(methodName,
                     parameterTypeDeclarations);
             throw new AptException(Message.DOMA4071, env, methodElement,
-                    location.getExpression(), location.getPosition(), node
-                            .getTargetObjectNode().getExpression(),
-                    typeDeclaration.getBinaryName(), methodSignature);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(),
+                            node.getTargetObjectNode().getExpression(),
+                            typeDeclaration.getBinaryName(), methodSignature });
         }
         if (methodDeclarations.size() == 1) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(0);
@@ -418,9 +433,10 @@ public class ExpressionValidator implements
         String methodSignature = createMethodSignature(methodName,
                 parameterTypeDeclarations);
         throw new AptException(Message.DOMA4073, env, methodElement,
-                location.getExpression(), location.getPosition(), node
-                        .getTargetObjectNode().getExpression(),
-                typeDeclaration.getBinaryName(), methodSignature);
+                new Object[] { location.getExpression(),
+                        location.getPosition(),
+                        node.getTargetObjectNode().getExpression(),
+                        typeDeclaration.getBinaryName(), methodSignature });
     }
 
     @Override
@@ -432,7 +448,8 @@ public class ExpressionValidator implements
         if (typeElement == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4145, env, methodElement,
-                    location.getExpression(), location.getPosition(), className);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), className });
         }
         TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
                 typeElement.asType(), env);
@@ -446,9 +463,12 @@ public class ExpressionValidator implements
             ExpressionLocation location = node.getLocation();
             String methodSignature = createMethodSignature(methodName,
                     parameterTypeDeclarations);
-            throw new AptException(Message.DOMA4146, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    className, methodSignature);
+            throw new AptException(
+                    Message.DOMA4146,
+                    env,
+                    methodElement,
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), className, methodSignature });
         }
         if (methodDeclarations.size() == 1) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(0);
@@ -462,8 +482,8 @@ public class ExpressionValidator implements
         String methodSignature = createMethodSignature(methodName,
                 parameterTypeDeclarations);
         throw new AptException(Message.DOMA4147, env, methodElement,
-                location.getExpression(), location.getPosition(), className,
-                methodSignature);
+                new Object[] { location.getExpression(),
+                        location.getPosition(), className, methodSignature });
     }
 
     @Override
@@ -480,8 +500,8 @@ public class ExpressionValidator implements
             String methodSignature = createMethodSignature(methodName,
                     parameterTypeDeclarations);
             throw new AptException(Message.DOMA4072, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    methodSignature);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), methodSignature });
         }
         if (methodDeclarations.size() == 1) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(0);
@@ -505,15 +525,17 @@ public class ExpressionValidator implements
         if (element == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4189, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getMethodName(), exprFunctionsClassName);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getMethodName(),
+                            exprFunctionsClassName });
         }
         TypeMirror type = element.asType();
         if (!TypeMirrorUtil.isAssignable(type, ExpressionFunctions.class, env)) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4190, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    node.getMethodName(), exprFunctionsClassName);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), node.getMethodName(),
+                            exprFunctionsClassName });
         }
         return TypeDeclaration.newTypeDeclaration(type, env);
     }
@@ -550,9 +572,10 @@ public class ExpressionValidator implements
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(Message.DOMA4114, env, methodElement,
-                location.getExpression(), location.getPosition(), node
-                        .getTargetObjectNode().getExpression(),
-                typeDeclaration.getBinaryName(), fieldName);
+                new Object[] { location.getExpression(),
+                        location.getPosition(),
+                        node.getTargetObjectNode().getExpression(),
+                        typeDeclaration.getBinaryName(), fieldName });
     }
 
     @Override
@@ -564,7 +587,8 @@ public class ExpressionValidator implements
         if (typeElement == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4145, env, methodElement,
-                    location.getExpression(), location.getPosition(), className);
+                    new Object[] { location.getExpression(),
+                            location.getPosition(), className });
         }
         TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
                 typeElement.asType(), env);
@@ -580,8 +604,8 @@ public class ExpressionValidator implements
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(Message.DOMA4148, env, methodElement,
-                location.getExpression(), location.getPosition(), className,
-                fieldName);
+                new Object[] { location.getExpression(),
+                        location.getPosition(), className, fieldName });
     }
 
     protected TypeDeclaration convertIfOptional(TypeDeclaration typeDeclaration) {
@@ -612,7 +636,7 @@ public class ExpressionValidator implements
         if (type == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(Message.DOMA4067, env, methodElement,
-                    variableName, location.getPosition());
+                    new Object[] { variableName, location.getPosition() });
         }
         validatedParameterNames.add(variableName);
         return TypeDeclaration.newTypeDeclaration(type, env);

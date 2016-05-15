@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
@@ -51,8 +52,8 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected boolean resultStream;
 
-    public SqlFileSelectQueryMeta(ExecutableElement method) {
-        super(method);
+    public SqlFileSelectQueryMeta(ExecutableElement method, TypeElement dao) {
+        super(method, dao);
     }
 
     public String getFunctionParameterName() {

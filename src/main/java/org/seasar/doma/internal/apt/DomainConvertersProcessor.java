@@ -69,7 +69,7 @@ public class DomainConvertersProcessor extends AbstractProcessor {
             if (convElement.getAnnotation(ExternalDomain.class) == null) {
                 throw new AptException(Message.DOMA4196, processingEnv,
                         typeElement, convertersMirror.getAnnotationMirror(),
-                        convElement.getQualifiedName());
+                        new Object[] { convElement.getQualifiedName() });
             }
         }
     }

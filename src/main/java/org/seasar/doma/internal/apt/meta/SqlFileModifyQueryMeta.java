@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
@@ -35,8 +36,8 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected ModifyMirror modifyMirror;
 
-    public SqlFileModifyQueryMeta(ExecutableElement method) {
-        super(method);
+    public SqlFileModifyQueryMeta(ExecutableElement method, TypeElement dao) {
+        super(method, dao);
     }
 
     public EntityCtType getEntityCtType() {

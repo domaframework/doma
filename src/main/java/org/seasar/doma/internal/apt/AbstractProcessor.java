@@ -51,8 +51,8 @@ public abstract class AbstractProcessor extends
             return;
         }
         if (Options.isDebugEnabled(processingEnv)) {
-            Notifier.debug(processingEnv, Message.DOMA4090, getClass()
-                    .getName(), typeElement.getQualifiedName());
+            Notifier.debug(processingEnv, Message.DOMA4090, new Object[] {
+                    getClass().getName(), typeElement.getQualifiedName() });
         }
         try {
             handler.accept(typeElement);
@@ -64,16 +64,16 @@ public abstract class AbstractProcessor extends
             throw new AptTypeHandleException(typeElement, e);
         } catch (AptIllegalStateException e) {
             Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4039,
-                    typeElement);
+                    typeElement, new Object[] {});
             throw new AptTypeHandleException(typeElement, e);
         } catch (RuntimeException e) {
             Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4016,
-                    typeElement);
+                    typeElement, new Object[] {});
             throw new AptTypeHandleException(typeElement, e);
         }
         if (Options.isDebugEnabled(processingEnv)) {
-            Notifier.debug(processingEnv, Message.DOMA4091, getClass()
-                    .getName(), typeElement.getQualifiedName());
+            Notifier.debug(processingEnv, Message.DOMA4091, new Object[] {
+                    getClass().getName(), typeElement.getQualifiedName() });
         }
     }
 }

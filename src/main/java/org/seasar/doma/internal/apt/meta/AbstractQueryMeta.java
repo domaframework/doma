@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -39,9 +40,11 @@ import org.seasar.doma.jdbc.query.Query;
  */
 public abstract class AbstractQueryMeta implements QueryMeta {
 
-    protected String name;
+    protected final String name;
 
-    protected ExecutableElement executableElement;
+    protected final ExecutableElement executableElement;
+
+    protected final TypeElement daoElement;
 
     protected List<String> typeParameterNames = new ArrayList<String>();
 
@@ -57,10 +60,11 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected List<String> fileNames = new ArrayList<String>();
 
-    protected AbstractQueryMeta(ExecutableElement method) {
+    protected AbstractQueryMeta(ExecutableElement method, TypeElement dao) {
         assertNotNull(method);
         this.name = method.getSimpleName().toString();
         this.executableElement = method;
+        this.daoElement = dao;
     }
 
     @Override
@@ -69,8 +73,13 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     }
 
     @Override
-    public ExecutableElement getExecutableElement() {
+    public ExecutableElement getMethodElement() {
         return executableElement;
+    }
+
+    @Override
+    public TypeElement getDaoElement() {
+        return daoElement;
     }
 
     public void addTypeParameterName(String typeParameterName) {

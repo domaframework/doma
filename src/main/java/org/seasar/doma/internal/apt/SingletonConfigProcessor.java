@@ -76,17 +76,24 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         if (!TypeMirrorUtil.isAssignable(typeElement.asType(), Config.class,
                 processingEnv)) {
             throw new AptException(Message.DOMA4253, processingEnv,
-                    typeElement, mirror.getAnnotationMirror());
+                    typeElement, mirror.getAnnotationMirror(),
+                    new Object[] { typeElement.getQualifiedName() });
         }
     }
 
     protected void validateConstructors(TypeElement typeElement) {
-        ElementFilter.constructorsIn(typeElement.getEnclosedElements())
+        ElementFilter
+                .constructorsIn(typeElement.getEnclosedElements())
                 .stream()
                 .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
-                .findAny().ifPresent(c -> {
-                    throw new AptException(Message.DOMA4256, processingEnv, c);
-                });
+                .findAny()
+                .ifPresent(
+                        c -> {
+                            throw new AptException(Message.DOMA4256,
+                                    processingEnv, c,
+                                    new Object[] { typeElement
+                                            .getQualifiedName() });
+                        });
     }
 
     protected void validateMethod(TypeElement typeElement, String methodName) {
@@ -102,7 +109,8 @@ public class SingletonConfigProcessor extends AbstractProcessor {
                 .findAny();
         if (!method.isPresent()) {
             throw new AptException(Message.DOMA4254, processingEnv,
-                    typeElement, methodName, typeElement.getQualifiedName());
+                    typeElement, new Object[] { methodName,
+                            typeElement.getQualifiedName() });
         }
     }
 }

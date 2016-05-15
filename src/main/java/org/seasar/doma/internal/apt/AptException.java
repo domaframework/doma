@@ -42,19 +42,19 @@ public class AptException extends DomaException {
     protected AnnotationValue annotationValue;
 
     public AptException(MessageResource messageResource,
-            ProcessingEnvironment env, Element element, Object... args) {
+            ProcessingEnvironment env, Element element, Object[] args) {
         this(messageResource, env, Kind.ERROR, element, null, null, null, args);
     }
 
     public AptException(MessageResource messageResource,
             ProcessingEnvironment env, Element element, Throwable cause,
-            Object... args) {
+            Object[] args) {
         this(messageResource, env, Kind.ERROR, element, null, null, cause, args);
     }
 
     public AptException(MessageResource messageResource,
             ProcessingEnvironment env, Element element,
-            AnnotationMirror annotationMirror, Object... args) {
+            AnnotationMirror annotationMirror, Object[] args) {
         this(messageResource, env, Kind.ERROR, element, annotationMirror, null,
                 null, args);
     }
@@ -62,22 +62,23 @@ public class AptException extends DomaException {
     public AptException(MessageResource messageResource,
             ProcessingEnvironment env, Element element,
             AnnotationMirror annotationMirror, AnnotationValue annotationValue,
-            Object... args) {
+            Object[] args) {
         this(messageResource, env, Kind.ERROR, element, annotationMirror,
                 annotationValue, null, args);
     }
 
-    public AptException(MessageResource messageResource,
+    private AptException(MessageResource messageResource,
             ProcessingEnvironment env, Kind kind, Element element,
             AnnotationMirror annotationMirror, AnnotationValue annotationValue,
-            Throwable cause, Object... args) {
+            Throwable cause, Object[] args) {
         super(messageResource, cause, args);
         this.kind = kind;
         this.element = element;
         this.annotationMirror = annotationMirror;
         this.annotationValue = annotationValue;
         if (Options.isDebugEnabled(env)) {
-            Notifier.debug(env, Message.DOMA4074, messageResource, cause);
+            Notifier.debug(env, Message.DOMA4074, new Object[] {
+                    messageResource, cause });
         }
     }
 

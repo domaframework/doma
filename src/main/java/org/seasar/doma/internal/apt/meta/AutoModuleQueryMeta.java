@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.MapKeyNamingType;
 
@@ -30,8 +31,8 @@ public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
 
     protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<CallableSqlParameterMeta>();
 
-    protected AutoModuleQueryMeta(ExecutableElement method) {
-        super(method);
+    protected AutoModuleQueryMeta(ExecutableElement method, TypeElement dao) {
+        super(method, dao);
     }
 
     public void addCallableSqlParameterMeta(

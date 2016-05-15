@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.annotation.Annotation;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -49,6 +50,10 @@ public class QueryParameterMeta {
 
     protected final VariableElement element;
 
+    protected final ExecutableElement methodElement;
+
+    protected final TypeElement daoElement;
+
     protected final ProcessingEnvironment env;
 
     protected final String name;
@@ -62,14 +67,18 @@ public class QueryParameterMeta {
     protected final CtType ctType;
 
     public QueryParameterMeta(VariableElement parameterElement,
-            ProcessingEnvironment env) {
-        assertNotNull(parameterElement, env);
+            QueryMeta queryMeta, ProcessingEnvironment env) {
+        assertNotNull(parameterElement, queryMeta, env);
         this.element = parameterElement;
+        this.methodElement = queryMeta.getMethodElement();
+        this.daoElement = queryMeta.getDaoElement();
         this.env = env;
         name = ElementUtil.getParameterName(parameterElement);
         if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
             throw new AptException(Message.DOMA4025, env, parameterElement,
-                    MetaConstants.RESERVED_NAME_PREFIX);
+                    new Object[] { MetaConstants.RESERVED_NAME_PREFIX,
+                            queryMeta.getDaoElement().getQualifiedName(),
+                            queryMeta.getMethodElement().getSimpleName() });
         }
         type = parameterElement.asType();
         typeName = TypeMirrorUtil.getTypeName(type, env);
@@ -87,10 +96,14 @@ public class QueryParameterMeta {
         IterableCtType iterableCtType = IterableCtType.newInstance(type, env);
         if (iterableCtType != null) {
             if (iterableCtType.isRawType()) {
-                throw new AptException(Message.DOMA4159, env, parameterElement);
+                throw new AptException(Message.DOMA4159, env, parameterElement,
+                        new Object[] { daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (iterableCtType.isWildcardType()) {
-                throw new AptException(Message.DOMA4160, env, parameterElement);
+                throw new AptException(Message.DOMA4160, env, parameterElement,
+                        new Object[] { daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             iterableCtType.getElementCtType().accept(
                     new IterableElementCtTypeVisitor(parameterElement), null);
@@ -106,11 +119,15 @@ public class QueryParameterMeta {
         if (optionalCtType != null) {
             if (optionalCtType.isRawType()) {
                 throw new AptException(Message.DOMA4236, env, parameterElement,
-                        optionalCtType.getQualifiedName());
+                        new Object[] { optionalCtType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (optionalCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4237, env, parameterElement,
-                        optionalCtType.getQualifiedName());
+                        new Object[] { optionalCtType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             optionalCtType.getElementCtType().accept(
                     new OptionalElementCtTypeVisitor(parameterElement), null);
@@ -139,11 +156,15 @@ public class QueryParameterMeta {
         if (domainCtType != null) {
             if (domainCtType.isRawType()) {
                 throw new AptException(Message.DOMA4208, env, parameterElement,
-                        domainCtType.getQualifiedName());
+                        new Object[] { domainCtType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (domainCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4209, env, parameterElement,
-                        domainCtType.getQualifiedName());
+                        new Object[] { domainCtType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             return domainCtType;
         }
@@ -163,11 +184,15 @@ public class QueryParameterMeta {
         if (functionCtType != null) {
             if (functionCtType.isRawType()) {
                 throw new AptException(Message.DOMA4240, env, parameterElement,
-                        qualifiedName);
+                        new Object[] { qualifiedName,
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (functionCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4241, env, parameterElement,
-                        qualifiedName);
+                        new Object[] { qualifiedName,
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             functionCtType.getTargetCtType().accept(
                     new FunctionTargetCtTypeVisitor(parameterElement), null);
@@ -179,11 +204,15 @@ public class QueryParameterMeta {
         if (collectorCtType != null) {
             if (collectorCtType.isRawType()) {
                 throw new AptException(Message.DOMA4258, env, parameterElement,
-                        qualifiedName);
+                        new Object[] { qualifiedName,
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (collectorCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4259, env, parameterElement,
-                        qualifiedName);
+                        new Object[] { qualifiedName,
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             collectorCtType.getTargetCtType().accept(
                     new CollectorTargetCtTypeVisitor(parameterElement), null);
@@ -195,11 +224,14 @@ public class QueryParameterMeta {
         if (referenceCtType != null) {
             if (referenceCtType.isRaw()) {
                 throw new AptException(Message.DOMA4108, env, parameterElement,
-                        qualifiedName);
+                        new Object[] { daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (referenceCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
-                        qualifiedName);
+                        new Object[] { qualifiedName,
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             referenceCtType.getReferentCtType().accept(
                     new ReferenceReferentCtTypeVisitor(parameterElement), null);
@@ -211,6 +243,14 @@ public class QueryParameterMeta {
 
     public VariableElement getElement() {
         return element;
+    }
+
+    public ExecutableElement getMethodElement() {
+        return methodElement;
+    }
+
+    public TypeElement getDaoElement() {
+        return daoElement;
     }
 
     public String getName() {
@@ -362,11 +402,15 @@ public class QueryParameterMeta {
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4212, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (ctType.isWildcardType()) {
                 throw new AptException(Message.DOMA4213, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             return null;
         }
@@ -391,11 +435,15 @@ public class QueryParameterMeta {
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4238, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (ctType.isWildcardType()) {
                 throw new AptException(Message.DOMA4239, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             return null;
         }
@@ -431,11 +479,17 @@ public class QueryParameterMeta {
                     throws RuntimeException {
                 if (ctType.isRawType()) {
                     throw new AptException(Message.DOMA4242, env,
-                            parameterElement, ctType.getQualifiedName());
+                            parameterElement, new Object[] {
+                                    ctType.getQualifiedName(),
+                                    daoElement.getQualifiedName(),
+                                    methodElement.getSimpleName() });
                 }
                 if (ctType.isWildcardType()) {
                     throw new AptException(Message.DOMA4243, env,
-                            parameterElement, ctType.getQualifiedName());
+                            parameterElement, new Object[] {
+                                    ctType.getQualifiedName(),
+                                    daoElement.getQualifiedName(),
+                                    methodElement.getSimpleName() });
                 }
                 return null;
             }
@@ -461,11 +515,15 @@ public class QueryParameterMeta {
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4260, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (ctType.isWildcardType()) {
                 throw new AptException(Message.DOMA4261, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             return null;
         }
@@ -491,11 +549,15 @@ public class QueryParameterMeta {
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4218, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             if (ctType.isWildcardType()) {
                 throw new AptException(Message.DOMA4219, env, parameterElement,
-                        ctType.getQualifiedName());
+                        new Object[] { ctType.getQualifiedName(),
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
             }
             return null;
         }

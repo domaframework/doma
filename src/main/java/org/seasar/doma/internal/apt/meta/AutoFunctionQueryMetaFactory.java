@@ -53,7 +53,8 @@ public class AutoFunctionQueryMetaFactory extends
         if (functionMirror == null) {
             return null;
         }
-        AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method);
+        AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method,
+                daoMeta.getDaoElement());
         queryMeta.setFunctionMirror(functionMirror);
         queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
         doTypeParameters(queryMeta, method, daoMeta);
@@ -66,7 +67,7 @@ public class AutoFunctionQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoFunctionQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(method);
+        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
         queryMeta.setReturnMeta(returnMeta);
         ResultParameterMeta resultParameterMeta = createResultParameterMeta(
                 queryMeta, returnMeta);
@@ -102,7 +103,10 @@ public class AutoFunctionQueryMetaFactory extends
         protected ResultParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4063, env,
-                    returnMeta.getElement(), returnMeta.getType());
+                    returnMeta.getMethodElement(), new Object[] {
+                            returnMeta.getType(),
+                            queryMeta.getDaoElement().getQualifiedName(),
+                            queryMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -182,7 +186,10 @@ public class AutoFunctionQueryMetaFactory extends
         protected ResultParameterMeta defaultAction(CtType ctType, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4065, env,
-                    returnMeta.getElement(), ctType.getTypeName());
+                    returnMeta.getMethodElement(), new Object[] {
+                            ctType.getTypeName(),
+                            queryMeta.getDaoElement().getQualifiedName(),
+                            queryMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -208,7 +215,10 @@ public class AutoFunctionQueryMetaFactory extends
                 Boolean p) throws RuntimeException {
             if (ctType.isAbstract()) {
                 throw new AptException(Message.DOMA4156, env,
-                        returnMeta.getElement(), ctType.getTypeName());
+                        returnMeta.getMethodElement(), new Object[] {
+                                ctType.getTypeName(),
+                                returnMeta.getDaoElement().getQualifiedName(),
+                                returnMeta.getMethodElement().getSimpleName() });
             }
             return new EntityResultListParameterMeta(ctType,
                     queryMeta.getEnsureResultMapping());

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -144,27 +144,28 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
             for (String included : includedPropertyNames) {
                 if (!names.contains(included)) {
                     throw new AptException(Message.DOMA4084, env, method,
-                            annotationMirror, includeValue, included,
-                            entityType);
+                            annotationMirror, includeValue, new Object[] {
+                                    included, entityType });
                 }
             }
             for (String excluded : excludedPropertyNames) {
                 if (!names.contains(excluded)) {
                     throw new AptException(Message.DOMA4085, env, method,
-                            annotationMirror, excludeValue, excluded,
-                            entityType);
+                            annotationMirror, excludeValue, new Object[] {
+                                    excluded, entityType });
                 }
             }
         }
     }
 
-    protected QueryReturnMeta createReturnMeta(ExecutableElement method) {
-        return new QueryReturnMeta(method, env);
+    protected QueryReturnMeta createReturnMeta(QueryMeta queryMeta) {
+        return new QueryReturnMeta(queryMeta, env);
     }
 
-    protected QueryParameterMeta createParameterMeta(VariableElement parameter) {
+    protected QueryParameterMeta createParameterMeta(VariableElement parameter,
+            QueryMeta queryMeta) {
         QueryParameterMeta queryParameterMeta = new QueryParameterMeta(
-                parameter, env);
+                parameter, queryMeta, env);
         return queryParameterMeta;
     }
 

@@ -53,7 +53,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter,
+                    queryMeta);
             queryMeta.addParameterMeta(parameterMeta);
 
             CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(parameterMeta);
@@ -83,7 +84,9 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             return createInOutParameterMeta(parameterMeta);
         }
         throw new AptException(Message.DOMA4066, env,
-                parameterMeta.getElement());
+                parameterMeta.getElement(), new Object[] {
+                        parameterMeta.getDaoElement().getQualifiedName(),
+                        parameterMeta.getMethodElement().getSimpleName() });
     }
 
     protected CallableSqlParameterMeta createResultSetParameterMeta(
@@ -138,7 +141,9 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected IterableCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4062, env,
-                    parameterMeta.getElement());
+                    parameterMeta.getElement(), new Object[] {
+                            parameterMeta.getDaoElement().getQualifiedName(),
+                            parameterMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -174,7 +179,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4186, env,
-                    parameterMeta.getElement(), type.getTypeName());
+                    parameterMeta.getElement(), new Object[] {
+                            type.getTypeName(),
+                            parameterMeta.getDaoElement().getQualifiedName(),
+                            parameterMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -182,7 +190,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 Boolean p) throws RuntimeException {
             if (ctType.isAbstract()) {
                 throw new AptException(Message.DOMA4157, env,
-                        parameterMeta.getElement(), ctType.getTypeName());
+                        parameterMeta.getElement(), new Object[] {
+                                ctType.getTypeName(),
+                                parameterMeta.getDaoElement()
+                                        .getQualifiedName(),
+                                parameterMeta.getMethodElement()
+                                        .getSimpleName() });
             }
             return new EntityListParameterMeta(parameterMeta.getName(), ctType,
                     resultSetMirror.getEnsureResultMappingValue());
@@ -259,7 +272,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4101, env,
-                    parameterMeta.getElement(), parameterMeta.getType());
+                    parameterMeta.getElement(), new Object[] {
+                            parameterMeta.getType(),
+                            parameterMeta.getDaoElement().getQualifiedName(),
+                            parameterMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -326,7 +342,9 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected ReferenceCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4098, env,
-                    parameterMeta.getElement());
+                    parameterMeta.getElement(), new Object[] {
+                            parameterMeta.getDaoElement().getQualifiedName(),
+                            parameterMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -359,8 +377,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4100, env,
-                    parameterMeta.getElement(),
-                    referenceCtType.getReferentTypeMirror());
+                    parameterMeta.getElement(), new Object[] {
+                            referenceCtType.getReferentTypeMirror(),
+                            parameterMeta.getDaoElement().getQualifiedName(),
+                            parameterMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -427,7 +447,9 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected ReferenceCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4111, env,
-                    parameterMeta.getElement());
+                    parameterMeta.getElement(), new Object[] {
+                            parameterMeta.getDaoElement().getQualifiedName(),
+                            parameterMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
@@ -460,8 +482,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4100, env,
-                    parameterMeta.getElement(),
-                    referenceCtType.getReferentTypeMirror());
+                    parameterMeta.getElement(), new Object[] {
+                            referenceCtType.getReferentTypeMirror(),
+                            parameterMeta.getDaoElement().getQualifiedName(),
+                            parameterMeta.getMethodElement().getSimpleName() });
         }
 
         @Override
