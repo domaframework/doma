@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
@@ -29,8 +30,8 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
     protected ProcedureMirror procedureMirror;
 
-    public AutoProcedureQueryMeta(ExecutableElement method) {
-        super(method);
+    public AutoProcedureQueryMeta(ExecutableElement method, TypeElement dao) {
+        super(method, dao);
     }
 
     ProcedureMirror getProcedureMirror() {

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -61,7 +61,8 @@ public class AutoModifyQueryMetaFactory extends
 
     protected AutoModifyQueryMeta createAutoModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method);
+        AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method,
+                daoMeta.getDaoElement());
         ModifyMirror modifyMirror = InsertMirror.newInstance(method, env);
         if (modifyMirror != null && !modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
@@ -86,17 +87,21 @@ public class AutoModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(method);
+        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
         EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isResult(entityCtType)) {
                 throw new AptException(Message.DOMA4222, env,
-                        returnMeta.getElement());
+                        returnMeta.getMethodElement(), new Object[] {
+                                daoMeta.getDaoElement().getQualifiedName(),
+                                method.getSimpleName() });
             }
         } else {
             if (!returnMeta.isPrimitiveInt()) {
                 throw new AptException(Message.DOMA4001, env,
-                        returnMeta.getElement());
+                        returnMeta.getMethodElement(), new Object[] {
+                                daoMeta.getDaoElement().getQualifiedName(),
+                                method.getSimpleName() });
             }
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -108,10 +113,12 @@ public class AutoModifyQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(Message.DOMA4002, env, method);
+            throw new AptException(Message.DOMA4002, env, method, new Object[] {
+                    daoMeta.getDaoElement().getQualifiedName(),
+                    method.getSimpleName() });
         }
-        final QueryParameterMeta parameterMeta = createParameterMeta(parameters
-                .get(0));
+        final QueryParameterMeta parameterMeta = createParameterMeta(
+                parameters.get(0), queryMeta);
         EntityCtType entityCtType = parameterMeta
                 .getCtType()
                 .accept(new SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException>() {
@@ -120,7 +127,10 @@ public class AutoModifyQueryMetaFactory extends
                     protected EntityCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
                         throw new AptException(Message.DOMA4003, env,
-                                parameterMeta.getElement());
+                                parameterMeta.getElement(), new Object[] {
+                                        daoMeta.getDaoElement()
+                                                .getQualifiedName(),
+                                        method.getSimpleName() });
                     }
 
                     @Override

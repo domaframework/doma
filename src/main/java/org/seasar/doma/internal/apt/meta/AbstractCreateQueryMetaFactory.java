@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -45,12 +45,14 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     @Override
     protected void doReturnType(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        QueryReturnMeta resultMeta = createReturnMeta(method);
+        QueryReturnMeta resultMeta = createReturnMeta(queryMeta);
         queryMeta.setReturnMeta(resultMeta);
         if (!returnClass.getName().equals(
                 resultMeta.getCtType().getQualifiedName())) {
-            throw new AptException(Message.DOMA4097, env, method,
-                    returnClass.getName());
+            throw new AptException(Message.DOMA4097, env, method, new Object[] {
+                    returnClass.getName(),
+                    daoMeta.getDaoElement().getQualifiedName(),
+                    method.getSimpleName() });
         }
     }
 
@@ -60,7 +62,9 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         List<? extends VariableElement> params = method.getParameters();
         int size = params.size();
         if (size != 0) {
-            throw new AptException(Message.DOMA4078, env, method);
+            throw new AptException(Message.DOMA4078, env, method, new Object[] {
+                    daoMeta.getDaoElement().getQualifiedName(),
+                    method.getSimpleName() });
         }
     }
 

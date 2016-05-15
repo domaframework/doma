@@ -100,7 +100,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                         if (parameterElement.getSimpleName().contentEquals(
                                 parameterName)) {
                             Notifier.notify(env, Kind.ERROR, Message.DOMA4122,
-                                    parameterElement, path, parameterName);
+                                    parameterElement, new Object[] { path,
+                                            parameterName });
                         }
                     }
                 }
@@ -122,9 +123,9 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             if (!isBindable(typeDeclaration)) {
                 String sql = getSql(location);
                 throw new AptException(Message.DOMA4153, env, methodElement,
-                        path, sql, location.getLineNumber(),
-                        location.getPosition(), variableName,
-                        typeDeclaration.getBinaryName());
+                        new Object[] { path, sql, location.getLineNumber(),
+                                location.getPosition(), variableName,
+                                typeDeclaration.getBinaryName() });
             }
         } else {
             if (!isBindableIterable(typeDeclaration)) {
@@ -132,9 +133,9 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                 env.getMessager().printMessage(Kind.NOTE,
                         parameterTypeMap.toString());
                 throw new AptException(Message.DOMA4161, env, methodElement,
-                        path, sql, location.getLineNumber(),
-                        location.getPosition(), variableName,
-                        typeDeclaration.getBinaryName());
+                        new Object[] { path, sql, location.getLineNumber(),
+                                location.getPosition(), variableName,
+                                typeDeclaration.getBinaryName() });
             }
         }
         visitNode(node, p);
@@ -190,9 +191,10 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                 expression);
         if (!typeDeclaration.isBooleanType()) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4140, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getBinaryName());
+            throw new AptException(Message.DOMA4140, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition(), expression,
+                            typeDeclaration.getBinaryName() });
         }
         visitNode(node, p);
         return null;
@@ -206,9 +208,10 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                 expression);
         if (!typeDeclaration.isBooleanType()) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4141, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getBinaryName());
+            throw new AptException(Message.DOMA4141, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition(), expression,
+                            typeDeclaration.getBinaryName() });
         }
         visitNode(node, p);
         return null;
@@ -224,18 +227,20 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         TypeMirror typeMirror = typeDeclaration.getType();
         if (!TypeMirrorUtil.isAssignable(typeMirror, Iterable.class, env)) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4149, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getBinaryName());
+            throw new AptException(Message.DOMA4149, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition(), expression,
+                            typeDeclaration.getBinaryName() });
         }
         DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
                 env);
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.isEmpty()) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4150, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getBinaryName());
+            throw new AptException(Message.DOMA4150, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition(), expression,
+                            typeDeclaration.getBinaryName() });
         }
 
         TypeMirror originalIdentifierType = expressionValidator
@@ -278,8 +283,9 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         if (!expandable) {
             SqlLocation location = node.getLocation();
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4257, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition());
+            throw new AptException(Message.DOMA4257, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition() });
         }
         return visitNode(node, p);
     }
@@ -289,8 +295,9 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         if (!populatable) {
             SqlLocation location = node.getLocation();
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4270, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition());
+            throw new AptException(Message.DOMA4270, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition() });
         }
         Iterator<String> it = parameterTypeMap.keySet().iterator();
         if (it.hasNext()) {
@@ -320,9 +327,9 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             throw e;
         } catch (AptException e) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4092, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition(),
-                    e.getMessage());
+            throw new AptException(Message.DOMA4092, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition(), e.getMessage() });
         }
     }
 
@@ -333,9 +340,9 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             return parser.parse();
         } catch (ExpressionException e) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4092, env, methodElement, path,
-                    sql, location.getLineNumber(), location.getPosition(),
-                    e.getMessage());
+            throw new AptException(Message.DOMA4092, env, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(),
+                            location.getPosition(), e.getMessage() });
         }
     }
 

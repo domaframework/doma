@@ -59,7 +59,8 @@ public class SqlFileModifyQueryMetaFactory extends
 
     protected SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method);
+        SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method,
+                daoMeta.getDaoElement());
         ModifyMirror modifyMirror = InsertMirror.newInstance(method, env);
         if (modifyMirror != null && modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
@@ -84,17 +85,21 @@ public class SqlFileModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(method);
+        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
         EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isResult(entityCtType)) {
                 throw new AptException(Message.DOMA4222, env,
-                        returnMeta.getElement());
+                        returnMeta.getMethodElement(), new Object[] {
+                                daoMeta.getDaoElement().getQualifiedName(),
+                                method.getSimpleName() });
             }
         } else {
             if (!returnMeta.isPrimitiveInt()) {
                 throw new AptException(Message.DOMA4001, env,
-                        returnMeta.getElement());
+                        returnMeta.getMethodElement(), new Object[] {
+                                daoMeta.getDaoElement().getQualifiedName(),
+                                method.getSimpleName() });
             }
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -104,7 +109,8 @@ public class SqlFileModifyQueryMetaFactory extends
     protected void doParameters(final SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            final QueryParameterMeta parameterMeta = createParameterMeta(
+                    parameter, queryMeta);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterCtType(parameterMeta.getName(),

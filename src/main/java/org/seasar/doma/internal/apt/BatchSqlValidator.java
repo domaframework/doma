@@ -55,7 +55,7 @@ public class BatchSqlValidator extends SqlValidator {
     public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
         if (!isSuppressed(Message.DOMA4181) && !embeddedVariableWarningNotified) {
             Notifier.notify(env, Kind.WARNING, Message.DOMA4181, methodElement,
-                    path);
+                    new Object[] { path });
             embeddedVariableWarningNotified = true;
         }
         return super.visitEmbeddedVariableNode(node, p);
@@ -65,7 +65,7 @@ public class BatchSqlValidator extends SqlValidator {
     public Void visitIfNode(IfNode node, Void p) {
         if (!isSuppressed(Message.DOMA4182) && !ifWarningNotified) {
             Notifier.notify(env, Kind.WARNING, Message.DOMA4182, methodElement,
-                    path);
+                    new Object[] { path });
             ifWarningNotified = true;
         }
         return super.visitIfNode(node, p);
@@ -75,7 +75,7 @@ public class BatchSqlValidator extends SqlValidator {
     public Void visitForNode(ForNode node, Void p) {
         if (!isSuppressed(Message.DOMA4183) && !forWarningNotified) {
             Notifier.notify(env, Kind.WARNING, Message.DOMA4183, methodElement,
-                    path);
+                    new Object[] { path });
             forWarningNotified = true;
         }
         return super.visitForNode(node, p);

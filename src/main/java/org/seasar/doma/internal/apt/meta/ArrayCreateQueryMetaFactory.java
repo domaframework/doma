@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Array;
 import java.util.List;
@@ -48,7 +48,8 @@ public class ArrayCreateQueryMetaFactory extends
         if (arrayFactoryMirror == null) {
             return null;
         }
-        ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(method);
+        ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(method,
+                daoMeta.getDaoElement());
         queryMeta.setArrayFactoryMirror(arrayFactoryMirror);
         queryMeta.setQueryKind(QueryKind.ARRAY_FACTORY);
         doTypeParameters(queryMeta, method, daoMeta);
@@ -64,13 +65,17 @@ public class ArrayCreateQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(Message.DOMA4002, env, method);
+            throw new AptException(Message.DOMA4002, env, method, new Object[] {
+                    daoMeta.getDaoElement().getQualifiedName(),
+                    method.getSimpleName() });
         }
-        QueryParameterMeta parameterMeta = createParameterMeta(parameters
-                .get(0));
+        QueryParameterMeta parameterMeta = createParameterMeta(
+                parameters.get(0), queryMeta);
         if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
             throw new AptException(Message.DOMA4076, env,
-                    parameterMeta.getElement());
+                    parameterMeta.getElement(), new Object[] {
+                            daoMeta.getDaoElement().getQualifiedName(),
+                            method.getSimpleName() });
         }
         queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -31,7 +31,7 @@ import org.seasar.doma.message.MessageResource;
 public final class Notifier {
 
     public static void debug(ProcessingEnvironment env,
-            MessageResource messageResource, Object... args) {
+            MessageResource messageResource, Object[] args) {
         assertNotNull(env, messageResource, args);
         Messager messager = env.getMessager();
         messager.printMessage(Kind.OTHER, messageResource.getMessage(args));
@@ -44,14 +44,14 @@ public final class Notifier {
     }
 
     public static void notify(ProcessingEnvironment env, Kind kind,
-            MessageResource messageResource, Object... args) {
+            MessageResource messageResource, Object[] args) {
         assertNotNull(env, messageResource, args);
         Messager messager = env.getMessager();
         messager.printMessage(kind, messageResource.getMessage(args));
     }
 
     public static void notify(ProcessingEnvironment env, Kind kind,
-            MessageResource messageResource, Element element, Object... args) {
+            MessageResource messageResource, Element element, Object[] args) {
         assertNotNull(env, kind, element, args);
         Messager messager = env.getMessager();
         messager.printMessage(kind, messageResource.getMessage(args), element);

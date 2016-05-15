@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class AutoBatchModifyQueryMetaFactory extends
     protected AutoBatchModifyQueryMeta createAutoBatchModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         AutoBatchModifyQueryMeta queryMeta = new AutoBatchModifyQueryMeta(
-                method);
+                method, daoMeta.getDaoElement());
         BatchModifyMirror batchModifyMirror = BatchInsertMirror.newInstance(
                 method, env);
         if (batchModifyMirror != null && !batchModifyMirror.getSqlFileValue()) {
@@ -89,17 +89,21 @@ public class AutoBatchModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(method);
+        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
         EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isBatchResult(entityCtType)) {
                 throw new AptException(Message.DOMA4223, env,
-                        returnMeta.getElement());
+                        returnMeta.getMethodElement(), new Object[] {
+                                daoMeta.getDaoElement().getQualifiedName(),
+                                method.getSimpleName() });
             }
         } else {
             if (!returnMeta.isPrimitiveIntArray()) {
                 throw new AptException(Message.DOMA4040, env,
-                        returnMeta.getElement());
+                        returnMeta.getMethodElement(), new Object[] {
+                                daoMeta.getDaoElement().getQualifiedName(),
+                                method.getSimpleName() });
             }
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -107,14 +111,16 @@ public class AutoBatchModifyQueryMetaFactory extends
 
     @Override
     protected void doParameters(AutoBatchModifyQueryMeta queryMeta,
-            final ExecutableElement method, DaoMeta daoMeta) {
+            final ExecutableElement method, final DaoMeta daoMeta) {
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(Message.DOMA4002, env, method);
+            throw new AptException(Message.DOMA4002, env, method, new Object[] {
+                    daoMeta.getDaoElement().getQualifiedName(),
+                    method.getSimpleName() });
         }
-        final QueryParameterMeta parameterMeta = createParameterMeta(parameters
-                .get(0));
+        final QueryParameterMeta parameterMeta = createParameterMeta(
+                parameters.get(0), queryMeta);
         IterableCtType iterableCtType = parameterMeta
                 .getCtType()
                 .accept(new SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException>() {
@@ -122,7 +128,11 @@ public class AutoBatchModifyQueryMetaFactory extends
                     @Override
                     protected IterableCtType defaultAction(CtType ctType, Void p)
                             throws RuntimeException {
-                        throw new AptException(Message.DOMA4042, env, method);
+                        throw new AptException(Message.DOMA4042, env, method,
+                                new Object[] {
+                                        daoMeta.getDaoElement()
+                                                .getQualifiedName(),
+                                        method.getSimpleName() });
                     }
 
                     @Override
@@ -140,7 +150,11 @@ public class AutoBatchModifyQueryMetaFactory extends
                     @Override
                     protected EntityCtType defaultAction(CtType ctType, Void p)
                             throws RuntimeException {
-                        throw new AptException(Message.DOMA4043, env, method);
+                        throw new AptException(Message.DOMA4043, env, method,
+                                new Object[] {
+                                        daoMeta.getDaoElement()
+                                                .getQualifiedName(),
+                                        method.getSimpleName() });
                     }
 
                     @Override

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Clob;
 
@@ -43,7 +43,8 @@ public class ClobCreateQueryMetaFactory extends
         if (clobFactoryMirror == null) {
             return null;
         }
-        ClobCreateQueryMeta queryMeta = new ClobCreateQueryMeta(method);
+        ClobCreateQueryMeta queryMeta = new ClobCreateQueryMeta(method,
+                daoMeta.getDaoElement());
         queryMeta.setClobFactoryMirror(clobFactoryMirror);
         queryMeta.setQueryKind(QueryKind.CLOB_FACTORY);
         doTypeParameters(queryMeta, method, daoMeta);

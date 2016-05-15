@@ -74,21 +74,23 @@ public class ExternalDomainMetaFactory implements
     protected void validateConverter(TypeElement convElement) {
         if (!TypeMirrorUtil.isAssignable(convElement.asType(),
                 DomainConverter.class, env)) {
-            throw new AptException(Message.DOMA4191, env, convElement);
+            throw new AptException(Message.DOMA4191, env, convElement,
+                    new Object[] { convElement.getQualifiedName() });
         }
         if (convElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4198, env, convElement);
+            throw new AptException(Message.DOMA4198, env, convElement,
+                    new Object[] { convElement.getQualifiedName() });
         }
         if (convElement.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AptException(Message.DOMA4192, env, convElement,
-                    convElement.getQualifiedName());
+                    new Object[] { convElement.getQualifiedName() });
         }
         ExecutableElement constructor = ElementUtil.getNoArgConstructor(
                 convElement, env);
         if (constructor == null
                 || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
             throw new AptException(Message.DOMA4193, env, convElement,
-                    convElement.getQualifiedName());
+                    new Object[] { convElement.getQualifiedName() });
         }
     }
 
@@ -131,7 +133,8 @@ public class ExternalDomainMetaFactory implements
                 domainElement);
         if (pkgElement.isUnnamed()) {
             throw new AptException(Message.DOMA4197, env, convElement,
-                    domainElement.getQualifiedName());
+                    new Object[] { domainElement.getQualifiedName(),
+                            convElement.getQualifiedName() });
         }
         DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(domainType,
                 env);
@@ -141,7 +144,8 @@ public class ExternalDomainMetaFactory implements
         for (TypeMirror typeArg : declaredType.getTypeArguments()) {
             if (typeArg.getKind() != TypeKind.WILDCARD) {
                 throw new AptException(Message.DOMA4203, env, convElement,
-                        domainElement.getQualifiedName());
+                        new Object[] { domainElement.getQualifiedName(),
+                                convElement.getQualifiedName() });
             }
         }
         meta.setDomainElement(domainElement);
@@ -157,7 +161,7 @@ public class ExternalDomainMetaFactory implements
                 || simpleName
                         .contains(Constants.BINARY_NAME_ENCLOSING_DELIMITER)) {
             throw new AptException(Message.DOMA4280, env, typeElement,
-                    typeElement.getQualifiedName());
+                    new Object[] { typeElement.getQualifiedName() });
         }
         NestingKind nestingKind = typeElement.getNestingKind();
         if (nestingKind == NestingKind.TOP_LEVEL) {
@@ -169,11 +173,11 @@ public class ExternalDomainMetaFactory implements
                 validateEnclosingElement(typeElement.getEnclosingElement());
             } else {
                 throw new AptException(Message.DOMA4278, env, typeElement,
-                        typeElement.getQualifiedName());
+                        new Object[] { typeElement.getQualifiedName() });
             }
         } else {
             throw new AptException(Message.DOMA4279, env, typeElement,
-                    typeElement.getQualifiedName());
+                    new Object[] { typeElement.getQualifiedName() });
         }
     }
 
@@ -185,7 +189,8 @@ public class ExternalDomainMetaFactory implements
         BasicCtType basicCtType = BasicCtType.newInstance(valueType, env);
         if (basicCtType == null) {
             throw new AptException(Message.DOMA4194, env, convElement,
-                    valueTypeName);
+                    new Object[] { valueTypeName,
+                            convElement.getQualifiedName() });
         }
         meta.setWrapperCtType(basicCtType.getWrapperCtType());
     }

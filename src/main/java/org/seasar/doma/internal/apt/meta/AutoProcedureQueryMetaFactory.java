@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -43,7 +43,8 @@ public class AutoProcedureQueryMetaFactory extends
         if (procedureMirror == null) {
             return null;
         }
-        AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(method);
+        AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(method,
+                daoMeta.getDaoElement());
         queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
         queryMeta.setProcedureMirror(procedureMirror);
         doTypeParameters(queryMeta, method, daoMeta);
@@ -56,10 +57,12 @@ public class AutoProcedureQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoProcedureQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta resultMeta = createReturnMeta(method);
+        QueryReturnMeta resultMeta = createReturnMeta(queryMeta);
         if (!resultMeta.isPrimitiveVoid()) {
             throw new AptException(Message.DOMA4064, env,
-                    resultMeta.getElement());
+                    resultMeta.getMethodElement(), new Object[] {
+                            queryMeta.getDaoElement().getQualifiedName(),
+                            queryMeta.getMethodElement().getSimpleName() });
         }
         queryMeta.setReturnMeta(resultMeta);
     }

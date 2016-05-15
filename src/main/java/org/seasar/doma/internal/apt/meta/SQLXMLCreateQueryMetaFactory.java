@@ -43,7 +43,8 @@ public class SQLXMLCreateQueryMetaFactory extends
         if (sqlxmlFactoryMirror == null) {
             return null;
         }
-        SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(method);
+        SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(method,
+                daoMeta.getDaoElement());
         queryMeta.setSqlxmlFactoryMirror(sqlxmlFactoryMirror);
         queryMeta.setQueryKind(QueryKind.SQLXML_FACTORY);
         doTypeParameters(queryMeta, method, daoMeta);

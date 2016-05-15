@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
 /**
  * @author taedium
@@ -23,7 +24,7 @@ import javax.lang.model.element.ExecutableElement;
  */
 public abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta {
 
-    protected AbstractSqlFileQueryMeta(ExecutableElement method) {
-        super(method);
+    protected AbstractSqlFileQueryMeta(ExecutableElement method, TypeElement dao) {
+        super(method, dao);
     }
 }
