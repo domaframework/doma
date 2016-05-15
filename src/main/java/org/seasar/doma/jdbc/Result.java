@@ -60,9 +60,33 @@ public class Result<ENTITY> {
         return entity;
     }
 
+    /**
+     * エンティティを返します。
+     * 
+     * @return エンティティ
+     * @see <a
+     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     *      Declarations</a>
+     */
+    public ENTITY component1() {
+        return entity;
+    }
+
+    /**
+     * 更新件数を返します。
+     * 
+     * @return 更新件数
+     * @see <a
+     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     *      Declarations</a>
+     */
+    public int component2() {
+        return count;
+    }
+
     @Override
     public String toString() {
-        return "Result [count=" + count + ", entity=" + entity + "]";
+        return "Result(entity=" + entity + ", count=" + count + ")";
     }
 
 }
