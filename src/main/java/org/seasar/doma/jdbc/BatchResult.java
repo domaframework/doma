@@ -63,10 +63,34 @@ public class BatchResult<ENTITY> {
         return entities;
     }
 
+    /**
+     * エンティティのリストを返します。
+     * 
+     * @return エンティティのリスト
+     * @see <a
+     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     *      Declarations</a>
+     */
+    public List<ENTITY> component1() {
+        return entities;
+    }
+
+    /**
+     * 更新件数の配列を返します。
+     * 
+     * @return 更新件数の配列
+     * @see <a
+     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     *      Declarations</a>
+     */
+    public int[] component2() {
+        return counts;
+    }
+
     @Override
     public String toString() {
-        return "BatchResult [counts=" + Arrays.toString(counts) + ", entities="
-                + entities + "]";
+        return "BatchResult(entities=" + entities + ", counts="
+                + Arrays.toString(counts) + ")";
     }
 
 }
