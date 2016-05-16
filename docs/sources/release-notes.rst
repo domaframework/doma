@@ -2,6 +2,24 @@
 リリースノート
 ==============
 
+v2.9.0: 2016-05-16
+======================
+
+* `GH136 <https://github.com/domaframework/doma/pull/136>`_
+  更新結果を表すクラスで Kotlin の Destructuring Declarations に対応
+* `GH135 <https://github.com/domaframework/doma/pull/135>`_
+  注釈処理で出力するメッセージに、クラス、メソッド、フィード名など出力元の情報を追加
+* `GH134 <https://github.com/domaframework/doma/pull/134>`_
+  `@Dao` に Singleton をフィールドで提供するタイプの Config を指定することをサポート
+* `GH133 <https://github.com/domaframework/doma/pull/133>`_
+  kapt 1.0.1-2の実験的なサポート
+* `GH132 <https://github.com/domaframework/doma/pull/132>`_
+  Switching remote URLs from SSH to HTTPS
+* `GH131 <https://github.com/domaframework/doma/pull/131>`_
+  無名パッケージに配置したクラスの注釈処理に失敗する不具合を修正
+* `GH130 <https://github.com/domaframework/doma/pull/130>`_
+  テストコードの改善
+
 v2.8.0: 2016-04-16
 ======================
 
