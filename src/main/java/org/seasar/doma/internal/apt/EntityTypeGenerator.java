@@ -631,8 +631,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             if (entityMeta.isImmutable()) {
                 iprint("    return new %1$s(%n", entityMeta.getEntityTypeName());
                 for (Iterator<EntityPropertyMeta> it = entityMeta
-                        .getAllPropertyMetasInCtorArgsOrder().iterator(); it
-                        .hasNext();) {
+                        .getAllPropertyMetas().iterator(); it.hasNext();) {
                     EntityPropertyMeta propertyMeta = it.next();
                     iprint("        (%1$s)(__args.containsKey(\"%2$s\") ? __args.get(\"%2$s\").get() : null)",
                             TypeMirrorUtil.boxIfPrimitive(
