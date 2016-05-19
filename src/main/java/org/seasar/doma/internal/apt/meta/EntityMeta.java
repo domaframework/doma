@@ -22,13 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -71,7 +68,7 @@ public class EntityMeta implements TypeElementMeta {
 
     protected OriginalStatesMeta originalStatesMeta;
 
-    protected ExecutableElement constructor;
+    protected EntityConstructorMeta constructorMeta;
 
     protected boolean error;
 
@@ -133,24 +130,10 @@ public class EntityMeta implements TypeElementMeta {
     }
 
     public List<EntityPropertyMeta> getAllPropertyMetas() {
-        return allPropertyMetas;
-    }
-
-    public List<EntityPropertyMeta> getAllPropertyMetasInCtorArgsOrder() {
-        if (constructor == null) {
+        if (constructorMeta == null) {
             return allPropertyMetas;
         }
-        List<EntityPropertyMeta> results = new ArrayList<EntityPropertyMeta>();
-        for (VariableElement param : constructor.getParameters()) {
-            String name = param.getSimpleName().toString();
-            ParameterName parameterName = param
-                    .getAnnotation(ParameterName.class);
-            if (parameterName != null) {
-                name = parameterName.value();
-            }
-            results.add(allPropertyMetaMap.get(name));
-        }
-        return results;
+        return constructorMeta.getEntityPropertyMetas();
     }
 
     public List<EntityPropertyMeta> getIdPropertyMetas() {
@@ -193,12 +176,12 @@ public class EntityMeta implements TypeElementMeta {
         this.originalStatesMeta = originalStatesMeta;
     }
 
-    public ExecutableElement getConstructor() {
-        return constructor;
+    public EntityConstructorMeta getConstructorMeta() {
+        return constructorMeta;
     }
 
-    public void setConstructor(ExecutableElement constructor) {
-        this.constructor = constructor;
+    public void setConstructorMeta(EntityConstructorMeta constructorMeta) {
+        this.constructorMeta = constructorMeta;
     }
 
     public TypeMirror getEntityListener() {

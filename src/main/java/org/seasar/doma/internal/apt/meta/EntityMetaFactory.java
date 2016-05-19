@@ -48,6 +48,7 @@ import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
+import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -585,14 +586,30 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             return;
         }
         if (entityMeta.isImmutable()) {
-            ExecutableElement constructor = getSuitableConstructor(
+            EntityConstructorMeta constructorMeta = getConstructorMeta(
                     classElement, entityMeta);
-            if (constructor == null
-                    || constructor.getModifiers().contains(Modifier.PRIVATE)) {
+            if (constructorMeta == null) {
+                if (Options.isKaptEnabled(env)) {
+                    constructorMeta = getConstructorMetaForKotlin(classElement,
+                            entityMeta);
+                    if (constructorMeta == null) {
+                        throw new AptException(
+                                Message.DOMA4282,
+                                env,
+                                classElement,
+                                new Object[] { classElement.getQualifiedName() });
+                    }
+                } else {
+                    throw new AptException(Message.DOMA4281, env, classElement,
+                            new Object[] { classElement.getQualifiedName() });
+                }
+            }
+            if (constructorMeta.getConstructorElement().getModifiers()
+                    .contains(Modifier.PRIVATE)) {
                 throw new AptException(Message.DOMA4221, env, classElement,
                         new Object[] { classElement.getQualifiedName() });
             }
-            entityMeta.setConstructor(constructor);
+            entityMeta.setConstructorMeta(constructorMeta);
         } else {
             ExecutableElement constructor = ElementUtil.getNoArgConstructor(
                     classElement, env);
@@ -604,15 +621,28 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         }
     }
 
-    protected ExecutableElement getSuitableConstructor(
+    protected EntityConstructorMeta getConstructorMetaForKotlin(
             TypeElement classElement, EntityMeta entityMeta) {
-        Map<String, TypeMirror> types = new HashMap<String, TypeMirror>();
+        for (ExecutableElement constructor : ElementFilter
+                .constructorsIn(classElement.getEnclosedElements())) {
+            if (entityMeta.getAllPropertyMetas().size() == constructor
+                    .getParameters().size()) {
+                return new EntityConstructorMeta(constructor,
+                        entityMeta.getAllPropertyMetas());
+            }
+        }
+        return null;
+    }
+
+    protected EntityConstructorMeta getConstructorMeta(
+            TypeElement classElement, EntityMeta entityMeta) {
+        Map<String, EntityPropertyMeta> entityPropertyMetaMap = new HashMap<String, EntityPropertyMeta>();
         for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
-            types.put(propertyMeta.getName(), propertyMeta.getType());
+            entityPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
         }
         outer: for (ExecutableElement constructor : ElementFilter
                 .constructorsIn(classElement.getEnclosedElements())) {
-            int validCount = 0;
+            List<EntityPropertyMeta> entityPropertyMetaList = new ArrayList<>();
             for (VariableElement param : constructor.getParameters()) {
                 String name = param.getSimpleName().toString();
                 ParameterName parameterName = param
@@ -621,17 +651,20 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                     name = parameterName.value();
                 }
                 TypeMirror paramType = param.asType();
-                TypeMirror propertyType = types.get(name);
-                if (propertyType == null) {
+                EntityPropertyMeta propertyMeta = entityPropertyMetaMap
+                        .get(name);
+                if (propertyMeta == null) {
                     continue outer;
                 }
+                TypeMirror propertyType = propertyMeta.getType();
                 if (!TypeMirrorUtil.isSameType(paramType, propertyType, env)) {
                     continue outer;
                 }
-                validCount++;
+                entityPropertyMetaList.add(propertyMeta);
             }
-            if (types.size() == validCount) {
-                return constructor;
+            if (entityPropertyMetaMap.size() == entityPropertyMetaList.size()) {
+                return new EntityConstructorMeta(constructor,
+                        entityPropertyMetaList);
             }
         }
         return null;
