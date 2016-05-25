@@ -51,6 +51,7 @@ User Documentation
    transaction
    annotation-processing
    build
+   kotlin-support
 
 Developer Documentation
 =======================

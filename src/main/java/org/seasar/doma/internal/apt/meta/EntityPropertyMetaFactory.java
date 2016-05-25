@@ -71,8 +71,7 @@ public class EntityPropertyMetaFactory {
             throw new AptIllegalStateException(fieldElement.toString());
         }
         EntityPropertyMeta propertyMeta = new EntityPropertyMeta(entityElement,
-                fieldElement, entityMeta.getNamingType(),
-                entityElement.equals(entityMeta.getEntityElement()), env);
+                fieldElement, entityMeta.getNamingType(), env);
         doCtType(propertyMeta, fieldElement, entityMeta);
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);

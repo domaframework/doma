@@ -184,13 +184,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     newWrapperExpr = String.format("new %s()",
                             wrapperCtType.getTypeName());
                 }
-                String parentEntityPropertyType = "null";
-                String parentEntityBoxedTypeName = Object.class.getName();
-                if (!pm.isOwnProperty()) {
-                    parentEntityPropertyType = pm.getEntityMetaTypeName()
-                            + ".getSingletonInternal()." + pm.getFieldName();
-                    parentEntityBoxedTypeName = pm.getEntityTypeName();
-                }
                 String domainType = "null";
                 String domainTypeName = "Object";
                 if (domainCtType != null) {
@@ -207,8 +200,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         /* 6 */entityMeta.getEntityTypeName(),
                         /* 7 */newWrapperExpr, /* 8 */domainType,
                         /* 9 */pm.getBoxedTypeName(),
-                        /* 10 */parentEntityPropertyType,
-                        /* 11 */parentEntityBoxedTypeName,
+                        /* 10 */NULL,
+                        /* 11 */Object.class.getName(),
                         /* 12 */pm.getFieldName(),
                         /* 13 */pm.getBoxedClassName(),
                         /* 14 */domainTypeName,
@@ -222,8 +215,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         /* 6 */entityMeta.getEntityTypeName(),
                         /* 7 */newWrapperExpr, /* 8 */domainType,
                         /* 9 */pm.getBoxedTypeName(),
-                        /* 10 */parentEntityPropertyType,
-                        /* 11 */parentEntityBoxedTypeName,
+                        /* 10 */NULL,
+                        /* 11 */Object.class.getName(),
                         /* 12 */pm.getFieldName(),
                         /* 13 */pm.getBoxedClassName(),
                         /* 14 */domainTypeName,
@@ -238,8 +231,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 6 */entityMeta.getEntityTypeName(),
                     /* 7 */newWrapperExpr, /* 8 */domainType,
                     /* 9 */pm.getBoxedTypeName(),
-                    /* 10 */parentEntityPropertyType,
-                    /* 11 */parentEntityBoxedTypeName,
+                    /* 10 */NULL,
+                    /* 11 */Object.class.getName(),
                     /* 12 */pm.getFieldName(),
                     /* 13 */pm.getBoxedClassName(),
                     /* 14 */domainTypeName,
@@ -255,8 +248,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 8 */entityMeta.getEntityTypeName(),
                     /* 9 */newWrapperExpr, /* 10 */domainType,
                     /* 11 */pm.getBoxedTypeName(),
-                    /* 12 */parentEntityPropertyType,
-                    /* 13 */parentEntityBoxedTypeName,
+                    /* 12 */NULL,
+                    /* 13 */Object.class.getName(),
                     /* 14 */pm.getFieldName(),
                     /* 15 */pm.getBoxedClassName(),
                     /* 16 */domainTypeName,
@@ -587,40 +580,30 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printGetGeneratedIdPropertyTypeMethod() {
-        String parentEntityTypeNameAsTypeParameter = Object.class.getName();
         String idName = "null";
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
             idName = pm.getFieldName();
-            if (!pm.isOwnProperty()) {
-                parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
-            }
         }
         iprint("@Override%n");
         iprint("public %1$s<%3$s, %2$s, ?, ?> getGeneratedIdPropertyType() {%n",
                 GeneratedIdPropertyType.class.getName(),
-                entityMeta.getEntityTypeName(),
-                parentEntityTypeNameAsTypeParameter);
+                entityMeta.getEntityTypeName(), Object.class.getName());
         iprint("    return %1$s;%n", idName);
         iprint("}%n");
         print("%n");
     }
 
     protected void printGetVersionPropertyTypeMethod() {
-        String parentEntityTypeNameAsTypeParameter = Object.class.getName();
         String versionName = "null";
         if (entityMeta.hasVersionPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getVersionPropertyMeta();
             versionName = pm.getFieldName();
-            if (!pm.isOwnProperty()) {
-                parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
-            }
         }
         iprint("@Override%n");
         iprint("public %1$s<%3$s, %2$s, ?, ?> getVersionPropertyType() {%n",
                 VersionPropertyType.class.getName(),
-                entityMeta.getEntityTypeName(),
-                parentEntityTypeNameAsTypeParameter);
+                entityMeta.getEntityTypeName(), Object.class.getName());
         iprint("    return %1$s;%n", versionName);
         iprint("}%n");
         print("%n");

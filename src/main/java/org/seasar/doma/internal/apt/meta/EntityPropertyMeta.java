@@ -55,8 +55,6 @@ public class EntityPropertyMeta {
 
     protected final String boxedClassName;
 
-    protected final boolean ownProperty;
-
     protected final String fieldPrefix;
 
     protected final ProcessingEnvironment env;
@@ -75,7 +73,7 @@ public class EntityPropertyMeta {
 
     public EntityPropertyMeta(TypeElement entityElement,
             VariableElement propertyElement, NamingType namingType,
-            boolean ownProperty, ProcessingEnvironment env) {
+            ProcessingEnvironment env) {
         assertNotNull(entityElement, propertyElement, env);
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
@@ -85,7 +83,6 @@ public class EntityPropertyMeta {
         this.typeName = TypeMirrorUtil.getTypeName(type, env);
         this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(type, env);
         this.boxedClassName = TypeMirrorUtil.getBoxedClassName(type, env);
-        this.ownProperty = ownProperty;
         this.fieldPrefix = Options.getEntityFieldPrefix(env);
         this.env = env;
     }
@@ -154,10 +151,6 @@ public class EntityPropertyMeta {
         return boxedClassName;
     }
 
-    public boolean isOwnProperty() {
-        return ownProperty;
-    }
-
     public CtType getCtType() {
         return ctType;
     }
@@ -193,7 +186,7 @@ public class EntityPropertyMeta {
                     @Override
                     public Boolean visitEmbeddableCtType(
                             EmbeddableCtType ctType, Void p)
-                                    throws RuntimeException {
+                            throws RuntimeException {
                         return true;
                     }
                 }, null);
