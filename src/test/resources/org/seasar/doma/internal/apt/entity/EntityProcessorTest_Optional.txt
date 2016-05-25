@@ -198,7 +198,12 @@ public final class _OptionalEntity extends org.seasar.doma.jdbc.entity.AbstractE
     @Override
     public org.seasar.doma.internal.apt.entity.OptionalEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.OptionalEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.OptionalEntity entity = new org.seasar.doma.internal.apt.entity.OptionalEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("name") != null) __args.get("name").save(entity);
+        if (__args.get("city") != null) __args.get("city").save(entity);
+        if (__args.get("weight") != null) __args.get("weight").save(entity);
+        if (__args.get("kind") != null) __args.get("kind").save(entity);
+        if (__args.get("version") != null) __args.get("version").save(entity);
         return entity;
     }
 

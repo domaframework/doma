@@ -19,8 +19,8 @@ package org.seasar.doma.internal.apt.cttype;
  * @author taedium
  * 
  */
-public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements
-        CtTypeVisitor<R, P, TH> {
+public class SimpleCtTypeVisitor<R, P, TH extends Throwable>
+        implements CtTypeVisitor<R, P, TH> {
 
     protected R defaultValue;
 
@@ -47,6 +47,11 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements
 
     @Override
     public R visitDomainCtType(DomainCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
+    @Override
+    public R visitEmbeddableCtType(EmbeddableCtType ctType, P p) throws TH {
         return defaultAction(ctType, p);
     }
 

@@ -228,6 +228,11 @@ public class EntityMeta implements TypeElementMeta {
         return entityElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
+    public boolean hasEmbeddedProperties() {
+        return allPropertyMetas.stream().anyMatch(
+                EntityPropertyMeta::isEmbedded);
+    }
+
     @Override
     public boolean isError() {
         return error;

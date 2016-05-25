@@ -178,7 +178,8 @@ public final class _Dept extends org.seasar.doma.jdbc.entity.AbstractEntityType<
     @Override
     public org.seasar.doma.internal.apt.entity.Dept newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.Dept, ?>> __args) {
         org.seasar.doma.internal.apt.entity.Dept entity = new org.seasar.doma.internal.apt.entity.Dept();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("branch") != null) __args.get("branch").save(entity);
         return entity;
     }
 

@@ -35,6 +35,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
@@ -150,16 +151,21 @@ public class EntityPropertyMetaFactory {
             return domainCtType;
         }
 
+        final EmbeddableCtType embeddableCtType = EmbeddableCtType.newInstance(
+                type, env);
+        if (embeddableCtType != null) {
+            return embeddableCtType;
+        }
+
         BasicCtType basicCtType = BasicCtType.newInstance(type, env);
         if (basicCtType != null) {
             return basicCtType;
-        } else {
-            throw new AptException(Message.DOMA4096, env, fieldElement,
-                    new Object[] { type,
-                            entityMeta.getEntityElement().getQualifiedName(),
-                            fieldElement.getSimpleName() });
         }
 
+        throw new AptException(Message.DOMA4096, env, fieldElement,
+                new Object[] { type,
+                        entityMeta.getEntityElement().getQualifiedName(),
+                        fieldElement.getSimpleName() });
     }
 
     protected void doName(EntityPropertyMeta propertyMeta,
@@ -190,8 +196,14 @@ public class EntityPropertyMetaFactory {
                     new Object[] { entityMeta.getEntityElement(),
                             fieldElement.getSimpleName() });
         }
+        if (propertyMeta.isEmbedded()) {
+            throw new AptException(Message.DOMA4302, env, fieldElement,
+                    new Object[] {
+                            entityMeta.getEntityElement().getQualifiedName(),
+                            fieldElement.getSimpleName() });
+        }
         propertyMeta.setId(true);
-        GeneratedValue generatedValue = fieldElement
+        final GeneratedValue generatedValue = fieldElement
                 .getAnnotation(GeneratedValue.class);
         if (generatedValue == null) {
             validateSequenceGeneratorNotExistent(propertyMeta, fieldElement,
@@ -199,6 +211,12 @@ public class EntityPropertyMetaFactory {
             validateTableGeneratorNotExistent(propertyMeta, fieldElement,
                     entityMeta);
             return;
+        }
+        if (propertyMeta.isEmbedded()) {
+            throw new AptException(Message.DOMA4303, env, fieldElement,
+                    new Object[] {
+                            entityMeta.getEntityElement().getQualifiedName(),
+                            fieldElement.getSimpleName() });
         }
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             throw new AptException(Message.DOMA4037, env, fieldElement,
@@ -345,6 +363,13 @@ public class EntityPropertyMetaFactory {
             VariableElement fieldElement, EntityMeta entityMeta) {
         Version version = fieldElement.getAnnotation(Version.class);
         if (version != null) {
+            if (propertyMeta.isEmbedded()) {
+                throw new AptException(Message.DOMA4304, env, fieldElement,
+                        new Object[] {
+                                entityMeta.getEntityElement()
+                                        .getQualifiedName(),
+                                fieldElement.getSimpleName() });
+            }
             if (entityMeta.hasVersionPropertyMeta()) {
                 throw new AptException(Message.DOMA4024, env, fieldElement,
                         new Object[] {
@@ -368,6 +393,12 @@ public class EntityPropertyMetaFactory {
         ColumnMirror columnMirror = ColumnMirror.newInstance(fieldElement, env);
         if (columnMirror == null) {
             return;
+        }
+        if (propertyMeta.isEmbedded()) {
+            throw new AptException(Message.DOMA4306, env, fieldElement,
+                    columnMirror.getAnnotationMirror(), new Object[] {
+                            entityMeta.getEntityElement().getQualifiedName(),
+                            fieldElement.getSimpleName() });
         }
         if (propertyMeta.isId() || propertyMeta.isVersion()) {
             if (!columnMirror.getInsertableValue()) {

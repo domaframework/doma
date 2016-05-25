@@ -28,6 +28,9 @@ public class DefaultPropertyTypeTest extends TestCase {
     @SuppressWarnings("unused")
     private String hoge;
 
+    @SuppressWarnings("unused")
+    private Foo foo;
+
     public void testIsQuoteRequired_true() throws Exception {
         boolean isQuoteRequired = true;
         DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
@@ -72,6 +75,15 @@ public class DefaultPropertyTypeTest extends TestCase {
         DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
                 DefaultPropertyTypeTest.class, String.class, String.class,
                 () -> new StringWrapper(), null, null, "hoge", "",
+                NamingType.UPPER_CASE, true, true, false);
+        assertEquals("HOGE", propertyType.getColumnName());
+    }
+
+    public void testGetColumnName_columnNotDefined_embeddableProeprty()
+            throws Exception {
+        DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
+                DefaultPropertyTypeTest.class, String.class, String.class,
+                () -> new StringWrapper(), null, null, "foo.hoge", "",
                 NamingType.UPPER_CASE, true, true, false);
         assertEquals("HOGE", propertyType.getColumnName());
     }
@@ -126,4 +138,7 @@ public class DefaultPropertyTypeTest extends TestCase {
                         + text + "]"));
     }
 
+    public static class Foo {
+        String hoge;
+    }
 }

@@ -178,7 +178,8 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
     @Override
     public org.seasar.doma.internal.apt.entity.EnumPropertyEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.EnumPropertyEntity entity = new org.seasar.doma.internal.apt.entity.EnumPropertyEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("hoge") != null) __args.get("hoge").save(entity);
         return entity;
     }
 

@@ -183,7 +183,9 @@ public final class _OptionalDoubleEntity extends org.seasar.doma.jdbc.entity.Abs
     @Override
     public org.seasar.doma.internal.apt.entity.OptionalDoubleEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.OptionalDoubleEntity entity = new org.seasar.doma.internal.apt.entity.OptionalDoubleEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("age") != null) __args.get("age").save(entity);
+        if (__args.get("version") != null) __args.get("version").save(entity);
         return entity;
     }
 

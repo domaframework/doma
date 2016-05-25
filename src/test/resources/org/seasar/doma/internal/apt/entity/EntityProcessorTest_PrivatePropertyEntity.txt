@@ -172,7 +172,7 @@ public final class _PrivatePropertyEntity extends org.seasar.doma.jdbc.entity.Ab
     @Override
     public org.seasar.doma.internal.apt.entity.PrivatePropertyEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.PrivatePropertyEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.PrivatePropertyEntity entity = new org.seasar.doma.internal.apt.entity.PrivatePropertyEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("name") != null) __args.get("name").save(entity);
         return entity;
     }
 

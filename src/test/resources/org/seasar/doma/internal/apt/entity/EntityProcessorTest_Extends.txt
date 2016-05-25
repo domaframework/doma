@@ -182,7 +182,9 @@ public final class _ChildEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
     @Override
     public org.seasar.doma.internal.apt.entity.ChildEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.ChildEntity entity = new org.seasar.doma.internal.apt.entity.ChildEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("aaa") != null) __args.get("aaa").save(entity);
+        if (__args.get("bbb") != null) __args.get("bbb").save(entity);
+        if (__args.get("ccc") != null) __args.get("ccc").save(entity);
         return entity;
     }
 
