@@ -32,11 +32,10 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-import junit.framework.AssertionFailedError;
-
 import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
+import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -44,6 +43,8 @@ import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.Message;
+
+import junit.framework.AssertionFailedError;
 
 /**
  * @author taedium
@@ -91,6 +92,7 @@ public abstract class AptTestCase extends AptinaTestCase {
                     + Options.Constants.DEFAULT_DAO_SUFFIX;
         }
         if (originalClass.isAnnotationPresent(Entity.class)
+                || originalClass.isAnnotationPresent(Embeddable.class)
                 || originalClass.isAnnotationPresent(Domain.class)
                 || originalClass.isAnnotationPresent(ExternalDomain.class)) {
             return MetaUtil.toFullMetaName(originalClass.getName());
@@ -123,8 +125,7 @@ public abstract class AptTestCase extends AptinaTestCase {
     @Override
     protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
         List<Diagnostic<? extends JavaFileObject>> results = new ArrayList<Diagnostic<? extends JavaFileObject>>();
-        for (Diagnostic<? extends JavaFileObject> diagnostic : super
-                .getDiagnostics()) {
+        for (Diagnostic<? extends JavaFileObject> diagnostic : super.getDiagnostics()) {
             switch (diagnostic.getKind()) {
             case ERROR:
             case WARNING:
@@ -165,9 +166,9 @@ public abstract class AptTestCase extends AptinaTestCase {
         TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
         for (TypeElement t = typeElement; t != null
                 && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
-                .toTypeElement(t.getSuperclass(), env)) {
-            for (ExecutableElement methodElement : ElementFilter.methodsIn(t
-                    .getEnclosedElements())) {
+                        .toTypeElement(t.getSuperclass(), env)) {
+            for (ExecutableElement methodElement : ElementFilter
+                    .methodsIn(t.getEnclosedElements())) {
                 if (!methodElement.getSimpleName().contentEquals(methodName)) {
                     continue;
                 }

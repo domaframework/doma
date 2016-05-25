@@ -183,7 +183,9 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     @Override
     public org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity = new org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("bool") != null) __args.get("bool").save(entity);
+        if (__args.get("version") != null) __args.get("version").save(entity);
         return entity;
     }
 

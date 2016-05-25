@@ -31,6 +31,7 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
@@ -134,14 +135,14 @@ public class QueryParameterMeta {
             return optionalCtType;
         }
 
-        OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(
-                type, env);
+        OptionalIntCtType optionalIntCtType = OptionalIntCtType
+                .newInstance(type, env);
         if (optionalIntCtType != null) {
             return optionalIntCtType;
         }
 
-        OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(
-                type, env);
+        OptionalLongCtType optionalLongCtType = OptionalLongCtType
+                .newInstance(type, env);
         if (optionalLongCtType != null) {
             return optionalLongCtType;
         }
@@ -199,8 +200,8 @@ public class QueryParameterMeta {
             return functionCtType;
         }
 
-        CollectorCtType collectorCtType = CollectorCtType
-                .newInstance(type, env);
+        CollectorCtType collectorCtType = CollectorCtType.newInstance(type,
+                env);
         if (collectorCtType != null) {
             if (collectorCtType.isRawType()) {
                 throw new AptException(Message.DOMA4258, env, parameterElement,
@@ -219,8 +220,8 @@ public class QueryParameterMeta {
             return collectorCtType;
         }
 
-        ReferenceCtType referenceCtType = ReferenceCtType
-                .newInstance(type, env);
+        ReferenceCtType referenceCtType = ReferenceCtType.newInstance(type,
+                env);
         if (referenceCtType != null) {
             if (referenceCtType.isRaw()) {
                 throw new AptException(Message.DOMA4108, env, parameterElement,
@@ -290,8 +291,8 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class NullableCtTypeVisitor extends
-            SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+    protected class NullableCtTypeVisitor
+            extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
         public NullableCtTypeVisitor(boolean nullable) {
             super(nullable);
@@ -315,8 +316,8 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class BindableCtTypeVisitor extends
-            SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+    protected class BindableCtTypeVisitor
+            extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
         public BindableCtTypeVisitor(boolean bindable) {
             super(bindable);
@@ -330,6 +331,12 @@ public class QueryParameterMeta {
 
         @Override
         public Boolean visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitEmbeddableCtType(EmbeddableCtType ctType, Void p)
                 throws RuntimeException {
             return true;
         }
@@ -353,8 +360,8 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitOptionalLongCtType(OptionalLongCtType ctType,
+                Void p) throws RuntimeException {
             return true;
         }
 
@@ -388,12 +395,13 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class IterableElementCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+    protected class IterableElementCtTypeVisitor
+            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         protected final VariableElement parameterElement;
 
-        protected IterableElementCtTypeVisitor(VariableElement parameterElement) {
+        protected IterableElementCtTypeVisitor(
+                VariableElement parameterElement) {
             this.parameterElement = parameterElement;
         }
 
@@ -421,12 +429,13 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class OptionalElementCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+    protected class OptionalElementCtTypeVisitor
+            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         protected final VariableElement parameterElement;
 
-        protected OptionalElementCtTypeVisitor(VariableElement parameterElement) {
+        protected OptionalElementCtTypeVisitor(
+                VariableElement parameterElement) {
             this.parameterElement = parameterElement;
         }
 
@@ -454,12 +463,13 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class FunctionTargetCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+    protected class FunctionTargetCtTypeVisitor
+            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         protected final VariableElement parameterElement;
 
-        protected FunctionTargetCtTypeVisitor(VariableElement parameterElement) {
+        protected FunctionTargetCtTypeVisitor(
+                VariableElement parameterElement) {
             this.parameterElement = parameterElement;
         }
 
@@ -471,23 +481,23 @@ public class QueryParameterMeta {
             return null;
         }
 
-        protected class StreamElementCtTypeVisitor extends
-                SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+        protected class StreamElementCtTypeVisitor
+                extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
             @Override
             public Void visitDomainCtType(final DomainCtType ctType, Void p)
                     throws RuntimeException {
                 if (ctType.isRawType()) {
                     throw new AptException(Message.DOMA4242, env,
-                            parameterElement, new Object[] {
-                                    ctType.getQualifiedName(),
+                            parameterElement,
+                            new Object[] { ctType.getQualifiedName(),
                                     daoElement.getQualifiedName(),
                                     methodElement.getSimpleName() });
                 }
                 if (ctType.isWildcardType()) {
                     throw new AptException(Message.DOMA4243, env,
-                            parameterElement, new Object[] {
-                                    ctType.getQualifiedName(),
+                            parameterElement,
+                            new Object[] { ctType.getQualifiedName(),
                                     daoElement.getQualifiedName(),
                                     methodElement.getSimpleName() });
                 }
@@ -501,12 +511,13 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class CollectorTargetCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+    protected class CollectorTargetCtTypeVisitor
+            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         protected final VariableElement parameterElement;
 
-        protected CollectorTargetCtTypeVisitor(VariableElement parameterElement) {
+        protected CollectorTargetCtTypeVisitor(
+                VariableElement parameterElement) {
             this.parameterElement = parameterElement;
         }
 
@@ -534,8 +545,8 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class ReferenceReferentCtTypeVisitor extends
-            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+    protected class ReferenceReferentCtTypeVisitor
+            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         protected final VariableElement parameterElement;
 

@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.jdbc.entity.PropertyField;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
@@ -37,8 +36,6 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
-import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
@@ -82,6 +79,9 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     /** プロパティの名前 */
     protected final String name;
 
+    /** プロパティの単純名 */
+    protected final String simpleName;
+
     /** カラム名 */
     protected final String columnName;
 
@@ -98,7 +98,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     protected final boolean quoteRequired;
 
     /** プロパティのフィールド */
-    protected final Field field;
+    protected final PropertyField<ENTITY> field;
 
     /** アクセサのサプライヤ */
     protected final Supplier<Property<ENTITY, BASIC>> propertySupplier;
@@ -163,12 +163,15 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         this.parentEntityPropertyType = parentEntityPropertyType;
         this.domainType = domainType;
         this.name = name;
+        int pos = name.lastIndexOf('.');
+        this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
         this.columnName = columnName;
         this.namingType = namingType;
         this.insertable = insertable;
         this.updatable = updatable;
         this.quoteRequired = quoteRequired;
-        this.field = parentEntityPropertyType == null ? getField() : null;
+        this.field = parentEntityPropertyType == null ? new PropertyField<>(
+                name, entityClass) : null;
         this.propertySupplier = createPropertySupplier();
     }
 
@@ -202,25 +205,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
             return () -> new DefaultProperty<BASIC>(new BasicScalar<>(
                     wrapperSupplier, field.getClass().isPrimitive()));
         }
-    }
-
-    private Field getField() {
-        Field field;
-        try {
-            field = ClassUtil.getDeclaredField(entityClass, name);
-        } catch (WrapException wrapException) {
-            throw new EntityPropertyNotFoundException(wrapException.getCause(),
-                    entityClass.getName(), name);
-        }
-        if (!FieldUtil.isPublic(field)) {
-            try {
-                FieldUtil.setAccessible(field, true);
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-        }
-        return field;
     }
 
     @Override
@@ -264,7 +248,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
             Function<String, String> quoteFunction) {
         String columnName = this.columnName;
         if (columnName.isEmpty()) {
-            columnName = namingFunction.apply(namingType, name);
+            columnName = namingFunction.apply(namingType, simpleName);
         }
         return quoteRequired ? quoteFunction.apply(columnName) : columnName;
     }
@@ -408,24 +392,14 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
 
         @Override
         public Property<ENTITY, BASIC> load(ENTITY entity) {
-            try {
-                Object value = FieldUtil.get(field, entity);
-                scalar.set(scalar.cast(value));
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
+            Object value = field.getValue(entity);
+            scalar.set(scalar.cast(value));
             return this;
         }
 
         @Override
         public Property<ENTITY, BASIC> save(ENTITY entity) {
-            try {
-                FieldUtil.set(field, entity, scalar.get());
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
+            field.setValue(entity, scalar.get());
             return this;
         }
 

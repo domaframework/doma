@@ -182,9 +182,9 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
     @Override
     public org.seasar.doma.internal.apt.entity.ImmutableEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __args) {
         return new org.seasar.doma.internal.apt.entity.ImmutableEntity(
-            (java.lang.String)(__args.containsKey("aaa") ? __args.get("aaa").get() : null),
-            (java.lang.Integer)(__args.containsKey("bbb") ? __args.get("bbb").get() : null),
-            (java.lang.Integer)(__args.containsKey("ccc") ? __args.get("ccc").get() : null));
+            (java.lang.String)(__args.get("aaa") != null ? __args.get("aaa").get() : null),
+            (java.lang.Integer)(__args.get("bbb") != null ? __args.get("bbb").get() : null),
+            (java.lang.Integer)(__args.get("ccc") != null ? __args.get("ccc").get() : null));
     }
 
     @Override

@@ -35,17 +35,14 @@ public class EntityPropertyNotFoundException extends JdbcException {
     /**
      * インスタンスを構築します。
      * 
-     * @param cause
-     *            原因
      * @param entityClassName
      *            エンティティクラスの名前
      * @param entityPropertyName
      *            エンティティプロパティの名前
      */
-    public EntityPropertyNotFoundException(Throwable cause,
-            String entityClassName, String entityPropertyName) {
-        super(Message.DOMA2211, cause, entityClassName, entityPropertyName,
-                cause);
+    public EntityPropertyNotFoundException(String entityClassName,
+            String entityPropertyName) {
+        super(Message.DOMA2211, entityClassName, entityPropertyName);
         this.entityClassName = entityClassName;
         this.entityPropertyName = entityPropertyName;
     }

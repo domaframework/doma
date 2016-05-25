@@ -105,6 +105,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         doClassElement(classElement, entityMeta);
         doFieldElements(classElement, entityMeta);
         validateGeneratedId(classElement, entityMeta);
+        validateOriginalStates(classElement, entityMeta);
         doConstructor(classElement, entityMeta);
         return entityMeta;
     }
@@ -581,6 +582,15 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         }
     }
 
+    protected void validateOriginalStates(TypeElement classElement,
+            EntityMeta entityMeta) {
+        if (entityMeta.hasOriginalStatesMeta()
+                && entityMeta.hasEmbeddedProperties()) {
+            throw new AptException(Message.DOMA4305, env, classElement,
+                    new Object[] { classElement.getQualifiedName() });
+        }
+    }
+
     protected void doConstructor(TypeElement classElement, EntityMeta entityMeta) {
         if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
             return;
@@ -627,6 +637,22 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                 .constructorsIn(classElement.getEnclosedElements())) {
             if (entityMeta.getAllPropertyMetas().size() == constructor
                     .getParameters().size()) {
+                Iterator<EntityPropertyMeta> propIt = entityMeta
+                        .getAllPropertyMetas().iterator();
+                Iterator<? extends VariableElement> paramIt = constructor
+                        .getParameters().iterator();
+                int index = 0;
+                for (; propIt.hasNext() && paramIt.hasNext();) {
+                    TypeMirror prop = propIt.next().getType();
+                    TypeMirror param = paramIt.next().asType();
+                    if (!TypeMirrorUtil.isSameType(prop, param, env)) {
+                        throw new AptException(Message.DOMA4307, env,
+                                classElement,
+                                new Object[] { prop, param, index,
+                                        classElement.getQualifiedName() });
+                    }
+                    index++;
+                }
                 return new EntityConstructorMeta(constructor,
                         entityMeta.getAllPropertyMetas());
             }

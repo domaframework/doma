@@ -183,7 +183,9 @@ public final class _QuoteEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
     @Override
     public org.seasar.doma.internal.apt.entity.QuoteEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.QuoteEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.QuoteEntity entity = new org.seasar.doma.internal.apt.entity.QuoteEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("name") != null) __args.get("name").save(entity);
+        if (__args.get("version") != null) __args.get("version").save(entity);
         return entity;
     }
 

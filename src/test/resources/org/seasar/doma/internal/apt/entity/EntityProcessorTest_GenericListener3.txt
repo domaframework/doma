@@ -167,7 +167,6 @@ public final class _GenericListener3Entity extends org.seasar.doma.jdbc.entity.A
     @Override
     public org.seasar.doma.internal.apt.entity.GenericListener3Entity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.GenericListener3Entity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.GenericListener3Entity entity = new org.seasar.doma.internal.apt.entity.GenericListener3Entity();
-        __args.values().forEach(v -> v.save(entity));
         return entity;
     }
 

@@ -203,7 +203,11 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     @Override
     public org.seasar.doma.internal.apt.entity.Emp newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.Emp, ?>> __args) {
         org.seasar.doma.internal.apt.entity.Emp entity = new org.seasar.doma.internal.apt.entity.Emp();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("name") != null) __args.get("name").save(entity);
+        if (__args.get("salary") != null) __args.get("salary").save(entity);
+        if (__args.get("version") != null) __args.get("version").save(entity);
+        if (__args.get("object") != null) __args.get("object").save(entity);
         return entity;
     }
 

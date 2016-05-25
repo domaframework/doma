@@ -22,8 +22,11 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -56,6 +59,8 @@ public class EntityPropertyMeta {
 
     protected final String fieldPrefix;
 
+    protected final ProcessingEnvironment env;
+
     protected String name;
 
     protected boolean id;
@@ -82,6 +87,7 @@ public class EntityPropertyMeta {
         this.boxedClassName = TypeMirrorUtil.getBoxedClassName(type, env);
         this.ownProperty = ownProperty;
         this.fieldPrefix = Options.getEntityFieldPrefix(env);
+        this.env = env;
     }
 
     public String getEntityName() {
@@ -180,4 +186,24 @@ public class EntityPropertyMeta {
         return columnMirror != null ? columnMirror.getQuoteValue() : false;
     }
 
+    public boolean isEmbedded() {
+        return ctType
+                .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
+                        false) {
+                    @Override
+                    public Boolean visitEmbeddableCtType(
+                            EmbeddableCtType ctType, Void p)
+                                    throws RuntimeException {
+                        return true;
+                    }
+                }, null);
+    }
+
+    public String getEmbeddableMetaTypeName() {
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
+        if (typeElement == null) {
+            throw new AptIllegalStateException("typeElement must not be null.");
+        }
+        return MetaUtil.toFullMetaName(typeElement, env);
+    }
 }

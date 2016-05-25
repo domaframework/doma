@@ -172,7 +172,7 @@ public final class _BytesPropertyEntity extends org.seasar.doma.jdbc.entity.Abst
     @Override
     public org.seasar.doma.internal.apt.entity.BytesPropertyEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.BytesPropertyEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.BytesPropertyEntity entity = new org.seasar.doma.internal.apt.entity.BytesPropertyEntity();
-        __args.values().forEach(v -> v.save(entity));
+        if (__args.get("bytes") != null) __args.get("bytes").save(entity);
         return entity;
     }
 
