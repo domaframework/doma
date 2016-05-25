@@ -111,4 +111,9 @@ public class PropertyField<ENTITY> {
                     entityClass.getName(), path);
         }
     }
+
+    public boolean isPrimitive() {
+        Field field = fields.getLast();
+        return field.getType().isPrimitive();
+    }
 }

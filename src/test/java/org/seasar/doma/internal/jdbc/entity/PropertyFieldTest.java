@@ -110,4 +110,10 @@ public class PropertyFieldTest extends TestCase {
         }
     }
 
+    public void testIsPrimitive() throws Exception {
+        PropertyField<Person> age = new PropertyField<>("age", Person.class);
+        assertTrue(age.isPrimitive());
+        PropertyField<Person> name = new PropertyField<>("name", Person.class);
+        assertFalse(name.isPrimitive());
+    }
 }
