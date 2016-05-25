@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
 /**
@@ -30,6 +31,12 @@ public class DefaultPropertyTypeTest extends TestCase {
 
     @SuppressWarnings("unused")
     private Foo foo;
+
+    @SuppressWarnings("unused")
+    private int primitiveInt;
+
+    @SuppressWarnings("unused")
+    private Integer integer;
 
     public void testIsQuoteRequired_true() throws Exception {
         boolean isQuoteRequired = true;
@@ -136,6 +143,26 @@ public class DefaultPropertyTypeTest extends TestCase {
         assertEquals("HOGE", propertyType.getColumnName(
                 (namingType, text) -> namingType.apply(text), text -> "["
                         + text + "]"));
+    }
+
+    public void testPrimitivePropertyDefaultValue() throws Exception {
+        DefaultPropertyType<Object, DefaultPropertyTypeTest, Integer, Object> propertyType = new DefaultPropertyType<>(
+                DefaultPropertyTypeTest.class, Integer.class, Integer.class,
+                () -> new IntegerWrapper(), null, null, "primitiveInt",
+                "primitiveInt", NamingType.NONE, true, true, false);
+        Property<DefaultPropertyTypeTest, Integer> property = propertyType
+                .createProperty();
+        assertEquals(0, property.get());
+    }
+
+    public void testWrapperPropertyDefaultValue() throws Exception {
+        DefaultPropertyType<Object, DefaultPropertyTypeTest, Integer, Object> propertyType = new DefaultPropertyType<>(
+                DefaultPropertyTypeTest.class, Integer.class, Integer.class,
+                () -> new IntegerWrapper(), null, null, "integer", "integer",
+                NamingType.NONE, true, true, false);
+        Property<DefaultPropertyTypeTest, Integer> property = propertyType
+                .createProperty();
+        assertNull(property.get());
     }
 
     public static class Foo {

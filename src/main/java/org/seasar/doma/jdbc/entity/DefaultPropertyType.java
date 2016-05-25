@@ -203,7 +203,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
                     (Scalar<BASIC, OptionalDouble>) new OptionalDoubleScalar());
         } else {
             return () -> new DefaultProperty<BASIC>(new BasicScalar<>(
-                    wrapperSupplier, field.getClass().isPrimitive()));
+                    wrapperSupplier, field.isPrimitive()));
         }
     }
 
