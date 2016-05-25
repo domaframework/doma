@@ -70,9 +70,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     /** ラッパーのサプライヤ */
     protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
-    /** 親のエンティティのプロパティ型 */
-    protected final EntityPropertyType<PARENT, BASIC> parentEntityPropertyType;
-
     /** ドメインのメタタイプ */
     protected final DomainType<BASIC, DOMAIN> domainType;
 
@@ -160,7 +157,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         this.entityPropertyClass = entityPropertyClass;
         this.basicClass = basicClass;
         this.wrapperSupplier = wrapperSupplier;
-        this.parentEntityPropertyType = parentEntityPropertyType;
         this.domainType = domainType;
         this.name = name;
         int pos = name.lastIndexOf('.');
@@ -170,16 +166,12 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         this.insertable = insertable;
         this.updatable = updatable;
         this.quoteRequired = quoteRequired;
-        this.field = parentEntityPropertyType == null ? new PropertyField<>(
-                name, entityClass) : null;
+        this.field = new PropertyField<>(name, entityClass);
         this.propertySupplier = createPropertySupplier();
     }
 
     @SuppressWarnings("unchecked")
     private Supplier<Property<ENTITY, BASIC>> createPropertySupplier() {
-        if (parentEntityPropertyType != null) {
-            return () -> new ParentProperty();
-        }
         if (domainType != null) {
             if (entityPropertyClass == Optional.class) {
                 return () -> new DefaultProperty<Optional<DOMAIN>>(
@@ -326,51 +318,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
             property.save(entity);
             return entity;
         }
-    }
-
-    /**
-     * @author nakamura-to
-     */
-    protected class ParentProperty implements Property<ENTITY, BASIC> {
-
-        protected final Property<PARENT, BASIC> delegate;
-
-        protected ParentProperty() {
-            this.delegate = parentEntityPropertyType.createProperty();
-        }
-
-        @Override
-        public Object get() {
-            return delegate.get();
-        }
-
-        @Override
-        public Property<ENTITY, BASIC> load(ENTITY entity) {
-            delegate.load(entity);
-            return this;
-        }
-
-        @Override
-        public Property<ENTITY, BASIC> save(ENTITY entity) {
-            delegate.save(entity);
-            return this;
-        }
-
-        @Override
-        public InParameter<BASIC> asInParameter() {
-            return delegate.asInParameter();
-        }
-
-        @Override
-        public Wrapper<BASIC> getWrapper() {
-            return delegate.getWrapper();
-        }
-
-        @Override
-        public Optional<Class<?>> getDomainClass() {
-            return delegate.getDomainClass();
-        }
-
     }
 
     /**
