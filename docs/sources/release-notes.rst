@@ -2,6 +2,24 @@
 リリースノート
 ==============
 
+v2.10.0: 2016-05-28
+======================
+
+* `GH146 <https://github.com/domaframework/doma/pull/146>`_
+  Embeddable なオブジェクトが null の場合に更新系の処理が失敗する不具合を修正
+* `GH145 <https://github.com/domaframework/doma/pull/145>`_
+  Kotlin のサポートについてドキュメントを追加
+* `GH142 <https://github.com/domaframework/doma/pull/142>`_
+  エンベッダブルクラスのドキュメントを追加
+* `GH141 <https://github.com/domaframework/doma/pull/141>`_
+  エンティティクラスが継承をしている場合の親プロパティへのアクセス方法を簡易化
+* `GH140 <https://github.com/domaframework/doma/pull/140>`_
+  プリミティブ型のプロパティにnullがアサインされる場合に例外が発生していた不具合をデフォルト値が設定されるように修正
+* `GH139 <https://github.com/domaframework/doma/pull/139>`_
+  `@Embeddable` をサポート
+* `GH138 <https://github.com/domaframework/doma/pull/138>`_
+  Kotlin でイミュータブルなエンティティを定義する際 `@ParameterName` を使用する必要性を除去
+
 v2.9.0: 2016-05-16
 ======================
 
