@@ -42,6 +42,7 @@ User Documentation
    config
    basic
    domain
+   embeddable
    entity
    dao
    query/index
