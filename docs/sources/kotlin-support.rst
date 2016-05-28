@@ -112,4 +112,3 @@ Domaの利用において、JavaとKotlinの混在は特に問題ありません
 サンプルコードについては下記のプロジェクトを参照ください。
 
 * `kotlin-sample <https://github.com/domaframework/kotlin-sample>`_
- No newline at end of file
