@@ -121,6 +121,7 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 
 * :doc:`basic`
 * :doc:`domain`
+* :doc:`embeddable`
 * :doc:`basic` または :doc:`domain` のいずれかを要素とするjava.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
@@ -156,6 +157,10 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 ``@Column`` を使用しない、もしくは ``@Column`` の ``name`` 要素を使用しない場合、
 カラム名は `ネーミング規約`_ により解決されます。
 
+.. note::
+
+  フィールドの型が :doc:`embeddable` の場合、　``@Column`` は指定できません。
+
 識別子
 ------
 
@@ -175,6 +180,10 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 
   @Id
   Integer id2;
+
+.. note::
+
+  フィールドの型が :doc:`embeddable` の場合、　``@Id`` は指定できません。
 
 識別子の自動生成
 ~~~~~~~~~~~~~~~~
@@ -264,6 +273,10 @@ RDBMSによってはサポートされていません。
   @Version
   Integer version;
 
+.. note::
+
+  フィールドの型が :doc:`embeddable` の場合、　``@Version`` は指定できません。
+
 非永続的なフィールド
 --------------------------------
 
@@ -291,6 +304,10 @@ RDBMSによってはサポートされていません。
 
   @OriginalStates
   Employee originalStates;
+
+.. note::
+
+  エンティティクラスのフィールドに :doc:`embeddable` が含まれている場合、　``@OriginalStates`` は使用できません。
 
 メソッド定義
 ==================
