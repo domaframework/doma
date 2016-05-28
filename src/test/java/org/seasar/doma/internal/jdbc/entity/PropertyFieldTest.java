@@ -66,6 +66,13 @@ public class PropertyFieldTest extends TestCase {
         assertEquals("Tokyo", path.getValue(person));
     }
 
+    public void testGetValue_nestedPath_null() throws Exception {
+        Person person = new Person();
+        PropertyField<Person> path = new PropertyField<>("address.city",
+                Person.class);
+        assertNull(path.getValue(person));
+    }
+
     public void testGetValue_nestedParentPath() throws Exception {
         Person person = new Person();
         person.address = new Address("island", "Tokyo", "Yaesu");

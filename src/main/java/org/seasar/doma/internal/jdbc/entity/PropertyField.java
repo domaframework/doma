@@ -81,6 +81,9 @@ public class PropertyField<ENTITY> {
         AssertionUtil.assertNotNull(entity);
         Object value = entity;
         for (Field field : fields) {
+            if (value == null) {
+                break;
+            }
             value = getFieldValue(field, value);
         }
         return value;
