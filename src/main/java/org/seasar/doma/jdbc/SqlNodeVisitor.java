@@ -33,6 +33,7 @@ import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
 import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
@@ -97,6 +98,8 @@ public interface SqlNodeVisitor<R, P> {
     R visitIfBlockNode(IfBlockNode node, P p);
 
     R visitIfNode(IfNode node, P p);
+
+    R visitLiteralVariableNode(LiteralVariableNode node, P p);
 
     R visitLogicalOperatorNode(LogicalOperatorNode node, P p);
 

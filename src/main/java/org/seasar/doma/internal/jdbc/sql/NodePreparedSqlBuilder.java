@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -56,6 +57,7 @@ import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
 import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
@@ -68,6 +70,7 @@ import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.UpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.UpdateStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
@@ -81,6 +84,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.Message;
+import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * @author taedium
@@ -199,6 +203,30 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitBindVariableNode(BindVariableNode node, Context p) {
+        return visitValueNode(node, p, p::addBindValue);
+    }
+
+    @Override
+    public Void visitLiteralVariableNode(final LiteralVariableNode node,
+            Context p) {
+        Consumer<Scalar<?, ?>> validator = (scalar) -> {
+            Object value = scalar.get();
+            if (value == null) {
+                return;
+            }
+            String text = value.toString();
+            if (text.indexOf('\'') > -1) {
+                SqlLocation location = node.getLocation();
+                throw new JdbcException(Message.DOMA2224, location.getSql(),
+                        location.getLineNumber(), location.getPosition(),
+                        node.getText());
+            }
+        };
+        return visitValueNode(node, p, validator.andThen(p::addLiteralValue));
+    }
+
+    protected Void visitValueNode(ValueNode node, Context p,
+            Consumer<Scalar<?, ?>> valueHandler) {
         SqlLocation location = node.getLocation();
         String name = node.getVariableName();
         EvaluationResult result = p.evaluate(location, name);
@@ -206,14 +234,14 @@ public class NodePreparedSqlBuilder implements
         Class<?> valueClass = result.getValueClass();
         p.setAvailable(true);
         if (node.isWordNodeIgnored()) {
-            handleSingleBindVarialbeNode(node, p, value, valueClass);
+            handleSingleValueNode(node, p, value, valueClass, valueHandler);
         } else if (node.isParensNodeIgnored()) {
             ParensNode parensNode = node.getParensNode();
             OtherNode openedFragmentNode = parensNode.getOpenedFragmentNode();
             openedFragmentNode.accept(this, p);
             if (Iterable.class.isAssignableFrom(valueClass)) {
-                handleIterableBindVarialbeNode(node, p, (Iterable<?>) value,
-                        valueClass);
+                handleIterableValueNode(node, p, (Iterable<?>) value,
+                        valueClass, valueHandler);
             } else {
                 throw new JdbcException(Message.DOMA2112, location.getSql(),
                         location.getLineNumber(), location.getPosition(),
@@ -273,16 +301,17 @@ public class NodePreparedSqlBuilder implements
         return matcher.lookingAt();
     }
 
-    protected Void handleSingleBindVarialbeNode(BindVariableNode node,
-            Context p, Object value, Class<?> valueClass) {
+    protected Void handleSingleValueNode(ValueNode node, Context p,
+            Object value, Class<?> valueClass, Consumer<Scalar<?, ?>> consumer) {
         Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
                 node.getText(), value, valueClass);
-        p.addBindValue(supplier.get());
+        consumer.accept(supplier.get());
         return null;
     }
 
-    protected void handleIterableBindVarialbeNode(BindVariableNode node,
-            Context p, Iterable<?> values, Class<?> valueClass) {
+    protected void handleIterableValueNode(ValueNode node, Context p,
+            Iterable<?> values, Class<?> valueClass,
+            Consumer<Scalar<?, ?>> consumer) {
         int index = 0;
         for (Object v : values) {
             if (v == null) {
@@ -293,7 +322,7 @@ public class NodePreparedSqlBuilder implements
             }
             Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
                     node.getText(), v, v.getClass());
-            p.addBindValue(supplier.get());
+            consumer.accept(supplier.get());
             p.appendRawSql(", ");
             p.appendFormattedSql(", ");
             index++;
@@ -635,7 +664,7 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitParensNode(ParensNode node, Context p) {
-        if (node.isAttachedWithBindVariable()) {
+        if (node.isAttachedWithValue()) {
             return null;
         }
         Context context = new Context(p);
@@ -758,6 +787,15 @@ public class NodePreparedSqlBuilder implements
             return formattedSqlBuf;
         }
 
+        protected <BASIC, CONTAINER> void addLiteralValue(
+                Scalar<BASIC, CONTAINER> scalar) {
+            String literal = scalar.getWrapper().accept(
+                    config.getDialect().getSqlLogFormattingVisitor(),
+                    formattingFunction, null);
+            rawSqlBuf.append(literal);
+            formattedSqlBuf.append(literal);
+        }
+
         protected <BASIC, CONTAINER> void addBindValue(
                 Scalar<BASIC, CONTAINER> scalar) {
             appendParameterInternal(new ScalarInParameter<BASIC, CONTAINER>(
@@ -818,5 +856,10 @@ public class NodePreparedSqlBuilder implements
         public String toString() {
             return rawSqlBuf.toString();
         }
+    }
+
+    protected static class LiteralValueVisitor implements
+            WrapperVisitor<String, Void, Void, RuntimeException> {
+
     }
 }

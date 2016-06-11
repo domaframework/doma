@@ -42,6 +42,7 @@ import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
 import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
@@ -54,6 +55,7 @@ import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.UpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.UpdateStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseAwareNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
@@ -161,6 +163,10 @@ public class SqlParser {
             }
             case BIND_VARIABLE_BLOCK_COMMENT: {
                 parseBindVariableBlockComment();
+                break;
+            }
+            case LITERAL_VARIABLE_BLOCK_COMMENT: {
+                parseLiteralVariableBlockComment();
                 break;
             }
             case EMBEDDED_VARIABLE_BLOCK_COMMENT: {
@@ -416,6 +422,18 @@ public class SqlParser {
         push(node);
     }
 
+    protected void parseLiteralVariableBlockComment() {
+        String varialbeName = tokenType.extract(token);
+        if (varialbeName.isEmpty()) {
+            throw new JdbcException(Message.DOMA2228, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition(), token);
+        }
+        LiteralVariableNode node = new LiteralVariableNode(getLocation(),
+                varialbeName, token);
+        appendNode(node);
+        push(node);
+    }
+
     protected void parseEmbeddedVariableBlockComment() {
         String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
@@ -639,8 +657,8 @@ public class SqlParser {
         return false;
     }
 
-    protected boolean isAfterBindVariableNode() {
-        return peek() instanceof BindVariableNode;
+    protected boolean isAfterValueNode() {
+        return peek() instanceof ValueNode;
     }
 
     protected boolean isAfterExpandNode() {
@@ -652,27 +670,27 @@ public class SqlParser {
     }
 
     protected void appendNode(SqlNode node) {
-        if (isAfterBindVariableNode()) {
-            BindVariableNode bindVariableNode = pop();
+        if (isAfterValueNode()) {
+            ValueNode valueNode = pop();
             if (node instanceof WordNode) {
                 WordNode wordNode = (WordNode) node;
                 String word = wordNode.getWord();
                 Matcher matcher = LITERAL_PATTERN.matcher(word);
                 if (matcher.lookingAt()) {
-                    bindVariableNode.setWordNode(wordNode);
+                    valueNode.setWordNode(wordNode);
                 } else {
                     throw new JdbcException(Message.DOMA2142, sql,
                             tokenizer.getLineNumber(), tokenizer.getPosition(),
-                            bindVariableNode.getText(), word);
+                            valueNode.getText(), word);
                 }
             } else if (node instanceof ParensNode) {
                 ParensNode parensNode = (ParensNode) node;
-                parensNode.setAttachedWithBindVariable(true);
-                bindVariableNode.setParensNode(parensNode);
+                parensNode.setAttachedWithValue(true);
+                valueNode.setParensNode(parensNode);
             } else {
                 throw new JdbcException(Message.DOMA2110, sql,
                         tokenizer.getLineNumber(), tokenizer.getPosition(),
-                        bindVariableNode.getText());
+                        valueNode.getText());
             }
         } else if (isAfterExpandNode()) {
             ExpandNode expandNode = pop();
@@ -713,7 +731,7 @@ public class SqlParser {
     }
 
     protected void validate() {
-        if (isAfterBindVariableNode()) {
+        if (isAfterValueNode()) {
             BindVariableNode bindVariableNode = pop();
             throw new JdbcException(Message.DOMA2110, sql,
                     tokenizer.getLineNumber(), tokenizer.getPosition(),

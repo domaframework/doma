@@ -36,6 +36,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.HAVING_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LITERAL_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPENED_PARENS;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
@@ -360,6 +361,8 @@ public class SqlTokenizer {
                 char c3 = buf.get();
                 if (ExpressionUtil.isExpressionIdentifierStart(c3)) {
                     type = BIND_VARIABLE_BLOCK_COMMENT;
+                } else if (c3 == '^') {
+                    type = LITERAL_VARIABLE_BLOCK_COMMENT;
                 } else if (c3 == '#') {
                     type = EMBEDDED_VARIABLE_BLOCK_COMMENT;
                 } else if (c3 == '%') {

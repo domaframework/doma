@@ -217,6 +217,53 @@ public class SqlParserTest extends TestCase {
                 .getWrapper().get());
     }
 
+    public void testLiteralVariable() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, "hoge"));
+        evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(
+                10000)));
+        String testSql = "select * from aaa where ename = /*^name*/'aaa' and sal = /*^salary*/-2000";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
+        assertEquals("select * from aaa where ename = 'hoge' and sal = 10000",
+                sql.getRawSql());
+        assertEquals("select * from aaa where ename = 'hoge' and sal = 10000",
+                sql.getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
+    public void testLiteralVariable_emptyName() throws Exception {
+        String testSql = "select * from aaa where ename = /*^   */'aaa'";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2228, expected.getMessageResource());
+        }
+    }
+
+    public void testLiteralVariable_in() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name",
+                new Value(List.class, Arrays.asList("hoge", "foo")));
+        String testSql = "select * from aaa where ename in /*^name*/('aaa', 'bbb')";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                Function.identity());
+        assertEquals("select * from aaa where ename in ('hoge', 'foo')",
+                sql.getRawSql());
+        assertEquals("select * from aaa where ename in ('hoge', 'foo')",
+                sql.getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
     public void testEmbeddedVariable() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));
