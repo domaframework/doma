@@ -28,7 +28,7 @@ public class ParensNode extends AbstractSqlNode {
 
     protected final SqlLocation location;
 
-    protected boolean attachedWithBindVariable;
+    protected boolean attachedWithValue;
 
     protected boolean empty = true;
 
@@ -42,12 +42,12 @@ public class ParensNode extends AbstractSqlNode {
         openedParensNode = OtherNode.of("(");
     }
 
-    public boolean isAttachedWithBindVariable() {
-        return attachedWithBindVariable;
+    public boolean isAttachedWithValue() {
+        return attachedWithValue;
     }
 
-    public void setAttachedWithBindVariable(boolean attachedWithBindVariable) {
-        this.attachedWithBindVariable = attachedWithBindVariable;
+    public void setAttachedWithValue(boolean attachedWithValue) {
+        this.attachedWithValue = attachedWithValue;
     }
 
     public boolean isEmpty() {

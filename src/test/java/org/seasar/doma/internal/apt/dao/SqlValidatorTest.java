@@ -75,6 +75,42 @@ public class SqlValidatorTest extends AptTestCase {
         sqlNode.accept(validator, null);
     }
 
+    public void testLiteralVariable() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        addCompilationUnit(StringWrapper.class);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testBindVariable", String.class);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false,
+                false);
+        SqlParser parser = new SqlParser(
+                "select * from emp where name = /*^ name */'aaa'");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+    }
+
+    public void testLiteralVariable_list() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        addCompilationUnit(StringWrapper.class);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testBindVariable_list", List.class);
+        LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false,
+                false);
+        SqlParser parser = new SqlParser(
+                "select * from emp where name in /*^ names */('aaa')");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+    }
+
     public void testEmbeddedVariable() throws Exception {
         Class<?> target = SqlValidationDao.class;
         addCompilationUnit(target);

@@ -18,9 +18,9 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-public class BindVariableNode extends ValueNode {
+public class LiteralVariableNode extends ValueNode {
 
-    public BindVariableNode(SqlLocation location, String variableName,
+    public LiteralVariableNode(SqlLocation location, String variableName,
             String text) {
         super(location, variableName, text);
     }
@@ -30,7 +30,7 @@ public class BindVariableNode extends ValueNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        return visitor.visitBindVariableNode(this, p);
+        return visitor.visitLiteralVariableNode(this, p);
     }
 
 }

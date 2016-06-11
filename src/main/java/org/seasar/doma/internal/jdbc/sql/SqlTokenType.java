@@ -47,6 +47,17 @@ public enum SqlTokenType {
         }
     },
 
+    LITERAL_VARIABLE_BLOCK_COMMENT {
+
+        @Override
+        public String extract(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 5);
+            String s = token.substring(3, token.length() - 2);
+            return StringUtil.trimWhitespace(s);
+        }
+    },
+
     EMBEDDED_VARIABLE_BLOCK_COMMENT {
 
         @Override

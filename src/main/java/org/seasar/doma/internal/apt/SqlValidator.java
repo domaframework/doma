@@ -46,8 +46,10 @@ import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
+import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
@@ -115,12 +117,21 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
     @Override
     public Void visitBindVariableNode(BindVariableNode node, Void p) {
+        return visitValueNode(node, p);
+    }
+
+    @Override
+    public Void visitLiteralVariableNode(LiteralVariableNode node, Void p) {
+        return visitValueNode(node, p);
+    }
+
+    protected Void visitValueNode(ValueNode node, Void p) {
         SqlLocation location = node.getLocation();
         String variableName = node.getVariableName();
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 variableName);
         if (node.getWordNode() != null) {
-            if (!isBindable(typeDeclaration)) {
+            if (!isScalar(typeDeclaration)) {
                 String sql = getSql(location);
                 throw new AptException(Message.DOMA4153, env, methodElement,
                         new Object[] { path, sql, location.getLineNumber(),
@@ -128,7 +139,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                                 typeDeclaration.getBinaryName() });
             }
         } else {
-            if (!isBindableIterable(typeDeclaration)) {
+            if (!isScalarIterable(typeDeclaration)) {
                 String sql = getSql(location);
                 env.getMessager().printMessage(Kind.NOTE,
                         parameterTypeMap.toString());
@@ -142,13 +153,13 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         return null;
     }
 
-    protected boolean isBindable(TypeDeclaration typeDeclaration) {
+    protected boolean isScalar(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
         return BasicCtType.newInstance(typeMirror, env) != null
                 || DomainCtType.newInstance(typeMirror, env) != null;
     }
 
-    protected boolean isBindableIterable(TypeDeclaration typeDeclaration) {
+    protected boolean isScalarIterable(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
         IterableCtType iterableCtType = IterableCtType.newInstance(typeMirror,
                 env);

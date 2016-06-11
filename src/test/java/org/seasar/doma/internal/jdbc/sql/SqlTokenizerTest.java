@@ -32,6 +32,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.HAVING_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LITERAL_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPENED_PARENS;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
@@ -397,6 +398,49 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals(" ", tokenizer.getToken());
         assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
         assertEquals("/*'a'*/", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("bbb", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testLiteralBlockComment() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*^aaa*/bbb");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(LITERAL_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*^aaa*/", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("bbb", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testLiteralBlockComment_followingQuote() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer(
+                "where /*^aaa*/'2001-01-01 12:34:56'");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(LITERAL_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*^aaa*/", tokenizer.getToken());
+        assertEquals(QUOTE, tokenizer.next());
+        assertEquals("'2001-01-01 12:34:56'", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testLiteralBlockComment_spaceIncluded() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*^ aaa */bbb");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(LITERAL_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*^ aaa */", tokenizer.getToken());
         assertEquals(WORD, tokenizer.next());
         assertEquals("bbb", tokenizer.getToken());
         assertEquals(EOF, tokenizer.next());

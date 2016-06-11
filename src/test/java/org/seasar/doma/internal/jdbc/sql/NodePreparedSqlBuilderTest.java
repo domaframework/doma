@@ -437,4 +437,23 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         assertEquals("select * from prefix_SCHEMA.TABLE", sql.getRawSql());
     }
 
+    public void testLiteralVariable_containsSingleQuote() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, "hog'e"));
+        evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(
+                10000)));
+        String testSql = "select * from aaa where ename = /*^name*/'aaa' and sal = /*salary*/-2000";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        try {
+            new NodePreparedSqlBuilder(config, SqlKind.SELECT, "dummyPath",
+                    evaluator, SqlLogType.FORMATTED).build(sqlNode,
+                    Function.identity());
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2224, expected.getMessageResource());
+        }
+    }
+
 }
