@@ -18,12 +18,12 @@ Embeddable（エンベッダブル）は、データベースのテーブルや�
   @Embeddalbe
   public class Address {
 
-      private final String city;
+      final String city;
 
-      private final String street;
+      final String street;
 
       @Column(name = "ZIP_CODE")
-      private final String zip;
+      final String zip;
 
       public Address(String city, String street, String zip) {
           this.city = city;
@@ -39,9 +39,9 @@ Embeddable（エンベッダブル）は、データベースのテーブルや�
   @Entity
   public class Employee {
       @Id
-      private final Integer id;
+      Integer id;
 
-      private final Address address;
+      Address address;
   }
 
 テーブルや結果セットとのマッピングにおいて、上記のクラス定義は下記のクラス定義と同等です。
@@ -51,14 +51,14 @@ Embeddable（エンベッダブル）は、データベースのテーブルや�
   @Entity
   public class Employee {
       @Id
-      private final Integer id;
+      Integer id;
 
-      private final String city;
+      String city;
 
-      private final String street;
+      String street;
 
       @Column(name = "ZIP_CODE")
-      private final String zip;
+      String zip;
   }
 
 
@@ -97,7 +97,7 @@ Embeddable（エンベッダブル）は、データベースのテーブルや�
 .. code-block:: java
 
   @Column(name = "ZIP_CODE")
-  private final String zip;
+  final String zip;
 
 識別子
 ------
