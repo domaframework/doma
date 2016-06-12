@@ -264,6 +264,33 @@ public class SqlParserTest extends TestCase {
         assertEquals(0, sql.getParameters().size());
     }
 
+    public void testLiteralVariable_endsWithLiteralVariableComment()
+            throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, "hoge"));
+        String testSql = "select * from aaa where ename = /*^name*/";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2110, expected.getMessageResource());
+        }
+    }
+
+    public void testLiteralVariable_illegalLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*^name*/bbb";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2142, expected.getMessageResource());
+        }
+    }
+
     public void testEmbeddedVariable() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));
