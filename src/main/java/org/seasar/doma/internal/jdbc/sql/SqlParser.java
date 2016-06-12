@@ -732,10 +732,10 @@ public class SqlParser {
 
     protected void validate() {
         if (isAfterValueNode()) {
-            BindVariableNode bindVariableNode = pop();
+            ValueNode valueNode = pop();
             throw new JdbcException(Message.DOMA2110, sql,
                     tokenizer.getLineNumber(), tokenizer.getPosition(),
-                    bindVariableNode.getText());
+                    valueNode.getText());
         }
         if (isInIfBlockNode()) {
             removeNodesTo(IfBlockNode.class);
