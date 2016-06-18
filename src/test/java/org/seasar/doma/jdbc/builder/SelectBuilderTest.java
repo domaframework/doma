@@ -23,6 +23,8 @@ import junit.framework.TestCase;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 
 import example.domain.PhoneNumber;
 import example.entity.Emp;
@@ -177,6 +179,41 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("bbb = ").param(int.class, 100);
         List<String> list = builder.getScalarResultList(String.class);
         assertNotNull(list);
+    }
+
+    public void testLiteral() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select");
+        builder.sql("id").sql(",");
+        builder.sql("name").sql(",");
+        builder.sql("salary");
+        builder.sql("from Emp");
+        builder.sql("where");
+        builder.sql("name = ").literal(String.class, "aaa");
+        builder.sql("and");
+        builder.sql("age > ").param(int.class, 20);
+        String sql = String.format("select%n" + "id,%n" + "name,%n"
+                + "salary%n" + "from Emp%n" + "where%n" + "name = 'aaa'%n"
+                + "and%n" + "age > ?");
+        assertEquals(sql, builder.getSql().getRawSql());
+    }
+
+    public void testLiteral_singleQuoteIncluded() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select");
+        builder.sql("id").sql(",");
+        builder.sql("name").sql(",");
+        builder.sql("salary");
+        builder.sql("from Emp");
+        builder.sql("where");
+        builder.sql("code = ").literal(String.class, "a'aa");
+        builder.sql("and");
+        builder.sql("age > ").param(int.class, 20);
+        try {
+            builder.getSql();
+        } catch (JdbcException e) {
+            assertEquals(Message.DOMA2224, e.getMessageResource());
+        }
     }
 
 }

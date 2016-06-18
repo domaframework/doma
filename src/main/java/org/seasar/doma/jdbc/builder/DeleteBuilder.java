@@ -143,7 +143,34 @@ public class DeleteBuilder {
         if (paramClass == null) {
             throw new DomaNullPointerException("paramClass");
         }
-        helper.appendParam(new Param(paramClass, param, paramIndex));
+        return appendParam(paramClass, param, false);
+    }
+
+    /**
+     * リテラルとしてパラメータを追加します。
+     * <p>
+     * パラメータの型には、基本型とドメインクラスを指定できます。
+     * 
+     * @param <P>
+     *            パラメータの型
+     * @param paramClass
+     *            パラメータのクラス
+     * @param param
+     *            パラメータ
+     * @return このインスタンス
+     * @throws DomaNullPointerException
+     *             {@code parameterClass} が {@code null} の場合
+     */
+    public <P> DeleteBuilder literal(Class<P> paramClass, P param) {
+        if (paramClass == null) {
+            throw new DomaNullPointerException("paramClass");
+        }
+        return appendParam(paramClass, param, true);
+    }
+
+    private <P> DeleteBuilder appendParam(Class<P> paramClass, P param,
+            boolean literal) {
+        helper.appendParam(new Param(paramClass, param, paramIndex, literal));
         paramIndex.increment();
         return new SubsequentDeleteBuilder(helper, query, paramIndex);
     }
