@@ -15,7 +15,13 @@
 どのクエリビルダも、インスタンスは ``Config`` 型の引数をとる
 ``static`` な ``newInstance`` メソッドで生成できます。
 インスタンスには、 ``sql`` メソッドでSQL文字列の断片を、
-``param`` メソッドでパラメータの型とパラメータを渡せます。
+``param`` メソッドと ``literal`` メソッドでパラメータの型とパラメータを渡せます。
+
+``param`` メソッドで渡されたパラメータは ``PreparedStatement`` のバインド変数として扱われます。
+
+``literal`` メソッドで渡されたパラメータはSQLにリテラルとして埋め込まれます。
+このメソッドでパラメータが渡された場合、SQLインジェクション対策としてのエスケープ処理は実施されません。
+しかし、SQLインジェクションを防ぐためにパラメータの値にシングルクォテーションを含めることは禁止しています。
 
 検索
 ====
@@ -33,6 +39,8 @@
   builder.sql("salary");
   builder.sql("from Emp");
   builder.sql("where");
+  builder.sql("job_type = ").literal(String.class, "fulltime");
+  builder.sql("and");
   builder.sql("name like ").param(String.class, "S%");
   builder.sql("and");
   builder.sql("age > ").param(int.class, 20);
