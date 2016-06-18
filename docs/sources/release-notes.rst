@@ -2,6 +2,16 @@
 リリースノート
 ==============
 
+v2.11.0: 2016-06-18
+======================
+
+* `GH153 <https://github.com/domaframework/doma/pull/153>`_
+  クエリビルダでリテラルの埋め込みをサポート
+* `GH151 <https://github.com/domaframework/doma/pull/151>`_
+  リテラル変数コメントの直後のテスト用リテラルに対するチェックを修正
+* `GH150 <https://github.com/domaframework/doma/pull/150>`_
+  リテラル変数コメントの機能を追加
+
 v2.10.0: 2016-05-28
 ======================
 
