@@ -27,10 +27,13 @@ class Param {
 
     final Object param;
 
-    Param(Class<?> paramClass, Object param, ParamIndex index) {
+    final boolean literal;
+
+    Param(Class<?> paramClass, Object param, ParamIndex index, boolean literal) {
         this.paramClass = paramClass;
         this.param = param;
         this.name = "p" + index.getValue();
+        this.literal = literal;
     }
 
 }

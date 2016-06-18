@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.builder;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -72,8 +72,6 @@ class BuildingHelper {
 
     SqlNode getSqlNode() {
         StringBuilder buf = new StringBuilder(200);
-        @SuppressWarnings("unused")
-        int index = 1;
         for (Item item : items) {
             switch (item.kind) {
             case SQL:
@@ -81,9 +79,11 @@ class BuildingHelper {
                 break;
             case PARAM:
                 buf.append("/*");
+                if (item.param.literal) {
+                    buf.append("^");
+                }
                 buf.append(item.param.name);
                 buf.append("*/0");
-                index++;
                 break;
             default:
                 assertUnreachable();

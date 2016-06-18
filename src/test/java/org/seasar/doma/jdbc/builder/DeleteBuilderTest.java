@@ -50,4 +50,19 @@ public class DeleteBuilderTest extends TestCase {
         builder.execute();
     }
 
+    public void testLiterall() throws Exception {
+        DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
+        builder.sql("delete from Emp");
+        builder.sql("where");
+        builder.sql("name = ").literal(String.class, "aaa");
+        builder.sql("and");
+        builder.sql("salary = ").literal(int.class, 10);
+
+        String sql = String.format("delete from Emp%n" + "where%n"
+                + "name = 'aaa'%n" + "and%n" + "salary = 10");
+        assertEquals(sql, builder.getSql().getRawSql());
+
+        builder.execute();
+    }
+
 }
