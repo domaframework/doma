@@ -84,7 +84,7 @@ Daoインタフェース
   val (newPerson, count) = dao.insert(person)
 
 
-katpによるビルド
+kaptによるビルド
 -------------------
 
 Kotlin で記述されたクラスやインタフェースに対して注釈処理をするには `kapt <http://blog.jetbrains.com/kotlin/2015/06/better-annotation-processing-supporting-stubs-in-kapt/>`_ を実行する必要があります。
