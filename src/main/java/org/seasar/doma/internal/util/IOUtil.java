@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.util;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
@@ -79,6 +81,22 @@ public final class IOUtil {
             } catch (IOException ignored) {
             }
         }
+    }
+
+    public static boolean endsWith(File file, String pathname) {
+        Path path = file.toPath();
+        Path other = Paths.get(pathname);
+        int i = path.getNameCount() - 1;
+        int j = other.getNameCount() - 1;
+        for (; i >= 0 && j >= 0; i--, j--) {
+            // avoid Path#equals to make comparison case sensitive
+            String element = path.getName(i).toString();
+            String otherElement = other.getName(j).toString();
+            if (!element.equals(otherElement)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
