@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.LinkedHashMap;
 
@@ -91,7 +92,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         if (!uri.isAbsolute()) {
             uri = new File(".").toURI().resolve(uri);
         }
-        File file = new File(uri);
+        File file = getCanonicalFile(new File(uri));
         if (!file.exists()) {
             throw new AptException(Message.DOMA4019, env, method, new Object[] {
                     filePath, file.getAbsolutePath() });
@@ -100,7 +101,19 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             throw new AptException(Message.DOMA4021, env, method, new Object[] {
                     filePath, file.getAbsolutePath() });
         }
+        if (!IOUtil.endsWith(file, filePath)) {
+            throw new AptException(Message.DOMA4309, env, method, new Object[] {
+                    filePath, file.getAbsolutePath() });
+        }
         return file;
+    }
+
+    protected File getCanonicalFile(File file) {
+        try {
+            return file.getCanonicalFile();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     protected File[] getSiblingFiles(M queryMeta, ExecutableElement method,
