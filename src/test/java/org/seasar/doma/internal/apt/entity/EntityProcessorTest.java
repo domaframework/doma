@@ -74,13 +74,57 @@ public class EntityProcessorTest extends AptTestCase {
     }
 
     public void testNotTopLevel() throws Exception {
-        Class<?> target = NotTopLevelEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
-        addCompilationUnit(target);
+        addCompilationUnit(NotTopLevelEntity.class);
+        compile();
+        assertGeneratedSource(NotTopLevelEntity.Hoge.class);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNotTopLevelImmutable() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(NotTopLevelImmutableEntity.class);
+        compile();
+        assertGeneratedSource(NotTopLevelImmutableEntity.Hoge.class);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOuter_nonStatic() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonStaticInner.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4018);
+        assertMessage(Message.DOMA4315);
+    }
+
+    public void testOuter_nonPublic() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonPublicInner.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4315);
+    }
+
+    public void testOuter_nonPublicMiddle() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonPublicMiddle.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4315);
+    }
+
+    public void testOuter__illegalName() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer__illegalName.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4317);
     }
 
     public void testUnsupportedProperty() throws Exception {

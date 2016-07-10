@@ -18,19 +18,23 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
@@ -45,6 +49,7 @@ import org.seasar.doma.EntityField;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.Transient;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
@@ -210,13 +215,39 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                     entityMirror.getAnnotationMirror(),
                     new Object[] { classElement.getQualifiedName() });
         }
-        if (classElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4018, env, classElement,
-                    new Object[] { classElement.getQualifiedName() });
-        }
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4051, env, classElement,
                     new Object[] { classElement.getQualifiedName() });
+        }
+        validateEnclosingElement(classElement);
+    }
+
+    protected void validateEnclosingElement(Element element) {
+        TypeElement typeElement = ElementUtil.toTypeElement(element, env);
+        if (typeElement == null) {
+            return;
+        }
+        String simpleName = typeElement.getSimpleName().toString();
+        if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
+                || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
+            throw new AptException(Message.DOMA4317, env, typeElement,
+                    new Object[] { typeElement.getQualifiedName() });
+        }
+        NestingKind nestingKind = typeElement.getNestingKind();
+        if (nestingKind == NestingKind.TOP_LEVEL) {
+            return;
+        } else if (nestingKind == NestingKind.MEMBER) {
+            Set<Modifier> modifiers = typeElement.getModifiers();
+            if (modifiers.containsAll(Arrays.asList(Modifier.STATIC,
+                    Modifier.PUBLIC))) {
+                validateEnclosingElement(typeElement.getEnclosingElement());
+            } else {
+                throw new AptException(Message.DOMA4315, env, typeElement,
+                        new Object[] { typeElement.getQualifiedName() });
+            }
+        } else {
+            throw new AptException(Message.DOMA4316, env, typeElement,
+                    new Object[] { typeElement.getQualifiedName() });
         }
     }
 
