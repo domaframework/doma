@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.embeddable;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.EmbeddableProcessor;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -59,6 +60,51 @@ public class EmbeddableProcessorTest extends AptTestCase {
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testNotTopLevel() throws Exception {
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(NotTopLevel.class);
+        compile();
+        assertGeneratedSource(NotTopLevel.Address.class);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOuter_nonStatic() throws Exception {
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonStaticInner.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4415);
+    }
+
+    public void testOuter_nonPublic() throws Exception {
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonPublicInner.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4415);
+    }
+
+    public void testOuter_nonPublicMiddle() throws Exception {
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer_nonPublicMiddle.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4415);
+    }
+
+    public void testOuter__illegalName() throws Exception {
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Outer__illegalName.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4417);
     }
 
 }

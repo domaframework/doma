@@ -18,18 +18,22 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
@@ -45,11 +49,13 @@ import org.seasar.doma.OriginalStates;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.EmbeddableMirror;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -95,13 +101,39 @@ public class EmbeddableMetaFactory implements
                     embeddableMirror.getAnnotationMirror(),
                     new Object[] { embeddableElement.getQualifiedName() });
         }
-        if (embeddableElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4284, env, embeddableElement,
-                    new Object[] { embeddableElement.getQualifiedName() });
-        }
         if (!embeddableElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4285, env, embeddableElement,
                     new Object[] { embeddableElement.getQualifiedName() });
+        }
+        validateEnclosingElement(embeddableElement);
+    }
+
+    protected void validateEnclosingElement(Element element) {
+        TypeElement typeElement = ElementUtil.toTypeElement(element, env);
+        if (typeElement == null) {
+            return;
+        }
+        String simpleName = typeElement.getSimpleName().toString();
+        if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
+                || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
+            throw new AptException(Message.DOMA4417, env, typeElement,
+                    new Object[] { typeElement.getQualifiedName() });
+        }
+        NestingKind nestingKind = typeElement.getNestingKind();
+        if (nestingKind == NestingKind.TOP_LEVEL) {
+            return;
+        } else if (nestingKind == NestingKind.MEMBER) {
+            Set<Modifier> modifiers = typeElement.getModifiers();
+            if (modifiers.containsAll(Arrays.asList(Modifier.STATIC,
+                    Modifier.PUBLIC))) {
+                validateEnclosingElement(typeElement.getEnclosingElement());
+            } else {
+                throw new AptException(Message.DOMA4415, env, typeElement,
+                        new Object[] { typeElement.getQualifiedName() });
+            }
+        } else {
+            throw new AptException(Message.DOMA4416, env, typeElement,
+                    new Object[] { typeElement.getQualifiedName() });
         }
     }
 
