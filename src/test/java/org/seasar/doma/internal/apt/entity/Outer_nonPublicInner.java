@@ -21,9 +21,9 @@ import org.seasar.doma.Entity;
  * @author taedium
  * 
  */
-public class NotTopLevelEntity {
+public class Outer_nonPublicInner {
 
     @Entity
-    public static class Hoge {
+    static class Inner {
     }
 }

@@ -18,12 +18,15 @@ package org.seasar.doma.internal.apt.entity;
 import org.seasar.doma.Entity;
 
 /**
- * @author taedium
- * 
+ * @author nakamura-to
+ *
  */
-public class NotTopLevelEntity {
+public class Outer_nonPublicMiddle {
 
-    @Entity
-    public static class Hoge {
+    static class Middle {
+        @Entity
+        public static class Inner {
+        }
     }
+
 }

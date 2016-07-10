@@ -38,9 +38,8 @@ public class Conventions {
             base = packageName + ".";
         }
         return base
-                + enclosingNames
-                        .stream()
-                        .map(n -> n + Constants.BINARY_NAME_ENCLOSING_DELIMITER)
+                + enclosingNames.stream()
+                        .map(n -> n + Constants.METATYPE_NAME_DELIMITER)
                         .collect(joining()) + simpleName;
     }
 

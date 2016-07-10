@@ -37,6 +37,12 @@ public class EntityTypeFactoryTest extends TestCase {
         assertNotNull(type);
     }
 
+    public void testGetEntityType_forNestedEntity() throws Exception {
+        EntityType<NotTopLevelEntity.Hoge> type = EntityTypeFactory
+                .getEntityType(NotTopLevelEntity.Hoge.class, classHelper);
+        assertNotNull(type);
+    }
+
     public void testGetEntityType_DomaIllegalArgumentException()
             throws Exception {
         try {
