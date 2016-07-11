@@ -79,4 +79,9 @@ public interface SqlFileRepository {
      */
     SqlFile getSqlFile(Method method, String path, Dialect dialect);
 
+    /**
+     * SQLファイルのキャッシュを削除します。
+     */
+    default void clearCache() {
+    }
 }

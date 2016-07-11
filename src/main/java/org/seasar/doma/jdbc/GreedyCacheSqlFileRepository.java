@@ -45,4 +45,8 @@ public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
         return current != null ? current : file;
     }
 
+    @Override
+    public void clearCache() {
+        sqlFileMap.clear();
+    }
 }
