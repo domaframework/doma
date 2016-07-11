@@ -66,4 +66,18 @@ public class GreedyCacheSqlFileRepositoryTest extends TestCase {
         SqlFile sqlFile = repository.getSqlFile(method, path, dialect);
         assertEquals(path, sqlFile.getPath());
     }
+
+    public void testClearCache() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        String path = "META-INF/" + getClass().getName().replace(".", "/")
+                + ".sql";
+        GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
+        SqlFile sqlFile = repository.getSqlFile(method, path, dialect);
+        assertNotNull(sqlFile);
+        repository.clearCache();
+        SqlFile sqlFile2 = repository.getSqlFile(method, path, dialect);
+        assertNotSame(sqlFile, sqlFile2);
+        assertEquals(path, sqlFile.getPath());
+    }
+
 }
