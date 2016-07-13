@@ -2,6 +2,22 @@
 リリースノート
 ==============
 
+v2.12.0: 2016-07-14
+======================
+
+* `GH161 <https://github.com/domaframework/doma/pull/161>`_
+  SQLファイルのキャッシュを削除するためのメソッドを追加
+* `GH160 <https://github.com/domaframework/doma/pull/160>`_
+  エンベッダブルクラスをネストした型として定義することをサポート
+* `GH159 <https://github.com/domaframework/doma/pull/159>`_
+  エンティティクラスをネストした型として定義することをサポート
+* `GH158 <https://github.com/domaframework/doma/pull/158>`_
+  ドキュメントのコピーライトの日付を更新
+* `GH156 <https://github.com/domaframework/doma/pull/156>`_
+  SQLファイルの存在チェックでパスの大文字小文字を区別するように修正
+* `GH155 <https://github.com/domaframework/doma/pull/155>`_
+  fix typo
+
 v2.11.0: 2016-06-18
 ======================
 
