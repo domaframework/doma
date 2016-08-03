@@ -67,8 +67,7 @@ public class PropertyField<ENTITY> {
     }
 
     private Field findField(Class<?> clazz, String name) {
-        for (Class<?> cl = clazz; cl != Object.class; cl = clazz
-                .getSuperclass()) {
+        for (Class<?> cl = clazz; cl != Object.class; cl = cl.getSuperclass()) {
             try {
                 return cl.getDeclaredField(name);
             } catch (NoSuchFieldException ignored) {
