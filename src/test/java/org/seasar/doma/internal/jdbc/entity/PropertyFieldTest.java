@@ -32,6 +32,11 @@ public class PropertyFieldTest extends TestCase {
         assertEquals(1, path.fields.size());
     }
 
+    public void testConstructor_grandParentPath() throws Exception {
+        PropertyField<Person> path = new PropertyField<>("weight", Person.class);
+        assertEquals(1, path.fields.size());
+    }
+
     public void testConstructor_nestedPath() throws Exception {
         PropertyField<Person> path = new PropertyField<>("address.city",
                 Person.class);
