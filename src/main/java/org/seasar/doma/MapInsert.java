@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * 
  * <h3>例:</h3>
  * 
- * 
+ * <pre>
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
  * 
