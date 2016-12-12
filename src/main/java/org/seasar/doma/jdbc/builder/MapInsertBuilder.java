@@ -113,8 +113,13 @@ public class MapInsertBuilder {
             .sql(parameter.keySet().stream().collect(Collectors.joining(", ")))
             .sql(")");
         builder.sql("values (");
-        parameter.forEach((key, value) -> 
-            builder.param(((Class<Object>) value.getClass()), value).sql(", "));
+        parameter.forEach((key, value) -> {
+            if (value == null) {
+                builder.sql("NULL").sql(", ");
+            } else {
+                builder.param(((Class<Object>) value.getClass()), value).sql(", ");
+            }
+        });
         builder.removeLast().sql(")");
         return builder.execute();
     }

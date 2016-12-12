@@ -35,7 +35,7 @@ public class MapInsertBuilderTest extends TestCase {
             put("name", "SMITH");
             put("salary", 100);
         }});
-    }
+    }   
 
     public void testGetSql() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
@@ -53,6 +53,38 @@ public class MapInsertBuilderTest extends TestCase {
         assertEquals(2, parameters.size());
         assertEquals("SMITH", parameters.get(0).getValue());
         assertEquals(100, parameters.get(1).getValue());
+    }
+
+    public void testNullValue() throws Exception {
+        MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
+        builder.execute(new LinkedHashMap(){{
+            put("name", null);
+            put("salary", 100);
+        }});
+
+        String expectedSql = String.format("insert into Emp" + " (name, salary)%n"
+                + "values (%nNULL, ?)");
+        assertEquals(expectedSql, builder.getSql().getRawSql());
+
+        List<? extends SqlParameter> parameters = builder.getSql().getParameters();
+        assertEquals(1, parameters.size());
+        assertEquals(100, parameters.get(0).getValue());
+    }
+
+    public void testLastNullValue() throws Exception {
+        MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
+        builder.execute(new LinkedHashMap(){{
+            put("salary", 100);
+            put("name", null);
+        }});
+
+        String expectedSql = String.format("insert into Emp" + " (salary, name)%n"
+                + "values (?, %nNULL)");
+        assertEquals(expectedSql, builder.getSql().getRawSql());
+
+        List<? extends SqlParameter> parameters = builder.getSql().getParameters();
+        assertEquals(1, parameters.size());
+        assertEquals(100, parameters.get(0).getValue());
     }
 
 }
