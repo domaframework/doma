@@ -1049,6 +1049,9 @@ public class StandardDialect implements Dialect {
 
         @Override
         public LocalDateTime roundDownTimePart(LocalDateTime localDateTime) {
+            if (localDateTime == null) {
+                return null;
+            }
             return localDateTime.truncatedTo(ChronoUnit.DAYS);
         }
 
@@ -1099,6 +1102,9 @@ public class StandardDialect implements Dialect {
 
         @Override
         public LocalDateTime roundUpTimePart(LocalDateTime localDateTime) {
+            if (localDateTime == null) {
+                return null;
+            }
             return localDateTime.plusDays(1).truncatedTo(ChronoUnit.DAYS);
         }
 
