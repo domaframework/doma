@@ -17,6 +17,8 @@ package org.seasar.doma.jdbc.dialect;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import junit.framework.TestCase;
@@ -134,6 +136,16 @@ public class StandardDialectTest extends TestCase {
                 functions.roundDownTimePart(timestamp));
     }
 
+    public void testExpressionFunctions_roundDonwTimePart_forLocalDateTime()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        LocalDateTime localDateTime = LocalDateTime.of(2009, 1, 23, 12, 34, 56,
+                123456789);
+        assertEquals(LocalDateTime.of(2009, 1, 23, 0, 0, 0, 0),
+                functions.roundDownTimePart(localDateTime));
+    }
+
     public void testExpressionFunctions_roundUpTimePart_forUtilDate()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
@@ -206,6 +218,63 @@ public class StandardDialectTest extends TestCase {
                 .valueOf("2009-12-31 00:00:00.000000000");
         assertEquals(Timestamp.valueOf("2010-01-01 00:00:00.000000000"),
                 functions.roundUpTimePart(timestamp));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forLocalDate()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        LocalDate localDate = LocalDate.of(2009, 1, 23);
+        assertEquals(LocalDate.of(2009, 1, 24),
+                functions.roundUpTimePart(localDate));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forLocalDate_endOfMonth()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        LocalDate localDate = LocalDate.of(2009, 3, 31);
+        assertEquals(LocalDate.of(2009, 4, 1),
+                functions.roundUpTimePart(localDate));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forLocalDate_endOfYear()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        LocalDate localDate = LocalDate.of(2009, 12, 31);
+        assertEquals(LocalDate.of(2010, 1, 1),
+                functions.roundUpTimePart(localDate));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forLocalDateTime()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        LocalDateTime localDateTime = LocalDateTime.of(2009, 1, 23, 12, 34, 56,
+                123456789);
+        assertEquals(LocalDateTime.of(2009, 1, 24, 0, 0, 0, 0),
+                functions.roundUpTimePart(localDateTime));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forLocalDateTime_endOfMonth()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        LocalDateTime localDateTime = LocalDateTime.of(2009, 3, 31, 12, 34, 56,
+                123456789);
+        assertEquals(LocalDateTime.of(2009, 4, 1, 0, 0, 0, 0),
+                functions.roundUpTimePart(localDateTime));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forLocalDateTime_endOfYear()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        LocalDateTime localDateTime = LocalDateTime.of(2009, 12, 31, 12, 34, 56,
+                123456789);
+        assertEquals(LocalDateTime.of(2010, 1, 1, 0, 0, 0, 0),
+                functions.roundUpTimePart(localDateTime));
     }
 
     public void testExpressionFunctions_isEmpty() throws Exception {
