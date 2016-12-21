@@ -19,6 +19,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1044,6 +1047,14 @@ public class StandardDialect implements Dialect {
             return new Timestamp(calendar.getTimeInMillis());
         }
 
+        @Override
+        public LocalDateTime roundDownTimePart(LocalDateTime localDateTime) {
+            if (localDateTime == null) {
+                return null;
+            }
+            return localDateTime.truncatedTo(ChronoUnit.DAYS);
+        }
+
         protected Calendar makeRoundedDownClandar(java.util.Date date) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
@@ -1079,6 +1090,22 @@ public class StandardDialect implements Dialect {
             }
             Calendar calendar = makeRoundedUpClandar(timestamp);
             return new Timestamp(calendar.getTimeInMillis());
+        }
+
+        @Override
+        public LocalDate roundUpTimePart(LocalDate localDate) {
+            if (localDate == null) {
+                return null;
+            }
+            return localDate.plusDays(1);
+        }
+
+        @Override
+        public LocalDateTime roundUpTimePart(LocalDateTime localDateTime) {
+            if (localDateTime == null) {
+                return null;
+            }
+            return localDateTime.plusDays(1).truncatedTo(ChronoUnit.DAYS);
         }
 
         protected Calendar makeRoundedUpClandar(java.util.Date date) {

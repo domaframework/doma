@@ -17,6 +17,8 @@ package org.seasar.doma.internal.expr;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.util.CharSequenceUtil;
@@ -83,6 +85,11 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     }
 
     @Override
+    public LocalDateTime roundDownTimePart(LocalDateTime localDateTime) {
+        return localDateTime;
+    }
+
+    @Override
     public java.util.Date roundUpTimePart(java.util.Date date) {
         return date;
     }
@@ -95,6 +102,16 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     @Override
     public Timestamp roundUpTimePart(Timestamp timestamp) {
         return timestamp;
+    }
+
+    @Override
+    public LocalDate roundUpTimePart(LocalDate localDate) {
+        return localDate;
+    }
+
+    @Override
+    public LocalDateTime roundUpTimePart(LocalDateTime localDateTime) {
+        return localDateTime;
     }
 
     @Override
@@ -116,5 +133,4 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     public boolean isNotBlank(CharSequence charSequence) {
         return CharSequenceUtil.isNotBlank(charSequence);
     }
-
 }

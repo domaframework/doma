@@ -17,6 +17,8 @@ package org.seasar.doma.expr;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 式の中で利用可能な関数群です。
@@ -137,6 +139,15 @@ public interface ExpressionFunctions {
     Timestamp roundDownTimePart(Timestamp timestamp);
 
     /**
+     * LocalDateTime の時刻部分を切り捨てます。
+     * 
+     * @param localDateTime
+     *            LocalDateTime
+     * @return 時刻部分が切り捨てられたタイムスタンプ
+     */
+    LocalDateTime roundDownTimePart(LocalDateTime localDateTime);
+
+    /**
      * 日付の時刻部分を切り上げます。
      * 
      * @param date
@@ -163,6 +174,24 @@ public interface ExpressionFunctions {
      * @return 時刻部分が切り上げられたタイムスタンプ
      */
     Timestamp roundUpTimePart(Timestamp timestamp);
+
+    /**
+     * 翌日の日付を返します。
+     * 
+     * @param localDate
+     *            LocalDate
+     * @return 翌日の日付
+     */
+    LocalDate roundUpTimePart(LocalDate localDate);
+
+    /**
+     * LocalDateTime の時刻部分を切り上げます。
+     * 
+     * @param localDateTime
+     *            LocalDateTime
+     * @return 時刻部分が切り上げられたタイムスタンプ
+     */
+    LocalDateTime roundUpTimePart(LocalDateTime localDateTime);
 
     /**
      * 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0} の場合 {@code true} を返します。
