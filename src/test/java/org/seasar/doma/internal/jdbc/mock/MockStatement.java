@@ -95,6 +95,7 @@ public class MockStatement extends MockWrapper implements Statement {
     public int[] executeBatch() throws SQLException {
         int[] results = new int[addBatchCount];
         Arrays.fill(results, updatedRows);
+        addBatchCount = 0;
         return results;
     }
 
