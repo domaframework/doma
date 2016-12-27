@@ -206,16 +206,16 @@ public class BatchInsertExecutor {
             builder.queryTimeout(queryTimeout);
         }
         if (sqlLogType != null) {
-            builder.queryTimeout(queryTimeout);
+            builder.sqlLogType(sqlLogType);
         }
         if (batchSize > 0) {
             builder.batchSize(batchSize);
         }
         if (className != null) {
-            builder.batchSize(batchSize);
+            builder.callerClassName(className);
         }
         if (methodName != null) {
-            builder.batchSize(batchSize);
+            builder.callerMethodName(methodName);
         }                
         for (P p : params) {
             buildConsumer.accept(p, builder);
