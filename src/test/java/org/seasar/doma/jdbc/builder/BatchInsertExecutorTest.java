@@ -23,8 +23,10 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.message.Message;
 
 /**
  * @author bakenezumi
@@ -152,8 +154,9 @@ public class BatchInsertExecutorTest extends TestCase {
         builder.sql("values (");
 
         try {
-            builder.literal(int.class, 10).sql(", ");
-        } catch (IllegalStateException e) {
+            builder.param(int.class, 10).sql(", ");
+        } catch (JdbcException e) {
+            assertEquals(Message.DOMA2229, e.getMessageResource());
             return;
         }
 
@@ -174,7 +177,8 @@ public class BatchInsertExecutorTest extends TestCase {
 
         try {
             builder.literal(String.class, "ALLEN").sql(", ");
-        } catch (IllegalStateException e) {
+        } catch (JdbcException e) {
+            assertEquals(Message.DOMA2230, e.getMessageResource());
             return;
         }
 
@@ -207,11 +211,11 @@ public class BatchInsertExecutorTest extends TestCase {
 
     public void testExecutorByMap() throws Exception {
         List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>(){{
+            add(new LinkedHashMap<String, Object>() {{
                 put("name", "SMITH");
                 put("salary", 500);
             }});
-            add(new LinkedHashMap<String, Object>(){{
+            add(new LinkedHashMap<String, Object>() {{
                 put("name", "ALLEN");
                 put("salary", null);
             }});
@@ -224,5 +228,6 @@ public class BatchInsertExecutorTest extends TestCase {
             builder.param(String.class, (String) emp.get("name")).sql(", ");
             builder.param(Integer.class, (Integer) emp.get("salary")).sql(")");
         });
-    }    
+    }
+
 }

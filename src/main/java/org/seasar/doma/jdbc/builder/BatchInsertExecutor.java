@@ -31,6 +31,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
+import org.seasar.doma.message.Message;
 
 /**
  * INSERT文を組み立てバッチ実行するクラスです。
@@ -462,10 +463,10 @@ public class BatchInsertExecutor {
             if (paramMap.containsKey(pi)) {
                 BatchParam batchParam = paramMap.get(pi);
                 if (paramClass != batchParam.paramClass) {
-                    throw new IllegalStateException("パラメータの型が異なります。バッチ実行されるクエリは全て同一でなければなりません。");
+                   throw new JdbcException(Message.DOMA2229);
                 }
                 if (literal != batchParam.literal) {
-                    throw new IllegalStateException("パラメータなのかリテラルなのかは動的に変更できません。バッチ実行されるクエリは全て同一でなければなりません。");
+                    throw new JdbcException(Message.DOMA2230);
                 }
                 batchParam.add(param);
             }
