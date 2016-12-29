@@ -53,7 +53,6 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
-import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -630,20 +629,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             EntityConstructorMeta constructorMeta = getConstructorMeta(
                     classElement, entityMeta);
             if (constructorMeta == null) {
-                if (Options.isKaptEnabled(env)) {
-                    constructorMeta = getConstructorMetaForKotlin(classElement,
-                            entityMeta);
-                    if (constructorMeta == null) {
-                        throw new AptException(
-                                Message.DOMA4282,
-                                env,
-                                classElement,
-                                new Object[] { classElement.getQualifiedName() });
-                    }
-                } else {
-                    throw new AptException(Message.DOMA4281, env, classElement,
-                            new Object[] { classElement.getQualifiedName() });
-                }
+                throw new AptException(Message.DOMA4281, env, classElement,
+                        new Object[] { classElement.getQualifiedName() });
             }
             if (constructorMeta.getConstructorElement().getModifiers()
                     .contains(Modifier.PRIVATE)) {
@@ -660,35 +647,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                         new Object[] { classElement.getQualifiedName() });
             }
         }
-    }
-
-    protected EntityConstructorMeta getConstructorMetaForKotlin(
-            TypeElement classElement, EntityMeta entityMeta) {
-        for (ExecutableElement constructor : ElementFilter
-                .constructorsIn(classElement.getEnclosedElements())) {
-            if (entityMeta.getAllPropertyMetas().size() == constructor
-                    .getParameters().size()) {
-                Iterator<EntityPropertyMeta> propIt = entityMeta
-                        .getAllPropertyMetas().iterator();
-                Iterator<? extends VariableElement> paramIt = constructor
-                        .getParameters().iterator();
-                int index = 0;
-                for (; propIt.hasNext() && paramIt.hasNext();) {
-                    TypeMirror prop = propIt.next().getType();
-                    TypeMirror param = paramIt.next().asType();
-                    if (!TypeMirrorUtil.isSameType(prop, param, env)) {
-                        throw new AptException(Message.DOMA4307, env,
-                                classElement,
-                                new Object[] { prop, param, index,
-                                        classElement.getQualifiedName() });
-                    }
-                    index++;
-                }
-                return new EntityConstructorMeta(constructor,
-                        entityMeta.getAllPropertyMetas());
-            }
-        }
-        return null;
     }
 
     protected EntityConstructorMeta getConstructorMeta(

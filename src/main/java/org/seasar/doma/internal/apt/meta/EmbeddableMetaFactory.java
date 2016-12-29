@@ -53,7 +53,6 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
-import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.EmbeddableMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -247,21 +246,8 @@ public class EmbeddableMetaFactory implements
         EmbeddableConstructorMeta constructorMeta = getConstructorMeta(
                 embeddableElement, embeddableMeta);
         if (constructorMeta == null) {
-            if (Options.isKaptEnabled(env)) {
-                constructorMeta = getConstructorMetaForKotlin(
-                        embeddableElement, embeddableMeta);
-                if (constructorMeta == null) {
-                    throw new AptException(
-                            Message.DOMA4292,
-                            env,
-                            embeddableElement,
-                            new Object[] { embeddableElement.getQualifiedName() });
-                }
-            } else {
-                throw new AptException(Message.DOMA4293, env,
-                        embeddableElement,
-                        new Object[] { embeddableElement.getQualifiedName() });
-            }
+            throw new AptException(Message.DOMA4293, env, embeddableElement,
+                    new Object[] { embeddableElement.getQualifiedName() });
         }
         if (constructorMeta.getConstructorElement().getModifiers()
                 .contains(Modifier.PRIVATE)) {
@@ -269,35 +255,6 @@ public class EmbeddableMetaFactory implements
                     new Object[] { embeddableElement.getQualifiedName() });
         }
         embeddableMeta.setConstructorMeta(constructorMeta);
-    }
-
-    protected EmbeddableConstructorMeta getConstructorMetaForKotlin(
-            TypeElement embeddableElement, EmbeddableMeta embeddableMeta) {
-        for (ExecutableElement constructor : ElementFilter
-                .constructorsIn(embeddableElement.getEnclosedElements())) {
-            if (embeddableMeta.getEmbeddablePropertyMetas().size() == constructor
-                    .getParameters().size()) {
-                Iterator<EmbeddablePropertyMeta> propIt = embeddableMeta
-                        .getEmbeddablePropertyMetas().iterator();
-                Iterator<? extends VariableElement> paramIt = constructor
-                        .getParameters().iterator();
-                int index = 0;
-                for (; propIt.hasNext() && paramIt.hasNext();) {
-                    TypeMirror prop = propIt.next().getType();
-                    TypeMirror param = paramIt.next().asType();
-                    if (!TypeMirrorUtil.isSameType(prop, param, env)) {
-                        throw new AptException(Message.DOMA4308, env,
-                                embeddableElement, new Object[] { prop, param,
-                                        index,
-                                        embeddableElement.getQualifiedName() });
-                    }
-                    index++;
-                }
-                return new EmbeddableConstructorMeta(constructor,
-                        embeddableMeta.getEmbeddablePropertyMetas());
-            }
-        }
-        return null;
     }
 
     protected EmbeddableConstructorMeta getConstructorMeta(
