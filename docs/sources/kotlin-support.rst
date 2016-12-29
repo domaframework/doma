@@ -5,7 +5,7 @@ Kotlin サポート
 .. contents:: 目次
    :depth: 3
 
-Doma は `Kotlin <https://kotlinlang.org/>`_ を実験的にサポートしています。
+Doma は `Kotlin <https://kotlinlang.org/>`_ 1.0.6を実験的にサポートしています。
 
 Kotlin利用のベストプラクティス
 ================================
@@ -20,7 +20,6 @@ Kotlin利用のベストプラクティス
 * コンストラクタは1つだけ定義する
 * コンストラクタ以外でプロパティを定義しない
 * コンストラクタで定義するプロパティには `val` を使用する
-* 継承は使わない
 
 .. code-block:: java
 
@@ -52,7 +51,6 @@ Kotlin利用のベストプラクティス
 * コンストラクタは1つだけ定義する
 * コンストラクタ以外でプロパティを定義しない
 * コンストラクタで定義するプロパティには `val` を使用する
-* 継承は使わない
 
 .. code-block:: java
 
@@ -62,7 +60,6 @@ Kotlin利用のベストプラクティス
 Daoインタフェース
 -------------------
 
-* SQLファイルとマッピングする場合は `@ParameterName` を使ってメソッドのパラメータに名前をつける
 * 更新処理の戻り値の型は `org.seasar.doma.jdbc.Result` や `org.seasar.doma.jdbc.BatchResult` を使う
 
 .. code-block:: java
@@ -70,7 +67,7 @@ Daoインタフェース
   @Dao(config = AppConfig::class)
   interface PersonDao {
     @Select
-    fun selectById(@ParameterName("id") id: Int): Person
+    fun selectById(id: Int): Person
     @Insert
     fun insert(person: Person): Result<Person>
   }
@@ -87,10 +84,9 @@ Daoインタフェース
 kaptによるビルド
 -------------------
 
-Kotlin で記述されたクラスやインタフェースに対して注釈処理をするには `kapt <http://blog.jetbrains.com/kotlin/2015/06/better-annotation-processing-supporting-stubs-in-kapt/>`_ を実行する必要があります。
-2016年5月現在、Kotlin 1.0.2のkaptは機能が不足しておりかつ動作が不安定です。また、ドキュメントがありません。
-Daoインタフェースで `@ParameterName` を用いて明示的に名前をつけることを推奨するのも kapt の不具合に由来します。
-不安定な挙動を避けるため、Gradleでビルドする際、常に `clean build` を実行することを推奨します。
+Kotlinで記述されたクラスやインタフェースに対して注釈処理をするには `kapt <https://blog.jetbrains.com/kotlin/2016/12/kotlin-1-0-6-is-here/>`_ を実行する必要があります。
+kaptは実験的な位置付けにありドキュメントがありません。
+Gradleでビルドする際は、確実な注釈処理が行われるように常に `clean build` を実行することを推奨します。
 
 .. code-block:: sh
 
@@ -101,10 +97,8 @@ Eclispeを利用する場合設定を適切に行えばJavaの注釈処理は自
 JavaとKotlinの混在
 -------------------------
 
-kaptの不具合を避けるため、Domaに関するコードの全てもしくは一部をJavaで書くことは検討に値します。
-特に、DaoについてはJavaで書いても良いかもしれません。
-JavaとKotlinで記述量にほとんど差がなく、 `@ParameterName` を使う必要性を避けられるためです。
-Domaの利用において、JavaとKotlinの混在は特に問題ありません。
+kaptの不確実な挙動を避けるため、Domaに関するコードの全てもしくは一部をJavaで書くことは検討に値します。
+Domaの利用において、JavaとKotlinの混在は問題ありません。
 
 サンプルプロジェクト
 =====================

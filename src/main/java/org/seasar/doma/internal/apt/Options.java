@@ -47,8 +47,6 @@ public final class Options {
 
     public static final String VERSION_VALIDATION = "doma.version.validation";
 
-    public static final String KAPT_ANNOTATIONS = "kapt.annotations";
-
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -114,10 +112,6 @@ public final class Options {
     public static boolean getVersionValidation(ProcessingEnvironment env) {
         String v = env.getOptions().get(Options.VERSION_VALIDATION);
         return v != null ? Boolean.valueOf(v).booleanValue() : true;
-    }
-
-    public static boolean isKaptEnabled(ProcessingEnvironment env) {
-        return env.getOptions().containsKey(KAPT_ANNOTATIONS);
     }
 
     protected static class Constants {
