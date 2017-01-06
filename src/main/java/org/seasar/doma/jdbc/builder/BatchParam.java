@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.builder;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNull;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,6 +38,16 @@ class BatchParam<P> {
         this.paramClass = paramClass;
         this.name = "p" + index.getValue();
         this.literal = literal;
+    }
+
+    BatchParam(BatchParam<Object> baseParam, Class<P> paramClass) {
+        this.name = baseParam.name;
+        this.paramClass = paramClass;
+        this.literal = baseParam.literal;
+        baseParam.params.forEach(e -> {
+            assertNull(e);
+            params.add(null);
+        });
     }
 
     void add(P param) {

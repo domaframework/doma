@@ -26,11 +26,11 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
-import org.seasar.doma.jdbc.command.BatchInsertCommand;
-import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
+import org.seasar.doma.jdbc.command.BatchUpdateCommand;
+import org.seasar.doma.jdbc.query.SqlBatchUpdateQuery;
 
 /**
- * INSERT文を組み立てバッチ実行するクラスです。
+ * UPDATE文を組み立てバッチ実行するクラスです。
  * <p>
  * このクラスはスレッドセーフではありません。
  *
@@ -39,42 +39,49 @@ import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
  *
  * <pre>
  * List&lt;Employee&gt; employees = Arrays.asList(new Employee[] {
- *     new Employee(&quot;SMITH&quot;, 100),
- *     new Employee(&quot;ALLEN&quot;, 200)
+ *     new Employee(10, &quot;SMITH&quot;, new BigDecimal(&quot;1000&quot;)),
+ *     new Employee(20, &quot;ALLEN&quot;, new BigDecimal(&quot;2000&quot;))
  * });
- * BatchInsertExecutor executor = BatchInsertExecutor.newInstance(config);
+ * BatchUpdateExecutor executor = BatchUpdateExecutor.newInstance(config);
  * executor.batchSize(10);
  * executor.execute(employees, (emp, builder) -&gt; {
- *     builder.sql(&quot;insert into Emp&quot;);
- *     builder.sql(&quot;(name, salary)&quot;);
- *     builder.sql(&quot;values (&quot;);
- *     builder.param(String.class, emp.name).sql(&quot;, &quot;);
- *     builder.param(int.class, emp.salary).sql(&quot;)&quot;);
+ *     builder.sql(&quot;update Emp&quot;);
+ *     builder.sql(&quot;set&quot;);
+ *     builder.sql(&quot;name = &quot;).param(String.class, emp.name).sql(&quot;,&quot;);
+ *     builder.sql(&quot;salary = &quot;).param(BigDecimal.class, emp.salary);
+ *     builder.sql(&quot;where&quot;);
+ *     builder.sql(&quot;id = &quot;).param(int.class, emp.id);
  * });
  * </pre>
  *
  * <h4>実行されるSQL</h4>
  *
  * <pre>
- * insert into Emp
- * (name, salary)
- * values('SMITH', 100)
+ * update Emp
+ * set
+ * name = 'SMIHT',
+ * salary = 1000
+ * where
+ * id = 10
  *
- * insert into Emp
- * (name, salary)
- * values('ALLEN', 200)
+ * update Emp
+ * set
+ * name = 'SMIHT',
+ * ALLEN = 2000
+ * where
+ * id = 20
  * </pre>
  *
  *
  * @author bakenezumi
- * @since 2.13.1
+ * @since 2.14.0
  */
-public class BatchInsertExecutor {
+public class BatchUpdateExecutor {
 
-    private final SqlBatchInsertQuery query;
+    private final SqlBatchUpdateQuery query;
 
-    private BatchInsertExecutor(Config config) {
-        this.query = new SqlBatchInsertQuery();
+    private BatchUpdateExecutor(Config config) {
+        this.query = new SqlBatchUpdateQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
         this.query.setSqlLogType(SqlLogType.FORMATTED);
@@ -89,11 +96,11 @@ public class BatchInsertExecutor {
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      */
-    public static BatchInsertExecutor newInstance(Config config) {
+    public static BatchUpdateExecutor newInstance(Config config) {
         if (config == null) {
             throw new DomaNullPointerException("config");
         }
-        return new BatchInsertExecutor(config);
+        return new BatchUpdateExecutor(config);
     }
 
     /**
@@ -133,7 +140,7 @@ public class BatchInsertExecutor {
     public void batchSize(int batchSize) {
         query.setBatchSize(batchSize);
     }
- 
+
     /**
      * 呼び出し元のクラス名です。
      * <p>
@@ -168,10 +175,6 @@ public class BatchInsertExecutor {
         query.setCallerMethodName(methodName);
     }
 
-    String getMethodName() {
-        return query.getMethodName();
-    }
-
     /**
      * SQLを実行します。
      *
@@ -203,12 +206,12 @@ public class BatchInsertExecutor {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
         for (P p : params) {
             buildConsumer.accept(p, builder);
             builder = builder.fixSql();
         }
-        return builder.execute((q) -> new BatchInsertCommand(q));
+        return builder.execute((q) -> new BatchUpdateCommand(q));
     }
 
     /**
@@ -216,7 +219,7 @@ public class BatchInsertExecutor {
      * 
      * @return 組み立てられたSQL
      */
-    public List<? extends Sql<?>> getSqls() {
+    public List<? extends Sql<?>> getSqls() {      
         return query.getSqls();
     }
 

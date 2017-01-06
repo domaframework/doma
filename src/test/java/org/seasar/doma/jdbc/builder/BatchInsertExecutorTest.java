@@ -23,8 +23,11 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.message.Message;
 
@@ -34,8 +37,16 @@ import org.seasar.doma.message.Message;
  */
 public class BatchInsertExecutorTest extends TestCase {
 
+    private SqlBatchInsertQuery mockQuery() {
+        final SqlBatchInsertQuery query = new SqlBatchInsertQuery();
+        query.setConfig(new MockConfig());
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        return query;
+    }
+
     public void testBuilder() throws Exception {
-        BatchInsertExecutor.BatchInsertBuilder builder = BatchInsertExecutor.BatchInsertBuilder.newInstance(new MockConfig());
+        SqlBatchInsertQuery query = mockQuery();
+        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -49,11 +60,12 @@ public class BatchInsertExecutorTest extends TestCase {
         builder.param(int.class, 200).sql(")");
         builder = builder.fixSql();
 
-        builder.execute();
+        builder.execute((q) -> new BatchInsertCommand(q));
     }
 
     public void testGetSql() throws Exception {
-        BatchInsertExecutor.BatchInsertBuilder builder = BatchInsertExecutor.BatchInsertBuilder.newInstance(new MockConfig());
+        SqlBatchInsertQuery query = mockQuery();
+        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -87,7 +99,8 @@ public class BatchInsertExecutorTest extends TestCase {
     }
 
     public void testLiteral() throws Exception {
-        BatchInsertExecutor.BatchInsertBuilder builder = BatchInsertExecutor.BatchInsertBuilder.newInstance(new MockConfig());
+        SqlBatchInsertQuery query = mockQuery();
+        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -119,7 +132,8 @@ public class BatchInsertExecutorTest extends TestCase {
     }
 
     public void testNotEqualParamCall() throws Exception {
-        BatchInsertExecutor.BatchInsertBuilder builder = BatchInsertExecutor.BatchInsertBuilder.newInstance(new MockConfig());
+        SqlBatchInsertQuery query = mockQuery();
+        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -133,7 +147,7 @@ public class BatchInsertExecutorTest extends TestCase {
         builder = builder.fixSql();
 
         try {
-            builder.execute();
+           builder.execute((q) -> new BatchInsertCommand(q));
         } catch (AssertionError e) {
             return;
         }
@@ -142,7 +156,8 @@ public class BatchInsertExecutorTest extends TestCase {
     }
 
     public void testChangeType() throws Exception {
-        BatchInsertExecutor.BatchInsertBuilder builder = BatchInsertExecutor.BatchInsertBuilder.newInstance(new MockConfig());
+        SqlBatchInsertQuery query = mockQuery();
+        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -164,7 +179,8 @@ public class BatchInsertExecutorTest extends TestCase {
     }
 
     public void testParamToLiteral() throws Exception {
-        BatchInsertExecutor.BatchInsertBuilder builder = BatchInsertExecutor.BatchInsertBuilder.newInstance(new MockConfig());
+        SqlBatchInsertQuery query = mockQuery();
+        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
