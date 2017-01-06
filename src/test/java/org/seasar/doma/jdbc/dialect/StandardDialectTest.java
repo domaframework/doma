@@ -47,6 +47,24 @@ public class StandardDialectTest extends TestCase {
         assertEquals("bbb", dialect.removeQuote("bbb"));
     }
 
+    public void testExpressionFunctions_escape() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("a$$a$%a$_", functions.escape("a$a%a_"));
+    }
+
+    public void testExpressionFunctions_escape_withExclamation() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("a!!a!%a!_", functions.escape("a!a%a_", '!'));
+    }
+
+    public void testExpressionFunctions_escape_withBackslash() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("a\\\\a\\%a\\_", functions.escape("a\\a%a_", '\\'));
+    }
+
     public void testExpressionFunctions_prefix() throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
