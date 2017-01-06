@@ -915,8 +915,7 @@ public class StandardDialect implements Dialect {
             if (text == null) {
                 return null;
             }
-            return escapeWildcard(defaultWildcardReplacementPattern, text,
-                    defaultReplacement);
+            return escapeWildcard(text, escapeChar);
         }
 
         @Override
@@ -924,7 +923,8 @@ public class StandardDialect implements Dialect {
             if (text == null) {
                 return null;
             }
-            return escapeWildcard(text, escapeChar);
+            return escapeWildcard(defaultWildcardReplacementPattern, text,
+                    defaultReplacement);
         }
 
         @Override
