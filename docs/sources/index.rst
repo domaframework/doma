@@ -52,6 +52,7 @@ User Documentation
    transaction
    annotation-processing
    build
+   lombok-support
    kotlin-support
 
 Developer Documentation

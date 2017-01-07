@@ -47,6 +47,10 @@ public final class Options {
 
     public static final String VERSION_VALIDATION = "doma.version.validation";
 
+    public static final String LOMBOK_ALL_ARGS_CONSTRUCTOR = "doma.lombok.AllArgsConstructor";
+
+    public static final String LOMBOK_VALUE = "doma.lombok.Value";
+
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -114,11 +118,24 @@ public final class Options {
         return v != null ? Boolean.valueOf(v).booleanValue() : true;
     }
 
+    public static String getLombokAllArgsConstructor(ProcessingEnvironment env) {
+        String name = env.getOptions().get(Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
+        return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
+    }
+
+    public static String getLombokValue(ProcessingEnvironment env) {
+        String name = env.getOptions().get(Options.LOMBOK_VALUE);
+        return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
+    }
+
     protected static class Constants {
 
         public static final String DEFAULT_DAO_SUFFIX = "Impl";
 
         public static final String DEFAULT_ENTITY_FIELD_PREFIX = "$";
 
+        public static final String DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR = "lombok.AllArgsConstructor";
+
+        public static final String DEFAULT_LOMBOK_VALUE = "lombok.Value";
     }
 }
