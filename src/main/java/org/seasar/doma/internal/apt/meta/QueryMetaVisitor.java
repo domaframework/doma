@@ -43,4 +43,6 @@ public interface QueryMetaVisitor<R, P> {
 
     R visitDefaultQueryMeta(DefaultQueryMeta m, P p);
 
+    R visitAutoMapInsertQueryMeta(AutoMapInsertQueryMeta m, P p);
+
 }

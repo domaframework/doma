@@ -53,6 +53,7 @@ import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
+import org.seasar.doma.internal.apt.meta.AutoMapInsertQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoModuleQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMeta;
@@ -701,6 +702,43 @@ public class DaoGenerator extends AbstractGenerator {
                         .getReturnMeta().getTypeName());
                 iprint("__query.complete();%n");
             }
+
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
+                    m.getName());
+            iprint("return __result;%n");
+
+            printThrowingStatements(m);
+            return null;
+        }
+
+        @Override
+        public Void visitAutoMapInsertQueryMeta(AutoMapInsertQueryMeta m,
+                String methodName) {
+            printEnteringStatements(m);
+            printPrerequisiteStatements(m);
+
+            iprint("%1$s __query = getQueryImplementors().create%2$s(%3$s, \"%4$s\", %5$s);%n",
+            /* 1 */m.getQueryClass().getName(),
+            /* 2 */m.getQueryClass().getSimpleName(),
+            /* 3 */methodName,
+            /* 4 */m.getTableName(),
+            /* 5 */m.getParameterMetas().iterator().next().getName());
+            iprint("__query.setMethod(%1$s);%n", methodName);
+            iprint("__query.setConfig(__config);%n");
+            iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
+            iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType()
+                    .getClass().getName(), m.getSqlLogType());
+
+            iprint("__query.prepare();%n");
+            iprint("%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+                    m.getCommandClass().getName(), m.getCommandClass()
+                            .getSimpleName(), methodName);
+
+            iprint("%1$s __result = __command.execute();%n", m
+                    .getReturnMeta().getTypeName());
+            iprint("__query.complete();%n");
 
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName,
                     m.getName());

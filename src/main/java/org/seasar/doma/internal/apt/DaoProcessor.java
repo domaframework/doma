@@ -29,6 +29,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.AutoMapInsertQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.BlobCreateQueryMetaFactory;
@@ -69,6 +70,7 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
         List<QueryMetaFactory> factories = new ArrayList<QueryMetaFactory>();
         factories.add(new SqlFileSelectQueryMetaFactory(processingEnv));
         factories.add(new AutoModifyQueryMetaFactory(processingEnv));
+        factories.add(new AutoMapInsertQueryMetaFactory(processingEnv));
         factories.add(new AutoBatchModifyQueryMetaFactory(processingEnv));
         factories.add(new AutoFunctionQueryMetaFactory(processingEnv));
         factories.add(new AutoProcedureQueryMetaFactory(processingEnv));

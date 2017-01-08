@@ -81,6 +81,16 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testAutoMapInsert() throws Exception {
+        Class<?> target = AutoMapInsertDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
     public void testSqlFileInsert() throws Exception {
         Class<?> target = SqlFileInsertDao.class;
         DaoProcessor processor = new DaoProcessor();
