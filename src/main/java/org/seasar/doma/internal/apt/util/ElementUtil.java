@@ -15,11 +15,12 @@
  */
 package org.seasar.doma.internal.apt.util;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
@@ -177,9 +178,22 @@ public final class ElementUtil {
     public static AnnotationMirror getAnnotationMirror(Element element,
             Class<? extends Annotation> annotationClass,
             ProcessingEnvironment env) {
+        return getAnnotationMirrorInternal(element, env,
+                type -> TypeMirrorUtil.isSameType(type, annotationClass, env));
+    }
+
+    public static AnnotationMirror getAnnotationMirror(Element element,
+            String annotationClassName, ProcessingEnvironment env) {
+        return getAnnotationMirrorInternal(element, env, type -> TypeMirrorUtil
+                .getClassName(type, env).equals(annotationClassName));
+    }
+
+    protected static AnnotationMirror getAnnotationMirrorInternal(
+            Element element, ProcessingEnvironment env,
+            Predicate<DeclaredType> predicate) {
         for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
             DeclaredType annotationType = annotationMirror.getAnnotationType();
-            if (TypeMirrorUtil.isSameType(annotationType, annotationClass, env)) {
+            if (predicate.test(annotationType)) {
                 return annotationMirror;
             }
         }

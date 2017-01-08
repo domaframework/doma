@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.DomainProcessor;
+import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.message.Message;
 
 /**
@@ -353,6 +354,83 @@ public class DomainProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4105);
+    }
+
+    public void testLombokValue() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        DomainProcessor processor = new DomainProcessor();
+        Class<?> target = LombokValue.class;
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testLombokValueStaticConstructor() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        DomainProcessor processor = new DomainProcessor();
+        Class<?> target = LombokValueStaticConstructor.class;
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4428);
+    }
+
+    public void testLombokValueNoField() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        DomainProcessor processor = new DomainProcessor();
+        Class<?> target = LombokValueNoField.class;
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4430);
+    }
+
+    public void testLombokValueTwoFields() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        DomainProcessor processor = new DomainProcessor();
+        Class<?> target = LombokValueTwoFields.class;
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4431);
+    }
+
+    public void testLombokValueTypeNotAssignable() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        DomainProcessor processor = new DomainProcessor();
+        Class<?> target = LombokValueTypeNotAssignable.class;
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4432);
+    }
+
+    public void testLombokValueAccessorMethod() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        DomainProcessor processor = new DomainProcessor();
+        Class<?> target = LombokValueAccessorMethod.class;
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4429);
+    }
+
+    public void testLombokValueAccessorMethod_boolean() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        DomainProcessor processor = new DomainProcessor();
+        Class<?> target = LombokValueAccessorMethod_boolean.class;
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4429);
     }
 
 }

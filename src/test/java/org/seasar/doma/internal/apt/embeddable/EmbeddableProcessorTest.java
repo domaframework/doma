@@ -17,6 +17,8 @@ package org.seasar.doma.internal.apt.embeddable;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.EmbeddableProcessor;
+import org.seasar.doma.internal.apt.lombok.AllArgsConstructor;
+import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.message.Message;
 
 /**
@@ -105,6 +107,76 @@ public class EmbeddableProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4417);
+    }
+
+    public void testLombokValue() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        Class<?> target = LombokValue.class;
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testLombokValueStaticConstructor() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        Class<?> target = LombokValueStaticConstructor.class;
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4423);
+    }
+
+    public void testLombokAllArgsConstructor() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructor.class;
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testLombokAllArgsConstructorStaticName() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructorStaticName.class;
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4424);
+    }
+
+    public void testLombokAllArgsConstructorAccess_private() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructorAccess_private.class;
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4425);
+    }
+
+    public void testLombokAllArgsConstructorAccess_none() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructorAccess_none.class;
+        EmbeddableProcessor processor = new EmbeddableProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4427);
     }
 
 }
