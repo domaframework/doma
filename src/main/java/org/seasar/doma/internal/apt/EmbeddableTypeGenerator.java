@@ -156,9 +156,9 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
             /* 15 */pm.getBoxedClassName(),
             /* 16 */domainTypeName,
             /* 17 */pm.isColumnQuoteRequired());
-            print(it.hasNext() ? "," : ");");
-            print("%n");
+            print(it.hasNext() ? ",%n" : "");
         }
+        print(");%n");
         iprint("}%n");
         print("%n");
     }
