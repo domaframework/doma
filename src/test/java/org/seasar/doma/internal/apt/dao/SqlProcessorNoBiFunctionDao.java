@@ -13,27 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.dao;
 
-import java.util.List;
-import java.util.function.Function;
-
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.Dao;
+import org.seasar.doma.SqlProcessor;
 
 /**
- * 
- * @author taedium
- * 
+ * @author nakamura
+ *
  */
-public class CallableSql extends AbstractSql<SqlParameter> {
+@Dao(config = MyConfig.class)
+public interface SqlProcessorNoBiFunctionDao {
 
-    public CallableSql(SqlKind kind, CharSequence rawSql,
-            CharSequence formattedSql, List<? extends SqlParameter> parameters,
-            SqlLogType sqlLogType, Function<String, String> converter) {
-        super(kind, rawSql, formattedSql, null, parameters, sqlLogType,
-                converter);
-    }
-
+    @SqlProcessor
+    void process(Integer id);
 }

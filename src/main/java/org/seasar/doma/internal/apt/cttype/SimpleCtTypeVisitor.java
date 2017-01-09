@@ -127,4 +127,19 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable>
         return defaultAction(ctType, p);
     }
 
+    @Override
+    public R visitBiFunctionCtType(BiFunctionCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
+    @Override
+    public R visitConfigCtType(ConfigCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
+    @Override
+    public R visitPreparedSqlCtType(PreparedSqlCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
 }

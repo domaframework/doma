@@ -468,10 +468,17 @@ public enum Message implements MessageResource {
     DOMA4430("@lombok.Valueによって初期化されるインスタンスフィールドが存在しません。 at {0}"),
     DOMA4431("@lombok.Valueによって初期化されるインスタンスフィールドが1つだけでなければいけませんが、2つ以上存在します。 at {0}"),
     DOMA4432("@lombok.Valueによって初期化されるインスタンスフィールドの型[{0}]が@DomainのvalueType要素に指定された型[{1}]と一致しません。 at {2}.{3}"),
+    DOMA4433("@SqlProcessorを使う場合、BiFunction型のパラメータの利用は必須です。 at {0}.{1}"),
+    DOMA4434("BiFunction型のパラメータは複数指定できません。 at {0}.{1}"),
+    DOMA4435("BiFunctionの2番目の実型引数の型は、org.seasar.doma.jdbc.PreparedSqlでなければいけません。 at {0}.{1}"),
+    DOMA4436("戻り値の型[{0}]とBiFunctionの3番目の実型引数の型[{1}]が一致していません。 at {2}.{3}"),
+    DOMA4437("BiFunctionの1番目の実型引数の型は、org.seasar.doma.jdbc.Configでなければいけません。 at {0}.{1}"),
+    DOMA4438("パラメータの型[{0}]を原型にしてはいけません。 at {1}.{2}"),
+    DOMA4439("パラメータの型[{0}]にワイルカード型の型パラメータを含めてはいけません。 at {1}.{2}"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。まず、JDBCドライバがクラスパスにあることを確認してください。次に、JDBCドライバが自動でロードされない場合は、Class.forNameで明示的にロードしてください。 ex) Class.forName(\"oracle.jdbc.driver.OracleDriver\")"),
-    DOMA5002("urlプロパティが設定されていません。"), ;
+    DOMA5002("urlプロパティが設定されていません。"),;
 
     private final String messagePattern;
 
@@ -506,8 +513,8 @@ public enum Message implements MessageResource {
             boolean fallback = false;
             ResourceBundle bundle;
             try {
-                bundle = ResourceBundle.getBundle(MessageResourceBundle.class
-                        .getName());
+                bundle = ResourceBundle
+                        .getBundle(MessageResourceBundle.class.getName());
             } catch (MissingResourceException ignored) {
                 fallback = true;
                 bundle = new MessageResourceBundle();

@@ -1,6 +1,6 @@
 package org.seasar.doma.internal.jdbc.scalar;
 
-import org.seasar.doma.internal.jdbc.command.JdbcMappable;
+import org.seasar.doma.jdbc.JdbcMappable;
 
 public interface Scalar<BASIC, CONTAINER> extends JdbcMappable<BASIC> {
 

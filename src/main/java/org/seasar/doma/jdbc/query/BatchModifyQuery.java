@@ -17,7 +17,7 @@ package org.seasar.doma.jdbc.query;
 
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
 

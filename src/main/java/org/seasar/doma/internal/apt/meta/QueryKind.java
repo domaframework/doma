@@ -26,6 +26,7 @@ import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.command.ProcedureCommand;
 import org.seasar.doma.jdbc.command.ScriptCommand;
 import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.jdbc.command.SqlProcessorCommand;
 import org.seasar.doma.jdbc.command.UpdateCommand;
 import org.seasar.doma.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
@@ -49,6 +50,7 @@ import org.seasar.doma.jdbc.query.SqlFileInsertQuery;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.jdbc.query.SqlFileUpdateQuery;
+import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 
 /**
  * @author taedium
@@ -365,7 +367,21 @@ public enum QueryKind {
         }
 
     },
-    ;
+
+    SQL_PROCESSOR {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return SqlProcessorQuery.class;
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return SqlProcessorCommand.class;
+        }
+
+    },;
 
     public abstract Class<? extends Query> getQueryClass();
 

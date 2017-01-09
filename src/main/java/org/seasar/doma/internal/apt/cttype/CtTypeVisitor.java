@@ -57,4 +57,9 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
     R visitStreamCtType(StreamCtType ctType, P p) throws TH;
 
+    R visitBiFunctionCtType(BiFunctionCtType ctType, P p) throws TH;
+
+    R visitConfigCtType(ConfigCtType ctType, P p) throws TH;
+
+    R visitPreparedSqlCtType(PreparedSqlCtType ctType, P p) throws TH;
 }

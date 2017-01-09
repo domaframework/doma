@@ -20,6 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Optional;
 
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
+import org.seasar.doma.jdbc.SingleResultParameter;
+import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

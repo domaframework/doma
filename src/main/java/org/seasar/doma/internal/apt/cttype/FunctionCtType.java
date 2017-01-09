@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import java.util.function.Function;
@@ -53,8 +53,8 @@ public class FunctionCtType extends AbstractCtType {
     public boolean isWildcardType() {
         return returnCtType.getTypeMirror() != null
                 && returnCtType.getTypeMirror().getKind() == TypeKind.WILDCARD
-                || targetCtType.getTypeMirror() != null
-                && targetCtType.getTypeMirror().getKind() == TypeKind.WILDCARD;
+                || targetCtType.getTypeMirror() != null && targetCtType
+                        .getTypeMirror().getKind() == TypeKind.WILDCARD;
     }
 
     public static FunctionCtType newInstance(TypeMirror type,
@@ -72,17 +72,19 @@ public class FunctionCtType extends AbstractCtType {
             TypeMirror targetTypeMirror = typeArguments.get(0);
             TypeMirror returnTypeMirror = typeArguments.get(1);
 
-            functionCtType.targetCtType = StreamCtType.newInstance(
-                    targetTypeMirror, env);
+            functionCtType.targetCtType = StreamCtType
+                    .newInstance(targetTypeMirror, env);
             if (functionCtType.targetCtType == null) {
+                functionCtType.targetCtType = PreparedSqlCtType
+                        .newInstance(targetTypeMirror, env);
                 if (functionCtType.targetCtType == null) {
-                    functionCtType.targetCtType = AnyCtType.newInstance(
-                            targetTypeMirror, env);
+                    functionCtType.targetCtType = AnyCtType
+                            .newInstance(targetTypeMirror, env);
                 }
             }
 
-            functionCtType.returnCtType = AnyCtType.newInstance(
-                    returnTypeMirror, env);
+            functionCtType.returnCtType = AnyCtType
+                    .newInstance(returnTypeMirror, env);
         }
 
         return functionCtType;

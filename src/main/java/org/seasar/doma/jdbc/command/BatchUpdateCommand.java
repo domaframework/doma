@@ -19,7 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.BatchUpdateQuery;
 
 /**

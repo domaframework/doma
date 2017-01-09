@@ -13,16 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.command;
+package org.seasar.doma.jdbc;
 
-import org.seasar.doma.jdbc.JdbcMappingHint;
-import org.seasar.doma.wrapper.Wrapper;
+import java.util.List;
 
 /**
  * @author nakamura-to
  * 
  */
-public interface JdbcMappable<BASIC> extends JdbcMappingHint {
+public interface ResultListParameter<ELEMENT> extends
+        ResultParameter<List<ELEMENT>>, ListParameter<ELEMENT> {
 
-    Wrapper<BASIC> getWrapper();
 }
