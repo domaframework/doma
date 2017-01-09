@@ -1,14 +1,10 @@
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.jdbc;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlParameter;
 
 public abstract class AbstractSql<P extends SqlParameter> implements Sql<P> {
 

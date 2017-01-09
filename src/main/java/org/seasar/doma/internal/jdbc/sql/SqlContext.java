@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import org.seasar.doma.jdbc.InParameter;
 
 /**
  * @author nakamura-to

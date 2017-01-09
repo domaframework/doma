@@ -13,15 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.jdbc;
 
-import java.util.List;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
- * @author nakamura-to
+ * @author taedium
  * 
  */
-public interface ResultListParameter<ELEMENT> extends
-        ResultParameter<List<ELEMENT>>, ListParameter<ELEMENT> {
+public interface ListParameter<ELEMENT> extends SqlParameter {
+
+    String getName();
+
+    ObjectProvider<ELEMENT> createObjectProvider(Query query);
+
+    void add(ELEMENT element);
 
 }

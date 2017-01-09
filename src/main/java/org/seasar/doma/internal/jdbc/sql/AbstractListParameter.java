@@ -19,6 +19,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
+import org.seasar.doma.jdbc.ListParameter;
+import org.seasar.doma.jdbc.SqlParameterVisitor;
+
 /**
  * @author taedium
  * 

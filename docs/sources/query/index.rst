@@ -16,3 +16,4 @@
    procedure
    factory
    script
+   sql-processor

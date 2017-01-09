@@ -18,7 +18,7 @@ package org.seasar.doma.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
-import org.seasar.doma.internal.jdbc.sql.ResultParameter;
+import org.seasar.doma.jdbc.ResultParameter;
 import org.seasar.doma.jdbc.SqlKind;
 
 /**

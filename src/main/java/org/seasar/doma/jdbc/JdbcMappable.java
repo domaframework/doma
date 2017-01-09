@@ -13,17 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.command;
+package org.seasar.doma.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author nakamura-to
  * 
  */
-public interface ObjectProvider<OBJECT> {
+public interface JdbcMappable<BASIC> extends JdbcMappingHint {
 
-    OBJECT get(ResultSet resultSet) throws SQLException;
-
+    Wrapper<BASIC> getWrapper();
 }

@@ -28,6 +28,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -237,6 +238,24 @@ public class QueryParameterMeta {
             referenceCtType.getReferentCtType().accept(
                     new ReferenceReferentCtTypeVisitor(parameterElement), null);
             return referenceCtType;
+        }
+
+        BiFunctionCtType biFunctionCtType = BiFunctionCtType.newInstance(type,
+                env);
+        if (biFunctionCtType != null) {
+            if (biFunctionCtType.isRawType()) {
+                throw new AptException(Message.DOMA4438, env, parameterElement,
+                        new Object[] { qualifiedName,
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
+            }
+            if (biFunctionCtType.isWildcardType()) {
+                throw new AptException(Message.DOMA4439, env, parameterElement,
+                        new Object[] { qualifiedName,
+                                daoElement.getQualifiedName(),
+                                methodElement.getSimpleName() });
+            }
+            return biFunctionCtType;
         }
 
         return AnyCtType.newInstance(type, env);

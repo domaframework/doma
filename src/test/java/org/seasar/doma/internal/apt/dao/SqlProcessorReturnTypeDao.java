@@ -13,22 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.internal.jdbc.command.ObjectProvider;
-import org.seasar.doma.jdbc.SqlParameter;
-import org.seasar.doma.jdbc.query.Query;
+import java.util.function.BiFunction;
+
+import org.seasar.doma.Dao;
+import org.seasar.doma.SqlProcessor;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.PreparedSql;
 
 /**
- * @author taedium
- * 
+ * @author nakamura
+ *
  */
-public interface ListParameter<ELEMENT> extends SqlParameter {
+@Dao(config = MyConfig.class)
+public interface SqlProcessorReturnTypeDao {
 
-    String getName();
-
-    ObjectProvider<ELEMENT> createObjectProvider(Query query);
-
-    void add(ELEMENT element);
-
+    @SqlProcessor
+    String process(Integer id,
+            BiFunction<Config, PreparedSql, Integer> handler);
 }

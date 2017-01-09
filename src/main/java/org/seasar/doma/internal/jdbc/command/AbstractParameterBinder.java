@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.command;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.seasar.doma.jdbc.JdbcMappable;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.wrapper.Wrapper;

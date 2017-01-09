@@ -13,13 +13,13 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.jdbc.command.JdbcMappable;
-import org.seasar.doma.jdbc.SqlParameter;
+/**
+ * @author taedium
+ * 
+ */
+public interface ResultParameter<RESULT> extends SqlParameter {
 
-public interface OutParameter<BASIC> extends SqlParameter, JdbcMappable<BASIC> {
-
-    void updateReference();
-
+    RESULT getResult();
 }

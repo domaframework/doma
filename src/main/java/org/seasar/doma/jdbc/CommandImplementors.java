@@ -16,6 +16,8 @@
 package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.BatchDelete;
@@ -24,13 +26,13 @@ import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.BlobFactory;
 import org.seasar.doma.ClobFactory;
 import org.seasar.doma.Delete;
-import org.seasar.doma.Function;
 import org.seasar.doma.Insert;
 import org.seasar.doma.NClobFactory;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.SQLXMLFactory;
 import org.seasar.doma.Script;
 import org.seasar.doma.Select;
+import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
@@ -44,6 +46,7 @@ import org.seasar.doma.jdbc.command.ProcedureCommand;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ScriptCommand;
 import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.jdbc.command.SqlProcessorCommand;
 import org.seasar.doma.jdbc.command.UpdateCommand;
 import org.seasar.doma.jdbc.query.BatchDeleteQuery;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
@@ -55,6 +58,7 @@ import org.seasar.doma.jdbc.query.InsertQuery;
 import org.seasar.doma.jdbc.query.ProcedureQuery;
 import org.seasar.doma.jdbc.query.ScriptQuery;
 import org.seasar.doma.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 import org.seasar.doma.jdbc.query.UpdateQuery;
 
 /**
@@ -92,7 +96,8 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default DeleteCommand createDeleteCommand(Method method, DeleteQuery query) {
+    default DeleteCommand createDeleteCommand(Method method,
+            DeleteQuery query) {
         return new DeleteCommand(query);
     }
 
@@ -105,7 +110,8 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default InsertCommand createInsertCommand(Method method, InsertQuery query) {
+    default InsertCommand createInsertCommand(Method method,
+            InsertQuery query) {
         return new InsertCommand(query);
     }
 
@@ -118,7 +124,8 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default UpdateCommand createUpdateCommand(Method method, UpdateQuery query) {
+    default UpdateCommand createUpdateCommand(Method method,
+            UpdateQuery query) {
         return new UpdateCommand(query);
     }
 
@@ -220,7 +227,28 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default ScriptCommand createScriptCommand(Method method, ScriptQuery query) {
+    default ScriptCommand createScriptCommand(Method method,
+            ScriptQuery query) {
         return new ScriptCommand(query);
+    }
+
+    /**
+     * {@link SqlProcessor} に対応したコマンドを作成します。
+     * 
+     * @param <RESULT>
+     *            ハンドラで処理された結果
+     * @param method
+     *            Dao メソッド
+     * @param query
+     *            クエリ
+     * @param handler
+     *            SQLのハンドラ
+     * @return コマンド
+     * @since 2.14.0
+     */
+    default <RESULT> SqlProcessorCommand<RESULT> createSqlProcessorCommand(
+            Method method, SqlProcessorQuery query,
+            BiFunction<Config, PreparedSql, RESULT> handler) {
+        return new SqlProcessorCommand<>(query, handler);
     }
 }
