@@ -24,8 +24,8 @@ import java.util.function.Function;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;

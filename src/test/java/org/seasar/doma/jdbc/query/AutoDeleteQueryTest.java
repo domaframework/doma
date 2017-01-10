@@ -20,8 +20,8 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;

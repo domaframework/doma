@@ -24,8 +24,8 @@ import java.util.Collections;
 import java.util.function.Function;
 
 import org.seasar.doma.internal.jdbc.command.ScriptReader;
-import org.seasar.doma.internal.jdbc.sql.AbstractSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
+import org.seasar.doma.jdbc.AbstractSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.ScriptException;

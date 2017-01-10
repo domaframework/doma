@@ -13,13 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.internal.jdbc.command.JdbcMappable;
-import org.seasar.doma.jdbc.SqlParameter;
+import java.util.function.BiFunction;
 
-public interface OutParameter<BASIC> extends SqlParameter, JdbcMappable<BASIC> {
+import org.seasar.doma.Dao;
+import org.seasar.doma.SqlProcessor;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.PreparedSql;
 
-    void updateReference();
+/**
+ * @author nakamura
+ *
+ */
+@Dao(config = MyConfig.class)
+public interface SqlProcessorReturnTypeDao {
 
+    @SqlProcessor
+    String process(Integer id,
+            BiFunction<Config, PreparedSql, Integer> handler);
 }

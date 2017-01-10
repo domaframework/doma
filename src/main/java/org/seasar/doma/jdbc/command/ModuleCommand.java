@@ -23,8 +23,8 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.command.CallableSqlParameterBinder;
 import org.seasar.doma.internal.jdbc.command.CallableSqlParameterFetcher;
-import org.seasar.doma.internal.jdbc.sql.CallableSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
+import org.seasar.doma.jdbc.CallableSql;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;

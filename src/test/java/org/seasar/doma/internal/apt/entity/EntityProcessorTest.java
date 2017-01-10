@@ -17,6 +17,8 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.EntityProcessor;
+import org.seasar.doma.internal.apt.lombok.AllArgsConstructor;
+import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.message.Message;
 
 /**
@@ -707,6 +709,99 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testLombokValue() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        Class<?> target = LombokValue.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testLombokValueNotImmutable() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        Class<?> target = LombokValueNotImmutable.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4418);
+    }
+
+    public void testLombokValueStaticConstructor() throws Exception {
+        addOption("-Adoma.lombok.Value=" + Value.class.getName());
+        Class<?> target = LombokValueStaticConstructor.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4419);
+    }
+
+    public void testLombokAllArgsConstructor() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructor.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testLombokAllArgsConstructorNotImmutable() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructorNotImmutable.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4420);
+    }
+
+    public void testLombokAllArgsConstructorStaticName() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructorStaticName.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4421);
+    }
+
+    public void testLombokAllArgsConstructorAccess_private() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructorAccess_private.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4422);
+    }
+
+    public void testLombokAllArgsConstructorAccess_none() throws Exception {
+        addOption("-Adoma.lombok.AllArgsConstructor="
+                + AllArgsConstructor.class.getName());
+        Class<?> target = LombokAllArgsConstructorAccess_none.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4426);
     }
 
 }

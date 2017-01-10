@@ -453,10 +453,32 @@ public enum Message implements MessageResource {
     DOMA4415("型[{0}]がpublicかつstaticでありません。エンベッダブルクラスもしくはエンベッダブルクラスを囲む型はpublicかつstaticでなければいけません。"),
     DOMA4416("型[{0}]がローカルクラスもしくは無名クラスです。エンベッダブルクラスもしくはエンベッダブルクラスを囲む型はトップレベルもしくはメンバでなければいけません。"),
     DOMA4417("型[{0}]の単純名に\"$\"または\"__\"が含まれています。エンベッダブルクラスもしくはエンベッダブルクラスを囲む型はこれらの文字列を単純名に含んではいけません。"),
+    DOMA4418("@lombok.Valueを注釈する場合は@Entityのimmutable要素にtrueを設定する必要があります。 at {0}"),
+    DOMA4419("@lombok.ValueのstaticConstructor要素の利用はサポートされていません。 at {0}"),
+    DOMA4420("@lombok.AllArgsConstructorを注釈する場合は@Entityのimmutable要素にtrueを設定する必要があります。 at {0}"),
+    DOMA4421("@lombok.AllArgsConstructorのstaticName要素の利用はサポートされていません。 at {0}"),
+    DOMA4422("@lombok.AllArgsConstructorのaccess要素にlombok.AccessLevel.PRIVATEを設定することはサポートされていません。 at {0}"),
+    DOMA4423(DOMA4419.getMessagePattern()),
+    DOMA4424(DOMA4421.getMessagePattern()),
+    DOMA4425(DOMA4422.getMessagePattern()),
+    DOMA4426("@lombok.AllArgsConstructorのaccess要素にlombok.AccessLevel.NONEを設定することはサポートされていません。 at {0}"),
+    DOMA4427(DOMA4426.getMessagePattern()),
+    DOMA4428(DOMA4419.getMessagePattern()),
+    DOMA4429("@lombok.Valueによって生成されるメソッド名[{0}]が@DomainのaccessorMethod要素に指定された値[{1}]と一致しません。 at {2}"),
+    DOMA4430("@lombok.Valueによって初期化されるインスタンスフィールドが存在しません。 at {0}"),
+    DOMA4431("@lombok.Valueによって初期化されるインスタンスフィールドが1つだけでなければいけませんが、2つ以上存在します。 at {0}"),
+    DOMA4432("@lombok.Valueによって初期化されるインスタンスフィールドの型[{0}]が@DomainのvalueType要素に指定された型[{1}]と一致しません。 at {2}.{3}"),
+    DOMA4433("@SqlProcessorを使う場合、BiFunction型のパラメータの利用は必須です。 at {0}.{1}"),
+    DOMA4434("BiFunction型のパラメータは複数指定できません。 at {0}.{1}"),
+    DOMA4435("BiFunctionの2番目の実型引数の型は、org.seasar.doma.jdbc.PreparedSqlでなければいけません。 at {0}.{1}"),
+    DOMA4436("戻り値の型[{0}]とBiFunctionの3番目の実型引数の型[{1}]が一致していません。 at {2}.{3}"),
+    DOMA4437("BiFunctionの1番目の実型引数の型は、org.seasar.doma.jdbc.Configでなければいけません。 at {0}.{1}"),
+    DOMA4438("パラメータの型[{0}]を原型にしてはいけません。 at {1}.{2}"),
+    DOMA4439("パラメータの型[{0}]にワイルカード型の型パラメータを含めてはいけません。 at {1}.{2}"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。まず、JDBCドライバがクラスパスにあることを確認してください。次に、JDBCドライバが自動でロードされない場合は、Class.forNameで明示的にロードしてください。 ex) Class.forName(\"oracle.jdbc.driver.OracleDriver\")"),
-    DOMA5002("urlプロパティが設定されていません。"), ;
+    DOMA5002("urlプロパティが設定されていません。"),;
 
     private final String messagePattern;
 
@@ -491,8 +513,8 @@ public enum Message implements MessageResource {
             boolean fallback = false;
             ResourceBundle bundle;
             try {
-                bundle = ResourceBundle.getBundle(MessageResourceBundle.class
-                        .getName());
+                bundle = ResourceBundle
+                        .getBundle(MessageResourceBundle.class.getName());
             } catch (MissingResourceException ignored) {
                 fallback = true;
                 bundle = new MessageResourceBundle();

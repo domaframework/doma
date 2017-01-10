@@ -23,10 +23,10 @@ import java.util.ListIterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Naming;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;

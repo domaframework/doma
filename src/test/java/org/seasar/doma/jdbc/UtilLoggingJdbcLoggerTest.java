@@ -19,9 +19,6 @@ import java.util.Collections;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.internal.jdbc.sql.InParameter;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-
 /**
  * @author taedium
  * 

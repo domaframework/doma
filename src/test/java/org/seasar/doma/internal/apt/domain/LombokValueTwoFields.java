@@ -13,16 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.command;
+package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.jdbc.JdbcMappingHint;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.Domain;
+import org.seasar.doma.internal.apt.lombok.Value;
 
 /**
  * @author nakamura-to
- * 
+ *
  */
-public interface JdbcMappable<BASIC> extends JdbcMappingHint {
+@Domain(valueType = String.class)
+@Value
+public class LombokValueTwoFields {
 
-    Wrapper<BASIC> getWrapper();
+    @SuppressWarnings("unused")
+    private String value1;
+
+    @SuppressWarnings("unused")
+    private String value2;
 }

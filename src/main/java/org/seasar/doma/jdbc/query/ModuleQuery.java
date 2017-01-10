@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import org.seasar.doma.internal.jdbc.sql.CallableSql;
+import org.seasar.doma.jdbc.CallableSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**

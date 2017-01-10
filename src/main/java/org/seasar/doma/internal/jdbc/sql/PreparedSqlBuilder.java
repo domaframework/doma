@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogType;

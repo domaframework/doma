@@ -13,9 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
-
-import org.seasar.doma.jdbc.SqlParameter;
+package org.seasar.doma.jdbc;
 
 /**
  * @author taedium

@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;

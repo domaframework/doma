@@ -31,6 +31,7 @@ import java.util.stream.StreamSupport;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.command.ResultSetIterator.SQLRuntimeException;
 import org.seasar.doma.internal.util.IteratorUtil;
+import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;

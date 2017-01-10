@@ -13,17 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.command;
+package org.seasar.doma.internal.apt.lombok;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author nakamura-to
- * 
+ *
  */
-public interface ObjectProvider<OBJECT> {
-
-    OBJECT get(ResultSet resultSet) throws SQLException;
-
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Value {
+    String staticConstructor() default "";
 }

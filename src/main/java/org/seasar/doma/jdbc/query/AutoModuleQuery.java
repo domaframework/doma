@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import org.seasar.doma.internal.jdbc.sql.CallableSql;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
+import org.seasar.doma.jdbc.CallableSql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 

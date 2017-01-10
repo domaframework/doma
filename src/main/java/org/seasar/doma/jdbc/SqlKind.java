@@ -55,5 +55,7 @@ public enum SqlKind {
      * 
      * @since 1.7.0
      */
-    SCRIPT
+    SCRIPT,
+
+    SQL_PROCESSOR
 }

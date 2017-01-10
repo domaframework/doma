@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.command.ResultSetIterator.SQLRuntimeExcepti
 import org.seasar.doma.internal.util.IteratorUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
+import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
