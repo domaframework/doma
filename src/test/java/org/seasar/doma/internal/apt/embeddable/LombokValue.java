@@ -13,11 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.embeddable;
 
-import org.seasar.doma.internal.jdbc.command.JdbcMappable;
-import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.Embeddable;
+import org.seasar.doma.internal.apt.lombok.Value;
 
-public interface InParameter<BASIC> extends SqlParameter, JdbcMappable<BASIC> {
+/**
+ * @author nakamura-to
+ *
+ */
+@Embeddable
+@Value
+public class LombokValue {
 
+    @SuppressWarnings("unused")
+    private String street;
+
+    @SuppressWarnings("unused")
+    private String city;
+
+    public LombokValue(String street, String city) {
+    }
 }

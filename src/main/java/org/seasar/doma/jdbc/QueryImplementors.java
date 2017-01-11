@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 
+import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
@@ -42,6 +43,7 @@ import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.jdbc.query.SqlFileUpdateQuery;
 import org.seasar.doma.jdbc.query.SqlInsertQuery;
+import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 import org.seasar.doma.jdbc.query.SqlSelectQuery;
 import org.seasar.doma.jdbc.query.SqlUpdateQuery;
 
@@ -163,4 +165,15 @@ public interface QueryImplementors {
         return new SQLXMLCreateQuery();
     }
 
+    /**
+     * {@link SqlProcessor} に対応したクエリを作成します。
+     * 
+     * @param method
+     *            Dao メソッド
+     * @return クエリ
+     * @since 2.14.0
+     */
+    default SqlProcessorQuery createSqlProcessorQuery(Method method) {
+        return new SqlProcessorQuery();
+    }
 }

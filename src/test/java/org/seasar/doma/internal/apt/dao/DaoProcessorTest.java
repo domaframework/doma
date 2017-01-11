@@ -998,4 +998,84 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testSqlProcessor() throws Exception {
+        Class<?> target = SqlProcessorDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testSqlProcessorBiFunction1stArgCheck() throws Exception {
+        Class<?> target = SqlProcessorBiFunction1stArgCheckDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4437);
+    }
+
+    public void testSqlProcessorBiFunction2ndArgCheck() throws Exception {
+        Class<?> target = SqlProcessorBiFunction2ndArgCheckDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4435);
+    }
+
+    public void testSqlProcessorNoBiFunction() throws Exception {
+        Class<?> target = SqlProcessorNoBiFunctionDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4433);
+    }
+
+    public void testSqlProcessorReturnType() throws Exception {
+        Class<?> target = SqlProcessorReturnTypeDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4436);
+    }
+
+    public void testSqlProcessorMultiBiFunctions() throws Exception {
+        Class<?> target = SqlProcessorMultiBiFunctionsDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4434);
+    }
+
+    public void testSqlProcessorRawType() throws Exception {
+        Class<?> target = SqlProcessorRawTypeDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4438);
+    }
+
+    public void testSqlProcessorWildcardType() throws Exception {
+        Class<?> target = SqlProcessorWildcardTypeDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4439);
+    }
+
 }

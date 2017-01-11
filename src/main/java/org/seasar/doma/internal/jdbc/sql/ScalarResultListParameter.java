@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.seasar.doma.internal.jdbc.command.ObjectProvider;
 import org.seasar.doma.internal.jdbc.command.ScalarProvider;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
+import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.query.Query;
 
 /**

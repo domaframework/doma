@@ -32,7 +32,8 @@ import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
  * 
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.Domain" })
-@SupportedOptions({ Options.VERSION_VALIDATION, Options.TEST, Options.DEBUG })
+@SupportedOptions({ Options.VERSION_VALIDATION, Options.LOMBOK_VALUE,
+        Options.TEST, Options.DEBUG })
 public class DomainProcessor extends AbstractGeneratingProcessor<DomainMeta> {
 
     public DomainProcessor() {

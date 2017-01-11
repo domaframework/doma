@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.jdbc.sql.SqlParameterVisitor;
-
 /**
  * SQLのパラメータを表します。
  * 

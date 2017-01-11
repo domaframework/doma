@@ -13,27 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.jdbc;
 
-import java.util.List;
-import java.util.function.Function;
-
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.jdbc.query.Query;
 
 /**
- * 
  * @author taedium
  * 
  */
-public class CallableSql extends AbstractSql<SqlParameter> {
+public interface ListParameter<ELEMENT> extends SqlParameter {
 
-    public CallableSql(SqlKind kind, CharSequence rawSql,
-            CharSequence formattedSql, List<? extends SqlParameter> parameters,
-            SqlLogType sqlLogType, Function<String, String> converter) {
-        super(kind, rawSql, formattedSql, null, parameters, sqlLogType,
-                converter);
-    }
+    String getName();
+
+    ObjectProvider<ELEMENT> createObjectProvider(Query query);
+
+    void add(ELEMENT element);
 
 }

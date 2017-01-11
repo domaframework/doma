@@ -13,15 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.internal.jdbc.command.JdbcMappable;
+import org.seasar.doma.Entity;
+import org.seasar.doma.internal.apt.lombok.Value;
 
 /**
  * @author nakamura-to
- * 
+ *
  */
-public interface SingleResultParameter<BASIC, RESULT> extends
-        ResultParameter<RESULT>, JdbcMappable<BASIC> {
+@Entity(immutable = true)
+@Value(staticConstructor = "of")
+public class LombokValueStaticConstructor {
 
 }

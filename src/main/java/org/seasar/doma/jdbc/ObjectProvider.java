@@ -13,15 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.jdbc;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @author nakamura-to
  * 
  */
-public interface ResultListParameter<ELEMENT> extends
-        ResultParameter<List<ELEMENT>>, ListParameter<ELEMENT> {
+public interface ObjectProvider<OBJECT> {
+
+    OBJECT get(ResultSet resultSet) throws SQLException;
 
 }

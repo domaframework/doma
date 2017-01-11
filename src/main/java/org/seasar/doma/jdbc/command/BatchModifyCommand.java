@@ -24,12 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.BatchOptimisticLockException;
 import org.seasar.doma.jdbc.BatchSqlExecutionException;
 import org.seasar.doma.jdbc.BatchUniqueConstraintException;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchModifyQuery;
 

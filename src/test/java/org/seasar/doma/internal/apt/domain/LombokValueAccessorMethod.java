@@ -13,22 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.internal.jdbc.command.ObjectProvider;
-import org.seasar.doma.jdbc.SqlParameter;
-import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.Domain;
+import org.seasar.doma.internal.apt.lombok.Value;
 
 /**
- * @author taedium
- * 
+ * @author nakamura-to
+ *
  */
-public interface ListParameter<ELEMENT> extends SqlParameter {
+@Domain(valueType = String.class)
+@Value
+public class LombokValueAccessorMethod {
 
-    String getName();
-
-    ObjectProvider<ELEMENT> createObjectProvider(Query query);
-
-    void add(ELEMENT element);
-
+    @SuppressWarnings("unused")
+    private String name;
 }

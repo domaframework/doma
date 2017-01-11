@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.internal.jdbc.command.JdbcMappable;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.JdbcMappable;
 
 /**
  * プロパティです。

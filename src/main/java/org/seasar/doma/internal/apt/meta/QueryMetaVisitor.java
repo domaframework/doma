@@ -43,4 +43,5 @@ public interface QueryMetaVisitor<R, P> {
 
     R visitDefaultQueryMeta(DefaultQueryMeta m, P p);
 
+    R visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m, P p);
 }

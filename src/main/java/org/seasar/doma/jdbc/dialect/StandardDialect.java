@@ -37,7 +37,6 @@ import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.StandardCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.internal.util.CharSequenceUtil;
 import org.seasar.doma.jdbc.JdbcException;
@@ -45,6 +44,7 @@ import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
+import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -915,8 +915,7 @@ public class StandardDialect implements Dialect {
             if (text == null) {
                 return null;
             }
-            return escapeWildcard(defaultWildcardReplacementPattern, text,
-                    defaultReplacement);
+            return escapeWildcard(text, escapeChar);
         }
 
         @Override
@@ -924,7 +923,8 @@ public class StandardDialect implements Dialect {
             if (text == null) {
                 return null;
             }
-            return escapeWildcard(text, escapeChar);
+            return escapeWildcard(defaultWildcardReplacementPattern, text,
+                    defaultReplacement);
         }
 
         @Override
