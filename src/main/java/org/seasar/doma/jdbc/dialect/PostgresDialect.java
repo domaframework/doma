@@ -171,12 +171,12 @@ public class PostgresDialect extends StandardDialect {
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }
-        String identityTableName = createIdentityTableName(catalogName,
-                schemaName, tableName, columnName, isQuoteRequired);
+        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(
+        		catalogName, schemaName, tableName, columnName, isQuoteRequired);
         StringBuilder buf = new StringBuilder(64);
-        buf.append("select currval('");
-        buf.append(identityTableName);
-        buf.append("')");
+        buf.append("select currval(");
+        buf.append(identitySeqFuncExpr);
+        buf.append(")");
         String rawSql = buf.toString();
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
                 Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
@@ -192,12 +192,12 @@ public class PostgresDialect extends StandardDialect {
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }
-        String identityTableName = createIdentityTableName(catalogName,
-                schemaName, tableName, columnName, isQuoteRequired);
+        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(
+        		catalogName, schemaName, tableName, columnName, isQuoteRequired);
         StringBuilder buf = new StringBuilder(64);
-        buf.append("select nextval('");
-        buf.append(identityTableName);
-        buf.append("') from generate_series(1, ");
+        buf.append("select nextval(");
+        buf.append(identitySeqFuncExpr);
+        buf.append(") from generate_series(1, ");
         buf.append(reservationSize);
         buf.append(")");
         String rawSql = buf.toString();
@@ -205,13 +205,14 @@ public class PostgresDialect extends StandardDialect {
                 Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
-    protected String createIdentityTableName(String catalogName,
+    protected String createIdentitySequenceFunctionExpression(String catalogName,
             String schemaName, String tableName, String columnName,
             boolean isQuoteRequired) {
         String qualifiedTableName = DatabaseObjectUtil.getQualifiedName(
                 isQuoteRequired ? this::applyQuote : Function.identity(),
-                catalogName, schemaName, tableName + "_" + columnName + "_seq");
-        return qualifiedTableName;
+                catalogName, schemaName, tableName);
+        String colName = isQuoteRequired ? columnName : columnName.toLowerCase();
+        return "pg_catalog.pg_get_serial_sequence('" + qualifiedTableName + "', '" + colName + "')";
     }
 
     @Override

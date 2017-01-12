@@ -30,14 +30,15 @@ public class PostgresDialectTest extends TestCase {
         PostgresDialect dialect = new PostgresDialect();
         PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc",
                 "ddd", false);
-        assertEquals("select currval('aaa.bbb.ccc_ddd_seq')", sql.getRawSql());
+        assertEquals("select currval(pg_catalog.pg_get_serial_sequence('aaa.bbb.ccc', 'ddd'))",
+        		sql.getRawSql());
     }
 
     public void testGetIdentitySelectSql_quoteRequired() throws Exception {
         PostgresDialect dialect = new PostgresDialect();
         PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc",
                 "ddd", true);
-        assertEquals("select currval('\"aaa\".\"bbb\".\"ccc_ddd_seq\"')",
+        assertEquals("select currval(pg_catalog.pg_get_serial_sequence('\"aaa\".\"bbb\".\"ccc\"', 'ddd'))",
                 sql.getRawSql());
     }
 
