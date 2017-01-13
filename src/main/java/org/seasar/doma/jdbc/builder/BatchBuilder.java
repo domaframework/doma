@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.builder;
 
-import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -34,24 +34,24 @@ import org.seasar.doma.message.Message;
  * @author bakenezumi
  * @since 2.14.0
  */
-public abstract class BatchBuilder<Q extends SqlBatchModifyQuery> {
+public abstract class BatchBuilder {
 
     final BatchBuildingHelper helper;
 
-    final Q query;
+    final SqlBatchModifyQuery query;
 
     final ParamIndex paramIndex;
 
     final Map<Integer, String> paramNameMap;
 
-    BatchBuilder(Q query) {
+    BatchBuilder(SqlBatchModifyQuery query) {
         this.helper = new BatchBuildingHelper();
         this.query = query;
         this.paramIndex = new ParamIndex();
         paramNameMap = new HashMap<>();
     }
 
-    BatchBuilder(BatchBuildingHelper builder, Q query,
+    BatchBuilder(BatchBuildingHelper builder, SqlBatchModifyQuery query,
                  ParamIndex paramIndex, Map<Integer, String> paramNameMap) {
         this.helper = builder;
         this.query = query;
@@ -146,12 +146,12 @@ public abstract class BatchBuilder<Q extends SqlBatchModifyQuery> {
         query.prepare();
     }
 
-    int[] execute(Function<Q, BatchModifyCommand> commandBuilder) {
+    int[] execute(Supplier<BatchModifyCommand> commandFactory) {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
         prepare();
-        BatchModifyCommand command = commandBuilder.apply(query);
+        BatchModifyCommand command = commandFactory.get();
         int[] result = command.execute();
         query.complete();
         return result;
@@ -165,13 +165,13 @@ public abstract class BatchBuilder<Q extends SqlBatchModifyQuery> {
         return query.getSqls();
     }
 
-    private static class InitialBatchBuilder<Q extends SqlBatchModifyQuery> extends BatchBuilder<Q> {
+    private static class InitialBatchBuilder extends BatchBuilder {
 
-        private InitialBatchBuilder(Q query) {
+        private InitialBatchBuilder(SqlBatchModifyQuery query) {
             super(query);
         }
 
-        private InitialBatchBuilder(BatchBuildingHelper builder, Q query,
+        private InitialBatchBuilder(BatchBuildingHelper builder, SqlBatchModifyQuery query,
                                     ParamIndex paramIndex, Map<Integer, String> paramNameMap) {
             super(builder, query, paramIndex, paramNameMap);
         }
@@ -193,7 +193,7 @@ public abstract class BatchBuilder<Q extends SqlBatchModifyQuery> {
 
         @Override
         <P> BatchBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
-            BatchParam batchParam = new BatchParam(paramClass, paramIndex, literal);
+            BatchParam<P> batchParam = new BatchParam<>(paramClass, paramIndex, literal);
             batchParam.add(param);
             helper.appendParam(batchParam);
             paramNameMap.put(paramIndex.getValue(), batchParam.name);
@@ -203,10 +203,10 @@ public abstract class BatchBuilder<Q extends SqlBatchModifyQuery> {
 
     }
 
-    private static class SubsequentBatchBuilder<Q extends SqlBatchModifyQuery> extends InitialBatchBuilder<Q> {
+    private static class SubsequentBatchBuilder extends InitialBatchBuilder {
 
         SubsequentBatchBuilder(BatchBuildingHelper builder,
-                               Q query, ParamIndex paramIndex,
+                               SqlBatchModifyQuery query, ParamIndex paramIndex,
                                Map<Integer, String> paramNameMap) {
             super(builder, query, paramIndex, paramNameMap);
         }
@@ -221,9 +221,9 @@ public abstract class BatchBuilder<Q extends SqlBatchModifyQuery> {
         }
     }
 
-    private static class FixedBatchBuilder<Q extends SqlBatchModifyQuery> extends BatchBuilder<Q> {
+    private static class FixedBatchBuilder extends BatchBuilder {
 
-        private FixedBatchBuilder(BatchBuildingHelper builder, Q query, Map<Integer, String> paramNameMap) {
+        private FixedBatchBuilder(BatchBuildingHelper builder, SqlBatchModifyQuery query, Map<Integer, String> paramNameMap) {
             super(builder, query, new ParamIndex(), paramNameMap);
         }
 
@@ -238,26 +238,34 @@ public abstract class BatchBuilder<Q extends SqlBatchModifyQuery> {
         }
 
         @Override
-        <P> BatchBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
+        <P extends Object> BatchBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
             final String paramName = paramNameMap.get(paramIndex.getValue());
             if (paramName == null) {
                 throw new JdbcException(Message.DOMA2231);
             }
-            BatchParam batchParam = helper.getParam(paramName);
-            if (paramClass != batchParam.paramClass) {
-                // BatchParamの初期値が型:Object、値:nullの場合に限り型の上書きを許可
-                if (batchParam.paramClass == Object.class) {
-                    batchParam = new BatchParam(batchParam, paramClass);
-                    helper.modifyParam(batchParam);
-                } else if (param != null || paramClass != Object.class) {
-                    // 型違いは型:Object、値:nullの場合のみ許可
-                    throw new JdbcException(Message.DOMA2229);
-                }
-            }
+            final BatchParam<?> batchParam = helper.getParam(paramName);
+            
             if (literal != batchParam.literal) {
                 throw new JdbcException(Message.DOMA2230);
             }
-            batchParam.add(param);
+            if (paramClass != batchParam.paramClass) {
+                // BatchParamの初期値が型:Object、値:nullの場合に限り型を上書き
+                if (batchParam.paramClass == Object.class) {
+                    final BatchParam<P> newBatchParam = new BatchParam<P>(batchParam, paramClass);                    
+                    newBatchParam.add(param);
+                    helper.modifyParam(newBatchParam);
+                } else if (param == null && paramClass == Object.class) {
+                    // 型違いは型:Object、値:nullの場合のみ許可
+                   batchParam.add(null);
+                } else {
+                    throw new JdbcException(Message.DOMA2229);                    
+                }
+            } else {
+                // paramClass == batchParam.paramClass であるため下記キャストは常に安全
+                @SuppressWarnings("unchecked")
+                final BatchParam<P> castedBatchParam = (BatchParam<P>) batchParam;
+                castedBatchParam.add(param);
+            }
             paramIndex.increment();
             return this;
         }

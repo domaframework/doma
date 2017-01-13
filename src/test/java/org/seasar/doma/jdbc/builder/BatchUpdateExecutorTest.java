@@ -47,7 +47,7 @@ public class BatchUpdateExecutorTest extends TestCase {
 
     public void testBuilder() throws Exception {
         SqlBatchUpdateQuery query = mockQuery();
-        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("update Emp");
         builder.sql("set");
         builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -65,12 +65,12 @@ public class BatchUpdateExecutorTest extends TestCase {
         builder.sql("ID = ").param(int.class, 20);
         builder = builder.fixSql();
 
-        builder.execute((q) -> new BatchUpdateCommand(q));
+        builder.execute(() -> new BatchUpdateCommand(query));
     }
 
     public void testGetSql() throws Exception {
         SqlBatchUpdateQuery query = mockQuery();
-        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("update Emp");
         builder.sql("set");
         builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -112,7 +112,7 @@ public class BatchUpdateExecutorTest extends TestCase {
 
     public void testLiteral() throws Exception {
         SqlBatchUpdateQuery query = mockQuery();
-        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("update Emp");
         builder.sql("set");
         builder.sql("name = ").literal(String.class, "SMITH").sql(",");
@@ -151,7 +151,7 @@ public class BatchUpdateExecutorTest extends TestCase {
 
     public void testNotEqualParamCall() throws Exception {
         SqlBatchUpdateQuery query = mockQuery();
-        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("update Emp");
         builder.sql("set");
         builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -168,7 +168,7 @@ public class BatchUpdateExecutorTest extends TestCase {
         builder = builder.fixSql();
 
         try {
-            builder.execute((q) -> new BatchUpdateCommand(q));
+            builder.execute(() -> new BatchUpdateCommand(query));
         } catch (AssertionError e) {
             return;
         }
@@ -178,7 +178,7 @@ public class BatchUpdateExecutorTest extends TestCase {
 
     public void testChangeType() throws Exception {
         SqlBatchUpdateQuery query = mockQuery();
-        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("update Emp");
         builder.sql("set");
         builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -204,7 +204,7 @@ public class BatchUpdateExecutorTest extends TestCase {
 
     public void testParamToLiteral() throws Exception {
         SqlBatchUpdateQuery query = mockQuery();
-        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("update Emp");
         builder.sql("set");
         builder.sql("name = ").param(String.class, "SMITH").sql(",");

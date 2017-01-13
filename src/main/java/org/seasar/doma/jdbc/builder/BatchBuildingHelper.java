@@ -53,12 +53,12 @@ class BatchBuildingHelper {
         }
     }
 
-    void appendParam(BatchParam param) {
+    void appendParam(BatchParam<?> param) {
         paramIndexMap.put(param.name, items.size());
         items.add(Item.param(param));
     }
 
-    void modifyParam(BatchParam param) {
+    void modifyParam(BatchParam<?>  param) {
         int index = paramIndexMap.get(param.name);
         items.set(index, Item.param(param));
     }
@@ -69,12 +69,12 @@ class BatchBuildingHelper {
         }
     }
 
-    BatchParam getParam(String paramName) {
+    BatchParam<?> getParam(String paramName) {
         return items.get(paramIndexMap.get(paramName)).param;
     }
 
-    List<BatchParam> getParams() {
-        List<BatchParam> results = new ArrayList<BatchParam>();
+    Iterable<BatchParam<?>> getParams() {
+        List<BatchParam<?>> results = new ArrayList<>();
         for (Item item : items) {
             if (item.kind == ItemKind.PARAM) {
                 results.add(item.param);
@@ -113,7 +113,7 @@ class BatchBuildingHelper {
 
         private String sql;
 
-        private BatchParam param;
+        private BatchParam<?> param;
 
         public static Item sql(String sql) {
             Item item = new Item();
@@ -122,7 +122,7 @@ class BatchBuildingHelper {
             return item;
         }
 
-        public static Item param(BatchParam param) {
+        public static Item param(BatchParam<?> param) {
             Item item = new Item();
             item.kind = ItemKind.PARAM;
             item.param = param;

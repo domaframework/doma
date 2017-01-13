@@ -197,10 +197,34 @@ public class MapBatchInsertBuilderTest extends TestCase {
         List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>();
         try {
             builder.execute(employees);
-        } catch (DomaIllegalArgumentException e) {
+        } catch (JdbcException e) {
+            assertEquals(Message.DOMA2232, e.getMessageResource());
             return;
         }
         fail();
     }
+
+    public void testDifferentKey() throws Exception {
+        MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
+        builder.callerClassName(getClass().getName());
+        builder.callerMethodName("test");
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
+            add(new LinkedHashMap<String, Object>() {{
+                put("name", "SMITH");
+                put("salary", 1000);
+            }});
+            add(new LinkedHashMap<String, Object>() {{
+                put("name", "ALLEN");
+                put("salaree", 2000);
+            }});
+        }};
+        try {
+            builder.execute(employees);
+        } catch (JdbcException e) {
+            assertEquals(Message.DOMA2233, e.getMessageResource());
+            return;
+        }
+        fail();
+    } 
 
 }

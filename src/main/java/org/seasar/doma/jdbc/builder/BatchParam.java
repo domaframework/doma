@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc.builder;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNull;
 
 import java.util.List;
@@ -40,7 +41,8 @@ class BatchParam<P> {
         this.literal = literal;
     }
 
-    BatchParam(BatchParam<Object> baseParam, Class<P> paramClass) {
+    BatchParam(BatchParam<?> baseParam, Class<P> paramClass) {
+        assertEquals(Object.class, baseParam.paramClass);
         this.name = baseParam.name;
         this.paramClass = paramClass;
         this.literal = baseParam.literal;

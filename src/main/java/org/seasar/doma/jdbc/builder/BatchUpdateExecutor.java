@@ -59,15 +59,15 @@ import org.seasar.doma.jdbc.query.SqlBatchUpdateQuery;
  * <pre>
  * update Emp
  * set
- * name = 'SMIHT',
+ * name = 'SMITH',
  * salary = 1000
  * where
  * id = 10
  *
  * update Emp
  * set
- * name = 'SMIHT',
- * ALLEN = 2000
+ * name = 'ALLEN',
+ * salary = 2000
  * where
  * id = 20
  * </pre>
@@ -206,12 +206,12 @@ public class BatchUpdateExecutor {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
-        BatchBuilder<SqlBatchUpdateQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         for (P p : params) {
             buildConsumer.accept(p, builder);
             builder = builder.fixSql();
         }
-        return builder.execute((q) -> new BatchUpdateCommand(q));
+        return builder.execute(() -> new BatchUpdateCommand(query));
     }
 
     /**

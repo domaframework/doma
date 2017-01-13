@@ -37,7 +37,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * 
  * <pre>
  * MapInsertBuilder builder = MapInsertBuilder.newInstance(config, "Emp");
- * builder.execute(new LinkedHashMap(){{
+ * builder.execute(new LinkedHashMap&lt;String, Object&gt;(){{
  *   put("name", "SMITH");
  *   put("salary", 1000)
  * }});
@@ -120,7 +120,11 @@ public class MapInsertBuilder {
             if (value == null) {
                 builder.sql("NULL").sql(", ");
             } else {
-                builder.param(((Class<Object>) value.getClass()), value).sql(", ");
+                // 静的な型指定が行えないためObjectにキャストしている
+                // BatchBuilder内で下記clazzを利用した型チェックが行われているため安全である
+                @SuppressWarnings("unchecked")
+                final Class<Object> clazz = (Class<Object>) value.getClass();
+                builder.param(clazz, value).sql(", ");
             }
         });
         builder.removeLast().sql(")");

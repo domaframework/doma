@@ -46,7 +46,7 @@ public class BatchInsertExecutorTest extends TestCase {
 
     public void testBuilder() throws Exception {
         SqlBatchInsertQuery query = mockQuery();
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -60,12 +60,12 @@ public class BatchInsertExecutorTest extends TestCase {
         builder.param(int.class, 200).sql(")");
         builder = builder.fixSql();
 
-        builder.execute((q) -> new BatchInsertCommand(q));
+        builder.execute(() -> new BatchInsertCommand(query));
     }
 
     public void testGetSql() throws Exception {
         SqlBatchInsertQuery query = mockQuery();
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -100,7 +100,7 @@ public class BatchInsertExecutorTest extends TestCase {
 
     public void testLiteral() throws Exception {
         SqlBatchInsertQuery query = mockQuery();
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -133,7 +133,7 @@ public class BatchInsertExecutorTest extends TestCase {
 
     public void testNotEqualParamCall() throws Exception {
         SqlBatchInsertQuery query = mockQuery();
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -147,7 +147,7 @@ public class BatchInsertExecutorTest extends TestCase {
         builder = builder.fixSql();
 
         try {
-           builder.execute((q) -> new BatchInsertCommand(q));
+           builder.execute(() -> new BatchInsertCommand(query));
         } catch (AssertionError e) {
             return;
         }
@@ -157,7 +157,7 @@ public class BatchInsertExecutorTest extends TestCase {
 
     public void testChangeType() throws Exception {
         SqlBatchInsertQuery query = mockQuery();
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");
@@ -180,7 +180,7 @@ public class BatchInsertExecutorTest extends TestCase {
 
     public void testParamToLiteral() throws Exception {
         SqlBatchInsertQuery query = mockQuery();
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("insert into Emp");
         builder.sql("(name, salary)");
         builder.sql("values (");

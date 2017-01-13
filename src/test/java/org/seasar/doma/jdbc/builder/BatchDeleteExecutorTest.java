@@ -47,7 +47,7 @@ public class BatchDeleteExecutorTest extends TestCase {
 
     public void testBuilder() throws Exception {
         SqlBatchDeleteQuery query = mockQuery();
-        BatchBuilder<SqlBatchDeleteQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("delete from Emp");
         builder.sql("where");
         builder.sql("name = ").param(String.class, "SMITH");
@@ -61,12 +61,12 @@ public class BatchDeleteExecutorTest extends TestCase {
         builder.sql("salary = ").param(BigDecimal.class, new BigDecimal("2000"));
         builder = builder.fixSql();
 
-        builder.execute((q) -> new BatchDeleteCommand(q));
+        builder.execute(() -> new BatchDeleteCommand(query));
     }
 
     public void testGetSql() throws Exception {
         SqlBatchDeleteQuery query = mockQuery();
-        BatchBuilder<SqlBatchDeleteQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("delete from Emp");
         builder.sql("where");
         builder.sql("name = ").param(String.class, "SMITH");
@@ -102,7 +102,7 @@ public class BatchDeleteExecutorTest extends TestCase {
 
     public void testLiteral() throws Exception {
         SqlBatchDeleteQuery query = mockQuery();
-        BatchBuilder<SqlBatchDeleteQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("delete from Emp");
         builder.sql("where");
         builder.sql("name = ").literal(String.class, "SMITH");
@@ -133,7 +133,7 @@ public class BatchDeleteExecutorTest extends TestCase {
 
     public void testNotEqualParamCall() throws Exception {
         SqlBatchDeleteQuery query = mockQuery();
-        BatchBuilder<SqlBatchDeleteQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("delete from Emp");
         builder.sql("where");
         builder.sql("name = ").param(String.class, "SMITH");
@@ -146,7 +146,7 @@ public class BatchDeleteExecutorTest extends TestCase {
         builder = builder.fixSql();
 
         try {
-            builder.execute((q) -> new BatchDeleteCommand(q));
+            builder.execute(() -> new BatchDeleteCommand(query));
         } catch (AssertionError e) {
             return;
         }
@@ -156,7 +156,7 @@ public class BatchDeleteExecutorTest extends TestCase {
 
     public void testChangeType() throws Exception {
         SqlBatchDeleteQuery query = mockQuery();
-        BatchBuilder<SqlBatchDeleteQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("delete from Emp");
         builder.sql("where");
         builder.sql("name = ").param(String.class, "SMITH");
@@ -181,7 +181,7 @@ public class BatchDeleteExecutorTest extends TestCase {
 
     public void testParamToLiteral() throws Exception {
         SqlBatchDeleteQuery query = mockQuery();
-        BatchBuilder<SqlBatchDeleteQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         builder.sql("delete from Emp");
         builder.sql("where");
         builder.sql("name = ").param(String.class, "SMITH");

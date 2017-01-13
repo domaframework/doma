@@ -125,12 +125,12 @@ public class MapBatchInsertBuilder {
             throw new DomaNullPointerException("parameter");
         }
         if (!parameter.iterator().hasNext() || parameter.iterator().next() == null) {
-            throw new DomaIllegalArgumentException("parameter", "要素が空です");
+            throw new JdbcException(Message.DOMA2232);
         }
         if (executor.getMethodName() == null) {
             executor.callerMethodName("execute");
         }        
-        final Set<String> keySet = new LinkedHashSet(parameter.iterator().next().keySet());
+        final Set<String> keySet = new LinkedHashSet<>(parameter.iterator().next().keySet());
         final int keySetSize = keySet.size();
         return executor.execute(parameter, (map, builder) -> {
             if (keySetSize != map.size()) {
@@ -144,14 +144,17 @@ public class MapBatchInsertBuilder {
             builder.sql("values (");
             keySet.forEach(key -> {
                 if (!map.containsKey(key)) {
-                    throw new DomaIllegalArgumentException("parameter",
-                    "要素Mapのキーに " + key + " が含まれていないものがあります");
+                    throw new JdbcException(Message.DOMA2233, key);
                 }
                 Object value = map.get(key);
                 if (value == null) {
-                    builder.param(Object.class, value).sql(", ");
+                    builder.param(Object.class, null).sql(", ");
                 } else {
-                    builder.param(((Class<Object>) value.getClass()), value).sql(", ");
+                    // 静的な型指定が行えないためObjectにキャストしている
+                    // BatchBuilder内で下記clazzを利用した型チェックが行われているため安全である
+                    @SuppressWarnings("unchecked")
+                    Class<Object> clazz = (Class<Object>) value.getClass();
+                    builder.param(clazz, value).sql(", ");
                 }
             });
             builder.removeLast().sql(")");

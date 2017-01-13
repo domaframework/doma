@@ -200,12 +200,12 @@ public class BatchDeleteExecutor {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
-        BatchBuilder<SqlBatchDeleteQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         for (P p : params) {
             buildConsumer.accept(p, builder);
             builder = builder.fixSql();
         }
-        return builder.execute((q) -> new BatchDeleteCommand(q));
+        return builder.execute(() -> new BatchDeleteCommand(query));
     }
 
     /**

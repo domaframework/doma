@@ -203,12 +203,12 @@ public class BatchInsertExecutor {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
-        BatchBuilder<SqlBatchInsertQuery> builder = BatchBuilder.newInstance(query);
+        BatchBuilder builder = BatchBuilder.newInstance(query);
         for (P p : params) {
             buildConsumer.accept(p, builder);
             builder = builder.fixSql();
         }
-        return builder.execute((q) -> new BatchInsertCommand(q));
+        return builder.execute(() -> new BatchInsertCommand(query));
     }
 
     /**
