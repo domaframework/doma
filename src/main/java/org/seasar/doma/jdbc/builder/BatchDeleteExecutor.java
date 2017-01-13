@@ -25,12 +25,11 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.UniqueConstraintException;
-import org.seasar.doma.jdbc.command.BatchInsertCommand;
-import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
+import org.seasar.doma.jdbc.command.BatchDeleteCommand;
+import org.seasar.doma.jdbc.query.SqlBatchDeleteQuery;
 
 /**
- * INSERT文を組み立てバッチ実行するクラスです。
+ * DELETE文を組み立てバッチ実行するクラスです。
  * <p>
  * このクラスはスレッドセーフではありません。
  *
@@ -39,42 +38,46 @@ import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
  *
  * <pre>
  * List&lt;Employee&gt; employees = Arrays.asList(new Employee[] {
- *     new Employee(&quot;SMITH&quot;, 100),
- *     new Employee(&quot;ALLEN&quot;, 200)
+ *     new Employee(10, &quot;SMITH&quot;, new BigDecimal(&quot;1000&quot;)),
+ *     new Employee(20, &quot;ALLEN&quot;, new BigDecimal(&quot;2000&quot;))
  * });
- * BatchInsertExecutor executor = BatchInsertExecutor.newInstance(config);
+ * BatchDeleteExecutor executor = BatchDeleteExecutor.newInstance(config);
  * executor.batchSize(10);
  * executor.execute(employees, (emp, builder) -&gt; {
- *     builder.sql(&quot;insert into Emp&quot;);
- *     builder.sql(&quot;(name, salary)&quot;);
- *     builder.sql(&quot;values (&quot;);
- *     builder.param(String.class, emp.name).sql(&quot;, &quot;);
- *     builder.param(int.class, emp.salary).sql(&quot;)&quot;);
+ *     builder.sql(&quot;delete from Emp&quot;);
+ *     builder.sql(&quot;where&quot;);
+ *     builder.sql(&quot;name = &quot;).param(String.class, emp.name);
+ *     builder.sql(&quot;and&quot;);
+ *     builder.sql(&quot;salary = &quot;).param(BigDecimal.class, emp.salary);
  * });
  * </pre>
  *
  * <h4>実行されるSQL</h4>
  *
  * <pre>
- * insert into Emp
- * (name, salary)
- * values('SMITH', 100)
+ * delete from Emp
+ * where
+ * name = 'SMITH'
+ * and
+ * salary = 1000
  *
- * insert into Emp
- * (name, salary)
- * values('ALLEN', 200)
+ * delete from Emp
+ * where
+ * name = 'ALLEN'
+ * and
+ * salary = 2000
  * </pre>
  *
  *
  * @author bakenezumi
- * @since 2.13.1
+ * @since 2.14.0
  */
-public class BatchInsertExecutor {
+public class BatchDeleteExecutor {
 
-    private final SqlBatchInsertQuery query;
+    private final SqlBatchDeleteQuery query;
 
-    private BatchInsertExecutor(Config config) {
-        this.query = new SqlBatchInsertQuery();
+    private BatchDeleteExecutor(Config config) {
+        this.query = new SqlBatchDeleteQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
         this.query.setSqlLogType(SqlLogType.FORMATTED);
@@ -89,11 +92,11 @@ public class BatchInsertExecutor {
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      */
-    public static BatchInsertExecutor newInstance(Config config) {
+    public static BatchDeleteExecutor newInstance(Config config) {
         if (config == null) {
             throw new DomaNullPointerException("config");
         }
-        return new BatchInsertExecutor(config);
+        return new BatchDeleteExecutor(config);
     }
 
     /**
@@ -168,10 +171,6 @@ public class BatchInsertExecutor {
         query.setCallerMethodName(methodName);
     }
 
-    String getMethodName() {
-        return query.getMethodName();
-    }
-
     /**
      * SQLを実行します。
      *
@@ -188,8 +187,6 @@ public class BatchInsertExecutor {
      *             配列のそれぞれの要素が更新された件数を返します。
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
-     * @throws UniqueConstraintException
-     *             一意制約違反が発生した場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
      */
@@ -208,7 +205,7 @@ public class BatchInsertExecutor {
             buildConsumer.accept(p, builder);
             builder = builder.fixSql();
         }
-        return builder.execute(() -> new BatchInsertCommand(query));
+        return builder.execute(() -> new BatchDeleteCommand(query));
     }
 
     /**

@@ -18,8 +18,10 @@ package org.seasar.doma.jdbc.builder;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
@@ -33,7 +35,8 @@ class BatchBuildingHelper {
     private static final String lineSeparator = System
             .getProperty("line.separator");
 
-    private final LinkedList<Item> items = new LinkedList<Item>();
+    private final LinkedList<Item> items = new LinkedList<>();
+    private final Map<String, Integer> paramIndexMap = new HashMap<>();
 
     BatchBuildingHelper() {
     }
@@ -50,8 +53,14 @@ class BatchBuildingHelper {
         }
     }
 
-    void appendParam(BatchParam param) {
+    void appendParam(BatchParam<?> param) {
+        paramIndexMap.put(param.name, items.size());
         items.add(Item.param(param));
+    }
+
+    void modifyParam(BatchParam<?>  param) {
+        int index = paramIndexMap.get(param.name);
+        items.set(index, Item.param(param));
     }
 
     void removeLast() {
@@ -60,8 +69,12 @@ class BatchBuildingHelper {
         }
     }
 
-    List<BatchParam> getParams() {
-        List<BatchParam> results = new ArrayList<BatchParam>();
+    BatchParam<?> getParam(String paramName) {
+        return items.get(paramIndexMap.get(paramName)).param;
+    }
+
+    Iterable<BatchParam<?>> getParams() {
+        List<BatchParam<?>> results = new ArrayList<>();
         for (Item item : items) {
             if (item.kind == ItemKind.PARAM) {
                 results.add(item.param);
@@ -100,7 +113,7 @@ class BatchBuildingHelper {
 
         private String sql;
 
-        private BatchParam param;
+        private BatchParam<?> param;
 
         public static Item sql(String sql) {
             Item item = new Item();
@@ -109,7 +122,7 @@ class BatchBuildingHelper {
             return item;
         }
 
-        public static Item param(BatchParam param) {
+        public static Item param(BatchParam<?> param) {
             Item item = new Item();
             item.kind = ItemKind.PARAM;
             item.param = param;

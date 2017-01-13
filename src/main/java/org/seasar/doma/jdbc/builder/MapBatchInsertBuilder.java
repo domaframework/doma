@@ -16,7 +16,10 @@
 package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.seasar.doma.DomaIllegalArgumentException;
@@ -26,50 +29,62 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
+import org.seasar.doma.message.Message;
 
 /**
- * MAPからINSERT文を自動的に組み立てて実行するクラスです。
+ * MAPからINSERT文を自動的に組み立ててバッチ実行するクラスです。
  * <p>
  * このクラスはスレッドセーフではありません。
- * 
+ *
  * <h3>例</h3>
  * <h4>Java</h4>
- * 
+ *
  * <pre>
- * MapInsertBuilder builder = MapInsertBuilder.newInstance(config, "Emp");
- * builder.execute(new LinkedHashMap&lt;String, Object&gt;(){{
- *   put("name", "SMITH");
- *   put("salary", 1000)
+ * MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(config, "Emp");
+ * builder.batchSize(10);
+ * builder.execute(new ArrayList&lt;Map&lt;String, Object&gt;&gt;() {{
+ *     add(new LinkedHashMap&lt;String, Object&gt;() {{
+ *         put(&quot;name&quot;, &quot;SMITH&quot;);
+ *         put(&quot;salary&quot;, 1000);
+ *     }});
+ *     add(new LinkedHashMap&lt;String, Object&gt;() {{
+ *         put(&quot;name", &quot;ALLEN&quot;);
+ *         put(&quot;salary&quot;, 2000);
+ *     }});
  * }});
  * </pre>
- * 
+ *
  * <h4>実行されるSQL</h4>
- * 
+ *
  * <pre>
  * insert into Emp
  * (name, salary)
  * values('SMITH', 1000)
+ *
+ * insert into Emp
+ * (name, salary)
+ * values('ALLEN', 2000)
  * </pre>
- * 
- * 
+ *
+ *
  * @author bakenezumi
- * @since 2.13.1
+ * @since 2.14.0
  */
-public class MapInsertBuilder {
+public class MapBatchInsertBuilder {
 
-    private final InsertBuilder builder;
+    private final BatchInsertExecutor executor;
 
     private final String tableName;
 
-    private MapInsertBuilder(Config config, String tableName) {
-        this.builder = InsertBuilder.newInstance(config);
-        builder.callerClassName(getClass().getName());
+    private MapBatchInsertBuilder(Config config, String tableName) {
+        this.executor = BatchInsertExecutor.newInstance(config);
+        executor.callerClassName(getClass().getName());
         this.tableName = tableName;
     }
 
     /**
      * ファクトリメソッドです。
-     * 
+     *
      * @param config
      *            設定
      * @param tableName
@@ -78,94 +93,122 @@ public class MapInsertBuilder {
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      */
-    public static MapInsertBuilder newInstance(Config config, String tableName) {
+    public static MapBatchInsertBuilder newInstance(Config config, String tableName) {
         if (config == null) {
             throw new DomaNullPointerException("config");
         }
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
-        return new MapInsertBuilder(config, tableName);
+        return new MapBatchInsertBuilder(config, tableName);
     }
 
     /**
      * パラメータからINSERT文を組み立てて実行します。
-     * 
-     * @return 更新件数
+     *
+     * @return 更新された件数の配列。
+     *             戻り値の配列の要素の数はパラメータのparameterの要素の数と等しくなります。
+     *             配列のそれぞれの要素が更新された件数を返します。
      * @param parameter
-     *             INSERT文の生成元となるMap
+     *            INSERT文の生成元となるMapのリスト
      * @throws DomaNullPointerException
      *             parameterがnullの場合
      * @throws DomaIllegalArgumentException
-     *             parameterが空の場合
+     *             parameterの要素が空の場合
      * @throws UniqueConstraintException
      *             一意制約違反が発生した場合
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
      */
-    public int execute(Map<String, Object> parameter) {
+    public int[] execute(Iterable<? extends Map<String, Object>> parameter) {
         if (parameter == null) {
             throw new DomaNullPointerException("parameter");
         }
-        if (parameter.size() < 1) {
-            throw new DomaIllegalArgumentException("parameter", "parameter.size() < 1");
+        if (!parameter.iterator().hasNext() || parameter.iterator().next() == null) {
+            throw new JdbcException(Message.DOMA2232);
         }
-        builder.sql("insert into ")
+        if (executor.getMethodName() == null) {
+            executor.callerMethodName("execute");
+        }        
+        final Set<String> keySet = new LinkedHashSet<>(parameter.iterator().next().keySet());
+        final int keySetSize = keySet.size();
+        return executor.execute(parameter, (map, builder) -> {
+            if (keySetSize != map.size()) {
+                throw new JdbcException(Message.DOMA2231);
+            }
+            builder.sql("insert into ")
             .sql(tableName)
             .sql(" (")
-            .sql(parameter.keySet().stream().collect(Collectors.joining(", ")))
+            .sql(keySet.stream().collect(Collectors.joining(", ")))
             .sql(")");
-        builder.sql("values (");
-        parameter.forEach((key, value) -> {
-            if (value == null) {
-                builder.sql("NULL").sql(", ");
-            } else {
-                // 静的な型指定が行えないためObjectにキャストしている
-                // BatchBuilder内で下記clazzを利用した型チェックが行われているため安全である
-                @SuppressWarnings("unchecked")
-                final Class<Object> clazz = (Class<Object>) value.getClass();
-                builder.param(clazz, value).sql(", ");
-            }
+            builder.sql("values (");
+            keySet.forEach(key -> {
+                if (!map.containsKey(key)) {
+                    throw new JdbcException(Message.DOMA2233, key);
+                }
+                Object value = map.get(key);
+                if (value == null) {
+                    builder.param(Object.class, null).sql(", ");
+                } else {
+                    // 静的な型指定が行えないためObjectにキャストしている
+                    // BatchBuilder内で下記clazzを利用した型チェックが行われているため安全である
+                    @SuppressWarnings("unchecked")
+                    Class<Object> clazz = (Class<Object>) value.getClass();
+                    builder.param(clazz, value).sql(", ");
+                }
+            });
+            builder.removeLast().sql(")");
         });
-        builder.removeLast().sql(")");
-        return builder.execute();
+
     }
 
     /**
      * クエリタイムアウト（秒）を設定します。
      * <p>
      * 指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
-     * 
+     *
      * @param queryTimeout
      *            クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
     public void queryTimeout(int queryTimeout) {
-        builder.queryTimeout(queryTimeout);
+        executor.queryTimeout(queryTimeout);
     }
 
     /**
      * SQLのログの出力形式を設定します。
-     * 
+     *
      * @param sqlLogType
      *            SQLのログの出力形式
      */
     public void sqlLogType(SqlLogType sqlLogType) {
-        builder.sqlLogType(sqlLogType);
+        executor.sqlLogType(sqlLogType);
+    }
+
+    /**
+     * バッチサイズを設定します。
+     * <p>
+     * 指定しない場合、 {@link Config#getBatchSize()} が使用されます。
+     *
+     * @param batchSize
+     *            バッチサイズ
+     */
+    public void batchSize(int batchSize) {
+        executor.batchSize(batchSize);
     }
 
     /**
      * 呼び出し元のクラス名です。
      * <p>
      * 指定しない場合このクラスの名前が使用されます。
-     * 
+     *
      * @param className
      *            呼び出し元のクラス名
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      */
     public void callerClassName(String className) {
-        builder.callerClassName(className);
+        executor.callerClassName(className);
     }
 
     /**
@@ -182,16 +225,16 @@ public class MapInsertBuilder {
         if (methodName == null) {
             throw new DomaNullPointerException("methodName");
         }
-        builder.callerMethodName(methodName);
+        executor.callerMethodName(methodName);
     }
 
     /**
      * 組み立てられたSQLを返します。
-     * 
+     *
      * @return 組み立てられたSQL
      */
-    public Sql<?> getSql() {
-        return builder.getSql();
+    public List<? extends Sql<?>> getSqls() {
+        return executor.getSqls();
     }
 
 }

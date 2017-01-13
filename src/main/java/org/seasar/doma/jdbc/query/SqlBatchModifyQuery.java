@@ -105,10 +105,10 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements
         this.sqlNode = sqlNode;
     }
 
-    public void addParameter(String name, Class<?> type, Iterable<Object> values) {
+    public void addParameter(String name, Class<?> type, List<?> values) {
         assertNotNull(name, type);
         assertNotNull(values);
-        List valueList = new ArrayList<Value>();
+        List<Value> valueList = new ArrayList<>();
         for (Object value : values) {
             valueList.add(new Value(type, value));
         }

@@ -31,7 +31,7 @@ public class MapInsertBuilderTest extends TestCase {
 
     public void test() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
-        builder.execute(new LinkedHashMap(){{
+        builder.execute(new LinkedHashMap<String, Object>(){{
             put("name", "SMITH");
             put("salary", 100);
         }});
@@ -40,7 +40,7 @@ public class MapInsertBuilderTest extends TestCase {
     public void testGetSql() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
 
-        builder.execute(new LinkedHashMap(){{
+        builder.execute(new LinkedHashMap<String, Object>(){{
             put("name", "SMITH");
             put("salary", 100);
         }});
@@ -57,7 +57,7 @@ public class MapInsertBuilderTest extends TestCase {
 
     public void testNullValue() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
-        builder.execute(new LinkedHashMap(){{
+        builder.execute(new LinkedHashMap<String, Object>(){{
             put("name", null);
             put("salary", 100);
         }});
@@ -73,7 +73,7 @@ public class MapInsertBuilderTest extends TestCase {
 
     public void testLastNullValue() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
-        builder.execute(new LinkedHashMap(){{
+        builder.execute(new LinkedHashMap<String, Object>(){{
             put("salary", 100);
             put("name", null);
         }});
