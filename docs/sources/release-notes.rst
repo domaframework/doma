@@ -2,6 +2,28 @@
 リリースノート
 ==============
 
+v2.14.0: 2017-01-14
+======================
+
+* `GH183 <https://github.com/domaframework/doma/pull/183>`_
+  BatchUpdateExecutor, BatchDeleteExecutor, MapBatchInsertBuilder を追加
+* `GH182 <https://github.com/domaframework/doma/pull/182>`_
+  エンベッダブルクラスにプロパティを定義しない場合に生成されるコードがコンパイルエラーになっていたのを修正
+* `GH181 <https://github.com/domaframework/doma/pull/181>`_
+  SQLテンプレートで組み立てられたSQLを扱うための `@SqlProcessor` を追加
+* `GH180 <https://github.com/domaframework/doma/pull/180>`_
+  Lombok をサポート
+* `GH179 <https://github.com/domaframework/doma/pull/179>`_
+  StandardExpressionFunctions#escapeがescapeCharを使用していない
+* `GH177 <https://github.com/domaframework/doma/pull/177>`_
+  Kotlin 1.0.6対応
+* `GH176 <https://github.com/domaframework/doma/pull/176>`_
+  BatchInsertExecutorを追加
+* `GH175 <https://github.com/domaframework/doma/pull/175>`_
+  組み込み関数の LocalDate, LocalDateTime 対応
+* `GH174 <https://github.com/domaframework/doma/pull/174>`_
+  Mapをパラメータとして自動でInsert文を組み立てるMapInsertBuilderを追加
+
 v2.13.0: 2016-11-13
 ======================
 
