@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.File;
@@ -209,35 +210,61 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
 
     protected void doParentDao(DaoMeta daoMeta) {
-        List<? extends TypeMirror> interfaces = daoMeta.getDaoElement()
-                .getInterfaces();
-        int size = interfaces.size();
-        if (size == 0) {
-            return;
+        List<TypeElement> interfaces = daoMeta.getDaoElement()
+                .getInterfaces()
+                .stream().map(type -> TypeMirrorUtil.toTypeElement(type, env))
+                .peek(element -> {
+                    if (element == null) {
+                        throw new AptIllegalStateException(
+                                "failed to convert to TypeElement.");
+                    }
+                }).collect(toList());
+        for (TypeElement typeElement : interfaces) {
+            DaoMirror daoMirror = DaoMirror.newInstance(typeElement, env);
+            if (daoMirror == null) {
+                ExecutableElement nonDefaultMethod = findNonDefaultMethod(
+                        typeElement);
+                if (nonDefaultMethod == null) {
+                    continue;
+                }
+                throw new AptException(Message.DOMA4440, env,
+                        daoMeta.getDaoElement(),
+                        new Object[] { nonDefaultMethod.getSimpleName(),
+                                daoMeta.getDaoElement().getQualifiedName() });
+            }
+            if (daoMeta.getParentDaoMeta() != null) {
+                throw new AptException(Message.DOMA4188, env,
+                        daoMeta.getDaoElement(),
+                        new Object[] {
+                                daoMeta.getDaoElement().getQualifiedName() });
+            }
+            ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoMirror);
+            parentDaoMeta.setDaoType(typeElement.asType());
+            parentDaoMeta.setDaoElement(typeElement);
+            daoMeta.setParentDaoMeta(parentDaoMeta);
         }
-        if (size > 1) {
-            throw new AptException(Message.DOMA4187, env,
-                    daoMeta.getDaoElement(), new Object[] { daoMeta
-                            .getDaoElement().getQualifiedName() });
+    }
+
+    protected ExecutableElement findNonDefaultMethod(
+            TypeElement interfaceElement) {
+        Optional<ExecutableElement> method = ElementFilter
+                .methodsIn(interfaceElement.getEnclosedElements()).stream()
+                .filter(m -> !m.isDefault()).findAny();
+        if (method.isPresent()) {
+            return method.get();
         }
-        TypeMirror parentMirror = interfaces.get(0);
-        TypeElement parentElement = TypeMirrorUtil.toTypeElement(parentMirror,
-                env);
-        if (parentElement == null) {
-            throw new AptIllegalStateException(
-                    "failed to convert to TypeElement.");
+        for (TypeMirror typeMirror : interfaceElement.getInterfaces()) {
+            TypeElement i = TypeMirrorUtil.toTypeElement(typeMirror, env);
+            if (i == null) {
+                throw new AptIllegalStateException(
+                        "failed to convert to TypeElement.");
+            }
+            ExecutableElement m = findNonDefaultMethod(i);
+            if (m != null) {
+                return m;
+            }
         }
-        DaoMirror daoMirror = DaoMirror.newInstance(parentElement, env);
-        if (daoMirror == null) {
-            throw new AptException(Message.DOMA4188, env,
-                    daoMeta.getDaoElement(), new Object[] {
-                            parentElement.getQualifiedName(),
-                            daoMeta.getDaoElement().getQualifiedName() });
-        }
-        ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoMirror);
-        parentDaoMeta.setDaoType(parentMirror);
-        parentDaoMeta.setDaoElement(parentElement);
-        daoMeta.setParentDaoMeta(parentDaoMeta);
+        return null;
     }
 
     protected void doMethodElements(TypeElement interfaceElement,
