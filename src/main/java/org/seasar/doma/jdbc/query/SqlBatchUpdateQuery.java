@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import java.sql.Statement;
-
 import org.seasar.doma.jdbc.SqlKind;
 
 /**

@@ -82,6 +82,7 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements
     protected void prepareSql() {
         sqls = new ArrayList<PreparedSql>();
         IntStream.rangeClosed(0, parameterSize - 1).forEach(i -> {
+            @SuppressWarnings("serial")
             Map<String, Value> map = new LinkedHashMap<String, Value>() {
                 {
                     parameters.forEach((key, value) -> put(key, value.get(i)));
