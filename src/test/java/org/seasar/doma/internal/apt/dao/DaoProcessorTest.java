@@ -307,8 +307,8 @@ public class DaoProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4188);
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 
     public void testIncludeAndExclude() throws Exception {
@@ -1076,6 +1076,36 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4439);
+    }
+
+    public void testOnlyDefaultMethodsExtends() throws Exception {
+        Class<?> target = OnlyDefaultMethodsExtendsDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNotOnlyDefaultMethodsExtends() throws Exception {
+        Class<?> target = NotOnlyDefaultMethodsExtendsDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4440);
+    }
+
+    public void testMultiDaoExtends() throws Exception {
+        Class<?> target = MultiDaoExtendsDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4188);
     }
 
 }

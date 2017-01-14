@@ -338,8 +338,7 @@ public enum Message implements MessageResource {
     DOMA4184("列挙型に@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。 at {0}"),
     DOMA4185(" ... /** SQLが長すぎるため最初の{0}文字のみを表示しています。 */"),
     DOMA4186("java.util.Listに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス、エンティティクラス、java.util.Map<String, Object>。 at {1}.{2}"),
-    DOMA4187("@Daoが注釈されたインタフェースは2つ以上のインタフェースをextendsできません。 at {0}"),
-    DOMA4188("@Daoが注釈されたインタフェースは@Daoが注釈されてないインタフェース[{0}]をextendsできません。 at {1}"),
+    DOMA4188("継承先に指定できる「@Daoが注釈されたインタフェース」は1つのみです。@Daoが注釈されておらず全てのメソッドがデフォルトメソッドであるインタフェースは複数指定できます。 at {0}"),
     DOMA4189("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションdoma.expr.functionsに指定されたクラス[{3}]が見つかりません。"),
     DOMA4190("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションdoma.expr.functionsに指定されたクラス[{3}]はorg.seasar.doma.expr.ExpressionFunctionsのサブタイプでなければいけません。"),
     DOMA4191("@ExternalDomainはorg.seasar.doma.jdbc.domain.DomainConverterのサブタイプにのみ注釈できます。 at {0}"),
@@ -478,6 +477,7 @@ public enum Message implements MessageResource {
     DOMA4437("BiFunctionの1番目の実型引数の型は、org.seasar.doma.jdbc.Configでなければいけません。 at {0}.{1}"),
     DOMA4438("パラメータの型[{0}]を原型にしてはいけません。 at {1}.{2}"),
     DOMA4439("パラメータの型[{0}]にワイルカード型の型パラメータを含めてはいけません。 at {1}.{2}"),
+    DOMA4440("継承先のメソッド[{0}]がデフォルトメソッドではありません。@Daoが注釈されていないインタフェースをextendsする場合、そのインタフェースの継承先を含む全てのメソッドはデフォルトメソッドでなければいけません。 at {1}"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。まず、JDBCドライバがクラスパスにあることを確認してください。次に、JDBCドライバが自動でロードされない場合は、Class.forNameで明示的にロードしてください。 ex) Class.forName(\"oracle.jdbc.driver.OracleDriver\")"),
