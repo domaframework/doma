@@ -23,7 +23,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
@@ -36,6 +35,7 @@ import org.seasar.doma.message.Message;
  */
 public class MapBatchInsertBuilderTest extends TestCase {
 
+    @SuppressWarnings("serial")
     public void test() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         builder.callerClassName(getClass().getName());
@@ -53,6 +53,7 @@ public class MapBatchInsertBuilderTest extends TestCase {
         builder.execute(employees);
     }   
 
+    @SuppressWarnings("serial")
     public void testGetSqls() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
@@ -84,6 +85,7 @@ public class MapBatchInsertBuilderTest extends TestCase {
         assertEquals(2001, parameters1.get(1).getValue());
     }
 
+    @SuppressWarnings("serial")
     public void testNullValue() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
@@ -115,6 +117,7 @@ public class MapBatchInsertBuilderTest extends TestCase {
         assertEquals(null, parameters1.get(1).getValue());
     }
 
+    @SuppressWarnings("serial")
     public void testChangeType() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
@@ -140,6 +143,7 @@ public class MapBatchInsertBuilderTest extends TestCase {
         fail();
     }
 
+    @SuppressWarnings("serial")
     public void testNotEqualMapSize() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
@@ -161,6 +165,7 @@ public class MapBatchInsertBuilderTest extends TestCase {
         fail();
     }
 
+    @SuppressWarnings("serial")
     public void testHashMap() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         List<Map<String, Object>> employees = new ArrayList<Map<String, Object>>() {{
@@ -204,6 +209,7 @@ public class MapBatchInsertBuilderTest extends TestCase {
         fail();
     }
 
+    @SuppressWarnings("serial")
     public void testDifferentKey() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         builder.callerClassName(getClass().getName());

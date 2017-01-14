@@ -29,6 +29,7 @@ import org.seasar.doma.jdbc.SqlParameter;
  */
 public class MapInsertBuilderTest extends TestCase {
 
+    @SuppressWarnings("serial")
     public void test() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
         builder.execute(new LinkedHashMap<String, Object>(){{
@@ -37,6 +38,7 @@ public class MapInsertBuilderTest extends TestCase {
         }});
     }   
 
+    @SuppressWarnings("serial")
     public void testGetSql() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
 
@@ -55,6 +57,7 @@ public class MapInsertBuilderTest extends TestCase {
         assertEquals(100, parameters.get(1).getValue());
     }
 
+    @SuppressWarnings("serial")
     public void testNullValue() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
         builder.execute(new LinkedHashMap<String, Object>(){{
@@ -71,6 +74,7 @@ public class MapInsertBuilderTest extends TestCase {
         assertEquals(100, parameters.get(0).getValue());
     }
 
+    @SuppressWarnings("serial")
     public void testLastNullValue() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
         builder.execute(new LinkedHashMap<String, Object>(){{

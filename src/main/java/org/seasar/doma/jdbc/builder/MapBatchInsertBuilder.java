@@ -120,6 +120,7 @@ public class MapBatchInsertBuilder {
      * @throws JdbcException
      *             上記以外でJDBCに関する例外が発生した場合
      */
+    @SuppressWarnings("unchecked")
     public int[] execute(Iterable<? extends Map<String, Object>> parameter) {
         if (parameter == null) {
             throw new DomaNullPointerException("parameter");
@@ -152,7 +153,6 @@ public class MapBatchInsertBuilder {
                 } else {
                     // 静的な型指定が行えないためObjectにキャストしている
                     // BatchBuilder内で下記clazzを利用した型チェックが行われているため安全である
-                    @SuppressWarnings("unchecked")
                     Class<Object> clazz = (Class<Object>) value.getClass();
                     builder.param(clazz, value).sql(", ");
                 }

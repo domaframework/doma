@@ -23,7 +23,6 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.BatchModifyCommand;
 import org.seasar.doma.jdbc.query.SqlBatchModifyQuery;
 import org.seasar.doma.message.Message;
@@ -139,19 +138,19 @@ public abstract class BatchBuilder {
 
     private void prepare() {
         query.clearParameters();
-        for (BatchParam p : helper.getParams()) {
+        for (BatchParam<?> p : helper.getParams()) {
             query.addParameter(p.name, p.paramClass, p.params);
         }
         query.setSqlNode(helper.getSqlNode());
         query.prepare();
     }
 
-    int[] execute(Supplier<BatchModifyCommand> commandFactory) {
+    int[] execute(Supplier<BatchModifyCommand<?>> commandFactory) {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
         prepare();
-        BatchModifyCommand command = commandFactory.get();
+        BatchModifyCommand<?> command = commandFactory.get();
         int[] result = command.execute();
         query.complete();
         return result;

@@ -16,9 +16,7 @@
 package org.seasar.doma.jdbc.builder;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import junit.framework.TestCase;

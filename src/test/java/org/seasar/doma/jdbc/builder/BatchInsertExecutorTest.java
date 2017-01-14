@@ -225,6 +225,7 @@ public class BatchInsertExecutorTest extends TestCase {
         });
     }
 
+    @SuppressWarnings("serial")
     public void testExecutorByMap() throws Exception {
         List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
             add(new LinkedHashMap<String, Object>() {{

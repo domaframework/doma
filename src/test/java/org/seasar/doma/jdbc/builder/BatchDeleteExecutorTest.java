@@ -16,9 +16,7 @@
 package org.seasar.doma.jdbc.builder;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -203,6 +201,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     }
 
     private static class Employee {
+        @SuppressWarnings("unused")
         final int id;
         final String name;
         final BigDecimal salary;
