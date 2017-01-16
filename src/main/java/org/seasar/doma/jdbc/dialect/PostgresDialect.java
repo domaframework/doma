@@ -164,7 +164,7 @@ public class PostgresDialect extends StandardDialect {
     @Override
     public PreparedSql getIdentitySelectSql(String catalogName,
             String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired) {
+            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
@@ -172,7 +172,8 @@ public class PostgresDialect extends StandardDialect {
             throw new DomaNullPointerException("columnName");
         }
         String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(
-        		catalogName, schemaName, tableName, columnName, isQuoteRequired);
+        		catalogName, schemaName, tableName, columnName,
+        		isQuoteRequired, isIdColumnQuoteRequired);
         StringBuilder buf = new StringBuilder(64);
         buf.append("select currval(");
         buf.append(identitySeqFuncExpr);
@@ -185,7 +186,8 @@ public class PostgresDialect extends StandardDialect {
     @Override
     public Sql<?> getIdentityReservationSql(String catalogName,
             String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, int reservationSize) {
+            boolean isQuoteRequired, boolean isIdColumnQuoteRequired,
+            int reservationSize) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
@@ -193,7 +195,8 @@ public class PostgresDialect extends StandardDialect {
             throw new DomaNullPointerException("columnName");
         }
         String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(
-        		catalogName, schemaName, tableName, columnName, isQuoteRequired);
+        		catalogName, schemaName, tableName, columnName,
+        		isQuoteRequired, isIdColumnQuoteRequired);
         StringBuilder buf = new StringBuilder(64);
         buf.append("select nextval(");
         buf.append(identitySeqFuncExpr);
@@ -207,11 +210,11 @@ public class PostgresDialect extends StandardDialect {
 
     protected String createIdentitySequenceFunctionExpression(String catalogName,
             String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired) {
+            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
         String qualifiedTableName = DatabaseObjectUtil.getQualifiedName(
                 isQuoteRequired ? this::applyQuote : Function.identity(),
                 catalogName, schemaName, tableName);
-        String colName = isQuoteRequired ? columnName : columnName.toLowerCase();
+        String colName = isIdColumnQuoteRequired ? columnName : columnName.toLowerCase();
         return "pg_catalog.pg_get_serial_sequence('" + qualifiedTableName + "', '" + colName + "')";
     }
 

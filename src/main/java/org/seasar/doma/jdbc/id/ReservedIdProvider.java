@@ -122,8 +122,11 @@ public class ReservedIdProvider implements IdProvider {
         String idColumnName = entityType.getGeneratedIdPropertyType()
                 .getColumnName(naming::apply);
         boolean isQuoteRequired = entityType.isQuoteRequired();
+        boolean isIdColumnQuoteRequired = entityType.getGeneratedIdPropertyType()
+        		.isQuoteRequired();
         return dialect.getIdentityReservationSql(catalogName, schemaName,
-                tableName, idColumnName, isQuoteRequired, reservationSize);
+                tableName, idColumnName, isQuoteRequired,
+                isIdColumnQuoteRequired, reservationSize);
     }
 
     protected void setupOptions(PreparedStatement preparedStatement)

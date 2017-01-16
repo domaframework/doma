@@ -133,7 +133,7 @@ public class H212126Dialect extends StandardDialect {
     @Override
     public PreparedSql getIdentitySelectSql(String catalogName,
             String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired) {
+            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }

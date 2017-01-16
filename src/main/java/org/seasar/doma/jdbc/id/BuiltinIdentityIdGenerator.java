@@ -118,7 +118,8 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
                 .getColumnName(naming::apply);
         Sql<?> sql = config.getDialect().getIdentitySelectSql(catalogName,
                 schemaName, tableName, idColumnName,
-                entityType.isQuoteRequired());
+                entityType.isQuoteRequired(),
+                entityType.getGeneratedIdPropertyType().isQuoteRequired());
         return getGeneratedValue(config, sql);
     }
 
