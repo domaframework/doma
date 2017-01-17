@@ -159,13 +159,16 @@ public interface Dialect {
      *            IDENTITYカラムの名前
      * @param isQuoteRequired
      *            引用符が必要かどうか
+     * @param isIdColumnQuoteRequired
+     *            ID列に引用符が必要かどうか
      * @return IDENTITYを取得するためのSQL
      * @throws DomaNullPointerException
      *             {@code tableName} と {@code columnName} のいずれかが {@code null}
      *             の場合
      */
     Sql<?> getIdentitySelectSql(String catalogName, String schemaName,
-            String tableName, String columnName, boolean isQuoteRequired);
+            String tableName, String columnName, boolean isQuoteRequired,
+            boolean isIdColumnQuoteRequired);
 
     /**
      * データベースのIDENTITYを予約するためのSQLを返します。
@@ -182,6 +185,8 @@ public interface Dialect {
      *            IDENTITYカラムの名前
      * @param isQuoteRequired
      *            引用符が必要かどうか
+     * @param isIdColumnQuoteRequired
+     *            ID列に引用符が必要かどうか
      * @param reservationSize
      *            予約サイズ
      * @return IDENTITYを予約するためのSQL
@@ -191,7 +196,7 @@ public interface Dialect {
      */
     Sql<?> getIdentityReservationSql(String catalogName, String schemaName,
             String tableName, String columnName, boolean isQuoteRequired,
-            int reservationSize);
+            boolean isIdColumnQuoteRequired, int reservationSize);
 
     /**
      * シーケンスの次の値を取得するためのSQLを返します。

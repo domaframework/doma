@@ -26,19 +26,35 @@ import junit.framework.TestCase;
  */
 public class PostgresDialectTest extends TestCase {
 
-    public void testGetIdentitySelectSql_quoteNotRequired() throws Exception {
+    public void testGetIdentitySelectSql_quoteNotRequired_idQuoteNotRequired() throws Exception {
         PostgresDialect dialect = new PostgresDialect();
         PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc",
-                "ddd", false);
-        assertEquals("select currval('aaa.bbb.ccc_ddd_seq')", sql.getRawSql());
+                "DDD", false, false);
+        assertEquals("select currval(pg_catalog.pg_get_serial_sequence('aaa.bbb.ccc', 'ddd'))",
+        		sql.getRawSql());
     }
 
-    public void testGetIdentitySelectSql_quoteRequired() throws Exception {
+    public void testGetIdentitySelectSql_quoteRequired_idQuoteNotRequired() throws Exception {
         PostgresDialect dialect = new PostgresDialect();
         PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc",
-                "ddd", true);
-        assertEquals("select currval('\"aaa\".\"bbb\".\"ccc_ddd_seq\"')",
+                "DDD", true, false);
+        assertEquals("select currval(pg_catalog.pg_get_serial_sequence('\"aaa\".\"bbb\".\"ccc\"', 'ddd'))",
                 sql.getRawSql());
     }
 
+    public void testGetIdentitySelectSql_quoteNotRequired_idQuoteRequired() throws Exception {
+        PostgresDialect dialect = new PostgresDialect();
+        PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc",
+                "DDD", false, true);
+        assertEquals("select currval(pg_catalog.pg_get_serial_sequence('aaa.bbb.ccc', 'DDD'))",
+        		sql.getRawSql());
+    }
+
+    public void testGetIdentitySelectSql_quoteRequired_idQuoteRequired() throws Exception {
+        PostgresDialect dialect = new PostgresDialect();
+        PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc",
+                "DDD", true, true);
+        assertEquals("select currval(pg_catalog.pg_get_serial_sequence('\"aaa\".\"bbb\".\"ccc\"', 'DDD'))",
+                sql.getRawSql());
+    }
 }

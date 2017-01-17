@@ -442,7 +442,8 @@ public class StandardDialect implements Dialect {
 
     @Override
     public Sql<?> getIdentitySelectSql(String catalogName, String schemaName,
-            String tableName, String columnName, boolean isQuoteRequired) {
+            String tableName, String columnName, boolean isQuoteRequired,
+            boolean isIdColumnQuoteRequired) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getIdentitySelectSql");
     }
@@ -450,7 +451,7 @@ public class StandardDialect implements Dialect {
     @Override
     public Sql<?> getIdentityReservationSql(String catalogName,
             String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, int reservationSize) {
+            boolean isQuoteRequired, boolean isIdColumnQuoteRequired, int reservationSize) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getIdentityReservationSql");
     }
