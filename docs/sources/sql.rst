@@ -49,7 +49,7 @@ SQLファイルとDaoのメソッドのマッピングは次のアノテーシ�
 * @Delete(sqlFile = true)
 * @BatchInsert(sqlFile = true)
 * @BatchUpdate(sqlFile = true)
-* @BaatchDelete(sqlFile = true)
+* @BatchDelete(sqlFile = true)
 
 SQLファイル
 ===========
