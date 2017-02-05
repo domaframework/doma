@@ -2,6 +2,16 @@
 リリースノート
 ==============
 
+v2.15.0: 2017-02-05
+======================
+
+* `GH184 <https://github.com/domaframework/doma/pull/184>`_
+  Long name serial sequence
+* `GH187 <https://github.com/domaframework/doma/pull/187>`_
+  Eclipse 4.6.2 で検出されたワーニングを修正
+* `GH188 <https://github.com/domaframework/doma/pull/188>`_
+  Dao においてデフォルトメソッドのみが定義されたインタフェースを継承可能に変更
+
 v2.14.0: 2017-01-14
 ======================
 
