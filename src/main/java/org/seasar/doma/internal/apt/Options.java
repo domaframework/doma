@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -154,7 +155,7 @@ public final class Options {
         return getConfig(env).get(key);
     }
 
-    private static Map<String, Map<String, String>> configCache = new HashMap<>();
+    private static Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
     private static Map<String, String> getConfig(ProcessingEnvironment env) {
         FileObject config = getFileObject(env, "", getConfigPath(env));
         if (config == null) {
@@ -169,7 +170,7 @@ public final class Options {
         });
     }
 
-    public static FileObject getFileObject(ProcessingEnvironment env, String pkg, String relativeName) {
+    private static FileObject getFileObject(ProcessingEnvironment env, String pkg, String relativeName) {
         Filer filer = env.getFiler();
 
         try {
@@ -195,7 +196,7 @@ public final class Options {
 
         public static final String DEFAULT_ENTITY_FIELD_PREFIX = "$";
 
-        public static final String DEFAULT_CONFIG_PATH = "doma.config";
+        public static final String DEFAULT_CONFIG_PATH = "doma.compile.config";
 
         public static final String DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR = "lombok.AllArgsConstructor";
 
