@@ -588,6 +588,17 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testSqlValidationSkipWhenOptionSpecifiedByConfigFile() throws Exception {
+        addOption("-Adoma.config.path=sql.validation.skip.config");
+        Class<?> target = SqlValidationSkipDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
     public void testParameterizedParam() throws Exception {
         Class<?> target = ParameterizedParamDao.class;
         DaoProcessor processor = new DaoProcessor();

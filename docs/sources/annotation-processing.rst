@@ -70,6 +70,10 @@ doma.version.validation
   （Domaのバージョンに互換性がある限りにおいて）。
   デフォルトの値は、 ``true`` 。
 
+doma.config.path
+  オプションの設定ファイルを置く場所の指定。
+  デフォルトの値は、 ``doma.compile.config``。
+
 Eclipse
 =======
 
@@ -90,3 +94,10 @@ Gradle
 
   compileJava.options.compilerArgs = ['-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
 
+設定ファイル
+==========
+
+デフォルトでは ``main/resources/doma.compile.config`` ファイルにオプションを記述しておくことで、
+ビルドツールごとのオプションの設定を利用する必要がなくなります。
+記述形式はプロパティファイルと同様です。
+なお、設定がバッティングした場合、ビルドツールごとのオプションの設定が優先されます。
