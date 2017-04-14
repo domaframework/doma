@@ -193,6 +193,32 @@ public class SelectBuilder {
     }
 
     /**
+     * パラメータのリストを追加します。
+     * <p>
+     * パラメータのリストの要素の型には、基本型とドメインクラスを指定できます。
+     * 
+     * @param <E>
+     *            リストの要素の型
+     * @param elementClass
+     *            リストの要素のクラス
+     * @param params
+     *            パラメータのリスト
+     * 
+     * @return クエリビルダ
+     * @throws DomaNullPointerException
+     *             {@code elementClass} もしくは {@code params} が {@code null} の場合
+     */
+    public <E> SelectBuilder params(Class<E> elementClass, List<E> params) {
+        if (elementClass == null) {
+            throw new DomaNullPointerException("elementClass");
+        }
+        if (params == null) {
+            throw new DomaNullPointerException("params");
+        }
+        return appendParams(elementClass, params, false);
+    }
+
+    /**
      * リテラルとしてパラメータを追加します。
      * <p>
      * パラメータの型には、基本型とドメインクラスを指定できます。
@@ -214,11 +240,53 @@ public class SelectBuilder {
         return appendParam(paramClass, param, true);
     }
 
+    /**
+     * リテラルとしてパラメータのリストを追加します。
+     * <p>
+     * パラメータのリストの要素の型には、基本型とドメインクラスを指定できます。
+     * 
+     * @param <E>
+     *            リストの要素の型
+     * @param elementClass
+     *            リストの要素のクラス
+     * @param params
+     *            パラメータのリスト
+     * @return クエリビルダ
+     * @throws DomaNullPointerException
+     *             {@code elementClass} もしくは {@code params} が {@code null} の場合
+     */
+    public <E> SelectBuilder literals(Class<E> elementClass, List<E> params) {
+        if (elementClass == null) {
+            throw new DomaNullPointerException("elementClass");
+        }
+        if (params == null) {
+            throw new DomaNullPointerException("params");
+        }
+        return appendParams(elementClass, params, true);
+    }
+
     private <P> SelectBuilder appendParam(Class<P> paramClass, P param,
             boolean literal) {
         helper.appendParam(new Param(paramClass, param, paramIndex, literal));
         paramIndex.increment();
         return new SubsequentSelectBuilder(config, helper, query, paramIndex);
+    }
+
+    private <E> SelectBuilder appendParams(Class<E> elementClass,
+            List<E> params, boolean literal) {
+        SelectBuilder builder = this;
+        int index = 0;
+        for (E param : params) {
+            builder = builder.appendParam(elementClass, param, literal)
+                    .sql(", ");
+            index++;
+        }
+        if (index == 0) {
+            builder = builder.sql("null");
+        } else {
+            builder = builder.removeLast();
+        }
+        return builder;
     }
 
     /**

@@ -23,6 +23,10 @@
 このメソッドでパラメータが渡された場合、SQLインジェクション対策としてのエスケープ処理は実施されません。
 しかし、SQLインジェクションを防ぐためにパラメータの値にシングルクォテーションを含めることは禁止しています。
 
+検索においてパラメータのリストを渡す場合は ``params`` メソッドと ``literals`` メソッドを利用できます。
+パラメータはカンマで連結されたSQLに変換されます。
+これらは、IN句と一緒に利用されることを想定されたメソッドです。
+
 検索
 ====
 
@@ -43,8 +47,8 @@
   builder.sql("and");
   builder.sql("name like ").param(String.class, "S%");
   builder.sql("and");
-  builder.sql("age > ").param(int.class, 20);
-  Emp emp = builder.getEntitySingleResult(Emp.class);
+  builder.sql("age in (").params(Integer.class, Arrays.asList(20, 30, 40)).sql(")");
+  List<Emp> employees = builder.getEntityResultList(Emp.class);
 
 組み立てたSQLのいくつかの方法で取得できます。
 

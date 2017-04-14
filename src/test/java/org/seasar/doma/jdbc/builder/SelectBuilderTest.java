@@ -15,19 +15,22 @@
  */
 package org.seasar.doma.jdbc.builder;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.message.Message;
 
 import example.domain.PhoneNumber;
 import example.entity.Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -214,6 +217,69 @@ public class SelectBuilderTest extends TestCase {
         } catch (JdbcException e) {
             assertEquals(Message.DOMA2224, e.getMessageResource());
         }
+    }
+
+    public void testParams() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select ccc from Emp");
+        builder.sql("where");
+        builder.sql("aaa in (")
+                .params(String.class, Arrays.asList("x", "y", "z")).sql(")");
+        Sql<?> sql = builder.getSql();
+        String rawSql = String.format(
+                "select ccc from Emp%n" + "where%n" + "aaa in (?, ?, ?)");
+        assertEquals(rawSql, sql.getRawSql());
+
+        List<? extends SqlParameter> params = sql.getParameters();
+        assertEquals(3, params.size());
+        assertEquals("x", params.get(0).getValue());
+        assertEquals("y", params.get(1).getValue());
+        assertEquals("z", params.get(2).getValue());
+    }
+
+    public void testParams_empty() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select ccc from Emp");
+        builder.sql("where");
+        builder.sql("aaa in (")
+                .params(String.class, Collections.emptyList()).sql(")");
+        Sql<?> sql = builder.getSql();
+        String rawSql = String.format(
+                "select ccc from Emp%n" + "where%n" + "aaa in (null)");
+        assertEquals(rawSql, sql.getRawSql());
+
+        List<? extends SqlParameter> params = sql.getParameters();
+        assertEquals(0, params.size());
+    }
+
+    public void testLiterals() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select ccc from Emp");
+        builder.sql("where");
+        builder.sql("aaa in (")
+                .literals(String.class, Arrays.asList("x", "y", "z")).sql(")");
+        Sql<?> sql = builder.getSql();
+        String rawSql = String.format(
+                "select ccc from Emp%n" + "where%n" + "aaa in ('x', 'y', 'z')");
+        assertEquals(rawSql, sql.getRawSql());
+
+        List<? extends SqlParameter> params = sql.getParameters();
+        assertEquals(0, params.size());
+    }
+
+    public void testLiterals_empty() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select ccc from Emp");
+        builder.sql("where");
+        builder.sql("aaa in (").params(String.class, Collections.emptyList())
+                .sql(")");
+        Sql<?> sql = builder.getSql();
+        String rawSql = String
+                .format("select ccc from Emp%n" + "where%n" + "aaa in (null)");
+        assertEquals(rawSql, sql.getRawSql());
+
+        List<? extends SqlParameter> params = sql.getParameters();
+        assertEquals(0, params.size());
     }
 
 }
