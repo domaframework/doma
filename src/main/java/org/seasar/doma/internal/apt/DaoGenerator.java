@@ -414,7 +414,7 @@ public class DaoGenerator extends AbstractGenerator {
                 print("@%1$s(%2$s) ", annotation.getTypeValue(),
                         annotation.getElementsValue());
             }
-            print("%1$s config) {%n", Config.class.getName());
+            print("%1$s config) {%n", daoMeta.getConfigType());
             indent();
             iprint("super(config);%n");
             unindent();
