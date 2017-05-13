@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
@@ -42,7 +41,6 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 
 import org.seasar.doma.DaoMethod;
 import org.seasar.doma.SingletonConfig;
@@ -55,6 +53,7 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
 import org.seasar.doma.internal.apt.mirror.DaoMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.util.ResourceUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
@@ -391,9 +390,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
 
     protected FileObject getFileObject(String path) {
-        Filer filer = env.getFiler();
         try {
-            return filer.getResource(StandardLocation.CLASS_OUTPUT, "", path);
+            return ResourceUtil.getResource(path, env);
         } catch (Exception ignored) {
             // Ignore, in case the Filer implementation doesn't support
             // directory path.

@@ -23,17 +23,16 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.LinkedHashMap;
 
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.SqlValidator;
+import org.seasar.doma.internal.apt.util.ResourceUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.internal.util.IOUtil;
@@ -136,9 +135,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
 
     protected FileObject getFileObject(String path, ExecutableElement method) {
-        Filer filer = env.getFiler();
         try {
-            return filer.getResource(StandardLocation.CLASS_OUTPUT, "", path);
+            return ResourceUtil.getResource(path, env);
         } catch (IOException e) {
             throw new AptException(Message.DOMA4143, env, method, e,
                     new Object[] { path, e });

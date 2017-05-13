@@ -35,7 +35,7 @@ import org.seasar.doma.message.Message;
  * @since 1.25.0
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.DomainConverters" })
-@SupportedOptions({ Options.TEST, Options.DEBUG })
+@SupportedOptions({ Options.RESOURCES_DIR, Options.TEST, Options.DEBUG })
 public class DomainConvertersProcessor extends AbstractProcessor {
 
     public DomainConvertersProcessor() {

@@ -5,7 +5,7 @@ Kotlin サポート
 .. contents:: 目次
    :depth: 3
 
-Doma は `Kotlin <https://kotlinlang.org/>`_ 1.0.6を実験的にサポートしています。
+Doma は `Kotlin <https://kotlinlang.org/>`_ 1.1.2を実験的にサポートしています。
 
 Kotlin利用のベストプラクティス
 ================================
@@ -60,16 +60,17 @@ Kotlin利用のベストプラクティス
 Daoインタフェース
 -------------------
 
+* KotlinではなくJavaで定義する
 * 更新処理の戻り値の型は `org.seasar.doma.jdbc.Result` や `org.seasar.doma.jdbc.BatchResult` を使う
 
 .. code-block:: java
 
-  @Dao(config = AppConfig::class)
-  interface PersonDao {
+  @Dao(config = AppConfig.class)
+  public interface PersonDao {
     @Select
-    fun selectById(id: Int): Person
+    Person selectById(Integer id);
     @Insert
-    fun insert(person: Person): Result<Person>
+    Result<Person> insert(Person person);
   }
 
 * 更新処理の戻り値を扱う際は `Destructuring Declarations <https://kotlinlang.org/docs/reference/multi-declarations.html>`_ を使う
@@ -94,10 +95,25 @@ Gradleでビルドする際は、確実な注釈処理が行われるように�
 
 Eclispeを利用する場合設定を適切に行えばJavaの注釈処理は自動で行われますが、kapt（Kotlinの注釈処理）はGradleを実行しない限り行われないことに注意してください。
 
+下記はbuild.gradleの抜粋です。コンパイル時にSQLファイルを参照するために下記の設定に特に注意してください。
+
+.. code-block:: groovy
+
+  // コンパイルより前にSQLファイルを出力先ディレクトリにコピーするために依存関係を逆転する
+  compileJava.dependsOn processResources
+  
+  // SQLファイルなどリソースファイルの出力先ディレクトリをkaptに伝える
+  kapt {
+      arguments {
+          arg("doma.resources.dir", processResources.destinationDir)
+      }
+  }
+
+
 JavaとKotlinの混在
 -------------------------
 
-kaptの不確実な挙動を避けるため、Domaに関するコードの全てもしくは一部をJavaで書くことは検討に値します。
+kaptの不確実な挙動を避けるため、Domaに関するコードの全てをJavaで書くことは検討に値します。
 Domaの利用において、JavaとKotlinの混在は問題ありません。
 
 サンプルプロジェクト
