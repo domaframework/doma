@@ -55,6 +55,11 @@ doma.expr.functions
   ``org.seasar.doma.expr.ExpressionFunctions`` のサブタイプでなければいけない。
   デフォルトの値は、 ``org.seasar.doma.expr.ExpressionFunctions`` 。
 
+doma.resources.dir
+  SQLファイルなどリソースファイルの出力先ディレクトリ。
+  絶対パスで指定する。
+  指定しない場合はクラスファイルの出力先ディレクトリが使われる。
+
 doma.sql.validation
   SQLファイルの存在チェックとSQLコメントの文法チェックを行う場合は ``true`` 。
   行わない場合は ``false`` 。
@@ -95,7 +100,7 @@ Gradle
   compileJava.options.compilerArgs = ['-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
 
 設定ファイル
-==========
+==================
 
 デフォルトでは ``main/resources/doma.compile.config`` ファイルにオプションを記述しておくことで、
 ビルドツールごとのオプションの設定を利用する必要がなくなります。

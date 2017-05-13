@@ -38,7 +38,7 @@ import org.seasar.doma.message.Message;
  * 
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.SingletonConfig" })
-@SupportedOptions({ Options.TEST, Options.DEBUG })
+@SupportedOptions({ Options.RESOURCES_DIR, Options.TEST, Options.DEBUG })
 public class SingletonConfigProcessor extends AbstractProcessor {
 
     public SingletonConfigProcessor() {

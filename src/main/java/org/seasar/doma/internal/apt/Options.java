@@ -25,12 +25,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 
 import org.seasar.doma.internal.Artifact;
+import org.seasar.doma.internal.apt.util.ResourceUtil;
 
 /**
  * @author taedium
@@ -59,6 +58,8 @@ public final class Options {
     public static final String VERSION_VALIDATION = "doma.version.validation";
 
     public static final String CONFIG_PATH = "doma.config.path";
+
+    public static final String RESOURCES_DIR = "doma.resources.dir";
 
     public static final String LOMBOK_ALL_ARGS_CONSTRUCTOR = "doma.lombok.AllArgsConstructor";
 
@@ -157,7 +158,7 @@ public final class Options {
 
     private static Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
     private static Map<String, String> getConfig(ProcessingEnvironment env) {
-        FileObject config = getFileObject(env, "", getConfigPath(env));
+        FileObject config = getFileObject(env, getConfigPath(env));
         if (config == null) {
             return Collections.emptyMap();
         }
@@ -170,11 +171,10 @@ public final class Options {
         });
     }
 
-    private static FileObject getFileObject(ProcessingEnvironment env, String pkg, String relativeName) {
-        Filer filer = env.getFiler();
-
+    private static FileObject getFileObject(ProcessingEnvironment env,
+            String path) {
         try {
-            return filer.getResource(StandardLocation.CLASS_OUTPUT, pkg, relativeName);
+            return ResourceUtil.getResource(path, env);
         } catch (IOException e) {
             return null;
         }

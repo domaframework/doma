@@ -33,7 +33,8 @@ import org.seasar.doma.internal.apt.meta.EmbeddablePropertyMetaFactory;
  *
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.Embeddable" })
-@SupportedOptions({ Options.VERSION_VALIDATION, Options.LOMBOK_VALUE,
+@SupportedOptions({ Options.VERSION_VALIDATION, Options.RESOURCES_DIR,
+        Options.LOMBOK_VALUE,
         Options.LOMBOK_ALL_ARGS_CONSTRUCTOR, Options.TEST, Options.DEBUG })
 public class EmbeddableProcessor extends
         AbstractGeneratingProcessor<EmbeddableMeta> {
