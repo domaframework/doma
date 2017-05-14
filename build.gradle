@@ -4,7 +4,7 @@ apply plugin: 'signing'
 apply plugin: 'maven'
 
 group = 'org.seasar.doma'
-version = '2.16.1'
+version = '2.17.0-SNAPSHOT'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 ext.encoding = 'UTF-8'
 sourceCompatibility = jdkVersion

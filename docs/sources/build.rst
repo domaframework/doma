@@ -82,7 +82,7 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
   }
 
   dependencies {
-      compile "org.seasar.doma:doma:2.16.1"
+      compile "org.seasar.doma:doma:2.17.0-SNAPSHOT"
   }
 
 .. note::
