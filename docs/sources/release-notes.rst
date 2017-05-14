@@ -2,6 +2,16 @@
 リリースノート
 ==============
 
+v2.16.1: 2017-05-14
+======================
+
+* `GH196 <https://github.com/domaframework/doma/pull/196>`_
+  Kotlin 1.1.2 を実験的にサポート
+* `GH195 <https://github.com/domaframework/doma/pull/195>`_
+  Oracle 12c 以降でIDENTITYを使った識別子の自動生成をサポート
+* `GH194 <https://github.com/domaframework/doma/pull/194>`_
+  SelectBuilder に params メソッドと literals メソッドを追加 
+
 v2.16.0: 2017-02-19
 ======================
 
