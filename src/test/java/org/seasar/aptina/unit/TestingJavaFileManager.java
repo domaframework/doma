@@ -15,11 +15,14 @@
  */
 package org.seasar.aptina.unit;
 
+import static org.seasar.aptina.unit.CollectionUtils.newHashMap;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.NoSuchFileException;
 import java.util.Map;
 
 import javax.annotation.processing.Processor;
@@ -27,11 +30,9 @@ import javax.tools.FileObject;
 import javax.tools.ForwardingJavaFileManager;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
-import javax.tools.JavaFileObject.Kind;
-
-import static org.seasar.aptina.unit.CollectionUtils.*;
 
 /**
  * {@link Processor}をテストする環境用の{@link JavaFileManager}の実装です。
@@ -119,6 +120,7 @@ class TestingJavaFileManager extends
             uri = originalFileObject.toUri();
             content = IOUtils.readBytes(originalFileObject.openInputStream());
         } catch (final FileNotFoundException ignore) {
+        } catch (final NoSuchFileException ignore) {
         }
         final InMemoryJavaFileObject fileObject = new InMemoryJavaFileObject(
             uri != null ? uri : toURI(location, packageName, relativeName),
@@ -156,6 +158,7 @@ class TestingJavaFileManager extends
             uri = originalFileObject.toUri();
             content = IOUtils.readBytes(originalFileObject.openInputStream());
         } catch (final FileNotFoundException ignore) {
+        } catch (final NoSuchFileException ignore) {
         }
         final InMemoryJavaFileObject fileObject = new InMemoryJavaFileObject(
             uri != null ? uri : toURI(location, className),
