@@ -20,9 +20,15 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.function.Consumer;
 
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -160,9 +166,13 @@ public abstract class AptTestCase extends AptinaTestCase {
         return null;
     }
 
-    protected ExecutableElement createMethodElement(Class<?> clazz,
-            String methodName, Class<?>... parameterClasses) {
-        ProcessingEnvironment env = getProcessingEnvironment();
+    protected TypeElement createTypeElement(ProcessingEnvironment env,
+            Class<?> clazz) {
+        return ElementUtil.getTypeElement(clazz, env);
+    }
+
+    protected ExecutableElement createMethodElement(ProcessingEnvironment env,
+            Class<?> clazz, String methodName, Class<?>... parameterClasses) {
         TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
         for (TypeElement t = typeElement; t != null
                 && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
@@ -202,6 +212,31 @@ public abstract class AptTestCase extends AptinaTestCase {
             result.put(name, type);
         }
         return result;
+    }
+
+    @SupportedAnnotationTypes("*")
+    static protected class AptProcessor extends AbstractProcessor {
+
+        private final Consumer<ProcessingEnvironment> consumer;
+
+        public AptProcessor(Consumer<ProcessingEnvironment> consumer) {
+            this.consumer = consumer;
+        }
+
+        @Override
+        public SourceVersion getSupportedSourceVersion() {
+            return SourceVersion.latest();
+        }
+
+        @Override
+        public boolean process(final Set<? extends TypeElement> annotations,
+                final RoundEnvironment roundEnv) {
+            if (roundEnv.processingOver()) {
+                return true;
+            }
+            this.consumer.accept(this.processingEnv);
+            return true;
+        }
     }
 
 }

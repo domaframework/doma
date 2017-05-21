@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.entity.NamingType1Entity;
@@ -30,40 +31,44 @@ public class EntityMetaFactoryTest extends AptTestCase {
     public void testNaming1Type() throws Exception {
         Class<?> target = NamingType1Entity.class;
         addCompilationUnit(target);
+        addProcessor(new AptProcessor(env -> {
+            EntityMeta entityMeta = createEntityMeta(env, target);
+            assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
+        }));
         compile();
-
-        EntityMetaFactory entityMetaFactory = createEntityMetaFactory();
-        EntityMeta entityMeta = entityMetaFactory
-                .createTypeElementMeta(getTypeElement(target));
-        assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
+        assertTrue(getCompiledResult());
     }
 
     public void testNaming2Type() throws Exception {
         Class<?> target = NamingType2Entity.class;
         addCompilationUnit(target);
+        addProcessor(new AptProcessor(env -> {
+            EntityMeta entityMeta = createEntityMeta(env, target);
+            assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
+        }));
         compile();
-
-        EntityMetaFactory entityMetaFactory = createEntityMetaFactory();
-        EntityMeta entityMeta = entityMetaFactory
-                .createTypeElementMeta(getTypeElement(target));
-        assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
+        assertTrue(getCompiledResult());
     }
 
     public void testNaming3Type() throws Exception {
         Class<?> target = NamingType3Entity.class;
         addCompilationUnit(target);
+        addProcessor(new AptProcessor(env -> {
+            EntityMeta entityMeta = createEntityMeta(env, target);
+            assertEquals(NamingType.NONE, entityMeta.getNamingType());
+        }));
         compile();
-
-        EntityMetaFactory entityMetaFactory = createEntityMetaFactory();
-        EntityMeta entityMeta = entityMetaFactory
-                .createTypeElementMeta(getTypeElement(target));
-        assertEquals(NamingType.NONE, entityMeta.getNamingType());
+        assertTrue(getCompiledResult());
     }
 
-    protected EntityMetaFactory createEntityMetaFactory() {
-        ProcessingEnvironment env = getProcessingEnvironment();
+    protected EntityMeta createEntityMeta(ProcessingEnvironment env,
+            Class<?> clazz) {
         EntityPropertyMetaFactory propertyMetaFactory = new EntityPropertyMetaFactory(
                 env);
-        return new EntityMetaFactory(env, propertyMetaFactory);
+        EntityMetaFactory entityMetaFactory = new EntityMetaFactory(env,
+                propertyMetaFactory);
+        TypeElement typeElement = createTypeElement(env, clazz);
+        return entityMetaFactory
+                .createTypeElementMeta(typeElement);
     }
 }
