@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;

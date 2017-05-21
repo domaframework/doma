@@ -21,8 +21,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Formatter;
 
-import javax.annotation.Generated;
 import javax.annotation.processing.Filer;
+import javax.annotation.processing.Generated;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
@@ -112,7 +112,8 @@ public abstract class AbstractGenerator implements Generator {
 
     protected void printGenerated() {
         iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\")%n",
-                Generated.class.getName(), Artifact.getName(),
+                Generated.class.getName(),
+                Artifact.getName(),
                 Options.getVersion(env), Options.getDate(env));
     }
 

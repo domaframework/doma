@@ -3,7 +3,7 @@ package org.seasar.doma.internal.apt.dao;
 /** */
 @org.seasar.doma.internal.apt.dao.ClassAnnotation(aaa = 1, bbb = true)
 @org.seasar.doma.internal.apt.dao.ClassAnnotation2(aaa = 1, bbb = true)
-@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 public class AnnotateWithDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.AnnotateWithDao {
 
     static {
