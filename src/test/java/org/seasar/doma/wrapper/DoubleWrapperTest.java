@@ -29,7 +29,7 @@ public class DoubleWrapperTest extends TestCase {
     public void testIncrement() {
         DoubleWrapper wrapper = new DoubleWrapper(10d);
         wrapper.increment();
-        assertEquals(new Double(11d), wrapper.get());
+        assertEquals(Double.valueOf(11d), wrapper.get());
     }
 
     /**
@@ -38,6 +38,6 @@ public class DoubleWrapperTest extends TestCase {
     public void testDecrement() {
         DoubleWrapper wrapper = new DoubleWrapper(10d);
         wrapper.decrement();
-        assertEquals(new Double(9d), wrapper.get());
+        assertEquals(Double.valueOf(9d), wrapper.get());
     }
 }

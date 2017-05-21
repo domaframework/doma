@@ -29,7 +29,7 @@ public class IntegerWrapperTtest extends TestCase {
     public void testIncrement() {
         IntegerWrapper wrapper = new IntegerWrapper(10);
         wrapper.increment();
-        assertEquals(new Integer(11), wrapper.get());
+        assertEquals(Integer.valueOf(11), wrapper.get());
     }
 
     /**
@@ -38,6 +38,6 @@ public class IntegerWrapperTtest extends TestCase {
     public void testDecrement() {
         IntegerWrapper wrapper = new IntegerWrapper(10);
         wrapper.decrement();
-        assertEquals(new Integer(9), wrapper.get());
+        assertEquals(Integer.valueOf(9), wrapper.get());
     }
 }

@@ -17,8 +17,6 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.lang.reflect.Method;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -32,6 +30,7 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -82,7 +81,7 @@ public class EntityIterationHandlerTest extends TestCase {
                 });
         Integer result = handler.handle(resultSet, query, (i, next) -> {
         }).get();
-        assertEquals(new Integer(2), result);
+        assertEquals(Integer.valueOf(2), result);
     }
 
     public void testHandle_exits() throws Exception {
@@ -120,7 +119,7 @@ public class EntityIterationHandlerTest extends TestCase {
                 });
         Integer result = handler.handle(resultSet, query, (i, next) -> {
         }).get();
-        assertEquals(new Integer(1), result);
+        assertEquals(Integer.valueOf(1), result);
     }
 
 }

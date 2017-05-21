@@ -17,8 +17,6 @@ package org.seasar.doma.jdbc.command;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.OptimisticLockException;
@@ -27,6 +25,7 @@ import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -64,9 +63,9 @@ public class UpdateCommandTest extends TestCase {
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());
         assertEquals("hoge", bindValues.get(0).getValue());
-        assertEquals(new Integer(10), bindValues.get(1).getValue());
-        assertEquals(new Integer(1), bindValues.get(2).getValue());
-        assertEquals(new Integer(10), bindValues.get(3).getValue());
+        assertEquals(Integer.valueOf(10), bindValues.get(1).getValue());
+        assertEquals(Integer.valueOf(1), bindValues.get(2).getValue());
+        assertEquals(Integer.valueOf(10), bindValues.get(3).getValue());
     }
 
     public void testExecute_throwsOptimisticLockException() throws Exception {
@@ -151,15 +150,15 @@ public class UpdateCommandTest extends TestCase {
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());
         assertEquals("hoge", bindValues.get(0).getValue());
-        assertEquals(new Integer(10), bindValues.get(1).getValue());
-        assertEquals(new Integer(1), bindValues.get(2).getValue());
-        assertEquals(new Integer(10), bindValues.get(3).getValue());
+        assertEquals(Integer.valueOf(10), bindValues.get(1).getValue());
+        assertEquals(Integer.valueOf(1), bindValues.get(2).getValue());
+        assertEquals(Integer.valueOf(10), bindValues.get(3).getValue());
 
         Emp updatedStates = emp.originalStates;
-        assertEquals(new Integer(1), updatedStates.getId());
+        assertEquals(Integer.valueOf(1), updatedStates.getId());
         assertEquals("hoge", updatedStates.getName());
         assertNull(updatedStates.getSalary());
-        assertEquals(new Integer(11), updatedStates.getVersion());
+        assertEquals(Integer.valueOf(11), updatedStates.getVersion());
     }
 
 }

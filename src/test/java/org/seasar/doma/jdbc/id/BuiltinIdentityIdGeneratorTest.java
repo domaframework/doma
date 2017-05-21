@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc.id;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
@@ -25,6 +23,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 
 import example.entity.IdGeneratedEmp;
 import example.entity._IdGeneratedEmp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -43,7 +42,7 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
                 _IdGeneratedEmp.getSingletonInternal());
         Long value = identityIdGenerator.generatePostInsert(idGenerationConfig,
                 config.dataSource.connection.preparedStatement);
-        assertEquals(new Long(11), value);
+        assertEquals(Long.valueOf(11), value);
         assertEquals("select currval(pg_catalog.pg_get_serial_sequence('\"CATA\".\"EMP\"', 'id'))",
                 config.dataSource.connection.preparedStatement.sql);
     }
@@ -62,14 +61,14 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
                 entityType, new ReservedIdProvider(config, entityType, 3));
         Long value = identityIdGenerator.generatePreInsert(idGenerationConfig);
-        assertEquals(new Long(11), value);
+        assertEquals(Long.valueOf(11), value);
         assertEquals(
                 "select nextval(pg_catalog.pg_get_serial_sequence('\"CATA\".\"EMP\"', 'id')) from generate_series(1, 3)",
                 config.dataSource.connection.preparedStatement.sql);
         value = identityIdGenerator.generatePreInsert(idGenerationConfig);
-        assertEquals(new Long(12), value);
+        assertEquals(Long.valueOf(12), value);
         value = identityIdGenerator.generatePreInsert(idGenerationConfig);
-        assertEquals(new Long(13), value);
+        assertEquals(Long.valueOf(13), value);
 
         try {
             identityIdGenerator.generatePreInsert(idGenerationConfig);

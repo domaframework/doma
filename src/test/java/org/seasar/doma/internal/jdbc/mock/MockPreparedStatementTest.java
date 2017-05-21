@@ -38,8 +38,8 @@ public class MockPreparedStatementTest extends TestCase {
         ps.setInt(1, 100);
         ps.setInt(2, 200);
 
-        assertEquals(new Integer(100), ps.bindValues.get(0).getValue());
-        assertEquals(new Integer(200), ps.bindValues.get(1).getValue());
+        assertEquals(Integer.valueOf(100), ps.bindValues.get(0).getValue());
+        assertEquals(Integer.valueOf(200), ps.bindValues.get(1).getValue());
     }
 
     public void testSetBigDecimal() throws Exception {

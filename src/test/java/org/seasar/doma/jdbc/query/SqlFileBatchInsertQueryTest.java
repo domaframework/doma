@@ -19,8 +19,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.InParameter;
@@ -28,6 +26,7 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -94,7 +93,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
         assertEquals("aaa", parameters.get(1).getWrapper().get());
         assertNull(parameters.get(2).getWrapper().get());
 
@@ -103,7 +102,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
                 sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+        assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());
         assertNull(parameters.get(1).getWrapper().get());
         assertEquals(new BigDecimal(2000), parameters.get(2).getWrapper().get());
     }

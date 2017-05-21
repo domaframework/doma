@@ -32,16 +32,6 @@ import org.seasar.doma.internal.WrapException;
  */
 public final class ClassUtil {
 
-    public static <T> T newInstance(Class<T> clazz) throws WrapException {
-        try {
-            return clazz.newInstance();
-        } catch (InstantiationException e) {
-            throw new WrapException(e);
-        } catch (IllegalAccessException e) {
-            throw new WrapException(e);
-        }
-    }
-
     public static <T> Constructor<T> getConstructor(Class<T> clazz,
             Class<?>... parameterTypes) throws WrapException {
         try {

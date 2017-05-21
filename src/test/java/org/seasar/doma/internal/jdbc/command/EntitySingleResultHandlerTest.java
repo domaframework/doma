@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -29,6 +27,7 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -59,7 +58,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
                 _Emp.getSingletonInternal());
         Emp emp = handler.handle(resultSet, query, (i, next) -> {
         }).get();
-        assertEquals(new Integer(1), emp.getId());
+        assertEquals(Integer.valueOf(1), emp.getId());
         assertEquals("aaa", emp.getName());
     }
 

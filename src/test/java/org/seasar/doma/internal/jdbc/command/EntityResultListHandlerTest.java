@@ -18,8 +18,6 @@ package org.seasar.doma.internal.jdbc.command;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -31,6 +29,7 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -72,10 +71,10 @@ public class EntityResultListHandlerTest extends TestCase {
 
         assertEquals(2, entities.size());
         Emp emp = entities.get(0);
-        assertEquals(new Integer(1), emp.getId());
+        assertEquals(Integer.valueOf(1), emp.getId());
         assertEquals("aaa", emp.getName());
         emp = entities.get(1);
-        assertEquals(new Integer(2), emp.getId());
+        assertEquals(Integer.valueOf(2), emp.getId());
         assertEquals("bbb", emp.getName());
     }
 

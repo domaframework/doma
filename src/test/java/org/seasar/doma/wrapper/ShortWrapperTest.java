@@ -29,7 +29,7 @@ public class ShortWrapperTest extends TestCase {
     public void testIncrement() {
         ShortWrapper wrapper = new ShortWrapper((short) 10);
         wrapper.increment();
-        assertEquals(new Short((short) 11), wrapper.get());
+        assertEquals(Short.valueOf((short) 11), wrapper.get());
     }
 
     /**
@@ -38,6 +38,6 @@ public class ShortWrapperTest extends TestCase {
     public void testDecrement() {
         ShortWrapper wrapper = new ShortWrapper((short) 10);
         wrapper.decrement();
-        assertEquals(new Short((short) 9), wrapper.get());
+        assertEquals(Short.valueOf((short) 9), wrapper.get());
     }
 }

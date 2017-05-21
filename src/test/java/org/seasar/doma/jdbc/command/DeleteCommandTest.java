@@ -18,8 +18,6 @@ package org.seasar.doma.jdbc.command;
 import java.math.BigDecimal;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
@@ -30,6 +28,7 @@ import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -64,8 +63,8 @@ public class DeleteCommandTest extends TestCase {
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(2, bindValues.size());
-        assertEquals(new Integer(1), bindValues.get(0).getValue());
-        assertEquals(new Integer(10), bindValues.get(1).getValue());
+        assertEquals(Integer.valueOf(1), bindValues.get(0).getValue());
+        assertEquals(Integer.valueOf(10), bindValues.get(1).getValue());
     }
 
     public void testExecute_throwsOptimisticLockException() throws Exception {

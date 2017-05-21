@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -42,6 +40,7 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author nakamura-to
@@ -80,8 +79,9 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(null, parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(3).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -110,8 +110,9 @@ public class SqlFileUpdateQueryTest extends TestCase {
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -139,8 +140,9 @@ public class SqlFileUpdateQueryTest extends TestCase {
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("hoge", parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -169,8 +171,9 @@ public class SqlFileUpdateQueryTest extends TestCase {
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("hoge", parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -199,8 +202,9 @@ public class SqlFileUpdateQueryTest extends TestCase {
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -229,8 +233,9 @@ public class SqlFileUpdateQueryTest extends TestCase {
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -259,9 +264,11 @@ public class SqlFileUpdateQueryTest extends TestCase {
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -306,8 +313,9 @@ public class SqlFileUpdateQueryTest extends TestCase {
         List<? extends InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100),
+                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 

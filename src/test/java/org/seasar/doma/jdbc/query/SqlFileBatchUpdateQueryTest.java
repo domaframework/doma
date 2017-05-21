@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.InParameter;
@@ -31,6 +29,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -99,7 +98,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertNull(parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
 
         sql = query.getSqls().get(1);
         assertEquals("update emp set name = ?, salary = ? where id = ?",
@@ -108,7 +107,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         assertEquals(3, parameters.size());
         assertNull(parameters.get(0).getWrapper().get());
         assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-        assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(20), parameters.get(2).getWrapper().get());
     }
 
     public void testIsExecutable() throws Exception {

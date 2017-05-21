@@ -22,8 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -36,6 +34,7 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
 import example.domain.PhoneNumber;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -579,7 +578,8 @@ public class SqlParserTest extends TestCase {
                 sql.getFormattedSql());
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
-        assertEquals(new Integer(5), sql.getParameters().get(1).getWrapper()
+        assertEquals(Integer.valueOf(5),
+                sql.getParameters().get(1).getWrapper()
                 .get());
     }
 
@@ -600,10 +600,12 @@ public class SqlParserTest extends TestCase {
                 "update aaa set no = 10, set name = 'hoge' where id = 100",
                 sql.getFormattedSql());
         assertEquals(3, sql.getParameters().size());
-        assertEquals(new Integer(10), sql.getParameters().get(0).getWrapper()
+        assertEquals(Integer.valueOf(10),
+                sql.getParameters().get(0).getWrapper()
                 .get());
         assertEquals("hoge", sql.getParameters().get(1).getWrapper().get());
-        assertEquals(new Integer(100), sql.getParameters().get(2).getWrapper()
+        assertEquals(Integer.valueOf(100),
+                sql.getParameters().get(2).getWrapper()
                 .get());
     }
 

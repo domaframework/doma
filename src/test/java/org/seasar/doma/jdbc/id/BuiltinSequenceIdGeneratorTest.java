@@ -15,14 +15,13 @@
  */
 package org.seasar.doma.jdbc.id;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
 import example.entity._IdGeneratedEmp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -43,7 +42,7 @@ public class BuiltinSequenceIdGeneratorTest extends TestCase {
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
                 _IdGeneratedEmp.getSingletonInternal());
         Long value = idGenerator.generatePreInsert(idGenerationConfig);
-        assertEquals(new Long(11), value);
+        assertEquals(Long.valueOf(11), value);
         assertEquals("select nextval('aaa')",
                 config.dataSource.connection.preparedStatement.sql);
     }

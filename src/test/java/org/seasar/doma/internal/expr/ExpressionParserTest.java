@@ -17,10 +17,10 @@ package org.seasar.doma.internal.expr;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
+
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -143,7 +143,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", new Value(String.class, "aaa"));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertEquals(new Integer(3), evaluationResult.getValue());
+        assertEquals(Integer.valueOf(3), evaluationResult.getValue());
     }
 
     public void testMethod() throws Exception {
@@ -152,7 +152,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", new Value(String.class, "aaa"));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertEquals(new Integer(3), evaluationResult.getValue());
+        assertEquals(Integer.valueOf(3), evaluationResult.getValue());
     }
 
     public void testMethod2() throws Exception {
@@ -181,7 +181,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertEquals(new Integer(2), evaluationResult.getValue());
+        assertEquals(Integer.valueOf(2), evaluationResult.getValue());
     }
 
     public void testMethod5() throws Exception {
@@ -191,7 +191,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertEquals(new Integer(2), evaluationResult.getValue());
+        assertEquals(Integer.valueOf(2), evaluationResult.getValue());
     }
 
     public void testMethod6() throws Exception {
@@ -338,7 +338,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertEquals(new Integer(10), evaluationResult.getValue());
+        assertEquals(Integer.valueOf(10), evaluationResult.getValue());
     }
 
     public void testEq() throws Exception {
@@ -652,19 +652,19 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Integer(2), result.getValue());
+        assertEquals(Integer.valueOf(2), result.getValue());
 
         parser = new ExpressionParser("+2");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Integer(2), result.getValue());
+        assertEquals(Integer.valueOf(2), result.getValue());
 
         parser = new ExpressionParser("-2");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Integer(-2), result.getValue());
+        assertEquals(Integer.valueOf(-2), result.getValue());
     }
 
     public void testLong() throws Exception {
@@ -672,19 +672,19 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Long(2), result.getValue());
+        assertEquals(Long.valueOf(2L), result.getValue());
 
         parser = new ExpressionParser("+2L");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Long(2), result.getValue());
+        assertEquals(Long.valueOf(2L), result.getValue());
 
         parser = new ExpressionParser("-2L");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Long(-2), result.getValue());
+        assertEquals(Long.valueOf(-2), result.getValue());
     }
 
     public void testFloat() throws Exception {
@@ -692,19 +692,19 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Float(2.5), result.getValue());
+        assertEquals(Float.valueOf(2.5f), result.getValue());
 
         parser = new ExpressionParser("+2.5F");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Float(2.5), result.getValue());
+        assertEquals(Float.valueOf(2.5f), result.getValue());
 
         parser = new ExpressionParser("-2.5F");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Float(-2.5), result.getValue());
+        assertEquals(Float.valueOf(-2.5f), result.getValue());
     }
 
     public void testDouble() throws Exception {
@@ -712,19 +712,19 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Double(2.5), result.getValue());
+        assertEquals(Double.valueOf(2.5), result.getValue());
 
         parser = new ExpressionParser("+2.5D");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Double(2.5), result.getValue());
+        assertEquals(Double.valueOf(2.5), result.getValue());
 
         parser = new ExpressionParser("-2.5D");
         node = parser.parse();
         evaluator = new ExpressionEvaluator();
         result = evaluator.evaluate(node);
-        assertEquals(new Double(-2.5), result.getValue());
+        assertEquals(Double.valueOf(-2.5), result.getValue());
     }
 
     public void testBigDecimal() throws Exception {
@@ -752,7 +752,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Character('a'), result.getValue());
+        assertEquals(Character.valueOf('a'), result.getValue());
     }
 
     public void testAdd() throws Exception {
@@ -800,7 +800,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Integer(14), result.getValue());
+        assertEquals(Integer.valueOf(14), result.getValue());
     }
 
     public void testArithmeticOperators2() throws Exception {
@@ -808,7 +808,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Integer(14), result.getValue());
+        assertEquals(Integer.valueOf(14), result.getValue());
     }
 
     public void testArithmeticOperators3() throws Exception {
@@ -816,7 +816,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
-        assertEquals(new Integer(-3), result.getValue());
+        assertEquals(Integer.valueOf(-3), result.getValue());
     }
 
     public void testConcat() throws Exception {

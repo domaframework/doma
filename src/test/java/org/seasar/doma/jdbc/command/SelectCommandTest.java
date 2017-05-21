@@ -21,8 +21,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
@@ -41,6 +39,7 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -79,10 +78,10 @@ public class SelectCommandTest extends TestCase {
         query.complete();
 
         assertNotNull(entity);
-        assertEquals(new Integer(1), entity.getId());
+        assertEquals(Integer.valueOf(1), entity.getId());
         assertEquals("hoge", entity.getName());
         assertEquals(new BigDecimal(10000), entity.getSalary());
-        assertEquals(new Integer(100), entity.getVersion());
+        assertEquals(Integer.valueOf(100), entity.getVersion());
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         BindValue bindValue = bindValues.get(0);
@@ -125,20 +124,20 @@ public class SelectCommandTest extends TestCase {
         assertNotNull(entities);
         assertEquals(3, entities.size());
         Emp entity = entities.get(0);
-        assertEquals(new Integer(1), entity.getId());
+        assertEquals(Integer.valueOf(1), entity.getId());
         assertEquals("hoge", entity.getName());
         assertEquals(new BigDecimal(10000), entity.getSalary());
-        assertEquals(new Integer(100), entity.getVersion());
+        assertEquals(Integer.valueOf(100), entity.getVersion());
         entity = entities.get(1);
-        assertEquals(new Integer(2), entity.getId());
+        assertEquals(Integer.valueOf(2), entity.getId());
         assertEquals("foo", entity.getName());
         assertEquals(new BigDecimal(20000), entity.getSalary());
-        assertEquals(new Integer(200), entity.getVersion());
+        assertEquals(Integer.valueOf(200), entity.getVersion());
         entity = entities.get(2);
-        assertEquals(new Integer(3), entity.getId());
+        assertEquals(Integer.valueOf(3), entity.getId());
         assertEquals("bar", entity.getName());
         assertEquals(new BigDecimal(30000), entity.getSalary());
-        assertEquals(new Integer(300), entity.getVersion());
+        assertEquals(Integer.valueOf(300), entity.getVersion());
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         BindValue bindValue = bindValues.get(0);
@@ -215,20 +214,20 @@ public class SelectCommandTest extends TestCase {
             assertNotNull(entities);
             assertEquals(3, entities.size());
             Emp entity = entities.get(0);
-            assertEquals(new Integer(1), entity.getId());
+            assertEquals(Integer.valueOf(1), entity.getId());
             assertEquals("hoge", entity.getName());
             assertEquals(new BigDecimal(10000), entity.getSalary());
-            assertEquals(new Integer(100), entity.getVersion());
+            assertEquals(Integer.valueOf(100), entity.getVersion());
             entity = entities.get(1);
-            assertEquals(new Integer(2), entity.getId());
+            assertEquals(Integer.valueOf(2), entity.getId());
             assertEquals("foo", entity.getName());
             assertEquals(new BigDecimal(20000), entity.getSalary());
-            assertEquals(new Integer(200), entity.getVersion());
+            assertEquals(Integer.valueOf(200), entity.getVersion());
             entity = entities.get(2);
-            assertEquals(new Integer(3), entity.getId());
+            assertEquals(Integer.valueOf(3), entity.getId());
             assertEquals("bar", entity.getName());
             assertEquals(new BigDecimal(30000), entity.getSalary());
-            assertEquals(new Integer(300), entity.getVersion());
+            assertEquals(Integer.valueOf(300), entity.getVersion());
 
             List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
             BindValue bindValue = bindValues.get(0);

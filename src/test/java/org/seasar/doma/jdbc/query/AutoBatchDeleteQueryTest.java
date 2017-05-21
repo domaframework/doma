@@ -19,8 +19,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -28,6 +26,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -68,7 +67,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         Emp emp2 = new Emp();
         emp2.setId(20);
         emp2.setSalary(new BigDecimal(2000));
-        emp2.setVersion(new Integer(10));
+        emp2.setVersion(Integer.valueOf(10));
 
         AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
                 _Emp.getSingletonInternal());
@@ -85,7 +84,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
-        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
         assertTrue(parameters.get(1).getWrapper().get() == null);
 
         sql = query.getSqls().get(1);
@@ -93,8 +92,8 @@ public class AutoBatchDeleteQueryTest extends TestCase {
                 sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(2, parameters.size());
-        assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(1).getWrapper().get());
     }
 
     public void testOption_ignoreVersion() throws Exception {
@@ -105,7 +104,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         Emp emp2 = new Emp();
         emp2.setId(20);
         emp2.setSalary(new BigDecimal(2000));
-        emp2.setVersion(new Integer(10));
+        emp2.setVersion(Integer.valueOf(10));
 
         AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
                 _Emp.getSingletonInternal());
@@ -122,12 +121,12 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
 
         sql = query.getSqls().get(1);
         assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+        assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());
     }
 }

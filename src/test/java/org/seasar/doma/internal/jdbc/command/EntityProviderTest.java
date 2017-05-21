@@ -19,8 +19,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Collections;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -40,6 +38,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -62,10 +61,10 @@ public class EntityProviderTest extends TestCase {
                 new MySelectQuery(new MockConfig()), false);
         Emp emp = provider.get(resultSet);
 
-        assertEquals(new Integer(1), emp.getId());
+        assertEquals(Integer.valueOf(1), emp.getId());
         assertEquals("aaa", emp.getName());
         assertEquals(new BigDecimal(10), emp.getSalary());
-        assertEquals(new Integer(100), emp.getVersion());
+        assertEquals(Integer.valueOf(100), emp.getVersion());
     }
 
     public void testGetEntity_UnknownColumnException() throws Exception {
@@ -107,10 +106,10 @@ public class EntityProviderTest extends TestCase {
                 new MySelectQuery(new EmptyUnknownColumnHandlerConfig()), false);
         Emp emp = provider.get(resultSet);
 
-        assertEquals(new Integer(1), emp.getId());
+        assertEquals(Integer.valueOf(1), emp.getId());
         assertEquals("aaa", emp.getName());
         assertEquals(new BigDecimal(10), emp.getSalary());
-        assertEquals(new Integer(100), emp.getVersion());
+        assertEquals(Integer.valueOf(100), emp.getVersion());
     }
 
     protected class MySelectQuery implements SelectQuery {

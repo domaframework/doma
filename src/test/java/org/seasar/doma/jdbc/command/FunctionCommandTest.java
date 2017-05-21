@@ -17,8 +17,6 @@ package org.seasar.doma.jdbc.command;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
@@ -28,6 +26,8 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.wrapper.IntegerWrapper;
+
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -68,10 +68,10 @@ public class FunctionCommandTest extends TestCase {
         query.complete();
 
         assertNotNull(result);
-        assertEquals(new Integer(10), result);
-        assertEquals(new Integer(40), aaa.get());
-        assertEquals(new Integer(20), bbb.get());
-        assertEquals(new Integer(30), ccc.get());
+        assertEquals(Integer.valueOf(10), result);
+        assertEquals(Integer.valueOf(40), aaa.get());
+        assertEquals(Integer.valueOf(20), bbb.get());
+        assertEquals(Integer.valueOf(30), ccc.get());
 
         String sql = runtimeConfig.dataSource.connection.callableStatement.sql;
         assertEquals("{? = call xxx.yyy.aaa(?, ?, ?)}", sql);

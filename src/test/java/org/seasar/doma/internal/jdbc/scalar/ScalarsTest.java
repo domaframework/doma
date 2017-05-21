@@ -30,8 +30,6 @@ import java.time.LocalTime;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
@@ -40,6 +38,7 @@ import org.seasar.doma.wrapper.Wrapper;
 
 import example.domain.InternationalPhoneNumber;
 import example.domain.PhoneNumber;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -54,21 +53,22 @@ public class ScalarsTest extends TestCase {
         assertNotNull(Scalars.wrap(true, boolean.class, false, classHelper));
         assertNotNull(Scalars.wrap(true, Boolean.class, false, classHelper));
         assertNotNull(Scalars.wrap((byte) 1, byte.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new Byte((byte) 1), Byte.class, false,
+        assertNotNull(Scalars.wrap(Byte.valueOf((byte) 1), Byte.class, false,
                 classHelper));
         assertNotNull(Scalars.wrap((short) 1, short.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new Short((short) 1), Short.class, false,
+        assertNotNull(Scalars.wrap(Short.valueOf((short) 1), Short.class, false,
                 classHelper));
         assertNotNull(Scalars.wrap(1, int.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new Integer(1), Integer.class, false,
+        assertNotNull(Scalars.wrap(Integer.valueOf(1), Integer.class, false,
                 classHelper));
         assertNotNull(Scalars.wrap(1L, long.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new Long(1), Long.class, false, classHelper));
+        assertNotNull(
+                Scalars.wrap(Long.valueOf(1), Long.class, false, classHelper));
         assertNotNull(Scalars.wrap(1f, float.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new Float(1), Float.class, false,
+        assertNotNull(Scalars.wrap(Float.valueOf(1), Float.class, false,
                 classHelper));
         assertNotNull(Scalars.wrap(1d, double.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new Double(1), Double.class, false,
+        assertNotNull(Scalars.wrap(Double.valueOf(1), Double.class, false,
                 classHelper));
         assertNotNull(Scalars.wrap(new byte[] { 1 }, byte[].class, false,
                 classHelper));
@@ -98,16 +98,16 @@ public class ScalarsTest extends TestCase {
     }
 
     public void testWrapBasic_primitiveType() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(new Integer(10),
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(Integer.valueOf(10),
                 int.class, false, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
-        assertEquals(new Integer(10), scalar.get());
+        assertEquals(Integer.valueOf(10), scalar.get());
 
         Wrapper<?> wrapper = scalar.getWrapper();
         assertEquals(IntegerWrapper.class, wrapper.getClass());
-        assertEquals(new Integer(10), wrapper.get());
+        assertEquals(Integer.valueOf(10), wrapper.get());
     }
 
     public void testWrapBasic_null() throws Exception {
@@ -125,18 +125,18 @@ public class ScalarsTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testWrapBasic_optional() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(new Integer(10),
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(Integer.valueOf(10),
                 Integer.class, true, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
         assertTrue(scalar.get() instanceof Optional);
         Optional<Integer> optional = (Optional<Integer>) scalar.get();
-        assertEquals(new Integer(10), optional.get());
+        assertEquals(Integer.valueOf(10), optional.get());
 
         Wrapper<?> wrapper = scalar.getWrapper();
         assertEquals(IntegerWrapper.class, wrapper.getClass());
-        assertEquals(new Integer(10), wrapper.get());
+        assertEquals(Integer.valueOf(10), wrapper.get());
     }
 
     @SuppressWarnings("unchecked")

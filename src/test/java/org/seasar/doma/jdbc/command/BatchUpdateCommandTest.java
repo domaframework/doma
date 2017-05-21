@@ -17,8 +17,6 @@ package org.seasar.doma.jdbc.command;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -26,6 +24,7 @@ import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -63,8 +62,8 @@ public class BatchUpdateCommandTest extends TestCase {
         assertEquals(
                 "update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql);
-        assertEquals(new Integer(11), emp1.getVersion());
-        assertEquals(new Integer(21), emp2.getVersion());
+        assertEquals(Integer.valueOf(11), emp1.getVersion());
+        assertEquals(Integer.valueOf(21), emp2.getVersion());
     }
 
     public void testExecute_throwsOptimisticLockException() throws Exception {

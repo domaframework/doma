@@ -19,8 +19,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
@@ -29,6 +27,7 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
 import example.entity._IdGeneratedEmp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -65,7 +64,7 @@ public class BuiltinTableIdGeneratorTest extends TestCase {
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
                 _IdGeneratedEmp.getSingletonInternal());
         Long value = idGenerator.generatePreInsert(idGenerationConfig);
-        assertEquals(new Long(10), value);
+        assertEquals(Long.valueOf(10), value);
         assertEquals("update aaa set VALUE = VALUE + ? where PK = ?",
                 connection.preparedStatement.sql);
         assertEquals(2, connection.preparedStatement.bindValues.size());

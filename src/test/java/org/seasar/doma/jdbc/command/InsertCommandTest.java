@@ -18,8 +18,6 @@ package org.seasar.doma.jdbc.command;
 import java.math.BigDecimal;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -27,6 +25,7 @@ import org.seasar.doma.jdbc.query.AutoInsertQuery;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -62,10 +61,10 @@ public class InsertCommandTest extends TestCase {
                 sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
-        assertEquals(new Integer(1), bindValues.get(0).getValue());
+        assertEquals(Integer.valueOf(1), bindValues.get(0).getValue());
         assertEquals(new String("hoge"), bindValues.get(1).getValue());
         assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-        assertEquals(new Integer(10), bindValues.get(3).getValue());
+        assertEquals(Integer.valueOf(10), bindValues.get(3).getValue());
     }
 
     public void testExecute_defaultVersion() throws Exception {
@@ -95,9 +94,9 @@ public class InsertCommandTest extends TestCase {
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());
-        assertEquals(new Integer(1), bindValues.get(0).getValue());
+        assertEquals(Integer.valueOf(1), bindValues.get(0).getValue());
         assertEquals(new String("hoge"), bindValues.get(1).getValue());
         assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-        assertEquals(new Integer(1), bindValues.get(3).getValue());
+        assertEquals(Integer.valueOf(1), bindValues.get(3).getValue());
     }
 }
