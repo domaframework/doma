@@ -59,7 +59,7 @@ jar {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+    gradleVersion = '3.5'
 }
 
 repositories {
