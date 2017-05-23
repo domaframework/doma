@@ -1,3 +1,4 @@
 [submodule "eclipse"]
 	path = eclipse
 	url = git://github.com/domaframework/eclipse-settings.git
+	branch = doma-3
