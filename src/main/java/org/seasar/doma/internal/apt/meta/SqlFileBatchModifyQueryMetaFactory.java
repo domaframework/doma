@@ -32,10 +32,8 @@ import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
-import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
-import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
-import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
+import org.seasar.doma.internal.apt.reflection.BatchModifyReflection;
+import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -69,22 +67,24 @@ public class SqlFileBatchModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileBatchModifyQueryMeta queryMeta = new SqlFileBatchModifyQueryMeta(
                 method, daoMeta.getDaoElement());
-        BatchModifyMirror batchModifyMirror = BatchInsertMirror.newInstance(
-                method, env);
-        if (batchModifyMirror != null && batchModifyMirror.getSqlFileValue()) {
-            queryMeta.setBatchModifyMirror(batchModifyMirror);
+        BatchModifyReflection batchModifyReflection = new Reflections(env)
+                .newBatchInsertReflection(method);
+        if (batchModifyReflection != null && batchModifyReflection.getSqlFileValue()) {
+            queryMeta.setBatchModifyReflection(batchModifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_INSERT);
             return queryMeta;
         }
-        batchModifyMirror = BatchUpdateMirror.newInstance(method, env);
-        if (batchModifyMirror != null && batchModifyMirror.getSqlFileValue()) {
-            queryMeta.setBatchModifyMirror(batchModifyMirror);
+        batchModifyReflection = new Reflections(env)
+                .newBatchUpdateReflection(method);
+        if (batchModifyReflection != null && batchModifyReflection.getSqlFileValue()) {
+            queryMeta.setBatchModifyReflection(batchModifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_UPDATE);
             return queryMeta;
         }
-        batchModifyMirror = BatchDeleteMirror.newInstance(method, env);
-        if (batchModifyMirror != null && batchModifyMirror.getSqlFileValue()) {
-            queryMeta.setBatchModifyMirror(batchModifyMirror);
+        batchModifyReflection = new Reflections(env)
+                .newBatchDeleteReflection(method);
+        if (batchModifyReflection != null && batchModifyReflection.getSqlFileValue()) {
+            queryMeta.setBatchModifyReflection(batchModifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_DELETE);
             return queryMeta;
         }

@@ -19,7 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
-import org.seasar.doma.internal.apt.mirror.SqlProcessorMirror;
+import org.seasar.doma.internal.apt.reflection.SqlProcessorReflection;
 
 /**
  * @author nakamura
@@ -27,7 +27,7 @@ import org.seasar.doma.internal.apt.mirror.SqlProcessorMirror;
  */
 public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected SqlProcessorMirror sqlProcessorMirror;
+    protected SqlProcessorReflection sqlProcessorReflection;
 
     protected String biFunctionParameterName;
 
@@ -42,12 +42,12 @@ public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
         return visitor.visitSqlProcessorQueryMeta(this, p);
     }
 
-    public SqlProcessorMirror getSqlProcessorMirror() {
-        return sqlProcessorMirror;
+    public SqlProcessorReflection getSqlProcessorReflection() {
+        return sqlProcessorReflection;
     }
 
-    public void setSqlProcessorMirror(SqlProcessorMirror sqlProcessorMirror) {
-        this.sqlProcessorMirror = sqlProcessorMirror;
+    public void setSqlProcessorReflection(SqlProcessorReflection sqlProcessorReflection) {
+        this.sqlProcessorReflection = sqlProcessorReflection;
     }
 
     public String getBiFunctionParameterName() {

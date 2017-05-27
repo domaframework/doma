@@ -29,7 +29,8 @@ import org.seasar.doma.internal.apt.cttype.ConfigCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.PreparedSqlCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.mirror.SqlProcessorMirror;
+import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.reflection.SqlProcessorReflection;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -63,14 +64,14 @@ public class SqlProcessorQueryMetaFactory
 
     protected SqlProcessorQueryMeta createSqlContentQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        SqlProcessorMirror sqlProcessorMirror = SqlProcessorMirror
-                .newInstance(method, env);
-        if (sqlProcessorMirror == null) {
+        SqlProcessorReflection sqlProcessorReflection = new Reflections(env)
+                .newSqlProcessorReflection(method);
+        if (sqlProcessorReflection == null) {
             return null;
         }
         SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method,
                 daoMeta.getDaoElement());
-        queryMeta.setSqlProcessorMirror(sqlProcessorMirror);
+        queryMeta.setSqlProcessorReflection(sqlProcessorReflection);
         queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
         return queryMeta;
     }
@@ -91,10 +92,10 @@ public class SqlProcessorQueryMetaFactory
         }
 
         if (queryMeta.getBiFunctionCtType() == null) {
-            SqlProcessorMirror sqlProcessorMirror = queryMeta
-                    .getSqlProcessorMirror();
+            SqlProcessorReflection sqlProcessorReflection = queryMeta
+                    .getSqlProcessorReflection();
             throw new AptException(Message.DOMA4433, env, method,
-                    sqlProcessorMirror.getAnnotationMirror(),
+                    sqlProcessorReflection.getAnnotationMirror(),
                     new Object[] { daoMeta.getDaoElement().getQualifiedName(),
                             method.getSimpleName() });
         }

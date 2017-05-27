@@ -32,7 +32,8 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.mirror.HolderConvertersMirror;
+import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
+import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.holder.HolderConverter;
@@ -166,8 +167,9 @@ public class HolderCtType extends AbstractCtType {
                     throw new AptIllegalOptionException(
                             Message.DOMA4200.getMessage(className));
                 }
-                HolderConvertersMirror convertersMirror = HolderConvertersMirror
-                        .newInstance(convertersProviderElement, env);
+                HolderConvertersReflection convertersMirror = new Reflections(
+                        env).newHolderConvertersReflection(
+                                convertersProviderElement);
                 if (convertersMirror == null) {
                     throw new AptIllegalOptionException(
                             Message.DOMA4201.getMessage(className));

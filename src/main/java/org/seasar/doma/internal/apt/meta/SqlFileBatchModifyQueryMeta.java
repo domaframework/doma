@@ -23,7 +23,7 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
+import org.seasar.doma.internal.apt.reflection.BatchModifyReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
@@ -38,7 +38,7 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected String elementsParameterName;
 
-    protected BatchModifyMirror batchModifyMirror;
+    protected BatchModifyReflection batchModifyReflection;
 
     public SqlFileBatchModifyQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
@@ -68,40 +68,40 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
         this.elementsParameterName = entitiesParameterName;
     }
 
-    public BatchModifyMirror getBatchModifyMirror() {
-        return batchModifyMirror;
+    public BatchModifyReflection getBatchModifyReflection() {
+        return batchModifyReflection;
     }
 
-    public void setBatchModifyMirror(BatchModifyMirror batchModifyMirror) {
-        this.batchModifyMirror = batchModifyMirror;
+    public void setBatchModifyReflection(BatchModifyReflection batchModifyReflection) {
+        this.batchModifyReflection = batchModifyReflection;
     }
 
     public int getQueryTimeout() {
-        return batchModifyMirror.getQueryTimeoutValue();
+        return batchModifyReflection.getQueryTimeoutValue();
     }
 
     public int getBatchSize() {
-        return batchModifyMirror.getBatchSizeValue();
+        return batchModifyReflection.getBatchSizeValue();
     }
 
     public Boolean getIgnoreVersion() {
-        return batchModifyMirror.getIgnoreVersionValue();
+        return batchModifyReflection.getIgnoreVersionValue();
     }
 
     public Boolean getSuppressOptimisticLockException() {
-        return batchModifyMirror.getSuppressOptimisticLockExceptionValue();
+        return batchModifyReflection.getSuppressOptimisticLockExceptionValue();
     }
 
     public List<String> getInclude() {
-        return batchModifyMirror.getIncludeValue();
+        return batchModifyReflection.getIncludeValue();
     }
 
     public List<String> getExclude() {
-        return batchModifyMirror.getExcludeValue();
+        return batchModifyReflection.getExcludeValue();
     }
 
     public SqlLogType getSqlLogType() {
-        return batchModifyMirror.getSqlLogValue();
+        return batchModifyReflection.getSqlLogValue();
     }
 
     public boolean isPopulatable() {

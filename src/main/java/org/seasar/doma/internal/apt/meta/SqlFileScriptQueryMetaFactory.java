@@ -23,7 +23,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.mirror.ScriptMirror;
+import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.reflection.ScriptReflection;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.message.Message;
 
@@ -58,11 +59,12 @@ public class SqlFileScriptQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method,
                 daoMeta.getDaoElement());
-        ScriptMirror scriptMirror = ScriptMirror.newInstance(method, env);
-        if (scriptMirror == null) {
+        ScriptReflection scriptReflection = new Reflections(env)
+                .newScriptReflection(method);
+        if (scriptReflection == null) {
             return null;
         }
-        queryMeta.setScriptMirror(scriptMirror);
+        queryMeta.setScriptReflection(scriptReflection);
         queryMeta.setQueryKind(QueryKind.SQLFILE_SCRIPT);
         return queryMeta;
     }

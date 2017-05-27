@@ -22,7 +22,8 @@ import java.sql.SQLXML;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.internal.apt.mirror.SQLXMLFactoryMirror;
+import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.reflection.SQLXMLFactoryReflection;
 
 /**
  * @author nakamura-to
@@ -38,14 +39,14 @@ public class SQLXMLCreateQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        SQLXMLFactoryMirror sqlxmlFactoryMirror = SQLXMLFactoryMirror
-                .newInstance(method, env);
+        SQLXMLFactoryReflection sqlxmlFactoryMirror = new Reflections(env)
+                .newSQLXMLFactoryReflection(method);
         if (sqlxmlFactoryMirror == null) {
             return null;
         }
         SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(method,
                 daoMeta.getDaoElement());
-        queryMeta.setSqlxmlFactoryMirror(sqlxmlFactoryMirror);
+        queryMeta.setSqlxmlFactoryReflection(sqlxmlFactoryMirror);
         queryMeta.setQueryKind(QueryKind.SQLXML_FACTORY);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);

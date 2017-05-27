@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
+import org.seasar.doma.internal.apt.reflection.ArrayFactoryReflection;
 
 /**
  * @author taedium
@@ -28,7 +28,7 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
     protected String elementsParameterName;
 
-    protected ArrayFactoryMirror arrayFactoryMirror;
+    protected ArrayFactoryReflection arrayFactoryReflection;
 
     public ArrayCreateQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
@@ -42,12 +42,12 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
         this.elementsParameterName = elementsParameterName;
     }
 
-    void setArrayFactoryMirror(ArrayFactoryMirror arrayFactoryMirror) {
-        this.arrayFactoryMirror = arrayFactoryMirror;
+    void setArrayFactoryReflection(ArrayFactoryReflection arrayFactoryReflection) {
+        this.arrayFactoryReflection = arrayFactoryReflection;
     }
 
     public String getArrayTypeName() {
-        return arrayFactoryMirror.getTypeNameValue();
+        return arrayFactoryReflection.getTypeNameValue();
     }
 
     @Override

@@ -19,7 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
+import org.seasar.doma.internal.apt.reflection.ProcedureReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
@@ -28,47 +28,47 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
-    protected ProcedureMirror procedureMirror;
+    protected ProcedureReflection procedureReflection;
 
     public AutoProcedureQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
     }
 
-    ProcedureMirror getProcedureMirror() {
-        return procedureMirror;
+    ProcedureReflection getProcedureReflection() {
+        return procedureReflection;
     }
 
-    void setProcedureMirror(ProcedureMirror procedureMirror) {
-        this.procedureMirror = procedureMirror;
+    void setProcedureReflection(ProcedureReflection procedureReflection) {
+        this.procedureReflection = procedureReflection;
     }
 
     public String getCatalogName() {
-        return procedureMirror.getCatalogValue();
+        return procedureReflection.getCatalogValue();
     }
 
     public String getSchemaName() {
-        return procedureMirror.getSchemaValue();
+        return procedureReflection.getSchemaValue();
     }
 
     public String getProcedureName() {
-        return procedureMirror.getNameValue();
+        return procedureReflection.getNameValue();
     }
 
     public boolean isQuoteRequired() {
-        return procedureMirror.getQuoteValue();
+        return procedureReflection.getQuoteValue();
     }
 
     public int getQueryTimeout() {
-        return procedureMirror.getQueryTimeoutValue();
+        return procedureReflection.getQueryTimeoutValue();
     }
 
     @Override
     public MapKeyNamingType getMapKeyNamingType() {
-        return procedureMirror.getMapKeyNamingValue();
+        return procedureReflection.getMapKeyNamingValue();
     }
 
     public SqlLogType getSqlLogType() {
-        return procedureMirror.getSqlLogValue();
+        return procedureReflection.getSqlLogValue();
     }
 
     @Override

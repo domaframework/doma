@@ -1,0 +1,95 @@
+/*
+ * Copyright 2004-2010 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.seasar.doma.internal.apt.reflection;
+
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
+
+import java.util.Map;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.VariableElement;
+
+import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import org.seasar.doma.jdbc.SqlLogType;
+
+/**
+ * @author taedium
+ * 
+ */
+public class ScriptReflection {
+
+    protected final AnnotationMirror annotationMirror;
+
+    protected final AnnotationValue haltOnError;
+
+    protected final AnnotationValue blockDelimiter;
+
+    protected final AnnotationValue sqlLog;
+
+    protected ScriptReflection(AnnotationMirror annotationMirror,
+            Map<String, AnnotationValue> values) {
+        assertNotNull(annotationMirror, values);
+        this.annotationMirror = annotationMirror;
+        this.haltOnError = assertNotNullValue(values, "haltOnError");
+        this.blockDelimiter = assertNotNullValue(values, "blockDelimiter");
+        this.sqlLog = assertNotNullValue(values, "sqlLog");
+    }
+
+    public AnnotationValue getHaltOnError() {
+        return haltOnError;
+    }
+
+    public AnnotationValue getBlockDelimiter() {
+        return blockDelimiter;
+    }
+
+    public AnnotationValue getSqlLog() {
+        return sqlLog;
+    }
+
+    public boolean getHaltOnErrorValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(haltOnError);
+        if (value == null) {
+            throw new AptIllegalStateException("haltOnError");
+        }
+        return value.booleanValue();
+    }
+
+    public String getBlockDelimiterValue() {
+        String value = AnnotationValueUtil.toString(blockDelimiter);
+        if (value == null) {
+            throw new AptIllegalStateException("blockDelimiter");
+        }
+        return value;
+    }
+
+    public SqlLogType getSqlLogValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(sqlLog);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("sqlLog");
+        }
+        return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
+    }
+
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
+    }
+
+}

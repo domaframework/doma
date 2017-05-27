@@ -22,13 +22,14 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
-import org.seasar.doma.internal.apt.mirror.ColumnMirror;
+import org.seasar.doma.internal.apt.reflection.ColumnReflection;
+import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -51,9 +52,10 @@ public class EmbeddablePropertyMetaFactory {
         CtType ctType = resolveCtType(fieldElement, fieldElement.asType(),
                 embeddableMeta);
         embeddablePropertyMeta.setCtType(ctType);
-        ColumnMirror columnMirror = ColumnMirror.newInstance(fieldElement, env);
-        if (columnMirror != null) {
-            embeddablePropertyMeta.setColumnMirror(columnMirror);
+        ColumnReflection columnReflection = new Reflections(env)
+                .newColumnReflection(fieldElement);
+        if (columnReflection != null) {
+            embeddablePropertyMeta.setColumnReflection(columnReflection);
         }
         return embeddablePropertyMeta;
     }

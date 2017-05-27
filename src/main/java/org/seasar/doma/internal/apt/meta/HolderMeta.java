@@ -22,7 +22,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
-import org.seasar.doma.internal.apt.mirror.HolderMirror;
+import org.seasar.doma.internal.apt.reflection.HolderReflection;
 
 public class HolderMeta implements TypeElementMeta {
 
@@ -36,7 +36,7 @@ public class HolderMeta implements TypeElementMeta {
 
     protected WrapperCtType wrapperCtType;
 
-    protected HolderMirror holderMirror;
+    protected HolderReflection holderReflection;
 
     protected String simpleTypeName;
 
@@ -72,31 +72,31 @@ public class HolderMeta implements TypeElementMeta {
     }
 
     public TypeMirror getValueType() {
-        return holderMirror.getValueTypeValue();
+        return holderReflection.getValueTypeValue();
     }
 
     public String getFactoryMethod() {
-        return holderMirror.getFactoryMethodValue();
+        return holderReflection.getFactoryMethodValue();
     }
 
     public String getAccessorMethod() {
-        return holderMirror.getAccessorMethodValue();
+        return holderReflection.getAccessorMethodValue();
     }
 
     public boolean getAcceptNull() {
-        return holderMirror.getAcceptNullValue();
+        return holderReflection.getAcceptNullValue();
     }
 
-    HolderMirror getHolderMirror() {
-        return holderMirror;
+    HolderReflection getHolderReflection() {
+        return holderReflection;
     }
 
-    void setHolderMirror(HolderMirror holderMirror) {
-        this.holderMirror = holderMirror;
+    void setHolderReflection(HolderReflection holderReflection) {
+        this.holderReflection = holderReflection;
     }
 
     public boolean providesConstructor() {
-        return "new".equals(holderMirror.getFactoryMethodValue());
+        return "new".equals(holderReflection.getFactoryMethodValue());
     }
 
     public boolean isParametarized() {

@@ -30,9 +30,9 @@ import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
@@ -42,7 +42,8 @@ import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.mirror.SelectMirror;
+import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.reflection.SelectReflection;
 import org.seasar.doma.message.Message;
 
 /**
@@ -74,13 +75,14 @@ public class SqlFileSelectQueryMetaFactory extends
 
     protected SqlFileSelectQueryMeta createSqlFileSelectQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        SelectMirror selectMirror = SelectMirror.newInstance(method, env);
-        if (selectMirror == null) {
+        SelectReflection selectReflection = new Reflections(env)
+                .newSelectReflection(method);
+        if (selectReflection == null) {
             return null;
         }
         SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(method,
                 daoMeta.getDaoElement());
-        queryMeta.setSelectMirror(selectMirror);
+        queryMeta.setSelectReflection(selectReflection);
         queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
         return queryMeta;
     }
@@ -116,10 +118,10 @@ public class SqlFileSelectQueryMetaFactory extends
             }
         } else {
             if (queryMeta.getFunctionCtType() != null) {
-                SelectMirror selectMirror = queryMeta.getSelectMirror();
+                SelectReflection selectReflection = queryMeta.getSelectReflection();
                 throw new AptException(Message.DOMA4248, env, method,
-                        selectMirror.getAnnotationMirror(),
-                        selectMirror.getStrategy(), new Object[] {
+                        selectReflection.getAnnotationMirror(),
+                        selectReflection.getStrategy(), new Object[] {
                                 daoMeta.getDaoElement().getQualifiedName(),
                                 method.getSimpleName() });
             }

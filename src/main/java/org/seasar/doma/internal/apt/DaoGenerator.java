@@ -117,7 +117,7 @@ import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileScriptQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlProcessorQueryMeta;
-import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
+import org.seasar.doma.internal.apt.reflection.AnnotationReflection;
 import org.seasar.doma.internal.jdbc.command.BasicCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
@@ -242,7 +242,7 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printClass() {
         iprint("/** */%n");
-        for (AnnotationMirror annotation : daoMeta
+        for (AnnotationReflection annotation : daoMeta
                 .getAnnotationMirrors(AnnotationTarget.CLASS)) {
             iprint("@%1$s(%2$s)%n", annotation.getTypeValue(),
                     annotation.getElementsValue());
@@ -403,13 +403,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("/**%n");
             iprint(" * @param config the config%n");
             iprint(" */%n");
-            for (AnnotationMirror annotation : daoMeta
+            for (AnnotationReflection annotation : daoMeta
                     .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
                 iprint("@%1$s(%2$s)%n", annotation.getTypeValue(),
                         annotation.getElementsValue());
             }
             iprint("public %1$s(", simpleName);
-            for (AnnotationMirror annotation : daoMeta.getAnnotationMirrors(
+            for (AnnotationReflection annotation : daoMeta.getAnnotationMirrors(
                     AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
                 print("@%1$s(%2$s) ", annotation.getTypeValue(),
                         annotation.getElementsValue());

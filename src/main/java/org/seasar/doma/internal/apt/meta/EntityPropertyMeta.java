@@ -27,7 +27,7 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.mirror.ColumnMirror;
+import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -65,7 +65,7 @@ public class EntityPropertyMeta {
 
     protected boolean version;
 
-    protected ColumnMirror columnMirror;
+    protected ColumnReflection columnReflection;
 
     protected IdGeneratorMeta idGeneratorMeta;
 
@@ -159,24 +159,24 @@ public class EntityPropertyMeta {
         this.ctType = ctType;
     }
 
-    public void setColumnMirror(ColumnMirror columnMirror) {
-        this.columnMirror = columnMirror;
+    public void setColumnReflection(ColumnReflection columnReflection) {
+        this.columnReflection = columnReflection;
     }
 
     public String getColumnName() {
-        return columnMirror != null ? columnMirror.getNameValue() : "";
+        return columnReflection != null ? columnReflection.getNameValue() : "";
     }
 
     public boolean isColumnInsertable() {
-        return columnMirror != null ? columnMirror.getInsertableValue() : true;
+        return columnReflection != null ? columnReflection.getInsertableValue() : true;
     }
 
     public boolean isColumnUpdatable() {
-        return columnMirror != null ? columnMirror.getUpdatableValue() : true;
+        return columnReflection != null ? columnReflection.getUpdatableValue() : true;
     }
 
     public boolean isColumnQuoteRequired() {
-        return columnMirror != null ? columnMirror.getQuoteValue() : false;
+        return columnReflection != null ? columnReflection.getQuoteValue() : false;
     }
 
     public boolean isEmbedded() {

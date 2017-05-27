@@ -26,8 +26,8 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.mirror.EntityMirror;
-import org.seasar.doma.internal.apt.mirror.TableMirror;
+import org.seasar.doma.internal.apt.reflection.EntityReflection;
+import org.seasar.doma.internal.apt.reflection.TableReflection;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
@@ -42,7 +42,7 @@ public class EntityMeta implements TypeElementMeta {
 
     protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
-    protected final EntityMirror entityMirror;
+    protected final EntityReflection entityReflection;
 
     protected final TypeElement entityElement;
 
@@ -56,7 +56,7 @@ public class EntityMeta implements TypeElementMeta {
 
     protected boolean genericEntityListener;
 
-    protected TableMirror tableMirror;
+    protected TableReflection tableReflection;
 
     protected EntityPropertyMeta versionPropertyMeta;
 
@@ -72,9 +72,9 @@ public class EntityMeta implements TypeElementMeta {
 
     protected boolean error;
 
-    public EntityMeta(EntityMirror entityMirror, TypeElement entityElement) {
-        assertNotNull(entityMirror);
-        this.entityMirror = entityMirror;
+    public EntityMeta(EntityReflection entityReflection, TypeElement entityElement) {
+        assertNotNull(entityReflection);
+        this.entityReflection = entityReflection;
         this.entityElement = entityElement;
     }
 
@@ -86,8 +86,8 @@ public class EntityMeta implements TypeElementMeta {
         this.entityName = entityName;
     }
 
-    EntityMirror getEntityMirror() {
-        return entityMirror;
+    EntityReflection getEntityReflection() {
+        return entityReflection;
     }
 
     public NamingType getNamingType() {
@@ -110,8 +110,8 @@ public class EntityMeta implements TypeElementMeta {
         return entityElement;
     }
 
-    public void setTableMirror(TableMirror tableMirror) {
-        this.tableMirror = tableMirror;
+    public void setTableMirror(TableReflection tableReflection) {
+        this.tableReflection = tableReflection;
     }
 
     public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
@@ -209,19 +209,19 @@ public class EntityMeta implements TypeElementMeta {
     }
 
     public String getCatalogName() {
-        return tableMirror != null ? tableMirror.getCatalogValue() : "";
+        return tableReflection != null ? tableReflection.getCatalogValue() : "";
     }
 
     public String getSchemaName() {
-        return tableMirror != null ? tableMirror.getSchemaValue() : "";
+        return tableReflection != null ? tableReflection.getSchemaValue() : "";
     }
 
     public String getTableName() {
-        return tableMirror != null ? tableMirror.getNameValue() : "";
+        return tableReflection != null ? tableReflection.getNameValue() : "";
     }
 
     public boolean isQuoteRequired() {
-        return tableMirror != null ? tableMirror.getQuoteValue() : false;
+        return tableReflection != null ? tableReflection.getQuoteValue() : false;
     }
 
     public boolean isAbstract() {

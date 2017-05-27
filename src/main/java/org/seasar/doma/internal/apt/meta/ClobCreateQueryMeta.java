@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.mirror.ClobFactoryMirror;
+import org.seasar.doma.internal.apt.reflection.ClobFactoryReflection;
 
 /**
  * @author taedium
@@ -26,18 +26,18 @@ import org.seasar.doma.internal.apt.mirror.ClobFactoryMirror;
  */
 public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected ClobFactoryMirror clobFactoryMirror;
+    protected ClobFactoryReflection clobFactoryReflection;
 
     public ClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
     }
 
-    ClobFactoryMirror getClobFactoryMirror() {
-        return clobFactoryMirror;
+    ClobFactoryReflection getClobFactoryReflection() {
+        return clobFactoryReflection;
     }
 
-    void setClobFactoryMirror(ClobFactoryMirror clobFactoryMirror) {
-        this.clobFactoryMirror = clobFactoryMirror;
+    void setClobFactoryReflection(ClobFactoryReflection clobFactoryReflection) {
+        this.clobFactoryReflection = clobFactoryReflection;
     }
 
 }

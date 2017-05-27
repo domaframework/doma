@@ -22,7 +22,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.mirror.ColumnMirror;
+import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 /**
@@ -41,7 +41,7 @@ public class EmbeddablePropertyMeta {
 
     protected String name;
 
-    protected ColumnMirror columnMirror;
+    protected ColumnReflection columnReflection;
 
     protected CtType ctType;
 
@@ -62,28 +62,28 @@ public class EmbeddablePropertyMeta {
         this.name = name;
     }
 
-    public ColumnMirror getColumnMirror() {
-        return columnMirror;
+    public ColumnReflection getColumnReflection() {
+        return columnReflection;
     }
 
-    public void setColumnMirror(ColumnMirror columnMirror) {
-        this.columnMirror = columnMirror;
+    public void setColumnReflection(ColumnReflection columnReflection) {
+        this.columnReflection = columnReflection;
     }
 
     public String getColumnName() {
-        return columnMirror != null ? columnMirror.getNameValue() : "";
+        return columnReflection != null ? columnReflection.getNameValue() : "";
     }
 
     public boolean isColumnInsertable() {
-        return columnMirror != null ? columnMirror.getInsertableValue() : true;
+        return columnReflection != null ? columnReflection.getInsertableValue() : true;
     }
 
     public boolean isColumnUpdatable() {
-        return columnMirror != null ? columnMirror.getUpdatableValue() : true;
+        return columnReflection != null ? columnReflection.getUpdatableValue() : true;
     }
 
     public boolean isColumnQuoteRequired() {
-        return columnMirror != null ? columnMirror.getQuoteValue() : false;
+        return columnReflection != null ? columnReflection.getQuoteValue() : false;
     }
 
     public CtType getCtType() {

@@ -53,9 +53,10 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
-import org.seasar.doma.internal.apt.mirror.AllArgsConstructorMirror;
-import org.seasar.doma.internal.apt.mirror.EmbeddableMirror;
-import org.seasar.doma.internal.apt.mirror.ValueMirror;
+import org.seasar.doma.internal.apt.reflection.AllArgsConstructorReflection;
+import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
+import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.reflection.ValueReflection;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
@@ -80,12 +81,12 @@ public class EmbeddableMetaFactory implements
 
     @Override
     public EmbeddableMeta createTypeElementMeta(TypeElement embeddableElement) {
-        EmbeddableMirror mirror = EmbeddableMirror.newInstance(
-                embeddableElement, env);
-        if (mirror == null) {
+        EmbeddableReflection reflection = new Reflections(env)
+                .newEmbeddableReflection(embeddableElement);
+        if (reflection == null) {
             throw new AptIllegalStateException("mirror must not be null");
         }
-        EmbeddableMeta embeddableMeta = new EmbeddableMeta(mirror,
+        EmbeddableMeta embeddableMeta = new EmbeddableMeta(reflection,
                 embeddableElement);
         Strategy strategy = createStrategy(embeddableElement, embeddableMeta);
         strategy.validateClass(embeddableElement, embeddableMeta);
@@ -96,16 +97,16 @@ public class EmbeddableMetaFactory implements
 
     protected Strategy createStrategy(TypeElement embeddableElement,
             EmbeddableMeta embeddableMeta) {
-        ValueMirror valueMirror = ValueMirror.newInstance(embeddableElement,
-                env);
-        if (valueMirror != null) {
-            return new ValueStrategy(env, propertyMetaFactory, valueMirror);
+        ValueReflection valueReflection = new Reflections(env)
+                .newValueReflection(embeddableElement);
+        if (valueReflection != null) {
+            return new ValueStrategy(env, propertyMetaFactory, valueReflection);
         }
-        AllArgsConstructorMirror allArgsConstructorMirror = AllArgsConstructorMirror
-                .newInstance(embeddableElement, env);
-        if (allArgsConstructorMirror != null) {
+        AllArgsConstructorReflection allArgsConstructorReflection = new Reflections(
+                env).newAllArgsConstructorReflection(embeddableElement);
+        if (allArgsConstructorReflection != null) {
             return new AllArgsConstructorStrategy(env, propertyMetaFactory,
-                    allArgsConstructorMirror);
+                    allArgsConstructorReflection);
         }
         return new DefaultStrategy(env, propertyMetaFactory);
     }
@@ -139,11 +140,11 @@ public class EmbeddableMetaFactory implements
         public void validateClass(TypeElement embeddableElement,
                 EmbeddableMeta embeddableMeta) {
             if (embeddableElement.getKind() != ElementKind.CLASS) {
-                EmbeddableMirror embeddableMirror = embeddableMeta
-                        .getEmbeddableMirror();
+                EmbeddableReflection embeddableReflection = embeddableMeta
+                        .getEmbeddableReflection();
                 throw new AptException(Message.DOMA4283, env,
                         embeddableElement,
-                        embeddableMirror.getAnnotationMirror(),
+                        embeddableReflection.getAnnotationMirror(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
             if (!embeddableElement.getTypeParameters().isEmpty()) {
@@ -353,38 +354,38 @@ public class EmbeddableMetaFactory implements
 
     protected static class AllArgsConstructorStrategy extends DefaultStrategy {
 
-        protected final AllArgsConstructorMirror allArgsConstructorMirror;
+        protected final AllArgsConstructorReflection allArgsConstructorReflection;
 
         public AllArgsConstructorStrategy(ProcessingEnvironment env,
                 EmbeddablePropertyMetaFactory propertyMetaFactory,
-                AllArgsConstructorMirror allArgsConstructorMirror) {
+                AllArgsConstructorReflection allArgsConstructorReflection) {
             super(env, propertyMetaFactory);
-            assertNotNull(allArgsConstructorMirror);
-            this.allArgsConstructorMirror = allArgsConstructorMirror;
+            assertNotNull(allArgsConstructorReflection);
+            this.allArgsConstructorReflection = allArgsConstructorReflection;
         }
 
         @Override
         public void doConstructor(TypeElement embeddableElement,
                 EmbeddableMeta embeddableMeta) {
-            if (!allArgsConstructorMirror.getStaticNameValue().isEmpty()) {
+            if (!allArgsConstructorReflection.getStaticNameValue().isEmpty()) {
                 throw new AptException(Message.DOMA4424, env,
                         embeddableElement,
-                        allArgsConstructorMirror.getAnnotationMirror(),
-                        allArgsConstructorMirror.getStaticName(),
+                        allArgsConstructorReflection.getAnnotationMirror(),
+                        allArgsConstructorReflection.getStaticName(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
-            if (allArgsConstructorMirror.isAccessPrivate()) {
+            if (allArgsConstructorReflection.isAccessPrivate()) {
                 throw new AptException(Message.DOMA4425, env,
                         embeddableElement,
-                        allArgsConstructorMirror.getAnnotationMirror(),
-                        allArgsConstructorMirror.getAccess(),
+                        allArgsConstructorReflection.getAnnotationMirror(),
+                        allArgsConstructorReflection.getAccess(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
-            if (allArgsConstructorMirror.isAccessNone()) {
+            if (allArgsConstructorReflection.isAccessNone()) {
                 throw new AptException(Message.DOMA4427, env,
                         embeddableElement,
-                        allArgsConstructorMirror.getAnnotationMirror(),
-                        allArgsConstructorMirror.getAccess(),
+                        allArgsConstructorReflection.getAnnotationMirror(),
+                        allArgsConstructorReflection.getAccess(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
         }
@@ -393,23 +394,23 @@ public class EmbeddableMetaFactory implements
 
     protected static class ValueStrategy extends DefaultStrategy {
 
-        protected final ValueMirror valueMirror;
+        protected final ValueReflection valueReflection;
 
         public ValueStrategy(ProcessingEnvironment env,
                 EmbeddablePropertyMetaFactory propertyMetaFactory,
-                ValueMirror valueMirror) {
+                ValueReflection valueReflection) {
             super(env, propertyMetaFactory);
-            assertNotNull(valueMirror);
-            this.valueMirror = valueMirror;
+            assertNotNull(valueReflection);
+            this.valueReflection = valueReflection;
         }
 
         @Override
         public void doConstructor(TypeElement embeddableElement,
                 EmbeddableMeta embeddableMeta) {
-            if (!valueMirror.getStaticConstructorValue().isEmpty()) {
+            if (!valueReflection.getStaticConstructorValue().isEmpty()) {
                 throw new AptException(Message.DOMA4423, env,
-                        embeddableElement, valueMirror.getAnnotationMirror(),
-                        valueMirror.getStaticConstructor(),
+                        embeddableElement, valueReflection.getAnnotationMirror(),
+                        valueReflection.getStaticConstructor(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
         }

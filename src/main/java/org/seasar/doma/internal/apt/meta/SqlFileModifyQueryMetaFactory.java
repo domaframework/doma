@@ -24,10 +24,8 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.mirror.DeleteMirror;
-import org.seasar.doma.internal.apt.mirror.InsertMirror;
-import org.seasar.doma.internal.apt.mirror.ModifyMirror;
-import org.seasar.doma.internal.apt.mirror.UpdateMirror;
+import org.seasar.doma.internal.apt.reflection.ModifyReflection;
+import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -61,21 +59,22 @@ public class SqlFileModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method,
                 daoMeta.getDaoElement());
-        ModifyMirror modifyMirror = InsertMirror.newInstance(method, env);
-        if (modifyMirror != null && modifyMirror.getSqlFileValue()) {
-            queryMeta.setModifyMirror(modifyMirror);
+        ModifyReflection modifyReflection = new Reflections(env)
+                .newInsertReflection(method);
+        if (modifyReflection != null && modifyReflection.getSqlFileValue()) {
+            queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
             return queryMeta;
         }
-        modifyMirror = UpdateMirror.newInstance(method, env);
-        if (modifyMirror != null && modifyMirror.getSqlFileValue()) {
-            queryMeta.setModifyMirror(modifyMirror);
+        modifyReflection = new Reflections(env).newUpdateReflection(method);
+        if (modifyReflection != null && modifyReflection.getSqlFileValue()) {
+            queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
             return queryMeta;
         }
-        modifyMirror = DeleteMirror.newInstance(method, env);
-        if (modifyMirror != null && modifyMirror.getSqlFileValue()) {
-            queryMeta.setModifyMirror(modifyMirror);
+        modifyReflection = new Reflections(env).newDeleteReflection(method);
+        if (modifyReflection != null && modifyReflection.getSqlFileValue()) {
+            queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
             return queryMeta;
         }

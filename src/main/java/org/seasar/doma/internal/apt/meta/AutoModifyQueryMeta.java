@@ -21,7 +21,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.mirror.ModifyMirror;
+import org.seasar.doma.internal.apt.reflection.ModifyReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
@@ -34,7 +34,7 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
     protected String entityParameterName;
 
-    protected ModifyMirror modifyMirror;
+    protected ModifyReflection modifyReflection;
 
     public AutoModifyQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
@@ -56,48 +56,48 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
         this.entityParameterName = entityParameterName;
     }
 
-    ModifyMirror getModifyMirror() {
-        return modifyMirror;
+    ModifyReflection getModifyReflection() {
+        return modifyReflection;
     }
 
-    void setModifyMirror(ModifyMirror modifyMirror) {
-        this.modifyMirror = modifyMirror;
+    void setModifyReflection(ModifyReflection modifyReflection) {
+        this.modifyReflection = modifyReflection;
     }
 
     public boolean getSqlFile() {
-        return modifyMirror.getSqlFileValue();
+        return modifyReflection.getSqlFileValue();
     }
 
     public int getQueryTimeout() {
-        return modifyMirror.getQueryTimeoutValue();
+        return modifyReflection.getQueryTimeoutValue();
     }
 
     public Boolean getIgnoreVersion() {
-        return modifyMirror.getIgnoreVersionValue();
+        return modifyReflection.getIgnoreVersionValue();
     }
 
     public Boolean getExcludeNull() {
-        return modifyMirror.getExcludeNullValue();
+        return modifyReflection.getExcludeNullValue();
     }
 
     public Boolean getSuppressOptimisticLockException() {
-        return modifyMirror.getSuppressOptimisticLockExceptionValue();
+        return modifyReflection.getSuppressOptimisticLockExceptionValue();
     }
 
     public Boolean getIncludeUnchanged() {
-        return modifyMirror.getIncludeUnchangedValue();
+        return modifyReflection.getIncludeUnchangedValue();
     }
 
     public List<String> getInclude() {
-        return modifyMirror.getIncludeValue();
+        return modifyReflection.getIncludeValue();
     }
 
     public List<String> getExclude() {
-        return modifyMirror.getExcludeValue();
+        return modifyReflection.getExcludeValue();
     }
 
     public SqlLogType getSqlLogType() {
-        return modifyMirror.getSqlLogValue();
+        return modifyReflection.getSqlLogValue();
     }
 
     @Override

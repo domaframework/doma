@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.mirror.DaoMirror;
+import org.seasar.doma.internal.apt.reflection.DaoReflection;
 
 /**
  * @author taedium
@@ -28,7 +28,7 @@ import org.seasar.doma.internal.apt.mirror.DaoMirror;
  */
 public class ParentDaoMeta {
 
-    protected final DaoMirror daoMirror;
+    protected final DaoReflection daoReflection;
 
     protected TypeMirror daoType;
 
@@ -36,9 +36,9 @@ public class ParentDaoMeta {
 
     protected String name;
 
-    public ParentDaoMeta(DaoMirror daoMirror) {
-        assertNotNull(daoMirror);
-        this.daoMirror = daoMirror;
+    public ParentDaoMeta(DaoReflection daoReflection) {
+        assertNotNull(daoReflection);
+        this.daoReflection = daoReflection;
     }
 
     public String getName() {
@@ -66,15 +66,15 @@ public class ParentDaoMeta {
     }
 
     public boolean hasUserDefinedConfig() {
-        return daoMirror.hasUserDefinedConfig();
+        return daoReflection.hasUserDefinedConfig();
     }
 
-    DaoMirror getDaoMirror() {
-        return daoMirror;
+    DaoReflection getDaoReflection() {
+        return daoReflection;
     }
 
     public TypeMirror getConfigType() {
-        return daoMirror.getConfigValue();
+        return daoReflection.getConfigValue();
     }
 
 }

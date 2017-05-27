@@ -23,8 +23,8 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
@@ -32,7 +32,8 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.mirror.FunctionMirror;
+import org.seasar.doma.internal.apt.reflection.FunctionReflection;
+import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -49,13 +50,14 @@ public class AutoFunctionQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        FunctionMirror functionMirror = FunctionMirror.newInstance(method, env);
-        if (functionMirror == null) {
+        FunctionReflection functionReflection = new Reflections(env)
+                .newFunctionReflection(method);
+        if (functionReflection == null) {
             return null;
         }
         AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method,
                 daoMeta.getDaoElement());
-        queryMeta.setFunctionMirror(functionMirror);
+        queryMeta.setFunctionReflection(functionReflection);
         queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);

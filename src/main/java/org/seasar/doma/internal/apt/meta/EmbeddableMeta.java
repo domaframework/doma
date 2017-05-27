@@ -23,7 +23,7 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.mirror.EmbeddableMirror;
+import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
 
 /**
  * @author nakamura-to
@@ -31,7 +31,7 @@ import org.seasar.doma.internal.apt.mirror.EmbeddableMirror;
  */
 public class EmbeddableMeta implements TypeElementMeta {
 
-    protected final EmbeddableMirror embeddableMirror;
+    protected final EmbeddableReflection embeddableReflection;
 
     protected final TypeElement embeddableElement;
 
@@ -41,15 +41,15 @@ public class EmbeddableMeta implements TypeElementMeta {
 
     protected boolean error;
 
-    public EmbeddableMeta(EmbeddableMirror embeddableMirror,
+    public EmbeddableMeta(EmbeddableReflection embeddableReflection,
             TypeElement embeddableElement) {
-        assertNotNull(embeddableMirror, embeddableElement);
-        this.embeddableMirror = embeddableMirror;
+        assertNotNull(embeddableReflection, embeddableElement);
+        this.embeddableReflection = embeddableReflection;
         this.embeddableElement = embeddableElement;
     }
 
-    public EmbeddableMirror getEmbeddableMirror() {
-        return embeddableMirror;
+    public EmbeddableReflection getEmbeddableReflection() {
+        return embeddableReflection;
     }
 
     public TypeElement getEmbeddableElement() {

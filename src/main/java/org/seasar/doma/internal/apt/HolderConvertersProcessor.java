@@ -24,9 +24,10 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
-import org.seasar.doma.HolderConverters;
 import org.seasar.doma.ExternalHolder;
-import org.seasar.doma.internal.apt.mirror.HolderConvertersMirror;
+import org.seasar.doma.HolderConverters;
+import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
+import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -58,8 +59,9 @@ public class HolderConvertersProcessor extends AbstractProcessor {
     }
 
     protected void validate(TypeElement typeElement) {
-        HolderConvertersMirror convertersMirror = HolderConvertersMirror
-                .newInstance(typeElement, processingEnv);
+        HolderConvertersReflection convertersMirror = new Reflections(
+                processingEnv)
+                .newHolderConvertersReflection(typeElement);
         for (TypeMirror convType : convertersMirror.getValueValue()) {
             TypeElement convElement = TypeMirrorUtil.toTypeElement(convType,
                     processingEnv);

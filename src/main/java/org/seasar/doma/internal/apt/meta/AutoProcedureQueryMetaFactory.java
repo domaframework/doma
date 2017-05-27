@@ -21,7 +21,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
+import org.seasar.doma.internal.apt.reflection.ProcedureReflection;
 import org.seasar.doma.message.Message;
 
 /**
@@ -38,15 +38,15 @@ public class AutoProcedureQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        ProcedureMirror procedureMirror = ProcedureMirror.newInstance(method,
+        ProcedureReflection procedureReflection = ProcedureReflection.newInstance(method,
                 env);
-        if (procedureMirror == null) {
+        if (procedureReflection == null) {
             return null;
         }
         AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(method,
                 daoMeta.getDaoElement());
         queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
-        queryMeta.setProcedureMirror(procedureMirror);
+        queryMeta.setProcedureReflection(procedureReflection);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);

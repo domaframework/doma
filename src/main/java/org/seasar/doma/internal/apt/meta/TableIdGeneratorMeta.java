@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
+import org.seasar.doma.internal.apt.reflection.TableGeneratorReflection;
 
 /**
  * @author taedium
@@ -25,52 +25,52 @@ import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
  */
 public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
-    protected final TableGeneratorMirror tableGeneratorMirror;
+    protected final TableGeneratorReflection tableGeneratorReflection;
 
-    public TableIdGeneratorMeta(TableGeneratorMirror tableGeneratorMirror) {
-        assertNotNull(tableGeneratorMirror);
-        this.tableGeneratorMirror = tableGeneratorMirror;
+    public TableIdGeneratorMeta(TableGeneratorReflection tableGeneratorReflection) {
+        assertNotNull(tableGeneratorReflection);
+        this.tableGeneratorReflection = tableGeneratorReflection;
     }
 
     public String getQualifiedTableName() {
         StringBuilder buf = new StringBuilder();
-        String catalogName = tableGeneratorMirror.getCatalogValue();
+        String catalogName = tableGeneratorReflection.getCatalogValue();
         if (!catalogName.isEmpty()) {
             buf.append(catalogName);
             buf.append(".");
         }
-        String schemaName = tableGeneratorMirror.getCatalogValue();
+        String schemaName = tableGeneratorReflection.getCatalogValue();
         if (!schemaName.isEmpty()) {
             buf.append(schemaName);
             buf.append(".");
         }
-        buf.append(tableGeneratorMirror.getTableValue());
+        buf.append(tableGeneratorReflection.getTableValue());
         return buf.toString();
     }
 
     public String getPkColumnName() {
-        return tableGeneratorMirror.getPkColumnNameValue();
+        return tableGeneratorReflection.getPkColumnNameValue();
     }
 
     public String getValueColumnName() {
-        return tableGeneratorMirror.getValueColumnNameValue();
+        return tableGeneratorReflection.getValueColumnNameValue();
     }
 
     public String getPkColumnValue() {
-        return tableGeneratorMirror.getPkColumnValueValue();
+        return tableGeneratorReflection.getPkColumnValueValue();
     }
 
     public long getInitialValue() {
-        return tableGeneratorMirror.getInitialValueValue();
+        return tableGeneratorReflection.getInitialValueValue();
     }
 
     public long getAllocationSize() {
-        return tableGeneratorMirror.getAllocationSizeValue();
+        return tableGeneratorReflection.getAllocationSizeValue();
     }
 
     @Override
     public String getIdGeneratorClassName() {
-        return tableGeneratorMirror.getImplementerValue().toString();
+        return tableGeneratorReflection.getImplementerValue().toString();
     }
 
     @Override

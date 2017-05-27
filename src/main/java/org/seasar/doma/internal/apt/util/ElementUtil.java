@@ -19,11 +19,15 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
@@ -210,4 +214,18 @@ public final class ElementUtil {
         }
         return null;
     }
+
+    public static Map<String, AnnotationValue> getElementValuesWithDefaults(
+            AnnotationMirror annotationMirror, ProcessingEnvironment env) {
+        Map<String, AnnotationValue> map = new HashMap<>();
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
+                .getElementUtils()
+                .getElementValuesWithDefaults(annotationMirror).entrySet()) {
+            String key = entry.getKey().getSimpleName().toString();
+            AnnotationValue value = entry.getValue();
+            map.put(key, value);
+        }
+        return Collections.unmodifiableMap(map);
+    }
+
 }

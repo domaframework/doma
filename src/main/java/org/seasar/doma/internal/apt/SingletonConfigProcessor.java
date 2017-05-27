@@ -28,7 +28,8 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.SingletonConfig;
-import org.seasar.doma.internal.apt.mirror.SingletonConfigMirror;
+import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.reflection.SingletonConfigReflection;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -61,8 +62,8 @@ public class SingletonConfigProcessor extends AbstractProcessor {
     }
 
     protected void validate(TypeElement typeElement) {
-        SingletonConfigMirror mirror = SingletonConfigMirror.newInstance(
-                typeElement, processingEnv);
+        SingletonConfigReflection mirror = new Reflections(processingEnv)
+                .newSingletonConfigReflection(typeElement);
         if (mirror == null) {
             throw new AptIllegalStateException("mirror must not be null");
         }
@@ -72,7 +73,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
     }
 
     protected void validateClass(TypeElement typeElement,
-            SingletonConfigMirror mirror) {
+            SingletonConfigReflection mirror) {
         if (!TypeMirrorUtil.isAssignable(typeElement.asType(), Config.class,
                 processingEnv)) {
             throw new AptException(Message.DOMA4253, processingEnv,

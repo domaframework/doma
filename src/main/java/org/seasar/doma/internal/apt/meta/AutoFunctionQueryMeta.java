@@ -19,7 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.apt.mirror.FunctionMirror;
+import org.seasar.doma.internal.apt.reflection.FunctionReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
@@ -30,7 +30,7 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
     protected ResultParameterMeta resultParameterMeta;
 
-    protected FunctionMirror functionMirror;
+    protected FunctionReflection functionReflection;
 
     public AutoFunctionQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
@@ -44,45 +44,45 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
         this.resultParameterMeta = resultParameterMeta;
     }
 
-    FunctionMirror getFunctionMirror() {
-        return functionMirror;
+    FunctionReflection getFunctionReflection() {
+        return functionReflection;
     }
 
-    void setFunctionMirror(FunctionMirror functionMirror) {
-        this.functionMirror = functionMirror;
+    void setFunctionReflection(FunctionReflection functionReflection) {
+        this.functionReflection = functionReflection;
     }
 
     public String getCatalogName() {
-        return functionMirror.getCatalogValue();
+        return functionReflection.getCatalogValue();
     }
 
     public String getSchemaName() {
-        return functionMirror.getSchemaValue();
+        return functionReflection.getSchemaValue();
     }
 
     public String getFunctionName() {
-        return functionMirror.getNameValue();
+        return functionReflection.getNameValue();
     }
 
     public boolean isQuoteRequired() {
-        return functionMirror.getQuoteValue();
+        return functionReflection.getQuoteValue();
     }
 
     public int getQueryTimeout() {
-        return functionMirror.getQueryTimeoutValue();
+        return functionReflection.getQueryTimeoutValue();
     }
 
     public boolean getEnsureResultMapping() {
-        return functionMirror.getEnsureResultMappingValue();
+        return functionReflection.getEnsureResultMappingValue();
     }
 
     @Override
     public MapKeyNamingType getMapKeyNamingType() {
-        return functionMirror.getMapKeyNamingValue();
+        return functionReflection.getMapKeyNamingValue();
     }
 
     public SqlLogType getSqlLogType() {
-        return functionMirror.getSqlLogValue();
+        return functionReflection.getSqlLogValue();
     }
 
     @Override

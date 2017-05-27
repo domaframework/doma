@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
-import org.seasar.doma.internal.apt.mirror.SelectMirror;
+import org.seasar.doma.internal.apt.reflection.SelectReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected SelectMirror selectMirror;
+    protected SelectReflection selectReflection;
 
     protected String functionParameterName;
 
@@ -112,48 +112,48 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         this.entityCtType = entityCtType;
     }
 
-    void setSelectMirror(SelectMirror selectMirror) {
-        this.selectMirror = selectMirror;
+    void setSelectReflection(SelectReflection selectReflection) {
+        this.selectReflection = selectReflection;
     }
 
-    SelectMirror getSelectMirror() {
-        return selectMirror;
+    SelectReflection getSelectReflection() {
+        return selectReflection;
     }
 
     public int getFetchSize() {
-        return selectMirror.getFetchSizeValue();
+        return selectReflection.getFetchSizeValue();
     }
 
     public int getMaxRows() {
-        return selectMirror.getMaxRowsValue();
+        return selectReflection.getMaxRowsValue();
     }
 
     public int getQueryTimeout() {
-        return selectMirror.getQueryTimeoutValue();
+        return selectReflection.getQueryTimeoutValue();
     }
 
     public SelectType getSelectStrategyType() {
-        return selectMirror.getStrategyValue();
+        return selectReflection.getStrategyValue();
     }
 
     public FetchType getFetchType() {
-        return selectMirror.getFetchValue();
+        return selectReflection.getFetchValue();
     }
 
     public boolean getEnsureResult() {
-        return selectMirror.getEnsureResultValue();
+        return selectReflection.getEnsureResultValue();
     }
 
     public boolean getEnsureResultMapping() {
-        return selectMirror.getEnsureResultMappingValue();
+        return selectReflection.getEnsureResultMappingValue();
     }
 
     public MapKeyNamingType getMapKeyNamingType() {
-        return selectMirror.getMapKeyNamingValue();
+        return selectReflection.getMapKeyNamingValue();
     }
 
     public SqlLogType getSqlLogType() {
-        return selectMirror.getSqlLogValue();
+        return selectReflection.getSqlLogValue();
     }
 
     public boolean isExpandable() {
