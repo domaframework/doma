@@ -24,7 +24,7 @@ import org.seasar.doma.internal.apt.entity.VersionNoConverter;
  */
 public final class _VersionNo
         extends
-        org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, VersionNo> {
+        org.seasar.doma.jdbc.holder.AbstractHolderType<java.lang.Integer, VersionNo> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -39,16 +39,16 @@ public final class _VersionNo
     }
 
     @Override
-    public VersionNo newDomain(java.lang.Integer value) {
-        return converter.fromValueToDomain(value);
+    public VersionNo newHolder(java.lang.Integer value) {
+        return converter.fromValueToHolder(value);
     }
 
     @Override
-    public Integer getBasicValue(VersionNo domain) {
-        if (domain == null) {
+    public Integer getBasicValue(VersionNo holder) {
+        if (holder == null) {
             return null;
         }
-        return converter.fromDomainToValue(domain);
+        return converter.fromHolderToValue(holder);
     }
 
     @Override
@@ -57,7 +57,7 @@ public final class _VersionNo
     }
 
     @Override
-    public Class<VersionNo> getDomainClass() {
+    public Class<VersionNo> getHolderClass() {
         return VersionNo.class;
     }
 

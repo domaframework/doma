@@ -33,7 +33,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-import example.domain.PhoneNumber;
+import example.holder.PhoneNumber;
 import junit.framework.TestCase;
 
 /**
@@ -65,7 +65,7 @@ public class SqlParserTest extends TestCase {
                 .getWrapper().get());
     }
 
-    public void testBindVariable_domain() throws Exception {
+    public void testBindVariable_holder() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("phone", new Value(PhoneNumber.class, new PhoneNumber(
                 "01-2345-6789")));

@@ -15,25 +15,25 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.jdbc.holder.AbstractHolderType;
 
 /**
  * @author taedium
  * 
  */
-public class _Weight<T> extends AbstractDomainType<Integer, Weight<T>> {
+public class _Weight<T> extends AbstractHolderType<Integer, Weight<T>> {
 
     private _Weight() {
         super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
     }
 
     @Override
-    public Weight<T> newDomain(Integer value) {
+    public Weight<T> newHolder(Integer value) {
         return null;
     }
 
     @Override
-    public Integer getBasicValue(Weight<T> domain) {
+    public Integer getBasicValue(Weight<T> holder) {
         return null;
     }
 
@@ -43,7 +43,7 @@ public class _Weight<T> extends AbstractDomainType<Integer, Weight<T>> {
     }
 
     @Override
-    public Class<Weight<T>> getDomainClass() {
+    public Class<Weight<T>> getHolderClass() {
         return null;
     }
 

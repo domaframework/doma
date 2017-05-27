@@ -37,5 +37,5 @@ public interface JdbcMappingHint {
      * 
      * @return ドメインクラス
      */
-    Optional<Class<?>> getDomainClass();
+    Optional<Class<?>> getHolderClass();
 }

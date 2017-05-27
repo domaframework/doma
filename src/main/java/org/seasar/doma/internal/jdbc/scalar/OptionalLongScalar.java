@@ -15,7 +15,7 @@ public class OptionalLongScalar implements Scalar<Long, OptionalLong> {
     }
 
     @Override
-    public Optional<Class<?>> getDomainClass() {
+    public Optional<Class<?>> getHolderClass() {
         return Optional.empty();
     }
 

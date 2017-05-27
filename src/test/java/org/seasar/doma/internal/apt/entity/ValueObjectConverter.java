@@ -15,25 +15,25 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.ExternalDomain;
+import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.internal.apt.entity.ValueObjectConverter.ValueObject;
-import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.jdbc.holder.HolderConverter;
 
 /**
  * @author taedium
  * 
  */
-@ExternalDomain
+@ExternalHolder
 public class ValueObjectConverter implements
-        DomainConverter<ValueObject, String> {
+        HolderConverter<ValueObject, String> {
 
     @Override
-    public String fromDomainToValue(ValueObject domain) {
+    public String fromHolderToValue(ValueObject holder) {
         return null;
     }
 
     @Override
-    public ValueObject fromValueToDomain(String value) {
+    public ValueObject fromValueToHolder(String value) {
         return null;
     }
 

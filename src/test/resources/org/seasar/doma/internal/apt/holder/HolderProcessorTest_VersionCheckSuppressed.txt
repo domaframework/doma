@@ -1,0 +1,43 @@
+package org.seasar.doma.internal.apt.holder;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _VersionCheckSuppressedHolder extends org.seasar.doma.jdbc.holder.AbstractHolderType<java.math.BigDecimal, org.seasar.doma.internal.apt.holder.VersionCheckSuppressedHolder> {
+
+    private static final _VersionCheckSuppressedHolder singleton = new _VersionCheckSuppressedHolder();
+
+    private _VersionCheckSuppressedHolder() {
+        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
+    }
+
+    @Override
+    protected org.seasar.doma.internal.apt.holder.VersionCheckSuppressedHolder newHolder(java.math.BigDecimal value) {
+        return new org.seasar.doma.internal.apt.holder.VersionCheckSuppressedHolder(value);
+    }
+
+    @Override
+    protected java.math.BigDecimal getBasicValue(org.seasar.doma.internal.apt.holder.VersionCheckSuppressedHolder holder) {
+        if (holder == null) {
+            return null;
+        }
+        return holder.getValue();
+    }
+
+    @Override
+    public Class<?> getBasicClass() {
+        return java.math.BigDecimal.class;
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.holder.VersionCheckSuppressedHolder> getHolderClass() {
+        return org.seasar.doma.internal.apt.holder.VersionCheckSuppressedHolder.class;
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _VersionCheckSuppressedHolder getSingletonInternal() {
+        return singleton;
+    }
+
+}

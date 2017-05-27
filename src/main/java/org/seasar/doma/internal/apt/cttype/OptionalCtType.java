@@ -57,10 +57,10 @@ public class OptionalCtType extends AbstractCtType {
                 if (entityCtType != null) {
                     elementCtType = entityCtType;
                 } else {
-                    DomainCtType domainCtType = DomainCtType.newInstance(
+                    HolderCtType holderCtType = HolderCtType.newInstance(
                             typeArg, env);
-                    if (domainCtType != null) {
-                        elementCtType = domainCtType;
+                    if (holderCtType != null) {
+                        elementCtType = holderCtType;
                     } else {
                         BasicCtType basicCtType = BasicCtType.newInstance(
                                 typeArg, env);

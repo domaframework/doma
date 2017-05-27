@@ -28,7 +28,7 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
@@ -173,7 +173,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 pm.getCtType().accept(visitor, null);
                 BasicCtType basicCtType = visitor.basicCtType;
                 WrapperCtType wrapperCtType = visitor.wrapperCtType;
-                DomainCtType domainCtType = visitor.domainCtType;
+                HolderCtType holderCtType = visitor.holderCtType;
 
                 String newWrapperExpr;
                 if (basicCtType.isEnum()) {
@@ -184,11 +184,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     newWrapperExpr = String.format("new %s()",
                             wrapperCtType.getTypeName());
                 }
-                String domainType = "null";
-                String domainTypeName = "Object";
-                if (domainCtType != null) {
-                    domainType = domainCtType.getInstantiationCommand();
-                    domainTypeName = domainCtType.getTypeName();
+                String holderType = "null";
+                String holderTypeName = "Object";
+                if (holderCtType != null) {
+                    holderType = holderCtType.getInstantiationCommand();
+                    holderTypeName = holderCtType.getTypeName();
                 }
                 if (pm.isId()) {
                     if (pm.getIdGeneratorMeta() != null) {
@@ -198,13 +198,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         /* 3 */basicCtType.getBoxedTypeName(),
                         /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
                         /* 6 */entityMeta.getEntityTypeName(),
-                        /* 7 */newWrapperExpr, /* 8 */domainType,
+                        /* 7 */newWrapperExpr, /* 8 */holderType,
                         /* 9 */pm.getBoxedTypeName(),
                         /* 10 */NULL,
                         /* 11 */Object.class.getName(),
                         /* 12 */pm.getFieldName(),
                         /* 13 */pm.getBoxedClassName(),
-                        /* 14 */domainTypeName,
+                        /* 14 */holderTypeName,
                         /* 15 */pm.isColumnQuoteRequired());
                     } else {
                         iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
@@ -213,13 +213,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         /* 3 */basicCtType.getBoxedTypeName(),
                         /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
                         /* 6 */entityMeta.getEntityTypeName(),
-                        /* 7 */newWrapperExpr, /* 8 */domainType,
+                        /* 7 */newWrapperExpr, /* 8 */holderType,
                         /* 9 */pm.getBoxedTypeName(),
                         /* 10 */NULL,
                         /* 11 */Object.class.getName(),
                         /* 12 */pm.getFieldName(),
                         /* 13 */pm.getBoxedClassName(),
-                        /* 14 */domainTypeName,
+                        /* 14 */holderTypeName,
                         /* 15 */pm.isColumnQuoteRequired());
                     }
                 } else if (pm.isVersion()) {
@@ -229,13 +229,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 3 */basicCtType.getBoxedTypeName(),
                     /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
                     /* 6 */entityMeta.getEntityTypeName(),
-                    /* 7 */newWrapperExpr, /* 8 */domainType,
+                    /* 7 */newWrapperExpr, /* 8 */holderType,
                     /* 9 */pm.getBoxedTypeName(),
                     /* 10 */NULL,
                     /* 11 */Object.class.getName(),
                     /* 12 */pm.getFieldName(),
                     /* 13 */pm.getBoxedClassName(),
-                    /* 14 */domainTypeName,
+                    /* 14 */holderTypeName,
                     /* 15 */pm.isColumnQuoteRequired());
                 } else {
                     iprint("public final %1$s<%13$s, %2$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, %15$s.class, %3$s.class, () -> %9$s, %12$s, %10$s, \"%4$s\", \"%5$s\", __namingType, %6$s, %7$s, %17$s);%n",
@@ -246,13 +246,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 6 */pm.isColumnInsertable(),
                     /* 7 */pm.isColumnUpdatable(),
                     /* 8 */entityMeta.getEntityTypeName(),
-                    /* 9 */newWrapperExpr, /* 10 */domainType,
+                    /* 9 */newWrapperExpr, /* 10 */holderType,
                     /* 11 */pm.getBoxedTypeName(),
                     /* 12 */NULL,
                     /* 13 */Object.class.getName(),
                     /* 14 */pm.getFieldName(),
                     /* 15 */pm.getBoxedClassName(),
-                    /* 16 */domainTypeName,
+                    /* 16 */holderTypeName,
                     /* 17 */pm.isColumnQuoteRequired());
                 }
             }
@@ -816,7 +816,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
         protected WrapperCtType wrapperCtType;
 
-        protected DomainCtType domainCtType;
+        protected HolderCtType holderCtType;
 
         @Override
         protected Void defaultAction(CtType ctType, Void p)
@@ -859,10 +859,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType domainCtType, Void p)
+        public Void visitHolderCtType(HolderCtType holderCtType, Void p)
                 throws RuntimeException {
-            this.domainCtType = domainCtType;
-            return visitBasicCtType(domainCtType.getBasicCtType(), p);
+            this.holderCtType = holderCtType;
+            return visitBasicCtType(holderCtType.getBasicCtType(), p);
         }
     }
 

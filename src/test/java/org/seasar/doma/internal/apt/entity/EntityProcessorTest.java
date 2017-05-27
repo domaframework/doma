@@ -33,7 +33,7 @@ public class EntityProcessorTest extends AptTestCase {
         addSourcePath("src/test/java");
         addOption(
                 "-Adoma.test=true",
-                "-Adoma.domain.converters=org.seasar.doma.internal.apt.entity.DomainConvertersProvider");
+                "-Adoma.holder.converters=org.seasar.doma.internal.apt.entity.HolderConvertersProvider");
     }
 
     public void testEmp() throws Exception {
@@ -249,8 +249,8 @@ public class EntityProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4086);
     }
 
-    public void testDomainProperty() throws Exception {
-        Class<?> target = DomainPropertyEntity.class;
+    public void testHolderProperty() throws Exception {
+        Class<?> target = HolderPropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

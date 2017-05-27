@@ -26,7 +26,7 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.jdbc.Reference;
 
-import example.domain.PhoneNumber;
+import example.holder.PhoneNumber;
 
 /**
  * @author taedium

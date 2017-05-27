@@ -15,24 +15,24 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.ExternalHolder;
+import org.seasar.doma.jdbc.holder.HolderConverter;
 
 /**
  * @author taedium
  * 
  */
-@ExternalDomain
+@ExternalHolder
 public class PrimaryKeyConverter implements
-        DomainConverter<PrimaryKey, Integer> {
+        HolderConverter<PrimaryKey, Integer> {
 
     @Override
-    public Integer fromDomainToValue(PrimaryKey domain) {
+    public Integer fromHolderToValue(PrimaryKey holder) {
         return null;
     }
 
     @Override
-    public PrimaryKey fromValueToDomain(Integer value) {
+    public PrimaryKey fromValueToHolder(Integer value) {
         return null;
     }
 

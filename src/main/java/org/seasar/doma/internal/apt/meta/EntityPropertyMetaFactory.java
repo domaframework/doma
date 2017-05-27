@@ -34,7 +34,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
@@ -129,25 +129,25 @@ public class EntityPropertyMetaFactory {
             return optionalDoubleCtType;
         }
 
-        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
-        if (domainCtType != null) {
-            if (domainCtType.isRawType()) {
+        final HolderCtType holderCtType = HolderCtType.newInstance(type, env);
+        if (holderCtType != null) {
+            if (holderCtType.isRawType()) {
                 throw new AptException(Message.DOMA4204, env, fieldElement,
                         new Object[] {
-                                domainCtType.getQualifiedName(),
+                                holderCtType.getQualifiedName(),
                                 entityMeta.getEntityElement()
                                         .getQualifiedName(),
                                 fieldElement.getSimpleName() });
             }
-            if (domainCtType.isWildcardType()) {
+            if (holderCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4205, env, fieldElement,
                         new Object[] {
-                                domainCtType.getQualifiedName(),
+                                holderCtType.getQualifiedName(),
                                 entityMeta.getEntityElement()
                                         .getQualifiedName(),
                                 fieldElement.getSimpleName() });
             }
-            return domainCtType;
+            return holderCtType;
         }
 
         final EmbeddableCtType embeddableCtType = EmbeddableCtType.newInstance(
@@ -452,7 +452,7 @@ public class EntityPropertyMetaFactory {
                     }
 
                     @Override
-                    public Boolean visitDomainCtType(DomainCtType ctType, Void p)
+                    public Boolean visitHolderCtType(HolderCtType ctType, Void p)
                             throws RuntimeException {
                         return ctType.getBasicCtType().accept(this, p);
                     }

@@ -25,7 +25,7 @@ import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
@@ -218,13 +218,13 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitDomainCtType(DomainCtType ctType,
+        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType,
                 Boolean optional) throws RuntimeException {
             if (Boolean.TRUE == optional) {
-                return new OptionalDomainListParameterMeta(
+                return new OptionalHolderListParameterMeta(
                         parameterMeta.getName(), ctType);
             }
-            return new DomainListParameterMeta(parameterMeta.getName(), ctType);
+            return new HolderListParameterMeta(parameterMeta.getName(), ctType);
         }
 
         @Override
@@ -289,13 +289,13 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitDomainCtType(DomainCtType ctType,
+        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType,
                 Boolean optional) throws RuntimeException {
             if (Boolean.TRUE == optional) {
-                return new OptionalDomainInParameterMeta(
+                return new OptionalHolderInParameterMeta(
                         parameterMeta.getName(), ctType);
             }
-            return new DomainInParameterMeta(parameterMeta.getName(), ctType);
+            return new HolderInParameterMeta(parameterMeta.getName(), ctType);
         }
 
         @Override
@@ -394,13 +394,13 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitDomainCtType(DomainCtType ctType,
+        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType,
                 Boolean optional) throws RuntimeException {
             if (Boolean.TRUE == optional) {
-                return new OptionalDomainOutParameterMeta(
+                return new OptionalHolderOutParameterMeta(
                         parameterMeta.getName(), ctType);
             }
-            return new DomainOutParameterMeta(parameterMeta.getName(), ctType);
+            return new HolderOutParameterMeta(parameterMeta.getName(), ctType);
         }
 
         @Override
@@ -499,13 +499,13 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitDomainCtType(DomainCtType ctType,
+        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType,
                 Boolean optional) throws RuntimeException {
             if (Boolean.TRUE == optional) {
-                return new OptionalDomainInOutParameterMeta(
+                return new OptionalHolderInOutParameterMeta(
                         parameterMeta.getName(), ctType);
             }
-            return new DomainInOutParameterMeta(parameterMeta.getName(), ctType);
+            return new HolderInOutParameterMeta(parameterMeta.getName(), ctType);
         }
 
         @Override

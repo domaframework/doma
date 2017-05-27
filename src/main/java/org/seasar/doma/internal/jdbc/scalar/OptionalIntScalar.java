@@ -15,7 +15,7 @@ public class OptionalIntScalar implements Scalar<Integer, OptionalInt> {
     }
 
     @Override
-    public Optional<Class<?>> getDomainClass() {
+    public Optional<Class<?>> getHolderClass() {
         return Optional.empty();
     }
 

@@ -54,8 +54,8 @@ public class ScalarSingleResultParameter<BASIC, CONTAINER> implements
     }
 
     @Override
-    public Optional<Class<?>> getDomainClass() {
-        return scalar.getDomainClass();
+    public Optional<Class<?>> getHolderClass() {
+        return scalar.getHolderClass();
     }
 
     @Override

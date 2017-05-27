@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.entity.BranchConverter;
 
 public final class _Branch
         extends
-        org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.String, Branch> {
+        org.seasar.doma.jdbc.holder.AbstractHolderType<java.lang.String, Branch> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -40,16 +40,16 @@ public final class _Branch
     }
 
     @Override
-    public Branch newDomain(java.lang.String value) {
-        return converter.fromValueToDomain(value);
+    public Branch newHolder(java.lang.String value) {
+        return converter.fromValueToHolder(value);
     }
 
     @Override
-    public String getBasicValue(Branch domain) {
-        if (domain == null) {
+    public String getBasicValue(Branch holder) {
+        if (holder == null) {
             return null;
         }
-        return converter.fromDomainToValue(domain);
+        return converter.fromHolderToValue(holder);
     }
 
     @Override
@@ -58,7 +58,7 @@ public final class _Branch
     }
 
     @Override
-    public Class<Branch> getDomainClass() {
+    public Class<Branch> getHolderClass() {
         return Branch.class;
     }
 

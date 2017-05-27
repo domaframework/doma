@@ -28,8 +28,8 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.message.Message;
 
-import example.domain.PhoneNumber;
 import example.entity.Emp;
+import example.holder.PhoneNumber;
 import junit.framework.TestCase;
 
 /**
@@ -97,7 +97,7 @@ public class SelectBuilderTest extends TestCase {
         assertNull(emp);
     }
 
-    public void testSingleResult_Domain() throws Exception {
+    public void testSingleResult_Holder() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
         builder.sql("select ccc from Emp");
         builder.sql("where");
@@ -162,7 +162,7 @@ public class SelectBuilderTest extends TestCase {
         assertNotNull(list);
     }
 
-    public void testGetResultList_Domain() throws Exception {
+    public void testGetResultList_Holder() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
         builder.sql("select ccc from Emp");
         builder.sql("where");

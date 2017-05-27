@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
@@ -136,21 +136,21 @@ public class QueryReturnMeta {
             return optionalDoubleCtType;
         }
 
-        DomainCtType domainCtType = DomainCtType.newInstance(type, env);
-        if (domainCtType != null) {
-            if (domainCtType.isRawType()) {
+        HolderCtType holderCtType = HolderCtType.newInstance(type, env);
+        if (holderCtType != null) {
+            if (holderCtType.isRawType()) {
                 throw new AptException(Message.DOMA4206, env, methodElement,
-                        new Object[] { domainCtType.getQualifiedName(),
+                        new Object[] { holderCtType.getQualifiedName(),
                                 daoElement.getQualifiedName(),
                                 methodElement.getSimpleName() });
             }
-            if (domainCtType.isWildcardType()) {
+            if (holderCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4207, env, methodElement,
-                        new Object[] { domainCtType.getQualifiedName(),
+                        new Object[] { holderCtType.getQualifiedName(),
                                 daoElement.getQualifiedName(),
                                 methodElement.getSimpleName() });
             }
-            return domainCtType;
+            return holderCtType;
         }
 
         BasicCtType basicCtType = BasicCtType.newInstance(type, env);
@@ -253,7 +253,7 @@ public class QueryReturnMeta {
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         @Override
-        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+        public Void visitHolderCtType(final HolderCtType ctType, Void p)
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4210, env, methodElement,
@@ -280,7 +280,7 @@ public class QueryReturnMeta {
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
         @Override
-        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+        public Void visitHolderCtType(final HolderCtType ctType, Void p)
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4238, env, methodElement,

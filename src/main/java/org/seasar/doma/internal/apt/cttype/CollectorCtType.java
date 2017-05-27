@@ -108,7 +108,7 @@ public class CollectorCtType extends AbstractCtType {
                 () -> OptionalIntCtType.newInstance(typeMirror, env),
                 () -> OptionalLongCtType.newInstance(typeMirror, env),
                 () -> OptionalDoubleCtType.newInstance(typeMirror, env),
-                () -> DomainCtType.newInstance(typeMirror, env),
+                () -> HolderCtType.newInstance(typeMirror, env),
                 () -> BasicCtType.newInstance(typeMirror, env),
                 () -> MapCtType.newInstance(typeMirror, env),
                 () -> AnyCtType.newInstance(typeMirror, env));

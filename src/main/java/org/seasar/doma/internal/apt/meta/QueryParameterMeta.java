@@ -31,7 +31,7 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
@@ -154,21 +154,21 @@ public class QueryParameterMeta {
             return optionalDoubleCtType;
         }
 
-        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
-        if (domainCtType != null) {
-            if (domainCtType.isRawType()) {
+        final HolderCtType holderCtType = HolderCtType.newInstance(type, env);
+        if (holderCtType != null) {
+            if (holderCtType.isRawType()) {
                 throw new AptException(Message.DOMA4208, env, parameterElement,
-                        new Object[] { domainCtType.getQualifiedName(),
+                        new Object[] { holderCtType.getQualifiedName(),
                                 daoElement.getQualifiedName(),
                                 methodElement.getSimpleName() });
             }
-            if (domainCtType.isWildcardType()) {
+            if (holderCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4209, env, parameterElement,
-                        new Object[] { domainCtType.getQualifiedName(),
+                        new Object[] { holderCtType.getQualifiedName(),
                                 daoElement.getQualifiedName(),
                                 methodElement.getSimpleName() });
             }
-            return domainCtType;
+            return holderCtType;
         }
 
         BasicCtType basicCtType = BasicCtType.newInstance(type, env);
@@ -324,7 +324,7 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitDomainCtType(DomainCtType ctType, Void p)
+        public Boolean visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return true;
         }
@@ -349,7 +349,7 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitDomainCtType(DomainCtType ctType, Void p)
+        public Boolean visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return true;
         }
@@ -425,7 +425,7 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+        public Void visitHolderCtType(final HolderCtType ctType, Void p)
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4212, env, parameterElement,
@@ -459,7 +459,7 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+        public Void visitHolderCtType(final HolderCtType ctType, Void p)
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4238, env, parameterElement,
@@ -504,7 +504,7 @@ public class QueryParameterMeta {
                 extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
             @Override
-            public Void visitDomainCtType(final DomainCtType ctType, Void p)
+            public Void visitHolderCtType(final HolderCtType ctType, Void p)
                     throws RuntimeException {
                 if (ctType.isRawType()) {
                     throw new AptException(Message.DOMA4242, env,
@@ -541,7 +541,7 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4260, env, parameterElement,
@@ -575,7 +575,7 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+        public Void visitHolderCtType(final HolderCtType ctType, Void p)
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4218, env, parameterElement,

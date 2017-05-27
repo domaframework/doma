@@ -92,7 +92,7 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     }
 
     @Override
-    public java.util.stream.Stream<example.domain.PhoneNumber> selectById(java.lang.Integer id) {
+    public java.util.stream.Stream<example.holder.PhoneNumber> selectById(java.lang.Integer id) {
         entering("org.seasar.doma.internal.apt.dao.ResultStreamDaoImpl", "selectById", id);
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
@@ -111,8 +111,8 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setResultStream(true);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<example.domain.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<java.lang.String, example.domain.PhoneNumber, java.util.stream.Stream<example.domain.PhoneNumber>>(example.domain._PhoneNumber.getSingletonInternal(), java.util.function.Function.identity()));
-            java.util.stream.Stream<example.domain.PhoneNumber> __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<example.holder.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.HolderStreamHandler<java.lang.String, example.holder.PhoneNumber, java.util.stream.Stream<example.holder.PhoneNumber>>(example.holder._PhoneNumber.getSingletonInternal(), java.util.function.Function.identity()));
+            java.util.stream.Stream<example.holder.PhoneNumber> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.ResultStreamDaoImpl", "selectById", __result);
             return __result;

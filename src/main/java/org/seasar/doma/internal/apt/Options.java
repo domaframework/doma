@@ -51,7 +51,7 @@ public final class Options {
 
     public static final String EXPR_FUNCTIONS = "doma.expr.functions";
 
-    public static final String DOMAIN_CONVERTERS = "doma.domain.converters";
+    public static final String HOLDER_CONVERTERS = "doma.holder.converters";
 
     public static final String SQL_VALIDATION = "doma.sql.validation";
 
@@ -117,8 +117,8 @@ public final class Options {
         return name != null ? name : null;
     }
 
-    public static String getDomainConverters(ProcessingEnvironment env) {
-        String converters = getOption(env, Options.DOMAIN_CONVERTERS);
+    public static String getHolderConverters(ProcessingEnvironment env) {
+        String converters = getOption(env, Options.HOLDER_CONVERTERS);
         return converters != null ? converters : null;
     }
 

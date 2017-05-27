@@ -40,10 +40,10 @@ import javax.tools.JavaFileObject;
 
 import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
-import org.seasar.doma.Domain;
+import org.seasar.doma.Holder;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
-import org.seasar.doma.ExternalDomain;
+import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -99,8 +99,8 @@ public abstract class AptTestCase extends AptinaTestCase {
         }
         if (originalClass.isAnnotationPresent(Entity.class)
                 || originalClass.isAnnotationPresent(Embeddable.class)
-                || originalClass.isAnnotationPresent(Domain.class)
-                || originalClass.isAnnotationPresent(ExternalDomain.class)) {
+                || originalClass.isAnnotationPresent(Holder.class)
+                || originalClass.isAnnotationPresent(ExternalHolder.class)) {
             return MetaUtil.toFullMetaName(originalClass.getName());
         }
         throw new AssertionFailedError("annotation not found.");

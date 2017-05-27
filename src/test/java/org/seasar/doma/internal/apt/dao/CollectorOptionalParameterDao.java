@@ -22,7 +22,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 
-import example.domain.PhoneNumber;
+import example.holder.PhoneNumber;
 
 /**
  * @author taedium

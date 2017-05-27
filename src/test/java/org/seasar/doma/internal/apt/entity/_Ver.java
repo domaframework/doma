@@ -15,25 +15,25 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.jdbc.holder.AbstractHolderType;
 
 /**
  * @author taedium
  * 
  */
-public class _Ver extends AbstractDomainType<Integer, Ver> {
+public class _Ver extends AbstractHolderType<Integer, Ver> {
 
     private _Ver() {
         super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
     }
 
     @Override
-    public Ver newDomain(Integer value) {
+    public Ver newHolder(Integer value) {
         return null;
     }
 
     @Override
-    public Integer getBasicValue(Ver domain) {
+    public Integer getBasicValue(Ver holder) {
         return null;
     }
 
@@ -43,7 +43,7 @@ public class _Ver extends AbstractDomainType<Integer, Ver> {
     }
 
     @Override
-    public Class<Ver> getDomainClass() {
+    public Class<Ver> getHolderClass() {
         return null;
     }
 

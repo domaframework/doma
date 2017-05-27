@@ -33,7 +33,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor8;
 
-import org.seasar.doma.Domain;
+import org.seasar.doma.Holder;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -104,10 +104,10 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
                 && typeElement.getAnnotation(Entity.class) != null;
     }
 
-    protected boolean isDomain(TypeMirror typeMirror) {
+    protected boolean isHolder(TypeMirror typeMirror) {
         TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         return typeElement != null
-                && typeElement.getAnnotation(Domain.class) != null;
+                && typeElement.getAnnotation(Holder.class) != null;
     }
 
     protected boolean isConfig(TypeMirror typeMirror) {

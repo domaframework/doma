@@ -33,18 +33,18 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visitBasicResultListParameterMeta(BasicResultListParameterMeta m, P p);
 
-    R visitDomainInParameterMeta(DomainInParameterMeta m, P p);
+    R visitHolderInParameterMeta(HolderInParameterMeta m, P p);
 
-    R visitDomainOutParameterMeta(DomainOutParameterMeta m, P p);
+    R visitHolderOutParameterMeta(HolderOutParameterMeta m, P p);
 
-    R visitDomainInOutParameterMeta(DomainInOutParameterMeta m, P p);
+    R visitHolderInOutParameterMeta(HolderInOutParameterMeta m, P p);
 
-    R visitDomainListParameterMeta(DomainListParameterMeta m, P p);
+    R visitHolderListParameterMeta(HolderListParameterMeta m, P p);
 
-    R visitDomainSingleResultParameterMeta(DomainSingleResultParameterMeta m,
+    R visitHolderSingleResultParameterMeta(HolderSingleResultParameterMeta m,
             P p);
 
-    R visitDomainResultListParameterMeta(DomainResultListParameterMeta m, P p);
+    R visitHolderResultListParameterMeta(HolderResultListParameterMeta m, P p);
 
     R visitEntityListParameterMeta(EntityListParameterMeta m, P p);
 
@@ -69,21 +69,21 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
     R visitOptionalBasicResultListParameterMeta(
             OptionalBasicResultListParameterMeta m, P p);
 
-    R visitOptionalDomainInParameterMeta(OptionalDomainInParameterMeta m, P p);
+    R visitOptionalHolderInParameterMeta(OptionalHolderInParameterMeta m, P p);
 
-    R visitOptionalDomainOutParameterMeta(OptionalDomainOutParameterMeta m, P p);
+    R visitOptionalHolderOutParameterMeta(OptionalHolderOutParameterMeta m, P p);
 
-    R visitOptionalDomainInOutParameterMeta(OptionalDomainInOutParameterMeta m,
+    R visitOptionalHolderInOutParameterMeta(OptionalHolderInOutParameterMeta m,
             P p);
 
-    R visitOptionalDomainListParameterMeta(OptionalDomainListParameterMeta m,
+    R visitOptionalHolderListParameterMeta(OptionalHolderListParameterMeta m,
             P p);
 
-    R visitOptionalDomainSingleResultParameterMeta(
-            OptionalDomainSingleResultParameterMeta m, P p);
+    R visitOptionalHolderSingleResultParameterMeta(
+            OptionalHolderSingleResultParameterMeta m, P p);
 
-    R visitOptionalDomainResultListParameterMeta(
-            OptionalDomainResultListParameterMeta m, P p);
+    R visitOptionalHolderResultListParameterMeta(
+            OptionalHolderResultListParameterMeta m, P p);
 
     R visitOptionalIntInParameterMeta(OptionalIntInParameterMeta m, P p);
 

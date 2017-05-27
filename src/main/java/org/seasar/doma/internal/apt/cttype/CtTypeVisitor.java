@@ -25,7 +25,7 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
     R visitBasicCtType(BasicCtType ctType, P p) throws TH;
 
-    R visitDomainCtType(DomainCtType ctType, P p) throws TH;
+    R visitHolderCtType(HolderCtType ctType, P p) throws TH;
 
     R visitEmbeddableCtType(EmbeddableCtType ctType, P p) throws TH;
 

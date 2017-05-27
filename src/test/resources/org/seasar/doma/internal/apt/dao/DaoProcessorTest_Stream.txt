@@ -96,7 +96,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
     }
 
     @Override
-    public <R> R selectById(java.lang.Integer id, java.util.function.Function<java.util.stream.Stream<example.domain.PhoneNumber>, R> mapper) {
+    public <R> R selectById(java.lang.Integer id, java.util.function.Function<java.util.stream.Stream<example.holder.PhoneNumber>, R> mapper) {
         entering("org.seasar.doma.internal.apt.dao.StreamDaoImpl", "selectById", id, mapper);
         try {
             if (mapper == null) {
@@ -117,7 +117,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.HolderStreamHandler<java.lang.String, example.holder.PhoneNumber, R>(example.holder._PhoneNumber.getSingletonInternal(), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.StreamDaoImpl", "selectById", __result);

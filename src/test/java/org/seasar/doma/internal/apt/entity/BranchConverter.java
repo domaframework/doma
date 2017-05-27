@@ -15,21 +15,21 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.jdbc.holder.HolderConverter;
 
 /**
  * @author taedium
  * 
  */
-public class BranchConverter implements DomainConverter<Branch, String> {
+public class BranchConverter implements HolderConverter<Branch, String> {
 
     @Override
-    public String fromDomainToValue(Branch domain) {
+    public String fromHolderToValue(Branch holder) {
         return null;
     }
 
     @Override
-    public Branch fromValueToDomain(String value) {
+    public Branch fromValueToHolder(String value) {
         return null;
     }
 

@@ -103,7 +103,7 @@ public class AutoFunctionOptionalParameterDaoImpl extends org.seasar.doma.intern
     }
 
     @Override
-    public example.domain.PhoneNumber executeFunction2(java.util.Optional<example.domain.PhoneNumber> arg1, org.seasar.doma.jdbc.Reference<java.util.Optional<example.domain.PhoneNumber>> arg2, org.seasar.doma.jdbc.Reference<java.util.Optional<example.domain.PhoneNumber>> arg3) {
+    public example.holder.PhoneNumber executeFunction2(java.util.Optional<example.holder.PhoneNumber> arg1, org.seasar.doma.jdbc.Reference<java.util.Optional<example.holder.PhoneNumber>> arg2, org.seasar.doma.jdbc.Reference<java.util.Optional<example.holder.PhoneNumber>> arg3) {
         entering("org.seasar.doma.internal.apt.dao.AutoFunctionOptionalParameterDaoImpl", "executeFunction2", arg1, arg2, arg3);
         try {
             if (arg1 == null) {
@@ -115,24 +115,24 @@ public class AutoFunctionOptionalParameterDaoImpl extends org.seasar.doma.intern
             if (arg3 == null) {
                 throw new org.seasar.doma.DomaNullPointerException("arg3");
             }
-            org.seasar.doma.jdbc.query.AutoFunctionQuery<example.domain.PhoneNumber> __query = getQueryImplementors().createAutoFunctionQuery(__method1);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<example.holder.PhoneNumber> __query = getQueryImplementors().createAutoFunctionQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
             __query.setFunctionName("executeFunction2");
             __query.setQuoteRequired(false);
-            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.DomainSingleResultParameter<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDomainInParameter<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), arg1));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDomainInOutParameter<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), arg2));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDomainOutParameter<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), arg3));
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.HolderSingleResultParameter<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal()));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalHolderInParameter<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal(), arg1));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalHolderInOutParameter<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal(), arg2));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalHolderOutParameter<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal(), arg3));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionOptionalParameterDaoImpl");
             __query.setCallerMethodName("executeFunction2");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.FunctionCommand<example.domain.PhoneNumber> __command = getCommandImplementors().createFunctionCommand(__method1, __query);
-            example.domain.PhoneNumber __result = __command.execute();
+            org.seasar.doma.jdbc.command.FunctionCommand<example.holder.PhoneNumber> __command = getCommandImplementors().createFunctionCommand(__method1, __query);
+            example.holder.PhoneNumber __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.AutoFunctionOptionalParameterDaoImpl", "executeFunction2", __result);
             return __result;
@@ -175,28 +175,28 @@ public class AutoFunctionOptionalParameterDaoImpl extends org.seasar.doma.intern
     }
 
     @Override
-    public java.util.List<java.util.Optional<example.domain.PhoneNumber>> executeFunction4(java.util.List<java.util.Optional<example.domain.PhoneNumber>> arg1) {
+    public java.util.List<java.util.Optional<example.holder.PhoneNumber>> executeFunction4(java.util.List<java.util.Optional<example.holder.PhoneNumber>> arg1) {
         entering("org.seasar.doma.internal.apt.dao.AutoFunctionOptionalParameterDaoImpl", "executeFunction4", arg1);
         try {
             if (arg1 == null) {
                 throw new org.seasar.doma.DomaNullPointerException("arg1");
             }
-            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Optional<example.domain.PhoneNumber>>> __query = getQueryImplementors().createAutoFunctionQuery(__method3);
+            org.seasar.doma.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Optional<example.holder.PhoneNumber>>> __query = getQueryImplementors().createAutoFunctionQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
             __query.setCatalogName("");
             __query.setSchemaName("");
             __query.setFunctionName("executeFunction4");
             __query.setQuoteRequired(false);
-            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDomainResultListParameter<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDomainListParameter<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal(), arg1, "arg1"));
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.OptionalHolderResultListParameter<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal()));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalHolderListParameter<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal(), arg1, "arg1"));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionOptionalParameterDaoImpl");
             __query.setCallerMethodName("executeFunction4");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.Optional<example.domain.PhoneNumber>>> __command = getCommandImplementors().createFunctionCommand(__method3, __query);
-            java.util.List<java.util.Optional<example.domain.PhoneNumber>> __result = __command.execute();
+            org.seasar.doma.jdbc.command.FunctionCommand<java.util.List<java.util.Optional<example.holder.PhoneNumber>>> __command = getCommandImplementors().createFunctionCommand(__method3, __query);
+            java.util.List<java.util.Optional<example.holder.PhoneNumber>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.dao.AutoFunctionOptionalParameterDaoImpl", "executeFunction4", __result);
             return __result;

@@ -24,7 +24,7 @@ import org.seasar.doma.internal.apt.entity.PrimaryKeyConverter;
  */
 public final class _PrimaryKey
         extends
-        org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, PrimaryKey> {
+        org.seasar.doma.jdbc.holder.AbstractHolderType<java.lang.Integer, PrimaryKey> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -39,16 +39,16 @@ public final class _PrimaryKey
     }
 
     @Override
-    public PrimaryKey newDomain(java.lang.Integer value) {
-        return converter.fromValueToDomain(value);
+    public PrimaryKey newHolder(java.lang.Integer value) {
+        return converter.fromValueToHolder(value);
     }
 
     @Override
-    public Integer getBasicValue(PrimaryKey domain) {
-        if (domain == null) {
+    public Integer getBasicValue(PrimaryKey holder) {
+        if (holder == null) {
             return null;
         }
-        return converter.fromDomainToValue(domain);
+        return converter.fromHolderToValue(holder);
     }
 
     @Override
@@ -57,7 +57,7 @@ public final class _PrimaryKey
     }
 
     @Override
-    public Class<PrimaryKey> getDomainClass() {
+    public Class<PrimaryKey> getHolderClass() {
         return PrimaryKey.class;
     }
 

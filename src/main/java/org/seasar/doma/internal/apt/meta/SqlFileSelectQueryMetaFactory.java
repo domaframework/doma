@@ -30,7 +30,7 @@ import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
@@ -289,7 +289,7 @@ public class SqlFileSelectQueryMetaFactory extends
             }
 
             @Override
-            public Void visitDomainCtType(DomainCtType ctType, Void p)
+            public Void visitHolderCtType(HolderCtType ctType, Void p)
                     throws RuntimeException {
                 return null;
             }
@@ -336,8 +336,8 @@ public class SqlFileSelectQueryMetaFactory extends
                             }
 
                             @Override
-                            public Boolean visitDomainCtType(
-                                    DomainCtType ctType, Void p)
+                            public Boolean visitHolderCtType(
+                                    HolderCtType ctType, Void p)
                                     throws RuntimeException {
                                 return true;
                             }
@@ -400,7 +400,7 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }
@@ -446,7 +446,7 @@ public class SqlFileSelectQueryMetaFactory extends
                         }
 
                         @Override
-                        public Boolean visitDomainCtType(DomainCtType ctType,
+                        public Boolean visitHolderCtType(HolderCtType ctType,
                                 Void p) throws RuntimeException {
                             return true;
                         }
@@ -515,7 +515,7 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }
@@ -642,7 +642,7 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }
@@ -731,7 +731,7 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }
@@ -820,7 +820,7 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }
@@ -881,7 +881,7 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }
@@ -922,7 +922,7 @@ public class SqlFileSelectQueryMetaFactory extends
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Void p)
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }

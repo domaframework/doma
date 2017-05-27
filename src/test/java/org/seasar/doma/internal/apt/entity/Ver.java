@@ -15,13 +15,13 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.Domain;
+import org.seasar.doma.Holder;
 
 /**
  * @author taedium
  * 
  */
-@Domain(valueType = Integer.class)
+@Holder(valueType = Integer.class)
 public class Ver {
 
     private final Integer value;

@@ -15,7 +15,7 @@ public class OptionalDoubleScalar implements Scalar<Double, OptionalDouble> {
     }
 
     @Override
-    public Optional<Class<?>> getDomainClass() {
+    public Optional<Class<?>> getHolderClass() {
         return Optional.empty();
     }
 

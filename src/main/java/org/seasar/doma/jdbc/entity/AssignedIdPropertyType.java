@@ -17,7 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.holder.HolderType;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -31,11 +31,11 @@ import org.seasar.doma.wrapper.Wrapper;
  *            エンティティの型
  * @param <BASIC>
  *            プロパティの基本型
- * @param <DOMAIN>
+ * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class AssignedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
-        extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
+public class AssignedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
+        extends DefaultPropertyType<PARENT, ENTITY, BASIC, HOLDER> {
 
     /**
      * インスタンスを構築します。
@@ -50,7 +50,7 @@ public class AssignedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN
      *            ラッパーのサプライヤ
      * @param parentEntityPropertyType
      *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
-     * @param domainType
+     * @param holderType
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
@@ -65,10 +65,10 @@ public class AssignedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN
             Class<?> entityPropertyClass, Class<BASIC> basicClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
-            DomainType<BASIC, DOMAIN> domainType, String name,
+            HolderType<BASIC, HOLDER> holderType, String name,
             String columnName, NamingType namingType, boolean quoteRequired) {
         super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
-                parentEntityPropertyType, domainType, name, columnName,
+                parentEntityPropertyType, holderType, name, columnName,
                 namingType, true, true, quoteRequired);
     }
 

@@ -18,7 +18,7 @@ public class OptionalBasicScalar<BASIC> implements
     }
 
     @Override
-    public Optional<Class<?>> getDomainClass() {
+    public Optional<Class<?>> getHolderClass() {
         return Optional.empty();
     }
 

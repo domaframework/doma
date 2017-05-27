@@ -15,23 +15,23 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.ExternalHolder;
+import org.seasar.doma.jdbc.holder.HolderConverter;
 
 /**
  * @author taedium
  * 
  */
-@ExternalDomain
-public class VersionNoConverter implements DomainConverter<VersionNo, Integer> {
+@ExternalHolder
+public class VersionNoConverter implements HolderConverter<VersionNo, Integer> {
 
     @Override
-    public Integer fromDomainToValue(VersionNo domain) {
+    public Integer fromHolderToValue(VersionNo holder) {
         return null;
     }
 
     @Override
-    public VersionNo fromValueToDomain(Integer value) {
+    public VersionNo fromValueToHolder(Integer value) {
         return null;
     }
 

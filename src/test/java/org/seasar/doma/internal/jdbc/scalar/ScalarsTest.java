@@ -36,8 +36,8 @@ import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-import example.domain.InternationalPhoneNumber;
-import example.domain.PhoneNumber;
+import example.holder.InternationalPhoneNumber;
+import example.holder.PhoneNumber;
 import junit.framework.TestCase;
 
 /**
@@ -213,7 +213,7 @@ public class ScalarsTest extends TestCase {
         assertNull(wrapper.get());
     }
 
-    public void testWrapDomain() throws Exception {
+    public void testWrapHolder() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
         Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber,
                 PhoneNumber.class, false, classHelper);
@@ -227,7 +227,7 @@ public class ScalarsTest extends TestCase {
         assertEquals("123-456-789", wrapper.get());
     }
 
-    public void testWrapDomain_subclass() throws Exception {
+    public void testWrapHolder_subclass() throws Exception {
         PhoneNumber phoneNumber = new InternationalPhoneNumber("123-456-789");
         Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber,
                 InternationalPhoneNumber.class, false, classHelper);
@@ -241,7 +241,7 @@ public class ScalarsTest extends TestCase {
         assertEquals("123-456-789", wrapper.get());
     }
 
-    public void testWrapDomain_null() throws Exception {
+    public void testWrapHolder_null() throws Exception {
         Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class,
                 false, classHelper);
         assertNotNull(supplier);
@@ -257,7 +257,7 @@ public class ScalarsTest extends TestCase {
     }
 
     @SuppressWarnings("unchecked")
-    public void testWrapDomain_option() throws Exception {
+    public void testWrapHolder_option() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
         Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber,
                 PhoneNumber.class, true, classHelper);
@@ -274,7 +274,7 @@ public class ScalarsTest extends TestCase {
     }
 
     @SuppressWarnings("unchecked")
-    public void testWrapDomain_option_null() throws Exception {
+    public void testWrapHolder_option_null() throws Exception {
         Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class,
                 true, classHelper);
         assertNotNull(supplier);

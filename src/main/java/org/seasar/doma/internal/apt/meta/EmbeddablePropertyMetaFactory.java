@@ -22,7 +22,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
@@ -101,25 +101,25 @@ public class EmbeddablePropertyMetaFactory {
             return optionalDoubleCtType;
         }
 
-        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
-        if (domainCtType != null) {
-            if (domainCtType.isRawType()) {
+        final HolderCtType holderCtType = HolderCtType.newInstance(type, env);
+        if (holderCtType != null) {
+            if (holderCtType.isRawType()) {
                 throw new AptException(Message.DOMA4295, env, fieldElement,
                         new Object[] {
-                                domainCtType.getQualifiedName(),
+                                holderCtType.getQualifiedName(),
                                 embeddableMeta.getEmbeddableElement()
                                         .getQualifiedName(),
                                 fieldElement.getSimpleName() });
             }
-            if (domainCtType.isWildcardType()) {
+            if (holderCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4296, env, fieldElement,
                         new Object[] {
-                                domainCtType.getQualifiedName(),
+                                holderCtType.getQualifiedName(),
                                 embeddableMeta.getEmbeddableElement()
                                         .getQualifiedName(),
                                 fieldElement.getSimpleName() });
             }
-            return domainCtType;
+            return holderCtType;
         }
 
         BasicCtType basicCtType = BasicCtType.newInstance(type, env);

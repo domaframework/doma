@@ -21,9 +21,10 @@ import java.util.stream.Stream;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.SelectType;
-import org.seasar.doma.Select;
 
-import example.domain.PhoneNumber;
+import example.holder.PhoneNumber;
+
+import org.seasar.doma.Select;
 
 /**
  * @author taedium

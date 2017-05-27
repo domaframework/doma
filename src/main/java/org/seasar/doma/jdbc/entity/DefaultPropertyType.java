@@ -37,7 +37,7 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.holder.HolderType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
@@ -52,10 +52,10 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  *            エンティティの型
  * @param <BASIC>
  *            プロパティの基本型
- * @param <DOMAIN>
+ * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
+public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
         implements EntityPropertyType<ENTITY, BASIC> {
 
     /** エンティティのクラス */
@@ -71,7 +71,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
     /** ドメインのメタタイプ */
-    protected final DomainType<BASIC, DOMAIN> domainType;
+    protected final HolderType<BASIC, HOLDER> holderType;
 
     /** プロパティの名前 */
     protected final String name;
@@ -113,7 +113,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
      *            ラッパーのサプライヤ
      * @param parentEntityPropertyType
      *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
-     * @param domainType
+     * @param holderType
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
@@ -132,7 +132,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
             Class<?> entityPropertyClass, Class<BASIC> basicClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
-            DomainType<BASIC, DOMAIN> domainType, String name,
+            HolderType<BASIC, HOLDER> holderType, String name,
             String columnName, NamingType namingType, boolean insertable,
             boolean updatable, boolean quoteRequired) {
         if (entityClass == null) {
@@ -157,7 +157,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         this.entityPropertyClass = entityPropertyClass;
         this.basicClass = basicClass;
         this.wrapperSupplier = wrapperSupplier;
-        this.domainType = domainType;
+        this.holderType = holderType;
         this.name = name;
         int pos = name.lastIndexOf('.');
         this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
@@ -172,13 +172,13 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
 
     @SuppressWarnings("unchecked")
     private Supplier<Property<ENTITY, BASIC>> createPropertySupplier() {
-        if (domainType != null) {
+        if (holderType != null) {
             if (entityPropertyClass == Optional.class) {
-                return () -> new DefaultProperty<Optional<DOMAIN>>(
-                        domainType.createOptionalScalar());
+                return () -> new DefaultProperty<Optional<HOLDER>>(
+                        holderType.createOptionalScalar());
             } else {
-                return () -> new DefaultProperty<DOMAIN>(
-                        domainType.createScalar());
+                return () -> new DefaultProperty<HOLDER>(
+                        holderType.createScalar());
             }
         }
         if (entityPropertyClass == Optional.class) {
@@ -361,8 +361,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
         }
 
         @Override
-        public Optional<Class<?>> getDomainClass() {
-            return scalar.getDomainClass();
+        public Optional<Class<?>> getHolderClass() {
+            return scalar.getHolderClass();
         }
 
     }

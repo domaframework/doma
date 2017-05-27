@@ -30,11 +30,11 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.holder.HolderType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-import example.domain.PhoneNumber;
-import example.domain._PhoneNumber;
+import example.holder.PhoneNumber;
+import example.holder._PhoneNumber;
 
 /**
  * @author taedium
@@ -76,35 +76,35 @@ public class ScalarProviderTest extends TestCase {
         assertEquals("hoge", result.get());
     }
 
-    public void testDomain() throws Exception {
+    public void testHolder() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
         metaData.columns.add(new ColumnMetaData("aaa"));
         MockResultSet resultSet = new MockResultSet(metaData);
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        DomainType<String, PhoneNumber> domainType = _PhoneNumber
+        HolderType<String, PhoneNumber> holderType = _PhoneNumber
                 .getSingletonInternal();
 
         ScalarProvider<String, PhoneNumber> provider = new ScalarProvider<>(
-                () -> domainType.createScalar(), new MySelectQuery());
+                () -> holderType.createScalar(), new MySelectQuery());
         PhoneNumber result = provider.get(resultSet);
 
         assertEquals("hoge", result.getValue());
     }
 
-    public void testOptionalDomain() throws Exception {
+    public void testOptionalHolder() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
         metaData.columns.add(new ColumnMetaData("aaa"));
         MockResultSet resultSet = new MockResultSet(metaData);
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        DomainType<String, PhoneNumber> domainType = _PhoneNumber
+        HolderType<String, PhoneNumber> holderType = _PhoneNumber
                 .getSingletonInternal();
 
         ScalarProvider<String, Optional<PhoneNumber>> provider = new ScalarProvider<>(
-                () -> domainType.createOptionalScalar(), new MySelectQuery());
+                () -> holderType.createOptionalScalar(), new MySelectQuery());
         Optional<PhoneNumber> result = provider.get(resultSet);
 
         assertEquals("hoge", result.get().getValue());

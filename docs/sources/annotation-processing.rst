@@ -42,7 +42,7 @@ doma.debug
 
 doma.domain.converters
   任意の型と基本型を相互変換する ``DomainConverter`` のプロバイダとなるクラスの完全修飾名のカンマ区切り。
-  クラスは ``org.seasar.doma.DomainConverters`` によって注釈されていないければいけない。
+  クラスは ``org.seasar.doma.HolderConverters`` によって注釈されていないければいけない。
 
 doma.entity.field.prefix
   ``@Entity`` が注釈されたクラスごとに生成されるタイプクラスで使用される。

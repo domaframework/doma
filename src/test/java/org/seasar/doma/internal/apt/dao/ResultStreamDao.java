@@ -25,7 +25,7 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.message.Message;
 
-import example.domain.PhoneNumber;
+import example.holder.PhoneNumber;
 
 /**
  * @author nakamura-to

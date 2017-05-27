@@ -1,6 +1,6 @@
-org.seasar.doma.internal.apt.DomainProcessor
-org.seasar.doma.internal.apt.ExternalDomainProcessor
-org.seasar.doma.internal.apt.DomainConvertersProcessor
+org.seasar.doma.internal.apt.HolderProcessor
+org.seasar.doma.internal.apt.ExternalHolderProcessor
+org.seasar.doma.internal.apt.HolderConvertersProcessor
 org.seasar.doma.internal.apt.EmbeddableProcessor
 org.seasar.doma.internal.apt.EntityProcessor
 org.seasar.doma.internal.apt.DaoProcessor

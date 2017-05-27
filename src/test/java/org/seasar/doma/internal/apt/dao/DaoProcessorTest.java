@@ -51,8 +51,8 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testSqlFileSelectDomain() throws Exception {
-        Class<?> target = SqlFileSelectDomainDao.class;
+    public void testSqlFileSelectHolder() throws Exception {
+        Class<?> target = SqlFileSelectHolderDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
@@ -171,7 +171,7 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4159);
     }
 
-    public void testElementOfParamListNotDomain() throws Exception {
+    public void testElementOfParamListNotHolder() throws Exception {
         Class<?> target = ElementOfParamListWildcardTypeDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
@@ -360,8 +360,8 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testDomainParameter() throws Exception {
-        Class<?> target = DomainParameterDao.class;
+    public void testHolderParameter() throws Exception {
+        Class<?> target = HolderParameterDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
@@ -779,8 +779,8 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testDomainResult() throws Exception {
-        Class<?> target = DomainResultDao.class;
+    public void testHolderResult() throws Exception {
+        Class<?> target = HolderResultDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
@@ -789,8 +789,8 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testParameterizedDomainResult() throws Exception {
-        Class<?> target = ParameterizedDomainResultDao.class;
+    public void testParameterizedHolderResult() throws Exception {
+        Class<?> target = ParameterizedHolderResultDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

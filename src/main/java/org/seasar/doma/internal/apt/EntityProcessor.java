@@ -33,7 +33,7 @@ import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
  * 
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.Entity" })
-@SupportedOptions({ Options.ENTITY_FIELD_PREFIX, Options.DOMAIN_CONVERTERS,
+@SupportedOptions({ Options.ENTITY_FIELD_PREFIX, Options.HOLDER_CONVERTERS,
         Options.VERSION_VALIDATION, Options.RESOURCES_DIR, Options.LOMBOK_VALUE,
         Options.LOMBOK_ALL_ARGS_CONSTRUCTOR, Options.TEST, Options.DEBUG })
 public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {

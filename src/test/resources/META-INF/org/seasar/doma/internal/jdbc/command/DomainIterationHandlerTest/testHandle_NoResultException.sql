@@ -1,1 +1,0 @@
-select x from dual

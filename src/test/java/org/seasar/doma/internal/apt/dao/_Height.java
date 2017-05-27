@@ -15,25 +15,25 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.jdbc.holder.AbstractHolderType;
 
 /**
  * @author taedium
  * 
  */
-public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
+public class _Height<T> extends AbstractHolderType<Integer, Height<T>> {
 
     private _Height() {
         super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
     }
 
     @Override
-    public Height<T> newDomain(Integer value) {
+    public Height<T> newHolder(Integer value) {
         return null;
     }
 
     @Override
-    public Integer getBasicValue(Height<T> domain) {
+    public Integer getBasicValue(Height<T> holder) {
         return null;
     }
 
@@ -42,7 +42,7 @@ public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
     }
 
     @SuppressWarnings("unchecked")
-    public Class<Height<T>> getDomainClass() {
+    public Class<Height<T>> getHolderClass() {
         Class<?> clazz = Height.class;
         return (Class<Height<T>>) clazz;
     }

@@ -36,7 +36,7 @@ import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.EnumWrapperCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
@@ -66,12 +66,12 @@ import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
 import org.seasar.doma.internal.apt.meta.DefaultQueryMeta;
-import org.seasar.doma.internal.apt.meta.DomainInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.DomainInParameterMeta;
-import org.seasar.doma.internal.apt.meta.DomainListParameterMeta;
-import org.seasar.doma.internal.apt.meta.DomainOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.DomainResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.DomainSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.HolderInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.HolderInParameterMeta;
+import org.seasar.doma.internal.apt.meta.HolderListParameterMeta;
+import org.seasar.doma.internal.apt.meta.HolderOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.HolderResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.HolderSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
@@ -82,12 +82,12 @@ import org.seasar.doma.internal.apt.meta.OptionalBasicListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalBasicOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalBasicResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalBasicSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDomainInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDomainInParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDomainListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDomainOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDomainResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDomainSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderInParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleInParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleListParameterMeta;
@@ -122,10 +122,10 @@ import org.seasar.doma.internal.jdbc.command.BasicCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.BasicStreamHandler;
-import org.seasar.doma.internal.jdbc.command.DomainCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
-import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.DomainStreamHandler;
+import org.seasar.doma.internal.jdbc.command.HolderCollectorHandler;
+import org.seasar.doma.internal.jdbc.command.HolderResultListHandler;
+import org.seasar.doma.internal.jdbc.command.HolderSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.HolderStreamHandler;
 import org.seasar.doma.internal.jdbc.command.EntityCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
@@ -138,10 +138,10 @@ import org.seasar.doma.internal.jdbc.command.OptionalBasicCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainStreamHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderCollectorHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderResultListHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDoubleCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDoubleResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDoubleSingleResultHandler;
@@ -163,12 +163,12 @@ import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.HolderInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.HolderInParameter;
+import org.seasar.doma.internal.jdbc.sql.HolderListParameter;
+import org.seasar.doma.internal.jdbc.sql.HolderOutParameter;
+import org.seasar.doma.internal.jdbc.sql.HolderResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.HolderSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapListParameter;
@@ -179,12 +179,12 @@ import org.seasar.doma.internal.jdbc.sql.OptionalBasicListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalBasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalBasicResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalBasicSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainInParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleListParameter;
@@ -1355,15 +1355,15 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainListParameterMeta(DomainListParameterMeta m,
+        public Void visitHolderListParameterMeta(HolderListParameterMeta m,
                 AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
-                    /* 1 */DomainListParameter.class.getName(),
+                    /* 1 */HolderListParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
@@ -1430,15 +1430,15 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainInOutParameterMeta(DomainInOutParameterMeta m,
+        public Void visitHolderInOutParameterMeta(HolderInOutParameterMeta m,
                 AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
-                    /* 1 */DomainInOutParameter.class.getName(),
+                    /* 1 */HolderInOutParameter.class.getName(),
                     /* 2 */basicCtType.getBoxedTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
@@ -1482,15 +1482,15 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainOutParameterMeta(DomainOutParameterMeta m,
+        public Void visitHolderOutParameterMeta(HolderOutParameterMeta m,
                 AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
-                    /* 1 */DomainOutParameter.class.getName(),
+                    /* 1 */HolderOutParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
@@ -1534,15 +1534,15 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainInParameterMeta(DomainInParameterMeta m,
+        public Void visitHolderInParameterMeta(HolderInParameterMeta m,
                 AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
-                    /* 1 */DomainInParameter.class.getName(),
+                    /* 1 */HolderInParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
@@ -1586,15 +1586,15 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainResultListParameterMeta(
-                DomainResultListParameterMeta m, AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+        public Void visitHolderResultListParameterMeta(
+                HolderResultListParameterMeta m, AutoModuleQueryMeta p) {
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
-                    /* 1 */DomainResultListParameter.class.getName(),
+                    /* 1 */HolderResultListParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand());
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand());
             return null;
         }
 
@@ -1661,15 +1661,15 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainSingleResultParameterMeta(
-                DomainSingleResultParameterMeta m, AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+        public Void visitHolderSingleResultParameterMeta(
+                HolderSingleResultParameterMeta m, AutoModuleQueryMeta p) {
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
-                    /* 1 */DomainSingleResultParameter.class.getName(),
+                    /* 1 */HolderSingleResultParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand());
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand());
             return null;
         }
 
@@ -1914,86 +1914,86 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitOptionalDomainInParameterMeta(
-                OptionalDomainInParameterMeta m, AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+        public Void visitOptionalHolderInParameterMeta(
+                OptionalHolderInParameterMeta m, AutoModuleQueryMeta p) {
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
-                    /* 1 */OptionalDomainInParameter.class.getName(),
+                    /* 1 */OptionalHolderInParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
 
         @Override
-        public Void visitOptionalDomainOutParameterMeta(
-                OptionalDomainOutParameterMeta m, AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+        public Void visitOptionalHolderOutParameterMeta(
+                OptionalHolderOutParameterMeta m, AutoModuleQueryMeta p) {
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
-                    /* 1 */OptionalDomainOutParameter.class.getName(),
+                    /* 1 */OptionalHolderOutParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
 
         @Override
-        public Void visitOptionalDomainInOutParameterMeta(
-                OptionalDomainInOutParameterMeta m, AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+        public Void visitOptionalHolderInOutParameterMeta(
+                OptionalHolderInOutParameterMeta m, AutoModuleQueryMeta p) {
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
-                    /* 1 */OptionalDomainInOutParameter.class.getName(),
+                    /* 1 */OptionalHolderInOutParameter.class.getName(),
                     /* 2 */basicCtType.getBoxedTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
 
         @Override
-        public Void visitOptionalDomainListParameterMeta(
-                OptionalDomainListParameterMeta m, AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+        public Void visitOptionalHolderListParameterMeta(
+                OptionalHolderListParameterMeta m, AutoModuleQueryMeta p) {
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
-                    /* 1 */OptionalDomainListParameter.class.getName(),
+                    /* 1 */OptionalHolderListParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand(),
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand(),
                     /* 5 */m.getName());
             return null;
         }
 
         @Override
-        public Void visitOptionalDomainSingleResultParameterMeta(
-                OptionalDomainSingleResultParameterMeta m,
+        public Void visitOptionalHolderSingleResultParameterMeta(
+                OptionalHolderSingleResultParameterMeta m,
                 AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
-                    /* 1 */OptionalDomainSingleResultParameter.class.getName(),
+                    /* 1 */OptionalHolderSingleResultParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand());
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand());
             return null;
         }
 
         @Override
-        public Void visitOptionalDomainResultListParameterMeta(
-                OptionalDomainResultListParameterMeta m,
+        public Void visitOptionalHolderResultListParameterMeta(
+                OptionalHolderResultListParameterMeta m,
                 AutoModuleQueryMeta p) {
-            DomainCtType domainCtType = m.getDomainCtType();
-            BasicCtType basicCtType = domainCtType.getBasicCtType();
+            HolderCtType holderCtType = m.getHolderCtType();
+            BasicCtType basicCtType = holderCtType.getBasicCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
-                    /* 1 */OptionalDomainResultListParameter.class.getName(),
+                    /* 1 */OptionalHolderResultListParameter.class.getName(),
                     /* 2 */basicCtType.getTypeName(),
-                    /* 3 */domainCtType.getTypeName(),
-                    /* 4 */domainCtType.getInstantiationCommand());
+                    /* 3 */holderCtType.getTypeName(),
+                    /* 4 */holderCtType.getInstantiationCommand());
             return null;
         }
 
@@ -2269,11 +2269,11 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
+        public Void visitHolderCtType(HolderCtType ctType, Boolean optional)
                 throws RuntimeException {
             iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
                     /* 1 */commandClassName, /* 2 */resultBoxedTypeName,
-                    /* 3 */getDomainStreamHandlerName(optional),
+                    /* 3 */getHolderStreamHandlerName(optional),
                     /* 4 */ctType.getBoxedTypeName(),
                     /* 5 */ctType.getInstantiationCommand(),
                     /* 6 */functionParamName, /* 7 */commandName,
@@ -2353,11 +2353,11 @@ public class DaoGenerator extends AbstractGenerator {
             return BasicStreamHandler.class.getName();
         }
 
-        protected String getDomainStreamHandlerName(Boolean optional) {
+        protected String getHolderStreamHandlerName(Boolean optional) {
             if (Boolean.TRUE == optional) {
-                return OptionalDomainStreamHandler.class.getName();
+                return OptionalHolderStreamHandler.class.getName();
             }
-            return DomainStreamHandler.class.getName();
+            return HolderStreamHandler.class.getName();
         }
 
         protected String getMapStreamHandlerName(Boolean optional) {
@@ -2446,12 +2446,12 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
+        public Void visitHolderCtType(HolderCtType ctType, Boolean optional)
                 throws RuntimeException {
             iprint("%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
                     /* 1 */commandClassName,
                     /* 2 */resultMeta.getBoxedTypeName(),
-                    /* 3 */getDomainCollectorHandlerName(optional),
+                    /* 3 */getHolderCollectorHandlerName(optional),
                     /* 4 */ctType.getBoxedTypeName(),
                     /* 5 */ctType.getInstantiationCommand(),
                     /* 6 */collectorParamName, /* 7 */commandName,
@@ -2536,11 +2536,11 @@ public class DaoGenerator extends AbstractGenerator {
             return BasicCollectorHandler.class.getName();
         }
 
-        protected String getDomainCollectorHandlerName(Boolean optional) {
+        protected String getHolderCollectorHandlerName(Boolean optional) {
             if (Boolean.TRUE == optional) {
-                return OptionalDomainCollectorHandler.class.getName();
+                return OptionalHolderCollectorHandler.class.getName();
             }
-            return DomainCollectorHandler.class.getName();
+            return HolderCollectorHandler.class.getName();
         }
 
         protected String getMapCollectorHandlerName(Boolean optional) {
@@ -2626,11 +2626,11 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType ctType, Boolean optional)
+        public Void visitHolderCtType(HolderCtType ctType, Boolean optional)
                 throws RuntimeException {
             iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %5$s>(%4$s));%n",
                     /* 1 */commandClassName, /* 2 */resultBoxedTypeName,
-                    /* 3 */getDomainSingleResultHandlerName(optional),
+                    /* 3 */getHolderSingleResultHandlerName(optional),
                     /* 4 */ctType.getInstantiationCommand(),
                     /* 5 */ctType.getBoxedTypeName(), /* 6 */commandName,
                     /* 7 */methodName,
@@ -2753,12 +2753,12 @@ public class DaoGenerator extends AbstractGenerator {
                         }
 
                         @Override
-                        public Void visitDomainCtType(DomainCtType ctType,
+                        public Void visitHolderCtType(HolderCtType ctType,
                                 Boolean optional) throws RuntimeException {
                             iprint("%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %4$s>(%5$s));%n",
                                     /* 1 */commandClassName,
                                     /* 2 */resultBoxedTypeName,
-                                    /* 3 */getDomainResultListHandlerName(
+                                    /* 3 */getHolderResultListHandlerName(
                                             optional),
                                     /* 4 */ctType.getBoxedTypeName(),
                                     /* 5 */ctType.getInstantiationCommand(),
@@ -2872,18 +2872,18 @@ public class DaoGenerator extends AbstractGenerator {
             return BasicResultListHandler.class.getName();
         }
 
-        protected String getDomainSingleResultHandlerName(Boolean optional) {
+        protected String getHolderSingleResultHandlerName(Boolean optional) {
             if (Boolean.TRUE == optional) {
-                return OptionalDomainSingleResultHandler.class.getName();
+                return OptionalHolderSingleResultHandler.class.getName();
             }
-            return DomainSingleResultHandler.class.getName();
+            return HolderSingleResultHandler.class.getName();
         }
 
-        protected String getDomainResultListHandlerName(Boolean optional) {
+        protected String getHolderResultListHandlerName(Boolean optional) {
             if (Boolean.TRUE == optional) {
-                return OptionalDomainResultListHandler.class.getName();
+                return OptionalHolderResultListHandler.class.getName();
             }
-            return DomainResultListHandler.class.getName();
+            return HolderResultListHandler.class.getName();
         }
 
         protected String getMapSingleResultHandlerName(Boolean optional) {

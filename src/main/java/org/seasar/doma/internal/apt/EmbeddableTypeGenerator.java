@@ -29,7 +29,7 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
@@ -119,7 +119,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
             pm.getCtType().accept(visitor, null);
             BasicCtType basicCtType = visitor.basicCtType;
             WrapperCtType wrapperCtType = visitor.wrapperCtType;
-            DomainCtType domainCtType = visitor.domainCtType;
+            HolderCtType holderCtType = visitor.holderCtType;
 
             String newWrapperExpr;
             if (basicCtType.isEnum()) {
@@ -132,11 +132,11 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
             }
             String parentEntityPropertyType = "null";
             String parentEntityBoxedTypeName = Object.class.getName();
-            String domainType = "null";
-            String domainTypeName = "Object";
-            if (domainCtType != null) {
-                domainType = domainCtType.getInstantiationCommand();
-                domainTypeName = domainCtType.getTypeName();
+            String holderType = "null";
+            String holderTypeName = "Object";
+            if (holderCtType != null) {
+                holderType = holderCtType.getInstantiationCommand();
+                holderTypeName = holderCtType.getTypeName();
             }
             iprint("        new %1$s<Object, ENTITY, %3$s, %16$s>(entityClass, %15$s.class, %3$s.class, () -> %9$s, null, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
             /* 1 */DefaultPropertyType.class.getName(),
@@ -148,13 +148,13 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
             /* 7 */pm.isColumnUpdatable(),
             /* 8 */null,
             /* 9 */newWrapperExpr,
-            /* 10 */domainType,
+            /* 10 */holderType,
             /* 11 */pm.getBoxedTypeName(),
             /* 12 */parentEntityPropertyType,
             /* 13 */parentEntityBoxedTypeName,
             /* 14 */null,
             /* 15 */pm.getBoxedClassName(),
-            /* 16 */domainTypeName,
+            /* 16 */holderTypeName,
             /* 17 */pm.isColumnQuoteRequired());
             print(it.hasNext() ? ",%n" : "");
         }
@@ -206,7 +206,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
 
         protected WrapperCtType wrapperCtType;
 
-        protected DomainCtType domainCtType;
+        protected HolderCtType holderCtType;
 
         @Override
         protected Void defaultAction(CtType ctType, Void p)
@@ -249,10 +249,10 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainCtType(DomainCtType domainCtType, Void p)
+        public Void visitHolderCtType(HolderCtType holderCtType, Void p)
                 throws RuntimeException {
-            this.domainCtType = domainCtType;
-            return visitBasicCtType(domainCtType.getBasicCtType(), p);
+            this.holderCtType = holderCtType;
+            return visitBasicCtType(holderCtType.getBasicCtType(), p);
         }
     }
 

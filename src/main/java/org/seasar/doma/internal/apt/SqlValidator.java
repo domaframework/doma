@@ -30,7 +30,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
@@ -156,7 +156,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     protected boolean isScalar(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
         return BasicCtType.newInstance(typeMirror, env) != null
-                || DomainCtType.newInstance(typeMirror, env) != null;
+                || HolderCtType.newInstance(typeMirror, env) != null;
     }
 
     protected boolean isScalarIterable(TypeDeclaration typeDeclaration) {
@@ -175,7 +175,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                         }
 
                         @Override
-                        public Boolean visitDomainCtType(DomainCtType ctType,
+                        public Boolean visitHolderCtType(HolderCtType ctType,
                                 Void p) throws RuntimeException {
                             return true;
                         }

@@ -25,7 +25,7 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.entity.Emp;
 
-import example.domain.PhoneNumber;
+import example.holder.PhoneNumber;
 
 /**
  * @author taedium

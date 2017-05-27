@@ -23,7 +23,7 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
@@ -119,12 +119,12 @@ public class AutoFunctionQueryMetaFactory extends
         }
 
         @Override
-        public ResultParameterMeta visitDomainCtType(DomainCtType ctType,
+        public ResultParameterMeta visitHolderCtType(HolderCtType ctType,
                 Boolean optional) throws RuntimeException {
             if (Boolean.TRUE == optional) {
-                return new OptionalDomainSingleResultParameterMeta(ctType);
+                return new OptionalHolderSingleResultParameterMeta(ctType);
             }
-            return new DomainSingleResultParameterMeta(ctType);
+            return new HolderSingleResultParameterMeta(ctType);
         }
 
         @Override
@@ -202,12 +202,12 @@ public class AutoFunctionQueryMetaFactory extends
         }
 
         @Override
-        public ResultParameterMeta visitDomainCtType(DomainCtType ctType,
+        public ResultParameterMeta visitHolderCtType(HolderCtType ctType,
                 Boolean optional) throws RuntimeException {
             if (Boolean.TRUE == optional) {
-                return new OptionalDomainResultListParameterMeta(ctType);
+                return new OptionalHolderResultListParameterMeta(ctType);
             }
-            return new DomainResultListParameterMeta(ctType);
+            return new HolderResultListParameterMeta(ctType);
         }
 
         @Override

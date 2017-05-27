@@ -33,11 +33,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.function.Supplier;
 
-import org.seasar.doma.Domain;
+import org.seasar.doma.Holder;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.ClassHelper;
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainTypeFactory;
+import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderTypeFactory;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
@@ -87,7 +87,7 @@ public final class Scalars {
         Supplier<Scalar<?, ?>> result = wrapBasicObject(value, boxedClass,
                 optional, valueClass.isPrimitive());
         if (result == null) {
-            result = wrapDomainObject(value, boxedClass, optional, classHelper);
+            result = wrapHolderObject(value, boxedClass, optional, classHelper);
             if (result == null) {
                 result = wrapEnumObject(value, boxedClass, optional);
                 if (result == null) {
@@ -279,7 +279,7 @@ public final class Scalars {
      * 
      * @param <BASIC>
      *            基本型
-     * @param <DOMAIN>
+     * @param <HOLDER>
      *            ドメイン型
      * @param value
      *            値
@@ -291,25 +291,25 @@ public final class Scalars {
      *            クラスヘルパー
      * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
      */
-    protected static <BASIC, DOMAIN> Supplier<Scalar<?, ?>> wrapDomainObject(
-            Object value, Class<DOMAIN> valueClass, boolean optional,
+    protected static <BASIC, HOLDER> Supplier<Scalar<?, ?>> wrapHolderObject(
+            Object value, Class<HOLDER> valueClass, boolean optional,
             ClassHelper classHelper) {
-        DomainType<BASIC, DOMAIN> domainType;
-        if (valueClass.isAnnotationPresent(Domain.class)) {
-            domainType = DomainTypeFactory.getDomainType(valueClass,
+        HolderType<BASIC, HOLDER> holderType;
+        if (valueClass.isAnnotationPresent(Holder.class)) {
+            holderType = HolderTypeFactory.getHolderType(valueClass,
                     classHelper);
         } else {
-            domainType = DomainTypeFactory.getExternalDomainType(valueClass,
+            holderType = HolderTypeFactory.getExternalHolderType(valueClass,
                     classHelper);
         }
-        if (domainType == null) {
+        if (holderType == null) {
             return null;
         }
-        DOMAIN domain = valueClass.cast(value);
+        HOLDER holder = valueClass.cast(value);
         if (optional) {
-            return () -> domainType.createOptionalScalar(domain);
+            return () -> holderType.createOptionalScalar(holder);
         } else {
-            return () -> domainType.createScalar(domain);
+            return () -> holderType.createScalar(holder);
         }
     }
 }
