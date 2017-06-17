@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 
 import java.util.Map;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
@@ -29,8 +28,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.AccessLevel;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.jdbc.Config;
 
 /**
  * @author taedium
@@ -40,19 +37,21 @@ public class DaoReflection {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected final ProcessingEnvironment env;
-
     protected final AnnotationValue config;
 
     protected final AnnotationValue accessLevel;
 
+    protected final boolean hasUserDefinedConfig;
+
     protected DaoReflection(AnnotationMirror annotationMirror,
-            ProcessingEnvironment env, Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, env, values);
+            Map<String, AnnotationValue> values) {
+        assertNotNull(annotationMirror, values);
         this.annotationMirror = annotationMirror;
-        this.env = env;
         this.config = assertNotNullValue(values, "config");
         this.accessLevel = assertNotNullValue(values, "accessLevel");
+        this.hasUserDefinedConfig = annotationMirror.getElementValues().keySet()
+                .stream()
+                .anyMatch(e -> e.getSimpleName().contentEquals("config"));
     }
 
     public AnnotationMirror getAnnotationMirror() {
@@ -68,10 +67,6 @@ public class DaoReflection {
     }
 
     public TypeMirror getConfigValue() {
-        return getConfigValueInternal();
-    }
-
-    protected TypeMirror getConfigValueInternal() {
         TypeMirror value = AnnotationValueUtil.toType(config);
         if (value == null) {
             throw new AptIllegalStateException("config");
@@ -89,8 +84,7 @@ public class DaoReflection {
     }
 
     public boolean hasUserDefinedConfig() {
-        TypeMirror configValue = getConfigValueInternal();
-        return !TypeMirrorUtil.isSameType(configValue, Config.class, env);
+        return hasUserDefinedConfig;
     }
 
 }

@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -52,13 +51,10 @@ import org.seasar.doma.Version;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Notifier;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.AllArgsConstructorReflection;
 import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.internal.apt.reflection.ValueReflection;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
 /**
@@ -68,20 +64,20 @@ import org.seasar.doma.message.Message;
 public class EmbeddableMetaFactory implements
         TypeElementMetaFactory<EmbeddableMeta> {
 
-    protected final ProcessingEnvironment env;
+    protected final Context ctx;
 
     protected final EmbeddablePropertyMetaFactory propertyMetaFactory;
 
-    public EmbeddableMetaFactory(ProcessingEnvironment env,
+    public EmbeddableMetaFactory(Context ctx,
             EmbeddablePropertyMetaFactory propertyMetaFactory) {
-        assertNotNull(env, propertyMetaFactory);
-        this.env = env;
+        assertNotNull(ctx, propertyMetaFactory);
+        this.ctx = ctx;
         this.propertyMetaFactory = propertyMetaFactory;
     }
 
     @Override
     public EmbeddableMeta createTypeElementMeta(TypeElement embeddableElement) {
-        EmbeddableReflection reflection = new Reflections(env)
+        EmbeddableReflection reflection = ctx.getReflections()
                 .newEmbeddableReflection(embeddableElement);
         if (reflection == null) {
             throw new AptIllegalStateException("mirror must not be null");
@@ -97,18 +93,19 @@ public class EmbeddableMetaFactory implements
 
     protected Strategy createStrategy(TypeElement embeddableElement,
             EmbeddableMeta embeddableMeta) {
-        ValueReflection valueReflection = new Reflections(env)
+        ValueReflection valueReflection = ctx.getReflections()
                 .newValueReflection(embeddableElement);
         if (valueReflection != null) {
-            return new ValueStrategy(env, propertyMetaFactory, valueReflection);
+            return new ValueStrategy(ctx, propertyMetaFactory, valueReflection);
         }
-        AllArgsConstructorReflection allArgsConstructorReflection = new Reflections(
-                env).newAllArgsConstructorReflection(embeddableElement);
+        AllArgsConstructorReflection allArgsConstructorReflection = ctx
+                .getReflections()
+                .newAllArgsConstructorReflection(embeddableElement);
         if (allArgsConstructorReflection != null) {
-            return new AllArgsConstructorStrategy(env, propertyMetaFactory,
+            return new AllArgsConstructorStrategy(ctx, propertyMetaFactory,
                     allArgsConstructorReflection);
         }
-        return new DefaultStrategy(env, propertyMetaFactory);
+        return new DefaultStrategy(ctx, propertyMetaFactory);
     }
 
     protected interface Strategy {
@@ -125,14 +122,14 @@ public class EmbeddableMetaFactory implements
 
     protected static class DefaultStrategy implements Strategy {
 
-        protected final ProcessingEnvironment env;
+        protected final Context ctx;
 
         protected final EmbeddablePropertyMetaFactory propertyMetaFactory;
 
-        public DefaultStrategy(ProcessingEnvironment env,
+        public DefaultStrategy(Context ctx,
                 EmbeddablePropertyMetaFactory propertyMetaFactory) {
-            assertNotNull(env, propertyMetaFactory);
-            this.env = env;
+            assertNotNull(ctx, propertyMetaFactory);
+            this.ctx = ctx;
             this.propertyMetaFactory = propertyMetaFactory;
         }
 
@@ -142,29 +139,26 @@ public class EmbeddableMetaFactory implements
             if (embeddableElement.getKind() != ElementKind.CLASS) {
                 EmbeddableReflection embeddableReflection = embeddableMeta
                         .getEmbeddableReflection();
-                throw new AptException(Message.DOMA4283, env,
-                        embeddableElement,
+                throw new AptException(Message.DOMA4283, embeddableElement,
                         embeddableReflection.getAnnotationMirror(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
             if (!embeddableElement.getTypeParameters().isEmpty()) {
-                throw new AptException(Message.DOMA4285, env,
-                        embeddableElement,
+                throw new AptException(Message.DOMA4285, embeddableElement,
                         new Object[] { embeddableElement.getQualifiedName() });
             }
             validateEnclosingElement(embeddableElement);
         }
 
         protected void validateEnclosingElement(Element element) {
-            TypeElement typeElement = ElementUtil.toTypeElement(element, env);
+            TypeElement typeElement = ctx.getElements().toTypeElement(element);
             if (typeElement == null) {
                 return;
             }
             String simpleName = typeElement.getSimpleName().toString();
             if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
                     || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
-                throw new AptException(Message.DOMA4417, env, typeElement,
-                        new Object[] { typeElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4417, typeElement, new Object[] { typeElement.getQualifiedName() });
             }
             NestingKind nestingKind = typeElement.getNestingKind();
             if (nestingKind == NestingKind.TOP_LEVEL) {
@@ -175,12 +169,10 @@ public class EmbeddableMetaFactory implements
                         Modifier.PUBLIC))) {
                     validateEnclosingElement(typeElement.getEnclosingElement());
                 } else {
-                    throw new AptException(Message.DOMA4415, env, typeElement,
-                            new Object[] { typeElement.getQualifiedName() });
+                    throw new AptException(Message.DOMA4415, typeElement, new Object[] { typeElement.getQualifiedName() });
                 }
             } else {
-                throw new AptException(Message.DOMA4416, env, typeElement,
-                        new Object[] { typeElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4416, typeElement, new Object[] { typeElement.getQualifiedName() });
             }
         }
 
@@ -195,30 +187,30 @@ public class EmbeddableMetaFactory implements
                             Modifier.STATIC)) {
                         continue;
                     } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
-                        throw new AptException(Message.DOMA4286, env,
-                                fieldElement, new Object[] {
+                        throw new AptException(Message.DOMA4286, fieldElement,
+                                new Object[] {
                                         embeddableElement.getQualifiedName(),
                                         fieldElement.getSimpleName() });
                     } else if (fieldElement.getAnnotation(Id.class) != null) {
-                        throw new AptException(Message.DOMA4289, env,
-                                fieldElement, new Object[] {
+                        throw new AptException(Message.DOMA4289, fieldElement,
+                                new Object[] {
                                         embeddableElement.getQualifiedName(),
                                         fieldElement.getSimpleName() });
                     } else if (fieldElement.getAnnotation(Version.class) != null) {
-                        throw new AptException(Message.DOMA4290, env,
-                                fieldElement, new Object[] {
+                        throw new AptException(Message.DOMA4290, fieldElement,
+                                new Object[] {
                                         embeddableElement.getQualifiedName(),
                                         fieldElement.getSimpleName() });
                     } else if (fieldElement.getAnnotation(GeneratedValue.class) != null) {
-                        throw new AptException(Message.DOMA4291, env,
-                                fieldElement, new Object[] {
+                        throw new AptException(Message.DOMA4291, fieldElement,
+                                new Object[] {
                                         embeddableElement.getQualifiedName(),
                                         fieldElement.getSimpleName() });
                     } else {
                         doEmbeddablePropertyMeta(fieldElement, embeddableMeta);
                     }
                 } catch (AptException e) {
-                    Notifier.notify(env, e);
+                    ctx.getNotifier().notify(e);
                     embeddableMeta.setError(true);
                 }
             }
@@ -236,8 +228,8 @@ public class EmbeddableMetaFactory implements
                 TypeElement embeddableElement) {
             List<VariableElement> results = new LinkedList<VariableElement>();
             for (TypeElement t = embeddableElement; t != null
-                    && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
-                    .toTypeElement(t.getSuperclass(), env)) {
+                    && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
+                            .toTypeElement(t.getSuperclass())) {
                 if (t.getAnnotation(Embeddable.class) == null) {
                     continue;
                 }
@@ -257,7 +249,7 @@ public class EmbeddableMetaFactory implements
                     .hasNext();) {
                 VariableElement hidden = it.next();
                 for (VariableElement hider : hiderFields) {
-                    if (env.getElementUtils().hides(hider, hidden)) {
+                    if (ctx.getElements().hides(hider, hidden)) {
                         it.remove();
                     }
                 }
@@ -271,12 +263,11 @@ public class EmbeddableMetaFactory implements
             for (AnnotationMirror annotation : fieldElement
                     .getAnnotationMirrors()) {
                 DeclaredType declaredType = annotation.getAnnotationType();
-                TypeElement typeElement = TypeMirrorUtil.toTypeElement(
-                        declaredType, env);
+                TypeElement typeElement = ctx.getTypes()
+                        .toTypeElement(declaredType);
                 if (typeElement.getAnnotation(EntityField.class) != null) {
                     if (foundAnnotationTypeElement != null) {
-                        throw new AptException(Message.DOMA4288, env,
-                                fieldElement,
+                        throw new AptException(Message.DOMA4288, fieldElement,
                                 new Object[] {
                                         foundAnnotationTypeElement
                                                 .getQualifiedName(),
@@ -299,14 +290,12 @@ public class EmbeddableMetaFactory implements
             EmbeddableConstructorMeta constructorMeta = getConstructorMeta(
                     embeddableElement, embeddableMeta);
             if (constructorMeta == null) {
-                throw new AptException(Message.DOMA4293, env,
-                        embeddableElement,
+                throw new AptException(Message.DOMA4293, embeddableElement,
                         new Object[] { embeddableElement.getQualifiedName() });
             }
             if (constructorMeta.getConstructorElement().getModifiers()
                     .contains(Modifier.PRIVATE)) {
-                throw new AptException(Message.DOMA4294, env,
-                        embeddableElement,
+                throw new AptException(Message.DOMA4294, embeddableElement,
                         new Object[] { embeddableElement.getQualifiedName() });
             }
             embeddableMeta.setConstructorMeta(constructorMeta);
@@ -336,8 +325,7 @@ public class EmbeddableMetaFactory implements
                         continue outer;
                     }
                     TypeMirror propertyType = propertyMeta.getType();
-                    if (!TypeMirrorUtil
-                            .isSameType(paramType, propertyType, env)) {
+                    if (!ctx.getTypes().isSameType(paramType, propertyType)) {
                         continue outer;
                     }
                     propertyMetaList.add(propertyMeta);
@@ -356,10 +344,10 @@ public class EmbeddableMetaFactory implements
 
         protected final AllArgsConstructorReflection allArgsConstructorReflection;
 
-        public AllArgsConstructorStrategy(ProcessingEnvironment env,
+        public AllArgsConstructorStrategy(Context ctx,
                 EmbeddablePropertyMetaFactory propertyMetaFactory,
                 AllArgsConstructorReflection allArgsConstructorReflection) {
-            super(env, propertyMetaFactory);
+            super(ctx, propertyMetaFactory);
             assertNotNull(allArgsConstructorReflection);
             this.allArgsConstructorReflection = allArgsConstructorReflection;
         }
@@ -368,22 +356,19 @@ public class EmbeddableMetaFactory implements
         public void doConstructor(TypeElement embeddableElement,
                 EmbeddableMeta embeddableMeta) {
             if (!allArgsConstructorReflection.getStaticNameValue().isEmpty()) {
-                throw new AptException(Message.DOMA4424, env,
-                        embeddableElement,
+                throw new AptException(Message.DOMA4424, embeddableElement,
                         allArgsConstructorReflection.getAnnotationMirror(),
                         allArgsConstructorReflection.getStaticName(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
             if (allArgsConstructorReflection.isAccessPrivate()) {
-                throw new AptException(Message.DOMA4425, env,
-                        embeddableElement,
+                throw new AptException(Message.DOMA4425, embeddableElement,
                         allArgsConstructorReflection.getAnnotationMirror(),
                         allArgsConstructorReflection.getAccess(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
             if (allArgsConstructorReflection.isAccessNone()) {
-                throw new AptException(Message.DOMA4427, env,
-                        embeddableElement,
+                throw new AptException(Message.DOMA4427, embeddableElement,
                         allArgsConstructorReflection.getAnnotationMirror(),
                         allArgsConstructorReflection.getAccess(),
                         new Object[] { embeddableElement.getQualifiedName() });
@@ -396,10 +381,10 @@ public class EmbeddableMetaFactory implements
 
         protected final ValueReflection valueReflection;
 
-        public ValueStrategy(ProcessingEnvironment env,
+        public ValueStrategy(Context ctx,
                 EmbeddablePropertyMetaFactory propertyMetaFactory,
                 ValueReflection valueReflection) {
-            super(env, propertyMetaFactory);
+            super(ctx, propertyMetaFactory);
             assertNotNull(valueReflection);
             this.valueReflection = valueReflection;
         }
@@ -408,9 +393,8 @@ public class EmbeddableMetaFactory implements
         public void doConstructor(TypeElement embeddableElement,
                 EmbeddableMeta embeddableMeta) {
             if (!valueReflection.getStaticConstructorValue().isEmpty()) {
-                throw new AptException(Message.DOMA4423, env,
-                        embeddableElement, valueReflection.getAnnotationMirror(),
-                        valueReflection.getStaticConstructor(),
+                throw new AptException(Message.DOMA4423, embeddableElement,
+                        valueReflection.getAnnotationMirror(), valueReflection.getStaticConstructor(),
                         new Object[] { embeddableElement.getQualifiedName() });
             }
         }

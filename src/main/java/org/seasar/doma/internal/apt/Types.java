@@ -13,22 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.util;
+package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.NoType;
+import javax.lang.model.type.NullType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -37,20 +34,21 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleElementVisitor8;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.TypeKindVisitor8;
-import javax.lang.model.util.Types;
 
-import org.seasar.doma.internal.apt.AptIllegalStateException;
+public class Types implements javax.lang.model.util.Types {
 
-/**
- * @author taedium
- * 
- */
-public final class TypeMirrorUtil {
+    private final Context ctx;
 
-    public static TypeElement toTypeElement(TypeMirror typeMirror,
-            final ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
-        Element element = env.getTypeUtils().asElement(typeMirror);
+    private final javax.lang.model.util.Types typeUtils;
+
+    public Types(Context ctx) {
+        this.ctx = ctx;
+        this.typeUtils = ctx.getEnv().getTypeUtils();
+    }
+
+    public TypeElement toTypeElement(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
+        Element element = asElement(typeMirror);
         if (element == null) {
             return null;
         }
@@ -64,9 +62,8 @@ public final class TypeMirrorUtil {
         }, null);
     }
 
-    public static DeclaredType toDeclaredType(TypeMirror typeMirror,
-            ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
+    public DeclaredType toDeclaredType(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
         return typeMirror.accept(new SimpleTypeVisitor8<DeclaredType, Void>() {
 
             @Override
@@ -77,9 +74,8 @@ public final class TypeMirrorUtil {
         }, null);
     }
 
-    public static TypeVariable toTypeVariable(TypeMirror typeMirror,
-            ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
+    public TypeVariable toTypeVariable(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
         return typeMirror.accept(new SimpleTypeVisitor8<TypeVariable, Void>() {
 
             @Override
@@ -90,19 +86,17 @@ public final class TypeMirrorUtil {
         }, null);
     }
 
-    public static boolean isAssignable(TypeMirror lhs, Class<?> rhs,
-            ProcessingEnvironment env) {
-        assertNotNull(lhs, rhs, env);
-        TypeElement typeElement = ElementUtil.getTypeElement(rhs, env);
+    public boolean isAssignable(TypeMirror lhs, Class<?> rhs) {
+        assertNotNull(lhs, rhs);
+        TypeElement typeElement = ctx.getElements().getTypeElement(rhs);
         if (typeElement == null) {
             return false;
         }
-        return isAssignable(lhs, typeElement.asType(), env);
+        return isAssignable(lhs, typeElement.asType());
     }
 
-    public static boolean isAssignable(TypeMirror lhs, TypeMirror rhs,
-            ProcessingEnvironment env) {
-        assertNotNull(lhs, rhs, env);
+    public boolean isAssignable(TypeMirror lhs, TypeMirror rhs) {
+        assertNotNull(lhs, rhs);
         if (lhs.getKind() == TypeKind.NONE || rhs.getKind() == TypeKind.NONE) {
             return false;
         }
@@ -118,36 +112,33 @@ public final class TypeMirrorUtil {
         if (rhs.getKind() == TypeKind.VOID) {
             return lhs.getKind() == TypeKind.VOID;
         }
-        Types types = env.getTypeUtils();
-        TypeMirror t1 = types.erasure(lhs);
-        TypeMirror t2 = types.erasure(rhs);
-        if (env.getTypeUtils().isSameType(t1, t2) || t1.equals(t2)) {
+        TypeMirror t1 = erasure(lhs);
+        TypeMirror t2 = erasure(rhs);
+        if (isSameType(t1, t2) || t1.equals(t2)) {
             return true;
         }
-        for (TypeMirror supertype : types.directSupertypes(t1)) {
-            if (isAssignable(supertype, t2, env)) {
+        for (TypeMirror supertype : directSupertypes(t1)) {
+            if (isAssignable(supertype, t2)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean isSameType(TypeMirror typeMirror, Class<?> clazz,
-            ProcessingEnvironment env) {
-        assertNotNull(typeMirror, clazz, env);
+    public boolean isSameType(TypeMirror typeMirror, Class<?> clazz) {
+        assertNotNull(typeMirror, clazz);
         if (typeMirror.getKind() == TypeKind.VOID) {
             return clazz == void.class;
         }
-        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
+        TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
         if (typeElement == null) {
             return false;
         }
-        return isSameType(typeMirror, typeElement.asType(), env);
+        return isSameType(typeMirror, typeElement.asType());
     }
 
-    public static boolean isSameType(TypeMirror t1, TypeMirror t2,
-            ProcessingEnvironment env) {
-        assertNotNull(t1, t2, env);
+    public boolean isSameType(TypeMirror t1, TypeMirror t2) {
+        assertNotNull(t1, t2);
         if (t1.getKind() == TypeKind.NONE || t2.getKind() == TypeKind.NONE) {
             return false;
         }
@@ -163,15 +154,14 @@ public final class TypeMirrorUtil {
         if (t2.getKind() == TypeKind.VOID) {
             return t1.getKind() == TypeKind.VOID;
         }
-        TypeMirror erasuredType1 = env.getTypeUtils().erasure(t1);
-        TypeMirror erasuredType2 = env.getTypeUtils().erasure(t2);
-        return env.getTypeUtils().isSameType(erasuredType1, erasuredType2)
+        TypeMirror erasuredType1 = erasure(t1);
+        TypeMirror erasuredType2 = erasure(t2);
+        return typeUtils.isSameType(erasuredType1, erasuredType2)
                 || erasuredType1.equals(erasuredType2);
     }
 
-    public static String getTypeName(TypeMirror typeMirror,
-            final ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
+    public String getTypeName(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
         StringBuilder p = new StringBuilder();
         typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
@@ -196,7 +186,7 @@ public final class TypeMirrorUtil {
 
             @Override
             public Void visitDeclared(DeclaredType t, StringBuilder p) {
-                TypeElement e = toTypeElement(t, env);
+                TypeElement e = toTypeElement(t);
                 if (e != null) {
                     p.append(e.getQualifiedName());
                 }
@@ -245,9 +235,8 @@ public final class TypeMirrorUtil {
         return p.toString();
     }
 
-    public static String getBoxedTypeName(TypeMirror typeMirror,
-            final ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
+    public String getBoxedTypeName(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
         switch (typeMirror.getKind()) {
         case BOOLEAN:
             return Boolean.class.getName();
@@ -266,13 +255,12 @@ public final class TypeMirrorUtil {
         case CHAR:
             return Character.class.getName();
         default:
-            return getTypeName(typeMirror, env);
+            return getTypeName(typeMirror);
         }
     }
 
-    public static String getTypeParameterName(TypeMirror typeMirror,
-            final ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
+    public String getTypeParameterName(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
         StringBuilder p = new StringBuilder();
         typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
@@ -287,7 +275,7 @@ public final class TypeMirrorUtil {
                 if (p.length() == 0) {
                     p.append(t);
                 } else {
-                    TypeElement e = env.getTypeUtils().boxedClass(t);
+                    TypeElement e = boxedClass(t);
                     p.append(e.getSimpleName());
                 }
                 return null;
@@ -302,7 +290,7 @@ public final class TypeMirrorUtil {
 
             @Override
             public Void visitDeclared(DeclaredType t, StringBuilder p) {
-                TypeElement e = toTypeElement(t, env);
+                TypeElement e = toTypeElement(t);
                 if (e != null) {
                     p.append(e.getQualifiedName());
                 }
@@ -322,8 +310,7 @@ public final class TypeMirrorUtil {
             public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
                 p.append(t);
                 TypeMirror upperBound = t.getUpperBound();
-                String upperBoundName = TypeMirrorUtil.getTypeName(upperBound,
-                        env);
+                String upperBoundName = ctx.getTypes().getTypeName(upperBound);
                 if (!Object.class.getName().equals(upperBoundName)) {
                     p.append(" extends ");
                     upperBound.accept(this, p);
@@ -363,43 +350,13 @@ public final class TypeMirrorUtil {
         return p.toString();
     }
 
-    public static Map<TypeMirror, TypeMirror> createTypeParameterMap(
-            TypeElement typeElement, TypeMirror typeMirror,
-            ProcessingEnvironment env) {
-        assertNotNull(typeElement, typeMirror, env);
-        Map<TypeMirror, TypeMirror> typeParameterMap = new HashMap<TypeMirror, TypeMirror>();
-        Iterator<? extends TypeParameterElement> formalParams = typeElement
-                .getTypeParameters().iterator();
-        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
-                env);
-        Iterator<? extends TypeMirror> actualParams = declaredType
-                .getTypeArguments().iterator();
-        for (; formalParams.hasNext() && actualParams.hasNext();) {
-            TypeMirror key = formalParams.next().asType();
-            TypeMirror value = actualParams.next();
-            typeParameterMap.put(key, value);
-        }
-        return Collections.unmodifiableMap(typeParameterMap);
-    }
-
-    public static TypeMirror resolveTypeParameter(
-            Map<TypeMirror, TypeMirror> typeParameterMap,
-            TypeMirror formalTypeParam) {
-        assertNotNull(typeParameterMap, formalTypeParam);
-        if (typeParameterMap.containsKey(formalTypeParam)) {
-            return typeParameterMap.get(formalTypeParam);
-        }
-        return formalTypeParam;
-    }
-
-    public static TypeMirror boxIfPrimitive(TypeMirror typeMirror,
-            final ProcessingEnvironment env) {
+    public TypeMirror boxIfPrimitive(TypeMirror typeMirror) {
         assertNotNull(typeMirror);
         return typeMirror.accept(new TypeKindVisitor8<TypeMirror, Void>() {
 
             @Override
             public TypeMirror visitPrimitive(PrimitiveType t, Void p) {
-                return env.getTypeUtils().boxedClass(t).asType();
+                return boxedClass(t).asType();
             }
 
             @Override
@@ -410,47 +367,46 @@ public final class TypeMirrorUtil {
         }, null);
     }
 
-    public static TypeMirror getTypeMirror(Class<?> clazz,
-            ProcessingEnvironment env) {
+    public TypeMirror getTypeMirror(Class<?> clazz) {
         assertNotNull(clazz);
         if (clazz == void.class) {
-            return env.getTypeUtils().getNoType(TypeKind.VOID);
+            return getNoType(TypeKind.VOID);
         }
         if (clazz == boolean.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN);
+            return getPrimitiveType(TypeKind.BOOLEAN);
         }
         if (clazz == char.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.CHAR);
+            return getPrimitiveType(TypeKind.CHAR);
         }
         if (clazz == byte.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.BYTE);
+            return getPrimitiveType(TypeKind.BYTE);
         }
         if (clazz == short.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.SHORT);
+            return getPrimitiveType(TypeKind.SHORT);
         }
         if (clazz == int.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.INT);
+            return getPrimitiveType(TypeKind.INT);
         }
         if (clazz == long.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.LONG);
+            return getPrimitiveType(TypeKind.LONG);
         }
         if (clazz == float.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.FLOAT);
+            return getPrimitiveType(TypeKind.FLOAT);
         }
         if (clazz == double.class) {
-            return env.getTypeUtils().getPrimitiveType(TypeKind.DOUBLE);
+            return getPrimitiveType(TypeKind.DOUBLE);
         }
-        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
+        TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
         if (typeElement == null) {
             throw new AptIllegalStateException(clazz.getName());
         }
         return typeElement.asType();
     }
 
-    public static TypeMirror getSupertypeMirror(TypeMirror typeMirror,
-            Class<?> superclass, ProcessingEnvironment env) {
-        assertNotNull(typeMirror, superclass, env);
-        if (TypeMirrorUtil.isSameType(typeMirror, superclass, env)) {
+    public TypeMirror getSupertypeMirror(TypeMirror typeMirror,
+            Class<?> superclass) {
+        assertNotNull(typeMirror, superclass);
+        if (isSameType(typeMirror, superclass)) {
             return typeMirror;
         }
         switch (typeMirror.getKind()) {
@@ -459,11 +415,11 @@ public final class TypeMirrorUtil {
         case VOID:
             return null;
         default:
-            for (TypeMirror t : env.getTypeUtils().directSupertypes(typeMirror)) {
-                if (isSameType(t, superclass, env)) {
+            for (TypeMirror t : directSupertypes(typeMirror)) {
+                if (isSameType(t, superclass)) {
                     return t;
                 }
-                TypeMirror candidate = getSupertypeMirror(t, superclass, env);
+                TypeMirror candidate = getSupertypeMirror(t, superclass);
                 if (candidate != null) {
                     return candidate;
                 }
@@ -472,9 +428,8 @@ public final class TypeMirrorUtil {
         }
     }
 
-    public static String getClassName(TypeMirror typeMirror,
-            final ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
+    public String getClassName(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
         StringBuilder p = new StringBuilder();
         typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
@@ -499,7 +454,7 @@ public final class TypeMirrorUtil {
 
             @Override
             public Void visitDeclared(DeclaredType t, StringBuilder p) {
-                TypeElement e = toTypeElement(t, env);
+                TypeElement e = toTypeElement(t);
                 if (e != null) {
                     p.append(e.getQualifiedName());
                 }
@@ -511,9 +466,8 @@ public final class TypeMirrorUtil {
         return p.length() > 0 ? p.toString() : Object.class.getName();
     }
 
-    public static String getBoxedClassName(TypeMirror typeMirror,
-            final ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
+    public String getBoxedClassName(TypeMirror typeMirror) {
+        assertNotNull(typeMirror);
         switch (typeMirror.getKind()) {
         case BOOLEAN:
             return Boolean.class.getName();
@@ -532,8 +486,79 @@ public final class TypeMirrorUtil {
         case CHAR:
             return Character.class.getName();
         default:
-            return getClassName(typeMirror, env);
+            return getClassName(typeMirror);
         }
+    }
+
+    public Element asElement(TypeMirror typeMirror) {
+        return typeUtils.asElement(typeMirror);
+    }
+
+    public TypeMirror asMemberOf(DeclaredType containing, Element element) {
+        return typeUtils.asMemberOf(containing, element);
+    }
+
+    public TypeElement boxedClass(PrimitiveType primitiveType) {
+        return typeUtils.boxedClass(primitiveType);
+    }
+
+    public TypeMirror capture(TypeMirror typeMirror) {
+        return typeUtils.capture(typeMirror);
+    }
+
+    public boolean contains(TypeMirror t1, TypeMirror t2) {
+        return typeUtils.contains(t1, t2);
+    }
+
+    public List<? extends TypeMirror> directSupertypes(TypeMirror typeMirror) {
+        return typeUtils.directSupertypes(typeMirror);
+    }
+
+    public TypeMirror erasure(TypeMirror typeMirror) {
+        return typeUtils.erasure(typeMirror);
+    }
+
+    public ArrayType getArrayType(TypeMirror componentType) {
+        return typeUtils.getArrayType(componentType);
+    }
+
+    public DeclaredType getDeclaredType(DeclaredType containing,
+            TypeElement typeElem, TypeMirror... typeArgs) {
+        return typeUtils.getDeclaredType(containing, typeElem, typeArgs);
+    }
+
+    public DeclaredType getDeclaredType(TypeElement typeElem,
+            TypeMirror... typeArgs) {
+        return typeUtils.getDeclaredType(typeElem, typeArgs);
+    }
+
+    public NoType getNoType(TypeKind kind) {
+        return typeUtils.getNoType(kind);
+    }
+
+    public NullType getNullType() {
+        return typeUtils.getNullType();
+    }
+
+    public PrimitiveType getPrimitiveType(TypeKind kind) {
+        return typeUtils.getPrimitiveType(kind);
+    }
+
+    public WildcardType getWildcardType(TypeMirror extendsBound,
+            TypeMirror superBound) {
+        return typeUtils.getWildcardType(extendsBound, superBound);
+    }
+
+    public boolean isSubsignature(ExecutableType m1, ExecutableType m2) {
+        return typeUtils.isSubsignature(m1, m2);
+    }
+
+    public boolean isSubtype(TypeMirror t1, TypeMirror t2) {
+        return typeUtils.isSubtype(t1, t2);
+    }
+
+    public PrimitiveType unboxedType(TypeMirror typeMirror) {
+        return typeUtils.unboxedType(typeMirror);
     }
 
 }

@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.Constants;
@@ -43,7 +42,6 @@ import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.OriginalStatesMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
@@ -73,10 +71,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected final EntityMeta entityMeta;
 
-    public EntityTypeGenerator(ProcessingEnvironment env,
+    public EntityTypeGenerator(Context ctx,
             TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
-        super(env, entityElement, null, null, Constants.METATYPE_PREFIX, "");
+        super(ctx, entityElement, null, null, Constants.METATYPE_PREFIX, "");
         assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
     }
@@ -631,8 +629,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                                 propertyMeta.getName());
                     } else {
                         iprint("        (%1$s)(__args.get(\"%2$s\") != null ? __args.get(\"%2$s\").get() : null)",
-                                TypeMirrorUtil.boxIfPrimitive(
-                                        propertyMeta.getType(), env),
+                                ctx.getTypes()
+                                        .boxIfPrimitive(propertyMeta.getType()),
                                 propertyMeta.getName());
                     }
                     if (it.hasNext()) {
@@ -666,8 +664,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
         if (entityMeta.isImmutable()) {
             for (EntityPropertyMeta propertyMeta : entityMeta
                     .getAllPropertyMetas()) {
-                TypeElement element = TypeMirrorUtil.toTypeElement(
-                        propertyMeta.getType(), env);
+                TypeElement element = ctx.getTypes()
+                        .toTypeElement(propertyMeta.getType());
                 if (element != null) {
                     if (!element.getTypeParameters().isEmpty()) {
                         return true;

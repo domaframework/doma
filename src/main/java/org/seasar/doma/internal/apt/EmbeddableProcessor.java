@@ -45,19 +45,21 @@ public class EmbeddableProcessor extends
 
     @Override
     protected EmbeddableMetaFactory createTypeElementMetaFactory() {
-        EmbeddablePropertyMetaFactory propertyMetaFactory = createEmbeddablePropertyMetaFactory();
-        return new EmbeddableMetaFactory(processingEnv, propertyMetaFactory);
+        EmbeddablePropertyMetaFactory propertyMetaFactory = createEmbeddablePropertyMetaFactory(
+                ctx);
+        return new EmbeddableMetaFactory(ctx, propertyMetaFactory);
     }
 
-    protected EmbeddablePropertyMetaFactory createEmbeddablePropertyMetaFactory() {
-        return new EmbeddablePropertyMetaFactory(processingEnv);
+    protected EmbeddablePropertyMetaFactory createEmbeddablePropertyMetaFactory(
+            Context ctx) {
+        return new EmbeddablePropertyMetaFactory(ctx);
     }
 
     @Override
-    protected Generator createGenerator(TypeElement typeElement,
+    protected Generator createGenerator(Context ctx, TypeElement typeElement,
             EmbeddableMeta meta) throws IOException {
         assertNotNull(typeElement, meta);
-        return new EmbeddableTypeGenerator(processingEnv, typeElement, meta);
+        return new EmbeddableTypeGenerator(ctx, typeElement, meta);
     }
 
 }

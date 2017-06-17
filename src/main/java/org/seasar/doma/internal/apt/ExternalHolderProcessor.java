@@ -43,14 +43,14 @@ public class ExternalHolderProcessor extends
 
     @Override
     protected ExternalHolderMetaFactory createTypeElementMetaFactory() {
-        return new ExternalHolderMetaFactory(processingEnv);
+        return new ExternalHolderMetaFactory(ctx);
     }
 
     @Override
-    protected Generator createGenerator(TypeElement typeElement,
+    protected Generator createGenerator(Context ctx, TypeElement typeElement,
             ExternalHolderMeta meta) throws IOException {
         assertNotNull(typeElement, meta);
-        return new ExternalHolderTypeGenerator(processingEnv,
-                meta.getHolderElement(), meta);
+        return new ExternalHolderTypeGenerator(ctx, meta.getHolderElement(),
+                meta);
     }
 }

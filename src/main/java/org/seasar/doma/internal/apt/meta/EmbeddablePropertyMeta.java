@@ -17,13 +17,12 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 /**
  * @author nakamura-to
@@ -45,13 +44,12 @@ public class EmbeddablePropertyMeta {
 
     protected CtType ctType;
 
-    public EmbeddablePropertyMeta(VariableElement fieldElement,
-            ProcessingEnvironment env) {
-        assertNotNull(fieldElement, env);
+    public EmbeddablePropertyMeta(Context ctx, VariableElement fieldElement) {
+        assertNotNull(ctx, fieldElement);
         this.type = fieldElement.asType();
-        this.typeName = TypeMirrorUtil.getTypeName(type, env);
-        this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(type, env);
-        this.boxedClassName = TypeMirrorUtil.getBoxedClassName(type, env);
+        this.typeName = ctx.getTypes().getTypeName(type);
+        this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
+        this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
     }
 
     public String getName() {

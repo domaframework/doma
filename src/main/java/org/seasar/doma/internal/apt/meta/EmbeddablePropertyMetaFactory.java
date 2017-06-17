@@ -15,11 +15,13 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import javax.annotation.processing.ProcessingEnvironment;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
@@ -29,7 +31,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -38,21 +39,22 @@ import org.seasar.doma.message.Message;
  */
 public class EmbeddablePropertyMetaFactory {
 
-    protected final ProcessingEnvironment env;
+    protected final Context ctx;
 
-    public EmbeddablePropertyMetaFactory(ProcessingEnvironment env) {
-        this.env = env;
+    public EmbeddablePropertyMetaFactory(Context ctx) {
+        assertNotNull(ctx);
+        this.ctx = ctx;
     }
 
     public EmbeddablePropertyMeta createEmbeddablePropertyMeta(
             VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
         EmbeddablePropertyMeta embeddablePropertyMeta = new EmbeddablePropertyMeta(
-                fieldElement, env);
+                ctx, fieldElement);
         embeddablePropertyMeta.setName(fieldElement.getSimpleName().toString());
         CtType ctType = resolveCtType(fieldElement, fieldElement.asType(),
                 embeddableMeta);
         embeddablePropertyMeta.setCtType(ctType);
-        ColumnReflection columnReflection = new Reflections(env)
+        ColumnReflection columnReflection = ctx.getReflections()
                 .newColumnReflection(fieldElement);
         if (columnReflection != null) {
             embeddablePropertyMeta.setColumnReflection(columnReflection);
@@ -63,89 +65,84 @@ public class EmbeddablePropertyMetaFactory {
     protected CtType resolveCtType(VariableElement fieldElement,
             TypeMirror type, EmbeddableMeta embeddableMeta) {
 
-        final OptionalCtType optionalCtType = OptionalCtType.newInstance(type,
-                env);
+        final OptionalCtType optionalCtType = ctx.getCtTypes()
+                .newOptionalCtType(type);
         if (optionalCtType != null) {
             if (optionalCtType.isRawType()) {
-                throw new AptException(Message.DOMA4299, env, fieldElement,
-                        new Object[] {
-                                optionalCtType.getQualifiedName(),
-                                embeddableMeta.getEmbeddableElement()
-                                        .getQualifiedName(),
-                                fieldElement.getSimpleName() });
+                throw new AptException(Message.DOMA4299, fieldElement, new Object[] {
+                        optionalCtType.getQualifiedName(),
+                        embeddableMeta.getEmbeddableElement()
+                                .getQualifiedName(),
+                        fieldElement.getSimpleName() });
             }
             if (optionalCtType.isWildcardType()) {
-                throw new AptException(Message.DOMA4301, env, fieldElement,
-                        new Object[] {
-                                optionalCtType.getQualifiedName(),
-                                embeddableMeta.getEmbeddableElement()
-                                        .getQualifiedName(),
-                                fieldElement.getSimpleName() });
+                throw new AptException(Message.DOMA4301, fieldElement, new Object[] {
+                        optionalCtType.getQualifiedName(),
+                        embeddableMeta.getEmbeddableElement()
+                                .getQualifiedName(),
+                        fieldElement.getSimpleName() });
             }
             return optionalCtType;
         }
 
-        OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(
-                type, env);
+        OptionalIntCtType optionalIntCtType = ctx.getCtTypes()
+                .newOptionalIntCtType(type);
         if (optionalIntCtType != null) {
             return optionalIntCtType;
         }
 
-        OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(
-                type, env);
+        OptionalLongCtType optionalLongCtType = ctx.getCtTypes()
+                .newOptionalLongCtType(type);
         if (optionalLongCtType != null) {
             return optionalLongCtType;
         }
 
-        OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType
-                .newInstance(type, env);
+        OptionalDoubleCtType optionalDoubleCtType = ctx.getCtTypes()
+                .newOptionalDoubleCtType(type);
         if (optionalDoubleCtType != null) {
             return optionalDoubleCtType;
         }
 
-        final HolderCtType holderCtType = HolderCtType.newInstance(type, env);
+        final HolderCtType holderCtType = ctx.getCtTypes()
+                .newHolderCtType(type);
         if (holderCtType != null) {
             if (holderCtType.isRawType()) {
-                throw new AptException(Message.DOMA4295, env, fieldElement,
-                        new Object[] {
-                                holderCtType.getQualifiedName(),
-                                embeddableMeta.getEmbeddableElement()
-                                        .getQualifiedName(),
-                                fieldElement.getSimpleName() });
+                throw new AptException(Message.DOMA4295, fieldElement, new Object[] {
+                        holderCtType.getQualifiedName(),
+                        embeddableMeta.getEmbeddableElement()
+                                .getQualifiedName(),
+                        fieldElement.getSimpleName() });
             }
             if (holderCtType.isWildcardType()) {
-                throw new AptException(Message.DOMA4296, env, fieldElement,
-                        new Object[] {
-                                holderCtType.getQualifiedName(),
-                                embeddableMeta.getEmbeddableElement()
-                                        .getQualifiedName(),
-                                fieldElement.getSimpleName() });
+                throw new AptException(Message.DOMA4296, fieldElement, new Object[] {
+                        holderCtType.getQualifiedName(),
+                        embeddableMeta.getEmbeddableElement()
+                                .getQualifiedName(),
+                        fieldElement.getSimpleName() });
             }
             return holderCtType;
         }
 
-        BasicCtType basicCtType = BasicCtType.newInstance(type, env);
+        BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(type);
         if (basicCtType != null) {
             return basicCtType;
         }
 
-        final EmbeddableCtType embeddableCtType = EmbeddableCtType.newInstance(
-                type, env);
+        final EmbeddableCtType embeddableCtType = ctx.getCtTypes()
+                .newEmbeddableCtType(type);
         if (embeddableCtType != null) {
-            throw new AptException(Message.DOMA4297, env, fieldElement,
-                    new Object[] {
-                            type,
-                            embeddableMeta.getEmbeddableElement()
-                                    .getQualifiedName(),
-                            fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4297, fieldElement, new Object[] {
+                    type,
+                    embeddableMeta.getEmbeddableElement()
+                            .getQualifiedName(),
+                    fieldElement.getSimpleName() });
         }
 
-        throw new AptException(Message.DOMA4298, env, fieldElement,
-                new Object[] {
-                        type,
-                        embeddableMeta.getEmbeddableElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
+        throw new AptException(Message.DOMA4298, fieldElement, new Object[] {
+                type,
+                embeddableMeta.getEmbeddableElement()
+                        .getQualifiedName(),
+                fieldElement.getSimpleName() });
     }
 
 }

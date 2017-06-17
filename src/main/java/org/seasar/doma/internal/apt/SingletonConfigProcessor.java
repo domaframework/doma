@@ -28,9 +28,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.SingletonConfig;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.internal.apt.reflection.SingletonConfigReflection;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
 
@@ -62,7 +60,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
     }
 
     protected void validate(TypeElement typeElement) {
-        SingletonConfigReflection mirror = new Reflections(processingEnv)
+        SingletonConfigReflection mirror = ctx.getReflections()
                 .newSingletonConfigReflection(typeElement);
         if (mirror == null) {
             throw new AptIllegalStateException("mirror must not be null");
@@ -74,11 +72,9 @@ public class SingletonConfigProcessor extends AbstractProcessor {
 
     protected void validateClass(TypeElement typeElement,
             SingletonConfigReflection mirror) {
-        if (!TypeMirrorUtil.isAssignable(typeElement.asType(), Config.class,
-                processingEnv)) {
-            throw new AptException(Message.DOMA4253, processingEnv,
-                    typeElement, mirror.getAnnotationMirror(),
-                    new Object[] { typeElement.getQualifiedName() });
+        if (!ctx.getTypes().isAssignable(typeElement.asType(), Config.class)) {
+            throw new AptException(Message.DOMA4253, typeElement,
+                    mirror.getAnnotationMirror(), new Object[] { typeElement.getQualifiedName() });
         }
     }
 
@@ -91,8 +87,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
                 .ifPresent(
                         c -> {
                             throw new AptException(Message.DOMA4256,
-                                    processingEnv, c,
-                                    new Object[] { typeElement
+                                    c, new Object[] { typeElement
                                             .getQualifiedName() });
                         });
     }
@@ -103,14 +98,14 @@ public class SingletonConfigProcessor extends AbstractProcessor {
                 .stream()
                 .filter(m -> m.getModifiers().containsAll(
                         EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-                .filter(m -> TypeMirrorUtil.isAssignable(m.getReturnType(),
-                        Config.class, processingEnv))
+                .filter(m -> ctx.getTypes().isAssignable(m.getReturnType(),
+                        Config.class))
                 .filter(m -> m.getParameters().isEmpty())
                 .filter(m -> m.getSimpleName().toString().equals(methodName))
                 .findAny();
         if (!method.isPresent()) {
-            throw new AptException(Message.DOMA4254, processingEnv,
-                    typeElement, new Object[] { methodName,
+            throw new AptException(Message.DOMA4254, typeElement,
+                    new Object[] { methodName,
                             typeElement.getQualifiedName() });
         }
     }

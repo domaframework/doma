@@ -43,14 +43,15 @@ public class HolderProcessor extends AbstractGeneratingProcessor<HolderMeta> {
 
     @Override
     protected HolderMetaFactory createTypeElementMetaFactory() {
-        return new HolderMetaFactory(processingEnv);
+        return new HolderMetaFactory(ctx);
     }
 
     @Override
-    protected Generator createGenerator(TypeElement typeElement, HolderMeta meta)
+    protected Generator createGenerator(Context ctx, TypeElement typeElement,
+            HolderMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
-        return new HolderTypeGenerator(processingEnv, typeElement, meta);
+        return new HolderTypeGenerator(ctx, typeElement, meta);
     }
 
 }

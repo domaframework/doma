@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt;
 import java.lang.annotation.Annotation;
 import java.util.function.Consumer;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
@@ -33,9 +34,17 @@ public abstract class AbstractProcessor extends
 
     protected Class<? extends Annotation> supportedAnnotationType;
 
+    protected Context ctx;
+
     protected AbstractProcessor(
             Class<? extends Annotation> supportedAnnotationType) {
         this.supportedAnnotationType = supportedAnnotationType;
+    }
+
+    @Override
+    public synchronized void init(ProcessingEnvironment env) {
+        super.init(env);
+        this.ctx = new Context(env);
     }
 
     @Override
@@ -50,29 +59,29 @@ public abstract class AbstractProcessor extends
         if (annotation == null) {
             return;
         }
-        if (Options.isDebugEnabled(processingEnv)) {
-            Notifier.debug(processingEnv, Message.DOMA4090, new Object[] {
+        if (ctx.getOptions().isDebugEnabled()) {
+            ctx.getNotifier().debug(Message.DOMA4090, new Object[] {
                     getClass().getName(), typeElement.getQualifiedName() });
         }
         try {
             handler.accept(typeElement);
         } catch (AptException e) {
-            Notifier.notify(processingEnv, e);
+            ctx.getNotifier().notify(e);
         } catch (AptIllegalOptionException e) {
-            Notifier.notify(processingEnv, Kind.ERROR, e.getMessage(),
+            ctx.getNotifier().notify(Kind.ERROR, e.getMessage(),
                     typeElement);
             throw new AptTypeHandleException(typeElement, e);
         } catch (AptIllegalStateException e) {
-            Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4039,
+            ctx.getNotifier().notify(Kind.ERROR, Message.DOMA4039,
                     typeElement, new Object[] {});
             throw new AptTypeHandleException(typeElement, e);
         } catch (RuntimeException e) {
-            Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4016,
+            ctx.getNotifier().notify(Kind.ERROR, Message.DOMA4016,
                     typeElement, new Object[] {});
             throw new AptTypeHandleException(typeElement, e);
         }
-        if (Options.isDebugEnabled(processingEnv)) {
-            Notifier.debug(processingEnv, Message.DOMA4091, new Object[] {
+        if (ctx.getOptions().isDebugEnabled()) {
+            ctx.getNotifier().debug(Message.DOMA4091, new Object[] {
                     getClass().getName(), typeElement.getQualifiedName() });
         }
     }

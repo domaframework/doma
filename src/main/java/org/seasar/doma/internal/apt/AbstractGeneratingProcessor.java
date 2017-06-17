@@ -50,10 +50,10 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
             final TypeElementMetaFactory<M> factory = createTypeElementMetaFactory();
             for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
-                handleTypeElement(typeElement, t -> {
+                handleTypeElement(typeElement, (t) -> {
                     M meta = factory.createTypeElementMeta(typeElement);
                     if (!meta.isError()) {
-                        generate(typeElement, meta);
+                        generate(ctx, typeElement, meta);
                     }
                 });
             }
@@ -63,20 +63,21 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
 
     protected abstract TypeElementMetaFactory<M> createTypeElementMetaFactory();
 
-    protected void generate(TypeElement typeElement, M meta) {
+    protected void generate(Context ctx, TypeElement typeElement, M meta) {
         Generator generator = null;
         try {
-            generator = createGenerator(typeElement, meta);
+            generator = createGenerator(ctx, typeElement, meta);
             generator.generate();
         } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, processingEnv,
-                    typeElement, e, new Object[] {
+            throw new AptException(Message.DOMA4011, typeElement,
+                    e, new Object[] {
                             typeElement.getQualifiedName(), e });
         } finally {
             IOUtil.close(generator);
         }
     }
 
-    protected abstract Generator createGenerator(TypeElement typeElement, M meta)
+    protected abstract Generator createGenerator(Context ctx,
+            TypeElement typeElement, M meta)
             throws IOException;
 }

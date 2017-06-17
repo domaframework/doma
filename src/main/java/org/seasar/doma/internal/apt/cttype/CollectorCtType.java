@@ -15,29 +15,22 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class CollectorCtType extends AbstractCtType {
 
-    protected CtType targetCtType;
+    protected final CtType targetCtType;
 
-    protected AnyCtType returnCtType;
+    protected final AnyCtType returnCtType;
 
-    public CollectorCtType(TypeMirror type, ProcessingEnvironment env) {
-        super(type, env);
+    public CollectorCtType(Context ctx, TypeMirror type, CtType targetCtType,
+            AnyCtType returnCtType) {
+        super(ctx, type);
+        this.targetCtType = targetCtType;
+        this.returnCtType = returnCtType;
     }
 
     public CtType getTargetCtType() {
@@ -58,60 +51,6 @@ public class CollectorCtType extends AbstractCtType {
                 && returnCtType.getTypeMirror().getKind() == TypeKind.WILDCARD
                 || targetCtType.getTypeMirror() != null
                 && targetCtType.getTypeMirror().getKind() == TypeKind.WILDCARD;
-    }
-
-    public static CollectorCtType newInstance(TypeMirror type,
-            ProcessingEnvironment env) {
-        assertNotNull(type, env);
-        DeclaredType collectorDeclaredType = getCollectorDeclaredType(type, env);
-        if (collectorDeclaredType == null) {
-            return null;
-        }
-
-        CollectorCtType collectorCtType = new CollectorCtType(type, env);
-        List<? extends TypeMirror> typeArguments = collectorDeclaredType
-                .getTypeArguments();
-        if (typeArguments.size() == 3) {
-            TypeMirror targetTypeMirror = typeArguments.get(0);
-            TypeMirror returnTypeMirror = typeArguments.get(2);
-            collectorCtType.targetCtType = buildCtTypeSuppliers(
-                    targetTypeMirror, env).stream().map(Supplier::get)
-                    .filter(Objects::nonNull).findFirst().get();
-            collectorCtType.returnCtType = AnyCtType.newInstance(
-                    returnTypeMirror, env);
-        }
-        return collectorCtType;
-    }
-
-    protected static DeclaredType getCollectorDeclaredType(TypeMirror type,
-            ProcessingEnvironment env) {
-        if (TypeMirrorUtil.isSameType(type, Collector.class, env)) {
-            return TypeMirrorUtil.toDeclaredType(type, env);
-        }
-        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-            if (TypeMirrorUtil.isSameType(supertype, Collector.class, env)) {
-                return TypeMirrorUtil.toDeclaredType(supertype, env);
-            }
-            DeclaredType result = getCollectorDeclaredType(supertype, env);
-            if (result != null) {
-                return result;
-            }
-        }
-        return null;
-    }
-
-    protected static List<Supplier<CtType>> buildCtTypeSuppliers(
-            TypeMirror typeMirror, ProcessingEnvironment env) {
-        return Arrays.<Supplier<CtType>> asList(
-                () -> EntityCtType.newInstance(typeMirror, env),
-                () -> OptionalCtType.newInstance(typeMirror, env),
-                () -> OptionalIntCtType.newInstance(typeMirror, env),
-                () -> OptionalLongCtType.newInstance(typeMirror, env),
-                () -> OptionalDoubleCtType.newInstance(typeMirror, env),
-                () -> HolderCtType.newInstance(typeMirror, env),
-                () -> BasicCtType.newInstance(typeMirror, env),
-                () -> MapCtType.newInstance(typeMirror, env),
-                () -> AnyCtType.newInstance(typeMirror, env));
     }
 
     @Override

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,12 +31,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
 
 import org.seasar.doma.internal.Artifact;
-import org.seasar.doma.internal.apt.util.ResourceUtil;
 
-/**
- * @author taedium
- * 
- */
 public final class Options {
 
     public static final String TEST = "doma.test";
@@ -65,100 +62,114 @@ public final class Options {
 
     public static final String LOMBOK_VALUE = "doma.lombok.Value";
 
-    public static boolean isTestEnabled(ProcessingEnvironment env) {
-        String test = getOption(env, Options.TEST);
+    private static Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
+
+    private final Context ctx;
+
+    private final ProcessingEnvironment env;
+
+    public Options(Context ctx) {
+        assertNotNull(ctx);
+        this.ctx = ctx;
+        this.env = ctx.getEnv();
+    }
+
+    public boolean isTestEnabled() {
+        String test = getOption(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
     }
 
-    public static String getVersion(ProcessingEnvironment env) {
-        if (isTestEnabled(env)) {
+    public String getVersion() {
+        if (isTestEnabled()) {
             return "@VERSION@";
         }
         return Artifact.getVersion();
     }
 
-    public static Date getDate(ProcessingEnvironment env) {
-        if (isTestEnabled(env)) {
+    public Date getDate() {
+        if (isTestEnabled()) {
             return new Date(0L);
         }
         return new Date();
     }
 
-    public static boolean isDebugEnabled(ProcessingEnvironment env) {
-        String debug = getOption(env, Options.DEBUG);
+    public boolean isDebugEnabled() {
+        String debug = getOption(Options.DEBUG);
         return Boolean.valueOf(debug).booleanValue();
     }
 
-    public static String getDaoPackage(ProcessingEnvironment env) {
-        String pkg = getOption(env, Options.DAO_PACKAGE);
+    public String getDaoPackage() {
+        String pkg = getOption(Options.DAO_PACKAGE);
         return pkg != null ? pkg : null;
     }
 
-    public static String getDaoSubpackage(ProcessingEnvironment env) {
-        String subpackage = getOption(env, Options.DAO_SUBPACKAGE);
+    public String getDaoSubpackage() {
+        String subpackage = getOption(Options.DAO_SUBPACKAGE);
         return subpackage != null ? subpackage : null;
     }
 
-    public static String getDaoSuffix(ProcessingEnvironment env) {
-        String suffix = getOption(env, Options.DAO_SUFFIX);
+    public String getDaoSuffix() {
+        String suffix = getOption(Options.DAO_SUFFIX);
         return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
     }
 
-    public static String getEntityFieldPrefix(ProcessingEnvironment env) {
-        String prefix = getOption(env, Options.ENTITY_FIELD_PREFIX);
+    public String getEntityFieldPrefix() {
+        String prefix = getOption(Options.ENTITY_FIELD_PREFIX);
         if ("none".equalsIgnoreCase(prefix)) {
             return "";
         }
         return prefix != null ? prefix : Constants.DEFAULT_ENTITY_FIELD_PREFIX;
     }
 
-    public static String getExprFunctions(ProcessingEnvironment env) {
-        String name = getOption(env, Options.EXPR_FUNCTIONS);
+    public String getExprFunctions() {
+        String name = getOption(Options.EXPR_FUNCTIONS);
         return name != null ? name : null;
     }
 
-    public static String getHolderConverters(ProcessingEnvironment env) {
-        String converters = getOption(env, Options.HOLDER_CONVERTERS);
+    public String getHolderConverters() {
+        String converters = getOption(Options.HOLDER_CONVERTERS);
         return converters != null ? converters : null;
     }
 
-    public static boolean getSqlValidation(ProcessingEnvironment env) {
-        String v = getOption(env, Options.SQL_VALIDATION);
+    public boolean getSqlValidation() {
+        String v = getOption(Options.SQL_VALIDATION);
         return v != null ? Boolean.valueOf(v).booleanValue() : true;
     }
 
-    public static boolean getVersionValidation(ProcessingEnvironment env) {
-        String v = getOption(env, Options.VERSION_VALIDATION);
+    public boolean getVersionValidation() {
+        String v = getOption(Options.VERSION_VALIDATION);
         return v != null ? Boolean.valueOf(v).booleanValue() : true;
     }
 
-    public static String getConfigPath(ProcessingEnvironment env) {
-        String configPath = env.getOptions().get(Options.CONFIG_PATH);
-        return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
-    }
 
-    public static String getLombokAllArgsConstructor(ProcessingEnvironment env) {
-        String name = getOption(env, Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
+    public String getLombokAllArgsConstructor() {
+        String name = getOption(Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
         return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
     }
 
-    public static String getLombokValue(ProcessingEnvironment env) {
-        String name = getOption(env, Options.LOMBOK_VALUE);
+    public String getLombokValue() {
+        String name = getOption(Options.LOMBOK_VALUE);
         return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
     }
 
-    private static String getOption(ProcessingEnvironment env, String key) {
+    private String getOption(String key) {
         String v = env.getOptions().get(key);
         if (v != null) {
             return v;
         }
-
-        return getConfig(env).get(key);
+        String configPath = getConfigPath();
+        Map<String, String> config = getConfig(ctx.getResources(), configPath);
+        return config.get(key);
     }
 
-    private static Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
-    private static Map<String, String> getConfig(ProcessingEnvironment env) {
-        FileObject config = getFileObject(env, getConfigPath(env));
+    private String getConfigPath() {
+        String configPath = env.getOptions().get(Options.CONFIG_PATH);
+        return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
+    }
+
+    private static Map<String, String> getConfig(Resources resources,
+            String path) {
+        FileObject config = getFileObject(resources, path);
         if (config == null) {
             return Collections.emptyMap();
         }
@@ -171,10 +182,11 @@ public final class Options {
         });
     }
 
-    private static FileObject getFileObject(ProcessingEnvironment env,
+
+    private static FileObject getFileObject(Resources resources,
             String path) {
         try {
-            return ResourceUtil.getResource(path, env);
+            return resources.getResource(path);
         } catch (IOException e) {
             return null;
         }

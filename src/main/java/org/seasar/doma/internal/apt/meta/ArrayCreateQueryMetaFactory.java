@@ -20,14 +20,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.sql.Array;
 import java.util.List;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.ArrayFactoryReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -37,14 +36,15 @@ import org.seasar.doma.message.Message;
 public class ArrayCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<ArrayCreateQueryMeta> {
 
-    public ArrayCreateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env, Array.class);
+    public ArrayCreateQueryMetaFactory(Context ctx) {
+        super(ctx, Array.class);
     }
 
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        ArrayFactoryReflection arrayFactoryReflection = new Reflections(env)
+        ArrayFactoryReflection arrayFactoryReflection = ctx
+                .getReflections()
                 .newArrayFactoryReflection(method);
         if (arrayFactoryReflection == null) {
             return null;
@@ -66,15 +66,15 @@ public class ArrayCreateQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(Message.DOMA4002, env, method, new Object[] {
+            throw new AptException(Message.DOMA4002, method, new Object[] {
                     daoMeta.getDaoElement().getQualifiedName(),
                     method.getSimpleName() });
         }
         QueryParameterMeta parameterMeta = createParameterMeta(
                 parameters.get(0), queryMeta);
         if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
-            throw new AptException(Message.DOMA4076, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4076, parameterMeta.getElement(),
+                    new Object[] {
                             daoMeta.getDaoElement().getQualifiedName(),
                             method.getSimpleName() });
         }

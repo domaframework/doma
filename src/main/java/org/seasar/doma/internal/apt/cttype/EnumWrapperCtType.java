@@ -15,8 +15,9 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
+
+import org.seasar.doma.internal.apt.Context;
 
 /**
  * @author taedium
@@ -24,8 +25,8 @@ import javax.lang.model.type.TypeMirror;
  */
 public class EnumWrapperCtType extends WrapperCtType {
 
-    public EnumWrapperCtType(TypeMirror type, ProcessingEnvironment env) {
-        super(type, env);
+    public EnumWrapperCtType(Context ctx, TypeMirror type) {
+        super(ctx, type);
     }
 
     @Override

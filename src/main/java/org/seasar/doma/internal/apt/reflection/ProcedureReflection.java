@@ -20,17 +20,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 
 import java.util.Map;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
@@ -71,20 +67,6 @@ public class ProcedureReflection {
         this.queryTimeout = assertNotNullValue(values, "queryTimeout");
         this.mapKeyNaming = assertNotNullValue(values, "mapKeyNaming");
         this.sqlLog = assertNotNullValue(values, "sqlLog");
-    }
-
-    public static ProcedureReflection newInstance(ExecutableElement method,
-            ProcessingEnvironment env) {
-        assertNotNull(env);
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Procedure.class, env);
-        if (annotationMirror == null) {
-            return null;
-        }
-        Map<String, AnnotationValue> values = ElementUtil
-                .getElementValuesWithDefaults(annotationMirror, env);
-        return new ProcedureReflection(annotationMirror,
-                method.getSimpleName().toString(), values);
     }
 
     public AnnotationValue getQueryTimeout() {

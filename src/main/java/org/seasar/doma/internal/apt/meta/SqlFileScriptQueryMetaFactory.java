@@ -19,11 +19,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.File;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.ScriptReflection;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.message.Message;
@@ -35,8 +34,8 @@ import org.seasar.doma.message.Message;
 public class SqlFileScriptQueryMetaFactory extends
         AbstractSqlFileQueryMetaFactory<SqlFileScriptQueryMeta> {
 
-    public SqlFileScriptQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public SqlFileScriptQueryMetaFactory(Context ctx) {
+        super(ctx);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class SqlFileScriptQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method,
                 daoMeta.getDaoElement());
-        ScriptReflection scriptReflection = new Reflections(env)
+        ScriptReflection scriptReflection = ctx.getReflections()
                 .newScriptReflection(method);
         if (scriptReflection == null) {
             return null;
@@ -74,8 +73,8 @@ public class SqlFileScriptQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
         if (!returnMeta.isPrimitiveVoid()) {
-            throw new AptException(Message.DOMA4172, env,
-                    returnMeta.getMethodElement(), new Object[] {
+            throw new AptException(Message.DOMA4172, returnMeta.getMethodElement(),
+                    new Object[] {
                             daoMeta.getDaoElement().getQualifiedName(),
                             method.getSimpleName() });
         }
@@ -86,7 +85,7 @@ public class SqlFileScriptQueryMetaFactory extends
     protected void doParameters(SqlFileScriptQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         if (!method.getParameters().isEmpty()) {
-            throw new AptException(Message.DOMA4173, env, method, new Object[] {
+            throw new AptException(Message.DOMA4173, method, new Object[] {
                     daoMeta.getDaoElement().getQualifiedName(),
                     method.getSimpleName() });
         }

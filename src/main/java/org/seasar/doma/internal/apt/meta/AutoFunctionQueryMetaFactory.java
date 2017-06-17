@@ -17,10 +17,10 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
@@ -33,7 +33,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.FunctionReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -43,14 +42,14 @@ import org.seasar.doma.message.Message;
 public class AutoFunctionQueryMetaFactory extends
         AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
-    public AutoFunctionQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public AutoFunctionQueryMetaFactory(Context ctx) {
+        super(ctx);
     }
 
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        FunctionReflection functionReflection = new Reflections(env)
+        FunctionReflection functionReflection = ctx.getReflections()
                 .newFunctionReflection(method);
         if (functionReflection == null) {
             return null;
@@ -104,8 +103,8 @@ public class AutoFunctionQueryMetaFactory extends
         @Override
         protected ResultParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4063, env,
-                    returnMeta.getMethodElement(), new Object[] {
+            throw new AptException(Message.DOMA4063, returnMeta.getMethodElement(),
+                    new Object[] {
                             returnMeta.getType(),
                             queryMeta.getDaoElement().getQualifiedName(),
                             queryMeta.getMethodElement().getSimpleName() });
@@ -187,8 +186,8 @@ public class AutoFunctionQueryMetaFactory extends
         @Override
         protected ResultParameterMeta defaultAction(CtType ctType, Boolean p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4065, env,
-                    returnMeta.getMethodElement(), new Object[] {
+            throw new AptException(Message.DOMA4065, returnMeta.getMethodElement(),
+                    new Object[] {
                             ctType.getTypeName(),
                             queryMeta.getDaoElement().getQualifiedName(),
                             queryMeta.getMethodElement().getSimpleName() });
@@ -216,8 +215,8 @@ public class AutoFunctionQueryMetaFactory extends
         public ResultParameterMeta visitEntityCtType(EntityCtType ctType,
                 Boolean p) throws RuntimeException {
             if (ctType.isAbstract()) {
-                throw new AptException(Message.DOMA4156, env,
-                        returnMeta.getMethodElement(), new Object[] {
+                throw new AptException(Message.DOMA4156, returnMeta.getMethodElement(),
+                        new Object[] {
                                 ctType.getTypeName(),
                                 returnMeta.getDaoElement().getQualifiedName(),
                                 returnMeta.getMethodElement().getSimpleName() });

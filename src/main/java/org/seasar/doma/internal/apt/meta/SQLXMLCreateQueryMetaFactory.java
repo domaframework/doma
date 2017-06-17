@@ -19,10 +19,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.SQLXML;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.internal.apt.reflection.Reflections;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.SQLXMLFactoryReflection;
 
 /**
@@ -32,14 +31,14 @@ import org.seasar.doma.internal.apt.reflection.SQLXMLFactoryReflection;
 public class SQLXMLCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<SQLXMLCreateQueryMeta> {
 
-    public SQLXMLCreateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env, SQLXML.class);
+    public SQLXMLCreateQueryMetaFactory(Context ctx) {
+        super(ctx, SQLXML.class);
     }
 
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        SQLXMLFactoryReflection sqlxmlFactoryMirror = new Reflections(env)
+        SQLXMLFactoryReflection sqlxmlFactoryMirror = ctx.getReflections()
                 .newSQLXMLFactoryReflection(method);
         if (sqlxmlFactoryMirror == null) {
             return null;

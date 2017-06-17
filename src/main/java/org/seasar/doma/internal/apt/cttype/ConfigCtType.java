@@ -15,27 +15,14 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.internal.apt.Context;
 
 public class ConfigCtType extends AbstractCtType {
 
-    public ConfigCtType(TypeMirror type, ProcessingEnvironment env) {
-        super(type, env);
-    }
-
-    public static ConfigCtType newInstance(TypeMirror type,
-            ProcessingEnvironment env) {
-        assertNotNull(type, env);
-        if (!TypeMirrorUtil.isSameType(type, Config.class, env)) {
-            return null;
-        }
-        return new ConfigCtType(type, env);
+    public ConfigCtType(Context ctx, TypeMirror type) {
+        super(ctx, type);
     }
 
     @Override

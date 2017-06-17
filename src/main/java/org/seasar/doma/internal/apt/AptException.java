@@ -15,14 +15,12 @@
  */
 package org.seasar.doma.internal.apt;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.message.MessageResource;
 
 /**
@@ -42,44 +40,38 @@ public class AptException extends DomaException {
     protected AnnotationValue annotationValue;
 
     public AptException(MessageResource messageResource,
-            ProcessingEnvironment env, Element element, Object[] args) {
-        this(messageResource, env, Kind.ERROR, element, null, null, null, args);
+            Element element, Object[] args) {
+        this(messageResource, Kind.ERROR, element, null, null, null, args);
     }
 
     public AptException(MessageResource messageResource,
-            ProcessingEnvironment env, Element element, Throwable cause,
+            Element element, Throwable cause, Object[] args) {
+        this(messageResource, Kind.ERROR, element, null, null, cause, args);
+    }
+
+    public AptException(MessageResource messageResource,
+            Element element, AnnotationMirror annotationMirror,
             Object[] args) {
-        this(messageResource, env, Kind.ERROR, element, null, null, cause, args);
+        this(messageResource, Kind.ERROR, element, annotationMirror, null, null,
+                args);
     }
 
     public AptException(MessageResource messageResource,
-            ProcessingEnvironment env, Element element,
-            AnnotationMirror annotationMirror, Object[] args) {
-        this(messageResource, env, Kind.ERROR, element, annotationMirror, null,
+            Element element, AnnotationMirror annotationMirror,
+            AnnotationValue annotationValue, Object[] args) {
+        this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue,
                 null, args);
     }
 
-    public AptException(MessageResource messageResource,
-            ProcessingEnvironment env, Element element,
-            AnnotationMirror annotationMirror, AnnotationValue annotationValue,
-            Object[] args) {
-        this(messageResource, env, Kind.ERROR, element, annotationMirror,
-                annotationValue, null, args);
-    }
-
     private AptException(MessageResource messageResource,
-            ProcessingEnvironment env, Kind kind, Element element,
-            AnnotationMirror annotationMirror, AnnotationValue annotationValue,
-            Throwable cause, Object[] args) {
+            Kind kind, Element element, AnnotationMirror annotationMirror,
+            AnnotationValue annotationValue, Throwable cause,
+            Object[] args) {
         super(messageResource, cause, args);
         this.kind = kind;
         this.element = element;
         this.annotationMirror = annotationMirror;
         this.annotationValue = annotationValue;
-        if (Options.isDebugEnabled(env)) {
-            Notifier.debug(env, Message.DOMA4074, new Object[] {
-                    messageResource, cause });
-        }
     }
 
     public Kind getKind() {

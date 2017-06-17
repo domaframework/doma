@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt;
 
 import java.util.LinkedHashMap;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
@@ -42,11 +41,10 @@ public class BatchSqlValidator extends SqlValidator {
 
     protected Suppress suppress;
 
-    public BatchSqlValidator(ProcessingEnvironment env,
-            ExecutableElement methodElement,
+    public BatchSqlValidator(Context ctx, ExecutableElement methodElement,
             LinkedHashMap<String, TypeMirror> parameterTypeMap, String path,
             boolean expandable, boolean populatable) {
-        super(env, methodElement, parameterTypeMap, path, expandable,
+        super(ctx, methodElement, parameterTypeMap, path, expandable,
                 populatable);
         suppress = methodElement.getAnnotation(Suppress.class);
     }
@@ -54,7 +52,8 @@ public class BatchSqlValidator extends SqlValidator {
     @Override
     public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
         if (!isSuppressed(Message.DOMA4181) && !embeddedVariableWarningNotified) {
-            Notifier.notify(env, Kind.WARNING, Message.DOMA4181, methodElement,
+            ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4181,
+                    methodElement,
                     new Object[] { path });
             embeddedVariableWarningNotified = true;
         }
@@ -64,7 +63,8 @@ public class BatchSqlValidator extends SqlValidator {
     @Override
     public Void visitIfNode(IfNode node, Void p) {
         if (!isSuppressed(Message.DOMA4182) && !ifWarningNotified) {
-            Notifier.notify(env, Kind.WARNING, Message.DOMA4182, methodElement,
+            ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4182,
+                    methodElement,
                     new Object[] { path });
             ifWarningNotified = true;
         }
@@ -74,7 +74,8 @@ public class BatchSqlValidator extends SqlValidator {
     @Override
     public Void visitForNode(ForNode node, Void p) {
         if (!isSuppressed(Message.DOMA4183) && !forWarningNotified) {
-            Notifier.notify(env, Kind.WARNING, Message.DOMA4183, methodElement,
+            ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4183,
+                    methodElement,
                     new Object[] { path });
             forWarningNotified = true;
         }

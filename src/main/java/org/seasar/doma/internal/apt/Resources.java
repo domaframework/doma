@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.util;
+package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
@@ -30,32 +30,41 @@ import java.util.Map;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.tools.FileObject;
+import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
-import org.seasar.doma.internal.apt.Options;
+public class Resources {
 
-/**
- * @author nakamura
- *
- */
-public class ResourceUtil {
+    private final ProcessingEnvironment env;
 
-    public static FileObject getResource(String relativePath,
-            ProcessingEnvironment env) throws IOException {
-        assertNotNull(relativePath, env);
+    private final Filer filer;
+
+    public Resources(Context ctx) {
+        assertNotNull(ctx);
+        this.env = ctx.getEnv();
+        this.filer = env.getFiler();
+    }
+    
+    public JavaFileObject createSourceFile(CharSequence name, Element... originatingElements)
+            throws IOException {
+        return filer.createSourceFile(name, originatingElements);
+    }
+
+    public FileObject getResource(String relativePath) throws IOException {
+        assertNotNull(relativePath);
         Map<String, String> options = env.getOptions();
         String resourcesDir = options.get(Options.RESOURCES_DIR);
         if (resourcesDir != null) {
             Path path = Paths.get(resourcesDir, relativePath);
             return new FileObjectImpl(path);
         }
-        Filer filer = env.getFiler();
         return filer.getResource(StandardLocation.CLASS_OUTPUT, "",
                 relativePath);
     }
 
-    protected static class FileObjectImpl implements FileObject {
+    public static class FileObjectImpl implements FileObject {
 
         private final Path path;
 
@@ -110,4 +119,5 @@ public class ResourceUtil {
             return false;
         }
     }
+
 }

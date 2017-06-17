@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -48,14 +47,9 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Notifier;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.AnnotateWithReflection;
 import org.seasar.doma.internal.apt.reflection.DaoReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.ResourceUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -68,21 +62,21 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     protected static final String SINGLETON_CONFIG_FIELD_NAME = "INSTANCE";
 
-    protected final ProcessingEnvironment env;
+    protected final Context ctx;
 
     protected final List<QueryMetaFactory> queryMetaFactories = new ArrayList<QueryMetaFactory>();
 
-    public DaoMetaFactory(ProcessingEnvironment env,
+    public DaoMetaFactory(Context ctx,
             List<QueryMetaFactory> commandMetaFactories) {
-        assertNotNull(env, commandMetaFactories);
-        this.env = env;
+        assertNotNull(ctx, commandMetaFactories);
+        this.ctx = ctx;
         this.queryMetaFactories.addAll(commandMetaFactories);
     }
 
     @Override
     public DaoMeta createTypeElementMeta(TypeElement interfaceElement) {
         assertNotNull(interfaceElement);
-        DaoReflection daoReflection = new Reflections(env)
+        DaoReflection daoReflection = ctx.getReflections()
                 .newDaoReflection(interfaceElement);
         if (daoReflection == null) {
             throw new AptIllegalStateException("daoReflection");
@@ -98,10 +92,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         validateInterface(interfaceElement, daoMeta);
 
         String name = interfaceElement.getSimpleName().toString();
-        String suffix = Options.getDaoSuffix(env);
+        String suffix = ctx.getOptions().getDaoSuffix();
         if (name.endsWith(suffix)) {
-            Notifier.notify(
-                    env,
+            ctx.getNotifier().notify(
                     Kind.WARNING,
                     Message.DOMA4026,
                     interfaceElement,
@@ -115,8 +108,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
         DaoReflection daoReflection = daoMeta.getDaoReflection();
         if (daoReflection.hasUserDefinedConfig()) {
-            TypeElement configElement = TypeMirrorUtil.toTypeElement(
-                    daoReflection.getConfigValue(), env);
+            TypeElement configElement = ctx.getTypes()
+                    .toTypeElement(daoReflection.getConfigValue());
             if (configElement == null) {
                 throw new AptIllegalStateException(
                         "failed to convert to TypeElement.");
@@ -131,13 +124,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 .getAnnotation(SingletonConfig.class);
         if (singletonConfig == null) {
             if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
-                throw new AptException(Message.DOMA4163, env,
-                        daoMeta.getDaoElement(),
-                        daoReflection.getAnnotationMirror(), daoReflection.getConfig(),
-                        new Object[] { configElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4163, daoMeta.getDaoElement(),
+                        daoReflection.getAnnotationMirror(),
+                        daoReflection.getConfig(), new Object[] { configElement.getQualifiedName() });
             }
-            ExecutableElement constructor = ElementUtil.getNoArgConstructor(
-                    configElement, env);
+            ExecutableElement constructor = ctx.getElements()
+                    .getNoArgConstructor(
+                            configElement);
             if (constructor == null
                     || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
                 Optional<VariableElement> field = ElementFilter
@@ -148,13 +141,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                         .filter(e -> e.getModifiers().containsAll(
                                 EnumSet.of(Modifier.STATIC, Modifier.PUBLIC,
                                         Modifier.FINAL)))
-                        .filter(e -> TypeMirrorUtil.isAssignable(e.asType(),
-                                Config.class, env)).findFirst();
+                        .filter(e -> ctx.getTypes().isAssignable(e.asType(),
+                                Config.class))
+                        .findFirst();
                 if (field.isPresent()) {
                     daoMeta.setSingletonFieldName(SINGLETON_CONFIG_FIELD_NAME);
                 } else {
-                    throw new AptException(Message.DOMA4164, env,
-                            daoMeta.getDaoElement(),
+                    throw new AptException(Message.DOMA4164, daoMeta.getDaoElement(),
                             daoReflection.getAnnotationMirror(),
                             daoReflection.getConfig(),
                             new Object[] { configElement.getQualifiedName() });
@@ -167,18 +160,17 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                     .stream()
                     .filter(m -> m.getModifiers().containsAll(
                             EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-                    .filter(m -> TypeMirrorUtil.isAssignable(m.getReturnType(),
-                            Config.class, env))
+                    .filter(m -> ctx.getTypes().isAssignable(m.getReturnType(),
+                            Config.class))
                     .filter(m -> m.getParameters().isEmpty())
                     .filter(m -> m.getSimpleName().toString()
                             .equals(methodName)).findAny().isPresent();
             if (present) {
                 daoMeta.setSingletonMethodName(methodName);
             } else {
-                throw new AptException(Message.DOMA4255, env,
-                        daoMeta.getDaoElement(),
-                        daoReflection.getAnnotationMirror(), daoReflection.getConfig(),
-                        new Object[] { configElement.getQualifiedName(),
+                throw new AptException(Message.DOMA4255, daoMeta.getDaoElement(),
+                        daoReflection.getAnnotationMirror(),
+                        daoReflection.getConfig(), new Object[] { configElement.getQualifiedName(),
                                 methodName });
             }
         }
@@ -188,22 +180,20 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             DaoMeta daoMeta) {
         if (!interfaceElement.getKind().isInterface()) {
             DaoReflection daoReflection = daoMeta.getDaoReflection();
-            throw new AptException(Message.DOMA4014, env, interfaceElement,
-                    daoReflection.getAnnotationMirror(),
+            throw new AptException(Message.DOMA4014, interfaceElement, daoReflection.getAnnotationMirror(),
                     new Object[] { interfaceElement.getQualifiedName() });
         }
         if (interfaceElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4017, env, interfaceElement,
-                    new Object[] { interfaceElement.getQualifiedName() });
+            throw new AptException(Message.DOMA4017, interfaceElement, new Object[] { interfaceElement.getQualifiedName() });
         }
         if (!interfaceElement.getTypeParameters().isEmpty()) {
-            throw new AptException(Message.DOMA4059, env, interfaceElement,
-                    new Object[] { interfaceElement.getQualifiedName() });
+            throw new AptException(Message.DOMA4059, interfaceElement, new Object[] { interfaceElement.getQualifiedName() });
         }
     }
 
     protected void doAnnotateWith(DaoMeta daoMeta) {
-        AnnotateWithReflection annotateWithReflection = new Reflections(env)
+        AnnotateWithReflection annotateWithReflection = ctx
+                .getReflections()
                 .newAnnotateWithReflection(daoMeta.getDaoElement());
         if (annotateWithReflection != null) {
             daoMeta.setAnnotateWithMirror(annotateWithReflection);
@@ -213,7 +203,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     protected void doParentDao(DaoMeta daoMeta) {
         List<TypeElement> interfaces = daoMeta.getDaoElement()
                 .getInterfaces()
-                .stream().map(type -> TypeMirrorUtil.toTypeElement(type, env))
+                .stream().map(ctx.getTypes()::toTypeElement)
                 .peek(element -> {
                     if (element == null) {
                         throw new AptIllegalStateException(
@@ -221,7 +211,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                     }
                 }).collect(toList());
         for (TypeElement typeElement : interfaces) {
-            DaoReflection daoReflection = new Reflections(env)
+            DaoReflection daoReflection = ctx.getReflections()
                     .newDaoReflection(typeElement);
             if (daoReflection == null) {
                 ExecutableElement nonDefaultMethod = findNonDefaultMethod(
@@ -229,14 +219,12 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 if (nonDefaultMethod == null) {
                     continue;
                 }
-                throw new AptException(Message.DOMA4440, env,
-                        daoMeta.getDaoElement(),
+                throw new AptException(Message.DOMA4440, daoMeta.getDaoElement(),
                         new Object[] { nonDefaultMethod.getSimpleName(),
                                 daoMeta.getDaoElement().getQualifiedName() });
             }
             if (daoMeta.getParentDaoMeta() != null) {
-                throw new AptException(Message.DOMA4188, env,
-                        daoMeta.getDaoElement(),
+                throw new AptException(Message.DOMA4188, daoMeta.getDaoElement(),
                         new Object[] {
                                 daoMeta.getDaoElement().getQualifiedName() });
             }
@@ -256,7 +244,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             return method.get();
         }
         for (TypeMirror typeMirror : interfaceElement.getInterfaces()) {
-            TypeElement i = TypeMirrorUtil.toTypeElement(typeMirror, env);
+            TypeElement i = ctx.getTypes().toTypeElement(typeMirror);
             if (i == null) {
                 throw new AptIllegalStateException(
                         "failed to convert to TypeElement.");
@@ -276,7 +264,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             try {
                 doMethodElement(methodElement, daoMeta);
             } catch (AptException e) {
-                Notifier.notify(env, e);
+                ctx.getNotifier().notify(e);
                 daoMeta.setError(true);
             }
         }
@@ -299,12 +287,11 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         TypeElement foundAnnotationTypeElement = null;
         for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
             DeclaredType declaredType = annotation.getAnnotationType();
-            TypeElement typeElement = TypeMirrorUtil.toTypeElement(
-                    declaredType, env);
+            TypeElement typeElement = ctx.getTypes()
+                    .toTypeElement(declaredType);
             if (typeElement.getAnnotation(DaoMethod.class) != null) {
                 if (foundAnnotationTypeElement != null) {
-                    throw new AptException(Message.DOMA4087, env,
-                            methodElement,
+                    throw new AptException(Message.DOMA4087, methodElement,
                             new Object[] {
                                     foundAnnotationTypeElement
                                             .getQualifiedName(),
@@ -313,8 +300,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                                     methodElement.getSimpleName() });
                 }
                 if (methodElement.isDefault()) {
-                    throw new AptException(Message.DOMA4252, env,
-                            methodElement, new Object[] {
+                    throw new AptException(Message.DOMA4252, methodElement,
+                            new Object[] {
                                     typeElement.getQualifiedName(),
                                     daoMeta.getDaoElement().getQualifiedName(),
                                     methodElement.getSimpleName() });
@@ -332,7 +319,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 return queryMeta;
             }
         }
-        throw new AptException(Message.DOMA4005, env, method, new Object[] {
+        throw new AptException(Message.DOMA4005, method, new Object[] {
                 daoMeta.getDaoElement().getQualifiedName(),
                 method.getSimpleName() });
     }
@@ -341,7 +328,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         if (daoMeta.isError()) {
             return;
         }
-        if (!Options.getSqlValidation(env)) {
+        if (!ctx.getOptions().getSqlValidation()) {
             return;
         }
         String dirPath = SqlFileUtil.buildPath(interfaceElement
@@ -356,7 +343,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         Message message = Message.DOMA4220;
         if (!isSuppressed(suppress, message)) {
             for (String fileName : fileNames) {
-                Notifier.notify(env, Kind.WARNING, message, interfaceElement,
+                ctx.getNotifier().notify(Kind.WARNING, message,
+                        interfaceElement,
                         new Object[] { dirPath + "/" + fileName });
             }
         }
@@ -396,7 +384,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     protected FileObject getFileObject(String path) {
         try {
-            return ResourceUtil.getResource(path, env);
+            return ctx.getResources().getResource(path);
         } catch (Exception ignored) {
             // Ignore, in case the Filer implementation doesn't support
             // directory path.

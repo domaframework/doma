@@ -17,21 +17,19 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.ConfigCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.PreparedSqlCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.internal.apt.reflection.SqlProcessorReflection;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
 /**
@@ -41,8 +39,8 @@ import org.seasar.doma.message.Message;
 public class SqlProcessorQueryMetaFactory
         extends AbstractSqlFileQueryMetaFactory<SqlProcessorQueryMeta> {
 
-    public SqlProcessorQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public SqlProcessorQueryMetaFactory(Context ctx) {
+        super(ctx);
     }
 
     @Override
@@ -64,7 +62,8 @@ public class SqlProcessorQueryMetaFactory
 
     protected SqlProcessorQueryMeta createSqlContentQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        SqlProcessorReflection sqlProcessorReflection = new Reflections(env)
+        SqlProcessorReflection sqlProcessorReflection = ctx
+                .getReflections()
                 .newSqlProcessorReflection(method);
         if (sqlProcessorReflection == null) {
             return null;
@@ -94,8 +93,7 @@ public class SqlProcessorQueryMetaFactory
         if (queryMeta.getBiFunctionCtType() == null) {
             SqlProcessorReflection sqlProcessorReflection = queryMeta
                     .getSqlProcessorReflection();
-            throw new AptException(Message.DOMA4433, env, method,
-                    sqlProcessorReflection.getAnnotationMirror(),
+            throw new AptException(Message.DOMA4433, method, sqlProcessorReflection.getAnnotationMirror(),
                     new Object[] { daoMeta.getDaoElement().getQualifiedName(),
                             method.getSimpleName() });
         }
@@ -111,23 +109,22 @@ public class SqlProcessorQueryMetaFactory
         AnyCtType resultCtType = biFunctionCtType.getResultCtType();
         if (resultCtType == null
                 || !isConvertibleReturnType(returnMeta, resultCtType)) {
-            throw new AptException(Message.DOMA4436, env, method,
-                    new Object[] { returnMeta.getType(),
-                            resultCtType.getBoxedTypeName(),
-                            daoMeta.getDaoElement().getQualifiedName(),
-                            method.getSimpleName() });
+            throw new AptException(Message.DOMA4436, method, new Object[] { returnMeta.getType(),
+                    resultCtType.getBoxedTypeName(),
+                    daoMeta.getDaoElement().getQualifiedName(),
+                    method.getSimpleName() });
         }
     }
 
     protected boolean isConvertibleReturnType(QueryReturnMeta returnMeta,
             AnyCtType resultCtType) {
-        if (env.getTypeUtils().isSameType(returnMeta.getType(),
+        if (ctx.getTypes().isSameType(returnMeta.getType(),
                 resultCtType.getTypeMirror())) {
             return true;
         }
         if (returnMeta.getType().getKind() == TypeKind.VOID) {
-            return TypeMirrorUtil.isSameType(resultCtType.getTypeMirror(),
-                    Void.class, env);
+            return ctx.getTypes().isSameType(resultCtType.getTypeMirror(),
+                    Void.class);
         }
         return false;
     }
@@ -154,8 +151,7 @@ public class SqlProcessorQueryMetaFactory
         public Void visitBiFunctionCtType(BiFunctionCtType ctType, Void p)
                 throws RuntimeException {
             if (queryMeta.getBiFunctionCtType() != null) {
-                throw new AptException(Message.DOMA4434, env,
-                        parameterMeta.getElement(),
+                throw new AptException(Message.DOMA4434, parameterMeta.getElement(),
                         new Object[] {
                                 parameterMeta.getDaoElement()
                                         .getQualifiedName(),
@@ -197,8 +193,7 @@ public class SqlProcessorQueryMetaFactory
         @Override
         protected Void defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4437, env,
-                    queryMeta.getMethodElement(),
+            throw new AptException(Message.DOMA4437, queryMeta.getMethodElement(),
                     new Object[] {
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });
@@ -233,8 +228,7 @@ public class SqlProcessorQueryMetaFactory
         @Override
         protected Void defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4435, env,
-                    queryMeta.getMethodElement(),
+            throw new AptException(Message.DOMA4435, queryMeta.getMethodElement(),
                     new Object[] {
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });

@@ -40,13 +40,11 @@ import javax.tools.JavaFileObject;
 
 import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
-import org.seasar.doma.Holder;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.ExternalHolder;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.Holder;
+import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.Message;
 
@@ -101,7 +99,7 @@ public abstract class AptTestCase extends AptinaTestCase {
                 || originalClass.isAnnotationPresent(Embeddable.class)
                 || originalClass.isAnnotationPresent(Holder.class)
                 || originalClass.isAnnotationPresent(ExternalHolder.class)) {
-            return MetaUtil.toFullMetaName(originalClass.getName());
+            return Conventions.toFullMetaName(originalClass.getName());
         }
         throw new AssertionFailedError("annotation not found.");
     }
@@ -166,17 +164,17 @@ public abstract class AptTestCase extends AptinaTestCase {
         return null;
     }
 
-    protected TypeElement createTypeElement(ProcessingEnvironment env,
+    protected TypeElement createTypeElement(Context ctx,
             Class<?> clazz) {
-        return ElementUtil.getTypeElement(clazz, env);
+        return ctx.getElements().getTypeElement(clazz);
     }
 
-    protected ExecutableElement createMethodElement(ProcessingEnvironment env,
+    protected ExecutableElement createMethodElement(Context ctx,
             Class<?> clazz, String methodName, Class<?>... parameterClasses) {
-        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
+        TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
         for (TypeElement t = typeElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
-                        .toTypeElement(t.getSuperclass(), env)) {
+                && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
+                        .toTypeElement(t.getSuperclass())) {
             for (ExecutableElement methodElement : ElementFilter
                     .methodsIn(t.getEnclosedElements())) {
                 if (!methodElement.getSimpleName().contentEquals(methodName)) {
@@ -192,8 +190,8 @@ public abstract class AptTestCase extends AptinaTestCase {
                         .iterator(); it.hasNext();) {
                     TypeMirror parameterType = it.next().asType();
                     Class<?> parameterClass = parameterClasses[i];
-                    if (!TypeMirrorUtil.isSameType(parameterType,
-                            parameterClass, env)) {
+                    if (!ctx.getTypes().isSameType(parameterType,
+                            parameterClass)) {
                         return null;
                     }
                 }
@@ -217,10 +215,18 @@ public abstract class AptTestCase extends AptinaTestCase {
     @SupportedAnnotationTypes("*")
     static protected class AptProcessor extends AbstractProcessor {
 
-        private final Consumer<ProcessingEnvironment> consumer;
+        private final Consumer<Context> consumer;
 
-        public AptProcessor(Consumer<ProcessingEnvironment> consumer) {
+        private Context ctx;
+
+        public AptProcessor(Consumer<Context> consumer) {
             this.consumer = consumer;
+        }
+
+        @Override
+        public synchronized void init(ProcessingEnvironment env) {
+            super.init(env);
+            this.ctx = new Context(env);
         }
 
         @Override
@@ -234,7 +240,7 @@ public abstract class AptTestCase extends AptinaTestCase {
             if (roundEnv.processingOver()) {
                 return true;
             }
-            this.consumer.accept(this.processingEnv);
+            this.consumer.accept(this.ctx);
             return true;
         }
     }

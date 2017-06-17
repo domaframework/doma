@@ -19,15 +19,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.meta.ExternalHolderMeta;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.holder.AbstractHolderType;
 
 /**
@@ -46,18 +42,20 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
 
     protected final boolean parametarized;
 
-    public ExternalHolderTypeGenerator(ProcessingEnvironment env,
+    public ExternalHolderTypeGenerator(Context ctx,
             TypeElement typeElement, ExternalHolderMeta holderMeta)
             throws IOException {
-        super(env, typeElement, Constants.EXTERNAL_HOLDER_METATYPE_ROOT_PACKAGE
-                + "." + ElementUtil.getPackageName(typeElement, env), null,
+        super(ctx, typeElement,
+                Constants.EXTERNAL_HOLDER_METATYPE_ROOT_PACKAGE + "."
+                        + ctx.getElements().getPackageName(typeElement),
+                null,
                 Constants.METATYPE_PREFIX, "");
         assertNotNull(holderMeta);
         this.holderMeta = holderMeta;
-        this.holderTypeName = TypeMirrorUtil.getTypeName(holderMeta
-                .getHolderElement().asType(), env);
-        this.simpleMetaClassName = MetaUtil.toSimpleMetaName(typeElement,
-                env);
+        this.holderTypeName = ctx.getTypes()
+                .getTypeName(holderMeta
+                        .getHolderElement().asType());
+        this.simpleMetaClassName = ctx.getMetas().toSimpleMetaName(typeElement);
         this.typeParamDecl = makeTypeParamDecl(holderTypeName);
         this.parametarized = !holderMeta.getHolderElement().getTypeParameters()
                 .isEmpty();

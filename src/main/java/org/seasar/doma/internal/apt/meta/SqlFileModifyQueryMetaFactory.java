@@ -17,15 +17,14 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.ModifyReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -35,8 +34,8 @@ import org.seasar.doma.message.Message;
 public class SqlFileModifyQueryMetaFactory extends
         AbstractSqlFileQueryMetaFactory<SqlFileModifyQueryMeta> {
 
-    public SqlFileModifyQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public SqlFileModifyQueryMetaFactory(Context ctx) {
+        super(ctx);
     }
 
     @Override
@@ -59,20 +58,22 @@ public class SqlFileModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method,
                 daoMeta.getDaoElement());
-        ModifyReflection modifyReflection = new Reflections(env)
+        ModifyReflection modifyReflection = ctx.getReflections()
                 .newInsertReflection(method);
         if (modifyReflection != null && modifyReflection.getSqlFileValue()) {
             queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
             return queryMeta;
         }
-        modifyReflection = new Reflections(env).newUpdateReflection(method);
+        modifyReflection = ctx.getReflections()
+                .newUpdateReflection(method);
         if (modifyReflection != null && modifyReflection.getSqlFileValue()) {
             queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
             return queryMeta;
         }
-        modifyReflection = new Reflections(env).newDeleteReflection(method);
+        modifyReflection = ctx.getReflections()
+                .newDeleteReflection(method);
         if (modifyReflection != null && modifyReflection.getSqlFileValue()) {
             queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
@@ -88,15 +89,15 @@ public class SqlFileModifyQueryMetaFactory extends
         EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isResult(entityCtType)) {
-                throw new AptException(Message.DOMA4222, env,
-                        returnMeta.getMethodElement(), new Object[] {
+                throw new AptException(Message.DOMA4222, returnMeta.getMethodElement(),
+                        new Object[] {
                                 daoMeta.getDaoElement().getQualifiedName(),
                                 method.getSimpleName() });
             }
         } else {
             if (!returnMeta.isPrimitiveInt()) {
-                throw new AptException(Message.DOMA4001, env,
-                        returnMeta.getMethodElement(), new Object[] {
+                throw new AptException(Message.DOMA4001, returnMeta.getMethodElement(),
+                        new Object[] {
                                 daoMeta.getDaoElement().getQualifiedName(),
                                 method.getSimpleName() });
             }

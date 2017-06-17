@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
@@ -23,6 +22,7 @@ import org.seasar.doma.In;
 import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
@@ -35,7 +35,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.internal.apt.reflection.ResultSetReflection;
 import org.seasar.doma.message.Message;
 
@@ -46,8 +45,8 @@ import org.seasar.doma.message.Message;
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    protected AutoModuleQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    protected AutoModuleQueryMetaFactory(Context ctx) {
+        super(ctx);
     }
 
     @Override
@@ -70,7 +69,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
     protected CallableSqlParameterMeta createParameterMeta(
             final QueryParameterMeta parameterMeta) {
-        ResultSetReflection resultSetReflection = new Reflections(env)
+        ResultSetReflection resultSetReflection = ctx.getReflections()
                 .newResultSetReflection(parameterMeta.getElement());
         if (resultSetReflection != null) {
             return createResultSetParameterMeta(parameterMeta, resultSetReflection);
@@ -84,8 +83,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         if (parameterMeta.isAnnotated(InOut.class)) {
             return createInOutParameterMeta(parameterMeta);
         }
-        throw new AptException(Message.DOMA4066, env,
-                parameterMeta.getElement(), new Object[] {
+        throw new AptException(Message.DOMA4066, parameterMeta.getElement(),
+                new Object[] {
                         parameterMeta.getDaoElement().getQualifiedName(),
                         parameterMeta.getMethodElement().getSimpleName() });
     }
@@ -141,8 +140,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected IterableCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4062, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4062, parameterMeta.getElement(),
+                    new Object[] {
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });
         }
@@ -179,8 +178,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4186, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4186, parameterMeta.getElement(),
+                    new Object[] {
                             type.getTypeName(),
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });
@@ -190,8 +189,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         public CallableSqlParameterMeta visitEntityCtType(EntityCtType ctType,
                 Boolean p) throws RuntimeException {
             if (ctType.isAbstract()) {
-                throw new AptException(Message.DOMA4157, env,
-                        parameterMeta.getElement(), new Object[] {
+                throw new AptException(Message.DOMA4157, parameterMeta.getElement(),
+                        new Object[] {
                                 ctType.getTypeName(),
                                 parameterMeta.getDaoElement()
                                         .getQualifiedName(),
@@ -272,8 +271,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4101, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4101, parameterMeta.getElement(),
+                    new Object[] {
                             parameterMeta.getType(),
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });
@@ -342,8 +341,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected ReferenceCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4098, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4098, parameterMeta.getElement(),
+                    new Object[] {
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });
         }
@@ -377,8 +376,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4100, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4100, parameterMeta.getElement(),
+                    new Object[] {
                             referenceCtType.getReferentTypeMirror(),
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });
@@ -447,8 +446,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected ReferenceCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4111, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4111, parameterMeta.getElement(),
+                    new Object[] {
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });
         }
@@ -482,8 +481,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4100, env,
-                    parameterMeta.getElement(), new Object[] {
+            throw new AptException(Message.DOMA4100, parameterMeta.getElement(),
+                    new Object[] {
                             referenceCtType.getReferentTypeMirror(),
                             parameterMeta.getDaoElement().getQualifiedName(),
                             parameterMeta.getMethodElement().getSimpleName() });

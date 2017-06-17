@@ -19,11 +19,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Clob;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.ClobFactoryReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 
 /**
  * @author taedium
@@ -32,14 +31,14 @@ import org.seasar.doma.internal.apt.reflection.Reflections;
 public class ClobCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<ClobCreateQueryMeta> {
 
-    public ClobCreateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env, Clob.class);
+    public ClobCreateQueryMetaFactory(Context ctx) {
+        super(ctx, Clob.class);
     }
 
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        ClobFactoryReflection clobFactoryReflection = new Reflections(env)
+        ClobFactoryReflection clobFactoryReflection = ctx.getReflections()
                 .newClobFactoryReflection(method);
         if (clobFactoryReflection == null) {
             return null;

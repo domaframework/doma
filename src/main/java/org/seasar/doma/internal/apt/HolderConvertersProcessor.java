@@ -27,8 +27,6 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.HolderConverters;
 import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
 /**
@@ -52,26 +50,23 @@ public class HolderConvertersProcessor extends AbstractProcessor {
         for (TypeElement a : annotations) {
             for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
-                handleTypeElement(typeElement, t -> validate(t));
+                handleTypeElement(typeElement, this::validate);
             }
         }
         return true;
     }
 
     protected void validate(TypeElement typeElement) {
-        HolderConvertersReflection convertersMirror = new Reflections(
-                processingEnv)
+        HolderConvertersReflection convertersMirror = ctx.getReflections()
                 .newHolderConvertersReflection(typeElement);
         for (TypeMirror convType : convertersMirror.getValueValue()) {
-            TypeElement convElement = TypeMirrorUtil.toTypeElement(convType,
-                    processingEnv);
+            TypeElement convElement = ctx.getTypes().toTypeElement(convType);
             if (convElement == null) {
                 continue;
             }
             if (convElement.getAnnotation(ExternalHolder.class) == null) {
-                throw new AptException(Message.DOMA4196, processingEnv,
-                        typeElement, convertersMirror.getAnnotationMirror(),
-                        new Object[] { convElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4196, typeElement,
+                        convertersMirror.getAnnotationMirror(), new Object[] { convElement.getQualifiedName() });
             }
         }
     }

@@ -44,19 +44,22 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
 
     @Override
     protected EntityMetaFactory createTypeElementMetaFactory() {
-        EntityPropertyMetaFactory propertyMetaFactory = createEntityPropertyMetaFactory();
-        return new EntityMetaFactory(processingEnv, propertyMetaFactory);
+        EntityPropertyMetaFactory propertyMetaFactory = createEntityPropertyMetaFactory(
+                ctx);
+        return new EntityMetaFactory(ctx, propertyMetaFactory);
     }
 
-    protected EntityPropertyMetaFactory createEntityPropertyMetaFactory() {
-        return new EntityPropertyMetaFactory(processingEnv);
+    protected EntityPropertyMetaFactory createEntityPropertyMetaFactory(
+            Context ctx) {
+        return new EntityPropertyMetaFactory(ctx);
     }
 
     @Override
-    protected Generator createGenerator(TypeElement typeElement, EntityMeta meta)
+    protected Generator createGenerator(Context ctx, TypeElement typeElement,
+            EntityMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
-        return new EntityTypeGenerator(processingEnv, typeElement, meta);
+        return new EntityTypeGenerator(ctx, typeElement, meta);
     }
 
 }

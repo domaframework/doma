@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.Constants;
@@ -38,7 +37,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.EmbeddablePropertyMeta;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EmbeddableType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -53,10 +51,10 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
 
     protected final EmbeddableMeta embeddableMeta;
 
-    public EmbeddableTypeGenerator(ProcessingEnvironment env,
+    public EmbeddableTypeGenerator(Context ctx,
             TypeElement entityElement, EmbeddableMeta embeddableMeta)
             throws IOException {
-        super(env, entityElement, null, null, Constants.METATYPE_PREFIX, "");
+        super(ctx, entityElement, null, null, Constants.METATYPE_PREFIX, "");
         assertNotNull(embeddableMeta);
         this.embeddableMeta = embeddableMeta;
     }
@@ -177,8 +175,8 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
                     .getEmbeddablePropertyMetas().iterator(); it.hasNext();) {
                 EmbeddablePropertyMeta propertyMeta = it.next();
                 iprint("        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") != null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
-                        TypeMirrorUtil.boxIfPrimitive(propertyMeta.getType(),
-                                env), propertyMeta.getName());
+                        ctx.getTypes().boxIfPrimitive(propertyMeta.getType()),
+                        propertyMeta.getName());
                 if (it.hasNext()) {
                     print(",%n");
                 }

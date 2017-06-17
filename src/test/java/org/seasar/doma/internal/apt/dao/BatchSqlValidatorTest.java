@@ -43,13 +43,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testEmbeddedVariable() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
             BatchSqlValidator validator = new BatchSqlValidator(
-                    env, methodElement, parameterTypeMap,
+                    ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp /*# orderBy */");
@@ -64,12 +64,12 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testEmbeddedVariableSuppressed() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testEmbeddedVariableSuppressed", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(env,
+            BatchSqlValidator validator = new BatchSqlValidator(ctx,
                     methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
                     false, false);
             SqlParser parser = new SqlParser(
@@ -85,12 +85,12 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testIf() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testIf");
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(env,
+            BatchSqlValidator validator = new BatchSqlValidator(ctx,
                     methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
                     false, false);
             SqlParser parser = new SqlParser(
@@ -106,13 +106,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testIfSuppressed() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testIfSuppressed");
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
             BatchSqlValidator validator = new BatchSqlValidator(
-                    env, methodElement, parameterTypeMap,
+                    ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where /*%if true*/ id = 1 /*%end */");
@@ -127,12 +127,12 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testIfAndEmbeddedVariable() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testIfAndEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(env,
+            BatchSqlValidator validator = new BatchSqlValidator(ctx,
                     methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
                     false, false);
             SqlParser parser = new SqlParser(
@@ -148,13 +148,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testIfAndEmbeddedVariableSuppressed() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testIfAndEmbeddedVariableSuppressed", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
             BatchSqlValidator validator = new BatchSqlValidator(
-                    env, methodElement, parameterTypeMap,
+                    ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
@@ -169,13 +169,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testPopulate() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
             BatchSqlValidator validator = new BatchSqlValidator(
-                    env, methodElement, parameterTypeMap,
+                    ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, true);
             SqlParser parser = new SqlParser(
                     "update emp set /*%populate*/ id = id");
@@ -190,12 +190,12 @@ public class BatchSqlValidatorTest extends AptTestCase {
     public void testPopulate_noPopulatable() throws Exception {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
-        addProcessor(new AptProcessor(env -> {
-            ExecutableElement methodElement = createMethodElement(env, target,
+        addProcessor(new AptProcessor(ctx -> {
+            ExecutableElement methodElement = createMethodElement(ctx, target,
                     "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(
                     methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(env,
+            BatchSqlValidator validator = new BatchSqlValidator(ctx,
                     methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
                     false, false);
             SqlParser parser = new SqlParser(

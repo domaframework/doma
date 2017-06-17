@@ -19,14 +19,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.meta.HolderMeta;
-import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.holder.AbstractHolderType;
 
@@ -45,15 +42,15 @@ public class HolderTypeGenerator extends AbstractGenerator {
 
     protected final String typeParamDecl;
 
-    public HolderTypeGenerator(ProcessingEnvironment env,
+    public HolderTypeGenerator(Context ctx,
             TypeElement holderElement, HolderMeta holderMeta)
             throws IOException {
-        super(env, holderElement, null, null, Constants.METATYPE_PREFIX, "");
+        super(ctx, holderElement, null, null, Constants.METATYPE_PREFIX, "");
         assertNotNull(holderMeta);
         this.holderMeta = holderMeta;
-        this.typeName = TypeMirrorUtil.getTypeName(holderMeta.getType(), env);
-        this.simpleMetaClassName = MetaUtil.toSimpleMetaName(
-                holderElement, env);
+        this.typeName = ctx.getTypes().getTypeName(holderMeta.getType());
+        this.simpleMetaClassName = ctx.getMetas()
+                .toSimpleMetaName(holderElement);
         this.typeParamDecl = makeTypeParamDecl(typeName);
     }
 
@@ -92,7 +89,7 @@ public class HolderTypeGenerator extends AbstractGenerator {
         printGenerated();
         iprint("public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
                 simpleMetaClassName, AbstractHolderType.class.getName(),
-                TypeMirrorUtil.boxIfPrimitive(holderMeta.getValueType(), env),
+                ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
                 typeName, typeParamDecl);
         print("%n");
         indent();
@@ -119,8 +116,7 @@ public class HolderTypeGenerator extends AbstractGenerator {
         if (holderMeta.getBasicCtType().isEnum()) {
             iprint("    super(() -> new %1$s(%2$s.class));%n", holderMeta
                     .getWrapperCtType().getTypeName(),
-                    TypeMirrorUtil.boxIfPrimitive(holderMeta.getValueType(),
-                            env));
+                    ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()));
         } else {
             iprint("    super(() -> new %1$s());%n", holderMeta
                     .getWrapperCtType().getTypeName());
@@ -141,7 +137,7 @@ public class HolderTypeGenerator extends AbstractGenerator {
         boolean primitive = holderMeta.getBasicCtType().isPrimitive();
         iprint("@Override%n");
         iprint("protected %1$s newHolder(%2$s value) {%n", typeName,
-                TypeMirrorUtil.boxIfPrimitive(holderMeta.getValueType(), env));
+                ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()));
         if (!primitive && !holderMeta.getAcceptNull()) {
             iprint("    if (value == null) {%n");
             iprint("        return null;%n");
@@ -174,7 +170,7 @@ public class HolderTypeGenerator extends AbstractGenerator {
     protected void printGetBasicValueMethod() {
         iprint("@Override%n");
         iprint("protected %1$s getBasicValue(%2$s holder) {%n",
-                TypeMirrorUtil.boxIfPrimitive(holderMeta.getValueType(), env),
+                ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
                 typeName);
         iprint("    if (holder == null) {%n");
         iprint("        return null;%n");

@@ -17,19 +17,16 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
-import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
@@ -38,6 +35,8 @@ import org.seasar.doma.jdbc.entity.NamingType;
  * 
  */
 public class EntityPropertyMeta {
+
+    protected final Context ctx;
 
     protected final String entityName;
 
@@ -57,8 +56,6 @@ public class EntityPropertyMeta {
 
     protected final String fieldPrefix;
 
-    protected final ProcessingEnvironment env;
-
     protected String name;
 
     protected boolean id;
@@ -71,20 +68,19 @@ public class EntityPropertyMeta {
 
     protected CtType ctType;
 
-    public EntityPropertyMeta(TypeElement entityElement,
-            VariableElement propertyElement, NamingType namingType,
-            ProcessingEnvironment env) {
-        assertNotNull(entityElement, propertyElement, env);
+    public EntityPropertyMeta(Context ctx, TypeElement entityElement,
+            VariableElement propertyElement, NamingType namingType) {
+        assertNotNull(ctx, entityElement, propertyElement);
+        this.ctx = ctx;
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
-        this.entityMetaTypeName = MetaUtil.toFullMetaName(entityElement, env);
+        this.entityMetaTypeName = ctx.getMetas().toFullMetaName(entityElement);
         this.namingType = namingType;
         this.type = propertyElement.asType();
-        this.typeName = TypeMirrorUtil.getTypeName(type, env);
-        this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(type, env);
-        this.boxedClassName = TypeMirrorUtil.getBoxedClassName(type, env);
-        this.fieldPrefix = Options.getEntityFieldPrefix(env);
-        this.env = env;
+        this.typeName = ctx.getTypes().getTypeName(type);
+        this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
+        this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
+        this.fieldPrefix = ctx.getOptions().getEntityFieldPrefix();
     }
 
     public String getEntityName() {
@@ -193,10 +189,10 @@ public class EntityPropertyMeta {
     }
 
     public String getEmbeddableMetaTypeName() {
-        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
+        TypeElement typeElement = ctx.getTypes().toTypeElement(type);
         if (typeElement == null) {
             throw new AptIllegalStateException("typeElement must not be null.");
         }
-        return MetaUtil.toFullMetaName(typeElement, env);
+        return ctx.getMetas().toFullMetaName(typeElement);
     }
 }

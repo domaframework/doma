@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.sql.DataSource;
 
@@ -36,10 +35,10 @@ import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.EnumWrapperCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
@@ -66,14 +65,14 @@ import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
 import org.seasar.doma.internal.apt.meta.DefaultQueryMeta;
+import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
+import org.seasar.doma.internal.apt.meta.EntityResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.HolderInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.HolderInParameterMeta;
 import org.seasar.doma.internal.apt.meta.HolderListParameterMeta;
 import org.seasar.doma.internal.apt.meta.HolderOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.HolderResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.HolderSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
-import org.seasar.doma.internal.apt.meta.EntityResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalBasicInOutParameterMeta;
@@ -82,18 +81,18 @@ import org.seasar.doma.internal.apt.meta.OptionalBasicListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalBasicOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalBasicResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalBasicSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderInParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleInParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleResultListParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalDoubleSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderInParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.OptionalHolderSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalIntInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalIntInParameterMeta;
 import org.seasar.doma.internal.apt.meta.OptionalIntListParameterMeta;
@@ -122,14 +121,14 @@ import org.seasar.doma.internal.jdbc.command.BasicCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.BasicStreamHandler;
-import org.seasar.doma.internal.jdbc.command.HolderCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.HolderResultListHandler;
-import org.seasar.doma.internal.jdbc.command.HolderSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.HolderStreamHandler;
 import org.seasar.doma.internal.jdbc.command.EntityCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
+import org.seasar.doma.internal.jdbc.command.HolderCollectorHandler;
+import org.seasar.doma.internal.jdbc.command.HolderResultListHandler;
+import org.seasar.doma.internal.jdbc.command.HolderSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.HolderStreamHandler;
 import org.seasar.doma.internal.jdbc.command.MapCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
 import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
@@ -138,15 +137,15 @@ import org.seasar.doma.internal.jdbc.command.OptionalBasicCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalBasicStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalHolderCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalHolderResultListHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalHolderSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalHolderStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDoubleCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDoubleResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDoubleSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalDoubleStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderCollectorHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderResultListHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalHolderStreamHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalIntCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalIntResultListHandler;
 import org.seasar.doma.internal.jdbc.command.OptionalIntSingleResultHandler;
@@ -163,14 +162,14 @@ import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
+import org.seasar.doma.internal.jdbc.sql.EntityResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.HolderInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.HolderInParameter;
 import org.seasar.doma.internal.jdbc.sql.HolderListParameter;
 import org.seasar.doma.internal.jdbc.sql.HolderOutParameter;
 import org.seasar.doma.internal.jdbc.sql.HolderResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.HolderSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
-import org.seasar.doma.internal.jdbc.sql.EntityResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalBasicInOutParameter;
@@ -179,18 +178,18 @@ import org.seasar.doma.internal.jdbc.sql.OptionalBasicListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalBasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalBasicResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalBasicSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalHolderInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalHolderInParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalHolderListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalHolderOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalHolderResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalHolderSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalDoubleSingleResultParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderInParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderOutParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.OptionalHolderSingleResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalIntInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalIntInParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalIntListParameter;
@@ -219,10 +218,11 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected final DaoMeta daoMeta;
 
-    public DaoGenerator(ProcessingEnvironment env, TypeElement daoElement,
+    public DaoGenerator(Context ctx, TypeElement daoElement,
             DaoMeta daoMeta) throws IOException {
-        super(env, daoElement, Options.getDaoPackage(env),
-                Options.getDaoSubpackage(env), "", Options.getDaoSuffix(env));
+        super(ctx, daoElement, ctx.getOptions().getDaoPackage(),
+                ctx.getOptions().getDaoSubpackage(), "",
+                ctx.getOptions().getDaoSuffix());
         assertNotNull(daoMeta);
         this.daoMeta = daoMeta;
     }
@@ -252,7 +252,7 @@ public class DaoGenerator extends AbstractGenerator {
         ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
         if (parentDaoMeta != null) {
             TypeElement parentDaotElement = parentDaoMeta.getDaoElement();
-            parentClassName = createCanonicalName(env, parentDaotElement,
+            parentClassName = createCanonicalName(parentDaotElement,
                     fullpackage, subpackage, prefix, suffix);
         }
         iprint("%4$s class %1$s extends %2$s implements %3$s {%n",

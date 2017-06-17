@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -58,9 +57,8 @@ import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Table;
 import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Update;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 /**
  * @author nakamura
@@ -68,35 +66,36 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
  */
 public class Reflections {
 
-    private final ProcessingEnvironment env;
+    private final Context ctx;
 
-    public Reflections(ProcessingEnvironment env) {
-        assertNotNull(env);
-        this.env = env;
+    public Reflections(Context ctx) {
+        assertNotNull(ctx);
+        this.ctx = ctx;
     }
 
     public AllArgsConstructorReflection newAllArgsConstructorReflection(
             TypeElement clazz) {
         assertNotNull(clazz);
-        return newInstance(clazz, Options.getLombokAllArgsConstructor(env),
+        return newInstance(clazz,
+                ctx.getOptions().getLombokAllArgsConstructor(),
                 AllArgsConstructorReflection::new);
     }
 
     public AnnotateWithReflection newAnnotateWithReflection(
             TypeElement typeElement) {
         assertNotNull(typeElement);
-        AnnotationMirror annotateWith = ElementUtil
-                .getAnnotationMirror(typeElement, AnnotateWith.class, env);
+        AnnotationMirror annotateWith = ctx.getElements()
+                .getAnnotationMirror(typeElement, AnnotateWith.class);
         if (annotateWith == null) {
             for (AnnotationMirror annotationMirror : typeElement
                     .getAnnotationMirrors()) {
-                TypeElement ownerElement = ElementUtil.toTypeElement(
-                        annotationMirror.getAnnotationType().asElement(), env);
+                TypeElement ownerElement = ctx.getElements().toTypeElement(
+                        annotationMirror.getAnnotationType().asElement());
                 if (ownerElement == null) {
                     continue;
                 }
-                annotateWith = ElementUtil.getAnnotationMirror(ownerElement,
-                        AnnotateWith.class, env);
+                annotateWith = ctx.getElements()
+                        .getAnnotationMirror(ownerElement, AnnotateWith.class);
                 if (annotateWith != null) {
                     break;
                 }
@@ -105,8 +104,8 @@ public class Reflections {
                 return null;
             }
         }
-        Map<String, AnnotationValue> values = ElementUtil
-                .getElementValuesWithDefaults(annotateWith, env);
+        Map<String, AnnotationValue> values = ctx.getElements()
+                .getValuesWithDefaults(annotateWith);
         AnnotationValue annotations = values.get("annotations");
         ArrayList<AnnotationReflection> annotationsValue = new ArrayList<>();
         for (AnnotationMirror annotationMirror : AnnotationValueUtil
@@ -120,8 +119,8 @@ public class Reflections {
     private AnnotationReflection newAnnotationReflection(
             AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
-        Map<String, AnnotationValue> values = ElementUtil
-                .getElementValuesWithDefaults(annotationMirror, env);
+        Map<String, AnnotationValue> values = ctx.getElements()
+                .getValuesWithDefaults(annotationMirror);
         return new AnnotationReflection(annotationMirror, values);
     }
 
@@ -176,7 +175,7 @@ public class Reflections {
         assertNotNull(interfaze);
         return newInstance(interfaze, Dao.class,
                 (annotationMirror, values) -> new DaoReflection(
-                        annotationMirror, env, values));
+                        annotationMirror, values));
     }
 
     public DeleteReflection newDeleteReflection(ExecutableElement method) {
@@ -298,7 +297,7 @@ public class Reflections {
 
     public ValueReflection newValueReflection(TypeElement clazz) {
         assertNotNull(clazz);
-        return newInstance(clazz, Options.getLombokValue(env),
+        return newInstance(clazz, ctx.getOptions().getLombokValue(),
                 ValueReflection::new);
     }
 
@@ -312,26 +311,26 @@ public class Reflections {
     private <REFLECTION> REFLECTION newInstance(Element element,
             Class<? extends Annotation> annotationClass,
             BiFunction<AnnotationMirror, Map<String, AnnotationValue>, REFLECTION> biFunction) {
-        AnnotationMirror annotationMirror = ElementUtil
-                .getAnnotationMirror(element, annotationClass, env);
+        AnnotationMirror annotationMirror = ctx.getElements()
+                .getAnnotationMirror(element, annotationClass);
         if (annotationMirror == null) {
             return null;
         }
-        Map<String, AnnotationValue> values = ElementUtil
-                .getElementValuesWithDefaults(annotationMirror, env);
+        Map<String, AnnotationValue> values = ctx.getElements()
+                .getValuesWithDefaults(annotationMirror);
         return biFunction.apply(annotationMirror, values);
     }
 
     private <REFLECTION> REFLECTION newInstance(Element element,
             String annotationClassName,
             BiFunction<AnnotationMirror, Map<String, AnnotationValue>, REFLECTION> biFunction) {
-        AnnotationMirror annotationMirror = ElementUtil
-                .getAnnotationMirror(element, annotationClassName, env);
+        AnnotationMirror annotationMirror = ctx.getElements()
+                .getAnnotationMirror(element, annotationClassName);
         if (annotationMirror == null) {
             return null;
         }
-        Map<String, AnnotationValue> values = ElementUtil
-                .getElementValuesWithDefaults(annotationMirror, env);
+        Map<String, AnnotationValue> values = ctx.getElements()
+                .getValuesWithDefaults(annotationMirror);
         return biFunction.apply(annotationMirror, values);
     }
 

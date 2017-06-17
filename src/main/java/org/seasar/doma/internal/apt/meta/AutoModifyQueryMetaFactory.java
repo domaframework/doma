@@ -19,16 +19,15 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.ModifyReflection;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 import org.seasar.doma.message.Message;
 
 /**
@@ -38,8 +37,8 @@ import org.seasar.doma.message.Message;
 public class AutoModifyQueryMetaFactory extends
         AbstractQueryMetaFactory<AutoModifyQueryMeta> {
 
-    public AutoModifyQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public AutoModifyQueryMetaFactory(Context ctx) {
+        super(ctx);
     }
 
     @Override
@@ -61,20 +60,22 @@ public class AutoModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method,
                 daoMeta.getDaoElement());
-        ModifyReflection modifyReflection = new Reflections(env)
+        ModifyReflection modifyReflection = ctx.getReflections()
                 .newInsertReflection(method);
         if (modifyReflection != null && !modifyReflection.getSqlFileValue()) {
             queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
             return queryMeta;
         }
-        modifyReflection = new Reflections(env).newUpdateReflection(method);
+        modifyReflection = ctx.getReflections()
+                .newUpdateReflection(method);
         if (modifyReflection != null && !modifyReflection.getSqlFileValue()) {
             queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
             return queryMeta;
         }
-        modifyReflection = new Reflections(env).newDeleteReflection(method);
+        modifyReflection = ctx.getReflections()
+                .newDeleteReflection(method);
         if (modifyReflection != null && !modifyReflection.getSqlFileValue()) {
             queryMeta.setModifyReflection(modifyReflection);
             queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
@@ -90,15 +91,15 @@ public class AutoModifyQueryMetaFactory extends
         EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isResult(entityCtType)) {
-                throw new AptException(Message.DOMA4222, env,
-                        returnMeta.getMethodElement(), new Object[] {
+                throw new AptException(Message.DOMA4222, returnMeta.getMethodElement(),
+                        new Object[] {
                                 daoMeta.getDaoElement().getQualifiedName(),
                                 method.getSimpleName() });
             }
         } else {
             if (!returnMeta.isPrimitiveInt()) {
-                throw new AptException(Message.DOMA4001, env,
-                        returnMeta.getMethodElement(), new Object[] {
+                throw new AptException(Message.DOMA4001, returnMeta.getMethodElement(),
+                        new Object[] {
                                 daoMeta.getDaoElement().getQualifiedName(),
                                 method.getSimpleName() });
             }
@@ -112,7 +113,7 @@ public class AutoModifyQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(Message.DOMA4002, env, method, new Object[] {
+            throw new AptException(Message.DOMA4002, method, new Object[] {
                     daoMeta.getDaoElement().getQualifiedName(),
                     method.getSimpleName() });
         }
@@ -125,8 +126,8 @@ public class AutoModifyQueryMetaFactory extends
                     @Override
                     protected EntityCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
-                        throw new AptException(Message.DOMA4003, env,
-                                parameterMeta.getElement(), new Object[] {
+                        throw new AptException(Message.DOMA4003, parameterMeta.getElement(),
+                                new Object[] {
                                         daoMeta.getDaoElement()
                                                 .getQualifiedName(),
                                         method.getSimpleName() });
