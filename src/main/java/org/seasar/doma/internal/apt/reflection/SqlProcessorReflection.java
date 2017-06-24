@@ -23,17 +23,11 @@ import javax.lang.model.element.AnnotationMirror;
  * @author nakamura
  *
  */
-public class SqlProcessorReflection {
+public class SqlProcessorReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
-
-    protected SqlProcessorReflection(AnnotationMirror annotationMirror) {
+    SqlProcessorReflection(AnnotationMirror annotationMirror) {
+        super(annotationMirror);
         assertNotNull(annotationMirror);
-        this.annotationMirror = annotationMirror;
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
 }

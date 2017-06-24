@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.reflection.TableGeneratorReflection;
 
@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.reflection.TableGeneratorReflection;
  */
 public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
-    protected final TableGeneratorReflection tableGeneratorReflection;
+    private final TableGeneratorReflection tableGeneratorReflection;
 
     public TableIdGeneratorMeta(TableGeneratorReflection tableGeneratorReflection) {
         assertNotNull(tableGeneratorReflection);

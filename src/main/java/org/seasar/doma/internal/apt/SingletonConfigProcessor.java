@@ -59,7 +59,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         return true;
     }
 
-    protected void validate(TypeElement typeElement) {
+    private void validate(TypeElement typeElement) {
         SingletonConfigReflection mirror = ctx.getReflections()
                 .newSingletonConfigReflection(typeElement);
         if (mirror == null) {
@@ -70,15 +70,15 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         validateMethod(typeElement, mirror.getMethodValue());
     }
 
-    protected void validateClass(TypeElement typeElement,
+    private void validateClass(TypeElement typeElement,
             SingletonConfigReflection mirror) {
         if (!ctx.getTypes().isAssignable(typeElement.asType(), Config.class)) {
             throw new AptException(Message.DOMA4253, typeElement,
-                    mirror.getAnnotationMirror(), new Object[] { typeElement.getQualifiedName() });
+                    mirror.getAnnotationMirror());
         }
     }
 
-    protected void validateConstructors(TypeElement typeElement) {
+    private void validateConstructors(TypeElement typeElement) {
         ElementFilter
                 .constructorsIn(typeElement.getEnclosedElements())
                 .stream()
@@ -86,13 +86,11 @@ public class SingletonConfigProcessor extends AbstractProcessor {
                 .findAny()
                 .ifPresent(
                         c -> {
-                            throw new AptException(Message.DOMA4256,
-                                    c, new Object[] { typeElement
-                                            .getQualifiedName() });
+                            throw new AptException(Message.DOMA4256, c);
                         });
     }
 
-    protected void validateMethod(TypeElement typeElement, String methodName) {
+    private void validateMethod(TypeElement typeElement, String methodName) {
         Optional<ExecutableElement> method = ElementFilter
                 .methodsIn(typeElement.getEnclosedElements())
                 .stream()
@@ -105,8 +103,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
                 .findAny();
         if (!method.isPresent()) {
             throw new AptException(Message.DOMA4254, typeElement,
-                    new Object[] { methodName,
-                            typeElement.getQualifiedName() });
+                    new Object[] { methodName });
         }
     }
 }

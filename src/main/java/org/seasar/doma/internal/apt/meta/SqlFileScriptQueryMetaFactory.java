@@ -54,7 +54,7 @@ public class SqlFileScriptQueryMetaFactory extends
         return queryMeta;
     }
 
-    protected SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(
+    private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method,
                 daoMeta.getDaoElement());
@@ -71,12 +71,10 @@ public class SqlFileScriptQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileScriptQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveVoid()) {
-            throw new AptException(Message.DOMA4172, returnMeta.getMethodElement(),
-                    new Object[] {
-                            daoMeta.getDaoElement().getQualifiedName(),
-                            method.getSimpleName() });
+            throw new AptException(Message.DOMA4172,
+                    returnMeta.getMethodElement());
         }
         queryMeta.setReturnMeta(returnMeta);
     }
@@ -85,9 +83,7 @@ public class SqlFileScriptQueryMetaFactory extends
     protected void doParameters(SqlFileScriptQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         if (!method.getParameters().isEmpty()) {
-            throw new AptException(Message.DOMA4173, method, new Object[] {
-                    daoMeta.getDaoElement().getQualifiedName(),
-                    method.getSimpleName() });
+            throw new AptException(Message.DOMA4173, method);
         }
     }
 

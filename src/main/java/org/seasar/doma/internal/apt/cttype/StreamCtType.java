@@ -22,11 +22,11 @@ import org.seasar.doma.internal.apt.Context;
 
 public class StreamCtType extends AbstractCtType {
 
-    protected final TypeMirror elementTypeMirror;
+    private final TypeMirror elementTypeMirror;
 
-    protected final CtType elementCtType;
+    private final CtType elementCtType;
 
-    public StreamCtType(Context ctx, TypeMirror type,
+    StreamCtType(Context ctx, TypeMirror type,
             TypeMirror elementTypeMirror, CtType elementCtType) {
         super(ctx, type);
         this.elementTypeMirror = elementTypeMirror;

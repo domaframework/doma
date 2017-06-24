@@ -13,26 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.cttype;
+package org.seasar.doma.internal.apt;
 
-import javax.lang.model.type.TypeMirror;
+public class ElementsTest extends AptTestCase {
 
-import org.seasar.doma.internal.apt.Context;
-
-/**
- * @author taedium
- * 
- */
-public class EnumWrapperCtType extends WrapperCtType {
-
-    public EnumWrapperCtType(Context ctx, TypeMirror type) {
-        super(ctx, type);
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitEnumWrapperCtType(this, p);
+    public void test() throws Exception {
+        addCompilationUnit(getClass());
+        addProcessor(new AptProcessor(ctx -> {
+        }));
+        compile();
+        assertTrue(getCompiledResult());
     }
 
 }

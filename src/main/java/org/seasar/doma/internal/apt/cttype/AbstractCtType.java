@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -33,35 +32,23 @@ public abstract class AbstractCtType implements CtType {
 
     protected final String typeName;
 
-    protected final String boxedTypeName;
-
-    protected final String metaTypeName;
-
     protected final TypeElement typeElement;
-
-    protected final String packageName;
-
-    protected final String packageExcludedBinaryName;
 
     protected final String qualifiedName;
 
-    protected AbstractCtType(Context ctx, TypeMirror typeMirror) {
+    protected final String metaTypeName;
+
+    AbstractCtType(Context ctx, TypeMirror typeMirror) {
         assertNotNull(ctx, typeMirror);
         this.typeMirror = typeMirror;
         this.typeName = ctx.getTypes().getTypeName(typeMirror);
-        this.boxedTypeName = ctx.getTypes().getBoxedTypeName(typeMirror);
-        this.metaTypeName = getMetaTypeName(ctx, typeMirror);
         this.typeElement = ctx.getTypes().toTypeElement(typeMirror);
         if (typeElement != null) {
             qualifiedName = typeElement.getQualifiedName().toString();
-            packageName = ctx.getElements().getPackageName(typeElement);
-            packageExcludedBinaryName = ctx.getElements()
-                    .getPackageExcludedBinaryName(typeElement);
         } else {
             qualifiedName = typeName;
-            packageName = "";
-            packageExcludedBinaryName = typeName;
         }
+        this.metaTypeName = getMetaTypeName(ctx, typeMirror);
     }
 
     private static String getMetaTypeName(Context ctx, TypeMirror typeMirror) {
@@ -99,38 +86,8 @@ public abstract class AbstractCtType implements CtType {
     }
 
     @Override
-    public String getBoxedTypeName() {
-        return boxedTypeName;
-    }
-
-    @Override
-    public String getMetaTypeName() {
-        return metaTypeName;
-    }
-
-    @Override
     public String getQualifiedName() {
         return qualifiedName;
-    }
-
-    @Override
-    public String getPackageName() {
-        return packageName;
-    }
-
-    @Override
-    public String getPackageExcludedBinaryName() {
-        return packageExcludedBinaryName;
-    }
-
-    @Override
-    public boolean isEnum() {
-        return typeElement != null && typeElement.getKind() == ElementKind.ENUM;
-    }
-
-    @Override
-    public boolean isPrimitive() {
-        return typeMirror.getKind().isPrimitive();
     }
 
 }

@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.Context;
 
 public class AnyCtType extends AbstractCtType {
 
-    public AnyCtType(Context ctx, TypeMirror type) {
+    AnyCtType(Context ctx, TypeMirror type) {
         super(ctx, type);
     }
 

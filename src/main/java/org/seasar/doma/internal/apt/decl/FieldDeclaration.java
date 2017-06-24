@@ -19,11 +19,11 @@ import javax.lang.model.element.VariableElement;
 
 public class FieldDeclaration {
 
-    protected final VariableElement element;
+    private final VariableElement element;
 
-    protected final TypeDeclaration typeDeclaration;
+    private final TypeDeclaration typeDeclaration;
 
-    public FieldDeclaration(VariableElement element,
+    FieldDeclaration(VariableElement element,
             TypeDeclaration typeDeclaration) {
         this.element = element;
         this.typeDeclaration = typeDeclaration;

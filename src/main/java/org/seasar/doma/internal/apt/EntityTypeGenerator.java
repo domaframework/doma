@@ -33,7 +33,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -67,9 +66,9 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
  */
 public class EntityTypeGenerator extends AbstractGenerator {
 
-    protected static final String NULL = "null";
+    private static final String NULL = "null";
 
-    protected final EntityMeta entityMeta;
+    private final EntityMeta entityMeta;
 
     public EntityTypeGenerator(Context ctx,
             TypeElement entityElement, EntityMeta entityMeta)
@@ -85,14 +84,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printClass();
     }
 
-    protected void printPackage() {
+    private void printPackage() {
         if (!packageName.isEmpty()) {
             iprint("package %1$s;%n", packageName);
             iprint("%n");
         }
     }
 
-    protected void printClass() {
+    private void printClass() {
         iprint("/** */%n");
         printGenerated();
         iprint("public final class %1$s extends %2$s<%3$s> {%n",
@@ -109,7 +108,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("}%n");
     }
 
-    protected void printFields() {
+    private void printFields() {
         printSingletonField();
         printOriginalStatesAccessorField();
         printNamingTypeField();
@@ -127,13 +126,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printEntityPropertyTypeMapField();
     }
 
-    protected void printSingletonField() {
+    private void printSingletonField() {
         iprint("private static final %1$s __singleton = new %1$s();%n",
                 simpleName);
         print("%n");
     }
 
-    protected void printOriginalStatesAccessorField() {
+    private void printOriginalStatesAccessorField() {
         if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
             OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
             iprint("private static final %1$s<%2$s> __originalStatesAccessor = new %1$s<>(%3$s.class, \"%4$s\");%n",
@@ -145,7 +144,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         }
     }
 
-    protected void printIdGeneratorField() {
+    private void printIdGeneratorField() {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             EntityPropertyMeta propertyMeta = entityMeta
                     .getGeneratedIdPropertyMeta();
@@ -155,7 +154,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         }
     }
 
-    protected void printPropertyTypeFields() {
+    private void printPropertyTypeFields() {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isEmbedded()) {
@@ -170,17 +169,16 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 EntityPropertyCtTypeVisitor visitor = new EntityPropertyCtTypeVisitor();
                 pm.getCtType().accept(visitor, null);
                 BasicCtType basicCtType = visitor.basicCtType;
-                WrapperCtType wrapperCtType = visitor.wrapperCtType;
                 HolderCtType holderCtType = visitor.holderCtType;
 
                 String newWrapperExpr;
                 if (basicCtType.isEnum()) {
                     newWrapperExpr = String.format("new %s(%s.class)",
-                            wrapperCtType.getTypeName(),
+                            basicCtType.getWrapperTypeName(),
                             basicCtType.getBoxedTypeName());
                 } else {
                     newWrapperExpr = String.format("new %s()",
-                            wrapperCtType.getTypeName());
+                            basicCtType.getWrapperTypeName());
                 }
                 String holderType = "null";
                 String holderTypeName = "Object";
@@ -258,14 +256,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         }
     }
 
-    protected String getNamingTypeExpression(boolean defined) {
-        if (defined) {
-            return NamingType.class.getName() + "." + NamingType.NONE;
-        }
-        return "__namingType";
-    }
-
-    protected void printListenerSupplierField() {
+    private void printListenerSupplierField() {
         if (entityMeta.isGenericEntityListener()) {
             iprint("private final java.util.function.Supplier<%1$s<%2$s>> __listenerSupplier;%n",
                     entityMeta.getEntityListenerElement().getQualifiedName(),
@@ -277,7 +268,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printNamingTypeField() {
+    private void printNamingTypeField() {
         NamingType namingType = entityMeta.getNamingType();
         if (namingType == null) {
             iprint("private final %1$s __namingType = null;%n",
@@ -289,58 +280,58 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printImmutableField() {
+    private void printImmutableField() {
         iprint("private final boolean __immutable;%n");
         print("%n");
     }
 
-    protected void printCatalogNameField() {
+    private void printCatalogNameField() {
         iprint("private final String __catalogName;%n");
         print("%n");
     }
 
-    protected void printSchemaNameField() {
+    private void printSchemaNameField() {
         iprint("private final String __schemaName;%n");
         print("%n");
     }
 
-    protected void printTableNameField() {
+    private void printTableNameField() {
         iprint("private final String __tableName;%n");
         print("%n");
     }
 
-    protected void printIsQuoteRequiredField() {
+    private void printIsQuoteRequiredField() {
         iprint("private final boolean __isQuoteRequired;%n");
         print("%n");
     }
 
-    protected void printNameField() {
+    private void printNameField() {
         iprint("private final String __name;%n");
         print("%n");
     }
 
-    protected void printIdPropertyTypesField() {
+    private void printIdPropertyTypesField() {
         iprint("private final java.util.List<%1$s<%2$s, ?>> __idPropertyTypes;%n",
                 EntityPropertyType.class.getName(),
                 entityMeta.getEntityTypeName());
         print("%n");
     }
 
-    protected void printEntityPropertyTypesField() {
+    private void printEntityPropertyTypesField() {
         iprint("private final java.util.List<%1$s<%2$s, ?>> __entityPropertyTypes;%n",
                 EntityPropertyType.class.getName(),
                 entityMeta.getEntityTypeName());
         print("%n");
     }
 
-    protected void printEntityPropertyTypeMapField() {
+    private void printEntityPropertyTypeMapField() {
         iprint("private final java.util.Map<String, %1$s<%2$s, ?>> __entityPropertyTypeMap;%n",
                 EntityPropertyType.class.getName(),
                 entityMeta.getEntityTypeName());
         print("%n");
     }
 
-    protected void printConstructor() {
+    private void printConstructor() {
         iprint("private %1$s() {%n", simpleName);
         iprint("    __listenerSupplier = () -> ListenerHolder.listener;%n");
         iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
@@ -382,7 +373,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMethods() {
+    private void printMethods() {
         printGetNamingTypeMethod();
         printIsImmutableMethod();
         printGetNameMethod();
@@ -409,7 +400,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printNewInstanceMethod();
     }
 
-    protected void printGetNamingTypeMethod() {
+    private void printGetNamingTypeMethod() {
         iprint("@Override%n");
         iprint("public %1$s getNamingType() {%n", NamingType.class.getName());
         iprint("    return __namingType;%n");
@@ -417,7 +408,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printIsImmutableMethod() {
+    private void printIsImmutableMethod() {
         iprint("@Override%n");
         iprint("public boolean isImmutable() {%n");
         iprint("    return __immutable;%n");
@@ -425,7 +416,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetNameMethod() {
+    private void printGetNameMethod() {
         iprint("@Override%n");
         iprint("public String getName() {%n");
         iprint("    return __name;%n");
@@ -433,7 +424,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetCatalogNameMethod() {
+    private void printGetCatalogNameMethod() {
         iprint("@Override%n");
         iprint("public String getCatalogName() {%n");
         iprint("    return __catalogName;%n");
@@ -441,7 +432,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetSchemaNameMethod() {
+    private void printGetSchemaNameMethod() {
         iprint("@Override%n");
         iprint("public String getSchemaName() {%n");
         iprint("    return __schemaName;%n");
@@ -449,7 +440,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetTableNameMethod() {
+    private void printGetTableNameMethod() {
         iprint("@Override%n");
         iprint("public String getTableName() {%n");
         iprint("    return getTableName(%1$s.DEFAULT::apply);%n",
@@ -467,7 +458,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printIsQuoteRequiredMethod() {
+    private void printIsQuoteRequiredMethod() {
         iprint("@Override%n");
         iprint("public boolean isQuoteRequired() {%n");
         iprint("    return __isQuoteRequired;%n");
@@ -475,7 +466,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printPreInsertMethod() {
+    private void printPreInsertMethod() {
         iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void preInsert(%1$s entity, %2$s<%1$s> context) {%n",
@@ -487,7 +478,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printPreUpdateMethod() {
+    private void printPreUpdateMethod() {
         iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void preUpdate(%1$s entity, %2$s<%1$s> context) {%n",
@@ -499,7 +490,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printPreDeleteMethod() {
+    private void printPreDeleteMethod() {
         iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void preDelete(%1$s entity, %2$s<%1$s> context) {%n",
@@ -511,7 +502,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printPostInsertMethod() {
+    private void printPostInsertMethod() {
         iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void postInsert(%1$s entity, %2$s<%1$s> context) {%n",
@@ -523,7 +514,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printPostUpdateMethod() {
+    private void printPostUpdateMethod() {
         iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void postUpdate(%1$s entity, %2$s<%1$s> context) {%n",
@@ -535,7 +526,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printPostDeleteMethod() {
+    private void printPostDeleteMethod() {
         iprint("@SuppressWarnings({\"rawtypes\", \"unchecked\"})%n");
         iprint("@Override%n");
         iprint("public void postDelete(%1$s entity, %2$s<%1$s> context) {%n",
@@ -547,7 +538,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetEntityPropertyTypesMethod() {
+    private void printGetEntityPropertyTypesMethod() {
         iprint("@Override%n");
         iprint("public java.util.List<%1$s<%2$s, ?>> getEntityPropertyTypes() {%n",
                 EntityPropertyType.class.getName(),
@@ -557,7 +548,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetEntityPropertyTypeMethod() {
+    private void printGetEntityPropertyTypeMethod() {
         iprint("@Override%n");
         iprint("public %1$s<%2$s, ?> getEntityPropertyType(String __name) {%n",
                 EntityPropertyType.class.getName(),
@@ -567,7 +558,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetIdPropertyTypesMethod() {
+    private void printGetIdPropertyTypesMethod() {
         iprint("@Override%n");
         iprint("public java.util.List<%1$s<%2$s, ?>> getIdPropertyTypes() {%n",
                 EntityPropertyType.class.getName(),
@@ -577,7 +568,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetGeneratedIdPropertyTypeMethod() {
+    private void printGetGeneratedIdPropertyTypeMethod() {
         String idName = "null";
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
@@ -592,7 +583,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetVersionPropertyTypeMethod() {
+    private void printGetVersionPropertyTypeMethod() {
         String versionName = "null";
         if (entityMeta.hasVersionPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getVersionPropertyMeta();
@@ -607,7 +598,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printNewEntityMethod() {
+    private void printNewEntityMethod() {
         if (hasGenericTypeProperty()) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
         }
@@ -660,7 +651,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected boolean hasGenericTypeProperty() {
+    private boolean hasGenericTypeProperty() {
         if (entityMeta.isImmutable()) {
             for (EntityPropertyMeta propertyMeta : entityMeta
                     .getAllPropertyMetas()) {
@@ -676,7 +667,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         return false;
     }
 
-    protected void printGetEntityClassMethod() {
+    private void printGetEntityClassMethod() {
         iprint("@Override%n");
         iprint("public Class<%1$s> getEntityClass() {%n",
                 entityMeta.getEntityTypeName());
@@ -685,7 +676,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetOriginalStatesMethod() {
+    private void printGetOriginalStatesMethod() {
         iprint("@Override%n");
         iprint("public %1$s getOriginalStates(%1$s __entity) {%n",
                 entityMeta.getEntityTypeName());
@@ -698,7 +689,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printSaveCurrentStatesMethod() {
+    private void printSaveCurrentStatesMethod() {
         iprint("@Override%n");
         iprint("public void saveCurrentStates(%1$s __entity) {%n",
                 entityMeta.getEntityTypeName());
@@ -715,7 +706,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetSingletonInternalMethod() {
+    private void printGetSingletonInternalMethod() {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");
@@ -725,7 +716,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printNewInstanceMethod() {
+    private void printNewInstanceMethod() {
         iprint("/**%n");
         iprint(" * @return the new instance%n");
         iprint(" */%n");
@@ -735,7 +726,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printListenerHolder() {
+    private void printListenerHolder() {
         iprint("private static class ListenerHolder {%n");
         if (entityMeta.isGenericEntityListener()) {
             iprint("    private static %1$s<%2$s> listener = new %1$s<>();%n",
@@ -756,7 +747,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 entityMeta.getEntityListenerElement().getQualifiedName());
     }
 
-    protected class IdGeneratorGenerator implements
+    private class IdGeneratorGenerator
+            implements
             IdGeneratorMetaVisitor<Void, Void> {
 
         @Override
@@ -807,20 +799,18 @@ public class EntityTypeGenerator extends AbstractGenerator {
         }
     }
 
-    protected class EntityPropertyCtTypeVisitor extends
+    private class EntityPropertyCtTypeVisitor
+            extends
             SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        protected BasicCtType basicCtType;
+        private BasicCtType basicCtType;
 
-        protected WrapperCtType wrapperCtType;
-
-        protected HolderCtType holderCtType;
+        private HolderCtType holderCtType;
 
         @Override
         protected Void defaultAction(CtType ctType, Void p)
                 throws RuntimeException {
             assertNotNull(basicCtType);
-            assertNotNull(wrapperCtType);
             return null;
         }
 
@@ -852,7 +842,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
         public Void visitBasicCtType(BasicCtType basicCtType, Void p)
                 throws RuntimeException {
             this.basicCtType = basicCtType;
-            this.wrapperCtType = basicCtType.getWrapperCtType();
             return defaultAction(basicCtType, p);
         }
 

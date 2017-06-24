@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.Context;
  */
 public class MapCtType extends AbstractCtType {
 
-    public MapCtType(Context ctx, TypeMirror type) {
+    MapCtType(Context ctx, TypeMirror type) {
         super(ctx, type);
     }
 

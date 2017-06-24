@@ -26,17 +26,18 @@ import org.seasar.doma.internal.apt.reflection.ClobFactoryReflection;
  */
 public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected ClobFactoryReflection clobFactoryReflection;
+    private ClobFactoryReflection clobFactoryReflection;
 
     public ClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
     }
 
-    ClobFactoryReflection getClobFactoryReflection() {
+    public ClobFactoryReflection getClobFactoryReflection() {
         return clobFactoryReflection;
     }
 
-    void setClobFactoryReflection(ClobFactoryReflection clobFactoryReflection) {
+    public void setClobFactoryReflection(
+            ClobFactoryReflection clobFactoryReflection) {
         this.clobFactoryReflection = clobFactoryReflection;
     }
 

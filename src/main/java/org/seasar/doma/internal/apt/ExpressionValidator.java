@@ -74,17 +74,17 @@ import org.seasar.doma.message.Message;
 public class ExpressionValidator implements
         ExpressionNodeVisitor<TypeDeclaration, Void> {
 
-    protected final Context ctx;
+    private final Context ctx;
 
-    protected final ExecutableElement methodElement;
+    private final ExecutableElement methodElement;
 
-    protected final Map<String, TypeMirror> parameterTypeMap;
+    private final Map<String, TypeMirror> parameterTypeMap;
 
-    protected final Set<String> validatedParameterNames;
+    private final Set<String> validatedParameterNames;
 
-    protected final TypeDeclaration unknownTypeDeclaration;
+    private final TypeDeclaration unknownTypeDeclaration;
 
-    protected final String exprFunctionsClassName;
+    private final String exprFunctionsClassName;
 
     public ExpressionValidator(Context ctx,
             ExecutableElement methodElement,
@@ -128,7 +128,7 @@ public class ExpressionValidator implements
         return validateInternal(node);
     }
 
-    protected TypeDeclaration validateInternal(ExpressionNode node) {
+    private TypeDeclaration validateInternal(ExpressionNode node) {
         return node.accept(this, null);
     }
 
@@ -162,7 +162,7 @@ public class ExpressionValidator implements
         return handleNullUnavailableComparisonOperation(node, p);
     }
 
-    protected TypeDeclaration handleNullAvailableComparisonOperation(
+    private TypeDeclaration handleNullAvailableComparisonOperation(
             ComparisonOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
@@ -177,7 +177,7 @@ public class ExpressionValidator implements
                 node.getRightNode().toString(), right.getBinaryName() });
     }
 
-    protected TypeDeclaration handleNullUnavailableComparisonOperation(
+    private TypeDeclaration handleNullUnavailableComparisonOperation(
             ComparisonOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
@@ -207,7 +207,7 @@ public class ExpressionValidator implements
         return handleLogicalBinaryOperatorNode(node, p);
     }
 
-    protected TypeDeclaration handleLogicalBinaryOperatorNode(
+    private TypeDeclaration handleLogicalBinaryOperatorNode(
             LogicalBinaryOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
@@ -293,7 +293,7 @@ public class ExpressionValidator implements
         return handleArithmeticOperatorNode(node, left, right, p);
     }
 
-    protected TypeDeclaration handleArithmeticOperatorNode(
+    private TypeDeclaration handleArithmeticOperatorNode(
             ArithmeticOperatorNode node, TypeDeclaration left,
             TypeDeclaration right, Void p) {
         if (!left.isNumberType()) {
@@ -363,7 +363,7 @@ public class ExpressionValidator implements
                 location.getPosition(), signature });
     }
 
-    protected String createConstructorSignature(String className,
+    private String createConstructorSignature(String className,
             List<TypeDeclaration> parameterTypeDeclarations) {
         StringBuilder buf = new StringBuilder();
         buf.append(className);
@@ -496,7 +496,7 @@ public class ExpressionValidator implements
         throw new AptIllegalStateException(methodName);
     }
 
-    protected TypeDeclaration getExpressionFunctionsDeclaration(
+    private TypeDeclaration getExpressionFunctionsDeclaration(
             FunctionOperatorNode node) {
         if (exprFunctionsClassName == null) {
             return ctx.getDeclarations()
@@ -520,7 +520,7 @@ public class ExpressionValidator implements
         return ctx.getDeclarations().newTypeDeclaration(type);
     }
 
-    protected String createMethodSignature(String methodName,
+    private String createMethodSignature(String methodName,
             List<TypeDeclaration> parameterTypeDeclarations) {
         StringBuilder buf = new StringBuilder();
         buf.append(methodName);
@@ -585,7 +585,7 @@ public class ExpressionValidator implements
                 location.getPosition(), className, fieldName });
     }
 
-    protected TypeDeclaration convertIfOptional(TypeDeclaration typeDeclaration) {
+    private TypeDeclaration convertIfOptional(TypeDeclaration typeDeclaration) {
         if (typeDeclaration.is(Optional.class)) {
             TypeParameterDeclaration typeParameterDeclaration = typeDeclaration
                     .getTypeParameterDeclarations()
@@ -619,7 +619,8 @@ public class ExpressionValidator implements
         return ctx.getDeclarations().newTypeDeclaration(type);
     }
 
-    protected class ParameterCollector implements
+    private class ParameterCollector
+            implements
             ExpressionNodeVisitor<Void, List<TypeDeclaration>> {
 
         public List<TypeDeclaration> collect(ExpressionNode node) {

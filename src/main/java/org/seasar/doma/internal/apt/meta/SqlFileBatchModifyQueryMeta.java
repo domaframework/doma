@@ -32,13 +32,13 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected EntityCtType entityCtType;
+    private EntityCtType entityCtType;
 
-    protected CtType elementCtType;
+    private CtType elementCtType;
 
-    protected String elementsParameterName;
+    private String elementsParameterName;
 
-    protected BatchModifyReflection batchModifyReflection;
+    private BatchModifyReflection batchModifyReflection;
 
     public SqlFileBatchModifyQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);

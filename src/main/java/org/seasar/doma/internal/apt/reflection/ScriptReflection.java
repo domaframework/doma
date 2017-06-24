@@ -32,20 +32,18 @@ import org.seasar.doma.jdbc.SqlLogType;
  * @author taedium
  * 
  */
-public class ScriptReflection {
+public class ScriptReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue haltOnError;
 
-    protected final AnnotationValue haltOnError;
+    private final AnnotationValue blockDelimiter;
 
-    protected final AnnotationValue blockDelimiter;
+    private final AnnotationValue sqlLog;
 
-    protected final AnnotationValue sqlLog;
-
-    protected ScriptReflection(AnnotationMirror annotationMirror,
+    ScriptReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.haltOnError = assertNotNullValue(values, "haltOnError");
         this.blockDelimiter = assertNotNullValue(values, "blockDelimiter");
         this.sqlLog = assertNotNullValue(values, "sqlLog");
@@ -86,10 +84,6 @@ public class ScriptReflection {
             throw new AptIllegalStateException("sqlLog");
         }
         return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
 }

@@ -15,12 +15,12 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import java.lang.annotation.Annotation;
 
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeKind;
 
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
@@ -38,54 +38,17 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 
 public class QueryParameterMeta {
 
-    protected VariableElement element;
+    private final String name;
 
-    protected ExecutableElement methodElement;
+    private final VariableElement element;
 
-    protected TypeElement daoElement;
+    private final CtType ctType;
 
-    protected String name;
-
-    protected String typeName;
-
-    protected TypeMirror type;
-
-    protected String qualifiedName;
-
-    protected CtType ctType;
-
-    public QueryParameterMeta() {
-    }
-
-    public void setElement(VariableElement element) {
+    public QueryParameterMeta(VariableElement element, String name,
+            CtType ctType) {
+        assertNotNull(element, name, ctType);
         this.element = element;
-    }
-
-    public void setMethodElement(ExecutableElement methodElement) {
-        this.methodElement = methodElement;
-    }
-
-    public void setDaoElement(TypeElement daoElement) {
-        this.daoElement = daoElement;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public void setType(TypeMirror type) {
-        this.type = type;
-    }
-
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
-    }
-
-    public void setCtType(CtType ctType) {
         this.ctType = ctType;
     }
 
@@ -93,32 +56,24 @@ public class QueryParameterMeta {
         return element;
     }
 
-    public ExecutableElement getMethodElement() {
-        return methodElement;
-    }
-
-    public TypeElement getDaoElement() {
-        return daoElement;
-    }
-
     public String getName() {
         return name;
     }
 
-    public TypeMirror getType() {
-        return type;
+    public CtType getCtType() {
+        return ctType;
     }
 
     public String getTypeName() {
-        return typeName;
+        return ctType.getTypeName();
     }
 
     public String getQualifiedName() {
-        return qualifiedName;
+        return ctType.getQualifiedName();
     }
 
-    public CtType getCtType() {
-        return ctType;
+    public boolean isArray() {
+        return ctType.getTypeMirror().getKind() == TypeKind.ARRAY;
     }
 
     public boolean isNullable() {
@@ -138,7 +93,7 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class NullableCtTypeVisitor
+    private class NullableCtTypeVisitor
             extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
         public NullableCtTypeVisitor(boolean nullable) {
@@ -163,7 +118,7 @@ public class QueryParameterMeta {
      * @author nakamura-to
      * 
      */
-    protected class BindableCtTypeVisitor
+    private class BindableCtTypeVisitor
             extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
         public BindableCtTypeVisitor(boolean bindable) {

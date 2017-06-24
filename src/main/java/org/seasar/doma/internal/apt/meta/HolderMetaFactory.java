@@ -64,11 +64,11 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
         if (holderReflection == null) {
             throw new AptIllegalStateException("holderReflection");
         }
+        Strategy strategy = createStrategy(classElement);
+        BasicCtType basicCtType = strategy.createBasicCtType(classElement,
+                holderReflection);
         HolderMeta holderMeta = new HolderMeta(classElement,
-                classElement.asType());
-        holderMeta.setHolderReflection(holderReflection);
-        Strategy strategy = createStrategy(classElement, holderMeta);
-        strategy.doWrapperCtType(classElement, holderMeta);
+                classElement.asType(), holderReflection, basicCtType);
         strategy.validateAcceptNull(classElement, holderMeta);
         strategy.validateClass(classElement, holderMeta);
         strategy.validateInitializer(classElement, holderMeta);
@@ -76,8 +76,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
         return holderMeta;
     }
 
-    protected Strategy createStrategy(TypeElement classElement,
-            HolderMeta holderMeta) {
+    private Strategy createStrategy(TypeElement classElement) {
         ValueReflection valueReflection = ctx.getReflections()
                 .newValueReflection(classElement);
         if (valueReflection != null) {
@@ -88,7 +87,8 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
     protected interface Strategy {
 
-        void doWrapperCtType(TypeElement classElement, HolderMeta holderMeta);
+        BasicCtType createBasicCtType(TypeElement classElement,
+                HolderReflection holderReflection);
 
         void validateAcceptNull(TypeElement classElement, HolderMeta holderMeta);
 
@@ -111,20 +111,17 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
         }
 
         @Override
-        public void doWrapperCtType(TypeElement classElement,
-                HolderMeta holderMeta) {
+        public BasicCtType createBasicCtType(TypeElement classElement,
+                HolderReflection holderReflection) {
+            TypeMirror valueType = holderReflection.getValueTypeValue();
             BasicCtType basicCtType = ctx.getCtTypes()
-                    .newBasicCtType(holderMeta.getValueType());
+                    .newBasicCtType(valueType);
             if (basicCtType == null) {
-                HolderReflection holderReflection = holderMeta.getHolderReflection();
                 throw new AptException(Message.DOMA4102, classElement, holderReflection.getAnnotationMirror(),
                         holderReflection.getValueType(),
-                        new Object[] {
-                                holderReflection.getValueTypeValue(),
-                                classElement.getQualifiedName() });
+                        new Object[] { valueType });
             }
-            holderMeta.setBasicCtType(basicCtType);
-            holderMeta.setWrapperCtType(basicCtType.getWrapperCtType());
+            return basicCtType;
         }
 
         @Override
@@ -134,8 +131,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                     && holderMeta.getAcceptNull()) {
                 HolderReflection holderReflection = holderMeta.getHolderReflection();
                 throw new AptException(Message.DOMA4251, classElement, holderReflection.getAnnotationMirror(),
-                        holderReflection.getAcceptNull(),
-                        new Object[] { classElement.getQualifiedName() });
+                        holderReflection.getAcceptNull());
             }
         }
 
@@ -146,7 +142,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                 if (holderMeta.providesConstructor()
                         && classElement.getModifiers().contains(
                                 Modifier.ABSTRACT)) {
-                    throw new AptException(Message.DOMA4132, classElement, new Object[] { classElement.getQualifiedName() });
+                    throw new AptException(Message.DOMA4132, classElement);
                 }
                 if (classElement.getNestingKind().isNested()) {
                     validateEnclosingElement(classElement);
@@ -155,27 +151,26 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                 if (holderMeta.providesConstructor()) {
                     HolderReflection holderReflection = holderMeta.getHolderReflection();
                     throw new AptException(Message.DOMA4184, classElement, holderReflection.getAnnotationMirror(),
-                            holderReflection.getFactoryMethod(),
-                            new Object[] { classElement.getQualifiedName() });
+                            holderReflection.getFactoryMethod());
                 }
                 if (classElement.getNestingKind().isNested()) {
                     validateEnclosingElement(classElement);
                 }
             } else if (classElement.getKind() == ElementKind.INTERFACE) {
                 if (holderMeta.providesConstructor()) {
-                    throw new AptException(Message.DOMA4268, classElement, new Object[] { classElement.getQualifiedName() });
+                    throw new AptException(Message.DOMA4268, classElement);
                 }
                 if (classElement.getNestingKind().isNested()) {
                     validateEnclosingElement(classElement);
                 }
             } else {
                 HolderReflection holderReflection = holderMeta.getHolderReflection();
-                throw new AptException(Message.DOMA4105, classElement, holderReflection.getAnnotationMirror(),
-                        new Object[] { classElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4105, classElement,
+                        holderReflection.getAnnotationMirror());
             }
         }
 
-        protected void validateEnclosingElement(Element element) {
+        private void validateEnclosingElement(Element element) {
             TypeElement typeElement = ctx.getElements().toTypeElement(element);
             if (typeElement == null) {
                 return;
@@ -211,7 +206,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
             }
         }
 
-        protected void validateConstructor(TypeElement classElement,
+        private void validateConstructor(TypeElement classElement,
                 HolderMeta holderMeta) {
             for (ExecutableElement constructor : ElementFilter
                     .constructorsIn(classElement.getEnclosedElements())) {
@@ -229,11 +224,11 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                     return;
                 }
             }
-            throw new AptException(Message.DOMA4103, classElement, new Object[] { holderMeta.getValueType(),
-                    classElement.getQualifiedName() });
+            throw new AptException(Message.DOMA4103, classElement,
+                    new Object[] { holderMeta.getValueType() });
         }
 
-        protected void validateFactoryMethod(TypeElement classElement,
+        private void validateFactoryMethod(TypeElement classElement,
                 HolderMeta holderMeta) {
             outer: for (ExecutableElement method : ElementFilter
                     .methodsIn(classElement.getEnclosedElements())) {
@@ -280,9 +275,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                 return;
             }
             throw new AptException(Message.DOMA4106, classElement, new Object[] { holderMeta.getFactoryMethod(),
-                    classElement.asType(), holderMeta.getValueType(),
-                    holderMeta.getFactoryMethod(),
-                    classElement.getQualifiedName() });
+                            classElement.asType(), holderMeta.getValueType() });
         }
 
         @Override
@@ -326,8 +319,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                 typeElement = ctx.getTypes().toTypeElement(typeMirror);
             }
             throw new AptException(Message.DOMA4104, classElement, new Object[] { holderMeta.getAccessorMethod(),
-                    holderMeta.getValueType(),
-                    classElement.getQualifiedName() });
+                            holderMeta.getValueType() });
         }
 
         protected TypeMirror inferType(TypeVariable typeVariable,
@@ -361,7 +353,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
     protected static class ValueStragety extends DefaultStrategy {
 
-        protected final ValueReflection valueReflection;
+        private final ValueReflection valueReflection;
 
         public ValueStragety(Context ctx, ValueReflection valueReflection) {
             super(ctx);
@@ -374,8 +366,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                 HolderMeta holderMeta) {
             if (!valueReflection.getStaticConstructorValue().isEmpty()) {
                 throw new AptException(Message.DOMA4428, classElement, valueReflection.getAnnotationMirror(),
-                        valueReflection.getStaticConstructor(),
-                        new Object[] { classElement.getQualifiedName() });
+                        valueReflection.getStaticConstructor());
             }
         }
 
@@ -388,13 +379,12 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                 HolderReflection holderReflection = holderMeta.getHolderReflection();
                 throw new AptException(Message.DOMA4429, classElement, holderReflection.getAnnotationMirror(),
                         holderReflection.getAccessorMethod(),
-                        new Object[] {
-                                accessorMethod, holderMeta.getAccessorMethod(),
-                                classElement.getQualifiedName() });
+                        new Object[] { accessorMethod,
+                                holderMeta.getAccessorMethod() });
             }
         }
 
-        protected String inferAccessorMethod(VariableElement field) {
+        private String inferAccessorMethod(VariableElement field) {
             String name = field.getSimpleName().toString();
             String capitalizedName = StringUtil.capitalize(name);
             if (field.asType().getKind() == TypeKind.BOOLEAN) {
@@ -407,7 +397,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
             return "get" + capitalizedName;
         }
 
-        protected VariableElement findSingleField(TypeElement classElement,
+        private VariableElement findSingleField(TypeElement classElement,
                 HolderMeta holderMeta) {
             List<VariableElement> fields = ElementFilter
                     .fieldsIn(classElement.getEnclosedElements())
@@ -415,18 +405,16 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                     .filter(field -> !field.getModifiers().contains(
                             Modifier.STATIC)).collect(Collectors.toList());
             if (fields.size() == 0) {
-                throw new AptException(Message.DOMA4430, classElement, new Object[] { classElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4430, classElement);
             }
             if (fields.size() > 1) {
-                throw new AptException(Message.DOMA4431, classElement, new Object[] { classElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4431, classElement);
             }
             VariableElement field = fields.get(0);
             if (!ctx.getTypes().isAssignable(field.asType(),
                     holderMeta.getValueType())) {
                 throw new AptException(Message.DOMA4432, field, new Object[] { field.asType(),
-                        holderMeta.getValueType(),
-                        classElement.getQualifiedName(),
-                        field.getSimpleName() });
+                                holderMeta.getValueType() });
             }
             return field;
         }

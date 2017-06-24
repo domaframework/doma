@@ -20,11 +20,11 @@ import javax.lang.model.element.Modifier;
 
 public class MethodDeclaration {
 
-    protected final ExecutableElement element;
+    private final ExecutableElement element;
 
-    protected final TypeDeclaration returnTypeDeclaration;
+    private final TypeDeclaration returnTypeDeclaration;
 
-    protected MethodDeclaration(ExecutableElement element,
+    MethodDeclaration(ExecutableElement element,
             TypeDeclaration returnTypeDeclaration) {
         this.element = element;
         this.returnTypeDeclaration = returnTypeDeclaration;

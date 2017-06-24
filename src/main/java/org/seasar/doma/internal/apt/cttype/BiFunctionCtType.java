@@ -22,15 +22,15 @@ import org.seasar.doma.internal.apt.Context;
 
 public class BiFunctionCtType extends AbstractCtType {
 
-    protected final boolean isRawType;
+    private final boolean isRawType;
 
-    protected final CtType firstArgCtType;
+    private final CtType firstArgCtType;
 
-    protected final CtType secondArgCtType;
+    private final CtType secondArgCtType;
 
-    protected final AnyCtType resultCtType;
+    private final AnyCtType resultCtType;
 
-    public BiFunctionCtType(Context ctx, TypeMirror type, 
+    BiFunctionCtType(Context ctx, TypeMirror type, 
             boolean isRawType, CtType firstArgCtType, CtType secondArgCtType,
             AnyCtType resultCtType) {
         super(ctx, type);

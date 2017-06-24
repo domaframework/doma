@@ -19,11 +19,11 @@ import javax.lang.model.element.ExecutableElement;
 
 public class ConstructorDeclaration {
 
-    protected final ExecutableElement element;
+    private final ExecutableElement element;
 
-    protected final TypeDeclaration typeDeclaration;
+    private final TypeDeclaration typeDeclaration;
 
-    protected ConstructorDeclaration(ExecutableElement element,
+    ConstructorDeclaration(ExecutableElement element,
             TypeDeclaration typeDeclaration) {
         this.element = element;
         this.typeDeclaration = typeDeclaration;

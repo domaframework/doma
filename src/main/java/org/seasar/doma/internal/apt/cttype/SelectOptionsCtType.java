@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.Context;
 
 public class SelectOptionsCtType extends AbstractCtType {
 
-    public SelectOptionsCtType(Context ctx, TypeMirror type) {
+    SelectOptionsCtType(Context ctx, TypeMirror type) {
         super(ctx, type);
     }
 

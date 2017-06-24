@@ -27,11 +27,11 @@ import org.seasar.doma.internal.apt.Context;
 
 public class HolderCtType extends AbstractCtType {
 
-    protected final BasicCtType basicCtType;
+    private final BasicCtType basicCtType;
 
-    protected final boolean external;
+    private final boolean external;
 
-    protected final String metaClassName;
+    private final String metaClassName;
 
     private final String typeArgDecl;
 
@@ -39,7 +39,7 @@ public class HolderCtType extends AbstractCtType {
 
     private boolean isWildcardType;
 
-    public HolderCtType(Context ctx, TypeMirror holderType,
+    HolderCtType(Context ctx, TypeMirror holderType,
             BasicCtType basicCtType, boolean external) {
         super(ctx, holderType);
         assertNotNull(basicCtType);
@@ -86,11 +86,6 @@ public class HolderCtType extends AbstractCtType {
     public String getInstantiationCommand() {
         return normalize(metaClassName) + "." + typeArgDecl
                 + "getSingletonInternal()";
-    }
-
-    @Override
-    public String getMetaTypeName() {
-        return normalize(metaTypeName);
     }
 
     protected String normalize(String name) {

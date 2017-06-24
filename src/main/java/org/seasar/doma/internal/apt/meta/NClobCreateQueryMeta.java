@@ -26,17 +26,18 @@ import org.seasar.doma.internal.apt.reflection.NClobFactoryReflection;
  */
 public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected NClobFactoryReflection nClobFactoryReflection;
+    private NClobFactoryReflection nClobFactoryReflection;
 
     public NClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
     }
 
-    NClobFactoryReflection getNClobFactoryReflection() {
+    public NClobFactoryReflection getNClobFactoryReflection() {
         return nClobFactoryReflection;
     }
 
-    void setNClobFactoryReflection(NClobFactoryReflection nClobFactoryReflection) {
+    public void setNClobFactoryReflection(
+            NClobFactoryReflection nClobFactoryReflection) {
         this.nClobFactoryReflection = nClobFactoryReflection;
     }
 

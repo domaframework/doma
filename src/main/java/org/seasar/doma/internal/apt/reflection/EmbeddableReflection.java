@@ -15,25 +15,16 @@
  */
 package org.seasar.doma.internal.apt.reflection;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import javax.lang.model.element.AnnotationMirror;
 
 /**
  * @author nakamura-to
  *
  */
-public class EmbeddableReflection {
+public class EmbeddableReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
-
-    public EmbeddableReflection(AnnotationMirror annotationMirror) {
-        assertNotNull(annotationMirror);
-        this.annotationMirror = annotationMirror;
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
+    EmbeddableReflection(AnnotationMirror annotationMirror) {
+        super(annotationMirror);
     }
 
 }

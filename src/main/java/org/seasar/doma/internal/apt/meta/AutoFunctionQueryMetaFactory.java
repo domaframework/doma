@@ -68,14 +68,14 @@ public class AutoFunctionQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoFunctionQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
         ResultParameterMeta resultParameterMeta = createResultParameterMeta(
                 queryMeta, returnMeta);
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
 
-    protected ResultParameterMeta createResultParameterMeta(
+    private ResultParameterMeta createResultParameterMeta(
             final AutoFunctionQueryMeta queryMeta,
             final QueryReturnMeta returnMeta) {
         return returnMeta.getCtType().accept(
@@ -87,7 +87,7 @@ public class AutoFunctionQueryMetaFactory extends
      * @author nakamura-to
      * 
      */
-    protected class ReturnCtTypeVisitor extends
+    private class ReturnCtTypeVisitor extends
             SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 
         protected final AutoFunctionQueryMeta queryMeta;
@@ -104,10 +104,7 @@ public class AutoFunctionQueryMetaFactory extends
         protected ResultParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4063, returnMeta.getMethodElement(),
-                    new Object[] {
-                            returnMeta.getType(),
-                            queryMeta.getDaoElement().getQualifiedName(),
-                            queryMeta.getMethodElement().getSimpleName() });
+                    new Object[] { returnMeta.getType() });
         }
 
         @Override
@@ -170,7 +167,7 @@ public class AutoFunctionQueryMetaFactory extends
      * @author nakamura-to
      * 
      */
-    protected class IterableElementCtTypeVisitor extends
+    private class IterableElementCtTypeVisitor extends
             SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 
         protected final AutoFunctionQueryMeta queryMeta;
@@ -187,10 +184,7 @@ public class AutoFunctionQueryMetaFactory extends
         protected ResultParameterMeta defaultAction(CtType ctType, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4065, returnMeta.getMethodElement(),
-                    new Object[] {
-                            ctType.getTypeName(),
-                            queryMeta.getDaoElement().getQualifiedName(),
-                            queryMeta.getMethodElement().getSimpleName() });
+                    new Object[] { ctType.getTypeName() });
         }
 
         @Override
@@ -216,10 +210,7 @@ public class AutoFunctionQueryMetaFactory extends
                 Boolean p) throws RuntimeException {
             if (ctType.isAbstract()) {
                 throw new AptException(Message.DOMA4156, returnMeta.getMethodElement(),
-                        new Object[] {
-                                ctType.getTypeName(),
-                                returnMeta.getDaoElement().getQualifiedName(),
-                                returnMeta.getMethodElement().getSimpleName() });
+                        new Object[] { ctType.getTypeName() });
             }
             return new EntityResultListParameterMeta(ctType,
                     queryMeta.getEnsureResultMapping());

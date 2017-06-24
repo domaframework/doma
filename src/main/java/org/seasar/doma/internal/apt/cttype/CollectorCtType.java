@@ -22,11 +22,11 @@ import org.seasar.doma.internal.apt.Context;
 
 public class CollectorCtType extends AbstractCtType {
 
-    protected final CtType targetCtType;
+    private final CtType targetCtType;
 
-    protected final AnyCtType returnCtType;
+    private final AnyCtType returnCtType;
 
-    public CollectorCtType(Context ctx, TypeMirror type, CtType targetCtType,
+    CollectorCtType(Context ctx, TypeMirror type, CtType targetCtType,
             AnyCtType returnCtType) {
         super(ctx, type);
         this.targetCtType = targetCtType;

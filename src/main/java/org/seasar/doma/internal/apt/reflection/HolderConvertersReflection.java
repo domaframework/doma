@@ -32,21 +32,15 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class HolderConvertersReflection {
+public class HolderConvertersReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue value;
 
-    protected final AnnotationValue value;
-
-    protected HolderConvertersReflection(AnnotationMirror annotationMirror,
+    HolderConvertersReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.value = assertNotNullValue(values, "value");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getValue() {

@@ -31,7 +31,7 @@ public class AptTypeHandleException extends RuntimeException {
         super(makeMessage(typeElement), cause);
     }
 
-    protected static String makeMessage(TypeElement typeElement) {
+    private static String makeMessage(TypeElement typeElement) {
         return Message.DOMA4300.getMessage(typeElement.getQualifiedName());
     }
 }

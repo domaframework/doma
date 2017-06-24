@@ -31,36 +31,30 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class SequenceGeneratorReflection {
+public class SequenceGeneratorReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue catalog;
 
-    protected final AnnotationValue catalog;
+    private final AnnotationValue schema;
 
-    protected final AnnotationValue schema;
+    private final AnnotationValue sequence;
 
-    protected final AnnotationValue sequence;
+    private final AnnotationValue initialValue;
 
-    protected final AnnotationValue initialValue;
+    private final AnnotationValue allocationSize;
 
-    protected final AnnotationValue allocationSize;
+    private final AnnotationValue implementer;
 
-    protected final AnnotationValue implementer;
-
-    protected SequenceGeneratorReflection(AnnotationMirror annotationMirror,
+    SequenceGeneratorReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
+        super(annotationMirror);
         assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
         this.catalog = assertNotNullValue(values, "catalog");
         this.schema = assertNotNullValue(values, "schema");
         this.sequence = assertNotNullValue(values, "sequence");
         this.initialValue = assertNotNullValue(values, "initialValue");
         this.allocationSize = assertNotNullValue(values, "allocationSize");
         this.implementer = assertNotNullValue(values, "implementer");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getCatalog() {

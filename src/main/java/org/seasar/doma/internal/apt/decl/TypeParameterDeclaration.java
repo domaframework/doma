@@ -19,11 +19,11 @@ import javax.lang.model.type.TypeMirror;
 
 public class TypeParameterDeclaration {
 
-    protected final TypeMirror formalType;
+    private final TypeMirror formalType;
 
-    protected final TypeMirror actualType;
+    private final TypeMirror actualType;
 
-    protected TypeParameterDeclaration(TypeMirror formalType,
+    TypeParameterDeclaration(TypeMirror formalType,
             TypeMirror actualType) {
         this.formalType = formalType;
         this.actualType = actualType;

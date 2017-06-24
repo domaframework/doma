@@ -138,11 +138,17 @@ public class Elements implements javax.lang.model.util.Elements {
 
     public AnnotationMirror getAnnotationMirror(Element element,
             String annotationClassName) {
-        return getAnnotationMirrorInternal(element, type -> ctx.getTypes()
-                .getClassName(type).equals(annotationClassName));
+        return getAnnotationMirrorInternal(element, type -> {
+            TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+            if (typeElement == null) {
+                return false;
+            }
+            return typeElement.getQualifiedName()
+                    .contentEquals(annotationClassName);
+        });
     }
 
-    protected AnnotationMirror getAnnotationMirrorInternal(
+    private AnnotationMirror getAnnotationMirrorInternal(
             Element element, 
             Predicate<DeclaredType> predicate) {
         for (AnnotationMirror annotationMirror : element

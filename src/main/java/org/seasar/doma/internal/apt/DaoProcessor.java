@@ -67,7 +67,7 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
         return new DaoMetaFactory(ctx, queryMetaFactories);
     }
 
-    protected List<QueryMetaFactory> createQueryMetaFactory(Context ctx) {
+    private List<QueryMetaFactory> createQueryMetaFactory(Context ctx) {
         List<QueryMetaFactory> factories = new ArrayList<QueryMetaFactory>();
         factories.add(new SqlFileSelectQueryMetaFactory(ctx));
         factories.add(new AutoModifyQueryMetaFactory(ctx));

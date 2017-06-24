@@ -28,9 +28,9 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
-    protected ResultParameterMeta resultParameterMeta;
+    private ResultParameterMeta resultParameterMeta;
 
-    protected FunctionReflection functionReflection;
+    private FunctionReflection functionReflection;
 
     public AutoFunctionQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
@@ -44,11 +44,11 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
         this.resultParameterMeta = resultParameterMeta;
     }
 
-    FunctionReflection getFunctionReflection() {
+    public FunctionReflection getFunctionReflection() {
         return functionReflection;
     }
 
-    void setFunctionReflection(FunctionReflection functionReflection) {
+    public void setFunctionReflection(FunctionReflection functionReflection) {
         this.functionReflection = functionReflection;
     }
 

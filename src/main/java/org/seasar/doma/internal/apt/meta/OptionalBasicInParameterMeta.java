@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
@@ -27,7 +27,7 @@ public class OptionalBasicInParameterMeta implements CallableSqlParameterMeta {
 
     private final String name;
 
-    protected final BasicCtType basicCtType;
+    private final BasicCtType basicCtType;
 
     public OptionalBasicInParameterMeta(String name, BasicCtType basicCtType) {
         assertNotNull(name, basicCtType);

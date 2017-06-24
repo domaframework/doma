@@ -64,9 +64,9 @@ import org.seasar.doma.message.Message;
 public class EmbeddableMetaFactory implements
         TypeElementMetaFactory<EmbeddableMeta> {
 
-    protected final Context ctx;
+    private final Context ctx;
 
-    protected final EmbeddablePropertyMetaFactory propertyMetaFactory;
+    private final EmbeddablePropertyMetaFactory propertyMetaFactory;
 
     public EmbeddableMetaFactory(Context ctx,
             EmbeddablePropertyMetaFactory propertyMetaFactory) {
@@ -91,7 +91,7 @@ public class EmbeddableMetaFactory implements
         return embeddableMeta;
     }
 
-    protected Strategy createStrategy(TypeElement embeddableElement,
+    private Strategy createStrategy(TypeElement embeddableElement,
             EmbeddableMeta embeddableMeta) {
         ValueReflection valueReflection = ctx.getReflections()
                 .newValueReflection(embeddableElement);
@@ -108,7 +108,7 @@ public class EmbeddableMetaFactory implements
         return new DefaultStrategy(ctx, propertyMetaFactory);
     }
 
-    protected interface Strategy {
+    private interface Strategy {
 
         void validateClass(TypeElement embeddableElement,
                 EmbeddableMeta embeddableMeta);
@@ -120,11 +120,11 @@ public class EmbeddableMetaFactory implements
                 EmbeddableMeta embeddableMeta);
     }
 
-    protected static class DefaultStrategy implements Strategy {
+    private static class DefaultStrategy implements Strategy {
 
-        protected final Context ctx;
+        private final Context ctx;
 
-        protected final EmbeddablePropertyMetaFactory propertyMetaFactory;
+        private final EmbeddablePropertyMetaFactory propertyMetaFactory;
 
         public DefaultStrategy(Context ctx,
                 EmbeddablePropertyMetaFactory propertyMetaFactory) {
@@ -140,17 +140,15 @@ public class EmbeddableMetaFactory implements
                 EmbeddableReflection embeddableReflection = embeddableMeta
                         .getEmbeddableReflection();
                 throw new AptException(Message.DOMA4283, embeddableElement,
-                        embeddableReflection.getAnnotationMirror(),
-                        new Object[] { embeddableElement.getQualifiedName() });
+                        embeddableReflection.getAnnotationMirror());
             }
             if (!embeddableElement.getTypeParameters().isEmpty()) {
-                throw new AptException(Message.DOMA4285, embeddableElement,
-                        new Object[] { embeddableElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4285, embeddableElement);
             }
             validateEnclosingElement(embeddableElement);
         }
 
-        protected void validateEnclosingElement(Element element) {
+        private void validateEnclosingElement(Element element) {
             TypeElement typeElement = ctx.getElements().toTypeElement(element);
             if (typeElement == null) {
                 return;
@@ -187,25 +185,13 @@ public class EmbeddableMetaFactory implements
                             Modifier.STATIC)) {
                         continue;
                     } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
-                        throw new AptException(Message.DOMA4286, fieldElement,
-                                new Object[] {
-                                        embeddableElement.getQualifiedName(),
-                                        fieldElement.getSimpleName() });
+                        throw new AptException(Message.DOMA4286, fieldElement);
                     } else if (fieldElement.getAnnotation(Id.class) != null) {
-                        throw new AptException(Message.DOMA4289, fieldElement,
-                                new Object[] {
-                                        embeddableElement.getQualifiedName(),
-                                        fieldElement.getSimpleName() });
+                        throw new AptException(Message.DOMA4289, fieldElement);
                     } else if (fieldElement.getAnnotation(Version.class) != null) {
-                        throw new AptException(Message.DOMA4290, fieldElement,
-                                new Object[] {
-                                        embeddableElement.getQualifiedName(),
-                                        fieldElement.getSimpleName() });
+                        throw new AptException(Message.DOMA4290, fieldElement);
                     } else if (fieldElement.getAnnotation(GeneratedValue.class) != null) {
-                        throw new AptException(Message.DOMA4291, fieldElement,
-                                new Object[] {
-                                        embeddableElement.getQualifiedName(),
-                                        fieldElement.getSimpleName() });
+                        throw new AptException(Message.DOMA4291, fieldElement);
                     } else {
                         doEmbeddablePropertyMeta(fieldElement, embeddableMeta);
                     }
@@ -216,7 +202,7 @@ public class EmbeddableMetaFactory implements
             }
         }
 
-        protected void doEmbeddablePropertyMeta(VariableElement fieldElement,
+        private void doEmbeddablePropertyMeta(VariableElement fieldElement,
                 EmbeddableMeta embeddableMeta) {
             validateFieldAnnotation(fieldElement, embeddableMeta);
             EmbeddablePropertyMeta propertyMeta = propertyMetaFactory
@@ -224,7 +210,7 @@ public class EmbeddableMetaFactory implements
             embeddableMeta.addEmbeddablePropertyMeta(propertyMeta);
         }
 
-        protected List<VariableElement> getFieldElements(
+        private List<VariableElement> getFieldElements(
                 TypeElement embeddableElement) {
             List<VariableElement> results = new LinkedList<VariableElement>();
             for (TypeElement t = embeddableElement; t != null
@@ -257,7 +243,7 @@ public class EmbeddableMetaFactory implements
             return results;
         }
 
-        protected void validateFieldAnnotation(VariableElement fieldElement,
+        private void validateFieldAnnotation(VariableElement fieldElement,
                 EmbeddableMeta embeddableMeta) {
             TypeElement foundAnnotationTypeElement = null;
             for (AnnotationMirror annotation : fieldElement
@@ -271,10 +257,7 @@ public class EmbeddableMetaFactory implements
                                 new Object[] {
                                         foundAnnotationTypeElement
                                                 .getQualifiedName(),
-                                        typeElement.getQualifiedName(),
-                                        embeddableMeta.getEmbeddableElement()
-                                                .getQualifiedName(),
-                                        fieldElement.getSimpleName() });
+                                        typeElement.getQualifiedName() });
                     }
                     foundAnnotationTypeElement = typeElement;
                 }
@@ -290,18 +273,16 @@ public class EmbeddableMetaFactory implements
             EmbeddableConstructorMeta constructorMeta = getConstructorMeta(
                     embeddableElement, embeddableMeta);
             if (constructorMeta == null) {
-                throw new AptException(Message.DOMA4293, embeddableElement,
-                        new Object[] { embeddableElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4293, embeddableElement);
             }
             if (constructorMeta.getConstructorElement().getModifiers()
                     .contains(Modifier.PRIVATE)) {
-                throw new AptException(Message.DOMA4294, embeddableElement,
-                        new Object[] { embeddableElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4294, embeddableElement);
             }
             embeddableMeta.setConstructorMeta(constructorMeta);
         }
 
-        protected EmbeddableConstructorMeta getConstructorMeta(
+        private EmbeddableConstructorMeta getConstructorMeta(
                 TypeElement embeddapleElement, EmbeddableMeta embeddableMeta) {
             Map<String, EmbeddablePropertyMeta> propertyMetaMap = new HashMap<String, EmbeddablePropertyMeta>();
             for (EmbeddablePropertyMeta propertyMeta : embeddableMeta
@@ -340,9 +321,9 @@ public class EmbeddableMetaFactory implements
 
     }
 
-    protected static class AllArgsConstructorStrategy extends DefaultStrategy {
+    private static class AllArgsConstructorStrategy extends DefaultStrategy {
 
-        protected final AllArgsConstructorReflection allArgsConstructorReflection;
+        private final AllArgsConstructorReflection allArgsConstructorReflection;
 
         public AllArgsConstructorStrategy(Context ctx,
                 EmbeddablePropertyMetaFactory propertyMetaFactory,
@@ -358,28 +339,25 @@ public class EmbeddableMetaFactory implements
             if (!allArgsConstructorReflection.getStaticNameValue().isEmpty()) {
                 throw new AptException(Message.DOMA4424, embeddableElement,
                         allArgsConstructorReflection.getAnnotationMirror(),
-                        allArgsConstructorReflection.getStaticName(),
-                        new Object[] { embeddableElement.getQualifiedName() });
+                        allArgsConstructorReflection.getStaticName());
             }
             if (allArgsConstructorReflection.isAccessPrivate()) {
                 throw new AptException(Message.DOMA4425, embeddableElement,
                         allArgsConstructorReflection.getAnnotationMirror(),
-                        allArgsConstructorReflection.getAccess(),
-                        new Object[] { embeddableElement.getQualifiedName() });
+                        allArgsConstructorReflection.getAccess());
             }
             if (allArgsConstructorReflection.isAccessNone()) {
                 throw new AptException(Message.DOMA4427, embeddableElement,
                         allArgsConstructorReflection.getAnnotationMirror(),
-                        allArgsConstructorReflection.getAccess(),
-                        new Object[] { embeddableElement.getQualifiedName() });
+                        allArgsConstructorReflection.getAccess());
             }
         }
 
     }
 
-    protected static class ValueStrategy extends DefaultStrategy {
+    private static class ValueStrategy extends DefaultStrategy {
 
-        protected final ValueReflection valueReflection;
+        private final ValueReflection valueReflection;
 
         public ValueStrategy(Context ctx,
                 EmbeddablePropertyMetaFactory propertyMetaFactory,
@@ -394,8 +372,8 @@ public class EmbeddableMetaFactory implements
                 EmbeddableMeta embeddableMeta) {
             if (!valueReflection.getStaticConstructorValue().isEmpty()) {
                 throw new AptException(Message.DOMA4423, embeddableElement,
-                        valueReflection.getAnnotationMirror(), valueReflection.getStaticConstructor(),
-                        new Object[] { embeddableElement.getQualifiedName() });
+                        valueReflection.getAnnotationMirror(),
+                        valueReflection.getStaticConstructor());
             }
         }
     }

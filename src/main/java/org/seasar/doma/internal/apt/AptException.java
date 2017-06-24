@@ -31,17 +31,26 @@ public class AptException extends DomaException {
 
     private static final long serialVersionUID = 1L;
 
-    protected final Kind kind;
+    private final Kind kind;
 
-    protected final Element element;
+    private final Element element;
 
-    protected AnnotationMirror annotationMirror;
+    private AnnotationMirror annotationMirror;
 
-    protected AnnotationValue annotationValue;
+    private AnnotationValue annotationValue;
+
+    public AptException(MessageResource messageResource, Element element) {
+        this(messageResource, element, new Object[] {});
+    }
 
     public AptException(MessageResource messageResource,
             Element element, Object[] args) {
         this(messageResource, Kind.ERROR, element, null, null, null, args);
+    }
+
+    public AptException(MessageResource messageResource,
+            Element element, Throwable cause) {
+        this(messageResource, element, cause, new Object[] {});
     }
 
     public AptException(MessageResource messageResource,
@@ -50,14 +59,25 @@ public class AptException extends DomaException {
     }
 
     public AptException(MessageResource messageResource,
-            Element element, AnnotationMirror annotationMirror,
-            Object[] args) {
+            Element element, AnnotationMirror annotationMirror) {
+        this(messageResource, element, annotationMirror, new Object[] {});
+    }
+
+    public AptException(MessageResource messageResource, Element element,
+            AnnotationMirror annotationMirror, Object[] args) {
         this(messageResource, Kind.ERROR, element, annotationMirror, null, null,
                 args);
     }
 
     public AptException(MessageResource messageResource,
             Element element, AnnotationMirror annotationMirror,
+            AnnotationValue annotationValue) {
+        this(messageResource, element, annotationMirror,
+                annotationValue, new Object[] {});
+    }
+
+    public AptException(MessageResource messageResource, Element element,
+            AnnotationMirror annotationMirror,
             AnnotationValue annotationValue, Object[] args) {
         this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue,
                 null, args);

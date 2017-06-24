@@ -23,7 +23,7 @@ public class OptionalLongCtType extends AbstractCtType {
 
     private final CtType elementCtType;
 
-    public OptionalLongCtType(Context ctx, TypeMirror typeMirror,
+    OptionalLongCtType(Context ctx, TypeMirror typeMirror,
             CtType elementCtType) {
         super(ctx, typeMirror);
         this.elementCtType = elementCtType;

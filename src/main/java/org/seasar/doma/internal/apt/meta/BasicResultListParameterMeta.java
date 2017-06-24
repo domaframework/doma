@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
  */
 public class BasicResultListParameterMeta implements ResultListParameterMeta {
 
-    protected final BasicCtType basicCtType;
+    private final BasicCtType basicCtType;
 
     public BasicResultListParameterMeta(BasicCtType basicCtType) {
         assertNotNull(basicCtType);

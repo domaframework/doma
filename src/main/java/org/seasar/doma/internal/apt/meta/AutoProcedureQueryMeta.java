@@ -28,17 +28,18 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
-    protected ProcedureReflection procedureReflection;
+    private ProcedureReflection procedureReflection;
 
     public AutoProcedureQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
     }
 
-    ProcedureReflection getProcedureReflection() {
+    public ProcedureReflection getProcedureReflection() {
         return procedureReflection;
     }
 
-    void setProcedureReflection(ProcedureReflection procedureReflection) {
+    public void setProcedureReflection(
+            ProcedureReflection procedureReflection) {
         this.procedureReflection = procedureReflection;
     }
 

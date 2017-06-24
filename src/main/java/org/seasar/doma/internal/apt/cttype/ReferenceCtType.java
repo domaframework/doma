@@ -22,11 +22,11 @@ import org.seasar.doma.internal.apt.Context;
 
 public class ReferenceCtType extends AbstractCtType {
 
-    protected final TypeMirror referentTypeMirror;
+    private final TypeMirror referentTypeMirror;
 
-    protected final CtType referentType;
+    private final CtType referentType;
 
-    public ReferenceCtType(Context ctx, TypeMirror type,
+    ReferenceCtType(Context ctx, TypeMirror type,
             TypeMirror referentTypeMirror, CtType referentType) {
         super(ctx, type);
         this.referentTypeMirror = referentTypeMirror;

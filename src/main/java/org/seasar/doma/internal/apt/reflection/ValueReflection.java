@@ -31,22 +31,16 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author nakamura-to
  *
  */
-public class ValueReflection {
+public class ValueReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue staticConstructor;
 
-    protected final AnnotationValue staticConstructor;
-
-    protected ValueReflection(AnnotationMirror annotationMirror,
+    ValueReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.staticConstructor = assertNotNullValue(values,
                 "staticConstructor");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getStaticConstructor() {

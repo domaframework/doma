@@ -27,11 +27,11 @@ import javax.lang.model.element.VariableElement;
  */
 public class OriginalStatesMeta {
 
-    protected final TypeElement typeElement;
+    private final TypeElement typeElement;
 
-    protected final VariableElement fieldElement;
+    private final VariableElement fieldElement;
 
-    protected final TypeElement fieldEnclosingElement;
+    private final TypeElement fieldEnclosingElement;
 
     public OriginalStatesMeta(TypeElement typeElement,
             VariableElement fieldElement, TypeElement fieldEnclosingElement) {

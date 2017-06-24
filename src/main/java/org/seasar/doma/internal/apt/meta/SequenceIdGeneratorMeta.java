@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.reflection.SequenceGeneratorReflection;
 
@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.reflection.SequenceGeneratorReflection;
  */
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
-    protected final SequenceGeneratorReflection sequenceGeneratorReflection;
+    private final SequenceGeneratorReflection sequenceGeneratorReflection;
 
     public SequenceIdGeneratorMeta(
             SequenceGeneratorReflection sequenceGeneratorReflection) {

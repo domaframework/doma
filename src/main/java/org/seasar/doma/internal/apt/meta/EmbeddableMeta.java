@@ -31,15 +31,15 @@ import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
  */
 public class EmbeddableMeta implements TypeElementMeta {
 
-    protected final EmbeddableReflection embeddableReflection;
+    private final EmbeddableReflection embeddableReflection;
 
-    protected final TypeElement embeddableElement;
+    private final TypeElement embeddableElement;
 
-    protected final List<EmbeddablePropertyMeta> propertyMetas = new ArrayList<>();
+    private final List<EmbeddablePropertyMeta> propertyMetas = new ArrayList<>();
 
-    protected EmbeddableConstructorMeta constructorMeta;
+    private EmbeddableConstructorMeta constructorMeta;
 
-    protected boolean error;
+    private boolean error;
 
     public EmbeddableMeta(EmbeddableReflection embeddableReflection,
             TypeElement embeddableElement) {

@@ -62,7 +62,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         return queryMeta;
     }
 
-    protected SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta(
+    private SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileBatchModifyQueryMeta queryMeta = new SqlFileBatchModifyQueryMeta(
                 method, daoMeta.getDaoElement());
@@ -93,21 +93,17 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
         EntityCtType entityCtType = queryMeta.getEntityType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isBatchResult(entityCtType)) {
-                throw new AptException(Message.DOMA4223, returnMeta.getMethodElement(),
-                        new Object[] {
-                                daoMeta.getDaoElement().getQualifiedName(),
-                                method.getSimpleName() });
+                throw new AptException(Message.DOMA4223,
+                        returnMeta.getMethodElement());
             }
         } else {
             if (!returnMeta.isPrimitiveIntArray()) {
-                throw new AptException(Message.DOMA4040, returnMeta.getMethodElement(),
-                        new Object[] {
-                                daoMeta.getDaoElement().getQualifiedName(),
-                                method.getSimpleName() });
+                throw new AptException(Message.DOMA4040,
+                        returnMeta.getMethodElement());
             }
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -119,12 +115,10 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(Message.DOMA4002, method, new Object[] {
-                    daoMeta.getDaoElement().getQualifiedName(),
-                    method.getSimpleName() });
+            throw new AptException(Message.DOMA4002, method);
         }
         QueryParameterMeta parameterMeta = createParameterMeta(
-                parameters.get(0), queryMeta);
+                parameters.get(0));
         IterableCtType iterableCtType = parameterMeta
                 .getCtType()
                 .accept(new SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException>() {
@@ -132,10 +126,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                     @Override
                     protected IterableCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
-                        throw new AptException(Message.DOMA4042, method, new Object[] {
-                                daoMeta.getDaoElement()
-                                        .getQualifiedName(),
-                                method.getSimpleName() });
+                        throw new AptException(Message.DOMA4042, method);
                     }
 
                     @Override

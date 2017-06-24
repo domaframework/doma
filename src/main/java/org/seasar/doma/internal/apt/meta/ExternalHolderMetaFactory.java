@@ -63,19 +63,19 @@ public class ExternalHolderMetaFactory implements
                     "converter doesn't have type args: "
                             + convElement.getQualifiedName());
         }
-        ExternalHolderMeta meta = new ExternalHolderMeta(convElement);
-        doHolderType(convElement, argTypes[0], meta);
-        doValueType(convElement, argTypes[1], meta);
-        return meta;
+        TypeElement holderElement = createHolderElement(convElement,
+                argTypes[0]);
+        BasicCtType basicCtType = createBasicCtType(convElement, argTypes[1]);
+        return new ExternalHolderMeta(convElement, holderElement, basicCtType);
     }
 
-    protected void validateConverter(TypeElement convElement) {
+    private void validateConverter(TypeElement convElement) {
         if (!ctx.getTypes().isAssignable(convElement.asType(),
                 HolderConverter.class)) {
-            throw new AptException(Message.DOMA4191, convElement, new Object[] { convElement.getQualifiedName() });
+            throw new AptException(Message.DOMA4191, convElement);
         }
         if (convElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4198, convElement, new Object[] { convElement.getQualifiedName() });
+            throw new AptException(Message.DOMA4198, convElement);
         }
         if (convElement.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AptException(Message.DOMA4192, convElement, new Object[] { convElement.getQualifiedName() });
@@ -88,7 +88,7 @@ public class ExternalHolderMetaFactory implements
         }
     }
 
-    protected TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
+    private TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
         for (TypeMirror supertype : ctx.getTypes()
                 .directSupertypes(typeMirror)) {
             if (!ctx.getTypes().isAssignable(supertype,
@@ -112,8 +112,8 @@ public class ExternalHolderMetaFactory implements
         return null;
     }
 
-    protected void doHolderType(TypeElement convElement, TypeMirror holderType,
-            ExternalHolderMeta meta) {
+    private TypeElement createHolderElement(TypeElement convElement,
+            TypeMirror holderType) {
         TypeElement holderElement = ctx.getTypes().toTypeElement(holderType);
         if (holderElement == null) {
             throw new AptIllegalStateException(holderType.toString());
@@ -124,8 +124,8 @@ public class ExternalHolderMetaFactory implements
         PackageElement pkgElement = ctx.getElements()
                 .getPackageOf(holderElement);
         if (pkgElement.isUnnamed()) {
-            throw new AptException(Message.DOMA4197, convElement, new Object[] { holderElement.getQualifiedName(),
-                    convElement.getQualifiedName() });
+            throw new AptException(Message.DOMA4197, convElement,
+                    new Object[] { holderElement.getQualifiedName() });
         }
         DeclaredType declaredType = ctx.getTypes().toDeclaredType(holderType);
         if (declaredType == null) {
@@ -133,14 +133,14 @@ public class ExternalHolderMetaFactory implements
         }
         for (TypeMirror typeArg : declaredType.getTypeArguments()) {
             if (typeArg.getKind() != TypeKind.WILDCARD) {
-                throw new AptException(Message.DOMA4203, convElement, new Object[] { holderElement.getQualifiedName(),
-                        convElement.getQualifiedName() });
+                throw new AptException(Message.DOMA4203, convElement,
+                        new Object[] { holderElement.getQualifiedName() });
             }
         }
-        meta.setHolderElement(holderElement);
+        return holderElement;
     }
 
-    protected void validateEnclosingElement(Element element) {
+    private void validateEnclosingElement(Element element) {
         TypeElement typeElement = ctx.getElements().toTypeElement(element);
         if (typeElement == null) {
             return;
@@ -166,17 +166,14 @@ public class ExternalHolderMetaFactory implements
         }
     }
 
-    protected void doValueType(TypeElement convElement, TypeMirror valueType,
-            ExternalHolderMeta meta) {
-        String valueTypeName = ctx.getTypes().getTypeName(valueType);
-        meta.setValueTypeName(valueTypeName);
-
+    private BasicCtType createBasicCtType(TypeElement convElement,
+            TypeMirror valueType) {
         BasicCtType basicCtType = ctx.getCtTypes()
                 .newBasicCtType(valueType);
         if (basicCtType == null) {
-            throw new AptException(Message.DOMA4194, convElement, new Object[] { valueTypeName,
-                    convElement.getQualifiedName() });
+            throw new AptException(Message.DOMA4194, convElement,
+                    new Object[] { valueType });
         }
-        meta.setWrapperCtType(basicCtType.getWrapperCtType());
+        return basicCtType;
     }
 }

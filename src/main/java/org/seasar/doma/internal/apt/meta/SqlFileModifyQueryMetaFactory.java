@@ -54,7 +54,7 @@ public class SqlFileModifyQueryMetaFactory extends
         return queryMeta;
     }
 
-    protected SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
+    private SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method,
                 daoMeta.getDaoElement());
@@ -85,21 +85,17 @@ public class SqlFileModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
         EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isResult(entityCtType)) {
-                throw new AptException(Message.DOMA4222, returnMeta.getMethodElement(),
-                        new Object[] {
-                                daoMeta.getDaoElement().getQualifiedName(),
-                                method.getSimpleName() });
+                throw new AptException(Message.DOMA4222,
+                        returnMeta.getMethodElement());
             }
         } else {
             if (!returnMeta.isPrimitiveInt()) {
-                throw new AptException(Message.DOMA4001, returnMeta.getMethodElement(),
-                        new Object[] {
-                                daoMeta.getDaoElement().getQualifiedName(),
-                                method.getSimpleName() });
+                throw new AptException(Message.DOMA4001,
+                        returnMeta.getMethodElement());
             }
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -110,7 +106,7 @@ public class SqlFileModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             final QueryParameterMeta parameterMeta = createParameterMeta(
-                    parameter, queryMeta);
+                    parameter);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterCtType(parameterMeta.getName(),

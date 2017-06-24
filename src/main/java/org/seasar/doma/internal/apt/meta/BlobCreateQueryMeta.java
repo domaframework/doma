@@ -26,17 +26,18 @@ import org.seasar.doma.internal.apt.reflection.BlobFactoryReflection;
  */
 public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected BlobFactoryReflection blobFactoryReflection;
+    private BlobFactoryReflection blobFactoryReflection;
 
     public BlobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
     }
 
-    BlobFactoryReflection getBlobFactoryReflection() {
+    public BlobFactoryReflection getBlobFactoryReflection() {
         return blobFactoryReflection;
     }
 
-    void setBlobFactoryReflection(BlobFactoryReflection blobFactoryReflection) {
+    public void setBlobFactoryReflection(
+            BlobFactoryReflection blobFactoryReflection) {
         this.blobFactoryReflection = blobFactoryReflection;
     }
 

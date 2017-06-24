@@ -202,7 +202,7 @@ public final class Options {
         }
     }
 
-    protected static class Constants {
+    public static class Constants {
 
         public static final String DEFAULT_DAO_SUFFIX = "Impl";
 

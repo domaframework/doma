@@ -30,7 +30,7 @@ import junit.framework.TestCase;
  * @author nakamura
  *
  */
-public class ResourceUtilTest extends TestCase {
+public class ResourcesTest extends TestCase {
 
     public void testFileObjectImpl_toUri() throws Exception {
         Path path = Paths.get("aaa", "bbb");

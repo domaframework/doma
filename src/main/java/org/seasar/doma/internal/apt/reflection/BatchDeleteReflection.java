@@ -26,7 +26,7 @@ import javax.lang.model.element.AnnotationValue;
  */
 public class BatchDeleteReflection extends BatchModifyReflection {
 
-    protected BatchDeleteReflection(AnnotationMirror annotationMirror,
+    BatchDeleteReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
         super(annotationMirror, values);
     }

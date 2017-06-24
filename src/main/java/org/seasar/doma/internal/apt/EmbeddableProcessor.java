@@ -50,7 +50,7 @@ public class EmbeddableProcessor extends
         return new EmbeddableMetaFactory(ctx, propertyMetaFactory);
     }
 
-    protected EmbeddablePropertyMetaFactory createEmbeddablePropertyMetaFactory(
+    private EmbeddablePropertyMetaFactory createEmbeddablePropertyMetaFactory(
             Context ctx) {
         return new EmbeddablePropertyMetaFactory(ctx);
     }

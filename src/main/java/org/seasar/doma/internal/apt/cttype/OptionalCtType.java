@@ -27,7 +27,7 @@ public class OptionalCtType extends AbstractCtType {
 
     private final boolean isWildcardType;
 
-    public OptionalCtType(Context ctx, TypeMirror optionalType,
+    OptionalCtType(Context ctx, TypeMirror optionalType,
             CtType elementCtType, boolean isRawType, boolean isWildcardType) {
         super(ctx, optionalType);
         this.elementCtType = elementCtType;

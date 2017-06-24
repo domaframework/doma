@@ -45,14 +45,12 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     @Override
     protected void doReturnType(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        QueryReturnMeta resultMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta resultMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(resultMeta);
         if (!returnClass.getName().equals(
                 resultMeta.getCtType().getQualifiedName())) {
             throw new AptException(Message.DOMA4097, method, new Object[] {
-                    returnClass.getName(),
-                    daoMeta.getDaoElement().getQualifiedName(),
-                    method.getSimpleName() });
+                    returnClass.getName() });
         }
     }
 
@@ -62,9 +60,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         List<? extends VariableElement> params = method.getParameters();
         int size = params.size();
         if (size != 0) {
-            throw new AptException(Message.DOMA4078, method, new Object[] {
-                    daoMeta.getDaoElement().getQualifiedName(),
-                    method.getSimpleName() });
+            throw new AptException(Message.DOMA4078, method);
         }
     }
 

@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.Context;
  */
 public class EmbeddableCtType extends AbstractCtType {
 
-    public EmbeddableCtType(Context ctx, TypeMirror type) {
+    EmbeddableCtType(Context ctx, TypeMirror type) {
         super(ctx, type);
     }
 

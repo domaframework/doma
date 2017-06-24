@@ -32,24 +32,18 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author nakamura-to
  *
  */
-public class AllArgsConstructorReflection {
+public class AllArgsConstructorReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue staticName;
 
-    protected final AnnotationValue staticName;
+    private final AnnotationValue access;
 
-    protected final AnnotationValue access;
-
-    protected AllArgsConstructorReflection(AnnotationMirror annotationMirror,
+    AllArgsConstructorReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.staticName = assertNotNullValue(values, "staticName");
         this.access = assertNotNullValue(values, "access");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getStaticName() {

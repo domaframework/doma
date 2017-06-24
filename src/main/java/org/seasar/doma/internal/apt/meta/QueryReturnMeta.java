@@ -15,10 +15,11 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -26,43 +27,59 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor8;
 
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
 
 public class QueryReturnMeta {
 
-    protected final Context ctx;
+    private final Context ctx;
 
-    protected ExecutableElement methodElement;
+    private final ExecutableElement methodElement;
 
-    protected TypeElement daoElement;
+    private final CtType ctType;
 
-    protected TypeMirror type;
-
-    protected String typeName;
-
-    protected CtType ctType;
-
-    public QueryReturnMeta(Context ctx) {
+    public QueryReturnMeta(Context ctx, ExecutableElement methodElement,
+            CtType ctType) {
+        assertNotNull(ctx, methodElement, ctType);
         this.ctx = ctx;
+        this.methodElement = methodElement;
+        this.ctType = ctType;
     }
 
     public String getTypeName() {
-        return typeName;
+        return ctType.getTypeName();
     }
 
     public String getBoxedTypeName() {
-        return ctType.getBoxedTypeName();
+        return ctType.accept(
+                new SimpleCtTypeVisitor<String, Void, RuntimeException>() {
+
+                    @Override
+                    protected String defaultAction(CtType ctType, Void p)
+                            throws RuntimeException {
+                        return ctType.getTypeName();
+                    }
+
+                    @Override
+                    public String visitBasicCtType(BasicCtType ctType, Void p)
+                            throws RuntimeException {
+                        return ctType.getBoxedTypeName();
+                    }
+
+                }, null);
     }
 
     public boolean isPrimitiveInt() {
-        return type.getKind() == TypeKind.INT;
+        return ctType.getTypeMirror().getKind() == TypeKind.INT;
     }
 
     public boolean isPrimitiveIntArray() {
-        return type.accept(new TypeKindVisitor8<Boolean, Void>(false) {
+        return ctType.getTypeMirror()
+                .accept(new TypeKindVisitor8<Boolean, Void>(false) {
 
             @Override
             public Boolean visitArray(ArrayType t, Void p) {
@@ -72,10 +89,11 @@ public class QueryReturnMeta {
     }
 
     public boolean isPrimitiveVoid() {
-        return type.getKind() == TypeKind.VOID;
+        return ctType.getTypeMirror().getKind() == TypeKind.VOID;
     }
 
     public boolean isResult(EntityCtType entityCtType) {
+        TypeMirror type = ctType.getTypeMirror();
         if (!ctx.getTypes().isSameType(type, Result.class)) {
             return false;
         }
@@ -92,6 +110,7 @@ public class QueryReturnMeta {
     }
 
     public boolean isBatchResult(EntityCtType entityCtType) {
+        TypeMirror type = ctType.getTypeMirror();
         if (!ctx.getTypes().isSameType(type, BatchResult.class)) {
             return false;
         }
@@ -111,36 +130,12 @@ public class QueryReturnMeta {
         return methodElement;
     }
 
-    public TypeElement getDaoElement() {
-        return daoElement;
-    }
-
     public TypeMirror getType() {
-        return type;
+        return ctType.getTypeMirror();
     }
 
     public CtType getCtType() {
         return ctType;
-    }
-
-    public void setMethodElement(ExecutableElement methodElement) {
-        this.methodElement = methodElement;
-    }
-
-    public void setDaoElement(TypeElement daoElement) {
-        this.daoElement = daoElement;
-    }
-
-    public void setType(TypeMirror type) {
-        this.type = type;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public void setCtType(CtType ctType) {
-        this.ctType = ctType;
     }
 
 }

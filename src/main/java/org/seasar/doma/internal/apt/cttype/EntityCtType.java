@@ -28,7 +28,7 @@ public class EntityCtType extends AbstractCtType {
 
     private final boolean immutable;
 
-    public EntityCtType(Context ctx, TypeMirror type, boolean immutable) {
+    EntityCtType(Context ctx, TypeMirror type, boolean immutable) {
         super(ctx, type);
         this.immutable = immutable;
     }
@@ -39,6 +39,10 @@ public class EntityCtType extends AbstractCtType {
 
     public boolean isAbstract() {
         return typeElement.getModifiers().contains(Modifier.ABSTRACT);
+    }
+
+    public String getMetaTypeName() {
+        return metaTypeName;
     }
 
     @Override

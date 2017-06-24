@@ -35,32 +35,30 @@ import org.seasar.doma.jdbc.SqlLogType;
  * @author taedium
  * 
  */
-public class SelectReflection {
+public class SelectReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue strategy;
 
-    protected final AnnotationValue strategy;
+    private final AnnotationValue fetch;
 
-    protected final AnnotationValue fetch;
+    private final AnnotationValue ensureResult;
 
-    protected final AnnotationValue ensureResult;
+    private final AnnotationValue ensureResultMapping;
 
-    protected final AnnotationValue ensureResultMapping;
+    private final AnnotationValue queryTimeout;
 
-    protected final AnnotationValue queryTimeout;
+    private final AnnotationValue fetchSize;
 
-    protected final AnnotationValue fetchSize;
+    private final AnnotationValue maxRows;
 
-    protected final AnnotationValue maxRows;
+    private final AnnotationValue mapKeyNaming;
 
-    protected final AnnotationValue mapKeyNaming;
+    private final AnnotationValue sqlLog;
 
-    protected final AnnotationValue sqlLog;
-
-    protected SelectReflection(AnnotationMirror annotationMirror,
+    SelectReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.strategy = assertNotNullValue(values, "strategy");
         this.fetch = assertNotNullValue(values, "fetch");
         this.ensureResult = assertNotNullValue(values, "ensureResult");
@@ -184,10 +182,6 @@ public class SelectReflection {
             throw new AptIllegalStateException("sqlLog");
         }
         return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
 }

@@ -26,9 +26,9 @@ import org.seasar.doma.internal.apt.reflection.ArrayFactoryReflection;
  */
 public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected String elementsParameterName;
+    private String elementsParameterName;
 
-    protected ArrayFactoryReflection arrayFactoryReflection;
+    private ArrayFactoryReflection arrayFactoryReflection;
 
     public ArrayCreateQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);

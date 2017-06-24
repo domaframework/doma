@@ -15,37 +15,44 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
 
 public class BasicCtType extends AbstractCtType {
 
-    protected WrapperCtType wrapperCtType;
+    private final String boxedTypeName;
 
-    public BasicCtType(Context ctx, TypeMirror type) {
+    private final String boxedClassName;
+
+    private final String wrapperTypeName;
+
+    BasicCtType(Context ctx, TypeMirror type, TypeMirror wrapperType) {
         super(ctx, type);
+        this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
+        this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
+        this.wrapperTypeName = ctx.getTypes().getTypeName(wrapperType);
     }
 
-    public WrapperCtType getWrapperCtType() {
-        return wrapperCtType;
+    public String getBoxedTypeName() {
+        return boxedTypeName;
     }
 
-    public String getDefaultValue() {
-        switch (typeMirror.getKind()) {
-        case BOOLEAN:
-            return String.valueOf(false);
-        case BYTE:
-        case SHORT:
-        case INT:
-        case LONG:
-        case FLOAT:
-        case DOUBLE:
-        case CHAR:
-            return "0";
-        default:
-            return "null";
-        }
+    public String getBoxedClassName() {
+        return boxedClassName;
+    }
+
+    public String getWrapperTypeName() {
+        return wrapperTypeName;
+    }
+
+    public boolean isEnum() {
+        return typeElement != null && typeElement.getKind() == ElementKind.ENUM;
+    }
+
+    public boolean isPrimitive() {
+        return typeMirror.getKind().isPrimitive();
     }
 
     @Override

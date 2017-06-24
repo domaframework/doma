@@ -33,27 +33,21 @@ import org.seasar.doma.jdbc.entity.NamingType;
  * @author taedium
  * 
  */
-public class EntityReflection {
+public class EntityReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue listener;
 
-    protected final AnnotationValue listener;
+    private final AnnotationValue naming;
 
-    protected final AnnotationValue naming;
+    private final AnnotationValue immutable;
 
-    protected final AnnotationValue immutable;
-
-    public EntityReflection(AnnotationMirror annotationMirror,
+    EntityReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.listener = assertNotNullValue(values, "listener");
         this.naming = assertNotNullValue(values, "naming");
         this.immutable = assertNotNullValue(values, "immutable");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getListener() {

@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
 /**
  * @author taedium
@@ -27,45 +27,34 @@ import org.seasar.doma.internal.apt.cttype.WrapperCtType;
  */
 public class ExternalHolderMeta implements TypeElementMeta {
 
-    protected final TypeElement typeElement;
+    private final TypeElement typeElement;
 
-    protected WrapperCtType wrapperCtType;
+    private final TypeElement holderElement;
 
-    protected String valueTypeName;
+    private final BasicCtType basicCtType;
 
-    protected TypeElement holderElement;
-
-    public ExternalHolderMeta(TypeElement typeElement) {
-        assertNotNull(typeElement);
+    public ExternalHolderMeta(TypeElement typeElement,
+            TypeElement holderElement, BasicCtType basicCtType) {
+        assertNotNull(typeElement, holderElement, basicCtType);
         this.typeElement = typeElement;
+        this.holderElement = holderElement;
+        this.basicCtType = basicCtType;
     }
 
     public TypeElement getTypeElement() {
         return typeElement;
     }
 
-    public WrapperCtType getWrapperCtType() {
-        return wrapperCtType;
-    }
-
-    public void setWrapperCtType(WrapperCtType wrapperCtType) {
-        this.wrapperCtType = wrapperCtType;
-    }
-
     public String getValueTypeName() {
-        return valueTypeName;
-    }
-
-    public void setValueTypeName(String valueTypeName) {
-        this.valueTypeName = valueTypeName;
+        return basicCtType.getBoxedTypeName();
     }
 
     public TypeElement getHolderElement() {
         return holderElement;
     }
 
-    public void setHolderElement(TypeElement holderElement) {
-        this.holderElement = holderElement;
+    public BasicCtType getBasicCtType() {
+        return basicCtType;
     }
 
     @Override

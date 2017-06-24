@@ -56,7 +56,7 @@ public class HolderConvertersProcessor extends AbstractProcessor {
         return true;
     }
 
-    protected void validate(TypeElement typeElement) {
+    private void validate(TypeElement typeElement) {
         HolderConvertersReflection convertersMirror = ctx.getReflections()
                 .newHolderConvertersReflection(typeElement);
         for (TypeMirror convType : convertersMirror.getValueValue()) {

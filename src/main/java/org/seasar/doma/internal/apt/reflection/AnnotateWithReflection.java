@@ -28,25 +28,19 @@ import javax.lang.model.element.AnnotationValue;
  * @author taedium
  * 
  */
-public class AnnotateWithReflection {
+public class AnnotateWithReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue annotations;
 
-    protected final AnnotationValue annotations;
+    private final List<AnnotationReflection> annotationsValue;
 
-    protected final List<AnnotationReflection> annotationsValue;
-
-    protected AnnotateWithReflection(AnnotationMirror annotationMirror,
+    AnnotateWithReflection(AnnotationMirror annotationMirror,
             AnnotationValue annotations,
             ArrayList<AnnotationReflection> annotationsValues) {
-        assertNotNull(annotationMirror, annotations, annotationsValues);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(annotations, annotationsValues);
         this.annotations = annotations;
         this.annotationsValue = Collections.unmodifiableList(annotationsValues);
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getAnnotations() {

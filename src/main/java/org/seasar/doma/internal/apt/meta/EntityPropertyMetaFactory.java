@@ -18,6 +18,8 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
+import java.util.List;
+
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -32,9 +34,10 @@ import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
+import org.seasar.doma.internal.apt.cttype.CtTypes;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
@@ -63,115 +66,42 @@ public class EntityPropertyMetaFactory {
     public EntityPropertyMeta createEntityPropertyMeta(
             VariableElement fieldElement, EntityMeta entityMeta) {
         assertNotNull(fieldElement, entityMeta);
-        TypeElement entityElement = ctx.getElements()
-                .toTypeElement(fieldElement.getEnclosingElement());
-        if (entityElement == null) {
-            throw new AptIllegalStateException(fieldElement.toString());
-        }
+        String name = getName(fieldElement);
+        CtType ctType = createCtType(fieldElement);
+        ColumnReflection columnReflection = ctx.getReflections()
+                .newColumnReflection(fieldElement);
+        String filedPrefix = ctx.getOptions().getEntityFieldPrefix();
         EntityPropertyMeta propertyMeta = new EntityPropertyMeta(ctx,
-                entityElement, fieldElement, entityMeta.getNamingType());
-        doCtType(propertyMeta, fieldElement, entityMeta);
-        doName(propertyMeta, fieldElement, entityMeta);
+                fieldElement, name, ctType, columnReflection,
+                filedPrefix);
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
         doColumn(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
     }
 
-    protected void doCtType(EntityPropertyMeta propertyMeta,
-            final VariableElement fieldElement, EntityMeta entityMeta) {
-        CtType ctType = resolveCtType(fieldElement, fieldElement.asType(),
-                entityMeta);
-        propertyMeta.setCtType(ctType);
-    }
-
-    protected CtType resolveCtType(VariableElement fieldElement,
-            TypeMirror type, EntityMeta entityMeta) {
-        final OptionalCtType optionalCtType = ctx.getCtTypes()
-                .newOptionalCtType(type);
-        if (optionalCtType != null) {
-            if (optionalCtType.isRawType()) {
-                throw new AptException(Message.DOMA4232, fieldElement, new Object[] {
-                        optionalCtType.getQualifiedName(),
-                        entityMeta.getEntityElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
-            }
-            if (optionalCtType.isWildcardType()) {
-                throw new AptException(Message.DOMA4233, fieldElement, new Object[] {
-                        optionalCtType.getQualifiedName(),
-                        entityMeta.getEntityElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
-            }
-            return optionalCtType;
-        }
-
-        OptionalIntCtType optionalIntCtType = ctx.getCtTypes()
-                .newOptionalIntCtType(type);
-        if (optionalIntCtType != null) {
-            return optionalIntCtType;
-        }
-
-        OptionalLongCtType optionalLongCtType = ctx.getCtTypes()
-                .newOptionalLongCtType(type);
-        if (optionalLongCtType != null) {
-            return optionalLongCtType;
-        }
-
-        OptionalDoubleCtType optionalDoubleCtType = ctx.getCtTypes()
-                .newOptionalDoubleCtType(type);
-        if (optionalDoubleCtType != null) {
-            return optionalDoubleCtType;
-        }
-
-        final HolderCtType holderCtType = ctx.getCtTypes()
-                .newHolderCtType(type);
-        if (holderCtType != null) {
-            if (holderCtType.isRawType()) {
-                throw new AptException(Message.DOMA4204, fieldElement, new Object[] {
-                        holderCtType.getQualifiedName(),
-                        entityMeta.getEntityElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
-            }
-            if (holderCtType.isWildcardType()) {
-                throw new AptException(Message.DOMA4205, fieldElement, new Object[] {
-                        holderCtType.getQualifiedName(),
-                        entityMeta.getEntityElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
-            }
-            return holderCtType;
-        }
-
-        final EmbeddableCtType embeddableCtType = ctx.getCtTypes()
-                .newEmbeddableCtType(type);
-        if (embeddableCtType != null) {
-            return embeddableCtType;
-        }
-
-        BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(type);
-        if (basicCtType != null) {
-            return basicCtType;
-        }
-
-        throw new AptException(Message.DOMA4096, fieldElement, new Object[] { type,
-                entityMeta.getEntityElement().getQualifiedName(),
-                fieldElement.getSimpleName() });
-    }
-
-    protected void doName(EntityPropertyMeta propertyMeta,
-            VariableElement fieldElement, EntityMeta entityMeta) {
+    private String getName(VariableElement fieldElement) {
         String name = fieldElement.getSimpleName().toString();
         if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
-            throw new AptException(Message.DOMA4025, fieldElement, new Object[] { MetaConstants.RESERVED_NAME_PREFIX,
-                    entityMeta.getEntityElement().getQualifiedName() });
+            throw new AptException(Message.DOMA4025, fieldElement,
+                    new Object[] { MetaConstants.RESERVED_NAME_PREFIX });
         }
-        propertyMeta.setName(name);
+        return name;
     }
 
-    protected void doId(EntityPropertyMeta propertyMeta,
+    private CtType createCtType(VariableElement fieldElement) {
+        TypeMirror type = fieldElement.asType();
+        CtTypes ctTypes = ctx.getCtTypes();
+        CtType ctType = ctTypes.toCtType(type, List.of(
+                ctTypes::newOptionalCtType,
+                ctTypes::newOptionalIntCtType, ctTypes::newOptionalLongCtType,
+                ctTypes::newOptionalDoubleCtType, ctTypes::newHolderCtType,
+                ctTypes::newEmbeddableCtType, ctTypes::newBasicCtType));
+        ctType.accept(new CtTypeValidator(fieldElement), null);
+        return ctType;
+    }
+
+    private void doId(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         Id id = fieldElement.getAnnotation(Id.class);
         if (id == null) {
@@ -184,13 +114,10 @@ public class EntityPropertyMetaFactory {
                         entityMeta);
                 return;
             }
-            throw new AptException(Message.DOMA4033, fieldElement, new Object[] { entityMeta.getEntityElement(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4033, fieldElement);
         }
         if (propertyMeta.isEmbedded()) {
-            throw new AptException(Message.DOMA4302, fieldElement, new Object[] {
-                    entityMeta.getEntityElement().getQualifiedName(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4302, fieldElement);
         }
         propertyMeta.setId(true);
         final GeneratedValue generatedValue = fieldElement
@@ -203,19 +130,13 @@ public class EntityPropertyMetaFactory {
             return;
         }
         if (propertyMeta.isEmbedded()) {
-            throw new AptException(Message.DOMA4303, fieldElement, new Object[] {
-                    entityMeta.getEntityElement().getQualifiedName(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4303, fieldElement);
         }
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
-            throw new AptException(Message.DOMA4037, fieldElement, new Object[] {
-                    entityMeta.getEntityElement().getQualifiedName(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4037, fieldElement);
         }
         if (!isNumber(propertyMeta.getCtType())) {
-            throw new AptException(Message.DOMA4095, fieldElement, new Object[] {
-                    entityMeta.getEntityElement().getQualifiedName(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4095, fieldElement);
         }
         switch (generatedValue.strategy()) {
         case IDENTITY:
@@ -233,41 +154,38 @@ public class EntityPropertyMetaFactory {
         }
     }
 
-    protected void validateSequenceGeneratorNotExistent(
+    private void validateSequenceGeneratorNotExistent(
             EntityPropertyMeta propertyMeta, VariableElement fieldElement,
             EntityMeta entityMeta) {
         SequenceGenerator sequenceGenerator = fieldElement
                 .getAnnotation(SequenceGenerator.class);
         if (sequenceGenerator != null) {
-            throw new AptException(Message.DOMA4030, fieldElement, new Object[] { entityMeta.getEntityElement(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4030, fieldElement);
         }
     }
 
-    protected void validateTableGeneratorNotExistent(
+    private void validateTableGeneratorNotExistent(
             EntityPropertyMeta propertyMeta, VariableElement fieldElement,
             EntityMeta entityMeta) {
         TableGenerator tableGenerator = fieldElement
                 .getAnnotation(TableGenerator.class);
         if (tableGenerator != null) {
-            throw new AptException(Message.DOMA4031, fieldElement, new Object[] { entityMeta.getEntityElement(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4031, fieldElement);
         }
     }
 
-    protected void doIdentityIdGeneratorMeta(EntityPropertyMeta propertyMeta,
+    private void doIdentityIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         propertyMeta.setIdGeneratorMeta(new IdentityIdGeneratorMeta());
     }
 
-    protected void doSequenceIdGeneratorMeta(EntityPropertyMeta propertyMeta,
+    private void doSequenceIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         SequenceGeneratorReflection sequenceGeneratorReflection = ctx
                 .getReflections()
                 .newSequenceGeneratorReflection(fieldElement);
         if (sequenceGeneratorReflection == null) {
-            throw new AptException(Message.DOMA4034, fieldElement, new Object[] { entityMeta.getEntityElement(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4034, fieldElement);
         }
         validateSequenceIdGenerator(propertyMeta, fieldElement,
                 sequenceGeneratorReflection);
@@ -276,7 +194,7 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
 
-    protected void validateSequenceIdGenerator(EntityPropertyMeta propertyMeta,
+    private void validateSequenceIdGenerator(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement,
             SequenceGeneratorReflection sequenceGeneratorReflection) {
         TypeElement typeElement = ctx.getTypes().toTypeElement(
@@ -300,14 +218,13 @@ public class EntityPropertyMetaFactory {
         }
     }
 
-    protected void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta,
+    private void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         TableGeneratorReflection tableGeneratorReflection = ctx
                 .getReflections()
                 .newTableGeneratorReflection(fieldElement);
         if (tableGeneratorReflection == null) {
-            throw new AptException(Message.DOMA4035, fieldElement, new Object[] { entityMeta.getEntityElement(),
-                    fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4035, fieldElement);
         }
         validateTableIdGenerator(propertyMeta, fieldElement,
                 tableGeneratorReflection);
@@ -316,7 +233,7 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
 
-    protected void validateTableIdGenerator(EntityPropertyMeta propertyMeta,
+    private void validateTableIdGenerator(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement,
             TableGeneratorReflection tableGeneratorReflection) {
         TypeElement typeElement = ctx.getTypes()
@@ -340,67 +257,46 @@ public class EntityPropertyMetaFactory {
         }
     }
 
-    protected void doVersion(EntityPropertyMeta propertyMeta,
+    private void doVersion(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         Version version = fieldElement.getAnnotation(Version.class);
         if (version != null) {
             if (propertyMeta.isEmbedded()) {
-                throw new AptException(Message.DOMA4304, fieldElement, new Object[] {
-                        entityMeta.getEntityElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
+                throw new AptException(Message.DOMA4304, fieldElement);
             }
             if (entityMeta.hasVersionPropertyMeta()) {
-                throw new AptException(Message.DOMA4024, fieldElement, new Object[] {
-                        entityMeta.getEntityElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
+                throw new AptException(Message.DOMA4024, fieldElement);
             }
             if (!isNumber(propertyMeta.getCtType())) {
-                throw new AptException(Message.DOMA4093, fieldElement, new Object[] {
-                        entityMeta.getEntityElement()
-                                .getQualifiedName(),
-                        fieldElement.getSimpleName() });
+                throw new AptException(Message.DOMA4093, fieldElement);
             }
             propertyMeta.setVersion(true);
         }
     }
 
-    protected void doColumn(EntityPropertyMeta propertyMeta,
+    private void doColumn(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
-        ColumnReflection columnReflection = ctx.getReflections()
-                .newColumnReflection(fieldElement);
+        ColumnReflection columnReflection = propertyMeta.getColumnReflection();
         if (columnReflection == null) {
             return;
         }
         if (propertyMeta.isEmbedded()) {
-            throw new AptException(Message.DOMA4306, fieldElement, columnReflection.getAnnotationMirror(),
-                    new Object[] {
-                            entityMeta.getEntityElement().getQualifiedName(),
-                            fieldElement.getSimpleName() });
+            throw new AptException(Message.DOMA4306, fieldElement,
+                    columnReflection.getAnnotationMirror());
         }
         if (propertyMeta.isId() || propertyMeta.isVersion()) {
             if (!columnReflection.getInsertableValue()) {
                 throw new AptException(Message.DOMA4088, fieldElement, columnReflection.getAnnotationMirror(),
-                        columnReflection.getInsertable(),
-                        new Object[] {
-                                entityMeta.getEntityElement()
-                                        .getQualifiedName(),
-                                fieldElement.getSimpleName() });
+                        columnReflection.getInsertable());
             }
             if (!columnReflection.getUpdatableValue()) {
                 throw new AptException(Message.DOMA4089, fieldElement, columnReflection.getAnnotationMirror(),
-                        columnReflection.getUpdatable(),
-                        new Object[] {
-                                entityMeta.getEntityElement()
-                                        .getQualifiedName(),
-                                fieldElement.getSimpleName() });
+                        columnReflection.getUpdatable());
             }
         }
-        propertyMeta.setColumnReflection(columnReflection);
     }
 
-    protected boolean isNumber(CtType ctType) {
+    private boolean isNumber(CtType ctType) {
         Boolean isNumber = ctType.accept(
                 new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
 
@@ -449,4 +345,48 @@ public class EntityPropertyMetaFactory {
         return isNumber == Boolean.TRUE;
     }
 
+    private class CtTypeValidator
+            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+        private final VariableElement fieldElement;
+
+        public CtTypeValidator(VariableElement fieldElement) {
+            this.fieldElement = fieldElement;
+        }
+
+        @Override
+        public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4232, fieldElement,
+                        new Object[] { ctType.getQualifiedName() });
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4233, fieldElement,
+                        new Object[] { ctType.getQualifiedName() });
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitHolderCtType(HolderCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4204, fieldElement,
+                        new Object[] { ctType.getQualifiedName() });
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4205, fieldElement,
+                        new Object[] { ctType.getQualifiedName() });
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitAnyCtType(AnyCtType ctType, Void p)
+                throws RuntimeException {
+            throw new AptException(Message.DOMA4096, fieldElement,
+                    new Object[] { ctType.getTypeMirror() });
+        }
+
+    }
 }

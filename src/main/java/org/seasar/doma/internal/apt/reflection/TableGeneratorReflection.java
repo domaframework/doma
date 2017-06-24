@@ -31,32 +31,30 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class TableGeneratorReflection {
+public class TableGeneratorReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue catalog;
 
-    protected final AnnotationValue catalog;
+    private final AnnotationValue schema;
 
-    protected final AnnotationValue schema;
+    private final AnnotationValue table;
 
-    protected final AnnotationValue table;
+    private final AnnotationValue pkColumnName;
 
-    protected final AnnotationValue pkColumnName;
+    private final AnnotationValue valueColumnName;
 
-    protected final AnnotationValue valueColumnName;
+    private final AnnotationValue pkColumnValue;
 
-    protected final AnnotationValue pkColumnValue;
+    private final AnnotationValue initialValue;
 
-    protected final AnnotationValue initialValue;
+    private final AnnotationValue allocationSize;
 
-    protected final AnnotationValue allocationSize;
+    private final AnnotationValue implementer;
 
-    protected final AnnotationValue implementer;
-
-    protected TableGeneratorReflection(AnnotationMirror annotationMirror,
+    TableGeneratorReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.catalog = assertNotNullValue(values, "catalog");
         this.schema = assertNotNullValue(values, "schema");
         this.table = assertNotNullValue(values, "table");
@@ -66,10 +64,6 @@ public class TableGeneratorReflection {
         this.initialValue = assertNotNullValue(values, "initialValue");
         this.allocationSize = assertNotNullValue(values, "allocationSize");
         this.implementer = assertNotNullValue(values, "implementer");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getCatalog() {

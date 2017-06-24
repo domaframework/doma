@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
@@ -25,11 +25,11 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
  */
 public class EntityListParameterMeta implements CallableSqlParameterMeta {
 
-    protected final String name;
+    private final String name;
 
-    protected final EntityCtType entityCtType;
+    private final EntityCtType entityCtType;
 
-    protected final boolean ensureResultMapping;
+    private final boolean ensureResultMapping;
 
     public EntityListParameterMeta(String name, EntityCtType entityCtType,
             boolean ensureResultMapping) {

@@ -30,16 +30,14 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class ArrayFactoryReflection {
+public class ArrayFactoryReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue typeName;
 
-    protected final AnnotationValue typeName;
-
-    protected ArrayFactoryReflection(AnnotationMirror annotationMirror,
+    ArrayFactoryReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.typeName = assertNotNullValue(values, "typeName");
     }
 

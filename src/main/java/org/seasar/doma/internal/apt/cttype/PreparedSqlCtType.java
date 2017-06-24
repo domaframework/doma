@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.Context;
 
 public class PreparedSqlCtType extends AbstractCtType {
 
-    public PreparedSqlCtType(Context ctx, TypeMirror type) {
+    PreparedSqlCtType(Context ctx, TypeMirror type) {
         super(ctx, type);
     }
 

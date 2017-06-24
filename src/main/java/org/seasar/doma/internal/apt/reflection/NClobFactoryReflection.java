@@ -21,12 +21,10 @@ import javax.lang.model.element.AnnotationMirror;
  * @author taedium
  * 
  */
-public class NClobFactoryReflection {
+public class NClobFactoryReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
-
-    protected NClobFactoryReflection(AnnotationMirror annotationMirror) {
-        this.annotationMirror = annotationMirror;
+    NClobFactoryReflection(AnnotationMirror annotationMirror) {
+        super(annotationMirror);
     }
 
 }

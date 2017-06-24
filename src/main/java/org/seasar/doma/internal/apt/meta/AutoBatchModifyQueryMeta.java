@@ -30,11 +30,11 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
-    protected EntityCtType entityCtType;
+    private EntityCtType entityCtType;
 
-    protected String entitiesParameterName;
+    private String entitiesParameterName;
 
-    protected BatchModifyReflection batchModifyReflection;
+    private BatchModifyReflection batchModifyReflection;
 
     public AutoBatchModifyQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);

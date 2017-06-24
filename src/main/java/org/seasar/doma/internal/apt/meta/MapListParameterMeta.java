@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 
@@ -25,9 +25,9 @@ import org.seasar.doma.internal.apt.cttype.MapCtType;
  */
 public class MapListParameterMeta implements CallableSqlParameterMeta {
 
-    protected final String name;
+    private final String name;
 
-    protected final MapCtType mapCtType;
+    private final MapCtType mapCtType;
 
     public MapListParameterMeta(String name, MapCtType mapCtType) {
         assertNotNull(name, mapCtType);

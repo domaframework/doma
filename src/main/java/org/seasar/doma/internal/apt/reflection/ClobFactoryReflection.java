@@ -15,21 +15,16 @@
  */
 package org.seasar.doma.internal.apt.reflection;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import javax.lang.model.element.AnnotationMirror;
 
 /**
  * @author taedium
  * 
  */
-public class ClobFactoryReflection {
+public class ClobFactoryReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
-
-    protected ClobFactoryReflection(AnnotationMirror annotationMirror) {
-        assertNotNull(annotationMirror);
-        this.annotationMirror = annotationMirror;
+    ClobFactoryReflection(AnnotationMirror annotationMirror) {
+        super(annotationMirror);
     }
 
 }

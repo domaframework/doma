@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -28,84 +27,12 @@ import org.seasar.doma.internal.apt.reflection.ColumnReflection;
  * @author nakamura-to
  *
  */
-public class EmbeddablePropertyMeta {
+public class EmbeddablePropertyMeta extends AbstractPropertyMeta {
 
-    protected final TypeMirror type;
-
-    protected final String typeName;
-
-    protected final String boxedTypeName;
-
-    protected final String boxedClassName;
-
-    protected String name;
-
-    protected ColumnReflection columnReflection;
-
-    protected CtType ctType;
-
-    public EmbeddablePropertyMeta(Context ctx, VariableElement fieldElement) {
+    public EmbeddablePropertyMeta(Context ctx, VariableElement fieldElement,
+            String name, CtType ctType, ColumnReflection columnReflection) {
+        super(fieldElement, name, ctType, columnReflection);
         assertNotNull(ctx, fieldElement);
-        this.type = fieldElement.asType();
-        this.typeName = ctx.getTypes().getTypeName(type);
-        this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
-        this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ColumnReflection getColumnReflection() {
-        return columnReflection;
-    }
-
-    public void setColumnReflection(ColumnReflection columnReflection) {
-        this.columnReflection = columnReflection;
-    }
-
-    public String getColumnName() {
-        return columnReflection != null ? columnReflection.getNameValue() : "";
-    }
-
-    public boolean isColumnInsertable() {
-        return columnReflection != null ? columnReflection.getInsertableValue() : true;
-    }
-
-    public boolean isColumnUpdatable() {
-        return columnReflection != null ? columnReflection.getUpdatableValue() : true;
-    }
-
-    public boolean isColumnQuoteRequired() {
-        return columnReflection != null ? columnReflection.getQuoteValue() : false;
-    }
-
-    public CtType getCtType() {
-        return ctType;
-    }
-
-    public void setCtType(CtType ctType) {
-        this.ctType = ctType;
-    }
-
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public String getBoxedTypeName() {
-        return boxedTypeName;
-    }
-
-    public String getBoxedClassName() {
-        return boxedClassName;
     }
 
 }

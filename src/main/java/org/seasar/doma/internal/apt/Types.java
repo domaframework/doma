@@ -428,7 +428,7 @@ public class Types implements javax.lang.model.util.Types {
         }
     }
 
-    public String getClassName(TypeMirror typeMirror) {
+    private String getClassName(TypeMirror typeMirror) {
         assertNotNull(typeMirror);
         StringBuilder p = new StringBuilder();
         typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {

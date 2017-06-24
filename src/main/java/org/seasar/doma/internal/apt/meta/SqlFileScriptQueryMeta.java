@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected ScriptReflection scriptReflection;
+    private ScriptReflection scriptReflection;
 
     public SqlFileScriptQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);

@@ -24,7 +24,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
  */
 public class OptionalLongListParameterMeta implements CallableSqlParameterMeta {
 
-    protected final String name;
+    private final String name;
 
     public OptionalLongListParameterMeta(String name) {
         assertNotNull(name);

@@ -30,16 +30,14 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class ResultSetReflection {
+public class ResultSetReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue ensureResultMapping;
 
-    protected final AnnotationValue ensureResultMapping;
-
-    protected ResultSetReflection(AnnotationMirror annotationMirror,
+    ResultSetReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.ensureResultMapping = assertNotNullValue(values,
                 "ensureResultMapping");
     }

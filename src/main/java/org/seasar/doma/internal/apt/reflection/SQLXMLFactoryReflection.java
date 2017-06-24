@@ -15,21 +15,16 @@
  */
 package org.seasar.doma.internal.apt.reflection;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import javax.lang.model.element.AnnotationMirror;
 
 /**
  * @author nakamura-to
  *
  */
-public class SQLXMLFactoryReflection {
-
-    protected final AnnotationMirror annotationMirror;
+public class SQLXMLFactoryReflection extends AbstractReflection {
 
     protected SQLXMLFactoryReflection(AnnotationMirror annotationMirror) {
-        assertNotNull(annotationMirror);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
     }
 
 }

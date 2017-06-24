@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
 
@@ -27,7 +27,7 @@ public class OptionalHolderOutParameterMeta implements CallableSqlParameterMeta 
 
     private final String name;
 
-    protected final HolderCtType holderCtType;
+    private final HolderCtType holderCtType;
 
     public OptionalHolderOutParameterMeta(String name, HolderCtType holderCtType) {
         assertNotNull(name, holderCtType);

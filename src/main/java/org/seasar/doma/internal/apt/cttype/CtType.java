@@ -30,19 +30,7 @@ public interface CtType {
 
     String getTypeName();
 
-    String getBoxedTypeName();
-
-    String getMetaTypeName();
-
     String getQualifiedName();
-
-    String getPackageName();
-
-    String getPackageExcludedBinaryName();
-
-    boolean isPrimitive();
-
-    boolean isEnum();
 
     <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p)
             throws TH;

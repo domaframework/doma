@@ -21,30 +21,28 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.reflection.HolderReflection;
 
 public class HolderMeta implements TypeElementMeta {
 
-    protected final TypeElement typeElement;
+    private final TypeElement typeElement;
 
-    protected final TypeMirror type;
+    private final TypeMirror type;
 
-    protected final boolean parametarized;
+    private final boolean parametarized;
 
-    protected BasicCtType basicCtType;
+    private final BasicCtType basicCtType;
 
-    protected WrapperCtType wrapperCtType;
+    private final HolderReflection holderReflection;
 
-    protected HolderReflection holderReflection;
-
-    protected String simpleTypeName;
-
-    public HolderMeta(TypeElement typeElement, TypeMirror type) {
-        assertNotNull(typeElement, type);
+    public HolderMeta(TypeElement typeElement, TypeMirror type,
+            HolderReflection holderReflection, BasicCtType basicCtType) {
+        assertNotNull(typeElement, type, holderReflection, basicCtType);
         this.typeElement = typeElement;
         this.type = type;
         this.parametarized = !typeElement.getTypeParameters().isEmpty();
+        this.holderReflection = holderReflection;
+        this.basicCtType = basicCtType;
     }
 
     public TypeMirror getType() {
@@ -57,18 +55,6 @@ public class HolderMeta implements TypeElementMeta {
 
     public BasicCtType getBasicCtType() {
         return basicCtType;
-    }
-
-    public void setBasicCtType(BasicCtType basicCtType) {
-        this.basicCtType = basicCtType;
-    }
-
-    public WrapperCtType getWrapperCtType() {
-        return wrapperCtType;
-    }
-
-    public void setWrapperCtType(WrapperCtType wrapperCtType) {
-        this.wrapperCtType = wrapperCtType;
     }
 
     public TypeMirror getValueType() {
@@ -87,12 +73,8 @@ public class HolderMeta implements TypeElementMeta {
         return holderReflection.getAcceptNullValue();
     }
 
-    HolderReflection getHolderReflection() {
+    public HolderReflection getHolderReflection() {
         return holderReflection;
-    }
-
-    void setHolderReflection(HolderReflection holderReflection) {
-        this.holderReflection = holderReflection;
     }
 
     public boolean providesConstructor() {

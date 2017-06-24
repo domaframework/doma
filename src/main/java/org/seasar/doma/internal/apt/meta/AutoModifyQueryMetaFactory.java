@@ -56,7 +56,7 @@ public class AutoModifyQueryMetaFactory extends
         return queryMeta;
     }
 
-    protected AutoModifyQueryMeta createAutoModifyQueryMeta(
+    private AutoModifyQueryMeta createAutoModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method,
                 daoMeta.getDaoElement());
@@ -87,21 +87,17 @@ public class AutoModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
         EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isResult(entityCtType)) {
-                throw new AptException(Message.DOMA4222, returnMeta.getMethodElement(),
-                        new Object[] {
-                                daoMeta.getDaoElement().getQualifiedName(),
-                                method.getSimpleName() });
+                throw new AptException(Message.DOMA4222,
+                        returnMeta.getMethodElement());
             }
         } else {
             if (!returnMeta.isPrimitiveInt()) {
-                throw new AptException(Message.DOMA4001, returnMeta.getMethodElement(),
-                        new Object[] {
-                                daoMeta.getDaoElement().getQualifiedName(),
-                                method.getSimpleName() });
+                throw new AptException(Message.DOMA4001,
+                        returnMeta.getMethodElement());
             }
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -113,12 +109,10 @@ public class AutoModifyQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(Message.DOMA4002, method, new Object[] {
-                    daoMeta.getDaoElement().getQualifiedName(),
-                    method.getSimpleName() });
+            throw new AptException(Message.DOMA4002, method);
         }
         final QueryParameterMeta parameterMeta = createParameterMeta(
-                parameters.get(0), queryMeta);
+                parameters.get(0));
         EntityCtType entityCtType = parameterMeta
                 .getCtType()
                 .accept(new SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException>() {
@@ -126,11 +120,8 @@ public class AutoModifyQueryMetaFactory extends
                     @Override
                     protected EntityCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
-                        throw new AptException(Message.DOMA4003, parameterMeta.getElement(),
-                                new Object[] {
-                                        daoMeta.getDaoElement()
-                                                .getQualifiedName(),
-                                        method.getSimpleName() });
+                        throw new AptException(Message.DOMA4003,
+                                parameterMeta.getElement());
                     }
 
                     @Override

@@ -37,25 +37,25 @@ import org.seasar.doma.internal.apt.reflection.DaoReflection;
  */
 public class DaoMeta implements TypeElementMeta {
 
-    protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
+    private final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
 
-    protected final DaoReflection daoReflection;
+    private final DaoReflection daoReflection;
 
-    protected AnnotateWithReflection annotateWithReflection;
+    private AnnotateWithReflection annotateWithReflection;
 
-    protected TypeMirror daoType;
+    private TypeMirror daoType;
 
-    protected TypeElement daoElement;
+    private TypeElement daoElement;
 
-    protected String name;
+    private String name;
 
-    protected boolean error;
+    private boolean error;
 
-    protected ParentDaoMeta parentDaoMeta;
+    private ParentDaoMeta parentDaoMeta;
 
-    protected String singletonMethodName;
+    private String singletonMethodName;
 
-    protected String singletonFieldName;
+    private String singletonFieldName;
 
     public DaoMeta(DaoReflection daoReflection) {
         assertNotNull(daoReflection);
@@ -98,7 +98,7 @@ public class DaoMeta implements TypeElementMeta {
         return daoReflection.hasUserDefinedConfig();
     }
 
-    DaoReflection getDaoReflection() {
+    public DaoReflection getDaoReflection() {
         return daoReflection;
     }
 

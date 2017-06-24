@@ -53,8 +53,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createParameterMeta(parameter,
-                    queryMeta);
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMeta(parameterMeta);
 
             CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(parameterMeta);
@@ -83,10 +82,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         if (parameterMeta.isAnnotated(InOut.class)) {
             return createInOutParameterMeta(parameterMeta);
         }
-        throw new AptException(Message.DOMA4066, parameterMeta.getElement(),
-                new Object[] {
-                        parameterMeta.getDaoElement().getQualifiedName(),
-                        parameterMeta.getMethodElement().getSimpleName() });
+        throw new AptException(Message.DOMA4066, parameterMeta.getElement());
     }
 
     protected CallableSqlParameterMeta createResultSetParameterMeta(
@@ -140,10 +136,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected IterableCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4062, parameterMeta.getElement(),
-                    new Object[] {
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+            throw new AptException(Message.DOMA4062,
+                    parameterMeta.getElement());
         }
 
         @Override
@@ -179,10 +173,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4186, parameterMeta.getElement(),
-                    new Object[] {
-                            type.getTypeName(),
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+                    new Object[] { type.getTypeName() });
         }
 
         @Override
@@ -190,12 +181,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 Boolean p) throws RuntimeException {
             if (ctType.isAbstract()) {
                 throw new AptException(Message.DOMA4157, parameterMeta.getElement(),
-                        new Object[] {
-                                ctType.getTypeName(),
-                                parameterMeta.getDaoElement()
-                                        .getQualifiedName(),
-                                parameterMeta.getMethodElement()
-                                        .getSimpleName() });
+                        new Object[] { ctType.getTypeName() });
             }
             return new EntityListParameterMeta(parameterMeta.getName(), ctType,
                     resultSetReflection.getEnsureResultMappingValue());
@@ -269,13 +255,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
+        protected CallableSqlParameterMeta defaultAction(CtType ctType,
+                Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4101, parameterMeta.getElement(),
-                    new Object[] {
-                            parameterMeta.getType(),
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+                    new Object[] { ctType.getTypeMirror() });
         }
 
         @Override
@@ -341,10 +325,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected ReferenceCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4098, parameterMeta.getElement(),
-                    new Object[] {
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+            throw new AptException(Message.DOMA4098,
+                    parameterMeta.getElement());
         }
 
         @Override
@@ -378,9 +360,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 throws RuntimeException {
             throw new AptException(Message.DOMA4100, parameterMeta.getElement(),
                     new Object[] {
-                            referenceCtType.getReferentTypeMirror(),
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+                            referenceCtType.getReferentTypeMirror() });
         }
 
         @Override
@@ -446,10 +426,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         @Override
         protected ReferenceCtType defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4111, parameterMeta.getElement(),
-                    new Object[] {
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+            throw new AptException(Message.DOMA4111,
+                    parameterMeta.getElement());
         }
 
         @Override
@@ -483,9 +461,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 throws RuntimeException {
             throw new AptException(Message.DOMA4100, parameterMeta.getElement(),
                     new Object[] {
-                            referenceCtType.getReferentTypeMirror(),
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+                            referenceCtType.getReferentTypeMirror() });
         }
 
         @Override

@@ -159,14 +159,14 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
         }
     }
 
-    protected QueryReturnMeta createReturnMeta(QueryMeta queryMeta) {
-        return queryReturnMetaFactory.createQueryReturnMeta(queryMeta);
+    protected QueryReturnMeta createReturnMeta(
+            ExecutableElement methodElement) {
+        return queryReturnMetaFactory.createQueryReturnMeta(methodElement);
     }
 
-    protected QueryParameterMeta createParameterMeta(VariableElement parameter,
-            QueryMeta queryMeta) {
-        return queryParameterMetaFactory.createQueryParameterMeta(parameter,
-                queryMeta);
+    protected QueryParameterMeta createParameterMeta(
+            VariableElement parameter) {
+        return queryParameterMetaFactory.createQueryParameterMeta(parameter);
     }
 
 }

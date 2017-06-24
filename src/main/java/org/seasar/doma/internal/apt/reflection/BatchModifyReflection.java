@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.internal.apt.reflection;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 
 import java.util.List;
 import java.util.Map;
@@ -33,31 +33,28 @@ import org.seasar.doma.jdbc.SqlLogType;
  * @author taedium
  * 
  */
-public abstract class BatchModifyReflection {
+public abstract class BatchModifyReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue sqlFile;
 
-    protected final AnnotationValue sqlFile;
+    private final AnnotationValue queryTimeout;
 
-    protected final AnnotationValue queryTimeout;
+    private final AnnotationValue batchSize;
 
-    protected final AnnotationValue batchSize;
+    private final AnnotationValue sqlLog;
 
-    protected final AnnotationValue sqlLog;
+    private final AnnotationValue ignoreVersion;
 
-    protected final AnnotationValue ignoreVersion;
+    private final AnnotationValue suppressOptimisticLockException;
 
-    protected final AnnotationValue suppressOptimisticLockException;
+    private final AnnotationValue include;
 
-    protected final AnnotationValue include;
+    private final AnnotationValue exclude;
 
-    protected final AnnotationValue exclude;
-
-    protected BatchModifyReflection(AnnotationMirror annotationMirror,
+    BatchModifyReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
+        super(annotationMirror);
         assertNotNull(annotationMirror, values);
-
-        this.annotationMirror = annotationMirror;
 
         // non null values
         this.sqlFile = assertNotNullValue(values, "sqlFile");
@@ -71,10 +68,6 @@ public abstract class BatchModifyReflection {
                 .get("suppressOptimisticLockException");
         this.include = values.get("include");
         this.exclude = values.get("exclude");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getSqlFile() {

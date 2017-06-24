@@ -26,17 +26,18 @@ import org.seasar.doma.internal.apt.reflection.SQLXMLFactoryReflection;
  */
 public class SQLXMLCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected SQLXMLFactoryReflection sqlxmlFactoryReflection;
+    private SQLXMLFactoryReflection sqlxmlFactoryReflection;
 
     public SQLXMLCreateQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
     }
 
-    SQLXMLFactoryReflection getSqlxmlFactoryReflection() {
+    public SQLXMLFactoryReflection getSqlxmlFactoryReflection() {
         return sqlxmlFactoryReflection;
     }
 
-    void setSqlxmlFactoryReflection(SQLXMLFactoryReflection sqlxmlFactoryMirror) {
+    public void setSqlxmlFactoryReflection(
+            SQLXMLFactoryReflection sqlxmlFactoryMirror) {
         this.sqlxmlFactoryReflection = sqlxmlFactoryMirror;
     }
 

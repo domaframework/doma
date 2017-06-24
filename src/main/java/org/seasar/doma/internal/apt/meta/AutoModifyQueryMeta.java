@@ -30,11 +30,11 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
-    protected EntityCtType entityCtType;
+    private EntityCtType entityCtType;
 
-    protected String entityParameterName;
+    private String entityParameterName;
 
-    protected ModifyReflection modifyReflection;
+    private ModifyReflection modifyReflection;
 
     public AutoModifyQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);
@@ -56,11 +56,11 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
         this.entityParameterName = entityParameterName;
     }
 
-    ModifyReflection getModifyReflection() {
+    public ModifyReflection getModifyReflection() {
         return modifyReflection;
     }
 
-    void setModifyReflection(ModifyReflection modifyReflection) {
+    public void setModifyReflection(ModifyReflection modifyReflection) {
         this.modifyReflection = modifyReflection;
     }
 

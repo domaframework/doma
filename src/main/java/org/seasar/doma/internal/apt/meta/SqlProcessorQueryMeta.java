@@ -27,11 +27,11 @@ import org.seasar.doma.internal.apt.reflection.SqlProcessorReflection;
  */
 public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected SqlProcessorReflection sqlProcessorReflection;
+    private SqlProcessorReflection sqlProcessorReflection;
 
-    protected String biFunctionParameterName;
+    private String biFunctionParameterName;
 
-    protected BiFunctionCtType biFunctionCtType;
+    private BiFunctionCtType biFunctionCtType;
 
     protected SqlProcessorQueryMeta(ExecutableElement method, TypeElement dao) {
         super(method, dao);

@@ -60,7 +60,7 @@ public class SqlProcessorQueryMetaFactory
         return queryMeta;
     }
 
-    protected SqlProcessorQueryMeta createSqlContentQueryMeta(
+    private SqlProcessorQueryMeta createSqlContentQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         SqlProcessorReflection sqlProcessorReflection = ctx
                 .getReflections()
@@ -80,7 +80,7 @@ public class SqlProcessorQueryMetaFactory
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             final QueryParameterMeta parameterMeta = createParameterMeta(
-                    parameter, queryMeta);
+                    parameter);
             parameterMeta.getCtType().accept(
                     new ParamCtTypeVisitor(queryMeta, parameterMeta), null);
             queryMeta.addParameterMeta(parameterMeta);
@@ -93,16 +93,15 @@ public class SqlProcessorQueryMetaFactory
         if (queryMeta.getBiFunctionCtType() == null) {
             SqlProcessorReflection sqlProcessorReflection = queryMeta
                     .getSqlProcessorReflection();
-            throw new AptException(Message.DOMA4433, method, sqlProcessorReflection.getAnnotationMirror(),
-                    new Object[] { daoMeta.getDaoElement().getQualifiedName(),
-                            method.getSimpleName() });
+            throw new AptException(Message.DOMA4433, method,
+                    sqlProcessorReflection.getAnnotationMirror());
         }
     }
 
     @Override
     protected void doReturnType(SqlProcessorQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        final QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
+        final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
 
         BiFunctionCtType biFunctionCtType = queryMeta.getBiFunctionCtType();
@@ -110,13 +109,11 @@ public class SqlProcessorQueryMetaFactory
         if (resultCtType == null
                 || !isConvertibleReturnType(returnMeta, resultCtType)) {
             throw new AptException(Message.DOMA4436, method, new Object[] { returnMeta.getType(),
-                    resultCtType.getBoxedTypeName(),
-                    daoMeta.getDaoElement().getQualifiedName(),
-                    method.getSimpleName() });
+                            resultCtType.getTypeName() });
         }
     }
 
-    protected boolean isConvertibleReturnType(QueryReturnMeta returnMeta,
+    private boolean isConvertibleReturnType(QueryReturnMeta returnMeta,
             AnyCtType resultCtType) {
         if (ctx.getTypes().isSameType(returnMeta.getType(),
                 resultCtType.getTypeMirror())) {
@@ -134,14 +131,14 @@ public class SqlProcessorQueryMetaFactory
      * @author nakamura
      *
      */
-    protected class ParamCtTypeVisitor
+    private class ParamCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        protected SqlProcessorQueryMeta queryMeta;
+        private SqlProcessorQueryMeta queryMeta;
 
-        protected QueryParameterMeta parameterMeta;
+        private QueryParameterMeta parameterMeta;
 
-        protected ParamCtTypeVisitor(SqlProcessorQueryMeta queryMeta,
+        public ParamCtTypeVisitor(SqlProcessorQueryMeta queryMeta,
                 QueryParameterMeta parameterMeta) {
             this.queryMeta = queryMeta;
             this.parameterMeta = parameterMeta;
@@ -151,19 +148,15 @@ public class SqlProcessorQueryMetaFactory
         public Void visitBiFunctionCtType(BiFunctionCtType ctType, Void p)
                 throws RuntimeException {
             if (queryMeta.getBiFunctionCtType() != null) {
-                throw new AptException(Message.DOMA4434, parameterMeta.getElement(),
-                        new Object[] {
-                                parameterMeta.getDaoElement()
-                                        .getQualifiedName(),
-                                parameterMeta.getMethodElement()
-                                        .getSimpleName() });
+                throw new AptException(Message.DOMA4434,
+                        parameterMeta.getElement());
             }
             ctType.getFirstArgCtType()
-                    .accept(new ParamBiFunctionFirstArgCtTypeVisitor(queryMeta,
-                            parameterMeta), null);
+                    .accept(new ParamBiFunctionFirstArgCtTypeVisitor(queryMeta),
+                            null);
             ctType.getSecondArgCtType()
-                    .accept(new ParamBiFunctionSecondArgCtTypeVisitor(queryMeta,
-                            parameterMeta), null);
+                    .accept(new ParamBiFunctionSecondArgCtTypeVisitor(
+                            queryMeta), null);
             queryMeta.setBiFunctionCtType(ctType);
             queryMeta.setBiFunctionParameterName(parameterMeta.getName());
             return null;
@@ -176,27 +169,21 @@ public class SqlProcessorQueryMetaFactory
      * @author nakamura
      *
      */
-    protected class ParamBiFunctionFirstArgCtTypeVisitor
+    private class ParamBiFunctionFirstArgCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        protected SqlProcessorQueryMeta queryMeta;
+        private SqlProcessorQueryMeta queryMeta;
 
-        protected QueryParameterMeta parameterMeta;
-
-        protected ParamBiFunctionFirstArgCtTypeVisitor(
-                SqlProcessorQueryMeta queryMeta,
-                QueryParameterMeta parameterMeta) {
+        public ParamBiFunctionFirstArgCtTypeVisitor(
+                SqlProcessorQueryMeta queryMeta) {
             this.queryMeta = queryMeta;
-            this.parameterMeta = parameterMeta;
         }
 
         @Override
         protected Void defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4437, queryMeta.getMethodElement(),
-                    new Object[] {
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+            throw new AptException(Message.DOMA4437,
+                    queryMeta.getMethodElement());
         }
 
         @Override
@@ -211,27 +198,21 @@ public class SqlProcessorQueryMetaFactory
      * @author nakamura
      *
      */
-    protected class ParamBiFunctionSecondArgCtTypeVisitor
+    private class ParamBiFunctionSecondArgCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        protected SqlProcessorQueryMeta queryMeta;
+        private SqlProcessorQueryMeta queryMeta;
 
-        protected QueryParameterMeta parameterMeta;
-
-        protected ParamBiFunctionSecondArgCtTypeVisitor(
-                SqlProcessorQueryMeta queryMeta,
-                QueryParameterMeta parameterMeta) {
+        public ParamBiFunctionSecondArgCtTypeVisitor(
+                SqlProcessorQueryMeta queryMeta) {
             this.queryMeta = queryMeta;
-            this.parameterMeta = parameterMeta;
         }
 
         @Override
         protected Void defaultAction(CtType type, Void p)
                 throws RuntimeException {
-            throw new AptException(Message.DOMA4435, queryMeta.getMethodElement(),
-                    new Object[] {
-                            parameterMeta.getDaoElement().getQualifiedName(),
-                            parameterMeta.getMethodElement().getSimpleName() });
+            throw new AptException(Message.DOMA4435,
+                    queryMeta.getMethodElement());
         }
 
         @Override

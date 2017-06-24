@@ -30,22 +30,20 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class TableReflection {
+public class TableReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue catalog;
 
-    protected final AnnotationValue catalog;
+    private final AnnotationValue schema;
 
-    protected final AnnotationValue schema;
+    private final AnnotationValue name;
 
-    protected final AnnotationValue name;
+    private final AnnotationValue quote;
 
-    protected final AnnotationValue quote;
-
-    protected TableReflection(AnnotationMirror annotationMirror,
+    TableReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.catalog = assertNotNullValue(values, "catalog");
         this.schema = assertNotNullValue(values, "schema");
         this.name = assertNotNullValue(values, "name");

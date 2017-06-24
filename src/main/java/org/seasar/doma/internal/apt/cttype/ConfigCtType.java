@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.Context;
 
 public class ConfigCtType extends AbstractCtType {
 
-    public ConfigCtType(Context ctx, TypeMirror type) {
+    ConfigCtType(Context ctx, TypeMirror type) {
         super(ctx, type);
     }
 

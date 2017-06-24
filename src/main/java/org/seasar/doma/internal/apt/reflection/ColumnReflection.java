@@ -30,30 +30,24 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class ColumnReflection {
+public class ColumnReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue name;
 
-    protected final AnnotationValue name;
+    private final AnnotationValue insertable;
 
-    protected final AnnotationValue insertable;
+    private final AnnotationValue updatable;
 
-    protected final AnnotationValue updatable;
+    private final AnnotationValue quote;
 
-    protected final AnnotationValue quote;
-
-    protected ColumnReflection(AnnotationMirror annotationMirror,
+    ColumnReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.name = assertNotNullValue(values, "name");
         this.insertable = assertNotNullValue(values, "insertable");
         this.updatable = assertNotNullValue(values, "updatable");
         this.quote = assertNotNullValue(values, "quote");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getName() {

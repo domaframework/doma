@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
 
@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.cttype.HolderCtType;
  */
 public class HolderResultListParameterMeta implements ResultListParameterMeta {
 
-    protected final HolderCtType holderCtType;
+    private final HolderCtType holderCtType;
 
     public HolderResultListParameterMeta(HolderCtType holderCtType) {
         assertNotNull(holderCtType);

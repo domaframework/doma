@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -28,13 +28,13 @@ import org.seasar.doma.internal.apt.reflection.DaoReflection;
  */
 public class ParentDaoMeta {
 
-    protected final DaoReflection daoReflection;
+    private final DaoReflection daoReflection;
 
-    protected TypeMirror daoType;
+    private TypeMirror daoType;
 
-    protected TypeElement daoElement;
+    private TypeElement daoElement;
 
-    protected String name;
+    private String name;
 
     public ParentDaoMeta(DaoReflection daoReflection) {
         assertNotNull(daoReflection);

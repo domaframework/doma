@@ -13,32 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.reflection;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-/**
- * 
- * @author nakamura-to
- *
- */
-public class OptionalDoubleListParameterMeta implements
-        CallableSqlParameterMeta {
+import javax.lang.model.element.AnnotationMirror;
 
-    private final String name;
+public abstract class AbstractReflection {
 
-    public OptionalDoubleListParameterMeta(String name) {
-        assertNotNull(name);
-        this.name = name;
+    private final AnnotationMirror annotationMirror;
+
+    AbstractReflection(AnnotationMirror annotationMirror) {
+        assertNotNull(annotationMirror);
+        this.annotationMirror = annotationMirror;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitOptionalDoubleListParameterMeta(this, p);
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
     }
 
 }

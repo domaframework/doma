@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Formatter;
 
@@ -25,11 +25,11 @@ import java.util.Formatter;
  */
 public class Printer {
 
-    protected static final String INDENT_SPACE = "    ";
+    private static final String INDENT_SPACE = "    ";
 
-    protected StringBuilder indent = new StringBuilder();
+    private StringBuilder indent = new StringBuilder();
 
-    protected final Formatter formatter;
+    private final Formatter formatter;
 
     public Printer(Appendable appendable) {
         assertNotNull(appendable);

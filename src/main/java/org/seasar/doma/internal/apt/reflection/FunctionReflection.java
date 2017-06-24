@@ -33,33 +33,31 @@ import org.seasar.doma.jdbc.SqlLogType;
  * @author taedium
  * 
  */
-public class FunctionReflection {
+public class FunctionReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final String defaultName;
 
-    protected final String defaultName;
+    private final AnnotationValue catalog;
 
-    protected final AnnotationValue catalog;
+    private final AnnotationValue schema;
 
-    protected final AnnotationValue schema;
+    private final AnnotationValue name;
 
-    protected final AnnotationValue name;
+    private final AnnotationValue quote;
 
-    protected final AnnotationValue quote;
+    private final AnnotationValue queryTimeout;
 
-    protected final AnnotationValue queryTimeout;
+    private final AnnotationValue mapKeyNaming;
 
-    protected final AnnotationValue mapKeyNaming;
+    private final AnnotationValue ensureResultMapping;
 
-    protected final AnnotationValue ensureResultMapping;
+    private final AnnotationValue sqlLog;
 
-    protected final AnnotationValue sqlLog;
-
-    protected FunctionReflection(AnnotationMirror annotationMirror,
+    FunctionReflection(AnnotationMirror annotationMirror,
             String defaultName, Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, defaultName, values);
+        super(annotationMirror);
+        assertNotNull(defaultName, values);
 
-        this.annotationMirror = annotationMirror;
         this.defaultName = defaultName;
 
         this.catalog = assertNotNullValue(values, "catalog");

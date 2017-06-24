@@ -49,7 +49,7 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
         return new EntityMetaFactory(ctx, propertyMetaFactory);
     }
 
-    protected EntityPropertyMetaFactory createEntityPropertyMetaFactory(
+    private EntityPropertyMetaFactory createEntityPropertyMetaFactory(
             Context ctx) {
         return new EntityPropertyMetaFactory(ctx);
     }

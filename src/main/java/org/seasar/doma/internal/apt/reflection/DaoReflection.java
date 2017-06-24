@@ -33,29 +33,23 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author taedium
  * 
  */
-public class DaoReflection {
+public class DaoReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue config;
 
-    protected final AnnotationValue config;
+    private final AnnotationValue accessLevel;
 
-    protected final AnnotationValue accessLevel;
+    private final boolean hasUserDefinedConfig;
 
-    protected final boolean hasUserDefinedConfig;
-
-    protected DaoReflection(AnnotationMirror annotationMirror,
+    DaoReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.config = assertNotNullValue(values, "config");
         this.accessLevel = assertNotNullValue(values, "accessLevel");
         this.hasUserDefinedConfig = annotationMirror.getElementValues().keySet()
                 .stream()
                 .anyMatch(e -> e.getSimpleName().contentEquals("config"));
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getConfig() {

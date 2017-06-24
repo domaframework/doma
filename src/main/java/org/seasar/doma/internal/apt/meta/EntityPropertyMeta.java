@@ -19,7 +19,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
@@ -27,80 +26,31 @@ import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
-import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
  * 
  * @author taedium
  * 
  */
-public class EntityPropertyMeta {
+public class EntityPropertyMeta extends AbstractPropertyMeta {
 
-    protected final Context ctx;
+    private final Context ctx;
 
-    protected final String entityName;
+    private final String fieldPrefix;
 
-    protected final String entityTypeName;
+    private boolean id;
 
-    protected final String entityMetaTypeName;
+    private boolean version;
 
-    protected final NamingType namingType;
+    private IdGeneratorMeta idGeneratorMeta;
 
-    protected final TypeMirror type;
-
-    protected final String typeName;
-
-    protected final String boxedTypeName;
-
-    protected final String boxedClassName;
-
-    protected final String fieldPrefix;
-
-    protected String name;
-
-    protected boolean id;
-
-    protected boolean version;
-
-    protected ColumnReflection columnReflection;
-
-    protected IdGeneratorMeta idGeneratorMeta;
-
-    protected CtType ctType;
-
-    public EntityPropertyMeta(Context ctx, TypeElement entityElement,
-            VariableElement propertyElement, NamingType namingType) {
-        assertNotNull(ctx, entityElement, propertyElement);
+    public EntityPropertyMeta(Context ctx, VariableElement fieldElement,
+            String name, CtType ctType, ColumnReflection columnReflection,
+            String fieldPrefix) {
+        super(fieldElement, name, ctType, columnReflection);
+        assertNotNull(ctx, fieldPrefix);
         this.ctx = ctx;
-        this.entityName = entityElement.getSimpleName().toString();
-        this.entityTypeName = entityElement.getQualifiedName().toString();
-        this.entityMetaTypeName = ctx.getMetas().toFullMetaName(entityElement);
-        this.namingType = namingType;
-        this.type = propertyElement.asType();
-        this.typeName = ctx.getTypes().getTypeName(type);
-        this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
-        this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
-        this.fieldPrefix = ctx.getOptions().getEntityFieldPrefix();
-    }
-
-    public String getEntityName() {
-        return entityName;
-    }
-
-    public String getEntityTypeName() {
-        return entityTypeName;
-    }
-
-    public String getEntityMetaTypeName() {
-        return entityMetaTypeName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.fieldPrefix = fieldPrefix;
     }
 
     public String getFieldName() {
@@ -131,50 +81,6 @@ public class EntityPropertyMeta {
         this.idGeneratorMeta = idGeneratorMeta;
     }
 
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public String getBoxedTypeName() {
-        return boxedTypeName;
-    }
-
-    public String getBoxedClassName() {
-        return boxedClassName;
-    }
-
-    public CtType getCtType() {
-        return ctType;
-    }
-
-    public void setCtType(CtType ctType) {
-        this.ctType = ctType;
-    }
-
-    public void setColumnReflection(ColumnReflection columnReflection) {
-        this.columnReflection = columnReflection;
-    }
-
-    public String getColumnName() {
-        return columnReflection != null ? columnReflection.getNameValue() : "";
-    }
-
-    public boolean isColumnInsertable() {
-        return columnReflection != null ? columnReflection.getInsertableValue() : true;
-    }
-
-    public boolean isColumnUpdatable() {
-        return columnReflection != null ? columnReflection.getUpdatableValue() : true;
-    }
-
-    public boolean isColumnQuoteRequired() {
-        return columnReflection != null ? columnReflection.getQuoteValue() : false;
-    }
-
     public boolean isEmbedded() {
         return ctType
                 .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
@@ -189,7 +95,7 @@ public class EntityPropertyMeta {
     }
 
     public String getEmbeddableMetaTypeName() {
-        TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+        TypeElement typeElement = ctType.getTypeElement();
         if (typeElement == null) {
             throw new AptIllegalStateException("typeElement must not be null.");
         }

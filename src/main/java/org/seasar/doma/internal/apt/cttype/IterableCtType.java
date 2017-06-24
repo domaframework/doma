@@ -22,13 +22,13 @@ import org.seasar.doma.internal.apt.Context;
 
 public class IterableCtType extends AbstractCtType {
 
-    protected final TypeMirror elementTypeMirror;
+    private final TypeMirror elementTypeMirror;
 
-    protected final CtType elementCtType;
+    private final CtType elementCtType;
 
-    protected final boolean isList;
+    private final boolean isList;
 
-    public IterableCtType(Context ctx, TypeMirror type,
+    IterableCtType(Context ctx, TypeMirror type,
             boolean isList, TypeMirror elementTypeMirror,
             CtType elementCtType) {
         super(ctx, type);

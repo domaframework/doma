@@ -53,8 +53,7 @@ public class DefaultQueryMetaFactory extends
     protected void doParameters(DefaultQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createParameterMeta(parameter,
-                    queryMeta);
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterCtType(parameterMeta.getName(),
@@ -66,7 +65,7 @@ public class DefaultQueryMetaFactory extends
     @Override
     protected void doReturnType(DefaultQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta resultMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta resultMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(resultMeta);
     }
 

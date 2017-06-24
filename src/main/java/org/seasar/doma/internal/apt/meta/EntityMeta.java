@@ -36,41 +36,41 @@ import org.seasar.doma.jdbc.entity.NamingType;
  */
 public class EntityMeta implements TypeElementMeta {
 
-    protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
+    private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
 
-    protected final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
+    private final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
 
-    protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
+    private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
-    protected final EntityReflection entityReflection;
+    private final EntityReflection entityReflection;
 
-    protected final TypeElement entityElement;
+    private final TypeElement entityElement;
 
-    protected boolean immutable;
+    private boolean immutable;
 
-    protected NamingType namingType;
+    private NamingType namingType;
 
-    protected TypeMirror entityListener;
+    private TypeMirror entityListener;
 
-    protected TypeElement entityListenerElement;
+    private TypeElement entityListenerElement;
 
-    protected boolean genericEntityListener;
+    private boolean genericEntityListener;
 
-    protected TableReflection tableReflection;
+    private TableReflection tableReflection;
 
-    protected EntityPropertyMeta versionPropertyMeta;
+    private EntityPropertyMeta versionPropertyMeta;
 
-    protected EntityPropertyMeta generatedIdPropertyMeta;
+    private EntityPropertyMeta generatedIdPropertyMeta;
 
-    protected String entityName;
+    private String entityName;
 
-    protected String entityTypeName;
+    private String entityTypeName;
 
-    protected OriginalStatesMeta originalStatesMeta;
+    private OriginalStatesMeta originalStatesMeta;
 
-    protected EntityConstructorMeta constructorMeta;
+    private EntityConstructorMeta constructorMeta;
 
-    protected boolean error;
+    private boolean error;
 
     public EntityMeta(EntityReflection entityReflection, TypeElement entityElement) {
         assertNotNull(entityReflection);
@@ -86,7 +86,7 @@ public class EntityMeta implements TypeElementMeta {
         this.entityName = entityName;
     }
 
-    EntityReflection getEntityReflection() {
+    public EntityReflection getEntityReflection() {
         return entityReflection;
     }
 

@@ -39,17 +39,17 @@ import org.seasar.doma.internal.apt.Context;
 
 public class TypeDeclaration {
 
-    protected Context ctx;
+    private Context ctx;
 
-    protected TypeElement typeElement;
+    private TypeElement typeElement;
 
-    protected TypeMirror type;
+    private TypeMirror type;
 
-    protected Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap = new HashMap<String, List<TypeParameterDeclaration>>();
+    private Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap = new HashMap<String, List<TypeParameterDeclaration>>();
 
-    protected int numberPriority;
+    private int numberPriority;
 
-    public TypeDeclaration(Context ctx, TypeMirror typeMirror,
+    TypeDeclaration(Context ctx, TypeMirror typeMirror,
             TypeElement typeElement,
             Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap,
             int numberPriority) {
@@ -132,7 +132,7 @@ public class TypeDeclaration {
         return candidates;
     }
 
-    protected List<ConstructorDeclaration> getCandidateConstructorDeclarations(
+    private List<ConstructorDeclaration> getCandidateConstructorDeclarations(
             List<TypeDeclaration> parameterTypeDeclarations) {
         List<ConstructorDeclaration> results = new LinkedList<ConstructorDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
@@ -176,7 +176,7 @@ public class TypeDeclaration {
         return results;
     }
 
-    protected ConstructorDeclaration findSuitableConstructorDeclaration(
+    private ConstructorDeclaration findSuitableConstructorDeclaration(
             List<TypeDeclaration> parameterTypeDeclarations,
             List<ConstructorDeclaration> candidates) {
         outer: for (ConstructorDeclaration constructorDeclaration : candidates) {
@@ -247,7 +247,7 @@ public class TypeDeclaration {
         return results;
     }
 
-    protected void removeHiddenFieldDeclarations(
+    private void removeHiddenFieldDeclarations(
             List<FieldDeclaration> candidates) {
         List<FieldDeclaration> hiders = new LinkedList<FieldDeclaration>(
                 candidates);
@@ -275,7 +275,7 @@ public class TypeDeclaration {
                 true);
     }
 
-    protected List<MethodDeclaration> getMethodDeclarationsInternal(
+    private List<MethodDeclaration> getMethodDeclarationsInternal(
             String name, List<TypeDeclaration> parameterTypeDeclarations,
             boolean statik) {
         List<MethodDeclaration> candidates = getCandidateMethodDeclarations(
@@ -293,7 +293,7 @@ public class TypeDeclaration {
         return candidates;
     }
 
-    protected List<MethodDeclaration> getCandidateMethodDeclarations(
+    private List<MethodDeclaration> getCandidateMethodDeclarations(
             String name, List<TypeDeclaration> parameterTypeDeclarations,
             boolean statik) {
         List<MethodDeclaration> results = new LinkedList<MethodDeclaration>();
@@ -351,7 +351,7 @@ public class TypeDeclaration {
         return results;
     }
 
-    protected void removeOverriddenMethodDeclarations(
+    private void removeOverriddenMethodDeclarations(
             List<MethodDeclaration> candidates) {
         List<MethodDeclaration> overriders = new LinkedList<MethodDeclaration>(
                 candidates);
@@ -373,7 +373,7 @@ public class TypeDeclaration {
         }
     }
 
-    protected void removeHiddenMethodDeclarations(
+    private void removeHiddenMethodDeclarations(
             List<MethodDeclaration> candidates) {
         List<MethodDeclaration> hiders = new LinkedList<MethodDeclaration>(
                 candidates);
@@ -395,7 +395,7 @@ public class TypeDeclaration {
         }
     }
 
-    protected MethodDeclaration findSuitableMethodDeclaration(
+    private MethodDeclaration findSuitableMethodDeclaration(
             List<TypeDeclaration> parameterTypeDeclarations,
             List<MethodDeclaration> candidates) {
         outer: for (MethodDeclaration methodDeclaration : candidates) {

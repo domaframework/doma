@@ -23,7 +23,7 @@ public class OptionalDoubleCtType extends AbstractCtType {
 
     private final CtType elementCtType;
 
-    public OptionalDoubleCtType(Context ctx, TypeMirror typeMirro,
+    OptionalDoubleCtType(Context ctx, TypeMirror typeMirro,
             CtType elementCtType) {
         super(ctx, typeMirro);
         this.elementCtType = elementCtType;

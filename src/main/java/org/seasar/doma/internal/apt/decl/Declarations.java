@@ -45,7 +45,7 @@ import org.seasar.doma.internal.apt.Context;
  */
 public class Declarations {
 
-    protected static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<String, Integer>();
+    private static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<String, Integer>();
     static {
         NUMBER_PRIORITY_MAP.put(BigDecimal.class.getName(), 80);
         NUMBER_PRIORITY_MAP.put(BigInteger.class.getName(), 70);
@@ -97,7 +97,7 @@ public class Declarations {
         return newTypeDeclaration(type);
     }
 
-    protected void gatherTypeParameterDeclarations(TypeMirror type,
+    private void gatherTypeParameterDeclarations(TypeMirror type,
             Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap) {
         TypeElement typeElement = ctx.getTypes().toTypeElement(type);
         if (typeElement == null) {
@@ -143,7 +143,7 @@ public class Declarations {
         return Collections.unmodifiableList(list);
     }
 
-    protected int determineNumberPriority(TypeElement typeElement,
+    private int determineNumberPriority(TypeElement typeElement,
             TypeMirror type) {
         if (typeElement != null) {
             Integer result = NUMBER_PRIORITY_MAP
@@ -205,7 +205,7 @@ public class Declarations {
         return new TypeParameterDeclaration(formalType, actualType);
     }
 
-    protected TypeMirror resolveTypeParameter(TypeMirror formalType,
+    private TypeMirror resolveTypeParameter(TypeMirror formalType,
             List<TypeParameterDeclaration> typeParameterDeclarations) {
         for (TypeParameterDeclaration typeParameterDecl : typeParameterDeclarations) {
             if (formalType.equals(typeParameterDecl.getFormalType())) {

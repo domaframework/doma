@@ -30,21 +30,15 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  * @author nakamura-to
  * 
  */
-public class SingletonConfigReflection {
+public class SingletonConfigReflection extends AbstractReflection {
 
-    protected final AnnotationMirror annotationMirror;
+    private final AnnotationValue method;
 
-    protected final AnnotationValue method;
-
-    protected SingletonConfigReflection(AnnotationMirror annotationMirror,
+    SingletonConfigReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
-        assertNotNull(annotationMirror, values);
-        this.annotationMirror = annotationMirror;
+        super(annotationMirror);
+        assertNotNull(values);
         this.method = assertNotNullValue(values, "method");
-    }
-
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
     }
 
     public AnnotationValue getMethod() {

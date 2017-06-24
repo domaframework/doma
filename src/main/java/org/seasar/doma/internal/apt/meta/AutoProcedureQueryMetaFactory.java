@@ -57,12 +57,10 @@ public class AutoProcedureQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoProcedureQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta resultMeta = createReturnMeta(queryMeta);
+        QueryReturnMeta resultMeta = createReturnMeta(method);
         if (!resultMeta.isPrimitiveVoid()) {
-            throw new AptException(Message.DOMA4064, resultMeta.getMethodElement(),
-                    new Object[] {
-                            queryMeta.getDaoElement().getQualifiedName(),
-                            queryMeta.getMethodElement().getSimpleName() });
+            throw new AptException(Message.DOMA4064,
+                    resultMeta.getMethodElement());
         }
         queryMeta.setReturnMeta(resultMeta);
     }
