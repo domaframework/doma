@@ -72,11 +72,6 @@ public final class _NotTopLevelEntity__Hoge extends
     }
 
     @Override
-    public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
-    }
-
-    @Override
     public String getTableName(
             java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
         if (__tableName.isEmpty()) {

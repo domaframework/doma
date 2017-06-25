@@ -80,11 +80,6 @@ public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractE
     }
 
     @Override
-    public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
-    }
-
-    @Override
     public String getTableName(java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
         if (__tableName.isEmpty()) {
             return namingFunction.apply(__namingType, __name);

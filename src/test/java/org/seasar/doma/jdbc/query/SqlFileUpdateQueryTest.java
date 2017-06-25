@@ -415,10 +415,6 @@ public class SqlFileUpdateQueryTest extends TestCase {
             return emp.getSchemaName();
         }
 
-        public String getTableName() {
-            return emp.getTableName();
-        }
-
         public String getTableName(
                 BiFunction<NamingType, String, String> namingFunction) {
             return emp.getTableName(namingFunction);

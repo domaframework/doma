@@ -19,13 +19,13 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
 import example.entity.Dept;
 import example.entity.Emp;
 import example.entity.ImmutableEmp;
 import example.entity._Dept;
 import example.entity._Emp;
 import example.entity._ImmutableEmp;
+import junit.framework.TestCase;
 
 /**
  * @author nakamura-to
@@ -62,11 +62,6 @@ public class EntityTypeTest extends TestCase {
         assertNull(newEmp.getName());
         assertEquals(BigDecimal.ONE, newEmp.getSalary());
         assertNull(newEmp.getVersion());
-    }
-
-    public void testGetTableName() throws Exception {
-        EntityType<Dept> entityType = _Dept.getSingletonInternal();
-        assertEquals("DEPT", entityType.getTableName());
     }
 
     public void testGetTableName_naming() throws Exception {

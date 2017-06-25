@@ -105,12 +105,6 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public String getTableName() {
-
-        return null;
-    }
-
-    @Override
     public String getTableName(
             BiFunction<NamingType, String, String> namingFunction) {
 

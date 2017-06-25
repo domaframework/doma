@@ -67,13 +67,6 @@ public interface EntityType<ENTITY> {
 
     /**
      * テーブル名を返します。
-     * 
-     * @return テーブル名
-     */
-    String getTableName();
-
-    /**
-     * テーブル名を返します。
      * <p>
      * ネーミング規約が適用されます。
      * 

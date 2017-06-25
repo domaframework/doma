@@ -41,7 +41,6 @@ import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.OriginalStatesMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
-import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -437,12 +436,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     private void printGetTableNameMethod() {
-        iprint("@Override%n");
-        iprint("public String getTableName() {%n");
-        iprint("    return getTableName(%1$s.DEFAULT::apply);%n",
-                Naming.class.getName());
-        iprint("}%n");
-        print("%n");
         iprint("@Override%n");
         iprint("public String getTableName(%1$s<%2$s, String, String> namingFunction) {%n",
                 BiFunction.class.getName(), NamingType.class.getName());

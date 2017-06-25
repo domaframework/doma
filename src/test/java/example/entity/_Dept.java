@@ -175,11 +175,6 @@ public class _Dept extends AbstractEntityType<Dept> {
     }
 
     @Override
-    public String getTableName() {
-        return getTableName((namingType, text) -> namingType.apply(text));
-    }
-
-    @Override
     public String getTableName(
             BiFunction<NamingType, String, String> namingFunction) {
         if (__tableName.isEmpty()) {
