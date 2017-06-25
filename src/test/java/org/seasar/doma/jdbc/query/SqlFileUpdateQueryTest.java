@@ -323,15 +323,6 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         protected final _Emp emp;
 
-        public String getQualifiedTableName() {
-            return emp.getQualifiedTableName();
-        }
-
-        public String getQualifiedTableName(
-                Function<String, String> quoteFunction) {
-            return emp.getQualifiedTableName(quoteFunction);
-        }
-
         public String getQualifiedTableName(
                 BiFunction<NamingType, String, String> namingFunction,
                 Function<String, String> quoteFunction) {

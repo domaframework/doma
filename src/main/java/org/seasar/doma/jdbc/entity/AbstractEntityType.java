@@ -36,17 +36,6 @@ public abstract class AbstractEntityType<ENTITY> implements EntityType<ENTITY> {
     }
 
     @Override
-    public String getQualifiedTableName() {
-        return getQualifiedTableName(Function.<String> identity());
-    }
-
-    @Override
-    public String getQualifiedTableName(Function<String, String> quoteFunction) {
-        return getQualifiedTableName(
-                (namingType, text) -> namingType.apply(text), quoteFunction);
-    }
-
-    @Override
     public String getQualifiedTableName(
             BiFunction<NamingType, String, String> namingFunction,
             Function<String, String> quoteFunction) {

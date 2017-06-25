@@ -79,24 +79,6 @@ public interface EntityType<ENTITY> {
 
     /**
      * 完全修飾されたテーブル名を返します。
-     * 
-     * @return 完全修飾されたテーブル名
-     */
-    String getQualifiedTableName();
-
-    /**
-     * 完全修飾されたテーブル名を返します。
-     * <p>
-     * カタログ、スキーマ、テーブル名は引用符で区切られます。
-     * 
-     * @param quoteFunction
-     *            引用符を適用する関数
-     * @return 完全修飾されたテーブル名
-     */
-    String getQualifiedTableName(Function<String, String> quoteFunction);
-
-    /**
-     * 完全修飾されたテーブル名を返します。
      * <p>
      * テーブル名には、ネーミング規約が適用されます。
      * <p>

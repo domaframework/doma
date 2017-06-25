@@ -70,17 +70,6 @@ public class EntityTypeTest extends TestCase {
                 .toLowerCase()));
     }
 
-    public void testGetQualifiedName() throws Exception {
-        EntityType<Dept> entityType = _Dept.getSingletonInternal();
-        assertEquals("CATA.DEPT", entityType.getQualifiedTableName());
-    }
-
-    public void testGetQualifiedName_quote() throws Exception {
-        EntityType<Dept> entityType = _Dept.getSingletonInternal();
-        assertEquals("[CATA].[DEPT]",
-                entityType.getQualifiedTableName(text -> "[" + text + "]"));
-    }
-
     public void testGetQualifiedName_naming_quote() throws Exception {
         EntityType<Dept> entityType = _Dept.getSingletonInternal();
         assertEquals(
