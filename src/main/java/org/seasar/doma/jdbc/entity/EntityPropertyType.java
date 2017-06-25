@@ -43,24 +43,6 @@ public interface EntityPropertyType<ENTITY, BASIC> {
 
     /**
      * カラム名を返します。
-     * 
-     * @return カラム名
-     */
-    String getColumnName();
-
-    /**
-     * カラム名を返します。
-     * <p>
-     * ネーミング規約が適用されます。
-     * 
-     * @param quoteFunction
-     *            引用符を適用する関数
-     * @return 引用符で囲まれたカラム名
-     */
-    String getColumnName(Function<String, String> quoteFunction);
-
-    /**
-     * カラム名を返します。
      * <p>
      * ネーミング規約が適用されます。
      * 

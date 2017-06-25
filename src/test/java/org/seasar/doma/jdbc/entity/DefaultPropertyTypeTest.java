@@ -70,49 +70,6 @@ public class DefaultPropertyTypeTest extends TestCase {
                         .apply(text)));
     }
 
-    public void testGetColumnName_columnDefined() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
-                DefaultPropertyTypeTest.class, String.class,
-                () -> new StringWrapper(), null, "hoge", "foo",
-                NamingType.UPPER_CASE, true, true, false);
-        assertEquals("foo", propertyType.getColumnName());
-    }
-
-    public void testGetColumnName_columnNotDefined() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
-                DefaultPropertyTypeTest.class, String.class,
-                () -> new StringWrapper(), null, "hoge", "",
-                NamingType.UPPER_CASE, true, true, false);
-        assertEquals("HOGE", propertyType.getColumnName());
-    }
-
-    public void testGetColumnName_columnNotDefined_embeddableProeprty()
-            throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
-                DefaultPropertyTypeTest.class, String.class,
-                () -> new StringWrapper(), null, "foo.hoge", "",
-                NamingType.UPPER_CASE, true, true, false);
-        assertEquals("HOGE", propertyType.getColumnName());
-    }
-
-    public void testGetColumnName_quote_quoteRequired() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
-                DefaultPropertyTypeTest.class, String.class,
-                () -> new StringWrapper(), null, "hoge", "",
-                NamingType.UPPER_CASE, true, true, true);
-        assertEquals("[HOGE]",
-                propertyType.getColumnName(text -> "[" + text + "]"));
-    }
-
-    public void testGetColumnName_quote_quoteNotRequired() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
-                DefaultPropertyTypeTest.class, String.class,
-                () -> new StringWrapper(), null, "hoge", "",
-                NamingType.UPPER_CASE, true, true, false);
-        assertEquals("HOGE",
-                propertyType.getColumnName(text -> "[" + text + "]"));
-    }
-
     public void testGetColumnName_naiming_columnNotDefined() throws Exception {
         DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
                 DefaultPropertyTypeTest.class, String.class,

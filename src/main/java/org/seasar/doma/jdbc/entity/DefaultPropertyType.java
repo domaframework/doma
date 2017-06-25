@@ -36,7 +36,6 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.holder.HolderType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
@@ -203,16 +202,6 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getColumnName() {
-        return getColumnName(Function.<String> identity());
-    }
-
-    @Override
-    public String getColumnName(Function<String, String> quoteFunction) {
-        return getColumnName(Naming.DEFAULT::apply, quoteFunction);
     }
 
     @Override
