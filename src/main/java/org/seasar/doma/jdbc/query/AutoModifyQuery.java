@@ -51,7 +51,7 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements
 
     protected List<EntityPropertyType<ENTITY, ?>> idPropertyTypes;
 
-    protected VersionPropertyType<? super ENTITY, ENTITY, ?, ?> versionPropertyType;
+    protected VersionPropertyType<ENTITY, ?, ?> versionPropertyType;
 
     protected boolean optimisticLockCheckRequired;
 

@@ -155,12 +155,12 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyType() {
         return null;
     }
 

@@ -46,8 +46,6 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * 
  * @author nakamura-to
  * 
- * @param <PARENT>
- *            親エンティティの型
  * @param <ENTITY>
  *            エンティティの型
  * @param <BASIC>
@@ -55,7 +53,7 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
+public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
         implements EntityPropertyType<ENTITY, BASIC> {
 
     /** エンティティのクラス */
@@ -63,9 +61,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
 
     /** プロパティのクラス */
     protected final Class<?> entityPropertyClass;
-
-    /** 基本型のクラス */
-    protected final Class<BASIC> basicClass;
 
     /** ラッパーのサプライヤ */
     protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
@@ -107,12 +102,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
      *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
-     * @param basicClass
-     *            値のクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
-     * @param parentEntityPropertyType
-     *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
      * @param holderType
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
@@ -129,9 +120,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
      *            カラム名に引用符が必要とされるかどうか
      */
     public DefaultPropertyType(Class<ENTITY> entityClass,
-            Class<?> entityPropertyClass, Class<BASIC> basicClass,
+            Class<?> entityPropertyClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
-            EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
             HolderType<BASIC, HOLDER> holderType, String name,
             String columnName, NamingType namingType, boolean insertable,
             boolean updatable, boolean quoteRequired) {
@@ -140,9 +130,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
         }
         if (entityPropertyClass == null) {
             throw new DomaNullPointerException("entityPropertyClass");
-        }
-        if (basicClass == null) {
-            throw new DomaNullPointerException("basicClass");
         }
         if (wrapperSupplier == null) {
             throw new DomaNullPointerException("wrapperSupplier");
@@ -155,7 +142,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, HOLDER>
         }
         this.entityClass = entityClass;
         this.entityPropertyClass = entityPropertyClass;
-        this.basicClass = basicClass;
         this.wrapperSupplier = wrapperSupplier;
         this.holderType = holderType;
         this.name = name;

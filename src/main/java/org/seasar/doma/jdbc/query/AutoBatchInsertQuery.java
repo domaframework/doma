@@ -48,7 +48,7 @@ import org.seasar.doma.message.Message;
 public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         implements BatchInsertQuery {
 
-    protected GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 

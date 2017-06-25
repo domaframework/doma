@@ -179,12 +179,12 @@ public final class _NotTopLevelEntity__Hoge extends
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, NotTopLevelEntity.Hoge, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<NotTopLevelEntity.Hoge, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyType() {
         return null;
     }
 

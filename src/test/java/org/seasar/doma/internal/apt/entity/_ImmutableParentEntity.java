@@ -38,14 +38,14 @@ public class _ImmutableParentEntity extends
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
-            ImmutableParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
+            ImmutableParentEntity.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "aaa", "AAA", __namingType, true, true, false);
 
-    public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
-            ImmutableParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
+            ImmutableParentEntity.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "bbb", "BBB", __namingType, true, true, false);
 
     private _ImmutableParentEntity() {
@@ -81,7 +81,7 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, ImmutableParentEntity, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<ImmutableParentEntity, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -118,7 +118,7 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public VersionPropertyType<Object, ImmutableParentEntity, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<ImmutableParentEntity, ?, ?> getVersionPropertyType() {
 
         return null;
     }

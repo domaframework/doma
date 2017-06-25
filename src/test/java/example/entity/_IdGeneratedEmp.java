@@ -50,24 +50,24 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public final GeneratedIdPropertyType<Object, IdGeneratedEmp, Integer, Object> id = new GeneratedIdPropertyType<>(
-            IdGeneratedEmp.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public final GeneratedIdPropertyType<IdGeneratedEmp, Integer, Object> id = new GeneratedIdPropertyType<>(
+            IdGeneratedEmp.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false, new BuiltinIdentityIdGenerator());
 
-    public final DefaultPropertyType<Object, IdGeneratedEmp, String, Object> name = new DefaultPropertyType<>(
-            IdGeneratedEmp.class, String.class, String.class,
-            () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
+    public final DefaultPropertyType<IdGeneratedEmp, String, Object> name = new DefaultPropertyType<>(
+            IdGeneratedEmp.class, String.class,
+            () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 
-    public final DefaultPropertyType<Object, IdGeneratedEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
-            IdGeneratedEmp.class, BigDecimal.class, BigDecimal.class,
-            () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null,
+    public final DefaultPropertyType<IdGeneratedEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
+            IdGeneratedEmp.class, BigDecimal.class,
+            () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
             "salary", "SALARY", __namingType, true, true, false);
 
-    public final VersionPropertyType<Object, IdGeneratedEmp, Integer, Integer> version = new VersionPropertyType<>(
-            IdGeneratedEmp.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public final VersionPropertyType<IdGeneratedEmp, Integer, Integer> version = new VersionPropertyType<>(
+            IdGeneratedEmp.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "version", "VERSION", __namingType, false);
 
     private final String __name = "Emp";
@@ -156,12 +156,12 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, IdGeneratedEmp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<IdGeneratedEmp, ?, ?> getGeneratedIdPropertyType() {
         return id;
     }
 
     @Override
-    public VersionPropertyType<Object, IdGeneratedEmp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<IdGeneratedEmp, ?, ?> getVersionPropertyType() {
         return version;
     }
 

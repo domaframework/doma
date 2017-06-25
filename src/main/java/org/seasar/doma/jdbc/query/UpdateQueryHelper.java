@@ -135,7 +135,7 @@ public class UpdateQueryHelper<E> {
 
     public void populateValues(E entity,
             List<EntityPropertyType<E, ?>> targetPropertyTypes,
-            VersionPropertyType<? super E, E, ?, ?> versionPropertyType,
+            VersionPropertyType<E, ?, ?> versionPropertyType,
             SqlContext context) {
         Dialect dialect = config.getDialect();
         Naming naming = config.getNaming();

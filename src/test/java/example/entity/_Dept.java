@@ -46,14 +46,14 @@ public class _Dept extends AbstractEntityType<Dept> {
 
     private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 
-    public final AssignedIdPropertyType<Object, Dept, Integer, Object> id = new AssignedIdPropertyType<>(
-            Dept.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public final AssignedIdPropertyType<Dept, Integer, Object> id = new AssignedIdPropertyType<>(
+            Dept.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false);
 
-    public final DefaultPropertyType<Object, Dept, String, Object> name = new DefaultPropertyType<>(
-            Dept.class, String.class, String.class,
-            () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
+    public final DefaultPropertyType<Dept, String, Object> name = new DefaultPropertyType<>(
+            Dept.class, String.class,
+            () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 
     private final String __name = "Dept";
@@ -126,12 +126,12 @@ public class _Dept extends AbstractEntityType<Dept> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Dept, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Dept, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<Object, Dept, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Dept, ?, ?> getVersionPropertyType() {
         return null;
     }
 

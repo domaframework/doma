@@ -38,14 +38,14 @@ public class _OriginalStatesParentEntity extends
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
-            OriginalStatesParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
+            OriginalStatesParentEntity.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "aaa", "AAA", __namingType, true, true, false);
 
-    public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
-            OriginalStatesParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
+            OriginalStatesParentEntity.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "bbb", "BBB", __namingType, true, true, false);
 
     private _OriginalStatesParentEntity() {
@@ -81,7 +81,7 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, OriginalStatesParentEntity, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<OriginalStatesParentEntity, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -119,7 +119,7 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public VersionPropertyType<Object, OriginalStatesParentEntity, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<OriginalStatesParentEntity, ?, ?> getVersionPropertyType() {
 
         return null;
     }

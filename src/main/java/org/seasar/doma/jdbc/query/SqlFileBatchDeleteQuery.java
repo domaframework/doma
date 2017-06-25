@@ -113,7 +113,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
 
         protected EntityType<ELEMENT> entityType;
 
-        protected VersionPropertyType<? super ELEMENT, ELEMENT, ?, ?> versionPropertyType;
+        protected VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
 
         protected EntityHandler(EntityType<ELEMENT> entityType) {
             assertNotNull(entityType);

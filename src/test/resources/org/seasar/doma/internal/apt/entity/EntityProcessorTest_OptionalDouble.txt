@@ -13,13 +13,13 @@ public final class _OptionalDoubleEntity extends org.seasar.doma.jdbc.entity.Abs
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, java.lang.Double, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalDoubleEntity.class, java.util.OptionalDouble.class, java.lang.Double.class, () -> new org.seasar.doma.wrapper.DoubleWrapper(), null, null, "id", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, java.lang.Double, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalDoubleEntity.class, java.util.OptionalDouble.class, () -> new org.seasar.doma.wrapper.DoubleWrapper(), null, "id", "", __namingType, false);
 
     /** the age */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, java.lang.Double, Object> $age = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalDoubleEntity.class, java.util.OptionalDouble.class, java.lang.Double.class, () -> new org.seasar.doma.wrapper.DoubleWrapper(), null, null, "age", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, java.lang.Double, Object> $age = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalDoubleEntity.class, java.util.OptionalDouble.class, () -> new org.seasar.doma.wrapper.DoubleWrapper(), null, "age", "", __namingType, true, true, false);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, java.lang.Double, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalDoubleEntity.class,  java.util.OptionalDouble.class, java.lang.Double.class, () -> new org.seasar.doma.wrapper.DoubleWrapper(), null, null, "version", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, java.lang.Double, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalDoubleEntity.class,  java.util.OptionalDouble.class, () -> new org.seasar.doma.wrapper.DoubleWrapper(), null, "version", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OptionalDoubleEntity>> __listenerSupplier;
 
@@ -171,12 +171,12 @@ public final class _OptionalDoubleEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.OptionalDoubleEntity, ?, ?> getVersionPropertyType() {
         return $version;
     }
 

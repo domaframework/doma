@@ -134,7 +134,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
                 holderType = holderCtType.getInstantiationCommand();
                 holderTypeName = holderCtType.getTypeName();
             }
-            iprint("        new %1$s<Object, ENTITY, %3$s, %16$s>(entityClass, %15$s.class, %3$s.class, () -> %9$s, null, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
+            iprint("        new %1$s<ENTITY, %3$s, %16$s>(entityClass, %15$s.class, () -> %9$s, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
             /* 1 */DefaultPropertyType.class.getName(),
             /* 2 */null,
             /* 3 */basicCtType.getBoxedTypeName(),

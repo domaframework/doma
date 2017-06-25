@@ -37,14 +37,14 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public DefaultPropertyType<Object, Parent2Entity, Integer, Integer> $aaa = new DefaultPropertyType<>(
-            Parent2Entity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public DefaultPropertyType<Parent2Entity, Integer, Integer> $aaa = new DefaultPropertyType<>(
+            Parent2Entity.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "aaa", "AAA", __namingType, true, true, false);
 
-    public DefaultPropertyType<Object, Parent2Entity, Integer, Integer> $bbb = new DefaultPropertyType<>(
-            Parent2Entity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+    public DefaultPropertyType<Parent2Entity, Integer, Integer> $bbb = new DefaultPropertyType<>(
+            Parent2Entity.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "bbb", "BBB", __namingType, true, true, false);
 
     private _Parent2Entity() {
@@ -80,7 +80,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Parent2Entity, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Parent2Entity, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -117,7 +117,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public VersionPropertyType<Object, Parent2Entity, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Parent2Entity, ?, ?> getVersionPropertyType() {
 
         return null;
     }

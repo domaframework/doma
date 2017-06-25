@@ -63,7 +63,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, ImmutableEmp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<ImmutableEmp, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -106,7 +106,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public VersionPropertyType<Object, ImmutableEmp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<ImmutableEmp, ?, ?> getVersionPropertyType() {
 
         return null;
     }

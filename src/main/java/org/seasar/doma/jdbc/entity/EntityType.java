@@ -141,14 +141,14 @@ public interface EntityType<ENTITY> {
      * 
      * @return 自動生成される識別子のプロパティ型
      */
-    GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> getGeneratedIdPropertyType();
+    GeneratedIdPropertyType<ENTITY, ?, ?> getGeneratedIdPropertyType();
 
     /**
      * バージョンのプロパティ型を返します。
      * 
      * @return バージョンのプロパティ型
      */
-    VersionPropertyType<? super ENTITY, ENTITY, ?, ?> getVersionPropertyType();
+    VersionPropertyType<ENTITY, ?, ?> getVersionPropertyType();
 
     /**
      * 識別子のプロパティ型のリストを返します。

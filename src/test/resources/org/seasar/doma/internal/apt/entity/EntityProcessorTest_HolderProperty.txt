@@ -21,13 +21,13 @@ public final class _HolderPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Identifier> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.entity.HolderPropertyEntity.class, org.seasar.doma.internal.apt.entity.Identifier.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, org.seasar.doma.internal.apt.entity._Identifier.getSingletonInternal(), "id", "", __namingType, false, __idGenerator);
+    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Identifier> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.entity.HolderPropertyEntity.class, org.seasar.doma.internal.apt.entity.Identifier.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), org.seasar.doma.internal.apt.entity._Identifier.getSingletonInternal(), "id", "", __namingType, false, __idGenerator);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.HolderPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.HolderPropertyEntity.class, org.seasar.doma.internal.apt.entity.Name.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, org.seasar.doma.internal.apt.entity._Name.getSingletonInternal(), "name", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.HolderPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.HolderPropertyEntity.class, org.seasar.doma.internal.apt.entity.Name.class, () -> new org.seasar.doma.wrapper.StringWrapper(), org.seasar.doma.internal.apt.entity._Name.getSingletonInternal(), "name", "", __namingType, true, true, false);
 
     /** the ver */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Ver> $ver = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.HolderPropertyEntity.class,  org.seasar.doma.internal.apt.entity.Ver.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, org.seasar.doma.internal.apt.entity._Ver.getSingletonInternal(), "ver", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Ver> $ver = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.HolderPropertyEntity.class,  org.seasar.doma.internal.apt.entity.Ver.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), org.seasar.doma.internal.apt.entity._Ver.getSingletonInternal(), "ver", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.HolderPropertyEntity>> __listenerSupplier;
 
@@ -179,12 +179,12 @@ public final class _HolderPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.HolderPropertyEntity, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.HolderPropertyEntity, ?, ?> getGeneratedIdPropertyType() {
         return $id;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.HolderPropertyEntity, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.HolderPropertyEntity, ?, ?> getVersionPropertyType() {
         return $ver;
     }
 

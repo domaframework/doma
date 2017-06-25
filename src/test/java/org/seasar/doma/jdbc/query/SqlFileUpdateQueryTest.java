@@ -371,11 +371,11 @@ public class SqlFileUpdateQueryTest extends TestCase {
             return emp.getOriginalStates(entity);
         }
 
-        public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
+        public GeneratedIdPropertyType<Emp, ?, ?> getGeneratedIdPropertyType() {
             return emp.getGeneratedIdPropertyType();
         }
 
-        public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
+        public VersionPropertyType<Emp, ?, ?> getVersionPropertyType() {
             return emp.getVersionPropertyType();
         }
 

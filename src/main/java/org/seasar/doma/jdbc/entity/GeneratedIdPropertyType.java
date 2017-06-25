@@ -35,8 +35,6 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * @author nakamura-to
  * 
- * @param <PARENT>
- *            親エンティティの型
  * @param <ENTITY>
  *            エンティティの型
  * @param <BASIC>
@@ -44,8 +42,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Number, HOLDER>
-        extends DefaultPropertyType<PARENT, ENTITY, BASIC, HOLDER> {
+public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
+        extends DefaultPropertyType<ENTITY, BASIC, HOLDER> {
 
     /** 識別子のジェネレータ */
     protected final IdGenerator idGenerator;
@@ -57,12 +55,8 @@ public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extend
      *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
-     * @param basicClass
-     *            値のクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
-     * @param parentEntityPropertyType
-     *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
      * @param holderType
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
@@ -77,14 +71,13 @@ public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extend
      *            カラム名に引用符が必要とされるかどうか
      */
     public GeneratedIdPropertyType(Class<ENTITY> entityClass,
-            Class<?> entityPropertyClass, Class<BASIC> basicClass,
+            Class<?> entityPropertyClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
-            EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
             HolderType<BASIC, HOLDER> holderType, String name,
             String columnName, NamingType namingType, boolean quoteRequired,
             IdGenerator idGenerator) {
-        super(entityClass, entityPropertyClass, basicClass, wrapperSupplier,
-                parentEntityPropertyType, holderType, name, columnName,
+        super(entityClass, entityPropertyClass, wrapperSupplier,
+                holderType, name, columnName,
                 namingType, true, true, quoteRequired);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");

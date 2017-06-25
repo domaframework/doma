@@ -157,7 +157,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected EntityType<E> entityType;
 
-        protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
+        protected VersionPropertyType<E, ?, ?> versionPropertyType;
 
         protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
 
