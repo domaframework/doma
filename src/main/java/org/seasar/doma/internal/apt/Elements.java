@@ -19,12 +19,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -35,6 +37,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.SimpleElementVisitor8;
 
@@ -182,6 +185,35 @@ public class Elements implements javax.lang.model.util.Elements {
             map.put(key, value);
         }
         return Collections.unmodifiableMap(map);
+    }
+
+    public List<TypeElement> hierarchy(TypeElement typeElement) {
+        if (typeElement == null) {
+            return Collections.emptyList();
+        }
+        List<TypeElement> list = new ArrayList<>();
+        for (TypeElement t = typeElement; t != null
+                && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
+                        .toTypeElement(t.getSuperclass())) {
+            list.add(t);
+        }
+        return Collections.unmodifiableList(list);
+    }
+
+    public List<VariableElement> getUnhiddenFields(TypeElement typeElement,
+            Predicate<TypeElement> filter) {
+        List<VariableElement> allFields = hierarchy(typeElement).stream()
+                .filter(filter).flatMap(t -> {
+                    List<VariableElement> fields = ElementFilter
+                            .fieldsIn(t.getEnclosedElements());
+                    Collections.reverse(fields);
+                    return fields.stream();
+                }).collect(Collectors.toList());
+        Collections.reverse(allFields);
+        return allFields.stream()
+                .filter(hidden -> !allFields.stream()
+                        .anyMatch(hider -> hides(hider, hidden)))
+                .collect(Collectors.toList());
     }
 
     public Map<? extends ExecutableElement, ? extends AnnotationValue> getElementValuesWithDefaults(

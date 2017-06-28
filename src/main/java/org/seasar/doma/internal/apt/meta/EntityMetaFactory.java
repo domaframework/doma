@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -549,35 +548,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
         private List<VariableElement> getFieldElements(
                 TypeElement classElement) {
-            List<VariableElement> results = new LinkedList<VariableElement>();
-            for (TypeElement t = classElement; t != null
-                    && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
-                            .toTypeElement(t.getSuperclass())) {
-                if (t.getAnnotation(Entity.class) == null) {
-                    continue;
-                }
-                List<VariableElement> fields = new LinkedList<VariableElement>();
-                for (VariableElement field : ElementFilter.fieldsIn(t
-                        .getEnclosedElements())) {
-                    fields.add(field);
-                }
-                Collections.reverse(fields);
-                results.addAll(fields);
-            }
-            Collections.reverse(results);
-
-            List<VariableElement> hiderFields = new LinkedList<VariableElement>(
-                    results);
-            for (Iterator<VariableElement> it = results.iterator(); it
-                    .hasNext();) {
-                VariableElement hidden = it.next();
-                for (VariableElement hider : hiderFields) {
-                    if (ctx.getElements().hides(hider, hidden)) {
-                        it.remove();
-                    }
-                }
-            }
-            return results;
+            return ctx.getElements().getUnhiddenFields(classElement,
+                    t -> t.getAnnotation(Entity.class) != null);
         }
 
         private void doOriginalStatesField(TypeElement classElement,

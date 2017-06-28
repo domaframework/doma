@@ -19,10 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +33,6 @@ import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
@@ -212,35 +208,8 @@ public class EmbeddableMetaFactory implements
 
         private List<VariableElement> getFieldElements(
                 TypeElement embeddableElement) {
-            List<VariableElement> results = new LinkedList<VariableElement>();
-            for (TypeElement t = embeddableElement; t != null
-                    && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
-                            .toTypeElement(t.getSuperclass())) {
-                if (t.getAnnotation(Embeddable.class) == null) {
-                    continue;
-                }
-                List<VariableElement> fields = new LinkedList<VariableElement>();
-                for (VariableElement field : ElementFilter.fieldsIn(t
-                        .getEnclosedElements())) {
-                    fields.add(field);
-                }
-                Collections.reverse(fields);
-                results.addAll(fields);
-            }
-            Collections.reverse(results);
-
-            List<VariableElement> hiderFields = new LinkedList<VariableElement>(
-                    results);
-            for (Iterator<VariableElement> it = results.iterator(); it
-                    .hasNext();) {
-                VariableElement hidden = it.next();
-                for (VariableElement hider : hiderFields) {
-                    if (ctx.getElements().hides(hider, hidden)) {
-                        it.remove();
-                    }
-                }
-            }
-            return results;
+            return ctx.getElements().getUnhiddenFields(embeddableElement,
+                    t -> t.getAnnotation(Embeddable.class) != null);
         }
 
         private void validateFieldAnnotation(VariableElement fieldElement,
