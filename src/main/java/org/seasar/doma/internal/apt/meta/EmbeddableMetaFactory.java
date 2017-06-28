@@ -41,7 +41,6 @@ import org.seasar.doma.EntityField;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
-import org.seasar.doma.ParameterName;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.Constants;
@@ -262,12 +261,7 @@ public class EmbeddableMetaFactory implements
                     .constructorsIn(embeddapleElement.getEnclosedElements())) {
                 List<EmbeddablePropertyMeta> propertyMetaList = new ArrayList<>();
                 for (VariableElement param : constructor.getParameters()) {
-                    String name = param.getSimpleName().toString();
-                    ParameterName parameterName = param
-                            .getAnnotation(ParameterName.class);
-                    if (parameterName != null) {
-                        name = parameterName.value();
-                    }
+                    String name = ctx.getElements().getParameterName(param);
                     TypeMirror paramType = param.asType();
                     EmbeddablePropertyMeta propertyMeta = propertyMetaMap
                             .get(name);
