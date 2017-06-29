@@ -16,8 +16,6 @@
 package org.seasar.doma.internal.apt;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -29,12 +27,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
@@ -162,54 +155,6 @@ public abstract class AptTestCase extends AptinaTestCase {
             }
         }
         return null;
-    }
-
-    protected TypeElement createTypeElement(Context ctx,
-            Class<?> clazz) {
-        return ctx.getElements().getTypeElement(clazz);
-    }
-
-    protected ExecutableElement createMethodElement(Context ctx,
-            Class<?> clazz, String methodName, Class<?>... parameterClasses) {
-        TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
-        for (TypeElement t = typeElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
-                        .toTypeElement(t.getSuperclass())) {
-            for (ExecutableElement methodElement : ElementFilter
-                    .methodsIn(t.getEnclosedElements())) {
-                if (!methodElement.getSimpleName().contentEquals(methodName)) {
-                    continue;
-                }
-                List<? extends VariableElement> parameterElements = methodElement
-                        .getParameters();
-                if (parameterElements.size() != parameterClasses.length) {
-                    continue;
-                }
-                int i = 0;
-                for (Iterator<? extends VariableElement> it = parameterElements
-                        .iterator(); it.hasNext();) {
-                    TypeMirror parameterType = it.next().asType();
-                    Class<?> parameterClass = parameterClasses[i];
-                    if (!ctx.getTypes().isSameType(parameterType,
-                            parameterClass)) {
-                        return null;
-                    }
-                }
-                return methodElement;
-            }
-        }
-        return null;
-    }
-
-    protected LinkedHashMap<String, TypeMirror> createParameterTypeMap(
-            ExecutableElement methodElement) {
-        LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<String, TypeMirror>();
-        for (VariableElement parameter : methodElement.getParameters()) {
-            String name = parameter.getSimpleName().toString();
-            TypeMirror type = parameter.asType();
-            result.put(name, type);
-        }
-        return result;
     }
 
     @SupportedAnnotationTypes("*")

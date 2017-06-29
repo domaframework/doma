@@ -19,11 +19,14 @@ import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 public class ElementsTest extends AptTestCase {
 
@@ -88,6 +91,44 @@ public class ElementsTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testGetMethodElement() throws Exception {
+        addCompilationUnit(getClass());
+        addProcessor(new AptProcessor(ctx -> {
+            Elements elements = ctx.getElements();
+            ExecutableElement methodElement = elements
+                    .getMethodElement(Ddd.class, "aaa", Integer.class);
+            assertNotNull(methodElement);
+            assertTrue(methodElement.getSimpleName().contentEquals("aaa"));
+            List<? extends VariableElement> paramElements = methodElement
+                    .getParameters();
+            VariableElement paramElement = paramElements.get(0);
+            assertEquals(Integer.class.getName(),
+                    ctx.getTypes().getTypeName(paramElement.asType()));
+        }));
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
+    public void testGetParameterTypeMap() throws Exception {
+        addCompilationUnit(getClass());
+        addProcessor(new AptProcessor(ctx -> {
+            Elements elements = ctx.getElements();
+            ExecutableElement methodElement = elements.getMethodElement(
+                    Eee.class, "aaa", String.class, Integer.class, Long.class);
+            Map<String, TypeMirror> map = elements
+                    .getParameterTypeMap(methodElement);
+            assertEquals(3, map.size());
+            assertEquals(String.class.getName(),
+                    ctx.getTypes().getTypeName(map.get("a")));
+            assertEquals(Integer.class.getName(),
+                    ctx.getTypes().getTypeName(map.get("b")));
+            assertEquals(Long.class.getName(),
+                    ctx.getTypes().getTypeName(map.get("c")));
+        }));
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
     public static class Aaa {
         String aaa;
         String bbb;
@@ -101,6 +142,19 @@ public class ElementsTest extends AptTestCase {
     public static class Ccc extends Bbb {
         String bbb;
         String ddd;
+    }
+
+    public static class Ddd {
+        void aaa(String a) {
+        }
+
+        void aaa(Integer a) {
+        }
+    }
+
+    public static class Eee {
+        void aaa(String a, Integer b, Long c) {
+        }
     }
 
 }

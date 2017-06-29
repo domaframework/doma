@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -38,6 +40,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.SimpleElementVisitor8;
 
@@ -214,6 +217,44 @@ public class Elements implements javax.lang.model.util.Elements {
                 .filter(hidden -> !allFields.stream()
                         .anyMatch(hider -> hides(hider, hidden)))
                 .collect(Collectors.toList());
+    }
+
+    public ExecutableElement getMethodElement(Class<?> clazz,
+            String methodName, Class<?>... parameterClasses) {
+        List<Class<?>> parameters = Arrays.asList(parameterClasses);
+        TypeElement typeElement = getTypeElement(clazz);
+        return hierarchy(typeElement).stream()
+                .flatMap(t -> ElementFilter.methodsIn(t.getEnclosedElements())
+                        .stream())
+                .filter(m -> m.getSimpleName().contentEquals(methodName))
+                .filter(m -> m.getParameters().size() == parameters.size())
+                .filter(m -> isSameType(m.getParameters(), parameters))
+                .findFirst().orElse(null);
+    }
+
+    private <E extends Element> boolean isSameType(List<E> lhs,
+            List<Class<?>> rhs) {
+        int i = 0;
+        for (Iterator<E> it = lhs.iterator(); it.hasNext();) {
+            TypeMirror parameterType = it.next().asType();
+            Class<?> parameterClass = rhs.get(i);
+            if (!ctx.getTypes().isSameType(parameterType, parameterClass)) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    public LinkedHashMap<String, TypeMirror> getParameterTypeMap(
+            ExecutableElement methodElement) {
+        LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<String, TypeMirror>();
+        for (VariableElement parameter : methodElement.getParameters()) {
+            String name = parameter.getSimpleName().toString();
+            TypeMirror type = parameter.asType();
+            result.put(name, type);
+        }
+        return result;
     }
 
     public Map<? extends ExecutableElement, ? extends AnnotationValue> getElementValuesWithDefaults(

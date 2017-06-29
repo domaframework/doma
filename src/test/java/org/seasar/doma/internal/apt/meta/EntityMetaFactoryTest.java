@@ -67,7 +67,7 @@ public class EntityMetaFactoryTest extends AptTestCase {
                 ctx);
         EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx,
                 propertyMetaFactory);
-        TypeElement typeElement = createTypeElement(ctx, clazz);
+        TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
         return entityMetaFactory
                 .createTypeElementMeta(typeElement);
     }
