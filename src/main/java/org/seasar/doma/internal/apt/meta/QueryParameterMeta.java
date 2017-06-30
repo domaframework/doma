@@ -73,7 +73,7 @@ public class QueryParameterMeta {
     }
 
     public boolean isArray() {
-        return ctType.getTypeMirror().getKind() == TypeKind.ARRAY;
+        return ctType.getType().getKind() == TypeKind.ARRAY;
     }
 
     public boolean isNullable() {

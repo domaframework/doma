@@ -79,11 +79,11 @@ public class QueryReturnMetaFactory {
                 throws RuntimeException {
             if (ctType.isRawType()) {
                 throw new AptException(Message.DOMA4109, methodElement,
-                        new Object[] { ctType.getTypeMirror() });
+                        new Object[] { ctType.getType() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType()) {
                 throw new AptException(Message.DOMA4113, methodElement,
-                        new Object[] { ctType.getTypeMirror() });
+                        new Object[] { ctType.getType() });
             }
             ctType.getElementCtType()
                     .accept(new IterableElementValidator(methodElement), null);
@@ -97,7 +97,7 @@ public class QueryReturnMetaFactory {
                 throw new AptException(Message.DOMA4236, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4237, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }
@@ -113,7 +113,7 @@ public class QueryReturnMetaFactory {
                 throw new AptException(Message.DOMA4206, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4207, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }
@@ -137,7 +137,7 @@ public class QueryReturnMetaFactory {
                 throw new AptException(Message.DOMA4210, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4211, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }
@@ -161,7 +161,7 @@ public class QueryReturnMetaFactory {
                 throw new AptException(Message.DOMA4238, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4239, methodElement,
                         new Object[] { ctType.getQualifiedName() });
             }

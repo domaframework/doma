@@ -32,19 +32,21 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class ArrayFactoryReflection extends AbstractReflection {
 
+    public static final String TYPE_NAME = "typeName";
+
     private final AnnotationValue typeName;
 
     ArrayFactoryReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.typeName = assertNotNullValue(values, "typeName");
+        this.typeName = assertNotNullValue(values, TYPE_NAME);
     }
 
     public String getTypeNameValue() {
         String result = AnnotationValueUtil.toString(typeName);
         if (result == null) {
-            throw new AptIllegalStateException("typeName");
+            throw new AptIllegalStateException(TYPE_NAME);
         }
         return result;
     }

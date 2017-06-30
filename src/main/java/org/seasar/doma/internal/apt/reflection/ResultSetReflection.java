@@ -32,6 +32,8 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class ResultSetReflection extends AbstractReflection {
 
+    public static final String ENSURE_RESULT_MAPPING = "ensureResultMapping";
+
     private final AnnotationValue ensureResultMapping;
 
     ResultSetReflection(AnnotationMirror annotationMirror,
@@ -39,7 +41,7 @@ public class ResultSetReflection extends AbstractReflection {
         super(annotationMirror);
         assertNotNull(values);
         this.ensureResultMapping = assertNotNullValue(values,
-                "ensureResultMapping");
+                ENSURE_RESULT_MAPPING);
     }
 
 
@@ -50,7 +52,7 @@ public class ResultSetReflection extends AbstractReflection {
     public boolean getEnsureResultMappingValue() {
         Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
         if (value == null) {
-            throw new AptIllegalStateException("ensureResultMapping");
+            throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
         }
         return value.booleanValue();
     }

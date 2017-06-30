@@ -15,25 +15,18 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.lang.model.type.TypeKind;
+import java.util.List;
+
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
 
 public class IterableCtType extends AbstractCtType {
 
-    private final TypeMirror elementTypeMirror;
-
     private final CtType elementCtType;
 
-    private final boolean isList;
-
-    IterableCtType(Context ctx, TypeMirror type,
-            boolean isList, TypeMirror elementTypeMirror,
-            CtType elementCtType) {
+    IterableCtType(Context ctx, TypeMirror type, CtType elementCtType) {
         super(ctx, type);
-        this.isList = isList;
-        this.elementTypeMirror = elementTypeMirror;
         this.elementCtType = elementCtType;
     }
 
@@ -41,17 +34,8 @@ public class IterableCtType extends AbstractCtType {
         return elementCtType;
     }
 
-    public boolean isRawType() {
-        return elementTypeMirror == null;
-    }
-
-    public boolean isWildcardType() {
-        return elementTypeMirror != null
-                && elementTypeMirror.getKind() == TypeKind.WILDCARD;
-    }
-
     public boolean isList() {
-        return isList;
+        return ctx.getTypes().isSameType(type, List.class);
     }
 
     @Override

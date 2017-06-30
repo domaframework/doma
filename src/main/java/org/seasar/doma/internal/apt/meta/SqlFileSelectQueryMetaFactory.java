@@ -128,7 +128,7 @@ public class SqlFileSelectQueryMetaFactory extends
             AnyCtType returnCtType = functionCtType.getReturnCtType();
             if (returnCtType == null
                     || !ctx.getTypes().isSameType(returnMeta.getType(),
-                            returnCtType.getTypeMirror())) {
+                            returnCtType.getType())) {
                 throw new AptException(Message.DOMA4246, method, new Object[] { returnMeta.getType(),
                                 returnCtType.getTypeName() });
             }
@@ -137,7 +137,7 @@ public class SqlFileSelectQueryMetaFactory extends
             AnyCtType returnCtType = collectorCtType.getReturnCtType();
             if (returnCtType == null
                     || !ctx.getTypes().isSameType(returnMeta.getType(),
-                            returnCtType.getTypeMirror())) {
+                            returnCtType.getType())) {
                 throw new AptException(Message.DOMA4265, method, new Object[] { returnMeta.getType(),
                                 returnCtType.getTypeName() });
             }
@@ -608,7 +608,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throws RuntimeException {
             if (ctType.isAbstract()) {
                 throw new AptException(Message.DOMA4155, returnMeta.getMethodElement(),
-                        new Object[] { ctType.getTypeMirror() });
+                        new Object[] { ctType.getType() });
             }
             queryMeta.setEntityCtType(ctType);
             return null;
@@ -691,7 +691,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throws RuntimeException {
             if (ctType.isAbstract()) {
                 throw new AptException(Message.DOMA4272, returnMeta.getMethodElement(),
-                        new Object[] { ctType.getTypeMirror() });
+                        new Object[] { ctType.getType() });
             }
             queryMeta.setEntityCtType(ctType);
             return null;
@@ -775,7 +775,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 throws RuntimeException {
             if (ctType.isAbstract()) {
                 throw new AptException(Message.DOMA4234, returnMeta.getMethodElement(),
-                        new Object[] { ctType.getTypeMirror() });
+                        new Object[] { ctType.getType() });
             }
             queryMeta.setEntityCtType(ctType);
             return null;

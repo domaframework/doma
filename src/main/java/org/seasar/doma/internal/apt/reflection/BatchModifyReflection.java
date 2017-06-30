@@ -35,6 +35,22 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public abstract class BatchModifyReflection extends AbstractReflection {
 
+    public static final String EXCLUDE = "exclude";
+
+    public static final String INCLUDE = "include";
+
+    public static final String SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION = "suppressOptimisticLockException";
+
+    public static final String IGNORE_VERSION = "ignoreVersion";
+
+    public static final String SQL_LOG = "sqlLog";
+
+    public static final String BATCH_SIZE = "batchSize";
+
+    public static final String QUERY_TIMEOUT = "queryTimeout";
+
+    public static final String SQL_FILE = "sqlFile";
+
     private final AnnotationValue sqlFile;
 
     private final AnnotationValue queryTimeout;
@@ -57,17 +73,17 @@ public abstract class BatchModifyReflection extends AbstractReflection {
         assertNotNull(annotationMirror, values);
 
         // non null values
-        this.sqlFile = assertNotNullValue(values, "sqlFile");
-        this.queryTimeout = assertNotNullValue(values, "queryTimeout");
-        this.batchSize = assertNotNullValue(values, "batchSize");
-        this.sqlLog = assertNotNullValue(values, "sqlLog");
+        this.sqlFile = assertNotNullValue(values, SQL_FILE);
+        this.queryTimeout = assertNotNullValue(values, QUERY_TIMEOUT);
+        this.batchSize = assertNotNullValue(values, BATCH_SIZE);
+        this.sqlLog = assertNotNullValue(values, SQL_LOG);
 
         // nullable values
-        this.ignoreVersion = values.get("ignoreVersion");
+        this.ignoreVersion = values.get(IGNORE_VERSION);
         this.suppressOptimisticLockException = values
-                .get("suppressOptimisticLockException");
-        this.include = values.get("include");
-        this.exclude = values.get("exclude");
+                .get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
+        this.include = values.get(INCLUDE);
+        this.exclude = values.get(EXCLUDE);
     }
 
     public AnnotationValue getSqlFile() {
@@ -105,7 +121,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
     public int getQueryTimeoutValue() {
         Integer value = AnnotationValueUtil.toInteger(queryTimeout);
         if (value == null) {
-            throw new AptIllegalStateException("queryTimeout");
+            throw new AptIllegalStateException(QUERY_TIMEOUT);
         }
         return value;
     }
@@ -113,7 +129,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
     public int getBatchSizeValue() {
         Integer value = AnnotationValueUtil.toInteger(batchSize);
         if (value == null) {
-            throw new AptIllegalStateException("batchSize");
+            throw new AptIllegalStateException(BATCH_SIZE);
         }
         return value;
     }
@@ -138,7 +154,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(sqlLog);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("sqlLog");
+            throw new AptIllegalStateException(SQL_LOG);
         }
         return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
     }
@@ -146,7 +162,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
     public boolean getSqlFileValue() {
         Boolean value = AnnotationValueUtil.toBoolean(sqlFile);
         if (value == null) {
-            throw new AptIllegalStateException("sqlFile");
+            throw new AptIllegalStateException(SQL_FILE);
         }
         return value.booleanValue();
     }

@@ -32,6 +32,14 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class ColumnReflection extends AbstractReflection {
 
+    public static final String QUOTE = "quote";
+
+    public static final String UPDATABLE = "updatable";
+
+    public static final String INSERTABLE = "insertable";
+
+    public static final String NAME = "name";
+
     private final AnnotationValue name;
 
     private final AnnotationValue insertable;
@@ -44,10 +52,10 @@ public class ColumnReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.name = assertNotNullValue(values, "name");
-        this.insertable = assertNotNullValue(values, "insertable");
-        this.updatable = assertNotNullValue(values, "updatable");
-        this.quote = assertNotNullValue(values, "quote");
+        this.name = assertNotNullValue(values, NAME);
+        this.insertable = assertNotNullValue(values, INSERTABLE);
+        this.updatable = assertNotNullValue(values, UPDATABLE);
+        this.quote = assertNotNullValue(values, QUOTE);
     }
 
     public AnnotationValue getName() {
@@ -69,7 +77,7 @@ public class ColumnReflection extends AbstractReflection {
     public String getNameValue() {
         String value = AnnotationValueUtil.toString(name);
         if (value == null) {
-            throw new AptIllegalStateException("name");
+            throw new AptIllegalStateException(NAME);
         }
         return value;
     }
@@ -77,7 +85,7 @@ public class ColumnReflection extends AbstractReflection {
     public boolean getInsertableValue() {
         Boolean value = AnnotationValueUtil.toBoolean(insertable);
         if (value == null) {
-            throw new AptIllegalStateException("insertable");
+            throw new AptIllegalStateException(INSERTABLE);
         }
         return value.booleanValue();
     }
@@ -85,7 +93,7 @@ public class ColumnReflection extends AbstractReflection {
     public boolean getUpdatableValue() {
         Boolean value = AnnotationValueUtil.toBoolean(updatable);
         if (value == null) {
-            throw new AptIllegalStateException("updatable");
+            throw new AptIllegalStateException(UPDATABLE);
         }
         return value.booleanValue();
     }
@@ -93,7 +101,7 @@ public class ColumnReflection extends AbstractReflection {
     public boolean getQuoteValue() {
         Boolean value = AnnotationValueUtil.toBoolean(quote);
         if (value == null) {
-            throw new AptIllegalStateException("quote");
+            throw new AptIllegalStateException(QUOTE);
         }
         return value.booleanValue();
     }

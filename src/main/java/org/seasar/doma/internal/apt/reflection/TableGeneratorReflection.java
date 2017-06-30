@@ -33,6 +33,24 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class TableGeneratorReflection extends AbstractReflection {
 
+    public static final String IMPLEMENTER = "implementer";
+
+    public static final String ALLOCATION_SIZE = "allocationSize";
+
+    public static final String INITIAL_VALUE = "initialValue";
+
+    public static final String PK_COLUMN_VALUE = "pkColumnValue";
+
+    public static final String VALUE_COLUMN_NAME = "valueColumnName";
+
+    public static final String PK_COLUMN_NAME = "pkColumnName";
+
+    public static final String TABLE = "table";
+
+    public static final String SCHEMA = "schema";
+
+    public static final String CATALOG = "catalog";
+
     private final AnnotationValue catalog;
 
     private final AnnotationValue schema;
@@ -55,15 +73,15 @@ public class TableGeneratorReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.catalog = assertNotNullValue(values, "catalog");
-        this.schema = assertNotNullValue(values, "schema");
-        this.table = assertNotNullValue(values, "table");
-        this.pkColumnName = assertNotNullValue(values, "pkColumnName");
-        this.valueColumnName = assertNotNullValue(values, "valueColumnName");
-        this.pkColumnValue = assertNotNullValue(values, "pkColumnValue");
-        this.initialValue = assertNotNullValue(values, "initialValue");
-        this.allocationSize = assertNotNullValue(values, "allocationSize");
-        this.implementer = assertNotNullValue(values, "implementer");
+        this.catalog = assertNotNullValue(values, CATALOG);
+        this.schema = assertNotNullValue(values, SCHEMA);
+        this.table = assertNotNullValue(values, TABLE);
+        this.pkColumnName = assertNotNullValue(values, PK_COLUMN_NAME);
+        this.valueColumnName = assertNotNullValue(values, VALUE_COLUMN_NAME);
+        this.pkColumnValue = assertNotNullValue(values, PK_COLUMN_VALUE);
+        this.initialValue = assertNotNullValue(values, INITIAL_VALUE);
+        this.allocationSize = assertNotNullValue(values, ALLOCATION_SIZE);
+        this.implementer = assertNotNullValue(values, IMPLEMENTER);
     }
 
     public AnnotationValue getCatalog() {
@@ -105,7 +123,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public String getCatalogValue() {
         String value = AnnotationValueUtil.toString(catalog);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException(CATALOG);
         }
         return value;
     }
@@ -113,7 +131,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public String getSchemaValue() {
         String value = AnnotationValueUtil.toString(schema);
         if (value == null) {
-            throw new AptIllegalStateException("schema");
+            throw new AptIllegalStateException(SCHEMA);
         }
         return value;
     }
@@ -121,7 +139,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public String getTableValue() {
         String value = AnnotationValueUtil.toString(table);
         if (value == null) {
-            throw new AptIllegalStateException("table");
+            throw new AptIllegalStateException(TABLE);
         }
         return value;
     }
@@ -129,7 +147,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public String getPkColumnNameValue() {
         String value = AnnotationValueUtil.toString(pkColumnName);
         if (value == null) {
-            throw new AptIllegalStateException("pkColumnName");
+            throw new AptIllegalStateException(PK_COLUMN_NAME);
         }
         return value;
     }
@@ -137,7 +155,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public String getValueColumnNameValue() {
         String value = AnnotationValueUtil.toString(valueColumnName);
         if (value == null) {
-            throw new AptIllegalStateException("valueColumnName");
+            throw new AptIllegalStateException(VALUE_COLUMN_NAME);
         }
         return value;
     }
@@ -145,7 +163,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public String getPkColumnValueValue() {
         String value = AnnotationValueUtil.toString(pkColumnValue);
         if (value == null) {
-            throw new AptIllegalStateException("pkColumnValue");
+            throw new AptIllegalStateException(PK_COLUMN_VALUE);
         }
         return value;
     }
@@ -153,7 +171,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public Long getInitialValueValue() {
         Long value = AnnotationValueUtil.toLong(initialValue);
         if (value == null) {
-            throw new AptIllegalStateException("initialValue");
+            throw new AptIllegalStateException(INITIAL_VALUE);
         }
         return value;
     }
@@ -161,7 +179,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public Long getAllocationSizeValue() {
         Long value = AnnotationValueUtil.toLong(allocationSize);
         if (value == null) {
-            throw new AptIllegalStateException("allocationSize");
+            throw new AptIllegalStateException(ALLOCATION_SIZE);
         }
         return value;
     }
@@ -169,7 +187,7 @@ public class TableGeneratorReflection extends AbstractReflection {
     public TypeMirror getImplementerValue() {
         TypeMirror value = AnnotationValueUtil.toType(implementer);
         if (value == null) {
-            throw new AptIllegalStateException("implementer");
+            throw new AptIllegalStateException(IMPLEMENTER);
         }
         return value;
     }

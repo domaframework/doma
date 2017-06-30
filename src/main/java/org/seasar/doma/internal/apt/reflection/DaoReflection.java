@@ -35,6 +35,10 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class DaoReflection extends AbstractReflection {
 
+    public static final String ACCESS_LEVEL = "accessLevel";
+
+    public static final String CONFIG = "config";
+
     private final AnnotationValue config;
 
     private final AnnotationValue accessLevel;
@@ -45,11 +49,11 @@ public class DaoReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.config = assertNotNullValue(values, "config");
-        this.accessLevel = assertNotNullValue(values, "accessLevel");
+        this.config = assertNotNullValue(values, CONFIG);
+        this.accessLevel = assertNotNullValue(values, ACCESS_LEVEL);
         this.hasUserDefinedConfig = annotationMirror.getElementValues().keySet()
                 .stream()
-                .anyMatch(e -> e.getSimpleName().contentEquals("config"));
+                .anyMatch(e -> e.getSimpleName().contentEquals(CONFIG));
     }
 
     public AnnotationValue getConfig() {
@@ -63,7 +67,7 @@ public class DaoReflection extends AbstractReflection {
     public TypeMirror getConfigValue() {
         TypeMirror value = AnnotationValueUtil.toType(config);
         if (value == null) {
-            throw new AptIllegalStateException("config");
+            throw new AptIllegalStateException(CONFIG);
         }
         return value;
     }
@@ -72,7 +76,7 @@ public class DaoReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(accessLevel);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("accessLevel");
+            throw new AptIllegalStateException(ACCESS_LEVEL);
         }
         return AccessLevel.valueOf(enumConstant.getSimpleName().toString());
     }

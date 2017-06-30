@@ -35,6 +35,12 @@ import org.seasar.doma.jdbc.entity.NamingType;
  */
 public class EntityReflection extends AbstractReflection {
 
+    public static final String LISTENER = "listener";
+
+    public static final String NAMING = "naming";
+
+    public static final String IMMUTABLE = "immutable";
+
     private final AnnotationValue listener;
 
     private final AnnotationValue naming;
@@ -45,9 +51,9 @@ public class EntityReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.listener = assertNotNullValue(values, "listener");
-        this.naming = assertNotNullValue(values, "naming");
-        this.immutable = assertNotNullValue(values, "immutable");
+        this.listener = assertNotNullValue(values, LISTENER);
+        this.naming = assertNotNullValue(values, NAMING);
+        this.immutable = assertNotNullValue(values, IMMUTABLE);
     }
 
     public AnnotationValue getListener() {
@@ -65,7 +71,7 @@ public class EntityReflection extends AbstractReflection {
     public TypeMirror getListenerValue() {
         TypeMirror result = AnnotationValueUtil.toType(listener);
         if (result == null) {
-            throw new AptIllegalStateException("listener");
+            throw new AptIllegalStateException(LISTENER);
         }
         return result;
     }
@@ -74,7 +80,7 @@ public class EntityReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(naming);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("naming");
+            throw new AptIllegalStateException(NAMING);
         }
         return NamingType.valueOf(enumConstant.getSimpleName().toString());
     }
@@ -82,7 +88,7 @@ public class EntityReflection extends AbstractReflection {
     public boolean getImmutableValue() {
         Boolean result = AnnotationValueUtil.toBoolean(immutable);
         if (result == null) {
-            throw new AptIllegalStateException("immutable");
+            throw new AptIllegalStateException(IMMUTABLE);
         }
         return result.booleanValue();
     }

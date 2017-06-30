@@ -337,7 +337,7 @@ public class EntityPropertyMetaFactory {
                     public Boolean visitBasicCtType(BasicCtType ctType, Void p)
                             throws RuntimeException {
                         TypeMirror boxedType = ctx.getTypes()
-                                .boxIfPrimitive(ctType.getTypeMirror());
+                                .boxIfPrimitive(ctType.getType());
                         return ctx.getTypes().isAssignable(boxedType,
                                 Number.class);
                     }
@@ -360,7 +360,7 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(Message.DOMA4232, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4233, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
@@ -374,7 +374,7 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(Message.DOMA4204, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4205, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
@@ -385,7 +385,7 @@ public class EntityPropertyMetaFactory {
         public Void visitAnyCtType(AnyCtType ctType, Void p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4096, fieldElement,
-                    new Object[] { ctType.getTypeMirror() });
+                    new Object[] { ctType.getType() });
         }
 
     }

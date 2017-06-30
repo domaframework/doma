@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
@@ -39,18 +38,6 @@ public class FunctionCtType extends AbstractCtType {
 
     public AnyCtType getReturnCtType() {
         return returnCtType;
-    }
-
-    public boolean isRawType() {
-        return returnCtType.getTypeMirror() == null
-                || targetCtType.getTypeMirror() == null;
-    }
-
-    public boolean isWildcardType() {
-        return returnCtType.getTypeMirror() != null
-                && returnCtType.getTypeMirror().getKind() == TypeKind.WILDCARD
-                || targetCtType.getTypeMirror() != null && targetCtType
-                        .getTypeMirror().getKind() == TypeKind.WILDCARD;
     }
 
     @Override

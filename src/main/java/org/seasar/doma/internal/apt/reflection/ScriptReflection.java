@@ -34,6 +34,12 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class ScriptReflection extends AbstractReflection {
 
+    public static final String SQL_LOG = "sqlLog";
+
+    public static final String BLOCK_DELIMITER = "blockDelimiter";
+
+    public static final String HALT_ON_ERROR = "haltOnError";
+
     private final AnnotationValue haltOnError;
 
     private final AnnotationValue blockDelimiter;
@@ -44,9 +50,9 @@ public class ScriptReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.haltOnError = assertNotNullValue(values, "haltOnError");
-        this.blockDelimiter = assertNotNullValue(values, "blockDelimiter");
-        this.sqlLog = assertNotNullValue(values, "sqlLog");
+        this.haltOnError = assertNotNullValue(values, HALT_ON_ERROR);
+        this.blockDelimiter = assertNotNullValue(values, BLOCK_DELIMITER);
+        this.sqlLog = assertNotNullValue(values, SQL_LOG);
     }
 
     public AnnotationValue getHaltOnError() {
@@ -64,7 +70,7 @@ public class ScriptReflection extends AbstractReflection {
     public boolean getHaltOnErrorValue() {
         Boolean value = AnnotationValueUtil.toBoolean(haltOnError);
         if (value == null) {
-            throw new AptIllegalStateException("haltOnError");
+            throw new AptIllegalStateException(HALT_ON_ERROR);
         }
         return value.booleanValue();
     }
@@ -72,7 +78,7 @@ public class ScriptReflection extends AbstractReflection {
     public String getBlockDelimiterValue() {
         String value = AnnotationValueUtil.toString(blockDelimiter);
         if (value == null) {
-            throw new AptIllegalStateException("blockDelimiter");
+            throw new AptIllegalStateException(BLOCK_DELIMITER);
         }
         return value;
     }
@@ -81,7 +87,7 @@ public class ScriptReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(sqlLog);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("sqlLog");
+            throw new AptIllegalStateException(SQL_LOG);
         }
         return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
     }

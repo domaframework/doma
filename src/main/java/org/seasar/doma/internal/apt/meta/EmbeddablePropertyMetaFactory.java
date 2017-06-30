@@ -86,7 +86,7 @@ public class EmbeddablePropertyMetaFactory {
                 throw new AptException(Message.DOMA4299, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4301, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
@@ -100,7 +100,7 @@ public class EmbeddablePropertyMetaFactory {
                 throw new AptException(Message.DOMA4295, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
-            if (ctType.isWildcardType()) {
+            if (ctType.hasWildcardType() || ctType.hasTypevarType()) {
                 throw new AptException(Message.DOMA4296, fieldElement,
                         new Object[] { ctType.getQualifiedName() });
             }
@@ -111,14 +111,14 @@ public class EmbeddablePropertyMetaFactory {
         public Void visitEmbeddableCtType(EmbeddableCtType ctType, Void p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4297, fieldElement,
-                    new Object[] { ctType.getTypeMirror() });
+                    new Object[] { ctType.getType() });
         }
 
         @Override
         public Void visitAnyCtType(AnyCtType ctType, Void p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4298, fieldElement,
-                    new Object[] { ctType.getTypeMirror() });
+                    new Object[] { ctType.getType() });
         }
     }
 }

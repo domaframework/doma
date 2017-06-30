@@ -166,7 +166,7 @@ public class ExpressionValidator implements
             ComparisonOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
-        if (left.isNullType() || right.isNullType() || left.isSameType(right)) {
+        if (left.isNullType() || right.isNullType() || left.isComparable(right)) {
             return ctx.getDeclarations()
                     .newTypeDeclaration(boolean.class);
         }
@@ -186,7 +186,7 @@ public class ExpressionValidator implements
             throw new AptException(Message.DOMA4139, methodElement, new Object[] { location.getExpression(),
                     location.getPosition(), node.getExpression() });
         }
-        if (left.isSameType(right)) {
+        if (left.isComparable(right)) {
             return ctx.getDeclarations()
                     .newTypeDeclaration(boolean.class);
         }
@@ -319,7 +319,7 @@ public class ExpressionValidator implements
     public TypeDeclaration visitLiteralNode(LiteralNode node, Void p) {
         TypeMirror type = node.getValueClass() == void.class
                 ? ctx.getTypes().getNullType()
-                : ctx.getTypes().getTypeMirror(node.getValueClass());
+                : ctx.getTypes().getType(node.getValueClass());
         return ctx.getDeclarations().newTypeDeclaration(type);
     }
 

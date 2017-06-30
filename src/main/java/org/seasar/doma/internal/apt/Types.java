@@ -17,7 +17,10 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -35,6 +38,8 @@ import javax.lang.model.util.SimpleElementVisitor8;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.TypeKindVisitor8;
 
+import org.seasar.doma.internal.util.Pair;
+
 public class Types implements javax.lang.model.util.Types {
 
     private final Context ctx;
@@ -46,9 +51,9 @@ public class Types implements javax.lang.model.util.Types {
         this.typeUtils = ctx.getEnv().getTypeUtils();
     }
 
-    public TypeElement toTypeElement(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
-        Element element = asElement(typeMirror);
+    public TypeElement toTypeElement(TypeMirror type) {
+        assertNotNull(type);
+        Element element = asElement(type);
         if (element == null) {
             return null;
         }
@@ -62,9 +67,9 @@ public class Types implements javax.lang.model.util.Types {
         }, null);
     }
 
-    public DeclaredType toDeclaredType(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
-        return typeMirror.accept(new SimpleTypeVisitor8<DeclaredType, Void>() {
+    public DeclaredType toDeclaredType(TypeMirror type) {
+        assertNotNull(type);
+        return type.accept(new SimpleTypeVisitor8<DeclaredType, Void>() {
 
             @Override
             public DeclaredType visitDeclared(DeclaredType t, Void p) {
@@ -74,9 +79,9 @@ public class Types implements javax.lang.model.util.Types {
         }, null);
     }
 
-    public TypeVariable toTypeVariable(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
-        return typeMirror.accept(new SimpleTypeVisitor8<TypeVariable, Void>() {
+    public TypeVariable toTypeVariable(TypeMirror type) {
+        assertNotNull(type);
+        return type.accept(new SimpleTypeVisitor8<TypeVariable, Void>() {
 
             @Override
             public TypeVariable visitTypeVariable(TypeVariable t, Void p) {
@@ -125,16 +130,21 @@ public class Types implements javax.lang.model.util.Types {
         return false;
     }
 
-    public boolean isSameType(TypeMirror typeMirror, Class<?> clazz) {
-        assertNotNull(typeMirror, clazz);
-        if (typeMirror.getKind() == TypeKind.VOID) {
+    public boolean isAssignable(Pair<TypeMirror, TypeMirror> pair) {
+        assertNotNull(pair);
+        return isAssignable(pair.fst, pair.snd);
+    }
+
+    public boolean isSameType(TypeMirror type, Class<?> clazz) {
+        assertNotNull(type, clazz);
+        if (type.getKind() == TypeKind.VOID) {
             return clazz == void.class;
         }
         TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
         if (typeElement == null) {
             return false;
         }
-        return isSameType(typeMirror, typeElement.asType());
+        return isSameType(type, typeElement.asType());
     }
 
     public boolean isSameType(TypeMirror t1, TypeMirror t2) {
@@ -160,10 +170,15 @@ public class Types implements javax.lang.model.util.Types {
                 || erasuredType1.equals(erasuredType2);
     }
 
-    public String getTypeName(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
+    public boolean isSameType(Pair<TypeMirror, TypeMirror> pair) {
+        assertNotNull(pair);
+        return isSameType(pair.fst, pair.snd);
+    }
+
+    public String getTypeName(TypeMirror type) {
+        assertNotNull(type);
         StringBuilder p = new StringBuilder();
-        typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
+        type.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
             @Override
             public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
@@ -235,9 +250,9 @@ public class Types implements javax.lang.model.util.Types {
         return p.toString();
     }
 
-    public String getBoxedTypeName(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
-        switch (typeMirror.getKind()) {
+    public String getBoxedTypeName(TypeMirror type) {
+        assertNotNull(type);
+        switch (type.getKind()) {
         case BOOLEAN:
             return Boolean.class.getName();
         case BYTE:
@@ -255,14 +270,14 @@ public class Types implements javax.lang.model.util.Types {
         case CHAR:
             return Character.class.getName();
         default:
-            return getTypeName(typeMirror);
+            return getTypeName(type);
         }
     }
 
-    public String getTypeParameterName(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
+    public String getTypeParameterName(TypeMirror type) {
+        assertNotNull(type);
         StringBuilder p = new StringBuilder();
-        typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
+        type.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
             @Override
             public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
@@ -350,9 +365,9 @@ public class Types implements javax.lang.model.util.Types {
         return p.toString();
     }
 
-    public TypeMirror boxIfPrimitive(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
-        return typeMirror.accept(new TypeKindVisitor8<TypeMirror, Void>() {
+    public TypeMirror boxIfPrimitive(TypeMirror type) {
+        assertNotNull(type);
+        return type.accept(new TypeKindVisitor8<TypeMirror, Void>() {
 
             @Override
             public TypeMirror visitPrimitive(PrimitiveType t, Void p) {
@@ -367,7 +382,7 @@ public class Types implements javax.lang.model.util.Types {
         }, null);
     }
 
-    public TypeMirror getTypeMirror(Class<?> clazz) {
+    public TypeMirror getType(Class<?> clazz) {
         assertNotNull(clazz);
         if (clazz == void.class) {
             return getNoType(TypeKind.VOID);
@@ -403,23 +418,23 @@ public class Types implements javax.lang.model.util.Types {
         return typeElement.asType();
     }
 
-    public TypeMirror getSupertypeMirror(TypeMirror typeMirror,
+    public TypeMirror getSupertype(TypeMirror type,
             Class<?> superclass) {
-        assertNotNull(typeMirror, superclass);
-        if (isSameType(typeMirror, superclass)) {
-            return typeMirror;
+        assertNotNull(type, superclass);
+        if (isSameType(type, superclass)) {
+            return type;
         }
-        switch (typeMirror.getKind()) {
+        switch (type.getKind()) {
         case NONE:
         case NULL:
         case VOID:
             return null;
         default:
-            for (TypeMirror t : directSupertypes(typeMirror)) {
+            for (TypeMirror t : directSupertypes(type)) {
                 if (isSameType(t, superclass)) {
                     return t;
                 }
-                TypeMirror candidate = getSupertypeMirror(t, superclass);
+                TypeMirror candidate = getSupertype(t, superclass);
                 if (candidate != null) {
                     return candidate;
                 }
@@ -428,10 +443,10 @@ public class Types implements javax.lang.model.util.Types {
         }
     }
 
-    private String getClassName(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
+    private String getClassName(TypeMirror type) {
+        assertNotNull(type);
         StringBuilder p = new StringBuilder();
-        typeMirror.accept(new TypeKindVisitor8<Void, StringBuilder>() {
+        type.accept(new TypeKindVisitor8<Void, StringBuilder>() {
 
             @Override
             public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
@@ -466,9 +481,9 @@ public class Types implements javax.lang.model.util.Types {
         return p.length() > 0 ? p.toString() : Object.class.getName();
     }
 
-    public String getBoxedClassName(TypeMirror typeMirror) {
-        assertNotNull(typeMirror);
-        switch (typeMirror.getKind()) {
+    public String getBoxedClassName(TypeMirror type) {
+        assertNotNull(type);
+        switch (type.getKind()) {
         case BOOLEAN:
             return Boolean.class.getName();
         case BYTE:
@@ -486,12 +501,12 @@ public class Types implements javax.lang.model.util.Types {
         case CHAR:
             return Character.class.getName();
         default:
-            return getClassName(typeMirror);
+            return getClassName(type);
         }
     }
 
-    public Element asElement(TypeMirror typeMirror) {
-        return typeUtils.asElement(typeMirror);
+    public Element asElement(TypeMirror type) {
+        return typeUtils.asElement(type);
     }
 
     public TypeMirror asMemberOf(DeclaredType containing, Element element) {
@@ -502,20 +517,20 @@ public class Types implements javax.lang.model.util.Types {
         return typeUtils.boxedClass(primitiveType);
     }
 
-    public TypeMirror capture(TypeMirror typeMirror) {
-        return typeUtils.capture(typeMirror);
+    public TypeMirror capture(TypeMirror type) {
+        return typeUtils.capture(type);
     }
 
     public boolean contains(TypeMirror t1, TypeMirror t2) {
         return typeUtils.contains(t1, t2);
     }
 
-    public List<? extends TypeMirror> directSupertypes(TypeMirror typeMirror) {
-        return typeUtils.directSupertypes(typeMirror);
+    public List<? extends TypeMirror> directSupertypes(TypeMirror type) {
+        return typeUtils.directSupertypes(type);
     }
 
-    public TypeMirror erasure(TypeMirror typeMirror) {
-        return typeUtils.erasure(typeMirror);
+    public TypeMirror erasure(TypeMirror type) {
+        return typeUtils.erasure(type);
     }
 
     public ArrayType getArrayType(TypeMirror componentType) {
@@ -557,8 +572,28 @@ public class Types implements javax.lang.model.util.Types {
         return typeUtils.isSubtype(t1, t2);
     }
 
-    public PrimitiveType unboxedType(TypeMirror typeMirror) {
-        return typeUtils.unboxedType(typeMirror);
+    public PrimitiveType unboxedType(TypeMirror type) {
+        return typeUtils.unboxedType(type);
+    }
+
+    public Collection<TypeMirror> supertypes(TypeMirror type) {
+        Map<String, TypeMirror> map = new HashMap<>();
+        gatherSupertypes(type, map);
+        return map.values();
+    }
+
+    private void gatherSupertypes(TypeMirror type,
+            Map<String, TypeMirror> map) {
+        for (TypeMirror supertype : directSupertypes(type)) {
+            TypeElement typeElement = toTypeElement(supertype);
+            if (typeElement == null) {
+                continue;
+            }
+            String key = ctx.getElements().getBinaryName(typeElement)
+                    .toString();
+            map.put(key, supertype);
+            gatherSupertypes(supertype, map);
+        }
     }
 
 }

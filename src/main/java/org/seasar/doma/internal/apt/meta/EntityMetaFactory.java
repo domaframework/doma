@@ -19,12 +19,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -32,12 +33,12 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
@@ -131,86 +132,55 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     private TypeMirror resolveEntityListener(TypeElement classElement) {
-        TypeMirror result = ctx.getTypes()
-                .getTypeMirror(NullEntityListener.class);
-        for (AnnotationValue value : getEntityElementValueList(classElement,
-                "listener")) {
-            if (value != null) {
-                TypeMirror listenerType = AnnotationValueUtil.toType(value);
-                if (listenerType == null) {
-                    throw new AptIllegalStateException("listener");
-                }
-                result = listenerType;
-            }
-        }
-        return result;
+        return getEntityElementValues(classElement, EntityReflection.LISTENER)
+                .map(AnnotationValueUtil::toType).peek(t -> {
+                    if (t == null) {
+                        throw new AptIllegalStateException(
+                                EntityReflection.LISTENER);
+                    }
+                }).findFirst().orElseGet(() -> ctx.getTypes()
+                        .getType(NullEntityListener.class));
     }
 
     private NamingType resolveNamingType(TypeElement classElement) {
-        NamingType result = null;
-        for (AnnotationValue value : getEntityElementValueList(classElement,
-                "naming")) {
-            if (value != null) {
-                VariableElement enumConstant = AnnotationValueUtil
-                        .toEnumConstant(value);
-                if (enumConstant == null) {
-                    throw new AptIllegalStateException("naming");
-                }
-                result = NamingType.valueOf(enumConstant.getSimpleName()
-                        .toString());
-            }
-        }
-        return result;
+        return getEntityElementValues(classElement, EntityReflection.NAMING)
+                .map(AnnotationValueUtil::toEnumConstant).peek(e -> {
+                    if (e == null) {
+                        throw new AptIllegalStateException(
+                                EntityReflection.NAMING);
+                    }
+                }).map(VariableElement::getSimpleName).map(Name::toString)
+                .map(NamingType::valueOf).findFirst().orElse(null);
     }
 
     private boolean resolveImmutable(TypeElement classElement,
             EntityReflection entityReflection) {
-        boolean result = false;
-        List<Boolean> resolvedList = new ArrayList<Boolean>();
-        for (AnnotationValue value : getEntityElementValueList(classElement,
-                "immutable")) {
-            if (value != null) {
-                Boolean immutable = AnnotationValueUtil.toBoolean(value);
-                if (immutable == null) {
-                    throw new AptIllegalStateException("immutable");
-                }
-                result = immutable.booleanValue();
-                resolvedList.add(immutable);
-            }
-        }
-        if (resolvedList.contains(Boolean.TRUE)
-                && resolvedList.contains(Boolean.FALSE)) {
+        List<Boolean> values = getEntityElementValues(classElement,
+                EntityReflection.IMMUTABLE).map(AnnotationValueUtil::toBoolean)
+                        .peek(b -> {
+                            if (b == null) {
+                                throw new AptIllegalStateException(
+                                        EntityReflection.IMMUTABLE);
+                            }
+                        }).collect(Collectors.toList());
+        if (values.contains(Boolean.TRUE)
+                && values.contains(Boolean.FALSE)) {
             throw new AptException(Message.DOMA4226, classElement, entityReflection.getAnnotationMirror(),
                     entityReflection.getImmutable());
         }
-        return result;
+        return values.stream().findAny().orElse(false);
     }
 
-    private List<AnnotationValue> getEntityElementValueList(
+    private Stream<AnnotationValue> getEntityElementValues(
             TypeElement classElement, String entityElementName) {
-        List<AnnotationValue> list = new LinkedList<AnnotationValue>();
-        for (TypeElement t = classElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
-                        .toTypeElement(t.getSuperclass())) {
-            AnnotationMirror annMirror = ctx.getElements()
-                    .getAnnotationMirror(t, Entity.class);
-            if (annMirror == null) {
-                continue;
-            }
-            AnnotationValue value = null;
-            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : annMirror
-                    .getElementValues().entrySet()) {
-                ExecutableElement element = entry.getKey();
-                if (entityElementName
-                        .equals(element.getSimpleName().toString())) {
-                    value = entry.getValue();
-                    break;
-                }
-            }
-            list.add(value);
-        }
-        Collections.reverse(list);
-        return list;
+        return ctx.getElements().hierarchy(classElement).stream()
+                .map(t -> ctx.getElements().getAnnotationMirror(t,
+                        Entity.class))
+                .filter(Objects::nonNull)
+                .flatMap(a -> a.getElementValues().entrySet().stream())
+                .filter(e -> e.getKey().getSimpleName()
+                        .contentEquals(entityElementName))
+                .map(e -> e.getValue());
     }
 
     private interface Strategy {

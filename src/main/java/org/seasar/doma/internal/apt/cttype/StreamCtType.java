@@ -15,35 +15,21 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
 
 public class StreamCtType extends AbstractCtType {
 
-    private final TypeMirror elementTypeMirror;
-
     private final CtType elementCtType;
 
-    StreamCtType(Context ctx, TypeMirror type,
-            TypeMirror elementTypeMirror, CtType elementCtType) {
+    StreamCtType(Context ctx, TypeMirror type, CtType elementCtType) {
         super(ctx, type);
-        this.elementTypeMirror = elementTypeMirror;
         this.elementCtType = elementCtType;
     }
 
     public CtType getElementCtType() {
         return elementCtType;
-    }
-
-    public boolean isRawType() {
-        return elementTypeMirror == null;
-    }
-
-    public boolean isWildcardType() {
-        return elementTypeMirror != null
-                && elementTypeMirror.getKind() == TypeKind.WILDCARD;
     }
 
     @Override

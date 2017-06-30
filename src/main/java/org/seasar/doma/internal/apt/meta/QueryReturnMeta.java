@@ -74,11 +74,11 @@ public class QueryReturnMeta {
     }
 
     public boolean isPrimitiveInt() {
-        return ctType.getTypeMirror().getKind() == TypeKind.INT;
+        return ctType.getType().getKind() == TypeKind.INT;
     }
 
     public boolean isPrimitiveIntArray() {
-        return ctType.getTypeMirror()
+        return ctType.getType()
                 .accept(new TypeKindVisitor8<Boolean, Void>(false) {
 
             @Override
@@ -89,11 +89,11 @@ public class QueryReturnMeta {
     }
 
     public boolean isPrimitiveVoid() {
-        return ctType.getTypeMirror().getKind() == TypeKind.VOID;
+        return ctType.getType().getKind() == TypeKind.VOID;
     }
 
     public boolean isResult(EntityCtType entityCtType) {
-        TypeMirror type = ctType.getTypeMirror();
+        TypeMirror type = ctType.getType();
         if (!ctx.getTypes().isSameType(type, Result.class)) {
             return false;
         }
@@ -106,11 +106,11 @@ public class QueryReturnMeta {
             return false;
         }
         TypeMirror typeArg = typeArgs.get(0);
-        return ctx.getTypes().isSameType(typeArg, entityCtType.getTypeMirror());
+        return ctx.getTypes().isSameType(typeArg, entityCtType.getType());
     }
 
     public boolean isBatchResult(EntityCtType entityCtType) {
-        TypeMirror type = ctType.getTypeMirror();
+        TypeMirror type = ctType.getType();
         if (!ctx.getTypes().isSameType(type, BatchResult.class)) {
             return false;
         }
@@ -123,7 +123,7 @@ public class QueryReturnMeta {
             return false;
         }
         TypeMirror typeArg = typeArgs.get(0);
-        return ctx.getTypes().isSameType(typeArg, entityCtType.getTypeMirror());
+        return ctx.getTypes().isSameType(typeArg, entityCtType.getType());
     }
 
     public ExecutableElement getMethodElement() {
@@ -131,7 +131,7 @@ public class QueryReturnMeta {
     }
 
     public TypeMirror getType() {
-        return ctType.getTypeMirror();
+        return ctType.getType();
     }
 
     public CtType getCtType() {

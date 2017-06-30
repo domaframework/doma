@@ -52,7 +52,7 @@ public class BasicCtType extends AbstractCtType {
     }
 
     public boolean isPrimitive() {
-        return typeMirror.getKind().isPrimitive();
+        return type.getKind().isPrimitive();
     }
 
     @Override

@@ -32,6 +32,14 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class TableReflection extends AbstractReflection {
 
+    public static final String QUOTE = "quote";
+
+    public static final String NAME = "name";
+
+    public static final String SCHEMA = "schema";
+
+    public static final String CATALOG = "catalog";
+
     private final AnnotationValue catalog;
 
     private final AnnotationValue schema;
@@ -44,16 +52,16 @@ public class TableReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.catalog = assertNotNullValue(values, "catalog");
-        this.schema = assertNotNullValue(values, "schema");
-        this.name = assertNotNullValue(values, "name");
-        this.quote = assertNotNullValue(values, "quote");
+        this.catalog = assertNotNullValue(values, CATALOG);
+        this.schema = assertNotNullValue(values, SCHEMA);
+        this.name = assertNotNullValue(values, NAME);
+        this.quote = assertNotNullValue(values, QUOTE);
     }
 
     public String getCatalogValue() {
         String value = AnnotationValueUtil.toString(catalog);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException(CATALOG);
         }
         return value;
     }
@@ -61,7 +69,7 @@ public class TableReflection extends AbstractReflection {
     public String getSchemaValue() {
         String value = AnnotationValueUtil.toString(schema);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException(CATALOG);
         }
         return value;
     }
@@ -69,7 +77,7 @@ public class TableReflection extends AbstractReflection {
     public String getNameValue() {
         String value = AnnotationValueUtil.toString(name);
         if (value == null) {
-            throw new AptIllegalStateException("name");
+            throw new AptIllegalStateException(NAME);
         }
         return value;
     }
@@ -77,7 +85,7 @@ public class TableReflection extends AbstractReflection {
     public boolean getQuoteValue() {
         Boolean value = AnnotationValueUtil.toBoolean(quote);
         if (value == null) {
-            throw new AptIllegalStateException("quote");
+            throw new AptIllegalStateException(QUOTE);
         }
         return value.booleanValue();
     }

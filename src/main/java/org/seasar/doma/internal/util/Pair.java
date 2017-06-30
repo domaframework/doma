@@ -13,28 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.cttype;
+package org.seasar.doma.internal.util;
 
-import javax.lang.model.type.TypeMirror;
+public class Pair<T, U> {
 
-import org.seasar.doma.internal.apt.Context;
+    public final T fst;
 
-public class ReferenceCtType extends AbstractCtType {
+    public final U snd;
 
-    private final CtType referentCtType;
-
-    ReferenceCtType(Context ctx, TypeMirror type, CtType referentType) {
-        super(ctx, type);
-        this.referentCtType = referentType;
-    }
-
-    public CtType getReferentCtType() {
-        return referentCtType;
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitReferenceCtType(this, p);
+    public Pair(T fst, U snd) {
+        this.fst = fst;
+        this.snd = snd;
     }
 }

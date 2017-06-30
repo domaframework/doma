@@ -259,7 +259,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4101, parameterMeta.getElement(),
-                    new Object[] { ctType.getTypeMirror() });
+                    new Object[] { ctType.getType() });
         }
 
         @Override
@@ -360,7 +360,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 throws RuntimeException {
             throw new AptException(Message.DOMA4100, parameterMeta.getElement(),
                     new Object[] {
-                            referenceCtType.getReferentTypeMirror() });
+                            referenceCtType.getReferentCtType()
+                                    .getType() });
         }
 
         @Override
@@ -461,7 +462,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 throws RuntimeException {
             throw new AptException(Message.DOMA4100, parameterMeta.getElement(),
                     new Object[] {
-                            referenceCtType.getReferentTypeMirror() });
+                            referenceCtType.getReferentCtType()
+                                    .getType() });
         }
 
         @Override

@@ -24,13 +24,19 @@ import javax.lang.model.type.TypeMirror;
  */
 public interface CtType {
 
-    TypeMirror getTypeMirror();
+    TypeMirror getType();
 
     TypeElement getTypeElement();
 
     String getTypeName();
 
     String getQualifiedName();
+
+    boolean isRawType();
+
+    boolean hasWildcardType();
+
+    boolean hasTypevarType();
 
     <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p)
             throws TH;

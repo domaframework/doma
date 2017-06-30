@@ -34,6 +34,10 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class AllArgsConstructorReflection extends AbstractReflection {
 
+    public static final String STATIC_NAME = "staticName";
+
+    public static final String ACCESS = "access";
+
     private final AnnotationValue staticName;
 
     private final AnnotationValue access;
@@ -42,8 +46,8 @@ public class AllArgsConstructorReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.staticName = assertNotNullValue(values, "staticName");
-        this.access = assertNotNullValue(values, "access");
+        this.staticName = assertNotNullValue(values, STATIC_NAME);
+        this.access = assertNotNullValue(values, ACCESS);
     }
 
     public AnnotationValue getStaticName() {
@@ -66,7 +70,7 @@ public class AllArgsConstructorReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(access);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("access");
+            throw new AptIllegalStateException(ACCESS);
         }
         return "PRIVATE".equals(enumConstant.getSimpleName().toString());
     }
@@ -75,7 +79,7 @@ public class AllArgsConstructorReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(access);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("access");
+            throw new AptIllegalStateException(ACCESS);
         }
         return "NONE".equals(enumConstant.getSimpleName().toString());
     }

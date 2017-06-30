@@ -34,13 +34,15 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class HolderConvertersReflection extends AbstractReflection {
 
+    public static final String VALUE = "value";
+
     private final AnnotationValue value;
 
     HolderConvertersReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.value = assertNotNullValue(values, "value");
+        this.value = assertNotNullValue(values, VALUE);
     }
 
     public AnnotationValue getValue() {
@@ -50,7 +52,7 @@ public class HolderConvertersReflection extends AbstractReflection {
     public List<TypeMirror> getValueValue() {
         List<TypeMirror> typeList = AnnotationValueUtil.toTypeList(value);
         if (typeList == null) {
-            throw new AptIllegalStateException("value");
+            throw new AptIllegalStateException(VALUE);
         }
         return typeList;
     }

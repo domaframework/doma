@@ -41,16 +41,11 @@ public class CollectorCtType extends AbstractCtType {
         return returnCtType;
     }
 
-    public boolean isRawType() {
-        return returnCtType.getTypeMirror() == null
-                || targetCtType.getTypeMirror() == null;
-    }
-
-    public boolean isWildcardType() {
-        return returnCtType.getTypeMirror() != null
-                && returnCtType.getTypeMirror().getKind() == TypeKind.WILDCARD
-                || targetCtType.getTypeMirror() != null
-                && targetCtType.getTypeMirror().getKind() == TypeKind.WILDCARD;
+    public boolean hasWildcardType() {
+        return returnCtType.getType() != null
+                && returnCtType.getType().getKind() == TypeKind.WILDCARD
+                || targetCtType.getType() != null
+                && targetCtType.getType().getKind() == TypeKind.WILDCARD;
     }
 
     @Override

@@ -17,12 +17,9 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.Constants;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 
 public class HolderCtType extends AbstractCtType {
@@ -35,13 +32,9 @@ public class HolderCtType extends AbstractCtType {
 
     private final String typeArgDecl;
 
-    private boolean isRawType;
-
-    private boolean isWildcardType;
-
-    HolderCtType(Context ctx, TypeMirror holderType,
-            BasicCtType basicCtType, boolean external) {
-        super(ctx, holderType);
+    HolderCtType(Context ctx, TypeMirror type, BasicCtType basicCtType,
+            boolean external) {
+        super(ctx, type);
         assertNotNull(basicCtType);
         this.basicCtType = basicCtType;
         this.external = external;
@@ -53,34 +46,10 @@ public class HolderCtType extends AbstractCtType {
             this.metaClassName = metaTypeName;
             this.typeArgDecl = "";
         }
-        if (!typeElement.getTypeParameters().isEmpty()) {
-            DeclaredType declaredType = ctx.getTypes()
-                    .toDeclaredType(getTypeMirror());
-            if (declaredType == null) {
-                throw new AptIllegalStateException(getTypeName());
-            }
-            if (declaredType.getTypeArguments().isEmpty()) {
-                isRawType = true;
-            }
-            for (TypeMirror typeArg : declaredType.getTypeArguments()) {
-                if (typeArg.getKind() == TypeKind.WILDCARD
-                        || typeArg.getKind() == TypeKind.TYPEVAR) {
-                    isWildcardType = true;
-                }
-            }
-        }
     }
 
     public BasicCtType getBasicCtType() {
         return basicCtType;
-    }
-
-    public boolean isRawType() {
-        return isRawType;
-    }
-
-    public boolean isWildcardType() {
-        return isWildcardType;
     }
 
     public String getInstantiationCommand() {

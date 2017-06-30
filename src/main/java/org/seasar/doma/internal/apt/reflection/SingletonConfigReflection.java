@@ -32,13 +32,15 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class SingletonConfigReflection extends AbstractReflection {
 
+    public static final String METHOD = "method";
+
     private final AnnotationValue method;
 
     SingletonConfigReflection(AnnotationMirror annotationMirror,
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.method = assertNotNullValue(values, "method");
+        this.method = assertNotNullValue(values, METHOD);
     }
 
     public AnnotationValue getMethod() {
@@ -48,7 +50,7 @@ public class SingletonConfigReflection extends AbstractReflection {
     public String getMethodValue() {
         String methodName = AnnotationValueUtil.toString(method);
         if (methodName == null) {
-            throw new AptIllegalStateException("method");
+            throw new AptIllegalStateException(METHOD);
         }
         return methodName;
     }

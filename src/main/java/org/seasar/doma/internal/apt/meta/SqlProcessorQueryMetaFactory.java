@@ -116,11 +116,11 @@ public class SqlProcessorQueryMetaFactory
     private boolean isConvertibleReturnType(QueryReturnMeta returnMeta,
             AnyCtType resultCtType) {
         if (ctx.getTypes().isSameType(returnMeta.getType(),
-                resultCtType.getTypeMirror())) {
+                resultCtType.getType())) {
             return true;
         }
         if (returnMeta.getType().getKind() == TypeKind.VOID) {
-            return ctx.getTypes().isSameType(resultCtType.getTypeMirror(),
+            return ctx.getTypes().isSameType(resultCtType.getType(),
                     Void.class);
         }
         return false;

@@ -18,8 +18,11 @@ package org.seasar.doma.internal.apt.cttype;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 
 /**
@@ -28,7 +31,9 @@ import org.seasar.doma.internal.apt.Context;
  */
 public abstract class AbstractCtType implements CtType {
 
-    protected final TypeMirror typeMirror;
+    protected final Context ctx;
+
+    protected final TypeMirror type;
 
     protected final String typeName;
 
@@ -38,28 +43,64 @@ public abstract class AbstractCtType implements CtType {
 
     protected final String metaTypeName;
 
-    AbstractCtType(Context ctx, TypeMirror typeMirror) {
-        assertNotNull(ctx, typeMirror);
-        this.typeMirror = typeMirror;
-        this.typeName = ctx.getTypes().getTypeName(typeMirror);
-        this.typeElement = ctx.getTypes().toTypeElement(typeMirror);
-        if (typeElement != null) {
-            qualifiedName = typeElement.getQualifiedName().toString();
+    protected final boolean isRawType;
+
+    protected final boolean hasWildcardType;
+
+    protected final boolean hasTypevarType;
+
+    AbstractCtType(Context ctx, TypeMirror type) {
+        assertNotNull(ctx, type);
+        this.ctx = ctx;
+        this.type = type;
+        this.typeName = ctx.getTypes().getTypeName(type);
+        this.typeElement = ctx.getTypes().toTypeElement(type);
+        if (typeElement == null) {
+            this.qualifiedName = typeName;
+            this.metaTypeName = typeName;
         } else {
-            qualifiedName = typeName;
+            this.qualifiedName = typeElement.getQualifiedName().toString();
+            this.metaTypeName = createMetaTypeName(ctx, typeElement, typeName);
         }
-        this.metaTypeName = getMetaTypeName(ctx, typeMirror);
+        this.isRawType = isRawType(ctx, type, typeElement);
+        if (isRawType) {
+            this.hasWildcardType = false;
+            this.hasTypevarType = false;
+        } else {
+            DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+            this.hasWildcardType = matchTypeArguments(declaredType, TypeKind.WILDCARD);
+            this.hasTypevarType = matchTypeArguments(declaredType,
+                    TypeKind.TYPEVAR);
+        }
     }
 
-    private static String getMetaTypeName(Context ctx, TypeMirror typeMirror) {
-        assertNotNull(ctx, typeMirror);
-        String typeName = ctx.getTypes().getTypeName(typeMirror);
-        TypeElement typeElement = ctx.getTypes().toTypeElement(typeMirror);
-        if (typeElement == null) {
-            return typeName;
-        }
+    private static String createMetaTypeName(Context ctx, TypeElement typeElement,
+            String typeName) {
         return ctx.getMetas().toFullMetaName(typeElement)
                 + makeTypeParamDecl(typeName);
+    }
+
+    private static boolean isRawType(Context ctx, TypeMirror type,
+            TypeElement typeElement) {
+        if (typeElement != null && !typeElement.getTypeParameters().isEmpty()) {
+            DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+            if (declaredType == null) {
+                throw new AptIllegalStateException(type.toString());
+            }
+            if (declaredType.getTypeArguments().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean matchTypeArguments(DeclaredType declaredType,
+            TypeKind kind) {
+        if (declaredType == null) {
+            return false;
+        }
+        return declaredType.getTypeArguments().stream()
+                .anyMatch(a -> a.getKind() == kind);
     }
 
     private static String makeTypeParamDecl(String typeName) {
@@ -71,8 +112,8 @@ public abstract class AbstractCtType implements CtType {
     }
 
     @Override
-    public TypeMirror getTypeMirror() {
-        return typeMirror;
+    public TypeMirror getType() {
+        return type;
     }
 
     @Override
@@ -88,6 +129,21 @@ public abstract class AbstractCtType implements CtType {
     @Override
     public String getQualifiedName() {
         return qualifiedName;
+    }
+
+    @Override
+    public boolean isRawType() {
+        return isRawType;
+    }
+
+    @Override
+    public boolean hasWildcardType() {
+        return hasWildcardType;
+    }
+
+    @Override
+    public boolean hasTypevarType() {
+        return hasTypevarType;
     }
 
 }

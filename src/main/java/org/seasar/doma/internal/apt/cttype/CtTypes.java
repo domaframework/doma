@@ -140,15 +140,13 @@ public class CtTypes {
         if (biFunctionDeclaredType == null) {
             return null;
         }
-
-        List<? extends TypeMirror> typeArguments = biFunctionDeclaredType
-                .getTypeArguments();
-        boolean isRawType = typeArguments.size() != 3;
         CtType firstArgCtType = null;
         CtType secondArgCtType = null;
         AnyCtType resultCtType = null;
+        List<? extends TypeMirror> typeArguments = biFunctionDeclaredType
+                .getTypeArguments();
 
-        if (!isRawType) {
+        if (typeArguments.size() == 3) {
             TypeMirror firstArgTypeMirror = typeArguments.get(0);
             TypeMirror secondArgTypeMirror = typeArguments.get(1);
             TypeMirror resultTypeMirror = typeArguments.get(2);
@@ -159,7 +157,7 @@ public class CtTypes {
             resultCtType = newAnyCtType(resultTypeMirror);
         }
 
-        return new BiFunctionCtType(ctx, type, isRawType, firstArgCtType,
+        return new BiFunctionCtType(ctx, type, firstArgCtType,
                 secondArgCtType, resultCtType);
     }
 
@@ -376,7 +374,7 @@ public class CtTypes {
 
     public IterableCtType newIterableCtType(TypeMirror type) {
         assertNotNull(type);
-        TypeMirror supertype = ctx.getTypes().getSupertypeMirror(type,
+        TypeMirror supertype = ctx.getTypes().getSupertype(type,
                 Iterable.class);
         if (supertype == null) {
             return null;
@@ -385,13 +383,10 @@ public class CtTypes {
         if (declaredType == null) {
             return null;
         }
-        boolean isList = ctx.getTypes().isSameType(type, List.class);
-        TypeMirror elementTypeMirror = null;
         CtType elementCtType = null;
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.size() > 0) {
-            elementTypeMirror = typeArgs.get(0);
-            elementCtType = toCtType(elementTypeMirror,
+            elementCtType = toCtType(typeArgs.get(0),
                     List.of(this::newEntityCtType, this::newOptionalCtType,
                             this::newOptionalIntCtType,
                             this::newOptionalLongCtType,
@@ -399,8 +394,7 @@ public class CtTypes {
                             this::newHolderCtType, this::newBasicCtType,
                             this::newMapCtType));
         }
-        return new IterableCtType(ctx, type, isList, elementTypeMirror,
-                elementCtType);
+        return new IterableCtType(ctx, type, elementCtType);
     }
 
     public MapCtType newMapCtType(TypeMirror type) {
@@ -435,25 +429,15 @@ public class CtTypes {
             return null;
         }
         CtType elementCtType;
-        boolean isRawType = false;
-        boolean isWildcardType = false;
         if (declaredType.getTypeArguments().isEmpty()) {
-            isRawType = true;
             elementCtType = null;
         } else {
             TypeMirror typeArg = declaredType.getTypeArguments().get(0);
-            if (typeArg.getKind() == TypeKind.WILDCARD
-                    || typeArg.getKind() == TypeKind.TYPEVAR) {
-                isWildcardType = true;
-                elementCtType = null;
-            } else {
-                elementCtType = toCtType(typeArg,
-                        List.of(this::newEntityCtType, this::newHolderCtType,
-                                this::newBasicCtType, this::newMapCtType));
-            }
+            elementCtType = toCtType(typeArg,
+                    List.of(this::newEntityCtType, this::newHolderCtType,
+                            this::newBasicCtType, this::newMapCtType));
         }
-        return new OptionalCtType(ctx, type, elementCtType, isRawType,
-                isWildcardType);
+        return new OptionalCtType(ctx, type, elementCtType);
     }
 
     public OptionalDoubleCtType newOptionalDoubleCtType(TypeMirror type) {
@@ -516,19 +500,17 @@ public class CtTypes {
         if (referenceDeclaredType == null) {
             return null;
         }
-        List<? extends TypeMirror> typeArguments = referenceDeclaredType
+        List<? extends TypeMirror> typeArgs = referenceDeclaredType
                 .getTypeArguments();
-        TypeMirror referentTypeMirror = null;
-        CtType referentType = null;
-        if (typeArguments.size() == 1) {
-            referentTypeMirror = typeArguments.get(0);
-            referentType = toCtType(referentTypeMirror,
+        CtType referentCtType = null;
+        if (typeArgs.size() == 1) {
+            referentCtType = toCtType(typeArgs.get(0),
                     List.of(this::newOptionalCtType, this::newOptionalIntCtType,
                             this::newOptionalLongCtType,
                             this::newOptionalDoubleCtType,
                             this::newHolderCtType, this::newBasicCtType));
         }
-        return new ReferenceCtType(ctx, type, referentTypeMirror, referentType);
+        return new ReferenceCtType(ctx, type, referentCtType);
     }
 
     public SelectOptionsCtType newSelectOptionsCtType(TypeMirror type) {
@@ -549,11 +531,9 @@ public class CtTypes {
             return null;
         }
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
-        TypeMirror elementTypeMirror = null;
         CtType elementCtType = null;
         if (typeArgs.size() > 0) {
-            elementTypeMirror = typeArgs.get(0);
-            elementCtType = toCtType(elementTypeMirror,
+            elementCtType = toCtType(typeArgs.get(0),
                     List.of(this::newEntityCtType, this::newOptionalCtType,
                             this::newOptionalIntCtType,
                             this::newOptionalLongCtType,
@@ -561,7 +541,7 @@ public class CtTypes {
                             this::newHolderCtType, this::newBasicCtType,
                             this::newMapCtType));
         }
-        return new StreamCtType(ctx, type, elementTypeMirror, elementCtType);
+        return new StreamCtType(ctx, type, elementCtType);
     }
 
     private DeclaredType getDeclaredTypeFromHierarchy(TypeMirror type,

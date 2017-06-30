@@ -98,7 +98,7 @@ public abstract class AbstractPropertyMeta {
     }
 
     public TypeMirror getType() {
-        return ctType.getTypeMirror();
+        return ctType.getType();
     }
 
     public ColumnReflection getColumnReflection() {

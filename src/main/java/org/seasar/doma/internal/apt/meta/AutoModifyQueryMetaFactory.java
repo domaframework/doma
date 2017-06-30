@@ -139,7 +139,7 @@ public class AutoModifyQueryMetaFactory extends
                     parameterMeta.getCtType());
         }
         ModifyReflection modifyReflection = queryMeta.getModifyReflection();
-        validateEntityPropertyNames(entityCtType.getTypeMirror(), method,
+        validateEntityPropertyNames(entityCtType.getType(), method,
                 modifyReflection.getAnnotationMirror(), modifyReflection.getInclude(),
                 modifyReflection.getExclude());
     }

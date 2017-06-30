@@ -34,6 +34,12 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class AnnotationReflection extends AbstractReflection {
 
+    public static final String TARGET = "target";
+
+    public static final String TYPE = "type";
+
+    public static final String ELEMENTS = "elements";
+
     private final AnnotationValue target;
 
     private final AnnotationValue type;
@@ -44,9 +50,9 @@ public class AnnotationReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.target = assertNotNullValue(values, "target");
-        this.type = assertNotNullValue(values, "type");
-        this.elements = assertNotNullValue(values, "elements");
+        this.target = assertNotNullValue(values, TARGET);
+        this.type = assertNotNullValue(values, TYPE);
+        this.elements = assertNotNullValue(values, ELEMENTS);
     }
 
     public AnnotationValue getTarget() {
@@ -64,7 +70,7 @@ public class AnnotationReflection extends AbstractReflection {
     public VariableElement getTargetValue() {
         VariableElement value = AnnotationValueUtil.toEnumConstant(target);
         if (value == null) {
-            throw new AptIllegalStateException("target");
+            throw new AptIllegalStateException(TARGET);
         }
         return value;
     }
@@ -72,7 +78,7 @@ public class AnnotationReflection extends AbstractReflection {
     public TypeMirror getTypeValue() {
         TypeMirror value = AnnotationValueUtil.toType(type);
         if (value == null) {
-            throw new AptIllegalStateException("type");
+            throw new AptIllegalStateException(TYPE);
         }
         return value;
     }
@@ -80,7 +86,7 @@ public class AnnotationReflection extends AbstractReflection {
     public String getElementsValue() {
         String value = AnnotationValueUtil.toString(elements);
         if (value == null) {
-            throw new AptIllegalStateException("elements");
+            throw new AptIllegalStateException(ELEMENTS);
         }
         return value;
     }

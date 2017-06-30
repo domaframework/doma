@@ -33,6 +33,14 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class HolderReflection extends AbstractReflection {
 
+    public static final String ACCEPT_NULL = "acceptNull";
+
+    public static final String ACCESSOR_METHOD = "accessorMethod";
+
+    public static final String FACTORY_METHOD = "factoryMethod";
+
+    public static final String VALUE_TYPE = "valueType";
+
     private final AnnotationValue valueType;
 
     private final AnnotationValue factoryMethod;
@@ -45,10 +53,10 @@ public class HolderReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.valueType = assertNotNullValue(values, "valueType");
-        this.factoryMethod = assertNotNullValue(values, "factoryMethod");
-        this.accessorMethod = assertNotNullValue(values, "accessorMethod");
-        this.acceptNull = assertNotNullValue(values, "acceptNull");
+        this.valueType = assertNotNullValue(values, VALUE_TYPE);
+        this.factoryMethod = assertNotNullValue(values, FACTORY_METHOD);
+        this.accessorMethod = assertNotNullValue(values, ACCESSOR_METHOD);
+        this.acceptNull = assertNotNullValue(values, ACCEPT_NULL);
     }
 
     public AnnotationValue getValueType() {
@@ -70,7 +78,7 @@ public class HolderReflection extends AbstractReflection {
     public TypeMirror getValueTypeValue() {
         TypeMirror value = AnnotationValueUtil.toType(valueType);
         if (value == null) {
-            throw new AptIllegalStateException("valueType");
+            throw new AptIllegalStateException(VALUE_TYPE);
         }
         return value;
     }
@@ -78,7 +86,7 @@ public class HolderReflection extends AbstractReflection {
     public String getFactoryMethodValue() {
         String value = AnnotationValueUtil.toString(factoryMethod);
         if (value == null) {
-            throw new AptIllegalStateException("factoryMethod");
+            throw new AptIllegalStateException(FACTORY_METHOD);
         }
         return value;
     }
@@ -86,7 +94,7 @@ public class HolderReflection extends AbstractReflection {
     public String getAccessorMethodValue() {
         String value = AnnotationValueUtil.toString(accessorMethod);
         if (value == null) {
-            throw new AptIllegalStateException("accessorMethod");
+            throw new AptIllegalStateException(ACCESSOR_METHOD);
         }
         return value;
     }
@@ -94,7 +102,7 @@ public class HolderReflection extends AbstractReflection {
     public boolean getAcceptNullValue() {
         Boolean value = AnnotationValueUtil.toBoolean(acceptNull);
         if (value == null) {
-            throw new AptIllegalStateException("acceptNull");
+            throw new AptIllegalStateException(ACCEPT_NULL);
         }
         return value.booleanValue();
     }

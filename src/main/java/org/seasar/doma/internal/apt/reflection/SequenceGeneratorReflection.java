@@ -33,6 +33,18 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class SequenceGeneratorReflection extends AbstractReflection {
 
+    public static final String IMPLEMENTER = "implementer";
+
+    public static final String ALLOCATION_SIZE = "allocationSize";
+
+    public static final String INITIAL_VALUE = "initialValue";
+
+    public static final String SEQUENCE = "sequence";
+
+    public static final String SCHEMA = "schema";
+
+    public static final String CATALOG = "catalog";
+
     private final AnnotationValue catalog;
 
     private final AnnotationValue schema;
@@ -49,12 +61,12 @@ public class SequenceGeneratorReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(annotationMirror, values);
-        this.catalog = assertNotNullValue(values, "catalog");
-        this.schema = assertNotNullValue(values, "schema");
-        this.sequence = assertNotNullValue(values, "sequence");
-        this.initialValue = assertNotNullValue(values, "initialValue");
-        this.allocationSize = assertNotNullValue(values, "allocationSize");
-        this.implementer = assertNotNullValue(values, "implementer");
+        this.catalog = assertNotNullValue(values, CATALOG);
+        this.schema = assertNotNullValue(values, SCHEMA);
+        this.sequence = assertNotNullValue(values, SEQUENCE);
+        this.initialValue = assertNotNullValue(values, INITIAL_VALUE);
+        this.allocationSize = assertNotNullValue(values, ALLOCATION_SIZE);
+        this.implementer = assertNotNullValue(values, IMPLEMENTER);
     }
 
     public AnnotationValue getCatalog() {
@@ -84,7 +96,7 @@ public class SequenceGeneratorReflection extends AbstractReflection {
     public String getCatalogValue() {
         String value = AnnotationValueUtil.toString(catalog);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException(CATALOG);
         }
         return value;
     }
@@ -92,7 +104,7 @@ public class SequenceGeneratorReflection extends AbstractReflection {
     public String getSchemaValue() {
         String value = AnnotationValueUtil.toString(schema);
         if (value == null) {
-            throw new AptIllegalStateException("schema");
+            throw new AptIllegalStateException(SCHEMA);
         }
         return value;
     }
@@ -100,7 +112,7 @@ public class SequenceGeneratorReflection extends AbstractReflection {
     public String getSequenceValue() {
         String value = AnnotationValueUtil.toString(sequence);
         if (value == null) {
-            throw new AptIllegalStateException("sequence");
+            throw new AptIllegalStateException(SEQUENCE);
         }
         return value;
     }
@@ -108,7 +120,7 @@ public class SequenceGeneratorReflection extends AbstractReflection {
     public Long getInitialValueValue() {
         Long value = AnnotationValueUtil.toLong(initialValue);
         if (value == null) {
-            throw new AptIllegalStateException("initialValue");
+            throw new AptIllegalStateException(INITIAL_VALUE);
         }
         return value;
     }
@@ -116,7 +128,7 @@ public class SequenceGeneratorReflection extends AbstractReflection {
     public Long getAllocationSizeValue() {
         Long value = AnnotationValueUtil.toLong(allocationSize);
         if (value == null) {
-            throw new AptIllegalStateException("allocationSize");
+            throw new AptIllegalStateException(ALLOCATION_SIZE);
         }
         return value;
     }
@@ -124,7 +136,7 @@ public class SequenceGeneratorReflection extends AbstractReflection {
     public TypeMirror getImplementerValue() {
         TypeMirror value = AnnotationValueUtil.toType(implementer);
         if (value == null) {
-            throw new AptIllegalStateException("implementer");
+            throw new AptIllegalStateException(IMPLEMENTER);
         }
         return value;
     }

@@ -38,7 +38,8 @@ public class EntityCtType extends AbstractCtType {
     }
 
     public boolean isAbstract() {
-        return typeElement.getModifiers().contains(Modifier.ABSTRACT);
+        return typeElement != null
+                && typeElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
     public String getMetaTypeName() {

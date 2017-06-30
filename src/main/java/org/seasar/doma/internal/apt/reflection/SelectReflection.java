@@ -37,6 +37,24 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class SelectReflection extends AbstractReflection {
 
+    public static final String SQL_LOG = "sqlLog";
+
+    public static final String MAP_KEY_NAMING = "mapKeyNaming";
+
+    public static final String MAX_ROWS = "maxRows";
+
+    public static final String FETCH_SIZE = "fetchSize";
+
+    public static final String QUERY_TIMEOUT = "queryTimeout";
+
+    public static final String ENSURE_RESULT_MAPPING = "ensureResultMapping";
+
+    public static final String ENSURE_RESULT = "ensureResult";
+
+    public static final String FETCH = "fetch";
+
+    public static final String STRATEGY = "strategy";
+
     private final AnnotationValue strategy;
 
     private final AnnotationValue fetch;
@@ -59,16 +77,16 @@ public class SelectReflection extends AbstractReflection {
             Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.strategy = assertNotNullValue(values, "strategy");
-        this.fetch = assertNotNullValue(values, "fetch");
-        this.ensureResult = assertNotNullValue(values, "ensureResult");
+        this.strategy = assertNotNullValue(values, STRATEGY);
+        this.fetch = assertNotNullValue(values, FETCH);
+        this.ensureResult = assertNotNullValue(values, ENSURE_RESULT);
         this.ensureResultMapping = assertNotNullValue(values,
-                "ensureResultMapping");
-        this.queryTimeout = assertNotNullValue(values, "queryTimeout");
-        this.fetchSize = assertNotNullValue(values, "fetchSize");
-        this.maxRows = assertNotNullValue(values, "maxRows");
-        this.mapKeyNaming = assertNotNullValue(values, "mapKeyNaming");
-        this.sqlLog = assertNotNullValue(values, "sqlLog");
+                ENSURE_RESULT_MAPPING);
+        this.queryTimeout = assertNotNullValue(values, QUERY_TIMEOUT);
+        this.fetchSize = assertNotNullValue(values, FETCH_SIZE);
+        this.maxRows = assertNotNullValue(values, MAX_ROWS);
+        this.mapKeyNaming = assertNotNullValue(values, MAP_KEY_NAMING);
+        this.sqlLog = assertNotNullValue(values, SQL_LOG);
     }
 
     public AnnotationValue getStrategy() {
@@ -110,7 +128,7 @@ public class SelectReflection extends AbstractReflection {
     public int getQueryTimeoutValue() {
         Integer value = AnnotationValueUtil.toInteger(queryTimeout);
         if (value == null) {
-            throw new AptIllegalStateException("queryTimeout");
+            throw new AptIllegalStateException(QUERY_TIMEOUT);
         }
         return value.intValue();
     }
@@ -118,7 +136,7 @@ public class SelectReflection extends AbstractReflection {
     public int getFetchSizeValue() {
         Integer value = AnnotationValueUtil.toInteger(fetchSize);
         if (value == null) {
-            throw new AptIllegalStateException("fetchSize");
+            throw new AptIllegalStateException(FETCH_SIZE);
         }
         return value.intValue();
     }
@@ -126,7 +144,7 @@ public class SelectReflection extends AbstractReflection {
     public int getMaxRowsValue() {
         Integer value = AnnotationValueUtil.toInteger(maxRows);
         if (value == null) {
-            throw new AptIllegalStateException("maxRows");
+            throw new AptIllegalStateException(MAX_ROWS);
         }
         return value.intValue();
     }
@@ -135,7 +153,7 @@ public class SelectReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(strategy);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("strategy");
+            throw new AptIllegalStateException(STRATEGY);
         }
         return SelectType.valueOf(enumConstant.getSimpleName().toString());
     }
@@ -144,7 +162,7 @@ public class SelectReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(fetch);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("fetch");
+            throw new AptIllegalStateException(FETCH);
         }
         return FetchType.valueOf(enumConstant.getSimpleName().toString());
     }
@@ -152,7 +170,7 @@ public class SelectReflection extends AbstractReflection {
     public boolean getEnsureResultValue() {
         Boolean value = AnnotationValueUtil.toBoolean(ensureResult);
         if (value == null) {
-            throw new AptIllegalStateException("ensureResult");
+            throw new AptIllegalStateException(ENSURE_RESULT);
         }
         return value.booleanValue();
     }
@@ -160,7 +178,7 @@ public class SelectReflection extends AbstractReflection {
     public boolean getEnsureResultMappingValue() {
         Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
         if (value == null) {
-            throw new AptIllegalStateException("ensureResultMapping");
+            throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
         }
         return value.booleanValue();
     }
@@ -169,7 +187,7 @@ public class SelectReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(mapKeyNaming);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("mapKeyNaming");
+            throw new AptIllegalStateException(MAP_KEY_NAMING);
         }
         return MapKeyNamingType
                 .valueOf(enumConstant.getSimpleName().toString());
@@ -179,7 +197,7 @@ public class SelectReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(sqlLog);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("sqlLog");
+            throw new AptIllegalStateException(SQL_LOG);
         }
         return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
     }

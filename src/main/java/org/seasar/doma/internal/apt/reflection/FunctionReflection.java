@@ -35,6 +35,22 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public class FunctionReflection extends AbstractReflection {
 
+    public static final String ENSURE_RESULT_MAPPING = "ensureResultMapping";
+
+    public static final String SQL_LOG = "sqlLog";
+
+    public static final String MAP_KEY_NAMING = "mapKeyNaming";
+
+    public static final String QUERY_TIMEOUT = "queryTimeout";
+
+    public static final String QUOTE = "quote";
+
+    public static final String NAME = "name";
+
+    public static final String SCHEMA = "schema";
+
+    public static final String CATALOG = "catalog";
+
     private final String defaultName;
 
     private final AnnotationValue catalog;
@@ -60,15 +76,15 @@ public class FunctionReflection extends AbstractReflection {
 
         this.defaultName = defaultName;
 
-        this.catalog = assertNotNullValue(values, "catalog");
-        this.schema = assertNotNullValue(values, "schema");
-        this.name = assertNotNullValue(values, "name");
-        this.quote = assertNotNullValue(values, "quote");
-        this.queryTimeout = assertNotNullValue(values, "queryTimeout");
-        this.mapKeyNaming = assertNotNullValue(values, "mapKeyNaming");
+        this.catalog = assertNotNullValue(values, CATALOG);
+        this.schema = assertNotNullValue(values, SCHEMA);
+        this.name = assertNotNullValue(values, NAME);
+        this.quote = assertNotNullValue(values, QUOTE);
+        this.queryTimeout = assertNotNullValue(values, QUERY_TIMEOUT);
+        this.mapKeyNaming = assertNotNullValue(values, MAP_KEY_NAMING);
         this.ensureResultMapping = assertNotNullValue(values,
-                "ensureResultMapping");
-        this.sqlLog = assertNotNullValue(values, "sqlLog");
+                ENSURE_RESULT_MAPPING);
+        this.sqlLog = assertNotNullValue(values, SQL_LOG);
     }
 
     public AnnotationValue getQueryTimeout() {
@@ -86,7 +102,7 @@ public class FunctionReflection extends AbstractReflection {
     public String getCatalogValue() {
         String value = AnnotationValueUtil.toString(catalog);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException(CATALOG);
         }
         return value;
     }
@@ -94,7 +110,7 @@ public class FunctionReflection extends AbstractReflection {
     public String getSchemaValue() {
         String value = AnnotationValueUtil.toString(schema);
         if (value == null) {
-            throw new AptIllegalStateException("schema");
+            throw new AptIllegalStateException(SCHEMA);
         }
         return value;
     }
@@ -110,7 +126,7 @@ public class FunctionReflection extends AbstractReflection {
     public boolean getQuoteValue() {
         Boolean value = AnnotationValueUtil.toBoolean(quote);
         if (value == null) {
-            throw new AptIllegalStateException("quote");
+            throw new AptIllegalStateException(QUOTE);
         }
         return value.booleanValue();
     }
@@ -118,7 +134,7 @@ public class FunctionReflection extends AbstractReflection {
     public int getQueryTimeoutValue() {
         Integer value = AnnotationValueUtil.toInteger(queryTimeout);
         if (value == null) {
-            throw new AptIllegalStateException("queryTimeout");
+            throw new AptIllegalStateException(QUERY_TIMEOUT);
         }
         return value.intValue();
     }
@@ -127,7 +143,7 @@ public class FunctionReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(mapKeyNaming);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("mapKeyNaming");
+            throw new AptIllegalStateException(MAP_KEY_NAMING);
         }
         return MapKeyNamingType
                 .valueOf(enumConstant.getSimpleName().toString());
@@ -136,7 +152,7 @@ public class FunctionReflection extends AbstractReflection {
     public boolean getEnsureResultMappingValue() {
         Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
         if (value == null) {
-            throw new AptIllegalStateException("ensureResultMapping");
+            throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
         }
         return value.booleanValue();
     }
@@ -145,7 +161,7 @@ public class FunctionReflection extends AbstractReflection {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(sqlLog);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("sqlLog");
+            throw new AptIllegalStateException(SQL_LOG);
         }
         return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
     }

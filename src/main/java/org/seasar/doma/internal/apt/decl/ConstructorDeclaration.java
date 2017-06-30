@@ -21,20 +21,12 @@ public class ConstructorDeclaration {
 
     private final ExecutableElement element;
 
-    private final TypeDeclaration typeDeclaration;
-
-    ConstructorDeclaration(ExecutableElement element,
-            TypeDeclaration typeDeclaration) {
+    ConstructorDeclaration(ExecutableElement element) {
         this.element = element;
-        this.typeDeclaration = typeDeclaration;
     }
 
     public ExecutableElement getElement() {
         return element;
-    }
-
-    public TypeDeclaration getTypeDeclaration() {
-        return typeDeclaration;
     }
 
 }

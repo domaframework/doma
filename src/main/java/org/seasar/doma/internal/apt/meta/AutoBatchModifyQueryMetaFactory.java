@@ -157,7 +157,7 @@ public class AutoBatchModifyQueryMetaFactory extends
                     parameterMeta.getCtType());
         }
         BatchModifyReflection batchModifyReflection = queryMeta.getBatchModifyReflection();
-        validateEntityPropertyNames(entityCtType.getTypeMirror(), method,
+        validateEntityPropertyNames(entityCtType.getType(), method,
                 batchModifyReflection.getAnnotationMirror(),
                 batchModifyReflection.getInclude(), batchModifyReflection.getExclude());
     }

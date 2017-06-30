@@ -250,12 +250,12 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         TypeMirror originalHasNextType = expressionValidator
                 .removeParameterType(hasNextVariable);
         expressionValidator.putParameterType(hasNextVariable,
-                ctx.getTypes().getTypeMirror(boolean.class));
+                ctx.getTypes().getType(boolean.class));
         String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
         TypeMirror originalIndexType = expressionValidator
                 .removeParameterType(indexVariable);
         expressionValidator.putParameterType(indexVariable,
-                ctx.getTypes().getTypeMirror(int.class));
+                ctx.getTypes().getType(int.class));
         visitNode(node, p);
         if (originalIdentifierType == null) {
             expressionValidator.removeParameterType(identifier);

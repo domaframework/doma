@@ -15,14 +15,11 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
 
 public class BiFunctionCtType extends AbstractCtType {
-
-    private final boolean isRawType;
 
     private final CtType firstArgCtType;
 
@@ -31,10 +28,9 @@ public class BiFunctionCtType extends AbstractCtType {
     private final AnyCtType resultCtType;
 
     BiFunctionCtType(Context ctx, TypeMirror type, 
-            boolean isRawType, CtType firstArgCtType, CtType secondArgCtType,
+            CtType firstArgCtType, CtType secondArgCtType,
             AnyCtType resultCtType) {
         super(ctx, type);
-        this.isRawType = isRawType;
         this.firstArgCtType = firstArgCtType;
         this.secondArgCtType = secondArgCtType;
         this.resultCtType = resultCtType;
@@ -50,19 +46,6 @@ public class BiFunctionCtType extends AbstractCtType {
 
     public AnyCtType getResultCtType() {
         return resultCtType;
-    }
-
-    public boolean isRawType() {
-        return isRawType;
-    }
-
-    public boolean isWildcardType() {
-        return resultCtType.getTypeMirror() != null
-                && resultCtType.getTypeMirror().getKind() == TypeKind.WILDCARD
-                || firstArgCtType.getTypeMirror() != null && firstArgCtType
-                        .getTypeMirror().getKind() == TypeKind.WILDCARD
-                || secondArgCtType.getTypeMirror() != null && secondArgCtType
-                        .getTypeMirror().getKind() == TypeKind.WILDCARD;
     }
 
     @Override
