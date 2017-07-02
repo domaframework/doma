@@ -11,7 +11,7 @@ public final class _ObjectHolder extends org.seasar.doma.jdbc.holder.AbstractHol
     private static final _ObjectHolder singleton = new _ObjectHolder();
 
     private _ObjectHolder() {
-        super(() -> new org.seasar.doma.wrapper.ObjectWrapper());
+        super(org.seasar.doma.wrapper.ObjectWrapper::new);
     }
 
     @Override

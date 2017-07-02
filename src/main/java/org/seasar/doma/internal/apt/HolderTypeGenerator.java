@@ -115,14 +115,7 @@ public class HolderTypeGenerator extends AbstractGenerator {
     private void printConstructors() {
         iprint("private %1$s() {%n", simpleName);
         BasicCtType basicCtType = holderMeta.getBasicCtType();
-        if (basicCtType.isEnum()) {
-            iprint("    super(() -> new %1$s(%2$s.class));%n",
-                    basicCtType.getWrapperTypeName(),
-                    ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()));
-        } else {
-            iprint("    super(() -> new %1$s());%n",
-                    basicCtType.getWrapperTypeName());
-        }
+        iprint("    super(%1$s);%n", supply(basicCtType));
         iprint("}%n");
         print("%n");
     }

@@ -11,7 +11,7 @@ public final class _OfAbstractHolder extends org.seasar.doma.jdbc.holder.Abstrac
     private static final _OfAbstractHolder singleton = new _OfAbstractHolder();
 
     private _OfAbstractHolder() {
-        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+        super(org.seasar.doma.wrapper.IntegerWrapper::new);
     }
 
     @Override

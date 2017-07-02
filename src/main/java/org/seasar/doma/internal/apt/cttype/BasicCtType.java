@@ -22,18 +22,11 @@ import org.seasar.doma.internal.apt.Context;
 
 public class BasicCtType extends AbstractCtType {
 
-    private final String boxedTypeName;
-
     private final String wrapperTypeName;
 
     BasicCtType(Context ctx, TypeMirror type, TypeMirror wrapperType) {
         super(ctx, type);
-        this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
         this.wrapperTypeName = ctx.getTypes().getTypeName(wrapperType);
-    }
-
-    public String getBoxedTypeName() {
-        return boxedTypeName;
     }
 
     public String getWrapperTypeName() {

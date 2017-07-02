@@ -13,7 +13,7 @@ public final class _ValueObject extends org.seasar.doma.jdbc.holder.AbstractHold
     private static final org.seasar.doma.internal.apt.holder.ValueObjectConverter converter = new org.seasar.doma.internal.apt.holder.ValueObjectConverter();
 
     private _ValueObject() {
-        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+        super(org.seasar.doma.wrapper.StringWrapper::new);
     }
 
     @Override

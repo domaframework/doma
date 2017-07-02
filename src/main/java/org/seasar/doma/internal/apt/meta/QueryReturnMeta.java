@@ -27,10 +27,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor8;
 
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
 
@@ -52,25 +50,6 @@ public class QueryReturnMeta {
 
     public String getTypeName() {
         return ctType.getTypeName();
-    }
-
-    public String getBoxedTypeName() {
-        return ctType.accept(
-                new SimpleCtTypeVisitor<String, Void, RuntimeException>() {
-
-                    @Override
-                    protected String defaultAction(CtType ctType, Void p)
-                            throws RuntimeException {
-                        return ctType.getTypeName();
-                    }
-
-                    @Override
-                    public String visitBasicCtType(BasicCtType ctType, Void p)
-                            throws RuntimeException {
-                        return ctType.getBoxedTypeName();
-                    }
-
-                }, null);
     }
 
     public boolean isPrimitiveInt() {

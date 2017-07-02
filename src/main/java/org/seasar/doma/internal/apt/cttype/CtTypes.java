@@ -48,19 +48,17 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleTypeVisitor8;
 
-import org.seasar.doma.Embeddable;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Holder;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
+import org.seasar.doma.internal.apt.reflection.EntityReflection;
 import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
+import org.seasar.doma.internal.apt.reflection.HolderReflection;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.Reference;
@@ -201,8 +199,9 @@ public class CtTypes {
         if (typeElement == null) {
             return null;
         }
-        Embeddable embeddable = typeElement.getAnnotation(Embeddable.class);
-        if (embeddable == null) {
+        EmbeddableReflection embeddableReflection = ctx.getReflections()
+                .newEmbeddableReflection(typeElement);
+        if (embeddableReflection == null) {
             return null;
         }
         return new EmbeddableCtType(ctx, type);
@@ -214,11 +213,13 @@ public class CtTypes {
         if (typeElement == null) {
             return null;
         }
-        Entity entity = typeElement.getAnnotation(Entity.class);
-        if (entity == null) {
+        EntityReflection entityReflection = ctx.getReflections()
+                .newEntityReflection(typeElement);
+        if (entityReflection == null) {
             return null;
         }
-        return new EntityCtType(ctx, type, entity.immutable());
+        return new EntityCtType(ctx, type,
+                entityReflection.getImmutableValue());
     }
 
     public FunctionCtType newFunctionCtType(TypeMirror type) {
@@ -262,61 +263,51 @@ public class CtTypes {
     }
 
     private HolderInfo getHolderInfo(TypeElement typeElement) {
-        Holder holder = typeElement.getAnnotation(Holder.class);
-        if (holder != null) {
-            return getHolderInfo(typeElement, holder);
+        HolderReflection holderReflection = ctx.getReflections()
+                .newHolderReflection(typeElement);
+        if (holderReflection != null) {
+            return new HolderInfo(holderReflection.getValueTypeValue(), false);
         }
         return getExternalHolderInfo(typeElement);
     }
 
-    private HolderInfo getHolderInfo(TypeElement typeElement,
-            Holder holder) {
-        try {
-            holder.valueType();
-        } catch (MirroredTypeException e) {
-            return new HolderInfo(e.getTypeMirror(), false);
-        }
-        throw new AptIllegalStateException("unreachable.");
-    }
-
     private HolderInfo getExternalHolderInfo(TypeElement typeElement) {
         String csv = ctx.getOptions().getHolderConverters();
-        if (csv != null) {
-            TypeMirror holderType = typeElement.asType();
-            for (String value : csv.split(",")) {
-                String className = value.trim();
-                if (className.isEmpty()) {
+        if (csv == null) {
+            return null;
+        }
+        TypeMirror holderType = typeElement.asType();
+        for (String value : csv.split(",")) {
+            String className = value.trim();
+            if (className.isEmpty()) {
+                continue;
+            }
+            TypeElement providerElement = ctx.getElements()
+                    .getTypeElement(className);
+            if (providerElement == null) {
+                throw new AptIllegalOptionException(
+                        Message.DOMA4200.getMessage(className));
+            }
+            HolderConvertersReflection convertersMirror = ctx.getReflections()
+                    .newHolderConvertersReflection(providerElement);
+            if (convertersMirror == null) {
+                throw new AptIllegalOptionException(
+                        Message.DOMA4201.getMessage(className));
+            }
+            for (TypeMirror converterType : convertersMirror.getValueValue()) {
+                // converterType does not contain adequate information in
+                // eclipse incremental compile, so reload typeMirror
+                converterType = reloadTypeMirror(converterType);
+                if (converterType == null) {
                     continue;
                 }
-                TypeElement convertersProviderElement = ctx.getElements()
-                        .getTypeElement(className);
-                if (convertersProviderElement == null) {
-                    throw new AptIllegalOptionException(
-                            Message.DOMA4200.getMessage(className));
+                TypeMirror[] argTypes = getConverterArgTypes(converterType);
+                if (argTypes == null || !ctx.getTypes().isSameType(holderType,
+                        argTypes[0])) {
+                    continue;
                 }
-                HolderConvertersReflection convertersMirror = ctx
-                        .getReflections().newHolderConvertersReflection(
-                                convertersProviderElement);
-                if (convertersMirror == null) {
-                    throw new AptIllegalOptionException(
-                            Message.DOMA4201.getMessage(className));
-                }
-                for (TypeMirror converterType : convertersMirror
-                        .getValueValue()) {
-                    // converterType does not contain adequate information in
-                    // eclipse incremental compile, so reload typeMirror
-                    converterType = reloadTypeMirror(converterType);
-                    if (converterType == null) {
-                        continue;
-                    }
-                    TypeMirror[] argTypes = getConverterArgTypes(converterType);
-                    if (argTypes == null || !ctx.getTypes()
-                            .isSameType(holderType, argTypes[0])) {
-                        continue;
-                    }
-                    TypeMirror valueType = argTypes[1];
-                    return new HolderInfo(valueType, true);
-                }
+                TypeMirror valueType = argTypes[1];
+                return new HolderInfo(valueType, true);
             }
         }
         return null;

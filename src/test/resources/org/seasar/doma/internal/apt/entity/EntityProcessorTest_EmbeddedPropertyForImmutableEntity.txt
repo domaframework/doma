@@ -13,7 +13,7 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.ImmutableUser, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableUser.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "id", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.ImmutableUser, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableUser.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, "id", "", __namingType, false);
 
     /** the address */
     public final org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.entity.ImmutableUser, org.seasar.doma.internal.apt.entity.UserAddress> $address = new org.seasar.doma.jdbc.entity.EmbeddedPropertyType<>("address", org.seasar.doma.internal.apt.entity.ImmutableUser.class, org.seasar.doma.internal.apt.entity._UserAddress.getSingletonInternal().getEmbeddablePropertyTypes("address", org.seasar.doma.internal.apt.entity.ImmutableUser.class, __namingType));

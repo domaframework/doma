@@ -27,6 +27,7 @@ import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.Conventions;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.Message;
 
@@ -153,6 +154,46 @@ public abstract class AbstractGenerator implements Generator {
             indentBuffer.setLength(indentBuffer.length()
                     - INDENT_SPACE.length());
         }
+    }
+
+    protected String box(String name) {
+        if (boolean.class.getName().equals(name)) {
+            return Boolean.class.getName();
+        }
+        if (char.class.getName().equals(name)) {
+            return Character.class.getName();
+        }
+        if (byte.class.getName().equals(name)) {
+            return Byte.class.getName();
+        }
+        if (short.class.getName().equals(name)) {
+            return Short.class.getName();
+        }
+        if (int.class.getName().equals(name)) {
+            return Integer.class.getName();
+        }
+        if (long.class.getName().equals(name)) {
+            return Long.class.getName();
+        }
+        if (float.class.getName().equals(name)) {
+            return Float.class.getName();
+        }
+        if (double.class.getName().equals(name)) {
+            return Double.class.getName();
+        }
+        return name;
+    }
+
+    protected String box(BasicCtType ctType) {
+        return box(ctType.getTypeName());
+    }
+    
+    protected String supply(BasicCtType ctType) {
+        if (ctType.isEnum()) {
+            return String.format("() -> new %1$s(%2$s.class)",
+                    ctType.getWrapperTypeName(), ctType.getQualifiedName());
+        }
+        return String.format("%1$s::new", ctType.getWrapperTypeName());
     }
 
     @Override

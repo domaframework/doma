@@ -13,22 +13,22 @@ public final class _OptionalEntity extends org.seasar.doma.jdbc.entity.AbstractE
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "id", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, "id", "", __namingType, false);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.String, org.seasar.doma.internal.apt.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, () -> new org.seasar.doma.wrapper.StringWrapper(), org.seasar.doma.internal.apt.entity._Name.getSingletonInternal(), "name", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.String, org.seasar.doma.internal.apt.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, org.seasar.doma.wrapper.StringWrapper::new, org.seasar.doma.internal.apt.entity._Name.getSingletonInternal(), "name", "", __namingType, true, true, false);
 
     /** the city */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.String, Object> $city = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, "city", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.String, Object> $city = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, org.seasar.doma.wrapper.StringWrapper::new, null, "city", "", __namingType, true, true, false);
 
     /** the weight */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Weight<java.lang.Integer>> $weight = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), org.seasar.doma.internal.apt.entity._Weight.<java.lang.Integer>getSingletonInternal(), "weight", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Weight<java.lang.Integer>> $weight = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, org.seasar.doma.internal.apt.entity._Weight.<java.lang.Integer>getSingletonInternal(), "weight", "", __namingType, true, true, false);
 
     /** the kind */
     public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, org.seasar.doma.internal.apt.entity.Kind, Object> $kind = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, () -> new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.Kind>(org.seasar.doma.internal.apt.entity.Kind.class), null, "kind", "", __namingType, true, true, false);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.Long, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, () -> new org.seasar.doma.wrapper.LongWrapper(), null, "version", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.OptionalEntity, java.lang.Long, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.OptionalEntity.class, org.seasar.doma.wrapper.LongWrapper::new, null, "version", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.OptionalEntity>> __listenerSupplier;
 

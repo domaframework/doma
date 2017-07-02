@@ -170,10 +170,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
+        protected CallableSqlParameterMeta defaultAction(CtType ctType, Boolean p)
                 throws RuntimeException {
             throw new AptException(Message.DOMA4186, parameterMeta.getElement(),
-                    new Object[] { type.getTypeName() });
+                    new Object[] { ctType.getTypeName() });
         }
 
         @Override

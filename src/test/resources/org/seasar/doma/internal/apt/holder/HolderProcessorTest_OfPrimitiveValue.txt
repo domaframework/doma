@@ -11,7 +11,7 @@ public final class _OfPrimitiveValueHolder extends org.seasar.doma.jdbc.holder.A
     private static final _OfPrimitiveValueHolder singleton = new _OfPrimitiveValueHolder();
 
     private _OfPrimitiveValueHolder() {
-        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+        super(org.seasar.doma.wrapper.IntegerWrapper::new);
     }
 
     @Override

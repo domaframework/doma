@@ -95,23 +95,22 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         if (valueColumnName == null) {
             throw new JdbcException(Message.DOMA2033, "valueColumnName");
         }
-        LongWrapper allocationSizeWrapper = new LongWrapper();
-        allocationSizeWrapper.set(allocationSize);
-        StringWrapper pkColumnValueWrapper = new StringWrapper();
-        pkColumnValueWrapper.set(pkColumnValue);
         updateSql = new PreparedSql(
                 SqlKind.UPDATE,
                 createUpdateRawSql(),
                 createUpdateFormattedSql(),
                 null,
                 Arrays.asList(
-                        new BasicInParameter<Long>(() -> allocationSizeWrapper),
-                        new BasicInParameter<String>(() -> pkColumnValueWrapper)),
+                        new BasicInParameter<Long>(LongWrapper::new,
+                                allocationSize),
+                        new BasicInParameter<String>(StringWrapper::new,
+                                pkColumnValue)),
                 SqlLogType.FORMATTED);
         selectSql = new PreparedSql(SqlKind.SELECT, createSelectRawSql(),
                 createSelectFormattedSql(), null,
                 Arrays.asList(new BasicInParameter<String>(
-                        () -> pkColumnValueWrapper)), SqlLogType.FORMATTED);
+                        StringWrapper::new, pkColumnValue)),
+                SqlLogType.FORMATTED);
     }
 
     /**

@@ -11,7 +11,7 @@ public final class _Outer__Inner extends org.seasar.doma.jdbc.holder.AbstractHol
     private static final _Outer__Inner singleton = new _Outer__Inner();
 
     private _Outer__Inner() {
-        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
+        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
     }
 
     @Override

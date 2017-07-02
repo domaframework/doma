@@ -44,7 +44,7 @@ public class FunctionCommandTest extends TestCase {
         outParameters.add(20);
         outParameters.add(30);
 
-        IntegerWrapper aaa = new IntegerWrapper(40);
+        IntegerWrapper aaa = new IntegerWrapper();
         IntegerWrapper bbb = new IntegerWrapper(50);
         IntegerWrapper ccc = new IntegerWrapper(60);
 
@@ -55,7 +55,7 @@ public class FunctionCommandTest extends TestCase {
         query.setFunctionName("aaa");
         query.setResultParameter(new BasicSingleResultParameter<Integer>(
                 () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
-        query.addParameter(new BasicInParameter<Integer>(() -> aaa));
+        query.addParameter(new BasicInParameter<Integer>(() -> aaa, 40));
         query.addParameter(new BasicOutParameter<Integer>(() -> bbb,
                 new Reference<Integer>()));
         query.addParameter(new BasicInOutParameter<Integer>(() -> ccc,

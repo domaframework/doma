@@ -11,7 +11,7 @@ public final class _SpecificHolder extends org.seasar.doma.jdbc.holder.AbstractH
     private static final _SpecificHolder singleton = new _SpecificHolder();
 
     private _SpecificHolder() {
-        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+        super(org.seasar.doma.wrapper.IntegerWrapper::new);
     }
 
     @Override

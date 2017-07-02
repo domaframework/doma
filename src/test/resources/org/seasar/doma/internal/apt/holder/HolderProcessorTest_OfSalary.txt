@@ -11,7 +11,7 @@ public final class _OfSalary extends org.seasar.doma.jdbc.holder.AbstractHolderT
     private static final _OfSalary singleton = new _OfSalary();
 
     private _OfSalary() {
-        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
+        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
     }
 
     @Override

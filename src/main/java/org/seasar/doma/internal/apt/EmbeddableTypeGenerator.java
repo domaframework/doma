@@ -117,15 +117,6 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
             BasicCtType basicCtType = visitor.basicCtType;
             HolderCtType holderCtType = visitor.holderCtType;
 
-            String newWrapperExpr;
-            if (basicCtType.isEnum()) {
-                newWrapperExpr = String.format("new %s(%s.class)",
-                        basicCtType.getWrapperTypeName(),
-                        basicCtType.getBoxedTypeName());
-            } else {
-                newWrapperExpr = String.format("new %s()",
-                        basicCtType.getWrapperTypeName());
-            }
             String parentEntityPropertyType = "null";
             String parentEntityBoxedTypeName = Object.class.getName();
             String holderType = "null";
@@ -134,18 +125,18 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
                 holderType = holderCtType.getInstantiationCommand();
                 holderTypeName = holderCtType.getTypeName();
             }
-            iprint("        new %1$s<ENTITY, %3$s, %16$s>(entityClass, () -> %9$s, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
+            iprint("        new %1$s<ENTITY, %3$s, %16$s>(entityClass, %9$s, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
             /* 1 */DefaultPropertyType.class.getName(),
             /* 2 */null,
-            /* 3 */basicCtType.getBoxedTypeName(),
+                    /* 3 */box(basicCtType),
             /* 4 */pm.getName(),
             /* 5 */pm.getColumnName(),
             /* 6 */pm.isColumnInsertable(),
             /* 7 */pm.isColumnUpdatable(),
             /* 8 */null,
-            /* 9 */newWrapperExpr,
+                    /* 9 */supply(basicCtType),
             /* 10 */holderType,
-            /* 11 */pm.getBoxedTypeName(),
+                    /* 11 unused */null,
             /* 12 */parentEntityPropertyType,
             /* 13 */parentEntityBoxedTypeName,
             /* 14 */null,

@@ -20,9 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 
 /**
@@ -55,24 +53,6 @@ public abstract class AbstractPropertyMeta {
 
     public String getTypeName() {
         return ctType.getTypeName();
-    }
-
-    public String getBoxedTypeName() {
-        return ctType.accept(
-                new SimpleCtTypeVisitor<String, Void, RuntimeException>() {
-
-                    @Override
-                    protected String defaultAction(CtType ctType, Void p)
-                            throws RuntimeException {
-                        return ctType.getTypeName();
-                    }
-
-                    @Override
-                    public String visitBasicCtType(BasicCtType ctType, Void p)
-                            throws RuntimeException {
-                        return ctType.getBoxedTypeName();
-                    }
-                }, null);
     }
 
     public CtType getCtType() {

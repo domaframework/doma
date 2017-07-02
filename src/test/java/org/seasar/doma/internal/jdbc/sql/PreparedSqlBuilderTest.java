@@ -44,15 +44,14 @@ public class PreparedSqlBuilderTest extends TestCase {
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.SELECT, SqlLogType.FORMATTED);
         builder.appendSql("select * from aaa where name = ");
-        Wrapper<String> stringWrapper = new StringWrapper("hoge");
+        Wrapper<String> stringWrapper = new StringWrapper();
         builder.appendParameter(new BasicInParameter<String>(
-                () -> stringWrapper));
+                () -> stringWrapper, "hoge"));
 
         builder.appendSql(" and salary = ");
-        Wrapper<BigDecimal> bigDecimalWrapper = new BigDecimalWrapper(
-                new BigDecimal(100));
+        Wrapper<BigDecimal> bigDecimalWrapper = new BigDecimalWrapper();
         builder.appendParameter(new BasicInParameter<BigDecimal>(
-                () -> bigDecimalWrapper));
+                () -> bigDecimalWrapper, new BigDecimal(100)));
         PreparedSql sql = builder.build(Function.identity());
         assertEquals("select * from aaa where name = ? and salary = ?",
                 sql.toString());

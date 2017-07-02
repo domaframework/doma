@@ -26,10 +26,6 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class BasicInParameter<BASIC> extends ScalarInParameter<BASIC, BASIC> {
 
-    public BasicInParameter(Supplier<Wrapper<BASIC>> supplier) {
-        super(new BasicScalar<BASIC>(supplier, false));
-    }
-
     public BasicInParameter(Supplier<Wrapper<BASIC>> supplier, BASIC value) {
         super(new BasicScalar<BASIC>(supplier, false), value);
     }

@@ -11,7 +11,7 @@ public final class _NullRejectionHolder extends org.seasar.doma.jdbc.holder.Abst
     private static final _NullRejectionHolder singleton = new _NullRejectionHolder();
 
     private _NullRejectionHolder() {
-        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+        super(org.seasar.doma.wrapper.StringWrapper::new);
     }
 
     @Override

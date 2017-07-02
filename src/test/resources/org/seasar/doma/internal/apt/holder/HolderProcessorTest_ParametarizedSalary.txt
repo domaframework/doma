@@ -15,7 +15,7 @@ public final class _ParametarizedSalary<T, U> extends org.seasar.doma.jdbc.holde
     private static final _ParametarizedSalary singleton = new _ParametarizedSalary();
 
     private _ParametarizedSalary() {
-        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
+        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
     }
 
     @Override

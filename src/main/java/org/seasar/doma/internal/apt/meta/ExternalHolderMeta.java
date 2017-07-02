@@ -46,7 +46,7 @@ public class ExternalHolderMeta implements TypeElementMeta {
     }
 
     public String getValueTypeName() {
-        return basicCtType.getBoxedTypeName();
+        return basicCtType.getTypeName();
     }
 
     public TypeElement getHolderElement() {

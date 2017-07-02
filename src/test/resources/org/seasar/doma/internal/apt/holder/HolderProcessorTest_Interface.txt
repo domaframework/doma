@@ -11,7 +11,7 @@ public final class _InterfaceHolder extends org.seasar.doma.jdbc.holder.Abstract
     private static final _InterfaceHolder singleton = new _InterfaceHolder();
 
     private _InterfaceHolder() {
-        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+        super(org.seasar.doma.wrapper.StringWrapper::new);
     }
 
     @Override

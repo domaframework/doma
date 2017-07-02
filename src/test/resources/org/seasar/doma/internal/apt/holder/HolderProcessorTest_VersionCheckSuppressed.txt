@@ -7,7 +7,7 @@ public final class _VersionCheckSuppressedHolder extends org.seasar.doma.jdbc.ho
     private static final _VersionCheckSuppressedHolder singleton = new _VersionCheckSuppressedHolder();
 
     private _VersionCheckSuppressedHolder() {
-        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
+        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
     }
 
     @Override

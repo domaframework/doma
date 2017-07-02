@@ -160,7 +160,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 iprint("public final %1$s<%2$s, %3$s> %4$s = new %1$s<>(\"%5$s\", %2$s.class, %6$s.getSingletonInternal().getEmbeddablePropertyTypes(\"%7$s\", %2$s.class, __namingType));%n",
                 /* 1 */EmbeddedPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
-                /* 3 */pm.getTypeName(), /* 4 */pm.getFieldName(),
+                        /* 3 */pm.getTypeName(), /* 4 */pm.getFieldName(),
                 /* 5 */pm.getName(),
                 /* 6 */pm.getEmbeddableMetaTypeName(),
                 /* 7 */pm.getName());
@@ -170,15 +170,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 BasicCtType basicCtType = visitor.basicCtType;
                 HolderCtType holderCtType = visitor.holderCtType;
 
-                String newWrapperExpr;
-                if (basicCtType.isEnum()) {
-                    newWrapperExpr = String.format("new %s(%s.class)",
-                            basicCtType.getWrapperTypeName(),
-                            basicCtType.getBoxedTypeName());
-                } else {
-                    newWrapperExpr = String.format("new %s()",
-                            basicCtType.getWrapperTypeName());
-                }
                 String holderType = "null";
                 String holderTypeName = "Object";
                 if (holderCtType != null) {
@@ -187,28 +178,28 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 }
                 if (pm.isId()) {
                     if (pm.getIdGeneratorMeta() != null) {
-                        iprint("public final %1$s<%2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, () -> %7$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s, __idGenerator);%n",
+                        iprint("public final %1$s<%2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %7$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s, __idGenerator);%n",
                         /* 1 */GeneratedIdPropertyType.class.getName(),
                         /* 2 */entityMeta.getEntityTypeName(),
-                        /* 3 */basicCtType.getBoxedTypeName(),
+                                /* 3 */box(basicCtType),
                         /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
                         /* 6 */entityMeta.getEntityTypeName(),
-                        /* 7 */newWrapperExpr, /* 8 */holderType,
-                        /* 9 */pm.getBoxedTypeName(),
+                                /* 7 */supply(basicCtType), /* 8 */holderType,
+                                /* 9 */UNUSED,
                                 /* 10 */UNUSED, /* 11 */UNUSED,
                         /* 12 */pm.getFieldName(),
                                 /* 13 */UNUSED,
                         /* 14 */holderTypeName,
                         /* 15 */pm.isColumnQuoteRequired());
                     } else {
-                        iprint("public final %1$s<%2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, () -> %7$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
+                        iprint("public final %1$s<%2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %7$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
                         /* 1 */AssignedIdPropertyType.class.getName(),
                         /* 2 */entityMeta.getEntityTypeName(),
-                        /* 3 */basicCtType.getBoxedTypeName(),
+                                /* 3 */box(basicCtType),
                         /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
                         /* 6 */entityMeta.getEntityTypeName(),
-                        /* 7 */newWrapperExpr, /* 8 */holderType,
-                        /* 9 */pm.getBoxedTypeName(),
+                                /* 7 */supply(basicCtType), /* 8 */holderType,
+                                /* 9 */UNUSED,
                                 /* 10 */UNUSED, /* 11 */UNUSED,
                         /* 12 */pm.getFieldName(),
                                 /* 13 */UNUSED,
@@ -216,30 +207,30 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         /* 15 */pm.isColumnQuoteRequired());
                     }
                 } else if (pm.isVersion()) {
-                    iprint("public final %1$s<%2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, () -> %7$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
+                    iprint("public final %1$s<%2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %7$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
                     /* 1 */VersionPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */basicCtType.getBoxedTypeName(),
+                            /* 3 */box(basicCtType.getTypeName()),
                     /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
                     /* 6 */entityMeta.getEntityTypeName(),
-                    /* 7 */newWrapperExpr, /* 8 */holderType,
-                    /* 9 */pm.getBoxedTypeName(),
+                            /* 7 */supply(basicCtType), /* 8 */holderType,
+                            /* 9 */UNUSED,
                             /* 10 */UNUSED, /* 11 */UNUSED,
                     /* 12 */pm.getFieldName(),
                             /* 13 */UNUSED,
                     /* 14 */holderTypeName,
                     /* 15 */pm.isColumnQuoteRequired());
                 } else {
-                    iprint("public final %1$s<%2$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, () -> %9$s, %10$s, \"%4$s\", \"%5$s\", __namingType, %6$s, %7$s, %17$s);%n",
+                    iprint("public final %1$s<%2$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, %9$s, %10$s, \"%4$s\", \"%5$s\", __namingType, %6$s, %7$s, %17$s);%n",
                     /* 1 */DefaultPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */basicCtType.getBoxedTypeName(),
+                            /* 3 */box(basicCtType.getTypeName()),
                     /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
                     /* 6 */pm.isColumnInsertable(),
                     /* 7 */pm.isColumnUpdatable(),
                     /* 8 */entityMeta.getEntityTypeName(),
-                    /* 9 */newWrapperExpr, /* 10 */holderType,
-                    /* 11 */pm.getBoxedTypeName(),
+                            /* 9 */supply(basicCtType), /* 10 */holderType,
+                            /* 11 */UNUSED,
                             /* 12 */UNUSED, /* 13 */UNUSED,
                     /* 14 */pm.getFieldName(),
                             /* 15 */UNUSED,

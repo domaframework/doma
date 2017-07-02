@@ -17,7 +17,7 @@ public final class _ParameterizedValueObject<T, U> extends org.seasar.doma.jdbc.
     private static final org.seasar.doma.internal.apt.holder.ParameterizedValueObjectConverter converter = new org.seasar.doma.internal.apt.holder.ParameterizedValueObjectConverter();
 
     private _ParameterizedValueObject() {
-        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+        super(org.seasar.doma.wrapper.StringWrapper::new);
     }
 
     @SuppressWarnings("unchecked")
