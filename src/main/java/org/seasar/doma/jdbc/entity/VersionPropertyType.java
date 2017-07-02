@@ -42,8 +42,6 @@ public class VersionPropertyType<ENTITY, BASIC extends Number, HOLDER>
      * 
      * @param entityClass
      *            エンティティのクラス
-     * @param entityPropertyClass
-     *            プロパティのクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
      * @param holderType
@@ -58,11 +56,10 @@ public class VersionPropertyType<ENTITY, BASIC extends Number, HOLDER>
      *            カラム名に引用符が必要とされるかどうか
      */
     public VersionPropertyType(Class<ENTITY> entityClass,
-            Class<?> entityPropertyClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             HolderType<BASIC, HOLDER> holderType, String name,
             String columnName, NamingType namingType, boolean quoteRequired) {
-        super(entityClass, entityPropertyClass, wrapperSupplier,
+        super(entityClass, wrapperSupplier,
                 holderType, name, columnName,
                 namingType, true, true, quoteRequired);
     }

@@ -75,24 +75,6 @@ public abstract class AbstractPropertyMeta {
                 }, null);
     }
 
-    public String getBoxedClassName() {
-        return ctType.accept(
-                new SimpleCtTypeVisitor<String, Void, RuntimeException>() {
-
-                    @Override
-                    protected String defaultAction(CtType ctType, Void p)
-                            throws RuntimeException {
-                        return ctType.getQualifiedName();
-                    }
-
-                    @Override
-                    public String visitBasicCtType(BasicCtType ctType, Void p)
-                            throws RuntimeException {
-                        return ctType.getBoxedClassName();
-                    }
-                }, null);
-    }
-
     public CtType getCtType() {
         return ctType;
     }

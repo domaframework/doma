@@ -39,12 +39,12 @@ public class _ImmutableParentEntity extends
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
     public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
-            ImmutableParentEntity.class, Integer.class,
+            ImmutableParentEntity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "aaa", "AAA", __namingType, true, true, false);
 
     public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
-            ImmutableParentEntity.class, Integer.class,
+            ImmutableParentEntity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "bbb", "BBB", __namingType, true, true, false);
 

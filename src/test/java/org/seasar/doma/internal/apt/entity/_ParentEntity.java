@@ -38,12 +38,12 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
     public DefaultPropertyType<ParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
-            ParentEntity.class, Integer.class,
+            ParentEntity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "aaa", "AAA", __namingType, true, true, false);
 
     public DefaultPropertyType<ParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
-            ParentEntity.class, Integer.class,
+            ParentEntity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "bbb", "BBB", __namingType, true, true, false);
 

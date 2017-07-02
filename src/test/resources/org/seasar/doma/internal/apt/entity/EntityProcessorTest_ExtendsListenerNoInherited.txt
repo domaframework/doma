@@ -13,10 +13,10 @@ public final class _Child2NoInheritingEntity extends org.seasar.doma.jdbc.entity
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the aaa */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity, java.lang.Integer, Object> $aaa = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "aaa", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity, java.lang.Integer, Object> $aaa = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "aaa", "", __namingType, true, true, false);
 
     /** the bbb */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity, java.lang.Integer, Object> $bbb = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "bbb", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity, java.lang.Integer, Object> $bbb = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "bbb", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity>> __listenerSupplier;
 

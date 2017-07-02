@@ -24,23 +24,16 @@ public class BasicCtType extends AbstractCtType {
 
     private final String boxedTypeName;
 
-    private final String boxedClassName;
-
     private final String wrapperTypeName;
 
     BasicCtType(Context ctx, TypeMirror type, TypeMirror wrapperType) {
         super(ctx, type);
         this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
-        this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
         this.wrapperTypeName = ctx.getTypes().getTypeName(wrapperType);
     }
 
     public String getBoxedTypeName() {
         return boxedTypeName;
-    }
-
-    public String getBoxedClassName() {
-        return boxedClassName;
     }
 
     public String getWrapperTypeName() {

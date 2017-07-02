@@ -118,4 +118,9 @@ public class PropertyField<ENTITY> {
         Field field = fields.getLast();
         return field.getType().isPrimitive();
     }
+
+    public Class<?> getType() {
+        Field field = fields.getLast();
+        return field.getType();
+    }
 }

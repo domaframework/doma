@@ -58,9 +58,6 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
     /** エンティティのクラス */
     protected final Class<ENTITY> entityClass;
 
-    /** プロパティのクラス */
-    protected final Class<?> entityPropertyClass;
-
     /** ラッパーのサプライヤ */
     protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
@@ -99,8 +96,6 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
      * 
      * @param entityClass
      *            エンティティのクラス
-     * @param entityPropertyClass
-     *            プロパティのクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
      * @param holderType
@@ -119,16 +114,12 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
      *            カラム名に引用符が必要とされるかどうか
      */
     public DefaultPropertyType(Class<ENTITY> entityClass,
-            Class<?> entityPropertyClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
             HolderType<BASIC, HOLDER> holderType, String name,
             String columnName, NamingType namingType, boolean insertable,
             boolean updatable, boolean quoteRequired) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
-        }
-        if (entityPropertyClass == null) {
-            throw new DomaNullPointerException("entityPropertyClass");
         }
         if (wrapperSupplier == null) {
             throw new DomaNullPointerException("wrapperSupplier");
@@ -140,7 +131,6 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
             throw new DomaNullPointerException("columnName");
         }
         this.entityClass = entityClass;
-        this.entityPropertyClass = entityPropertyClass;
         this.wrapperSupplier = wrapperSupplier;
         this.holderType = holderType;
         this.name = name;
@@ -157,6 +147,7 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
 
     @SuppressWarnings("unchecked")
     private Supplier<Property<ENTITY, BASIC>> createPropertySupplier() {
+        Class<?> entityPropertyClass = field.getType();
         if (holderType != null) {
             if (entityPropertyClass == Optional.class) {
                 return () -> new DefaultProperty<Optional<HOLDER>>(

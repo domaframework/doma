@@ -51,22 +51,22 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
     public final GeneratedIdPropertyType<IdGeneratedEmp, Integer, Object> id = new GeneratedIdPropertyType<>(
-            IdGeneratedEmp.class, Integer.class,
+            IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false, new BuiltinIdentityIdGenerator());
 
     public final DefaultPropertyType<IdGeneratedEmp, String, Object> name = new DefaultPropertyType<>(
-            IdGeneratedEmp.class, String.class,
+            IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 
     public final DefaultPropertyType<IdGeneratedEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
-            IdGeneratedEmp.class, BigDecimal.class,
+            IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
             "salary", "SALARY", __namingType, true, true, false);
 
     public final VersionPropertyType<IdGeneratedEmp, Integer, Integer> version = new VersionPropertyType<>(
-            IdGeneratedEmp.class, Integer.class,
+            IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "version", "VERSION", __namingType, false);
 

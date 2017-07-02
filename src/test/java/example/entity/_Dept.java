@@ -47,12 +47,12 @@ public class _Dept extends AbstractEntityType<Dept> {
     private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 
     public final AssignedIdPropertyType<Dept, Integer, Object> id = new AssignedIdPropertyType<>(
-            Dept.class, Integer.class,
+            Dept.class, 
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false);
 
     public final DefaultPropertyType<Dept, String, Object> name = new DefaultPropertyType<>(
-            Dept.class, String.class,
+            Dept.class, 
             () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 

@@ -51,22 +51,22 @@ public class _Emp extends AbstractEntityType<Emp> {
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
     public final AssignedIdPropertyType<Emp, Integer, Object> id = new AssignedIdPropertyType<>(
-            Emp.class, Integer.class,
+            Emp.class, 
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false);
 
     public final DefaultPropertyType<Emp, String, Object> name = new DefaultPropertyType<>(
-            Emp.class, String.class,
+            Emp.class, 
             () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 
     public final DefaultPropertyType<Emp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
-            Emp.class, BigDecimal.class,
+            Emp.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
             "salary", "SALARY", __namingType, true, true, false);
 
     public final VersionPropertyType<Emp, Integer, Integer> version = new VersionPropertyType<>(
-            Emp.class, Integer.class,
+            Emp.class, 
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "version", "VERSION", __namingType, false);
 

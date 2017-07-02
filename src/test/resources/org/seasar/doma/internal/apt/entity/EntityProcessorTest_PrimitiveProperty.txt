@@ -13,13 +13,13 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "id", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "id", "", __namingType, false);
 
     /** the bool */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean, Object> $bool = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, java.lang.Boolean.class, () -> new org.seasar.doma.wrapper.BooleanWrapper(), null, "bool", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean, Object> $bool = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, () -> new org.seasar.doma.wrapper.BooleanWrapper(), null, "bool", "", __namingType, true, true, false);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class,  java.lang.Long.class, () -> new org.seasar.doma.wrapper.LongWrapper(), null, "version", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, () -> new org.seasar.doma.wrapper.LongWrapper(), null, "version", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity>> __listenerSupplier;
 

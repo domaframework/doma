@@ -33,16 +33,15 @@ public class _UserAddress implements EmbeddableType<UserAddress> {
             NamingType namingType) {
         return java.util.Arrays
                 .asList(new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, Object>(
-                        entityClass, java.lang.String.class,
+                        entityClass,
                         () -> new org.seasar.doma.wrapper.StringWrapper(),
                         null, embeddedPropertyName + ".city", "",
                         namingType, true, true, false),
                         new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, Object>(
                                 entityClass,
-                                java.lang.String.class,
                                 () -> new org.seasar.doma.wrapper.StringWrapper(),
-                                null, embeddedPropertyName + ".street",
-                                "", namingType, true, true, false));
+                                null, embeddedPropertyName + ".street", "",
+                                namingType, true, true, false));
     }
 
     @Override

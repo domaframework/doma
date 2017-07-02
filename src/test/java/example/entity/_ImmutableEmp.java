@@ -48,22 +48,22 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
     public final AssignedIdPropertyType<ImmutableEmp, Integer, Object> id = new AssignedIdPropertyType<>(
-            ImmutableEmp.class, Integer.class,
+            ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false);
 
     public final DefaultPropertyType<ImmutableEmp, String, Object> name = new DefaultPropertyType<>(
-            ImmutableEmp.class, String.class,
+            ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 
     public final DefaultPropertyType<ImmutableEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
-            ImmutableEmp.class, BigDecimal.class,
+            ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
             "salary", "SALARY", __namingType, true, true, false);
 
     public final VersionPropertyType<ImmutableEmp, Integer, Integer> version = new VersionPropertyType<>(
-            ImmutableEmp.class, Integer.class,
+            ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "version", "VERSION", __namingType, false);
 

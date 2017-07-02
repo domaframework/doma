@@ -13,13 +13,13 @@ public final class _QuoteEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "id", "", __namingType, true);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "id", "", __namingType, true);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, "name", "", __namingType, true, true, true);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, "name", "", __namingType, true, true, true);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "version", "", __namingType, true, true, true);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.QuoteEntity, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.QuoteEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "version", "", __namingType, true, true, true);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.QuoteEntity>> __listenerSupplier;
 

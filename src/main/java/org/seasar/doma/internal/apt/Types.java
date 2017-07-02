@@ -443,68 +443,6 @@ public class Types implements javax.lang.model.util.Types {
         }
     }
 
-    private String getClassName(TypeMirror type) {
-        assertNotNull(type);
-        StringBuilder p = new StringBuilder();
-        type.accept(new TypeKindVisitor8<Void, StringBuilder>() {
-
-            @Override
-            public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
-                p.append("void");
-                return null;
-            }
-
-            @Override
-            public Void visitPrimitive(PrimitiveType t, StringBuilder p) {
-                p.append(t.getKind().name().toLowerCase());
-                return null;
-            }
-
-            @Override
-            public Void visitArray(ArrayType t, StringBuilder p) {
-                t.getComponentType().accept(this, p);
-                p.append("[]");
-                return null;
-            }
-
-            @Override
-            public Void visitDeclared(DeclaredType t, StringBuilder p) {
-                TypeElement e = toTypeElement(t);
-                if (e != null) {
-                    p.append(e.getQualifiedName());
-                }
-                return null;
-            }
-
-        }, p);
-
-        return p.length() > 0 ? p.toString() : Object.class.getName();
-    }
-
-    public String getBoxedClassName(TypeMirror type) {
-        assertNotNull(type);
-        switch (type.getKind()) {
-        case BOOLEAN:
-            return Boolean.class.getName();
-        case BYTE:
-            return Byte.class.getName();
-        case SHORT:
-            return Short.class.getName();
-        case INT:
-            return Integer.class.getName();
-        case LONG:
-            return Long.class.getName();
-        case FLOAT:
-            return Float.class.getName();
-        case DOUBLE:
-            return Double.class.getName();
-        case CHAR:
-            return Character.class.getName();
-        default:
-            return getClassName(type);
-        }
-    }
-
     public Element asElement(TypeMirror type) {
         return typeUtils.asElement(type);
     }

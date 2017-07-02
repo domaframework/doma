@@ -13,13 +13,13 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the aaa */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.Integer, Object> $aaa = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.lang.Integer.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "aaa", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.Integer, Object> $aaa = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, "aaa", "", __namingType, true, true, false);
 
     /** the bbb */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.math.BigDecimal, Object> $bbb = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.math.BigDecimal.class, () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, "bbb", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.math.BigDecimal, Object> $bbb = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, "bbb", "", __namingType, true, true, false);
 
     /** the ccc */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.String, Object> $ccc = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, "ccc", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.String, Object> $ccc = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, "ccc", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.internal.apt.entity.Parent2EntityListener<org.seasar.doma.internal.apt.entity.Child2InheritingEntity>> __listenerSupplier;
 
