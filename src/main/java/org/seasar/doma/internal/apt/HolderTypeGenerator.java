@@ -43,15 +43,13 @@ public class HolderTypeGenerator extends AbstractGenerator {
 
     private final String typeParamDecl;
 
-    public HolderTypeGenerator(Context ctx,
-            TypeElement holderElement, HolderMeta holderMeta)
+    public HolderTypeGenerator(Context ctx, TypeElement holderElement, HolderMeta holderMeta)
             throws IOException {
         super(ctx, holderElement, null, null, Constants.METATYPE_PREFIX, "");
         assertNotNull(holderMeta);
         this.holderMeta = holderMeta;
         this.typeName = ctx.getTypes().getTypeName(holderMeta.getType());
-        this.simpleMetaClassName = ctx.getMetas()
-                .toSimpleMetaName(holderElement);
+        this.simpleMetaClassName = ctx.getMetas().toSimpleMetaName(holderElement);
         this.typeParamDecl = makeTypeParamDecl(typeName);
     }
 
@@ -81,17 +79,19 @@ public class HolderTypeGenerator extends AbstractGenerator {
             iprint("/** */%n");
         } else {
             iprint("/**%n");
-            for (TypeParameterElement typeParam : typeElement
-                    .getTypeParameters()) {
+            for (TypeParameterElement typeParam : typeElement.getTypeParameters()) {
                 iprint(" * @param <%1$s> %1$s%n", typeParam.getSimpleName());
             }
             iprint(" */%n");
         }
         printGenerated();
-        iprint("public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
-                simpleMetaClassName, AbstractHolderType.class.getName(),
-                ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
-                typeName, typeParamDecl);
+        iprint("public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n", simpleMetaClassName,
+                // @formatter:off
+                /* 1 */AbstractHolderType.class.getName(),
+                /* 2 */ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
+                /* 3 */typeName,
+                /* 4 */typeParamDecl);
+                // @formatter:on
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -107,8 +107,7 @@ public class HolderTypeGenerator extends AbstractGenerator {
         if (holderMeta.isParametarized()) {
             iprint("@SuppressWarnings(\"rawtypes\")%n");
         }
-        iprint("private static final %1$s singleton = new %1$s();%n",
-                simpleName);
+        iprint("private static final %1$s singleton = new %1$s();%n", simpleName);
         print("%n");
     }
 
@@ -131,8 +130,11 @@ public class HolderTypeGenerator extends AbstractGenerator {
     private void printNewHolderMethod() {
         boolean primitive = holderMeta.getBasicCtType().isPrimitive();
         iprint("@Override%n");
-        iprint("protected %1$s newHolder(%2$s value) {%n", typeName,
-                ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()));
+        iprint("protected %1$s newHolder(%2$s value) {%n",
+                // @formatter:off
+                /* 1 */typeName,
+                /* 2 */ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()));
+                // @formatter:on
         if (!primitive && !holderMeta.getAcceptNull()) {
             iprint("    if (value == null) {%n");
             iprint("        return null;%n");
@@ -141,21 +143,30 @@ public class HolderTypeGenerator extends AbstractGenerator {
         if (holderMeta.providesConstructor()) {
             if (primitive) {
                 iprint("    return new %1$s(%2$s.unbox(value));%n",
-                /* 1 */typeName, BoxedPrimitiveUtil.class.getName());
+                        // @formatter:off
+                        /* 1 */typeName,
+                        /* 2 */BoxedPrimitiveUtil.class.getName());
+                        // @formatter:on
             } else {
                 iprint("    return new %1$s(value);%n",
-                /* 1 */typeName);
+                        // @formatter:off
+                        /* 1 */typeName);
+                        // @formatter:on
             }
         } else {
             if (primitive) {
                 iprint("    return %1$s.%2$s(%3$s.unbox(value));%n",
-                /* 1 */holderMeta.getTypeElement().getQualifiedName(),
-                /* 2 */holderMeta.getFactoryMethod(),
-                /* 3 */BoxedPrimitiveUtil.class.getName());
+                        // @formatter:off
+                        /* 1 */holderMeta.getTypeElement().getQualifiedName(),
+                        /* 2 */holderMeta.getFactoryMethod(),
+                        /* 3 */BoxedPrimitiveUtil.class.getName());
+                        // @formatter:on
             } else {
                 iprint("    return %1$s.%2$s(value);%n",
-                /* 1 */holderMeta.getTypeElement().getQualifiedName(),
-                /* 2 */holderMeta.getFactoryMethod());
+                        // @formatter:off
+                        /* 1 */holderMeta.getTypeElement().getQualifiedName(),
+                        /* 2 */holderMeta.getFactoryMethod());
+                        // @formatter:on
             }
         }
         iprint("}%n");
@@ -165,8 +176,10 @@ public class HolderTypeGenerator extends AbstractGenerator {
     private void printGetBasicValueMethod() {
         iprint("@Override%n");
         iprint("protected %1$s getBasicValue(%2$s holder) {%n",
-                ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
-                typeName);
+                // @formatter:off
+                /* 1 */ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
+                /* 2 */typeName);
+                // @formatter:on
         iprint("    if (holder == null) {%n");
         iprint("        return null;%n");
         iprint("    }%n");
@@ -190,12 +203,11 @@ public class HolderTypeGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public Class<%1$s> getHolderClass() {%n", typeName);
         if (holderMeta.isParametarized()) {
-            iprint("    Class<?> clazz = %1$s.class;%n", holderMeta
-                    .getTypeElement().getQualifiedName());
+            iprint("    Class<?> clazz = %1$s.class;%n",
+                    holderMeta.getTypeElement().getQualifiedName());
             iprint("    return (Class<%1$s>) clazz;%n", typeName);
         } else {
-            iprint("    return %1$s.class;%n", holderMeta.getTypeElement()
-                    .getQualifiedName());
+            iprint("    return %1$s.class;%n", holderMeta.getTypeElement().getQualifiedName());
         }
         iprint("}%n");
         print("%n");
@@ -208,12 +220,17 @@ public class HolderTypeGenerator extends AbstractGenerator {
         if (holderMeta.isParametarized()) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
             iprint("public static %1$s %2$s%1$s getSingletonInternal() {%n",
-                    typeParamDecl, simpleMetaClassName);
-            iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl,
-                    simpleMetaClassName);
+                    // @formatter:off
+                    /* 1 */typeParamDecl,
+                    /* 2 */simpleMetaClassName);
+                    // @formatter:on
+            iprint("    return (%2$s%1$s) singleton;%n",
+                    // @formatter:off
+                    /* 1 */typeParamDecl, 
+                    /* 2 */simpleMetaClassName);
+                    // @formatter:on
         } else {
-            iprint("public static %1$s getSingletonInternal() {%n",
-                    simpleMetaClassName);
+            iprint("public static %1$s getSingletonInternal() {%n", simpleMetaClassName);
             iprint("    return singleton;%n");
         }
         iprint("}%n");
