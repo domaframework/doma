@@ -43,23 +43,18 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
 
     private final boolean parametarized;
 
-    public ExternalHolderTypeGenerator(Context ctx,
-            TypeElement typeElement, ExternalHolderMeta holderMeta)
-            throws IOException {
+    public ExternalHolderTypeGenerator(Context ctx, TypeElement typeElement,
+            ExternalHolderMeta holderMeta) throws IOException {
         super(ctx, typeElement,
                 Constants.EXTERNAL_HOLDER_METATYPE_ROOT_PACKAGE + "."
                         + ctx.getElements().getPackageName(typeElement),
-                null,
-                Constants.METATYPE_PREFIX, "");
+                null, Constants.METATYPE_PREFIX, "");
         assertNotNull(holderMeta);
         this.holderMeta = holderMeta;
-        this.holderTypeName = ctx.getTypes()
-                .getTypeName(holderMeta
-                        .getHolderElement().asType());
+        this.holderTypeName = ctx.getTypes().getTypeName(holderMeta.getHolderElement().asType());
         this.simpleMetaClassName = ctx.getMetas().toSimpleMetaName(typeElement);
         this.typeParamDecl = makeTypeParamDecl(holderTypeName);
-        this.parametarized = !holderMeta.getHolderElement().getTypeParameters()
-                .isEmpty();
+        this.parametarized = !holderMeta.getHolderElement().getTypeParameters().isEmpty();
     }
 
     private String makeTypeParamDecl(String typeName) {
@@ -96,8 +91,13 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
         }
         printGenerated();
         iprint("public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
-                simpleMetaClassName, AbstractHolderType.class.getName(),
-                holderMeta.getValueTypeName(), holderTypeName, typeParamDecl);
+                // @formatter:off
+                /* 1 */simpleMetaClassName,
+                /* 2 */AbstractHolderType.class.getName(),
+                /* 3 */holderMeta.getValueTypeName(),
+                /* 4 */holderTypeName,
+                /* 5 */typeParamDecl);
+                // @formatter:on
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -113,8 +113,7 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
         if (parametarized) {
             iprint("@SuppressWarnings(\"rawtypes\")%n");
         }
-        iprint("private static final %1$s singleton = new %1$s();%n",
-                simpleName);
+        iprint("private static final %1$s singleton = new %1$s();%n", simpleName);
         print("%n");
         iprint("private static final %1$s converter = new %1$s();%n",
                 holderMeta.getTypeElement().getQualifiedName());
@@ -142,11 +141,13 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
             iprint("@SuppressWarnings(\"unchecked\")%n");
         }
         iprint("@Override%n");
-        iprint("protected %1$s newHolder(%2$s value) {%n", holderTypeName,
-                holderMeta.getValueTypeName());
+        iprint("protected %1$s newHolder(%2$s value) {%n",
+                // @formatter:off
+                /* 1 */holderTypeName,
+                /* 2 */holderMeta.getValueTypeName());
+                // @formatter:on
         if (parametarized) {
-            iprint("    return (%1$s) converter.fromValueToHolder(value);%n",
-                    holderTypeName);
+            iprint("    return (%1$s) converter.fromValueToHolder(value);%n", holderTypeName);
         } else {
             iprint("    return converter.fromValueToHolder(value);%n");
         }
@@ -157,7 +158,10 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
     private void printGetBasicValueMethod() {
         iprint("@Override%n");
         iprint("protected %1$s getBasicValue(%2$s holder) {%n",
-                holderMeta.getValueTypeName(), holderTypeName);
+                // @formatter:off
+                /* 1 */holderMeta.getValueTypeName(),
+                /* 2 */holderTypeName);
+                // @formatter:on
         iprint("    if (holder == null) {%n");
         iprint("        return null;%n");
         iprint("    }%n");
@@ -181,12 +185,11 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public Class<%1$s> getHolderClass() {%n", holderTypeName);
         if (parametarized) {
-            iprint("    Class<?> clazz = %1$s.class;%n", holderMeta
-                    .getHolderElement().getQualifiedName());
+            iprint("    Class<?> clazz = %1$s.class;%n",
+                    holderMeta.getHolderElement().getQualifiedName());
             iprint("    return (Class<%1$s>) clazz;%n", holderTypeName);
         } else {
-            iprint("    return %1$s.class;%n", holderMeta.getHolderElement()
-                    .getQualifiedName());
+            iprint("    return %1$s.class;%n", holderMeta.getHolderElement().getQualifiedName());
         }
         iprint("}%n");
         print("%n");
@@ -199,12 +202,17 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
         if (parametarized) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
             iprint("public static %1$s %2$s%1$s getSingletonInternal() {%n",
-                    typeParamDecl, simpleMetaClassName);
-            iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl,
-                    simpleMetaClassName);
+                    // @formatter:off
+                    /* 1 */typeParamDecl,
+                    /* 2 */simpleMetaClassName);
+                    // @formatter:on
+            iprint("    return (%2$s%1$s) singleton;%n",
+                    // @formatter:off
+                    /* 1 */typeParamDecl,
+                    /* 2 */simpleMetaClassName);
+                    // @formatter:on
         } else {
-            iprint("public static %1$s getSingletonInternal() {%n",
-                    simpleMetaClassName);
+            iprint("public static %1$s getSingletonInternal() {%n", simpleMetaClassName);
             iprint("    return singleton;%n");
         }
         iprint("}%n");
