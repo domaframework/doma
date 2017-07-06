@@ -37,7 +37,7 @@ public class IntegerAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
     protected Boolean doGetValue(ResultSet resultSet, int index)
             throws SQLException {
         int value = resultSet.getInt(index);
-        return formIntToBoolean(value);
+        return fromIntToBoolean(value);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class IntegerAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
     protected Boolean doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
         int value = callableStatement.getInt(index);
-        return formIntToBoolean(value);
+        return fromIntToBoolean(value);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class IntegerAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
         return value ? 1 : 0;
     }
 
-    protected Boolean formIntToBoolean(int value) {
+    protected Boolean fromIntToBoolean(int value) {
         return value == 1;
     }
 }
