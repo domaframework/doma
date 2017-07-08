@@ -26,9 +26,8 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
-import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.message.Message;
 
 /**
@@ -43,82 +42,39 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final TypeElement typeElement;
 
-    protected final String canonicalName;
+    protected final CanonicalName canonicalName;
 
     protected final String packageName;
 
     protected final String simpleName;
 
-    protected final String fullpackage;
-
-    protected final String subpackage;
-
-    protected final String prefix;
-
-    protected final String suffix;
-
     protected final Formatter formatter;
 
     protected final StringBuilder indentBuffer = new StringBuilder();
 
-    protected AbstractGenerator(Context ctx,
-            TypeElement typeElement, String fullpackage, String subpackage,
-            String prefix, String suffix) throws IOException {
-        assertNotNull(ctx, typeElement, prefix, suffix);
+    protected AbstractGenerator(Context ctx, TypeElement typeElement, CanonicalName canonicalName)
+            throws IOException {
+        assertNotNull(ctx, typeElement, canonicalName);
         this.ctx = ctx;
         this.typeElement = typeElement;
-        this.fullpackage = fullpackage;
-        this.subpackage = subpackage;
-        this.prefix = prefix;
-        this.suffix = suffix;
-        this.canonicalName = createCanonicalName(typeElement, fullpackage,
-                subpackage, prefix, suffix);
-        this.packageName = ClassUtil.getPackageName(canonicalName);
-        this.simpleName = ClassUtil.getSimpleName(canonicalName);
-        JavaFileObject file = ctx.getResources()
-                .createSourceFile(canonicalName, typeElement);
+        this.canonicalName = canonicalName;
+        this.packageName = canonicalName.getPackageName();
+        this.simpleName = canonicalName.getSimpleName();
+        JavaFileObject file = ctx.getResources().createSourceFile(canonicalName, typeElement);
         formatter = new Formatter(new BufferedWriter(file.openWriter()));
-    }
-
-    protected String createCanonicalName(TypeElement typeElement,
-            String fullpackage, String subpackage,
-            String prefix, String suffix) {
-        String qualifiedNamePrefix = getQualifiedNamePrefix(typeElement,
-                fullpackage, subpackage);
-        String binaryName = Conventions.normalizeBinaryName(
-                ctx.getElements().getBinaryName(typeElement).toString());
-        String infix = ClassUtil.getSimpleName(binaryName);
-        return qualifiedNamePrefix + prefix + infix + suffix;
-    }
-
-    protected String getQualifiedNamePrefix(TypeElement typeElement,
-            String fullpackage, String subpackage) {
-        if (fullpackage != null) {
-            return fullpackage + ".";
-        }
-        String packageName = ctx.getElements().getPackageName(typeElement);
-        String base = "";
-        if (packageName != null && packageName.length() > 0) {
-            base = packageName + ".";
-        }
-        if (subpackage != null) {
-            return base + subpackage + ".";
-        }
-        return base;
     }
 
     protected void printGenerated() {
         iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\")%n",
-                Generated.class.getName(),
-                Artifact.getName(),
-                ctx.getOptions().getVersion(), ctx.getOptions().getDate());
+                Generated.class.getName(), Artifact.getName(), ctx.getOptions().getVersion(),
+                ctx.getOptions().getDate());
     }
 
     protected void printValidateVersionStaticInitializer() {
         if (ctx.getOptions().getVersionValidation()) {
             iprint("static {%n");
-            iprint("    %1$s.validateVersion(\"%2$s\");%n",
-                    Artifact.class.getName(), ctx.getOptions().getVersion());
+            iprint("    %1$s.validateVersion(\"%2$s\");%n", Artifact.class.getName(),
+                    ctx.getOptions().getVersion());
             iprint("}%n");
             print("%n");
         }
@@ -151,8 +107,7 @@ public abstract class AbstractGenerator implements Generator {
 
     protected void unindent() {
         if (indentBuffer.length() >= INDENT_SPACE.length()) {
-            indentBuffer.setLength(indentBuffer.length()
-                    - INDENT_SPACE.length());
+            indentBuffer.setLength(indentBuffer.length() - INDENT_SPACE.length());
         }
     }
 
@@ -187,11 +142,11 @@ public abstract class AbstractGenerator implements Generator {
     protected String box(BasicCtType ctType) {
         return box(ctType.getTypeName());
     }
-    
+
     protected String supply(BasicCtType ctType) {
         if (ctType.isEnum()) {
-            return String.format("() -> new %1$s(%2$s.class)",
-                    ctType.getWrapperTypeName(), ctType.getQualifiedName());
+            return String.format("() -> new %1$s(%2$s.class)", ctType.getWrapperTypeName(),
+                    ctType.getQualifiedName());
         }
         return String.format("%1$s::new", ctType.getWrapperTypeName());
     }

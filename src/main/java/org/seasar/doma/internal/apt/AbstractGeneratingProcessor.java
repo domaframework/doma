@@ -35,24 +35,22 @@ import org.seasar.doma.message.Message;
 public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
         extends AbstractProcessor {
 
-    protected AbstractGeneratingProcessor(
-            Class<? extends Annotation> supportedAnnotationType) {
+    protected AbstractGeneratingProcessor(Class<? extends Annotation> supportedAnnotationType) {
         super(supportedAnnotationType);
     }
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver()) {
             return true;
         }
         for (TypeElement a : annotations) {
-            final TypeElementMetaFactory<M> factory = createTypeElementMetaFactory();
-            for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
+            for (TypeElement typeElement : ElementFilter
+                    .typesIn(roundEnv.getElementsAnnotatedWith(a))) {
                 handleTypeElement(typeElement, (t) -> {
-                    M meta = factory.createTypeElementMeta(typeElement);
-                    if (!meta.isError()) {
+                    TypeElementMetaFactory<M> factory = createTypeElementMetaFactory(t);
+                    M meta = factory.createTypeElementMeta();
+                    if (meta != null) {
                         generate(ctx, typeElement, meta);
                     }
                 });
@@ -61,7 +59,8 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
         return true;
     }
 
-    protected abstract TypeElementMetaFactory<M> createTypeElementMetaFactory();
+    protected abstract TypeElementMetaFactory<M> createTypeElementMetaFactory(
+            TypeElement typeElement);
 
     protected void generate(Context ctx, TypeElement typeElement, M meta) {
         Generator generator = null;
@@ -69,15 +68,13 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
             generator = createGenerator(ctx, typeElement, meta);
             generator.generate();
         } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, typeElement,
-                    e, new Object[] {
-                            typeElement.getQualifiedName(), e });
+            throw new AptException(Message.DOMA4011, typeElement, e,
+                    new Object[] { typeElement.getQualifiedName(), e });
         } finally {
             IOUtil.close(generator);
         }
     }
 
-    protected abstract Generator createGenerator(Context ctx,
-            TypeElement typeElement, M meta)
+    protected abstract Generator createGenerator(Context ctx, TypeElement typeElement, M meta)
             throws IOException;
 }

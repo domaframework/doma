@@ -24,9 +24,8 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.internal.apt.meta.EntityMeta;
-import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
-import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 
 /**
  * @author taedium
@@ -43,20 +42,12 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
     }
 
     @Override
-    protected EntityMetaFactory createTypeElementMetaFactory() {
-        EntityPropertyMetaFactory propertyMetaFactory = createEntityPropertyMetaFactory(
-                ctx);
-        return new EntityMetaFactory(ctx, propertyMetaFactory);
-    }
-
-    private EntityPropertyMetaFactory createEntityPropertyMetaFactory(
-            Context ctx) {
-        return new EntityPropertyMetaFactory(ctx);
+    protected EntityMetaFactory createTypeElementMetaFactory(TypeElement typeElement) {
+        return new EntityMetaFactory(ctx, typeElement);
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement,
-            EntityMeta meta)
+    protected Generator createGenerator(Context ctx, TypeElement typeElement, EntityMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
         return new EntityTypeGenerator(ctx, typeElement, meta);

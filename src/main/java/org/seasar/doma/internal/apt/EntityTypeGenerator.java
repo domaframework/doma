@@ -24,7 +24,6 @@ import java.util.function.BiFunction;
 
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
@@ -33,14 +32,14 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.EntityMeta;
-import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
-import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
-import org.seasar.doma.internal.apt.meta.IdGeneratorMetaVisitor;
-import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
-import org.seasar.doma.internal.apt.meta.OriginalStatesMeta;
-import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
-import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
+import org.seasar.doma.internal.apt.meta.entity.OriginalStatesMeta;
+import org.seasar.doma.internal.apt.meta.id.IdGeneratorMeta;
+import org.seasar.doma.internal.apt.meta.id.IdGeneratorMetaVisitor;
+import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
+import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
+import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -69,7 +68,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     public EntityTypeGenerator(Context ctx, TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
-        super(ctx, entityElement, null, null, Constants.METATYPE_PREFIX, "");
+        super(ctx, entityElement, entityMeta.getEntityDescCanonicalName());
         assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
     }
@@ -90,8 +89,12 @@ public class EntityTypeGenerator extends AbstractGenerator {
     private void printClass() {
         iprint("/** */%n");
         printGenerated();
-        iprint("public final class %1$s extends %2$s<%3$s> {%n", /* 1 */simpleName,
-                /* 2 */AbstractEntityType.class.getName(), /* 3 */entityMeta.getEntityTypeName());
+        iprint("public final class %1$s extends %2$s<%3$s> {%n",
+                // @formatter:off
+                /* 1 */simpleName,
+                /* 2 */AbstractEntityType.class.getName(),
+                /* 3 */entityMeta.getEntityTypeName());
+                // @formatter:on
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -249,15 +252,15 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     private void printListenerSupplierField() {
-        if (entityMeta.isGenericEntityListener()) {
+        if (entityMeta.hasGenericListener()) {
             iprint("private final java.util.function.Supplier<%1$s<%2$s>> __listenerSupplier;%n",
                     // @formatter:off
-                    /* 1 */entityMeta.getEntityListenerElement().getQualifiedName(),
+                    /* 1 */entityMeta.getListenerElement().getQualifiedName(),
                     /* 2 */entityMeta.getEntityTypeName());
                     // @formatter:on
         } else {
             iprint("private final java.util.function.Supplier<%1$s> __listenerSupplier;%n",
-                    entityMeta.getEntityListenerElement().getQualifiedName());
+                    entityMeta.getListenerElement().getQualifiedName());
         }
         print("%n");
     }
@@ -762,15 +765,15 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     private void printListenerHolder() {
         iprint("private static class ListenerHolder {%n");
-        if (entityMeta.isGenericEntityListener()) {
+        if (entityMeta.hasGenericListener()) {
             iprint("    private static %1$s<%2$s> listener = new %1$s<>();%n",
                     // @formatter:off
-                    /* 1 */entityMeta.getEntityListenerElement().getQualifiedName(),
+                    /* 1 */entityMeta.getListenerElement().getQualifiedName(),
                     /* 2 */entityMeta.getEntityTypeName());
                     // @formatter:on
         } else {
             iprint("    private static %1$s listener = new %1$s();%n",
-                    entityMeta.getEntityListenerElement().getQualifiedName());
+                    entityMeta.getListenerElement().getQualifiedName());
         }
         iprint("}%n");
         print("%n");
@@ -778,9 +781,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     private void printDeclareListener() {
         iprint("    Class __listenerClass = %1$s.class;%n",
-                entityMeta.getEntityListenerElement().getQualifiedName());
+                entityMeta.getListenerElement().getQualifiedName());
         iprint("    %1$s __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);%n",
-                entityMeta.getEntityListenerElement().getQualifiedName());
+                entityMeta.getListenerElement().getQualifiedName());
     }
 
     private class IdGeneratorGenerator implements IdGeneratorMetaVisitor<Void, Void> {

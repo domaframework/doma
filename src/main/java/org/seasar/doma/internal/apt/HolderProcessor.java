@@ -24,16 +24,15 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Holder;
-import org.seasar.doma.internal.apt.meta.HolderMeta;
-import org.seasar.doma.internal.apt.meta.HolderMetaFactory;
+import org.seasar.doma.internal.apt.meta.holder.HolderMeta;
+import org.seasar.doma.internal.apt.meta.holder.HolderMetaFactory;
 
 /**
  * @author taedium
  * 
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.Holder" })
-@SupportedOptions({ Options.VERSION_VALIDATION, Options.RESOURCES_DIR,
-        Options.LOMBOK_VALUE,
+@SupportedOptions({ Options.VERSION_VALIDATION, Options.RESOURCES_DIR, Options.LOMBOK_VALUE,
         Options.TEST, Options.DEBUG })
 public class HolderProcessor extends AbstractGeneratingProcessor<HolderMeta> {
 
@@ -42,13 +41,12 @@ public class HolderProcessor extends AbstractGeneratingProcessor<HolderMeta> {
     }
 
     @Override
-    protected HolderMetaFactory createTypeElementMetaFactory() {
-        return new HolderMetaFactory(ctx);
+    protected HolderMetaFactory createTypeElementMetaFactory(TypeElement typeElement) {
+        return new HolderMetaFactory(ctx, typeElement);
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement,
-            HolderMeta meta)
+    protected Generator createGenerator(Context ctx, TypeElement typeElement, HolderMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
         return new HolderTypeGenerator(ctx, typeElement, meta);

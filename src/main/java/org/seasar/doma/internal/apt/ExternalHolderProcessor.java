@@ -24,33 +24,31 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.ExternalHolder;
-import org.seasar.doma.internal.apt.meta.ExternalHolderMeta;
-import org.seasar.doma.internal.apt.meta.ExternalHolderMetaFactory;
+import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMeta;
+import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMetaFactory;
 
 /**
  * @author taedium
  * 
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.ExternalHolder" })
-@SupportedOptions({ Options.VERSION_VALIDATION, Options.RESOURCES_DIR,
-        Options.TEST, Options.DEBUG })
-public class ExternalHolderProcessor extends
-        AbstractGeneratingProcessor<ExternalHolderMeta> {
+@SupportedOptions({ Options.VERSION_VALIDATION, Options.RESOURCES_DIR, Options.TEST,
+        Options.DEBUG })
+public class ExternalHolderProcessor extends AbstractGeneratingProcessor<ExternalHolderMeta> {
 
     public ExternalHolderProcessor() {
         super(ExternalHolder.class);
     }
 
     @Override
-    protected ExternalHolderMetaFactory createTypeElementMetaFactory() {
-        return new ExternalHolderMetaFactory(ctx);
+    protected ExternalHolderMetaFactory createTypeElementMetaFactory(TypeElement typeElement) {
+        return new ExternalHolderMetaFactory(ctx, typeElement);
     }
 
     @Override
     protected Generator createGenerator(Context ctx, TypeElement typeElement,
             ExternalHolderMeta meta) throws IOException {
         assertNotNull(typeElement, meta);
-        return new ExternalHolderTypeGenerator(ctx, meta.getHolderElement(),
-                meta);
+        return new ExternalHolderTypeGenerator(ctx, meta.getHolderElement(), meta);
     }
 }

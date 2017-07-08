@@ -22,9 +22,8 @@ import java.io.IOException;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 
-import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.meta.HolderMeta;
+import org.seasar.doma.internal.apt.meta.holder.HolderMeta;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.holder.AbstractHolderType;
 
@@ -45,7 +44,7 @@ public class HolderTypeGenerator extends AbstractGenerator {
 
     public HolderTypeGenerator(Context ctx, TypeElement holderElement, HolderMeta holderMeta)
             throws IOException {
-        super(ctx, holderElement, null, null, Constants.METATYPE_PREFIX, "");
+        super(ctx, holderElement, holderMeta.getHolderDescCanonicalName());
         assertNotNull(holderMeta);
         this.holderMeta = holderMeta;
         this.typeName = ctx.getTypes().getTypeName(holderMeta.getType());

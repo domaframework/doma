@@ -24,40 +24,30 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Embeddable;
-import org.seasar.doma.internal.apt.meta.EmbeddableMeta;
-import org.seasar.doma.internal.apt.meta.EmbeddableMetaFactory;
-import org.seasar.doma.internal.apt.meta.EmbeddablePropertyMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
 
 /**
  * @author nakamura-to
  *
  */
 @SupportedAnnotationTypes({ "org.seasar.doma.Embeddable" })
-@SupportedOptions({ Options.VERSION_VALIDATION, Options.RESOURCES_DIR,
-        Options.LOMBOK_VALUE,
+@SupportedOptions({ Options.VERSION_VALIDATION, Options.RESOURCES_DIR, Options.LOMBOK_VALUE,
         Options.LOMBOK_ALL_ARGS_CONSTRUCTOR, Options.TEST, Options.DEBUG })
-public class EmbeddableProcessor extends
-        AbstractGeneratingProcessor<EmbeddableMeta> {
+public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableMeta> {
 
     public EmbeddableProcessor() {
         super(Embeddable.class);
     }
 
     @Override
-    protected EmbeddableMetaFactory createTypeElementMetaFactory() {
-        EmbeddablePropertyMetaFactory propertyMetaFactory = createEmbeddablePropertyMetaFactory(
-                ctx);
-        return new EmbeddableMetaFactory(ctx, propertyMetaFactory);
-    }
-
-    private EmbeddablePropertyMetaFactory createEmbeddablePropertyMetaFactory(
-            Context ctx) {
-        return new EmbeddablePropertyMetaFactory(ctx);
+    protected EmbeddableMetaFactory createTypeElementMetaFactory(TypeElement typeElement) {
+        return new EmbeddableMetaFactory(ctx, typeElement);
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement,
-            EmbeddableMeta meta) throws IOException {
+    protected Generator createGenerator(Context ctx, TypeElement typeElement, EmbeddableMeta meta)
+            throws IOException {
         assertNotNull(typeElement, meta);
         return new EmbeddableTypeGenerator(ctx, typeElement, meta);
     }

@@ -46,74 +46,75 @@ import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
-import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
-import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
-import org.seasar.doma.internal.apt.meta.AutoModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.AutoModuleQueryMeta;
-import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMeta;
-import org.seasar.doma.internal.apt.meta.BasicInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicInParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
-import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
-import org.seasar.doma.internal.apt.meta.DaoMeta;
-import org.seasar.doma.internal.apt.meta.DefaultQueryMeta;
-import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
-import org.seasar.doma.internal.apt.meta.EntityResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.HolderInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.HolderInParameterMeta;
-import org.seasar.doma.internal.apt.meta.HolderListParameterMeta;
-import org.seasar.doma.internal.apt.meta.HolderOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.HolderResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.HolderSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
-import org.seasar.doma.internal.apt.meta.MapResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalBasicInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalBasicInParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalBasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalBasicOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalBasicResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalBasicSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDoubleInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDoubleInParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDoubleListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDoubleOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDoubleResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalDoubleSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderInParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalHolderSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalIntInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalIntInParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalIntListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalIntOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalIntResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalIntSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalLongInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalLongInParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalLongListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalLongOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalLongResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.OptionalLongSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.ParentDaoMeta;
-import org.seasar.doma.internal.apt.meta.QueryKind;
-import org.seasar.doma.internal.apt.meta.QueryMeta;
-import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
-import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
-import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
-import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.SqlFileScriptQueryMeta;
-import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
-import org.seasar.doma.internal.apt.meta.SqlProcessorQueryMeta;
+import org.seasar.doma.internal.apt.meta.dao.ConfigMeta;
+import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
+import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
+import org.seasar.doma.internal.apt.meta.parameter.BasicInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.BasicInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.BasicListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.BasicOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.BasicResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.BasicSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMetaVisitor;
+import org.seasar.doma.internal.apt.meta.parameter.EntityListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.EntityResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.HolderInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.HolderInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.HolderListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.HolderOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.HolderResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.HolderSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.MapListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.MapResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalIntInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalIntInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalIntListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalIntOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalIntResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalIntSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalLongInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalLongInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalLongListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalLongOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalLongResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.OptionalLongSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.query.AbstractCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoBatchModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoModuleQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.DefaultQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryKind;
+import org.seasar.doma.internal.apt.meta.query.QueryMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryMetaVisitor;
+import org.seasar.doma.internal.apt.meta.query.QueryParameterMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryReturnMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMeta;
 import org.seasar.doma.internal.apt.reflection.AnnotationReflection;
 import org.seasar.doma.internal.jdbc.command.BasicCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
@@ -217,8 +218,7 @@ public class DaoGenerator extends AbstractGenerator {
     private final DaoMeta daoMeta;
 
     public DaoGenerator(Context ctx, TypeElement daoElement, DaoMeta daoMeta) throws IOException {
-        super(ctx, daoElement, ctx.getOptions().getDaoPackage(),
-                ctx.getOptions().getDaoSubpackage(), "", ctx.getOptions().getDaoSuffix());
+        super(ctx, daoElement, daoMeta.getDaoImplCanonicalName());
         assertNotNull(daoMeta);
         this.daoMeta = daoMeta;
     }
@@ -239,16 +239,14 @@ public class DaoGenerator extends AbstractGenerator {
     private void printClass() {
         iprint("/** */%n");
         for (AnnotationReflection annotation : daoMeta
-                .getAnnotationMirrors(AnnotationTarget.CLASS)) {
+                .getAnnotationReflections(AnnotationTarget.CLASS)) {
             iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
         }
         printGenerated();
         String parentClassName = AbstractDao.class.getName();
         ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
         if (parentDaoMeta != null) {
-            TypeElement parentDaotElement = parentDaoMeta.getDaoElement();
-            parentClassName = createCanonicalName(parentDaotElement, fullpackage, subpackage,
-                    prefix, suffix);
+            parentClassName = parentDaoMeta.getDaoImplCanonicalName().toString();
         }
         iprint("%4$s class %1$s extends %2$s implements %3$s {%n",
                 // @formatter:off
@@ -287,25 +285,24 @@ public class DaoGenerator extends AbstractGenerator {
 
     private void printConstructors() {
         if (daoMeta.hasUserDefinedConfig()) {
-            String singletonMethodName = daoMeta.getSingletonMethodName();
-            String singletonFieldName = daoMeta.getSingletonFieldName();
+            ConfigMeta configMeta = daoMeta.getConfigMeta();
 
             iprint("/** */%n");
             iprint("public %1$s() {%n", simpleName);
             indent();
-            if (singletonMethodName == null) {
-                if (singletonFieldName == null) {
-                    iprint("super(new %1$s());%n", daoMeta.getConfigType());
-                } else {
-                    iprint("super(%1$s.%2$s);%n", daoMeta.getConfigType(), singletonFieldName);
-                }
+            if (configMeta.getSingletonField() != null) {
+                iprint("super(%1$s.%2$s);%n", configMeta.getConfigType(),
+                        configMeta.getSingletonField().getSimpleName());
+            } else if (configMeta.getSingletonMethod() != null) {
+                iprint("super(%1$s.%2$s());%n", configMeta.getConfigType(),
+                        configMeta.getSingletonMethod().getSimpleName());
             } else {
-                iprint("super(%1$s.%2$s());%n", daoMeta.getConfigType(), singletonMethodName);
+                iprint("super(new %1$s());%n", configMeta.getConfigType());
             }
             unindent();
             iprint("}%n");
             print("%n");
-            if (daoMeta.getAnnotateWithMirror() == null) {
+            if (daoMeta.getAnnotateWithReflection() == null) {
                 ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
                 boolean jdbcConstructorsNecessary = parentDaoMeta == null
                         || parentDaoMeta.hasUserDefinedConfig();
@@ -316,16 +313,14 @@ public class DaoGenerator extends AbstractGenerator {
                     iprint("public %1$s(%2$s connection) {%n", simpleName,
                             Connection.class.getName());
                     indent();
-                    if (singletonMethodName == null) {
-                        if (singletonFieldName == null) {
-                            iprint("super(new %1$s(), connection);%n", daoMeta.getConfigType());
-                        } else {
-                            iprint("super(%1$s.%2$s, connection);%n", daoMeta.getConfigType(),
-                                    singletonFieldName);
-                        }
+                    if (configMeta.getSingletonField() != null) {
+                        iprint("super(%1$s.%2$s, connection);%n", configMeta.getConfigType(),
+                                configMeta.getSingletonField().getSimpleName());
+                    } else if (configMeta.getSingletonMethod() != null) {
+                        iprint("super(%1$s.%2$s(), connection);%n", configMeta.getConfigType(),
+                                configMeta.getSingletonMethod().getSimpleName());
                     } else {
-                        iprint("super(%1$s.%2$s(), connection);%n", daoMeta.getConfigType(),
-                                singletonMethodName);
+                        iprint("super(new %1$s(), connection);%n", configMeta.getConfigType());
                     }
                     unindent();
                     iprint("}%n");
@@ -336,16 +331,14 @@ public class DaoGenerator extends AbstractGenerator {
                     iprint("public %1$s(%2$s dataSource) {%n", simpleName,
                             DataSource.class.getName());
                     indent();
-                    if (singletonMethodName == null) {
-                        if (singletonFieldName == null) {
-                            iprint("super(new %1$s(), dataSource);%n", daoMeta.getConfigType());
-                        } else {
-                            iprint("super(%1$s.%2$s, dataSource);%n", daoMeta.getConfigType(),
-                                    singletonFieldName);
-                        }
+                    if (configMeta.getSingletonField() != null) {
+                        iprint("super(%1$s.%2$s, dataSource);%n", configMeta.getConfigType(),
+                                configMeta.getSingletonField().getSimpleName());
+                    } else if (configMeta.getSingletonMethod() != null) {
+                        iprint("super(%1$s.%2$s(), dataSource);%n", configMeta.getConfigType(),
+                                configMeta.getSingletonMethod().getSimpleName());
                     } else {
-                        iprint("super(%1$s.%2$s(), dataSource);%n", daoMeta.getConfigType(),
-                                singletonMethodName);
+                        iprint("super(new %1$s(), dataSource);%n", configMeta.getConfigType());
                     }
                     unindent();
                     iprint("}%n");
@@ -386,17 +379,17 @@ public class DaoGenerator extends AbstractGenerator {
                 }
             }
         }
-        if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithMirror() != null) {
+        if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithReflection() != null) {
             iprint("/**%n");
             iprint(" * @param config the config%n");
             iprint(" */%n");
             for (AnnotationReflection annotation : daoMeta
-                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
+                    .getAnnotationReflections(AnnotationTarget.CONSTRUCTOR)) {
                 iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
             }
             iprint("public %1$s(", simpleName);
             for (AnnotationReflection annotation : daoMeta
-                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
+                    .getAnnotationReflections(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
                 print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation.getElementsValue());
             }
             print("%1$s config) {%n", Config.class.getName());

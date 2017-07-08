@@ -20,6 +20,8 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.entity.NamingType1Entity;
+import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
@@ -61,14 +63,9 @@ public class EntityMetaFactoryTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    protected EntityMeta createEntityMeta(Context ctx,
-            Class<?> clazz) {
-        EntityPropertyMetaFactory propertyMetaFactory = new EntityPropertyMetaFactory(
-                ctx);
-        EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx,
-                propertyMetaFactory);
-        TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
-        return entityMetaFactory
-                .createTypeElementMeta(typeElement);
+    protected EntityMeta createEntityMeta(Context ctx, Class<?> clazz) {
+        TypeElement entityElement = ctx.getElements().getTypeElement(clazz);
+        EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx, entityElement);
+        return entityMetaFactory.createTypeElementMeta();
     }
 }

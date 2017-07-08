@@ -25,7 +25,6 @@ import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
@@ -34,8 +33,8 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.EmbeddableMeta;
-import org.seasar.doma.internal.apt.meta.EmbeddablePropertyMeta;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EmbeddableType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -50,9 +49,9 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
 
     private final EmbeddableMeta embeddableMeta;
 
-    public EmbeddableTypeGenerator(Context ctx, TypeElement entityElement,
+    public EmbeddableTypeGenerator(Context ctx, TypeElement embeddableElement,
             EmbeddableMeta embeddableMeta) throws IOException {
-        super(ctx, entityElement, null, null, Constants.METATYPE_PREFIX, "");
+        super(ctx, embeddableElement, embeddableMeta.getEmbeddableDescCanonicalName());
         assertNotNull(embeddableMeta);
         this.embeddableMeta = embeddableMeta;
     }
