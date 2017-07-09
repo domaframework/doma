@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.enumholder;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _PrimitiveValue implements org.seasar.doma.jdbc.holder.HolderType<java.lang.Integer, org.seasar.doma.internal.apt.enumholder.PrimitiveValue> {
+public final class _PrimitiveValue implements org.seasar.doma.jdbc.holder.HolderDesc<java.lang.Integer, org.seasar.doma.internal.apt.enumholder.PrimitiveValue> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");

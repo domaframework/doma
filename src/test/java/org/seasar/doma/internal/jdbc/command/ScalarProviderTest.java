@@ -30,7 +30,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 import example.holder.PhoneNumber;
@@ -83,11 +83,11 @@ public class ScalarProviderTest extends TestCase {
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        HolderType<String, PhoneNumber> holderType = _PhoneNumber
+        HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber
                 .getSingletonInternal();
 
         ScalarProvider<String, PhoneNumber> provider = new ScalarProvider<>(
-                () -> holderType.createScalar(), new MySelectQuery());
+                () -> holderDesc.createScalar(), new MySelectQuery());
         PhoneNumber result = provider.get(resultSet);
 
         assertEquals("hoge", result.getValue());
@@ -100,11 +100,11 @@ public class ScalarProviderTest extends TestCase {
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        HolderType<String, PhoneNumber> holderType = _PhoneNumber
+        HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber
                 .getSingletonInternal();
 
         ScalarProvider<String, Optional<PhoneNumber>> provider = new ScalarProvider<>(
-                () -> holderType.createOptionalScalar(), new MySelectQuery());
+                () -> holderDesc.createOptionalScalar(), new MySelectQuery());
         Optional<PhoneNumber> result = provider.get(resultSet);
 
         assertEquals("hoge", result.get().getValue());

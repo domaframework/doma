@@ -33,7 +33,7 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
  * @param <HOLDER>
  *            ドメイン型
  */
-public interface HolderType<BASIC, HOLDER> {
+public interface HolderDesc<BASIC, HOLDER> {
 
     /**
      * 基本型のクラスを返します。

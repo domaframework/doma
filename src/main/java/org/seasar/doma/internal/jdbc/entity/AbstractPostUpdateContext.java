@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityPropertyNotDefinedException;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.PostUpdateContext;
 
 /**
@@ -31,15 +31,15 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 public abstract class AbstractPostUpdateContext<E> extends
         AbstractEntityListenerContext<E> implements PostUpdateContext<E> {
 
-    protected AbstractPostUpdateContext(EntityType<E> entityType,
+    protected AbstractPostUpdateContext(EntityDesc<E> entityDesc,
             Method method, Config config) {
-        super(entityType, method, config);
+        super(entityDesc, method, config);
     }
 
     protected void validatePropertyDefined(String propertyName) {
         assertNotNull(propertyName);
         if (!isPropertyDefinedInternal(propertyName)) {
-            throw new EntityPropertyNotDefinedException(entityType
+            throw new EntityPropertyNotDefinedException(entityDesc
                     .getEntityClass().getName(), propertyName);
         }
     }

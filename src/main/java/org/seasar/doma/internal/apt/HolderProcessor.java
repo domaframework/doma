@@ -49,7 +49,7 @@ public class HolderProcessor extends AbstractGeneratingProcessor<HolderMeta> {
     protected Generator createGenerator(Context ctx, TypeElement typeElement, HolderMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
-        return new HolderTypeGenerator(ctx, typeElement, meta);
+        return new HolderDescGenerator(ctx, typeElement, meta);
     }
 
 }

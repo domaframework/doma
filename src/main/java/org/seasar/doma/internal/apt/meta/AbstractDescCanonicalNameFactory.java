@@ -37,7 +37,7 @@ public abstract class AbstractDescCanonicalNameFactory extends AbstractCanonical
         if (packageName != null && packageName.length() > 0) {
             base = packageName + ".";
         }
-        return base + Constants.METATYPE_PREFIX;
+        return base + Constants.DESC_PREFIX;
     }
 
 }

@@ -34,7 +34,7 @@ import org.seasar.doma.Entity;
  * @param <ENTITY>
  *            エンティティの型
  */
-public interface EntityType<ENTITY> {
+public interface EntityDesc<ENTITY> {
 
     /**
      * エンティティがイミュータブルかどうかを返します。
@@ -116,21 +116,21 @@ public interface EntityType<ENTITY> {
      * 
      * @return 自動生成される識別子のプロパティ型
      */
-    GeneratedIdPropertyType<ENTITY, ?, ?> getGeneratedIdPropertyType();
+    GeneratedIdPropertyDesc<ENTITY, ?, ?> getGeneratedIdPropertyDesc();
 
     /**
      * バージョンのプロパティ型を返します。
      * 
      * @return バージョンのプロパティ型
      */
-    VersionPropertyType<ENTITY, ?, ?> getVersionPropertyType();
+    VersionPropertyDesc<ENTITY, ?, ?> getVersionPropertyDesc();
 
     /**
      * 識別子のプロパティ型のリストを返します。
      * 
      * @return 識別子のプロパティ型のリスト
      */
-    List<EntityPropertyType<ENTITY, ?>> getIdPropertyTypes();
+    List<EntityPropertyDesc<ENTITY, ?>> getIdPropertyDescs();
 
     /**
      * 名前を指定してプロパティ型を返します。
@@ -139,14 +139,14 @@ public interface EntityType<ENTITY> {
      *            プロパティ名
      * @return プロパティ名、存在しない場合 {@code null}
      */
-    EntityPropertyType<ENTITY, ?> getEntityPropertyType(String __name);
+    EntityPropertyDesc<ENTITY, ?> getEntityPropertyDesc(String __name);
 
     /**
      * プロパティ型のリストを返します。
      * 
      * @return プロパティ型のリスト
      */
-    List<EntityPropertyType<ENTITY, ?>> getEntityPropertyTypes();
+    List<EntityPropertyDesc<ENTITY, ?>> getEntityPropertyDescs();
 
     /**
      * 新しいエンティティをインスタンス化します。

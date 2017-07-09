@@ -25,21 +25,21 @@ import junit.framework.TestCase;
  * @author taedium
  * 
  */
-public class HolderTypeFactoryTest extends TestCase {
+public class HolderDescFactoryTest extends TestCase {
 
     private ClassHelper classHelper = new ClassHelper() {
     };
 
-    public void testGetHolderType() throws Exception {
-        HolderType<String, PhoneNumber> type = HolderTypeFactory.getHolderType(
+    public void testGetHolderDesc() throws Exception {
+        HolderDesc<String, PhoneNumber> desc = HolderDescFactory.getHolderDesc(
                 PhoneNumber.class, classHelper);
-        assertNotNull(type);
+        assertNotNull(desc);
     }
 
-    public void testGetHolderType_DomaIllegalArgumentException()
+    public void testGetHolderDesc_DomaIllegalArgumentException()
             throws Exception {
         try {
-            HolderTypeFactory.getHolderType(Object.class, classHelper);
+            HolderDescFactory.getHolderDesc(Object.class, classHelper);
             fail();
         } catch (DomaIllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -49,9 +49,9 @@ public class HolderTypeFactoryTest extends TestCase {
     public void testGetHolderType_HolderTypeNotFoundException()
             throws Exception {
         try {
-            HolderTypeFactory.getHolderType(Money.class, classHelper);
+            HolderDescFactory.getHolderDesc(Money.class, classHelper);
             fail();
-        } catch (HolderTypeNotFoundException e) {
+        } catch (HolderDescNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }

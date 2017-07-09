@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.DefaultPropertyType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -31,19 +31,19 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 public class _OriginalStatesParentEntity extends
-        AbstractEntityType<OriginalStatesParentEntity> {
+        AbstractEntityDesc<OriginalStatesParentEntity> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
+    public DefaultPropertyDesc<OriginalStatesParentEntity, Integer, Integer> $aaa = new DefaultPropertyDesc<>(
             OriginalStatesParentEntity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "aaa", "AAA", __namingType, true, true, false);
 
-    public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
+    public DefaultPropertyDesc<OriginalStatesParentEntity, Integer, Integer> $bbb = new DefaultPropertyDesc<>(
             OriginalStatesParentEntity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "bbb", "BBB", __namingType, true, true, false);
@@ -68,20 +68,20 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public EntityPropertyType<OriginalStatesParentEntity, ?> getEntityPropertyType(
+    public EntityPropertyDesc<OriginalStatesParentEntity, ?> getEntityPropertyDesc(
             String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<OriginalStatesParentEntity, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyDesc<OriginalStatesParentEntity, ?>> getEntityPropertyDescs() {
 
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<OriginalStatesParentEntity, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyDesc<OriginalStatesParentEntity, ?, ?> getGeneratedIdPropertyDesc() {
 
         return null;
     }
@@ -113,7 +113,7 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public VersionPropertyType<OriginalStatesParentEntity, ?, ?> getVersionPropertyType() {
+    public VersionPropertyDesc<OriginalStatesParentEntity, ?, ?> getVersionPropertyDesc() {
 
         return null;
     }
@@ -149,7 +149,7 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public List<EntityPropertyType<OriginalStatesParentEntity, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyDesc<OriginalStatesParentEntity, ?>> getIdPropertyDescs() {
         return null;
     }
 

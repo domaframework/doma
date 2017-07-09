@@ -7,12 +7,12 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.wrapper.Wrapper;
 
-public abstract class AbstractHolderType<BASIC, HOLDER> implements
-        HolderType<BASIC, HOLDER> {
+public abstract class AbstractHolderDesc<BASIC, HOLDER> implements
+        HolderDesc<BASIC, HOLDER> {
 
     protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
-    protected AbstractHolderType(Supplier<Wrapper<BASIC>> wrapperSupplier) {
+    protected AbstractHolderDesc(Supplier<Wrapper<BASIC>> wrapperSupplier) {
         AssertionUtil.assertNotNull(wrapperSupplier);
         this.wrapperSupplier = wrapperSupplier;
     }
@@ -55,13 +55,13 @@ public abstract class AbstractHolderType<BASIC, HOLDER> implements
 
         @Override
         public Optional<Class<?>> getHolderClass() {
-            Class<?> c = AbstractHolderType.this.getHolderClass();
+            Class<?> c = AbstractHolderDesc.this.getHolderClass();
             return Optional.<Class<?>> of(c);
         }
 
         @Override
         public HOLDER cast(Object value) {
-            return AbstractHolderType.this.getHolderClass().cast(value);
+            return AbstractHolderDesc.this.getHolderClass().cast(value);
         }
 
         @Override
@@ -97,7 +97,7 @@ public abstract class AbstractHolderType<BASIC, HOLDER> implements
 
         @Override
         public Optional<Class<?>> getHolderClass() {
-            Class<?> clazz = AbstractHolderType.this.getHolderClass();
+            Class<?> clazz = AbstractHolderDesc.this.getHolderClass();
             return Optional.<Class<?>> of(clazz);
         }
 
@@ -111,7 +111,7 @@ public abstract class AbstractHolderType<BASIC, HOLDER> implements
         public Optional<HOLDER> get() {
             BASIC value = wrapper.get();
             if (value == null
-                    && !AbstractHolderType.this.getBasicClass().isPrimitive()) {
+                    && !AbstractHolderDesc.this.getBasicClass().isPrimitive()) {
                 return getDefaultInternal();
             }
             return Optional.of(newHolder(value));

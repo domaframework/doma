@@ -24,13 +24,13 @@ import javax.lang.model.element.TypeParameterElement;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMeta;
-import org.seasar.doma.jdbc.holder.AbstractHolderType;
+import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
 /**
  * @author taedium
  * 
  */
-public class ExternalHolderTypeGenerator extends AbstractGenerator {
+public class ExternalHolderDescGenerator extends AbstractGenerator {
 
     private final ExternalHolderMeta holderMeta;
 
@@ -42,13 +42,13 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
 
     private final boolean parametarized;
 
-    public ExternalHolderTypeGenerator(Context ctx, TypeElement typeElement,
+    public ExternalHolderDescGenerator(Context ctx, TypeElement typeElement,
             ExternalHolderMeta holderMeta) throws IOException {
         super(ctx, typeElement, holderMeta.getExternalHolderDescCanonicalName());
         assertNotNull(holderMeta);
         this.holderMeta = holderMeta;
         this.holderTypeName = ctx.getTypes().getTypeName(holderMeta.getHolderElement().asType());
-        this.simpleMetaClassName = ctx.getMetas().toSimpleMetaName(typeElement);
+        this.simpleMetaClassName = ctx.getMetas().toSimpleDescName(typeElement);
         this.typeParamDecl = makeTypeParamDecl(holderTypeName);
         this.parametarized = !holderMeta.getHolderElement().getTypeParameters().isEmpty();
     }
@@ -89,7 +89,7 @@ public class ExternalHolderTypeGenerator extends AbstractGenerator {
         iprint("public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
                 // @formatter:off
                 /* 1 */simpleMetaClassName,
-                /* 2 */AbstractHolderType.class.getName(),
+                /* 2 */AbstractHolderDesc.class.getName(),
                 /* 3 */holderMeta.getValueTypeName(),
                 /* 4 */holderTypeName,
                 /* 5 */typeParamDecl);

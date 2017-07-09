@@ -213,11 +213,11 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
  * @author taedium
  * 
  */
-public class DaoGenerator extends AbstractGenerator {
+public class DaoImplGenerator extends AbstractGenerator {
 
     private final DaoMeta daoMeta;
 
-    public DaoGenerator(Context ctx, TypeElement daoElement, DaoMeta daoMeta) throws IOException {
+    public DaoImplGenerator(Context ctx, TypeElement daoElement, DaoMeta daoMeta) throws IOException {
         super(ctx, daoElement, daoMeta.getDaoImplCanonicalName());
         assertNotNull(daoMeta);
         this.daoMeta = daoMeta;
@@ -490,7 +490,7 @@ public class DaoGenerator extends AbstractGenerator {
             }
             if (m.getEntityCtType() != null) {
                 iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
-                        m.getEntityCtType().getMetaTypeName());
+                        m.getEntityCtType().getDescTypeName());
             }
 
             printAddParameterStatements(m.getParameterMetas());
@@ -593,7 +593,7 @@ public class DaoGenerator extends AbstractGenerator {
                     // @formatter:off
                     /* 1 */m.getQueryClass().getName(),
                     /* 2 */m.getEntityCtType().getTypeName(),
-                    /* 3 */m.getEntityCtType().getMetaTypeName(),
+                    /* 3 */m.getEntityCtType().getDescTypeName(),
                     /* 4 */m.getQueryClass().getSimpleName(),
                     /* 5 */methodName);
                     // @formatter:on
@@ -686,7 +686,7 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getEntityParameterName() != null && m.getEntityCtType() != null) {
                 iprint("__query.setEntityAndEntityType(\"%1$s\", %2$s, %3$s.getSingletonInternal());%n",
                         m.getEntityParameterName(), m.getEntityParameterName(),
-                        m.getEntityCtType().getMetaTypeName());
+                        m.getEntityCtType().getDescTypeName());
             }
 
             Boolean excludeNull = m.getExcludeNull();
@@ -755,7 +755,7 @@ public class DaoGenerator extends AbstractGenerator {
                     // @formatter:off
                     /* 1 */m.getQueryClass().getName(),
                     /* 2 */m.getEntityCtType().getTypeName(),
-                    /* 3 */m.getEntityCtType().getMetaTypeName(),
+                    /* 3 */m.getEntityCtType().getDescTypeName(),
                     /* 4 */m.getQueryClass().getSimpleName(),
                     /* 5 */methodName);
                     // @formatter:on
@@ -842,7 +842,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             if (m.getEntityType() != null) {
                 iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
-                        m.getEntityType().getMetaTypeName());
+                        m.getEntityType().getDescTypeName());
             }
 
             Boolean ignoreVersion = m.getIgnoreVersion();
@@ -1258,7 +1258,7 @@ public class DaoGenerator extends AbstractGenerator {
                     // @formatter:off
                     /* 1 */EntityListParameter.class.getName(),
                     /* 2 */entityCtType.getTypeName(),
-                    /* 3 */entityCtType.getMetaTypeName(),
+                    /* 3 */entityCtType.getDescTypeName(),
                     /* 4 */m.getName(),
                     /* 5 */m.getEnsureResultMapping());
                     // @formatter:on
@@ -1401,7 +1401,7 @@ public class DaoGenerator extends AbstractGenerator {
                     // @formatter:off
                     /* 1 */EntityResultListParameter.class.getName(),
                     /* 2 */entityCtType.getTypeName(),
-                    /* 3 */entityCtType.getMetaTypeName(),
+                    /* 3 */entityCtType.getDescTypeName(),
                     /* 4 */m.getEnsureResultMapping());
                     // @formatter:on
             return null;
@@ -1932,7 +1932,7 @@ public class DaoGenerator extends AbstractGenerator {
                     /* 2 */resultBoxedTypeName,
                     /* 3 */getEntityStreamHandlerName(optional),
                     /* 4 */ctType.getTypeName(),
-                    /* 5 */ctType.getMetaTypeName(),
+                    /* 5 */ctType.getDescTypeName(),
                     /* 6 */functionParamName,
                     /* 7 */commandName,
                     /* 8 */methodName);
@@ -2105,7 +2105,7 @@ public class DaoGenerator extends AbstractGenerator {
                     /* 2 */box(resultMeta.getTypeName()),
                     /* 3 */getEntityCollectorHandlerName(optional),
                     /* 4 */ctType.getTypeName(),
-                    /* 5 */ctType.getMetaTypeName(),
+                    /* 5 */ctType.getDescTypeName(),
                     /* 6 */collectorParamName,
                     /* 7 */commandName,
                     /* 8 */methodName);
@@ -2272,7 +2272,7 @@ public class DaoGenerator extends AbstractGenerator {
                     /* 1 */commandClassName,
                     /* 2 */box(returnTypeName),
                     /* 3 */getEntitySingleResultHandlerName(optional),
-                    /* 4 */ctType.getMetaTypeName(),
+                    /* 4 */ctType.getDescTypeName(),
                     /* 5 */ctType.getTypeName(),
                     /* 6 */commandName,
                     /* 7 */methodName);
@@ -2393,7 +2393,7 @@ public class DaoGenerator extends AbstractGenerator {
                                     /* 2 */box(returnTypeName),
                                     /* 3 */getEntityResultListHandlerName(optional),
                                     /* 4 */ctType.getTypeName(),
-                                    /* 5 */ctType.getMetaTypeName(),
+                                    /* 5 */ctType.getDescTypeName(),
                                     /* 6 */commandName,
                                     /* 7 */methodName);
                                     // @formatter:on

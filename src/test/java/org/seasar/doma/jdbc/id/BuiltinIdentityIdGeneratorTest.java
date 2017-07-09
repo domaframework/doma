@@ -19,7 +19,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 
 import example.entity.IdGeneratedEmp;
 import example.entity._IdGeneratedEmp;
@@ -55,7 +55,7 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
         resultSet.rows.add(new RowData(12L));
         resultSet.rows.add(new RowData(13L));
 
-        EntityType<IdGeneratedEmp> entityType = _IdGeneratedEmp
+        EntityDesc<IdGeneratedEmp> entityType = _IdGeneratedEmp
                 .getSingletonInternal();
         BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,

@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.command;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * 
@@ -30,9 +30,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class HolderStreamHandler<BASIC, HOLDER, RESULT> extends
         ScalarStreamHandler<BASIC, HOLDER, RESULT> {
 
-    public HolderStreamHandler(HolderType<BASIC, HOLDER> holderType,
+    public HolderStreamHandler(HolderDesc<BASIC, HOLDER> holderDesc,
             Function<Stream<HOLDER>, RESULT> mapper) {
-        super(() -> holderType.createScalar(), mapper);
+        super(() -> holderDesc.createScalar(), mapper);
     }
 
 }

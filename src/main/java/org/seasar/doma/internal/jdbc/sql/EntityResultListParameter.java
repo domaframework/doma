@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.command.EntityProvider;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -31,14 +31,14 @@ import org.seasar.doma.jdbc.query.Query;
 public class EntityResultListParameter<ENTITY> extends
         AbstractResultListParameter<ENTITY> {
 
-    EntityType<ENTITY> entityType;
+    EntityDesc<ENTITY> entityDesc;
     boolean resultMappingEnsured;
 
-    public EntityResultListParameter(EntityType<ENTITY> entityType,
+    public EntityResultListParameter(EntityDesc<ENTITY> entityDesc,
             boolean resultMappingEnsured) {
         super(new ArrayList<ENTITY>());
-        assertNotNull(entityType);
-        this.entityType = entityType;
+        assertNotNull(entityDesc);
+        this.entityDesc = entityDesc;
         this.resultMappingEnsured = resultMappingEnsured;
     }
 
@@ -49,7 +49,7 @@ public class EntityResultListParameter<ENTITY> extends
 
     @Override
     public EntityProvider<ENTITY> createObjectProvider(Query query) {
-        return new EntityProvider<>(entityType, query,
+        return new EntityProvider<>(entityDesc, query,
                 resultMappingEnsured);
     }
 

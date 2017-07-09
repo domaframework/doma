@@ -36,8 +36,8 @@ import java.util.function.Supplier;
 import org.seasar.doma.Holder;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.ClassHelper;
-import org.seasar.doma.jdbc.holder.HolderType;
-import org.seasar.doma.jdbc.holder.HolderTypeFactory;
+import org.seasar.doma.jdbc.holder.HolderDesc;
+import org.seasar.doma.jdbc.holder.HolderDescFactory;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
@@ -294,22 +294,22 @@ public final class Scalars {
     protected static <BASIC, HOLDER> Supplier<Scalar<?, ?>> wrapHolderObject(
             Object value, Class<HOLDER> valueClass, boolean optional,
             ClassHelper classHelper) {
-        HolderType<BASIC, HOLDER> holderType;
+        HolderDesc<BASIC, HOLDER> holderDesc;
         if (valueClass.isAnnotationPresent(Holder.class)) {
-            holderType = HolderTypeFactory.getHolderType(valueClass,
+            holderDesc = HolderDescFactory.getHolderDesc(valueClass,
                     classHelper);
         } else {
-            holderType = HolderTypeFactory.getExternalHolderType(valueClass,
+            holderDesc = HolderDescFactory.getExternalHolderDesc(valueClass,
                     classHelper);
         }
-        if (holderType == null) {
+        if (holderDesc == null) {
             return null;
         }
         HOLDER holder = valueClass.cast(value);
         if (optional) {
-            return () -> holderType.createOptionalScalar(holder);
+            return () -> holderDesc.createOptionalScalar(holder);
         } else {
-            return () -> holderType.createScalar(holder);
+            return () -> holderDesc.createScalar(holder);
         }
     }
 }

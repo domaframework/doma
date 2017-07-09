@@ -92,7 +92,7 @@ public abstract class AptTestCase extends AptinaTestCase {
                 || originalClass.isAnnotationPresent(Embeddable.class)
                 || originalClass.isAnnotationPresent(Holder.class)
                 || originalClass.isAnnotationPresent(ExternalHolder.class)) {
-            return Conventions.toFullMetaName(originalClass.getName());
+            return Conventions.toFullDescName(originalClass.getName());
         }
         throw new AssertionFailedError("annotation not found.");
     }

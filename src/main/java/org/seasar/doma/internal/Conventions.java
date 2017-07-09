@@ -39,11 +39,11 @@ public class Conventions {
         }
         return base
                 + enclosingNames.stream()
-                        .map(n -> n + Constants.METATYPE_NAME_DELIMITER)
+                        .map(n -> n + Constants.DESC_NAME_DELIMITER)
                         .collect(joining()) + simpleName;
     }
 
-    public static String toFullMetaName(String originalBinaryName) {
+    public static String toFullDescName(String originalBinaryName) {
         assertNotNull(originalBinaryName);
         String binaryName = normalizeBinaryName(originalBinaryName);
         String packageName = ClassUtil.getPackageName(binaryName);
@@ -52,18 +52,18 @@ public class Conventions {
         if (packageName != null && packageName.length() > 0) {
             base = packageName + ".";
         }
-        return base + createSimpleMetaName(simpleName);
+        return base + createSimpleDescName(simpleName);
     }
 
-    public static String toSimpleMetaName(String originalBinaryName) {
+    public static String toSimpleDescName(String originalBinaryName) {
         assertNotNull(originalBinaryName);
         String binaryName = normalizeBinaryName(originalBinaryName);
         String simpleName = ClassUtil.getSimpleName(binaryName);
-        return createSimpleMetaName(simpleName);
+        return createSimpleDescName(simpleName);
     }
 
-    private static String createSimpleMetaName(String originalSimpleName) {
-        return Constants.METATYPE_PREFIX + originalSimpleName;
+    private static String createSimpleDescName(String originalSimpleName) {
+        return Constants.DESC_PREFIX + originalSimpleName;
     }
 
 }

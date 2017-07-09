@@ -23,7 +23,7 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 
 /**
@@ -94,7 +94,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
             final ResultSet resultSet = statement.getGeneratedKeys();
             return getGeneratedValue(config, resultSet);
         } catch (final SQLException e) {
-            throw new JdbcException(Message.DOMA2018, e, config.getEntityType()
+            throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc()
                     .getName(), e);
         }
     }
@@ -110,16 +110,16 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
      */
     protected long getGeneratedValue(IdGenerationConfig config) {
         Naming naming = config.getNaming();
-        EntityType<?> entityType = config.getEntityType();
+        EntityDesc<?> entityType = config.getEntityDesc();
         String catalogName = entityType.getCatalogName();
         String schemaName = entityType.getSchemaName();
         String tableName = entityType.getTableName(naming::apply);
-        String idColumnName = entityType.getGeneratedIdPropertyType()
+        String idColumnName = entityType.getGeneratedIdPropertyDesc()
                 .getColumnName(naming::apply);
         Sql<?> sql = config.getDialect().getIdentitySelectSql(catalogName,
                 schemaName, tableName, idColumnName,
                 entityType.isQuoteRequired(),
-                entityType.getGeneratedIdPropertyType().isQuoteRequired());
+                entityType.getGeneratedIdPropertyDesc().isQuoteRequired());
         return getGeneratedValue(config, sql);
     }
 

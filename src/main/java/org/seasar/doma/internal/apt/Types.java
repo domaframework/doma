@@ -418,8 +418,7 @@ public class Types implements javax.lang.model.util.Types {
         return typeElement.asType();
     }
 
-    public TypeMirror getSupertype(TypeMirror type,
-            Class<?> superclass) {
+    public TypeMirror getSupertype(TypeMirror type, Class<?> superclass) {
         assertNotNull(type, superclass);
         if (isSameType(type, superclass)) {
             return type;
@@ -475,13 +474,12 @@ public class Types implements javax.lang.model.util.Types {
         return typeUtils.getArrayType(componentType);
     }
 
-    public DeclaredType getDeclaredType(DeclaredType containing,
-            TypeElement typeElem, TypeMirror... typeArgs) {
+    public DeclaredType getDeclaredType(DeclaredType containing, TypeElement typeElem,
+            TypeMirror... typeArgs) {
         return typeUtils.getDeclaredType(containing, typeElem, typeArgs);
     }
 
-    public DeclaredType getDeclaredType(TypeElement typeElem,
-            TypeMirror... typeArgs) {
+    public DeclaredType getDeclaredType(TypeElement typeElem, TypeMirror... typeArgs) {
         return typeUtils.getDeclaredType(typeElem, typeArgs);
     }
 
@@ -497,8 +495,7 @@ public class Types implements javax.lang.model.util.Types {
         return typeUtils.getPrimitiveType(kind);
     }
 
-    public WildcardType getWildcardType(TypeMirror extendsBound,
-            TypeMirror superBound) {
+    public WildcardType getWildcardType(TypeMirror extendsBound, TypeMirror superBound) {
         return typeUtils.getWildcardType(extendsBound, superBound);
     }
 
@@ -520,15 +517,16 @@ public class Types implements javax.lang.model.util.Types {
         return map.values();
     }
 
-    private void gatherSupertypes(TypeMirror type,
-            Map<String, TypeMirror> map) {
+    private void gatherSupertypes(TypeMirror type, Map<String, TypeMirror> map) {
+        if (type.getKind() == TypeKind.NONE || type.getKind() == TypeKind.NULL) {
+            return;
+        }
         for (TypeMirror supertype : directSupertypes(type)) {
             TypeElement typeElement = toTypeElement(supertype);
             if (typeElement == null) {
                 continue;
             }
-            String key = ctx.getElements().getBinaryName(typeElement)
-                    .toString();
+            String key = ctx.getElements().getBinaryName(typeElement).toString();
             map.put(key, supertype);
             gatherSupertypes(supertype, map);
         }

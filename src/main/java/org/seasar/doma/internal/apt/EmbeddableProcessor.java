@@ -49,7 +49,7 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
     protected Generator createGenerator(Context ctx, TypeElement typeElement, EmbeddableMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
-        return new EmbeddableTypeGenerator(ctx, typeElement, meta);
+        return new EmbeddableDescGenerator(ctx, typeElement, meta);
     }
 
 }

@@ -36,7 +36,7 @@ public interface PreDeleteContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<E> getEntityType();
+    public EntityDesc<E> getEntityType();
 
     /**
      * {@link Delete} が注釈されたメソッドを返します。

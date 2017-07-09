@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -32,21 +32,21 @@ public interface UnknownColumnHandler {
      * 
      * @param query
      *            クエリ
-     * @param entityType
+     * @param entityDesc
      *            エンティティのメタタイプ
      * @param unknownColumnName
      *            未知のカラム名
      * @throws UnknownColumnException
      *             未知のカラムを許可しない場合
      */
-    default void handle(Query query, EntityType<?> entityType,
+    default void handle(Query query, EntityDesc<?> entityDesc,
             String unknownColumnName) {
         Sql<?> sql = query.getSql();
         Naming naming = query.getConfig().getNaming();
-        NamingType namingType = entityType.getNamingType();
+        NamingType namingType = entityDesc.getNamingType();
         throw new UnknownColumnException(query.getConfig()
                 .getExceptionSqlLogType(), unknownColumnName, naming.revert(
-                namingType, unknownColumnName), entityType.getEntityClass()
+                namingType, unknownColumnName), entityDesc.getEntityClass()
                 .getName(), sql.getKind(), sql.getRawSql(),
                 sql.getFormattedSql(), sql.getSqlFilePath());
     }

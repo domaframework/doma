@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * @author taedium
@@ -26,9 +26,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class HolderResultListHandler<BASIC, HOLDER> extends
         ScalarResultListHandler<BASIC, HOLDER> {
 
-    public HolderResultListHandler(HolderType<BASIC, HOLDER> holderType) {
-        super(() -> holderType.createScalar());
-        assertNotNull(holderType);
+    public HolderResultListHandler(HolderDesc<BASIC, HOLDER> holderDesc) {
+        super(() -> holderDesc.createScalar());
+        assertNotNull(holderDesc);
     }
 
 }

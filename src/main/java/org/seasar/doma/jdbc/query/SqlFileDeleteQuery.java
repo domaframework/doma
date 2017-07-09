@@ -23,8 +23,8 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 /**
  * @author taedium
@@ -81,7 +81,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
 
     @Override
     public <E> void setEntityAndEntityType(String name, E entity,
-            EntityType<E> entityType) {
+            EntityDesc<E> entityType) {
         entityHandler = new EntityHandler<E>(name, entity, entityType);
     }
 
@@ -108,39 +108,39 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
 
         protected E entity;
 
-        protected EntityType<E> entityType;
+        protected EntityDesc<E> entityDesc;
 
-        protected VersionPropertyType<E, ?, ?> versionPropertyType;
+        protected VersionPropertyDesc<E, ?, ?> versionPropertyDesc;
 
-        protected EntityHandler(String name, E entity, EntityType<E> entityType) {
+        protected EntityHandler(String name, E entity, EntityDesc<E> entityType) {
             assertNotNull(name, entity, entityType);
             this.name = name;
             this.entity = entity;
-            this.entityType = entityType;
-            this.versionPropertyType = entityType.getVersionPropertyType();
+            this.entityDesc = entityType;
+            this.versionPropertyDesc = entityType.getVersionPropertyDesc();
         }
 
         protected void preDelete() {
             SqlFilePreDeleteContext<E> context = new SqlFilePreDeleteContext<E>(
-                    entityType, method, config);
-            entityType.preDelete(entity, context);
+                    entityDesc, method, config);
+            entityDesc.preDelete(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
-                addParameterInternal(name, entityType.getEntityClass(), entity);
+                addParameterInternal(name, entityDesc.getEntityClass(), entity);
             }
         }
 
         protected void postDelete() {
             SqlFilePostDeleteContext<E> context = new SqlFilePostDeleteContext<E>(
-                    entityType, method, config);
-            entityType.postDelete(entity, context);
+                    entityDesc, method, config);
+            entityDesc.postDelete(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
         }
 
         protected void prepareOptimisticLock() {
-            if (versionPropertyType != null && !versionIgnored) {
+            if (versionPropertyDesc != null && !versionIgnored) {
                 if (!optimisticLockExceptionSuppressed) {
                     optimisticLockCheckRequired = true;
                 }
@@ -151,7 +151,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePreDeleteContext<E> extends
             AbstractPreDeleteContext<E> {
 
-        public SqlFilePreDeleteContext(EntityType<E> entityType, Method method,
+        public SqlFilePreDeleteContext(EntityDesc<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
@@ -160,7 +160,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePostDeleteContext<E> extends
             AbstractPostDeleteContext<E> {
 
-        public SqlFilePostDeleteContext(EntityType<E> entityType,
+        public SqlFilePostDeleteContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

@@ -52,6 +52,6 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
     protected Generator createGenerator(Context ctx, TypeElement typeElement, DaoMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
-        return new DaoGenerator(ctx, typeElement, meta);
+        return new DaoImplGenerator(ctx, typeElement, meta);
     }
 }

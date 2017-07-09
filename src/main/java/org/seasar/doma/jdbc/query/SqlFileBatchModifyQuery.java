@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 
 /**
  * @author taedium
@@ -165,7 +165,7 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
-    public abstract void setEntityType(EntityType<ELEMENT> entityType);
+    public abstract void setEntityType(EntityDesc<ELEMENT> entityType);
 
     @Override
     public PreparedSql getSql() {

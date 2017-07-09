@@ -25,11 +25,11 @@ import java.util.function.BiFunction;
 
 import javax.annotation.processing.Generated;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
-import org.seasar.doma.jdbc.entity.DefaultPropertyType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -38,31 +38,31 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 @Generated("")
-public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
+public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 
     private static _ImmutableEmp singleton = new _ImmutableEmp();
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public final AssignedIdPropertyType<ImmutableEmp, Integer, Object> id = new AssignedIdPropertyType<>(
+    public final AssignedIdPropertyDesc<ImmutableEmp, Integer, Object> id = new AssignedIdPropertyDesc<>(
             ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false);
 
-    public final DefaultPropertyType<ImmutableEmp, String, Object> name = new DefaultPropertyType<>(
+    public final DefaultPropertyDesc<ImmutableEmp, String, Object> name = new DefaultPropertyDesc<>(
             ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 
-    public final DefaultPropertyType<ImmutableEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
+    public final DefaultPropertyDesc<ImmutableEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyDesc<>(
             ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
             "salary", "SALARY", __namingType, true, true, false);
 
-    public final VersionPropertyType<ImmutableEmp, Integer, Integer> version = new VersionPropertyType<>(
+    public final VersionPropertyDesc<ImmutableEmp, Integer, Integer> version = new VersionPropertyDesc<>(
             ImmutableEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "version", "VERSION", __namingType, false);
@@ -75,23 +75,23 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
     private final String __tableName = "EMP";
 
-    private final List<EntityPropertyType<ImmutableEmp, ?>> __idPropertyTypes;
+    private final List<EntityPropertyDesc<ImmutableEmp, ?>> __idPropertyTypes;
 
-    private final List<EntityPropertyType<ImmutableEmp, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyDesc<ImmutableEmp, ?>> __entityPropertyTypes;
 
-    private final Map<String, EntityPropertyType<ImmutableEmp, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyDesc<ImmutableEmp, ?>> __entityPropertyTypeMap;
 
     private _ImmutableEmp() {
-        List<EntityPropertyType<ImmutableEmp, ?>> __idList = new ArrayList<>();
+        List<EntityPropertyDesc<ImmutableEmp, ?>> __idList = new ArrayList<>();
         __idList.add(id);
         __idPropertyTypes = Collections.unmodifiableList(__idList);
-        List<EntityPropertyType<ImmutableEmp, ?>> __list = new ArrayList<>();
+        List<EntityPropertyDesc<ImmutableEmp, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
         __list.add(salary);
         __list.add(version);
         __entityPropertyTypes = Collections.unmodifiableList(__list);
-        Map<String, EntityPropertyType<ImmutableEmp, ?>> __map = new HashMap<>();
+        Map<String, EntityPropertyDesc<ImmutableEmp, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
         __map.put("salary", salary);
@@ -126,12 +126,12 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public List<EntityPropertyType<ImmutableEmp, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyDesc<ImmutableEmp, ?>> getEntityPropertyDescs() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public EntityPropertyType<ImmutableEmp, ?> getEntityPropertyType(
+    public EntityPropertyDesc<ImmutableEmp, ?> getEntityPropertyDesc(
             String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
@@ -146,17 +146,17 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<ImmutableEmp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyDesc<ImmutableEmp, ?, ?> getGeneratedIdPropertyDesc() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<ImmutableEmp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyDesc<ImmutableEmp, ?, ?> getVersionPropertyDesc() {
         return version;
     }
 
     @Override
-    public List<EntityPropertyType<ImmutableEmp, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyDesc<ImmutableEmp, ?>> getIdPropertyDescs() {
         return __idPropertyTypes;
     }
 

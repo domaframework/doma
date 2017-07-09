@@ -60,7 +60,7 @@ public interface PreUpdateContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<?> getEntityType();
+    public EntityDesc<?> getEntityType();
 
     /**
      * {@link Update} が注釈されたメソッドを返します。

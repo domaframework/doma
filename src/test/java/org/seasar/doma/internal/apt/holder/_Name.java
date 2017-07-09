@@ -15,13 +15,13 @@
  */
 package org.seasar.doma.internal.apt.holder;
 
-import org.seasar.doma.jdbc.holder.AbstractHolderType;
+import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
 /**
  * @author taedium
  * 
  */
-public class _Name extends AbstractHolderType<String, Name> {
+public class _Name extends AbstractHolderDesc<String, Name> {
 
     private _Name() {
         super(() -> new org.seasar.doma.wrapper.StringWrapper());

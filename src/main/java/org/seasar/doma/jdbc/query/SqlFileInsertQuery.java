@@ -24,7 +24,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 
 /**
  * @author taedium
@@ -84,7 +84,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
 
     @Override
     public <E> void setEntityAndEntityType(String name, E entity,
-            EntityType<E> entityType) {
+            EntityDesc<E> entityType) {
         entityHandler = new EntityHandler<E>(name, entity, entityType);
     }
 
@@ -98,29 +98,29 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
 
         protected E entity;
 
-        protected EntityType<E> entityType;
+        protected EntityDesc<E> entityDesc;
 
-        protected EntityHandler(String name, E entity, EntityType<E> entityType) {
+        protected EntityHandler(String name, E entity, EntityDesc<E> entityType) {
             assertNotNull(name, entity, entityType);
             this.name = name;
             this.entity = entity;
-            this.entityType = entityType;
+            this.entityDesc = entityType;
         }
 
         protected void preInsert() {
             SqlFilePreInsertContext<E> context = new SqlFilePreInsertContext<E>(
-                    entityType, method, config);
-            entityType.preInsert(entity, context);
+                    entityDesc, method, config);
+            entityDesc.preInsert(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
-                addParameterInternal(name, entityType.getEntityClass(), entity);
+                addParameterInternal(name, entityDesc.getEntityClass(), entity);
             }
         }
 
         protected void postInsert() {
             SqlFilePostInsertContext<E> context = new SqlFilePostInsertContext<E>(
-                    entityType, method, config);
-            entityType.postInsert(entity, context);
+                    entityDesc, method, config);
+            entityDesc.postInsert(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
@@ -132,7 +132,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePreInsertContext<E> extends
             AbstractPreInsertContext<E> {
 
-        public SqlFilePreInsertContext(EntityType<E> entityType, Method method,
+        public SqlFilePreInsertContext(EntityDesc<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
@@ -141,7 +141,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePostInsertContext<E> extends
             AbstractPostInsertContext<E> {
 
-        public SqlFilePostInsertContext(EntityType<E> entityType,
+        public SqlFilePostInsertContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

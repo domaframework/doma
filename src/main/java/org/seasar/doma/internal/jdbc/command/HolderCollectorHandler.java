@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.stream.Collector;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * 
@@ -29,9 +29,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class HolderCollectorHandler<BASIC, HOLDER, RESULT> extends
         ScalarCollectorHandler<BASIC, HOLDER, RESULT> {
 
-    public HolderCollectorHandler(HolderType<BASIC, HOLDER> holderType,
+    public HolderCollectorHandler(HolderDesc<BASIC, HOLDER> holderDesc,
             Collector<HOLDER, ?, RESULT> collector) {
-        super(() -> holderType.createScalar(), collector);
+        super(() -> holderDesc.createScalar(), collector);
     }
 
 }

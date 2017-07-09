@@ -24,7 +24,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 
 /**
  * 識別子の生成に関する設定です。
@@ -38,7 +38,7 @@ public class IdGenerationConfig {
     protected final Config config;
 
     /** 識別子が属するエンティティ */
-    protected final EntityType<?> entityType;
+    protected final EntityDesc<?> entityDesc;
 
     /** 識別子プロバイダ */
     protected final IdProvider idProvider;
@@ -48,11 +48,11 @@ public class IdGenerationConfig {
      * 
      * @param config
      *            JDBCの設定
-     * @param entityType
+     * @param entityDesc
      *            識別子が属するエンティティ
      */
-    public IdGenerationConfig(Config config, EntityType<?> entityType) {
-        this(config, entityType, new UnavailableIdProvider());
+    public IdGenerationConfig(Config config, EntityDesc<?> entityDesc) {
+        this(config, entityDesc, new UnavailableIdProvider());
     }
 
     /**
@@ -60,16 +60,16 @@ public class IdGenerationConfig {
      * 
      * @param config
      *            JDBCの設定
-     * @param entityType
+     * @param entityDesc
      *            識別子が属するエンティティ
      * @param idProvider
      *            識別子プロバイダ
      */
-    public IdGenerationConfig(Config config, EntityType<?> entityType,
+    public IdGenerationConfig(Config config, EntityDesc<?> entityDesc,
             IdProvider idProvider) {
-        assertNotNull(config, entityType, idProvider);
+        assertNotNull(config, entityDesc, idProvider);
         this.config = config;
-        this.entityType = entityType;
+        this.entityDesc = entityDesc;
         this.idProvider = idProvider;
     }
 
@@ -109,8 +109,8 @@ public class IdGenerationConfig {
         return config.getQueryTimeout();
     }
 
-    public EntityType<?> getEntityType() {
-        return entityType;
+    public EntityDesc<?> getEntityDesc() {
+        return entityDesc;
     }
 
     public IdProvider getIdProvider() {

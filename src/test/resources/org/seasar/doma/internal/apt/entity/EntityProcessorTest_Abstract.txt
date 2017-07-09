@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.AbstractEntity> {
+public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractEntityDesc<org.seasar.doma.internal.apt.entity.AbstractEntity> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -13,7 +13,7 @@ public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractE
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.AbstractEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, "id", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<>(org.seasar.doma.internal.apt.entity.AbstractEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, "id", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.AbstractEntity>> __listenerSupplier;
 
@@ -29,11 +29,11 @@ public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractE
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __idPropertyDescs;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __entityPropertyDescs;
 
-    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __entityPropertyDescMap;
 
     private _AbstractEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
@@ -43,15 +43,15 @@ public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractE
         __schemaName = "";
         __tableName = "";
         __isQuoteRequired = false;
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __idList = new java.util.ArrayList<>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __list = new java.util.ArrayList<>(1);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __map = new java.util.HashMap<>(1);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __list = new java.util.ArrayList<>(1);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __map = new java.util.HashMap<>(1);
         __idList.add($id);
         __list.add($id);
         __map.put("id", $id);
-        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
-        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
-        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __idPropertyDescs = java.util.Collections.unmodifiableList(__idList);
+        __entityPropertyDescs = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyDescMap = java.util.Collections.unmodifiableMap(__map);
     }
 
     @Override
@@ -141,27 +141,27 @@ public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractE
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> getEntityPropertyTypes() {
-        return __entityPropertyTypes;
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> getEntityPropertyDescs() {
+        return __entityPropertyDescs;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?> getEntityPropertyType(String __name) {
-        return __entityPropertyTypeMap.get(__name);
+    public org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?> getEntityPropertyDesc(String __name) {
+        return __entityPropertyDescMap.get(__name);
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> getIdPropertyTypes() {
-        return __idPropertyTypes;
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> getIdPropertyDescs() {
+        return __idPropertyDescs;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?, ?> getGeneratedIdPropertyDesc() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyDesc<org.seasar.doma.internal.apt.entity.AbstractEntity, ?, ?> getVersionPropertyDesc() {
         return null;
     }
 

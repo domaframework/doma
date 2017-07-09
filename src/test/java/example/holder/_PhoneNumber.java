@@ -15,9 +15,9 @@
  */
 package example.holder;
 
-import org.seasar.doma.jdbc.holder.AbstractHolderType;
+import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
-public class _PhoneNumber extends AbstractHolderType<String, PhoneNumber> {
+public class _PhoneNumber extends AbstractHolderDesc<String, PhoneNumber> {
 
     private static final _PhoneNumber singleton = new _PhoneNumber();
 

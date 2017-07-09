@@ -23,8 +23,8 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.holder.HolderType;
-import org.seasar.doma.jdbc.holder.HolderTypeFactory;
+import org.seasar.doma.jdbc.holder.HolderDesc;
+import org.seasar.doma.jdbc.holder.HolderDescFactory;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
@@ -61,8 +61,8 @@ public class PreparedSqlBuilderTest extends TestCase {
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.SELECT, SqlLogType.FORMATTED);
         builder.appendSql("select * from aaa where phoneNumber = ");
-        HolderType<String, PhoneNumber> phoneNumberType = HolderTypeFactory
-                .getHolderType(PhoneNumber.class, new ClassHelper() {
+        HolderDesc<String, PhoneNumber> phoneNumberType = HolderDescFactory
+                .getHolderDesc(PhoneNumber.class, new ClassHelper() {
                 });
         PhoneNumber phoneNumber = new PhoneNumber("03-1234-5678");
         builder.appendParameter(new HolderInParameter<String, PhoneNumber>(

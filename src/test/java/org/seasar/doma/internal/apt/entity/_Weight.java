@@ -15,13 +15,13 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.holder.AbstractHolderType;
+import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
 /**
  * @author taedium
  * 
  */
-public class _Weight<T> extends AbstractHolderType<Integer, Weight<T>> {
+public class _Weight<T> extends AbstractHolderDesc<Integer, Weight<T>> {
 
     private _Weight() {
         super(() -> new org.seasar.doma.wrapper.IntegerWrapper());

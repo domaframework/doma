@@ -50,7 +50,7 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
     protected Generator createGenerator(Context ctx, TypeElement typeElement, EntityMeta meta)
             throws IOException {
         assertNotNull(typeElement, meta);
-        return new EntityTypeGenerator(ctx, typeElement, meta);
+        return new EntityDescGenerator(ctx, typeElement, meta);
     }
 
 }

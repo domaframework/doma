@@ -28,7 +28,7 @@ public class HolderCtType extends AbstractCtType {
 
     private final boolean external;
 
-    private final String metaClassName;
+    private final String descClassName;
 
     private final String typeArgDecl;
 
@@ -38,12 +38,12 @@ public class HolderCtType extends AbstractCtType {
         assertNotNull(basicCtType);
         this.basicCtType = basicCtType;
         this.external = external;
-        int pos = metaTypeName.indexOf('<');
+        int pos = descTypeName.indexOf('<');
         if (pos > -1) {
-            this.metaClassName = metaTypeName.substring(0, pos);
-            this.typeArgDecl = metaTypeName.substring(pos);
+            this.descClassName = descTypeName.substring(0, pos);
+            this.typeArgDecl = descTypeName.substring(pos);
         } else {
-            this.metaClassName = metaTypeName;
+            this.descClassName = descTypeName;
             this.typeArgDecl = "";
         }
     }
@@ -53,13 +53,13 @@ public class HolderCtType extends AbstractCtType {
     }
 
     public String getInstantiationCommand() {
-        return normalize(metaClassName) + "." + typeArgDecl
+        return normalize(descClassName) + "." + typeArgDecl
                 + "getSingletonInternal()";
     }
 
     protected String normalize(String name) {
         if (external) {
-            return Constants.EXTERNAL_HOLDER_METATYPE_ROOT_PACKAGE + "." + name;
+            return Constants.EXTERNAL_HOLDER_DESC_ROOT_PACKAGE + "." + name;
         }
         return name;
     }

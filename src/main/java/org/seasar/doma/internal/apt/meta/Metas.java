@@ -31,16 +31,16 @@ public class Metas {
         this.ctx = ctx;
     }
 
-    public String toFullMetaName(TypeElement originalTypeElement) {
+    public String toFullDescName(TypeElement originalTypeElement) {
         assertNotNull(originalTypeElement);
         String binaryName = ctx.getElements()
                 .getBinaryName(originalTypeElement).toString();
-        return Conventions.toFullMetaName(binaryName);
+        return Conventions.toFullDescName(binaryName);
     }
 
-    public String toSimpleMetaName(TypeElement originalTypeElement) {
+    public String toSimpleDescName(TypeElement originalTypeElement) {
         assertNotNull(originalTypeElement);
-        return Conventions.toSimpleMetaName(ctx.getElements()
+        return Conventions.toSimpleDescName(ctx.getElements()
                 .getBinaryName(originalTypeElement).toString());
     }
 

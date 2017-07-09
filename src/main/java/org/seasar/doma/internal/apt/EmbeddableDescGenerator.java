@@ -35,9 +35,9 @@ import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
-import org.seasar.doma.jdbc.entity.DefaultPropertyType;
-import org.seasar.doma.jdbc.entity.EmbeddableType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EmbeddableDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 
@@ -45,11 +45,11 @@ import org.seasar.doma.jdbc.entity.Property;
  * @author nakamura-to
  *
  */
-public class EmbeddableTypeGenerator extends AbstractGenerator {
+public class EmbeddableDescGenerator extends AbstractGenerator {
 
     private final EmbeddableMeta embeddableMeta;
 
-    public EmbeddableTypeGenerator(Context ctx, TypeElement embeddableElement,
+    public EmbeddableDescGenerator(Context ctx, TypeElement embeddableElement,
             EmbeddableMeta embeddableMeta) throws IOException {
         super(ctx, embeddableElement, embeddableMeta.getEmbeddableDescCanonicalName());
         assertNotNull(embeddableMeta);
@@ -75,7 +75,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
         iprint("public final class %1$s implements %2$s<%3$s> {%n",
                 // @formatter:off
                 /* 1 */simpleName,
-                /* 2 */EmbeddableType.class.getName(),
+                /* 2 */EmbeddableDesc.class.getName(),
                 /* 3 */embeddableMeta.getEmbeddableElement().getQualifiedName());
                 // @formatter:on
         print("%n");
@@ -97,16 +97,16 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     }
 
     private void printMethods() {
-        printGetEmbeddablePropertyTypesMethod();
+        printGetEmbeddablePropertyDescsMethod();
         printNewEmbeddableMethod();
         printGetSingletonInternalMethod();
     }
 
-    private void printGetEmbeddablePropertyTypesMethod() {
+    private void printGetEmbeddablePropertyDescsMethod() {
         iprint("@Override%n");
-        iprint("public <ENTITY> %1$s<%2$s<ENTITY, ?>> getEmbeddablePropertyTypes"
+        iprint("public <ENTITY> %1$s<%2$s<ENTITY, ?>> getEmbeddablePropertyDescs"
                 + "(String embeddedPropertyName, Class<ENTITY> entityClass, %3$s namingType) {%n",
-                List.class.getName(), EntityPropertyType.class.getName(),
+                List.class.getName(), EntityPropertyDesc.class.getName(),
                 NamingType.class.getName());
         iprint("    return %1$s.asList(%n", Arrays.class.getName());
         for (Iterator<EmbeddablePropertyMeta> it = embeddableMeta.getEmbeddablePropertyMetas()
@@ -126,7 +126,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
             iprint("        new %1$s<ENTITY, %2$s, %3$s>(entityClass, %4$s, %5$s, "
                     + "embeddedPropertyName + \".%6$s\", \"%7$s\", namingType, %8$s, %9$s, %10$s)",
                     // @formatter:off
-                    /* 1 */DefaultPropertyType.class.getName(),
+                    /* 1 */DefaultPropertyDesc.class.getName(),
                     /* 2 */box(basicCtType),
                     /* 3 */holderTypeName,
                     /* 4 */supply(basicCtType),

@@ -15,9 +15,9 @@
  */
 package example.holder;
 
-import org.seasar.doma.jdbc.holder.AbstractHolderType;
+import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
-public class _JobType extends AbstractHolderType<Integer, JobType> {
+public class _JobType extends AbstractHolderDesc<Integer, JobType> {
 
     private static final _JobType singleton = new _JobType();
 

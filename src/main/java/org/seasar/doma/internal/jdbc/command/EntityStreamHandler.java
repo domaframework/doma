@@ -21,7 +21,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.seasar.doma.jdbc.ObjectProvider;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
@@ -34,18 +34,18 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class EntityStreamHandler<ENTITY, RESULT> extends
         AbstractStreamHandler<ENTITY, RESULT> {
 
-    protected final EntityType<ENTITY> entityType;
+    protected final EntityDesc<ENTITY> entityDesc;
 
-    public EntityStreamHandler(EntityType<ENTITY> entityType,
+    public EntityStreamHandler(EntityDesc<ENTITY> entityDesc,
             Function<Stream<ENTITY>, RESULT> mapper) {
         super(mapper);
-        assertNotNull(entityType);
-        this.entityType = entityType;
+        assertNotNull(entityDesc);
+        this.entityDesc = entityDesc;
     }
 
     @Override
     protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
-        return new EntityProvider<>(entityType, query,
+        return new EntityProvider<>(entityDesc, query,
                 query.isResultMappingEnsured());
     }
 

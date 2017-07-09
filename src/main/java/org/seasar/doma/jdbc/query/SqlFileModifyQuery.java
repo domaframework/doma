@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 
 /**
  * @author taedium
@@ -150,7 +150,7 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements
     }
 
     public abstract <E> void setEntityAndEntityType(String name, E entity,
-            EntityType<E> entityType);
+            EntityDesc<E> entityType);
 
     @Override
     public String toString() {

@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.command;
 import java.util.Optional;
 import java.util.stream.Collector;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * 
@@ -30,9 +30,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class OptionalHolderCollectorHandler<BASIC, HOLDER, RESULT> extends
         ScalarCollectorHandler<BASIC, Optional<HOLDER>, RESULT> {
 
-    public OptionalHolderCollectorHandler(HolderType<BASIC, HOLDER> holderType,
+    public OptionalHolderCollectorHandler(HolderDesc<BASIC, HOLDER> holderDesc,
             Collector<Optional<HOLDER>, ?, RESULT> collector) {
-        super(() -> holderType.createOptionalScalar(), collector);
+        super(() -> holderDesc.createOptionalScalar(), collector);
     }
 
 }

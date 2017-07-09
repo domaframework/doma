@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.entity.BranchConverter;
 
 public final class _Branch
         extends
-        org.seasar.doma.jdbc.holder.AbstractHolderType<java.lang.String, Branch> {
+        org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.String, Branch> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");

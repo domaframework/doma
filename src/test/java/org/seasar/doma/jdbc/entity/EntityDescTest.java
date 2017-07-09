@@ -31,32 +31,32 @@ import junit.framework.TestCase;
  * @author nakamura-to
  * 
  */
-public class EntityTypeTest extends TestCase {
+public class EntityDescTest extends TestCase {
 
     public void test() throws Exception {
-        EntityType<Emp> entityType = _Emp.getSingletonInternal();
+        EntityDesc<Emp> entityType = _Emp.getSingletonInternal();
         entityType.getName();
     }
 
     public void testImmutable_newEntity() throws Exception {
         ImmutableEmp emp = new ImmutableEmp(99, "hoge", BigDecimal.ONE, 1);
-        EntityType<ImmutableEmp> entityType = _ImmutableEmp
+        EntityDesc<ImmutableEmp> entityDesc = _ImmutableEmp
                 .getSingletonInternal();
         Map<String, Property<ImmutableEmp, ?>> args = new HashMap<>();
 
-        EntityPropertyType<ImmutableEmp, ?> idType = entityType
-                .getEntityPropertyType("id");
+        EntityPropertyDesc<ImmutableEmp, ?> idType = entityDesc
+                .getEntityPropertyDesc("id");
         Property<ImmutableEmp, ?> id = idType.createProperty();
         id.load(emp);
         args.put(idType.getName(), id);
 
-        EntityPropertyType<ImmutableEmp, ?> salaryType = entityType
-                .getEntityPropertyType("salary");
+        EntityPropertyDesc<ImmutableEmp, ?> salaryType = entityDesc
+                .getEntityPropertyDesc("salary");
         Property<ImmutableEmp, ?> salary = salaryType.createProperty();
         salary.load(emp);
         args.put(salaryType.getName(), salary);
 
-        ImmutableEmp newEmp = entityType.newEntity(args);
+        ImmutableEmp newEmp = entityDesc.newEntity(args);
 
         assertEquals(Integer.valueOf(99), newEmp.getId());
         assertNull(newEmp.getName());
@@ -65,16 +65,16 @@ public class EntityTypeTest extends TestCase {
     }
 
     public void testGetTableName_naming() throws Exception {
-        EntityType<Dept> entityType = _Dept.getSingletonInternal();
-        assertEquals("dept", entityType.getTableName((namingType, text) -> text
+        EntityDesc<Dept> entityDesc = _Dept.getSingletonInternal();
+        assertEquals("dept", entityDesc.getTableName((namingType, text) -> text
                 .toLowerCase()));
     }
 
     public void testGetQualifiedName_naming_quote() throws Exception {
-        EntityType<Dept> entityType = _Dept.getSingletonInternal();
+        EntityDesc<Dept> entityDesc = _Dept.getSingletonInternal();
         assertEquals(
                 "[CATA].[dept]",
-                entityType.getQualifiedTableName(
+                entityDesc.getQualifiedTableName(
                         (namingType, text) -> text.toLowerCase(), text -> "["
                                 + text + "]"));
     }

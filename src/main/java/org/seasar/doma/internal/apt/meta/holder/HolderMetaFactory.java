@@ -171,7 +171,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
             }
             String simpleName = typeElement.getSimpleName().toString();
             if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-                    || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
+                    || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
                 throw new AptException(Message.DOMA4277, typeElement,
                         new Object[] { typeElement.getQualifiedName() });
             }

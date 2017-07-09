@@ -49,6 +49,6 @@ public class ExternalHolderProcessor extends AbstractGeneratingProcessor<Externa
     protected Generator createGenerator(Context ctx, TypeElement typeElement,
             ExternalHolderMeta meta) throws IOException {
         assertNotNull(typeElement, meta);
-        return new ExternalHolderTypeGenerator(ctx, meta.getHolderElement(), meta);
+        return new ExternalHolderDescGenerator(ctx, meta.getHolderElement(), meta);
     }
 }

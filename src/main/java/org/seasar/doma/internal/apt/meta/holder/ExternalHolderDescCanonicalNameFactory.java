@@ -33,8 +33,8 @@ public class ExternalHolderDescCanonicalNameFactory extends AbstractDescCanonica
 
     @Override
     protected String prefix() {
-        return Constants.EXTERNAL_HOLDER_METATYPE_ROOT_PACKAGE + "."
-                + ctx.getElements().getPackageName(typeElement) + "." + Constants.METATYPE_PREFIX;
+        return Constants.EXTERNAL_HOLDER_DESC_ROOT_PACKAGE + "."
+                + ctx.getElements().getPackageName(typeElement) + "." + Constants.DESC_PREFIX;
     }
 
 }

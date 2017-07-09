@@ -15,13 +15,13 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.jdbc.holder.AbstractHolderType;
+import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
 /**
  * @author taedium
  * 
  */
-public class _Height<T> extends AbstractHolderType<Integer, Height<T>> {
+public class _Height<T> extends AbstractHolderDesc<Integer, Height<T>> {
 
     private _Height() {
         super(() -> new org.seasar.doma.wrapper.IntegerWrapper());

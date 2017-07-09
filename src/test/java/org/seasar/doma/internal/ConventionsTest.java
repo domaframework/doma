@@ -32,17 +32,17 @@ public class ConventionsTest extends TestCase {
     }
 
     public void testToFullMetaName() throws Exception {
-        assertEquals("_Ccc", Conventions.toFullMetaName("Ccc"));
-        assertEquals("aaa.bbb._Ccc", Conventions.toFullMetaName("aaa.bbb.Ccc"));
+        assertEquals("_Ccc", Conventions.toFullDescName("Ccc"));
+        assertEquals("aaa.bbb._Ccc", Conventions.toFullDescName("aaa.bbb.Ccc"));
         assertEquals("aaa.bbb._Ccc__Ddd__Eee",
-                Conventions.toFullMetaName("aaa.bbb.Ccc$Ddd$Eee"));
+                Conventions.toFullDescName("aaa.bbb.Ccc$Ddd$Eee"));
     }
 
     public void testToSimpleMetaName() throws Exception {
-        assertEquals("_Ccc", Conventions.toSimpleMetaName("Ccc"));
-        assertEquals("_Ccc", Conventions.toSimpleMetaName("aaa.bbb.Ccc"));
+        assertEquals("_Ccc", Conventions.toSimpleDescName("Ccc"));
+        assertEquals("_Ccc", Conventions.toSimpleDescName("aaa.bbb.Ccc"));
         assertEquals("_Ccc__Ddd__Eee",
-                Conventions.toSimpleMetaName("aaa.bbb.Ccc$Ddd$Eee"));
+                Conventions.toSimpleDescName("aaa.bbb.Ccc$Ddd$Eee"));
     }
 
 }

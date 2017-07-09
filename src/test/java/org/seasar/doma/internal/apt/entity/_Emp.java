@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -30,13 +30,13 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 /**
  * @author taedium
  * 
  */
-public class _Emp extends AbstractEntityType<Emp> {
+public class _Emp extends AbstractEntityDesc<Emp> {
 
     @Override
     public String getCatalogName() {
@@ -51,25 +51,25 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public EntityPropertyType<Emp, ?> getEntityPropertyType(String name) {
+    public EntityPropertyDesc<Emp, ?> getEntityPropertyDesc(String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyDesc<Emp, ?>> getEntityPropertyDescs() {
 
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<Emp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyDesc<Emp, ?, ?> getGeneratedIdPropertyDesc() {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyDesc<Emp, ?>> getIdPropertyDescs() {
 
         return null;
     }
@@ -100,7 +100,7 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public VersionPropertyType<Emp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyDesc<Emp, ?, ?> getVersionPropertyDesc() {
 
         return null;
     }

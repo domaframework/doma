@@ -32,7 +32,7 @@ import java.util.function.Function;
  * @param <BASIC>
  *            基本型
  */
-public interface EntityPropertyType<ENTITY, BASIC> {
+public interface EntityPropertyDesc<ENTITY, BASIC> {
 
     /**
      * プロパティの名前を返します。

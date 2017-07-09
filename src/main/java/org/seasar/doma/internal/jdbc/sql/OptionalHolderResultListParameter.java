@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import java.util.Optional;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * @author taedium
@@ -27,8 +27,8 @@ public class OptionalHolderResultListParameter<BASIC, HOLDER> extends
         ScalarResultListParameter<BASIC, Optional<HOLDER>> {
 
     public OptionalHolderResultListParameter(
-            HolderType<BASIC, HOLDER> holderType) {
-        super(() -> holderType.createOptionalScalar());
+            HolderDesc<BASIC, HOLDER> holderDesc) {
+        super(() -> holderDesc.createOptionalScalar());
     }
 
 }

@@ -139,7 +139,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             }
             String simpleName = typeElement.getSimpleName().toString();
             if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-                    || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
+                    || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
                 throw new AptException(Message.DOMA4417, typeElement,
                         new Object[] { typeElement.getQualifiedName() });
             }

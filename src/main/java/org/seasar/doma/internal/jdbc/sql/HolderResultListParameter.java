@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * @author taedium
@@ -24,8 +24,8 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class HolderResultListParameter<BASIC, HOLDER> extends
         ScalarResultListParameter<BASIC, HOLDER> {
 
-    public HolderResultListParameter(HolderType<BASIC, HOLDER> holderType) {
-        super(() -> holderType.createScalar());
+    public HolderResultListParameter(HolderDesc<BASIC, HOLDER> holderDesc) {
+        super(() -> holderDesc.createScalar());
     }
 
 }

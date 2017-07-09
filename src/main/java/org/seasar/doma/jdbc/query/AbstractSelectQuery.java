@@ -39,7 +39,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
 
@@ -64,7 +64,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
 
     protected int maxRows;
 
-    protected EntityType<?> entityType;
+    protected EntityDesc<?> entityDesc;
 
     protected PreparedSql sql;
 
@@ -106,14 +106,14 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
     }
 
     protected List<String> expandColumns(ExpandNode node) {
-        if (entityType == null) {
+        if (entityDesc == null) {
             SqlLocation location = node.getLocation();
             throw new JdbcException(Message.DOMA2144, location.getSql(),
                     location.getLineNumber(), location.getPosition());
         }
         Naming naming = config.getNaming();
         Dialect dialect = config.getDialect();
-        return entityType.getEntityPropertyTypes().stream()
+        return entityDesc.getEntityPropertyDescs().stream()
                 .map(p -> p.getColumnName(naming::apply, dialect::applyQuote))
                 .collect(Collectors.toList());
     }
@@ -129,7 +129,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
         query.setQueryTimeout(queryTimeout);
         query.setOptions(options);
         query.setSqlNode(sqlNode);
-        query.setEntityType(entityType);
+        query.setEntityType(entityDesc);
         query.setSqlLogType(sqlLogType);
         query.addParameters(parameters);
         query.prepare();
@@ -224,8 +224,8 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
         this.resultStream = resultStream;
     }
 
-    public void setEntityType(EntityType<?> entityType) {
-        this.entityType = entityType;
+    public void setEntityType(EntityDesc<?> entityType) {
+        this.entityDesc = entityType;
     }
 
     @Override

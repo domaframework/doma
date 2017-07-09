@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 
 /**
  * @author taedium
@@ -29,7 +29,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
  */
 public abstract class AbstractEntityListenerContext<E> {
 
-    protected final EntityType<E> entityType;
+    protected final EntityDesc<E> entityDesc;
 
     protected final Method method;
 
@@ -37,21 +37,21 @@ public abstract class AbstractEntityListenerContext<E> {
 
     protected E newEntity;
 
-    protected AbstractEntityListenerContext(EntityType<E> entityType,
+    protected AbstractEntityListenerContext(EntityDesc<E> entityDesc,
             Method method, Config config) {
-        assertNotNull(entityType, method, config);
-        this.entityType = entityType;
+        assertNotNull(entityDesc, method, config);
+        this.entityDesc = entityDesc;
         this.method = method;
         this.config = config;
     }
 
     protected boolean isPropertyDefinedInternal(String propertyName) {
         assertNotNull(propertyName);
-        return entityType.getEntityPropertyType(propertyName) != null;
+        return entityDesc.getEntityPropertyDesc(propertyName) != null;
     }
 
-    public EntityType<E> getEntityType() {
-        return entityType;
+    public EntityDesc<E> getEntityType() {
+        return entityDesc;
     }
 
     public Method getMethod() {

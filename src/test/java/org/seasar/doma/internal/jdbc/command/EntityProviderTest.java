@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
@@ -210,7 +210,7 @@ public class EntityProviderTest extends TestCase {
     protected static class EmptyUnknownColumnHandler implements
             UnknownColumnHandler {
         @Override
-        public void handle(Query query, EntityType<?> entityType,
+        public void handle(Query query, EntityDesc<?> entityType,
                 String unknownColumnName) {
         }
     }

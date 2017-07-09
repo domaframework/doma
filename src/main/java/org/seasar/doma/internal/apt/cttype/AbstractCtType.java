@@ -41,7 +41,7 @@ public abstract class AbstractCtType implements CtType {
 
     protected final String qualifiedName;
 
-    protected final String metaTypeName;
+    protected final String descTypeName;
 
     protected final boolean isRawType;
 
@@ -57,10 +57,10 @@ public abstract class AbstractCtType implements CtType {
         this.typeElement = ctx.getTypes().toTypeElement(type);
         if (typeElement == null) {
             this.qualifiedName = typeName;
-            this.metaTypeName = typeName;
+            this.descTypeName = typeName;
         } else {
             this.qualifiedName = typeElement.getQualifiedName().toString();
-            this.metaTypeName = createMetaTypeName(ctx, typeElement, typeName);
+            this.descTypeName = createDescTypeName(ctx, typeElement, typeName);
         }
         this.isRawType = isRawType(ctx, type, typeElement);
         if (isRawType) {
@@ -74,9 +74,9 @@ public abstract class AbstractCtType implements CtType {
         }
     }
 
-    private static String createMetaTypeName(Context ctx, TypeElement typeElement,
+    private static String createDescTypeName(Context ctx, TypeElement typeElement,
             String typeName) {
-        return ctx.getMetas().toFullMetaName(typeElement)
+        return ctx.getMetas().toFullDescName(typeElement)
                 + makeTypeParamDecl(typeName);
     }
 

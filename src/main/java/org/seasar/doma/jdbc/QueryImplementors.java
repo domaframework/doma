@@ -18,7 +18,7 @@ package org.seasar.doma.jdbc;
 import java.lang.reflect.Method;
 
 import org.seasar.doma.SqlProcessor;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
@@ -68,17 +68,17 @@ public interface QueryImplementors {
     }
 
     default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(
-            Method method, EntityType<ENTITY> entityType) {
+            Method method, EntityDesc<ENTITY> entityType) {
         return new AutoDeleteQuery<>(entityType);
     }
 
     default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
-            Method method, EntityType<ENTITY> entityType) {
+            Method method, EntityDesc<ENTITY> entityType) {
         return new AutoInsertQuery<>(entityType);
     }
 
     default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
-            Method method, EntityType<ENTITY> entityType) {
+            Method method, EntityDesc<ENTITY> entityType) {
         return new AutoUpdateQuery<>(entityType);
     }
 
@@ -107,17 +107,17 @@ public interface QueryImplementors {
     }
 
     default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
-            Method method, EntityType<ENTITY> entityType) {
+            Method method, EntityDesc<ENTITY> entityType) {
         return new AutoBatchDeleteQuery<>(entityType);
     }
 
     default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
-            Method method, EntityType<ENTITY> entityType) {
+            Method method, EntityDesc<ENTITY> entityType) {
         return new AutoBatchInsertQuery<>(entityType);
     }
 
     default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
-            Method method, EntityType<ENTITY> entityType) {
+            Method method, EntityDesc<ENTITY> entityType) {
         return new AutoBatchUpdateQuery<>(entityType);
     }
 

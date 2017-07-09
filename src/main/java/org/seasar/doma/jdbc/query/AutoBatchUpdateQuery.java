@@ -29,8 +29,8 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
 /**
@@ -47,7 +47,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected BatchUpdateQueryHelper<ENTITY> helper;
 
-    public AutoBatchUpdateQuery(EntityType<ENTITY> entityType) {
+    public AutoBatchUpdateQuery(EntityDesc<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -81,22 +81,22 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void setupHelper() {
-        helper = new BatchUpdateQueryHelper<>(config, entityType,
+        helper = new BatchUpdateQueryHelper<>(config, entityDesc,
                 includedPropertyNames, excludedPropertyNames, versionIgnored,
                 optimisticLockExceptionSuppressed);
     }
 
     protected void preUpdate() {
         AutoBatchPreUpdateContext<ENTITY> context = new AutoBatchPreUpdateContext<ENTITY>(
-                entityType, method, config);
-        entityType.preUpdate(currentEntity, context);
+                entityDesc, method, config);
+        entityDesc.preUpdate(currentEntity, context);
         if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }
 
     protected void prepareOptimisticLock() {
-        if (versionPropertyType != null && !versionIgnored) {
+        if (versionPropertyDesc != null && !versionIgnored) {
             if (!optimisticLockExceptionSuppressed) {
                 optimisticLockCheckRequired = true;
             }
@@ -113,14 +113,14 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.BATCH_UPDATE, sqlLogType);
         builder.appendSql("update ");
-        builder.appendSql(entityType.getQualifiedTableName(naming::apply,
+        builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         builder.appendSql(" set ");
         helper.populateValues(currentEntity, targetPropertyTypes,
-                versionPropertyType, builder);
+                versionPropertyDesc, builder);
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
+            for (EntityPropertyDesc<ENTITY, ?> propertyType : idPropertyTypes) {
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(currentEntity);
                 builder.appendSql(propertyType.getColumnName(naming::apply,
@@ -131,15 +131,15 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             }
             builder.cutBackSql(5);
         }
-        if (versionPropertyType != null && !versionIgnored) {
+        if (versionPropertyDesc != null && !versionIgnored) {
             if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");
             }
-            Property<ENTITY, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyDesc.createProperty();
             property.load(currentEntity);
-            builder.appendSql(versionPropertyType.getColumnName(naming::apply,
+            builder.appendSql(versionPropertyDesc.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property.asInParameter());
@@ -150,10 +150,10 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     @Override
     public void incrementVersions() {
-        if (versionPropertyType != null && !versionIgnored) {
+        if (versionPropertyDesc != null && !versionIgnored) {
             for (ListIterator<ENTITY> it = entities.listIterator(); it
                     .hasNext();) {
-                ENTITY newEntity = versionPropertyType.increment(entityType,
+                ENTITY newEntity = versionPropertyDesc.increment(entityDesc,
                         it.next());
                 it.set(newEntity);
             }
@@ -171,12 +171,12 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected void postUpdate() {
         AutoBatchPostUpdateContext<ENTITY> context = new AutoBatchPostUpdateContext<ENTITY>(
-                entityType, method, config);
-        entityType.postUpdate(currentEntity, context);
+                entityDesc, method, config);
+        entityDesc.postUpdate(currentEntity, context);
         if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
-        entityType.saveCurrentStates(currentEntity);
+        entityDesc.saveCurrentStates(currentEntity);
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
@@ -191,7 +191,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPreUpdateContext<E> extends
             AbstractPreUpdateContext<E> {
 
-        public AutoBatchPreUpdateContext(EntityType<E> entityType,
+        public AutoBatchPreUpdateContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
@@ -211,7 +211,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPostUpdateContext<E> extends
             AbstractPostUpdateContext<E> {
 
-        public AutoBatchPostUpdateContext(EntityType<E> entityType,
+        public AutoBatchPostUpdateContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

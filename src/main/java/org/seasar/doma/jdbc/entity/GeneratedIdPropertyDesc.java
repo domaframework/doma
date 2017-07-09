@@ -22,7 +22,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.Message;
@@ -42,8 +42,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
-        extends DefaultPropertyType<ENTITY, BASIC, HOLDER> {
+public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
+        extends DefaultPropertyDesc<ENTITY, BASIC, HOLDER> {
 
     /** 識別子のジェネレータ */
     protected final IdGenerator idGenerator;
@@ -55,7 +55,7 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
      *            エンティティのクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
-     * @param holderType
+     * @param holderDesc
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
@@ -68,13 +68,13 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
      * @param quoteRequired
      *            カラム名に引用符が必要とされるかどうか
      */
-    public GeneratedIdPropertyType(Class<ENTITY> entityClass,
+    public GeneratedIdPropertyDesc(Class<ENTITY> entityClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
-            HolderType<BASIC, HOLDER> holderType, String name,
+            HolderDesc<BASIC, HOLDER> holderDesc, String name,
             String columnName, NamingType namingType, boolean quoteRequired,
             IdGenerator idGenerator) {
         super(entityClass, wrapperSupplier,
-                holderType, name, columnName,
+                holderDesc, name, columnName,
                 namingType, true, true, quoteRequired);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");
@@ -97,8 +97,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
         Dialect dialect = config.getDialect();
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {
-            EntityType<?> entityType = config.getEntityType();
-            throw new JdbcException(Message.DOMA2021, entityType.getName(),
+            EntityDesc<?> entityDesc = config.getEntityDesc();
+            throw new JdbcException(Message.DOMA2021, entityDesc.getName(),
                     name, generationType.name(), dialect.getName());
         }
     }
@@ -160,7 +160,7 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
     /**
      * INSERTの実行前に識別子を生成します。
      * 
-     * @param entityType
+     * @param entityDesc
      *            エンティティタイプ
      * @param entity
      *            エンティティ
@@ -168,16 +168,16 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
      *            識別子の生成に関する設定
      * @return エンティティ
      */
-    public ENTITY preInsert(EntityType<ENTITY> entityType, ENTITY entity,
+    public ENTITY preInsert(EntityDesc<ENTITY> entityDesc, ENTITY entity,
             IdGenerationConfig config) {
-        return setIfNecessary(entityType, entity,
+        return setIfNecessary(entityDesc, entity,
                 () -> idGenerator.generatePreInsert(config));
     }
 
     /**
      * INSERTの実行後に識別子の生成を行います。
      * 
-     * @param entityType
+     * @param entityDesc
      *            エンティティタイプ
      * @param entity
      *            エンティティ
@@ -187,16 +187,16 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
      *            INSERT文を実行した文
      * @return エンティティ
      */
-    public ENTITY postInsert(EntityType<ENTITY> entityType, ENTITY entity,
+    public ENTITY postInsert(EntityDesc<ENTITY> entityDesc, ENTITY entity,
             IdGenerationConfig config, Statement statement) {
-        return setIfNecessary(entityType, entity,
+        return setIfNecessary(entityDesc, entity,
                 () -> idGenerator.generatePostInsert(config, statement));
     }
 
     /**
      * 必要であれば識別子を設定します。
      * 
-     * @param entityType
+     * @param entityDesc
      *            エンティティタイプ
      * @param entity
      *            エンティティ
@@ -204,9 +204,9 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, HOLDER>
      *            値のサプライヤ
      * @return エンティティ
      */
-    protected ENTITY setIfNecessary(EntityType<ENTITY> entityType,
+    protected ENTITY setIfNecessary(EntityDesc<ENTITY> entityDesc,
             ENTITY entity, Supplier<Long> supplier) {
-        return modifyIfNecessary(entityType, entity, new ValueSetter(),
+        return modifyIfNecessary(entityDesc, entity, new ValueSetter(),
                 supplier);
     }
 

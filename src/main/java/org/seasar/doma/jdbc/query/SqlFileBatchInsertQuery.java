@@ -26,7 +26,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 
 /**
  * @author taedium
@@ -89,7 +89,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
     }
 
     @Override
-    public void setEntityType(EntityType<ELEMENT> entityType) {
+    public void setEntityType(EntityDesc<ELEMENT> entityType) {
         entityHandler = new EntityHandler(entityType);
     }
 
@@ -100,17 +100,17 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
 
     protected class EntityHandler {
 
-        protected EntityType<ELEMENT> entityType;
+        protected EntityDesc<ELEMENT> entityDesc;
 
-        protected EntityHandler(EntityType<ELEMENT> entityType) {
+        protected EntityHandler(EntityDesc<ELEMENT> entityType) {
             assertNotNull(entityType);
-            this.entityType = entityType;
+            this.entityDesc = entityType;
         }
 
         protected void preInsert() {
             SqlFileBatchPreInsertContext<ELEMENT> context = new SqlFileBatchPreInsertContext<ELEMENT>(
-                    entityType, method, config);
-            entityType.preInsert(currentEntity, context);
+                    entityDesc, method, config);
+            entityDesc.preInsert(currentEntity, context);
             if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
@@ -118,8 +118,8 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
 
         protected void postInsert() {
             SqlFileBatchPostInsertContext<ELEMENT> context = new SqlFileBatchPostInsertContext<ELEMENT>(
-                    entityType, method, config);
-            entityType.postInsert(currentEntity, context);
+                    entityDesc, method, config);
+            entityDesc.postInsert(currentEntity, context);
             if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
@@ -129,7 +129,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
     protected static class SqlFileBatchPreInsertContext<E> extends
             AbstractPreInsertContext<E> {
 
-        public SqlFileBatchPreInsertContext(EntityType<E> entityType,
+        public SqlFileBatchPreInsertContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
@@ -138,7 +138,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
     protected static class SqlFileBatchPostInsertContext<E> extends
             AbstractPostInsertContext<E> {
 
-        public SqlFileBatchPostInsertContext(EntityType<E> entityType,
+        public SqlFileBatchPostInsertContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

@@ -22,9 +22,9 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 import org.seasar.doma.message.Message;
 
 /**
@@ -41,17 +41,17 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements
 
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected final EntityType<ENTITY> entityType;
+    protected final EntityDesc<ENTITY> entityDesc;
 
     protected ENTITY entity;
 
     protected PreparedSql sql;
 
-    protected List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes;
+    protected List<EntityPropertyDesc<ENTITY, ?>> targetPropertyTypes;
 
-    protected List<EntityPropertyType<ENTITY, ?>> idPropertyTypes;
+    protected List<EntityPropertyDesc<ENTITY, ?>> idPropertyTypes;
 
-    protected VersionPropertyType<ENTITY, ?, ?> versionPropertyType;
+    protected VersionPropertyDesc<ENTITY, ?, ?> versionPropertyDesc;
 
     protected boolean optimisticLockCheckRequired;
 
@@ -63,19 +63,19 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements
 
     protected SqlLogType sqlLogType;
 
-    protected AutoModifyQuery(EntityType<ENTITY> entityType) {
+    protected AutoModifyQuery(EntityDesc<ENTITY> entityType) {
         AssertionUtil.assertNotNull(entityType);
-        this.entityType = entityType;
+        this.entityDesc = entityType;
     }
 
     protected void prepareIdAndVersionPropertyTypes() {
-        idPropertyTypes = entityType.getIdPropertyTypes();
-        versionPropertyType = entityType.getVersionPropertyType();
+        idPropertyTypes = entityDesc.getIdPropertyDescs();
+        versionPropertyDesc = entityDesc.getVersionPropertyDesc();
     }
 
     protected void validateIdExistent() {
         if (idPropertyTypes.isEmpty()) {
-            throw new JdbcException(Message.DOMA2022, entityType.getName());
+            throw new JdbcException(Message.DOMA2022, entityDesc.getName());
         }
     }
 

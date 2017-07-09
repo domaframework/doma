@@ -25,8 +25,8 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 /**
  * @author taedium
@@ -96,7 +96,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
     }
 
     @Override
-    public void setEntityType(EntityType<ELEMENT> entityType) {
+    public void setEntityType(EntityDesc<ELEMENT> entityType) {
         entityHandler = new EntityHandler(entityType);
     }
 
@@ -111,20 +111,20 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
 
     protected class EntityHandler {
 
-        protected EntityType<ELEMENT> entityType;
+        protected EntityDesc<ELEMENT> entityDesc;
 
-        protected VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
+        protected VersionPropertyDesc<ELEMENT, ?, ?> versionPropertyDesc;
 
-        protected EntityHandler(EntityType<ELEMENT> entityType) {
+        protected EntityHandler(EntityDesc<ELEMENT> entityType) {
             assertNotNull(entityType);
-            this.entityType = entityType;
-            this.versionPropertyType = entityType.getVersionPropertyType();
+            this.entityDesc = entityType;
+            this.versionPropertyDesc = entityType.getVersionPropertyDesc();
         }
 
         protected void preDelete() {
             SqlFileBatchPreDeleteContext<ELEMENT> context = new SqlFileBatchPreDeleteContext<ELEMENT>(
-                    entityType, method, config);
-            entityType.preDelete(currentEntity, context);
+                    entityDesc, method, config);
+            entityDesc.preDelete(currentEntity, context);
             if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
@@ -132,15 +132,15 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
 
         protected void postDelete() {
             SqlFileBatchPostDeleteContext<ELEMENT> context = new SqlFileBatchPostDeleteContext<ELEMENT>(
-                    entityType, method, config);
-            entityType.postDelete(currentEntity, context);
+                    entityDesc, method, config);
+            entityDesc.postDelete(currentEntity, context);
             if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
         }
 
         protected void prepareOptimisticLock() {
-            if (versionPropertyType != null && !versionIgnored) {
+            if (versionPropertyDesc != null && !versionIgnored) {
                 if (!optimisticLockExceptionSuppressed) {
                     optimisticLockCheckRequired = true;
                 }
@@ -151,7 +151,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
     protected static class SqlFileBatchPreDeleteContext<E> extends
             AbstractPreDeleteContext<E> {
 
-        public SqlFileBatchPreDeleteContext(EntityType<E> entityType,
+        public SqlFileBatchPreDeleteContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
@@ -160,7 +160,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
     protected static class SqlFileBatchPostDeleteContext<E> extends
             AbstractPostDeleteContext<E> {
 
-        public SqlFileBatchPostDeleteContext(EntityType<E> entityType,
+        public SqlFileBatchPostDeleteContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

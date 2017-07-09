@@ -25,10 +25,10 @@ import java.util.function.BiFunction;
 
 import javax.annotation.processing.Generated;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.DefaultPropertyType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -37,11 +37,11 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
 
 @Generated("")
-public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
+public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
 
     private static _IdGeneratedEmp singleton = new _IdGeneratedEmp();
 
@@ -50,22 +50,22 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public final GeneratedIdPropertyType<IdGeneratedEmp, Integer, Object> id = new GeneratedIdPropertyType<>(
+    public final GeneratedIdPropertyDesc<IdGeneratedEmp, Integer, Object> id = new GeneratedIdPropertyDesc<>(
             IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false, new BuiltinIdentityIdGenerator());
 
-    public final DefaultPropertyType<IdGeneratedEmp, String, Object> name = new DefaultPropertyType<>(
+    public final DefaultPropertyDesc<IdGeneratedEmp, String, Object> name = new DefaultPropertyDesc<>(
             IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
 
-    public final DefaultPropertyType<IdGeneratedEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
+    public final DefaultPropertyDesc<IdGeneratedEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyDesc<>(
             IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
             "salary", "SALARY", __namingType, true, true, false);
 
-    public final VersionPropertyType<IdGeneratedEmp, Integer, Integer> version = new VersionPropertyType<>(
+    public final VersionPropertyDesc<IdGeneratedEmp, Integer, Integer> version = new VersionPropertyDesc<>(
             IdGeneratedEmp.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "version", "VERSION", __namingType, false);
@@ -78,23 +78,23 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
 
     private final String __tableName = "";
 
-    private final List<EntityPropertyType<IdGeneratedEmp, ?>> __idPropertyTypes;
+    private final List<EntityPropertyDesc<IdGeneratedEmp, ?>> __idPropertyTypes;
 
-    private final List<EntityPropertyType<IdGeneratedEmp, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyDesc<IdGeneratedEmp, ?>> __entityPropertyTypes;
 
-    private final Map<String, EntityPropertyType<IdGeneratedEmp, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyDesc<IdGeneratedEmp, ?>> __entityPropertyTypeMap;
 
     private _IdGeneratedEmp() {
-        List<EntityPropertyType<IdGeneratedEmp, ?>> __idList = new ArrayList<>();
+        List<EntityPropertyDesc<IdGeneratedEmp, ?>> __idList = new ArrayList<>();
         __idList.add(id);
         __idPropertyTypes = Collections.unmodifiableList(__idList);
-        List<EntityPropertyType<IdGeneratedEmp, ?>> __list = new ArrayList<>();
+        List<EntityPropertyDesc<IdGeneratedEmp, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
         __list.add(salary);
         __list.add(version);
         __entityPropertyTypes = Collections.unmodifiableList(__list);
-        Map<String, EntityPropertyType<IdGeneratedEmp, ?>> __map = new HashMap<>();
+        Map<String, EntityPropertyDesc<IdGeneratedEmp, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
         __map.put("salary", salary);
@@ -126,12 +126,12 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
     }
 
     @Override
-    public List<EntityPropertyType<IdGeneratedEmp, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyDesc<IdGeneratedEmp, ?>> getEntityPropertyDescs() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public EntityPropertyType<IdGeneratedEmp, ?> getEntityPropertyType(
+    public EntityPropertyDesc<IdGeneratedEmp, ?> getEntityPropertyDesc(
             String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
@@ -156,17 +156,17 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<IdGeneratedEmp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyDesc<IdGeneratedEmp, ?, ?> getGeneratedIdPropertyDesc() {
         return id;
     }
 
     @Override
-    public VersionPropertyType<IdGeneratedEmp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyDesc<IdGeneratedEmp, ?, ?> getVersionPropertyDesc() {
         return version;
     }
 
     @Override
-    public List<EntityPropertyType<IdGeneratedEmp, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyDesc<IdGeneratedEmp, ?>> getIdPropertyDescs() {
         return __idPropertyTypes;
     }
 

@@ -28,15 +28,15 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link EntityType} のファクトリクラスです。
+ * {@link EntityDesc} のファクトリクラスです。
  * 
  * @author taedium
  * @since 1.8.0
  */
-public final class EntityTypeFactory {
+public final class EntityDescFactory {
 
     /**
-     * {@link EntityType} のインスタンスを生成します。
+     * {@link EntityDesc} のインスタンスを生成します。
      * 
      * @param <E>
      *            エンティティの型
@@ -44,16 +44,16 @@ public final class EntityTypeFactory {
      *            エンティティクラス
      * @param classHelper
      *            クラスヘルパー
-     * @return {@link EntityType} のインスタンス
+     * @return {@link EntityDesc} のインスタンス
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             エンティティクラスに {@link Entity} が注釈されていない場合
-     * @throws EntityTypeNotFoundException
+     * @throws EntityDescNotFoundException
      *             エンティティクラスに対応するメタクラスが見つからない場合
      * @since 1.27.0
      */
-    public static <E> EntityType<E> getEntityType(Class<E> entityClass,
+    public static <E> EntityDesc<E> getEntityDesc(Class<E> entityClass,
             ClassHelper classHelper) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
@@ -65,18 +65,18 @@ public final class EntityTypeFactory {
             throw new DomaIllegalArgumentException("entityClass",
                     Message.DOMA2206.getMessage("entityClass"));
         }
-        String entityTypeClassName = Conventions.toFullMetaName(entityClass
+        String entityDescClassName = Conventions.toFullDescName(entityClass
                 .getName());
         try {
-            Class<E> clazz = classHelper.forName(entityTypeClassName);
+            Class<E> clazz = classHelper.forName(entityDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
-            throw new EntityTypeNotFoundException(e.getCause(),
-                    entityClass.getName(), entityTypeClassName);
+            throw new EntityDescNotFoundException(e.getCause(),
+                    entityClass.getName(), entityDescClassName);
         } catch (Exception e) {
-            throw new EntityTypeNotFoundException(e.getCause(),
-                    entityClass.getName(), entityTypeClassName);
+            throw new EntityDescNotFoundException(e.getCause(),
+                    entityClass.getName(), entityDescClassName);
         }
     }
 }

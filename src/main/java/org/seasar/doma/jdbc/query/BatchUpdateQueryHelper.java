@@ -22,8 +22,8 @@ import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
 /**
@@ -34,7 +34,7 @@ public class BatchUpdateQueryHelper<E> {
 
     protected final Config config;
 
-    protected final EntityType<E> entityType;
+    protected final EntityDesc<E> entityDesc;
 
     protected final boolean versionIgnored;
 
@@ -44,21 +44,21 @@ public class BatchUpdateQueryHelper<E> {
 
     protected final String[] excludedPropertyNames;
 
-    public BatchUpdateQueryHelper(Config config, EntityType<E> entityType,
+    public BatchUpdateQueryHelper(Config config, EntityDesc<E> entityType,
             String[] includedPropertyNames, String[] excludedPropertyNames,
             boolean versionIgnored, boolean optimisticLockExceptionSuppressed) {
         this.config = config;
-        this.entityType = entityType;
+        this.entityDesc = entityType;
         this.versionIgnored = versionIgnored;
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
         this.includedPropertyNames = includedPropertyNames;
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
-    public List<EntityPropertyType<E, ?>> getTargetPropertyTypes() {
-        List<EntityPropertyType<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
-                entityType.getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
+    public List<EntityPropertyDesc<E, ?>> getTargetPropertyTypes() {
+        List<EntityPropertyDesc<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyDesc<E, ?>>(
+                entityDesc.getEntityPropertyDescs().size());
+        for (EntityPropertyDesc<E, ?> p : entityDesc.getEntityPropertyDescs()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -103,11 +103,11 @@ public class BatchUpdateQueryHelper<E> {
     }
 
     public void populateValues(E entity,
-            List<EntityPropertyType<E, ?>> targetPropertyTypes,
-            EntityPropertyType<E, ?> versionPropertyType, SqlContext context) {
+            List<EntityPropertyDesc<E, ?>> targetPropertyTypes,
+            EntityPropertyDesc<E, ?> versionPropertyType, SqlContext context) {
         Dialect dialect = config.getDialect();
         Naming naming = config.getNaming();
-        for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
+        for (EntityPropertyDesc<E, ?> propertyType : targetPropertyTypes) {
             Property<E, ?> property = propertyType.createProperty();
             property.load(entity);
             context.appendSql(propertyType.getColumnName(naming::apply,

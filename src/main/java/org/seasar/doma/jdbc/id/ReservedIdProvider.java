@@ -29,7 +29,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 
 /**
@@ -40,7 +40,7 @@ public class ReservedIdProvider implements IdProvider {
 
     protected final Config config;
 
-    protected final EntityType<?> entityType;
+    protected final EntityDesc<?> entityDesc;
 
     protected final int reservationSize;
 
@@ -50,11 +50,11 @@ public class ReservedIdProvider implements IdProvider {
 
     protected int index = 0;
 
-    public ReservedIdProvider(Config config, EntityType<?> entityType,
+    public ReservedIdProvider(Config config, EntityDesc<?> entityDesc,
             int reservationSize) {
-        assertNotNull(config, entityType);
+        assertNotNull(config, entityDesc);
         this.config = config;
-        this.entityType = entityType;
+        this.entityDesc = entityDesc;
         this.reservationSize = reservationSize;
         this.available = config.getDialect().supportsIdentityReservation();
     }
@@ -97,13 +97,13 @@ public class ReservedIdProvider implements IdProvider {
                     }
                 } catch (final SQLException e) {
                     throw new JdbcException(Message.DOMA2083, e,
-                            entityType.getName(), e);
+                            entityDesc.getName(), e);
                 } finally {
                     JdbcUtil.close(resultSet, logger);
                 }
             } catch (SQLException e) {
                 throw new JdbcException(Message.DOMA2083, e,
-                        entityType.getName(), e);
+                        entityDesc.getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
@@ -116,13 +116,13 @@ public class ReservedIdProvider implements IdProvider {
     protected Sql<?> createSql() {
         Naming naming = config.getNaming();
         Dialect dialect = config.getDialect();
-        String catalogName = entityType.getCatalogName();
-        String schemaName = entityType.getSchemaName();
-        String tableName = entityType.getTableName(naming::apply);
-        String idColumnName = entityType.getGeneratedIdPropertyType()
+        String catalogName = entityDesc.getCatalogName();
+        String schemaName = entityDesc.getSchemaName();
+        String tableName = entityDesc.getTableName(naming::apply);
+        String idColumnName = entityDesc.getGeneratedIdPropertyDesc()
                 .getColumnName(naming::apply);
-        boolean isQuoteRequired = entityType.isQuoteRequired();
-        boolean isIdColumnQuoteRequired = entityType.getGeneratedIdPropertyType()
+        boolean isQuoteRequired = entityDesc.isQuoteRequired();
+        boolean isIdColumnQuoteRequired = entityDesc.getGeneratedIdPropertyDesc()
         		.isQuoteRequired();
         return dialect.getIdentityReservationSql(catalogName, schemaName,
                 tableName, idColumnName, isQuoteRequired,

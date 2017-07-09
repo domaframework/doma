@@ -29,15 +29,15 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link HolderType} のファクトリクラスです。
+ * {@link HolderDesc} のファクトリクラスです。
  * 
  * @author taedium
  * @since 1.8.0
  */
-public final class HolderTypeFactory {
+public final class HolderDescFactory {
 
     /**
-     * {@link HolderType} のインスタンスを生成します。
+     * {@link HolderDesc} のインスタンスを生成します。
      * 
      * @param <BASIC>
      *            基本型
@@ -45,23 +45,23 @@ public final class HolderTypeFactory {
      *            ドメイン型
      * @param holderClass
      *            ドメインクラス
-     * @return {@link HolderType} のインスタンス
+     * @return {@link HolderDesc} のインスタンス
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             ドメインクラスに {@link Holder} もしくは {@code EnumHolder} が注釈されていない場合
-     * @throws HolderTypeNotFoundException
+     * @throws HolderDescNotFoundException
      *             ドメインクラスに対応するメタクラスが見つからない場合
      * @since 2.0.0
      */
-    public static <BASIC, HOLDER> HolderType<BASIC, HOLDER> getHolderType(
+    public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getHolderDesc(
             Class<HOLDER> holderClass) {
-        return getHolderType(holderClass, new ClassHelper() {
+        return getHolderDesc(holderClass, new ClassHelper() {
         });
     }
 
     /**
-     * {@link ClassHelper} を使って {@link HolderType} のインスタンスを生成します。
+     * {@link ClassHelper} を使って {@link HolderDesc} のインスタンスを生成します。
      * 
      * @param <BASIC>
      *            基本型
@@ -71,16 +71,16 @@ public final class HolderTypeFactory {
      *            ドメインクラス
      * @param classHelper
      *            クラスヘルパー
-     * @return {@link HolderType} のインスタンス
+     * @return {@link HolderDesc} のインスタンス
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @throws DomaIllegalArgumentException
      *             ドメインクラスに {@link Holder} もしくは {@code EnumHolder} が注釈されていない場合
-     * @throws HolderTypeNotFoundException
+     * @throws HolderDescNotFoundException
      *             ドメインクラスに対応するメタクラスが見つからない場合
      * @since 1.27.0
      */
-    public static <BASIC, HOLDER> HolderType<BASIC, HOLDER> getHolderType(
+    public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getHolderDesc(
             Class<HOLDER> holderClass, ClassHelper classHelper) {
         if (holderClass == null) {
             throw new DomaNullPointerException("holderClass");
@@ -92,23 +92,23 @@ public final class HolderTypeFactory {
             throw new DomaIllegalArgumentException("holderClass",
                     Message.DOMA2205.getMessage(holderClass.getName()));
         }
-        String holderTypeClassName = Conventions.toFullMetaName(holderClass
+        String holderDescClassName = Conventions.toFullDescName(holderClass
                 .getName());
         try {
-            Class<HOLDER> clazz = classHelper.forName(holderTypeClassName);
+            Class<HOLDER> clazz = classHelper.forName(holderDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
-            throw new HolderTypeNotFoundException(e.getCause(),
-                    holderClass.getName(), holderTypeClassName);
+            throw new HolderDescNotFoundException(e.getCause(),
+                    holderClass.getName(), holderDescClassName);
         } catch (Exception e) {
-            throw new HolderTypeNotFoundException(e, holderClass.getName(),
-                    holderTypeClassName);
+            throw new HolderDescNotFoundException(e, holderClass.getName(),
+                    holderDescClassName);
         }
     }
 
     /**
-     * {@link HolderType} のインスタンスを生成します。
+     * {@link HolderDesc} のインスタンスを生成します。
      * 
      * @param <BASIC>
      *            基本型
@@ -116,19 +116,19 @@ public final class HolderTypeFactory {
      *            ドメイン型
      * @param holderClass
      *            ドメインクラス
-     * @return {@link HolderType} のインスタンス、存在しない場合 {@code null}
+     * @return {@link HolderDesc} のインスタンス、存在しない場合 {@code null}
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @since 2.0.0
      */
-    public static <BASIC, HOLDER> HolderType<BASIC, HOLDER> getExternalHolderType(
+    public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getExternalHolderDesc(
             Class<HOLDER> holderClass) {
-        return getExternalHolderType(holderClass, new ClassHelper() {
+        return getExternalHolderDesc(holderClass, new ClassHelper() {
         });
     }
 
     /**
-     * {@link ClassHelper} を使って {@link HolderType} のインスタンスを生成します。
+     * {@link ClassHelper} を使って {@link HolderDesc} のインスタンスを生成します。
      * 
      * @param <BASIC>
      *            基本型
@@ -138,12 +138,12 @@ public final class HolderTypeFactory {
      *            ドメインクラス
      * @param classHelper
      *            クラスヘルパー
-     * @return {@link HolderType} のインスタンス、存在しない場合 {@code null}
+     * @return {@link HolderDesc} のインスタンス、存在しない場合 {@code null}
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @since 1.27.0
      */
-    public static <BASIC, HOLDER> HolderType<BASIC, HOLDER> getExternalHolderType(
+    public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getExternalHolderDesc(
             Class<HOLDER> holderClass, ClassHelper classHelper) {
         if (holderClass == null) {
             throw new DomaNullPointerException("holderClass");
@@ -151,10 +151,10 @@ public final class HolderTypeFactory {
         if (classHelper == null) {
             throw new DomaNullPointerException("classHelper");
         }
-        String holderTypeClassName = Constants.EXTERNAL_HOLDER_METATYPE_ROOT_PACKAGE
-                + "." + Conventions.toFullMetaName(holderClass.getName());
+        String holderDescClassName = Constants.EXTERNAL_HOLDER_DESC_ROOT_PACKAGE
+                + "." + Conventions.toFullDescName(holderClass.getName());
         try {
-            Class<HOLDER> clazz = classHelper.forName(holderTypeClassName);
+            Class<HOLDER> clazz = classHelper.forName(holderDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {

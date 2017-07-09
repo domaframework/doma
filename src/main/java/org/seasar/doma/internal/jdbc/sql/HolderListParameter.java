@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.command.ScalarProvider;
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -30,19 +30,19 @@ import org.seasar.doma.jdbc.query.Query;
 public class HolderListParameter<BASIC, HOLDER> extends
         AbstractListParameter<HOLDER> {
 
-    protected final HolderType<BASIC, HOLDER> holderType;
+    protected final HolderDesc<BASIC, HOLDER> holderDesc;
 
-    public HolderListParameter(HolderType<BASIC, HOLDER> holderType,
+    public HolderListParameter(HolderDesc<BASIC, HOLDER> holderDesc,
             List<HOLDER> list, String name) {
         super(list, name);
-        assertNotNull(holderType);
-        this.holderType = holderType;
+        assertNotNull(holderDesc);
+        this.holderDesc = holderDesc;
     }
 
     @Override
     public ScalarProvider<BASIC, HOLDER> createObjectProvider(Query query) {
         return new ScalarProvider<BASIC, HOLDER>(
-                () -> holderType.createScalar(), query);
+                () -> holderDesc.createScalar(), query);
     }
 
 }

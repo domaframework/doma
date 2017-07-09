@@ -17,7 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.wrapper.NumberWrapper;
 import org.seasar.doma.wrapper.NumberWrapperVisitor;
 import org.seasar.doma.wrapper.Wrapper;
@@ -34,8 +34,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class VersionPropertyType<ENTITY, BASIC extends Number, HOLDER>
-        extends DefaultPropertyType<ENTITY, BASIC, HOLDER> {
+public class VersionPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
+        extends DefaultPropertyDesc<ENTITY, BASIC, HOLDER> {
 
     /**
      * インスタンスを構築します。
@@ -44,7 +44,7 @@ public class VersionPropertyType<ENTITY, BASIC extends Number, HOLDER>
      *            エンティティのクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
-     * @param holderType
+     * @param holderDesc
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
@@ -55,12 +55,12 @@ public class VersionPropertyType<ENTITY, BASIC extends Number, HOLDER>
      * @param quoteRequired
      *            カラム名に引用符が必要とされるかどうか
      */
-    public VersionPropertyType(Class<ENTITY> entityClass,
+    public VersionPropertyDesc(Class<ENTITY> entityClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
-            HolderType<BASIC, HOLDER> holderType, String name,
+            HolderDesc<BASIC, HOLDER> holderDesc, String name,
             String columnName, NamingType namingType, boolean quoteRequired) {
         super(entityClass, wrapperSupplier,
-                holderType, name, columnName,
+                holderDesc, name, columnName,
                 namingType, true, true, quoteRequired);
     }
 
@@ -72,7 +72,7 @@ public class VersionPropertyType<ENTITY, BASIC extends Number, HOLDER>
     /**
      * 必要であればバージョンの値を設定します。
      * 
-     * @param entityType
+     * @param entityDesc
      *            エンティティのタイプ
      * @param entity
      *            エンティティ
@@ -80,22 +80,22 @@ public class VersionPropertyType<ENTITY, BASIC extends Number, HOLDER>
      *            バージョンの値
      * @return エンティティ
      */
-    public ENTITY setIfNecessary(EntityType<ENTITY> entityType, ENTITY entity,
+    public ENTITY setIfNecessary(EntityDesc<ENTITY> entityDesc, ENTITY entity,
             Number value) {
-        return modifyIfNecessary(entityType, entity, new ValueSetter(), value);
+        return modifyIfNecessary(entityDesc, entity, new ValueSetter(), value);
     }
 
     /**
      * バージョン番号をインクリメントします。
      * 
-     * @param entityType
+     * @param entityDesc
      *            エンティティのタイプ
      * @param entity
      *            エンティティ
      * @return エンティティ
      */
-    public ENTITY increment(EntityType<ENTITY> entityType, ENTITY entity) {
-        return modifyIfNecessary(entityType, entity, new Incrementer(), null);
+    public ENTITY increment(EntityDesc<ENTITY> entityDesc, ENTITY entity) {
+        return modifyIfNecessary(entityDesc, entity, new Incrementer(), null);
     }
 
     protected static class ValueSetter implements

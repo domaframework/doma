@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.List;
 import java.util.Optional;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * @author taedium
@@ -27,9 +27,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class OptionalHolderListParameter<BASIC, HOLDER> extends
         ScalarListParameter<BASIC, Optional<HOLDER>> {
 
-    public OptionalHolderListParameter(HolderType<BASIC, HOLDER> holderType,
+    public OptionalHolderListParameter(HolderDesc<BASIC, HOLDER> holderDesc,
             List<Optional<HOLDER>> list, String name) {
-        super(() -> holderType.createOptionalScalar(), list, name);
+        super(() -> holderDesc.createOptionalScalar(), list, name);
     }
 
 }

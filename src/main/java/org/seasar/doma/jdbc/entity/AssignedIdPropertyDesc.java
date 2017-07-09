@@ -17,7 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.function.Supplier;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -32,8 +32,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class AssignedIdPropertyType<ENTITY, BASIC, HOLDER>
-        extends DefaultPropertyType<ENTITY, BASIC, HOLDER> {
+public class AssignedIdPropertyDesc<ENTITY, BASIC, HOLDER>
+        extends DefaultPropertyDesc<ENTITY, BASIC, HOLDER> {
 
     /**
      * インスタンスを構築します。
@@ -42,7 +42,7 @@ public class AssignedIdPropertyType<ENTITY, BASIC, HOLDER>
      *            エンティティのクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
-     * @param holderType
+     * @param holderDesc
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
@@ -53,12 +53,12 @@ public class AssignedIdPropertyType<ENTITY, BASIC, HOLDER>
      * @param quoteRequired
      *            カラム名に引用符が必要とされるかどうか
      */
-    public AssignedIdPropertyType(Class<ENTITY> entityClass,
+    public AssignedIdPropertyDesc(Class<ENTITY> entityClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
-            HolderType<BASIC, HOLDER> holderType, String name,
+            HolderDesc<BASIC, HOLDER> holderDesc, String name,
             String columnName, NamingType namingType, boolean quoteRequired) {
         super(entityClass, wrapperSupplier,
-                holderType, name, columnName,
+                holderDesc, name, columnName,
                 namingType, true, true, quoteRequired);
     }
 

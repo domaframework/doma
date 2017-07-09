@@ -24,7 +24,7 @@ import org.seasar.doma.internal.apt.entity.VersionNoConverter;
  */
 public final class _VersionNo
         extends
-        org.seasar.doma.jdbc.holder.AbstractHolderType<java.lang.Integer, VersionNo> {
+        org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.Integer, VersionNo> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");

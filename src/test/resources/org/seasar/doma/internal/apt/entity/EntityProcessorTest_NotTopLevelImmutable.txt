@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _NotTopLevelImmutableEntity__Hoge extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge> {
+public final class _NotTopLevelImmutableEntity__Hoge extends org.seasar.doma.jdbc.entity.AbstractEntityDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -13,7 +13,7 @@ public final class _NotTopLevelImmutableEntity__Hoge extends org.seasar.doma.jdb
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge.class, org.seasar.doma.wrapper.StringWrapper::new, null, "name", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge.class, org.seasar.doma.wrapper.StringWrapper::new, null, "name", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge>> __listenerSupplier;
 
@@ -29,11 +29,11 @@ public final class _NotTopLevelImmutableEntity__Hoge extends org.seasar.doma.jdb
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __idPropertyDescs;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __entityPropertyDescs;
 
-    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __entityPropertyDescMap;
 
     private _NotTopLevelImmutableEntity__Hoge() {
         __listenerSupplier = () -> ListenerHolder.listener;
@@ -43,14 +43,14 @@ public final class _NotTopLevelImmutableEntity__Hoge extends org.seasar.doma.jdb
         __schemaName = "";
         __tableName = "";
         __isQuoteRequired = false;
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __idList = new java.util.ArrayList<>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __list = new java.util.ArrayList<>(1);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __map = new java.util.HashMap<>(1);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __list = new java.util.ArrayList<>(1);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> __map = new java.util.HashMap<>(1);
         __list.add($name);
         __map.put("name", $name);
-        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
-        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
-        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __idPropertyDescs = java.util.Collections.unmodifiableList(__idList);
+        __entityPropertyDescs = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyDescMap = java.util.Collections.unmodifiableMap(__map);
     }
 
     @Override
@@ -140,27 +140,27 @@ public final class _NotTopLevelImmutableEntity__Hoge extends org.seasar.doma.jdb
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> getEntityPropertyTypes() {
-        return __entityPropertyTypes;
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> getEntityPropertyDescs() {
+        return __entityPropertyDescs;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?> getEntityPropertyType(String __name) {
-        return __entityPropertyTypeMap.get(__name);
+    public org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?> getEntityPropertyDesc(String __name) {
+        return __entityPropertyDescMap.get(__name);
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> getIdPropertyTypes() {
-        return __idPropertyTypes;
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?>> getIdPropertyDescs() {
+        return __idPropertyDescs;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?, ?> getGeneratedIdPropertyDesc() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyDesc<org.seasar.doma.internal.apt.entity.NotTopLevelImmutableEntity.Hoge, ?, ?> getVersionPropertyDesc() {
         return null;
     }
 

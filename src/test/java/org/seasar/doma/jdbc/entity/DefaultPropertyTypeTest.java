@@ -40,7 +40,7 @@ public class DefaultPropertyTypeTest extends TestCase {
 
     public void testIsQuoteRequired_true() throws Exception {
         boolean isQuoteRequired = true;
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class,
                 () -> new StringWrapper(), null, "hoge", "hoge",
                 NamingType.NONE, true, true, isQuoteRequired);
@@ -51,7 +51,7 @@ public class DefaultPropertyTypeTest extends TestCase {
 
     public void testIsQuoteRequired_false() throws Exception {
         boolean isQuoteRequired = false;
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class, 
                 () -> new StringWrapper(), null, "hoge", "hoge",
                 NamingType.NONE, true, true, isQuoteRequired);
@@ -61,7 +61,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     }
 
     public void testGetColumnName_naming_columnNameDefined() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class,
                 () -> new StringWrapper(), null, "hoge", "foo",
                 NamingType.UPPER_CASE, true, true, false);
@@ -71,7 +71,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     }
 
     public void testGetColumnName_naiming_columnNotDefined() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class, 
                 () -> new StringWrapper(), null, "hoge", "",
                 NamingType.UPPER_CASE, true, true, false);
@@ -82,7 +82,7 @@ public class DefaultPropertyTypeTest extends TestCase {
 
     public void testGetColumnName_naiming_quote_quoteRequired()
             throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class, 
                 () -> new StringWrapper(), null, "hoge", "",
                 NamingType.UPPER_CASE, true, true, true);
@@ -93,7 +93,7 @@ public class DefaultPropertyTypeTest extends TestCase {
 
     public void testGetColumnName_naiming_quote_quoteNotRequired()
             throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, String, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class, 
                 () -> new StringWrapper(), null, "hoge", "",
                 NamingType.UPPER_CASE, true, true, false);
@@ -103,7 +103,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     }
 
     public void testPrimitivePropertyDefaultValue() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, Integer, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, Integer, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class, 
                 () -> new IntegerWrapper(), null, "primitiveInt",
                 "primitiveInt", NamingType.NONE, true, true, false);
@@ -113,7 +113,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     }
 
     public void testWrapperPropertyDefaultValue() throws Exception {
-        DefaultPropertyType<DefaultPropertyTypeTest, Integer, Object> propertyType = new DefaultPropertyType<>(
+        DefaultPropertyDesc<DefaultPropertyTypeTest, Integer, Object> propertyType = new DefaultPropertyDesc<>(
                 DefaultPropertyTypeTest.class, 
                 () -> new IntegerWrapper(), null, "integer", "integer",
                 NamingType.NONE, true, true, false);

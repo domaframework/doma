@@ -26,8 +26,8 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
 /**
@@ -42,14 +42,14 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoDeleteQuery(EntityType<ENTITY> entityType) {
+    public AutoDeleteQuery(EntityDesc<ENTITY> entityType) {
         super(entityType);
     }
 
     @Override
     public void prepare() {
         super.prepare();
-        assertNotNull(method, entityType);
+        assertNotNull(method, entityDesc);
         executable = true;
         preDelete();
         prepareIdAndVersionPropertyTypes();
@@ -62,15 +62,15 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     protected void preDelete() {
         AutoPreDeleteContext<ENTITY> context = new AutoPreDeleteContext<ENTITY>(
-                entityType, method, config);
-        entityType.preDelete(entity, context);
+                entityDesc, method, config);
+        entityDesc.preDelete(entity, context);
         if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
     }
 
     protected void prepareOptimisticLock() {
-        if (versionPropertyType != null && !versionIgnored) {
+        if (versionPropertyDesc != null && !versionIgnored) {
             if (!optimisticLockExceptionSuppressed) {
                 optimisticLockCheckRequired = true;
             }
@@ -83,11 +83,11 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.DELETE, sqlLogType);
         builder.appendSql("delete from ");
-        builder.appendSql(entityType.getQualifiedTableName(naming::apply,
+        builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
+            for (EntityPropertyDesc<ENTITY, ?> propertyType : idPropertyTypes) {
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
                 builder.appendSql(propertyType.getColumnName(naming::apply,
@@ -98,15 +98,15 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
             }
             builder.cutBackSql(5);
         }
-        if (versionPropertyType != null && !versionIgnored) {
+        if (versionPropertyDesc != null && !versionIgnored) {
             if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");
             }
-            Property<ENTITY, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyDesc.createProperty();
             property.load(entity);
-            builder.appendSql(versionPropertyType.getColumnName(naming::apply,
+            builder.appendSql(versionPropertyDesc.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property.asInParameter());
@@ -121,8 +121,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     protected void postDelete() {
         AutoPostDeleteContext<ENTITY> context = new AutoPostDeleteContext<ENTITY>(
-                entityType, method, config);
-        entityType.postDelete(entity, context);
+                entityDesc, method, config);
+        entityDesc.postDelete(entity, context);
         if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
@@ -140,7 +140,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     protected static class AutoPreDeleteContext<E> extends
             AbstractPreDeleteContext<E> {
 
-        public AutoPreDeleteContext(EntityType<E> entityType, Method method,
+        public AutoPreDeleteContext(EntityDesc<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
@@ -149,7 +149,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     protected static class AutoPostDeleteContext<E> extends
             AbstractPostDeleteContext<E> {
 
-        public AutoPostDeleteContext(EntityType<E> entityType, Method method,
+        public AutoPostDeleteContext(EntityDesc<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }

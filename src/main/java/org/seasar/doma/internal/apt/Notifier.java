@@ -37,8 +37,7 @@ public final class Notifier {
         messager.printMessage(Kind.OTHER, messageResource.getMessage(args));
     }
 
-    public void notify(Kind kind, MessageResource messageResource,
-            Element element, Object[] args) {
+    public void notify(Kind kind, MessageResource messageResource, Element element, Object[] args) {
         assertNotNull(kind, element, args);
         messager.printMessage(kind, messageResource.getMessage(args), element);
     }
@@ -50,8 +49,8 @@ public final class Notifier {
 
     public void notify(AptException e) {
         assertNotNull(e);
-        messager.printMessage(e.getKind(), e.getMessage(), e.getElement(),
-                e.getAnnotationMirror(), e.getAnnotationValue());
+        messager.printMessage(e.getKind(), e.getMessage(), e.getElement(), e.getAnnotationMirror(),
+                e.getAnnotationValue());
     }
 
 }

@@ -13,9 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.holder;
-
-import org.seasar.doma.jdbc.holder.HolderTypeNotFoundException;
+package org.seasar.doma.jdbc.entity;
 
 import junit.framework.TestCase;
 
@@ -23,13 +21,13 @@ import junit.framework.TestCase;
  * @author taedium
  * 
  */
-public class HolderTypeNotFoundExceptionTest extends TestCase {
+public class EntityDescNotFoundExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        HolderTypeNotFoundException e = new HolderTypeNotFoundException(
+        EntityDescNotFoundException e = new EntityDescNotFoundException(
                 new Exception(), "aaa", "bbb");
         System.out.println(e.getMessage());
-        assertEquals("aaa", e.getHolderClassName());
-        assertEquals("bbb", e.getHolderTypeClassName());
+        assertEquals("aaa", e.getEntityClassName());
+        assertEquals("bbb", e.getEntityDescClassName());
     }
 }

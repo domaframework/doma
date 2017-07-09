@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -30,13 +30,13 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 /**
  * @author taedium
  * 
  */
-public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
+public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 
     @Override
     public String getCatalogName() {
@@ -51,25 +51,25 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public EntityPropertyType<ImmutableEmp, ?> getEntityPropertyType(String name) {
+    public EntityPropertyDesc<ImmutableEmp, ?> getEntityPropertyDesc(String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<ImmutableEmp, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyDesc<ImmutableEmp, ?>> getEntityPropertyDescs() {
 
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<ImmutableEmp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyDesc<ImmutableEmp, ?, ?> getGeneratedIdPropertyDesc() {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<ImmutableEmp, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyDesc<ImmutableEmp, ?>> getIdPropertyDescs() {
 
         return null;
     }
@@ -100,7 +100,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public VersionPropertyType<ImmutableEmp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyDesc<ImmutableEmp, ?, ?> getVersionPropertyDesc() {
 
         return null;
     }

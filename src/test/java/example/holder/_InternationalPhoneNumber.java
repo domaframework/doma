@@ -15,10 +15,10 @@
  */
 package example.holder;
 
-import org.seasar.doma.jdbc.holder.AbstractHolderType;
+import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
 public class _InternationalPhoneNumber extends
-        AbstractHolderType<String, InternationalPhoneNumber> {
+        AbstractHolderDesc<String, InternationalPhoneNumber> {
 
     private static final _InternationalPhoneNumber singleton = new _InternationalPhoneNumber();
 

@@ -15,19 +15,20 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import junit.framework.TestCase;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @author taedium
- * 
+ * @author nakamura-to
+ *
  */
-public class EntityTypeNotFoundExceptionTest extends TestCase {
+public interface EmbeddableDesc<EMBEDDABLE> {
 
-    public void test() throws Exception {
-        EntityTypeNotFoundException e = new EntityTypeNotFoundException(
-                new Exception(), "aaa", "bbb");
-        System.out.println(e.getMessage());
-        assertEquals("aaa", e.getEntityClassName());
-        assertEquals("bbb", e.getEntityTypeClassName());
-    }
+    <ENTITY> List<EntityPropertyDesc<ENTITY, ?>> getEmbeddablePropertyDescs(
+            String embeddedPropertyName, Class<ENTITY> entityClass,
+            NamingType namingType);
+
+    <ENTITY> EMBEDDABLE newEmbeddable(String embeddedPropertyName,
+            Map<String, Property<ENTITY, ?>> __args);
+
 }

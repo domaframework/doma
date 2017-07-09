@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import org.seasar.doma.jdbc.Reference;
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * @author taedium
@@ -29,9 +29,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class HolderInOutParameter<BASIC, HOLDER> extends
         ScalarInOutParameter<BASIC, HOLDER> {
 
-    public HolderInOutParameter(HolderType<BASIC, HOLDER> holderType,
+    public HolderInOutParameter(HolderDesc<BASIC, HOLDER> holderDesc,
             Reference<HOLDER> reference) {
-        super(holderType.createScalar(), reference);
+        super(holderDesc.createScalar(), reference);
     }
 
 }

@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.embeddable;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _Derived implements org.seasar.doma.jdbc.entity.EmbeddableType<org.seasar.doma.internal.apt.embeddable.Derived> {
+public final class _Derived implements org.seasar.doma.jdbc.entity.EmbeddableDesc<org.seasar.doma.internal.apt.embeddable.Derived> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -11,10 +11,10 @@ public final class _Derived implements org.seasar.doma.jdbc.entity.EmbeddableTyp
     private static final _Derived __singleton = new _Derived();
 
     @Override
-    public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType) {
+    public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<ENTITY, ?>> getEmbeddablePropertyDescs(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType) {
         return java.util.Arrays.asList(
-            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".aaa", "", namingType, true, true, false),
-            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".bbb", "", namingType, true, true, false));
+            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".aaa", "", namingType, true, true, false),
+            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".bbb", "", namingType, true, true, false));
     }
 
     @Override

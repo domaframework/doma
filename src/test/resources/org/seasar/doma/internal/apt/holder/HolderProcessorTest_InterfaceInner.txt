@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.holder;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _InterfaceOuter__Inner extends org.seasar.doma.jdbc.holder.AbstractHolderType<java.math.BigDecimal, org.seasar.doma.internal.apt.holder.InterfaceOuter.Inner> {
+public final class _InterfaceOuter__Inner extends org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.math.BigDecimal, org.seasar.doma.internal.apt.holder.InterfaceOuter.Inner> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");

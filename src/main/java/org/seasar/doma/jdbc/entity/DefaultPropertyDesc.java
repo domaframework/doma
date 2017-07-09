@@ -36,7 +36,7 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
@@ -52,8 +52,8 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @param <HOLDER>
  *            プロパティのドメイン型
  */
-public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
-        implements EntityPropertyType<ENTITY, BASIC> {
+public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
+        implements EntityPropertyDesc<ENTITY, BASIC> {
 
     /** エンティティのクラス */
     protected final Class<ENTITY> entityClass;
@@ -62,7 +62,7 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
     protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
     /** ドメインのメタタイプ */
-    protected final HolderType<BASIC, HOLDER> holderType;
+    protected final HolderDesc<BASIC, HOLDER> holderDesc;
 
     /** プロパティの名前 */
     protected final String name;
@@ -98,7 +98,7 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
      *            エンティティのクラス
      * @param wrapperSupplier
      *            ラッパーのサプライヤ
-     * @param holderType
+     * @param holderDesc
      *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
@@ -113,9 +113,9 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
      * @param quoteRequired
      *            カラム名に引用符が必要とされるかどうか
      */
-    public DefaultPropertyType(Class<ENTITY> entityClass,
+    public DefaultPropertyDesc(Class<ENTITY> entityClass,
             Supplier<Wrapper<BASIC>> wrapperSupplier,
-            HolderType<BASIC, HOLDER> holderType, String name,
+            HolderDesc<BASIC, HOLDER> holderDesc, String name,
             String columnName, NamingType namingType, boolean insertable,
             boolean updatable, boolean quoteRequired) {
         if (entityClass == null) {
@@ -132,7 +132,7 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
         }
         this.entityClass = entityClass;
         this.wrapperSupplier = wrapperSupplier;
-        this.holderType = holderType;
+        this.holderDesc = holderDesc;
         this.name = name;
         int pos = name.lastIndexOf('.');
         this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
@@ -148,13 +148,13 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
     @SuppressWarnings("unchecked")
     private Supplier<Property<ENTITY, BASIC>> createPropertySupplier() {
         Class<?> entityPropertyClass = field.getType();
-        if (holderType != null) {
+        if (holderDesc != null) {
             if (entityPropertyClass == Optional.class) {
                 return () -> new DefaultProperty<Optional<HOLDER>>(
-                        holderType.createOptionalScalar());
+                        holderDesc.createOptionalScalar());
             } else {
                 return () -> new DefaultProperty<HOLDER>(
-                        holderType.createScalar());
+                        holderDesc.createScalar());
             }
         }
         if (entityPropertyClass == Optional.class) {
@@ -241,7 +241,7 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
      * 
      * @param <VALUE>
      *            値の型
-     * @param entityType
+     * @param entityDesc
      *            エンティティタイプ
      * @param entity
      *            エンティティ
@@ -251,16 +251,16 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
      *            値
      * @return 値が変更されたエンティティもしくは変更されていないエンティティ
      */
-    protected <VALUE> ENTITY modifyIfNecessary(EntityType<ENTITY> entityType,
+    protected <VALUE> ENTITY modifyIfNecessary(EntityDesc<ENTITY> entityDesc,
             ENTITY entity,
             WrapperVisitor<Boolean, VALUE, Void, RuntimeException> visitor,
             VALUE value) {
-        if (entityType.isImmutable()) {
-            List<EntityPropertyType<ENTITY, ?>> propertyTypes = entityType
-                    .getEntityPropertyTypes();
+        if (entityDesc.isImmutable()) {
+            List<EntityPropertyDesc<ENTITY, ?>> propertyTypes = entityDesc
+                    .getEntityPropertyDescs();
             Map<String, Property<ENTITY, ?>> args = new HashMap<>(
                     propertyTypes.size());
-            for (EntityPropertyType<ENTITY, ?> propertyType : propertyTypes) {
+            for (EntityPropertyDesc<ENTITY, ?> propertyType : propertyTypes) {
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
                 if (propertyType == this) {
@@ -272,7 +272,7 @@ public class DefaultPropertyType<ENTITY, BASIC, HOLDER>
                 }
                 args.put(propertyType.getName(), property);
             }
-            return entityType.newEntity(args);
+            return entityDesc.newEntity(args);
         } else {
             Property<ENTITY, ?> property = createProperty();
             property.load(entity);

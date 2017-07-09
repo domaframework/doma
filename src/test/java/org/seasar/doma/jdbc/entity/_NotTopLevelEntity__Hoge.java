@@ -2,7 +2,7 @@ package org.seasar.doma.jdbc.entity;
 
 /** */
 public final class _NotTopLevelEntity__Hoge extends
-        org.seasar.doma.jdbc.entity.AbstractEntityType<NotTopLevelEntity.Hoge> {
+        org.seasar.doma.jdbc.entity.AbstractEntityDesc<NotTopLevelEntity.Hoge> {
 
     private static final _NotTopLevelEntity__Hoge __singleton = new _NotTopLevelEntity__Hoge();
 
@@ -22,11 +22,11 @@ public final class _NotTopLevelEntity__Hoge extends
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __idPropertyTypes;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __entityPropertyTypes;
 
-    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __entityPropertyTypeMap;
 
     private _NotTopLevelEntity__Hoge() {
         __listenerSupplier = () -> ListenerHolder.listener;
@@ -36,10 +36,10 @@ public final class _NotTopLevelEntity__Hoge extends
         __schemaName = "";
         __tableName = "";
         __isQuoteRequired = false;
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> __idList = new java.util.ArrayList<>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> __list = new java.util.ArrayList<>(
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __list = new java.util.ArrayList<>(
                 0);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> __map = new java.util.HashMap<>(
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __map = new java.util.HashMap<>(
                 0);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
@@ -158,28 +158,28 @@ public final class _NotTopLevelEntity__Hoge extends
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> getEntityPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> getEntityPropertyDescs() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?> getEntityPropertyType(
+    public org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?> getEntityPropertyDesc(
             String __name) {
         return __entityPropertyTypeMap.get(__name);
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>> getIdPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> getIdPropertyDescs() {
         return __idPropertyTypes;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<NotTopLevelEntity.Hoge, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<NotTopLevelEntity.Hoge, ?, ?> getGeneratedIdPropertyDesc() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyDesc<NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyDesc() {
         return null;
     }
 

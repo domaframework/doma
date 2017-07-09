@@ -143,8 +143,8 @@ public enum Message implements MessageResource {
     DOMA2143("SQLの解析に失敗しました。（[{1}]行目[{2}]番目の文字付近）。カラム展開コメント[{3}]の直後にアスタリスク(*)が見つかりません。SQL[{0}]"),
     DOMA2144("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。カラム展開コメント[{3}]でカラムを展開できません。結果セットの1レコードがマッピングされる型を確認してください。1レコードにマッピングされる型はエンティティクラスでなければいけません。SQL[{0}]"),
     DOMA2201("ページング用SQLに変換するには元のSQLにorder by句が指定されている必要があります。"),
-    DOMA2202("ドメインクラス[{0}]に対応するメタクラス[{1}]が見つかりませんでした。原因は次のものです。{2}"),
-    DOMA2203("エンティティクラス[{0}]に対応するメタクラス[{1}]が見つかりませんでした。原因は次のものです。{2}"),
+    DOMA2202("ドメインクラス[{0}]に対応するドメイン記述クラス[{1}]が見つかりませんでした。原因は次のものです。{2}"),
+    DOMA2203("エンティティクラス[{0}]に対応するエンティティ記述クラス[{1}]が見つかりませんでした。原因は次のものです。{2}"),
     DOMA2204("クラス[{0}]の型は基本型もしくはドメイン型でなければいけません。詳細な原因は次のものです。{1}"),
     DOMA2205("クラス[{0}]は、@Holderが注釈されていなければいけません。"),
     DOMA2206("クラス[{0}]は、@Entityが注釈されていなければいけません。"),
@@ -514,8 +514,7 @@ public enum Message implements MessageResource {
             boolean fallback = false;
             ResourceBundle bundle;
             try {
-                bundle = ResourceBundle
-                        .getBundle(MessageResourceBundle.class.getName());
+                bundle = ResourceBundle.getBundle(MessageResourceBundle.class.getName());
             } catch (MissingResourceException ignored) {
                 fallback = true;
                 bundle = new MessageResourceBundle();
@@ -523,8 +522,7 @@ public enum Message implements MessageResource {
             String code = name();
             String pattern = bundle.getString(code);
             String message = MessageFormat.format(pattern, args);
-            return fallback ? "(This is a fallback message) " + message
-                    : message;
+            return fallback ? "(This is a fallback message) " + message : message;
         } catch (Throwable throwable) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -534,8 +532,8 @@ public enum Message implements MessageResource {
                 arguments.append(a);
                 arguments.append(", ");
             }
-            return "[DOMA9001] Failed to get a message because of following error : "
-                    + sw + " : " + arguments;
+            return "[DOMA9001] Failed to get a message because of following error : " + sw + " : "
+                    + arguments;
         }
     }
 }

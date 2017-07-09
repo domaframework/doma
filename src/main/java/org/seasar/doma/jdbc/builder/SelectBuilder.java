@@ -54,8 +54,8 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.SelectCommand;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.EntityDescFactory;
 import org.seasar.doma.jdbc.query.SqlSelectQuery;
 import org.seasar.doma.message.Message;
 
@@ -331,7 +331,7 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getEntitySingleResult");
         }
-        EntityType<RESULT> entityType = EntityTypeFactory.getEntityType(
+        EntityDesc<RESULT> entityType = EntityDescFactory.getEntityDesc(
                 resultClass, config.getClassHelper());
         query.setEntityType(entityType);
         EntitySingleResultHandler<RESULT> handler = new EntitySingleResultHandler<>(
@@ -381,7 +381,7 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getOptionalEntitySingleResult");
         }
-        EntityType<RESULT> entityType = EntityTypeFactory.getEntityType(
+        EntityDesc<RESULT> entityType = EntityDescFactory.getEntityDesc(
                 resultClass, config.getClassHelper());
         query.setEntityType(entityType);
         OptionalEntitySingleResultHandler<RESULT> handler = new OptionalEntitySingleResultHandler<>(
@@ -583,7 +583,7 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getEntityResultList");
         }
-        EntityType<ELEMENT> entityType = EntityTypeFactory.getEntityType(
+        EntityDesc<ELEMENT> entityType = EntityDescFactory.getEntityDesc(
                 elementClass, config.getClassHelper());
         query.setEntityType(entityType);
         ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<ELEMENT>(
@@ -781,7 +781,7 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("streamEntity");
         }
-        EntityType<TARGET> entityType = EntityTypeFactory.getEntityType(
+        EntityDesc<TARGET> entityType = EntityDescFactory.getEntityDesc(
                 targetClass, config.getClassHelper());
         query.setEntityType(entityType);
         ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(

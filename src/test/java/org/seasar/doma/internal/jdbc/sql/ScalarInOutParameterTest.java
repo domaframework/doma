@@ -20,8 +20,8 @@ import java.util.Optional;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.Reference;
-import org.seasar.doma.jdbc.holder.HolderType;
-import org.seasar.doma.jdbc.holder.HolderTypeFactory;
+import org.seasar.doma.jdbc.holder.HolderDesc;
+import org.seasar.doma.jdbc.holder.HolderDescFactory;
 
 import example.holder.PhoneNumber;
 import junit.framework.TestCase;
@@ -33,10 +33,10 @@ import junit.framework.TestCase;
 public class ScalarInOutParameterTest extends TestCase {
 
     public void testGetHolderClass() throws Exception {
-        HolderType<String, PhoneNumber> holderType = HolderTypeFactory
-                .getHolderType(PhoneNumber.class, new ClassHelper() {
+        HolderDesc<String, PhoneNumber> holderDesc = HolderDescFactory
+                .getHolderDesc(PhoneNumber.class, new ClassHelper() {
                 });
-        Scalar<String, PhoneNumber> scalar = holderType.createScalar();
+        Scalar<String, PhoneNumber> scalar = holderDesc.createScalar();
         Reference<PhoneNumber> ref = new Reference<>();
         ScalarInOutParameter<String, PhoneNumber> parameter = new ScalarInOutParameter<>(
                 scalar, ref);
@@ -45,10 +45,10 @@ public class ScalarInOutParameterTest extends TestCase {
     }
 
     public void testGetHolderClass_optional() throws Exception {
-        HolderType<String, PhoneNumber> holderType = HolderTypeFactory
-                .getHolderType(PhoneNumber.class, new ClassHelper() {
+        HolderDesc<String, PhoneNumber> holderDesc = HolderDescFactory
+                .getHolderDesc(PhoneNumber.class, new ClassHelper() {
                 });
-        Scalar<String, Optional<PhoneNumber>> scalar = holderType
+        Scalar<String, Optional<PhoneNumber>> scalar = holderDesc
                 .createOptionalScalar();
         Reference<Optional<PhoneNumber>> ref = new Reference<>();
         ScalarInOutParameter<String, Optional<PhoneNumber>> parameter = new ScalarInOutParameter<>(

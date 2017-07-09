@@ -36,7 +36,7 @@ public interface PreInsertContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<E> getEntityType();
+    public EntityDesc<E> getEntityType();
 
     /**
      * {@link Insert} が注釈されたメソッドを返します。

@@ -95,11 +95,11 @@ public class EntityPropertyMeta extends AbstractPropertyMeta {
                 }, null);
     }
 
-    public String getEmbeddableMetaTypeName() {
+    public String getEmbeddableDescTypeName() {
         TypeElement typeElement = ctType.getTypeElement();
         if (typeElement == null) {
             throw new AptIllegalStateException("typeElement must not be null.");
         }
-        return ctx.getMetas().toFullMetaName(typeElement);
+        return ctx.getMetas().toFullDescName(typeElement);
     }
 }

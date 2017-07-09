@@ -50,7 +50,7 @@ public interface PostUpdateContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<E> getEntityType();
+    public EntityDesc<E> getEntityType();
 
     /**
      * {@link Update} が注釈されたメソッドを返します。

@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * 
@@ -31,9 +31,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class OptionalHolderStreamHandler<BASIC, HOLDER, RESULT> extends
         ScalarStreamHandler<BASIC, Optional<HOLDER>, RESULT> {
 
-    public OptionalHolderStreamHandler(HolderType<BASIC, HOLDER> holderType,
+    public OptionalHolderStreamHandler(HolderDesc<BASIC, HOLDER> holderDesc,
             Function<Stream<Optional<HOLDER>>, RESULT> mapper) {
-        super(() -> holderType.createOptionalScalar(), mapper);
+        super(() -> holderDesc.createOptionalScalar(), mapper);
     }
 
 }

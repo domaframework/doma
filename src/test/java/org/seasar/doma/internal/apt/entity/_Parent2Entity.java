@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.DefaultPropertyType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -31,18 +31,18 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
-public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
+public class _Parent2Entity extends AbstractEntityDesc<Parent2Entity> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public DefaultPropertyType<Parent2Entity, Integer, Integer> $aaa = new DefaultPropertyType<>(
+    public DefaultPropertyDesc<Parent2Entity, Integer, Integer> $aaa = new DefaultPropertyDesc<>(
             Parent2Entity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "aaa", "AAA", __namingType, true, true, false);
 
-    public DefaultPropertyType<Parent2Entity, Integer, Integer> $bbb = new DefaultPropertyType<>(
+    public DefaultPropertyDesc<Parent2Entity, Integer, Integer> $bbb = new DefaultPropertyDesc<>(
             Parent2Entity.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "bbb", "BBB", __namingType, true, true, false);
@@ -67,20 +67,20 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public EntityPropertyType<Parent2Entity, ?> getEntityPropertyType(
+    public EntityPropertyDesc<Parent2Entity, ?> getEntityPropertyDesc(
             String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Parent2Entity, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyDesc<Parent2Entity, ?>> getEntityPropertyDescs() {
 
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<Parent2Entity, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyDesc<Parent2Entity, ?, ?> getGeneratedIdPropertyDesc() {
 
         return null;
     }
@@ -111,7 +111,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public VersionPropertyType<Parent2Entity, ?, ?> getVersionPropertyType() {
+    public VersionPropertyDesc<Parent2Entity, ?, ?> getVersionPropertyDesc() {
 
         return null;
     }
@@ -147,7 +147,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public List<EntityPropertyType<Parent2Entity, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyDesc<Parent2Entity, ?>> getIdPropertyDescs() {
         return null;
     }
 

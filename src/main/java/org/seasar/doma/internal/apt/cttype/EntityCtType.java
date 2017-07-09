@@ -42,8 +42,8 @@ public class EntityCtType extends AbstractCtType {
                 && typeElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
-    public String getMetaTypeName() {
-        return metaTypeName;
+    public String getDescTypeName() {
+        return descTypeName;
     }
 
     @Override

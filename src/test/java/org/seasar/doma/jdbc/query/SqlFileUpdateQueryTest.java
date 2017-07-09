@@ -25,9 +25,9 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -36,7 +36,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -319,7 +319,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertTrue(query.isExecutable());
     }
 
-    public static class PreUpdate implements EntityType<Emp> {
+    public static class PreUpdate implements EntityDesc<Emp> {
 
         protected final _Emp emp;
 
@@ -345,13 +345,13 @@ public class SqlFileUpdateQueryTest extends TestCase {
             return emp.getName();
         }
 
-        public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
-            return emp.getEntityPropertyTypes();
+        public List<EntityPropertyDesc<Emp, ?>> getEntityPropertyDescs() {
+            return emp.getEntityPropertyDescs();
         }
 
-        public EntityPropertyType<Emp, ?> getEntityPropertyType(
+        public EntityPropertyDesc<Emp, ?> getEntityPropertyDesc(
                 String propertyName) {
-            return emp.getEntityPropertyType(propertyName);
+            return emp.getEntityPropertyDesc(propertyName);
         }
 
         public void saveCurrentStates(Emp __entity) {
@@ -362,16 +362,16 @@ public class SqlFileUpdateQueryTest extends TestCase {
             return emp.getOriginalStates(entity);
         }
 
-        public GeneratedIdPropertyType<Emp, ?, ?> getGeneratedIdPropertyType() {
-            return emp.getGeneratedIdPropertyType();
+        public GeneratedIdPropertyDesc<Emp, ?, ?> getGeneratedIdPropertyDesc() {
+            return emp.getGeneratedIdPropertyDesc();
         }
 
-        public VersionPropertyType<Emp, ?, ?> getVersionPropertyType() {
-            return emp.getVersionPropertyType();
+        public VersionPropertyDesc<Emp, ?, ?> getVersionPropertyDesc() {
+            return emp.getVersionPropertyDesc();
         }
 
-        public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
-            return emp.getIdPropertyTypes();
+        public List<EntityPropertyDesc<Emp, ?>> getIdPropertyDescs() {
+            return emp.getIdPropertyDescs();
         }
 
         public void preInsert(Emp entity, PreInsertContext<Emp> context) {

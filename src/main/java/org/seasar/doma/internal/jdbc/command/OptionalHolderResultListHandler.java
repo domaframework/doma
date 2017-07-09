@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Optional;
 
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * 
@@ -30,9 +30,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class OptionalHolderResultListHandler<BASIC, HOLDER> extends
         ScalarResultListHandler<BASIC, Optional<HOLDER>> {
 
-    public OptionalHolderResultListHandler(HolderType<BASIC, HOLDER> holderType) {
-        super(() -> holderType.createOptionalScalar());
-        assertNotNull(holderType);
+    public OptionalHolderResultListHandler(HolderDesc<BASIC, HOLDER> holderDesc) {
+        super(() -> holderDesc.createOptionalScalar());
+        assertNotNull(holderDesc);
     }
 
 }

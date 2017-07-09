@@ -19,18 +19,18 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * ドメインクラスに対応するメタクラスが見つからない場合にスローされる例外です。
+ * ドメインクラスに対応するドメイン記述クラスが見つからない場合にスローされる例外です。
  * 
  * @author taedium
  * @since 1.8.0
  */
-public class HolderTypeNotFoundException extends JdbcException {
+public class HolderDescNotFoundException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
     private final String holderClassName;
 
-    private final String holderTypeClassName;
+    private final String holderDescClassName;
 
     /**
      * インスタンスを構築します。
@@ -39,15 +39,14 @@ public class HolderTypeNotFoundException extends JdbcException {
      *            原因
      * @param holderClassName
      *            ドメインクラスの名前
-     * @param holderTypeClassName
-     *            ドメインタイプクラスの名前
+     * @param holderDescClassName
+     *            ドメイン記述クラスの名前
      */
-    public HolderTypeNotFoundException(Throwable cause, String holderClassName,
-            String holderTypeClassName) {
-        super(Message.DOMA2202, cause, holderClassName, holderTypeClassName,
-                cause);
+    public HolderDescNotFoundException(Throwable cause, String holderClassName,
+            String holderDescClassName) {
+        super(Message.DOMA2202, cause, holderClassName, holderDescClassName, cause);
         this.holderClassName = holderClassName;
-        this.holderTypeClassName = holderTypeClassName;
+        this.holderDescClassName = holderDescClassName;
     }
 
     /**
@@ -64,8 +63,8 @@ public class HolderTypeNotFoundException extends JdbcException {
      * 
      * @return ドメインタイプクラスの名前
      */
-    public String getHolderTypeClassName() {
-        return holderTypeClassName;
+    public String getHolderDescClassName() {
+        return holderDescClassName;
     }
 
 }

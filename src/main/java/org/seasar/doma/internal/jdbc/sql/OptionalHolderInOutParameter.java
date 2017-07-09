@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.Optional;
 
 import org.seasar.doma.jdbc.Reference;
-import org.seasar.doma.jdbc.holder.HolderType;
+import org.seasar.doma.jdbc.holder.HolderDesc;
 
 /**
  * @author taedium
@@ -27,9 +27,9 @@ import org.seasar.doma.jdbc.holder.HolderType;
 public class OptionalHolderInOutParameter<BASIC, HOLDER> extends
         ScalarInOutParameter<BASIC, Optional<HOLDER>> {
 
-    public OptionalHolderInOutParameter(HolderType<BASIC, HOLDER> holderType,
+    public OptionalHolderInOutParameter(HolderDesc<BASIC, HOLDER> holderDesc,
             Reference<Optional<HOLDER>> reference) {
-        super(holderType.createOptionalScalar(), reference);
+        super(holderDesc.createOptionalScalar(), reference);
     }
 
 }

@@ -26,9 +26,9 @@ import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 /**
  * @author taedium
@@ -128,7 +128,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
     @Override
     public <E> void setEntityAndEntityType(String name, E entity,
-            EntityType<E> entityType) {
+            EntityDesc<E> entityType) {
         entityHandler = new EntityHandler<E>(name, entity, entityType);
     }
 
@@ -155,24 +155,24 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected E entity;
 
-        protected EntityType<E> entityType;
+        protected EntityDesc<E> entityDesc;
 
-        protected VersionPropertyType<E, ?, ?> versionPropertyType;
+        protected VersionPropertyDesc<E, ?, ?> versionPropertyDesc;
 
-        protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
+        protected List<EntityPropertyDesc<E, ?>> targetPropertyTypes;
 
         protected UpdateQueryHelper<E> helper;
 
-        protected EntityHandler(String name, E entity, EntityType<E> entityType) {
+        protected EntityHandler(String name, E entity, EntityDesc<E> entityType) {
             assertNotNull(name, entity, entityType);
             this.name = name;
             this.entity = entity;
-            this.entityType = entityType;
-            this.versionPropertyType = entityType.getVersionPropertyType();
+            this.entityDesc = entityType;
+            this.versionPropertyDesc = entityType.getVersionPropertyDesc();
         }
 
         protected void init() {
-            helper = new UpdateQueryHelper<E>(config, entityType,
+            helper = new UpdateQueryHelper<E>(config, entityDesc,
                     includedPropertyNames, excludedPropertyNames, nullExcluded,
                     versionIgnored, optimisticLockExceptionSuppressed,
                     unchangedPropertyIncluded);
@@ -180,11 +180,11 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected void preUpdate() {
             SqlFilePreUpdateContext<E> context = new SqlFilePreUpdateContext<E>(
-                    entityType, method, config);
-            entityType.preUpdate(entity, context);
+                    entityDesc, method, config);
+            entityDesc.preUpdate(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
-                addParameterInternal(name, entityType.getEntityClass(), entity);
+                addParameterInternal(name, entityDesc.getEntityClass(), entity);
             }
 
         }
@@ -200,16 +200,16 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected void postUpdate() {
             SqlFilePostUpdateContext<E> context = new SqlFilePostUpdateContext<E>(
-                    entityType, method, config);
-            entityType.postUpdate(entity, context);
+                    entityDesc, method, config);
+            entityDesc.postUpdate(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
-            entityType.saveCurrentStates(entity);
+            entityDesc.saveCurrentStates(entity);
         }
 
         protected void prepareOptimisticLock() {
-            if (versionPropertyType != null && !versionIgnored) {
+            if (versionPropertyDesc != null && !versionIgnored) {
                 if (!optimisticLockExceptionSuppressed) {
                     optimisticLockCheckRequired = true;
                 }
@@ -217,14 +217,14 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void incrementVersion() {
-            if (versionPropertyType != null && !versionIgnored) {
-                entity = versionPropertyType.increment(entityType, entity);
+            if (versionPropertyDesc != null && !versionIgnored) {
+                entity = versionPropertyDesc.increment(entityDesc, entity);
             }
         }
 
         protected void populateValues(SqlContext context) {
             helper.populateValues(entity, targetPropertyTypes,
-                    versionPropertyType, context);
+                    versionPropertyDesc, context);
         }
 
     }
@@ -232,7 +232,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePreUpdateContext<E> extends
             AbstractPreUpdateContext<E> {
 
-        public SqlFilePreUpdateContext(EntityType<E> entityType, Method method,
+        public SqlFilePreUpdateContext(EntityDesc<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
@@ -252,7 +252,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePostUpdateContext<E> extends
             AbstractPostUpdateContext<E> {
 
-        public SqlFilePostUpdateContext(EntityType<E> entityType,
+        public SqlFilePostUpdateContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

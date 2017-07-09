@@ -29,8 +29,8 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
 /**
@@ -45,7 +45,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchDeleteQuery(EntityType<ENTITY> entityType) {
+    public AutoBatchDeleteQuery(EntityDesc<ENTITY> entityType) {
         super(entityType);
     }
 
@@ -78,15 +78,15 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected void preDelete() {
         AutoBatchPreDeleteContext<ENTITY> context = new AutoBatchPreDeleteContext<ENTITY>(
-                entityType, method, config);
-        entityType.preDelete(currentEntity, context);
+                entityDesc, method, config);
+        entityDesc.preDelete(currentEntity, context);
         if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }
 
     protected void prepareOptimisticLock() {
-        if (versionPropertyType != null && !versionIgnored) {
+        if (versionPropertyDesc != null && !versionIgnored) {
             if (!optimisticLockExceptionSuppressed) {
                 optimisticLockCheckRequired = true;
             }
@@ -99,11 +99,11 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.BATCH_DELETE, sqlLogType);
         builder.appendSql("delete from ");
-        builder.appendSql(entityType.getQualifiedTableName(naming::apply,
+        builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
+            for (EntityPropertyDesc<ENTITY, ?> propertyType : idPropertyTypes) {
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(currentEntity);
                 builder.appendSql(propertyType.getColumnName(naming::apply,
@@ -114,15 +114,15 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             }
             builder.cutBackSql(5);
         }
-        if (versionPropertyType != null && !versionIgnored) {
+        if (versionPropertyDesc != null && !versionIgnored) {
             if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");
             }
-            Property<ENTITY, ?> property = versionPropertyType.createProperty();
+            Property<ENTITY, ?> property = versionPropertyDesc.createProperty();
             property.load(currentEntity);
-            builder.appendSql(versionPropertyType.getColumnName(naming::apply,
+            builder.appendSql(versionPropertyDesc.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property.asInParameter());
@@ -142,8 +142,8 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected void postDelete() {
         AutoBatchPostDeleteContext<ENTITY> context = new AutoBatchPostDeleteContext<ENTITY>(
-                entityType, method, config);
-        entityType.postDelete(currentEntity, context);
+                entityDesc, method, config);
+        entityDesc.postDelete(currentEntity, context);
         if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
@@ -161,7 +161,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPreDeleteContext<E> extends
             AbstractPreDeleteContext<E> {
 
-        public AutoBatchPreDeleteContext(EntityType<E> entityType,
+        public AutoBatchPreDeleteContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
@@ -170,7 +170,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPostDeleteContext<E> extends
             AbstractPostDeleteContext<E> {
 
-        public AutoBatchPostDeleteContext(EntityType<E> entityType,
+        public AutoBatchPostDeleteContext(EntityDesc<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

@@ -24,11 +24,11 @@ import java.util.function.BiFunction;
 
 import javax.annotation.processing.Generated;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
-import org.seasar.doma.jdbc.entity.DefaultPropertyType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -37,21 +37,21 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 @Generated("")
-public class _Dept extends AbstractEntityType<Dept> {
+public class _Dept extends AbstractEntityDesc<Dept> {
 
     private static _Dept singleton = new _Dept();
 
     private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 
-    public final AssignedIdPropertyType<Dept, Integer, Object> id = new AssignedIdPropertyType<>(
+    public final AssignedIdPropertyDesc<Dept, Integer, Object> id = new AssignedIdPropertyDesc<>(
             Dept.class, 
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
             "id", "ID", __namingType, false);
 
-    public final DefaultPropertyType<Dept, String, Object> name = new DefaultPropertyType<>(
+    public final DefaultPropertyDesc<Dept, String, Object> name = new DefaultPropertyDesc<>(
             Dept.class, 
             () -> new org.seasar.doma.wrapper.StringWrapper(), null,
             "name", "NAME", __namingType, true, true, false);
@@ -64,21 +64,21 @@ public class _Dept extends AbstractEntityType<Dept> {
 
     private final String __tableName = "";
 
-    private final List<EntityPropertyType<Dept, ?>> __idPropertyTypes;
+    private final List<EntityPropertyDesc<Dept, ?>> __idPropertyTypes;
 
-    private final List<EntityPropertyType<Dept, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyDesc<Dept, ?>> __entityPropertyTypes;
 
-    private final Map<String, EntityPropertyType<Dept, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyDesc<Dept, ?>> __entityPropertyTypeMap;
 
     private _Dept() {
-        List<EntityPropertyType<Dept, ?>> __idList = new ArrayList<>();
+        List<EntityPropertyDesc<Dept, ?>> __idList = new ArrayList<>();
         __idList.add(id);
         __idPropertyTypes = Collections.unmodifiableList(__idList);
-        List<EntityPropertyType<Dept, ?>> __list = new ArrayList<>();
+        List<EntityPropertyDesc<Dept, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
         __entityPropertyTypes = Collections.unmodifiableList(__list);
-        Map<String, EntityPropertyType<Dept, ?>> __map = new HashMap<>();
+        Map<String, EntityPropertyDesc<Dept, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
         __entityPropertyTypeMap = Collections.unmodifiableMap(__map);
@@ -107,12 +107,12 @@ public class _Dept extends AbstractEntityType<Dept> {
     }
 
     @Override
-    public List<EntityPropertyType<Dept, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyDesc<Dept, ?>> getEntityPropertyDescs() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public EntityPropertyType<Dept, ?> getEntityPropertyType(String propertyName) {
+    public EntityPropertyDesc<Dept, ?> getEntityPropertyDesc(String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
 
@@ -126,17 +126,17 @@ public class _Dept extends AbstractEntityType<Dept> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Dept, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyDesc<Dept, ?, ?> getGeneratedIdPropertyDesc() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<Dept, ?, ?> getVersionPropertyType() {
+    public VersionPropertyDesc<Dept, ?, ?> getVersionPropertyDesc() {
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<Dept, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyDesc<Dept, ?>> getIdPropertyDescs() {
         return __idPropertyTypes;
     }
 

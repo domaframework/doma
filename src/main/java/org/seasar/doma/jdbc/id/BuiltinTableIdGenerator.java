@@ -206,7 +206,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                     });
             return value - allocationSize;
         } catch (Throwable t) {
-            throw new JdbcException(Message.DOMA2018, t, config.getEntityType()
+            throw new JdbcException(Message.DOMA2018, t, config.getEntityDesc()
                     .getName(), t);
         }
     }
@@ -235,11 +235,11 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 int rows = preparedStatement.executeUpdate();
                 if (rows != 1) {
                     throw new JdbcException(Message.DOMA2017, config
-                            .getEntityType().getName());
+                            .getEntityDesc().getName());
                 }
             } catch (SQLException e) {
                 throw new JdbcException(Message.DOMA2018, e, config
-                        .getEntityType().getName(), e);
+                        .getEntityDesc().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
@@ -277,10 +277,10 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                     }
                 }
                 throw new JdbcException(Message.DOMA2017, config
-                        .getEntityType().getName());
+                        .getEntityDesc().getName());
             } catch (SQLException e) {
                 throw new JdbcException(Message.DOMA2018, e, config
-                        .getEntityType().getName(), e);
+                        .getEntityDesc().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
