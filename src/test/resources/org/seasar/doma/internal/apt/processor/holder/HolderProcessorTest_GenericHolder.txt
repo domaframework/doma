@@ -1,0 +1,47 @@
+package org.seasar.doma.internal.apt.processor.holder;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _SpecificHolder extends org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.Integer, org.seasar.doma.internal.apt.processor.holder.SpecificHolder> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _SpecificHolder singleton = new _SpecificHolder();
+
+    private _SpecificHolder() {
+        super(org.seasar.doma.wrapper.IntegerWrapper::new);
+    }
+
+    @Override
+    protected org.seasar.doma.internal.apt.processor.holder.SpecificHolder newHolder(java.lang.Integer value) {
+        return new org.seasar.doma.internal.apt.processor.holder.SpecificHolder(value);
+    }
+
+    @Override
+    protected java.lang.Integer getBasicValue(org.seasar.doma.internal.apt.processor.holder.SpecificHolder holder) {
+        if (holder == null) {
+            return null;
+        }
+        return holder.getValue();
+    }
+
+    @Override
+    public Class<?> getBasicClass() {
+        return java.lang.Integer.class;
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.processor.holder.SpecificHolder> getHolderClass() {
+        return org.seasar.doma.internal.apt.processor.holder.SpecificHolder.class;
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _SpecificHolder getSingletonInternal() {
+        return singleton;
+    }
+
+}

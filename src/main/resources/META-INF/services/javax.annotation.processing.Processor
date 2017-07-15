@@ -1,7 +1,7 @@
-org.seasar.doma.internal.apt.HolderProcessor
-org.seasar.doma.internal.apt.ExternalHolderProcessor
-org.seasar.doma.internal.apt.HolderConvertersProcessor
-org.seasar.doma.internal.apt.EmbeddableProcessor
-org.seasar.doma.internal.apt.EntityProcessor
-org.seasar.doma.internal.apt.DaoProcessor
-org.seasar.doma.internal.apt.SingletonConfigProcessor
+org.seasar.doma.internal.apt.processor.HolderProcessor
+org.seasar.doma.internal.apt.processor.ExternalHolderProcessor
+org.seasar.doma.internal.apt.processor.HolderConvertersProcessor
+org.seasar.doma.internal.apt.processor.EmbeddableProcessor
+org.seasar.doma.internal.apt.processor.EntityProcessor
+org.seasar.doma.internal.apt.processor.DaoProcessor
+org.seasar.doma.internal.apt.processor.SingletonConfigProcessor

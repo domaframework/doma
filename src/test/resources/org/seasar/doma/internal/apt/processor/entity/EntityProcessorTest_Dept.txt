@@ -1,0 +1,213 @@
+package org.seasar.doma.internal.apt.processor.entity;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _Dept extends org.seasar.doma.jdbc.entity.AbstractEntityDesc<org.seasar.doma.internal.apt.processor.entity.Dept> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _Dept __singleton = new _Dept();
+
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
+
+    /** the id */
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, java.lang.Integer, org.seasar.doma.internal.apt.processor.entity.PrimaryKey> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.Dept.class, org.seasar.doma.wrapper.IntegerWrapper::new, __.org.seasar.doma.internal.apt.processor.entity._PrimaryKey.getSingletonInternal(), "id", "", __namingType, false);
+
+    /** the branch */
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, java.lang.String, org.seasar.doma.internal.apt.processor.entity.Branch> $branch = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.Dept.class, org.seasar.doma.wrapper.StringWrapper::new, __.org.seasar.doma.internal.apt.processor.entity._Branch.getSingletonInternal(), "branch", "", __namingType, true, true, false);
+
+    private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.Dept>> __listenerSupplier;
+
+    private final boolean __immutable;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final boolean __isQuoteRequired;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __idPropertyDescs;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __entityPropertyDescs;
+
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __entityPropertyDescMap;
+
+    private _Dept() {
+        __listenerSupplier = () -> ListenerHolder.listener;
+        __immutable = false;
+        __name = "Dept";
+        __catalogName = "";
+        __schemaName = "";
+        __tableName = "";
+        __isQuoteRequired = false;
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __list = new java.util.ArrayList<>(2);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __map = new java.util.HashMap<>(2);
+        __idList.add($id);
+        __list.add($id);
+        __map.put("id", $id);
+        __list.add($branch);
+        __map.put("branch", $branch);
+        __idPropertyDescs = java.util.Collections.unmodifiableList(__idList);
+        __entityPropertyDescs = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyDescMap = java.util.Collections.unmodifiableMap(__map);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
+        return __namingType;
+    }
+
+    @Override
+    public boolean isImmutable() {
+        return __immutable;
+    }
+
+    @Override
+    public String getName() {
+        return __name;
+    }
+
+    @Override
+    public String getCatalogName() {
+        return __catalogName;
+    }
+
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
+    }
+
+    @Override
+    public String getTableName(java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
+        if (__tableName.isEmpty()) {
+            return namingFunction.apply(__namingType, __name);
+        }
+        return __tableName;
+    }
+
+    @Override
+    public boolean isQuoteRequired() {
+        return __isQuoteRequired;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.processor.entity.Dept entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.processor.entity.Dept> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.preInsert(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.processor.entity.Dept entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.processor.entity.Dept> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.preUpdate(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.processor.entity.Dept entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.processor.entity.Dept> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.preDelete(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void postInsert(org.seasar.doma.internal.apt.processor.entity.Dept entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.processor.entity.Dept> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.postInsert(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void postUpdate(org.seasar.doma.internal.apt.processor.entity.Dept entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.processor.entity.Dept> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.postUpdate(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void postDelete(org.seasar.doma.internal.apt.processor.entity.Dept entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.processor.entity.Dept> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.postDelete(entity, context);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> getEntityPropertyDescs() {
+        return __entityPropertyDescs;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?> getEntityPropertyDesc(String __name) {
+        return __entityPropertyDescMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> getIdPropertyDescs() {
+        return __idPropertyDescs;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?, ?> getGeneratedIdPropertyDesc() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.VersionPropertyDesc<org.seasar.doma.internal.apt.processor.entity.Dept, ?, ?> getVersionPropertyDesc() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.processor.entity.Dept newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __args) {
+        org.seasar.doma.internal.apt.processor.entity.Dept entity = new org.seasar.doma.internal.apt.processor.entity.Dept();
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        if (__args.get("branch") != null) __args.get("branch").save(entity);
+        return entity;
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.processor.entity.Dept> getEntityClass() {
+        return org.seasar.doma.internal.apt.processor.entity.Dept.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.processor.entity.Dept getOriginalStates(org.seasar.doma.internal.apt.processor.entity.Dept __entity) {
+        return null;
+    }
+
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.processor.entity.Dept __entity) {
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _Dept getSingletonInternal() {
+        return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _Dept newInstance() {
+        return new _Dept();
+    }
+
+    private static class ListenerHolder {
+        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.Dept> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
+    }
+
+}

@@ -1,0 +1,34 @@
+package org.seasar.doma.internal.apt.processor.embeddable;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _Address implements org.seasar.doma.jdbc.entity.EmbeddableDesc<org.seasar.doma.internal.apt.processor.embeddable.Address> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _Address __singleton = new _Address();
+
+    @Override
+    public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<ENTITY, ?>> getEmbeddablePropertyDescs(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType) {
+        return java.util.Arrays.asList(
+            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".city", "", namingType, true, true, false),
+            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".street", "STREET", namingType, false, true, false));
+    }
+
+    @Override
+    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.Address newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args) {
+        return new org.seasar.doma.internal.apt.processor.embeddable.Address(
+            (java.lang.String)(__args.get(embeddedPropertyName + ".city") != null ? __args.get(embeddedPropertyName + ".city").get() : null),
+            (java.lang.String)(__args.get(embeddedPropertyName + ".street") != null ? __args.get(embeddedPropertyName + ".street").get() : null));
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _Address getSingletonInternal() {
+        return __singleton;
+    }
+
+}
