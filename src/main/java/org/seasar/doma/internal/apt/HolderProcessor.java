@@ -18,12 +18,18 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
+import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Holder;
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.HolderDescGenerator;
 import org.seasar.doma.internal.apt.meta.holder.HolderMeta;
 import org.seasar.doma.internal.apt.meta.holder.HolderMetaFactory;
 
@@ -46,10 +52,14 @@ public class HolderProcessor extends AbstractGeneratingProcessor<HolderMeta> {
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement, HolderMeta meta)
-            throws IOException {
-        assertNotNull(typeElement, meta);
-        return new HolderDescGenerator(ctx, typeElement, meta);
+    protected CodeSpecFactory createCodeSpecFactory(HolderMeta meta) {
+        return new DescCodeSpecFactory(ctx, meta.getHolderElement());
+    }
+
+    @Override
+    protected Generator createGenerator(HolderMeta meta, CodeSpec codeSpec, Formatter formatter) throws IOException {
+        assertNotNull(meta, codeSpec, formatter);
+        return new HolderDescGenerator(ctx, meta, codeSpec, formatter);
     }
 
 }

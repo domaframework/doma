@@ -19,31 +19,29 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
 
 public class HolderCtType extends AbstractCtType {
 
     private final BasicCtType basicCtType;
-
-    private final boolean external;
 
     private final String descClassName;
 
     private final String typeArgDecl;
 
     HolderCtType(Context ctx, TypeMirror type, BasicCtType basicCtType,
-            boolean external) {
+            DescCodeSpecFactory descCodeSpecFactory) {
         super(ctx, type);
-        assertNotNull(basicCtType);
+        assertNotNull(basicCtType, descCodeSpecFactory, typeElement);
         this.basicCtType = basicCtType;
-        this.external = external;
-        int pos = descTypeName.indexOf('<');
+        CodeSpec codeSpec = descCodeSpecFactory.create();
+        this.descClassName = codeSpec.getQualifiedName();
+        int pos = typeName.indexOf('<');
         if (pos > -1) {
-            this.descClassName = descTypeName.substring(0, pos);
-            this.typeArgDecl = descTypeName.substring(pos);
+            this.typeArgDecl = typeName.substring(pos);
         } else {
-            this.descClassName = descTypeName;
             this.typeArgDecl = "";
         }
     }
@@ -52,21 +50,12 @@ public class HolderCtType extends AbstractCtType {
         return basicCtType;
     }
 
-    public String getInstantiationCommand() {
-        return normalize(descClassName) + "." + typeArgDecl
-                + "getSingletonInternal()";
-    }
-
-    protected String normalize(String name) {
-        if (external) {
-            return Constants.EXTERNAL_HOLDER_DESC_ROOT_PACKAGE + "." + name;
-        }
-        return name;
+    public String getInstantiationCode() {
+        return descClassName + "." + typeArgDecl + "getSingletonInternal()";
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitHolderCtType(this, p);
     }
 

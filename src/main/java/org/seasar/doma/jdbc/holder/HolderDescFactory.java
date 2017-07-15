@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Holder;
-import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
@@ -80,8 +79,8 @@ public final class HolderDescFactory {
      *             ドメインクラスに対応するメタクラスが見つからない場合
      * @since 1.27.0
      */
-    public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getHolderDesc(
-            Class<HOLDER> holderClass, ClassHelper classHelper) {
+    public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getHolderDesc(Class<HOLDER> holderClass,
+            ClassHelper classHelper) {
         if (holderClass == null) {
             throw new DomaNullPointerException("holderClass");
         }
@@ -92,18 +91,16 @@ public final class HolderDescFactory {
             throw new DomaIllegalArgumentException("holderClass",
                     Message.DOMA2205.getMessage(holderClass.getName()));
         }
-        String holderDescClassName = Conventions.toFullDescName(holderClass
-                .getName());
+        String holderDescClassName = Conventions.createDescClassName(holderClass.getName());
         try {
             Class<HOLDER> clazz = classHelper.forName(holderDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
-            throw new HolderDescNotFoundException(e.getCause(),
-                    holderClass.getName(), holderDescClassName);
-        } catch (Exception e) {
-            throw new HolderDescNotFoundException(e, holderClass.getName(),
+            throw new HolderDescNotFoundException(e.getCause(), holderClass.getName(),
                     holderDescClassName);
+        } catch (Exception e) {
+            throw new HolderDescNotFoundException(e, holderClass.getName(), holderDescClassName);
         }
     }
 
@@ -151,8 +148,7 @@ public final class HolderDescFactory {
         if (classHelper == null) {
             throw new DomaNullPointerException("classHelper");
         }
-        String holderDescClassName = Constants.EXTERNAL_HOLDER_DESC_ROOT_PACKAGE
-                + "." + Conventions.toFullDescName(holderClass.getName());
+        String holderDescClassName = Conventions.createExternalDescClassName(holderClass.getName());
         try {
             Class<HOLDER> clazz = classHelper.forName(holderDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");

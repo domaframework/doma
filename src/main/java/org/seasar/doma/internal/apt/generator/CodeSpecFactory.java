@@ -13,21 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta.entity;
+package org.seasar.doma.internal.apt.generator;
 
-import javax.lang.model.element.TypeElement;
+public interface CodeSpecFactory {
 
-import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.meta.AbstractDescCanonicalNameFactory;
-
-/**
- * @author nakamura
- *
- */
-public class EntityDescCanonicalNameFactory extends AbstractDescCanonicalNameFactory {
-
-    public EntityDescCanonicalNameFactory(Context ctx, TypeElement entityElement) {
-        super(ctx, entityElement);
-    }
-
+    CodeSpec create();
 }

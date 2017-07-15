@@ -18,15 +18,22 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
+import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.DaoImplCodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.DaoImplGenerator;
+import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.dao.DaoMetaFactory;
+import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
 
 /**
  * @author taedium
@@ -49,9 +56,19 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement, DaoMeta meta)
+    protected CodeSpecFactory createCodeSpecFactory(DaoMeta meta) {
+        ParentDaoMeta parentDaoMeta = meta.getParentDaoMeta();
+        TypeElement parentDaoElement = null;
+        if (parentDaoMeta != null) {
+            parentDaoElement = parentDaoMeta.getDaoElement();
+        }
+        return new DaoImplCodeSpecFactory(ctx, meta.getDaoElement(), parentDaoElement);
+    }
+
+    @Override
+    protected Generator createGenerator(DaoMeta meta, CodeSpec codeSpec, Formatter formatter)
             throws IOException {
-        assertNotNull(typeElement, meta);
-        return new DaoImplGenerator(ctx, typeElement, meta);
+        assertNotNull(meta, codeSpec, formatter);
+        return new DaoImplGenerator(ctx, meta, codeSpec, formatter);
     }
 }

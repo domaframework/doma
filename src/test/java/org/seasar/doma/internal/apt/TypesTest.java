@@ -33,8 +33,10 @@ public class TypesTest extends AptTestCase {
             TypeMirror type = types.getType(Ccc.class);
             Collection<TypeMirror> collection = types.supertypes(type);
             assertEquals(4, collection.size());
-            Set<String> set = collection.stream().map(types::toTypeElement)
-                    .map(TypeElement::getQualifiedName).map(Name::toString)
+            Set<String> set = collection.stream()
+                    .map(types::toTypeElement)
+                    .map(TypeElement::getQualifiedName)
+                    .map(Name::toString)
                     .collect(Collectors.toSet());
             assertTrue(set.contains(Object.class.getCanonicalName()));
             assertTrue(set.contains(Serializable.class.getCanonicalName()));

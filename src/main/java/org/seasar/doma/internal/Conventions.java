@@ -28,7 +28,28 @@ import org.seasar.doma.internal.util.ClassUtil;
  */
 public class Conventions {
 
-    public static String normalizeBinaryName(String binaryName) {
+    public static String createDescClassName(CharSequence originalBinaryName) {
+        return toFullDescClassName(originalBinaryName);
+    }
+
+    public static String createExternalDescClassName(CharSequence originalBinaryName) {
+        return Constants.EXTERNAL_HOLDER_DESC_ROOT_PACKAGE + "."
+                + toFullDescClassName(originalBinaryName);
+    }
+
+    protected static String toFullDescClassName(CharSequence originalBinaryName) {
+        assertNotNull(originalBinaryName);
+        String binaryName = normalizeBinaryName(originalBinaryName.toString());
+        String packageName = ClassUtil.getPackageName(binaryName);
+        String simpleName = ClassUtil.getSimpleName(binaryName);
+        String base = "";
+        if (packageName != null && packageName.length() > 0) {
+            base = packageName + ".";
+        }
+        return base + Constants.DESC_PREFIX + simpleName;
+    }
+
+    protected static String normalizeBinaryName(String binaryName) {
         assertNotNull(binaryName);
         String packageName = ClassUtil.getPackageName(binaryName);
         List<String> enclosingNames = ClassUtil.getEnclosingNames(binaryName);
@@ -37,33 +58,8 @@ public class Conventions {
         if (packageName != null && packageName.length() > 0) {
             base = packageName + ".";
         }
-        return base
-                + enclosingNames.stream()
-                        .map(n -> n + Constants.DESC_NAME_DELIMITER)
-                        .collect(joining()) + simpleName;
-    }
-
-    public static String toFullDescName(String originalBinaryName) {
-        assertNotNull(originalBinaryName);
-        String binaryName = normalizeBinaryName(originalBinaryName);
-        String packageName = ClassUtil.getPackageName(binaryName);
-        String simpleName = ClassUtil.getSimpleName(binaryName);
-        String base = "";
-        if (packageName != null && packageName.length() > 0) {
-            base = packageName + ".";
-        }
-        return base + createSimpleDescName(simpleName);
-    }
-
-    public static String toSimpleDescName(String originalBinaryName) {
-        assertNotNull(originalBinaryName);
-        String binaryName = normalizeBinaryName(originalBinaryName);
-        String simpleName = ClassUtil.getSimpleName(binaryName);
-        return createSimpleDescName(simpleName);
-    }
-
-    private static String createSimpleDescName(String originalSimpleName) {
-        return Constants.DESC_PREFIX + originalSimpleName;
+        return base + enclosingNames.stream().map(n -> n + Constants.DESC_NAME_DELIMITER).collect(
+                joining()) + simpleName;
     }
 
 }

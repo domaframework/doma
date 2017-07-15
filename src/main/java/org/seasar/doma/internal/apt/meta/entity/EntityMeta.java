@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.reflection.EntityReflection;
 import org.seasar.doma.internal.apt.reflection.TableReflection;
@@ -65,8 +64,6 @@ public class EntityMeta implements TypeElementMeta {
 
     private EntityConstructorMeta constructorMeta;
 
-    private CanonicalName entityDescCanonicalName;
-
     public EntityMeta(EntityReflection entityReflection, TypeElement entityElement) {
         assertNotNull(entityReflection, entityElement);
         this.entityReflection = entityReflection;
@@ -79,6 +76,10 @@ public class EntityMeta implements TypeElementMeta {
 
     public EntityReflection getEntityReflection() {
         return entityReflection;
+    }
+
+    public TypeElement getEntityElement() {
+        return entityElement;
     }
 
     public NamingType getNamingType() {
@@ -197,14 +198,6 @@ public class EntityMeta implements TypeElementMeta {
 
     public boolean hasEmbeddedProperties() {
         return allPropertyMetas.stream().anyMatch(EntityPropertyMeta::isEmbedded);
-    }
-
-    public CanonicalName getEntityDescCanonicalName() {
-        return entityDescCanonicalName;
-    }
-
-    public void setEntityDescCanonicalName(CanonicalName entityDescCanonicalName) {
-        this.entityDescCanonicalName = entityDescCanonicalName;
     }
 
 }

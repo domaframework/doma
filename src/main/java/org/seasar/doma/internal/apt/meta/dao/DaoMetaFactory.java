@@ -47,7 +47,6 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.AutoBatchModifyQueryMetaFactory;
@@ -107,7 +106,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         doAnnotateWith(daoMeta);
         doParentDao(daoMeta);
         doConfig(daoMeta);
-        doDaoImplCanonicalName(daoMeta);
         doMethods(daoMeta);
         validateFiles(daoMeta);
         return error ? null : daoMeta;
@@ -221,10 +219,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             if (daoMeta.getParentDaoMeta() != null) {
                 throw new AptException(Message.DOMA4188, daoElement);
             }
-            DaoImplCanonicalNameFactory factory = new DaoImplCanonicalNameFactory(ctx, typeElement);
-            CanonicalName daoImplCanonicalName = factory.create();
-            ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoReflection, typeElement,
-                    daoImplCanonicalName);
+            ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoReflection, typeElement);
             daoMeta.setParentDaoMeta(parentDaoMeta);
         }
     }
@@ -399,12 +394,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             }
         }
         return false;
-    }
-
-    private void doDaoImplCanonicalName(DaoMeta daoMeta) {
-        DaoImplCanonicalNameFactory factory = new DaoImplCanonicalNameFactory(ctx, daoElement);
-        CanonicalName daoImplCanonicalName = factory.create();
-        daoMeta.setDaoImplCanonicalName(daoImplCanonicalName);
     }
 
 }

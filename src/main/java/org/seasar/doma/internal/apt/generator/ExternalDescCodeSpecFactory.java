@@ -13,13 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.generator;
+
+import javax.lang.model.element.Name;
+import javax.lang.model.element.TypeElement;
+
+import org.seasar.doma.internal.Conventions;
+import org.seasar.doma.internal.apt.Context;
 
 /**
- * @author taedium
- * 
+ * @author nakamura
+ *
  */
-public final class MetaConstants {
+public class ExternalDescCodeSpecFactory extends DescCodeSpecFactory {
 
-    public static final String RESERVED_NAME_PREFIX = "__";
+    public ExternalDescCodeSpecFactory(Context ctx, TypeElement holderElement) {
+        super(ctx, holderElement);
+    }
+
+    @Override
+    protected String createDescClassName(Name binaryName) {
+        return Conventions.createExternalDescClassName(binaryName);
+    }
+
 }

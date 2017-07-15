@@ -47,7 +47,6 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.reflection.AllArgsConstructorReflection;
 import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
@@ -116,7 +115,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
         @Override
         public void doClass(EmbeddableMeta embeddableMeta) {
             validateClass(embeddableMeta);
-            doEmbeddableDescCanonicalName(embeddableMeta);
         }
 
         public void validateClass(EmbeddableMeta embeddableMeta) {
@@ -158,13 +156,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
                 throw new AptException(Message.DOMA4416, typeElement,
                         new Object[] { typeElement.getQualifiedName() });
             }
-        }
-
-        private void doEmbeddableDescCanonicalName(EmbeddableMeta embeddableMeta) {
-            EmbeddableDescCanonicalNameFactory factory = new EmbeddableDescCanonicalNameFactory(ctx,
-                    embeddableElement);
-            CanonicalName embeddableDescCanonicalName = factory.create();
-            embeddableMeta.setEmbeddableDescCanonicalName(embeddableDescCanonicalName);
         }
 
         @Override

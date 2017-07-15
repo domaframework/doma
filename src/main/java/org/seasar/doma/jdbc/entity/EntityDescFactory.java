@@ -53,8 +53,7 @@ public final class EntityDescFactory {
      *             エンティティクラスに対応するメタクラスが見つからない場合
      * @since 1.27.0
      */
-    public static <E> EntityDesc<E> getEntityDesc(Class<E> entityClass,
-            ClassHelper classHelper) {
+    public static <E> EntityDesc<E> getEntityDesc(Class<E> entityClass, ClassHelper classHelper) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
         }
@@ -65,18 +64,17 @@ public final class EntityDescFactory {
             throw new DomaIllegalArgumentException("entityClass",
                     Message.DOMA2206.getMessage("entityClass"));
         }
-        String entityDescClassName = Conventions.toFullDescName(entityClass
-                .getName());
+        String entityDescClassName = Conventions.createDescClassName(entityClass.getName());
         try {
             Class<E> clazz = classHelper.forName(entityDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
-            throw new EntityDescNotFoundException(e.getCause(),
-                    entityClass.getName(), entityDescClassName);
+            throw new EntityDescNotFoundException(e.getCause(), entityClass.getName(),
+                    entityDescClassName);
         } catch (Exception e) {
-            throw new EntityDescNotFoundException(e.getCause(),
-                    entityClass.getName(), entityDescClassName);
+            throw new EntityDescNotFoundException(e.getCause(), entityClass.getName(),
+                    entityDescClassName);
         }
     }
 }

@@ -18,12 +18,18 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
+import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Entity;
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.EntityDescGenerator;
+import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 
@@ -47,10 +53,14 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement, EntityMeta meta)
-            throws IOException {
-        assertNotNull(typeElement, meta);
-        return new EntityDescGenerator(ctx, typeElement, meta);
+    protected CodeSpecFactory createCodeSpecFactory(EntityMeta meta) {
+        return new DescCodeSpecFactory(ctx, meta.getEntityElement());
+    }
+
+    @Override
+    protected Generator createGenerator(EntityMeta meta, CodeSpec codeSpec, Formatter formatter) throws IOException {
+        assertNotNull(meta, codeSpec, formatter);
+        return new EntityDescGenerator(ctx, meta, codeSpec, formatter);
     }
 
 }

@@ -13,47 +13,40 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.TypeElement;
+import java.util.stream.Collectors;
 
-import org.seasar.doma.internal.Conventions;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.type.TypeMirror;
+
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.util.ClassUtil;
 
 /**
  * @author nakamura
  *
  */
-public abstract class AbstractCanonicalNameFactory {
+public abstract class AbstractCodeSpecFactory implements CodeSpecFactory {
 
     protected final Context ctx;
 
     protected final TypeElement typeElement;
 
-    protected AbstractCanonicalNameFactory(Context ctx, TypeElement typeElement) {
+    protected AbstractCodeSpecFactory(Context ctx, TypeElement typeElement) {
         assertNotNull(ctx, typeElement);
         this.ctx = ctx;
         this.typeElement = typeElement;
     }
 
-    public CanonicalName create() {
-        String name = prefix() + infix() + suffix();
-        return new CanonicalName(name);
-    }
-
-    protected abstract String prefix();
-
-    protected String infix() {
-        String binaryName = Conventions
-                .normalizeBinaryName(ctx.getElements().getBinaryName(typeElement).toString());
-        return ClassUtil.getSimpleName(binaryName);
-    }
-
-    protected String suffix() {
-        return "";
+    protected static String createTypeParamsName(TypeElement typeElement) {
+        return typeElement.getTypeParameters()
+                .stream()
+                .map(TypeParameterElement::asType)
+                .map(TypeMirror::toString)
+                .collect(Collectors.joining(", "));
     }
 
 }

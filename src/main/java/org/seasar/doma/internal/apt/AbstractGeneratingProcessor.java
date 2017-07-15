@@ -15,17 +15,23 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
+import java.util.Formatter;
 import java.util.Set;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
+import javax.tools.JavaFileObject;
 
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.message.Message;
 
 /**
@@ -51,7 +57,7 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
                     TypeElementMetaFactory<M> factory = createTypeElementMetaFactory(t);
                     M meta = factory.createTypeElementMeta();
                     if (meta != null) {
-                        generate(ctx, typeElement, meta);
+                        generate(typeElement, meta);
                     }
                 });
             }
@@ -62,19 +68,23 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
     protected abstract TypeElementMetaFactory<M> createTypeElementMetaFactory(
             TypeElement typeElement);
 
-    protected void generate(Context ctx, TypeElement typeElement, M meta) {
-        Generator generator = null;
+    protected void generate(TypeElement typeElement, M meta) {
+        CodeSpecFactory codeSpecFactory = createCodeSpecFactory(meta);
+        CodeSpec codeSpec = codeSpecFactory.create();
         try {
-            generator = createGenerator(ctx, typeElement, meta);
-            generator.generate();
-        } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, typeElement, e,
-                    new Object[] { typeElement.getQualifiedName(), e });
-        } finally {
-            IOUtil.close(generator);
+            JavaFileObject file = ctx.getResources().createSourceFile(codeSpec, typeElement);
+            try (Formatter formatter = new Formatter(new BufferedWriter(file.openWriter()))) {
+                Generator generator = createGenerator(meta, codeSpec, formatter);
+                generator.generate();
+            }
+        } catch (IOException | UncheckedIOException e) {
+            throw new AptException(Message.DOMA4079, typeElement, e,
+                    new Object[] { codeSpec.getQualifiedName(), e });
         }
     }
 
-    protected abstract Generator createGenerator(Context ctx, TypeElement typeElement, M meta)
-            throws IOException;
+    protected abstract CodeSpecFactory createCodeSpecFactory(M meta);
+
+    protected abstract Generator createGenerator(M meta, CodeSpec codeSpec, Formatter formatter) throws IOException;
+
 }

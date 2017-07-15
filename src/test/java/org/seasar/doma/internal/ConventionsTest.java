@@ -25,24 +25,15 @@ public class ConventionsTest extends TestCase {
 
     public void testNormalizeBinaryName() throws Exception {
         assertEquals("Ccc", Conventions.normalizeBinaryName("Ccc"));
-        assertEquals("aaa.bbb.Ccc",
-                Conventions.normalizeBinaryName("aaa.bbb.Ccc"));
+        assertEquals("aaa.bbb.Ccc", Conventions.normalizeBinaryName("aaa.bbb.Ccc"));
         assertEquals("aaa.bbb.Ccc__Ddd__Eee",
                 Conventions.normalizeBinaryName("aaa.bbb.Ccc$Ddd$Eee"));
     }
 
     public void testToFullMetaName() throws Exception {
-        assertEquals("_Ccc", Conventions.toFullDescName("Ccc"));
-        assertEquals("aaa.bbb._Ccc", Conventions.toFullDescName("aaa.bbb.Ccc"));
-        assertEquals("aaa.bbb._Ccc__Ddd__Eee",
-                Conventions.toFullDescName("aaa.bbb.Ccc$Ddd$Eee"));
-    }
-
-    public void testToSimpleMetaName() throws Exception {
-        assertEquals("_Ccc", Conventions.toSimpleDescName("Ccc"));
-        assertEquals("_Ccc", Conventions.toSimpleDescName("aaa.bbb.Ccc"));
-        assertEquals("_Ccc__Ddd__Eee",
-                Conventions.toSimpleDescName("aaa.bbb.Ccc$Ddd$Eee"));
+        assertEquals("_Ccc", Conventions.toFullDescClassName("Ccc"));
+        assertEquals("aaa.bbb._Ccc", Conventions.toFullDescClassName("aaa.bbb.Ccc"));
+        assertEquals("aaa.bbb._Ccc__Ddd__Eee", Conventions.toFullDescClassName("aaa.bbb.Ccc$Ddd$Eee"));
     }
 
 }

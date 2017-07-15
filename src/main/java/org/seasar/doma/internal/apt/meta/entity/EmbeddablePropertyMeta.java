@@ -19,7 +19,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 
@@ -29,10 +28,10 @@ import org.seasar.doma.internal.apt.reflection.ColumnReflection;
  */
 public class EmbeddablePropertyMeta extends AbstractPropertyMeta {
 
-    public EmbeddablePropertyMeta(Context ctx, VariableElement fieldElement,
-            String name, CtType ctType, ColumnReflection columnReflection) {
+    public EmbeddablePropertyMeta(VariableElement fieldElement, String name, CtType ctType,
+            ColumnReflection columnReflection) {
         super(fieldElement, name, ctType, columnReflection);
-        assertNotNull(ctx, fieldElement);
+        assertNotNull(fieldElement);
     }
 
 }

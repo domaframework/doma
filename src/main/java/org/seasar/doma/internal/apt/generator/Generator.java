@@ -13,16 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
-
-import java.io.Closeable;
+package org.seasar.doma.internal.apt.generator;
 
 /**
  * 
  * @author taedium
  * 
  */
-public interface Generator extends Closeable {
+public interface Generator {
 
     void generate();
 }

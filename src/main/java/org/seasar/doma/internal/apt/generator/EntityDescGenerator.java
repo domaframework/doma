@@ -13,17 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiFunction;
 
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
@@ -66,9 +67,9 @@ public class EntityDescGenerator extends AbstractGenerator {
 
     private final EntityMeta entityMeta;
 
-    public EntityDescGenerator(Context ctx, TypeElement entityElement, EntityMeta entityMeta)
-            throws IOException {
-        super(ctx, entityElement, entityMeta.getEntityDescCanonicalName());
+    public EntityDescGenerator(Context ctx, EntityMeta entityMeta, CodeSpec codeSpec,
+            Formatter formatter) {
+        super(ctx, codeSpec, formatter);
         assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
     }
@@ -77,13 +78,6 @@ public class EntityDescGenerator extends AbstractGenerator {
     public void generate() {
         printPackage();
         printClass();
-    }
-
-    private void printPackage() {
-        if (!packageName.isEmpty()) {
-            iprint("package %1$s;%n", packageName);
-            iprint("%n");
-        }
     }
 
     private void printClass() {
@@ -168,7 +162,7 @@ public class EntityDescGenerator extends AbstractGenerator {
                         /* 3 */pm.getTypeName(),
                         /* 4 */pm.getFieldName(), 
                         /* 5 */pm.getName(),
-                        /* 6 */pm.getEmbeddableDescTypeName(), 
+                        /* 6 */pm.getEmbeddableDescClassName(), 
                         /* 7 */pm.getName());
                         // @formatter:on
             } else {
@@ -242,7 +236,7 @@ public class EntityDescGenerator extends AbstractGenerator {
         args._5_fieldName = pm.getFieldName();
         args._6_entityClass = entityMeta.getEntityTypeName() + ".class";
         args._7_wrapperSupplier = supply(basicCtType);
-        args._8_holderType = holderCtType == null ? "null" : holderCtType.getInstantiationCommand();
+        args._8_holderType = holderCtType == null ? "null" : holderCtType.getInstantiationCode();
         args._9_name = "\"" + pm.getName() + "\"";
         args._10_columnName = "\"" + pm.getColumnName() + "\"";
         args._11_quoteRequired = pm.isColumnQuoteRequired();
@@ -656,7 +650,7 @@ public class EntityDescGenerator extends AbstractGenerator {
                     if (propertyMeta.isEmbedded()) {
                         iprint("        %1$s.getSingletonInternal().newEmbeddable(\"%2$s\", __args)",
                                 // @formatter:off
-                                /* 1 */propertyMeta.getEmbeddableDescTypeName(),
+                                /* 1 */propertyMeta.getEmbeddableDescClassName(),
                                 /* 2 */propertyMeta.getName());
                                 // @formatter:on
                     } else {
@@ -678,7 +672,7 @@ public class EntityDescGenerator extends AbstractGenerator {
                         iprint("    %1$s.save(entity, %2$s.getSingletonInternal().newEmbeddable(\"%3$s\", __args));%n",
                                 // @formatter:off
                                 /* 1 */propertyMeta.getFieldName(),
-                                /* 2 */propertyMeta.getEmbeddableDescTypeName(),
+                                /* 2 */propertyMeta.getEmbeddableDescClassName(),
                                 /* 3 */propertyMeta.getName());
                                 // @formatter:off
                     } else {

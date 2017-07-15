@@ -13,22 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Formatter;
 
 import javax.annotation.processing.Generated;
-import javax.lang.model.element.TypeElement;
-import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
-import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -36,32 +33,37 @@ import org.seasar.doma.message.Message;
  */
 public abstract class AbstractGenerator implements Generator {
 
-    protected static final String INDENT_SPACE = "    ";
+    private static final String INDENT_SPACE = "    ";
 
     protected final Context ctx;
 
-    protected final TypeElement typeElement;
-
-    protected final CanonicalName canonicalName;
+    protected final CodeSpec codeSpec;
 
     protected final String packageName;
 
     protected final String simpleName;
 
-    protected final Formatter formatter;
+    protected final String typeParamsName;
 
-    protected final StringBuilder indentBuffer = new StringBuilder();
+    private final Formatter formatter;
 
-    protected AbstractGenerator(Context ctx, TypeElement typeElement, CanonicalName canonicalName)
-            throws IOException {
-        assertNotNull(ctx, typeElement, canonicalName);
+    private final StringBuilder indentBuffer = new StringBuilder();
+
+    protected AbstractGenerator(Context ctx, CodeSpec codeSpec, Formatter formatter) {
+        assertNotNull(ctx, codeSpec, formatter);
         this.ctx = ctx;
-        this.typeElement = typeElement;
-        this.canonicalName = canonicalName;
-        this.packageName = canonicalName.getPackageName();
-        this.simpleName = canonicalName.getSimpleName();
-        JavaFileObject file = ctx.getResources().createSourceFile(canonicalName, typeElement);
-        formatter = new Formatter(new BufferedWriter(file.openWriter()));
+        this.codeSpec = codeSpec;
+        this.packageName = codeSpec.getPackageName();
+        this.simpleName = codeSpec.getSimpleName();
+        this.typeParamsName = codeSpec.getTypeParamsName();
+        this.formatter = formatter;
+    }
+
+    protected void printPackage() {
+        if (!packageName.isEmpty()) {
+            iprint("package %1$s;%n", packageName);
+            iprint("%n");
+        }
     }
 
     protected void printGenerated() {
@@ -96,8 +98,7 @@ public abstract class AbstractGenerator implements Generator {
         IOException ioException = formatter.ioException();
         if (ioException != null) {
             formatter.close();
-            throw new AptException(Message.DOMA4079, typeElement, ioException,
-                    new Object[] { canonicalName, ioException });
+            throw new UncheckedIOException(ioException);
         }
     }
 
@@ -149,13 +150,6 @@ public abstract class AbstractGenerator implements Generator {
                     ctType.getQualifiedName());
         }
         return String.format("%1$s::new", ctType.getWrapperTypeName());
-    }
-
-    @Override
-    public void close() {
-        if (formatter != null) {
-            formatter.close();
-        }
     }
 
 }

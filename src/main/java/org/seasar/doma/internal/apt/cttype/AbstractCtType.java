@@ -41,8 +41,6 @@ public abstract class AbstractCtType implements CtType {
 
     protected final String qualifiedName;
 
-    protected final String descTypeName;
-
     protected final boolean isRawType;
 
     protected final boolean hasWildcardType;
@@ -57,10 +55,8 @@ public abstract class AbstractCtType implements CtType {
         this.typeElement = ctx.getTypes().toTypeElement(type);
         if (typeElement == null) {
             this.qualifiedName = typeName;
-            this.descTypeName = typeName;
         } else {
             this.qualifiedName = typeElement.getQualifiedName().toString();
-            this.descTypeName = createDescTypeName(ctx, typeElement, typeName);
         }
         this.isRawType = isRawType(ctx, type, typeElement);
         if (isRawType) {
@@ -69,19 +65,11 @@ public abstract class AbstractCtType implements CtType {
         } else {
             DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
             this.hasWildcardType = matchTypeArguments(declaredType, TypeKind.WILDCARD);
-            this.hasTypevarType = matchTypeArguments(declaredType,
-                    TypeKind.TYPEVAR);
+            this.hasTypevarType = matchTypeArguments(declaredType, TypeKind.TYPEVAR);
         }
     }
 
-    private static String createDescTypeName(Context ctx, TypeElement typeElement,
-            String typeName) {
-        return ctx.getMetas().toFullDescName(typeElement)
-                + makeTypeParamDecl(typeName);
-    }
-
-    private static boolean isRawType(Context ctx, TypeMirror type,
-            TypeElement typeElement) {
+    private static boolean isRawType(Context ctx, TypeMirror type, TypeElement typeElement) {
         if (typeElement != null && !typeElement.getTypeParameters().isEmpty()) {
             DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
             if (declaredType == null) {
@@ -94,31 +82,16 @@ public abstract class AbstractCtType implements CtType {
         return false;
     }
 
-    private static boolean matchTypeArguments(DeclaredType declaredType,
-            TypeKind kind) {
+    private static boolean matchTypeArguments(DeclaredType declaredType, TypeKind kind) {
         if (declaredType == null) {
             return false;
         }
-        return declaredType.getTypeArguments().stream()
-                .anyMatch(a -> a.getKind() == kind);
-    }
-
-    private static String makeTypeParamDecl(String typeName) {
-        int pos = typeName.indexOf("<");
-        if (pos == -1) {
-            return "";
-        }
-        return typeName.substring(pos);
+        return declaredType.getTypeArguments().stream().anyMatch(a -> a.getKind() == kind);
     }
 
     @Override
     public TypeMirror getType() {
         return type;
-    }
-
-    @Override
-    public TypeElement getTypeElement() {
-        return typeElement;
     }
 
     @Override

@@ -35,7 +35,6 @@ import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
-import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.Holder;
 import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.util.ResourceUtil;
@@ -71,12 +70,10 @@ public abstract class AptTestCase extends AptinaTestCase {
         return ResourceUtil.getResourceAsString(path + suffix);
     }
 
-    protected void assertGeneratedSource(Class<?> originalClass)
-            throws Exception {
+    protected void assertGeneratedSource(Class<?> originalClass) throws Exception {
         String generatedClassName = getGeneratedClassName(originalClass);
         try {
-            assertEqualsGeneratedSource(getExpectedContent(),
-                    generatedClassName);
+            assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
         } catch (AssertionFailedError error) {
             System.out.println(getGeneratedSource(generatedClassName));
             throw error;
@@ -85,14 +82,12 @@ public abstract class AptTestCase extends AptinaTestCase {
 
     protected String getGeneratedClassName(Class<?> originalClass) {
         if (originalClass.isAnnotationPresent(Dao.class)) {
-            return originalClass.getName()
-                    + Options.Constants.DEFAULT_DAO_SUFFIX;
+            return originalClass.getName() + Options.Constants.DEFAULT_DAO_SUFFIX;
         }
         if (originalClass.isAnnotationPresent(Entity.class)
                 || originalClass.isAnnotationPresent(Embeddable.class)
-                || originalClass.isAnnotationPresent(Holder.class)
-                || originalClass.isAnnotationPresent(ExternalHolder.class)) {
-            return Conventions.toFullDescName(originalClass.getName());
+                || originalClass.isAnnotationPresent(Holder.class)) {
+            return Conventions.createDescClassName(originalClass.getName());
         }
         throw new AssertionFailedError("annotation not found.");
     }
@@ -143,8 +138,7 @@ public abstract class AptTestCase extends AptinaTestCase {
         return null;
     }
 
-    protected Message extractMessage(
-            Diagnostic<? extends JavaFileObject> diagnostic) {
+    protected Message extractMessage(Diagnostic<? extends JavaFileObject> diagnostic) {
         String message = diagnostic.getMessage(getLocale());
         int start = message.indexOf('[');
         int end = message.indexOf(']');

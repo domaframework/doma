@@ -21,13 +21,12 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.reflection.HolderReflection;
 
 public class HolderMeta implements TypeElementMeta {
 
-    private final TypeElement typeElement;
+    private final TypeElement holderElement;
 
     private final TypeMirror type;
 
@@ -37,25 +36,22 @@ public class HolderMeta implements TypeElementMeta {
 
     private final HolderReflection holderReflection;
 
-    private final CanonicalName holderDescCanonicalName;
-
     public HolderMeta(TypeElement typeElement, TypeMirror type, HolderReflection holderReflection,
-            BasicCtType basicCtType, CanonicalName holderDescCanonicalName) {
-        assertNotNull(typeElement, type, holderReflection, basicCtType, holderDescCanonicalName);
-        this.typeElement = typeElement;
+            BasicCtType basicCtType) {
+        assertNotNull(typeElement, type, holderReflection, basicCtType);
+        this.holderElement = typeElement;
         this.type = type;
         this.parametarized = !typeElement.getTypeParameters().isEmpty();
         this.holderReflection = holderReflection;
         this.basicCtType = basicCtType;
-        this.holderDescCanonicalName = holderDescCanonicalName;
     }
 
     public TypeMirror getType() {
         return type;
     }
 
-    public TypeElement getTypeElement() {
-        return typeElement;
+    public TypeElement getHolderElement() {
+        return holderElement;
     }
 
     public BasicCtType getBasicCtType() {
@@ -88,10 +84,6 @@ public class HolderMeta implements TypeElementMeta {
 
     public boolean isParametarized() {
         return parametarized;
-    }
-
-    public CanonicalName getHolderDescCanonicalName() {
-        return holderDescCanonicalName;
     }
 
 }

@@ -13,21 +13,33 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta.entity;
+package org.seasar.doma.internal.apt.generator;
 
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.meta.AbstractDescCanonicalNameFactory;
 
 /**
  * @author nakamura
  *
  */
-public class EmbeddableDescCanonicalNameFactory extends AbstractDescCanonicalNameFactory {
+public class DescCodeSpecFactory extends AbstractCodeSpecFactory {
 
-    public EmbeddableDescCanonicalNameFactory(Context ctx, TypeElement embeddableElement) {
-        super(ctx, embeddableElement);
+    public DescCodeSpecFactory(Context ctx, TypeElement typeElement) {
+        super(ctx, typeElement);
+    }
+
+    public CodeSpec create() {
+        Name binaryName = ctx.getElements().getBinaryName(typeElement);
+        String descClassName = createDescClassName(binaryName);
+        String typeParamsName = createTypeParamsName(typeElement);
+        return new CodeSpec(descClassName, typeParamsName);
+    }
+
+    protected String createDescClassName(Name binaryName) {
+        return Conventions.createDescClassName(binaryName);
     }
 
 }

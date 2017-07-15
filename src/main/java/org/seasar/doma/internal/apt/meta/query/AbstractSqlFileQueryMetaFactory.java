@@ -30,7 +30,7 @@ import javax.tools.FileObject;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.SqlValidator;
+import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.internal.util.IOUtil;

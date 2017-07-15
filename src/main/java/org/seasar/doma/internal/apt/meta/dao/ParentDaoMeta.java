@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.reflection.DaoReflection;
 
 /**
@@ -33,14 +32,10 @@ public class ParentDaoMeta {
 
     private final TypeElement daoElement;
 
-    private final CanonicalName daoImplCanonicalName;
-
-    public ParentDaoMeta(DaoReflection daoReflection, TypeElement daoElement,
-            CanonicalName daoImplCanonicalName) {
-        assertNotNull(daoReflection, daoElement, daoImplCanonicalName);
+    public ParentDaoMeta(DaoReflection daoReflection, TypeElement daoElement) {
+        assertNotNull(daoReflection, daoElement);
         this.daoReflection = daoReflection;
         this.daoElement = daoElement;
-        this.daoImplCanonicalName = daoImplCanonicalName;
     }
 
     public TypeMirror getDaoType() {
@@ -53,10 +48,6 @@ public class ParentDaoMeta {
 
     public boolean hasUserDefinedConfig() {
         return daoReflection.hasUserDefinedConfig();
-    }
-
-    public CanonicalName getDaoImplCanonicalName() {
-        return daoImplCanonicalName;
     }
 
 }

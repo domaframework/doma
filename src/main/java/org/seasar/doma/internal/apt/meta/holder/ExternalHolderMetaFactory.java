@@ -37,7 +37,6 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 import org.seasar.doma.message.Message;
@@ -68,10 +67,7 @@ public class ExternalHolderMetaFactory implements TypeElementMetaFactory<Externa
         }
         TypeElement holderElement = createHolderElement(argTypes[0]);
         BasicCtType basicCtType = createBasicCtType(argTypes[1]);
-        CanonicalName externalHolderCanonicalName = createExteranlHolderDescCanonicalName(
-                holderElement);
-        return new ExternalHolderMeta(convElement, holderElement, basicCtType,
-                externalHolderCanonicalName);
+        return new ExternalHolderMeta(convElement, holderElement, basicCtType);
     }
 
     private void validateConverter() {
@@ -174,9 +170,4 @@ public class ExternalHolderMetaFactory implements TypeElementMetaFactory<Externa
         return basicCtType;
     }
 
-    private CanonicalName createExteranlHolderDescCanonicalName(TypeElement holderElement) {
-        ExternalHolderDescCanonicalNameFactory factory = new ExternalHolderDescCanonicalNameFactory(
-                ctx, holderElement);
-        return factory.create();
-    }
 }

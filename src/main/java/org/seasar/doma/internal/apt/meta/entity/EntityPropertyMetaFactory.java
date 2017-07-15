@@ -31,6 +31,7 @@ import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Version;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
@@ -44,7 +45,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.MetaConstants;
 import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
@@ -75,7 +75,7 @@ public class EntityPropertyMetaFactory {
         CtType ctType = createCtType();
         ColumnReflection columnReflection = ctx.getReflections().newColumnReflection(fieldElement);
         String filedPrefix = ctx.getOptions().getEntityFieldPrefix();
-        EntityPropertyMeta propertyMeta = new EntityPropertyMeta(ctx, fieldElement, name, ctType,
+        EntityPropertyMeta propertyMeta = new EntityPropertyMeta(fieldElement, name, ctType,
                 columnReflection, filedPrefix);
         doId(propertyMeta);
         doVersion(propertyMeta);
@@ -85,9 +85,9 @@ public class EntityPropertyMetaFactory {
 
     private String getName() {
         String name = fieldElement.getSimpleName().toString();
-        if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
+        if (name.startsWith(Constants.RESERVED_VARIABLE_NAME_PREFIX)) {
             throw new AptException(Message.DOMA4025, fieldElement,
-                    new Object[] { MetaConstants.RESERVED_NAME_PREFIX });
+                    new Object[] { Constants.RESERVED_VARIABLE_NAME_PREFIX });
         }
         return name;
     }

@@ -23,7 +23,6 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
 
@@ -40,8 +39,6 @@ public class EmbeddableMeta implements TypeElementMeta {
     private final List<EmbeddablePropertyMeta> propertyMetas = new ArrayList<>();
 
     private EmbeddableConstructorMeta constructorMeta;
-
-    private CanonicalName embeddableDescCanonicalName;
 
     public EmbeddableMeta(EmbeddableReflection embeddableReflection,
             TypeElement embeddableElement) {
@@ -75,14 +72,6 @@ public class EmbeddableMeta implements TypeElementMeta {
 
     public boolean isAbstract() {
         return embeddableElement.getModifiers().contains(Modifier.ABSTRACT);
-    }
-
-    public CanonicalName getEmbeddableDescCanonicalName() {
-        return embeddableDescCanonicalName;
-    }
-
-    public void setEmbeddableDescCanonicalName(CanonicalName embeddableDescCanonicalName) {
-        this.embeddableDescCanonicalName = embeddableDescCanonicalName;
     }
 
 }

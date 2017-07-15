@@ -22,7 +22,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptTestCase;
-import org.seasar.doma.internal.apt.BatchSqlValidator;
+import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;

@@ -17,11 +17,9 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
@@ -35,8 +33,6 @@ import org.seasar.doma.internal.apt.reflection.ColumnReflection;
  */
 public class EntityPropertyMeta extends AbstractPropertyMeta {
 
-    private final Context ctx;
-
     private final String fieldPrefix;
 
     private boolean id;
@@ -45,12 +41,10 @@ public class EntityPropertyMeta extends AbstractPropertyMeta {
 
     private IdGeneratorMeta idGeneratorMeta;
 
-    public EntityPropertyMeta(Context ctx, VariableElement fieldElement,
-            String name, CtType ctType, ColumnReflection columnReflection,
-            String fieldPrefix) {
+    public EntityPropertyMeta(VariableElement fieldElement, String name, CtType ctType,
+            ColumnReflection columnReflection, String fieldPrefix) {
         super(fieldElement, name, ctType, columnReflection);
-        assertNotNull(ctx, fieldPrefix);
-        this.ctx = ctx;
+        assertNotNull(fieldPrefix);
         this.fieldPrefix = fieldPrefix;
     }
 
@@ -83,23 +77,28 @@ public class EntityPropertyMeta extends AbstractPropertyMeta {
     }
 
     public boolean isEmbedded() {
-        return ctType
-                .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
-                        false) {
-                    @Override
-                    public Boolean visitEmbeddableCtType(
-                            EmbeddableCtType ctType, Void p)
-                            throws RuntimeException {
-                        return true;
-                    }
-                }, null);
+        return ctType.accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
+            @Override
+            public Boolean visitEmbeddableCtType(EmbeddableCtType ctType, Void p)
+                    throws RuntimeException {
+                return true;
+            }
+        }, null);
     }
 
-    public String getEmbeddableDescTypeName() {
-        TypeElement typeElement = ctType.getTypeElement();
-        if (typeElement == null) {
-            throw new AptIllegalStateException("typeElement must not be null.");
-        }
-        return ctx.getMetas().toFullDescName(typeElement);
+    public String getEmbeddableDescClassName() {
+        return ctType.accept(new SimpleCtTypeVisitor<String, Void, RuntimeException>() {
+
+            @Override
+            protected String defaultAction(CtType ctType, Void p) throws RuntimeException {
+                throw new AptIllegalStateException("getEmbeddableDescClassName");
+            }
+
+            @Override
+            public String visitEmbeddableCtType(EmbeddableCtType ctType, Void p)
+                    throws RuntimeException {
+                return ctType.getDescClassName();
+            }
+        }, null);
     }
 }

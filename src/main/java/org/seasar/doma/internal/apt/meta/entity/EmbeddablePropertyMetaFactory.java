@@ -53,7 +53,7 @@ public class EmbeddablePropertyMetaFactory {
         String name = fieldElement.getSimpleName().toString();
         CtType ctType = resolveCtType();
         ColumnReflection columnReflection = ctx.getReflections().newColumnReflection(fieldElement);
-        return new EmbeddablePropertyMeta(ctx, fieldElement, name, ctType, columnReflection);
+        return new EmbeddablePropertyMeta(fieldElement, name, ctType, columnReflection);
     }
 
     private CtType resolveCtType() {

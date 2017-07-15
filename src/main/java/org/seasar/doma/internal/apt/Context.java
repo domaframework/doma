@@ -19,7 +19,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 
 import org.seasar.doma.internal.apt.cttype.CtTypes;
 import org.seasar.doma.internal.apt.decl.Declarations;
-import org.seasar.doma.internal.apt.meta.Metas;
 import org.seasar.doma.internal.apt.reflection.Reflections;
 
 /**
@@ -56,10 +55,6 @@ public class Context {
 
     public Types getTypes() {
         return new Types(this);
-    }
-
-    public Metas getMetas() {
-        return new Metas(this);
     }
 
     public Resources getResources() {

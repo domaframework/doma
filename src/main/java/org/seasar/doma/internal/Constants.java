@@ -43,4 +43,6 @@ public final class Constants {
 
     public static final String BINARY_NAME_DELIMITER = "$";
 
+    public static final String RESERVED_VARIABLE_NAME_PREFIX = "__";
+
 }

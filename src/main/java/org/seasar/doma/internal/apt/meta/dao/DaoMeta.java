@@ -26,7 +26,6 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.AccessLevel;
 import org.seasar.doma.AnnotationTarget;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 import org.seasar.doma.internal.apt.reflection.AnnotateWithReflection;
@@ -51,8 +50,6 @@ public class DaoMeta implements TypeElementMeta {
     private ParentDaoMeta parentDaoMeta;
 
     private ConfigMeta configMeta;
-
-    private CanonicalName daoImplCanonicalName;
 
     public DaoMeta(DaoReflection daoReflection, TypeElement daoElement) {
         assertNotNull(daoReflection, daoElement);
@@ -123,14 +120,6 @@ public class DaoMeta implements TypeElementMeta {
 
     public void setConfigMeta(ConfigMeta configMeta) {
         this.configMeta = configMeta;
-    }
-
-    public CanonicalName getDaoImplCanonicalName() {
-        return daoImplCanonicalName;
-    }
-
-    public void setDaoImplCanonicalName(CanonicalName daoImplCanonicalName) {
-        this.daoImplCanonicalName = daoImplCanonicalName;
     }
 
 }

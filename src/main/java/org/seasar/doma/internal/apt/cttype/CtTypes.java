@@ -55,6 +55,8 @@ import javax.lang.model.util.SimpleTypeVisitor8;
 
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.ExternalDescCodeSpecFactory;
 import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
 import org.seasar.doma.internal.apt.reflection.EntityReflection;
 import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
@@ -111,20 +113,17 @@ public class CtTypes {
 
     public BasicCtType newBasicCtType(TypeMirror type) {
         assertNotNull(type);
-        Class<?> wrapperClass = type.accept(new WrapperClassMapper(ctx),
-                null);
+        Class<?> wrapperClass = type.accept(new WrapperClassMapper(ctx), null);
         if (wrapperClass == null) {
             return null;
         }
-        TypeElement wrapperTypeElement = ctx.getElements()
-                .getTypeElement(wrapperClass);
+        TypeElement wrapperTypeElement = ctx.getElements().getTypeElement(wrapperClass);
         if (wrapperTypeElement == null) {
             return null;
         }
         TypeMirror wrapperType;
         if (wrapperClass == EnumWrapper.class) {
-            wrapperType = ctx.getTypes().getDeclaredType(wrapperTypeElement,
-                    type);
+            wrapperType = ctx.getTypes().getDeclaredType(wrapperTypeElement, type);
         } else {
             wrapperType = wrapperTypeElement.asType();
         }
@@ -133,52 +132,45 @@ public class CtTypes {
 
     public BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
         assertNotNull(type);
-        DeclaredType biFunctionDeclaredType = getDeclaredTypeFromHierarchy(type,
-                BiFunction.class);
+        DeclaredType biFunctionDeclaredType = getDeclaredTypeFromHierarchy(type, BiFunction.class);
         if (biFunctionDeclaredType == null) {
             return null;
         }
         CtType firstArgCtType = null;
         CtType secondArgCtType = null;
         AnyCtType resultCtType = null;
-        List<? extends TypeMirror> typeArguments = biFunctionDeclaredType
-                .getTypeArguments();
+        List<? extends TypeMirror> typeArguments = biFunctionDeclaredType.getTypeArguments();
 
         if (typeArguments.size() == 3) {
             TypeMirror firstArgTypeMirror = typeArguments.get(0);
             TypeMirror secondArgTypeMirror = typeArguments.get(1);
             TypeMirror resultTypeMirror = typeArguments.get(2);
-            firstArgCtType = toCtType(firstArgTypeMirror,
-                    List.of(this::newConfigCtType));
-            secondArgCtType = toCtType(secondArgTypeMirror,
-                    List.of(this::newPreparedSqlCtType));
+            firstArgCtType = toCtType(firstArgTypeMirror, List.of(this::newConfigCtType));
+            secondArgCtType = toCtType(secondArgTypeMirror, List.of(this::newPreparedSqlCtType));
             resultCtType = newAnyCtType(resultTypeMirror);
         }
 
-        return new BiFunctionCtType(ctx, type, firstArgCtType,
-                secondArgCtType, resultCtType);
+        return new BiFunctionCtType(ctx, type, firstArgCtType, secondArgCtType, resultCtType);
     }
 
     public CollectorCtType newCollectorCtType(TypeMirror type) {
         assertNotNull(type);
-        DeclaredType collectorDeclaredType = getDeclaredTypeFromHierarchy(type,
-                Collector.class);
+        DeclaredType collectorDeclaredType = getDeclaredTypeFromHierarchy(type, Collector.class);
         if (collectorDeclaredType == null) {
             return null;
         }
 
-        List<? extends TypeMirror> typeArguments = collectorDeclaredType
-                .getTypeArguments();
+        List<? extends TypeMirror> typeArguments = collectorDeclaredType.getTypeArguments();
         CtType targetCtType = null;
         AnyCtType returnCtType = null;
         if (typeArguments.size() == 3) {
             TypeMirror targetTypeMirror = typeArguments.get(0);
             TypeMirror returnTypeMirror = typeArguments.get(2);
-            targetCtType = toCtType(targetTypeMirror, List.of(
-                    this::newEntityCtType, this::newOptionalCtType,
-                    this::newOptionalIntCtType, this::newOptionalLongCtType,
-                    this::newOptionalDoubleCtType, this::newHolderCtType,
-                    this::newBasicCtType, this::newMapCtType));
+            targetCtType = toCtType(targetTypeMirror,
+                    List.of(this::newEntityCtType, this::newOptionalCtType,
+                            this::newOptionalIntCtType, this::newOptionalLongCtType,
+                            this::newOptionalDoubleCtType, this::newHolderCtType,
+                            this::newBasicCtType, this::newMapCtType));
             returnCtType = newAnyCtType(returnTypeMirror);
         }
 
@@ -213,25 +205,21 @@ public class CtTypes {
         if (typeElement == null) {
             return null;
         }
-        EntityReflection entityReflection = ctx.getReflections()
-                .newEntityReflection(typeElement);
+        EntityReflection entityReflection = ctx.getReflections().newEntityReflection(typeElement);
         if (entityReflection == null) {
             return null;
         }
-        return new EntityCtType(ctx, type,
-                entityReflection.getImmutableValue());
+        return new EntityCtType(ctx, type, entityReflection.getImmutableValue());
     }
 
     public FunctionCtType newFunctionCtType(TypeMirror type) {
         assertNotNull(type);
-        DeclaredType functionDeclaredType = getDeclaredTypeFromHierarchy(type,
-                Function.class);
+        DeclaredType functionDeclaredType = getDeclaredTypeFromHierarchy(type, Function.class);
         if (functionDeclaredType == null) {
             return null;
         }
 
-        List<? extends TypeMirror> typeArguments = functionDeclaredType
-                .getTypeArguments();
+        List<? extends TypeMirror> typeArguments = functionDeclaredType.getTypeArguments();
         CtType targetCtType = null;
         AnyCtType returnCtType = null;
         if (typeArguments.size() == 2) {
@@ -259,12 +247,17 @@ public class CtTypes {
         if (basicCtType == null) {
             return null;
         }
-        return new HolderCtType(ctx, type, basicCtType, info.external);
+        DescCodeSpecFactory factory;
+        if (info.external) {
+            factory = new ExternalDescCodeSpecFactory(ctx, typeElement);
+        } else {
+            factory = new DescCodeSpecFactory(ctx, typeElement);
+        }
+        return new HolderCtType(ctx, type, basicCtType, factory);
     }
 
     private HolderInfo getHolderInfo(TypeElement typeElement) {
-        HolderReflection holderReflection = ctx.getReflections()
-                .newHolderReflection(typeElement);
+        HolderReflection holderReflection = ctx.getReflections().newHolderReflection(typeElement);
         if (holderReflection != null) {
             return new HolderInfo(holderReflection.getValueTypeValue(), false);
         }
@@ -282,17 +275,14 @@ public class CtTypes {
             if (className.isEmpty()) {
                 continue;
             }
-            TypeElement providerElement = ctx.getElements()
-                    .getTypeElement(className);
+            TypeElement providerElement = ctx.getElements().getTypeElement(className);
             if (providerElement == null) {
-                throw new AptIllegalOptionException(
-                        Message.DOMA4200.getMessage(className));
+                throw new AptIllegalOptionException(Message.DOMA4200.getMessage(className));
             }
             HolderConvertersReflection convertersMirror = ctx.getReflections()
                     .newHolderConvertersReflection(providerElement);
             if (convertersMirror == null) {
-                throw new AptIllegalOptionException(
-                        Message.DOMA4201.getMessage(className));
+                throw new AptIllegalOptionException(Message.DOMA4201.getMessage(className));
             }
             for (TypeMirror converterType : convertersMirror.getValueValue()) {
                 // converterType does not contain adequate information in
@@ -302,8 +292,7 @@ public class CtTypes {
                     continue;
                 }
                 TypeMirror[] argTypes = getConverterArgTypes(converterType);
-                if (argTypes == null || !ctx.getTypes().isSameType(holderType,
-                        argTypes[0])) {
+                if (argTypes == null || !ctx.getTypes().isSameType(holderType, argTypes[0])) {
                     continue;
                 }
                 TypeMirror valueType = argTypes[1];
@@ -318,8 +307,7 @@ public class CtTypes {
         if (typeElement == null) {
             return null;
         }
-        String binaryName = ctx.getElements().getBinaryName(typeElement)
-                .toString();
+        String binaryName = ctx.getElements().getBinaryName(typeElement).toString();
         typeElement = ctx.getElements().getTypeElement(binaryName);
         if (typeElement == null) {
             return null;
@@ -328,18 +316,14 @@ public class CtTypes {
     }
 
     private TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
-        for (TypeMirror supertype : ctx.getTypes()
-                .directSupertypes(typeMirror)) {
-            if (!ctx.getTypes().isAssignable(supertype,
-                    HolderConverter.class)) {
+        for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
+            if (!ctx.getTypes().isAssignable(supertype, HolderConverter.class)) {
                 continue;
             }
             if (ctx.getTypes().isSameType(supertype, HolderConverter.class)) {
-                DeclaredType declaredType = ctx.getTypes()
-                        .toDeclaredType(supertype);
+                DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
                 assertNotNull(declaredType);
-                List<? extends TypeMirror> args = declaredType
-                        .getTypeArguments();
+                List<? extends TypeMirror> args = declaredType.getTypeArguments();
                 assertEquals(2, args.size());
                 return new TypeMirror[] { args.get(0), args.get(1) };
             }
@@ -365,8 +349,7 @@ public class CtTypes {
 
     public IterableCtType newIterableCtType(TypeMirror type) {
         assertNotNull(type);
-        TypeMirror supertype = ctx.getTypes().getSupertype(type,
-                Iterable.class);
+        TypeMirror supertype = ctx.getTypes().getSupertype(type, Iterable.class);
         if (supertype == null) {
             return null;
         }
@@ -379,11 +362,9 @@ public class CtTypes {
         if (typeArgs.size() > 0) {
             elementCtType = toCtType(typeArgs.get(0),
                     List.of(this::newEntityCtType, this::newOptionalCtType,
-                            this::newOptionalIntCtType,
-                            this::newOptionalLongCtType,
-                            this::newOptionalDoubleCtType,
-                            this::newHolderCtType, this::newBasicCtType,
-                            this::newMapCtType));
+                            this::newOptionalIntCtType, this::newOptionalLongCtType,
+                            this::newOptionalDoubleCtType, this::newHolderCtType,
+                            this::newBasicCtType, this::newMapCtType));
         }
         return new IterableCtType(ctx, type, elementCtType);
     }
@@ -424,9 +405,8 @@ public class CtTypes {
             elementCtType = null;
         } else {
             TypeMirror typeArg = declaredType.getTypeArguments().get(0);
-            elementCtType = toCtType(typeArg,
-                    List.of(this::newEntityCtType, this::newHolderCtType,
-                            this::newBasicCtType, this::newMapCtType));
+            elementCtType = toCtType(typeArg, List.of(this::newEntityCtType, this::newHolderCtType,
+                    this::newBasicCtType, this::newMapCtType));
         }
         return new OptionalCtType(ctx, type, elementCtType);
     }
@@ -440,8 +420,7 @@ public class CtTypes {
         if (declaredType == null) {
             return null;
         }
-        PrimitiveType primitiveType = ctx.getTypes()
-                .getPrimitiveType(TypeKind.DOUBLE);
+        PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.DOUBLE);
         CtType elementCtType = newBasicCtType(primitiveType);
         return new OptionalDoubleCtType(ctx, type, elementCtType);
     }
@@ -455,8 +434,7 @@ public class CtTypes {
         if (declaredType == null) {
             return null;
         }
-        PrimitiveType primitiveType = ctx.getTypes()
-                .getPrimitiveType(TypeKind.INT);
+        PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.INT);
         CtType elementCtType = newBasicCtType(primitiveType);
         return new OptionalIntCtType(ctx, type, elementCtType);
     }
@@ -470,8 +448,7 @@ public class CtTypes {
         if (declaredType == null) {
             return null;
         }
-        PrimitiveType primitiveType = ctx.getTypes()
-                .getPrimitiveType(TypeKind.LONG);
+        PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.LONG);
         CtType elementCtType = newBasicCtType(primitiveType);
         return new OptionalLongCtType(ctx, type, elementCtType);
     }
@@ -486,19 +463,16 @@ public class CtTypes {
 
     public ReferenceCtType newReferenceCtType(TypeMirror type) {
         assertNotNull(type);
-        DeclaredType referenceDeclaredType = getDeclaredTypeFromHierarchy(type,
-                Reference.class);
+        DeclaredType referenceDeclaredType = getDeclaredTypeFromHierarchy(type, Reference.class);
         if (referenceDeclaredType == null) {
             return null;
         }
-        List<? extends TypeMirror> typeArgs = referenceDeclaredType
-                .getTypeArguments();
+        List<? extends TypeMirror> typeArgs = referenceDeclaredType.getTypeArguments();
         CtType referentCtType = null;
         if (typeArgs.size() == 1) {
             referentCtType = toCtType(typeArgs.get(0),
                     List.of(this::newOptionalCtType, this::newOptionalIntCtType,
-                            this::newOptionalLongCtType,
-                            this::newOptionalDoubleCtType,
+                            this::newOptionalLongCtType, this::newOptionalDoubleCtType,
                             this::newHolderCtType, this::newBasicCtType));
         }
         return new ReferenceCtType(ctx, type, referentCtType);
@@ -526,17 +500,14 @@ public class CtTypes {
         if (typeArgs.size() > 0) {
             elementCtType = toCtType(typeArgs.get(0),
                     List.of(this::newEntityCtType, this::newOptionalCtType,
-                            this::newOptionalIntCtType,
-                            this::newOptionalLongCtType,
-                            this::newOptionalDoubleCtType,
-                            this::newHolderCtType, this::newBasicCtType,
-                            this::newMapCtType));
+                            this::newOptionalIntCtType, this::newOptionalLongCtType,
+                            this::newOptionalDoubleCtType, this::newHolderCtType,
+                            this::newBasicCtType, this::newMapCtType));
         }
         return new StreamCtType(ctx, type, elementCtType);
     }
 
-    private DeclaredType getDeclaredTypeFromHierarchy(TypeMirror type,
-            Class<?> clazz) {
+    private DeclaredType getDeclaredTypeFromHierarchy(TypeMirror type, Class<?> clazz) {
         if (ctx.getTypes().isSameType(type, clazz)) {
             return ctx.getTypes().toDeclaredType(type);
         }
@@ -544,8 +515,7 @@ public class CtTypes {
             if (ctx.getTypes().isSameType(supertype, clazz)) {
                 return ctx.getTypes().toDeclaredType(supertype);
             }
-            DeclaredType result = getDeclaredTypeFromHierarchy(supertype,
-                    clazz);
+            DeclaredType result = getDeclaredTypeFromHierarchy(supertype, clazz);
             if (result != null) {
                 return result;
             }
@@ -553,17 +523,15 @@ public class CtTypes {
         return null;
     }
 
-    public CtType toCtType(
-            TypeMirror typeMirror,
-            List<Function<TypeMirror, CtType>> factories) {
+    public CtType toCtType(TypeMirror typeMirror, List<Function<TypeMirror, CtType>> factories) {
         return factories.stream()
                 .map(f -> f.apply(typeMirror))
-                .filter(Objects::nonNull).findFirst()
+                .filter(Objects::nonNull)
+                .findFirst()
                 .orElseGet(() -> newAnyCtType(typeMirror));
     }
 
-    public static class WrapperClassMapper
-            extends SimpleTypeVisitor8<Class<?>, Void> {
+    public static class WrapperClassMapper extends SimpleTypeVisitor8<Class<?>, Void> {
 
         protected final Context ctx;
 

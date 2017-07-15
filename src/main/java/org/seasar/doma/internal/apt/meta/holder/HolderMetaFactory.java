@@ -42,7 +42,6 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.reflection.HolderReflection;
 import org.seasar.doma.internal.apt.reflection.ValueReflection;
@@ -71,9 +70,8 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     public HolderMeta createTypeElementMeta() {
         assertNotNull(holderElement);
         BasicCtType basicCtType = createBasicCtType();
-        CanonicalName holderDescCanonicalName = createHolderDescCanonicalName();
         HolderMeta holderMeta = new HolderMeta(holderElement, holderElement.asType(),
-                holderReflection, basicCtType, holderDescCanonicalName);
+                holderReflection, basicCtType);
         Strategy strategy = createStrategy();
         strategy.validateAcceptNull(holderMeta);
         strategy.validateClass(holderMeta);
@@ -91,12 +89,6 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
                     new Object[] { valueType });
         }
         return basicCtType;
-    }
-
-    private CanonicalName createHolderDescCanonicalName() {
-        HolderDescCanonicalNameFactory factory = new HolderDescCanonicalNameFactory(ctx,
-                holderElement);
-        return factory.create();
     }
 
     private Strategy createStrategy() {

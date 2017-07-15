@@ -51,7 +51,6 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.reflection.AllArgsConstructorReflection;
 import org.seasar.doma.internal.apt.reflection.EntityReflection;
@@ -189,16 +188,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         public void doClass(EntityMeta entityMeta) {
             validateClass(entityMeta);
 
-            doEntityDescCanonicalName(entityMeta);
             doEntityListener(entityMeta);
             doTable(entityMeta);
-        }
-
-        protected void doEntityDescCanonicalName(EntityMeta entityMeta) {
-            EntityDescCanonicalNameFactory factory = new EntityDescCanonicalNameFactory(ctx,
-                    entityElement);
-            CanonicalName entityDescCanonicalName = factory.create();
-            entityMeta.setEntityDescCanonicalName(entityDescCanonicalName);
         }
 
         protected void validateClass(EntityMeta entityMeta) {

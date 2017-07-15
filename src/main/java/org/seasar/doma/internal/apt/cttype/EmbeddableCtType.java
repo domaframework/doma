@@ -15,9 +15,13 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
 
 /**
  * @author taedium
@@ -25,13 +29,22 @@ import org.seasar.doma.internal.apt.Context;
  */
 public class EmbeddableCtType extends AbstractCtType {
 
+    private final String descClassName;
+
     EmbeddableCtType(Context ctx, TypeMirror type) {
         super(ctx, type);
+        assertNotNull(typeElement);
+        DescCodeSpecFactory factory = new DescCodeSpecFactory(ctx, typeElement);
+        CodeSpec codeSpec = factory.create();
+        this.descClassName = codeSpec.getQualifiedName();
+    }
+
+    public String getDescClassName() {
+        return descClassName;
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitEmbeddableCtType(this, p);
     }
 }

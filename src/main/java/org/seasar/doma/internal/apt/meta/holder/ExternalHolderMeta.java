@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.meta.CanonicalName;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
 /**
@@ -35,15 +34,12 @@ public class ExternalHolderMeta implements TypeElementMeta {
 
     private final BasicCtType basicCtType;
 
-    private final CanonicalName externalHolderDescCanonicalName;
-
     public ExternalHolderMeta(TypeElement typeElement, TypeElement holderElement,
-            BasicCtType basicCtType, CanonicalName externalHolderDescCanonicalName) {
-        assertNotNull(typeElement, holderElement, basicCtType, externalHolderDescCanonicalName);
+            BasicCtType basicCtType) {
+        assertNotNull(typeElement, holderElement, basicCtType);
         this.typeElement = typeElement;
         this.holderElement = holderElement;
         this.basicCtType = basicCtType;
-        this.externalHolderDescCanonicalName = externalHolderDescCanonicalName;
     }
 
     public TypeElement getTypeElement() {
@@ -60,10 +56,6 @@ public class ExternalHolderMeta implements TypeElementMeta {
 
     public BasicCtType getBasicCtType() {
         return basicCtType;
-    }
-
-    public CanonicalName getExternalHolderDescCanonicalName() {
-        return externalHolderDescCanonicalName;
     }
 
 }

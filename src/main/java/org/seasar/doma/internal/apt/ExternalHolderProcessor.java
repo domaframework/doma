@@ -18,12 +18,18 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
+import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.ExternalHolder;
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.ExternalDescCodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.ExternalHolderDescGenerator;
+import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMeta;
 import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMetaFactory;
 
@@ -46,9 +52,13 @@ public class ExternalHolderProcessor extends AbstractGeneratingProcessor<Externa
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement,
-            ExternalHolderMeta meta) throws IOException {
-        assertNotNull(typeElement, meta);
-        return new ExternalHolderDescGenerator(ctx, meta.getHolderElement(), meta);
+    protected CodeSpecFactory createCodeSpecFactory(ExternalHolderMeta meta) {
+        return new ExternalDescCodeSpecFactory(ctx, meta.getHolderElement());
+    }
+
+    @Override
+    protected Generator createGenerator(ExternalHolderMeta meta, CodeSpec codeSpec, Formatter formatter) throws IOException {
+        assertNotNull(meta, codeSpec);
+        return new ExternalHolderDescGenerator(ctx, meta, codeSpec, formatter);
     }
 }

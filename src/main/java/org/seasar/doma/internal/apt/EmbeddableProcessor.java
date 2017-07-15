@@ -18,12 +18,18 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
+import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Embeddable;
+import org.seasar.doma.internal.apt.generator.CodeSpec;
+import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.generator.EmbeddableDescGenerator;
+import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
 
@@ -46,10 +52,14 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
     }
 
     @Override
-    protected Generator createGenerator(Context ctx, TypeElement typeElement, EmbeddableMeta meta)
-            throws IOException {
-        assertNotNull(typeElement, meta);
-        return new EmbeddableDescGenerator(ctx, typeElement, meta);
+    protected CodeSpecFactory createCodeSpecFactory(EmbeddableMeta meta) {
+        return new DescCodeSpecFactory(ctx, meta.getEmbeddableElement());
+    }
+
+    @Override
+    protected Generator createGenerator(EmbeddableMeta meta, CodeSpec codeSpec, Formatter formatter) throws IOException {
+        assertNotNull(meta, codeSpec, formatter);
+        return new EmbeddableDescGenerator(ctx, meta, codeSpec, formatter);
     }
 
 }

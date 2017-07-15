@@ -13,18 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.lang.model.element.TypeElement;
-
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
@@ -49,9 +48,9 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
 
     private final EmbeddableMeta embeddableMeta;
 
-    public EmbeddableDescGenerator(Context ctx, TypeElement embeddableElement,
-            EmbeddableMeta embeddableMeta) throws IOException {
-        super(ctx, embeddableElement, embeddableMeta.getEmbeddableDescCanonicalName());
+    public EmbeddableDescGenerator(Context ctx, EmbeddableMeta embeddableMeta, CodeSpec codeSpec,
+            Formatter formatter) {
+        super(ctx, codeSpec, formatter);
         assertNotNull(embeddableMeta);
         this.embeddableMeta = embeddableMeta;
     }
@@ -60,13 +59,6 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     public void generate() {
         printPackage();
         printClass();
-    }
-
-    private void printPackage() {
-        if (!packageName.isEmpty()) {
-            iprint("package %1$s;%n", packageName);
-            iprint("%n");
-        }
     }
 
     private void printClass() {
@@ -120,7 +112,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
             String holderType = "null";
             String holderTypeName = "Object";
             if (holderCtType != null) {
-                holderType = holderCtType.getInstantiationCommand();
+                holderType = holderCtType.getInstantiationCode();
                 holderTypeName = holderCtType.getTypeName();
             }
             iprint("        new %1$s<ENTITY, %2$s, %3$s>(entityClass, %4$s, %5$s, "

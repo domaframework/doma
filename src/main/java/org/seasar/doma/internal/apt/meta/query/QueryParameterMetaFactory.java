@@ -22,6 +22,7 @@ import java.util.List;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
@@ -35,7 +36,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.meta.MetaConstants;
 import org.seasar.doma.message.Message;
 
 /**
@@ -56,9 +56,9 @@ public class QueryParameterMetaFactory {
 
     public QueryParameterMeta createQueryParameterMeta() {
         String name = ctx.getElements().getParameterName(parameterElement);
-        if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
+        if (name.startsWith(Constants.RESERVED_VARIABLE_NAME_PREFIX)) {
             throw new AptException(Message.DOMA4025, parameterElement,
-                    new Object[] { MetaConstants.RESERVED_NAME_PREFIX });
+                    new Object[] { Constants.RESERVED_VARIABLE_NAME_PREFIX });
         }
         CtType ctType = createCtType();
         return new QueryParameterMeta(parameterElement, name, ctType);
