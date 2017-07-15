@@ -55,8 +55,7 @@ import javax.lang.model.util.SimpleTypeVisitor8;
 
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
-import org.seasar.doma.internal.apt.generator.ExternalDescCodeSpecFactory;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
 import org.seasar.doma.internal.apt.reflection.EntityReflection;
 import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
@@ -247,13 +246,13 @@ public class CtTypes {
         if (basicCtType == null) {
             return null;
         }
-        DescCodeSpecFactory factory;
+        Function<TypeElement, CodeSpec> codeSpecFactory;
         if (info.external) {
-            factory = new ExternalDescCodeSpecFactory(ctx, typeElement);
+            codeSpecFactory = ctx.getCodeSpecs()::newExternalHolderDescCodeSpec;
         } else {
-            factory = new DescCodeSpecFactory(ctx, typeElement);
+            codeSpecFactory = ctx.getCodeSpecs()::newHolderDescCodeSpec;
         }
-        return new HolderCtType(ctx, type, basicCtType, factory);
+        return new HolderCtType(ctx, type, basicCtType, codeSpecFactory);
     }
 
     private HolderInfo getHolderInfo(TypeElement typeElement) {

@@ -26,9 +26,7 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.CodeSpec;
-import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
-import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.generator.EntityDescGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
@@ -54,12 +52,13 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
     }
 
     @Override
-    protected CodeSpecFactory createCodeSpecFactory(EntityMeta meta) {
-        return new DescCodeSpecFactory(ctx, meta.getEntityElement());
+    protected CodeSpec createCodeSpec(EntityMeta meta) {
+        return ctx.getCodeSpecs().newEntityDescCodeSpec(meta.getEntityElement());
     }
 
     @Override
-    protected Generator createGenerator(EntityMeta meta, CodeSpec codeSpec, Formatter formatter) throws IOException {
+    protected Generator createGenerator(EntityMeta meta, CodeSpec codeSpec, Formatter formatter)
+            throws IOException {
         assertNotNull(meta, codeSpec, formatter);
         return new EntityDescGenerator(ctx, meta, codeSpec, formatter);
     }

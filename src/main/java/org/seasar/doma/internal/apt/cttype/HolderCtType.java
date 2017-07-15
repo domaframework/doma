@@ -17,11 +17,13 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.function.Function;
+
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.generator.CodeSpec;
-import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
 public class HolderCtType extends AbstractCtType {
 
@@ -32,11 +34,11 @@ public class HolderCtType extends AbstractCtType {
     private final String typeArgDecl;
 
     HolderCtType(Context ctx, TypeMirror type, BasicCtType basicCtType,
-            DescCodeSpecFactory descCodeSpecFactory) {
+            Function<TypeElement, CodeSpec> codeSpecFactory) {
         super(ctx, type);
-        assertNotNull(basicCtType, descCodeSpecFactory, typeElement);
+        assertNotNull(basicCtType, codeSpecFactory, typeElement);
         this.basicCtType = basicCtType;
-        CodeSpec codeSpec = descCodeSpecFactory.create();
+        CodeSpec codeSpec = codeSpecFactory.apply(typeElement);
         this.descClassName = codeSpec.getQualifiedName();
         int pos = typeName.indexOf('<');
         if (pos > -1) {

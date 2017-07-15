@@ -26,9 +26,7 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.CodeSpec;
-import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
-import org.seasar.doma.internal.apt.generator.ExternalDescCodeSpecFactory;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.generator.ExternalHolderDescGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMeta;
@@ -53,12 +51,13 @@ public class ExternalHolderProcessor extends AbstractGeneratingProcessor<Externa
     }
 
     @Override
-    protected CodeSpecFactory createCodeSpecFactory(ExternalHolderMeta meta) {
-        return new ExternalDescCodeSpecFactory(ctx, meta.getHolderElement());
+    protected CodeSpec createCodeSpec(ExternalHolderMeta meta) {
+        return ctx.getCodeSpecs().newExternalHolderDescCodeSpec(meta.getHolderElement());
     }
 
     @Override
-    protected Generator createGenerator(ExternalHolderMeta meta, CodeSpec codeSpec, Formatter formatter) throws IOException {
+    protected Generator createGenerator(ExternalHolderMeta meta, CodeSpec codeSpec,
+            Formatter formatter) throws IOException {
         assertNotNull(meta, codeSpec);
         return new ExternalHolderDescGenerator(ctx, meta, codeSpec, formatter);
     }

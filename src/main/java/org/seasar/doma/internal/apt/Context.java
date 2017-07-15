@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt;
 
 import javax.annotation.processing.ProcessingEnvironment;
 
+import org.seasar.doma.internal.apt.codespec.CodeSpecs;
 import org.seasar.doma.internal.apt.cttype.CtTypes;
 import org.seasar.doma.internal.apt.decl.Declarations;
 import org.seasar.doma.internal.apt.reflection.Reflections;
@@ -67,5 +68,9 @@ public class Context {
 
     public Notifier getNotifier() {
         return new Notifier(this);
+    }
+
+    public CodeSpecs getCodeSpecs() {
+        return new CodeSpecs(this);
     }
 }

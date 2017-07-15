@@ -25,6 +25,7 @@ import javax.annotation.processing.Generated;
 
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
 /**

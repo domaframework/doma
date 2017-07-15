@@ -21,8 +21,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.generator.CodeSpec;
-import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
 /**
  * @author taedium
@@ -38,8 +37,7 @@ public class EntityCtType extends AbstractCtType {
         super(ctx, type);
         assertNotNull(typeElement);
         this.immutable = immutable;
-        DescCodeSpecFactory factory = new DescCodeSpecFactory(ctx, typeElement);
-        CodeSpec codeSpec = factory.create();
+        CodeSpec codeSpec = ctx.getCodeSpecs().newEntityDescCodeSpec(typeElement);
         this.descClassName = codeSpec.getQualifiedName();
     }
 

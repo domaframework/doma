@@ -26,9 +26,7 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.CodeSpec;
-import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
-import org.seasar.doma.internal.apt.generator.DaoImplCodeSpecFactory;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.generator.DaoImplGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
@@ -57,13 +55,13 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
     }
 
     @Override
-    protected CodeSpecFactory createCodeSpecFactory(DaoMeta meta) {
+    protected CodeSpec createCodeSpec(DaoMeta meta) {
         ParentDaoMeta parentDaoMeta = meta.getParentDaoMeta();
         TypeElement parentDaoElement = null;
         if (parentDaoMeta != null) {
             parentDaoElement = parentDaoMeta.getDaoElement();
         }
-        return new DaoImplCodeSpecFactory(ctx, meta.getDaoElement(), parentDaoElement);
+        return ctx.getCodeSpecs().newDaoImplCodeSpec(meta.getDaoElement(), parentDaoElement);
     }
 
     @Override

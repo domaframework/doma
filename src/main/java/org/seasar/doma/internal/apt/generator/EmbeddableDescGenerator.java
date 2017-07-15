@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;

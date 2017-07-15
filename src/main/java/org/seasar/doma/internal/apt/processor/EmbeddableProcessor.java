@@ -26,9 +26,7 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.CodeSpec;
-import org.seasar.doma.internal.apt.generator.CodeSpecFactory;
-import org.seasar.doma.internal.apt.generator.DescCodeSpecFactory;
+import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.generator.EmbeddableDescGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
@@ -53,12 +51,13 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
     }
 
     @Override
-    protected CodeSpecFactory createCodeSpecFactory(EmbeddableMeta meta) {
-        return new DescCodeSpecFactory(ctx, meta.getEmbeddableElement());
+    protected CodeSpec createCodeSpec(EmbeddableMeta meta) {
+        return ctx.getCodeSpecs().newEmbeddableDescCodeSpec(meta.getEmbeddableElement());
     }
 
     @Override
-    protected Generator createGenerator(EmbeddableMeta meta, CodeSpec codeSpec, Formatter formatter) throws IOException {
+    protected Generator createGenerator(EmbeddableMeta meta, CodeSpec codeSpec, Formatter formatter)
+            throws IOException {
         assertNotNull(meta, codeSpec, formatter);
         return new EmbeddableDescGenerator(ctx, meta, codeSpec, formatter);
     }
