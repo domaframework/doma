@@ -31,8 +31,6 @@ public class HolderCtType extends AbstractCtType {
 
     private final String descClassName;
 
-    private final String typeArgDecl;
-
     HolderCtType(Context ctx, TypeMirror type, BasicCtType basicCtType,
             Function<TypeElement, CodeSpec> codeSpecFactory) {
         super(ctx, type);
@@ -40,20 +38,14 @@ public class HolderCtType extends AbstractCtType {
         this.basicCtType = basicCtType;
         CodeSpec codeSpec = codeSpecFactory.apply(typeElement);
         this.descClassName = codeSpec.getQualifiedName();
-        int pos = typeName.indexOf('<');
-        if (pos > -1) {
-            this.typeArgDecl = typeName.substring(pos);
-        } else {
-            this.typeArgDecl = "";
-        }
     }
 
     public BasicCtType getBasicCtType() {
         return basicCtType;
     }
 
-    public String getInstantiationCode() {
-        return descClassName + "." + typeArgDecl + "getSingletonInternal()";
+    public String getDescClassName() {
+        return descClassName;
     }
 
     @Override

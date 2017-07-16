@@ -86,18 +86,19 @@ public class EntityPropertyMeta extends AbstractPropertyMeta {
         }, null);
     }
 
-    public String getEmbeddableDescClassName() {
-        return ctType.accept(new SimpleCtTypeVisitor<String, Void, RuntimeException>() {
+    public EmbeddableCtType getEmbeddableCtType() {
+        return ctType.accept(new SimpleCtTypeVisitor<EmbeddableCtType, Void, RuntimeException>() {
 
             @Override
-            protected String defaultAction(CtType ctType, Void p) throws RuntimeException {
-                throw new AptIllegalStateException("getEmbeddableDescClassName");
+            protected EmbeddableCtType defaultAction(CtType ctType, Void p)
+                    throws RuntimeException {
+                throw new AptIllegalStateException("getEmbeddableCtType");
             }
 
             @Override
-            public String visitEmbeddableCtType(EmbeddableCtType ctType, Void p)
+            public EmbeddableCtType visitEmbeddableCtType(EmbeddableCtType ctType, Void p)
                     throws RuntimeException {
-                return ctType.getDescClassName();
+                return ctType;
             }
         }, null);
     }

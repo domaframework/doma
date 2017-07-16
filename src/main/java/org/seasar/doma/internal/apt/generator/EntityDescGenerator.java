@@ -86,7 +86,7 @@ public class EntityDescGenerator extends AbstractGenerator {
         printGenerated();
         iprint("public final class %1$s extends %2$s<%3$s> {%n",
                 // @formatter:off
-                /* 1 */simpleName,
+                /* 1 */codeSpec.getSimpleName(),
                 /* 2 */AbstractEntityDesc.class.getName(),
                 /* 3 */entityMeta.getEntityTypeName());
                 // @formatter:on
@@ -122,7 +122,7 @@ public class EntityDescGenerator extends AbstractGenerator {
     private void printSingletonField() {
         iprint("private static final %1$s __singleton = new %1$s();%n",
                 // @formatter:off
-                /* 1 */simpleName);
+                /* 1 */codeSpec.getSimpleName());
                 // @formatter:on
         print("%n");
     }
@@ -155,7 +155,7 @@ public class EntityDescGenerator extends AbstractGenerator {
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isEmbedded()) {
                 iprint("public final %1$s<%2$s, %3$s> %4$s = "
-                        + "new %1$s<>(\"%5$s\", %2$s.class, %6$s.getSingletonInternal().getEmbeddablePropertyDescs"
+                        + "new %1$s<>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyDescs"
                         + "(\"%7$s\", %2$s.class, __namingType));%n",
                         // @formatter:off
                         /* 1 */EmbeddedPropertyDesc.class.getName(),
@@ -163,7 +163,7 @@ public class EntityDescGenerator extends AbstractGenerator {
                         /* 3 */pm.getTypeName(),
                         /* 4 */pm.getFieldName(), 
                         /* 5 */pm.getName(),
-                        /* 6 */pm.getEmbeddableDescClassName(), 
+                        /* 6 */embeddableDesc(pm.getEmbeddableCtType()), 
                         /* 7 */pm.getName());
                         // @formatter:on
             } else {
@@ -205,7 +205,7 @@ public class EntityDescGenerator extends AbstractGenerator {
             String _5_fieldName;
             String _6_entityClass;
             String _7_wrapperSupplier;
-            String _8_holderType;
+            String _8_holderDesc;
             String _9_name;
             String _10_columnName;
             boolean _11_quoteRequired;
@@ -214,7 +214,7 @@ public class EntityDescGenerator extends AbstractGenerator {
 
             Object[] toArray() {
                 return new Object[] { _1_propertyTypeClass, _2_ENTITY, _3_BASIC, _4_HOLDER,
-                        _5_fieldName, _6_entityClass, _7_wrapperSupplier, _8_holderType, _9_name,
+                        _5_fieldName, _6_entityClass, _7_wrapperSupplier, _8_holderDesc, _9_name,
                         _10_columnName, _11_quoteRequired, _12_insertable, _13_updatable };
             }
         }
@@ -236,8 +236,8 @@ public class EntityDescGenerator extends AbstractGenerator {
         args._4_HOLDER = holderCtType == null ? "Object" : holderCtType.getTypeName();
         args._5_fieldName = pm.getFieldName();
         args._6_entityClass = entityMeta.getEntityTypeName() + ".class";
-        args._7_wrapperSupplier = supply(basicCtType);
-        args._8_holderType = holderCtType == null ? "null" : holderCtType.getInstantiationCode();
+        args._7_wrapperSupplier = supplier(basicCtType);
+        args._8_holderDesc = holderCtType == null ? "null" : holderDesc(holderCtType);
         args._9_name = "\"" + pm.getName() + "\"";
         args._10_columnName = "\"" + pm.getColumnName() + "\"";
         args._11_quoteRequired = pm.isColumnQuoteRequired();
@@ -335,7 +335,7 @@ public class EntityDescGenerator extends AbstractGenerator {
     }
 
     private void printConstructor() {
-        iprint("private %1$s() {%n", simpleName);
+        iprint("private %1$s() {%n", codeSpec.getSimpleName());
         iprint("    __listenerSupplier = () -> ListenerHolder.listener;%n");
         iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
         iprint("    __name = \"%1$s\";%n", entityMeta.getEntityName());
@@ -649,9 +649,9 @@ public class EntityDescGenerator extends AbstractGenerator {
                         .iterator(); it.hasNext();) {
                     EntityPropertyMeta propertyMeta = it.next();
                     if (propertyMeta.isEmbedded()) {
-                        iprint("        %1$s.getSingletonInternal().newEmbeddable(\"%2$s\", __args)",
+                        iprint("        %1$s.newEmbeddable(\"%2$s\", __args)",
                                 // @formatter:off
-                                /* 1 */propertyMeta.getEmbeddableDescClassName(),
+                                /* 1 */embeddableDesc(propertyMeta.getEmbeddableCtType()),
                                 /* 2 */propertyMeta.getName());
                                 // @formatter:on
                     } else {
@@ -670,10 +670,10 @@ public class EntityDescGenerator extends AbstractGenerator {
                 iprint("    %1$s entity = new %1$s();%n", entityMeta.getEntityTypeName());
                 for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
                     if (propertyMeta.isEmbedded()) {
-                        iprint("    %1$s.save(entity, %2$s.getSingletonInternal().newEmbeddable(\"%3$s\", __args));%n",
+                        iprint("    %1$s.save(entity, %2$s.newEmbeddable(\"%3$s\", __args));%n",
                                 // @formatter:off
                                 /* 1 */propertyMeta.getFieldName(),
-                                /* 2 */propertyMeta.getEmbeddableDescClassName(),
+                                /* 2 */embeddableDesc(propertyMeta.getEmbeddableCtType()),
                                 /* 3 */propertyMeta.getName());
                                 // @formatter:off
                     } else {
@@ -742,7 +742,7 @@ public class EntityDescGenerator extends AbstractGenerator {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");
-        iprint("public static %1$s getSingletonInternal() {%n", simpleName);
+        iprint("public static %1$s getSingletonInternal() {%n", codeSpec.getSimpleName());
         iprint("    return __singleton;%n");
         iprint("}%n");
         print("%n");
@@ -752,8 +752,8 @@ public class EntityDescGenerator extends AbstractGenerator {
         iprint("/**%n");
         iprint(" * @return the new instance%n");
         iprint(" */%n");
-        iprint("public static %1$s newInstance() {%n", simpleName);
-        iprint("    return new %1$s();%n", simpleName);
+        iprint("public static %1$s newInstance() {%n", codeSpec.getSimpleName());
+        iprint("    return new %1$s();%n", codeSpec.getSimpleName());
         iprint("}%n");
         print("%n");
     }

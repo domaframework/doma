@@ -67,7 +67,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
         printGenerated();
         iprint("public final class %1$s implements %2$s<%3$s> {%n",
                 // @formatter:off
-                /* 1 */simpleName,
+                /* 1 */codeSpec.getSimpleName(),
                 /* 2 */EmbeddableDesc.class.getName(),
                 /* 3 */embeddableMeta.getEmbeddableElement().getQualifiedName());
                 // @formatter:on
@@ -85,7 +85,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     }
 
     private void printSingletonField() {
-        iprint("private static final %1$s __singleton = new %1$s();%n", simpleName);
+        iprint("private static final %1$s __singleton = new %1$s();%n", codeSpec.getSimpleName());
         print("%n");
     }
 
@@ -110,10 +110,10 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
             BasicCtType basicCtType = visitor.basicCtType;
             HolderCtType holderCtType = visitor.holderCtType;
 
-            String holderType = "null";
+            String holderDesc = "null";
             String holderTypeName = "Object";
             if (holderCtType != null) {
-                holderType = holderCtType.getInstantiationCode();
+                holderDesc = holderDesc(holderCtType);
                 holderTypeName = holderCtType.getTypeName();
             }
             iprint("        new %1$s<ENTITY, %2$s, %3$s>(entityClass, %4$s, %5$s, "
@@ -122,8 +122,8 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
                     /* 1 */DefaultPropertyDesc.class.getName(),
                     /* 2 */box(basicCtType),
                     /* 3 */holderTypeName,
-                    /* 4 */supply(basicCtType),
-                    /* 5 */holderType,
+                    /* 4 */supplier(basicCtType),
+                    /* 5 */holderDesc,
                     /* 6 */pm.getName(),
                     /* 7 */pm.getColumnName(),
                     /* 8 */pm.isColumnInsertable(),
@@ -170,7 +170,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");
-        iprint("public static %1$s getSingletonInternal() {%n", simpleName);
+        iprint("public static %1$s getSingletonInternal() {%n", codeSpec.getSimpleName());
         iprint("    return __singleton;%n");
         iprint("}%n");
         print("%n");

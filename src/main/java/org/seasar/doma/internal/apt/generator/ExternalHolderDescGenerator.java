@@ -69,16 +69,16 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
         if (parameterized) {
             iprint("public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
                     // @formatter:off
-                    /* 1 */simpleName,
+                    /* 1 */codeSpec.getSimpleName(),
                     /* 2 */AbstractHolderDesc.class.getName(),
                     /* 3 */holderMeta.getValueTypeName(),
                     /* 4 */holderTypeName,
-                    /* 5 */typeParamsName);
+                    /* 5 */codeSpec.getTypeParamsName());
                     // @formatter:on
         } else {
             iprint("public final class %1$s extends %2$s<%3$s, %4$s> {%n",
                     // @formatter:off
-                    /* 1 */simpleName,
+                    /* 1 */codeSpec.getSimpleName(),
                     /* 2 */AbstractHolderDesc.class.getName(),
                     /* 3 */holderMeta.getValueTypeName(),
                     /* 4 */holderTypeName);
@@ -99,7 +99,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
         if (parameterized) {
             iprint("@SuppressWarnings(\"rawtypes\")%n");
         }
-        iprint("private static final %1$s singleton = new %1$s();%n", simpleName);
+        iprint("private static final %1$s singleton = new %1$s();%n", codeSpec.getSimpleName());
         print("%n");
         iprint("private static final %1$s converter = new %1$s();%n",
                 holderMeta.getTypeElement().getQualifiedName());
@@ -107,9 +107,9 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
     }
 
     private void printConstructors() {
-        iprint("private %1$s() {%n", simpleName);
+        iprint("private %1$s() {%n", codeSpec.getSimpleName());
         BasicCtType basicCtType = holderMeta.getBasicCtType();
-        iprint("    super(%1$s);%n", supply(basicCtType));
+        iprint("    super(%1$s);%n", supplier(basicCtType));
         iprint("}%n");
         print("%n");
     }
@@ -189,16 +189,16 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
             iprint("@SuppressWarnings(\"unchecked\")%n");
             iprint("public static <%1$s> %2$s<%1$s> getSingletonInternal() {%n",
                     // @formatter:off
-                    /* 1 */typeParamsName,
-                    /* 2 */simpleName);
+                    /* 1 */codeSpec.getTypeParamsName(),
+                    /* 2 */codeSpec.getSimpleName());
                     // @formatter:on
             iprint("    return (%2$s<%1$s>) singleton;%n",
                     // @formatter:off
-                    /* 1 */typeParamsName,
-                    /* 2 */simpleName);
+                    /* 1 */codeSpec.getTypeParamsName(),
+                    /* 2 */codeSpec.getSimpleName());
                     // @formatter:on
         } else {
-            iprint("public static %1$s getSingletonInternal() {%n", simpleName);
+            iprint("public static %1$s getSingletonInternal() {%n", codeSpec.getSimpleName());
             iprint("    return singleton;%n");
         }
         iprint("}%n");

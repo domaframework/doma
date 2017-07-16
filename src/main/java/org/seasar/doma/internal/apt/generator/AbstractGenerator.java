@@ -27,6 +27,9 @@ import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
 
 /**
  * @author taedium
@@ -40,12 +43,6 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final CodeSpec codeSpec;
 
-    protected final String packageName;
-
-    protected final String simpleName;
-
-    protected final String typeParamsName;
-
     private final Formatter formatter;
 
     private final StringBuilder indentBuffer = new StringBuilder();
@@ -54,15 +51,12 @@ public abstract class AbstractGenerator implements Generator {
         assertNotNull(ctx, codeSpec, formatter);
         this.ctx = ctx;
         this.codeSpec = codeSpec;
-        this.packageName = codeSpec.getPackageName();
-        this.simpleName = codeSpec.getSimpleName();
-        this.typeParamsName = codeSpec.getTypeParamsName();
         this.formatter = formatter;
     }
 
     protected void printPackage() {
-        if (!packageName.isEmpty()) {
-            iprint("package %1$s;%n", packageName);
+        if (!codeSpec.getPackageName().isEmpty()) {
+            iprint("package %1$s;%n", codeSpec.getPackageName());
             iprint("%n");
         }
     }
@@ -145,12 +139,29 @@ public abstract class AbstractGenerator implements Generator {
         return box(ctType.getTypeName());
     }
 
-    protected String supply(BasicCtType ctType) {
+    protected String supplier(BasicCtType ctType) {
         if (ctType.isEnum()) {
             return String.format("() -> new %1$s(%2$s.class)", ctType.getWrapperTypeName(),
                     ctType.getQualifiedName());
         }
         return String.format("%1$s::new", ctType.getWrapperTypeName());
+    }
+
+    protected String holderDesc(HolderCtType ctType) {
+        int pos = ctType.getTypeName().indexOf('<');
+        String typeArgDecl = "";
+        if (pos > -1) {
+            typeArgDecl = ctType.getTypeName().substring(pos);
+        }
+        return ctType.getDescClassName() + "." + typeArgDecl + "getSingletonInternal()";
+    }
+
+    protected String entityDesc(EntityCtType ctType) {
+        return ctType.getDescClassName() + ".getSingletonInternal()";
+    }
+
+    protected String embeddableDesc(EmbeddableCtType ctType) {
+        return ctType.getDescClassName() + ".getSingletonInternal()";
     }
 
 }
