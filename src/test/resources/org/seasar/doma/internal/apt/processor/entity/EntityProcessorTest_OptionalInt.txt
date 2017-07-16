@@ -13,13 +13,13 @@ public final class _OptionalIntEntity extends org.seasar.doma.jdbc.entity.Abstra
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, "id", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity, java.lang.Integer, java.util.OptionalInt> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar(), "id", "", __namingType, false);
 
     /** the age */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity, java.lang.Integer, Object> $age = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, "age", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity, java.lang.Integer, java.util.OptionalInt> $age = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar(), "age", "", __namingType, true, true, false);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyDesc<org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity, java.lang.Integer, Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, "version", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyDesc<org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity, java.lang.Integer, java.util.OptionalInt> $version = new org.seasar.doma.jdbc.entity.VersionPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar(), "version", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.OptionalIntEntity>> __listenerSupplier;
 

@@ -12,6 +12,12 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
 
     protected final boolean primitive;
 
+    public BasicScalar(Wrapper<BASIC> wrapper, boolean primitive) {
+        AssertionUtil.assertNotNull(wrapper);
+        this.wrapper = wrapper;
+        this.primitive = primitive;
+    }
+
     public BasicScalar(Supplier<Wrapper<BASIC>> supplier, boolean primitive) {
         AssertionUtil.assertNotNull(supplier);
         this.wrapper = supplier.get();

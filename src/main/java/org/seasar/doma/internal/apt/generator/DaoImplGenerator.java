@@ -15,6 +15,10 @@
  */
 package org.seasar.doma.internal.apt.generator;
 
+import static org.seasar.doma.internal.apt.generator.CodeHelper.box;
+import static org.seasar.doma.internal.apt.generator.CodeHelper.entityDesc;
+import static org.seasar.doma.internal.apt.generator.CodeHelper.holderDesc;
+import static org.seasar.doma.internal.apt.generator.CodeHelper.supplier;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;

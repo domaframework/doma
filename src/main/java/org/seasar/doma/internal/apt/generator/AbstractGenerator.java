@@ -26,10 +26,6 @@ import javax.annotation.processing.Generated;
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
-import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 
 /**
  * @author taedium
@@ -105,63 +101,6 @@ public abstract class AbstractGenerator implements Generator {
         if (indentBuffer.length() >= INDENT_SPACE.length()) {
             indentBuffer.setLength(indentBuffer.length() - INDENT_SPACE.length());
         }
-    }
-
-    protected String box(String name) {
-        if (boolean.class.getName().equals(name)) {
-            return Boolean.class.getName();
-        }
-        if (char.class.getName().equals(name)) {
-            return Character.class.getName();
-        }
-        if (byte.class.getName().equals(name)) {
-            return Byte.class.getName();
-        }
-        if (short.class.getName().equals(name)) {
-            return Short.class.getName();
-        }
-        if (int.class.getName().equals(name)) {
-            return Integer.class.getName();
-        }
-        if (long.class.getName().equals(name)) {
-            return Long.class.getName();
-        }
-        if (float.class.getName().equals(name)) {
-            return Float.class.getName();
-        }
-        if (double.class.getName().equals(name)) {
-            return Double.class.getName();
-        }
-        return name;
-    }
-
-    protected String box(BasicCtType ctType) {
-        return box(ctType.getTypeName());
-    }
-
-    protected String supplier(BasicCtType ctType) {
-        if (ctType.isEnum()) {
-            return String.format("() -> new %1$s(%2$s.class)", ctType.getWrapperTypeName(),
-                    ctType.getQualifiedName());
-        }
-        return String.format("%1$s::new", ctType.getWrapperTypeName());
-    }
-
-    protected String holderDesc(HolderCtType ctType) {
-        int pos = ctType.getTypeName().indexOf('<');
-        String typeArgDecl = "";
-        if (pos > -1) {
-            typeArgDecl = ctType.getTypeName().substring(pos);
-        }
-        return ctType.getDescClassName() + "." + typeArgDecl + "getSingletonInternal()";
-    }
-
-    protected String entityDesc(EntityCtType ctType) {
-        return ctType.getDescClassName() + ".getSingletonInternal()";
-    }
-
-    protected String embeddableDesc(EmbeddableCtType ctType) {
-        return ctType.getDescClassName() + ".getSingletonInternal()";
     }
 
 }

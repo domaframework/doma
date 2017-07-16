@@ -13,8 +13,8 @@ public final class _Address implements org.seasar.doma.jdbc.entity.EmbeddableDes
     @Override
     public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<ENTITY, ?>> getEmbeddablePropertyDescs(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType) {
         return java.util.Arrays.asList(
-            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".city", "", namingType, true, true, false),
-            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, Object>(entityClass, org.seasar.doma.wrapper.StringWrapper::new, null, embeddedPropertyName + ".street", "STREET", namingType, false, true, false));
+            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, java.lang.String>(entityClass, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false), embeddedPropertyName + ".city", "", namingType, true, true, false),
+            new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, java.lang.String, java.lang.String>(entityClass, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false), embeddedPropertyName + ".street", "STREET", namingType, false, true, false));
     }
 
     @Override

@@ -19,24 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.entity.PropertyField;
-import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
@@ -49,20 +40,14 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  *            エンティティの型
  * @param <BASIC>
  *            プロパティの基本型
- * @param <HOLDER>
+ * @param <CONTAINER>
  *            プロパティのドメイン型
  */
-public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
+public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
         implements EntityPropertyDesc<ENTITY, BASIC> {
 
     /** エンティティのクラス */
     protected final Class<ENTITY> entityClass;
-
-    /** ラッパーのサプライヤ */
-    protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
-
-    /** ドメインのメタタイプ */
-    protected final HolderDesc<BASIC, HOLDER> holderDesc;
 
     /** プロパティの名前 */
     protected final String name;
@@ -96,10 +81,8 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
      * 
      * @param entityClass
      *            エンティティのクラス
-     * @param wrapperSupplier
+     * @param scalarSupplier
      *            ラッパーのサプライヤ
-     * @param holderDesc
-     *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
      * @param columnName
@@ -114,15 +97,13 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
      *            カラム名に引用符が必要とされるかどうか
      */
     public DefaultPropertyDesc(Class<ENTITY> entityClass,
-            Supplier<Wrapper<BASIC>> wrapperSupplier,
-            HolderDesc<BASIC, HOLDER> holderDesc, String name,
-            String columnName, NamingType namingType, boolean insertable,
-            boolean updatable, boolean quoteRequired) {
+            Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier, String name, String columnName,
+            NamingType namingType, boolean insertable, boolean updatable, boolean quoteRequired) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
         }
-        if (wrapperSupplier == null) {
-            throw new DomaNullPointerException("wrapperSupplier");
+        if (scalarSupplier == null) {
+            throw new DomaNullPointerException("scalarSupplier");
         }
         if (name == null) {
             throw new DomaNullPointerException("name");
@@ -131,8 +112,6 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
             throw new DomaNullPointerException("columnName");
         }
         this.entityClass = entityClass;
-        this.wrapperSupplier = wrapperSupplier;
-        this.holderDesc = holderDesc;
         this.name = name;
         int pos = name.lastIndexOf('.');
         this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
@@ -142,37 +121,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
         this.updatable = updatable;
         this.quoteRequired = quoteRequired;
         this.field = new PropertyField<>(name, entityClass);
-        this.propertySupplier = createPropertySupplier();
-    }
-
-    @SuppressWarnings("unchecked")
-    private Supplier<Property<ENTITY, BASIC>> createPropertySupplier() {
-        Class<?> entityPropertyClass = field.getType();
-        if (holderDesc != null) {
-            if (entityPropertyClass == Optional.class) {
-                return () -> new DefaultProperty<Optional<HOLDER>>(
-                        holderDesc.createOptionalScalar());
-            } else {
-                return () -> new DefaultProperty<HOLDER>(
-                        holderDesc.createScalar());
-            }
-        }
-        if (entityPropertyClass == Optional.class) {
-            return () -> new DefaultProperty<Optional<BASIC>>(
-                    new OptionalBasicScalar<>(wrapperSupplier));
-        } else if (entityPropertyClass == OptionalInt.class) {
-            return () -> new DefaultProperty<OptionalInt>(
-                    (Scalar<BASIC, OptionalInt>) new OptionalIntScalar());
-        } else if (entityPropertyClass == OptionalLong.class) {
-            return () -> new DefaultProperty<OptionalLong>(
-                    (Scalar<BASIC, OptionalLong>) new OptionalLongScalar());
-        } else if (entityPropertyClass == OptionalDouble.class) {
-            return () -> new DefaultProperty<OptionalDouble>(
-                    (Scalar<BASIC, OptionalDouble>) new OptionalDoubleScalar());
-        } else {
-            return () -> new DefaultProperty<BASIC>(new BasicScalar<>(
-                    wrapperSupplier, field.isPrimitive()));
-        }
+        this.propertySupplier = () -> new DefaultProperty(scalarSupplier.get());
     }
 
     @Override
@@ -196,13 +145,11 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
     }
 
     @Override
-    public String getColumnName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getColumnName(BiFunction<NamingType, String, String> namingFunction) {
         return getColumnName(namingFunction, Function.identity());
     }
 
-    public String getColumnName(
-            BiFunction<NamingType, String, String> namingFunction,
+    public String getColumnName(BiFunction<NamingType, String, String> namingFunction,
             Function<String, String> quoteFunction) {
         String columnName = this.columnName;
         if (columnName.isEmpty()) {
@@ -251,21 +198,16 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
      *            値
      * @return 値が変更されたエンティティもしくは変更されていないエンティティ
      */
-    protected <VALUE> ENTITY modifyIfNecessary(EntityDesc<ENTITY> entityDesc,
-            ENTITY entity,
-            WrapperVisitor<Boolean, VALUE, Void, RuntimeException> visitor,
-            VALUE value) {
+    protected <VALUE> ENTITY modifyIfNecessary(EntityDesc<ENTITY> entityDesc, ENTITY entity,
+            WrapperVisitor<Boolean, VALUE, Void, RuntimeException> visitor, VALUE value) {
         if (entityDesc.isImmutable()) {
-            List<EntityPropertyDesc<ENTITY, ?>> propertyTypes = entityDesc
-                    .getEntityPropertyDescs();
-            Map<String, Property<ENTITY, ?>> args = new HashMap<>(
-                    propertyTypes.size());
+            List<EntityPropertyDesc<ENTITY, ?>> propertyTypes = entityDesc.getEntityPropertyDescs();
+            Map<String, Property<ENTITY, ?>> args = new HashMap<>(propertyTypes.size());
             for (EntityPropertyDesc<ENTITY, ?> propertyType : propertyTypes) {
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
                 if (propertyType == this) {
-                    Boolean modified = property.getWrapper().accept(visitor,
-                            value, null);
+                    Boolean modified = property.getWrapper().accept(visitor, value, null);
                     if (modified == Boolean.FALSE) {
                         return entity;
                     }
@@ -276,8 +218,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
         } else {
             Property<ENTITY, ?> property = createProperty();
             property.load(entity);
-            Boolean modified = property.getWrapper().accept(visitor, value,
-                    null);
+            Boolean modified = property.getWrapper().accept(visitor, value, null);
             if (modified == Boolean.FALSE) {
                 return entity;
             }
@@ -289,8 +230,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, HOLDER>
     /**
      * @author nakamura-to
      */
-    protected class DefaultProperty<CONTAINER> implements
-            Property<ENTITY, BASIC> {
+    protected class DefaultProperty implements Property<ENTITY, BASIC> {
 
         protected final Scalar<BASIC, CONTAINER> scalar;
 

@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.apt.generator.CodeHelper.*;
 
 import java.util.Formatter;
 import java.util.Iterator;
@@ -26,14 +27,6 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.entity.OriginalStatesMeta;
@@ -171,19 +164,17 @@ public class EntityDescGenerator extends AbstractGenerator {
                 Object className = args[0];
                 if (GeneratedIdPropertyDesc.class.getName().equals(className)) {
                     iprint("public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-                            + "new %1$s<>(%6$s, %7$s, %8$s, %9$s, %10$s, __namingType, %11$s, __idGenerator);%n",
+                            + "new %1$s<>(%6$s, %7$s, %9$s, %10$s, __namingType, %11$s, __idGenerator);%n",
                             args);
                 } else if (AssignedIdPropertyDesc.class.getName().equals(className)) {
                     iprint("public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-                            + "new %1$s<>(%6$s, %7$s, %8$s, %9$s, %10$s, __namingType, %11$s);%n",
-                            args);
+                            + "new %1$s<>(%6$s, %7$s, %9$s, %10$s, __namingType, %11$s);%n", args);
                 } else if (VersionPropertyDesc.class.getName().equals(className)) {
                     iprint("public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-                            + "new %1$s<>(%6$s, %7$s, %8$s, %9$s, %10$s, __namingType, %11$s);%n",
-                            args);
+                            + "new %1$s<>(%6$s, %7$s, %9$s, %10$s, __namingType, %11$s);%n", args);
                 } else {
                     iprint("public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-                            + "new %1$s<>(%6$s, %7$s, %8$s, %9$s, %10$s, __namingType, %12$s, %13$s, %11$s);%n",
+                            + "new %1$s<>(%6$s, %7$s, %9$s, %10$s, __namingType, %12$s, %13$s, %11$s);%n",
                             args);
                 }
             }
@@ -192,20 +183,16 @@ public class EntityDescGenerator extends AbstractGenerator {
     }
 
     private Object[] createPropertyFormatArgs(EntityPropertyMeta pm) {
-        EntityPropertyCtTypeVisitor visitor = new EntityPropertyCtTypeVisitor();
-        pm.getCtType().accept(visitor, null);
-        BasicCtType basicCtType = visitor.basicCtType;
-        HolderCtType holderCtType = visitor.holderCtType;
 
         class Args {
             String _1_propertyTypeClass;
             String _2_ENTITY;
             String _3_BASIC;
-            String _4_HOLDER;
+            String _4_CONTAINER;
             String _5_fieldName;
             String _6_entityClass;
-            String _7_wrapperSupplier;
-            String _8_holderDesc;
+            String _7_scalarSupplier;
+            String _8_;
             String _9_name;
             String _10_columnName;
             boolean _11_quoteRequired;
@@ -213,8 +200,8 @@ public class EntityDescGenerator extends AbstractGenerator {
             boolean _13_updatable;
 
             Object[] toArray() {
-                return new Object[] { _1_propertyTypeClass, _2_ENTITY, _3_BASIC, _4_HOLDER,
-                        _5_fieldName, _6_entityClass, _7_wrapperSupplier, _8_holderDesc, _9_name,
+                return new Object[] { _1_propertyTypeClass, _2_ENTITY, _3_BASIC, _4_CONTAINER,
+                        _5_fieldName, _6_entityClass, _7_scalarSupplier, _8_, _9_name,
                         _10_columnName, _11_quoteRequired, _12_insertable, _13_updatable };
             }
         }
@@ -232,12 +219,12 @@ public class EntityDescGenerator extends AbstractGenerator {
             args._1_propertyTypeClass = DefaultPropertyDesc.class.getName();
         }
         args._2_ENTITY = entityMeta.getEntityTypeName();
-        args._3_BASIC = box(basicCtType);
-        args._4_HOLDER = holderCtType == null ? "Object" : holderCtType.getTypeName();
+        args._3_BASIC = pm.getCtType().accept(new BasicTypeArgCodeBuilder(), null);
+        args._4_CONTAINER = pm.getCtType().accept(new ContainerTypeArgCodeBuilder(), false);
         args._5_fieldName = pm.getFieldName();
         args._6_entityClass = entityMeta.getEntityTypeName() + ".class";
-        args._7_wrapperSupplier = supplier(basicCtType);
-        args._8_holderDesc = holderCtType == null ? "null" : holderDesc(holderCtType);
+        args._7_scalarSupplier = pm.getCtType().accept(new ScalarSuplierCodeBuilder(), false);
+        args._8_ = null;
         args._9_name = "\"" + pm.getName() + "\"";
         args._10_columnName = "\"" + pm.getColumnName() + "\"";
         args._11_quoteRequired = pm.isColumnQuoteRequired();
@@ -816,55 +803,6 @@ public class EntityDescGenerator extends AbstractGenerator {
             iprint("    __idGenerator.initialize();%n");
             iprint("}%n");
             return null;
-        }
-    }
-
-    private class EntityPropertyCtTypeVisitor
-            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
-
-        private BasicCtType basicCtType;
-
-        private HolderCtType holderCtType;
-
-        @Override
-        protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
-            assertNotNull(basicCtType);
-            return null;
-        }
-
-        @Override
-        public Void visitOptionalCtType(OptionalCtType ctType, Void p) throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
-                throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
-                throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void p)
-                throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitBasicCtType(BasicCtType basicCtType, Void p) throws RuntimeException {
-            this.basicCtType = basicCtType;
-            return defaultAction(basicCtType, p);
-        }
-
-        @Override
-        public Void visitHolderCtType(HolderCtType holderCtType, Void p) throws RuntimeException {
-            this.holderCtType = holderCtType;
-            return visitBasicCtType(holderCtType.getBasicCtType(), p);
         }
     }
 

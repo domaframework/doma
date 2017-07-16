@@ -21,13 +21,13 @@ public final class _HolderPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.processor.entity.Identifier> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, org.seasar.doma.internal.apt.processor.entity._Identifier.getSingletonInternal(), "id", "", __namingType, false, __idGenerator);
+    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.processor.entity.Identifier> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity.class, () -> org.seasar.doma.internal.apt.processor.entity._Identifier.getSingletonInternal().createScalar(), "id", "", __namingType, false, __idGenerator);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.processor.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity.class, org.seasar.doma.wrapper.StringWrapper::new, org.seasar.doma.internal.apt.processor.entity._Name.getSingletonInternal(), "name", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.processor.entity.Name> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity.class, () -> org.seasar.doma.internal.apt.processor.entity._Name.getSingletonInternal().createScalar(), "name", "", __namingType, true, true, false);
 
     /** the ver */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyDesc<org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.processor.entity.Ver> $ver = new org.seasar.doma.jdbc.entity.VersionPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity.class, org.seasar.doma.wrapper.IntegerWrapper::new, org.seasar.doma.internal.apt.processor.entity._Ver.getSingletonInternal(), "ver", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyDesc<org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.processor.entity.Ver> $ver = new org.seasar.doma.jdbc.entity.VersionPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity.class, () -> org.seasar.doma.internal.apt.processor.entity._Ver.getSingletonInternal().createScalar(), "ver", "", __namingType, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.HolderPropertyEntity>> __listenerSupplier;
 

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.generator;
 
+import static org.seasar.doma.internal.apt.generator.CodeHelper.box;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Arrays;
@@ -25,14 +26,6 @@ import java.util.Map;
 
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
 import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
@@ -105,25 +98,14 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
         for (Iterator<EmbeddablePropertyMeta> it = embeddableMeta.getEmbeddablePropertyMetas()
                 .iterator(); it.hasNext();) {
             EmbeddablePropertyMeta pm = it.next();
-            EmbeddablePropertyCtTypeVisitor visitor = new EmbeddablePropertyCtTypeVisitor();
-            pm.getCtType().accept(visitor, null);
-            BasicCtType basicCtType = visitor.basicCtType;
-            HolderCtType holderCtType = visitor.holderCtType;
-
-            String holderDesc = "null";
-            String holderTypeName = "Object";
-            if (holderCtType != null) {
-                holderDesc = holderDesc(holderCtType);
-                holderTypeName = holderCtType.getTypeName();
-            }
-            iprint("        new %1$s<ENTITY, %2$s, %3$s>(entityClass, %4$s, %5$s, "
+            iprint("        new %1$s<ENTITY, %2$s, %3$s>(entityClass, %4$s, "
                     + "embeddedPropertyName + \".%6$s\", \"%7$s\", namingType, %8$s, %9$s, %10$s)",
                     // @formatter:off
                     /* 1 */DefaultPropertyDesc.class.getName(),
-                    /* 2 */box(basicCtType),
-                    /* 3 */holderTypeName,
-                    /* 4 */supplier(basicCtType),
-                    /* 5 */holderDesc,
+                    /* 2 */pm.getCtType().accept(new BasicTypeArgCodeBuilder(), null),
+                    /* 3 */pm.getCtType().accept(new ContainerTypeArgCodeBuilder(), false),
+                    /* 4 */pm.getCtType().accept(new ScalarSuplierCodeBuilder(), false),
+                    /* 5 */null,
                     /* 6 */pm.getName(),
                     /* 7 */pm.getColumnName(),
                     /* 8 */pm.isColumnInsertable(),
@@ -174,55 +156,6 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
         iprint("    return __singleton;%n");
         iprint("}%n");
         print("%n");
-    }
-
-    private class EmbeddablePropertyCtTypeVisitor
-            extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
-
-        private BasicCtType basicCtType;
-
-        private HolderCtType holderCtType;
-
-        @Override
-        protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
-            assertNotNull(basicCtType);
-            return null;
-        }
-
-        @Override
-        public Void visitOptionalCtType(OptionalCtType ctType, Void p) throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
-                throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
-                throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void p)
-                throws RuntimeException {
-            return ctType.getElementCtType().accept(this, p);
-        }
-
-        @Override
-        public Void visitBasicCtType(BasicCtType basicCtType, Void p) throws RuntimeException {
-            this.basicCtType = basicCtType;
-            return defaultAction(basicCtType, p);
-        }
-
-        @Override
-        public Void visitHolderCtType(HolderCtType holderCtType, Void p) throws RuntimeException {
-            this.holderCtType = holderCtType;
-            return visitBasicCtType(holderCtType.getBasicCtType(), p);
-        }
     }
 
 }

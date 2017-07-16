@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.generator;
 
+import static org.seasar.doma.internal.apt.generator.CodeHelper.supplier;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Formatter;

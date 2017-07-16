@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
 import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
@@ -32,20 +33,18 @@ import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
-public class _ImmutableParentEntity extends
-        AbstractEntityDesc<ImmutableParentEntity> {
+public class _ImmutableParentEntity extends AbstractEntityDesc<ImmutableParentEntity> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
     public DefaultPropertyDesc<ImmutableParentEntity, Integer, Integer> $aaa = new DefaultPropertyDesc<>(
-            ImmutableParentEntity.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
+            ImmutableParentEntity.class, () -> new BasicScalar<>(new IntegerWrapper(), false),
             "aaa", "AAA", __namingType, true, true, false);
 
     public DefaultPropertyDesc<ImmutableParentEntity, Integer, Integer> $bbb = new DefaultPropertyDesc<>(
-            ImmutableParentEntity.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
+            ImmutableParentEntity.class, () -> new BasicScalar<>(new IntegerWrapper(), false),
             "bbb", "BBB", __namingType, true, true, false);
 
     private _ImmutableParentEntity() {
@@ -68,8 +67,7 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public EntityPropertyDesc<ImmutableParentEntity, ?> getEntityPropertyDesc(
-            String name) {
+    public EntityPropertyDesc<ImmutableParentEntity, ?> getEntityPropertyDesc(String name) {
 
         return null;
     }
@@ -105,8 +103,7 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
         return null;
     }
@@ -167,8 +164,7 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public ImmutableParentEntity newEntity(
-            Map<String, Property<ImmutableParentEntity, ?>> args) {
+    public ImmutableParentEntity newEntity(Map<String, Property<ImmutableParentEntity, ?>> args) {
         return null;
     }
 

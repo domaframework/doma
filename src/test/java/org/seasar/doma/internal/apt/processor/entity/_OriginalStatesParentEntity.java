@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
 import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
@@ -32,20 +33,18 @@ import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
-public class _OriginalStatesParentEntity extends
-        AbstractEntityDesc<OriginalStatesParentEntity> {
+public class _OriginalStatesParentEntity extends AbstractEntityDesc<OriginalStatesParentEntity> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
     public DefaultPropertyDesc<OriginalStatesParentEntity, Integer, Integer> $aaa = new DefaultPropertyDesc<>(
-            OriginalStatesParentEntity.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
+            OriginalStatesParentEntity.class, () -> new BasicScalar<>(new IntegerWrapper(), false),
             "aaa", "AAA", __namingType, true, true, false);
 
     public DefaultPropertyDesc<OriginalStatesParentEntity, Integer, Integer> $bbb = new DefaultPropertyDesc<>(
-            OriginalStatesParentEntity.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
+            OriginalStatesParentEntity.class, () -> new BasicScalar<>(new IntegerWrapper(), false),
             "bbb", "BBB", __namingType, true, true, false);
 
     private _OriginalStatesParentEntity() {
@@ -68,8 +67,7 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public EntityPropertyDesc<OriginalStatesParentEntity, ?> getEntityPropertyDesc(
-            String name) {
+    public EntityPropertyDesc<OriginalStatesParentEntity, ?> getEntityPropertyDesc(String name) {
 
         return null;
     }
@@ -93,8 +91,7 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public OriginalStatesParentEntity getOriginalStates(
-            OriginalStatesParentEntity entity) {
+    public OriginalStatesParentEntity getOriginalStates(OriginalStatesParentEntity entity) {
 
         return null;
     }
@@ -106,8 +103,7 @@ public class _OriginalStatesParentEntity extends
     }
 
     @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
         return null;
     }

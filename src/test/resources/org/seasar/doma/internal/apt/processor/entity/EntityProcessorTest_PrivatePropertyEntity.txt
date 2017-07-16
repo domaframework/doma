@@ -13,7 +13,7 @@ public final class _PrivatePropertyEntity extends org.seasar.doma.jdbc.entity.Ab
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity.class, org.seasar.doma.wrapper.StringWrapper::new, null, "name", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyDesc<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, java.lang.String, java.lang.String> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false), "name", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity>> __listenerSupplier;
 

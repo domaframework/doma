@@ -20,15 +20,14 @@ import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.NumberWrapper;
 import org.seasar.doma.wrapper.NumberWrapperVisitor;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 生成される識別子のプロパティ型です。
@@ -39,11 +38,11 @@ import org.seasar.doma.wrapper.Wrapper;
  *            エンティティの型
  * @param <BASIC>
  *            プロパティの基本型
- * @param <HOLDER>
+ * @param <CONTAINER>
  *            プロパティのドメイン型
  */
-public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
-        extends DefaultPropertyDesc<ENTITY, BASIC, HOLDER> {
+public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, CONTAINER>
+        extends DefaultPropertyDesc<ENTITY, BASIC, CONTAINER> {
 
     /** 識別子のジェネレータ */
     protected final IdGenerator idGenerator;
@@ -53,10 +52,8 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
      * 
      * @param entityClass
      *            エンティティのクラス
-     * @param wrapperSupplier
+     * @param scalarSupplier
      *            ラッパーのサプライヤ
-     * @param holderDesc
-     *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
      * @param columnName
@@ -69,13 +66,9 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
      *            カラム名に引用符が必要とされるかどうか
      */
     public GeneratedIdPropertyDesc(Class<ENTITY> entityClass,
-            Supplier<Wrapper<BASIC>> wrapperSupplier,
-            HolderDesc<BASIC, HOLDER> holderDesc, String name,
-            String columnName, NamingType namingType, boolean quoteRequired,
-            IdGenerator idGenerator) {
-        super(entityClass, wrapperSupplier,
-                holderDesc, name, columnName,
-                namingType, true, true, quoteRequired);
+            Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier, String name, String columnName,
+            NamingType namingType, boolean quoteRequired, IdGenerator idGenerator) {
+        super(entityClass, scalarSupplier, name, columnName, namingType, true, true, quoteRequired);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");
         }
@@ -98,8 +91,8 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {
             EntityDesc<?> entityDesc = config.getEntityDesc();
-            throw new JdbcException(Message.DOMA2021, entityDesc.getName(),
-                    name, generationType.name(), dialect.getName());
+            throw new JdbcException(Message.DOMA2021, entityDesc.getName(), name,
+                    generationType.name(), dialect.getName());
         }
     }
 
@@ -112,8 +105,7 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
      *            方言
      * @return サポートされている場合 {@code true}
      */
-    protected boolean isGenerationTypeSupported(GenerationType generationType,
-            Dialect dialect) {
+    protected boolean isGenerationTypeSupported(GenerationType generationType, Dialect dialect) {
         switch (generationType) {
         case IDENTITY:
             return dialect.supportsIdentity();
@@ -170,8 +162,7 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
      */
     public ENTITY preInsert(EntityDesc<ENTITY> entityDesc, ENTITY entity,
             IdGenerationConfig config) {
-        return setIfNecessary(entityDesc, entity,
-                () -> idGenerator.generatePreInsert(config));
+        return setIfNecessary(entityDesc, entity, () -> idGenerator.generatePreInsert(config));
     }
 
     /**
@@ -204,20 +195,17 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, HOLDER>
      *            値のサプライヤ
      * @return エンティティ
      */
-    protected ENTITY setIfNecessary(EntityDesc<ENTITY> entityDesc,
-            ENTITY entity, Supplier<Long> supplier) {
-        return modifyIfNecessary(entityDesc, entity, new ValueSetter(),
-                supplier);
+    protected ENTITY setIfNecessary(EntityDesc<ENTITY> entityDesc, ENTITY entity,
+            Supplier<Long> supplier) {
+        return modifyIfNecessary(entityDesc, entity, new ValueSetter(), supplier);
     }
 
     protected static class ValueSetter
-            implements
-            NumberWrapperVisitor<Boolean, Supplier<Long>, Void, RuntimeException> {
+            implements NumberWrapperVisitor<Boolean, Supplier<Long>, Void, RuntimeException> {
 
         @Override
-        public <V extends Number> Boolean visitNumberWrapper(
-                NumberWrapper<V> wrapper, Supplier<Long> valueSupplier, Void q)
-                throws RuntimeException {
+        public <V extends Number> Boolean visitNumberWrapper(NumberWrapper<V> wrapper,
+                Supplier<Long> valueSupplier, Void q) throws RuntimeException {
             Number currentValue = wrapper.get();
             if (currentValue == null || currentValue.intValue() < 0) {
                 Long value = valueSupplier.get();

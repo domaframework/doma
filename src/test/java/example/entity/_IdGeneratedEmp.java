@@ -25,6 +25,7 @@ import java.util.function.BiFunction;
 
 import javax.annotation.processing.Generated;
 
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
 import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
@@ -39,6 +40,9 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
@@ -50,25 +54,21 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public final GeneratedIdPropertyDesc<IdGeneratedEmp, Integer, Object> id = new GeneratedIdPropertyDesc<>(
-            IdGeneratedEmp.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
-            "id", "ID", __namingType, false, new BuiltinIdentityIdGenerator());
+    public final GeneratedIdPropertyDesc<IdGeneratedEmp, Integer, Integer> id = new GeneratedIdPropertyDesc<>(
+            IdGeneratedEmp.class, () -> new BasicScalar<>(new IntegerWrapper(), false), "id", "ID",
+            __namingType, false, new BuiltinIdentityIdGenerator());
 
-    public final DefaultPropertyDesc<IdGeneratedEmp, String, Object> name = new DefaultPropertyDesc<>(
-            IdGeneratedEmp.class,
-            () -> new org.seasar.doma.wrapper.StringWrapper(), null,
-            "name", "NAME", __namingType, true, true, false);
+    public final DefaultPropertyDesc<IdGeneratedEmp, String, String> name = new DefaultPropertyDesc<>(
+            IdGeneratedEmp.class, () -> new BasicScalar<>(new StringWrapper(), false), "name",
+            "NAME", __namingType, true, true, false);
 
     public final DefaultPropertyDesc<IdGeneratedEmp, BigDecimal, BigDecimal> salary = new DefaultPropertyDesc<>(
-            IdGeneratedEmp.class,
-            () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
-            "salary", "SALARY", __namingType, true, true, false);
+            IdGeneratedEmp.class, () -> new BasicScalar<>(new BigDecimalWrapper(), false), "salary",
+            "SALARY", __namingType, true, true, false);
 
     public final VersionPropertyDesc<IdGeneratedEmp, Integer, Integer> version = new VersionPropertyDesc<>(
-            IdGeneratedEmp.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
-            "version", "VERSION", __namingType, false);
+            IdGeneratedEmp.class, () -> new BasicScalar<>(new IntegerWrapper(), false), "version",
+            "VERSION", __namingType, false);
 
     private final String __name = "Emp";
 
@@ -108,8 +108,7 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
     }
 
     @Override
-    public IdGeneratedEmp newEntity(
-            Map<String, Property<IdGeneratedEmp, ?>> args) {
+    public IdGeneratedEmp newEntity(Map<String, Property<IdGeneratedEmp, ?>> args) {
         IdGeneratedEmp entity = new IdGeneratedEmp();
         args.values().forEach(v -> v.save(entity));
         return entity;
@@ -131,8 +130,7 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
     }
 
     @Override
-    public EntityPropertyDesc<IdGeneratedEmp, ?> getEntityPropertyDesc(
-            String propertyName) {
+    public EntityPropertyDesc<IdGeneratedEmp, ?> getEntityPropertyDesc(String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
 
@@ -171,33 +169,27 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
     }
 
     @Override
-    public void preInsert(IdGeneratedEmp entity,
-            PreInsertContext<IdGeneratedEmp> context) {
+    public void preInsert(IdGeneratedEmp entity, PreInsertContext<IdGeneratedEmp> context) {
     }
 
     @Override
-    public void preUpdate(IdGeneratedEmp entity,
-            PreUpdateContext<IdGeneratedEmp> context) {
+    public void preUpdate(IdGeneratedEmp entity, PreUpdateContext<IdGeneratedEmp> context) {
     }
 
     @Override
-    public void preDelete(IdGeneratedEmp entity,
-            PreDeleteContext<IdGeneratedEmp> context) {
+    public void preDelete(IdGeneratedEmp entity, PreDeleteContext<IdGeneratedEmp> context) {
     }
 
     @Override
-    public void postInsert(IdGeneratedEmp entity,
-            PostInsertContext<IdGeneratedEmp> context) {
+    public void postInsert(IdGeneratedEmp entity, PostInsertContext<IdGeneratedEmp> context) {
     }
 
     @Override
-    public void postUpdate(IdGeneratedEmp entity,
-            PostUpdateContext<IdGeneratedEmp> context) {
+    public void postUpdate(IdGeneratedEmp entity, PostUpdateContext<IdGeneratedEmp> context) {
     }
 
     @Override
-    public void postDelete(IdGeneratedEmp entity,
-            PostDeleteContext<IdGeneratedEmp> context) {
+    public void postDelete(IdGeneratedEmp entity, PostDeleteContext<IdGeneratedEmp> context) {
     }
 
     @Override
@@ -211,8 +203,7 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
     }
 
     @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
         if (__tableName.isEmpty()) {
             return namingFunction.apply(getNamingType(), getName());
         }

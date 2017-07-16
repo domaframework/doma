@@ -25,6 +25,7 @@ import java.util.function.BiFunction;
 
 import javax.annotation.processing.Generated;
 
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
@@ -39,6 +40,9 @@ import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _Emp extends AbstractEntityDesc<Emp> {
@@ -50,25 +54,21 @@ public class _Emp extends AbstractEntityDesc<Emp> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public final AssignedIdPropertyDesc<Emp, Integer, Object> id = new AssignedIdPropertyDesc<>(
-            Emp.class, 
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
-            "id", "ID", __namingType, false);
+    public final AssignedIdPropertyDesc<Emp, Integer, Integer> id = new AssignedIdPropertyDesc<>(
+            Emp.class, () -> new BasicScalar<>(new IntegerWrapper(), false), "id", "ID",
+            __namingType, false);
 
-    public final DefaultPropertyDesc<Emp, String, Object> name = new DefaultPropertyDesc<>(
-            Emp.class, 
-            () -> new org.seasar.doma.wrapper.StringWrapper(), null,
-            "name", "NAME", __namingType, true, true, false);
+    public final DefaultPropertyDesc<Emp, String, String> name = new DefaultPropertyDesc<>(
+            Emp.class, () -> new BasicScalar<>(new StringWrapper(), false), "name", "NAME",
+            __namingType, true, true, false);
 
     public final DefaultPropertyDesc<Emp, BigDecimal, BigDecimal> salary = new DefaultPropertyDesc<>(
-            Emp.class,
-            () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null,
-            "salary", "SALARY", __namingType, true, true, false);
+            Emp.class, () -> new BasicScalar<>(new BigDecimalWrapper(), false), "salary", "SALARY",
+            __namingType, true, true, false);
 
     public final VersionPropertyDesc<Emp, Integer, Integer> version = new VersionPropertyDesc<>(
-            Emp.class, 
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
-            "version", "VERSION", __namingType, false);
+            Emp.class, () -> new BasicScalar<>(new IntegerWrapper(), false), "version", "VERSION",
+            __namingType, false);
 
     private final String __name = "Emp";
 
@@ -203,8 +203,7 @@ public class _Emp extends AbstractEntityDesc<Emp> {
     }
 
     @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
         if (__tableName.isEmpty()) {
             return namingFunction.apply(getNamingType(), getName());
         }

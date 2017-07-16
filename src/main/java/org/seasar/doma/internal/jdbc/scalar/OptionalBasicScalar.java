@@ -6,10 +6,14 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class OptionalBasicScalar<BASIC> implements
-        Scalar<BASIC, Optional<BASIC>> {
+public class OptionalBasicScalar<BASIC> implements Scalar<BASIC, Optional<BASIC>> {
 
     protected final Wrapper<BASIC> wrapper;
+
+    public OptionalBasicScalar(Wrapper<BASIC> wrapper) {
+        AssertionUtil.assertNotNull(wrapper);
+        this.wrapper = wrapper;
+    }
 
     public OptionalBasicScalar(Supplier<Wrapper<BASIC>> supplier) {
         AssertionUtil.assertNotNull(supplier);

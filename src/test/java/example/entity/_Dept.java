@@ -24,6 +24,7 @@ import java.util.function.BiFunction;
 
 import javax.annotation.processing.Generated;
 
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
@@ -38,6 +39,8 @@ import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _Dept extends AbstractEntityDesc<Dept> {
@@ -46,15 +49,13 @@ public class _Dept extends AbstractEntityDesc<Dept> {
 
     private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 
-    public final AssignedIdPropertyDesc<Dept, Integer, Object> id = new AssignedIdPropertyDesc<>(
-            Dept.class, 
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null,
-            "id", "ID", __namingType, false);
+    public final AssignedIdPropertyDesc<Dept, Integer, Integer> id = new AssignedIdPropertyDesc<>(
+            Dept.class, () -> new BasicScalar<>(new IntegerWrapper(), false), "id", "ID",
+            __namingType, false);
 
-    public final DefaultPropertyDesc<Dept, String, Object> name = new DefaultPropertyDesc<>(
-            Dept.class, 
-            () -> new org.seasar.doma.wrapper.StringWrapper(), null,
-            "name", "NAME", __namingType, true, true, false);
+    public final DefaultPropertyDesc<Dept, String, String> name = new DefaultPropertyDesc<>(
+            Dept.class, () -> new BasicScalar<>(new StringWrapper(), false), "name", "NAME",
+            __namingType, true, true, false);
 
     private final String __name = "Dept";
 
@@ -175,8 +176,7 @@ public class _Dept extends AbstractEntityDesc<Dept> {
     }
 
     @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
         if (__tableName.isEmpty()) {
             return namingFunction.apply(getNamingType(), getName());
         }
