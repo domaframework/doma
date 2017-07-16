@@ -78,7 +78,7 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.holder.PhoneNumber> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.HolderSingleResultHandler<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.holder.PhoneNumber> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createScalar()));
             example.holder.PhoneNumber __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectSingleResult", __result);
@@ -107,7 +107,7 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<example.holder.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalHolderSingleResultHandler<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<example.holder.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createOptionalScalar()));
             java.util.Optional<example.holder.PhoneNumber> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectOptionalSingleResult", __result);
@@ -136,7 +136,7 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.holder.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.HolderResultListHandler<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.holder.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.ScalarResultListHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createScalar()));
             java.util.List<example.holder.PhoneNumber> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectResultList", __result);
@@ -165,7 +165,7 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<example.holder.PhoneNumber>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalHolderResultListHandler<java.lang.String, example.holder.PhoneNumber>(example.holder._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<example.holder.PhoneNumber>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.ScalarResultListHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createOptionalScalar()));
             java.util.List<java.util.Optional<example.holder.PhoneNumber>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectOptionalResultList", __result);
@@ -197,7 +197,7 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.HolderStreamHandler<java.lang.String, example.holder.PhoneNumber, R>(example.holder._PhoneNumber.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createScalar(), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "stream", __result);

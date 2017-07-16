@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.generator;
 
-import static org.seasar.doma.internal.apt.generator.CodeHelper.supplier;
+import static org.seasar.doma.internal.apt.generator.CodeHelper.wrapperSupplier;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Formatter;
@@ -110,7 +110,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
     private void printConstructors() {
         iprint("private %1$s() {%n", codeSpec.getSimpleName());
         BasicCtType basicCtType = holderMeta.getBasicCtType();
-        iprint("    super(%1$s);%n", supplier(basicCtType));
+        iprint("    super(%1$s);%n", wrapperSupplier(basicCtType));
         iprint("}%n");
         print("%n");
     }

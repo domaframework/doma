@@ -22,7 +22,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
@@ -95,21 +96,18 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         if (valueColumnName == null) {
             throw new JdbcException(Message.DOMA2033, "valueColumnName");
         }
-        updateSql = new PreparedSql(
-                SqlKind.UPDATE,
-                createUpdateRawSql(),
-                createUpdateFormattedSql(),
-                null,
+        updateSql = new PreparedSql(SqlKind.UPDATE, createUpdateRawSql(),
+                createUpdateFormattedSql(), null,
                 Arrays.asList(
-                        new BasicInParameter<Long>(LongWrapper::new,
+                        new ScalarInParameter<>(() -> new BasicScalar<>(new LongWrapper(), true),
                                 allocationSize),
-                        new BasicInParameter<String>(StringWrapper::new,
+                        new ScalarInParameter<>(() -> new BasicScalar<>(new StringWrapper(), false),
                                 pkColumnValue)),
                 SqlLogType.FORMATTED);
         selectSql = new PreparedSql(SqlKind.SELECT, createSelectRawSql(),
                 createSelectFormattedSql(), null,
-                Arrays.asList(new BasicInParameter<String>(
-                        StringWrapper::new, pkColumnValue)),
+                Arrays.asList(new ScalarInParameter<>(
+                        () -> new BasicScalar<>(new StringWrapper(), false), pkColumnValue)),
                 SqlLogType.FORMATTED);
     }
 
@@ -195,19 +193,17 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     protected long getNewInitialValue(final IdGenerationConfig config) {
         RequiresNewController controller = config.getRequiresNewController();
         try {
-            Long value = controller
-                    .requiresNew(new RequiresNewController.Callback<Long>() {
+            Long value = controller.requiresNew(new RequiresNewController.Callback<Long>() {
 
-                        @Override
-                        public Long execute() {
-                            updateId(config, updateSql);
-                            return selectId(config, selectSql);
-                        }
-                    });
+                @Override
+                public Long execute() {
+                    updateId(config, updateSql);
+                    return selectId(config, selectSql);
+                }
+            });
             return value - allocationSize;
         } catch (Throwable t) {
-            throw new JdbcException(Message.DOMA2018, t, config.getEntityDesc()
-                    .getName(), t);
+            throw new JdbcException(Message.DOMA2018, t, config.getEntityDesc().getName(), t);
         }
     }
 
@@ -225,8 +221,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql);
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
             try {
                 logger.logSql(getClass().getName(), "updateId", sql);
                 setupOptions(config, preparedStatement);
@@ -234,12 +229,10 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 preparedStatement.setString(2, pkColumnValue);
                 int rows = preparedStatement.executeUpdate();
                 if (rows != 1) {
-                    throw new JdbcException(Message.DOMA2017, config
-                            .getEntityDesc().getName());
+                    throw new JdbcException(Message.DOMA2017, config.getEntityDesc().getName());
                 }
             } catch (SQLException e) {
-                throw new JdbcException(Message.DOMA2018, e, config
-                        .getEntityDesc().getName(), e);
+                throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
@@ -263,8 +256,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql);
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
             try {
                 logger.logSql(getClass().getName(), "selectId", sql);
                 setupOptions(config, preparedStatement);
@@ -276,11 +268,9 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                         return ((Number) result).longValue();
                     }
                 }
-                throw new JdbcException(Message.DOMA2017, config
-                        .getEntityDesc().getName());
+                throw new JdbcException(Message.DOMA2017, config.getEntityDesc().getName());
             } catch (SQLException e) {
-                throw new JdbcException(Message.DOMA2018, e, config
-                        .getEntityDesc().getName(), e);
+                throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }

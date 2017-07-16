@@ -24,10 +24,11 @@ import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockCallableStatement;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.RegisterOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.internal.jdbc.sql.ScalarInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarSingleResultParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.Sql;
@@ -48,18 +49,18 @@ public class CallableSqlParameterBinderTest extends TestCase {
         MockCallableStatement callableStatement = new MockCallableStatement();
 
         List<SqlParameter> parameters = new ArrayList<>();
-        parameters.add(new BasicSingleResultParameter<Integer>(
-                () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
-        parameters.add(new BasicInParameter<String>(
-                () -> new org.seasar.doma.wrapper.StringWrapper(), "aaa"));
-        parameters.add(new BasicInOutParameter<BigDecimal>(
-                () -> new org.seasar.doma.wrapper.BigDecimalWrapper(),
+        parameters.add(new ScalarSingleResultParameter<>(
+                () -> new BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper(), false)));
+        parameters.add(new ScalarInParameter<>(
+                () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false),
+                "aaa"));
+        parameters.add(new ScalarInOutParameter<>(
+                () -> new BasicScalar<>(new org.seasar.doma.wrapper.BigDecimalWrapper(), false),
                 new Reference<BigDecimal>(new BigDecimal(10))));
-        parameters.add(new BasicOutParameter<String>(
-                () -> new org.seasar.doma.wrapper.StringWrapper("bbb"),
+        parameters.add(new ScalarOutParameter<>(
+                () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper("bbb"), false),
                 new Reference<String>()));
-        CallableSqlParameterBinder binder = new CallableSqlParameterBinder(
-                new MyQuery());
+        CallableSqlParameterBinder binder = new CallableSqlParameterBinder(new MyQuery());
         binder.bind(callableStatement, parameters);
 
         List<BindValue> bindValues = callableStatement.bindValues;

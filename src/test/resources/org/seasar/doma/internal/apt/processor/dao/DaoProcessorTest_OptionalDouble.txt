@@ -89,7 +89,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(example.entity._Emp.getSingletonInternal()));
             example.entity.Emp __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl", "selectById", __result);
@@ -122,7 +122,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.OptionalDouble> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleSingleResultHandler());
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.OptionalDouble> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar()));
             java.util.OptionalDouble __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl", "selectAgeById", __result);
@@ -151,7 +151,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.OptionalDouble>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleResultListHandler());
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.OptionalDouble>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.ScalarResultListHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar()));
             java.util.List<java.util.OptionalDouble> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl", "selectAllAge", __result);
@@ -183,7 +183,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleStreamHandler<R>(mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl", "selectAllAge", __result);
@@ -215,7 +215,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.OptionalDoubleCollectorHandler<R>(mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.ScalarCollectorHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl", "selectAllAge", __result);
@@ -249,11 +249,11 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setSchemaName("");
             __query.setFunctionName("getSingleResult");
             __query.setQuoteRequired(false);
-            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleSingleResultParameter());
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleInParameter(in));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleInOutParameter(inout));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleOutParameter(out));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleListParameter(resultSet, "resultSet"));
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.ScalarSingleResultParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar()));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarInParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), in));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarInOutParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), inout));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarOutParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), out));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarListParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), resultSet, "resultSet"));
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl");
             __query.setCallerMethodName("getSingleResult");
             __query.setQueryTimeout(-1);
@@ -281,7 +281,7 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setSchemaName("");
             __query.setFunctionName("getResultList");
             __query.setQuoteRequired(false);
-            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleResultListParameter());
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.ScalarResultListParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar()));
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl");
             __query.setCallerMethodName("getResultList");
             __query.setQueryTimeout(-1);
@@ -321,10 +321,10 @@ public class OptionalDoubleDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abs
             __query.setSchemaName("");
             __query.setProcedureName("execute");
             __query.setQuoteRequired(false);
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleInParameter(in));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleInOutParameter(inout));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleOutParameter(out));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.OptionalDoubleListParameter(resultSet, "resultSet"));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarInParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), in));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarInOutParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), inout));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarOutParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), out));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.ScalarListParameter<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar(), resultSet, "resultSet"));
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalDoubleDaoImpl");
             __query.setCallerMethodName("execute");
             __query.setQueryTimeout(-1);

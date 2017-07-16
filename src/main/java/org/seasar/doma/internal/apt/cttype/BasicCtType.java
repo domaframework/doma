@@ -20,7 +20,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
 
-public class BasicCtType extends AbstractCtType {
+public class BasicCtType extends ScalarCtType {
 
     private final String wrapperTypeName;
 
@@ -42,8 +42,7 @@ public class BasicCtType extends AbstractCtType {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitBasicCtType(this, p);
     }
 

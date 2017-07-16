@@ -92,12 +92,11 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @author taedium
  * 
  */
-public class NodePreparedSqlBuilder implements
-        SqlNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
+public class NodePreparedSqlBuilder
+        implements SqlNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
 
     protected static final Pattern clauseKeywordPattern = Pattern.compile(
-            "(select|from|where|group by|having|order by|for update)",
-            Pattern.CASE_INSENSITIVE);
+            "(select|from|where|group by|having|order by|for update)", Pattern.CASE_INSENSITIVE);
 
     protected final Config config;
 
@@ -113,17 +112,15 @@ public class NodePreparedSqlBuilder implements
 
     protected final BiConsumer<PopulateNode, SqlContext> valuesPopulater;
 
-    public NodePreparedSqlBuilder(Config config, SqlKind kind,
-            String sqlFilePath) {
+    public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath) {
         this(config, kind, sqlFilePath,
-                new ExpressionEvaluator(config.getDialect()
-                        .getExpressionFunctions(), config.getClassHelper()),
+                new ExpressionEvaluator(config.getDialect().getExpressionFunctions(),
+                        config.getClassHelper()),
                 SqlLogType.FORMATTED);
     }
 
-    public NodePreparedSqlBuilder(Config config, SqlKind kind,
-            String sqlFilePath, ExpressionEvaluator evaluator,
-            SqlLogType sqlLogType) {
+    public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath,
+            ExpressionEvaluator evaluator, SqlLogType sqlLogType) {
         this(config, kind, sqlFilePath, evaluator, sqlLogType,
                 new Function<ExpandNode, List<String>>() {
                     @Override
@@ -133,9 +130,8 @@ public class NodePreparedSqlBuilder implements
                 });
     }
 
-    public NodePreparedSqlBuilder(Config config, SqlKind kind,
-            String sqlFilePath, ExpressionEvaluator evaluator,
-            SqlLogType sqlLogType,
+    public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath,
+            ExpressionEvaluator evaluator, SqlLogType sqlLogType,
             Function<ExpandNode, List<String>> columnsExpander) {
         this(config, kind, sqlFilePath, evaluator, sqlLogType, columnsExpander,
                 new BiConsumer<PopulateNode, SqlContext>() {
@@ -146,9 +142,8 @@ public class NodePreparedSqlBuilder implements
                 });
     }
 
-    public NodePreparedSqlBuilder(Config config, SqlKind kind,
-            String sqlFilePath, ExpressionEvaluator evaluator,
-            SqlLogType sqlLogType,
+    public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath,
+            ExpressionEvaluator evaluator, SqlLogType sqlLogType,
             Function<ExpandNode, List<String>> columnsExpander,
             BiConsumer<PopulateNode, SqlContext> valuesPopulater) {
         assertNotNull(config, kind, evaluator, columnsExpander, valuesPopulater);
@@ -165,8 +160,7 @@ public class NodePreparedSqlBuilder implements
         assertNotNull(sqlNode, commenter);
         Context context = new Context(config, evaluator);
         sqlNode.accept(this, context);
-        return new PreparedSql(kind, context.getSqlBuf(),
-                context.getFormattedSqlBuf(), sqlFilePath,
+        return new PreparedSql(kind, context.getSqlBuf(), context.getFormattedSqlBuf(), sqlFilePath,
                 context.getParameters(), sqlLogType, commenter);
     }
 
@@ -209,8 +203,7 @@ public class NodePreparedSqlBuilder implements
     }
 
     @Override
-    public Void visitLiteralVariableNode(final LiteralVariableNode node,
-            Context p) {
+    public Void visitLiteralVariableNode(final LiteralVariableNode node, Context p) {
         Consumer<Scalar<?, ?>> validator = (scalar) -> {
             Object value = scalar.get();
             if (value == null) {
@@ -220,15 +213,13 @@ public class NodePreparedSqlBuilder implements
             if (text.indexOf('\'') > -1) {
                 SqlLocation location = node.getLocation();
                 throw new JdbcException(Message.DOMA2224, location.getSql(),
-                        location.getLineNumber(), location.getPosition(),
-                        node.getText());
+                        location.getLineNumber(), location.getPosition(), node.getText());
             }
         };
         return visitValueNode(node, p, validator.andThen(p::addLiteralValue));
     }
 
-    protected Void visitValueNode(ValueNode node, Context p,
-            Consumer<Scalar<?, ?>> valueHandler) {
+    protected Void visitValueNode(ValueNode node, Context p, Consumer<Scalar<?, ?>> valueHandler) {
         SqlLocation location = node.getLocation();
         String name = node.getVariableName();
         EvaluationResult result = p.evaluate(location, name);
@@ -242,12 +233,11 @@ public class NodePreparedSqlBuilder implements
             OtherNode openedFragmentNode = parensNode.getOpenedFragmentNode();
             openedFragmentNode.accept(this, p);
             if (Iterable.class.isAssignableFrom(valueClass)) {
-                handleIterableValueNode(node, p, (Iterable<?>) value,
-                        valueClass, valueHandler);
+                handleIterableValueNode(node, p, (Iterable<?>) value, valueClass, valueHandler);
             } else {
                 throw new JdbcException(Message.DOMA2112, location.getSql(),
-                        location.getLineNumber(), location.getPosition(),
-                        node.getText(), valueClass);
+                        location.getLineNumber(), location.getPosition(), node.getText(),
+                        valueClass);
             }
             OtherNode closedFragmentNode = parensNode.getClosedFragmentNode();
             closedFragmentNode.accept(this, p);
@@ -267,23 +257,19 @@ public class NodePreparedSqlBuilder implements
             String fragment = value.toString();
             if (fragment.indexOf('\'') > -1) {
                 throw new JdbcException(Message.DOMA2116, location.getSql(),
-                        location.getLineNumber(), location.getPosition(),
-                        node.getText());
+                        location.getLineNumber(), location.getPosition(), node.getText());
             }
             if (fragment.indexOf(';') > -1) {
                 throw new JdbcException(Message.DOMA2117, location.getSql(),
-                        location.getLineNumber(), location.getPosition(),
-                        node.getText());
+                        location.getLineNumber(), location.getPosition(), node.getText());
             }
             if (fragment.indexOf("--") > -1) {
                 throw new JdbcException(Message.DOMA2122, location.getSql(),
-                        location.getLineNumber(), location.getPosition(),
-                        node.getText());
+                        location.getLineNumber(), location.getPosition(), node.getText());
             }
             if (fragment.indexOf("/*") > -1) {
                 throw new JdbcException(Message.DOMA2123, location.getSql(),
-                        location.getLineNumber(), location.getPosition(),
-                        node.getText());
+                        location.getLineNumber(), location.getPosition(), node.getText());
             }
             if (!startsWithClauseKeyword(fragment)) {
                 p.setAvailable(true);
@@ -298,32 +284,29 @@ public class NodePreparedSqlBuilder implements
     }
 
     protected boolean startsWithClauseKeyword(String fragment) {
-        Matcher matcher = clauseKeywordPattern.matcher(StringUtil
-                .trimWhitespace(fragment));
+        Matcher matcher = clauseKeywordPattern.matcher(StringUtil.trimWhitespace(fragment));
         return matcher.lookingAt();
     }
 
-    protected Void handleSingleValueNode(ValueNode node, Context p,
-            Object value, Class<?> valueClass, Consumer<Scalar<?, ?>> consumer) {
-        Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
-                node.getText(), value, valueClass);
+    protected Void handleSingleValueNode(ValueNode node, Context p, Object value,
+            Class<?> valueClass, Consumer<Scalar<?, ?>> consumer) {
+        Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(), node.getText(), value,
+                valueClass);
         consumer.accept(supplier.get());
         return null;
     }
 
-    protected void handleIterableValueNode(ValueNode node, Context p,
-            Iterable<?> values, Class<?> valueClass,
-            Consumer<Scalar<?, ?>> consumer) {
+    protected void handleIterableValueNode(ValueNode node, Context p, Iterable<?> values,
+            Class<?> valueClass, Consumer<Scalar<?, ?>> consumer) {
         int index = 0;
         for (Object v : values) {
             if (v == null) {
                 SqlLocation location = node.getLocation();
                 throw new JdbcException(Message.DOMA2115, location.getSql(),
-                        location.getLineNumber(), location.getPosition(),
-                        node.getText(), index);
+                        location.getLineNumber(), location.getPosition(), node.getText(), index);
             }
-            Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(),
-                    node.getText(), v, v.getClass());
+            Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(), node.getText(), v,
+                    v.getClass());
             consumer.accept(supplier.get());
             p.appendRawSql(", ");
             p.appendFormattedSql(", ");
@@ -418,14 +401,12 @@ public class NodePreparedSqlBuilder implements
     public Void visitForBlockNode(ForBlockNode node, Context p) {
         ForNode forNode = node.getForNode();
         SqlLocation location = forNode.getLocation();
-        EvaluationResult expressionResult = p.evaluate(location,
-                forNode.getExpression());
+        EvaluationResult expressionResult = p.evaluate(location, forNode.getExpression());
         Object expressionValue = expressionResult.getValue();
         Class<?> expressionValueClass = expressionResult.getValueClass();
         if (!Iterable.class.isAssignableFrom(expressionValueClass)) {
-            throw new JdbcException(Message.DOMA2129, location.getSql(),
-                    location.getLineNumber(), location.getPosition(),
-                    forNode.getExpression(), expressionValueClass);
+            throw new JdbcException(Message.DOMA2129, location.getSql(), location.getLineNumber(),
+                    location.getPosition(), forNode.getExpression(), expressionValueClass);
         }
 
         Iterable<?> iterable = (Iterable<?>) expressionValue;
@@ -697,8 +678,7 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitExpandNode(ExpandNode node, Context p) {
-        EvaluationResult evalResult = p.evaluate(node.getLocation(),
-                node.getAlias());
+        EvaluationResult evalResult = p.evaluate(node.getLocation(), node.getAlias());
         String alias = evalResult.getValue().toString();
         String prefix = alias.isEmpty() ? "" : alias + ".";
         StringJoiner joiner = new StringJoiner(", ");
@@ -711,15 +691,13 @@ public class NodePreparedSqlBuilder implements
         return null;
     }
 
-    protected Supplier<Scalar<?, ?>> wrap(SqlLocation location,
-            String bindVariableText, Object value, Class<?> valueClass) {
+    protected Supplier<Scalar<?, ?>> wrap(SqlLocation location, String bindVariableText,
+            Object value, Class<?> valueClass) {
         try {
-            return Scalars.wrap(value, valueClass, false,
-                    config.getClassHelper());
+            return Scalars.wrap(value, valueClass, false, config.getClassHelper());
         } catch (ScalarException e) {
             throw new JdbcException(Message.DOMA2118, e, location.getSql(),
-                    location.getLineNumber(), location.getPosition(),
-                    bindVariableText, e);
+                    location.getLineNumber(), location.getPosition(), bindVariableText, e);
         }
     }
 
@@ -789,32 +767,26 @@ public class NodePreparedSqlBuilder implements
             return formattedSqlBuf;
         }
 
-        protected <BASIC, CONTAINER> void addLiteralValue(
-                Scalar<BASIC, CONTAINER> scalar) {
+        protected <BASIC, CONTAINER> void addLiteralValue(Scalar<BASIC, CONTAINER> scalar) {
             String literal = scalar.getWrapper().accept(
-                    config.getDialect().getSqlLogFormattingVisitor(),
-                    formattingFunction, null);
+                    config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null);
             rawSqlBuf.append(literal);
             formattedSqlBuf.append(literal);
         }
 
-        protected <BASIC, CONTAINER> void addBindValue(
-                Scalar<BASIC, CONTAINER> scalar) {
-            appendParameterInternal(new ScalarInParameter<BASIC, CONTAINER>(
-                    scalar));
+        protected <BASIC, CONTAINER> void addBindValue(Scalar<BASIC, CONTAINER> scalar) {
+            appendParameterInternal(new ScalarInParameter<BASIC, CONTAINER>(scalar));
         }
 
         protected <BASIC> void appendParameter(InParameter<BASIC> parameter) {
             appendParameterInternal(parameter);
         }
 
-        protected <BASIC> void appendParameterInternal(
-                InParameter<BASIC> parameter) {
+        protected <BASIC> void appendParameterInternal(InParameter<BASIC> parameter) {
             parameters.add(parameter);
             rawSqlBuf.append("?");
             String formatted = parameter.getWrapper().accept(
-                    config.getDialect().getSqlLogFormattingVisitor(),
-                    formattingFunction, null);
+                    config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null);
             formattedSqlBuf.append(formatted);
         }
 
@@ -842,8 +814,7 @@ public class NodePreparedSqlBuilder implements
             return evaluator.removeValue(variableName);
         }
 
-        protected EvaluationResult evaluate(SqlLocation location,
-                String expression) {
+        protected EvaluationResult evaluate(SqlLocation location, String expression) {
             try {
                 ExpressionParser parser = new ExpressionParser(expression);
                 ExpressionNode expressionNode = parser.parse();
@@ -860,8 +831,8 @@ public class NodePreparedSqlBuilder implements
         }
     }
 
-    protected static class LiteralValueVisitor implements
-            WrapperVisitor<String, Void, Void, RuntimeException> {
+    protected static class LiteralValueVisitor
+            implements WrapperVisitor<String, Void, Void, RuntimeException> {
 
     }
 }

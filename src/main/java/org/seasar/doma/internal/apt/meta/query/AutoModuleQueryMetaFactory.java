@@ -23,49 +23,21 @@ import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
+import org.seasar.doma.internal.apt.cttype.ScalarCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.parameter.BasicInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.EntityListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.HolderInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.HolderInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.HolderListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.HolderOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.MapListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarOutParameterMeta;
 import org.seasar.doma.internal.apt.reflection.ResultSetReflection;
 import org.seasar.doma.message.Message;
 
@@ -215,45 +187,15 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitBasicCtType(BasicCtType ctType, Boolean optional)
+        public CallableSqlParameterMeta visitScalarCtType(ScalarCtType ctType, Boolean p)
                 throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalBasicListParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new BasicListParameterMeta(parameterMeta.getName(), ctType);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType, Boolean optional)
-                throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalHolderListParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new HolderListParameterMeta(parameterMeta.getName(), ctType);
+            return new ScalarListParameterMeta(parameterMeta.getName(), ctType, p);
         }
 
         @Override
         public CallableSqlParameterMeta visitOptionalCtType(OptionalCtType ctType, Boolean p)
                 throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalIntListParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalLongCtType(OptionalLongCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalLongListParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalDoubleListParameterMeta(parameterMeta.getName());
         }
 
     }
@@ -280,45 +222,15 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitBasicCtType(BasicCtType ctType, Boolean optional)
+        public CallableSqlParameterMeta visitScalarCtType(ScalarCtType ctType, Boolean p)
                 throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalBasicInParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new BasicInParameterMeta(parameterMeta.getName(), ctType);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType, Boolean optional)
-                throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalHolderInParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new HolderInParameterMeta(parameterMeta.getName(), ctType);
+            return new ScalarInParameterMeta(parameterMeta.getName(), ctType, p);
         }
 
         @Override
         public CallableSqlParameterMeta visitOptionalCtType(OptionalCtType ctType, Boolean p)
                 throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalIntInParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalLongCtType(OptionalLongCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalLongInParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalDoubleInParameterMeta(parameterMeta.getName());
         }
 
     }
@@ -375,45 +287,15 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitBasicCtType(BasicCtType ctType, Boolean optional)
+        public CallableSqlParameterMeta visitScalarCtType(ScalarCtType ctType, Boolean p)
                 throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalBasicOutParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new BasicOutParameterMeta(parameterMeta.getName(), ctType);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType, Boolean optional)
-                throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalHolderOutParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new HolderOutParameterMeta(parameterMeta.getName(), ctType);
+            return new ScalarOutParameterMeta(parameterMeta.getName(), ctType, p);
         }
 
         @Override
         public CallableSqlParameterMeta visitOptionalCtType(OptionalCtType ctType, Boolean p)
                 throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalIntOutParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalLongCtType(OptionalLongCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalLongOutParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalDoubleOutParameterMeta(parameterMeta.getName());
         }
 
     }
@@ -470,45 +352,15 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
 
         @Override
-        public CallableSqlParameterMeta visitBasicCtType(BasicCtType ctType, Boolean optional)
+        public CallableSqlParameterMeta visitScalarCtType(ScalarCtType ctType, Boolean p)
                 throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalBasicInOutParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new BasicInOutParameterMeta(parameterMeta.getName(), ctType);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitHolderCtType(HolderCtType ctType, Boolean optional)
-                throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalHolderInOutParameterMeta(parameterMeta.getName(), ctType);
-            }
-            return new HolderInOutParameterMeta(parameterMeta.getName(), ctType);
+            return new ScalarInOutParameterMeta(parameterMeta.getName(), ctType, p);
         }
 
         @Override
         public CallableSqlParameterMeta visitOptionalCtType(OptionalCtType ctType, Boolean p)
                 throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalIntInOutParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalLongCtType(OptionalLongCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalLongInOutParameterMeta(parameterMeta.getName());
-        }
-
-        @Override
-        public CallableSqlParameterMeta visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
-                Boolean p) throws RuntimeException {
-            return new OptionalDoubleInOutParameterMeta(parameterMeta.getName());
         }
 
     }

@@ -17,8 +17,6 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.lang.reflect.Method;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -31,6 +29,7 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
 import example.holder.PhoneNumber;
 import example.holder._PhoneNumber;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -55,16 +54,15 @@ public class HolderSingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
         query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
-        HolderSingleResultHandler<String, PhoneNumber> handler = new HolderSingleResultHandler<String, PhoneNumber>(
-                _PhoneNumber.getSingletonInternal());
+        ScalarSingleResultHandler<String, PhoneNumber> handler = new ScalarSingleResultHandler<>(
+                () -> _PhoneNumber.getSingletonInternal().createScalar());
         PhoneNumber result = handler.handle(resultSet, query, (i, next) -> {
         }).get();
         assertEquals("01-2345-6789", result.getValue());
@@ -79,16 +77,15 @@ public class HolderSingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
         query.setSqlLogType(SqlLogType.FORMATTED);
         query.prepare();
 
-        HolderSingleResultHandler<String, PhoneNumber> handler = new HolderSingleResultHandler<String, PhoneNumber>(
-                _PhoneNumber.getSingletonInternal());
+        ScalarSingleResultHandler<String, PhoneNumber> handler = new ScalarSingleResultHandler<>(
+                () -> _PhoneNumber.getSingletonInternal().createScalar());
         try {
             handler.handle(resultSet, query, (i, next) -> {
             });

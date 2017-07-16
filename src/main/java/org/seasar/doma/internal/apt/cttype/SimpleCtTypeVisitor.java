@@ -19,8 +19,7 @@ package org.seasar.doma.internal.apt.cttype;
  * @author taedium
  * 
  */
-public class SimpleCtTypeVisitor<R, P, TH extends Throwable>
-        implements CtTypeVisitor<R, P, TH> {
+public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVisitor<R, P, TH> {
 
     protected R defaultValue;
 
@@ -42,12 +41,12 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable>
 
     @Override
     public R visitBasicCtType(BasicCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
+        return visitScalarCtType(ctType, p);
     }
 
     @Override
     public R visitHolderCtType(HolderCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
+        return visitScalarCtType(ctType, p);
     }
 
     @Override
@@ -76,11 +75,9 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable>
     }
 
     @Override
-    public R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p)
-            throws TH {
+    public R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p) throws TH {
         return defaultAction(ctType, p);
     }
-
 
     @Override
     public R visitMapCtType(MapCtType ctType, P p) throws TH {
@@ -94,18 +91,17 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable>
 
     @Override
     public R visitOptionalIntCtType(OptionalIntCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
+        return visitScalarCtType(ctType, p);
     }
 
     @Override
     public R visitOptionalLongCtType(OptionalLongCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
+        return visitScalarCtType(ctType, p);
     }
 
     @Override
-    public R visitOptionalDoubleCtType(OptionalDoubleCtType ctType, P p)
-            throws TH {
-        return defaultAction(ctType, p);
+    public R visitOptionalDoubleCtType(OptionalDoubleCtType ctType, P p) throws TH {
+        return visitScalarCtType(ctType, p);
     }
 
     @Override
@@ -133,4 +129,8 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable>
         return defaultAction(ctType, p);
     }
 
+    @Override
+    public R visitScalarCtType(ScalarCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
 }

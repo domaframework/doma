@@ -18,10 +18,11 @@ package org.seasar.doma.jdbc.command;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.internal.jdbc.sql.ScalarInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarSingleResultParameter;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
@@ -53,12 +54,12 @@ public class FunctionCommandTest extends TestCase {
         query.setCatalogName("xxx");
         query.setSchemaName("yyy");
         query.setFunctionName("aaa");
-        query.setResultParameter(new BasicSingleResultParameter<Integer>(
-                () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
-        query.addParameter(new BasicInParameter<Integer>(() -> aaa, 40));
-        query.addParameter(new BasicOutParameter<Integer>(() -> bbb,
+        query.setResultParameter(new ScalarSingleResultParameter<>(
+                () -> new BasicScalar<>(new IntegerWrapper(), false)));
+        query.addParameter(new ScalarInParameter<>(() -> new BasicScalar<>(aaa, false), 40));
+        query.addParameter(new ScalarOutParameter<>(() -> new BasicScalar<>(bbb, false),
                 new Reference<Integer>()));
-        query.addParameter(new BasicInOutParameter<Integer>(() -> ccc,
+        query.addParameter(new ScalarInOutParameter<>(() -> new BasicScalar<>(ccc, false),
                 new Reference<Integer>()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.OutParameter;
@@ -34,17 +35,16 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <CONTAINER>
  *            基本型のコンテナとなる型
  */
-public class ScalarOutParameter<BASIC, CONTAINER> implements
-        OutParameter<BASIC> {
+public class ScalarOutParameter<BASIC, CONTAINER> implements OutParameter<BASIC> {
 
     protected final Scalar<BASIC, CONTAINER> scalar;
 
     protected final Reference<CONTAINER> reference;
 
-    public ScalarOutParameter(Scalar<BASIC, CONTAINER> holder,
+    public ScalarOutParameter(Supplier<Scalar<BASIC, CONTAINER>> supplier,
             Reference<CONTAINER> reference) {
-        assertNotNull(holder, reference);
-        this.scalar = holder;
+        assertNotNull(supplier, reference);
+        this.scalar = supplier.get();
         this.reference = reference;
     }
 
@@ -69,8 +69,8 @@ public class ScalarOutParameter<BASIC, CONTAINER> implements
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p)
+            throws TH {
         return visitor.visitOutParameter(this, p);
     }
 

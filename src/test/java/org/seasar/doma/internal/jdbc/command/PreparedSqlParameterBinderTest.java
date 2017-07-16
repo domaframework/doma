@@ -23,7 +23,8 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.query.Query;
@@ -36,14 +37,14 @@ public class PreparedSqlParameterBinderTest extends TestCase {
 
     public void testBind() throws Exception {
         MockPreparedStatement preparedStatement = new MockPreparedStatement();
-        List<BasicInParameter<?>> parameters = new ArrayList<BasicInParameter<?>>();
-        parameters.add(new BasicInParameter<String>(
-                () -> new org.seasar.doma.wrapper.StringWrapper(), "aaa"));
-        parameters.add(new BasicInParameter<BigDecimal>(
-                () -> new org.seasar.doma.wrapper.BigDecimalWrapper(),
+        List<ScalarInParameter<?, ?>> parameters = new ArrayList<ScalarInParameter<?, ?>>();
+        parameters.add(new ScalarInParameter<>(
+                () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false),
+                "aaa"));
+        parameters.add(new ScalarInParameter<>(
+                () -> new BasicScalar<>(new org.seasar.doma.wrapper.BigDecimalWrapper(), false),
                 new BigDecimal(10)));
-        PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
-                new MyQuery());
+        PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(new MyQuery());
         binder.bind(preparedStatement, parameters);
 
         List<BindValue> bindValues = preparedStatement.bindValues;

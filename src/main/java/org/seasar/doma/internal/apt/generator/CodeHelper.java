@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt.generator;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 
 final class CodeHelper {
 
@@ -50,33 +49,12 @@ final class CodeHelper {
         return name;
     }
 
-    static String box(BasicCtType ctType) {
-        return box(ctType.getTypeName());
-    }
-
-    static String supplier(BasicCtType ctType) {
+    static String wrapperSupplier(BasicCtType ctType) {
         if (ctType.isEnum()) {
             return String.format("() -> new %1$s(%2$s.class)", ctType.getWrapperTypeName(),
                     ctType.getQualifiedName());
         }
         return String.format("%1$s::new", ctType.getWrapperTypeName());
-    }
-
-    static String wrapper(BasicCtType ctType) {
-        if (ctType.isEnum()) {
-            return String.format("new %1$s(%2$s.class)", ctType.getWrapperTypeName(),
-                    ctType.getQualifiedName());
-        }
-        return String.format("new %1$s()", ctType.getWrapperTypeName());
-    }
-
-    static String holderDesc(HolderCtType ctType) {
-        int pos = ctType.getTypeName().indexOf('<');
-        String typeArgDecl = "";
-        if (pos > -1) {
-            typeArgDecl = ctType.getTypeName().substring(pos);
-        }
-        return ctType.getDescClassName() + "." + typeArgDecl + "getSingletonInternal()";
     }
 
     static String entityDesc(EntityCtType ctType) {

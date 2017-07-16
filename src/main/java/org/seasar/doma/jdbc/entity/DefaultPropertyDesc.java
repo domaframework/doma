@@ -216,7 +216,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
             }
             return entityDesc.newEntity(args);
         } else {
-            Property<ENTITY, ?> property = createProperty();
+            Property<ENTITY, BASIC> property = createProperty();
             property.load(entity);
             Boolean modified = property.getWrapper().accept(visitor, value, null);
             if (modified == Boolean.FALSE) {

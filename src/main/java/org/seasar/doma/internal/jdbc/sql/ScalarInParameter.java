@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.InParameter;
@@ -37,15 +38,20 @@ public class ScalarInParameter<BASIC, CONTAINER> implements InParameter<BASIC> {
 
     protected final Scalar<BASIC, CONTAINER> scalar;
 
-    public ScalarInParameter(Scalar<BASIC, CONTAINER> holder) {
-        assertNotNull(holder);
-        this.scalar = holder;
+    public ScalarInParameter(Scalar<BASIC, CONTAINER> scalar) {
+        assertNotNull(scalar);
+        this.scalar = scalar;
     }
 
-    public ScalarInParameter(Scalar<BASIC, CONTAINER> holder, CONTAINER value) {
-        assertNotNull(holder);
-        this.scalar = holder;
-        holder.set(value);
+    public ScalarInParameter(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
+        assertNotNull(supplier);
+        scalar = supplier.get();
+    }
+
+    public ScalarInParameter(Supplier<Scalar<BASIC, CONTAINER>> supplier, CONTAINER value) {
+        assertNotNull(supplier);
+        scalar = supplier.get();
+        scalar.set(value);
     }
 
     @Override
@@ -64,8 +70,8 @@ public class ScalarInParameter<BASIC, CONTAINER> implements InParameter<BASIC> {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p)
+            throws TH {
         return visitor.visitInParameter(this, p);
     }
 }

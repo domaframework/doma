@@ -84,7 +84,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal(), mapper));
             java.lang.Integer __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl", "selectByIdAndName", __result);
@@ -117,7 +117,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.HolderStreamHandler<java.lang.String, example.holder.PhoneNumber, R>(example.holder._PhoneNumber.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createScalar(), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl", "selectById", __result);
@@ -149,7 +149,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl", "select", __result);
@@ -181,7 +181,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<java.lang.String, java.lang.String>(org.seasar.doma.wrapper.StringWrapper::new, mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false), mapper));
             java.lang.String __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl", "selectWithHogeFunction", __result);
@@ -214,7 +214,7 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<R>(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<>(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl", "selectByIdAsMap", __result);

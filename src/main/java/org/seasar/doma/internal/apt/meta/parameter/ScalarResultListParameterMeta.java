@@ -17,27 +17,35 @@ package org.seasar.doma.internal.apt.meta.parameter;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import org.seasar.doma.internal.apt.cttype.ScalarCtType;
+
 /**
+ * @author taedium
  * 
- * @author nakamura-to
- *
  */
-public class OptionalIntInOutParameterMeta implements CallableSqlParameterMeta {
+public class ScalarResultListParameterMeta implements ResultListParameterMeta {
 
-    private final String name;
+    private final ScalarCtType scalarCtType;
 
-    public OptionalIntInOutParameterMeta(String name) {
-        assertNotNull(name);
-        this.name = name;
+    private final boolean optional;
+
+    public ScalarResultListParameterMeta(ScalarCtType scalarCtType, boolean optional) {
+        assertNotNull(scalarCtType);
+        this.scalarCtType = scalarCtType;
+        this.optional = optional;
     }
 
-    public String getName() {
-        return name;
+    public ScalarCtType getScalarCtType() {
+        return scalarCtType;
+    }
+
+    public boolean isOptional() {
+        return optional;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitOptionalIntInOutParameterMeta(this, p);
+        return visitor.visitScalarResultListParameterMeta(this, p);
     }
 
 }

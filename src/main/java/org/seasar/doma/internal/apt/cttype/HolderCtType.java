@@ -25,7 +25,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
-public class HolderCtType extends AbstractCtType {
+public class HolderCtType extends ScalarCtType {
 
     private final BasicCtType basicCtType;
 

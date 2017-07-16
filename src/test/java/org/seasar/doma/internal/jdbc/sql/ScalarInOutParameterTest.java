@@ -39,7 +39,7 @@ public class ScalarInOutParameterTest extends TestCase {
         Scalar<String, PhoneNumber> scalar = holderDesc.createScalar();
         Reference<PhoneNumber> ref = new Reference<>();
         ScalarInOutParameter<String, PhoneNumber> parameter = new ScalarInOutParameter<>(
-                scalar, ref);
+                () -> scalar, ref);
         Optional<Class<?>> optional = parameter.getHolderClass();
         assertEquals(PhoneNumber.class, optional.get());
     }
@@ -48,11 +48,10 @@ public class ScalarInOutParameterTest extends TestCase {
         HolderDesc<String, PhoneNumber> holderDesc = HolderDescFactory
                 .getHolderDesc(PhoneNumber.class, new ClassHelper() {
                 });
-        Scalar<String, Optional<PhoneNumber>> scalar = holderDesc
-                .createOptionalScalar();
+        Scalar<String, Optional<PhoneNumber>> scalar = holderDesc.createOptionalScalar();
         Reference<Optional<PhoneNumber>> ref = new Reference<>();
         ScalarInOutParameter<String, Optional<PhoneNumber>> parameter = new ScalarInOutParameter<>(
-                scalar, ref);
+                () -> scalar, ref);
         Optional<Class<?>> optional = parameter.getHolderClass();
         assertEquals(PhoneNumber.class, optional.get());
     }

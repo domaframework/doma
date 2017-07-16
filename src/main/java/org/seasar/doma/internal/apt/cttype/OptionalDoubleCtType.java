@@ -19,12 +19,11 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Context;
 
-public class OptionalDoubleCtType extends AbstractCtType {
+public class OptionalDoubleCtType extends ScalarCtType {
 
     private final CtType elementCtType;
 
-    OptionalDoubleCtType(Context ctx, TypeMirror typeMirro,
-            CtType elementCtType) {
+    OptionalDoubleCtType(Context ctx, TypeMirror typeMirro, CtType elementCtType) {
         super(ctx, typeMirro);
         this.elementCtType = elementCtType;
     }
@@ -34,8 +33,7 @@ public class OptionalDoubleCtType extends AbstractCtType {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitOptionalDoubleCtType(this, p);
     }
 

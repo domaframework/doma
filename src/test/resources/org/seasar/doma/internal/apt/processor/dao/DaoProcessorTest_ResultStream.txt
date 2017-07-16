@@ -80,7 +80,7 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setResultStream(true);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<org.seasar.doma.internal.apt.processor.entity.Emp, java.util.stream.Stream<org.seasar.doma.internal.apt.processor.entity.Emp>>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal(), java.util.function.Function.identity()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal(), java.util.function.Function.identity()));
             java.util.stream.Stream<org.seasar.doma.internal.apt.processor.entity.Emp> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl", "selectByIdAndName", __result);
@@ -111,7 +111,7 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setResultStream(true);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<example.holder.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.HolderStreamHandler<java.lang.String, example.holder.PhoneNumber, java.util.stream.Stream<example.holder.PhoneNumber>>(example.holder._PhoneNumber.getSingletonInternal(), java.util.function.Function.identity()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<example.holder.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createScalar(), java.util.function.Function.identity()));
             java.util.stream.Stream<example.holder.PhoneNumber> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl", "selectById", __result);
@@ -141,7 +141,7 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setResultStream(true);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<java.lang.String, java.util.stream.Stream<java.lang.String>>(org.seasar.doma.wrapper.StringWrapper::new, java.util.function.Function.identity()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false), java.util.function.Function.identity()));
             java.util.stream.Stream<java.lang.String> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl", "select", __result);
@@ -172,7 +172,7 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setResultStream(true);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<java.util.stream.Stream<java.util.Map<java.lang.String, java.lang.Object>>>(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, java.util.function.Function.identity()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<>(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, java.util.function.Function.identity()));
             java.util.stream.Stream<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl", "selectByIdAsMap", __result);

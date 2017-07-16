@@ -76,7 +76,7 @@ public class CollectorOptionalParameterDaoImpl extends org.seasar.doma.internal.
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.OptionalHolderCollectorHandler<java.lang.String, example.holder.PhoneNumber, R>(example.holder._PhoneNumber.getSingletonInternal(), collector));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.ScalarCollectorHandler<>(() -> example.holder._PhoneNumber.getSingletonInternal().createOptionalScalar(), collector));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.CollectorOptionalParameterDaoImpl", "selectById", __result);
@@ -108,7 +108,7 @@ public class CollectorOptionalParameterDaoImpl extends org.seasar.doma.internal.
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalBasicCollectorHandler<java.lang.String, R>(org.seasar.doma.wrapper.StringWrapper::new, mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.ScalarCollectorHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), mapper));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.CollectorOptionalParameterDaoImpl", "select", __result);

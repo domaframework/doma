@@ -58,4 +58,7 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
     R visitConfigCtType(ConfigCtType ctType, P p) throws TH;
 
     R visitPreparedSqlCtType(PreparedSqlCtType ctType, P p) throws TH;
+
+    R visitScalarCtType(ScalarCtType ctType, P p) throws TH;
+
 }

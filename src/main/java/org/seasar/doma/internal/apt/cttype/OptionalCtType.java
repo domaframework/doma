@@ -23,8 +23,7 @@ public class OptionalCtType extends AbstractCtType {
 
     private final CtType elementCtType;
 
-    OptionalCtType(Context ctx, TypeMirror optionalType,
-            CtType elementCtType) {
+    OptionalCtType(Context ctx, TypeMirror optionalType, CtType elementCtType) {
         super(ctx, optionalType);
         this.elementCtType = elementCtType;
     }
@@ -34,8 +33,7 @@ public class OptionalCtType extends AbstractCtType {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitOptionalCtType(this, p);
     }
 

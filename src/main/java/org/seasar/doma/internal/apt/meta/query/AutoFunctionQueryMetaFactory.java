@@ -19,34 +19,18 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.HolderCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
+import org.seasar.doma.internal.apt.cttype.ScalarCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.parameter.BasicResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.EntityResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.HolderResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.HolderSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.MapResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalHolderSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.ResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarSingleResultParameterMeta;
 import org.seasar.doma.internal.apt.reflection.FunctionReflection;
 import org.seasar.doma.message.Message;
 
@@ -116,21 +100,9 @@ public class AutoFunctionQueryMetaFactory
         }
 
         @Override
-        public ResultParameterMeta visitBasicCtType(BasicCtType ctType, Boolean optional)
+        public ResultParameterMeta visitScalarCtType(ScalarCtType ctType, Boolean p)
                 throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalBasicSingleResultParameterMeta(ctType);
-            }
-            return new BasicSingleResultParameterMeta(ctType);
-        }
-
-        @Override
-        public ResultParameterMeta visitHolderCtType(HolderCtType ctType, Boolean optional)
-                throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalHolderSingleResultParameterMeta(ctType);
-            }
-            return new HolderSingleResultParameterMeta(ctType);
+            return new ScalarSingleResultParameterMeta(ctType, p);
         }
 
         @Override
@@ -147,24 +119,6 @@ public class AutoFunctionQueryMetaFactory
         public ResultParameterMeta visitOptionalCtType(OptionalCtType ctType, Boolean p)
                 throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
-        }
-
-        @Override
-        public ResultParameterMeta visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalIntSingleResultParameterMeta();
-        }
-
-        @Override
-        public ResultParameterMeta visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalLongSingleResultParameterMeta();
-        }
-
-        @Override
-        public ResultParameterMeta visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalDoubleSingleResultParameterMeta();
         }
 
     }
@@ -195,21 +149,9 @@ public class AutoFunctionQueryMetaFactory
         }
 
         @Override
-        public ResultParameterMeta visitBasicCtType(BasicCtType ctType, Boolean optional)
+        public ResultParameterMeta visitScalarCtType(ScalarCtType ctType, Boolean p)
                 throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalBasicResultListParameterMeta(ctType);
-            }
-            return new BasicResultListParameterMeta(ctType);
-        }
-
-        @Override
-        public ResultParameterMeta visitHolderCtType(HolderCtType ctType, Boolean optional)
-                throws RuntimeException {
-            if (Boolean.TRUE == optional) {
-                return new OptionalHolderResultListParameterMeta(ctType);
-            }
-            return new HolderResultListParameterMeta(ctType);
+            return new ScalarResultListParameterMeta(ctType, p);
         }
 
         @Override
@@ -232,24 +174,6 @@ public class AutoFunctionQueryMetaFactory
         public ResultParameterMeta visitOptionalCtType(OptionalCtType ctType, Boolean p)
                 throws RuntimeException {
             return ctType.getElementCtType().accept(this, true);
-        }
-
-        @Override
-        public ResultParameterMeta visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalIntResultListParameterMeta();
-        }
-
-        @Override
-        public ResultParameterMeta visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalLongResultListParameterMeta();
-        }
-
-        @Override
-        public ResultParameterMeta visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Boolean p)
-                throws RuntimeException {
-            return new OptionalDoubleResultListParameterMeta();
         }
 
     }

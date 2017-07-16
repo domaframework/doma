@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
-import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.jdbc.JdbcException;
@@ -47,8 +48,7 @@ import org.seasar.doma.wrapper.LongWrapper;
  * @author nakamura-to
  *
  */
-public abstract class AbstractSelectQuery extends AbstractQuery implements
-        SelectQuery {
+public abstract class AbstractSelectQuery extends AbstractQuery implements SelectQuery {
 
     protected final Map<String, Value> parameters = new HashMap<String, Value>();
 
@@ -100,20 +100,20 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
     protected void buildSql(
             BiFunction<ExpressionEvaluator, Function<ExpandNode, List<String>>, PreparedSql> sqlBuilder) {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions(),
-                config.getClassHelper());
+                config.getDialect().getExpressionFunctions(), config.getClassHelper());
         sql = sqlBuilder.apply(evaluator, this::expandColumns);
     }
 
     protected List<String> expandColumns(ExpandNode node) {
         if (entityDesc == null) {
             SqlLocation location = node.getLocation();
-            throw new JdbcException(Message.DOMA2144, location.getSql(),
-                    location.getLineNumber(), location.getPosition());
+            throw new JdbcException(Message.DOMA2144, location.getSql(), location.getLineNumber(),
+                    location.getPosition());
         }
         Naming naming = config.getNaming();
         Dialect dialect = config.getDialect();
-        return entityDesc.getEntityPropertyDescs().stream()
+        return entityDesc.getEntityPropertyDescs()
+                .stream()
                 .map(p -> p.getColumnName(naming::apply, dialect::applyQuote))
                 .collect(Collectors.toList());
     }
@@ -134,8 +134,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements
         query.addParameters(parameters);
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
-                new BasicSingleResultHandler<Long>(() -> new LongWrapper(),
-                        true));
+                new ScalarSingleResultHandler<>(() -> new BasicScalar<>(new LongWrapper(), true)));
         long count = command.execute();
         query.complete();
         SelectOptionsAccessor.setCountSize(options, count);

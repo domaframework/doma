@@ -78,7 +78,7 @@ public class ParameterizedHolderResultDaoImpl extends org.seasar.doma.internal.j
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.HolderSingleResultHandler<java.lang.Integer, org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal().createScalar()));
             org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ParameterizedHolderResultDaoImpl", "selectSingleResult", __result);
@@ -107,7 +107,7 @@ public class ParameterizedHolderResultDaoImpl extends org.seasar.doma.internal.j
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalHolderSingleResultHandler<java.lang.Integer, org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal().createOptionalScalar()));
             java.util.Optional<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ParameterizedHolderResultDaoImpl", "selectOptionalSingleResult", __result);
@@ -136,7 +136,7 @@ public class ParameterizedHolderResultDaoImpl extends org.seasar.doma.internal.j
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.HolderResultListHandler<java.lang.Integer, org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.ScalarResultListHandler<>(() -> org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal().createScalar()));
             java.util.List<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ParameterizedHolderResultDaoImpl", "selectResultList", __result);
@@ -165,7 +165,7 @@ public class ParameterizedHolderResultDaoImpl extends org.seasar.doma.internal.j
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalHolderResultListHandler<java.lang.Integer, org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>(org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.ScalarResultListHandler<>(() -> org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal().createOptionalScalar()));
             java.util.List<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>>> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ParameterizedHolderResultDaoImpl", "selectOptionalResultList", __result);
@@ -197,7 +197,7 @@ public class ParameterizedHolderResultDaoImpl extends org.seasar.doma.internal.j
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.HolderStreamHandler<java.lang.Integer, org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String>, R>(org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal(), callback));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.ScalarStreamHandler<>(() -> org.seasar.doma.internal.apt.processor.dao._Height.<java.lang.String>getSingletonInternal().createScalar(), callback));
             R __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ParameterizedHolderResultDaoImpl", "stream", __result);

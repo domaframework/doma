@@ -17,35 +17,42 @@ package org.seasar.doma.internal.apt.meta.parameter;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.ScalarCtType;
 
 /**
  * @author taedium
  * 
  */
-public class OptionalBasicListParameterMeta implements CallableSqlParameterMeta {
+public class ScalarInParameterMeta implements CallableSqlParameterMeta {
 
     private final String name;
 
-    private final BasicCtType basicCtType;
+    private final ScalarCtType scalarCtType;
 
-    public OptionalBasicListParameterMeta(String name, BasicCtType basicCtType) {
-        assertNotNull(name, basicCtType);
+    private final boolean optional;
+
+    public ScalarInParameterMeta(String name, ScalarCtType scalarCtType, boolean optional) {
+        assertNotNull(name, scalarCtType);
         this.name = name;
-        this.basicCtType = basicCtType;
+        this.scalarCtType = scalarCtType;
+        this.optional = optional;
     }
 
     public String getName() {
         return name;
     }
 
-    public BasicCtType getBasicCtType() {
-        return basicCtType;
+    public ScalarCtType getScalarCtType() {
+        return scalarCtType;
+    }
+
+    public boolean isOptional() {
+        return optional;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitOptionalBasicListParameterMeta(this, p);
+        return visitor.visitScalarInParameterMeta(this, p);
     }
 
 }

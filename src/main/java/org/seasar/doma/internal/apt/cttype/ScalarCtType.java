@@ -13,24 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.cttype;
 
-import java.util.function.Supplier;
+import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.jdbc.Reference;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.apt.Context;
 
-/**
- * @author taedium
- * 
- */
-public class BasicInOutParameter<BASIC> extends
-        ScalarInOutParameter<BASIC, BASIC> {
+public abstract class ScalarCtType extends AbstractCtType {
 
-    public BasicInOutParameter(Supplier<Wrapper<BASIC>> supplier,
-            Reference<BASIC> reference) {
-        super(new BasicScalar<BASIC>(supplier, false), reference);
+    ScalarCtType(Context ctx, TypeMirror type) {
+        super(ctx, type);
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitScalarCtType(this, p);
     }
 
 }

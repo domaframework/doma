@@ -59,7 +59,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
         iprint("/** */%n");
         printGenerated();
         iprint("public final class %1$s implements %2$s<%3$s> {%n",
-                // @formatter:off
+        // @formatter:off
                 /* 1 */codeSpec.getSimpleName(),
                 /* 2 */EmbeddableDesc.class.getName(),
                 /* 3 */embeddableMeta.getEmbeddableElement().getQualifiedName());
@@ -99,18 +99,17 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
                 .iterator(); it.hasNext();) {
             EmbeddablePropertyMeta pm = it.next();
             iprint("        new %1$s<ENTITY, %2$s, %3$s>(entityClass, %4$s, "
-                    + "embeddedPropertyName + \".%6$s\", \"%7$s\", namingType, %8$s, %9$s, %10$s)",
-                    // @formatter:off
+                    + "embeddedPropertyName + \".%5$s\", \"%6$s\", namingType, %7$s, %8$s, %9$s)",
+            // @formatter:off
                     /* 1 */DefaultPropertyDesc.class.getName(),
                     /* 2 */pm.getCtType().accept(new BasicTypeArgCodeBuilder(), null),
                     /* 3 */pm.getCtType().accept(new ContainerTypeArgCodeBuilder(), false),
-                    /* 4 */pm.getCtType().accept(new ScalarSuplierCodeBuilder(), false),
-                    /* 5 */null,
-                    /* 6 */pm.getName(),
-                    /* 7 */pm.getColumnName(),
-                    /* 8 */pm.isColumnInsertable(),
-                    /* 9 */pm.isColumnUpdatable(),
-                    /* 10 */pm.isColumnQuoteRequired());
+                    /* 4 */pm.getCtType().accept(new ScalarSupplierCodeBuilder(), false),
+                    /* 5 */pm.getName(),
+                    /* 6 */pm.getColumnName(),
+                    /* 7 */pm.isColumnInsertable(),
+                    /* 8 */pm.isColumnUpdatable(),
+                    /* 9 */pm.isColumnQuoteRequired());
                     // @formatter:on
             print(it.hasNext() ? ",%n" : "");
         }
@@ -134,7 +133,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
                 EmbeddablePropertyMeta propertyMeta = it.next();
                 iprint("        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") != null "
                         + "? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
-                        // @formatter:off
+                // @formatter:off
                         /* 1 */box(propertyMeta.getTypeName()),
                         /* 2 */propertyMeta.getName());
                         // @formatter:on

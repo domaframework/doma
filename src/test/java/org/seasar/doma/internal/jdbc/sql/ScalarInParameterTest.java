@@ -36,8 +36,7 @@ public class ScalarInParameterTest extends TestCase {
                 .getHolderDesc(PhoneNumber.class, new ClassHelper() {
                 });
         Scalar<String, PhoneNumber> scalar = holderDesc.createScalar();
-        ScalarInParameter<String, PhoneNumber> parameter = new ScalarInParameter<>(
-                scalar);
+        ScalarInParameter<String, PhoneNumber> parameter = new ScalarInParameter<>(() -> scalar);
         Optional<Class<?>> optional = parameter.getHolderClass();
         assertEquals(PhoneNumber.class, optional.get());
     }
@@ -46,10 +45,9 @@ public class ScalarInParameterTest extends TestCase {
         HolderDesc<String, PhoneNumber> holderDesc = HolderDescFactory
                 .getHolderDesc(PhoneNumber.class, new ClassHelper() {
                 });
-        Scalar<String, Optional<PhoneNumber>> scalar = holderDesc
-                .createOptionalScalar();
+        Scalar<String, Optional<PhoneNumber>> scalar = holderDesc.createOptionalScalar();
         ScalarInParameter<String, Optional<PhoneNumber>> parameter = new ScalarInParameter<>(
-                scalar);
+                () -> scalar);
         Optional<Class<?>> optional = parameter.getHolderClass();
         assertEquals(PhoneNumber.class, optional.get());
     }
