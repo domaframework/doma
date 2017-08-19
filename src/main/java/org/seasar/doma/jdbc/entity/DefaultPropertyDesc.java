@@ -49,6 +49,8 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
     /** エンティティのクラス */
     protected final Class<ENTITY> entityClass;
 
+    protected final Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier;
+
     /** プロパティの名前 */
     protected final String name;
 
@@ -72,9 +74,6 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
 
     /** プロパティのフィールド */
     protected final PropertyField<ENTITY> field;
-
-    /** アクセサのサプライヤ */
-    protected final Supplier<Property<ENTITY, BASIC>> propertySupplier;
 
     /**
      * インスタンスを構築します。
@@ -112,6 +111,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
             throw new DomaNullPointerException("columnName");
         }
         this.entityClass = entityClass;
+        this.scalarSupplier = scalarSupplier;
         this.name = name;
         int pos = name.lastIndexOf('.');
         this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
@@ -121,12 +121,11 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
         this.updatable = updatable;
         this.quoteRequired = quoteRequired;
         this.field = new PropertyField<>(name, entityClass);
-        this.propertySupplier = () -> new DefaultProperty(scalarSupplier.get());
     }
 
     @Override
     public Property<ENTITY, BASIC> createProperty() {
-        return propertySupplier.get();
+        return new DefaultProperty();
     }
 
     @Override
@@ -234,8 +233,8 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
 
         protected final Scalar<BASIC, CONTAINER> scalar;
 
-        protected DefaultProperty(Scalar<BASIC, CONTAINER> scalar) {
-            this.scalar = scalar;
+        protected DefaultProperty() {
+            this.scalar = scalarSupplier.get();
         }
 
         @Override
