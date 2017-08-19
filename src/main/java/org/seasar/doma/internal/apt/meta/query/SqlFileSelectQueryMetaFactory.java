@@ -20,7 +20,6 @@ import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.SelectType;
-import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
@@ -40,6 +39,7 @@ import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.reflection.SelectReflection;
+import org.seasar.doma.internal.apt.reflection.SuppressReflection;
 import org.seasar.doma.message.Message;
 
 /**
@@ -402,12 +402,13 @@ public class SqlFileSelectQueryMetaFactory
 
         private QueryReturnMeta returnMeta;
 
-        private Suppress suppress;
+        private SuppressReflection suppressReflection;
 
         public ReturnCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
             this.queryMeta = queryMeta;
             this.returnMeta = returnMeta;
-            this.suppress = queryMeta.getMethodElement().getAnnotation(Suppress.class);
+            this.suppressReflection = ctx.getReflections()
+                    .newSuppressReflection(queryMeta.getMethodElement());
         }
 
         @Override
@@ -489,12 +490,8 @@ public class SqlFileSelectQueryMetaFactory
         }
 
         private boolean isSuppressed(Message message) {
-            if (suppress != null) {
-                for (Message suppressMessage : suppress.messages()) {
-                    if (suppressMessage == message) {
-                        return true;
-                    }
-                }
+            if (suppressReflection != null) {
+                return suppressReflection.isSuppressed(message);
             }
             return false;
         }

@@ -42,7 +42,6 @@ import javax.tools.FileObject;
 
 import org.seasar.doma.DaoMethod;
 import org.seasar.doma.SingletonConfig;
-import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -67,6 +66,7 @@ import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMetaFactory;
 import org.seasar.doma.internal.apt.reflection.AnnotateWithReflection;
 import org.seasar.doma.internal.apt.reflection.DaoReflection;
+import org.seasar.doma.internal.apt.reflection.SuppressReflection;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -85,6 +85,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     private final DaoReflection daoReflection;
 
+    private final SuppressReflection suppressReflection;
+
     private boolean error;
 
     public DaoMetaFactory(Context ctx, TypeElement interfaceElement) {
@@ -95,6 +97,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         if (daoReflection == null) {
             throw new AptIllegalStateException("daoReflection");
         }
+        suppressReflection = ctx.getReflections().newSuppressReflection(interfaceElement);
     }
 
     @Override
@@ -333,11 +336,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 fileNames.remove(fileName);
             }
         }
-        Suppress suppress = daoElement.getAnnotation(Suppress.class);
-        Message message = Message.DOMA4220;
-        if (!isSuppressed(suppress, message)) {
+        if (!isSuppressed(Message.DOMA4220)) {
             for (String fileName : fileNames) {
-                ctx.getNotifier().send(Kind.WARNING, message, daoElement,
+                ctx.getNotifier().send(Kind.WARNING, Message.DOMA4220, daoElement,
                         new Object[] { dirPath + "/" + fileName });
             }
         }
@@ -385,13 +386,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         }
     }
 
-    private boolean isSuppressed(Suppress suppress, Message message) {
-        if (suppress != null) {
-            for (Message suppressMessage : suppress.messages()) {
-                if (suppressMessage == message) {
-                    return true;
-                }
-            }
+    private boolean isSuppressed(Message message) {
+        if (suppressReflection != null) {
+            return suppressReflection.isSuppressed(message);
         }
         return false;
     }

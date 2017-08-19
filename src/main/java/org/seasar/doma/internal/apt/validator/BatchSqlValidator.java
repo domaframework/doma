@@ -21,8 +21,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.reflection.SuppressReflection;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
@@ -40,21 +40,19 @@ public class BatchSqlValidator extends SqlValidator {
 
     private boolean forWarningNotified;
 
-    private Suppress suppress;
+    private SuppressReflection suppressReflection;
 
     public BatchSqlValidator(Context ctx, ExecutableElement methodElement,
-            LinkedHashMap<String, TypeMirror> parameterTypeMap, String path,
-            boolean expandable, boolean populatable) {
-        super(ctx, methodElement, parameterTypeMap, path, expandable,
-                populatable);
-        suppress = methodElement.getAnnotation(Suppress.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap, String path, boolean expandable,
+            boolean populatable) {
+        super(ctx, methodElement, parameterTypeMap, path, expandable, populatable);
+        suppressReflection = ctx.getReflections().newSuppressReflection(methodElement);
     }
 
     @Override
     public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
         if (!isSuppressed(Message.DOMA4181) && !embeddedVariableWarningNotified) {
-            ctx.getNotifier().send(Kind.WARNING, Message.DOMA4181,
-                    methodElement,
+            ctx.getNotifier().send(Kind.WARNING, Message.DOMA4181, methodElement,
                     new Object[] { path });
             embeddedVariableWarningNotified = true;
         }
@@ -64,8 +62,7 @@ public class BatchSqlValidator extends SqlValidator {
     @Override
     public Void visitIfNode(IfNode node, Void p) {
         if (!isSuppressed(Message.DOMA4182) && !ifWarningNotified) {
-            ctx.getNotifier().send(Kind.WARNING, Message.DOMA4182,
-                    methodElement,
+            ctx.getNotifier().send(Kind.WARNING, Message.DOMA4182, methodElement,
                     new Object[] { path });
             ifWarningNotified = true;
         }
@@ -75,8 +72,7 @@ public class BatchSqlValidator extends SqlValidator {
     @Override
     public Void visitForNode(ForNode node, Void p) {
         if (!isSuppressed(Message.DOMA4183) && !forWarningNotified) {
-            ctx.getNotifier().send(Kind.WARNING, Message.DOMA4183,
-                    methodElement,
+            ctx.getNotifier().send(Kind.WARNING, Message.DOMA4183, methodElement,
                     new Object[] { path });
             forWarningNotified = true;
         }
@@ -84,12 +80,8 @@ public class BatchSqlValidator extends SqlValidator {
     }
 
     private boolean isSuppressed(Message message) {
-        if (suppress != null) {
-            for (Message suppressMessage : suppress.messages()) {
-                if (suppressMessage == message) {
-                    return true;
-                }
-            }
+        if (suppressReflection != null) {
+            return suppressReflection.isSuppressed(message);
         }
         return false;
     }
