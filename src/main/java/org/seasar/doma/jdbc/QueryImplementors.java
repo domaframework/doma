@@ -68,18 +68,18 @@ public interface QueryImplementors {
     }
 
     default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(
-            Method method, EntityDesc<ENTITY> entityType) {
-        return new AutoDeleteQuery<>(entityType);
+            Method method, EntityDesc<ENTITY> entityDesc) {
+        return new AutoDeleteQuery<>(entityDesc);
     }
 
     default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
-            Method method, EntityDesc<ENTITY> entityType) {
-        return new AutoInsertQuery<>(entityType);
+            Method method, EntityDesc<ENTITY> entityDesc) {
+        return new AutoInsertQuery<>(entityDesc);
     }
 
     default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
-            Method method, EntityDesc<ENTITY> entityType) {
-        return new AutoUpdateQuery<>(entityType);
+            Method method, EntityDesc<ENTITY> entityDesc) {
+        return new AutoUpdateQuery<>(entityDesc);
     }
 
     default SqlFileDeleteQuery createSqlFileDeleteQuery(Method method) {
@@ -107,18 +107,18 @@ public interface QueryImplementors {
     }
 
     default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
-            Method method, EntityDesc<ENTITY> entityType) {
-        return new AutoBatchDeleteQuery<>(entityType);
+            Method method, EntityDesc<ENTITY> entityDesc) {
+        return new AutoBatchDeleteQuery<>(entityDesc);
     }
 
     default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
-            Method method, EntityDesc<ENTITY> entityType) {
-        return new AutoBatchInsertQuery<>(entityType);
+            Method method, EntityDesc<ENTITY> entityDesc) {
+        return new AutoBatchInsertQuery<>(entityDesc);
     }
 
     default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
-            Method method, EntityDesc<ENTITY> entityType) {
-        return new AutoBatchUpdateQuery<>(entityType);
+            Method method, EntityDesc<ENTITY> entityDesc) {
+        return new AutoBatchUpdateQuery<>(entityDesc);
     }
 
     default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(

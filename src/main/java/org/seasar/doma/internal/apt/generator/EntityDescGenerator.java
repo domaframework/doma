@@ -185,7 +185,7 @@ public class EntityDescGenerator extends AbstractGenerator {
     private Object[] createPropertyFormatArgs(EntityPropertyMeta pm) {
 
         class Args {
-            String _1_propertyTypeClass;
+            String _1_propertyDescClass;
             String _2_ENTITY;
             String _3_BASIC;
             String _4_CONTAINER;
@@ -199,7 +199,7 @@ public class EntityDescGenerator extends AbstractGenerator {
             boolean _12_updatable;
 
             Object[] toArray() {
-                return new Object[] { _1_propertyTypeClass, _2_ENTITY, _3_BASIC, _4_CONTAINER,
+                return new Object[] { _1_propertyDescClass, _2_ENTITY, _3_BASIC, _4_CONTAINER,
                         _5_fieldName, _6_entityClass, _7_scalarSupplier, _8_name, _9_columnName,
                         _10_quoteRequired, _11_insertable, _12_updatable };
             }
@@ -208,14 +208,14 @@ public class EntityDescGenerator extends AbstractGenerator {
         Args args = new Args();
         if (pm.isId()) {
             if (pm.getIdGeneratorMeta() != null) {
-                args._1_propertyTypeClass = GeneratedIdPropertyDesc.class.getName();
+                args._1_propertyDescClass = GeneratedIdPropertyDesc.class.getName();
             } else {
-                args._1_propertyTypeClass = AssignedIdPropertyDesc.class.getName();
+                args._1_propertyDescClass = AssignedIdPropertyDesc.class.getName();
             }
         } else if (pm.isVersion()) {
-            args._1_propertyTypeClass = VersionPropertyDesc.class.getName();
+            args._1_propertyDescClass = VersionPropertyDesc.class.getName();
         } else {
-            args._1_propertyTypeClass = DefaultPropertyDesc.class.getName();
+            args._1_propertyDescClass = DefaultPropertyDesc.class.getName();
         }
         args._2_ENTITY = entityMeta.getEntityTypeName();
         args._3_BASIC = pm.getCtType().accept(new BasicTypeArgCodeBuilder(), null);

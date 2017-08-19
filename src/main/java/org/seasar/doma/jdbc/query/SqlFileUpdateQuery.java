@@ -59,7 +59,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         preUpdate();
         prepareOptimisticLock();
         prepareOptions();
-        prepareTargetPropertyTypes();
+        prepareTargetPropertyDescs();
         prepareExecutable();
         prepareSql();
         assertNotNull(sql);
@@ -77,14 +77,14 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
     }
 
-    protected void prepareTargetPropertyTypes() {
+    protected void prepareTargetPropertyDescs() {
         if (entityHandler != null) {
-            entityHandler.prepareTargetPropertyTypes();
+            entityHandler.prepareTargetPropertyDescs();
         }
     }
 
     protected void prepareExecutable() {
-        if (entityHandler == null || entityHandler.hasTargetPropertyTypes()) {
+        if (entityHandler == null || entityHandler.hasTargetPropertyDescs()) {
             executable = true;
             sqlExecutionSkipCause = null;
         }
@@ -112,7 +112,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     }
 
     @SuppressWarnings("unchecked")
-    public <E> E getEntity(Class<E> entityType) {
+    public <E> E getEntity(Class<E> entityDesc) {
         if (entityHandler != null) {
             return (E) entityHandler.entity;
         }
@@ -127,9 +127,9 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void setEntityAndEntityType(String name, E entity,
-            EntityDesc<E> entityType) {
-        entityHandler = new EntityHandler<E>(name, entity, entityType);
+    public <E> void setEntityAndEntityDesc(String name, E entity,
+            EntityDesc<E> entityDesc) {
+        entityHandler = new EntityHandler<E>(name, entity, entityDesc);
     }
 
     public void setNullExcluded(boolean nullExcluded) {
@@ -159,16 +159,16 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected VersionPropertyDesc<E, ?, ?> versionPropertyDesc;
 
-        protected List<EntityPropertyDesc<E, ?>> targetPropertyTypes;
+        protected List<EntityPropertyDesc<E, ?>> targetPropertyDescs;
 
         protected UpdateQueryHelper<E> helper;
 
-        protected EntityHandler(String name, E entity, EntityDesc<E> entityType) {
-            assertNotNull(name, entity, entityType);
+        protected EntityHandler(String name, E entity, EntityDesc<E> entityDesc) {
+            assertNotNull(name, entity, entityDesc);
             this.name = name;
             this.entity = entity;
-            this.entityDesc = entityType;
-            this.versionPropertyDesc = entityType.getVersionPropertyDesc();
+            this.entityDesc = entityDesc;
+            this.versionPropertyDesc = entityDesc.getVersionPropertyDesc();
         }
 
         protected void init() {
@@ -189,13 +189,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         }
 
-        protected void prepareTargetPropertyTypes() {
-            targetPropertyTypes = helper.getTargetPropertyTypes(entity);
+        protected void prepareTargetPropertyDescs() {
+            targetPropertyDescs = helper.getTargetPropertyDescs(entity);
         }
 
-        protected boolean hasTargetPropertyTypes() {
-            return targetPropertyTypes != null
-                    && !targetPropertyTypes.isEmpty();
+        protected boolean hasTargetPropertyDescs() {
+            return targetPropertyDescs != null
+                    && !targetPropertyDescs.isEmpty();
         }
 
         protected void postUpdate() {
@@ -223,7 +223,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void populateValues(SqlContext context) {
-            helper.populateValues(entity, targetPropertyTypes,
+            helper.populateValues(entity, targetPropertyDescs,
                     versionPropertyDesc, context);
         }
 
@@ -232,9 +232,9 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePreUpdateContext<E> extends
             AbstractPreUpdateContext<E> {
 
-        public SqlFilePreUpdateContext(EntityDesc<E> entityType, Method method,
+        public SqlFilePreUpdateContext(EntityDesc<E> entityDesc, Method method,
                 Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
 
         @Override
@@ -252,9 +252,9 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePostUpdateContext<E> extends
             AbstractPostUpdateContext<E> {
 
-        public SqlFilePostUpdateContext(EntityDesc<E> entityType,
+        public SqlFilePostUpdateContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
 
         @Override

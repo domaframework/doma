@@ -50,7 +50,7 @@ public abstract class AbstractEntityListenerContext<E> {
         return entityDesc.getEntityPropertyDesc(propertyName) != null;
     }
 
-    public EntityDesc<E> getEntityType() {
+    public EntityDesc<E> getEntityDesc() {
         return entityDesc;
     }
 

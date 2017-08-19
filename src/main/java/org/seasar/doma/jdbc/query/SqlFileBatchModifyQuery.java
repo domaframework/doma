@@ -165,7 +165,7 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
-    public abstract void setEntityType(EntityDesc<ELEMENT> entityType);
+    public abstract void setEntityDesc(EntityDesc<ELEMENT> entityDesc);
 
     @Override
     public PreparedSql getSql() {

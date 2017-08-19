@@ -50,7 +50,7 @@ public interface PostUpdateContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityDesc<E> getEntityType();
+    public EntityDesc<E> getEntityDesc();
 
     /**
      * {@link Update} が注釈されたメソッドを返します。
@@ -79,7 +79,7 @@ public interface PostUpdateContext<E> {
     /**
      * 新しいエンティティを設定します。
      * <p>
-     * このメソッドは、 {@link PostUpdateContext#getEntityType()}
+     * このメソッドは、 {@link PostUpdateContext#getEntityDesc()}
      * に対応するエンティティがイミュータブルである場合にのみ利用してください。
      * 
      * @param newEntity

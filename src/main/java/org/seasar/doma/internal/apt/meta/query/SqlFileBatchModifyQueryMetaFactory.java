@@ -85,7 +85,7 @@ public class SqlFileBatchModifyQueryMetaFactory
     @Override
     protected void doReturnType(SqlFileBatchModifyQueryMeta queryMeta) {
         QueryReturnMeta returnMeta = createReturnMeta();
-        EntityCtType entityCtType = queryMeta.getEntityType();
+        EntityCtType entityCtType = queryMeta.getEntityCtType();
         if (entityCtType != null && entityCtType.isImmutable()) {
             if (!returnMeta.isBatchResult(entityCtType)) {
                 throw new AptException(Message.DOMA4223, returnMeta.getMethodElement());
@@ -129,7 +129,7 @@ public class SqlFileBatchModifyQueryMetaFactory
 
             @Override
             public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
-                queryMeta.setEntityType(ctType);
+                queryMeta.setEntityCtType(ctType);
                 return null;
             }
 

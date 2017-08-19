@@ -56,8 +56,8 @@ public class EntityProviderTest extends TestCase {
         resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100));
         resultSet.next();
 
-        _Emp entityType = _Emp.getSingletonInternal();
-        EntityProvider<Emp> provider = new EntityProvider<>(entityType,
+        _Emp entityDesc = _Emp.getSingletonInternal();
+        EntityProvider<Emp> provider = new EntityProvider<>(entityDesc,
                 new MySelectQuery(new MockConfig()), false);
         Emp emp = provider.get(resultSet);
 
@@ -79,8 +79,8 @@ public class EntityProviderTest extends TestCase {
                 .add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
         resultSet.next();
 
-        _Emp entityType = _Emp.getSingletonInternal();
-        EntityProvider<Emp> provider = new EntityProvider<>(entityType,
+        _Emp entityDesc = _Emp.getSingletonInternal();
+        EntityProvider<Emp> provider = new EntityProvider<>(entityDesc,
                 new MySelectQuery(new MockConfig()), false);
         try {
             provider.get(resultSet);
@@ -101,8 +101,8 @@ public class EntityProviderTest extends TestCase {
                 .add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
         resultSet.next();
 
-        _Emp entityType = _Emp.getSingletonInternal();
-        EntityProvider<Emp> provider = new EntityProvider<>(entityType,
+        _Emp entityDesc = _Emp.getSingletonInternal();
+        EntityProvider<Emp> provider = new EntityProvider<>(entityDesc,
                 new MySelectQuery(new EmptyUnknownColumnHandlerConfig()), false);
         Emp emp = provider.get(resultSet);
 
@@ -210,7 +210,7 @@ public class EntityProviderTest extends TestCase {
     protected static class EmptyUnknownColumnHandler implements
             UnknownColumnHandler {
         @Override
-        public void handle(Query query, EntityDesc<?> entityType,
+        public void handle(Query query, EntityDesc<?> entityDesc,
                 String unknownColumnName) {
         }
     }

@@ -28,8 +28,8 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 public class AbstractPreDeleteContext<E> extends
         AbstractEntityListenerContext<E> implements PreDeleteContext<E> {
 
-    protected AbstractPreDeleteContext(EntityDesc<E> entityType, Method method,
+    protected AbstractPreDeleteContext(EntityDesc<E> entityDesc, Method method,
             Config config) {
-        super(entityType, method, config);
+        super(entityDesc, method, config);
     }
 }

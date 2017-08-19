@@ -34,8 +34,8 @@ import junit.framework.TestCase;
 public class EntityDescTest extends TestCase {
 
     public void test() throws Exception {
-        EntityDesc<Emp> entityType = _Emp.getSingletonInternal();
-        entityType.getName();
+        EntityDesc<Emp> entityDesc = _Emp.getSingletonInternal();
+        entityDesc.getName();
     }
 
     public void testImmutable_newEntity() throws Exception {

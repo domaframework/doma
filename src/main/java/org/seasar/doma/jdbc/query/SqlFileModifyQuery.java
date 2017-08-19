@@ -149,8 +149,8 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements
         return sqlLogType;
     }
 
-    public abstract <E> void setEntityAndEntityType(String name, E entity,
-            EntityDesc<E> entityType);
+    public abstract <E> void setEntityAndEntityDesc(String name, E entity,
+            EntityDesc<E> entityDesc);
 
     @Override
     public String toString() {

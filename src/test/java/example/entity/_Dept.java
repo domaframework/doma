@@ -65,24 +65,24 @@ public class _Dept extends AbstractEntityDesc<Dept> {
 
     private final String __tableName = "";
 
-    private final List<EntityPropertyDesc<Dept, ?>> __idPropertyTypes;
+    private final List<EntityPropertyDesc<Dept, ?>> __idPropertyDescs;
 
-    private final List<EntityPropertyDesc<Dept, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyDesc<Dept, ?>> __entityPropertyDescs;
 
-    private final Map<String, EntityPropertyDesc<Dept, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyDesc<Dept, ?>> __entityPropertyDescMap;
 
     private _Dept() {
         List<EntityPropertyDesc<Dept, ?>> __idList = new ArrayList<>();
         __idList.add(id);
-        __idPropertyTypes = Collections.unmodifiableList(__idList);
+        __idPropertyDescs = Collections.unmodifiableList(__idList);
         List<EntityPropertyDesc<Dept, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
-        __entityPropertyTypes = Collections.unmodifiableList(__list);
+        __entityPropertyDescs = Collections.unmodifiableList(__list);
         Map<String, EntityPropertyDesc<Dept, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
-        __entityPropertyTypeMap = Collections.unmodifiableMap(__map);
+        __entityPropertyDescMap = Collections.unmodifiableMap(__map);
     }
 
     @Override
@@ -109,12 +109,12 @@ public class _Dept extends AbstractEntityDesc<Dept> {
 
     @Override
     public List<EntityPropertyDesc<Dept, ?>> getEntityPropertyDescs() {
-        return __entityPropertyTypes;
+        return __entityPropertyDescs;
     }
 
     @Override
     public EntityPropertyDesc<Dept, ?> getEntityPropertyDesc(String propertyName) {
-        return __entityPropertyTypeMap.get(propertyName);
+        return __entityPropertyDescMap.get(propertyName);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class _Dept extends AbstractEntityDesc<Dept> {
 
     @Override
     public List<EntityPropertyDesc<Dept, ?>> getIdPropertyDescs() {
-        return __idPropertyTypes;
+        return __idPropertyDescs;
     }
 
     @Override

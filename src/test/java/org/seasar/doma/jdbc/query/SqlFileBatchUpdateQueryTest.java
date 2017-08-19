@@ -147,7 +147,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setSqlLogType(SqlLogType.FORMATTED);
-        query.setEntityType(_Emp.getSingletonInternal());
+        query.setEntityDesc(_Emp.getSingletonInternal());
         query.prepare();
 
         assertEquals(2, query.getSqls().size());
@@ -179,7 +179,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setSqlLogType(SqlLogType.FORMATTED);
-        query.setEntityType(_Emp.getSingletonInternal());
+        query.setEntityDesc(_Emp.getSingletonInternal());
         query.setIncludedPropertyNames("name");
         query.prepare();
 
@@ -211,7 +211,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setSqlLogType(SqlLogType.FORMATTED);
-        query.setEntityType(_Emp.getSingletonInternal());
+        query.setEntityDesc(_Emp.getSingletonInternal());
         query.setExcludedPropertyNames("name");
         query.prepare();
 
@@ -243,7 +243,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setSqlLogType(SqlLogType.FORMATTED);
-        query.setEntityType(_Emp.getSingletonInternal());
+        query.setEntityDesc(_Emp.getSingletonInternal());
         query.setVersionIgnored(true);
         query.prepare();
 

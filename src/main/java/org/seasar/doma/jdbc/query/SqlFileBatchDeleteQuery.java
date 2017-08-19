@@ -96,8 +96,8 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
     }
 
     @Override
-    public void setEntityType(EntityDesc<ELEMENT> entityType) {
-        entityHandler = new EntityHandler(entityType);
+    public void setEntityDesc(EntityDesc<ELEMENT> entityDesc) {
+        entityHandler = new EntityHandler(entityDesc);
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
@@ -115,10 +115,10 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
 
         protected VersionPropertyDesc<ELEMENT, ?, ?> versionPropertyDesc;
 
-        protected EntityHandler(EntityDesc<ELEMENT> entityType) {
-            assertNotNull(entityType);
-            this.entityDesc = entityType;
-            this.versionPropertyDesc = entityType.getVersionPropertyDesc();
+        protected EntityHandler(EntityDesc<ELEMENT> entityDesc) {
+            assertNotNull(entityDesc);
+            this.entityDesc = entityDesc;
+            this.versionPropertyDesc = entityDesc.getVersionPropertyDesc();
         }
 
         protected void preDelete() {
@@ -151,18 +151,18 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
     protected static class SqlFileBatchPreDeleteContext<E> extends
             AbstractPreDeleteContext<E> {
 
-        public SqlFileBatchPreDeleteContext(EntityDesc<E> entityType,
+        public SqlFileBatchPreDeleteContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 
     protected static class SqlFileBatchPostDeleteContext<E> extends
             AbstractPostDeleteContext<E> {
 
-        public SqlFileBatchPostDeleteContext(EntityDesc<E> entityType,
+        public SqlFileBatchPostDeleteContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 }

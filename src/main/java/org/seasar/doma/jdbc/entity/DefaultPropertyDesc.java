@@ -201,18 +201,18 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
     protected <VALUE> ENTITY modifyIfNecessary(EntityDesc<ENTITY> entityDesc, ENTITY entity,
             WrapperVisitor<Boolean, VALUE, Void, RuntimeException> visitor, VALUE value) {
         if (entityDesc.isImmutable()) {
-            List<EntityPropertyDesc<ENTITY, ?>> propertyTypes = entityDesc.getEntityPropertyDescs();
-            Map<String, Property<ENTITY, ?>> args = new HashMap<>(propertyTypes.size());
-            for (EntityPropertyDesc<ENTITY, ?> propertyType : propertyTypes) {
-                Property<ENTITY, ?> property = propertyType.createProperty();
+            List<EntityPropertyDesc<ENTITY, ?>> propertyDescs = entityDesc.getEntityPropertyDescs();
+            Map<String, Property<ENTITY, ?>> args = new HashMap<>(propertyDescs.size());
+            for (EntityPropertyDesc<ENTITY, ?> propertyDesc : propertyDescs) {
+                Property<ENTITY, ?> property = propertyDesc.createProperty();
                 property.load(entity);
-                if (propertyType == this) {
+                if (propertyDesc == this) {
                     Boolean modified = property.getWrapper().accept(visitor, value, null);
                     if (modified == Boolean.FALSE) {
                         return entity;
                     }
                 }
-                args.put(propertyType.getName(), property);
+                args.put(propertyDesc.getName(), property);
             }
             return entityDesc.newEntity(args);
         } else {

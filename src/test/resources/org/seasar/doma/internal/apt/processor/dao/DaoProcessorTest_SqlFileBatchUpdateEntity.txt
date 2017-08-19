@@ -70,7 +70,7 @@ public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jd
             __query.setQueryTimeout(-1);
             __query.setBatchSize(10);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();

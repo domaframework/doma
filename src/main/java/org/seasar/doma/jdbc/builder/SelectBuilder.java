@@ -331,11 +331,11 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getEntitySingleResult");
         }
-        EntityDesc<RESULT> entityType = EntityDescFactory.getEntityDesc(
+        EntityDesc<RESULT> entityDesc = EntityDescFactory.getEntityDesc(
                 resultClass, config.getClassHelper());
-        query.setEntityType(entityType);
+        query.setEntityDesc(entityDesc);
         EntitySingleResultHandler<RESULT> handler = new EntitySingleResultHandler<>(
-                entityType);
+                entityDesc);
         return execute(handler);
     }
 
@@ -381,11 +381,11 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getOptionalEntitySingleResult");
         }
-        EntityDesc<RESULT> entityType = EntityDescFactory.getEntityDesc(
+        EntityDesc<RESULT> entityDesc = EntityDescFactory.getEntityDesc(
                 resultClass, config.getClassHelper());
-        query.setEntityType(entityType);
+        query.setEntityDesc(entityDesc);
         OptionalEntitySingleResultHandler<RESULT> handler = new OptionalEntitySingleResultHandler<>(
-                entityType);
+                entityDesc);
         return execute(handler);
     }
 
@@ -583,11 +583,11 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getEntityResultList");
         }
-        EntityDesc<ELEMENT> entityType = EntityDescFactory.getEntityDesc(
+        EntityDesc<ELEMENT> entityDesc = EntityDescFactory.getEntityDesc(
                 elementClass, config.getClassHelper());
-        query.setEntityType(entityType);
+        query.setEntityDesc(entityDesc);
         ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<ELEMENT>(
-                entityType);
+                entityDesc);
         return execute(handler);
     }
 
@@ -781,11 +781,11 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("streamEntity");
         }
-        EntityDesc<TARGET> entityType = EntityDescFactory.getEntityDesc(
+        EntityDesc<TARGET> entityDesc = EntityDescFactory.getEntityDesc(
                 targetClass, config.getClassHelper());
-        query.setEntityType(entityType);
+        query.setEntityDesc(entityDesc);
         ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(
-                entityType, mapper);
+                entityDesc, mapper);
         return execute(handler);
     }
 

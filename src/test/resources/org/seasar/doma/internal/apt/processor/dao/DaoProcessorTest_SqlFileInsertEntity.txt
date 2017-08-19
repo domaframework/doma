@@ -70,7 +70,7 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setEntityAndEntityDesc("emp", emp, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setNullExcluded(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
@@ -106,7 +106,7 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerMethodName("insertMultipleEntities");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setEntityAndEntityDesc("emp", emp, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setNullExcluded(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();

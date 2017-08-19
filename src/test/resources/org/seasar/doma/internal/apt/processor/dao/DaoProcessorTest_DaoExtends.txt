@@ -66,7 +66,7 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.processor.da
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/DaoExtendsDao/selectById.sql");
             __query.setOptions(options);
-            __query.setEntityType(example.entity._Emp.getSingletonInternal());
+            __query.setEntityDesc(example.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.DaoExtendsDaoImpl");
             __query.setCallerMethodName("selectById");

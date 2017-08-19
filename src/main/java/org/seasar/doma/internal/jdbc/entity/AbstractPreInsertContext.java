@@ -28,8 +28,8 @@ import org.seasar.doma.jdbc.entity.PreInsertContext;
 public class AbstractPreInsertContext<E> extends
         AbstractEntityListenerContext<E> implements PreInsertContext<E> {
 
-    protected AbstractPreInsertContext(EntityDesc<E> entityType, Method method,
+    protected AbstractPreInsertContext(EntityDesc<E> entityDesc, Method method,
             Config config) {
-        super(entityType, method, config);
+        super(entityDesc, method, config);
     }
 }

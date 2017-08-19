@@ -44,19 +44,19 @@ public class BatchUpdateQueryHelper<E> {
 
     protected final String[] excludedPropertyNames;
 
-    public BatchUpdateQueryHelper(Config config, EntityDesc<E> entityType,
+    public BatchUpdateQueryHelper(Config config, EntityDesc<E> entityDesc,
             String[] includedPropertyNames, String[] excludedPropertyNames,
             boolean versionIgnored, boolean optimisticLockExceptionSuppressed) {
         this.config = config;
-        this.entityDesc = entityType;
+        this.entityDesc = entityDesc;
         this.versionIgnored = versionIgnored;
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
         this.includedPropertyNames = includedPropertyNames;
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
-    public List<EntityPropertyDesc<E, ?>> getTargetPropertyTypes() {
-        List<EntityPropertyDesc<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyDesc<E, ?>>(
+    public List<EntityPropertyDesc<E, ?>> getTargetPropertyDescs() {
+        List<EntityPropertyDesc<E, ?>> targetPropertyDescs = new ArrayList<EntityPropertyDesc<E, ?>>(
                 entityDesc.getEntityPropertyDescs().size());
         for (EntityPropertyDesc<E, ?> p : entityDesc.getEntityPropertyDescs()) {
             if (!p.isUpdatable()) {
@@ -66,15 +66,15 @@ public class BatchUpdateQueryHelper<E> {
                 continue;
             }
             if (p.isVersion()) {
-                targetPropertyTypes.add(p);
+                targetPropertyDescs.add(p);
                 continue;
             }
             if (!isTargetPropertyName(p.getName())) {
                 continue;
             }
-            targetPropertyTypes.add(p);
+            targetPropertyDescs.add(p);
         }
-        return targetPropertyTypes;
+        return targetPropertyDescs;
     }
 
     protected boolean isTargetPropertyName(String name) {
@@ -103,18 +103,18 @@ public class BatchUpdateQueryHelper<E> {
     }
 
     public void populateValues(E entity,
-            List<EntityPropertyDesc<E, ?>> targetPropertyTypes,
-            EntityPropertyDesc<E, ?> versionPropertyType, SqlContext context) {
+            List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
+            EntityPropertyDesc<E, ?> versionPropertyDesc, SqlContext context) {
         Dialect dialect = config.getDialect();
         Naming naming = config.getNaming();
-        for (EntityPropertyDesc<E, ?> propertyType : targetPropertyTypes) {
-            Property<E, ?> property = propertyType.createProperty();
+        for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
+            Property<E, ?> property = propertyDesc.createProperty();
             property.load(entity);
-            context.appendSql(propertyType.getColumnName(naming::apply,
+            context.appendSql(propertyDesc.getColumnName(naming::apply,
                     dialect::applyQuote));
             context.appendSql(" = ");
             context.appendParameter(property.asInParameter());
-            if (propertyType.isVersion() && !versionIgnored) {
+            if (propertyDesc.isVersion() && !versionIgnored) {
                 context.appendSql(" + 1");
             }
             context.appendSql(", ");

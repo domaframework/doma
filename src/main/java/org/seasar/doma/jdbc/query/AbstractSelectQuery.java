@@ -129,7 +129,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
         query.setQueryTimeout(queryTimeout);
         query.setOptions(options);
         query.setSqlNode(sqlNode);
-        query.setEntityType(entityDesc);
+        query.setEntityDesc(entityDesc);
         query.setSqlLogType(sqlLogType);
         query.addParameters(parameters);
         query.prepare();
@@ -223,8 +223,8 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
         this.resultStream = resultStream;
     }
 
-    public void setEntityType(EntityDesc<?> entityType) {
-        this.entityDesc = entityType;
+    public void setEntityDesc(EntityDesc<?> entityDesc) {
+        this.entityDesc = entityDesc;
     }
 
     @Override

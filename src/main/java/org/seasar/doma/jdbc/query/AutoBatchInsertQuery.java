@@ -54,8 +54,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected boolean batchSupported = true;
 
-    public AutoBatchInsertQuery(EntityDesc<ENTITY> entityType) {
-        super(entityType);
+    public AutoBatchInsertQuery(EntityDesc<ENTITY> entityDesc) {
+        super(entityDesc);
     }
 
     @Override
@@ -70,9 +70,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         executionSkipCause = null;
         currentEntity = entities.get(0);
         preInsert();
-        prepareIdAndVersionPropertyTypes();
+        prepareIdAndVersionPropertyDescs();
         prepareOptions();
-        prepareTargetPropertyTypes();
+        prepareTargetPropertyDescs();
         prepareIdValue();
         prepareVersionValue();
         prepareSql();
@@ -99,8 +99,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     @Override
-    protected void prepareIdAndVersionPropertyTypes() {
-        super.prepareIdAndVersionPropertyTypes();
+    protected void prepareIdAndVersionPropertyDescs() {
+        super.prepareIdAndVersionPropertyDescs();
         generatedIdPropertyDesc = entityDesc.getGeneratedIdPropertyDesc();
         if (generatedIdPropertyDesc != null) {
             if (idGenerationConfig == null) {
@@ -117,35 +117,35 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         }
     }
 
-    protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = new ArrayList<>(entityDesc
+    protected void prepareTargetPropertyDescs() {
+        targetPropertyDescs = new ArrayList<>(entityDesc
                 .getEntityPropertyDescs().size());
-        for (EntityPropertyDesc<ENTITY, ?> propertyType : entityDesc
+        for (EntityPropertyDesc<ENTITY, ?> propertyDesc : entityDesc
                 .getEntityPropertyDescs()) {
-            if (!propertyType.isInsertable()) {
+            if (!propertyDesc.isInsertable()) {
                 continue;
             }
-            if (propertyType.isId()) {
-                if (propertyType != generatedIdPropertyDesc
+            if (propertyDesc.isId()) {
+                if (propertyDesc != generatedIdPropertyDesc
                         || generatedIdPropertyDesc
                                 .isIncluded(idGenerationConfig)) {
-                    targetPropertyTypes.add(propertyType);
+                    targetPropertyDescs.add(propertyDesc);
                 }
                 if (generatedIdPropertyDesc == null) {
-                    Property<ENTITY, ?> property = propertyType
+                    Property<ENTITY, ?> property = propertyDesc
                             .createProperty();
                     property.load(currentEntity);
                     if (property.getWrapper().get() == null) {
                         throw new JdbcException(Message.DOMA2020,
-                                entityDesc.getName(), propertyType.getName());
+                                entityDesc.getName(), propertyDesc.getName());
                     }
                 }
                 continue;
             }
-            if (!isTargetPropertyName(propertyType.getName())) {
+            if (!isTargetPropertyName(propertyDesc.getName())) {
                 continue;
             }
-            targetPropertyTypes.add(propertyType);
+            targetPropertyDescs.add(propertyDesc);
         }
     }
 
@@ -173,15 +173,15 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         builder.appendSql(" (");
-        for (EntityPropertyDesc<ENTITY, ?> p : targetPropertyTypes) {
+        for (EntityPropertyDesc<ENTITY, ?> p : targetPropertyDescs) {
             builder.appendSql(p.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyDesc<ENTITY, ?> propertyType : targetPropertyTypes) {
-            Property<ENTITY, ?> property = propertyType.createProperty();
+        for (EntityPropertyDesc<ENTITY, ?> propertyDesc : targetPropertyDescs) {
+            Property<ENTITY, ?> property = propertyDesc.createProperty();
             property.load(currentEntity);
             builder.appendParameter(property.asInParameter());
             builder.appendSql(", ");
@@ -227,18 +227,18 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPreInsertContext<E> extends
             AbstractPreInsertContext<E> {
 
-        public AutoBatchPreInsertContext(EntityDesc<E> entityType,
+        public AutoBatchPreInsertContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 
     protected static class AutoBatchPostInsertContext<E> extends
             AbstractPostInsertContext<E> {
 
-        public AutoBatchPostInsertContext(EntityDesc<E> entityType,
+        public AutoBatchPostInsertContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 }

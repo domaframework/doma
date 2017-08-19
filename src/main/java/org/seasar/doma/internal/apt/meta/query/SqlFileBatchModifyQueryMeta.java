@@ -43,11 +43,11 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
         super(method);
     }
 
-    public EntityCtType getEntityType() {
+    public EntityCtType getEntityCtType() {
         return entityCtType;
     }
 
-    public void setEntityType(EntityCtType entityCtType) {
+    public void setEntityCtType(EntityCtType entityCtType) {
         this.entityCtType = entityCtType;
     }
 

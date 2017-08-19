@@ -75,28 +75,28 @@ public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 
     private final String __tableName = "EMP";
 
-    private final List<EntityPropertyDesc<ImmutableEmp, ?>> __idPropertyTypes;
+    private final List<EntityPropertyDesc<ImmutableEmp, ?>> __idPropertyDescs;
 
-    private final List<EntityPropertyDesc<ImmutableEmp, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyDesc<ImmutableEmp, ?>> __entityPropertyDescs;
 
-    private final Map<String, EntityPropertyDesc<ImmutableEmp, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyDesc<ImmutableEmp, ?>> __entityPropertyDescMap;
 
     private _ImmutableEmp() {
         List<EntityPropertyDesc<ImmutableEmp, ?>> __idList = new ArrayList<>();
         __idList.add(id);
-        __idPropertyTypes = Collections.unmodifiableList(__idList);
+        __idPropertyDescs = Collections.unmodifiableList(__idList);
         List<EntityPropertyDesc<ImmutableEmp, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
         __list.add(salary);
         __list.add(version);
-        __entityPropertyTypes = Collections.unmodifiableList(__list);
+        __entityPropertyDescs = Collections.unmodifiableList(__list);
         Map<String, EntityPropertyDesc<ImmutableEmp, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
         __map.put("salary", salary);
         __map.put("version", version);
-        __entityPropertyTypeMap = Collections.unmodifiableMap(__map);
+        __entityPropertyDescMap = Collections.unmodifiableMap(__map);
     }
 
     @Override
@@ -124,12 +124,12 @@ public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 
     @Override
     public List<EntityPropertyDesc<ImmutableEmp, ?>> getEntityPropertyDescs() {
-        return __entityPropertyTypes;
+        return __entityPropertyDescs;
     }
 
     @Override
     public EntityPropertyDesc<ImmutableEmp, ?> getEntityPropertyDesc(String propertyName) {
-        return __entityPropertyTypeMap.get(propertyName);
+        return __entityPropertyDescMap.get(propertyName);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 
     @Override
     public List<EntityPropertyDesc<ImmutableEmp, ?>> getIdPropertyDescs() {
-        return __idPropertyTypes;
+        return __idPropertyDescs;
     }
 
     @Override

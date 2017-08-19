@@ -47,9 +47,9 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements
 
     protected PreparedSql sql;
 
-    protected List<EntityPropertyDesc<ENTITY, ?>> targetPropertyTypes;
+    protected List<EntityPropertyDesc<ENTITY, ?>> targetPropertyDescs;
 
-    protected List<EntityPropertyDesc<ENTITY, ?>> idPropertyTypes;
+    protected List<EntityPropertyDesc<ENTITY, ?>> idPropertyDescs;
 
     protected VersionPropertyDesc<ENTITY, ?, ?> versionPropertyDesc;
 
@@ -63,18 +63,18 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements
 
     protected SqlLogType sqlLogType;
 
-    protected AutoModifyQuery(EntityDesc<ENTITY> entityType) {
-        AssertionUtil.assertNotNull(entityType);
-        this.entityDesc = entityType;
+    protected AutoModifyQuery(EntityDesc<ENTITY> entityDesc) {
+        AssertionUtil.assertNotNull(entityDesc);
+        this.entityDesc = entityDesc;
     }
 
-    protected void prepareIdAndVersionPropertyTypes() {
-        idPropertyTypes = entityDesc.getIdPropertyDescs();
+    protected void prepareIdAndVersionPropertyDescs() {
+        idPropertyDescs = entityDesc.getIdPropertyDescs();
         versionPropertyDesc = entityDesc.getVersionPropertyDesc();
     }
 
     protected void validateIdExistent() {
-        if (idPropertyTypes.isEmpty()) {
+        if (idPropertyDescs.isEmpty()) {
             throw new JdbcException(Message.DOMA2022, entityDesc.getName());
         }
     }

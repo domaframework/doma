@@ -65,35 +65,35 @@ public class UpdateQueryHelper<E> {
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
-    public List<EntityPropertyDesc<E, ?>> getTargetPropertyTypes(E entity) {
+    public List<EntityPropertyDesc<E, ?>> getTargetPropertyDescs(E entity) {
         int capacity = entityDesc.getEntityPropertyDescs().size();
         List<EntityPropertyDesc<E, ?>> results = new ArrayList<>(capacity);
         E originalStates = entityDesc.getOriginalStates(entity);
-        for (EntityPropertyDesc<E, ?> propertyType : entityDesc
+        for (EntityPropertyDesc<E, ?> propertyDesc : entityDesc
                 .getEntityPropertyDescs()) {
-            if (!propertyType.isUpdatable()) {
+            if (!propertyDesc.isUpdatable()) {
                 continue;
             }
-            if (propertyType.isId()) {
+            if (propertyDesc.isId()) {
                 continue;
             }
-            if (!versionIgnored && propertyType.isVersion()) {
+            if (!versionIgnored && propertyDesc.isVersion()) {
                 continue;
             }
             if (nullExcluded) {
-                Property<E, ?> property = propertyType.createProperty();
+                Property<E, ?> property = propertyDesc.createProperty();
                 property.load(entity);
                 if (property.getWrapper().get() == null) {
                     continue;
                 }
             }
             if (unchangedPropertyIncluded || originalStates == null
-                    || isChanged(entity, originalStates, propertyType)) {
-                String name = propertyType.getName();
+                    || isChanged(entity, originalStates, propertyDesc)) {
+                String name = propertyDesc.getName();
                 if (!isTargetPropertyName(name)) {
                     continue;
                 }
-                results.add(propertyType);
+                results.add(propertyDesc);
             }
         }
         return results;
@@ -125,33 +125,33 @@ public class UpdateQueryHelper<E> {
     }
 
     protected boolean isChanged(E entity, E originalStates,
-            EntityPropertyDesc<E, ?> propertyType) {
-        Wrapper<?> wrapper = propertyType.createProperty().load(entity)
+            EntityPropertyDesc<E, ?> propertyDesc) {
+        Wrapper<?> wrapper = propertyDesc.createProperty().load(entity)
                 .getWrapper();
-        Wrapper<?> originalWrapper = propertyType.createProperty()
+        Wrapper<?> originalWrapper = propertyDesc.createProperty()
                 .load(originalStates).getWrapper();
         return !wrapper.hasEqualValue(originalWrapper.get());
     }
 
     public void populateValues(E entity,
-            List<EntityPropertyDesc<E, ?>> targetPropertyTypes,
-            VersionPropertyDesc<E, ?, ?> versionPropertyType,
+            List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
+            VersionPropertyDesc<E, ?, ?> versionPropertyDesc,
             SqlContext context) {
         Dialect dialect = config.getDialect();
         Naming naming = config.getNaming();
-        for (EntityPropertyDesc<E, ?> propertyType : targetPropertyTypes) {
-            Property<E, ?> property = propertyType.createProperty();
+        for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
+            Property<E, ?> property = propertyDesc.createProperty();
             property.load(entity);
-            context.appendSql(propertyType.getColumnName(naming::apply,
+            context.appendSql(propertyDesc.getColumnName(naming::apply,
                     dialect::applyQuote));
             context.appendSql(" = ");
             context.appendParameter(property.asInParameter());
             context.appendSql(", ");
         }
-        if (!versionIgnored && versionPropertyType != null) {
-            Property<E, ?> property = versionPropertyType.createProperty();
+        if (!versionIgnored && versionPropertyDesc != null) {
+            Property<E, ?> property = versionPropertyDesc.createProperty();
             property.load(entity);
-            context.appendSql(versionPropertyType.getColumnName(naming::apply,
+            context.appendSql(versionPropertyDesc.getColumnName(naming::apply,
                     dialect::applyQuote));
             context.appendSql(" = ");
             context.appendParameter(property.asInParameter());

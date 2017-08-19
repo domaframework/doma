@@ -68,7 +68,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     }
 
     @SuppressWarnings("unchecked")
-    public <E> E getEntity(Class<E> entityType) {
+    public <E> E getEntity(Class<E> entityDesc) {
         if (entityHandler != null) {
             return (E) entityHandler.entity;
         }
@@ -83,9 +83,9 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void setEntityAndEntityType(String name, E entity,
-            EntityDesc<E> entityType) {
-        entityHandler = new EntityHandler<E>(name, entity, entityType);
+    public <E> void setEntityAndEntityDesc(String name, E entity,
+            EntityDesc<E> entityDesc) {
+        entityHandler = new EntityHandler<E>(name, entity, entityDesc);
     }
 
     public void setNullExcluded(boolean nullExcluded) {
@@ -100,11 +100,11 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
 
         protected EntityDesc<E> entityDesc;
 
-        protected EntityHandler(String name, E entity, EntityDesc<E> entityType) {
-            assertNotNull(name, entity, entityType);
+        protected EntityHandler(String name, E entity, EntityDesc<E> entityDesc) {
+            assertNotNull(name, entity, entityDesc);
             this.name = name;
             this.entity = entity;
-            this.entityDesc = entityType;
+            this.entityDesc = entityDesc;
         }
 
         protected void preInsert() {
@@ -132,18 +132,18 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePreInsertContext<E> extends
             AbstractPreInsertContext<E> {
 
-        public SqlFilePreInsertContext(EntityDesc<E> entityType, Method method,
+        public SqlFilePreInsertContext(EntityDesc<E> entityDesc, Method method,
                 Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 
     protected static class SqlFilePostInsertContext<E> extends
             AbstractPostInsertContext<E> {
 
-        public SqlFilePostInsertContext(EntityDesc<E> entityType,
+        public SqlFilePostInsertContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 }

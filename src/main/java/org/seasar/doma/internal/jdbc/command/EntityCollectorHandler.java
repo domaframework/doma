@@ -29,9 +29,9 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 public class EntityCollectorHandler<ENTITY, RESULT> extends
         AbstractCollectorHandler<ENTITY, RESULT> {
 
-    public EntityCollectorHandler(EntityDesc<ENTITY> entityType,
+    public EntityCollectorHandler(EntityDesc<ENTITY> entityDesc,
             Collector<ENTITY, ?, RESULT> collector) {
-        super(new EntityStreamHandler<>(entityType, s -> s.collect(collector)));
+        super(new EntityStreamHandler<>(entityDesc, s -> s.collect(collector)));
     }
 
 }

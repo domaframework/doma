@@ -429,7 +429,7 @@ public class DaoImplGenerator extends AbstractGenerator {
                 iprint("__query.setOptions(%1$s);%n", m.getSelectOptionsParameterName());
             }
             if (m.getEntityCtType() != null) {
-                iprint("__query.setEntityType(%1$s);%n", entityDesc(m.getEntityCtType()));
+                iprint("__query.setEntityDesc(%1$s);%n", entityDesc(m.getEntityCtType()));
             }
 
             printAddParameterStatements(m.getParameterMetas());
@@ -648,7 +648,7 @@ public class DaoImplGenerator extends AbstractGenerator {
                     // @formatter:on
 
             if (m.getEntityParameterName() != null && m.getEntityCtType() != null) {
-                iprint("__query.setEntityAndEntityType(\"%1$s\", %2$s, %3$s);%n",
+                iprint("__query.setEntityAndEntityDesc(\"%1$s\", %2$s, %3$s);%n",
                 // @formatter:off
                         /* 1 */m.getEntityParameterName(),
                         /* 2 */m.getEntityParameterName(),
@@ -823,8 +823,8 @@ public class DaoImplGenerator extends AbstractGenerator {
                     /* 2 */m.getSqlLogType());
                     // @formatter:on
 
-            if (m.getEntityType() != null) {
-                iprint("__query.setEntityType(%1$s);%n", entityDesc(m.getEntityType()));
+            if (m.getEntityCtType() != null) {
+                iprint("__query.setEntityDesc(%1$s);%n", entityDesc(m.getEntityCtType()));
             }
 
             Boolean ignoreVersion = m.getIgnoreVersion();
@@ -856,7 +856,7 @@ public class DaoImplGenerator extends AbstractGenerator {
                     /* 3 */methodName);
                     // @formatter:on
 
-            EntityCtType entityCtType = m.getEntityType();
+            EntityCtType entityCtType = m.getEntityCtType();
             if (entityCtType != null && entityCtType.isImmutable()) {
                 iprint("int[] __counts = __command.execute();%n");
                 iprint("__query.complete();%n");

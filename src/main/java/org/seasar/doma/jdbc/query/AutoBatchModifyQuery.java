@@ -40,9 +40,9 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
-    protected List<EntityPropertyDesc<ENTITY, ?>> targetPropertyTypes;
+    protected List<EntityPropertyDesc<ENTITY, ?>> targetPropertyDescs;
 
-    protected List<EntityPropertyDesc<ENTITY, ?>> idPropertyTypes;
+    protected List<EntityPropertyDesc<ENTITY, ?>> idPropertyDescs;
 
     protected String[] includedPropertyNames = EMPTY_STRINGS;
 
@@ -70,18 +70,18 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
     protected SqlLogType sqlLogType;
 
-    public AutoBatchModifyQuery(EntityDesc<ENTITY> entityType) {
-        assertNotNull(entityType);
-        this.entityDesc = entityType;
+    public AutoBatchModifyQuery(EntityDesc<ENTITY> entityDesc) {
+        assertNotNull(entityDesc);
+        this.entityDesc = entityDesc;
     }
 
-    protected void prepareIdAndVersionPropertyTypes() {
-        idPropertyTypes = entityDesc.getIdPropertyDescs();
+    protected void prepareIdAndVersionPropertyDescs() {
+        idPropertyDescs = entityDesc.getIdPropertyDescs();
         versionPropertyDesc = entityDesc.getVersionPropertyDesc();
     }
 
     protected void validateIdExistent() {
-        if (idPropertyTypes.isEmpty()) {
+        if (idPropertyDescs.isEmpty()) {
             throw new JdbcException(Message.DOMA2022, entityDesc.getName());
         }
     }

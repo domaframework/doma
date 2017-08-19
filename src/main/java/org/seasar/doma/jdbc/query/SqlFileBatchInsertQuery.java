@@ -89,8 +89,8 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
     }
 
     @Override
-    public void setEntityType(EntityDesc<ELEMENT> entityType) {
-        entityHandler = new EntityHandler(entityType);
+    public void setEntityDesc(EntityDesc<ELEMENT> entityDesc) {
+        entityHandler = new EntityHandler(entityDesc);
     }
 
     @Override
@@ -102,9 +102,9 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
 
         protected EntityDesc<ELEMENT> entityDesc;
 
-        protected EntityHandler(EntityDesc<ELEMENT> entityType) {
-            assertNotNull(entityType);
-            this.entityDesc = entityType;
+        protected EntityHandler(EntityDesc<ELEMENT> entityDesc) {
+            assertNotNull(entityDesc);
+            this.entityDesc = entityDesc;
         }
 
         protected void preInsert() {
@@ -129,18 +129,18 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
     protected static class SqlFileBatchPreInsertContext<E> extends
             AbstractPreInsertContext<E> {
 
-        public SqlFileBatchPreInsertContext(EntityDesc<E> entityType,
+        public SqlFileBatchPreInsertContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 
     protected static class SqlFileBatchPostInsertContext<E> extends
             AbstractPostInsertContext<E> {
 
-        public SqlFileBatchPostInsertContext(EntityDesc<E> entityType,
+        public SqlFileBatchPostInsertContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 }

@@ -66,7 +66,7 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlFileSelectEntityDao/selectById.sql");
             __query.setOptions(options);
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectEntityDaoImpl");
             __query.setCallerMethodName("selectById");
@@ -101,7 +101,7 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlFileSelectEntityDao/selectByNameAndSalary.sql");
             __query.setOptions(options);
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.addParameter("name", java.lang.String.class, name);
             __query.addParameter("salary", java.math.BigDecimal.class, salary);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectEntityDaoImpl");

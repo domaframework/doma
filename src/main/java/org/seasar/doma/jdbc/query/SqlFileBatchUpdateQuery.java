@@ -65,7 +65,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         prepareSqlFile();
         prepareOptions();
         prepareOptimisticLock();
-        prepareTargetPropertyTypes();
+        prepareTargetPropertyDescs();
         prepareSql();
         elements.set(0, currentEntity);
         for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext();) {
@@ -89,9 +89,9 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         }
     }
 
-    protected void prepareTargetPropertyTypes() {
+    protected void prepareTargetPropertyDescs() {
         if (entityHandler != null) {
-            entityHandler.prepareTargetPropertyTypes();
+            entityHandler.prepareTargetPropertyDescs();
         }
     }
 
@@ -129,8 +129,8 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
     }
 
     @Override
-    public void setEntityType(EntityDesc<ELEMENT> entityType) {
-        entityHandler = new EntityHandler(entityType);
+    public void setEntityDesc(EntityDesc<ELEMENT> entityDesc) {
+        entityHandler = new EntityHandler(entityDesc);
     }
 
     public void setVersionIncluded(boolean versionIncluded) {
@@ -152,14 +152,14 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
 
         protected VersionPropertyDesc<ELEMENT, ?, ?> versionPropertyDesc;
 
-        protected List<EntityPropertyDesc<ELEMENT, ?>> targetPropertyTypes;
+        protected List<EntityPropertyDesc<ELEMENT, ?>> targetPropertyDescs;
 
         protected BatchUpdateQueryHelper<ELEMENT> helper;
 
-        protected EntityHandler(EntityDesc<ELEMENT> entityType) {
-            assertNotNull(entityType);
-            this.entityDesc = entityType;
-            this.versionPropertyDesc = entityType.getVersionPropertyDesc();
+        protected EntityHandler(EntityDesc<ELEMENT> entityDesc) {
+            assertNotNull(entityDesc);
+            this.entityDesc = entityDesc;
+            this.versionPropertyDesc = entityDesc.getVersionPropertyDesc();
         }
 
         protected void init() {
@@ -177,8 +177,8 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
             }
         }
 
-        protected void prepareTargetPropertyTypes() {
-            targetPropertyTypes = helper.getTargetPropertyTypes();
+        protected void prepareTargetPropertyDescs() {
+            targetPropertyDescs = helper.getTargetPropertyDescs();
         }
 
         protected void postUpdate() {
@@ -211,7 +211,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         }
 
         protected void populateValues(SqlContext context) {
-            helper.populateValues(currentEntity, targetPropertyTypes,
+            helper.populateValues(currentEntity, targetPropertyDescs,
                     versionPropertyDesc, context);
         }
 
@@ -220,9 +220,9 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
     protected static class SqlFileBatchPreUpdateContext<E> extends
             AbstractPreUpdateContext<E> {
 
-        public SqlFileBatchPreUpdateContext(EntityDesc<E> entityType,
+        public SqlFileBatchPreUpdateContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
 
         @Override
@@ -240,9 +240,9 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
     protected static class SqlFileBatchPostUpdateContext<E> extends
             AbstractPostUpdateContext<E> {
 
-        public SqlFileBatchPostUpdateContext(EntityDesc<E> entityType,
+        public SqlFileBatchPostUpdateContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
 
         @Override

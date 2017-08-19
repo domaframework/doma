@@ -110,16 +110,16 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
      */
     protected long getGeneratedValue(IdGenerationConfig config) {
         Naming naming = config.getNaming();
-        EntityDesc<?> entityType = config.getEntityDesc();
-        String catalogName = entityType.getCatalogName();
-        String schemaName = entityType.getSchemaName();
-        String tableName = entityType.getTableName(naming::apply);
-        String idColumnName = entityType.getGeneratedIdPropertyDesc()
+        EntityDesc<?> entityDesc = config.getEntityDesc();
+        String catalogName = entityDesc.getCatalogName();
+        String schemaName = entityDesc.getSchemaName();
+        String tableName = entityDesc.getTableName(naming::apply);
+        String idColumnName = entityDesc.getGeneratedIdPropertyDesc()
                 .getColumnName(naming::apply);
         Sql<?> sql = config.getDialect().getIdentitySelectSql(catalogName,
                 schemaName, tableName, idColumnName,
-                entityType.isQuoteRequired(),
-                entityType.getGeneratedIdPropertyDesc().isQuoteRequired());
+                entityDesc.isQuoteRequired(),
+                entityDesc.getGeneratedIdPropertyDesc().isQuoteRequired());
         return getGeneratedValue(config, sql);
     }
 

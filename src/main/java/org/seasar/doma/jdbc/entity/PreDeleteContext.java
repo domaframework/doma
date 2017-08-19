@@ -36,7 +36,7 @@ public interface PreDeleteContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityDesc<E> getEntityType();
+    public EntityDesc<E> getEntityDesc();
 
     /**
      * {@link Delete} が注釈されたメソッドを返します。
@@ -65,7 +65,7 @@ public interface PreDeleteContext<E> {
     /**
      * 新しいエンティティを設定します。
      * <p>
-     * このメソッドは、 {@link PreDeleteContext#getEntityType()}
+     * このメソッドは、 {@link PreDeleteContext#getEntityDesc()}
      * に対応するエンティティがイミュータブルである場合にのみ利用してください。
      * 
      * @param newEntity

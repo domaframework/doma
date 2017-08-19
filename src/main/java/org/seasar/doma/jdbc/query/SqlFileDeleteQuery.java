@@ -80,9 +80,9 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void setEntityAndEntityType(String name, E entity,
-            EntityDesc<E> entityType) {
-        entityHandler = new EntityHandler<E>(name, entity, entityType);
+    public <E> void setEntityAndEntityDesc(String name, E entity,
+            EntityDesc<E> entityDesc) {
+        entityHandler = new EntityHandler<E>(name, entity, entityDesc);
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
@@ -95,7 +95,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     }
 
     @SuppressWarnings("unchecked")
-    public <E> E getEntity(Class<E> entityType) {
+    public <E> E getEntity(Class<E> entityDesc) {
         if (entityHandler != null) {
             return (E) entityHandler.entity;
         }
@@ -112,12 +112,12 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
 
         protected VersionPropertyDesc<E, ?, ?> versionPropertyDesc;
 
-        protected EntityHandler(String name, E entity, EntityDesc<E> entityType) {
-            assertNotNull(name, entity, entityType);
+        protected EntityHandler(String name, E entity, EntityDesc<E> entityDesc) {
+            assertNotNull(name, entity, entityDesc);
             this.name = name;
             this.entity = entity;
-            this.entityDesc = entityType;
-            this.versionPropertyDesc = entityType.getVersionPropertyDesc();
+            this.entityDesc = entityDesc;
+            this.versionPropertyDesc = entityDesc.getVersionPropertyDesc();
         }
 
         protected void preDelete() {
@@ -151,18 +151,18 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePreDeleteContext<E> extends
             AbstractPreDeleteContext<E> {
 
-        public SqlFilePreDeleteContext(EntityDesc<E> entityType, Method method,
+        public SqlFilePreDeleteContext(EntityDesc<E> entityDesc, Method method,
                 Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 
     protected static class SqlFilePostDeleteContext<E> extends
             AbstractPostDeleteContext<E> {
 
-        public SqlFilePostDeleteContext(EntityDesc<E> entityType,
+        public SqlFilePostDeleteContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 }

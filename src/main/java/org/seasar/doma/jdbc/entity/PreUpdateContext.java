@@ -60,7 +60,7 @@ public interface PreUpdateContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityDesc<?> getEntityType();
+    public EntityDesc<?> getEntityDesc();
 
     /**
      * {@link Update} が注釈されたメソッドを返します。
@@ -89,7 +89,7 @@ public interface PreUpdateContext<E> {
     /**
      * 新しいエンティティを設定します。
      * <p>
-     * このメソッドは、 {@link PreUpdateContext#getEntityType()}
+     * このメソッドは、 {@link PreUpdateContext#getEntityDesc()}
      * に対応するエンティティがイミュータブルである場合にのみ利用してください。
      * 
      * @param newEntity

@@ -36,7 +36,7 @@ public interface PostDeleteContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityDesc<E> getEntityType();
+    public EntityDesc<E> getEntityDesc();
 
     /**
      * {@link Delete} が注釈されたメソッドを返します。
@@ -65,7 +65,7 @@ public interface PostDeleteContext<E> {
     /**
      * 新しいエンティティを設定します。
      * <p>
-     * このメソッドは、 {@link PostDeleteContext#getEntityType()}
+     * このメソッドは、 {@link PostDeleteContext#getEntityDesc()}
      * に対応するエンティティがイミュータブルである場合にのみ利用してください。
      * 
      * @param newEntity

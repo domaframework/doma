@@ -50,8 +50,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
 
     protected IdGenerationConfig idGenerationConfig;
 
-    public AutoInsertQuery(EntityDesc<ENTITY> entityType) {
-        super(entityType);
+    public AutoInsertQuery(EntityDesc<ENTITY> entityDesc) {
+        super(entityDesc);
     }
 
     @Override
@@ -60,9 +60,9 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         assertNotNull(method, entityDesc, entity);
         executable = true;
         preInsert();
-        prepareIdAndVersionPropertyTypes();
+        prepareIdAndVersionPropertyDescs();
         prepareOptions();
-        prepareTargetPropertyType();
+        prepareTargetPropertyDescs();
         prepareIdValue();
         prepareVersionValue();
         prepareSql();
@@ -79,8 +79,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     }
 
     @Override
-    protected void prepareIdAndVersionPropertyTypes() {
-        super.prepareIdAndVersionPropertyTypes();
+    protected void prepareIdAndVersionPropertyDescs() {
+        super.prepareIdAndVersionPropertyDescs();
         generatedIdPropertyDesc = entityDesc.getGeneratedIdPropertyDesc();
         if (generatedIdPropertyDesc != null) {
             idGenerationConfig = new IdGenerationConfig(config, entityDesc);
@@ -91,31 +91,31 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         }
     }
 
-    protected void prepareTargetPropertyType() {
-        targetPropertyTypes = new ArrayList<>(entityDesc
+    protected void prepareTargetPropertyDescs() {
+        targetPropertyDescs = new ArrayList<>(entityDesc
                 .getEntityPropertyDescs().size());
-        for (EntityPropertyDesc<ENTITY, ?> propertyType : entityDesc
+        for (EntityPropertyDesc<ENTITY, ?> propertyDesc : entityDesc
                 .getEntityPropertyDescs()) {
-            if (!propertyType.isInsertable()) {
+            if (!propertyDesc.isInsertable()) {
                 continue;
             }
-            Property<ENTITY, ?> property = propertyType.createProperty();
+            Property<ENTITY, ?> property = propertyDesc.createProperty();
             property.load(entity);
-            if (propertyType.isId()) {
-                if (propertyType != generatedIdPropertyDesc
+            if (propertyDesc.isId()) {
+                if (propertyDesc != generatedIdPropertyDesc
                         || generatedIdPropertyDesc
                                 .isIncluded(idGenerationConfig)) {
-                    targetPropertyTypes.add(propertyType);
+                    targetPropertyDescs.add(propertyDesc);
                 }
                 if (generatedIdPropertyDesc == null
                         && property.getWrapper().get() == null) {
                     throw new JdbcException(Message.DOMA2020,
-                            entityDesc.getName(), propertyType.getName());
+                            entityDesc.getName(), propertyDesc.getName());
                 }
                 continue;
             }
-            if (propertyType.isVersion()) {
-                targetPropertyTypes.add(propertyType);
+            if (propertyDesc.isVersion()) {
+                targetPropertyDescs.add(propertyDesc);
                 continue;
             }
             if (nullExcluded) {
@@ -123,10 +123,10 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
                     continue;
                 }
             }
-            if (!isTargetPropertyName(propertyType.getName())) {
+            if (!isTargetPropertyName(propertyDesc.getName())) {
                 continue;
             }
-            targetPropertyTypes.add(propertyType);
+            targetPropertyDescs.add(propertyDesc);
         }
     }
 
@@ -153,15 +153,15 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         builder.appendSql(" (");
-        for (EntityPropertyDesc<ENTITY, ?> propertyType : targetPropertyTypes) {
-            builder.appendSql(propertyType.getColumnName(naming::apply,
+        for (EntityPropertyDesc<ENTITY, ?> propertyDesc : targetPropertyDescs) {
+            builder.appendSql(propertyDesc.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyDesc<ENTITY, ?> propertyType : targetPropertyTypes) {
-            Property<ENTITY, ?> property = propertyType.createProperty();
+        for (EntityPropertyDesc<ENTITY, ?> propertyDesc : targetPropertyDescs) {
+            Property<ENTITY, ?> property = propertyDesc.createProperty();
             property.load(entity);
             builder.appendParameter(property.asInParameter());
             builder.appendSql(", ");
@@ -201,18 +201,18 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     protected static class AutoPreInsertContext<E> extends
             AbstractPreInsertContext<E> {
 
-        public AutoPreInsertContext(EntityDesc<E> entityType, Method method,
+        public AutoPreInsertContext(EntityDesc<E> entityDesc, Method method,
                 Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 
     protected static class AutoPostInsertContext<E> extends
             AbstractPostInsertContext<E> {
 
-        public AutoPostInsertContext(EntityDesc<E> entityType, Method method,
+        public AutoPostInsertContext(EntityDesc<E> entityDesc, Method method,
                 Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 }

@@ -78,28 +78,28 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
 
     private final String __tableName = "";
 
-    private final List<EntityPropertyDesc<IdGeneratedEmp, ?>> __idPropertyTypes;
+    private final List<EntityPropertyDesc<IdGeneratedEmp, ?>> __idPropertyDescs;
 
-    private final List<EntityPropertyDesc<IdGeneratedEmp, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyDesc<IdGeneratedEmp, ?>> __entityPropertyDescs;
 
-    private final Map<String, EntityPropertyDesc<IdGeneratedEmp, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyDesc<IdGeneratedEmp, ?>> __entityPropertyDescMap;
 
     private _IdGeneratedEmp() {
         List<EntityPropertyDesc<IdGeneratedEmp, ?>> __idList = new ArrayList<>();
         __idList.add(id);
-        __idPropertyTypes = Collections.unmodifiableList(__idList);
+        __idPropertyDescs = Collections.unmodifiableList(__idList);
         List<EntityPropertyDesc<IdGeneratedEmp, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
         __list.add(salary);
         __list.add(version);
-        __entityPropertyTypes = Collections.unmodifiableList(__list);
+        __entityPropertyDescs = Collections.unmodifiableList(__list);
         Map<String, EntityPropertyDesc<IdGeneratedEmp, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
         __map.put("salary", salary);
         __map.put("version", version);
-        __entityPropertyTypeMap = Collections.unmodifiableMap(__map);
+        __entityPropertyDescMap = Collections.unmodifiableMap(__map);
     }
 
     @Override
@@ -126,12 +126,12 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
 
     @Override
     public List<EntityPropertyDesc<IdGeneratedEmp, ?>> getEntityPropertyDescs() {
-        return __entityPropertyTypes;
+        return __entityPropertyDescs;
     }
 
     @Override
     public EntityPropertyDesc<IdGeneratedEmp, ?> getEntityPropertyDesc(String propertyName) {
-        return __entityPropertyTypeMap.get(propertyName);
+        return __entityPropertyDescMap.get(propertyName);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class _IdGeneratedEmp extends AbstractEntityDesc<IdGeneratedEmp> {
 
     @Override
     public List<EntityPropertyDesc<IdGeneratedEmp, ?>> getIdPropertyDescs() {
-        return __idPropertyTypes;
+        return __idPropertyDescs;
     }
 
     @Override

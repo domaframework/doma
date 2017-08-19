@@ -36,7 +36,7 @@ public interface PostInsertContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityDesc<E> getEntityType();
+    public EntityDesc<E> getEntityDesc();
 
     /**
      * {@link Insert} が注釈されたメソッドを返します。
@@ -65,7 +65,7 @@ public interface PostInsertContext<E> {
     /**
      * 新しいエンティティを設定します。
      * <p>
-     * このメソッドは、 {@link PostInsertContext#getEntityType()}
+     * このメソッドは、 {@link PostInsertContext#getEntityDesc()}
      * に対応するエンティティがイミュータブルである場合にのみ利用してください。
      * 
      * @param newEntity

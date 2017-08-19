@@ -66,7 +66,7 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setMethod(__method0);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ResultStreamDao/selectByIdAndName.sql");
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl");

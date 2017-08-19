@@ -69,7 +69,7 @@ public class Issue82DaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDa
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityAndEntityType("entity", entity, example.entity._Emp.getSingletonInternal());
+            __query.setEntityAndEntityDesc("entity", entity, example.entity._Emp.getSingletonInternal());
             __query.setNullExcluded(false);
             __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();

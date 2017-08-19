@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * @author nakamura-to
  * 
  */
-public class DefaultPropertyTypeTest extends TestCase {
+public class DefaultPropertyDescTest extends TestCase {
 
     @SuppressWarnings("unused")
     private String hoge;
@@ -41,67 +41,67 @@ public class DefaultPropertyTypeTest extends TestCase {
 
     public void testIsQuoteRequired_true() throws Exception {
         boolean isQuoteRequired = true;
-        DefaultPropertyDesc<DefaultPropertyTypeTest, String, String> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
+        DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
                 "hoge", "hoge", NamingType.NONE, true, true, isQuoteRequired);
-        assertEquals("hoge", propertyType.getColumnName((n, t) -> t));
-        assertEquals("[hoge]", propertyType.getColumnName((n, t) -> t, s -> "[" + s + "]"));
+        assertEquals("hoge", propertyDesc.getColumnName((n, t) -> t));
+        assertEquals("[hoge]", propertyDesc.getColumnName((n, t) -> t, s -> "[" + s + "]"));
     }
 
     public void testIsQuoteRequired_false() throws Exception {
         boolean isQuoteRequired = false;
-        DefaultPropertyDesc<DefaultPropertyTypeTest, String, String> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
+        DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
                 "hoge", "hoge", NamingType.NONE, true, true, isQuoteRequired);
-        assertEquals("hoge", propertyType.getColumnName((n, t) -> t));
-        assertEquals("hoge", propertyType.getColumnName((n, t) -> t, s -> "[" + s + "]"));
+        assertEquals("hoge", propertyDesc.getColumnName((n, t) -> t));
+        assertEquals("hoge", propertyDesc.getColumnName((n, t) -> t, s -> "[" + s + "]"));
     }
 
     public void testGetColumnName_naming_columnNameDefined() throws Exception {
-        DefaultPropertyDesc<DefaultPropertyTypeTest, String, String> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
+        DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
                 "hoge", "foo", NamingType.UPPER_CASE, true, true, false);
         assertEquals("foo",
-                propertyType.getColumnName((namingType, text) -> namingType.apply(text)));
+                propertyDesc.getColumnName((namingType, text) -> namingType.apply(text)));
     }
 
     public void testGetColumnName_naiming_columnNotDefined() throws Exception {
-        DefaultPropertyDesc<DefaultPropertyTypeTest, String, String> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
+        DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
                 "hoge", "", NamingType.UPPER_CASE, true, true, false);
         assertEquals("HOGE",
-                propertyType.getColumnName((namingType, text) -> namingType.apply(text)));
+                propertyDesc.getColumnName((namingType, text) -> namingType.apply(text)));
     }
 
     public void testGetColumnName_naiming_quote_quoteRequired() throws Exception {
-        DefaultPropertyDesc<DefaultPropertyTypeTest, String, String> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
+        DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
                 "hoge", "", NamingType.UPPER_CASE, true, true, true);
-        assertEquals("[HOGE]", propertyType.getColumnName(
+        assertEquals("[HOGE]", propertyDesc.getColumnName(
                 (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
     }
 
     public void testGetColumnName_naiming_quote_quoteNotRequired() throws Exception {
-        DefaultPropertyDesc<DefaultPropertyTypeTest, String, String> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
+        DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new StringWrapper(), false),
                 "hoge", "", NamingType.UPPER_CASE, true, true, false);
-        assertEquals("HOGE", propertyType.getColumnName(
+        assertEquals("HOGE", propertyDesc.getColumnName(
                 (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
     }
 
     public void testPrimitivePropertyDefaultValue() throws Exception {
-        DefaultPropertyDesc<DefaultPropertyTypeTest, Integer, Integer> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new IntegerWrapper(), true),
+        DefaultPropertyDesc<DefaultPropertyDescTest, Integer, Integer> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new IntegerWrapper(), true),
                 "primitiveInt", "primitiveInt", NamingType.NONE, true, true, false);
-        Property<DefaultPropertyTypeTest, Integer> property = propertyType.createProperty();
+        Property<DefaultPropertyDescTest, Integer> property = propertyDesc.createProperty();
         assertEquals(0, property.get());
     }
 
     public void testWrapperPropertyDefaultValue() throws Exception {
-        DefaultPropertyDesc<DefaultPropertyTypeTest, Integer, Integer> propertyType = new DefaultPropertyDesc<>(
-                DefaultPropertyTypeTest.class, () -> new BasicScalar<>(new IntegerWrapper(), false),
+        DefaultPropertyDesc<DefaultPropertyDescTest, Integer, Integer> propertyDesc = new DefaultPropertyDesc<>(
+                DefaultPropertyDescTest.class, () -> new BasicScalar<>(new IntegerWrapper(), false),
                 "integer", "integer", NamingType.NONE, true, true, false);
-        Property<DefaultPropertyTypeTest, Integer> property = propertyType.createProperty();
+        Property<DefaultPropertyDescTest, Integer> property = propertyDesc.createProperty();
         assertNull(property.get());
     }
 

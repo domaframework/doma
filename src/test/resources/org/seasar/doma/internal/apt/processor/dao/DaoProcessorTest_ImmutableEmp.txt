@@ -280,7 +280,7 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerMethodName("insert2");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityAndEntityDesc("emp", emp, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
             __query.setNullExcluded(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
@@ -313,7 +313,7 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerMethodName("update2");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityAndEntityDesc("emp", emp, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
             __query.setNullExcluded(false);
             __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();
@@ -349,7 +349,7 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerMethodName("delete2");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityAndEntityDesc("emp", emp, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
@@ -383,7 +383,7 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setQueryTimeout(-1);
             __query.setBatchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.prepare();
@@ -417,7 +417,7 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setQueryTimeout(-1);
             __query.setBatchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
             __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
@@ -453,7 +453,7 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setQueryTimeout(-1);
             __query.setBatchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();

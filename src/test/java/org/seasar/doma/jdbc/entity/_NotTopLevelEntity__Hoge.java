@@ -22,11 +22,11 @@ public final class _NotTopLevelEntity__Hoge extends
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __idPropertyDescs;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __entityPropertyDescs;
 
-    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __entityPropertyDescMap;
 
     private _NotTopLevelEntity__Hoge() {
         __listenerSupplier = () -> ListenerHolder.listener;
@@ -41,9 +41,9 @@ public final class _NotTopLevelEntity__Hoge extends
                 0);
         java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> __map = new java.util.HashMap<>(
                 0);
-        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
-        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
-        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __idPropertyDescs = java.util.Collections.unmodifiableList(__idList);
+        __entityPropertyDescs = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyDescMap = java.util.Collections.unmodifiableMap(__map);
     }
 
     @Override
@@ -159,18 +159,18 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @Override
     public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> getEntityPropertyDescs() {
-        return __entityPropertyTypes;
+        return __entityPropertyDescs;
     }
 
     @Override
     public org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?> getEntityPropertyDesc(
             String __name) {
-        return __entityPropertyTypeMap.get(__name);
+        return __entityPropertyDescMap.get(__name);
     }
 
     @Override
     public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyDesc<NotTopLevelEntity.Hoge, ?>> getIdPropertyDescs() {
-        return __idPropertyTypes;
+        return __idPropertyDescs;
     }
 
     @Override

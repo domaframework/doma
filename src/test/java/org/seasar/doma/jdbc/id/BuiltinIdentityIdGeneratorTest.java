@@ -55,11 +55,11 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
         resultSet.rows.add(new RowData(12L));
         resultSet.rows.add(new RowData(13L));
 
-        EntityDesc<IdGeneratedEmp> entityType = _IdGeneratedEmp
+        EntityDesc<IdGeneratedEmp> entityDesc = _IdGeneratedEmp
                 .getSingletonInternal();
         BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                entityType, new ReservedIdProvider(config, entityType, 3));
+                entityDesc, new ReservedIdProvider(config, entityDesc, 3));
         Long value = identityIdGenerator.generatePreInsert(idGenerationConfig);
         assertEquals(Long.valueOf(11), value);
         assertEquals(

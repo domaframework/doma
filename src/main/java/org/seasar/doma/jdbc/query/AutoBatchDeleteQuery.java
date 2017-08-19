@@ -45,8 +45,8 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchDeleteQuery(EntityDesc<ENTITY> entityType) {
-        super(entityType);
+    public AutoBatchDeleteQuery(EntityDesc<ENTITY> entityDesc) {
+        super(entityDesc);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         executionSkipCause = null;
         currentEntity = entities.get(0);
         preDelete();
-        prepareIdAndVersionPropertyTypes();
+        prepareIdAndVersionPropertyDescs();
         validateIdExistent();
         prepareOptions();
         prepareOptimisticLock();
@@ -101,12 +101,12 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql("delete from ");
         builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
-        if (idPropertyTypes.size() > 0) {
+        if (idPropertyDescs.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyDesc<ENTITY, ?> propertyType : idPropertyTypes) {
-                Property<ENTITY, ?> property = propertyType.createProperty();
+            for (EntityPropertyDesc<ENTITY, ?> propertyDesc : idPropertyDescs) {
+                Property<ENTITY, ?> property = propertyDesc.createProperty();
                 property.load(currentEntity);
-                builder.appendSql(propertyType.getColumnName(naming::apply,
+                builder.appendSql(propertyDesc.getColumnName(naming::apply,
                         dialect::applyQuote));
                 builder.appendSql(" = ");
                 builder.appendParameter(property.asInParameter());
@@ -115,7 +115,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             builder.cutBackSql(5);
         }
         if (versionPropertyDesc != null && !versionIgnored) {
-            if (idPropertyTypes.size() == 0) {
+            if (idPropertyDescs.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");
@@ -161,18 +161,18 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPreDeleteContext<E> extends
             AbstractPreDeleteContext<E> {
 
-        public AutoBatchPreDeleteContext(EntityDesc<E> entityType,
+        public AutoBatchPreDeleteContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 
     protected static class AutoBatchPostDeleteContext<E> extends
             AbstractPostDeleteContext<E> {
 
-        public AutoBatchPostDeleteContext(EntityDesc<E> entityType,
+        public AutoBatchPostDeleteContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
     }
 }

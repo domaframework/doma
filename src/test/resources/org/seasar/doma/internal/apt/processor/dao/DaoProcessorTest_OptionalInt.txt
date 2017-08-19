@@ -77,7 +77,7 @@ public class OptionalIntDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             __query.setMethod(__method0);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/OptionalIntDao/selectById.sql");
-            __query.setEntityType(example.entity._Emp.getSingletonInternal());
+            __query.setEntityDesc(example.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id.isPresent() ? id.getAsInt() : null);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalIntDaoImpl");
             __query.setCallerMethodName("selectById");

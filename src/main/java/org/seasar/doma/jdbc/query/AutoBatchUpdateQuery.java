@@ -47,8 +47,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected BatchUpdateQueryHelper<ENTITY> helper;
 
-    public AutoBatchUpdateQuery(EntityDesc<ENTITY> entityType) {
-        super(entityType);
+    public AutoBatchUpdateQuery(EntityDesc<ENTITY> entityDesc) {
+        super(entityDesc);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         currentEntity = entities.get(0);
         setupHelper();
         preUpdate();
-        prepareIdAndVersionPropertyTypes();
+        prepareIdAndVersionPropertyDescs();
         validateIdExistent();
         prepareOptions();
         prepareOptimisticLock();
-        prepareTargetPropertyTypes();
+        prepareTargetPropertyDescs();
         prepareSql();
         entities.set(0, currentEntity);
         for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext();) {
@@ -103,8 +103,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         }
     }
 
-    protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = helper.getTargetPropertyTypes();
+    protected void prepareTargetPropertyDescs() {
+        targetPropertyDescs = helper.getTargetPropertyDescs();
     }
 
     protected void prepareSql() {
@@ -116,14 +116,14 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
                 dialect::applyQuote));
         builder.appendSql(" set ");
-        helper.populateValues(currentEntity, targetPropertyTypes,
+        helper.populateValues(currentEntity, targetPropertyDescs,
                 versionPropertyDesc, builder);
-        if (idPropertyTypes.size() > 0) {
+        if (idPropertyDescs.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyDesc<ENTITY, ?> propertyType : idPropertyTypes) {
-                Property<ENTITY, ?> property = propertyType.createProperty();
+            for (EntityPropertyDesc<ENTITY, ?> propertyDesc : idPropertyDescs) {
+                Property<ENTITY, ?> property = propertyDesc.createProperty();
                 property.load(currentEntity);
-                builder.appendSql(propertyType.getColumnName(naming::apply,
+                builder.appendSql(propertyDesc.getColumnName(naming::apply,
                         dialect::applyQuote));
                 builder.appendSql(" = ");
                 builder.appendParameter(property.asInParameter());
@@ -132,7 +132,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             builder.cutBackSql(5);
         }
         if (versionPropertyDesc != null && !versionIgnored) {
-            if (idPropertyTypes.size() == 0) {
+            if (idPropertyDescs.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");
@@ -191,9 +191,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPreUpdateContext<E> extends
             AbstractPreUpdateContext<E> {
 
-        public AutoBatchPreUpdateContext(EntityDesc<E> entityType,
+        public AutoBatchPreUpdateContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
 
         @Override
@@ -211,9 +211,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected static class AutoBatchPostUpdateContext<E> extends
             AbstractPostUpdateContext<E> {
 
-        public AutoBatchPostUpdateContext(EntityDesc<E> entityType,
+        public AutoBatchPostUpdateContext(EntityDesc<E> entityDesc,
                 Method method, Config config) {
-            super(entityType, method, config);
+            super(entityDesc, method, config);
         }
 
         @Override

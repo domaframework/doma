@@ -60,7 +60,7 @@ public class HolderParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
             __query.setMethod(__method0);
             __query.setConfig(__config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/HolderParameterDao/select.sql");
-            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.addParameter("phoneNumber", example.holder.PhoneNumber.class, phoneNumber);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.HolderParameterDaoImpl");
             __query.setCallerMethodName("select");
