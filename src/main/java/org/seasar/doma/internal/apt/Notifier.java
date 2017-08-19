@@ -37,17 +37,17 @@ public final class Notifier {
         messager.printMessage(Kind.OTHER, messageResource.getMessage(args));
     }
 
-    public void notify(Kind kind, MessageResource messageResource, Element element, Object[] args) {
+    public void send(Kind kind, MessageResource messageResource, Element element, Object[] args) {
         assertNotNull(kind, element, args);
         messager.printMessage(kind, messageResource.getMessage(args), element);
     }
 
-    public void notify(Kind kind, String message, Element element) {
+    public void send(Kind kind, String message, Element element) {
         assertNotNull(kind, message, element);
         messager.printMessage(kind, message, element);
     }
 
-    public void notify(AptException e) {
+    public void send(AptException e) {
         assertNotNull(e);
         messager.printMessage(e.getKind(), e.getMessage(), e.getElement(), e.getAnnotationMirror(),
                 e.getAnnotationValue());

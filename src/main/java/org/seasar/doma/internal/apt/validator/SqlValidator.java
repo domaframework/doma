@@ -101,7 +101,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                             .getParameters()) {
                         if (parameterElement.getSimpleName().contentEquals(
                                 parameterName)) {
-                            ctx.getNotifier().notify(Kind.ERROR,
+                            ctx.getNotifier().send(Kind.ERROR,
                                     Message.DOMA4122,
                                     parameterElement, new Object[] { path,
                                             parameterName });
@@ -112,7 +112,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {
-            ctx.getNotifier().notify(e);
+            ctx.getNotifier().send(e);
         }
     }
 

@@ -454,7 +454,7 @@ public class SqlFileSelectQueryMetaFactory
         @Override
         public Void visitStreamCtType(StreamCtType ctType, Void p) throws RuntimeException {
             if (!isSuppressed(Message.DOMA4274)) {
-                ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4274,
+                ctx.getNotifier().send(Kind.WARNING, Message.DOMA4274,
                         returnMeta.getMethodElement(), new Object[] {});
             }
             queryMeta.setResultStream(true);

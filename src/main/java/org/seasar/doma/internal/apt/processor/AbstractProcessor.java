@@ -71,17 +71,17 @@ public abstract class AbstractProcessor extends
         try {
             handler.accept(typeElement);
         } catch (AptException e) {
-            ctx.getNotifier().notify(e);
+            ctx.getNotifier().send(e);
         } catch (AptIllegalOptionException e) {
-            ctx.getNotifier().notify(Kind.ERROR, e.getMessage(),
+            ctx.getNotifier().send(Kind.ERROR, e.getMessage(),
                     typeElement);
             throw new AptTypeHandleException(typeElement, e);
         } catch (AptIllegalStateException e) {
-            ctx.getNotifier().notify(Kind.ERROR, Message.DOMA4039,
+            ctx.getNotifier().send(Kind.ERROR, Message.DOMA4039,
                     typeElement, new Object[] {});
             throw new AptTypeHandleException(typeElement, e);
         } catch (RuntimeException e) {
-            ctx.getNotifier().notify(Kind.ERROR, Message.DOMA4016,
+            ctx.getNotifier().send(Kind.ERROR, Message.DOMA4016,
                     typeElement, new Object[] {});
             throw new AptTypeHandleException(typeElement, e);
         }

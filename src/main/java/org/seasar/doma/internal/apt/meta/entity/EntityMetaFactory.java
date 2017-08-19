@@ -444,7 +444,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                         doEntityPropertyMeta(fieldElement, entityMeta);
                     }
                 } catch (AptException e) {
-                    ctx.getNotifier().notify(e);
+                    ctx.getNotifier().send(e);
                     error = true;
                 }
             }

@@ -128,7 +128,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         String name = daoElement.getSimpleName().toString();
         String suffix = ctx.getOptions().getDaoSuffix();
         if (name.endsWith(suffix)) {
-            ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4026, daoElement,
+            ctx.getNotifier().send(Kind.WARNING, Message.DOMA4026, daoElement,
                     new Object[] { suffix });
         }
     }
@@ -252,7 +252,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             try {
                 doMethod(methodElement, daoMeta);
             } catch (AptException e) {
-                ctx.getNotifier().notify(e);
+                ctx.getNotifier().send(e);
                 error = true;
             }
         }
@@ -337,7 +337,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         Message message = Message.DOMA4220;
         if (!isSuppressed(suppress, message)) {
             for (String fileName : fileNames) {
-                ctx.getNotifier().notify(Kind.WARNING, message, daoElement,
+                ctx.getNotifier().send(Kind.WARNING, message, daoElement,
                         new Object[] { dirPath + "/" + fileName });
             }
         }

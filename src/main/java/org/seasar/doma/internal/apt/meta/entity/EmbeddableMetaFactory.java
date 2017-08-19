@@ -178,7 +178,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
                         doEmbeddablePropertyMeta(fieldElement, embeddableMeta);
                     }
                 } catch (AptException e) {
-                    ctx.getNotifier().notify(e);
+                    ctx.getNotifier().send(e);
                     error = true;
                 }
             }
