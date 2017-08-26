@@ -71,8 +71,8 @@ import org.seasar.doma.message.Message;
  */
 public class SqlParser {
 
-    protected static final Pattern LITERAL_PATTERN = Pattern.compile(
-            "[-+'.0-9]|.*'|true|false|null", Pattern.CASE_INSENSITIVE);
+    protected static final Pattern LITERAL_PATTERN = Pattern
+            .compile("[-+'.0-9]|.*'|true|false|null", Pattern.CASE_INSENSITIVE);
 
     protected final Deque<AppendableSqlNode> nodeStack = new LinkedList<AppendableSqlNode>();
 
@@ -394,15 +394,14 @@ public class SqlParser {
 
     protected void parseClosedParens() {
         if (!isInParensNode()) {
-            throw new JdbcException(Message.DOMA2109, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2109, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         validate();
         removeNodesTo(ParensNode.class);
         ParensNode parensNode = pop();
         for (SqlNode child : parensNode.getChildren()) {
-            if (!(child instanceof WhitespaceNode)
-                    && !(child instanceof CommentNode)) {
+            if (!(child instanceof WhitespaceNode) && !(child instanceof CommentNode)) {
                 parensNode.setEmpty(false);
                 break;
             }
@@ -413,11 +412,10 @@ public class SqlParser {
     protected void parseBindVariableBlockComment() {
         String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
-            throw new JdbcException(Message.DOMA2120, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition(), token);
+            throw new JdbcException(Message.DOMA2120, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition(), token);
         }
-        BindVariableNode node = new BindVariableNode(getLocation(),
-                varialbeName, token);
+        BindVariableNode node = new BindVariableNode(getLocation(), varialbeName, token);
         appendNode(node);
         push(node);
     }
@@ -425,11 +423,10 @@ public class SqlParser {
     protected void parseLiteralVariableBlockComment() {
         String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
-            throw new JdbcException(Message.DOMA2228, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition(), token);
+            throw new JdbcException(Message.DOMA2228, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition(), token);
         }
-        LiteralVariableNode node = new LiteralVariableNode(getLocation(),
-                varialbeName, token);
+        LiteralVariableNode node = new LiteralVariableNode(getLocation(), varialbeName, token);
         appendNode(node);
         push(node);
     }
@@ -437,11 +434,10 @@ public class SqlParser {
     protected void parseEmbeddedVariableBlockComment() {
         String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
-            throw new JdbcException(Message.DOMA2121, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition(), token);
+            throw new JdbcException(Message.DOMA2121, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition(), token);
         }
-        EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(),
-                varialbeName, token);
+        EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(), varialbeName, token);
         appendNode(node);
         push(node);
     }
@@ -458,14 +454,14 @@ public class SqlParser {
 
     protected void parseElseifBlockComment() {
         if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2138, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2138, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2139, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2139, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         String expression = tokenType.extract(token);
         ElseifNode node = new ElseifNode(getLocation(), expression, token);
@@ -475,14 +471,14 @@ public class SqlParser {
 
     protected void parseElseBlockComment() {
         if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2140, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2140, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2141, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2141, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         ElseNode node = new ElseNode(token);
         ifBlockNode.setElseNode(node);
@@ -491,8 +487,8 @@ public class SqlParser {
 
     protected void parseEndBlockComment() {
         if (!isInBlockNode()) {
-            throw new JdbcException(Message.DOMA2104, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2104, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         removeNodesTo(BlockNode.class);
         BlockNode blockNode = pop();
@@ -508,21 +504,20 @@ public class SqlParser {
         String expr = tokenType.extract(token);
         int pos = expr.indexOf(":");
         if (pos == -1) {
-            throw new JdbcException(Message.DOMA2124, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2124, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         String identifier = expr.substring(0, pos).trim();
         if (identifier.isEmpty()) {
-            throw new JdbcException(Message.DOMA2125, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2125, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
         String expression = expr.substring(pos + 1).trim();
         if (expression.isEmpty()) {
-            throw new JdbcException(Message.DOMA2126, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2126, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition());
         }
-        ForNode forNode = new ForNode(getLocation(), identifier, expression,
-                token);
+        ForNode forNode = new ForNode(getLocation(), identifier, expression, token);
         forBlockNode.setForNode(forNode);
         push(forNode);
     }
@@ -566,8 +561,7 @@ public class SqlParser {
     }
 
     protected void removeNodesTo(Class<? extends SqlNode> clazz) {
-        for (Iterator<AppendableSqlNode> it = nodeStack.iterator(); it
-                .hasNext();) {
+        for (Iterator<AppendableSqlNode> it = nodeStack.iterator(); it.hasNext();) {
             SqlNode node = it.next();
             if (clazz.isInstance(node)) {
                 break;
@@ -679,32 +673,28 @@ public class SqlParser {
                 if (matcher.lookingAt()) {
                     valueNode.setWordNode(wordNode);
                 } else {
-                    throw new JdbcException(Message.DOMA2142, sql,
-                            tokenizer.getLineNumber(), tokenizer.getPosition(),
-                            valueNode.getText(), word);
+                    throw new JdbcException(Message.DOMA2142, sql, tokenizer.getLineNumber(),
+                            tokenizer.getPosition(), valueNode.getText(), word);
                 }
             } else if (node instanceof ParensNode) {
                 ParensNode parensNode = (ParensNode) node;
                 parensNode.setAttachedWithValue(true);
                 valueNode.setParensNode(parensNode);
             } else {
-                throw new JdbcException(Message.DOMA2110, sql,
-                        tokenizer.getLineNumber(), tokenizer.getPosition(),
-                        valueNode.getText());
+                throw new JdbcException(Message.DOMA2110, sql, tokenizer.getLineNumber(),
+                        tokenizer.getPosition(), valueNode.getText());
             }
         } else if (isAfterExpandNode()) {
             ExpandNode expandNode = pop();
             if (node instanceof OtherNode) {
                 OtherNode otherNode = (OtherNode) node;
                 if (!otherNode.getOther().equals("*")) {
-                    throw new JdbcException(Message.DOMA2143, sql,
-                            tokenizer.getLineNumber(), tokenizer.getPosition(),
-                            expandNode.getText());
+                    throw new JdbcException(Message.DOMA2143, sql, tokenizer.getLineNumber(),
+                            tokenizer.getPosition(), expandNode.getText());
                 }
             } else {
-                throw new JdbcException(Message.DOMA2143, sql,
-                        tokenizer.getLineNumber(), tokenizer.getPosition(),
-                        expandNode.getText());
+                throw new JdbcException(Message.DOMA2143, sql, tokenizer.getLineNumber(),
+                        tokenizer.getPosition(), expandNode.getText());
             }
         } else {
             peek().appendNode(node);
@@ -726,30 +716,28 @@ public class SqlParser {
     }
 
     protected SqlLocation getLocation() {
-        return new SqlLocation(sql, tokenizer.getLineNumber(),
-                tokenizer.getPosition());
+        return new SqlLocation(sql, tokenizer.getLineNumber(), tokenizer.getPosition());
     }
 
     protected void validate() {
         if (isAfterValueNode()) {
             ValueNode valueNode = pop();
-            throw new JdbcException(Message.DOMA2110, sql,
-                    tokenizer.getLineNumber(), tokenizer.getPosition(),
-                    valueNode.getText());
+            throw new JdbcException(Message.DOMA2110, sql, tokenizer.getLineNumber(),
+                    tokenizer.getPosition(), valueNode.getText());
         }
         if (isInIfBlockNode()) {
             removeNodesTo(IfBlockNode.class);
             IfBlockNode ifBlockNode = pop();
             SqlLocation location = ifBlockNode.getIfNode().getLocation();
-            throw new JdbcException(Message.DOMA2133, sql,
-                    location.getLineNumber(), location.getPosition());
+            throw new JdbcException(Message.DOMA2133, sql, location.getLineNumber(),
+                    location.getPosition());
         }
         if (isInForBlockNode()) {
             removeNodesTo(ForBlockNode.class);
             ForBlockNode forBlockNode = pop();
             SqlLocation location = forBlockNode.getForNode().getLocation();
-            throw new JdbcException(Message.DOMA2134, sql,
-                    location.getLineNumber(), location.getPosition());
+            throw new JdbcException(Message.DOMA2134, sql, location.getLineNumber(),
+                    location.getPosition());
         }
     }
 
@@ -758,8 +746,8 @@ public class SqlParser {
             removeNodesTo(ParensNode.class);
             ParensNode parensNode = pop();
             SqlLocation location = parensNode.getLocation();
-            throw new JdbcException(Message.DOMA2135, sql,
-                    location.getLineNumber(), location.getPosition());
+            throw new JdbcException(Message.DOMA2135, sql, location.getLineNumber(),
+                    location.getPosition());
         }
     }
 

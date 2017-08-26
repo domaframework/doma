@@ -41,8 +41,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class CallableSqlBuilder implements
-        SqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
+public class CallableSqlBuilder
+        implements SqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
 
     protected final Config config;
 
@@ -94,14 +94,12 @@ public class CallableSqlBuilder implements
         }
         context.cutBackIfNecessary();
         context.append(")}");
-        LinkedList<SqlParameter> allParameters = new LinkedList<SqlParameter>(
-                parameters);
+        LinkedList<SqlParameter> allParameters = new LinkedList<SqlParameter>(parameters);
         if (resultParameter != null) {
             allParameters.addFirst(resultParameter);
         }
-        return new CallableSql(kind, context.getSqlBuf(),
-                context.getFormattedSqlBuf(), allParameters, sqlLogType,
-                commenter);
+        return new CallableSql(kind, context.getSqlBuf(), context.getFormattedSqlBuf(),
+                allParameters, sqlLogType, commenter);
     }
 
     @Override
@@ -109,16 +107,16 @@ public class CallableSqlBuilder implements
             throws RuntimeException {
         Wrapper<BASIC> wrapper = parameter.getWrapper();
         p.appendRawSql("?, ");
-        p.appendFormattedSql(wrapper.accept(config.getDialect()
-                .getSqlLogFormattingVisitor(), formattingFunction, null));
+        p.appendFormattedSql(wrapper.accept(config.getDialect().getSqlLogFormattingVisitor(),
+                formattingFunction, null));
         p.appendFormattedSql(", ");
         p.addParameter(parameter);
         return null;
     }
 
     @Override
-    public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter,
-            Context p) throws RuntimeException {
+    public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter, Context p)
+            throws RuntimeException {
         p.appendRawSql("?, ");
         p.appendFormattedSql("?, ");
         p.addParameter(parameter);
@@ -133,8 +131,8 @@ public class CallableSqlBuilder implements
     }
 
     @Override
-    public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter,
-            Context p) throws RuntimeException {
+    public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter, Context p)
+            throws RuntimeException {
         if (config.getDialect().supportsResultSetReturningAsOutParameter()) {
             p.appendRawSql("?, ");
             p.appendFormattedSql("?, ");
@@ -145,17 +143,15 @@ public class CallableSqlBuilder implements
 
     @Override
     public <BASIC, RESULT> Void visitSingleResultParameter(
-            SingleResultParameter<BASIC, RESULT> parameter, Context p)
-            throws RuntimeException {
+            SingleResultParameter<BASIC, RESULT> parameter, Context p) throws RuntimeException {
         p.appendRawSql("? ");
         p.appendFormattedSql("? ");
         return null;
     }
 
     @Override
-    public <ELEMENT> Void visitResultListParameter(
-            ResultListParameter<ELEMENT> parameter, Context p)
-            throws RuntimeException {
+    public <ELEMENT> Void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
+            Context p) throws RuntimeException {
         p.appendRawSql("? ");
         p.appendFormattedSql("? ");
         return null;

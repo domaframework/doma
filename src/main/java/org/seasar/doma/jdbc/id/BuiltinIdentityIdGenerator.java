@@ -32,8 +32,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
-        IdentityIdGenerator {
+public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements IdentityIdGenerator {
 
     @Override
     public boolean supportsBatch(IdGenerationConfig config) {
@@ -66,8 +65,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
     }
 
     @Override
-    public Long generatePostInsert(IdGenerationConfig config,
-            Statement statement) {
+    public Long generatePostInsert(IdGenerationConfig config, Statement statement) {
         if (config.getIdProvider().isAvailable()) {
             return null;
         }
@@ -88,14 +86,12 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
      * @throws JdbcException
      *             識別子の取得に失敗した場合
      */
-    protected long getGeneratedValue(IdGenerationConfig config,
-            Statement statement) {
+    protected long getGeneratedValue(IdGenerationConfig config, Statement statement) {
         try {
             final ResultSet resultSet = statement.getGeneratedKeys();
             return getGeneratedValue(config, resultSet);
         } catch (final SQLException e) {
-            throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc()
-                    .getName(), e);
+            throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc().getName(), e);
         }
     }
 
@@ -114,11 +110,9 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
         String catalogName = entityDesc.getCatalogName();
         String schemaName = entityDesc.getSchemaName();
         String tableName = entityDesc.getTableName(naming::apply);
-        String idColumnName = entityDesc.getGeneratedIdPropertyDesc()
-                .getColumnName(naming::apply);
-        Sql<?> sql = config.getDialect().getIdentitySelectSql(catalogName,
-                schemaName, tableName, idColumnName,
-                entityDesc.isQuoteRequired(),
+        String idColumnName = entityDesc.getGeneratedIdPropertyDesc().getColumnName(naming::apply);
+        Sql<?> sql = config.getDialect().getIdentitySelectSql(catalogName, schemaName, tableName,
+                idColumnName, entityDesc.isQuoteRequired(),
                 entityDesc.getGeneratedIdPropertyDesc().isQuoteRequired());
         return getGeneratedValue(config, sql);
     }

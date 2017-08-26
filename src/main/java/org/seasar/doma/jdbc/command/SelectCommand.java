@@ -48,8 +48,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
 
     protected final ResultSetHandler<RESULT> resultSetHandler;
 
-    public SelectCommand(SelectQuery query,
-            ResultSetHandler<RESULT> resultSetHandler) {
+    public SelectCommand(SelectQuery query, ResultSetHandler<RESULT> resultSetHandler) {
         assertNotNull(query, resultSetHandler);
         this.query = query;
         this.sql = query.getSql();
@@ -59,11 +58,9 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
     @Override
     public RESULT execute() {
         Supplier<RESULT> supplier = null;
-        Connection connection = JdbcUtil.getConnection(query.getConfig()
-                .getDataSource());
+        Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql);
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
             try {
                 log();
                 setupOptions(preparedStatement);
@@ -71,16 +68,14 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
                 supplier = executeQuery(preparedStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
-                throw new SqlExecutionException(query.getConfig()
-                        .getExceptionSqlLogType(), sql, e,
+                throw new SqlExecutionException(query.getConfig().getExceptionSqlLogType(), sql, e,
                         dialect.getRootCause(e));
             } finally {
-                close(supplier, () -> JdbcUtil.close(preparedStatement, query
-                        .getConfig().getJdbcLogger()));
+                close(supplier,
+                        () -> JdbcUtil.close(preparedStatement, query.getConfig().getJdbcLogger()));
             }
         } finally {
-            close(supplier, () -> JdbcUtil.close(connection, query.getConfig()
-                    .getJdbcLogger()));
+            close(supplier, () -> JdbcUtil.close(connection, query.getConfig().getJdbcLogger()));
         }
         return supplier.get();
     }
@@ -90,8 +85,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         logger.logSql(query.getClassName(), query.getMethodName(), sql);
     }
 
-    protected void setupOptions(PreparedStatement preparedStatement)
-            throws SQLException {
+    protected void setupOptions(PreparedStatement preparedStatement) throws SQLException {
         if (query.getFetchSize() > 0) {
             preparedStatement.setFetchSize(query.getFetchSize());
         }
@@ -103,10 +97,8 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         }
     }
 
-    protected void bindParameters(PreparedStatement preparedStatement)
-            throws SQLException {
-        PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
-                query);
+    protected void bindParameters(PreparedStatement preparedStatement) throws SQLException {
+        PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(query);
         binder.bind(preparedStatement, sql.getParameters());
     }
 
@@ -118,25 +110,21 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
             supplier = handleResultSet(resultSet);
             return supplier;
         } finally {
-            close(supplier, () -> JdbcUtil.close(resultSet, query.getConfig()
-                    .getJdbcLogger()));
+            close(supplier, () -> JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger()));
         }
     }
 
-    protected Supplier<RESULT> handleResultSet(ResultSet resultSet)
-            throws SQLException {
+    protected Supplier<RESULT> handleResultSet(ResultSet resultSet) throws SQLException {
         return resultSetHandler.handle(resultSet, query, (index, next) -> {
             if (index == -1 && !next && query.isResultEnsured()) {
                 Sql<?> sql = query.getSql();
-                throw new NoResultException(query.getConfig()
-                        .getExceptionSqlLogType(), sql);
+                throw new NoResultException(query.getConfig().getExceptionSqlLogType(), sql);
             }
         });
     }
 
     protected void close(Supplier<RESULT> supplier, Runnable closeHandler) {
-        if (supplier != null && query.isResultStream()
-                && query.getFetchType() == FetchType.LAZY) {
+        if (supplier != null && query.isResultStream() && query.getFetchType() == FetchType.LAZY) {
             RESULT result = supplier.get();
             if (result instanceof Stream) {
                 @SuppressWarnings("resource")

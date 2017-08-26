@@ -53,8 +53,8 @@ public class ScalarProviderTest extends TestCase {
 
         ScalarProvider<String, String> provider = new ScalarProvider<>(
                 () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<String>(
-                        () -> new org.seasar.doma.wrapper.StringWrapper(),
-                        false), new MySelectQuery());
+                        () -> new org.seasar.doma.wrapper.StringWrapper(), false),
+                new MySelectQuery());
         String result = provider.get(resultSet);
 
         assertEquals("hoge", result);
@@ -83,8 +83,7 @@ public class ScalarProviderTest extends TestCase {
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber
-                .getSingletonInternal();
+        HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber.getSingletonInternal();
 
         ScalarProvider<String, PhoneNumber> provider = new ScalarProvider<>(
                 () -> holderDesc.createScalar(), new MySelectQuery());
@@ -100,8 +99,7 @@ public class ScalarProviderTest extends TestCase {
         resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
-        HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber
-                .getSingletonInternal();
+        HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber.getSingletonInternal();
 
         ScalarProvider<String, Optional<PhoneNumber>> provider = new ScalarProvider<>(
                 () -> holderDesc.createOptionalScalar(), new MySelectQuery());

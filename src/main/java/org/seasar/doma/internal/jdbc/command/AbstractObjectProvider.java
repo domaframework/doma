@@ -30,15 +30,12 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <TARGET>
  *            提供する型
  */
-public abstract class AbstractObjectProvider<TARGET> implements
-        ObjectProvider<TARGET> {
+public abstract class AbstractObjectProvider<TARGET> implements ObjectProvider<TARGET> {
 
-    protected <BASIC> void fetch(ResultSet resultSet,
-            JdbcMappable<BASIC> mappable, int index,
+    protected <BASIC> void fetch(ResultSet resultSet, JdbcMappable<BASIC> mappable, int index,
             JdbcMappingVisitor jdbcMappingVisitor) throws SQLException {
         Wrapper<?> wrapper = mappable.getWrapper();
-        wrapper.accept(jdbcMappingVisitor,
-                new JdbcValueGetter(resultSet, index), mappable);
+        wrapper.accept(jdbcMappingVisitor, new JdbcValueGetter(resultSet, index), mappable);
     }
 
 }

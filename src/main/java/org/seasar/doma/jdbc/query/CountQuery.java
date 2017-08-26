@@ -56,9 +56,8 @@ public class CountQuery extends AbstractSelectQuery {
         SqlNode transformedSqlNode = config.getDialect()
                 .transformSelectSqlNodeForGettingCount(sqlNode);
         buildSql((evaluator, expander) -> {
-            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                    config, SqlKind.SELECT, null, evaluator, sqlLogType,
-                    expander);
+            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                    null, evaluator, sqlLogType, expander);
             return sqlBuilder.build(transformedSqlNode, this::comment);
         });
     }

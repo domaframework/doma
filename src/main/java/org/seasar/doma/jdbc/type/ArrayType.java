@@ -35,20 +35,18 @@ public class ArrayType extends AbstractJdbcType<Array> {
     }
 
     @Override
-    protected Array doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Array doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getArray(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Array value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Array value)
+            throws SQLException {
         preparedStatement.setArray(index, value);
     }
 
     @Override
-    protected Array doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Array doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getArray(index);
     }
 

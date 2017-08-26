@@ -28,14 +28,12 @@ import org.seasar.doma.jdbc.query.Query;
  * @author taedium
  * 
  */
-public class EntityResultListParameter<ENTITY> extends
-        AbstractResultListParameter<ENTITY> {
+public class EntityResultListParameter<ENTITY> extends AbstractResultListParameter<ENTITY> {
 
     EntityDesc<ENTITY> entityDesc;
     boolean resultMappingEnsured;
 
-    public EntityResultListParameter(EntityDesc<ENTITY> entityDesc,
-            boolean resultMappingEnsured) {
+    public EntityResultListParameter(EntityDesc<ENTITY> entityDesc, boolean resultMappingEnsured) {
         super(new ArrayList<ENTITY>());
         assertNotNull(entityDesc);
         this.entityDesc = entityDesc;
@@ -49,8 +47,7 @@ public class EntityResultListParameter<ENTITY> extends
 
     @Override
     public EntityProvider<ENTITY> createObjectProvider(Query query) {
-        return new EntityProvider<>(entityDesc, query,
-                resultMappingEnsured);
+        return new EntityProvider<>(entityDesc, query, resultMappingEnsured);
     }
 
 }

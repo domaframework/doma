@@ -38,10 +38,8 @@ import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
  * <h4>Java</h4>
  *
  * <pre>
- * List&lt;Employee&gt; employees = Arrays.asList(new Employee[] {
- *     new Employee(&quot;SMITH&quot;, 100),
- *     new Employee(&quot;ALLEN&quot;, 200)
- * });
+ * List&lt;Employee&gt; employees = Arrays
+ *         .asList(new Employee[] { new Employee(&quot;SMITH&quot;, 100), new Employee(&quot;ALLEN&quot;, 200) });
  * BatchInsertExecutor executor = BatchInsertExecutor.newInstance(config);
  * executor.batchSize(10);
  * executor.execute(employees, (emp, builder) -&gt; {
@@ -133,7 +131,7 @@ public class BatchInsertExecutor {
     public void batchSize(int batchSize) {
         query.setBatchSize(batchSize);
     }
- 
+
     /**
      * 呼び出し元のクラス名です。
      * <p>
@@ -178,14 +176,12 @@ public class BatchInsertExecutor {
      * @param <P>
      *            パラメータの型
      * @param params
-     *             1要素が1クエリのパラメータの元となる {@link java.lang.Iterable} なもの
+     *            1要素が1クエリのパラメータの元となる {@link java.lang.Iterable} なもの
      * @param buildConsumer
-     *             {@link BatchBuilder} を使って1回分のクエリを組み立てるラムダ式。
-     *             第一パラメータには params の要素が、
-     *             第二パラメータには {@link BatchBuilder} のインスタンスが渡ります。
-     * @return 更新された件数の配列。
-     *             戻り値の配列の要素の数はパラメータのparamsの要素の数と等しくなります。
-     *             配列のそれぞれの要素が更新された件数を返します。
+     *            {@link BatchBuilder} を使って1回分のクエリを組み立てるラムダ式。 第一パラメータには params
+     *            の要素が、 第二パラメータには {@link BatchBuilder} のインスタンスが渡ります。
+     * @return 更新された件数の配列。 戻り値の配列の要素の数はパラメータのparamsの要素の数と等しくなります。
+     *         配列のそれぞれの要素が更新された件数を返します。
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      * @throws UniqueConstraintException

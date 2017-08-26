@@ -30,8 +30,7 @@ public class BigDecimalWrapperTest extends TestCase {
      * 
      */
     public void testSetBigDecimalAsNumber() {
-        Number greaterThanLongMaxValue = new BigDecimal(Long.MAX_VALUE)
-                .add(BigDecimal.ONE);
+        Number greaterThanLongMaxValue = new BigDecimal(Long.MAX_VALUE).add(BigDecimal.ONE);
         BigDecimalWrapper wrapper = new BigDecimalWrapper();
         wrapper.set(greaterThanLongMaxValue);
         assertEquals(greaterThanLongMaxValue, wrapper.get());
@@ -41,8 +40,8 @@ public class BigDecimalWrapperTest extends TestCase {
      * 
      */
     public void testSetBigInteger() {
-        BigInteger greaterThanLongMaxValue = new BigDecimal(Long.MAX_VALUE)
-                .add(BigDecimal.ONE).toBigInteger();
+        BigInteger greaterThanLongMaxValue = new BigDecimal(Long.MAX_VALUE).add(BigDecimal.ONE)
+                .toBigInteger();
         BigDecimalWrapper wrapper = new BigDecimalWrapper();
         wrapper.set(greaterThanLongMaxValue);
         assertEquals(new BigDecimal(greaterThanLongMaxValue), wrapper.get());

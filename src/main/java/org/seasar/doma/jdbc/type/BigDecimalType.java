@@ -35,20 +35,19 @@ public class BigDecimalType extends AbstractJdbcType<BigDecimal> {
     }
 
     @Override
-    protected BigDecimal doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected BigDecimal doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getBigDecimal(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            BigDecimal value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, BigDecimal value)
+            throws SQLException {
         preparedStatement.setBigDecimal(index, value);
     }
 
     @Override
-    protected BigDecimal doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException {
+    protected BigDecimal doGetValue(CallableStatement callableStatement, int index)
+            throws SQLException {
         return callableStatement.getBigDecimal(index);
     }
 

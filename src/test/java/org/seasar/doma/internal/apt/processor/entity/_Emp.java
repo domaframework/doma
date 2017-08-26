@@ -93,8 +93,7 @@ public class _Emp extends AbstractEntityDesc<Emp> {
     }
 
     @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
         return null;
     }

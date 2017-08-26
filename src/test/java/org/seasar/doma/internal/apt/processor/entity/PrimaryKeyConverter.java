@@ -23,8 +23,7 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * 
  */
 @ExternalHolder
-public class PrimaryKeyConverter implements
-        HolderConverter<PrimaryKey, Integer> {
+public class PrimaryKeyConverter implements HolderConverter<PrimaryKey, Integer> {
 
     @Override
     public Integer fromHolderToValue(PrimaryKey holder) {

@@ -94,8 +94,7 @@ public class MockConnection extends MockWrapper implements Connection {
     }
 
     @Override
-    public Array createArrayOf(String typeName, Object[] elements)
-            throws SQLException {
+    public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
@@ -130,9 +129,8 @@ public class MockConnection extends MockWrapper implements Connection {
     }
 
     @Override
-    public Statement createStatement(int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability)
-            throws SQLException {
+    public Statement createStatement(int resultSetType, int resultSetConcurrency,
+            int resultSetHoldability) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
@@ -145,8 +143,7 @@ public class MockConnection extends MockWrapper implements Connection {
     }
 
     @Override
-    public Struct createStruct(String typeName, Object[] attributes)
-            throws SQLException {
+    public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
@@ -227,16 +224,15 @@ public class MockConnection extends MockWrapper implements Connection {
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability)
-            throws SQLException {
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
+            int resultSetHoldability) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType,
-            int resultSetConcurrency) throws SQLException {
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency)
+            throws SQLException {
         callableStatement.sql = sql;
         return callableStatement;
     }
@@ -249,8 +245,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
     @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability)
-            throws SQLException {
+            int resultSetConcurrency, int resultSetHoldability) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
@@ -270,8 +265,7 @@ public class MockConnection extends MockWrapper implements Connection {
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int[] columnIndexes)
-            throws SQLException {
+    public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
@@ -323,15 +317,13 @@ public class MockConnection extends MockWrapper implements Connection {
     }
 
     @Override
-    public void setClientInfo(Properties properties)
-            throws SQLClientInfoException {
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
         AssertionUtil.notYetImplemented();
 
     }
 
     @Override
-    public void setClientInfo(String name, String value)
-            throws SQLClientInfoException {
+    public void setClientInfo(String name, String value) throws SQLClientInfoException {
         AssertionUtil.notYetImplemented();
 
     }
@@ -399,8 +391,7 @@ public class MockConnection extends MockWrapper implements Connection {
     }
 
     @SuppressWarnings("all")
-    public void setNetworkTimeout(Executor executor, int milliseconds)
-            throws SQLException {
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 

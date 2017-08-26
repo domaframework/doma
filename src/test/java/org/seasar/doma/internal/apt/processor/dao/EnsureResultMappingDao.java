@@ -39,8 +39,7 @@ public interface EnsureResultMappingDao {
     Emp selectById(Integer id, SelectOptions options);
 
     @Select(ensureResultMapping = true)
-    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions options);
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions options);
 
     @Procedure
     void procedure(@ResultSet(ensureResultMapping = true) List<Emp> emp);

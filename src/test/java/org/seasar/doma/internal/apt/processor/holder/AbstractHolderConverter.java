@@ -24,8 +24,7 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * 
  */
 @ExternalHolder
-public abstract class AbstractHolderConverter implements
-        HolderConverter<ValueObject, String> {
+public abstract class AbstractHolderConverter implements HolderConverter<ValueObject, String> {
 
     @Override
     public String fromHolderToValue(ValueObject holder) {

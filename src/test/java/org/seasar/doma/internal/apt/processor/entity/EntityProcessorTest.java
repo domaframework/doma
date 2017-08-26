@@ -31,8 +31,7 @@ public class EntityProcessorTest extends AptTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         addSourcePath("src/test/java");
-        addOption(
-                "-Adoma.test=true",
+        addOption("-Adoma.test=true",
                 "-Adoma.holder.converters=org.seasar.doma.internal.apt.processor.entity.HolderConvertersProvider");
     }
 
@@ -745,8 +744,7 @@ public class EntityProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructor() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructor.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
@@ -757,8 +755,7 @@ public class EntityProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructorNotImmutable() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructorNotImmutable.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
@@ -769,8 +766,7 @@ public class EntityProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructorStaticName() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructorStaticName.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
@@ -781,8 +777,7 @@ public class EntityProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructorAccess_private() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructorAccess_private.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
@@ -793,8 +788,7 @@ public class EntityProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructorAccess_none() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructorAccess_none.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);

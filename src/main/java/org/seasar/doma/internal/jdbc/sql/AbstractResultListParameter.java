@@ -26,8 +26,7 @@ import org.seasar.doma.jdbc.SqlParameterVisitor;
  * @author taedium
  * 
  */
-public abstract class AbstractResultListParameter<ELEMENT> implements
-        ResultListParameter<ELEMENT> {
+public abstract class AbstractResultListParameter<ELEMENT> implements ResultListParameter<ELEMENT> {
 
     protected final List<ELEMENT> list;
 
@@ -57,8 +56,8 @@ public abstract class AbstractResultListParameter<ELEMENT> implements
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p)
+            throws TH {
         return visitor.visitResultListParameter(this, p);
     }
 }

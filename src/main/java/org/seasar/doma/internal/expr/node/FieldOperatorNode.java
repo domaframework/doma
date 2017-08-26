@@ -38,8 +38,7 @@ public class FieldOperatorNode implements OperatorNode {
         return PRIORITY;
     }
 
-    public FieldOperatorNode(ExpressionLocation location, String expression,
-            String fieldName) {
+    public FieldOperatorNode(ExpressionLocation location, String expression, String fieldName) {
         assertNotNull(location, fieldName);
         this.location = location;
         this.expression = expression;

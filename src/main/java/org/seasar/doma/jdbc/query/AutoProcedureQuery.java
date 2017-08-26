@@ -24,8 +24,7 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class AutoProcedureQuery extends AutoModuleQuery implements
-        ProcedureQuery {
+public class AutoProcedureQuery extends AutoModuleQuery implements ProcedureQuery {
 
     @Override
     public void prepare() {
@@ -38,8 +37,8 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
     }
 
     protected void prepareSql() {
-        CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                SqlKind.PROCEDURE, qualifiedName, parameters, sqlLogType);
+        CallableSqlBuilder builder = new CallableSqlBuilder(config, SqlKind.PROCEDURE,
+                qualifiedName, parameters, sqlLogType);
         sql = builder.build(this::comment);
     }
 

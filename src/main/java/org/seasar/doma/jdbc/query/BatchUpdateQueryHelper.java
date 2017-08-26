@@ -45,8 +45,8 @@ public class BatchUpdateQueryHelper<E> {
     protected final String[] excludedPropertyNames;
 
     public BatchUpdateQueryHelper(Config config, EntityDesc<E> entityDesc,
-            String[] includedPropertyNames, String[] excludedPropertyNames,
-            boolean versionIgnored, boolean optimisticLockExceptionSuppressed) {
+            String[] includedPropertyNames, String[] excludedPropertyNames, boolean versionIgnored,
+            boolean optimisticLockExceptionSuppressed) {
         this.config = config;
         this.entityDesc = entityDesc;
         this.versionIgnored = versionIgnored;
@@ -102,16 +102,14 @@ public class BatchUpdateQueryHelper<E> {
         return true;
     }
 
-    public void populateValues(E entity,
-            List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
+    public void populateValues(E entity, List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
             EntityPropertyDesc<E, ?> versionPropertyDesc, SqlContext context) {
         Dialect dialect = config.getDialect();
         Naming naming = config.getNaming();
         for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
             Property<E, ?> property = propertyDesc.createProperty();
             property.load(entity);
-            context.appendSql(propertyDesc.getColumnName(naming::apply,
-                    dialect::applyQuote));
+            context.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
             context.appendSql(" = ");
             context.appendParameter(property.asInParameter());
             if (propertyDesc.isVersion() && !versionIgnored) {

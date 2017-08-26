@@ -30,8 +30,7 @@ import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
  * @author taedium
  * 
  */
-public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
-        DeleteQuery {
+public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuery {
 
     protected EntityHandler<?> entityHandler;
 
@@ -80,8 +79,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void setEntityAndEntityDesc(String name, E entity,
-            EntityDesc<E> entityDesc) {
+    public <E> void setEntityAndEntityDesc(String name, E entity, EntityDesc<E> entityDesc) {
         entityHandler = new EntityHandler<E>(name, entity, entityDesc);
     }
 
@@ -89,8 +87,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         this.versionIgnored = versionIgnored;
     }
 
-    public void setOptimisticLockExceptionSuppressed(
-            boolean optimisticLockExceptionSuppressed) {
+    public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
@@ -121,8 +118,8 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         }
 
         protected void preDelete() {
-            SqlFilePreDeleteContext<E> context = new SqlFilePreDeleteContext<E>(
-                    entityDesc, method, config);
+            SqlFilePreDeleteContext<E> context = new SqlFilePreDeleteContext<E>(entityDesc, method,
+                    config);
             entityDesc.preDelete(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
@@ -131,8 +128,8 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         }
 
         protected void postDelete() {
-            SqlFilePostDeleteContext<E> context = new SqlFilePostDeleteContext<E>(
-                    entityDesc, method, config);
+            SqlFilePostDeleteContext<E> context = new SqlFilePostDeleteContext<E>(entityDesc,
+                    method, config);
             entityDesc.postDelete(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
@@ -148,20 +145,16 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         }
     }
 
-    protected static class SqlFilePreDeleteContext<E> extends
-            AbstractPreDeleteContext<E> {
+    protected static class SqlFilePreDeleteContext<E> extends AbstractPreDeleteContext<E> {
 
-        public SqlFilePreDeleteContext(EntityDesc<E> entityDesc, Method method,
-                Config config) {
+        public SqlFilePreDeleteContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
     }
 
-    protected static class SqlFilePostDeleteContext<E> extends
-            AbstractPostDeleteContext<E> {
+    protected static class SqlFilePostDeleteContext<E> extends AbstractPostDeleteContext<E> {
 
-        public SqlFilePostDeleteContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFilePostDeleteContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
     }

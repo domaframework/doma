@@ -34,14 +34,13 @@ public class DoubleType extends AbstractJdbcType<Double> {
     }
 
     @Override
-    public Double doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    public Double doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getDouble(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Double value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Double value)
+            throws SQLException {
         preparedStatement.setDouble(index, value);
     }
 

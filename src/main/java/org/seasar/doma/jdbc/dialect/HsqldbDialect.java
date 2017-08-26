@@ -46,8 +46,7 @@ public class HsqldbDialect extends StandardDialect {
      * インスタンスを構築します。
      */
     public HsqldbDialect() {
-        this(new HsqldbJdbcMappingVisitor(),
-                new HsqldbSqlLogFormattingVisitor(),
+        this(new HsqldbJdbcMappingVisitor(), new HsqldbSqlLogFormattingVisitor(),
                 new HsqldbExpressionFunctions());
     }
 
@@ -81,8 +80,8 @@ public class HsqldbDialect extends StandardDialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public HsqldbDialect(ExpressionFunctions expressionFunctions) {
-        this(new HsqldbJdbcMappingVisitor(),
-                new HsqldbSqlLogFormattingVisitor(), expressionFunctions);
+        this(new HsqldbJdbcMappingVisitor(), new HsqldbSqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -97,8 +96,7 @@ public class HsqldbDialect extends StandardDialect {
      */
     public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new HsqldbExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new HsqldbExpressionFunctions());
     }
 
     /**
@@ -130,9 +128,8 @@ public class HsqldbDialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String catalogName,
-            String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
+    public PreparedSql getIdentitySelectSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
@@ -145,13 +142,11 @@ public class HsqldbDialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
-        String rawSql = "select next value for "
-                + qualifiedSequenceName
+        String rawSql = "select next value for " + qualifiedSequenceName
                 + " from information_schema.system_tables where table_name = 'SYSTEM_TABLES'";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
                 Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
@@ -168,15 +163,13 @@ public class HsqldbDialect extends StandardDialect {
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        HsqldbPagingTransformer transformer = new HsqldbPagingTransformer(
-                offset, limit);
+        HsqldbPagingTransformer transformer = new HsqldbPagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
         return sqlNode;
     }
 
@@ -196,8 +189,7 @@ public class HsqldbDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class HsqldbJdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class HsqldbJdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
     /**
@@ -206,8 +198,7 @@ public class HsqldbDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class HsqldbSqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class HsqldbSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
     /**
@@ -216,8 +207,7 @@ public class HsqldbDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class HsqldbExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class HsqldbExpressionFunctions extends StandardExpressionFunctions {
 
         public HsqldbExpressionFunctions() {
             super();

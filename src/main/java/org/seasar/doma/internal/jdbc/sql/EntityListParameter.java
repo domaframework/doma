@@ -33,8 +33,8 @@ public class EntityListParameter<ENTITY> extends AbstractListParameter<ENTITY> {
 
     protected final boolean resultMappingEnsured;
 
-    public EntityListParameter(EntityDesc<ENTITY> entityDesc,
-            List<ENTITY> list, String name, boolean resultMappingEnsured) {
+    public EntityListParameter(EntityDesc<ENTITY> entityDesc, List<ENTITY> list, String name,
+            boolean resultMappingEnsured) {
         super(list, name);
         assertNotNull(entityDesc);
         this.entityDesc = entityDesc;
@@ -48,8 +48,7 @@ public class EntityListParameter<ENTITY> extends AbstractListParameter<ENTITY> {
 
     @Override
     public EntityProvider<ENTITY> createObjectProvider(Query query) {
-        return new EntityProvider<>(entityDesc, query,
-                resultMappingEnsured);
+        return new EntityProvider<>(entityDesc, query, resultMappingEnsured);
     }
 
 }

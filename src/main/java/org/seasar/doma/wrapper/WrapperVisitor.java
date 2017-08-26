@@ -35,13 +35,11 @@ public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
         return null;
     }
 
-    default R visitBigDecimalWrapper(BigDecimalWrapper wrapper, P p, Q q)
-            throws TH {
+    default R visitBigDecimalWrapper(BigDecimalWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitBigIntegerWrapper(BigIntegerWrapper wrapper, P p, Q q)
-            throws TH {
+    default R visitBigIntegerWrapper(BigIntegerWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
@@ -73,8 +71,7 @@ public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
         return null;
     }
 
-    default <E extends Enum<E>> R visitEnumWrapper(EnumWrapper<E> wrapper, P p,
-            Q q) throws TH {
+    default <E extends Enum<E>> R visitEnumWrapper(EnumWrapper<E> wrapper, P p, Q q) throws TH {
         return null;
     }
 
@@ -86,18 +83,15 @@ public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
         return null;
     }
 
-    default R visitLocalDateWrapper(LocalDateWrapper wrapper, P p, Q q)
-            throws TH {
+    default R visitLocalDateWrapper(LocalDateWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper, P p, Q q)
-            throws TH {
+    default R visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
-    default R visitLocalTimeWrapper(LocalTimeWrapper wrapper, P p, Q q)
-            throws TH {
+    default R visitLocalTimeWrapper(LocalTimeWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 
@@ -125,8 +119,7 @@ public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
         return null;
     }
 
-    default R visitTimestampWrapper(TimestampWrapper wrapper, P p, Q q)
-            throws TH {
+    default R visitTimestampWrapper(TimestampWrapper wrapper, P p, Q q) throws TH {
         return null;
     }
 

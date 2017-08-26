@@ -51,8 +51,7 @@ public class ScalarException extends DomaException {
      * @param args
      *            メッセージへの引数
      */
-    public ScalarException(Message messageCode, Throwable cause,
-            Object... args) {
+    public ScalarException(Message messageCode, Throwable cause, Object... args) {
         super(messageCode, cause, args);
     }
 

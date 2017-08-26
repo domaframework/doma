@@ -17,8 +17,8 @@ package example.holder;
 
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
-public class _InternationalPhoneNumber extends
-        AbstractHolderDesc<String, InternationalPhoneNumber> {
+public class _InternationalPhoneNumber
+        extends AbstractHolderDesc<String, InternationalPhoneNumber> {
 
     private static final _InternationalPhoneNumber singleton = new _InternationalPhoneNumber();
 

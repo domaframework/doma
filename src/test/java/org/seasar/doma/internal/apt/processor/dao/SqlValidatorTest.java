@@ -44,16 +44,13 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testBindVariable", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(ctx, methodElement,
-                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
-            SqlParser parser = new SqlParser(
-                    "select * from emp where name = /* name */'aaa'");
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
+                    "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("select * from emp where name = /* name */'aaa'");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -66,16 +63,13 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testBindVariable_list", List.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(ctx, methodElement,
-                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
-            SqlParser parser = new SqlParser(
-                    "select * from emp where name in /* names */('aaa')");
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
+                    "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("select * from emp where name in /* names */('aaa')");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -88,17 +82,13 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testBindVariable", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
-            SqlParser parser = new SqlParser(
-                    "select * from emp where name = /*^ name */'aaa'");
+            SqlParser parser = new SqlParser("select * from emp where name = /*^ name */'aaa'");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -111,17 +101,13 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testBindVariable_list", List.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
-            SqlParser parser = new SqlParser(
-                    "select * from emp where name in /*^ names */('aaa')");
+            SqlParser parser = new SqlParser("select * from emp where name in /*^ names */('aaa')");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -133,17 +119,13 @@ public class SqlValidatorTest extends AptTestCase {
         Class<?> target = SqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testEmbeddedVariable", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
-            SqlParser parser = new SqlParser(
-                    "select * from emp /*# orderBy */");
+            SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -156,14 +138,12 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testFor", List.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(ctx, methodElement,
-                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testFor",
+                    List.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
+                    "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where name = /*%for e : names*/ /*e*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
             SqlNode sqlNode = parser.parse();
@@ -177,14 +157,11 @@ public class SqlValidatorTest extends AptTestCase {
         Class<?> target = SqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testFor", List.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testFor",
+                    List.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where name = /*%for e : names*/ /*x*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
@@ -205,14 +182,11 @@ public class SqlValidatorTest extends AptTestCase {
         Class<?> target = SqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testFor_notIterable", Iterator.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where name = /*%for e : names*/ /*e*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
@@ -233,14 +207,11 @@ public class SqlValidatorTest extends AptTestCase {
         Class<?> target = SqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testFor_noTypeArgument", List.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where name = /*%for e : names*/ /*e*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
@@ -262,14 +233,11 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testExpand", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", true, false);
             SqlParser parser = new SqlParser(
                     "select /*%expand*/* from emp where name = /* name */'aaa'");
@@ -285,14 +253,11 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testExpand", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select /*%expand*/* from emp where name = /* name */'aaa'");
@@ -314,17 +279,13 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPopulate", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(
-                    ctx, methodElement, parameterTypeMap,
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
                     "aaa/bbbDao/ccc.sql", false, true);
-            SqlParser parser = new SqlParser(
-                    "update emp set /*%populate*/ id = id");
+            SqlParser parser = new SqlParser("update emp set /*%populate*/ id = id");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -337,16 +298,13 @@ public class SqlValidatorTest extends AptTestCase {
         addCompilationUnit(target);
         addCompilationUnit(StringWrapper.class);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPopulate", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            SqlValidator validator = new SqlValidator(ctx, methodElement,
-                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
-            SqlParser parser = new SqlParser(
-                    "update emp set /*%populate*/ id = id");
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            SqlValidator validator = new SqlValidator(ctx, methodElement, parameterTypeMap,
+                    "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("update emp set /*%populate*/ id = id");
             SqlNode sqlNode = parser.parse();
             try {
                 sqlNode.accept(validator, null);

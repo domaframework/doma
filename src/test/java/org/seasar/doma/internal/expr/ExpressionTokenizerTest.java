@@ -192,8 +192,7 @@ public class ExpressionTokenizerTest extends TestCase {
     }
 
     public void testMethodOperator() throws Exception {
-        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
-                "aaa.bbb(\"ccc\")");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb(\"ccc\")");
         assertEquals(VARIABLE, tokenizer.next());
         assertEquals("aaa", tokenizer.getToken());
         assertEquals(METHOD_OPERATOR, tokenizer.next());
@@ -229,8 +228,7 @@ public class ExpressionTokenizerTest extends TestCase {
     }
 
     public void testFunctionOperator() throws Exception {
-        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
-                "@startWith(aaa)");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("@startWith(aaa)");
         assertEquals(FUNCTION_OPERATOR, tokenizer.next());
         assertEquals("@startWith", tokenizer.getToken());
         assertEquals(OPENED_PARENS, tokenizer.next());
@@ -251,8 +249,7 @@ public class ExpressionTokenizerTest extends TestCase {
         }
     }
 
-    public void testBuiltinFunctionOperator_illegalJavaIdentifierStart()
-            throws Exception {
+    public void testBuiltinFunctionOperator_illegalJavaIdentifierStart() throws Exception {
         try {
             new ExpressionTokenizer("@!");
             fail();
@@ -263,8 +260,7 @@ public class ExpressionTokenizerTest extends TestCase {
     }
 
     public void testStaticMethodOperator() throws Exception {
-        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
-                "@java.lang.String@valueOf(aaa)");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("@java.lang.String@valueOf(aaa)");
         assertEquals(STATIC_METHOD_OPERATOR, tokenizer.next());
         assertEquals("@java.lang.String@valueOf", tokenizer.getToken());
         assertEquals(OPENED_PARENS, tokenizer.next());
@@ -276,8 +272,7 @@ public class ExpressionTokenizerTest extends TestCase {
     }
 
     public void testStaticMethodOperator_simpleClassName() throws Exception {
-        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
-                "@Aaa@valueOf(aaa)");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("@Aaa@valueOf(aaa)");
         assertEquals(STATIC_METHOD_OPERATOR, tokenizer.next());
         assertEquals("@Aaa@valueOf", tokenizer.getToken());
         assertEquals(OPENED_PARENS, tokenizer.next());
@@ -292,7 +287,6 @@ public class ExpressionTokenizerTest extends TestCase {
         ExpressionTokenizer tokenizer = new ExpressionTokenizer(
                 "@java.lang.String@CASE_INSENSITIVE_ORDER ");
         assertEquals(STATIC_FIELD_OPERATOR, tokenizer.next());
-        assertEquals("@java.lang.String@CASE_INSENSITIVE_ORDER",
-                tokenizer.getToken());
+        assertEquals("@java.lang.String@CASE_INSENSITIVE_ORDER", tokenizer.getToken());
     }
 }

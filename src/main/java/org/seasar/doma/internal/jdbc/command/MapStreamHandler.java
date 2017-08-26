@@ -30,8 +30,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * 
  * @param <RESULT>
  */
-public class MapStreamHandler<RESULT> extends
-        AbstractStreamHandler<Map<String, Object>, RESULT> {
+public class MapStreamHandler<RESULT> extends AbstractStreamHandler<Map<String, Object>, RESULT> {
 
     private final MapKeyNamingType mapKeyNamingType;
 

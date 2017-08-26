@@ -26,8 +26,8 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class Db2ForUpdateTransformer extends StandardForUpdateTransformer {
 
-    public Db2ForUpdateTransformer(SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
+    public Db2ForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
         super(forUpdateType, waitSeconds, aliases);
     }
 
@@ -38,8 +38,7 @@ public class Db2ForUpdateTransformer extends StandardForUpdateTransformer {
         }
         processed = true;
 
-        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(
-                "for update with rs");
+        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode("for update with rs");
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());

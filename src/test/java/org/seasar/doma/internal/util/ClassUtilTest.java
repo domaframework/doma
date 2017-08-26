@@ -28,8 +28,8 @@ import junit.framework.TestCase;
 public class ClassUtilTest extends TestCase {
 
     public void testGetConstructor() throws Exception {
-        Constructor<String> constructor = ClassUtil.getConstructor(
-                String.class, char[].class, int.class, int.class);
+        Constructor<String> constructor = ClassUtil.getConstructor(String.class, char[].class,
+                int.class, int.class);
         assertNotNull(constructor);
     }
 

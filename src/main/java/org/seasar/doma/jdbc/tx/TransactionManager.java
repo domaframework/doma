@@ -48,8 +48,7 @@ public interface TransactionManager {
      * @param block
      *            トランザクション内で実行する処理
      */
-    public abstract void required(TransactionIsolationLevel isolationLevel,
-            Runnable block);
+    public abstract void required(TransactionIsolationLevel isolationLevel, Runnable block);
 
     /**
      * トランザクション属性がREQUIREDであるトランザクションを実行します。
@@ -73,8 +72,8 @@ public interface TransactionManager {
      *            結果の型
      * @return 処理の結果
      */
-    public abstract <RESULT> RESULT required(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+    public abstract <RESULT> RESULT required(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier);
 
     /**
      * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
@@ -92,8 +91,7 @@ public interface TransactionManager {
      * @param block
      *            トランザクション内で実行する処理
      */
-    public abstract void requiresNew(TransactionIsolationLevel isolationLevel,
-            Runnable block);
+    public abstract void requiresNew(TransactionIsolationLevel isolationLevel, Runnable block);
 
     /**
      * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
@@ -117,8 +115,8 @@ public interface TransactionManager {
      *            結果の型
      * @return 処理の結果
      */
-    public abstract <RESULT> RESULT requiresNew(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+    public abstract <RESULT> RESULT requiresNew(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier);
 
     /**
      * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
@@ -136,8 +134,7 @@ public interface TransactionManager {
      * @param block
      *            トランザクション内で実行する処理
      */
-    public abstract void notSupported(TransactionIsolationLevel isolationLevel,
-            Runnable block);
+    public abstract void notSupported(TransactionIsolationLevel isolationLevel, Runnable block);
 
     /**
      * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
@@ -161,8 +158,8 @@ public interface TransactionManager {
      *            結果の型
      * @return 処理の結果
      */
-    public abstract <RESULT> RESULT notSupported(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+    public abstract <RESULT> RESULT notSupported(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier);
 
     /**
      * 現在のトランザクションをロールバックすることを予約します。

@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public class MapIterationHandler<RESULT> extends
-        AbstractIterationHandler<Map<String, Object>, RESULT> {
+public class MapIterationHandler<RESULT>
+        extends AbstractIterationHandler<Map<String, Object>, RESULT> {
 
     private final MapKeyNamingType mapKeyNamingType;
 

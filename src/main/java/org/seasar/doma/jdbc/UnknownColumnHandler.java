@@ -39,15 +39,13 @@ public interface UnknownColumnHandler {
      * @throws UnknownColumnException
      *             未知のカラムを許可しない場合
      */
-    default void handle(Query query, EntityDesc<?> entityDesc,
-            String unknownColumnName) {
+    default void handle(Query query, EntityDesc<?> entityDesc, String unknownColumnName) {
         Sql<?> sql = query.getSql();
         Naming naming = query.getConfig().getNaming();
         NamingType namingType = entityDesc.getNamingType();
-        throw new UnknownColumnException(query.getConfig()
-                .getExceptionSqlLogType(), unknownColumnName, naming.revert(
-                namingType, unknownColumnName), entityDesc.getEntityClass()
-                .getName(), sql.getKind(), sql.getRawSql(),
+        throw new UnknownColumnException(query.getConfig().getExceptionSqlLogType(),
+                unknownColumnName, naming.revert(namingType, unknownColumnName),
+                entityDesc.getEntityClass().getName(), sql.getKind(), sql.getRawSql(),
                 sql.getFormattedSql(), sql.getSqlFilePath());
     }
 }

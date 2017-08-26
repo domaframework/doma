@@ -31,8 +31,7 @@ public class DeleteCommand extends ModifyCommand<DeleteQuery> {
     }
 
     @Override
-    protected int executeInternal(PreparedStatement preparedStatement)
-            throws SQLException {
+    protected int executeInternal(PreparedStatement preparedStatement) throws SQLException {
         return executeUpdate(preparedStatement);
     }
 

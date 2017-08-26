@@ -35,20 +35,19 @@ public class TimestampType extends AbstractJdbcType<Timestamp> {
     }
 
     @Override
-    protected Timestamp doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Timestamp doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getTimestamp(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Timestamp value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Timestamp value)
+            throws SQLException {
         preparedStatement.setTimestamp(index, value);
     }
 
     @Override
-    protected Timestamp doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException {
+    protected Timestamp doGetValue(CallableStatement callableStatement, int index)
+            throws SQLException {
         return callableStatement.getTimestamp(index);
     }
 

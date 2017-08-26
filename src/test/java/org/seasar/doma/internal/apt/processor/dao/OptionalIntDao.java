@@ -56,17 +56,14 @@ public interface OptionalIntDao {
     <R> R selectAllAge(Collector<OptionalInt, ?, R> mapper);
 
     @org.seasar.doma.Function
-    OptionalInt getSingleResult(@In OptionalInt in,
-            @InOut Reference<OptionalInt> inout,
-            @Out Reference<OptionalInt> out,
-            @ResultSet List<OptionalInt> resultSet);
+    OptionalInt getSingleResult(@In OptionalInt in, @InOut Reference<OptionalInt> inout,
+            @Out Reference<OptionalInt> out, @ResultSet List<OptionalInt> resultSet);
 
     @org.seasar.doma.Function
     List<OptionalInt> getResultList();
 
     @Procedure
     void execute(@In OptionalInt in, @InOut Reference<OptionalInt> inout,
-            @Out Reference<OptionalInt> out,
-            @ResultSet List<OptionalInt> resultSet);
+            @Out Reference<OptionalInt> out, @ResultSet List<OptionalInt> resultSet);
 
 }

@@ -33,8 +33,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public abstract class SqlModifyQuery extends AbstractQuery implements
-        ModifyQuery {
+public abstract class SqlModifyQuery extends AbstractQuery implements ModifyQuery {
 
     protected final SqlKind kind;
 
@@ -70,10 +69,9 @@ public abstract class SqlModifyQuery extends AbstractQuery implements
 
     protected void prepareSql() {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions(),
-                config.getClassHelper());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                kind, null, evaluator, sqlLogType);
+                config.getDialect().getExpressionFunctions(), config.getClassHelper());
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, kind, null,
+                evaluator, sqlLogType);
         sql = sqlBuilder.build(sqlNode, this::comment);
     }
 

@@ -53,8 +53,7 @@ public class H2Dialect extends H212126Dialect {
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      */
     public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
-        this(jdbcMappingVisitor, new H2SqlLogFormattingVisitor(),
-                new H2ExpressionFunctions());
+        this(jdbcMappingVisitor, new H2SqlLogFormattingVisitor(), new H2ExpressionFunctions());
     }
 
     /**
@@ -65,8 +64,7 @@ public class H2Dialect extends H212126Dialect {
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
     public H2Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(new H2JdbcMappingVisitor(), sqlLogFormattingVisitor,
-                new H2ExpressionFunctions());
+        this(new H2JdbcMappingVisitor(), sqlLogFormattingVisitor, new H2ExpressionFunctions());
     }
 
     /**
@@ -76,8 +74,7 @@ public class H2Dialect extends H212126Dialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public H2Dialect(ExpressionFunctions expressionFunctions) {
-        this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
-                expressionFunctions);
+        this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(), expressionFunctions);
     }
 
     /**
@@ -92,8 +89,7 @@ public class H2Dialect extends H212126Dialect {
      */
     public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new H2ExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new H2ExpressionFunctions());
     }
 
     /**
@@ -130,11 +126,10 @@ public class H2Dialect extends H212126Dialect {
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        H2ForUpdateTransformer transformer = new H2ForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        H2ForUpdateTransformer transformer = new H2ForUpdateTransformer(forUpdateType, waitSeconds,
+                aliases);
         return transformer.transform(sqlNode);
     }
 
@@ -153,8 +148,7 @@ public class H2Dialect extends H212126Dialect {
      * @author taedium
      * 
      */
-    public static class H2SqlLogFormattingVisitor extends
-            H212126SqlLogFormattingVisitor {
+    public static class H2SqlLogFormattingVisitor extends H212126SqlLogFormattingVisitor {
     }
 
     /**
@@ -163,8 +157,7 @@ public class H2Dialect extends H212126Dialect {
      * @author taedium
      * 
      */
-    public static class H2ExpressionFunctions extends
-            H212126ExpressionFunctions {
+    public static class H2ExpressionFunctions extends H212126ExpressionFunctions {
 
         public H2ExpressionFunctions() {
             super();

@@ -66,8 +66,8 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
         assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
         assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
 
-        String dbmsSpecificPath = ScriptFileUtil.convertToDbmsSpecificPath(
-                scriptFilePath, config.getDialect());
+        String dbmsSpecificPath = ScriptFileUtil.convertToDbmsSpecificPath(scriptFilePath,
+                config.getDialect());
         scriptFileUrl = ResourceUtil.getResource(dbmsSpecificPath);
         if (scriptFileUrl != null) {
             scriptFilePath = dbmsSpecificPath;

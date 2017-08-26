@@ -23,8 +23,8 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * 
  */
 @ExternalHolder
-public class NotPersistentValueObjectConverter implements
-        HolderConverter<NotPersistentValueObject, StringBuilder> {
+public class NotPersistentValueObjectConverter
+        implements HolderConverter<NotPersistentValueObject, StringBuilder> {
 
     @Override
     public StringBuilder fromHolderToValue(NotPersistentValueObject holder) {

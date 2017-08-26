@@ -34,8 +34,7 @@ public class ForNode extends AbstractSqlNode implements SpaceStrippingNode {
 
     protected final String text;
 
-    public ForNode(SqlLocation location, String identifier, String expression,
-            String text) {
+    public ForNode(SqlLocation location, String identifier, String expression, String text) {
         assertNotNull(location, identifier, expression, text);
         this.location = location;
         this.identifier = identifier;

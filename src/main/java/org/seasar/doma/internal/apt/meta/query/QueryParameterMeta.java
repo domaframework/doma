@@ -44,8 +44,7 @@ public class QueryParameterMeta {
 
     private final CtType ctType;
 
-    public QueryParameterMeta(VariableElement element, String name,
-            CtType ctType) {
+    public QueryParameterMeta(VariableElement element, String name, CtType ctType) {
         assertNotNull(element, name, ctType);
         this.element = element;
         this.name = name;
@@ -101,14 +100,12 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitBasicCtType(BasicCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitBasicCtType(BasicCtType ctType, Void p) throws RuntimeException {
             return true;
         }
 
         @Override
-        public Boolean visitHolderCtType(HolderCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitHolderCtType(HolderCtType ctType, Void p) throws RuntimeException {
             return true;
         }
     }
@@ -126,14 +123,12 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitBasicCtType(BasicCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitBasicCtType(BasicCtType ctType, Void p) throws RuntimeException {
             return true;
         }
 
         @Override
-        public Boolean visitHolderCtType(HolderCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitHolderCtType(HolderCtType ctType, Void p) throws RuntimeException {
             return true;
         }
 
@@ -144,14 +139,12 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitEntityCtType(EntityCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
             return true;
         }
 
         @Override
-        public Boolean visitOptionalCtType(OptionalCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitOptionalCtType(OptionalCtType ctType, Void p) throws RuntimeException {
             return true;
         }
 
@@ -162,20 +155,19 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitOptionalLongCtType(OptionalLongCtType ctType,
-                Void p) throws RuntimeException {
-            return true;
-        }
-
-        @Override
-        public Boolean visitOptionalDoubleCtType(OptionalDoubleCtType ctType,
-                Void p) throws RuntimeException {
-            return true;
-        }
-
-        @Override
-        public Boolean visitIterableCtType(IterableCtType ctType, Void p)
+        public Boolean visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
                 throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitIterableCtType(IterableCtType ctType, Void p) throws RuntimeException {
             return true;
         }
 
@@ -186,8 +178,7 @@ public class QueryParameterMeta {
         }
 
         @Override
-        public Boolean visitAnyCtType(AnyCtType ctType, Void p)
-                throws RuntimeException {
+        public Boolean visitAnyCtType(AnyCtType ctType, Void p) throws RuntimeException {
             return true;
         }
     }

@@ -81,8 +81,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals(
-                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
@@ -92,8 +91,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         assertEquals(Integer.valueOf(1), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals(
-                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
                 sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());

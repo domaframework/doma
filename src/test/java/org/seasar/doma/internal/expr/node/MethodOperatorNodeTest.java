@@ -30,13 +30,10 @@ public class MethodOperatorNodeTest extends TestCase {
     protected ExpressionLocation location = new ExpressionLocation("", 0);
 
     public void testOneParameter() throws Exception {
-        MethodOperatorNode node = new MethodOperatorNode(location, ".equals",
-                "equals");
+        MethodOperatorNode node = new MethodOperatorNode(location, ".equals", "equals");
         node.setTargetObjectNode(new VariableNode(location, "hoge"));
-        CommaOperatorNode commaOperatorNode = new CommaOperatorNode(location,
-                ",");
-        commaOperatorNode.addNode(new LiteralNode(location, "\"aaa\"", "aaa",
-                String.class));
+        CommaOperatorNode commaOperatorNode = new CommaOperatorNode(location, ",");
+        commaOperatorNode.addNode(new LiteralNode(location, "\"aaa\"", "aaa", String.class));
         node.setParametersNode(commaOperatorNode);
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", new Value(String.class, "aaa"));

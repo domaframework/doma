@@ -33,7 +33,8 @@ public class ConventionsTest extends TestCase {
     public void testToFullMetaName() throws Exception {
         assertEquals("_Ccc", Conventions.toFullDescClassName("Ccc"));
         assertEquals("aaa.bbb._Ccc", Conventions.toFullDescClassName("aaa.bbb.Ccc"));
-        assertEquals("aaa.bbb._Ccc__Ddd__Eee", Conventions.toFullDescClassName("aaa.bbb.Ccc$Ddd$Eee"));
+        assertEquals("aaa.bbb._Ccc__Ddd__Eee",
+                Conventions.toFullDescClassName("aaa.bbb.Ccc$Ddd$Eee"));
     }
 
 }

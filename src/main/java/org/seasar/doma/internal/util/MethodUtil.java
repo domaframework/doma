@@ -44,8 +44,7 @@ public final class MethodUtil {
         }
     }
 
-    public static String createSignature(String methodName,
-            Class<?>[] paramTypes) {
+    public static String createSignature(String methodName, Class<?>[] paramTypes) {
         StringBuilder buf = new StringBuilder();
         buf.append(methodName);
         buf.append("(");

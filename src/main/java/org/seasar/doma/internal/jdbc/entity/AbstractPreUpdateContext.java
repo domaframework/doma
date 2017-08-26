@@ -28,19 +28,18 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
  * @author taedium
  * 
  */
-public abstract class AbstractPreUpdateContext<E> extends
-        AbstractEntityListenerContext<E> implements PreUpdateContext<E> {
+public abstract class AbstractPreUpdateContext<E> extends AbstractEntityListenerContext<E>
+        implements PreUpdateContext<E> {
 
-    protected AbstractPreUpdateContext(EntityDesc<E> entityDesc, Method method,
-            Config config) {
+    protected AbstractPreUpdateContext(EntityDesc<E> entityDesc, Method method, Config config) {
         super(entityDesc, method, config);
     }
 
     protected void validatePropertyDefined(String propertyName) {
         assertNotNull(propertyName);
         if (!isPropertyDefinedInternal(propertyName)) {
-            throw new EntityPropertyNotDefinedException(entityDesc
-                    .getEntityClass().getName(), propertyName);
+            throw new EntityPropertyNotDefinedException(entityDesc.getEntityClass().getName(),
+                    propertyName);
         }
     }
 

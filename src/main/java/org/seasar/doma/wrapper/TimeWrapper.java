@@ -54,8 +54,8 @@ public class TimeWrapper extends AbstractWrapper<Time> {
     }
 
     @Override
-    public <R, P, Q, TH extends Throwable> R accept(
-            WrapperVisitor<R, P, Q, TH> visitor, P p, Q q) throws TH {
+    public <R, P, Q, TH extends Throwable> R accept(WrapperVisitor<R, P, Q, TH> visitor, P p, Q q)
+            throws TH {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }

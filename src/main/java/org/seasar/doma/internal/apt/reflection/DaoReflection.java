@@ -45,15 +45,13 @@ public class DaoReflection extends AbstractReflection {
 
     private final boolean hasUserDefinedConfig;
 
-    DaoReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    DaoReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.config = assertNotNullValue(values, CONFIG);
         this.accessLevel = assertNotNullValue(values, ACCESS_LEVEL);
-        this.hasUserDefinedConfig = annotationMirror.getElementValues().keySet()
-                .stream()
-                .anyMatch(e -> e.getSimpleName().contentEquals(CONFIG));
+        this.hasUserDefinedConfig = annotationMirror.getElementValues().keySet().stream().anyMatch(
+                e -> e.getSimpleName().contentEquals(CONFIG));
     }
 
     public AnnotationValue getConfig() {
@@ -73,8 +71,7 @@ public class DaoReflection extends AbstractReflection {
     }
 
     public AccessLevel getAccessLevelValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(accessLevel);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(accessLevel);
         if (enumConstant == null) {
             throw new AptIllegalStateException(ACCESS_LEVEL);
         }

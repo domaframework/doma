@@ -43,8 +43,7 @@ class DiagnosticUtils {
      * @return 指定されたクラスに対する {@link Diagnostic} のリスト
      */
     public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final List<Diagnostic<? extends JavaFileObject>> diagnostics,
-            final Class<?> clazz) {
+            final List<Diagnostic<? extends JavaFileObject>> diagnostics, final Class<?> clazz) {
         assertNotNull("clazz", clazz);
         return getDiagnostics(diagnostics, clazz.getName());
     }
@@ -59,8 +58,7 @@ class DiagnosticUtils {
      * @return 指定されたクラスに対する {@link Diagnostic} のリスト
      */
     public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final List<Diagnostic<? extends JavaFileObject>> diagnostics,
-            final String className) {
+            final List<Diagnostic<? extends JavaFileObject>> diagnostics, final String className) {
         assertNotNull("className", className);
         final String name = className.replace('.', '/') + ".java";
         final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
@@ -111,8 +109,8 @@ class DiagnosticUtils {
      *         {@link Diagnostic} のリスト
      */
     public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final List<Diagnostic<? extends JavaFileObject>> diagnostics,
-            final Class<?> clazz, final javax.tools.Diagnostic.Kind kind) {
+            final List<Diagnostic<? extends JavaFileObject>> diagnostics, final Class<?> clazz,
+            final javax.tools.Diagnostic.Kind kind) {
         assertNotNull("clazz", clazz);
         assertNotNull("kind", kind);
         return getDiagnostics(diagnostics, clazz.getName(), kind);
@@ -132,8 +130,8 @@ class DiagnosticUtils {
      *         {@link Diagnostic} のリスト
      */
     public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final List<Diagnostic<? extends JavaFileObject>> diagnostics,
-            final String className, final javax.tools.Diagnostic.Kind kind) {
+            final List<Diagnostic<? extends JavaFileObject>> diagnostics, final String className,
+            final javax.tools.Diagnostic.Kind kind) {
         assertNotNull("className", className);
         assertNotNull("kind", kind);
         final String name = className.replace('.', '/') + ".java";

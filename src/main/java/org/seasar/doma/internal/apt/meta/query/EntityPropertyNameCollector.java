@@ -53,8 +53,7 @@ public class EntityPropertyNameCollector {
         for (TypeElement t = ctx.getTypes().toTypeElement(type); t != null
                 && t.asType().getKind() != TypeKind.NONE; t = ctx.getTypes()
                         .toTypeElement(t.getSuperclass())) {
-            for (VariableElement field : ElementFilter.fieldsIn(t
-                    .getEnclosedElements())) {
+            for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
                 if (isPersistent(field)) {
                     names.add(field.getSimpleName().toString());
                 }

@@ -27,8 +27,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  */
 final class FileUtil {
 
-    static String buildPath(String prefix, String suffix, String className,
-            String methodName) {
+    static String buildPath(String prefix, String suffix, String className, String methodName) {
         assertNotNull(prefix, suffix, className, methodName);
         String path = buildPath(prefix, suffix, className);
         path += "/" + methodName + suffix;
@@ -48,24 +47,21 @@ final class FileUtil {
         return path;
     }
 
-    static boolean isFile(String prefix, String suffix, File file,
-            String methodName) {
+    static boolean isFile(String prefix, String suffix, File file, String methodName) {
         assertNotNull(prefix, suffix, file, methodName);
         if (!file.isFile()) {
             return false;
         }
         String fileName = file.getName();
         return fileName.equals(methodName + suffix)
-                || fileName.startsWith(methodName + "-")
-                && fileName.endsWith(suffix);
+                || fileName.startsWith(methodName + "-") && fileName.endsWith(suffix);
     }
 
-    static String convertToDbmsSpecificPath(String prefix, String suffix,
-            String path, Dialect dialect) {
+    static String convertToDbmsSpecificPath(String prefix, String suffix, String path,
+            Dialect dialect) {
         assertNotNull(prefix, suffix, path, dialect);
         String name = dialect.getName();
-        return path.substring(0, path.length() - suffix.length()) + "-" + name
-                + suffix;
+        return path.substring(0, path.length() - suffix.length()) + "-" + name + suffix;
     }
 
 }

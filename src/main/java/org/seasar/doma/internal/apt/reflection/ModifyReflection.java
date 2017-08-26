@@ -98,8 +98,7 @@ public abstract class ModifyReflection extends AbstractReflection {
 
     private final AnnotationValue exclude;
 
-    ModifyReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    ModifyReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
 
@@ -111,8 +110,7 @@ public abstract class ModifyReflection extends AbstractReflection {
         // nullable values
         this.ignoreVersion = values.get(IGNORE_VERSION);
         this.excludeNull = values.get(EXCLUDE_NULL);
-        this.suppressOptimisticLockException = values
-                .get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
+        this.suppressOptimisticLockException = values.get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
         this.includeUnchanged = values.get(INCLUDE_UNCHANGED);
         this.include = values.get(INCLUDE);
         this.exclude = values.get(EXCLUDE);
@@ -187,8 +185,7 @@ public abstract class ModifyReflection extends AbstractReflection {
     }
 
     public SqlLogType getSqlLogValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(sqlLog);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
         if (enumConstant == null) {
             throw new AptIllegalStateException(SQL_LOG);
         }

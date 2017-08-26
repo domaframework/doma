@@ -47,8 +47,7 @@ public class EntityReflection extends AbstractReflection {
 
     private final AnnotationValue immutable;
 
-    EntityReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    EntityReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.listener = assertNotNullValue(values, LISTENER);
@@ -77,8 +76,7 @@ public class EntityReflection extends AbstractReflection {
     }
 
     public NamingType getNamingValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(naming);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(naming);
         if (enumConstant == null) {
             throw new AptIllegalStateException(NAMING);
         }

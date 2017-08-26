@@ -25,8 +25,7 @@ import java.util.Map;
 public interface EmbeddableDesc<EMBEDDABLE> {
 
     <ENTITY> List<EntityPropertyDesc<ENTITY, ?>> getEmbeddablePropertyDescs(
-            String embeddedPropertyName, Class<ENTITY> entityClass,
-            NamingType namingType);
+            String embeddedPropertyName, Class<ENTITY> entityClass, NamingType namingType);
 
     <ENTITY> EMBEDDABLE newEmbeddable(String embeddedPropertyName,
             Map<String, Property<ENTITY, ?>> __args);

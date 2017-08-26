@@ -31,8 +31,7 @@ public class ProcedureCommand extends ModuleCommand<ProcedureQuery, Void> {
     }
 
     @Override
-    protected Void executeInternal(CallableStatement callableStatement)
-            throws SQLException {
+    protected Void executeInternal(CallableStatement callableStatement) throws SQLException {
         callableStatement.execute();
         fetchParameters(callableStatement);
         return null;

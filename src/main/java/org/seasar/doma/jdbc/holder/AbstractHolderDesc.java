@@ -7,8 +7,7 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.wrapper.Wrapper;
 
-public abstract class AbstractHolderDesc<BASIC, HOLDER> implements
-        HolderDesc<BASIC, HOLDER> {
+public abstract class AbstractHolderDesc<BASIC, HOLDER> implements HolderDesc<BASIC, HOLDER> {
 
     protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
@@ -86,8 +85,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements
         }
     }
 
-    protected class OptionalHolderScalar implements
-            Scalar<BASIC, Optional<HOLDER>> {
+    protected class OptionalHolderScalar implements Scalar<BASIC, Optional<HOLDER>> {
 
         protected final Wrapper<BASIC> wrapper;
 
@@ -110,8 +108,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements
         @Override
         public Optional<HOLDER> get() {
             BASIC value = wrapper.get();
-            if (value == null
-                    && !AbstractHolderDesc.this.getBasicClass().isPrimitive()) {
+            if (value == null && !AbstractHolderDesc.this.getBasicClass().isPrimitive()) {
                 return getDefaultInternal();
             }
             return Optional.of(newHolder(value));

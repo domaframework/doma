@@ -32,8 +32,7 @@ import org.seasar.doma.message.Message;
  * @param <ENTITY>
  *            エンティティ
  */
-public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements
-        ModifyQuery {
+public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements ModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 

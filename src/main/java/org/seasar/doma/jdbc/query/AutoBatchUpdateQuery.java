@@ -81,9 +81,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void setupHelper() {
-        helper = new BatchUpdateQueryHelper<>(config, entityDesc,
-                includedPropertyNames, excludedPropertyNames, versionIgnored,
-                optimisticLockExceptionSuppressed);
+        helper = new BatchUpdateQueryHelper<>(config, entityDesc, includedPropertyNames,
+                excludedPropertyNames, versionIgnored, optimisticLockExceptionSuppressed);
     }
 
     protected void preUpdate() {
@@ -110,21 +109,18 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     protected void prepareSql() {
         Naming naming = config.getNaming();
         Dialect dialect = config.getDialect();
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.BATCH_UPDATE, sqlLogType);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.BATCH_UPDATE,
+                sqlLogType);
         builder.appendSql("update ");
-        builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
-                dialect::applyQuote));
+        builder.appendSql(entityDesc.getQualifiedTableName(naming::apply, dialect::applyQuote));
         builder.appendSql(" set ");
-        helper.populateValues(currentEntity, targetPropertyDescs,
-                versionPropertyDesc, builder);
+        helper.populateValues(currentEntity, targetPropertyDescs, versionPropertyDesc, builder);
         if (idPropertyDescs.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyDesc<ENTITY, ?> propertyDesc : idPropertyDescs) {
                 Property<ENTITY, ?> property = propertyDesc.createProperty();
                 property.load(currentEntity);
-                builder.appendSql(propertyDesc.getColumnName(naming::apply,
-                        dialect::applyQuote));
+                builder.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
                 builder.appendSql(" = ");
                 builder.appendParameter(property.asInParameter());
                 builder.appendSql(" and ");
@@ -139,8 +135,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             }
             Property<ENTITY, ?> property = versionPropertyDesc.createProperty();
             property.load(currentEntity);
-            builder.appendSql(versionPropertyDesc.getColumnName(naming::apply,
-                    dialect::applyQuote));
+            builder.appendSql(
+                    versionPropertyDesc.getColumnName(naming::apply, dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property.asInParameter());
         }
@@ -151,10 +147,8 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     @Override
     public void incrementVersions() {
         if (versionPropertyDesc != null && !versionIgnored) {
-            for (ListIterator<ENTITY> it = entities.listIterator(); it
-                    .hasNext();) {
-                ENTITY newEntity = versionPropertyDesc.increment(entityDesc,
-                        it.next());
+            for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext();) {
+                ENTITY newEntity = versionPropertyDesc.increment(entityDesc, it.next());
                 it.set(newEntity);
             }
         }
@@ -183,16 +177,13 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         this.versionIgnored |= versionIgnored;
     }
 
-    public void setOptimisticLockExceptionSuppressed(
-            boolean optimisticLockExceptionSuppressed) {
+    public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
-    protected static class AutoBatchPreUpdateContext<E> extends
-            AbstractPreUpdateContext<E> {
+    protected static class AutoBatchPreUpdateContext<E> extends AbstractPreUpdateContext<E> {
 
-        public AutoBatchPreUpdateContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public AutoBatchPreUpdateContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
 
@@ -208,11 +199,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         }
     }
 
-    protected static class AutoBatchPostUpdateContext<E> extends
-            AbstractPostUpdateContext<E> {
+    protected static class AutoBatchPostUpdateContext<E> extends AbstractPostUpdateContext<E> {
 
-        public AutoBatchPostUpdateContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public AutoBatchPostUpdateContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
 

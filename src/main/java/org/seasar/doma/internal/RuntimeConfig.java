@@ -156,8 +156,7 @@ public class RuntimeConfig implements Config {
     public EntityListenerProvider getEntityListenerProvider() {
         EntityListenerProvider provider = config.getEntityListenerProvider();
         if (provider == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getEntityListenerProvider");
+            throw new ConfigException(config.getClass().getName(), "getEntityListenerProvider");
         }
         return provider;
     }

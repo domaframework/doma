@@ -56,8 +56,7 @@ public class LocalTransactionManager implements TransactionManager {
     }
 
     @Override
-    public void required(TransactionIsolationLevel isolationLevel,
-            Runnable block) {
+    public void required(TransactionIsolationLevel isolationLevel, Runnable block) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
@@ -87,8 +86,8 @@ public class LocalTransactionManager implements TransactionManager {
         return requiredInternal(isolationLevel, supplier);
     }
 
-    protected <RESULT> RESULT requiredInternal(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+    protected <RESULT> RESULT requiredInternal(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier) {
         assertNotNull(isolationLevel, supplier);
         if (transaction.isActive()) {
             return supplier.get();
@@ -102,13 +101,11 @@ public class LocalTransactionManager implements TransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        requiresNewInternal(TransactionIsolationLevel.DEFAULT,
-                toSupplier(block));
+        requiresNewInternal(TransactionIsolationLevel.DEFAULT, toSupplier(block));
     }
 
     @Override
-    public void requiresNew(TransactionIsolationLevel isolationLevel,
-            Runnable block) {
+    public void requiresNew(TransactionIsolationLevel isolationLevel, Runnable block) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
@@ -127,8 +124,8 @@ public class LocalTransactionManager implements TransactionManager {
     }
 
     @Override
-    public <RESULT> RESULT requiresNew(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+    public <RESULT> RESULT requiresNew(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
@@ -138,8 +135,8 @@ public class LocalTransactionManager implements TransactionManager {
         return requiresNewInternal(isolationLevel, supplier);
     }
 
-    protected <RESULT> RESULT requiresNewInternal(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+    protected <RESULT> RESULT requiresNewInternal(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier) {
         assertNotNull(isolationLevel, supplier);
         if (transaction.isActive()) {
             LocalTransactionContext context = transaction.suspend();
@@ -158,13 +155,11 @@ public class LocalTransactionManager implements TransactionManager {
         if (block == null) {
             throw new DomaNullPointerException("block");
         }
-        notSupportedInternal(TransactionIsolationLevel.DEFAULT,
-                toSupplier(block));
+        notSupportedInternal(TransactionIsolationLevel.DEFAULT, toSupplier(block));
     }
 
     @Override
-    public void notSupported(TransactionIsolationLevel isolationLevel,
-            Runnable block) {
+    public void notSupported(TransactionIsolationLevel isolationLevel, Runnable block) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
@@ -183,8 +178,8 @@ public class LocalTransactionManager implements TransactionManager {
     }
 
     @Override
-    public <RESULT> RESULT notSupported(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+    public <RESULT> RESULT notSupported(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier) {
         if (isolationLevel == null) {
             throw new DomaNullPointerException("isolationLevel");
         }
@@ -194,8 +189,8 @@ public class LocalTransactionManager implements TransactionManager {
         return notSupportedInternal(isolationLevel, supplier);
     }
 
-    protected <RESULT> RESULT notSupportedInternal(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+    protected <RESULT> RESULT notSupportedInternal(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier) {
         assertNotNull(isolationLevel, supplier);
         if (transaction.isActive()) {
             LocalTransactionContext context = transaction.suspend();
@@ -237,8 +232,8 @@ public class LocalTransactionManager implements TransactionManager {
      *            結果の型
      * @return 処理の結果
      */
-    protected <RESULT> RESULT executeInTransaction(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
+    protected <RESULT> RESULT executeInTransaction(TransactionIsolationLevel isolationLevel,
+            Supplier<RESULT> supplier) {
         assertNotNull(isolationLevel, supplier);
         transaction.begin(isolationLevel);
         try {

@@ -36,21 +36,20 @@ public class BigIntegerType extends AbstractJdbcType<BigInteger> {
     }
 
     @Override
-    protected BigInteger doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected BigInteger doGetValue(ResultSet resultSet, int index) throws SQLException {
         BigDecimal decimal = resultSet.getBigDecimal(index);
         return decimal != null ? decimal.toBigInteger() : null;
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            BigInteger value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, BigInteger value)
+            throws SQLException {
         preparedStatement.setBigDecimal(index, new BigDecimal(value));
     }
 
     @Override
-    protected BigInteger doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException {
+    protected BigInteger doGetValue(CallableStatement callableStatement, int index)
+            throws SQLException {
         BigDecimal decimal = callableStatement.getBigDecimal(index);
         return decimal != null ? decimal.toBigInteger() : null;
     }

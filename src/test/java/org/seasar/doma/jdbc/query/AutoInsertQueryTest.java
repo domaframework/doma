@@ -40,8 +40,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setId(10);
         emp.setName("aaa");
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -59,8 +58,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setId(10);
         emp.setName("aaa");
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -70,8 +68,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals(
-                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
@@ -86,8 +83,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setId(10);
         emp.setName("aaa");
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -98,8 +94,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
-                sql.getRawSql());
+        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
@@ -113,8 +108,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setSalary(new BigDecimal(200));
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -125,8 +119,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
-                sql.getRawSql());
+        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
@@ -140,8 +133,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setSalary(new BigDecimal(200));
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -152,8 +144,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)",
-                sql.getRawSql());
+        assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());

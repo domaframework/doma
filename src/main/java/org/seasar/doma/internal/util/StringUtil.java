@@ -113,8 +113,7 @@ public final class StringUtil {
         return fromCamelCaseToSnakeCaseInternal(text, true);
     }
 
-    private static String fromCamelCaseToSnakeCaseInternal(String text,
-            boolean lenient) {
+    private static String fromCamelCaseToSnakeCaseInternal(String text, boolean lenient) {
         if (isNullOrEmpty(text)) {
             return text;
         }
@@ -122,8 +121,7 @@ public final class StringUtil {
         if (lenient) {
             isNotUpperCase = Character::isLowerCase;
         } else {
-            isNotUpperCase = c -> Character.isLowerCase(c)
-                    || Character.isDigit(c);
+            isNotUpperCase = c -> Character.isLowerCase(c) || Character.isDigit(c);
         }
         StringBuilder result = new StringBuilder();
         CharBuffer buf = CharBuffer.wrap(text);
@@ -176,8 +174,8 @@ public final class StringUtil {
             end--;
         }
         if (start < end) {
-            return ((start > 0) || (end < chars.length)) ? new String(chars,
-                    start, end - start) : text;
+            return ((start > 0) || (end < chars.length)) ? new String(chars, start, end - start)
+                    : text;
         }
         return "";
     }

@@ -38,20 +38,18 @@ public class PortableObjectType<T> extends AbstractJdbcType<T> {
     }
 
     @Override
-    public T doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    public T doGetValue(ResultSet resultSet, int index) throws SQLException {
         return baseType.getValue(resultSet, index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            T value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, T value)
+            throws SQLException {
         preparedStatement.setObject(index, value, this.type);
     }
 
     @Override
-    protected T doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected T doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return baseType.getValue(callableStatement, index);
     }
 

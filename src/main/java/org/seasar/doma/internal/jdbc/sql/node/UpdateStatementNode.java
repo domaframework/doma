@@ -25,8 +25,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author nakamura-to
  * @since 2.3.0
  */
-public class UpdateStatementNode extends AbstractSqlNode implements
-        WhereClauseAwareNode {
+public class UpdateStatementNode extends AbstractSqlNode implements WhereClauseAwareNode {
 
     protected UpdateClauseNode updateClauseNode;
 
@@ -65,8 +64,7 @@ public class UpdateStatementNode extends AbstractSqlNode implements
 
     @Override
     public void appendNode(SqlNode child) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "addNode");
+        throw new JdbcUnsupportedOperationException(getClass().getName(), "addNode");
 
     }
 

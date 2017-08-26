@@ -26,8 +26,7 @@ public class ConfigCtType extends AbstractCtType {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitConfigCtType(this, p);
     }
 }

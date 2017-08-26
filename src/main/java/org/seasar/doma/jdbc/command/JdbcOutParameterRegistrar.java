@@ -36,8 +36,7 @@ public class JdbcOutParameterRegistrar implements JdbcMappingFunction {
 
     protected final int index;
 
-    public JdbcOutParameterRegistrar(CallableStatement callableStatement,
-            int index) {
+    public JdbcOutParameterRegistrar(CallableStatement callableStatement, int index) {
         assertNotNull(callableStatement);
         assertTrue(index > 0, index);
         this.callableStatement = callableStatement;
@@ -45,8 +44,7 @@ public class JdbcOutParameterRegistrar implements JdbcMappingFunction {
     }
 
     @Override
-    public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
-            throws SQLException {
+    public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType) throws SQLException {
         if (jdbcType == null) {
             throw new DomaNullPointerException("jdbcType");
         }

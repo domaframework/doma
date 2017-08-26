@@ -30,8 +30,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 class BuildingHelper {
 
-    private static final String lineSeparator = System
-            .getProperty("line.separator");
+    private static final String lineSeparator = System.getProperty("line.separator");
 
     private final LinkedList<Item> items = new LinkedList<Item>();
 

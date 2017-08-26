@@ -35,8 +35,7 @@ public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
         return blobFactoryReflection;
     }
 
-    public void setBlobFactoryReflection(
-            BlobFactoryReflection blobFactoryReflection) {
+    public void setBlobFactoryReflection(BlobFactoryReflection blobFactoryReflection) {
         this.blobFactoryReflection = blobFactoryReflection;
     }
 

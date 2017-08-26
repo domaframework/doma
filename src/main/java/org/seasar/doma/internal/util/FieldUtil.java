@@ -39,8 +39,7 @@ public final class FieldUtil {
         }
     }
 
-    public static void set(Field field, Object target, Object value)
-            throws WrapException {
+    public static void set(Field field, Object target, Object value) throws WrapException {
         assertNotNull(field);
         try {
             field.set(target, value);
@@ -51,8 +50,7 @@ public final class FieldUtil {
         }
     }
 
-    public static void setAccessible(Field field, boolean flag)
-            throws WrapException {
+    public static void setAccessible(Field field, boolean flag) throws WrapException {
         assertNotNull(field);
         try {
             field.setAccessible(flag);

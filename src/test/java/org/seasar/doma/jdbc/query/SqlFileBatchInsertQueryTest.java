@@ -47,12 +47,10 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         emp2.setName("bbb");
         emp2.setVersion(200);
 
-        SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(
-                Emp.class);
+        SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -75,12 +73,10 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         emp2.setSalary(new BigDecimal(2000));
         emp2.setVersion(200);
 
-        SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(
-                Emp.class);
+        SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -89,8 +85,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("insert into emp (id, name, salary) values (?, ?, ?)",
-                sql.getRawSql());
+        assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
@@ -98,8 +93,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         assertNull(parameters.get(2).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("insert into emp (id, name, salary) values (?, ?, ?)",
-                sql.getRawSql());
+        assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());

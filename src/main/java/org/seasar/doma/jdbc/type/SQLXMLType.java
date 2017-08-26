@@ -35,14 +35,13 @@ public class SQLXMLType extends AbstractJdbcType<SQLXML> {
     }
 
     @Override
-    protected SQLXML doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected SQLXML doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getSQLXML(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            SQLXML value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, SQLXML value)
+            throws SQLException {
         preparedStatement.setSQLXML(index, value);
     }
 

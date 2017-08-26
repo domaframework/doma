@@ -58,8 +58,7 @@ public class PostgresDialect extends StandardDialect {
      * インスタンスを構築します。
      */
     public PostgresDialect() {
-        this(new PostgresJdbcMappingVisitor(),
-                new PostgresSqlLogFormattingVisitor(),
+        this(new PostgresJdbcMappingVisitor(), new PostgresSqlLogFormattingVisitor(),
                 new PostgresExpressionFunctions());
     }
 
@@ -93,8 +92,8 @@ public class PostgresDialect extends StandardDialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public PostgresDialect(ExpressionFunctions expressionFunctions) {
-        this(new PostgresJdbcMappingVisitor(),
-                new PostgresSqlLogFormattingVisitor(), expressionFunctions);
+        this(new PostgresJdbcMappingVisitor(), new PostgresSqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -109,8 +108,7 @@ public class PostgresDialect extends StandardDialect {
      */
     public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new PostgresExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new PostgresExpressionFunctions());
     }
 
     /**
@@ -137,18 +135,16 @@ public class PostgresDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        PostgresForUpdateTransformer transformer = new PostgresForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        PostgresForUpdateTransformer transformer = new PostgresForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        PostgresPagingTransformer transformer = new PostgresPagingTransformer(
-                offset, limit);
+        PostgresPagingTransformer transformer = new PostgresPagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
@@ -162,18 +158,16 @@ public class PostgresDialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String catalogName,
-            String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
+    public PreparedSql getIdentitySelectSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }
-        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(
-        		catalogName, schemaName, tableName, columnName,
-        		isQuoteRequired, isIdColumnQuoteRequired);
+        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(catalogName,
+                schemaName, tableName, columnName, isQuoteRequired, isIdColumnQuoteRequired);
         StringBuilder buf = new StringBuilder(64);
         buf.append("select currval(");
         buf.append(identitySeqFuncExpr);
@@ -184,9 +178,8 @@ public class PostgresDialect extends StandardDialect {
     }
 
     @Override
-    public Sql<?> getIdentityReservationSql(String catalogName,
-            String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, boolean isIdColumnQuoteRequired,
+    public Sql<?> getIdentityReservationSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired,
             int reservationSize) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
@@ -194,9 +187,8 @@ public class PostgresDialect extends StandardDialect {
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }
-        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(
-        		catalogName, schemaName, tableName, columnName,
-        		isQuoteRequired, isIdColumnQuoteRequired);
+        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(catalogName,
+                schemaName, tableName, columnName, isQuoteRequired, isIdColumnQuoteRequired);
         StringBuilder buf = new StringBuilder(64);
         buf.append("select nextval(");
         buf.append(identitySeqFuncExpr);
@@ -208,19 +200,18 @@ public class PostgresDialect extends StandardDialect {
                 Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
 
-    protected String createIdentitySequenceFunctionExpression(String catalogName,
-            String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
+    protected String createIdentitySequenceFunctionExpression(String catalogName, String schemaName,
+            String tableName, String columnName, boolean isQuoteRequired,
+            boolean isIdColumnQuoteRequired) {
         String qualifiedTableName = DatabaseObjectUtil.getQualifiedName(
-                isQuoteRequired ? this::applyQuote : Function.identity(),
-                catalogName, schemaName, tableName);
+                isQuoteRequired ? this::applyQuote : Function.identity(), catalogName, schemaName,
+                tableName);
         String colName = isIdColumnQuoteRequired ? columnName : columnName.toLowerCase();
         return "pg_catalog.pg_get_serial_sequence('" + qualifiedTableName + "', '" + colName + "')";
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
@@ -245,10 +236,8 @@ public class PostgresDialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
-        return type == SelectForUpdateType.NORMAL
-                || type == SelectForUpdateType.NOWAIT;
+    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
+        return type == SelectForUpdateType.NORMAL || type == SelectForUpdateType.NOWAIT;
     }
 
     @Override
@@ -285,8 +274,7 @@ public class PostgresDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class PostgresJdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class PostgresJdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
     /**
@@ -295,8 +283,7 @@ public class PostgresDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class PostgresSqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class PostgresSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
     /**
@@ -305,8 +292,7 @@ public class PostgresDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class PostgresExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class PostgresExpressionFunctions extends StandardExpressionFunctions {
 
         public PostgresExpressionFunctions() {
             super();
@@ -328,8 +314,7 @@ public class PostgresDialect extends StandardDialect {
      * @author taedium
      * @since 1.7.0
      */
-    public static class PostgresScriptBlockContext implements
-            ScriptBlockContext {
+    public static class PostgresScriptBlockContext implements ScriptBlockContext {
 
         protected boolean inBlock;
 

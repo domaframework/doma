@@ -44,9 +44,9 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * 
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
- * <li> {@link ScriptFileNotFoundException} スクリプトファイルが見つからなかった場合
- * <li> {@link ScriptException} スクリプトファイルの実行中に例外が発生した場合
- * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
+ * <li>{@link ScriptFileNotFoundException} スクリプトファイルが見つからなかった場合
+ * <li>{@link ScriptException} スクリプトファイルの実行中に例外が発生した場合
+ * <li>{@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
  * 
  * @author taedium

@@ -48,8 +48,7 @@ public class ColumnReflection extends AbstractReflection {
 
     private final AnnotationValue quote;
 
-    ColumnReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    ColumnReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.name = assertNotNullValue(values, NAME);

@@ -28,6 +28,5 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * 
  */
 public interface SqlLogFormattingVisitor
-        extends
-        WrapperVisitor<String, SqlLogFormattingFunction, Void, RuntimeException> {
+        extends WrapperVisitor<String, SqlLogFormattingFunction, Void, RuntimeException> {
 }

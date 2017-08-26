@@ -91,8 +91,7 @@ public interface EntityDesc<ENTITY> {
      * @return 完全修飾されたテーブル名
      * @since 2.2.0
      */
-    String getQualifiedTableName(
-            BiFunction<NamingType, String, String> namingFunction,
+    String getQualifiedTableName(BiFunction<NamingType, String, String> namingFunction,
             Function<String, String> quoteFunction);
 
     /**

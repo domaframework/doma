@@ -38,14 +38,12 @@ public class PropertyFieldTest extends TestCase {
     }
 
     public void testConstructor_nestedPath() throws Exception {
-        PropertyField<Person> path = new PropertyField<>("address.city",
-                Person.class);
+        PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
         assertEquals(2, path.fields.size());
     }
 
     public void testConstructor_nestedParentPath() throws Exception {
-        PropertyField<Person> path = new PropertyField<>("address.kind",
-                Person.class);
+        PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
         assertEquals(2, path.fields.size());
     }
 
@@ -66,23 +64,20 @@ public class PropertyFieldTest extends TestCase {
     public void testGetValue_nestedPath() throws Exception {
         Person person = new Person();
         person.address = new Address("island", "Tokyo", "Yaesu");
-        PropertyField<Person> path = new PropertyField<>("address.city",
-                Person.class);
+        PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
         assertEquals("Tokyo", path.getValue(person));
     }
 
     public void testGetValue_nestedPath_null() throws Exception {
         Person person = new Person();
-        PropertyField<Person> path = new PropertyField<>("address.city",
-                Person.class);
+        PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
         assertNull(path.getValue(person));
     }
 
     public void testGetValue_nestedParentPath() throws Exception {
         Person person = new Person();
         person.address = new Address("island", "Tokyo", "Yaesu");
-        PropertyField<Person> path = new PropertyField<>("address.kind",
-                Person.class);
+        PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
         assertEquals("island", path.getValue(person));
     }
 
@@ -102,8 +97,7 @@ public class PropertyFieldTest extends TestCase {
 
     public void testSetValue_nestedPath() throws Exception {
         Person person = new Person();
-        PropertyField<Person> path = new PropertyField<>("address.city",
-                Person.class);
+        PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
         try {
             path.setValue(person, "Kyoto");
             fail();
@@ -113,8 +107,7 @@ public class PropertyFieldTest extends TestCase {
 
     public void testSetValue_nestedParentPath() throws Exception {
         Person person = new Person();
-        PropertyField<Person> path = new PropertyField<>("address.kind",
-                Person.class);
+        PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
         try {
             path.setValue(person, "island");
             fail();

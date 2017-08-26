@@ -37,8 +37,7 @@ public class ScriptCommandTest extends TestCase {
         query.setConfig(new MockConfig());
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));
         query.setBlockDelimiter("");
         query.prepare();
         query.setSqlLogType(SqlLogType.FORMATTED);
@@ -61,8 +60,7 @@ public class ScriptCommandTest extends TestCase {
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));
         query.setBlockDelimiter("");
         query.setHaltOnError(true);
         query.setSqlLogType(SqlLogType.FORMATTED);

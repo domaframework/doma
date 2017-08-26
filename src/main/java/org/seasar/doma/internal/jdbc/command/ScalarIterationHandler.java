@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public class ScalarIterationHandler<BASIC, CONTAINER, RESULT> extends
-        AbstractIterationHandler<CONTAINER, RESULT> {
+public class ScalarIterationHandler<BASIC, CONTAINER, RESULT>
+        extends AbstractIterationHandler<CONTAINER, RESULT> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
@@ -40,8 +40,7 @@ public class ScalarIterationHandler<BASIC, CONTAINER, RESULT> extends
     }
 
     @Override
-    protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(
-            SelectQuery query) {
+    protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(SelectQuery query) {
         return new ScalarProvider<>(supplier, query);
     }
 

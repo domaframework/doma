@@ -59,8 +59,7 @@ class LocalTransactionConnection implements Connection {
      * @param connection
      *            コネクション
      */
-    public LocalTransactionConnection(Connection connection,
-            int preservedTransactionIsolation) {
+    public LocalTransactionConnection(Connection connection, int preservedTransactionIsolation) {
         assertNotNull(connection);
         assertTrue(!(connection instanceof LocalTransactionConnection));
         this.connection = connection;
@@ -96,8 +95,7 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public Array createArrayOf(String typeName, Object[] elements)
-            throws SQLException {
+    public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
         return connection.createArrayOf(typeName, elements);
     }
 
@@ -127,9 +125,8 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public Statement createStatement(int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability)
-            throws SQLException {
+    public Statement createStatement(int resultSetType, int resultSetConcurrency,
+            int resultSetHoldability) throws SQLException {
         return connection.createStatement(resultSetType, resultSetConcurrency,
                 resultSetHoldability);
     }
@@ -141,8 +138,7 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public Struct createStruct(String typeName, Object[] attributes)
-            throws SQLException {
+    public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
         return connection.createStruct(typeName, attributes);
     }
 
@@ -223,16 +219,15 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability)
-            throws SQLException {
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
+            int resultSetHoldability) throws SQLException {
         return connection.prepareCall(sql, resultSetType, resultSetConcurrency,
                 resultSetHoldability);
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType,
-            int resultSetConcurrency) throws SQLException {
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency)
+            throws SQLException {
         return connection.prepareCall(sql, resultSetType, resultSetConcurrency);
     }
 
@@ -243,17 +238,15 @@ class LocalTransactionConnection implements Connection {
 
     @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability)
-            throws SQLException {
-        return connection.prepareStatement(sql, resultSetType,
-                resultSetConcurrency, resultSetHoldability);
+            int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        return connection.prepareStatement(sql, resultSetType, resultSetConcurrency,
+                resultSetHoldability);
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType,
             int resultSetConcurrency) throws SQLException {
-        return connection.prepareStatement(sql, resultSetType,
-                resultSetConcurrency);
+        return connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
     }
 
     @Override
@@ -263,8 +256,7 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int[] columnIndexes)
-            throws SQLException {
+    public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
         return connection.prepareStatement(sql, columnIndexes);
     }
 
@@ -305,14 +297,12 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public void setClientInfo(Properties properties)
-            throws SQLClientInfoException {
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
         connection.setClientInfo(properties);
     }
 
     @Override
-    public void setClientInfo(String name, String value)
-            throws SQLClientInfoException {
+    public void setClientInfo(String name, String value) throws SQLClientInfoException {
         connection.setClientInfo(name, value);
     }
 
@@ -374,8 +364,7 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public void setNetworkTimeout(Executor executor, int milliseconds)
-            throws SQLException {
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
         connection.setNetworkTimeout(executor, milliseconds);
     }
 

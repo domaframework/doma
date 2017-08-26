@@ -57,8 +57,7 @@ public class EntityIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
@@ -66,14 +65,12 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Emp, Integer> handler = new EntityIterationHandler<>(
-                _Emp.getSingletonInternal(),
-                new IterationCallback<Emp, Integer>() {
+                _Emp.getSingletonInternal(), new IterationCallback<Emp, Integer>() {
 
                     private int count;
 
                     @Override
-                    public Integer iterate(Emp target,
-                            IterationContext iterationContext) {
+                    public Integer iterate(Emp target, IterationContext iterationContext) {
                         count++;
                         return count;
                     }
@@ -94,8 +91,7 @@ public class EntityIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);
@@ -103,14 +99,12 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Emp, Integer> handler = new EntityIterationHandler<>(
-                _Emp.getSingletonInternal(),
-                new IterationCallback<Emp, Integer>() {
+                _Emp.getSingletonInternal(), new IterationCallback<Emp, Integer>() {
 
                     private int count;
 
                     @Override
-                    public Integer iterate(Emp target,
-                            IterationContext iterationContext) {
+                    public Integer iterate(Emp target, IterationContext iterationContext) {
                         iterationContext.exit();
                         count++;
                         return count;

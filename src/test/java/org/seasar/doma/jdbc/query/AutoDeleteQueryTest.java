@@ -37,8 +37,7 @@ public class AutoDeleteQueryTest extends TestCase {
     public void testPrepare() throws Exception {
         Emp emp = new Emp();
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -57,8 +56,7 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -68,13 +66,11 @@ public class AutoDeleteQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("delete from EMP where ID = ? and VERSION = ?",
-                sql.getRawSql());
+        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
         assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
     }
 
     public void testOption_ignoreVersion() throws Exception {
@@ -83,8 +79,7 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);

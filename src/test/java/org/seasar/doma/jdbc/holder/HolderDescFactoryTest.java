@@ -31,13 +31,12 @@ public class HolderDescFactoryTest extends TestCase {
     };
 
     public void testGetHolderDesc() throws Exception {
-        HolderDesc<String, PhoneNumber> desc = HolderDescFactory.getHolderDesc(
-                PhoneNumber.class, classHelper);
+        HolderDesc<String, PhoneNumber> desc = HolderDescFactory.getHolderDesc(PhoneNumber.class,
+                classHelper);
         assertNotNull(desc);
     }
 
-    public void testGetHolderDesc_DomaIllegalArgumentException()
-            throws Exception {
+    public void testGetHolderDesc_DomaIllegalArgumentException() throws Exception {
         try {
             HolderDescFactory.getHolderDesc(Object.class, classHelper);
             fail();
@@ -46,8 +45,7 @@ public class HolderDescFactoryTest extends TestCase {
         }
     }
 
-    public void testGetHolderType_HolderTypeNotFoundException()
-            throws Exception {
+    public void testGetHolderType_HolderTypeNotFoundException() throws Exception {
         try {
             HolderDescFactory.getHolderDesc(Money.class, classHelper);
             fail();

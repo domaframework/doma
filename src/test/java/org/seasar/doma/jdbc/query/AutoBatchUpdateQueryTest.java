@@ -91,11 +91,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(5, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertTrue(parameters.get(1).getWrapper().get() == null);
-        assertEquals(Integer.valueOf(100),
-                parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(2).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(3).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(4).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(4).getWrapper().get());
 
         sql = query.getSqls().get(1);
         assertEquals(
@@ -105,11 +103,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(5, parameters.size());
         assertTrue(parameters.get(0).getWrapper().get() == null);
         assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-        assertEquals(Integer.valueOf(200),
-                parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(200), parameters.get(2).getWrapper().get());
         assertEquals(Integer.valueOf(20), parameters.get(3).getWrapper().get());
-        assertEquals(Integer.valueOf(200),
-                parameters.get(4).getWrapper().get());
+        assertEquals(Integer.valueOf(200), parameters.get(4).getWrapper().get());
     }
 
     public void testOption_ignoreVersion() throws Exception {
@@ -135,27 +131,23 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals(
-                "update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?",
+        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?",
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertNull(parameters.get(1).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(2).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals(
-                "update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?",
+        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?",
                 sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertNull(parameters.get(0).getWrapper().get());
         assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-        assertEquals(Integer.valueOf(200),
-                parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(200), parameters.get(2).getWrapper().get());
         assertEquals(Integer.valueOf(20), parameters.get(3).getWrapper().get());
     }
 
@@ -182,30 +174,24 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals(
-                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(3).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals(
-                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertNull(parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(200),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(200), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(20), parameters.get(2).getWrapper().get());
-        assertEquals(Integer.valueOf(200),
-                parameters.get(3).getWrapper().get());
+        assertEquals(Integer.valueOf(200), parameters.get(3).getWrapper().get());
     }
 
     public void testOption_exclude() throws Exception {
@@ -231,30 +217,24 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals(
-                "update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(3).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals(
-                "update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
                 sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertNull(parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(200),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(200), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(20), parameters.get(2).getWrapper().get());
-        assertEquals(Integer.valueOf(200),
-                parameters.get(3).getWrapper().get());
+        assertEquals(Integer.valueOf(200), parameters.get(3).getWrapper().get());
     }
 
     public void testIsExecutable() throws Exception {

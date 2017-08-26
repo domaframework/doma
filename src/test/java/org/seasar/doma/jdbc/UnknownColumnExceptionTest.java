@@ -24,9 +24,8 @@ import junit.framework.TestCase;
 public class UnknownColumnExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        UnknownColumnException e = new UnknownColumnException(
-                SqlLogType.FORMATTED, "aaa", "bbb", "ccc", SqlKind.SELECT,
-                "ddd", "eee", "fff");
+        UnknownColumnException e = new UnknownColumnException(SqlLogType.FORMATTED, "aaa", "bbb",
+                "ccc", SqlKind.SELECT, "ddd", "eee", "fff");
         System.out.println(e.getMessage());
         assertEquals("aaa", e.getColumnName());
         assertEquals("bbb", e.getExpectedPropertyName());

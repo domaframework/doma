@@ -37,8 +37,7 @@ class AssertionUtils {
      * @throws AssertionError
      *             パラメータが {@code null} の場合
      */
-    public static void assertNotNull(final String name, final Object param)
-            throws AssertionError {
+    public static void assertNotNull(final String name, final Object param) throws AssertionError {
         if (param == null) {
             throw new AssertionError(name + "must not be null");
         }
@@ -54,8 +53,8 @@ class AssertionUtils {
      * @throws AssertionError
      *             文字列が {@code null} または場合
      */
-    public static void assertNotEmpty(final String name,
-            final CharSequence string) throws AssertionError {
+    public static void assertNotEmpty(final String name, final CharSequence string)
+            throws AssertionError {
         if (string == null) {
             throw new AssertionError(name + "must not be null");
         }
@@ -99,8 +98,8 @@ class AssertionUtils {
      * @throws AssertionError
      *             配列が {@code null} または空の場合
      */
-    public static void assertNotEmpty(final String name,
-            final Collection<?> collection) throws AssertionError {
+    public static void assertNotEmpty(final String name, final Collection<?> collection)
+            throws AssertionError {
         if (collection == null) {
             throw new AssertionError(name + " must not be null");
         }
@@ -126,11 +125,9 @@ class AssertionUtils {
      * @throws AssertionError
      *             期待する値が実際の値と異なった場合
      */
-    public static void assertEquals(final int expected, final int actual)
-            throws AssertionError {
+    public static void assertEquals(final int expected, final int actual) throws AssertionError {
         if (expected != actual) {
-            throw new AssertionError("expected <" + expected + ">, but was <"
-                    + actual + ">");
+            throw new AssertionError("expected <" + expected + ">, but was <" + actual + ">");
         }
     }
 
@@ -144,11 +141,9 @@ class AssertionUtils {
      * @throws AssertionError
      *             期待する値が実際の値と異なった場合
      */
-    public static void assertEquals(final long expected, final long actual)
-            throws AssertionError {
+    public static void assertEquals(final long expected, final long actual) throws AssertionError {
         if (expected != actual) {
-            throw new AssertionError("expected <" + expected + ">, but was <"
-                    + actual + ">");
+            throw new AssertionError("expected <" + expected + ">, but was <" + actual + ">");
         }
     }
 

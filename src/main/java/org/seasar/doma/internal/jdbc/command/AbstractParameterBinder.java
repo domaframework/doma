@@ -35,11 +35,9 @@ import org.seasar.doma.wrapper.Wrapper;
 public abstract class AbstractParameterBinder<STATEMENT extends PreparedStatement, PARAMETER extends SqlParameter>
         implements ParameterBinder<STATEMENT, PARAMETER> {
 
-    protected <BASIC> void bindInParameter(STATEMENT statement,
-            JdbcMappable<BASIC> parameter, int index,
-            JdbcMappingVisitor jdbcMappingVisitor) throws SQLException {
+    protected <BASIC> void bindInParameter(STATEMENT statement, JdbcMappable<BASIC> parameter,
+            int index, JdbcMappingVisitor jdbcMappingVisitor) throws SQLException {
         Wrapper<?> wrapper = parameter.getWrapper();
-        wrapper.accept(jdbcMappingVisitor,
-                new JdbcValueSetter(statement, index), parameter);
+        wrapper.accept(jdbcMappingVisitor, new JdbcValueSetter(statement, index), parameter);
     }
 }

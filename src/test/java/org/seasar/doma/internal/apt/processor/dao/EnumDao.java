@@ -32,8 +32,7 @@ public interface EnumDao {
     MyEnum selectById(MyEnum id, SelectOptions options);
 
     @Select
-    List<MyEnum> selectByNameAndSalary(MyEnum name, MyEnum salary,
-            SelectOptions options);
+    List<MyEnum> selectByNameAndSalary(MyEnum name, MyEnum salary, SelectOptions options);
 
     public enum MyEnum {
     }

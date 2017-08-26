@@ -36,6 +36,6 @@ public interface SqlFileSelectMapDao {
     Map<String, Object> selectById(Integer id, SelectOptions options);
 
     @Select
-    List<Map<String, Object>> selectByNameAndSalary(String name,
-            BigDecimal salary, SelectOptions options);
+    List<Map<String, Object>> selectByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions options);
 }

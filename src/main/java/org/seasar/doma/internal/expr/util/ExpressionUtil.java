@@ -29,8 +29,7 @@ public final class ExpressionUtil {
 
     public static boolean isExpressionIdentifierStart(char c) {
         return Character.isJavaIdentifierStart(c) || Character.isWhitespace(c)
-                || c == STRING_LITERAL_QUOTE || c == CHAR_LITERAL_QUOTE
-                || c == FUNCTION_OPERATOR;
+                || c == STRING_LITERAL_QUOTE || c == CHAR_LITERAL_QUOTE || c == FUNCTION_OPERATOR;
     }
 
 }

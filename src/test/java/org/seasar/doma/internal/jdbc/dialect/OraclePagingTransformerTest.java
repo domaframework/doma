@@ -37,8 +37,8 @@ public class OraclePagingTransformerTest extends TestCase {
         OraclePagingTransformer transformer = new OraclePagingTransformer(5, 10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
@@ -46,11 +46,10 @@ public class OraclePagingTransformerTest extends TestCase {
     public void testOffsetLimit_forUpdate() throws Exception {
         String expected = "select * from ( select temp_.*, rownum doma_rownumber_ from ( select * from emp order by emp.id  ) temp_ ) where doma_rownumber_ > 5 and doma_rownumber_ <= 15 for update";
         OraclePagingTransformer transformer = new OraclePagingTransformer(5, 10);
-        SqlParser parser = new SqlParser(
-                "select * from emp order by emp.id for update");
+        SqlParser parser = new SqlParser("select * from emp order by emp.id for update");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
@@ -60,20 +59,19 @@ public class OraclePagingTransformerTest extends TestCase {
         OraclePagingTransformer transformer = new OraclePagingTransformer(5, -1);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
 
     public void testLimitOnly() throws Exception {
         String expected = "select * from ( select temp_.*, rownum doma_rownumber_ from ( select * from emp order by emp.id ) temp_ ) where doma_rownumber_ <= 10";
-        OraclePagingTransformer transformer = new OraclePagingTransformer(-1,
-                10);
+        OraclePagingTransformer transformer = new OraclePagingTransformer(-1, 10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }

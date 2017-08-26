@@ -38,8 +38,7 @@ public class CreateCommand<RESULT> implements Command<RESULT> {
 
     @Override
     public RESULT execute() {
-        Connection connection = JdbcUtil.getConnection(query.getConfig()
-                .getDataSource());
+        Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
         try {
             return query.create(connection);
         } catch (SQLException e) {

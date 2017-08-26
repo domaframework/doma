@@ -41,8 +41,8 @@ public class BuiltinSequenceIdGenerator extends AbstractPreGenerateIdGenerator
 
     @Override
     protected long getNewInitialValue(IdGenerationConfig config) {
-        Sql<?> sql = config.getDialect().getSequenceNextValSql(
-                qualifiedSequenceName, allocationSize);
+        Sql<?> sql = config.getDialect().getSequenceNextValSql(qualifiedSequenceName,
+                allocationSize);
         return getGeneratedValue(config, sql);
     }
 

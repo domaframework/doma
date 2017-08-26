@@ -39,8 +39,8 @@ public class Mssql2008ForUpdateTransformerTest extends TestCase {
                 SelectForUpdateType.NORMAL, 0);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
@@ -52,13 +52,11 @@ public class Mssql2008ForUpdateTransformerTest extends TestCase {
         SqlParser parser = new SqlParser(original);
         SqlNode originalSqlNode = parser.parse();
         SqlNode sqlNode = transformer.transform(originalSqlNode);
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
-        sqlBuilder.build(sqlNode, Function.identity());
-        sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
                 SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder
-                .build(originalSqlNode, Function.identity());
+        sqlBuilder.build(sqlNode, Function.identity());
+        sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(), SqlKind.SELECT, "dummyPath");
+        PreparedSql sql = sqlBuilder.build(originalSqlNode, Function.identity());
         assertEquals(original, sql.getRawSql());
     }
 
@@ -68,8 +66,8 @@ public class Mssql2008ForUpdateTransformerTest extends TestCase {
                 SelectForUpdateType.NOWAIT, 0);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }

@@ -21,8 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
  * @author taedium
  * 
  */
-public abstract class AbstractComparisonOperatorNode implements
-        ComparisonOperatorNode {
+public abstract class AbstractComparisonOperatorNode implements ComparisonOperatorNode {
 
     protected static final int PRIORITY = 40;
 
@@ -34,8 +33,7 @@ public abstract class AbstractComparisonOperatorNode implements
 
     protected ExpressionNode rightNode;
 
-    protected AbstractComparisonOperatorNode(ExpressionLocation location,
-            String expression) {
+    protected AbstractComparisonOperatorNode(ExpressionLocation location, String expression) {
         assertNotNull(location, expression);
         this.location = location;
         this.expression = expression;

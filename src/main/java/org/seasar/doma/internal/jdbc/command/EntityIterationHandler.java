@@ -26,8 +26,8 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public class EntityIterationHandler<ENTITY, RESULT> extends
-        AbstractIterationHandler<ENTITY, RESULT> {
+public class EntityIterationHandler<ENTITY, RESULT>
+        extends AbstractIterationHandler<ENTITY, RESULT> {
 
     protected final EntityDesc<ENTITY> entityDesc;
 
@@ -40,8 +40,7 @@ public class EntityIterationHandler<ENTITY, RESULT> extends
 
     @Override
     protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
-        return new EntityProvider<>(entityDesc, query,
-                query.isResultMappingEnsured());
+        return new EntityProvider<>(entityDesc, query, query.isResultMappingEnsured());
     }
 
 }

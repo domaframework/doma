@@ -137,8 +137,7 @@ import junit.framework.TestCase;
  *         compile();
  *
  *         // テスト対象の Annotation Processor が生成したソースを検証
- *         assertEqualsGeneratedSource("package foo.bar; public class Baz {}",
- *                 "foo.bar.Baz");
+ *         assertEqualsGeneratedSource("package foo.bar; public class Baz {}", "foo.bar.Baz");
  *     }
  * 
  * }
@@ -370,8 +369,7 @@ public abstract class AptinaTestCase extends TestCase {
      * @param source
      *            ソース
      */
-    protected void addCompilationUnit(final Class<?> clazz,
-            final CharSequence source) {
+    protected void addCompilationUnit(final Class<?> clazz, final CharSequence source) {
         AssertionUtils.assertNotNull("clazz", clazz);
         assertNotEmpty("source", source);
         addCompilationUnit(clazz.getName(), source);
@@ -385,12 +383,10 @@ public abstract class AptinaTestCase extends TestCase {
      * @param source
      *            ソース
      */
-    protected void addCompilationUnit(final String className,
-            final CharSequence source) {
+    protected void addCompilationUnit(final String className, final CharSequence source) {
         assertNotEmpty("className", className);
         assertNotEmpty("source", source);
-        compilationUnits.add(new InMemoryCompilationUnit(className, source
-            .toString()));
+        compilationUnits.add(new InMemoryCompilationUnit(className, source.toString()));
     }
 
     /**
@@ -403,26 +399,14 @@ public abstract class AptinaTestCase extends TestCase {
         javaCompiler = ToolProvider.getSystemJavaCompiler();
         diagnostics = new DiagnosticCollector<JavaFileObject>();
         final DiagnosticListener<JavaFileObject> listener = new LoggingDiagnosticListener(
-            diagnostics);
+                diagnostics);
 
-        standardJavaFileManager = javaCompiler.getStandardFileManager(
-            listener,
-            locale,
-            charset);
-        standardJavaFileManager.setLocation(
-            StandardLocation.SOURCE_PATH,
-            sourcePaths);
-        testingJavaFileManager = new TestingJavaFileManager(
-            standardJavaFileManager,
-            charset);
+        standardJavaFileManager = javaCompiler.getStandardFileManager(listener, locale, charset);
+        standardJavaFileManager.setLocation(StandardLocation.SOURCE_PATH, sourcePaths);
+        testingJavaFileManager = new TestingJavaFileManager(standardJavaFileManager, charset);
 
-        final CompilationTask task = javaCompiler.getTask(
-            out,
-            testingJavaFileManager,
-            listener,
-            options,
-            null,
-            getCompilationUnits());
+        final CompilationTask task = javaCompiler.getTask(out, testingJavaFileManager, listener,
+                options, null, getCompilationUnits());
         task.setProcessors(processors);
         compiledResult = task.call();
         compilationUnits.clear();
@@ -461,8 +445,7 @@ public abstract class AptinaTestCase extends TestCase {
      *            取得するクラス
      * @return 指定されたクラスに対する {@link Diagnostic} のリスト
      */
-    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final Class<?> clazz) {
+    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final Class<?> clazz) {
         assertCompiled();
         return DiagnosticUtils.getDiagnostics(getDiagnostics(), clazz);
     }
@@ -474,8 +457,7 @@ public abstract class AptinaTestCase extends TestCase {
      *            取得するクラス名
      * @return 指定されたクラスに対する {@link Diagnostic} のリスト
      */
-    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final String className) {
+    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final String className) {
         assertCompiled();
         return DiagnosticUtils.getDiagnostics(getDiagnostics(), className);
     }
@@ -506,8 +488,8 @@ public abstract class AptinaTestCase extends TestCase {
      * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ
      *         {@link Diagnostic} のリスト
      */
-    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final Class<?> clazz, final javax.tools.Diagnostic.Kind kind) {
+    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final Class<?> clazz,
+            final javax.tools.Diagnostic.Kind kind) {
         assertCompiled();
         return DiagnosticUtils.getDiagnostics(getDiagnostics(), clazz, kind);
     }
@@ -523,11 +505,10 @@ public abstract class AptinaTestCase extends TestCase {
      * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ
      *         {@link Diagnostic} のリスト
      */
-    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
-            final String className, final javax.tools.Diagnostic.Kind kind) {
+    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final String className,
+            final javax.tools.Diagnostic.Kind kind) {
         assertCompiled();
-        return DiagnosticUtils
-            .getDiagnostics(getDiagnostics(), className, kind);
+        return DiagnosticUtils.getDiagnostics(getDiagnostics(), className, kind);
     }
 
     /**
@@ -544,8 +525,7 @@ public abstract class AptinaTestCase extends TestCase {
      *             ソースが生成されなかった場合
      */
     protected String getGeneratedSource(final Class<?> clazz)
-            throws IllegalStateException, IOException,
-            SourceNotGeneratedException {
+            throws IllegalStateException, IOException, SourceNotGeneratedException {
         assertNotNull("clazz", clazz);
         assertCompiled();
         return getGeneratedSource(clazz.getName());
@@ -565,15 +545,11 @@ public abstract class AptinaTestCase extends TestCase {
      *             ソースが生成されなかった場合
      */
     protected String getGeneratedSource(final String className)
-            throws IllegalStateException, IOException,
-            SourceNotGeneratedException {
+            throws IllegalStateException, IOException, SourceNotGeneratedException {
         assertNotEmpty("className", className);
         assertCompiled();
         final JavaFileObject javaFileObject = testingJavaFileManager
-            .getJavaFileForInput(
-                StandardLocation.SOURCE_OUTPUT,
-                className,
-                Kind.SOURCE);
+                .getJavaFileForInput(StandardLocation.SOURCE_OUTPUT, className, Kind.SOURCE);
         if (javaFileObject == null) {
             throw new SourceNotGeneratedException(className);
         }
@@ -598,9 +574,8 @@ public abstract class AptinaTestCase extends TestCase {
             return;
         }
         final BufferedReader expectedReader = new BufferedReader(
-            new StringReader(expected.toString()));
-        final BufferedReader actualReader = new BufferedReader(
-            new StringReader(actual));
+                new StringReader(expected.toString()));
+        final BufferedReader actualReader = new BufferedReader(new StringReader(actual));
         try {
             assertEqualsByLine(expectedReader, actualReader);
         } catch (final IOException ignore) {
@@ -651,9 +626,9 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSource(final CharSequence expected,
-            final Class<?> clazz) throws IllegalStateException, IOException,
-            SourceNotGeneratedException, ComparisonFailure {
+    protected void assertEqualsGeneratedSource(final CharSequence expected, final Class<?> clazz)
+            throws IllegalStateException, IOException, SourceNotGeneratedException,
+            ComparisonFailure {
         assertNotEmpty("expected", expected);
         assertNotNull("clazz", clazz);
         assertCompiled();
@@ -676,16 +651,14 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSource(final CharSequence expected,
-            final String className) throws IllegalStateException, IOException,
-            SourceNotGeneratedException, ComparisonFailure {
+    protected void assertEqualsGeneratedSource(final CharSequence expected, final String className)
+            throws IllegalStateException, IOException, SourceNotGeneratedException,
+            ComparisonFailure {
         assertNotEmpty("className", className);
         assertCompiled();
         final String actual = getGeneratedSource(className);
         assertNotNull("actual", actual);
-        assertEqualsByLine(
-            expected == null ? null : expected.toString(),
-            actual);
+        assertEqualsByLine(expected == null ? null : expected.toString(), actual);
     }
 
     /**
@@ -704,9 +677,8 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithFile(
-            final File expectedSourceFile, final Class<?> clazz)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithFile(final File expectedSourceFile,
+            final Class<?> clazz) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotNull("expectedSourceFile", expectedSourceFile);
         assertNotNull("clazz", clazz);
@@ -730,16 +702,13 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithFile(
-            final File expectedSourceFile, final String className)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithFile(final File expectedSourceFile,
+            final String className) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotNull("expectedSourceFile", expectedSourceFile);
         assertNotEmpty("className", className);
         assertCompiled();
-        assertEqualsGeneratedSource(
-            readString(expectedSourceFile, charset),
-            className);
+        assertEqualsGeneratedSource(readString(expectedSourceFile, charset), className);
     }
 
     /**
@@ -758,15 +727,13 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithFile(
-            final String expectedSourceFilePath, final Class<?> clazz)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithFile(final String expectedSourceFilePath,
+            final Class<?> clazz) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotEmpty("expectedSourceFilePath", expectedSourceFilePath);
         assertNotNull("clazz", clazz);
         assertCompiled();
-        assertEqualsGeneratedSourceWithFile(expectedSourceFilePath, clazz
-            .getName());
+        assertEqualsGeneratedSourceWithFile(expectedSourceFilePath, clazz.getName());
     }
 
     /**
@@ -785,16 +752,13 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithFile(
-            final String expectedSourceFilePath, final String className)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithFile(final String expectedSourceFilePath,
+            final String className) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotEmpty("expectedSourceFilePath", expectedSourceFilePath);
         assertNotEmpty("className", className);
         assertCompiled();
-        assertEqualsGeneratedSourceWithFile(
-            new File(expectedSourceFilePath),
-            className);
+        assertEqualsGeneratedSourceWithFile(new File(expectedSourceFilePath), className);
     }
 
     /**
@@ -813,15 +777,13 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithResource(
-            final URL expectedResourceUrl, final Class<?> clazz)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithResource(final URL expectedResourceUrl,
+            final Class<?> clazz) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotNull("expectedResourceUrl", expectedResourceUrl);
         assertNotNull("clazz", clazz);
         assertCompiled();
-        assertEqualsGeneratedSourceWithResource(expectedResourceUrl, clazz
-            .getName());
+        assertEqualsGeneratedSourceWithResource(expectedResourceUrl, clazz.getName());
     }
 
     /**
@@ -840,16 +802,13 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithResource(
-            final URL expectedResourceUrl, final String className)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithResource(final URL expectedResourceUrl,
+            final String className) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotNull("expectedResourceUrl", expectedResourceUrl);
         assertNotEmpty("className", className);
         assertCompiled();
-        assertEqualsGeneratedSource(
-            readFromResource(expectedResourceUrl),
-            className);
+        assertEqualsGeneratedSource(readFromResource(expectedResourceUrl), className);
     }
 
     /**
@@ -868,16 +827,13 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithResource(
-            final String expectedResource, final Class<?> clazz)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithResource(final String expectedResource,
+            final Class<?> clazz) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotEmpty("expectedResource", expectedResource);
         assertNotNull("clazz", clazz);
         assertCompiled();
-        assertEqualsGeneratedSourceWithResource(
-            clazz.getName(),
-            expectedResource);
+        assertEqualsGeneratedSourceWithResource(clazz.getName(), expectedResource);
     }
 
     /**
@@ -896,17 +852,14 @@ public abstract class AptinaTestCase extends TestCase {
      * @throws ComparisonFailure
      *             生成されたソースが期待される内容と一致しなかった場合
      */
-    protected void assertEqualsGeneratedSourceWithResource(
-            final String expectedResource, final String className)
-            throws IllegalStateException, IOException,
+    protected void assertEqualsGeneratedSourceWithResource(final String expectedResource,
+            final String className) throws IllegalStateException, IOException,
             SourceNotGeneratedException, ComparisonFailure {
         assertNotEmpty("expectedResource", expectedResource);
         assertNotEmpty("className", className);
         assertCompiled();
-        final URL url = Thread
-            .currentThread()
-            .getContextClassLoader()
-            .getResource(expectedResource);
+        final URL url = Thread.currentThread().getContextClassLoader().getResource(
+                expectedResource);
         if (url == null) {
             throw new FileNotFoundException(expectedResource);
         }
@@ -949,8 +902,7 @@ public abstract class AptinaTestCase extends TestCase {
      *             入出力例外が発生した場合
      */
     List<JavaFileObject> getCompilationUnits() throws IOException {
-        final List<JavaFileObject> result = new ArrayList<JavaFileObject>(
-            compilationUnits.size());
+        final List<JavaFileObject> result = new ArrayList<JavaFileObject>(compilationUnits.size());
         for (final CompilationUnit compilationUnit : compilationUnits) {
             result.add(compilationUnit.getJavaFileObject());
         }
@@ -999,8 +951,7 @@ public abstract class AptinaTestCase extends TestCase {
      * 
      * @author koichik
      */
-    static class LoggingDiagnosticListener implements
-            DiagnosticListener<JavaFileObject> {
+    static class LoggingDiagnosticListener implements DiagnosticListener<JavaFileObject> {
 
         DiagnosticListener<JavaFileObject> listener;
 
@@ -1010,8 +961,7 @@ public abstract class AptinaTestCase extends TestCase {
          * @param listener
          *            後続の {@link DiagnosticListener}
          */
-        LoggingDiagnosticListener(
-                final DiagnosticListener<JavaFileObject> listener) {
+        LoggingDiagnosticListener(final DiagnosticListener<JavaFileObject> listener) {
             this.listener = listener;
         }
 
@@ -1062,10 +1012,8 @@ public abstract class AptinaTestCase extends TestCase {
 
         @Override
         public JavaFileObject getJavaFileObject() throws IOException {
-            return standardJavaFileManager.getJavaFileForInput(
-                StandardLocation.SOURCE_PATH,
-                className,
-                Kind.SOURCE);
+            return standardJavaFileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH,
+                    className, Kind.SOURCE);
         }
 
     }
@@ -1089,20 +1037,15 @@ public abstract class AptinaTestCase extends TestCase {
          * @param source
          *            ソース
          */
-        public InMemoryCompilationUnit(final String className,
-                final String source) {
+        public InMemoryCompilationUnit(final String className, final String source) {
             this.className = className;
             this.source = source;
         }
 
         @Override
         public JavaFileObject getJavaFileObject() throws IOException {
-            final JavaFileObject javaFileObject = testingJavaFileManager
-                .getJavaFileForOutput(
-                    StandardLocation.SOURCE_OUTPUT,
-                    className,
-                    Kind.SOURCE,
-                    null);
+            final JavaFileObject javaFileObject = testingJavaFileManager.getJavaFileForOutput(
+                    StandardLocation.SOURCE_OUTPUT, className, Kind.SOURCE, null);
             final Writer writer = javaFileObject.openWriter();
             try {
                 writer.write(source);

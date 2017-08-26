@@ -21,7 +21,6 @@ import org.seasar.doma.HolderConverters;
  * @author taedium
  * 
  */
-@HolderConverters({ BranchConverter.class, PrimaryKeyConverter.class,
-        VersionNoConverter.class })
+@HolderConverters({ BranchConverter.class, PrimaryKeyConverter.class, VersionNoConverter.class })
 public class HolderConvertersProvider {
 }

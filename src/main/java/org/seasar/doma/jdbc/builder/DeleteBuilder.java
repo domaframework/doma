@@ -74,8 +74,7 @@ public class DeleteBuilder {
         this.paramIndex = new ParamIndex();
     }
 
-    private DeleteBuilder(BuildingHelper builder, SqlDeleteQuery query,
-            ParamIndex parameterIndex) {
+    private DeleteBuilder(BuildingHelper builder, SqlDeleteQuery query, ParamIndex parameterIndex) {
         this.helper = builder;
         this.query = query;
         this.paramIndex = parameterIndex;
@@ -168,8 +167,7 @@ public class DeleteBuilder {
         return appendParam(paramClass, param, true);
     }
 
-    private <P> DeleteBuilder appendParam(Class<P> paramClass, P param,
-            boolean literal) {
+    private <P> DeleteBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
         helper.appendParam(new Param(paramClass, param, paramIndex, literal));
         paramIndex.increment();
         return new SubsequentDeleteBuilder(helper, query, paramIndex);
@@ -277,8 +275,8 @@ public class DeleteBuilder {
 
     private static class SubsequentDeleteBuilder extends DeleteBuilder {
 
-        private SubsequentDeleteBuilder(BuildingHelper builder,
-                SqlDeleteQuery query, ParamIndex parameterIndex) {
+        private SubsequentDeleteBuilder(BuildingHelper builder, SqlDeleteQuery query,
+                ParamIndex parameterIndex) {
             super(builder, query, parameterIndex);
         }
 

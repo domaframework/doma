@@ -84,11 +84,9 @@ public abstract class AbstractDao implements ConfigProvider {
         }
         DataSource dataSource = null;
         if (connection instanceof NeverClosedConnection) {
-            dataSource = new NeverClosedConnectionProvider(
-                    (NeverClosedConnection) connection);
+            dataSource = new NeverClosedConnectionProvider((NeverClosedConnection) connection);
         } else {
-            dataSource = new NeverClosedConnectionProvider(
-                    new NeverClosedConnection(connection));
+            dataSource = new NeverClosedConnectionProvider(new NeverClosedConnection(connection));
         }
         validateConfig(config, dataSource);
         this.__config = new RuntimeConfig(config, dataSource);
@@ -120,55 +118,44 @@ public abstract class AbstractDao implements ConfigProvider {
     private void validateConfig(Config config, DataSource dataSource) {
         if (dataSource == null) {
             if (config.getDataSource() == null) {
-                throw new ConfigException(config.getClass().getName(),
-                        "getDataSource");
+                throw new ConfigException(config.getClass().getName(), "getDataSource");
             }
         }
         if (config.getDialect() == null) {
             throw new ConfigException(config.getClass().getName(), "getDialect");
         }
         if (config.getSqlFileRepository() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getSqlFileRepository");
+            throw new ConfigException(config.getClass().getName(), "getSqlFileRepository");
         }
         if (config.getJdbcLogger() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getJdbcLogger");
+            throw new ConfigException(config.getClass().getName(), "getJdbcLogger");
         }
         if (config.getCommandImplementors() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getCommandImplementors");
+            throw new ConfigException(config.getClass().getName(), "getCommandImplementors");
         }
         if (config.getQueryImplementors() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getQueryImplementors");
+            throw new ConfigException(config.getClass().getName(), "getQueryImplementors");
         }
         if (config.getExceptionSqlLogType() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getExceptionSqlLogType");
+            throw new ConfigException(config.getClass().getName(), "getExceptionSqlLogType");
         }
         if (config.getRequiresNewController() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getRequiresNewController");
+            throw new ConfigException(config.getClass().getName(), "getRequiresNewController");
         }
         if (config.getClassHelper() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getClassHelper");
+            throw new ConfigException(config.getClass().getName(), "getClassHelper");
         }
         if (config.getUnknownColumnHandler() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getUnknownColumnHandler");
+            throw new ConfigException(config.getClass().getName(), "getUnknownColumnHandler");
         }
         if (config.getNaming() == null) {
             throw new ConfigException(config.getClass().getName(), "getNaming");
         }
         if (config.getMapKeyNaming() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getMapKeyNaming");
+            throw new ConfigException(config.getClass().getName(), "getMapKeyNaming");
         }
         if (config.getCommenter() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getCommenter");
+            throw new ConfigException(config.getClass().getName(), "getCommenter");
         }
     }
 
@@ -204,10 +191,8 @@ public abstract class AbstractDao implements ConfigProvider {
      * @param args
      *            引数
      */
-    protected void entering(String callerClassName, String callerMethodName,
-            Object... args) {
-        __config.getJdbcLogger().logDaoMethodEntering(callerClassName,
-                callerMethodName, args);
+    protected void entering(String callerClassName, String callerMethodName, Object... args) {
+        __config.getJdbcLogger().logDaoMethodEntering(callerClassName, callerMethodName, args);
     }
 
     /**
@@ -220,10 +205,8 @@ public abstract class AbstractDao implements ConfigProvider {
      * @param result
      *            結果の値
      */
-    protected void exiting(String callerClassName, String callerMethodName,
-            Object result) {
-        __config.getJdbcLogger().logDaoMethodExiting(callerClassName,
-                callerMethodName, result);
+    protected void exiting(String callerClassName, String callerMethodName, Object result) {
+        __config.getJdbcLogger().logDaoMethodExiting(callerClassName, callerMethodName, result);
     }
 
     /**
@@ -236,10 +219,8 @@ public abstract class AbstractDao implements ConfigProvider {
      * @param e
      *            実行時例外
      */
-    protected void throwing(String callerClassName, String callerMethodName,
-            RuntimeException e) {
-        __config.getJdbcLogger().logDaoMethodThrowing(callerClassName,
-                callerMethodName, e);
+    protected void throwing(String callerClassName, String callerMethodName, RuntimeException e) {
+        __config.getJdbcLogger().logDaoMethodThrowing(callerClassName, callerMethodName, e);
     }
 
     public static <T> Method getDeclaredMethod(Class<T> clazz, String name,
@@ -248,8 +229,7 @@ public abstract class AbstractDao implements ConfigProvider {
             return ClassUtil.getDeclaredMethod(clazz, name, parameterTypes);
         } catch (WrapException e) {
             String signature = MethodUtil.createSignature(name, parameterTypes);
-            throw new DaoMethodNotFoundException(e.getCause(), clazz.getName(),
-                    signature);
+            throw new DaoMethodNotFoundException(e.getCause(), clazz.getName(), signature);
         }
     }
 }

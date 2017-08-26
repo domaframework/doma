@@ -23,8 +23,7 @@ import org.seasar.doma.MapKeyNamingType;
  * @author taedium
  * 
  */
-public class MapResultListHandler extends
-        AbstractResultListHandler<Map<String, Object>> {
+public class MapResultListHandler extends AbstractResultListHandler<Map<String, Object>> {
 
     public MapResultListHandler(MapKeyNamingType keyNamingType) {
         super(new MapIterationHandler<>(keyNamingType,

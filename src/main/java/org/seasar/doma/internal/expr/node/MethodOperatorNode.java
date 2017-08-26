@@ -40,8 +40,7 @@ public class MethodOperatorNode implements OperatorNode {
         return PRIORITY;
     }
 
-    public MethodOperatorNode(ExpressionLocation location, String expression,
-            String methodName) {
+    public MethodOperatorNode(ExpressionLocation location, String expression, String methodName) {
         assertNotNull(location, methodName);
         this.location = location;
         this.expression = expression;

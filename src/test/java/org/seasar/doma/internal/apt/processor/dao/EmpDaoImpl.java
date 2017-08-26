@@ -64,8 +64,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
      * @param connection
      *            the connection
      */
-    protected EmpDaoImpl(org.seasar.doma.jdbc.Config config,
-            java.sql.Connection connection) {
+    protected EmpDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
         super(config, connection);
     }
 
@@ -75,8 +74,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
      * @param dataSource
      *            the dataSource
      */
-    protected EmpDaoImpl(org.seasar.doma.jdbc.Config config,
-            javax.sql.DataSource dataSource) {
+    protected EmpDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
         super(config, dataSource);
     }
 
@@ -86,8 +84,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     }
 
     @Override
-    public List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions options) {
+    public List<Emp> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions options) {
         return null;
     }
 

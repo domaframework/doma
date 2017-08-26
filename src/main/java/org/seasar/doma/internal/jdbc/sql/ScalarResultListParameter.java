@@ -30,8 +30,8 @@ import org.seasar.doma.jdbc.query.Query;
  * @author taedium
  * 
  */
-public class ScalarResultListParameter<BASIC, CONTAINER> extends
-        AbstractResultListParameter<CONTAINER> {
+public class ScalarResultListParameter<BASIC, CONTAINER>
+        extends AbstractResultListParameter<CONTAINER> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 

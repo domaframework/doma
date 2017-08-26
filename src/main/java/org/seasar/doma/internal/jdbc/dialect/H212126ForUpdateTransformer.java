@@ -26,8 +26,8 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class H212126ForUpdateTransformer extends StandardForUpdateTransformer {
 
-    public H212126ForUpdateTransformer(SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
+    public H212126ForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
         super(forUpdateType, waitSeconds, aliases);
     }
 

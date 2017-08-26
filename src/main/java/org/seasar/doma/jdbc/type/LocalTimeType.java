@@ -34,21 +34,20 @@ public class LocalTimeType extends AbstractJdbcType<LocalTime> {
     }
 
     @Override
-    public LocalTime doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    public LocalTime doGetValue(ResultSet resultSet, int index) throws SQLException {
         Time time = resultSet.getTime(index);
         return time != null ? time.toLocalTime() : null;
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            LocalTime value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, LocalTime value)
+            throws SQLException {
         preparedStatement.setTime(index, Time.valueOf(value));
     }
 
     @Override
-    protected LocalTime doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException {
+    protected LocalTime doGetValue(CallableStatement callableStatement, int index)
+            throws SQLException {
         Time time = callableStatement.getTime(index);
         return time != null ? time.toLocalTime() : null;
     }

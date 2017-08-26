@@ -37,8 +37,8 @@ public interface SqlFileSelectHolderDao {
     PhoneNumber selectPhoneNumberById(Integer id);
 
     @Select
-    List<PhoneNumber> selectPhoneNumberByNameAndSalary(String name,
-            BigDecimal salary, SelectOptions options);
+    List<PhoneNumber> selectPhoneNumberByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions options);
 
     @Select
     JobType selectJobTypeById(Integer id);

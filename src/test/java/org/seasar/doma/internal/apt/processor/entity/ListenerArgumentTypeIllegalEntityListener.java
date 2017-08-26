@@ -27,8 +27,7 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
  * @author taedium
  * 
  */
-public class ListenerArgumentTypeIllegalEntityListener implements
-        EntityListener<String> {
+public class ListenerArgumentTypeIllegalEntityListener implements EntityListener<String> {
 
     @Override
     public void preDelete(String entity, PreDeleteContext<String> context) {

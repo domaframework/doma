@@ -44,14 +44,13 @@ public class HolderConvertersProcessor extends AbstractProcessor {
     }
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver()) {
             return true;
         }
         for (TypeElement a : annotations) {
-            for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
+            for (TypeElement typeElement : ElementFilter
+                    .typesIn(roundEnv.getElementsAnnotatedWith(a))) {
                 handleTypeElement(typeElement, this::validate);
             }
         }
@@ -68,7 +67,8 @@ public class HolderConvertersProcessor extends AbstractProcessor {
             }
             if (convElement.getAnnotation(ExternalHolder.class) == null) {
                 throw new AptException(Message.DOMA4196, typeElement,
-                        convertersMirror.getAnnotationMirror(), new Object[] { convElement.getQualifiedName() });
+                        convertersMirror.getAnnotationMirror(),
+                        new Object[] { convElement.getQualifiedName() });
             }
         }
     }

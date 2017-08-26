@@ -29,18 +29,17 @@ import org.seasar.doma.internal.jdbc.mock.MockConnection;
 public class LocalTransactionConnectionTest extends TestCase {
 
     public void testIsWrapperFor() throws Exception {
-        try (Connection connection = new LocalTransactionConnection(
-                new MockConnection(), Connection.TRANSACTION_READ_COMMITTED)) {
-            assertTrue(connection
-                    .isWrapperFor(LocalTransactionConnection.class));
+        try (Connection connection = new LocalTransactionConnection(new MockConnection(),
+                Connection.TRANSACTION_READ_COMMITTED)) {
+            assertTrue(connection.isWrapperFor(LocalTransactionConnection.class));
             assertTrue(connection.isWrapperFor(MockConnection.class));
             assertFalse(connection.isWrapperFor(Runnable.class));
         }
     }
 
     public void testUnwrap() throws Exception {
-        try (Connection connection = new LocalTransactionConnection(
-                new MockConnection(), Connection.TRANSACTION_READ_COMMITTED)) {
+        try (Connection connection = new LocalTransactionConnection(new MockConnection(),
+                Connection.TRANSACTION_READ_COMMITTED)) {
             assertNotNull(connection.unwrap(LocalTransactionConnection.class));
             assertNotNull(connection.unwrap(LocalTransactionConnection.class));
             try {

@@ -49,8 +49,7 @@ public class HolderReflection extends AbstractReflection {
 
     private final AnnotationValue acceptNull;
 
-    HolderReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    HolderReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.valueType = assertNotNullValue(values, VALUE_TYPE);

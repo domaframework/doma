@@ -42,7 +42,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * 
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
- * <li> {@link JdbcException} JDBCに関する例外が発生した場合
+ * <li>{@link JdbcException} JDBCに関する例外が発生した場合
  * </ul>
  * 
  * @author nakamura-to

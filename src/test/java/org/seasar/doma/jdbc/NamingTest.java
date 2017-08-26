@@ -31,10 +31,8 @@ public class NamingTest extends TestCase {
         assertEquals("hogeFoo", naming.apply(null, "hogeFoo"));
         assertEquals("hogeFoo", naming.revert(null, "hogeFoo"));
 
-        assertEquals("HOGE_FOO",
-                naming.apply(NamingType.SNAKE_UPPER_CASE, "hogeFoo"));
-        assertEquals("hogeFoo",
-                naming.revert(NamingType.SNAKE_UPPER_CASE, "HOGE_FOO"));
+        assertEquals("HOGE_FOO", naming.apply(NamingType.SNAKE_UPPER_CASE, "hogeFoo"));
+        assertEquals("hogeFoo", naming.revert(NamingType.SNAKE_UPPER_CASE, "HOGE_FOO"));
     }
 
     public void testSNAKE_UPPER_CASE() throws Exception {
@@ -43,10 +41,8 @@ public class NamingTest extends TestCase {
         assertEquals("HOGE_FOO", naming.apply(null, "hogeFoo"));
         assertEquals("hogeFoo", naming.revert(null, "HOGE_FOO"));
 
-        assertEquals("hoge_foo",
-                naming.apply(NamingType.SNAKE_LOWER_CASE, "hogeFoo"));
-        assertEquals("hogeFoo",
-                naming.revert(NamingType.SNAKE_LOWER_CASE, "hoge_foo"));
+        assertEquals("hoge_foo", naming.apply(NamingType.SNAKE_LOWER_CASE, "hogeFoo"));
+        assertEquals("hogeFoo", naming.revert(NamingType.SNAKE_LOWER_CASE, "hoge_foo"));
     }
 
 }

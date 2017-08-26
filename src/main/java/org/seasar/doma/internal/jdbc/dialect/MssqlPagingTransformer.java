@@ -30,8 +30,7 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
 
     private boolean forceOffsetFetch;
 
-    public MssqlPagingTransformer(long offset, long limit,
-            boolean forceOffsetFetch) {
+    public MssqlPagingTransformer(long offset, long limit, boolean forceOffsetFetch) {
         super(offset, limit);
         this.forceOffsetFetch = forceOffsetFetch;
     }
@@ -52,8 +51,7 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
             throw new JdbcException(Message.DOMA2201);
         }
 
-        OrderByClauseNode orderBy = new OrderByClauseNode(
-                originalOrderBy.getWordNode());
+        OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
 
         for (SqlNode child : originalOrderBy.getChildren()) {
             orderBy.appendNode(child);

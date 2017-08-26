@@ -66,15 +66,14 @@ public class PreparedSqlBuilder implements SqlContext {
     public <BASIC> void appendParameter(InParameter<BASIC> parameter) {
         rawSql.append("?");
         Wrapper<BASIC> wrapper = parameter.getWrapper();
-        formattedSql.append(wrapper.accept(config.getDialect()
-                .getSqlLogFormattingVisitor(), formattingFunction, null));
+        formattedSql.append(wrapper.accept(config.getDialect().getSqlLogFormattingVisitor(),
+                formattingFunction, null));
         parameters.add(parameter);
     }
 
     public PreparedSql build(Function<String, String> commenter) {
         assertNotNull(commenter);
-        return new PreparedSql(kind, rawSql, formattedSql, null, parameters,
-                sqlLogType, commenter);
+        return new PreparedSql(kind, rawSql, formattedSql, null, parameters, sqlLogType, commenter);
     }
 
 }

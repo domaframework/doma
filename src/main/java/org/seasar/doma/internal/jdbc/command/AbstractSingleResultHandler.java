@@ -34,8 +34,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  *            結果
  */
-public abstract class AbstractSingleResultHandler<RESULT> implements
-        ResultSetHandler<RESULT> {
+public abstract class AbstractSingleResultHandler<RESULT> implements ResultSetHandler<RESULT> {
 
     protected final ResultSetHandler<RESULT> handler;
 
@@ -50,15 +49,13 @@ public abstract class AbstractSingleResultHandler<RESULT> implements
     @Override
     public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
             ResultSetRowIndexConsumer consumer) throws SQLException {
-        Supplier<RESULT> result = handler.handle(resultSet, query,
-                (index, next) -> {
-                    consumer.accept(index, next);
-                    if (index == 0 && next) {
-                        Sql<?> sql = query.getSql();
-                        throw new NonUniqueResultException(query.getConfig()
-                                .getExceptionSqlLogType(), sql);
-                    }
-                });
+        Supplier<RESULT> result = handler.handle(resultSet, query, (index, next) -> {
+            consumer.accept(index, next);
+            if (index == 0 && next) {
+                Sql<?> sql = query.getSql();
+                throw new NonUniqueResultException(query.getConfig().getExceptionSqlLogType(), sql);
+            }
+        });
         return result;
     }
 }

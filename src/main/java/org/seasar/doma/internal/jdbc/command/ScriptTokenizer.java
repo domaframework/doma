@@ -247,9 +247,8 @@ public class ScriptTokenizer {
      * @return コメントや単語以外の場合{@code true}
      */
     protected static boolean isOther(char c) {
-        return Character.isWhitespace(c) || c == '=' || c == '?' || c == '<'
-                || c == '>' || c == '(' || c == ')' || c == '!' || c == '*'
-                || c == '-' || c == ',';
+        return Character.isWhitespace(c) || c == '=' || c == '?' || c == '<' || c == '>' || c == '('
+                || c == ')' || c == '!' || c == '*' || c == '-' || c == ',';
     }
 
     /**

@@ -26,8 +26,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class StandardForUpdateTransformer extends
-        SimpleSqlNodeVisitor<SqlNode, Void> {
+public class StandardForUpdateTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
 
     protected final SelectForUpdateType forUpdateType;
 
@@ -37,8 +36,8 @@ public class StandardForUpdateTransformer extends
 
     protected boolean processed;
 
-    public StandardForUpdateTransformer(SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
+    public StandardForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
         assertNotNull(forUpdateType);
         this.forUpdateType = forUpdateType;
         this.waitSeconds = waitSeconds;

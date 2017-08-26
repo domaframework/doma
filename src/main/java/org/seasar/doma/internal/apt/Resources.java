@@ -46,7 +46,7 @@ public class Resources {
         this.env = ctx.getEnv();
         this.filer = env.getFiler();
     }
-    
+
     public JavaFileObject createSourceFile(CharSequence name, Element... originatingElements)
             throws IOException {
         return filer.createSourceFile(name, originatingElements);
@@ -60,8 +60,7 @@ public class Resources {
             Path path = Paths.get(resourcesDir, relativePath);
             return new FileObjectImpl(path);
         }
-        return filer.getResource(StandardLocation.CLASS_OUTPUT, "",
-                relativePath);
+        return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
     }
 
     public static class FileObjectImpl implements FileObject {
@@ -93,14 +92,12 @@ public class Resources {
         }
 
         @Override
-        public Reader openReader(boolean ignoreEncodingErrors)
-                throws IOException {
+        public Reader openReader(boolean ignoreEncodingErrors) throws IOException {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public CharSequence getCharContent(boolean ignoreEncodingErrors)
-                throws IOException {
+        public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
             throw new UnsupportedOperationException();
         }
 

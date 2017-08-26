@@ -24,8 +24,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class MysqlCountCalculatingTransformer extends
-        StandardCountCalculatingTransformer {
+public class MysqlCountCalculatingTransformer extends StandardCountCalculatingTransformer {
 
     @Override
     public SqlNode visitSelectStatementNode(SelectStatementNode node, Void p) {

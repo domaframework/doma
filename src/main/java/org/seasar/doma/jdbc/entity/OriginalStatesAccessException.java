@@ -43,8 +43,8 @@ public class OriginalStatesAccessException extends JdbcException {
      * @param fieldName
      *            フィールドの名前
      */
-    public OriginalStatesAccessException(Throwable cause,
-            String entityClassName, String fieldName) {
+    public OriginalStatesAccessException(Throwable cause, String entityClassName,
+            String fieldName) {
         super(Message.DOMA2212, cause, entityClassName, fieldName, cause);
         this.entityClassName = entityClassName;
         this.fieldName = fieldName;

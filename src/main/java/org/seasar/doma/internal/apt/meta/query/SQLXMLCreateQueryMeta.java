@@ -35,8 +35,7 @@ public class SQLXMLCreateQueryMeta extends AbstractCreateQueryMeta {
         return sqlxmlFactoryReflection;
     }
 
-    public void setSqlxmlFactoryReflection(
-            SQLXMLFactoryReflection sqlxmlFactoryMirror) {
+    public void setSqlxmlFactoryReflection(SQLXMLFactoryReflection sqlxmlFactoryMirror) {
         this.sqlxmlFactoryReflection = sqlxmlFactoryMirror;
     }
 

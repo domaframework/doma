@@ -37,12 +37,10 @@ public class SqlSelectQuery extends AbstractSelectQuery {
     }
 
     protected void prepareSql() {
-        SqlNode transformedSqlNode = config.getDialect()
-                .transformSelectSqlNode(sqlNode, options);
+        SqlNode transformedSqlNode = config.getDialect().transformSelectSqlNode(sqlNode, options);
         buildSql((evaluator, expander) -> {
-            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                    config, SqlKind.SELECT, null, evaluator, sqlLogType,
-                    expander);
+            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                    null, evaluator, sqlLogType, expander);
             return sqlBuilder.build(transformedSqlNode, this::comment);
         });
 

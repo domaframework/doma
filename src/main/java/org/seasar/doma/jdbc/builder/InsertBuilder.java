@@ -73,8 +73,7 @@ public class InsertBuilder {
         this.paramIndex = new ParamIndex();
     }
 
-    private InsertBuilder(BuildingHelper builder, SqlInsertQuery query,
-            ParamIndex parameterIndex) {
+    private InsertBuilder(BuildingHelper builder, SqlInsertQuery query, ParamIndex parameterIndex) {
         this.helper = builder;
         this.query = query;
         this.paramIndex = parameterIndex;
@@ -167,8 +166,7 @@ public class InsertBuilder {
         return appendParam(paramClass, param, true);
     }
 
-    private <P> InsertBuilder appendParam(Class<P> paramClass, P param,
-            boolean literal) {
+    private <P> InsertBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
         helper.appendParam(new Param(paramClass, param, paramIndex, literal));
         paramIndex.increment();
         return new SubsequentInsertBuilder(helper, query, paramIndex);
@@ -278,8 +276,8 @@ public class InsertBuilder {
 
     private static class SubsequentInsertBuilder extends InsertBuilder {
 
-        private SubsequentInsertBuilder(BuildingHelper builder,
-                SqlInsertQuery query, ParamIndex parameterIndex) {
+        private SubsequentInsertBuilder(BuildingHelper builder, SqlInsertQuery query,
+                ParamIndex parameterIndex) {
             super(builder, query, parameterIndex);
         }
 

@@ -25,11 +25,10 @@ import org.seasar.doma.jdbc.entity.PostInsertContext;
  * @author taedium
  * 
  */
-public class AbstractPostInsertContext<E> extends
-        AbstractEntityListenerContext<E> implements PostInsertContext<E> {
+public class AbstractPostInsertContext<E> extends AbstractEntityListenerContext<E>
+        implements PostInsertContext<E> {
 
-    protected AbstractPostInsertContext(EntityDesc<E> entityDesc,
-            Method method, Config config) {
+    protected AbstractPostInsertContext(EntityDesc<E> entityDesc, Method method, Config config) {
         super(entityDesc, method, config);
     }
 }

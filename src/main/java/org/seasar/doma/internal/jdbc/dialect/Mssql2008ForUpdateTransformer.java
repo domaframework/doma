@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class Mssql2008ForUpdateTransformer extends StandardForUpdateTransformer {
 
-    public Mssql2008ForUpdateTransformer(SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
+    public Mssql2008ForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
         super(forUpdateType, waitSeconds, aliases);
     }
 
@@ -39,8 +39,7 @@ public class Mssql2008ForUpdateTransformer extends StandardForUpdateTransformer 
         }
         processed = true;
 
-        StringBuilder buf = new StringBuilder(100)
-                .append("with (updlock, rowlock");
+        StringBuilder buf = new StringBuilder(100).append("with (updlock, rowlock");
         if (forUpdateType == SelectForUpdateType.NOWAIT) {
             buf.append(", nowait");
         }

@@ -60,8 +60,7 @@ public class Db2Dialect extends StandardDialect {
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      */
     public Db2Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
-        this(jdbcMappingVisitor, new Db2SqlLogFormattingVisitor(),
-                new Db2ExpressionFunctions());
+        this(jdbcMappingVisitor, new Db2SqlLogFormattingVisitor(), new Db2ExpressionFunctions());
     }
 
     /**
@@ -72,8 +71,7 @@ public class Db2Dialect extends StandardDialect {
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
     public Db2Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(new Db2JdbcMappingVisitor(), sqlLogFormattingVisitor,
-                new Db2ExpressionFunctions());
+        this(new Db2JdbcMappingVisitor(), sqlLogFormattingVisitor, new Db2ExpressionFunctions());
     }
 
     /**
@@ -83,8 +81,7 @@ public class Db2Dialect extends StandardDialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public Db2Dialect(ExpressionFunctions expressionFunctions) {
-        this(new Db2JdbcMappingVisitor(), new Db2SqlLogFormattingVisitor(),
-                expressionFunctions);
+        this(new Db2JdbcMappingVisitor(), new Db2SqlLogFormattingVisitor(), expressionFunctions);
     }
 
     /**
@@ -99,8 +96,7 @@ public class Db2Dialect extends StandardDialect {
      */
     public Db2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new Db2ExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new Db2ExpressionFunctions());
     }
 
     /**
@@ -127,18 +123,16 @@ public class Db2Dialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        Db2ForUpdateTransformer transformer = new Db2ForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        Db2ForUpdateTransformer transformer = new Db2ForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        Db2PagingTransformer transformer = new Db2PagingTransformer(offset,
-                limit);
+        Db2PagingTransformer transformer = new Db2PagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
@@ -152,8 +146,7 @@ public class Db2Dialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
@@ -173,8 +166,7 @@ public class Db2Dialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
+    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
         return type == SelectForUpdateType.NORMAL && !withTargets;
     }
 
@@ -199,8 +191,7 @@ public class Db2Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Db2JdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class Db2JdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
     /**
@@ -209,8 +200,7 @@ public class Db2Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Db2SqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class Db2SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
     /**
@@ -219,8 +209,7 @@ public class Db2Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Db2ExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class Db2ExpressionFunctions extends StandardExpressionFunctions {
 
         private final static char[] DEFAULT_WILDCARDS = { '%', '_', '％', '＿' };
 
@@ -244,8 +233,7 @@ public class Db2Dialect extends StandardDialect {
      * @author taedium
      * @since 1.7.0
      */
-    public static class Db2ScriptBlockContext extends
-            StandardScriptBlockContext {
+    public static class Db2ScriptBlockContext extends StandardScriptBlockContext {
 
         protected Db2ScriptBlockContext() {
             sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));

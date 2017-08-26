@@ -28,21 +28,19 @@ import org.seasar.doma.jdbc.query.Query;
  * @author taedium
  * 
  */
-public class ScalarListParameter<BASIC, CONTAINER> extends
-        AbstractListParameter<CONTAINER> {
+public class ScalarListParameter<BASIC, CONTAINER> extends AbstractListParameter<CONTAINER> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> suppler;
 
-    public ScalarListParameter(Supplier<Scalar<BASIC, CONTAINER>> suppler,
-            List<CONTAINER> list, String name) {
+    public ScalarListParameter(Supplier<Scalar<BASIC, CONTAINER>> suppler, List<CONTAINER> list,
+            String name) {
         super(list, name);
         assertNotNull(suppler);
         this.suppler = suppler;
     }
 
     @Override
-    public ScalarProvider<BASIC, CONTAINER> createObjectProvider(
-            Query query) {
+    public ScalarProvider<BASIC, CONTAINER> createObjectProvider(Query query) {
         return new ScalarProvider<BASIC, CONTAINER>(suppler, query);
     }
 

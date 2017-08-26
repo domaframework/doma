@@ -20,8 +20,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 public class LiteralVariableNode extends ValueNode {
 
-    public LiteralVariableNode(SqlLocation location, String variableName,
-            String text) {
+    public LiteralVariableNode(SqlLocation location, String variableName, String text) {
         super(location, variableName, text);
     }
 

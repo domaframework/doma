@@ -21,8 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
  * @author taedium
  * 
  */
-public abstract class AbstractClauseNode extends AbstractSqlNode implements
-        ClauseNode {
+public abstract class AbstractClauseNode extends AbstractSqlNode implements ClauseNode {
 
     protected final WordNode wordNode;
 

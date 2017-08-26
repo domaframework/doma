@@ -63,20 +63,18 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
         try {
             return Enum.valueOf(enumClass, value);
         } catch (IllegalArgumentException e) {
-            throw new JdbcException(Message.DOMA2040, enumClass.getName(),
-                    value);
+            throw new JdbcException(Message.DOMA2040, enumClass.getName(), value);
         }
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            E value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, E value)
+            throws SQLException {
         preparedStatement.setString(index, value.name());
     }
 
     @Override
-    protected E doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected E doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         String value = callableStatement.getString(index);
         if (value == null) {
             return null;
@@ -84,8 +82,7 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
         try {
             return Enum.valueOf(enumClass, value);
         } catch (IllegalArgumentException e) {
-            throw new JdbcException(Message.DOMA2040, enumClass.getName(),
-                    value);
+            throw new JdbcException(Message.DOMA2040, enumClass.getName(), value);
         }
     }
 

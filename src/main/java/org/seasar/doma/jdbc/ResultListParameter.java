@@ -21,7 +21,7 @@ import java.util.List;
  * @author nakamura-to
  * 
  */
-public interface ResultListParameter<ELEMENT> extends
-        ResultParameter<List<ELEMENT>>, ListParameter<ELEMENT> {
+public interface ResultListParameter<ELEMENT>
+        extends ResultParameter<List<ELEMENT>>, ListParameter<ELEMENT> {
 
 }

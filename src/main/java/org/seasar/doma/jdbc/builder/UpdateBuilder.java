@@ -77,8 +77,7 @@ public class UpdateBuilder {
         this.paramIndex = new ParamIndex();
     }
 
-    private UpdateBuilder(BuildingHelper builder, SqlUpdateQuery query,
-            ParamIndex parameterIndex) {
+    private UpdateBuilder(BuildingHelper builder, SqlUpdateQuery query, ParamIndex parameterIndex) {
         this.helper = builder;
         this.query = query;
         this.paramIndex = parameterIndex;
@@ -171,8 +170,7 @@ public class UpdateBuilder {
         return appendParam(paramClass, param, true);
     }
 
-    private <P> UpdateBuilder appendParam(Class<P> paramClass, P param,
-            boolean literal) {
+    private <P> UpdateBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
         helper.appendParam(new Param(paramClass, param, paramIndex, literal));
         paramIndex.increment();
         return new SubsequentUpdateBuilder(helper, query, paramIndex);
@@ -282,8 +280,8 @@ public class UpdateBuilder {
 
     private static class SubsequentUpdateBuilder extends UpdateBuilder {
 
-        private SubsequentUpdateBuilder(BuildingHelper builder,
-                SqlUpdateQuery query, ParamIndex parameterIndex) {
+        private SubsequentUpdateBuilder(BuildingHelper builder, SqlUpdateQuery query,
+                ParamIndex parameterIndex) {
             super(builder, query, parameterIndex);
         }
 

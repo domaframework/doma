@@ -41,8 +41,7 @@ import org.seasar.doma.DomaNullPointerException;
  *                 .getComponent(TransactionManagerAdapter.class);
  *         Object result = txAdapter.requiresNew(new TransactionCallback() {
  * 
- *             public Object execute(final TransactionManagerAdapter adapter)
- *                     throws Throwable {
+ *             public Object execute(final TransactionManagerAdapter adapter) throws Throwable {
  *                 return callback.execute();
  *             }
  * 

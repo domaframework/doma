@@ -35,8 +35,8 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
     }
 
     @Override
-    protected int[] executeInternal(PreparedStatement preparedStatement,
-            List<PreparedSql> sqls) throws SQLException {
+    protected int[] executeInternal(PreparedStatement preparedStatement, List<PreparedSql> sqls)
+            throws SQLException {
         if (query.isBatchSupported()) {
             return executeBatch(preparedStatement, sqls);
         }
@@ -53,15 +53,15 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
         return updatedRows;
     }
 
-    protected int executeUpdate(PreparedStatement preparedStatement,
-            PreparedSql sql) throws SQLException {
+    protected int executeUpdate(PreparedStatement preparedStatement, PreparedSql sql)
+            throws SQLException {
         try {
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             Dialect dialect = query.getConfig().getDialect();
             if (dialect.isUniqueConstraintViolated(e)) {
-                throw new BatchUniqueConstraintException(query.getConfig()
-                        .getExceptionSqlLogType(), sql, e);
+                throw new BatchUniqueConstraintException(query.getConfig().getExceptionSqlLogType(),
+                        sql, e);
             }
             throw e;
         }

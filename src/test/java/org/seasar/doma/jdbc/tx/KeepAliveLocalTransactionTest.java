@@ -50,16 +50,14 @@ public class KeepAliveLocalTransactionTest extends TestCase {
                 connection.isolationLevel);
     }
 
-    public void testBeginImlicitDefaultTransactionIsolationLevel()
-            throws Exception {
-        LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(
-                jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
+    public void testBeginImlicitDefaultTransactionIsolationLevel() throws Exception {
+        LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(jdbcLogger,
+                TransactionIsolationLevel.SERIALIZABLE);
         transaction.begin();
         assertTrue(transaction.isActive());
         dataSource.getConnection();
         assertFalse(connection.autoCommit);
-        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(),
-                connection.isolationLevel);
+        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(), connection.isolationLevel);
     }
 
     public void testBeginWithTransactionIsolationLevel() throws Exception {
@@ -67,8 +65,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         assertTrue(transaction.isActive());
         dataSource.getConnection();
         assertFalse(connection.autoCommit);
-        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(),
-                connection.isolationLevel);
+        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(), connection.isolationLevel);
     }
 
     public void testBegin_alreadyBegun() throws Exception {
@@ -93,8 +90,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         };
         LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
-        LocalTransaction transaction = dataSource
-                .getKeepAliveLocalTransaction(jdbcLogger);
+        LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(jdbcLogger);
         try {
             transaction.begin();
             dataSource.getConnection();
@@ -117,8 +113,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
         };
         LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
-        LocalTransaction transaction = dataSource
-                .getKeepAliveLocalTransaction(jdbcLogger);
+        LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(jdbcLogger);
         try {
             transaction.begin(TransactionIsolationLevel.READ_COMMITTED);
             dataSource.getConnection();

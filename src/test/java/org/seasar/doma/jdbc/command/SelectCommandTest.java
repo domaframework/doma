@@ -62,8 +62,7 @@ public class SelectCommandTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.addParameter("name", String.class, "hoge");
         query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
         query.setMethod(getClass().getMethod(getName()));
@@ -107,8 +106,7 @@ public class SelectCommandTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.addParameter("salary", BigDecimal.class, new BigDecimal(5000));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -158,8 +156,7 @@ public class SelectCommandTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.addParameter("name", String.class, "hoge");
         query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
         query.setMethod(getClass().getMethod(getName()));
@@ -193,8 +190,7 @@ public class SelectCommandTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.addParameter("salary", BigDecimal.class, new BigDecimal(5000));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -204,9 +200,9 @@ public class SelectCommandTest extends TestCase {
         query.setResultStream(true);
         query.prepare();
 
-        SelectCommand<Stream<Emp>> command = new SelectCommand<Stream<Emp>>(
-                query, new EntityStreamHandler<Emp, Stream<Emp>>(
-                        _Emp.getSingletonInternal(), Function.identity()));
+        SelectCommand<Stream<Emp>> command = new SelectCommand<Stream<Emp>>(query,
+                new EntityStreamHandler<Emp, Stream<Emp>>(_Emp.getSingletonInternal(),
+                        Function.identity()));
         try (Stream<Emp> stream = command.execute()) {
             query.complete();
 
@@ -235,17 +231,13 @@ public class SelectCommandTest extends TestCase {
             assertEquals(new BigDecimal(5000), bindValue.getValue());
             assertEquals(1, bindValue.getIndex());
 
-            assertFalse(runtimeConfig.dataSource.connection.preparedStatement.resultSet
-                    .isClosed());
-            assertFalse(runtimeConfig.dataSource.connection.preparedStatement
-                    .isClosed());
+            assertFalse(runtimeConfig.dataSource.connection.preparedStatement.resultSet.isClosed());
+            assertFalse(runtimeConfig.dataSource.connection.preparedStatement.isClosed());
             assertFalse(runtimeConfig.dataSource.connection.isClosed());
         }
 
-        assertTrue(runtimeConfig.dataSource.connection.preparedStatement.resultSet
-                .isClosed());
-        assertTrue(runtimeConfig.dataSource.connection.preparedStatement
-                .isClosed());
+        assertTrue(runtimeConfig.dataSource.connection.preparedStatement.resultSet.isClosed());
+        assertTrue(runtimeConfig.dataSource.connection.preparedStatement.isClosed());
         assertTrue(runtimeConfig.dataSource.connection.isClosed());
     }
 

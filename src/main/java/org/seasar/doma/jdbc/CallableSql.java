@@ -25,11 +25,10 @@ import java.util.function.Function;
  */
 public class CallableSql extends AbstractSql<SqlParameter> {
 
-    public CallableSql(SqlKind kind, CharSequence rawSql,
-            CharSequence formattedSql, List<? extends SqlParameter> parameters,
-            SqlLogType sqlLogType, Function<String, String> converter) {
-        super(kind, rawSql, formattedSql, null, parameters, sqlLogType,
-                converter);
+    public CallableSql(SqlKind kind, CharSequence rawSql, CharSequence formattedSql,
+            List<? extends SqlParameter> parameters, SqlLogType sqlLogType,
+            Function<String, String> converter) {
+        super(kind, rawSql, formattedSql, null, parameters, sqlLogType, converter);
     }
 
 }

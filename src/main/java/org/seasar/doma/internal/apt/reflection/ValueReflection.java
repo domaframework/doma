@@ -37,12 +37,10 @@ public class ValueReflection extends AbstractReflection {
 
     private final AnnotationValue staticConstructor;
 
-    ValueReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    ValueReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.staticConstructor = assertNotNullValue(values,
-                STATIC_CONSTRUCTOR);
+        this.staticConstructor = assertNotNullValue(values, STATIC_CONSTRUCTOR);
     }
 
     public AnnotationValue getStaticConstructor() {

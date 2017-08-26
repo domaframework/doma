@@ -34,8 +34,7 @@ public class AnnotateWithReflection extends AbstractReflection {
 
     private final List<AnnotationReflection> annotationsValue;
 
-    AnnotateWithReflection(AnnotationMirror annotationMirror,
-            AnnotationValue annotations,
+    AnnotateWithReflection(AnnotationMirror annotationMirror, AnnotationValue annotations,
             ArrayList<AnnotationReflection> annotationsValues) {
         super(annotationMirror);
         assertNotNull(annotations, annotationsValues);

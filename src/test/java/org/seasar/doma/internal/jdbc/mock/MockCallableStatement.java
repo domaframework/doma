@@ -46,8 +46,7 @@ import org.seasar.doma.internal.util.AssertionUtil;
  * 
  */
 @SuppressWarnings({ "all", "deprecation" })
-public class MockCallableStatement extends MockPreparedStatement implements
-        CallableStatement {
+public class MockCallableStatement extends MockPreparedStatement implements CallableStatement {
 
     public List<Object> outParameters = new ArrayList<Object>();
 
@@ -75,8 +74,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public BigDecimal getBigDecimal(int parameterIndex, int scale)
-            throws SQLException {
+    public BigDecimal getBigDecimal(int parameterIndex, int scale) throws SQLException {
         notYetImplemented();
         return null;
     }
@@ -279,8 +277,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public Object getObject(int parameterIndex, Map<String, Class<?>> map)
-            throws SQLException {
+    public Object getObject(int parameterIndex, Map<String, Class<?>> map) throws SQLException {
         notYetImplemented();
         return null;
     }
@@ -292,8 +289,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public Object getObject(String parameterName, Map<String, Class<?>> map)
-            throws SQLException {
+    public Object getObject(String parameterName, Map<String, Class<?>> map) throws SQLException {
         notYetImplemented();
         return null;
     }
@@ -389,8 +385,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public Timestamp getTimestamp(int parameterIndex, Calendar cal)
-            throws SQLException {
+    public Timestamp getTimestamp(int parameterIndex, Calendar cal) throws SQLException {
         notYetImplemented();
         return null;
     }
@@ -402,8 +397,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public Timestamp getTimestamp(String parameterName, Calendar cal)
-            throws SQLException {
+    public Timestamp getTimestamp(String parameterName, Calendar cal) throws SQLException {
         notYetImplemented();
         return null;
     }
@@ -434,36 +428,33 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void registerOutParameter(int parameterIndex, int sqlType,
-            String typeName) throws SQLException {
-        notYetImplemented();
-
-    }
-
-    @Override
-    public void registerOutParameter(int parameterIndex, int sqlType)
+    public void registerOutParameter(int parameterIndex, int sqlType, String typeName)
             throws SQLException {
-        registerOutParameters.add(new RegisterOutParameter(parameterIndex,
-                sqlType));
-    }
-
-    @Override
-    public void registerOutParameter(String parameterName, int sqlType,
-            int scale) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void registerOutParameter(String parameterName, int sqlType,
-            String typeName) throws SQLException {
-        notYetImplemented();
-
+    public void registerOutParameter(int parameterIndex, int sqlType) throws SQLException {
+        registerOutParameters.add(new RegisterOutParameter(parameterIndex, sqlType));
     }
 
     @Override
-    public void registerOutParameter(String parameterName, int sqlType)
+    public void registerOutParameter(String parameterName, int sqlType, int scale)
             throws SQLException {
+        notYetImplemented();
+
+    }
+
+    @Override
+    public void registerOutParameter(String parameterName, int sqlType, String typeName)
+            throws SQLException {
+        notYetImplemented();
+
+    }
+
+    @Override
+    public void registerOutParameter(String parameterName, int sqlType) throws SQLException {
         notYetImplemented();
 
     }
@@ -483,15 +474,13 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setAsciiStream(String parameterName, InputStream x)
-            throws SQLException {
+    public void setAsciiStream(String parameterName, InputStream x) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setBigDecimal(String parameterName, BigDecimal x)
-            throws SQLException {
+    public void setBigDecimal(String parameterName, BigDecimal x) throws SQLException {
         notYetImplemented();
 
     }
@@ -511,8 +500,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setBinaryStream(String parameterName, InputStream x)
-            throws SQLException {
+    public void setBinaryStream(String parameterName, InputStream x) throws SQLException {
         notYetImplemented();
 
     }
@@ -524,15 +512,14 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setBlob(String parameterName, InputStream inputStream,
-            long length) throws SQLException {
+    public void setBlob(String parameterName, InputStream inputStream, long length)
+            throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setBlob(String parameterName, InputStream inputStream)
-            throws SQLException {
+    public void setBlob(String parameterName, InputStream inputStream) throws SQLException {
         notYetImplemented();
 
     }
@@ -556,22 +543,21 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setCharacterStream(String parameterName, Reader reader,
-            int length) throws SQLException {
-        notYetImplemented();
-
-    }
-
-    @Override
-    public void setCharacterStream(String parameterName, Reader reader,
-            long length) throws SQLException {
-        notYetImplemented();
-
-    }
-
-    @Override
-    public void setCharacterStream(String parameterName, Reader reader)
+    public void setCharacterStream(String parameterName, Reader reader, int length)
             throws SQLException {
+        notYetImplemented();
+
+    }
+
+    @Override
+    public void setCharacterStream(String parameterName, Reader reader, long length)
+            throws SQLException {
+        notYetImplemented();
+
+    }
+
+    @Override
+    public void setCharacterStream(String parameterName, Reader reader) throws SQLException {
         notYetImplemented();
 
     }
@@ -583,22 +569,19 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setClob(String parameterName, Reader reader, long length)
-            throws SQLException {
+    public void setClob(String parameterName, Reader reader, long length) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setClob(String parameterName, Reader reader)
-            throws SQLException {
+    public void setClob(String parameterName, Reader reader) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setDate(String parameterName, Date x, Calendar cal)
-            throws SQLException {
+    public void setDate(String parameterName, Date x, Calendar cal) throws SQLException {
         notYetImplemented();
 
     }
@@ -634,15 +617,14 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setNCharacterStream(String parameterName, Reader value,
-            long length) throws SQLException {
+    public void setNCharacterStream(String parameterName, Reader value, long length)
+            throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setNCharacterStream(String parameterName, Reader value)
-            throws SQLException {
+    public void setNCharacterStream(String parameterName, Reader value) throws SQLException {
         notYetImplemented();
 
     }
@@ -654,29 +636,25 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setNClob(String parameterName, Reader reader, long length)
-            throws SQLException {
+    public void setNClob(String parameterName, Reader reader, long length) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setNClob(String parameterName, Reader reader)
-            throws SQLException {
+    public void setNClob(String parameterName, Reader reader) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setNString(String parameterName, String value)
-            throws SQLException {
+    public void setNString(String parameterName, String value) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setNull(String parameterName, int sqlType, String typeName)
-            throws SQLException {
+    public void setNull(String parameterName, int sqlType, String typeName) throws SQLException {
         notYetImplemented();
 
     }
@@ -688,15 +666,14 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setObject(String parameterName, Object x, int targetSqlType,
-            int scale) throws SQLException {
+    public void setObject(String parameterName, Object x, int targetSqlType, int scale)
+            throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setObject(String parameterName, Object x, int targetSqlType)
-            throws SQLException {
+    public void setObject(String parameterName, Object x, int targetSqlType) throws SQLException {
         notYetImplemented();
 
     }
@@ -720,8 +697,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setSQLXML(String parameterName, SQLXML xmlObject)
-            throws SQLException {
+    public void setSQLXML(String parameterName, SQLXML xmlObject) throws SQLException {
         notYetImplemented();
 
     }
@@ -733,8 +709,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setTime(String parameterName, Time x, Calendar cal)
-            throws SQLException {
+    public void setTime(String parameterName, Time x, Calendar cal) throws SQLException {
         notYetImplemented();
 
     }
@@ -746,15 +721,13 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @Override
-    public void setTimestamp(String parameterName, Timestamp x, Calendar cal)
-            throws SQLException {
+    public void setTimestamp(String parameterName, Timestamp x, Calendar cal) throws SQLException {
         notYetImplemented();
 
     }
 
     @Override
-    public void setTimestamp(String parameterName, Timestamp x)
-            throws SQLException {
+    public void setTimestamp(String parameterName, Timestamp x) throws SQLException {
         notYetImplemented();
 
     }
@@ -771,14 +744,13 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @SuppressWarnings("all")
-    public void setObject(int parameterIndex, Object x, SQLType targetSqlType,
-            int scaleOrLength) throws SQLException {
+    public void setObject(int parameterIndex, Object x, SQLType targetSqlType, int scaleOrLength)
+            throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 
     @SuppressWarnings("all")
-    public void setObject(int parameterIndex, Object x, SQLType targetSqlType)
-            throws SQLException {
+    public void setObject(int parameterIndex, Object x, SQLType targetSqlType) throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 
@@ -829,43 +801,38 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @SuppressWarnings("all")
-    public long executeLargeUpdate(String sql, int autoGeneratedKeys)
-            throws SQLException {
+    public long executeLargeUpdate(String sql, int autoGeneratedKeys) throws SQLException {
         AssertionUtil.notYetImplemented();
         return 0;
     }
 
     @SuppressWarnings("all")
-    public long executeLargeUpdate(String sql, int[] columnIndexes)
-            throws SQLException {
+    public long executeLargeUpdate(String sql, int[] columnIndexes) throws SQLException {
         AssertionUtil.notYetImplemented();
         return 0;
     }
 
     @SuppressWarnings("all")
-    public long executeLargeUpdate(String sql, String[] columnNames)
-            throws SQLException {
+    public long executeLargeUpdate(String sql, String[] columnNames) throws SQLException {
         AssertionUtil.notYetImplemented();
         return 0;
     }
 
     @SuppressWarnings("all")
-    public <T> T getObject(int parameterIndex, Class<T> type)
-            throws SQLException {
+    public <T> T getObject(int parameterIndex, Class<T> type) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
 
     @SuppressWarnings("all")
-    public <T> T getObject(String parameterName, Class<T> type)
-            throws SQLException {
+    public <T> T getObject(String parameterName, Class<T> type) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
 
     @SuppressWarnings("all")
-    public void setObject(String parameterName, Object x,
-            SQLType targetSqlType, int scaleOrLength) throws SQLException {
+    public void setObject(String parameterName, Object x, SQLType targetSqlType, int scaleOrLength)
+            throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 
@@ -876,38 +843,36 @@ public class MockCallableStatement extends MockPreparedStatement implements
     }
 
     @SuppressWarnings("all")
-    public void registerOutParameter(int parameterIndex, SQLType sqlType)
+    public void registerOutParameter(int parameterIndex, SQLType sqlType) throws SQLException {
+        AssertionUtil.notYetImplemented();
+    }
+
+    @SuppressWarnings("all")
+    public void registerOutParameter(int parameterIndex, SQLType sqlType, int scale)
             throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 
     @SuppressWarnings("all")
-    public void registerOutParameter(int parameterIndex, SQLType sqlType,
-            int scale) throws SQLException {
-        AssertionUtil.notYetImplemented();
-    }
-
-    @SuppressWarnings("all")
-    public void registerOutParameter(int parameterIndex, SQLType sqlType,
-            String typeName) throws SQLException {
-        AssertionUtil.notYetImplemented();
-    }
-
-    @SuppressWarnings("all")
-    public void registerOutParameter(String parameterName, SQLType sqlType)
+    public void registerOutParameter(int parameterIndex, SQLType sqlType, String typeName)
             throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 
     @SuppressWarnings("all")
-    public void registerOutParameter(String parameterName, SQLType sqlType,
-            int scale) throws SQLException {
+    public void registerOutParameter(String parameterName, SQLType sqlType) throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 
     @SuppressWarnings("all")
-    public void registerOutParameter(String parameterName, SQLType sqlType,
-            String typeName) throws SQLException {
+    public void registerOutParameter(String parameterName, SQLType sqlType, int scale)
+            throws SQLException {
+        AssertionUtil.notYetImplemented();
+    }
+
+    @SuppressWarnings("all")
+    public void registerOutParameter(String parameterName, SQLType sqlType, String typeName)
+            throws SQLException {
         AssertionUtil.notYetImplemented();
     }
 

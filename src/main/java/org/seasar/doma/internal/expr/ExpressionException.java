@@ -30,8 +30,7 @@ public class ExpressionException extends DomaException {
         super(messageCode, args);
     }
 
-    public ExpressionException(Message messageCode, Throwable cause,
-            Object... args) {
+    public ExpressionException(Message messageCode, Throwable cause, Object... args) {
         super(messageCode, cause, args);
     }
 

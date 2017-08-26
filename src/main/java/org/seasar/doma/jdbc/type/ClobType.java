@@ -35,20 +35,18 @@ public class ClobType extends AbstractJdbcType<Clob> {
     }
 
     @Override
-    protected Clob doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Clob doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getClob(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Clob value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Clob value)
+            throws SQLException {
         preparedStatement.setClob(index, value);
     }
 
     @Override
-    protected Clob doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Clob doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getClob(index);
     }
 

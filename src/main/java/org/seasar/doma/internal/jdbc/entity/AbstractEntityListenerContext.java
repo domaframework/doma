@@ -37,8 +37,8 @@ public abstract class AbstractEntityListenerContext<E> {
 
     protected E newEntity;
 
-    protected AbstractEntityListenerContext(EntityDesc<E> entityDesc,
-            Method method, Config config) {
+    protected AbstractEntityListenerContext(EntityDesc<E> entityDesc, Method method,
+            Config config) {
         assertNotNull(entityDesc, method, config);
         this.entityDesc = entityDesc;
         this.method = method;

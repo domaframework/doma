@@ -39,8 +39,7 @@ import javax.tools.StandardLocation;
  * 
  * @author koichik
  */
-class TestingJavaFileManager extends
-        ForwardingJavaFileManager<StandardJavaFileManager> {
+class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
 
     final Map<String, InMemoryJavaFileObject> fileObjects = newHashMap();
 
@@ -63,16 +62,13 @@ class TestingJavaFileManager extends
     }
 
     @Override
-    public FileObject getFileForInput(final Location location,
-            final String packageName, final String relativeName)
-            throws IOException {
+    public FileObject getFileForInput(final Location location, final String packageName,
+            final String relativeName) throws IOException {
         if (relativeName.endsWith(".java")) {
-            return getJavaFileForInput(location, packageName + "."
-                    + relativeName, Kind.SOURCE);
+            return getJavaFileForInput(location, packageName + "." + relativeName, Kind.SOURCE);
         }
         if (relativeName.endsWith(".class")) {
-            return getJavaFileForInput(location, packageName + "."
-                    + relativeName, Kind.CLASS);
+            return getJavaFileForInput(location, packageName + "." + relativeName, Kind.CLASS);
         }
         final String key = createKey(packageName, relativeName);
         if (fileObjects.containsKey(key)) {
@@ -82,16 +78,15 @@ class TestingJavaFileManager extends
     }
 
     @Override
-    public FileObject getFileForOutput(final Location location,
-            final String packageName, final String relativeName,
-            final FileObject sibling) throws IOException {
+    public FileObject getFileForOutput(final Location location, final String packageName,
+            final String relativeName, final FileObject sibling) throws IOException {
         if (relativeName.endsWith(".java")) {
-            return getJavaFileForOutput(location, packageName + "."
-                    + relativeName, Kind.SOURCE, sibling);
+            return getJavaFileForOutput(location, packageName + "." + relativeName, Kind.SOURCE,
+                    sibling);
         }
         if (relativeName.endsWith(".class")) {
-            return getJavaFileForOutput(location, packageName + "."
-                    + relativeName, Kind.CLASS, sibling);
+            return getJavaFileForOutput(location, packageName + "." + relativeName, Kind.CLASS,
+                    sibling);
         }
         final String key = createKey(packageName, relativeName);
         if (fileObjects.containsKey(key)) {
@@ -105,17 +100,12 @@ class TestingJavaFileManager extends
             if (location == StandardLocation.CLASS_OUTPUT) {
                 // 通常はコンパイル時にCLASS_OUTPUTへコピーされるリソースがAptina Unit環境ではコピーされないため，
                 // まずはSOURCE_PATHから読み込む
-                originalFileObject = super.getFileForInput(
-                    StandardLocation.SOURCE_PATH,
-                    packageName,
-                    relativeName);
+                originalFileObject = super.getFileForInput(StandardLocation.SOURCE_PATH,
+                        packageName, relativeName);
             }
             if (originalFileObject == null) {
-                originalFileObject = super.getFileForOutput(
-                    location,
-                    packageName,
-                    relativeName,
-                    sibling);
+                originalFileObject = super.getFileForOutput(location, packageName, relativeName,
+                        sibling);
             }
             uri = originalFileObject.toUri();
             content = IOUtils.readBytes(originalFileObject.openInputStream());
@@ -123,17 +113,15 @@ class TestingJavaFileManager extends
         } catch (final NoSuchFileException ignore) {
         }
         final InMemoryJavaFileObject fileObject = new InMemoryJavaFileObject(
-            uri != null ? uri : toURI(location, packageName, relativeName),
-            Kind.OTHER,
-            charset,
-            content);
+                uri != null ? uri : toURI(location, packageName, relativeName), Kind.OTHER, charset,
+                content);
         fileObjects.put(key, fileObject);
         return fileObject;
     }
 
     @Override
-    public JavaFileObject getJavaFileForInput(final Location location,
-            final String className, final Kind kind) throws IOException {
+    public JavaFileObject getJavaFileForInput(final Location location, final String className,
+            final Kind kind) throws IOException {
         final String key = createKey(className, kind);
         if (fileObjects.containsKey(key)) {
             return fileObjects.get(key);
@@ -142,9 +130,8 @@ class TestingJavaFileManager extends
     }
 
     @Override
-    public JavaFileObject getJavaFileForOutput(final Location location,
-            final String className, final Kind kind, final FileObject sibling)
-            throws IOException {
+    public JavaFileObject getJavaFileForOutput(final Location location, final String className,
+            final Kind kind, final FileObject sibling) throws IOException {
         final String key = createKey(className, kind);
         if (fileObjects.containsKey(key)) {
             return fileObjects.get(key);
@@ -153,18 +140,15 @@ class TestingJavaFileManager extends
         byte[] content = null;
         URI uri = null;
         try {
-            final JavaFileObject originalFileObject = super
-                .getJavaFileForOutput(location, className, kind, sibling);
+            final JavaFileObject originalFileObject = super.getJavaFileForOutput(location,
+                    className, kind, sibling);
             uri = originalFileObject.toUri();
             content = IOUtils.readBytes(originalFileObject.openInputStream());
         } catch (final FileNotFoundException ignore) {
         } catch (final NoSuchFileException ignore) {
         }
         final InMemoryJavaFileObject fileObject = new InMemoryJavaFileObject(
-            uri != null ? uri : toURI(location, className),
-            kind,
-            charset,
-            content);
+                uri != null ? uri : toURI(location, className), kind, charset, content);
         fileObjects.put(key, fileObject);
         return fileObject;
     }
@@ -193,8 +177,8 @@ class TestingJavaFileManager extends
      * @throws IOException
      *             入出力例外が発生した場合
      */
-    public JavaFileObject getGeneratedJavaFile(final Location location,
-            final String className, final Kind kind) throws IOException {
+    public JavaFileObject getGeneratedJavaFile(final Location location, final String className,
+            final Kind kind) throws IOException {
         final String key = kind.name() + "::" + className;
         if (fileObjects.containsKey(key)) {
             return fileObjects.get(key);
@@ -202,11 +186,10 @@ class TestingJavaFileManager extends
         return null;
     }
 
-    URI toURI(final Location location, final String packageName,
-            final String relativeName) {
+    URI toURI(final Location location, final String packageName, final String relativeName) {
         try {
-            return new URI(location.getName() + "/"
-                    + packageName.replace('.', '/') + "/" + relativeName);
+            return new URI(
+                    location.getName() + "/" + packageName.replace('.', '/') + "/" + relativeName);
         } catch (final URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -214,8 +197,7 @@ class TestingJavaFileManager extends
 
     URI toURI(final Location location, final String className) {
         try {
-            return new URI(location.getName() + "/"
-                    + className.replace('.', '/') + ".java");
+            return new URI(location.getName() + "/" + className.replace('.', '/') + ".java");
         } catch (final URISyntaxException e) {
             throw new RuntimeException(e);
         }

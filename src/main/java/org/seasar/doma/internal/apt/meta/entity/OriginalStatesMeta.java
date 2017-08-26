@@ -33,8 +33,8 @@ public class OriginalStatesMeta {
 
     private final TypeElement fieldEnclosingElement;
 
-    public OriginalStatesMeta(TypeElement typeElement,
-            VariableElement fieldElement, TypeElement fieldEnclosingElement) {
+    public OriginalStatesMeta(TypeElement typeElement, VariableElement fieldElement,
+            TypeElement fieldEnclosingElement) {
         assertNotNull(typeElement, fieldElement, fieldEnclosingElement);
         this.typeElement = typeElement;
         this.fieldElement = fieldElement;

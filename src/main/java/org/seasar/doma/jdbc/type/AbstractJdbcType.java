@@ -83,8 +83,8 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
     }
 
     @Override
-    public void registerOutParameter(CallableStatement callableStatement,
-            int index) throws SQLException {
+    public void registerOutParameter(CallableStatement callableStatement, int index)
+            throws SQLException {
         if (callableStatement == null) {
             throw new DomaNullPointerException("callableStatement");
         }
@@ -95,8 +95,7 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
     }
 
     @Override
-    public T getValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    public T getValue(CallableStatement callableStatement, int index) throws SQLException {
         if (callableStatement == null) {
             throw new DomaNullPointerException("callableStatement");
         }
@@ -129,8 +128,7 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
      * @throws SQLException
      *             SQL例外が発生した場合
      */
-    protected abstract T doGetValue(ResultSet resultSet, int index)
-            throws SQLException;
+    protected abstract T doGetValue(ResultSet resultSet, int index) throws SQLException;
 
     /**
      * サブクラスで {@link PreparedStatement} に値を設定します。
@@ -144,8 +142,8 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
      * @throws SQLException
      *             SQL例外が発生した場合
      */
-    protected abstract void doSetValue(PreparedStatement preparedStatement,
-            int index, T value) throws SQLException;
+    protected abstract void doSetValue(PreparedStatement preparedStatement, int index, T value)
+            throws SQLException;
 
     /**
      * サブクラスで {@link CallableStatement} から値を取得します。
@@ -158,8 +156,8 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
      * @throws SQLException
      *             SQL例外が発生した場合
      */
-    protected abstract T doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException;
+    protected abstract T doGetValue(CallableStatement callableStatement, int index)
+            throws SQLException;
 
     /**
      * サブクラスで値をログ用フォーマットの文字列に変換します。

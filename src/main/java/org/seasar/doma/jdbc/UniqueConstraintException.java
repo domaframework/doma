@@ -50,10 +50,9 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(SqlLogType logType, Sql<?> sql,
-            Throwable cause) {
-        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
-                sql.getSqlFilePath(), cause);
+    public UniqueConstraintException(SqlLogType logType, Sql<?> sql, Throwable cause) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath(),
+                cause);
     }
 
     /**
@@ -72,11 +71,9 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(SqlLogType logType, SqlKind kind,
-            String rawSql, String formattedSql, String sqlFilePath,
-            Throwable cause) {
-        super(Message.DOMA2004, cause, sqlFilePath, choiceSql(logType, rawSql,
-                formattedSql));
+    public UniqueConstraintException(SqlLogType logType, SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath, Throwable cause) {
+        super(Message.DOMA2004, cause, sqlFilePath, choiceSql(logType, rawSql, formattedSql));
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
@@ -97,8 +94,8 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    protected UniqueConstraintException(MessageResource messageCode,
-            SqlKind kind, String rawSql, String sqlFilePath, Throwable cause) {
+    protected UniqueConstraintException(MessageResource messageCode, SqlKind kind, String rawSql,
+            String sqlFilePath, Throwable cause) {
         super(messageCode, cause, sqlFilePath, rawSql, cause);
         this.kind = kind;
         this.rawSql = rawSql;

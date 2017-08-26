@@ -91,8 +91,7 @@ public class BatchUpdateCommandTest extends TestCase {
         }
     }
 
-    public void testExecute_suppressesOptimisticLockException()
-            throws Exception {
+    public void testExecute_suppressesOptimisticLockException() throws Exception {
         Emp emp = new Emp();
         emp.setId(1);
         emp.setName("hoge");

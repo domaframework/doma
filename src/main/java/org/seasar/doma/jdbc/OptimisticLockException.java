@@ -51,8 +51,7 @@ public class OptimisticLockException extends JdbcException {
      *            SQL
      */
     public OptimisticLockException(SqlLogType logType, Sql<?> sql) {
-        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
-                sql.getSqlFilePath());
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
     }
 
     /**
@@ -69,10 +68,9 @@ public class OptimisticLockException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public OptimisticLockException(SqlLogType logType, SqlKind kind,
-            String rawSql, String formattedSql, String sqlFilePath) {
-        super(Message.DOMA2003, sqlFilePath, choiceSql(logType, rawSql,
-                formattedSql));
+    public OptimisticLockException(SqlLogType logType, SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath) {
+        super(Message.DOMA2003, sqlFilePath, choiceSql(logType, rawSql, formattedSql));
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
@@ -91,8 +89,8 @@ public class OptimisticLockException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    protected OptimisticLockException(MessageResource messageCode,
-            SqlKind kind, String rawSql, String sqlFilePath) {
+    protected OptimisticLockException(MessageResource messageCode, SqlKind kind, String rawSql,
+            String sqlFilePath) {
         super(messageCode, sqlFilePath, rawSql);
         this.kind = kind;
         this.rawSql = rawSql;

@@ -56,8 +56,7 @@ public class EntityResultListHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(method);

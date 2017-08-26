@@ -33,8 +33,8 @@ import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
  * @param <ELEMENT>
  *            リストの要素
  */
-public class SqlFileBatchDeleteQuery<ELEMENT> extends
-        SqlFileBatchModifyQuery<ELEMENT> implements BatchDeleteQuery {
+public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
+        implements BatchDeleteQuery {
 
     protected EntityHandler entityHandler;
 
@@ -86,8 +86,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
     @Override
     public void complete() {
         if (entityHandler != null) {
-            for (ListIterator<ELEMENT> it = elements.listIterator(); it
-                    .hasNext();) {
+            for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext();) {
                 currentEntity = it.next();
                 entityHandler.postDelete();
                 it.set(currentEntity);
@@ -104,8 +103,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
         this.versionIgnored = versionIgnored;
     }
 
-    public void setOptimisticLockExceptionSuppressed(
-            boolean optimisticLockExceptionSuppressed) {
+    public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
@@ -148,20 +146,18 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends
         }
     }
 
-    protected static class SqlFileBatchPreDeleteContext<E> extends
-            AbstractPreDeleteContext<E> {
+    protected static class SqlFileBatchPreDeleteContext<E> extends AbstractPreDeleteContext<E> {
 
-        public SqlFileBatchPreDeleteContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFileBatchPreDeleteContext(EntityDesc<E> entityDesc, Method method,
+                Config config) {
             super(entityDesc, method, config);
         }
     }
 
-    protected static class SqlFileBatchPostDeleteContext<E> extends
-            AbstractPostDeleteContext<E> {
+    protected static class SqlFileBatchPostDeleteContext<E> extends AbstractPostDeleteContext<E> {
 
-        public SqlFileBatchPostDeleteContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFileBatchPostDeleteContext(EntityDesc<E> entityDesc, Method method,
+                Config config) {
             super(entityDesc, method, config);
         }
     }

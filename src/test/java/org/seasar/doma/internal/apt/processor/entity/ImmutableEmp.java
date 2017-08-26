@@ -42,8 +42,8 @@ public class ImmutableEmp {
     @Version
     final Integer version;
 
-    public ImmutableEmp(Integer id, String name, BigDecimal salary,
-            Integer version, List<String> names) {
+    public ImmutableEmp(Integer id, String name, BigDecimal salary, Integer version,
+            List<String> names) {
         this.id = id;
         this.name = name;
         this.salary = salary;

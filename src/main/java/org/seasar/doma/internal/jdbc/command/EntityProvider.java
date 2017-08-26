@@ -67,8 +67,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
         this.entityDesc = entityDesc;
         this.query = query;
         this.resultMappingEnsured = resultMappingEnsured;
-        this.jdbcMappingVisitor = query.getConfig().getDialect()
-                .getJdbcMappingVisitor();
+        this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
         this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
     }
 
@@ -83,8 +82,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
             indexMap = createIndexMap(resultSet.getMetaData(), entityDesc);
         }
         Map<String, Property<ENTITY, ?>> states = new HashMap<>(indexMap.size());
-        for (Map.Entry<Integer, EntityPropertyDesc<ENTITY, ?>> entry : indexMap
-                .entrySet()) {
+        for (Map.Entry<Integer, EntityPropertyDesc<ENTITY, ?>> entry : indexMap.entrySet()) {
             Integer index = entry.getKey();
             EntityPropertyDesc<ENTITY, ?> propertyDesc = entry.getValue();
             Property<ENTITY, ?> property = propertyDesc.createProperty();
@@ -99,24 +97,23 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     }
 
     protected HashMap<Integer, EntityPropertyDesc<ENTITY, ?>> createIndexMap(
-            ResultSetMetaData resultSetMeta, EntityDesc<ENTITY> entityDesc)
-            throws SQLException {
+            ResultSetMetaData resultSetMeta, EntityDesc<ENTITY> entityDesc) throws SQLException {
         HashMap<Integer, EntityPropertyDesc<ENTITY, ?>> indexMap = new HashMap<>();
-        HashMap<String, EntityPropertyDesc<ENTITY, ?>> columnNameMap = createColumnNameMap(entityDesc);
-        Set<EntityPropertyDesc<ENTITY, ?>> unmappedPropertySet = resultMappingEnsured ? new HashSet<>(
-                columnNameMap.values()) : Collections.emptySet();
+        HashMap<String, EntityPropertyDesc<ENTITY, ?>> columnNameMap = createColumnNameMap(
+                entityDesc);
+        Set<EntityPropertyDesc<ENTITY, ?>> unmappedPropertySet = resultMappingEnsured
+                ? new HashSet<>(columnNameMap.values())
+                : Collections.emptySet();
         int count = resultSetMeta.getColumnCount();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
             String lowerCaseColumnName = columnName.toLowerCase();
-            EntityPropertyDesc<ENTITY, ?> propertyDesc = columnNameMap
-                    .get(lowerCaseColumnName);
+            EntityPropertyDesc<ENTITY, ?> propertyDesc = columnNameMap.get(lowerCaseColumnName);
             if (propertyDesc == null) {
                 if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
                     continue;
                 }
-                unknownColumnHandler.handle(query, entityDesc,
-                        lowerCaseColumnName);
+                unknownColumnHandler.handle(query, entityDesc, lowerCaseColumnName);
             } else {
                 unmappedPropertySet.remove(propertyDesc);
                 indexMap.put(i, propertyDesc);
@@ -131,10 +128,8 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     protected HashMap<String, EntityPropertyDesc<ENTITY, ?>> createColumnNameMap(
             EntityDesc<ENTITY> entityDesc) {
         Naming naming = query.getConfig().getNaming();
-        List<EntityPropertyDesc<ENTITY, ?>> propertyDescs = entityDesc
-                .getEntityPropertyDescs();
-        HashMap<String, EntityPropertyDesc<ENTITY, ?>> result = new HashMap<>(
-                propertyDescs.size());
+        List<EntityPropertyDesc<ENTITY, ?>> propertyDescs = entityDesc.getEntityPropertyDescs();
+        HashMap<String, EntityPropertyDesc<ENTITY, ?>> result = new HashMap<>(propertyDescs.size());
         for (EntityPropertyDesc<ENTITY, ?> propertyDesc : propertyDescs) {
             String columnName = propertyDesc.getColumnName(naming::apply);
             result.put(columnName.toLowerCase(), propertyDesc);
@@ -153,11 +148,9 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
             expectedColumnNames.add(propertyDesc.getColumnName(naming::apply));
         }
         Sql<?> sql = query.getSql();
-        throw new ResultMappingException(query.getConfig()
-                .getExceptionSqlLogType(), entityDesc.getEntityClass()
-                .getName(), unmappedPropertyNames, expectedColumnNames,
-                sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
-                sql.getSqlFilePath());
+        throw new ResultMappingException(query.getConfig().getExceptionSqlLogType(),
+                entityDesc.getEntityClass().getName(), unmappedPropertyNames, expectedColumnNames,
+                sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
     }
 
 }

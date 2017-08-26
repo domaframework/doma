@@ -44,17 +44,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testEmbeddedVariable", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    "aaa/bbbDao/ccc.sql", false, false);
-            SqlParser parser = new SqlParser(
-                    "select * from emp /*# orderBy */");
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -67,17 +63,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testEmbeddedVariableSuppressed", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(ctx,
-                    methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
-                    false, false);
-            SqlParser parser = new SqlParser(
-                    "select * from emp /*# orderBy */");
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -90,14 +82,11 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target, "testIf");
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(ctx,
-                    methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
-                    false, false);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testIf");
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where /*%if true*/ id = 1 /*%end */");
             SqlNode sqlNode = parser.parse();
@@ -112,14 +101,12 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target, "testIfSuppressed");
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    "aaa/bbbDao/ccc.sql", false, false);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
+                    "testIfSuppressed");
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where /*%if true*/ id = 1 /*%end */");
             SqlNode sqlNode = parser.parse();
@@ -134,15 +121,12 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target, "testIfAndEmbeddedVariable",
-                            String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(ctx,
-                    methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
-                    false, false);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
+                    "testIfAndEmbeddedVariable", String.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
             SqlNode sqlNode = parser.parse();
@@ -157,16 +141,12 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                            "testIfAndEmbeddedVariableSuppressed",
-                            String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    "aaa/bbbDao/ccc.sql", false, false);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
+                    "testIfAndEmbeddedVariableSuppressed", String.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
             SqlParser parser = new SqlParser(
                     "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
             SqlNode sqlNode = parser.parse();
@@ -181,16 +161,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target, "testPopulate", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    "aaa/bbbDao/ccc.sql", false, true);
-            SqlParser parser = new SqlParser(
-                    "update emp set /*%populate*/ id = id");
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
+                    "testPopulate", String.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, true);
+            SqlParser parser = new SqlParser("update emp set /*%populate*/ id = id");
             SqlNode sqlNode = parser.parse();
             sqlNode.accept(validator, null);
         }));
@@ -203,16 +180,13 @@ public class BatchSqlValidatorTest extends AptTestCase {
         Class<?> target = BatchSqlValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target, "testPopulate", String.class);
-            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx
-                    .getElements().getParameterTypeMap(
-                    methodElement);
-            BatchSqlValidator validator = new BatchSqlValidator(ctx,
-                    methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql",
-                    false, false);
-            SqlParser parser = new SqlParser(
-                    "update emp set /*%populate*/ id = id");
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
+                    "testPopulate", String.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap = ctx.getElements()
+                    .getParameterTypeMap(methodElement);
+            BatchSqlValidator validator = new BatchSqlValidator(ctx, methodElement,
+                    parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("update emp set /*%populate*/ id = id");
             SqlNode sqlNode = parser.parse();
             try {
                 sqlNode.accept(validator, null);

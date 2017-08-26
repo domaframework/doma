@@ -45,9 +45,8 @@ public class RuntimeConfigTest extends TestCase {
 
         RuntimeConfig runtimeConfig = new RuntimeConfig(originalConfig);
 
-        MockEntityListener entityListener = runtimeConfig
-                .getEntityListenerProvider().get(MockEntityListener.class,
-                        MockEntityListener::new);
+        MockEntityListener entityListener = runtimeConfig.getEntityListenerProvider()
+                .get(MockEntityListener.class, MockEntityListener::new);
         assertNotNull(entityListener);
     }
 
@@ -63,8 +62,8 @@ public class RuntimeConfigTest extends TestCase {
         RuntimeConfig runtimeConfig = new RuntimeConfig(originalConfig);
 
         try {
-            runtimeConfig.getEntityListenerProvider().get(
-                    MockEntityListener.class, MockEntityListener::new);
+            runtimeConfig.getEntityListenerProvider().get(MockEntityListener.class,
+                    MockEntityListener::new);
             fail();
         } catch (ConfigException e) {
             assertEquals(originalConfig.getClass().getName(), e.getClassName());

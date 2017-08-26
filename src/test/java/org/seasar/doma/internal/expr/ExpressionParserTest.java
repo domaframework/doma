@@ -69,8 +69,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testAnd2() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "(true || false) && (true || false)");
+        ExpressionParser parser = new ExpressionParser("(true || false) && (true || false)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -78,8 +77,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testAnd3() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "(true || false ) && !( true || false)");
+        ExpressionParser parser = new ExpressionParser("(true || false ) && !( true || false)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -87,8 +85,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testAnd4() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "(true || false ) && true");
+        ExpressionParser parser = new ExpressionParser("(true || false ) && true");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -120,8 +117,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testOr3() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "true && true || true && true");
+        ExpressionParser parser = new ExpressionParser("true && true || true && true");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -129,8 +125,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testOr4() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "true && false || true && true");
+        ExpressionParser parser = new ExpressionParser("true && false || true && true");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -165,8 +160,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testMethod3() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "hoge.foo.substring(2, 4)");
+        ExpressionParser parser = new ExpressionParser("hoge.foo.substring(2, 4)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
@@ -175,8 +169,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testMethod4() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "hoge.bar(2, 4).length()");
+        ExpressionParser parser = new ExpressionParser("hoge.bar(2, 4).length()");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
@@ -195,8 +188,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testMethod6() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "bbb.method(bbb.method(bbb.value))");
+        ExpressionParser parser = new ExpressionParser("bbb.method(bbb.method(bbb.value))");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         Bbb bbb = new Bbb();
@@ -221,8 +213,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testStatictMethod() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "@java.lang.String@valueOf(1)");
+        ExpressionParser parser = new ExpressionParser("@java.lang.String@valueOf(1)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -230,8 +221,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testStatictMethod_classNotFound() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "@java.lang.Xxx@valueOf(1)");
+        ExpressionParser parser = new ExpressionParser("@java.lang.Xxx@valueOf(1)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {
@@ -243,8 +233,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testStatictMethod_methodNotFound() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "@java.lang.String@xxx(1)");
+        ExpressionParser parser = new ExpressionParser("@java.lang.String@xxx(1)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {
@@ -268,8 +257,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testStatictField() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "@java.lang.String@CASE_INSENSITIVE_ORDER");
+        ExpressionParser parser = new ExpressionParser("@java.lang.String@CASE_INSENSITIVE_ORDER");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -277,8 +265,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testStatictField_classNotFound() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "@java.lang.Xxx@CASE_INSENSITIVE_ORDER");
+        ExpressionParser parser = new ExpressionParser("@java.lang.Xxx@CASE_INSENSITIVE_ORDER");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {
@@ -333,8 +320,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testNew() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new java.lang.Integer(10)");
+        ExpressionParser parser = new ExpressionParser("new java.lang.Integer(10)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);

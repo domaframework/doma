@@ -43,8 +43,7 @@ public class InsertBuilderTest extends TestCase {
         builder.param(String.class, "SMITH").sql(", ");
         builder.param(int.class, 100).sql(")");
 
-        String sql = String.format("insert into Emp%n" + "(name, salary)%n"
-                + "values (?, ?)");
+        String sql = String.format("insert into Emp%n" + "(name, salary)%n" + "values (?, ?)");
         assertEquals(sql, builder.getSql().getRawSql());
 
         builder.execute();
@@ -58,8 +57,8 @@ public class InsertBuilderTest extends TestCase {
         builder.literal(String.class, "SMITH").sql(", ");
         builder.literal(int.class, 100).sql(")");
 
-        String sql = String.format("insert into Emp%n" + "(name, salary)%n"
-                + "values ('SMITH', 100)");
+        String sql = String
+                .format("insert into Emp%n" + "(name, salary)%n" + "values ('SMITH', 100)");
         assertEquals(sql, builder.getSql().getRawSql());
 
         builder.execute();

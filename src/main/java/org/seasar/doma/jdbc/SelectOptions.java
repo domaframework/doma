@@ -135,8 +135,7 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions forUpdateWait(int waitSeconds) {
         if (waitSeconds < 0) {
-            throw new DomaIllegalArgumentException("waitSeconds",
-                    "waitSeconds < 0");
+            throw new DomaIllegalArgumentException("waitSeconds", "waitSeconds < 0");
         }
         forUpdateType = SelectForUpdateType.WAIT;
         this.waitSeconds = waitSeconds;
@@ -154,8 +153,7 @@ public class SelectOptions implements Serializable {
      */
     public SelectOptions forUpdateWait(int waitSeconds, String... aliases) {
         if (waitSeconds < 0) {
-            throw new DomaIllegalArgumentException("waitSeconds",
-                    "waitSeconds < 0");
+            throw new DomaIllegalArgumentException("waitSeconds", "waitSeconds < 0");
         }
         if (aliases == null) {
             throw new DomaNullPointerException("aliases");

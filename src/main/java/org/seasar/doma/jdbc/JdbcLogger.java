@@ -42,8 +42,7 @@ public interface JdbcLogger {
      * @param args
      *            メソッドの引数
      */
-    void logDaoMethodEntering(String callerClassName, String callerMethodName,
-            Object... args);
+    void logDaoMethodEntering(String callerClassName, String callerMethodName, Object... args);
 
     /**
      * Daoメソッドの実行終了を記録します。
@@ -59,8 +58,7 @@ public interface JdbcLogger {
      * @param result
      *            メソッドの実行結果、実行結果が存在しない場合{@code null}
      */
-    void logDaoMethodExiting(String callerClassName, String callerMethodName,
-            Object result);
+    void logDaoMethodExiting(String callerClassName, String callerMethodName, Object result);
 
     /**
      * Daoメソッドの実行時例外による実行終了を記録します。
@@ -76,8 +74,7 @@ public interface JdbcLogger {
      *            実行時例外
      * @since 1.6.0
      */
-    void logDaoMethodThrowing(String callerClassName, String callerMethodName,
-            RuntimeException e);
+    void logDaoMethodThrowing(String callerClassName, String callerMethodName, RuntimeException e);
 
     /**
      * SQLの実行がスキップされたことを記録します。
@@ -89,8 +86,8 @@ public interface JdbcLogger {
      * @param cause
      *            原因
      */
-    void logSqlExecutionSkipping(String callerClassName,
-            String callerMethodName, SqlExecutionSkipCause cause);
+    void logSqlExecutionSkipping(String callerClassName, String callerMethodName,
+            SqlExecutionSkipCause cause);
 
     /**
      * 実行するSQLを記録します。
@@ -115,8 +112,7 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @since 2.0.0
      */
-    void logTransactionBegun(String callerClassName, String callerMethodName,
-            String transactionId);
+    void logTransactionBegun(String callerClassName, String callerMethodName, String transactionId);
 
     /**
      * トランザクションの終了を記録します。
@@ -129,8 +125,7 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @since 2.0.0
      */
-    void logTransactionEnded(String callerClassName, String callerMethodName,
-            String transactionId);
+    void logTransactionEnded(String callerClassName, String callerMethodName, String transactionId);
 
     /**
      * トランザクションのコミットを記録します。
@@ -143,8 +138,8 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @since 2.0.0
      */
-    void logTransactionCommitted(String callerClassName,
-            String callerMethodName, String transactionId);
+    void logTransactionCommitted(String callerClassName, String callerMethodName,
+            String transactionId);
 
     /**
      * トランザクションのセーブポイントの作成を記録します。
@@ -159,8 +154,8 @@ public interface JdbcLogger {
      *            セーブポイントの名前
      * @since 2.0.0
      */
-    void logTransactionSavepointCreated(String callerClassName,
-            String callerMethodName, String transactionId, String savepointName);
+    void logTransactionSavepointCreated(String callerClassName, String callerMethodName,
+            String transactionId, String savepointName);
 
     /**
      * トランザクションのロールバックを記録します。
@@ -173,8 +168,8 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @since 2.0.0
      */
-    void logTransactionRolledback(String callerClassName,
-            String callerMethodName, String transactionId);
+    void logTransactionRolledback(String callerClassName, String callerMethodName,
+            String transactionId);
 
     /**
      * トランザクションのセーブポイントのロールバックを記録します。
@@ -189,8 +184,8 @@ public interface JdbcLogger {
      *            セーブポイントの名前
      * @since 2.0.0
      */
-    void logTransactionSavepointRolledback(String callerClassName,
-            String callerMethodName, String transactionId, String savepointName);
+    void logTransactionSavepointRolledback(String callerClassName, String callerMethodName,
+            String transactionId, String savepointName);
 
     /**
      * トランザクションのロールバックの失敗を記録します。
@@ -205,8 +200,8 @@ public interface JdbcLogger {
      *            {@link Connection#rollback()} 時に発生した {@link SQLException}
      * @since 2.0.0
      */
-    void logTransactionRollbackFailure(String callerClassName,
-            String callerMethodName, String transactionId, SQLException e);
+    void logTransactionRollbackFailure(String callerClassName, String callerMethodName,
+            String transactionId, SQLException e);
 
     /**
      * {@link Connection#setAutoCommit(boolean)} の引数に {@code true} を渡した時に発生した
@@ -221,8 +216,8 @@ public interface JdbcLogger {
      *            {@link SQLException}
      * @since 1.2.0
      */
-    void logAutoCommitEnablingFailure(String callerClassName,
-            String callerMethodName, SQLException e);
+    void logAutoCommitEnablingFailure(String callerClassName, String callerMethodName,
+            SQLException e);
 
     /**
      * {@link Connection#setTransactionIsolation(int)} 時に発生した
@@ -240,9 +235,8 @@ public interface JdbcLogger {
      *            {@link SQLException}
      * @since 1.2.0
      */
-    void logTransactionIsolationSettingFailure(String callerClassName,
-            String callerMethodName, int transactionIsolationLevel,
-            SQLException e);
+    void logTransactionIsolationSettingFailure(String callerClassName, String callerMethodName,
+            int transactionIsolationLevel, SQLException e);
 
     /**
      * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。
@@ -254,8 +248,8 @@ public interface JdbcLogger {
      * @param e
      *            {@link Connection#close()} 時に発生した {@link SQLException}
      */
-    void logConnectionClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e);
+    void logConnectionClosingFailure(String callerClassName, String callerMethodName,
+            SQLException e);
 
     /**
      * {@link Statement#close()} 時に発生した {@link SQLException} を記録します。
@@ -267,8 +261,8 @@ public interface JdbcLogger {
      * @param e
      *            {@link Statement#close()} 時に発生した {@link SQLException}
      */
-    void logStatementClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e);
+    void logStatementClosingFailure(String callerClassName, String callerMethodName,
+            SQLException e);
 
     /**
      * {@link ResultSet#close()} 時に発生した {@link SQLException} を記録します。
@@ -280,7 +274,7 @@ public interface JdbcLogger {
      * @param e
      *            {@link ResultSet#close()} 時に発生した {@link SQLException}
      */
-    void logResultSetClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e);
+    void logResultSetClosingFailure(String callerClassName, String callerMethodName,
+            SQLException e);
 
 }

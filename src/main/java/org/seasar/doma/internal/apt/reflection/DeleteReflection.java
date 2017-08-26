@@ -26,8 +26,7 @@ import javax.lang.model.element.AnnotationValue;
  */
 public class DeleteReflection extends ModifyReflection {
 
-    DeleteReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    DeleteReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror, values);
     }
 

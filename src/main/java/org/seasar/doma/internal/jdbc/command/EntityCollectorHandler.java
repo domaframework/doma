@@ -26,8 +26,8 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
  * @param <RESULT>
  * @param <ENTITY>
  */
-public class EntityCollectorHandler<ENTITY, RESULT> extends
-        AbstractCollectorHandler<ENTITY, RESULT> {
+public class EntityCollectorHandler<ENTITY, RESULT>
+        extends AbstractCollectorHandler<ENTITY, RESULT> {
 
     public EntityCollectorHandler(EntityDesc<ENTITY> entityDesc,
             Collector<ENTITY, ?, RESULT> collector) {

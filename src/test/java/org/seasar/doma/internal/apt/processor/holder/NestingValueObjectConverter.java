@@ -24,8 +24,7 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * 
  */
 @ExternalHolder
-public class NestingValueObjectConverter implements
-        HolderConverter<NestingValueObject, String> {
+public class NestingValueObjectConverter implements HolderConverter<NestingValueObject, String> {
 
     public static class NestingValueObject {
     }

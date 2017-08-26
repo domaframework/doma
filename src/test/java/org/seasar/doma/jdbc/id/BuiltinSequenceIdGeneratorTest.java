@@ -43,7 +43,6 @@ public class BuiltinSequenceIdGeneratorTest extends TestCase {
                 _IdGeneratedEmp.getSingletonInternal());
         Long value = idGenerator.generatePreInsert(idGenerationConfig);
         assertEquals(Long.valueOf(11), value);
-        assertEquals("select nextval('aaa')",
-                config.dataSource.connection.preparedStatement.sql);
+        assertEquals("select nextval('aaa')", config.dataSource.connection.preparedStatement.sql);
     }
 }

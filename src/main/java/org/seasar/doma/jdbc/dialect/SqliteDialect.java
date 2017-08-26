@@ -43,8 +43,7 @@ public class SqliteDialect extends StandardDialect {
      * インスタンスを構築します。
      */
     public SqliteDialect() {
-        this(new SqliteJdbcMappingVisitor(),
-                new SqliteSqlLogFormattingVisitor(),
+        this(new SqliteJdbcMappingVisitor(), new SqliteSqlLogFormattingVisitor(),
                 new SqliteExpressionFunctions());
     }
 
@@ -78,8 +77,8 @@ public class SqliteDialect extends StandardDialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public SqliteDialect(ExpressionFunctions expressionFunctions) {
-        this(new SqliteJdbcMappingVisitor(),
-                new SqliteSqlLogFormattingVisitor(), expressionFunctions);
+        this(new SqliteJdbcMappingVisitor(), new SqliteSqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -94,8 +93,7 @@ public class SqliteDialect extends StandardDialect {
      */
     public SqliteDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new SqliteExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new SqliteExpressionFunctions());
     }
 
     /**
@@ -127,9 +125,8 @@ public class SqliteDialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String catalogName,
-            String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
+    public PreparedSql getIdentitySelectSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
@@ -143,15 +140,13 @@ public class SqliteDialect extends StandardDialect {
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        SqlitePagingTransformer transformer = new SqlitePagingTransformer(
-                offset, limit);
+        SqlitePagingTransformer transformer = new SqlitePagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
         return sqlNode;
     }
 
@@ -177,8 +172,7 @@ public class SqliteDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class SqliteJdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class SqliteJdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
     /**
@@ -187,8 +181,7 @@ public class SqliteDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class SqliteSqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class SqliteSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
     /**
@@ -197,8 +190,7 @@ public class SqliteDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class SqliteExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class SqliteExpressionFunctions extends StandardExpressionFunctions {
 
         public SqliteExpressionFunctions() {
             super();

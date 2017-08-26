@@ -24,26 +24,22 @@ import junit.framework.TestCase;
 public class DatabaseObjectUtilTest extends TestCase {
 
     public void testGetQualifiedName() throws Exception {
-        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]",
-                "aaa", "bbb", "ccc");
+        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]", "aaa", "bbb", "ccc");
         assertEquals("[aaa].[bbb].[ccc]", name);
     }
 
     public void testGetQualifiedName_catalogIsNull() throws Exception {
-        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]",
-                null, "bbb", "ccc");
+        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]", null, "bbb", "ccc");
         assertEquals("[bbb].[ccc]", name);
     }
 
     public void testGetQualifiedName_schemaIsNull() throws Exception {
-        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]",
-                "aaa", null, "ccc");
+        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]", "aaa", null, "ccc");
         assertEquals("[aaa].[ccc]", name);
     }
 
     public void testGetQualifiedName_catalogAndSchemaIsNull() throws Exception {
-        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]",
-                null, null, "ccc");
+        String name = DatabaseObjectUtil.getQualifiedName(s -> "[" + s + "]", null, null, "ccc");
         assertEquals("[ccc]", name);
     }
 }

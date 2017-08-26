@@ -48,6 +48,5 @@ public interface JdbcMappingFunction {
      * @throws SQLException
      *             SQLに関する例外が発生した場合
      */
-    <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
-            throws SQLException;
+    <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType) throws SQLException;
 }

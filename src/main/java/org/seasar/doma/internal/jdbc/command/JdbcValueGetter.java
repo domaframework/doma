@@ -44,8 +44,7 @@ public class JdbcValueGetter implements JdbcMappingFunction {
     }
 
     @Override
-    public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
-            throws SQLException {
+    public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType) throws SQLException {
         if (wrapper == null) {
             throw new DomaNullPointerException("wrapper");
         }

@@ -32,8 +32,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  *            結果
  */
-public abstract class AbstractCollectorHandler<TARGET, RESULT> implements
-        ResultSetHandler<RESULT> {
+public abstract class AbstractCollectorHandler<TARGET, RESULT> implements ResultSetHandler<RESULT> {
 
     protected final ResultSetHandler<RESULT> handler;
 

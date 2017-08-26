@@ -105,8 +105,7 @@ public class MysqlDialect extends StandardDialect {
      */
     public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new MysqlExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new MysqlExpressionFunctions());
     }
 
     /**
@@ -152,8 +151,7 @@ public class MysqlDialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
+    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
         return type == SelectForUpdateType.NORMAL && !withTargets;
     }
 
@@ -165,17 +163,15 @@ public class MysqlDialect extends StandardDialect {
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        MysqlPagingTransformer transformer = new MysqlPagingTransformer(offset,
-                limit);
+        MysqlPagingTransformer transformer = new MysqlPagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        MysqlForUpdateTransformer transformer = new MysqlForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        MysqlForUpdateTransformer transformer = new MysqlForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
@@ -206,8 +202,7 @@ public class MysqlDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class MysqlJdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class MysqlJdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
     /**
@@ -216,8 +211,7 @@ public class MysqlDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class MysqlSqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class MysqlSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
     /**
@@ -226,8 +220,7 @@ public class MysqlDialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class MysqlExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class MysqlExpressionFunctions extends StandardExpressionFunctions {
 
         public MysqlExpressionFunctions() {
             super();
@@ -249,8 +242,7 @@ public class MysqlDialect extends StandardDialect {
      * @author taedium
      * @since 1.7.0
      */
-    public static class MysqlScriptBlockContext extends
-            StandardScriptBlockContext {
+    public static class MysqlScriptBlockContext extends StandardScriptBlockContext {
 
         protected MysqlScriptBlockContext() {
             sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));

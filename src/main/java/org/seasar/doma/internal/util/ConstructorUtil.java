@@ -26,8 +26,8 @@ import org.seasar.doma.internal.WrapException;
  */
 public final class ConstructorUtil {
 
-    public static <T> T newInstance(Constructor<T> constructor,
-            Object... params) throws WrapException {
+    public static <T> T newInstance(Constructor<T> constructor, Object... params)
+            throws WrapException {
         try {
             return constructor.newInstance(params);
         } catch (IllegalArgumentException e) {
@@ -42,8 +42,7 @@ public final class ConstructorUtil {
     }
 
     public static String createSignature(Constructor<?> constructor) {
-        return createSignature(constructor.getDeclaringClass(),
-                constructor.getParameterTypes());
+        return createSignature(constructor.getDeclaringClass(), constructor.getParameterTypes());
     }
 
     public static String createSignature(Class<?> clazz, Class<?>[] paramTypes) {

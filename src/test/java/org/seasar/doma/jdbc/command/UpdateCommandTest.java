@@ -42,8 +42,7 @@ public class UpdateCommandTest extends TestCase {
         emp.setVersion(10);
         emp.originalStates = new Emp();
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -56,9 +55,7 @@ public class UpdateCommandTest extends TestCase {
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals(
-                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
-                sql);
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());
@@ -76,8 +73,7 @@ public class UpdateCommandTest extends TestCase {
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -93,8 +89,7 @@ public class UpdateCommandTest extends TestCase {
         }
     }
 
-    public void testExecute_suppressesOptimisticLockException()
-            throws Exception {
+    public void testExecute_suppressesOptimisticLockException() throws Exception {
         Emp emp = new Emp();
         emp.setId(10);
         emp.setName("aaa");
@@ -102,8 +97,7 @@ public class UpdateCommandTest extends TestCase {
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -129,8 +123,7 @@ public class UpdateCommandTest extends TestCase {
 
         emp.originalStates = states;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -143,9 +136,7 @@ public class UpdateCommandTest extends TestCase {
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals(
-                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
-                sql);
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());

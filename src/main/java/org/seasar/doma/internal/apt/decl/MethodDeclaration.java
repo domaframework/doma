@@ -24,8 +24,7 @@ public class MethodDeclaration {
 
     private final TypeDeclaration returnTypeDeclaration;
 
-    MethodDeclaration(ExecutableElement element,
-            TypeDeclaration returnTypeDeclaration) {
+    MethodDeclaration(ExecutableElement element, TypeDeclaration returnTypeDeclaration) {
         this.element = element;
         this.returnTypeDeclaration = returnTypeDeclaration;
     }

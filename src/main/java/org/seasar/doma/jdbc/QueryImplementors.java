@@ -67,18 +67,18 @@ public interface QueryImplementors {
         return new SqlFileScriptQuery();
     }
 
-    default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(
-            Method method, EntityDesc<ENTITY> entityDesc) {
+    default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(Method method,
+            EntityDesc<ENTITY> entityDesc) {
         return new AutoDeleteQuery<>(entityDesc);
     }
 
-    default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
-            Method method, EntityDesc<ENTITY> entityDesc) {
+    default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(Method method,
+            EntityDesc<ENTITY> entityDesc) {
         return new AutoInsertQuery<>(entityDesc);
     }
 
-    default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
-            Method method, EntityDesc<ENTITY> entityDesc) {
+    default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(Method method,
+            EntityDesc<ENTITY> entityDesc) {
         return new AutoUpdateQuery<>(entityDesc);
     }
 
@@ -106,38 +106,37 @@ public interface QueryImplementors {
         return new SqlUpdateQuery();
     }
 
-    default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
-            Method method, EntityDesc<ENTITY> entityDesc) {
+    default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(Method method,
+            EntityDesc<ENTITY> entityDesc) {
         return new AutoBatchDeleteQuery<>(entityDesc);
     }
 
-    default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
-            Method method, EntityDesc<ENTITY> entityDesc) {
+    default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(Method method,
+            EntityDesc<ENTITY> entityDesc) {
         return new AutoBatchInsertQuery<>(entityDesc);
     }
 
-    default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
-            Method method, EntityDesc<ENTITY> entityDesc) {
+    default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(Method method,
+            EntityDesc<ENTITY> entityDesc) {
         return new AutoBatchUpdateQuery<>(entityDesc);
     }
 
-    default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(
-            Method method, Class<ELEMENT> clazz) {
+    default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(Method method,
+            Class<ELEMENT> clazz) {
         return new SqlFileBatchDeleteQuery<>(clazz);
     }
 
-    default <ELEMENT> SqlFileBatchInsertQuery<ELEMENT> createSqlFileBatchInsertQuery(
-            Method method, Class<ELEMENT> clazz) {
+    default <ELEMENT> SqlFileBatchInsertQuery<ELEMENT> createSqlFileBatchInsertQuery(Method method,
+            Class<ELEMENT> clazz) {
         return new SqlFileBatchInsertQuery<>(clazz);
     }
 
-    default <ELEMENT> SqlFileBatchUpdateQuery<ELEMENT> createSqlFileBatchUpdateQuery(
-            Method method, Class<ELEMENT> clazz) {
+    default <ELEMENT> SqlFileBatchUpdateQuery<ELEMENT> createSqlFileBatchUpdateQuery(Method method,
+            Class<ELEMENT> clazz) {
         return new SqlFileBatchUpdateQuery<>(clazz);
     }
 
-    default <RESULT> AutoFunctionQuery<RESULT> createAutoFunctionQuery(
-            Method method) {
+    default <RESULT> AutoFunctionQuery<RESULT> createAutoFunctionQuery(Method method) {
         return new AutoFunctionQuery<>();
     }
 

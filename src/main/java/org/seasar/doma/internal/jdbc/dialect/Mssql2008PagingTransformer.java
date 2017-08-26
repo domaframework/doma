@@ -54,8 +54,7 @@ public class Mssql2008PagingTransformer extends StandardPagingTransformer {
     }
 
     protected SqlNode appendTopNode(SelectStatementNode node) {
-        SelectClauseNode select = new SelectClauseNode(node
-                .getSelectClauseNode().getWordNode());
+        SelectClauseNode select = new SelectClauseNode(node.getSelectClauseNode().getWordNode());
         select.appendNode(new FragmentNode(" top (" + limit + ")"));
         for (SqlNode child : node.getSelectClauseNode().getChildren()) {
             select.appendNode(child);

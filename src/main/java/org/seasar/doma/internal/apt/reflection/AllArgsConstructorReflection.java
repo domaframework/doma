@@ -67,8 +67,7 @@ public class AllArgsConstructorReflection extends AbstractReflection {
     }
 
     public boolean isAccessPrivate() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(access);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(access);
         if (enumConstant == null) {
             throw new AptIllegalStateException(ACCESS);
         }
@@ -76,8 +75,7 @@ public class AllArgsConstructorReflection extends AbstractReflection {
     }
 
     public boolean isAccessNone() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(access);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(access);
         if (enumConstant == null) {
             throw new AptIllegalStateException(ACCESS);
         }

@@ -69,8 +69,8 @@ public class FunctionReflection extends AbstractReflection {
 
     private final AnnotationValue sqlLog;
 
-    FunctionReflection(AnnotationMirror annotationMirror,
-            String defaultName, Map<String, AnnotationValue> values) {
+    FunctionReflection(AnnotationMirror annotationMirror, String defaultName,
+            Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(defaultName, values);
 
@@ -82,8 +82,7 @@ public class FunctionReflection extends AbstractReflection {
         this.quote = assertNotNullValue(values, QUOTE);
         this.queryTimeout = assertNotNullValue(values, QUERY_TIMEOUT);
         this.mapKeyNaming = assertNotNullValue(values, MAP_KEY_NAMING);
-        this.ensureResultMapping = assertNotNullValue(values,
-                ENSURE_RESULT_MAPPING);
+        this.ensureResultMapping = assertNotNullValue(values, ENSURE_RESULT_MAPPING);
         this.sqlLog = assertNotNullValue(values, SQL_LOG);
     }
 
@@ -140,13 +139,11 @@ public class FunctionReflection extends AbstractReflection {
     }
 
     public MapKeyNamingType getMapKeyNamingValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(mapKeyNaming);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
         if (enumConstant == null) {
             throw new AptIllegalStateException(MAP_KEY_NAMING);
         }
-        return MapKeyNamingType
-                .valueOf(enumConstant.getSimpleName().toString());
+        return MapKeyNamingType.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public boolean getEnsureResultMappingValue() {
@@ -158,8 +155,7 @@ public class FunctionReflection extends AbstractReflection {
     }
 
     public SqlLogType getSqlLogValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(sqlLog);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
         if (enumConstant == null) {
             throw new AptIllegalStateException(SQL_LOG);
         }

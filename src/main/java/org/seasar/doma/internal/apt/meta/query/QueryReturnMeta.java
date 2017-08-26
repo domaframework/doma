@@ -40,8 +40,7 @@ public class QueryReturnMeta {
 
     private final CtType ctType;
 
-    public QueryReturnMeta(Context ctx, ExecutableElement methodElement,
-            CtType ctType) {
+    public QueryReturnMeta(Context ctx, ExecutableElement methodElement, CtType ctType) {
         assertNotNull(ctx, methodElement, ctType);
         this.ctx = ctx;
         this.methodElement = methodElement;
@@ -57,8 +56,7 @@ public class QueryReturnMeta {
     }
 
     public boolean isPrimitiveIntArray() {
-        return ctType.getType()
-                .accept(new TypeKindVisitor8<Boolean, Void>(false) {
+        return ctType.getType().accept(new TypeKindVisitor8<Boolean, Void>(false) {
 
             @Override
             public Boolean visitArray(ArrayType t, Void p) {

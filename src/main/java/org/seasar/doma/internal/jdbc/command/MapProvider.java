@@ -55,8 +55,7 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
         assertNotNull(query, mapKeyNamingType);
         this.query = query;
         this.mapKeyNamingType = mapKeyNamingType;
-        this.jdbcMappingVisitor = query.getConfig().getDialect()
-                .getJdbcMappingVisitor();
+        this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
     }
 
     @Override
@@ -68,16 +67,15 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
         for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
             Integer index = entry.getKey();
             String key = entry.getValue();
-            BasicScalar<Object> scalar = new BasicScalar<>(
-                    () -> new ObjectWrapper(), false);
+            BasicScalar<Object> scalar = new BasicScalar<>(() -> new ObjectWrapper(), false);
             fetch(resultSet, scalar, index, jdbcMappingVisitor);
             map.put(key, scalar.get());
         }
         return map;
     }
 
-    protected HashMap<Integer, String> createIndexMap(
-            ResultSetMetaData resultSetMeta) throws SQLException {
+    protected HashMap<Integer, String> createIndexMap(ResultSetMetaData resultSetMeta)
+            throws SQLException {
         MapKeyNaming naming = query.getConfig().getMapKeyNaming();
         Method method = query.getMethod();
         HashMap<Integer, String> indexMap = new HashMap<Integer, String>();

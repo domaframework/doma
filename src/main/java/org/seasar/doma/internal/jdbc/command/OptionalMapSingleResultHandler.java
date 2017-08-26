@@ -25,8 +25,8 @@ import org.seasar.doma.MapKeyNamingType;
  * @author nakamura-to
  * 
  */
-public class OptionalMapSingleResultHandler extends
-        AbstractSingleResultHandler<Optional<Map<String, Object>>> {
+public class OptionalMapSingleResultHandler
+        extends AbstractSingleResultHandler<Optional<Map<String, Object>>> {
 
     public OptionalMapSingleResultHandler(MapKeyNamingType keyNamingType) {
         super(new MapIterationHandler<>(keyNamingType,

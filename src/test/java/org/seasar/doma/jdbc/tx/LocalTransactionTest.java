@@ -38,8 +38,7 @@ public class LocalTransactionTest extends TestCase {
 
     private final UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
 
-    private final LocalTransaction transaction = dataSource
-            .getLocalTransaction(jdbcLogger);
+    private final LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
 
     public void testBegin() throws Exception {
         transaction.begin();
@@ -50,16 +49,14 @@ public class LocalTransactionTest extends TestCase {
                 connection.isolationLevel);
     }
 
-    public void testBeginImlicitDefaultTransactionIsolationLevel()
-            throws Exception {
-        LocalTransaction transaction = dataSource.getLocalTransaction(
-                jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
+    public void testBeginImlicitDefaultTransactionIsolationLevel() throws Exception {
+        LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger,
+                TransactionIsolationLevel.SERIALIZABLE);
         transaction.begin();
         assertTrue(transaction.isActive());
         dataSource.getConnection();
         assertFalse(connection.autoCommit);
-        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(),
-                connection.isolationLevel);
+        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(), connection.isolationLevel);
     }
 
     public void testBeginWithTransactionIsolationLevel() throws Exception {
@@ -67,8 +64,7 @@ public class LocalTransactionTest extends TestCase {
         assertTrue(transaction.isActive());
         dataSource.getConnection();
         assertFalse(connection.autoCommit);
-        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(),
-                connection.isolationLevel);
+        assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(), connection.isolationLevel);
     }
 
     public void testBegin_alreadyBegun() throws Exception {
@@ -81,8 +77,7 @@ public class LocalTransactionTest extends TestCase {
         }
     }
 
-    public void testBeginAndGetConnection_failedToSetAutoCommit()
-            throws Exception {
+    public void testBeginAndGetConnection_failedToSetAutoCommit() throws Exception {
         final SQLException exception = new SQLException();
         MockConnection connection = new MockConnection() {
 
@@ -94,8 +89,7 @@ public class LocalTransactionTest extends TestCase {
         };
         LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
-        LocalTransaction transaction = dataSource
-                .getLocalTransaction(jdbcLogger);
+        LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
 
         try {
             transaction.begin();
@@ -119,8 +113,7 @@ public class LocalTransactionTest extends TestCase {
         };
         LocalTransactionDataSource dataSource = new LocalTransactionDataSource(
                 new MockDataSource(connection));
-        LocalTransaction transaction = dataSource
-                .getLocalTransaction(jdbcLogger);
+        LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
 
         try {
             transaction.begin(TransactionIsolationLevel.READ_COMMITTED);

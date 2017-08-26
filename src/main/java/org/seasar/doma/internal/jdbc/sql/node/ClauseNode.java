@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-
 /**
  * @author taedium
  * 

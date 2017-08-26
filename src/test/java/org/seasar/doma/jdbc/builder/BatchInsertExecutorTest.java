@@ -78,8 +78,7 @@ public class BatchInsertExecutorTest extends TestCase {
         builder.param(String.class, "ALLEN").sql(", ");
         builder.param(int.class, 200).sql(")");
         builder = builder.fixSql();
-        String sql = String.format("insert into Emp%n" + "(name, salary)%n"
-                                   + "values (?, ?)");
+        String sql = String.format("insert into Emp%n" + "(name, salary)%n" + "values (?, ?)");
 
         List<? extends Sql<?>> sqls = builder.getSqls();
         assertEquals(2, sqls.size());
@@ -117,15 +116,17 @@ public class BatchInsertExecutorTest extends TestCase {
         List<? extends Sql<?>> sqls = builder.getSqls();
         assertEquals(2, sqls.size());
         Sql<?> sql0 = sqls.get(0);
-        assertEquals(String.format("insert into Emp%n" + "(name, salary)%n"
-                                   + "values ('SMITH', ?)"), sql0.getRawSql());
+        assertEquals(
+                String.format("insert into Emp%n" + "(name, salary)%n" + "values ('SMITH', ?)"),
+                sql0.getRawSql());
         List<? extends SqlParameter> parameters0 = sql0.getParameters();
         assertEquals(1, parameters0.size());
         assertEquals(100, parameters0.get(0).getValue());
 
         Sql<?> sql1 = sqls.get(1);
-        assertEquals(String.format("insert into Emp%n" + "(name, salary)%n"
-                                   + "values ('ALLEN', ?)"), sql1.getRawSql());
+        assertEquals(
+                String.format("insert into Emp%n" + "(name, salary)%n" + "values ('ALLEN', ?)"),
+                sql1.getRawSql());
         List<? extends SqlParameter> parameters1 = sql1.getParameters();
         assertEquals(1, parameters1.size());
         assertEquals(200, parameters1.get(0).getValue());
@@ -147,7 +148,7 @@ public class BatchInsertExecutorTest extends TestCase {
         builder = builder.fixSql();
 
         try {
-           builder.execute(() -> new BatchInsertCommand(query));
+            builder.execute(() -> new BatchInsertCommand(query));
         } catch (AssertionError e) {
             return;
         }
@@ -204,6 +205,7 @@ public class BatchInsertExecutorTest extends TestCase {
     private static class Employee {
         final String name;
         final int salary;
+
         Employee(String name, int salary) {
             this.name = name;
             this.salary = salary;
@@ -211,10 +213,8 @@ public class BatchInsertExecutorTest extends TestCase {
     }
 
     public void testExecutor() throws Exception {
-        List<Employee> employees = Arrays.asList(new Employee[] {
-                                       new Employee("SMITH", 100),
-                                       new Employee("ALLEN", 200)
-                                   });
+        List<Employee> employees = Arrays
+                .asList(new Employee[] { new Employee("SMITH", 100), new Employee("ALLEN", 200) });
         BatchInsertExecutor executor = BatchInsertExecutor.newInstance(new MockConfig());
         executor.execute(employees, (emp, builder) -> {
             builder.sql("insert into Emp");
@@ -227,16 +227,22 @@ public class BatchInsertExecutorTest extends TestCase {
 
     @SuppressWarnings("serial")
     public void testExecutorByMap() throws Exception {
-        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "SMITH");
-                put("salary", 500);
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salary", null);
-            }});
-        }};
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {
+            {
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "SMITH");
+                        put("salary", 500);
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salary", null);
+                    }
+                });
+            }
+        };
         BatchInsertExecutor executor = BatchInsertExecutor.newInstance(new MockConfig());
         executor.execute(employees, (emp, builder) -> {
             builder.sql("insert into Emp");

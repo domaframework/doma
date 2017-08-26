@@ -43,7 +43,6 @@ public final class SqlFileUtil {
     }
 
     public static String convertToDbmsSpecificPath(String path, Dialect dialect) {
-        return FileUtil
-                .convertToDbmsSpecificPath(PREFIX, SUFFIX, path, dialect);
+        return FileUtil.convertToDbmsSpecificPath(PREFIX, SUFFIX, path, dialect);
     }
 }

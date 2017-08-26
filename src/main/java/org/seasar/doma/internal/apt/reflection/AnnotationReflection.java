@@ -46,8 +46,7 @@ public class AnnotationReflection extends AbstractReflection {
 
     private final AnnotationValue elements;
 
-    AnnotationReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    AnnotationReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.target = assertNotNullValue(values, TARGET);

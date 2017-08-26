@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class PostgresForUpdateTransformer extends StandardForUpdateTransformer {
 
-    public PostgresForUpdateTransformer(SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
+    public PostgresForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
         super(forUpdateType, waitSeconds, aliases);
     }
 

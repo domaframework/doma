@@ -34,14 +34,13 @@ public class IntegerType extends AbstractJdbcType<Integer> {
     }
 
     @Override
-    protected Integer doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Integer doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getInt(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Integer value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Integer value)
+            throws SQLException {
         preparedStatement.setInt(index, value);
     }
 

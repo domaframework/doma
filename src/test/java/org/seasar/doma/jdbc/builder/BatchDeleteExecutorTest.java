@@ -78,8 +78,8 @@ public class BatchDeleteExecutorTest extends TestCase {
         builder.sql("salary = ").param(BigDecimal.class, new BigDecimal("2000"));
         builder = builder.fixSql();
 
-        String sql = String.format("delete from Emp%n" + "where%n"
-                + "name = ?%n" + "and%n" + "salary = ?");
+        String sql = String
+                .format("delete from Emp%n" + "where%n" + "name = ?%n" + "and%n" + "salary = ?");
 
         List<? extends Sql<?>> sqls = builder.getSqls();
         assertEquals(2, sqls.size());
@@ -117,14 +117,16 @@ public class BatchDeleteExecutorTest extends TestCase {
         List<? extends Sql<?>> sqls = builder.getSqls();
         assertEquals(2, sqls.size());
         Sql<?> sql0 = sqls.get(0);
-        assertEquals(String.format("delete from Emp%n" + "where%n"
-                + "name = 'SMITH'%n" + "and%n" + "salary = 1000"), sql0.getRawSql());
+        assertEquals(String.format(
+                "delete from Emp%n" + "where%n" + "name = 'SMITH'%n" + "and%n" + "salary = 1000"),
+                sql0.getRawSql());
         List<? extends SqlParameter> parameters0 = sql0.getParameters();
         assertEquals(0, parameters0.size());
 
         Sql<?> sql1 = sqls.get(1);
-        assertEquals(String.format("delete from Emp%n" + "where%n"
-                + "name = 'ALLEN'%n" + "and%n" + "salary = 2000"), sql1.getRawSql());
+        assertEquals(String.format(
+                "delete from Emp%n" + "where%n" + "name = 'ALLEN'%n" + "and%n" + "salary = 2000"),
+                sql1.getRawSql());
         List<? extends SqlParameter> parameters1 = sql1.getParameters();
         assertEquals(0, parameters1.size());
     }
@@ -166,7 +168,7 @@ public class BatchDeleteExecutorTest extends TestCase {
         builder.sql("name = ").param(String.class, "ALLEN");
         builder.sql("and");
         builder = builder.sql("salary = ");
-                
+
         try {
             builder.param(int.class, 2000);
         } catch (JdbcException e) {
@@ -189,7 +191,7 @@ public class BatchDeleteExecutorTest extends TestCase {
         builder.sql("delete from Emp");
         builder.sql("where");
         builder = builder.sql("name = ");
-       
+
         try {
             builder.literal(String.class, "ALLEN");
         } catch (JdbcException e) {
@@ -205,6 +207,7 @@ public class BatchDeleteExecutorTest extends TestCase {
         final int id;
         final String name;
         final BigDecimal salary;
+
         Employee(int id, String name, BigDecimal salary) {
             this.id = id;
             this.name = name;
@@ -213,17 +216,16 @@ public class BatchDeleteExecutorTest extends TestCase {
     }
 
     public void testExecutor() throws Exception {
-        List<Employee> employees = Arrays.asList(new Employee[] {
-                                       new Employee(10, "SMITH", new BigDecimal("1001")),
-                                       new Employee(20, "ALLEN", new BigDecimal("2001"))
-                                   });
+        List<Employee> employees = Arrays
+                .asList(new Employee[] { new Employee(10, "SMITH", new BigDecimal("1001")),
+                        new Employee(20, "ALLEN", new BigDecimal("2001")) });
         BatchDeleteExecutor executor = BatchDeleteExecutor.newInstance(new MockConfig());
-            executor.execute(employees, (emp, builder) -> {
+        executor.execute(employees, (emp, builder) -> {
             builder.sql("delete from Emp");
             builder.sql("where");
             builder.sql("name = ").param(String.class, emp.name);
             builder.sql("and");
-            builder.sql("salary = ").param(BigDecimal.class, emp.salary );
+            builder.sql("salary = ").param(BigDecimal.class, emp.salary);
         });
     }
 

@@ -59,9 +59,7 @@ public class BatchInsertCommandTest extends TestCase {
 
         assertEquals(2, rows.length);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals(
-                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
-                sql);
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
     }
 
 }

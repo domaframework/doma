@@ -35,8 +35,7 @@ public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
         return clobFactoryReflection;
     }
 
-    public void setClobFactoryReflection(
-            ClobFactoryReflection clobFactoryReflection) {
+    public void setClobFactoryReflection(ClobFactoryReflection clobFactoryReflection) {
         this.clobFactoryReflection = clobFactoryReflection;
     }
 

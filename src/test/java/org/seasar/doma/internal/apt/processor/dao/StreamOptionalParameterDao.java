@@ -34,8 +34,7 @@ import org.seasar.doma.Select;
 public interface StreamOptionalParameterDao {
 
     @Select(strategy = SelectType.STREAM)
-    <R> R selectById(Integer id,
-            Function<Stream<Optional<PhoneNumber>>, R> mapper);
+    <R> R selectById(Integer id, Function<Stream<Optional<PhoneNumber>>, R> mapper);
 
     @Select(strategy = SelectType.STREAM)
     <R extends Number> R select(Function<Stream<Optional<String>>, R> mapper);

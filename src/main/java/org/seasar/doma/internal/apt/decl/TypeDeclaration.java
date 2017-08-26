@@ -85,21 +85,19 @@ public class TypeDeclaration {
         this.typeElement = ctx.getTypes().toTypeElement(type);
         this.typeParameterDeclarations = typeParameterDeclarations;
         this.supertypeDeclarations = supertypeDeclarations;
-        this.numberPriority = determineNumberPriority(ctx, type,
-                typeElement);
+        this.numberPriority = determineNumberPriority(ctx, type, typeElement);
     }
 
     private static int determineNumberPriority(Context ctx, TypeMirror type,
             TypeElement typeElement) {
         if (typeElement != null) {
-            Integer result = NUMBER_PRIORITY_MAP.get(
-                    ctx.getElements().getBinaryName(typeElement).toString());
+            Integer result = NUMBER_PRIORITY_MAP
+                    .get(ctx.getElements().getBinaryName(typeElement).toString());
             if (result != null) {
                 return result.intValue();
             }
         }
-        Integer result = NUMBER_PRIORITY_MAP
-                .get(type.getKind().name().toLowerCase());
+        Integer result = NUMBER_PRIORITY_MAP.get(type.getKind().name().toLowerCase());
         if (result != null) {
             return result.intValue();
         }
@@ -126,13 +124,11 @@ public class TypeDeclaration {
     }
 
     public boolean isBooleanType() {
-        return type.getKind() == TypeKind.BOOLEAN
-                || ctx.getTypes().isSameType(type, Boolean.class);
+        return type.getKind() == TypeKind.BOOLEAN || ctx.getTypes().isSameType(type, Boolean.class);
     }
 
     public boolean isTextType() {
-        return type.getKind() == TypeKind.CHAR
-                || ctx.getTypes().isSameType(type, String.class)
+        return type.getKind() == TypeKind.CHAR || ctx.getTypes().isSameType(type, String.class)
                 || ctx.getTypes().isSameType(type, Character.class);
     }
 
@@ -160,7 +156,8 @@ public class TypeDeclaration {
 
     public List<ConstructorDeclaration> getConstructorDeclarations(
             List<TypeDeclaration> parameterTypeDeclarations) {
-        List<ConstructorDeclaration> candidates = getCandidateConstructorDeclarations(parameterTypeDeclarations);
+        List<ConstructorDeclaration> candidates = getCandidateConstructorDeclarations(
+                parameterTypeDeclarations);
         if (candidates.size() == 1) {
             return candidates;
         }
@@ -174,14 +171,12 @@ public class TypeDeclaration {
 
     private List<ConstructorDeclaration> getCandidateConstructorDeclarations(
             List<TypeDeclaration> parameterTypeDeclarations) {
-        return Optional.of(typeElement).stream()
-                .flatMap(t -> ElementFilter
-                        .constructorsIn(t.getEnclosedElements()).stream())
+        return Optional.of(typeElement)
+                .stream()
+                .flatMap(t -> ElementFilter.constructorsIn(t.getEnclosedElements()).stream())
                 .filter(e -> e.getModifiers().contains(Modifier.PUBLIC))
-                .filter(e -> e.getParameters()
-                        .size() == parameterTypeDeclarations.size())
-                .filter(e -> isAssignable(parameterTypeDeclarations,
-                        e.getParameters()))
+                .filter(e -> e.getParameters().size() == parameterTypeDeclarations.size())
+                .filter(e -> isAssignable(parameterTypeDeclarations, e.getParameters()))
                 .map(ctx.getDeclarations()::newConstructorDeclaration)
                 .collect(Collectors.toList());
     }
@@ -190,9 +185,9 @@ public class TypeDeclaration {
             List<TypeDeclaration> parameterTypeDeclarations,
             List<ConstructorDeclaration> candidates) {
         return candidates.stream()
-                .filter(c -> isSameType(parameterTypeDeclarations,
-                        c.getElement().getParameters()))
-                .findFirst().orElse(null);
+                .filter(c -> isSameType(parameterTypeDeclarations, c.getElement().getParameters()))
+                .findFirst()
+                .orElse(null);
     }
 
     public FieldDeclaration getFieldDeclaration(String name) {
@@ -203,10 +198,8 @@ public class TypeDeclaration {
         return getFieldDeclarationInternal(name, true);
     }
 
-    public FieldDeclaration getFieldDeclarationInternal(String name,
-            boolean statik) {
-        List<FieldDeclaration> candidates = getCandidateFieldDeclaration(name,
-                statik);
+    public FieldDeclaration getFieldDeclarationInternal(String name, boolean statik) {
+        List<FieldDeclaration> candidates = getCandidateFieldDeclaration(name, statik);
         removeHiddenFieldDeclarations(candidates);
 
         if (candidates.size() == 0) {
@@ -218,30 +211,23 @@ public class TypeDeclaration {
         throw new AptIllegalStateException(name);
     }
 
-    public List<FieldDeclaration> getCandidateFieldDeclaration(String name,
-            boolean statik) {
+    public List<FieldDeclaration> getCandidateFieldDeclaration(String name, boolean statik) {
         return Stream.concat(Stream.of(this), supertypeDeclarations.stream())
-                .map(t -> t.typeElement).filter(Objects::nonNull)
-                .flatMap(t -> ElementFilter.fieldsIn(t.getEnclosedElements())
-                        .stream())
-                .filter(v -> !statik
-                        || v.getModifiers().contains(Modifier.STATIC))
+                .map(t -> t.typeElement)
+                .filter(Objects::nonNull)
+                .flatMap(t -> ElementFilter.fieldsIn(t.getEnclosedElements()).stream())
+                .filter(v -> !statik || v.getModifiers().contains(Modifier.STATIC))
                 .filter(v -> v.getSimpleName().contentEquals(name))
-                .map(v -> ctx.getDeclarations().newFieldDeclaration(v,
-                        typeParameterDeclarations))
+                .map(v -> ctx.getDeclarations().newFieldDeclaration(v, typeParameterDeclarations))
                 .collect(Collectors.toList());
     }
 
-    private void removeHiddenFieldDeclarations(
-            List<FieldDeclaration> candidates) {
-        List<FieldDeclaration> hiders = new LinkedList<FieldDeclaration>(
-                candidates);
-        for (Iterator<FieldDeclaration> it = candidates.iterator(); it
-                .hasNext();) {
+    private void removeHiddenFieldDeclarations(List<FieldDeclaration> candidates) {
+        List<FieldDeclaration> hiders = new LinkedList<FieldDeclaration>(candidates);
+        for (Iterator<FieldDeclaration> it = candidates.iterator(); it.hasNext();) {
             FieldDeclaration hidden = it.next();
             for (FieldDeclaration hider : hiders) {
-                if (ctx.getElements().hides(hider.getElement(),
-                        hidden.getElement())) {
+                if (ctx.getElements().hides(hider.getElement(), hidden.getElement())) {
                     it.remove();
                 }
             }
@@ -250,21 +236,18 @@ public class TypeDeclaration {
 
     public List<MethodDeclaration> getMethodDeclarations(String name,
             List<TypeDeclaration> parameterTypeDeclarations) {
-        return getMethodDeclarationsInternal(name, parameterTypeDeclarations,
-                false);
+        return getMethodDeclarationsInternal(name, parameterTypeDeclarations, false);
     }
 
     public List<MethodDeclaration> getStaticMethodDeclarations(String name,
             List<TypeDeclaration> parameterTypeDeclarations) {
-        return getMethodDeclarationsInternal(name, parameterTypeDeclarations,
-                true);
+        return getMethodDeclarationsInternal(name, parameterTypeDeclarations, true);
     }
 
-    private List<MethodDeclaration> getMethodDeclarationsInternal(
-            String name, List<TypeDeclaration> parameterTypeDeclarations,
-            boolean statik) {
-        List<MethodDeclaration> candidates = getCandidateMethodDeclarations(
-                name, parameterTypeDeclarations, statik);
+    private List<MethodDeclaration> getMethodDeclarationsInternal(String name,
+            List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
+        List<MethodDeclaration> candidates = getCandidateMethodDeclarations(name,
+                parameterTypeDeclarations, statik);
         removeOverriddenMethodDeclarations(candidates);
         removeHiddenMethodDeclarations(candidates);
         if (candidates.size() == 1) {
@@ -278,64 +261,49 @@ public class TypeDeclaration {
         return candidates;
     }
 
-    private List<MethodDeclaration> getCandidateMethodDeclarations(
-            String name, List<TypeDeclaration> parameterTypeDeclarations,
-            boolean statik) {
+    private List<MethodDeclaration> getCandidateMethodDeclarations(String name,
+            List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
         return Stream.concat(Stream.of(this), supertypeDeclarations.stream())
-                .map(t -> t.typeElement).filter(Objects::nonNull)
-                .flatMap(t -> ElementFilter.methodsIn(t.getEnclosedElements())
-                        .stream())
-                .filter(e -> !statik
-                        || e.getModifiers().contains(Modifier.STATIC))
+                .map(t -> t.typeElement)
+                .filter(Objects::nonNull)
+                .flatMap(t -> ElementFilter.methodsIn(t.getEnclosedElements()).stream())
+                .filter(e -> !statik || e.getModifiers().contains(Modifier.STATIC))
                 .filter(e -> e.getModifiers().contains(Modifier.PUBLIC))
                 .filter(e -> e.getSimpleName().contentEquals(name))
                 .filter(e -> e.getReturnType().getKind() != TypeKind.VOID)
-                .filter(e -> e.getParameters()
-                        .size() == parameterTypeDeclarations.size())
-                .filter(e -> isAssignable(parameterTypeDeclarations,
-                        e.getParameters()))
-                .map(e -> ctx.getDeclarations().newMethodDeclaration(e,
-                        typeParameterDeclarations))
+                .filter(e -> e.getParameters().size() == parameterTypeDeclarations.size())
+                .filter(e -> isAssignable(parameterTypeDeclarations, e.getParameters()))
+                .map(e -> ctx.getDeclarations().newMethodDeclaration(e, typeParameterDeclarations))
                 .collect(Collectors.toList());
     }
 
-    private void removeOverriddenMethodDeclarations(
-            List<MethodDeclaration> candidates) {
-        List<MethodDeclaration> overriders = new LinkedList<MethodDeclaration>(
-                candidates);
-        for (Iterator<MethodDeclaration> it = candidates.iterator(); it
-                .hasNext();) {
+    private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
+        List<MethodDeclaration> overriders = new LinkedList<MethodDeclaration>(candidates);
+        for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext();) {
             MethodDeclaration overridden = it.next();
             for (MethodDeclaration overrider : overriders) {
                 TypeElement overriderTypeElement = ctx.getElements()
-                        .toTypeElement(
-                                overrider.getElement().getEnclosingElement());
+                        .toTypeElement(overrider.getElement().getEnclosingElement());
                 if (overriderTypeElement == null) {
                     continue;
                 }
-                if (ctx.getElements().overrides(overrider.getElement(),
-                        overridden.getElement(), overriderTypeElement)) {
+                if (ctx.getElements().overrides(overrider.getElement(), overridden.getElement(),
+                        overriderTypeElement)) {
                     it.remove();
                 }
             }
         }
     }
 
-    private void removeHiddenMethodDeclarations(
-            List<MethodDeclaration> candidates) {
-        List<MethodDeclaration> hiders = new LinkedList<MethodDeclaration>(
-                candidates);
-        for (Iterator<MethodDeclaration> it = candidates.iterator(); it
-                .hasNext();) {
+    private void removeHiddenMethodDeclarations(List<MethodDeclaration> candidates) {
+        List<MethodDeclaration> hiders = new LinkedList<MethodDeclaration>(candidates);
+        for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext();) {
             MethodDeclaration hidden = it.next();
             for (MethodDeclaration hider : hiders) {
-                TypeMirror subtype = hider.getElement().getEnclosingElement()
-                        .asType();
-                TypeMirror supertype = hidden.getElement()
-                        .getEnclosingElement().asType();
+                TypeMirror subtype = hider.getElement().getEnclosingElement().asType();
+                TypeMirror supertype = hidden.getElement().getEnclosingElement().asType();
                 if (ctx.getTypes().isAssignable(subtype, supertype)) {
-                    if (ctx.getElements().hides(hider.getElement(),
-                            hidden.getElement())) {
+                    if (ctx.getElements().hides(hider.getElement(), hidden.getElement())) {
                         it.remove();
                     }
                 }
@@ -344,12 +312,12 @@ public class TypeDeclaration {
     }
 
     private MethodDeclaration findSuitableMethodDeclaration(
-            List<TypeDeclaration> parameterTypeDeclarations,
-            List<MethodDeclaration> candidates) {
+            List<TypeDeclaration> parameterTypeDeclarations, List<MethodDeclaration> candidates) {
         return candidates.stream()
                 .filter(e -> isAssignable(parameterTypeDeclarations,
                         e.getElement().getParameters()))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 
     public TypeDeclaration emulateConcatOperation(TypeDeclaration other) {
@@ -364,8 +332,7 @@ public class TypeDeclaration {
         assertNotNull(other);
         assertTrue(isNumberType());
         assertTrue(other.isNumberType());
-        TypeMirror type = this.numberPriority >= other.numberPriority ? this.type
-                : other.type;
+        TypeMirror type = this.numberPriority >= other.numberPriority ? this.type : other.type;
         return ctx.getDeclarations().newTypeDeclaration(type);
     }
 
@@ -388,14 +355,12 @@ public class TypeDeclaration {
 
     private boolean isSameType(List<TypeDeclaration> typeDeclarations,
             List<? extends VariableElement> parameters) {
-        return allMatch(typeDeclarations, parameters,
-                ctx.getTypes()::isSameType);
+        return allMatch(typeDeclarations, parameters, ctx.getTypes()::isSameType);
     }
 
     private boolean isAssignable(List<TypeDeclaration> typeDeclarations,
             List<? extends VariableElement> parameters) {
-        return allMatch(typeDeclarations, parameters,
-                ctx.getTypes()::isAssignable);
+        return allMatch(typeDeclarations, parameters, ctx.getTypes()::isAssignable);
     }
 
     private boolean allMatch(List<TypeDeclaration> typeDeclarations,
@@ -406,18 +371,15 @@ public class TypeDeclaration {
         return Zip.stream(fst, snd).allMatch(predicate);
     }
 
-    private Stream<TypeMirror> streamTypeDeclarations(
-            List<TypeDeclaration> typeDeclarations) {
+    private Stream<TypeMirror> streamTypeDeclarations(List<TypeDeclaration> typeDeclarations) {
         assertNotNull(typeDeclarations);
-        return typeDeclarations.stream().map(TypeDeclaration::getType)
-                .map(ctx.getTypes()::boxIfPrimitive);
+        return typeDeclarations.stream().map(TypeDeclaration::getType).map(
+                ctx.getTypes()::boxIfPrimitive);
     }
 
-    private Stream<TypeMirror> streamVariableElements(
-            List<? extends VariableElement> parameters) {
+    private Stream<TypeMirror> streamVariableElements(List<? extends VariableElement> parameters) {
         assertNotNull(parameters);
-        return parameters.stream().map(Element::asType)
-                .map(ctx.getTypes()::boxIfPrimitive);
+        return parameters.stream().map(Element::asType).map(ctx.getTypes()::boxIfPrimitive);
 
     }
 }

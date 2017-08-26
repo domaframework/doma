@@ -46,14 +46,13 @@ public class UtilDateType extends AbstractJdbcType<Date> {
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Date value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Date value)
+            throws SQLException {
         preparedStatement.setTimestamp(index, new Timestamp(value.getTime()));
     }
 
     @Override
-    protected Date doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Date doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         Timestamp timestamp = callableStatement.getTimestamp(index);
         if (timestamp == null) {
             return null;
@@ -63,8 +62,7 @@ public class UtilDateType extends AbstractJdbcType<Date> {
 
     @Override
     protected String doConvertToLogFormat(Date value) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return "'" + dateFormat.format(value) + "'";
     }
 

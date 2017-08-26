@@ -34,20 +34,18 @@ public class LongType extends AbstractJdbcType<Long> {
     }
 
     @Override
-    protected Long doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Long doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getLong(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Long value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Long value)
+            throws SQLException {
         preparedStatement.setLong(index, value);
     }
 
     @Override
-    protected Long doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Long doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getLong(index);
     }
 

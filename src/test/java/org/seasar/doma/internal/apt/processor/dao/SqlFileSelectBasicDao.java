@@ -34,6 +34,5 @@ public interface SqlFileSelectBasicDao {
     String selectById(Integer id);
 
     @Select
-    List<String> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions options);
+    List<String> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions options);
 }

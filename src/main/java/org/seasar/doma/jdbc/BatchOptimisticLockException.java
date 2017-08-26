@@ -54,10 +54,9 @@ public class BatchOptimisticLockException extends OptimisticLockException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public BatchOptimisticLockException(SqlLogType logType, SqlKind kind,
-            String rawSql, String sqlFilePath) {
-        super(Message.DOMA2028, kind, choiceSql(logType, rawSql, rawSql),
-                sqlFilePath);
+    public BatchOptimisticLockException(SqlLogType logType, SqlKind kind, String rawSql,
+            String sqlFilePath) {
+        super(Message.DOMA2028, kind, choiceSql(logType, rawSql, rawSql), sqlFilePath);
     }
 
 }

@@ -38,8 +38,7 @@ import org.seasar.doma.jdbc.entity.Property;
  * @param <ENTITY>
  *            エンティティ
  */
-public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
-        UpdateQuery {
+public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements UpdateQuery {
 
     protected boolean nullExcluded;
 
@@ -71,17 +70,16 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     }
 
     protected void setupHelper() {
-        helper = new UpdateQueryHelper<ENTITY>(config, entityDesc,
-                includedPropertyNames, excludedPropertyNames, nullExcluded,
-                versionIgnored, optimisticLockExceptionSuppressed,
-                unchangedPropertyIncluded);
+        helper = new UpdateQueryHelper<ENTITY>(config, entityDesc, includedPropertyNames,
+                excludedPropertyNames, nullExcluded, versionIgnored,
+                optimisticLockExceptionSuppressed, unchangedPropertyIncluded);
     }
 
     protected void preUpdate() {
         List<EntityPropertyDesc<ENTITY, ?>> targetPropertyDescs = helper
                 .getTargetPropertyDescs(entity);
-        AutoPreUpdateContext<ENTITY> context = new AutoPreUpdateContext<ENTITY>(
-                entityDesc, method, config, targetPropertyDescs);
+        AutoPreUpdateContext<ENTITY> context = new AutoPreUpdateContext<ENTITY>(entityDesc, method,
+                config, targetPropertyDescs);
         entityDesc.preUpdate(entity, context);
         if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
@@ -107,21 +105,17 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     protected void prepareSql() {
         Naming naming = config.getNaming();
         Dialect dialect = config.getDialect();
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
-                SqlKind.UPDATE, sqlLogType);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.UPDATE, sqlLogType);
         builder.appendSql("update ");
-        builder.appendSql(entityDesc.getQualifiedTableName(naming::apply,
-                dialect::applyQuote));
+        builder.appendSql(entityDesc.getQualifiedTableName(naming::apply, dialect::applyQuote));
         builder.appendSql(" set ");
-        helper.populateValues(entity, targetPropertyDescs, versionPropertyDesc,
-                builder);
+        helper.populateValues(entity, targetPropertyDescs, versionPropertyDesc, builder);
         if (idPropertyDescs.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyDesc<ENTITY, ?> propertyDesc : idPropertyDescs) {
                 Property<ENTITY, ?> property = propertyDesc.createProperty();
                 property.load(entity);
-                builder.appendSql(propertyDesc.getColumnName(naming::apply,
-                        dialect::applyQuote));
+                builder.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
                 builder.appendSql(" = ");
                 builder.appendParameter(property.asInParameter());
                 builder.appendSql(" and ");
@@ -136,8 +130,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
             }
             Property<ENTITY, ?> property = versionPropertyDesc.createProperty();
             property.load(entity);
-            builder.appendSql(versionPropertyDesc.getColumnName(naming::apply,
-                    dialect::applyQuote));
+            builder.appendSql(
+                    versionPropertyDesc.getColumnName(naming::apply, dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property.asInParameter());
         }
@@ -162,8 +156,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         if (!versionIgnored && versionPropertyDesc != null) {
             targetPropertyDescs.add(versionPropertyDesc);
         }
-        AutoPostUpdateContext<ENTITY> context = new AutoPostUpdateContext<ENTITY>(
-                entityDesc, method, config, targetPropertyDescs);
+        AutoPostUpdateContext<ENTITY> context = new AutoPostUpdateContext<ENTITY>(entityDesc,
+                method, config, targetPropertyDescs);
         entityDesc.postUpdate(entity, context);
         if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
@@ -179,8 +173,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         this.versionIgnored |= versionIgnored;
     }
 
-    public void setOptimisticLockExceptionSuppressed(
-            boolean optimisticLockExceptionSuppressed) {
+    public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
@@ -188,18 +181,15 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         this.unchangedPropertyIncluded = unchangedPropertyIncluded;
     }
 
-    protected static class AutoPreUpdateContext<E> extends
-            AbstractPreUpdateContext<E> {
+    protected static class AutoPreUpdateContext<E> extends AbstractPreUpdateContext<E> {
 
         protected final Set<String> changedPropertyNames;
 
-        public AutoPreUpdateContext(EntityDesc<E> entityDesc, Method method,
-                Config config,
+        public AutoPreUpdateContext(EntityDesc<E> entityDesc, Method method, Config config,
                 List<EntityPropertyDesc<E, ?>> targetPropertyDescs) {
             super(entityDesc, method, config);
             assertNotNull(targetPropertyDescs);
-            changedPropertyNames = new HashSet<String>(
-                    targetPropertyDescs.size());
+            changedPropertyNames = new HashSet<String>(targetPropertyDescs.size());
             for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
                 changedPropertyNames.add(propertyDesc.getName());
             }
@@ -217,18 +207,15 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         }
     }
 
-    protected static class AutoPostUpdateContext<E> extends
-            AbstractPostUpdateContext<E> {
+    protected static class AutoPostUpdateContext<E> extends AbstractPostUpdateContext<E> {
 
         protected final Set<String> changedPropertyNames;
 
-        public AutoPostUpdateContext(EntityDesc<E> entityDesc, Method method,
-                Config config,
+        public AutoPostUpdateContext(EntityDesc<E> entityDesc, Method method, Config config,
                 List<EntityPropertyDesc<E, ?>> targetPropertyDescs) {
             super(entityDesc, method, config);
             assertNotNull(targetPropertyDescs);
-            changedPropertyNames = new HashSet<String>(
-                    targetPropertyDescs.size());
+            changedPropertyNames = new HashSet<String>(targetPropertyDescs.size());
             for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
                 changedPropertyNames.add(propertyDesc.getName());
             }

@@ -33,8 +33,8 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
  * @param <ELEMENT>
  *            リストの要素
  */
-public class SqlFileBatchInsertQuery<ELEMENT> extends
-        SqlFileBatchModifyQuery<ELEMENT> implements BatchInsertQuery {
+public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
+        implements BatchInsertQuery {
 
     protected EntityHandler entityHandler;
 
@@ -79,8 +79,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
     @Override
     public void complete() {
         if (entityHandler != null) {
-            for (ListIterator<ELEMENT> it = elements.listIterator(); it
-                    .hasNext();) {
+            for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext();) {
                 currentEntity = it.next();
                 entityHandler.postInsert();
                 it.set(currentEntity);
@@ -126,20 +125,18 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends
         }
     }
 
-    protected static class SqlFileBatchPreInsertContext<E> extends
-            AbstractPreInsertContext<E> {
+    protected static class SqlFileBatchPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
-        public SqlFileBatchPreInsertContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFileBatchPreInsertContext(EntityDesc<E> entityDesc, Method method,
+                Config config) {
             super(entityDesc, method, config);
         }
     }
 
-    protected static class SqlFileBatchPostInsertContext<E> extends
-            AbstractPostInsertContext<E> {
+    protected static class SqlFileBatchPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
-        public SqlFileBatchPostInsertContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFileBatchPostInsertContext(EntityDesc<E> entityDesc, Method method,
+                Config config) {
             super(entityDesc, method, config);
         }
     }

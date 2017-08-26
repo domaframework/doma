@@ -76,8 +76,7 @@ public class Oracle11Dialect extends StandardDialect {
      * インスタンスを構築します。
      */
     public Oracle11Dialect() {
-        this(new Oracle11JdbcMappingVisitor(),
-                new Oracle11SqlLogFormattingVisitor(),
+        this(new Oracle11JdbcMappingVisitor(), new Oracle11SqlLogFormattingVisitor(),
                 new Oracle11ExpressionFunctions());
     }
 
@@ -111,8 +110,8 @@ public class Oracle11Dialect extends StandardDialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public Oracle11Dialect(ExpressionFunctions expressionFunctions) {
-        this(new Oracle11JdbcMappingVisitor(),
-                new Oracle11SqlLogFormattingVisitor(), expressionFunctions);
+        this(new Oracle11JdbcMappingVisitor(), new Oracle11SqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -127,8 +126,7 @@ public class Oracle11Dialect extends StandardDialect {
      */
     public Oracle11Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new Oracle11ExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new Oracle11ExpressionFunctions());
     }
 
     /**
@@ -160,18 +158,16 @@ public class Oracle11Dialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        OracleForUpdateTransformer transformer = new OracleForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        OracleForUpdateTransformer transformer = new OracleForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        OraclePagingTransformer transformer = new OraclePagingTransformer(
-                offset, limit);
+        OraclePagingTransformer transformer = new OraclePagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
@@ -185,13 +181,11 @@ public class Oracle11Dialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
-        String rawSql = "select " + qualifiedSequenceName
-                + ".nextval from dual";
+        String rawSql = "select " + qualifiedSequenceName + ".nextval from dual";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
                 Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
     }
@@ -207,8 +201,7 @@ public class Oracle11Dialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
+    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
         return true;
     }
 
@@ -253,12 +246,11 @@ public class Oracle11Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Oracle11JdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class Oracle11JdbcMappingVisitor extends StandardJdbcMappingVisitor {
 
         @Override
-        public Void visitBooleanWrapper(BooleanWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitBooleanWrapper(BooleanWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
     }
@@ -269,8 +261,7 @@ public class Oracle11Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Oracle11SqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class Oracle11SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
 
         /** {@link Date}用日付フォーマッタ */
         protected DateFormatter dateFormatter = new DateFormatter();
@@ -285,32 +276,29 @@ public class Oracle11Dialect extends StandardDialect {
         protected UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
 
         /** {@link LocalDate}用日付フォーマッタ */
-        protected LocalDateFormatter localDateFormatter = new LocalDateFormatter(
-                dateFormatter);
+        protected LocalDateFormatter localDateFormatter = new LocalDateFormatter(dateFormatter);
 
         /** {@link LocalDateTime}用タイムスタンプフォーマッタ */
         protected LocalDateTimeFormatter localDateTimeFormatter = new LocalDateTimeFormatter(
                 timestampFormatter);
 
         /** {@link LocalTime}用時刻フォーマッタ */
-        protected LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(
-                timeFormatter);
+        protected LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(timeFormatter);
 
         @Override
-        public String visitBooleanWrapper(BooleanWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitBooleanWrapper(BooleanWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
 
         @Override
-        public String visitDateWrapper(DateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitDateWrapper(DateWrapper wrapper, SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, dateFormatter);
         }
 
         @Override
-        public String visitLocalDateWrapper(LocalDateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitLocalDateWrapper(LocalDateWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) throws RuntimeException {
             return p.apply(wrapper, localDateFormatter);
         }
 
@@ -321,26 +309,25 @@ public class Oracle11Dialect extends StandardDialect {
         }
 
         @Override
-        public String visitLocalTimeWrapper(LocalTimeWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitLocalTimeWrapper(LocalTimeWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) throws RuntimeException {
             return p.apply(wrapper, localTimeFormatter);
         }
 
         @Override
-        public String visitTimeWrapper(TimeWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitTimeWrapper(TimeWrapper wrapper, SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, timeFormatter);
         }
 
         @Override
-        public String visitTimestampWrapper(TimestampWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitTimestampWrapper(TimestampWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, timestampFormatter);
         }
 
         @Override
-        public String visitUtilDateWrapper(UtilDateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitUtilDateWrapper(UtilDateWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, utilDateFormatter);
         }
 
@@ -384,8 +371,7 @@ public class Oracle11Dialect extends StandardDialect {
          * @author taedium
          * 
          */
-        protected static class TimestampFormatter implements
-                SqlLogFormatter<Timestamp> {
+        protected static class TimestampFormatter implements SqlLogFormatter<Timestamp> {
 
             @Override
             public String convertToLogFormat(Timestamp value) {
@@ -402,16 +388,14 @@ public class Oracle11Dialect extends StandardDialect {
          * @author taedium
          * @since 1.9.0
          */
-        protected static class UtilDateFormatter implements
-                SqlLogFormatter<java.util.Date> {
+        protected static class UtilDateFormatter implements SqlLogFormatter<java.util.Date> {
 
             @Override
             public String convertToLogFormat(java.util.Date value) {
                 if (value == null) {
                     return "null";
                 }
-                SimpleDateFormat dateFormat = new SimpleDateFormat(
-                        "yyyy-MM-dd HH:mm:ss.SSS");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 return "timestamp'" + dateFormat.format(value) + "'";
             }
         }
@@ -422,8 +406,7 @@ public class Oracle11Dialect extends StandardDialect {
          * @author nakamura-to
          * @since 2.0.0
          */
-        protected static class LocalDateFormatter implements
-                SqlLogFormatter<LocalDate> {
+        protected static class LocalDateFormatter implements SqlLogFormatter<LocalDate> {
 
             protected final DateFormatter delegate;
 
@@ -447,8 +430,7 @@ public class Oracle11Dialect extends StandardDialect {
          * @author nakamura-to
          * @since 2.0.0
          */
-        protected static class LocalDateTimeFormatter implements
-                SqlLogFormatter<LocalDateTime> {
+        protected static class LocalDateTimeFormatter implements SqlLogFormatter<LocalDateTime> {
 
             protected final TimestampFormatter delegate;
 
@@ -472,8 +454,7 @@ public class Oracle11Dialect extends StandardDialect {
          * @author nakamura-to
          * @since 2.0.0
          */
-        protected static class LocalTimeFormatter implements
-                SqlLogFormatter<LocalTime> {
+        protected static class LocalTimeFormatter implements SqlLogFormatter<LocalTime> {
 
             protected final TimeFormatter delegate;
 
@@ -499,8 +480,7 @@ public class Oracle11Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Oracle11ExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class Oracle11ExpressionFunctions extends StandardExpressionFunctions {
 
         private final static char[] DEFAULT_WILDCARDS = { '%', '_', '％', '＿' };
 
@@ -524,16 +504,12 @@ public class Oracle11Dialect extends StandardDialect {
      * @author taedium
      * @since 1.7.0
      */
-    public static class Oracle11ScriptBlockContext extends
-            StandardScriptBlockContext {
+    public static class Oracle11ScriptBlockContext extends StandardScriptBlockContext {
 
         protected Oracle11ScriptBlockContext() {
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
-                    "replace", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
-                    "replace", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
-                    "replace", "triger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or", "replace", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or", "replace", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or", "replace", "triger"));
             sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
             sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
             sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));

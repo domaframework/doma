@@ -32,8 +32,7 @@ public class ResourceUtilTest extends TestCase {
     }
 
     public void testGetResourceAsStream_nonexistentPath() throws Exception {
-        InputStream inputStream = ResourceUtil
-                .getResourceAsStream("nonexistentPath");
+        InputStream inputStream = ResourceUtil.getResourceAsStream("nonexistentPath");
         assertNull(inputStream);
     }
 

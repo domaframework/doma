@@ -23,8 +23,7 @@ import org.seasar.doma.internal.apt.processor.entity.PrimaryKeyConverter;
  * 
  */
 public final class _PrimaryKey
-        extends
-        org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.Integer, PrimaryKey> {
+        extends org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.Integer, PrimaryKey> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");

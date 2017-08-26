@@ -58,7 +58,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
         query.setCallerClassName("aaa");
@@ -69,18 +70,15 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         UpdateQuery updateQuery = query;
         PreparedSql sql = updateQuery.getSql();
-        assertEquals(
-                "update aaa set NAME = ?, SALARY = ?, VERSION = ? + 1 where id = ?",
+        assertEquals("update aaa set NAME = ?, SALARY = ?, VERSION = ? + 1 where id = ?",
                 sql.getRawSql());
-        assertEquals(
-                "update aaa set NAME = 'aaa', SALARY = null, VERSION = 100 + 1 where id = 10",
+        assertEquals("update aaa set NAME = 'aaa', SALARY = null, VERSION = 100 + 1 where id = 10",
                 sql.getFormattedSql());
         List<? extends InParameter<?>> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
         assertEquals(null, parameters.get(1).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(2).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(2).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(3).getWrapper().get());
         assertTrue(query.isExecutable());
     }
@@ -94,7 +92,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
         query.setCallerClassName("aaa");
@@ -104,14 +103,12 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
 
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
@@ -124,7 +121,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
         query.setNullExcluded(true);
@@ -135,29 +133,26 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("hoge", parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
-    public void testPopulate_excludeNull_updateNullableInPreUpdate()
-            throws Exception {
+    public void testPopulate_excludeNull_updateNullableInPreUpdate() throws Exception {
         Emp emp = new Emp();
         emp.setId(10);
         emp.setVersion(100);
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
-        query.setEntityAndEntityDesc("emp", emp,
-                new PreUpdate(_Emp.getSingletonInternal()));
+        query.setEntityAndEntityDesc("emp", emp, new PreUpdate(_Emp.getSingletonInternal()));
         query.setNullExcluded(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -166,13 +161,11 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("hoge", parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
@@ -186,7 +179,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
         query.setVersionIgnored(true);
@@ -197,13 +191,11 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update aaa set NAME = ?, VERSION = ? where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set NAME = ?, VERSION = ? where id = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
@@ -217,7 +209,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
         query.setIncludedPropertyNames("name");
@@ -228,13 +221,11 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
@@ -248,7 +239,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
         query.setExcludedPropertyNames("name");
@@ -259,16 +251,13 @@ public class SqlFileUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update aaa set SALARY = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set SALARY = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertTrue(query.isExecutable());
     }
 
@@ -278,7 +267,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
         query.setCallerClassName("aaa");
@@ -293,7 +283,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
     public void testNonEntity() throws Exception {
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testNonEntity.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testNonEntity.sql");
         query.setConfig(runtimeConfig);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -305,16 +296,13 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         UpdateQuery updateQuery = query;
         PreparedSql sql = updateQuery.getSql();
-        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
-        assertEquals(
-                "update aaa set NAME = 'aaa', VERSION = 100 + 1 where id = 10",
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
+        assertEquals("update aaa set NAME = 'aaa', VERSION = 100 + 1 where id = 10",
                 sql.getFormattedSql());
         List<? extends InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
-        assertEquals(Integer.valueOf(100),
-                parameters.get(1).getWrapper().get());
+        assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
         assertTrue(query.isExecutable());
     }
@@ -323,8 +311,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         protected final _Emp emp;
 
-        public String getQualifiedTableName(
-                BiFunction<NamingType, String, String> namingFunction,
+        public String getQualifiedTableName(BiFunction<NamingType, String, String> namingFunction,
                 Function<String, String> quoteFunction) {
             return emp.getQualifiedTableName(namingFunction, quoteFunction);
         }
@@ -349,8 +336,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
             return emp.getEntityPropertyDescs();
         }
 
-        public EntityPropertyDesc<Emp, ?> getEntityPropertyDesc(
-                String propertyName) {
+        public EntityPropertyDesc<Emp, ?> getEntityPropertyDesc(String propertyName) {
             return emp.getEntityPropertyDesc(propertyName);
         }
 
@@ -406,8 +392,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
             return emp.getSchemaName();
         }
 
-        public String getTableName(
-                BiFunction<NamingType, String, String> namingFunction) {
+        public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
             return emp.getTableName(namingFunction);
         }
 

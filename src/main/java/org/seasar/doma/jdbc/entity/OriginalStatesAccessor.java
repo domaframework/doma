@@ -74,8 +74,8 @@ public class OriginalStatesAccessor<E> {
             try {
                 FieldUtil.setAccessible(field, true);
             } catch (WrapException wrapException) {
-                throw new OriginalStatesNotFoundException(
-                        wrapException.getCause(), entityClass.getName(), name);
+                throw new OriginalStatesNotFoundException(wrapException.getCause(),
+                        entityClass.getName(), name);
             }
         }
         return field;
@@ -96,8 +96,8 @@ public class OriginalStatesAccessor<E> {
         try {
             return (E) FieldUtil.get(field, entity);
         } catch (WrapException wrapException) {
-            throw new OriginalStatesAccessException(wrapException.getCause(),
-                    entityClass.getName(), name);
+            throw new OriginalStatesAccessException(wrapException.getCause(), entityClass.getName(),
+                    name);
         }
     }
 
@@ -116,8 +116,8 @@ public class OriginalStatesAccessor<E> {
         try {
             FieldUtil.set(field, entity, states);
         } catch (WrapException wrapException) {
-            throw new OriginalStatesAccessException(wrapException.getCause(),
-                    entityClass.getName(), name);
+            throw new OriginalStatesAccessException(wrapException.getCause(), entityClass.getName(),
+                    name);
         }
     }
 }

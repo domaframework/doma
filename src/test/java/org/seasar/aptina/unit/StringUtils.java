@@ -80,8 +80,7 @@ class StringUtils {
         if (s.length() == 1) {
             return s.toLowerCase();
         }
-        if (Character.isUpperCase(s.charAt(0))
-                && Character.isUpperCase(s.charAt(1))) {
+        if (Character.isUpperCase(s.charAt(0)) && Character.isUpperCase(s.charAt(1))) {
             return s;
         }
         return Character.toLowerCase(s.charAt(0)) + s.substring(1);
@@ -130,8 +129,8 @@ class StringUtils {
      * @return 同じ長さの二つのシーケンスのそれぞれの対応する要素をセパレータ1で区切って連結し， それらをセパレータ2で区切って連結した文字列
      */
     public static String join(final Iterable<? extends CharSequence> elements1,
-            final Iterable<? extends CharSequence> elements2,
-            final String separator1, final String separator2) {
+            final Iterable<? extends CharSequence> elements2, final String separator1,
+            final String separator2) {
         final StringBuilder buf = new StringBuilder();
         final Iterator<? extends CharSequence> it = elements2.iterator();
         for (final CharSequence element1 : elements1) {
@@ -139,8 +138,7 @@ class StringUtils {
                 throw new IllegalArgumentException("elements1 > elements2");
             }
             final CharSequence element2 = it.next();
-            buf.append(element1).append(separator1).append(element2)
-                    .append(separator2);
+            buf.append(element1).append(separator1).append(element2).append(separator2);
         }
         if (it.hasNext()) {
             throw new IllegalArgumentException("elements1 < elements2");

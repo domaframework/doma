@@ -157,8 +157,7 @@ public class SimpleDataSource implements DataSource {
     }
 
     @Override
-    public Connection getConnection(String user, String password)
-            throws SQLException {
+    public Connection getConnection(String user, String password) throws SQLException {
         Properties info = new Properties();
         info.putAll(properties);
         if (user != null) {
@@ -179,8 +178,7 @@ public class SimpleDataSource implements DataSource {
      * @throws SQLException
      *             SQLに関する例外が発生した場合
      */
-    protected Connection getConnectionInternal(Properties info)
-            throws SQLException {
+    protected Connection getConnectionInternal(Properties info) throws SQLException {
         if (url == null) {
             throw new SQLException(Message.DOMA5002.getMessage());
         }

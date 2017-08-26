@@ -25,7 +25,7 @@ import java.sql.Connection;
  */
 public enum TransactionIsolationLevel {
 
-    /** @see Connection#TRANSACTION_READ_UNCOMMITTED　 */
+    /** @see Connection#TRANSACTION_READ_UNCOMMITTED */
     READ_UNCOMMITTED(Connection.TRANSACTION_READ_UNCOMMITTED),
 
     /** @see Connection#TRANSACTION_READ_COMMITTED */

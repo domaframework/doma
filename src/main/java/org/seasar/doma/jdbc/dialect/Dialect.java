@@ -132,8 +132,7 @@ public interface Dialect {
      *            ロックの対象が指定されている場合 {@code true}
      * @return サポートしている場合 {@code true}
      */
-    boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets);
+    boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets);
 
     /**
      * ストアドプロシージャ-やストアドファンクションで {@link ResultSet}
@@ -167,9 +166,8 @@ public interface Dialect {
      *             {@code tableName} と {@code columnName} のいずれかが {@code null}
      *             の場合
      */
-    Sql<?> getIdentitySelectSql(String catalogName, String schemaName,
-            String tableName, String columnName, boolean isQuoteRequired,
-            boolean isIdColumnQuoteRequired);
+    Sql<?> getIdentitySelectSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired);
 
     /**
      * データベースのIDENTITYを予約するためのSQLを返します。
@@ -195,9 +193,9 @@ public interface Dialect {
      *             {@code tableName} と {@code columnName} のいずれかが {@code null}
      *             の場合
      */
-    Sql<?> getIdentityReservationSql(String catalogName, String schemaName,
-            String tableName, String columnName, boolean isQuoteRequired,
-            boolean isIdColumnQuoteRequired, int reservationSize);
+    Sql<?> getIdentityReservationSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired,
+            int reservationSize);
 
     /**
      * シーケンスの次の値を取得するためのSQLを返します。
@@ -212,8 +210,7 @@ public interface Dialect {
      * @throws DomaNullPointerException
      *             {@code qualifiedSequenceName} が {@code null} の場合
      */
-    Sql<?> getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize);
+    Sql<?> getSequenceNextValSql(String qualifiedSequenceName, long allocationSize);
 
     /**
      * {@link ResultSet} の {@link JdbcType} を返します。

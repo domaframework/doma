@@ -60,8 +60,7 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
         } else {
             orderBy = new OrderByClauseNode("");
         }
-        orderBy.appendNode(new FragmentNode(" fetch first " + limit
-                + " rows only"));
+        orderBy.appendNode(new FragmentNode(" fetch first " + limit + " rows only"));
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());

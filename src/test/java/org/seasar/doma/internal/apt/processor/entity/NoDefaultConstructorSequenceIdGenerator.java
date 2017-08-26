@@ -21,8 +21,7 @@ import org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator;
  * @author taedium
  * 
  */
-public class NoDefaultConstructorSequenceIdGenerator extends
-        BuiltinSequenceIdGenerator {
+public class NoDefaultConstructorSequenceIdGenerator extends BuiltinSequenceIdGenerator {
 
     private NoDefaultConstructorSequenceIdGenerator() {
     }

@@ -141,7 +141,6 @@ public final class Options {
         return v != null ? Boolean.valueOf(v).booleanValue() : true;
     }
 
-
     public String getLombokAllArgsConstructor() {
         String name = getOption(Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
         return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
@@ -167,8 +166,7 @@ public final class Options {
         return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
     }
 
-    private static Map<String, String> getConfig(Resources resources,
-            String path) {
+    private static Map<String, String> getConfig(Resources resources, String path) {
         FileObject config = getFileObject(resources, path);
         if (config == null) {
             return Collections.emptyMap();
@@ -182,9 +180,7 @@ public final class Options {
         });
     }
 
-
-    private static FileObject getFileObject(Resources resources,
-            String path) {
+    private static FileObject getFileObject(Resources resources, String path) {
         try {
             return resources.getResource(path);
         } catch (IOException e) {
@@ -195,7 +191,7 @@ public final class Options {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Map<String, String> loadProperties(FileObject config) throws IOException {
         try (InputStream is = config.openInputStream();
-             InputStreamReader isr = new InputStreamReader(is, "UTF-8")){
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8")) {
             Properties props = new Properties();
             props.load(isr);
             return (Map<String, String>) new HashMap(props);

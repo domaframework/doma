@@ -43,49 +43,41 @@ public class AptException extends DomaException {
         this(messageResource, element, new Object[] {});
     }
 
-    public AptException(MessageResource messageResource,
-            Element element, Object[] args) {
+    public AptException(MessageResource messageResource, Element element, Object[] args) {
         this(messageResource, Kind.ERROR, element, null, null, null, args);
     }
 
-    public AptException(MessageResource messageResource,
-            Element element, Throwable cause) {
+    public AptException(MessageResource messageResource, Element element, Throwable cause) {
         this(messageResource, element, cause, new Object[] {});
     }
 
-    public AptException(MessageResource messageResource,
-            Element element, Throwable cause, Object[] args) {
+    public AptException(MessageResource messageResource, Element element, Throwable cause,
+            Object[] args) {
         this(messageResource, Kind.ERROR, element, null, null, cause, args);
     }
 
-    public AptException(MessageResource messageResource,
-            Element element, AnnotationMirror annotationMirror) {
+    public AptException(MessageResource messageResource, Element element,
+            AnnotationMirror annotationMirror) {
         this(messageResource, element, annotationMirror, new Object[] {});
     }
 
     public AptException(MessageResource messageResource, Element element,
             AnnotationMirror annotationMirror, Object[] args) {
-        this(messageResource, Kind.ERROR, element, annotationMirror, null, null,
-                args);
-    }
-
-    public AptException(MessageResource messageResource,
-            Element element, AnnotationMirror annotationMirror,
-            AnnotationValue annotationValue) {
-        this(messageResource, element, annotationMirror,
-                annotationValue, new Object[] {});
+        this(messageResource, Kind.ERROR, element, annotationMirror, null, null, args);
     }
 
     public AptException(MessageResource messageResource, Element element,
-            AnnotationMirror annotationMirror,
-            AnnotationValue annotationValue, Object[] args) {
-        this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue,
-                null, args);
+            AnnotationMirror annotationMirror, AnnotationValue annotationValue) {
+        this(messageResource, element, annotationMirror, annotationValue, new Object[] {});
     }
 
-    private AptException(MessageResource messageResource,
-            Kind kind, Element element, AnnotationMirror annotationMirror,
-            AnnotationValue annotationValue, Throwable cause,
+    public AptException(MessageResource messageResource, Element element,
+            AnnotationMirror annotationMirror, AnnotationValue annotationValue, Object[] args) {
+        this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue, null, args);
+    }
+
+    private AptException(MessageResource messageResource, Kind kind, Element element,
+            AnnotationMirror annotationMirror, AnnotationValue annotationValue, Throwable cause,
             Object[] args) {
         super(messageResource, cause, args);
         this.kind = kind;

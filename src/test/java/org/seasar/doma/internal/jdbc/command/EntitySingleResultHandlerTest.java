@@ -46,8 +46,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(getClass().getMethod(getName()));
@@ -72,8 +71,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setMethod(getClass().getMethod(getName()));

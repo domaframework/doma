@@ -50,8 +50,7 @@ public class MysqlPagingTransformer extends StandardPagingTransformer {
             orderBy = new OrderByClauseNode("");
         }
         String offset = this.offset <= 0 ? "0" : String.valueOf(this.offset);
-        String limit = this.limit <= 0 ? MAXIMUM_LIMIT : String
-                .valueOf(this.limit);
+        String limit = this.limit <= 0 ? MAXIMUM_LIMIT : String.valueOf(this.limit);
         orderBy.appendNode(new FragmentNode(" limit "));
         orderBy.appendNode(new FragmentNode(offset));
         orderBy.appendNode(new FragmentNode(", "));

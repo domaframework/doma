@@ -25,8 +25,7 @@ public class FunctionCtType extends AbstractCtType {
 
     private final AnyCtType returnCtType;
 
-    FunctionCtType(Context ctx, TypeMirror type, CtType targetCtType,
-            AnyCtType returnCtType) {
+    FunctionCtType(Context ctx, TypeMirror type, CtType targetCtType, AnyCtType returnCtType) {
         super(ctx, type);
         this.targetCtType = targetCtType;
         this.returnCtType = returnCtType;
@@ -41,8 +40,7 @@ public class FunctionCtType extends AbstractCtType {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitFunctionCtType(this, p);
     }
 }

@@ -38,8 +38,7 @@ public class ImmutableEmp implements Serializable {
     @Version
     final Integer version;
 
-    public ImmutableEmp(Integer id, String name, BigDecimal salary,
-            Integer version) {
+    public ImmutableEmp(Integer id, String name, BigDecimal salary, Integer version) {
         super();
         this.id = id;
         this.name = name;

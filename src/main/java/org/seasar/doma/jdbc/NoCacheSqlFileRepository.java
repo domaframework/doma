@@ -28,8 +28,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 public class NoCacheSqlFileRepository extends AbstractSqlFileRepository {
 
     @Override
-    protected SqlFile getSqlFileWithCacheControl(Method method, String path,
-            Dialect dialect) {
+    protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {
         return createSqlFile(path, dialect);
     }
 

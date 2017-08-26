@@ -105,12 +105,11 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
     protected void prepareSql() {
         Value value = new Value(elementClass, currentEntity);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(
-                Collections.singletonMap(parameterName, value), config
-                        .getDialect().getExpressionFunctions(),
-                config.getClassHelper());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                kind, sqlFile.getPath(), evaluator, sqlLogType,
-                this::expandColumns, this::populateValues);
+                Collections.singletonMap(parameterName, value),
+                config.getDialect().getExpressionFunctions(), config.getClassHelper());
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, kind,
+                sqlFile.getPath(), evaluator, sqlLogType, this::expandColumns,
+                this::populateValues);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
         sqls.add(sql);
     }
@@ -134,8 +133,7 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
     public void setElements(Iterable<ELEMENT> elements) {
         assertNotNull(elements);
         if (elements instanceof Collection<?>) {
-            this.elements = new ArrayList<ELEMENT>(
-                    (Collection<ELEMENT>) elements);
+            this.elements = new ArrayList<ELEMENT>((Collection<ELEMENT>) elements);
         } else {
             this.elements = new ArrayList<ELEMENT>();
             for (ELEMENT element : elements) {

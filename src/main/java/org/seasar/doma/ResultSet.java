@@ -41,8 +41,7 @@ import org.seasar.doma.jdbc.ResultMappingException;
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void fetchEmployees(@In Integer departmentId,
- *             &#064;ResultSet List&lt;Employee&gt; employees);
+ *     void fetchEmployees(@In Integer departmentId, &#064;ResultSet List&lt;Employee&gt; employees);
  * }
  * </pre>
  * 

@@ -26,8 +26,7 @@ public class CollectorCtType extends AbstractCtType {
 
     private final AnyCtType returnCtType;
 
-    CollectorCtType(Context ctx, TypeMirror type, CtType targetCtType,
-            AnyCtType returnCtType) {
+    CollectorCtType(Context ctx, TypeMirror type, CtType targetCtType, AnyCtType returnCtType) {
         super(ctx, type);
         this.targetCtType = targetCtType;
         this.returnCtType = returnCtType;
@@ -45,12 +44,11 @@ public class CollectorCtType extends AbstractCtType {
         return returnCtType.getType() != null
                 && returnCtType.getType().getKind() == TypeKind.WILDCARD
                 || targetCtType.getType() != null
-                && targetCtType.getType().getKind() == TypeKind.WILDCARD;
+                        && targetCtType.getType().getKind() == TypeKind.WILDCARD;
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitCollectorCtType(this, p);
     }
 }

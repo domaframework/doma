@@ -39,14 +39,13 @@ public class FloatType extends AbstractJdbcType<Float> {
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Float value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Float value)
+            throws SQLException {
         preparedStatement.setDouble(index, value);
     }
 
     @Override
-    protected Float doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Float doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getFloat(index);
     }
 

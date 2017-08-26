@@ -73,15 +73,13 @@ public class SelectReflection extends AbstractReflection {
 
     private final AnnotationValue sqlLog;
 
-    SelectReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    SelectReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.strategy = assertNotNullValue(values, STRATEGY);
         this.fetch = assertNotNullValue(values, FETCH);
         this.ensureResult = assertNotNullValue(values, ENSURE_RESULT);
-        this.ensureResultMapping = assertNotNullValue(values,
-                ENSURE_RESULT_MAPPING);
+        this.ensureResultMapping = assertNotNullValue(values, ENSURE_RESULT_MAPPING);
         this.queryTimeout = assertNotNullValue(values, QUERY_TIMEOUT);
         this.fetchSize = assertNotNullValue(values, FETCH_SIZE);
         this.maxRows = assertNotNullValue(values, MAX_ROWS);
@@ -150,8 +148,7 @@ public class SelectReflection extends AbstractReflection {
     }
 
     public SelectType getStrategyValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(strategy);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(strategy);
         if (enumConstant == null) {
             throw new AptIllegalStateException(STRATEGY);
         }
@@ -159,8 +156,7 @@ public class SelectReflection extends AbstractReflection {
     }
 
     public FetchType getFetchValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(fetch);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(fetch);
         if (enumConstant == null) {
             throw new AptIllegalStateException(FETCH);
         }
@@ -184,18 +180,15 @@ public class SelectReflection extends AbstractReflection {
     }
 
     public MapKeyNamingType getMapKeyNamingValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(mapKeyNaming);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
         if (enumConstant == null) {
             throw new AptIllegalStateException(MAP_KEY_NAMING);
         }
-        return MapKeyNamingType
-                .valueOf(enumConstant.getSimpleName().toString());
+        return MapKeyNamingType.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public SqlLogType getSqlLogValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(sqlLog);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
         if (enumConstant == null) {
             throw new AptIllegalStateException(SQL_LOG);
         }

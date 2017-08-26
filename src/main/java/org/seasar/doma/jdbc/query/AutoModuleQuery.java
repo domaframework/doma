@@ -28,8 +28,7 @@ import org.seasar.doma.jdbc.SqlParameter;
  * @author taedium
  * 
  */
-public abstract class AutoModuleQuery extends AbstractQuery implements
-        ModuleQuery {
+public abstract class AutoModuleQuery extends AbstractQuery implements ModuleQuery {
 
     protected CallableSql sql;
 
@@ -50,8 +49,8 @@ public abstract class AutoModuleQuery extends AbstractQuery implements
     protected void prepareQualifiedName() {
         Function<String, String> mapper = isQuoteRequired ? config.getDialect()::applyQuote
                 : Function.identity();
-        qualifiedName = DatabaseObjectUtil.getQualifiedName(mapper,
-                catalogName, schemaName, moduleName);
+        qualifiedName = DatabaseObjectUtil.getQualifiedName(mapper, catalogName, schemaName,
+                moduleName);
     }
 
     protected void prepareOptions() {

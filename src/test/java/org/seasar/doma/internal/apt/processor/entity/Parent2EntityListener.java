@@ -27,8 +27,7 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
  * @author taedium
  * 
  */
-public class Parent2EntityListener<E extends Parent2Entity> implements
-        EntityListener<E> {
+public class Parent2EntityListener<E extends Parent2Entity> implements EntityListener<E> {
 
     @Override
     public void preInsert(E entity, PreInsertContext<E> context) {

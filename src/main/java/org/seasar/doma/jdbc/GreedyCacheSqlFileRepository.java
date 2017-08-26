@@ -34,8 +34,7 @@ public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
             200);
 
     @Override
-    protected SqlFile getSqlFileWithCacheControl(Method method, String path,
-            Dialect dialect) {
+    protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {
         SqlFile file = sqlFileMap.get(path);
         if (file != null) {
             return file;

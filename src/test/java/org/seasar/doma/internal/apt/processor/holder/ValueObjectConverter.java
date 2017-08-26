@@ -23,8 +23,7 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * 
  */
 @ExternalHolder
-public class ValueObjectConverter implements
-        HolderConverter<ValueObject, String> {
+public class ValueObjectConverter implements HolderConverter<ValueObject, String> {
 
     @Override
     public String fromHolderToValue(ValueObject holder) {

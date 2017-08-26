@@ -37,8 +37,8 @@ import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
  * @param <ELEMENT>
  *            リストの要素
  */
-public class SqlFileBatchUpdateQuery<ELEMENT> extends
-        SqlFileBatchModifyQuery<ELEMENT> implements BatchUpdateQuery {
+public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
+        implements BatchUpdateQuery {
 
     protected EntityHandler entityHandler;
 
@@ -119,8 +119,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
     @Override
     public void complete() {
         if (entityHandler != null) {
-            for (ListIterator<ELEMENT> it = elements.listIterator(); it
-                    .hasNext();) {
+            for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext();) {
                 currentEntity = it.next();
                 entityHandler.postUpdate();
                 it.set(currentEntity);
@@ -141,8 +140,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         this.versionIgnored |= versionIgnored;
     }
 
-    public void setOptimisticLockExceptionSuppressed(
-            boolean optimisticLockExceptionSuppressed) {
+    public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
@@ -163,9 +161,8 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         }
 
         protected void init() {
-            helper = new BatchUpdateQueryHelper<>(config, entityDesc,
-                    includedPropertyNames, excludedPropertyNames,
-                    versionIgnored, optimisticLockExceptionSuppressed);
+            helper = new BatchUpdateQueryHelper<>(config, entityDesc, includedPropertyNames,
+                    excludedPropertyNames, versionIgnored, optimisticLockExceptionSuppressed);
         }
 
         protected void preUpdate() {
@@ -201,27 +198,23 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
 
         protected void incrementVersions() {
             if (versionPropertyDesc != null && !versionIgnored) {
-                for (ListIterator<ELEMENT> it = elements.listIterator(); it
-                        .hasNext();) {
-                    ELEMENT newEntity = versionPropertyDesc.increment(
-                            entityDesc, it.next());
+                for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext();) {
+                    ELEMENT newEntity = versionPropertyDesc.increment(entityDesc, it.next());
                     it.set(newEntity);
                 }
             }
         }
 
         protected void populateValues(SqlContext context) {
-            helper.populateValues(currentEntity, targetPropertyDescs,
-                    versionPropertyDesc, context);
+            helper.populateValues(currentEntity, targetPropertyDescs, versionPropertyDesc, context);
         }
 
     }
 
-    protected static class SqlFileBatchPreUpdateContext<E> extends
-            AbstractPreUpdateContext<E> {
+    protected static class SqlFileBatchPreUpdateContext<E> extends AbstractPreUpdateContext<E> {
 
-        public SqlFileBatchPreUpdateContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFileBatchPreUpdateContext(EntityDesc<E> entityDesc, Method method,
+                Config config) {
             super(entityDesc, method, config);
         }
 
@@ -237,11 +230,10 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends
         }
     }
 
-    protected static class SqlFileBatchPostUpdateContext<E> extends
-            AbstractPostUpdateContext<E> {
+    protected static class SqlFileBatchPostUpdateContext<E> extends AbstractPostUpdateContext<E> {
 
-        public SqlFileBatchPostUpdateContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFileBatchPostUpdateContext(EntityDesc<E> entityDesc, Method method,
+                Config config) {
             super(entityDesc, method, config);
         }
 

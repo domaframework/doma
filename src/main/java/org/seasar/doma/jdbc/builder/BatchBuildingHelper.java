@@ -32,8 +32,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 class BatchBuildingHelper {
 
-    private static final String lineSeparator = System
-            .getProperty("line.separator");
+    private static final String lineSeparator = System.getProperty("line.separator");
 
     private final LinkedList<Item> items = new LinkedList<>();
     private final Map<String, Integer> paramIndexMap = new HashMap<>();
@@ -58,7 +57,7 @@ class BatchBuildingHelper {
         items.add(Item.param(param));
     }
 
-    void modifyParam(BatchParam<?>  param) {
+    void modifyParam(BatchParam<?> param) {
         int index = paramIndexMap.get(param.name);
         items.set(index, Item.param(param));
     }

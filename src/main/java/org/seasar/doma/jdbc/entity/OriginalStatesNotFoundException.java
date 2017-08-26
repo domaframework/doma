@@ -43,8 +43,8 @@ public class OriginalStatesNotFoundException extends JdbcException {
      * @param fieldName
      *            フィールドの名前
      */
-    public OriginalStatesNotFoundException(Throwable cause,
-            String entityClassName, String fieldName) {
+    public OriginalStatesNotFoundException(Throwable cause, String entityClassName,
+            String fieldName) {
         super(Message.DOMA2213, cause, entityClassName, fieldName, cause);
         this.entityClassName = entityClassName;
         this.fieldName = fieldName;

@@ -93,7 +93,7 @@ public class MapInsertBuilder {
      * 
      * @return 更新件数
      * @param parameter
-     *             INSERT文の生成元となるMap
+     *            INSERT文の生成元となるMap
      * @throws DomaNullPointerException
      *             parameterがnullの場合
      * @throws DomaIllegalArgumentException
@@ -111,10 +111,10 @@ public class MapInsertBuilder {
             throw new DomaIllegalArgumentException("parameter", "parameter.size() < 1");
         }
         builder.sql("insert into ")
-            .sql(tableName)
-            .sql(" (")
-            .sql(parameter.keySet().stream().collect(Collectors.joining(", ")))
-            .sql(")");
+                .sql(tableName)
+                .sql(" (")
+                .sql(parameter.keySet().stream().collect(Collectors.joining(", ")))
+                .sql(")");
         builder.sql("values (");
         parameter.forEach((key, value) -> {
             if (value == null) {

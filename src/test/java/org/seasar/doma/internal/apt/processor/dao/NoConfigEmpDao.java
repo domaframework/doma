@@ -39,8 +39,7 @@ public interface NoConfigEmpDao {
     Emp selectById(Integer id, SelectOptions options);
 
     @Select
-    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions options);
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions options);
 
     @Insert
     int insert(Emp entity);

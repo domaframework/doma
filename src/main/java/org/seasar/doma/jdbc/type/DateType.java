@@ -40,14 +40,13 @@ public class DateType extends AbstractJdbcType<Date> {
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Date value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Date value)
+            throws SQLException {
         preparedStatement.setDate(index, value);
     }
 
     @Override
-    protected Date doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Date doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getDate(index);
     }
 

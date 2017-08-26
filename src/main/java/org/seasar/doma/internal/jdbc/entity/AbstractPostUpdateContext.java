@@ -28,19 +28,18 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
  * @author taedium
  * 
  */
-public abstract class AbstractPostUpdateContext<E> extends
-        AbstractEntityListenerContext<E> implements PostUpdateContext<E> {
+public abstract class AbstractPostUpdateContext<E> extends AbstractEntityListenerContext<E>
+        implements PostUpdateContext<E> {
 
-    protected AbstractPostUpdateContext(EntityDesc<E> entityDesc,
-            Method method, Config config) {
+    protected AbstractPostUpdateContext(EntityDesc<E> entityDesc, Method method, Config config) {
         super(entityDesc, method, config);
     }
 
     protected void validatePropertyDefined(String propertyName) {
         assertNotNull(propertyName);
         if (!isPropertyDefinedInternal(propertyName)) {
-            throw new EntityPropertyNotDefinedException(entityDesc
-                    .getEntityClass().getName(), propertyName);
+            throw new EntityPropertyNotDefinedException(entityDesc.getEntityClass().getName(),
+                    propertyName);
         }
     }
 

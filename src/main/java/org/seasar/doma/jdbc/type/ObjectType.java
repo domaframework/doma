@@ -34,14 +34,13 @@ public class ObjectType extends AbstractJdbcType<Object> {
     }
 
     @Override
-    protected Object doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Object doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getObject(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Object value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException {
         preparedStatement.setObject(index, value);
     }
 

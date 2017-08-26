@@ -70,7 +70,7 @@ public interface SqlFileRepository {
      * @throws DomaNullPointerException
      *             引数のいずれかが {@code null} の場合
      * @throws DomaIllegalArgumentException
-     *             {@code path} が'META-INF/'で始まらない場合、 もしくは、{@code path} 
+     *             {@code path} が'META-INF/'で始まらない場合、 もしくは、{@code path}
      *             が'.sql'で終わらない場合
      * @throws SqlFileNotFoundException
      *             SQLファイルが見つからない場合

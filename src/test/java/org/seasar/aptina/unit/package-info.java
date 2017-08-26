@@ -17,4 +17,3 @@
  * {@link javax.annotation.processing.Processor} の単体テストを支援するクラスを提供します．
  */
 package org.seasar.aptina.unit;
-

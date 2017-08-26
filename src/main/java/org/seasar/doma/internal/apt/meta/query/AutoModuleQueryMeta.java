@@ -35,8 +35,7 @@ public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
         super(method);
     }
 
-    public void addCallableSqlParameterMeta(
-            CallableSqlParameterMeta sqlParameterMeta) {
+    public void addCallableSqlParameterMeta(CallableSqlParameterMeta sqlParameterMeta) {
         sqlParameterMetas.add(sqlParameterMeta);
     }
 

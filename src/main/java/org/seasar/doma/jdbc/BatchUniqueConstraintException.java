@@ -40,10 +40,8 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
      * @param cause
      *            原因
      */
-    public BatchUniqueConstraintException(SqlLogType logType, Sql<?> sql,
-            Throwable cause) {
-        this(logType, sql.getKind(), sql.getRawSql(), sql.getSqlFilePath(),
-                cause);
+    public BatchUniqueConstraintException(SqlLogType logType, Sql<?> sql, Throwable cause) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getSqlFilePath(), cause);
     }
 
     /**
@@ -60,10 +58,9 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
      * @param cause
      *            原因
      */
-    public BatchUniqueConstraintException(SqlLogType logType, SqlKind kind,
-            String rawSql, String sqlFilePath, Throwable cause) {
-        super(Message.DOMA2029, kind, choiceSql(logType, rawSql, rawSql),
-                sqlFilePath, cause);
+    public BatchUniqueConstraintException(SqlLogType logType, SqlKind kind, String rawSql,
+            String sqlFilePath, Throwable cause) {
+        super(Message.DOMA2029, kind, choiceSql(logType, rawSql, rawSql), sqlFilePath, cause);
     }
 
 }

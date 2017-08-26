@@ -50,8 +50,7 @@ public class JdbcException extends DomaException {
      * @param args
      *            メッセージへの引数
      */
-    public JdbcException(MessageResource messageCode, Throwable cause,
-            Object... args) {
+    public JdbcException(MessageResource messageCode, Throwable cause, Object... args) {
         super(messageCode, cause, args);
     }
 
@@ -67,8 +66,7 @@ public class JdbcException extends DomaException {
      * @return ログ用SQL
      * @since 1.22.0
      */
-    protected static String choiceSql(SqlLogType logType, String rawSql,
-            String formattedSql) {
+    protected static String choiceSql(SqlLogType logType, String rawSql, String formattedSql) {
         switch (logType) {
         case RAW:
             return rawSql;

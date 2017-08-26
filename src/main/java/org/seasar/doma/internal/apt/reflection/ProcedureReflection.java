@@ -65,8 +65,8 @@ public class ProcedureReflection extends AbstractReflection {
 
     private final AnnotationValue sqlLog;
 
-    ProcedureReflection(AnnotationMirror annotationMirror,
-            String defaultName, Map<String, AnnotationValue> values) {
+    ProcedureReflection(AnnotationMirror annotationMirror, String defaultName,
+            Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(defaultName, values);
 
@@ -134,18 +134,15 @@ public class ProcedureReflection extends AbstractReflection {
     }
 
     public MapKeyNamingType getMapKeyNamingValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(mapKeyNaming);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
         if (enumConstant == null) {
             throw new AptIllegalStateException(MAP_KEY_NAMING);
         }
-        return MapKeyNamingType
-                .valueOf(enumConstant.getSimpleName().toString());
+        return MapKeyNamingType.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public SqlLogType getSqlLogValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(sqlLog);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
         if (enumConstant == null) {
             throw new AptIllegalStateException(SQL_LOG);
         }

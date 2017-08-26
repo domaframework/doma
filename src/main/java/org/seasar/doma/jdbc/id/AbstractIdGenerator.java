@@ -49,16 +49,14 @@ public abstract class AbstractIdGenerator implements IdGenerator {
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql);
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
             try {
                 logger.logSql(getClass().getName(), "getGeneratedId", sql);
                 setupOptions(config, preparedStatement);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 return getGeneratedValue(config, resultSet);
             } catch (SQLException e) {
-                throw new JdbcException(Message.DOMA2018, e, config
-                        .getEntityDesc().getName(), e);
+                throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
@@ -77,8 +75,8 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      * @throws SQLException
      *             SQL例外が発生した場合
      */
-    protected void setupOptions(IdGenerationConfig config,
-            PreparedStatement preparedStatement) throws SQLException {
+    protected void setupOptions(IdGenerationConfig config, PreparedStatement preparedStatement)
+            throws SQLException {
         if (config.getFetchSize() > 0) {
             preparedStatement.setFetchSize(config.getFetchSize());
         }
@@ -101,18 +99,15 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      * @throws JdbcException
      *             識別子の取得に失敗した場合
      */
-    protected long getGeneratedValue(IdGenerationConfig config,
-            ResultSet resultSet) {
+    protected long getGeneratedValue(IdGenerationConfig config, ResultSet resultSet) {
         JdbcLogger logger = config.getJdbcLogger();
         try {
             if (resultSet.next()) {
                 return resultSet.getLong(1);
             }
-            throw new JdbcException(Message.DOMA2017, config.getEntityDesc()
-                    .getName());
+            throw new JdbcException(Message.DOMA2017, config.getEntityDesc().getName());
         } catch (final SQLException e) {
-            throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc()
-                    .getName(), e);
+            throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc().getName(), e);
         } finally {
             JdbcUtil.close(resultSet, logger);
         }

@@ -27,8 +27,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * @author taedium
  * 
  */
-public abstract class AbstractPreGenerateIdGenerator extends
-        AbstractIdGenerator {
+public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator {
 
     /** 初期値 */
     protected long initialValue;
@@ -81,8 +80,7 @@ public abstract class AbstractPreGenerateIdGenerator extends
     }
 
     @Override
-    public Long generatePostInsert(IdGenerationConfig config,
-            Statement statement) {
+    public Long generatePostInsert(IdGenerationConfig config, Statement statement) {
         return null;
     }
 

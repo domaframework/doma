@@ -20,8 +20,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 public class BindVariableNode extends ValueNode {
 
-    public BindVariableNode(SqlLocation location, String variableName,
-            String text) {
+    public BindVariableNode(SqlLocation location, String variableName, String text) {
         super(location, variableName, text);
     }
 

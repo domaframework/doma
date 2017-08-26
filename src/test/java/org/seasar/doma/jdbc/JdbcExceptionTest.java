@@ -48,8 +48,7 @@ public class JdbcExceptionTest extends TestCase {
     public void testSqlFileNotFound() throws Exception {
         GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
         try {
-            repository.getSqlFile(method, "META-INF/aaa/bbb.sql",
-                    new StandardDialect());
+            repository.getSqlFile(method, "META-INF/aaa/bbb.sql", new StandardDialect());
             fail();
         } catch (SqlFileNotFoundException e) {
             System.out.println(e.getMessage());
@@ -91,8 +90,7 @@ public class JdbcExceptionTest extends TestCase {
     }
 
     public void testIfCommentNotFoundForSecondEndComment() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where/*%if true*//*%end*/ /*%end*/");
+        SqlParser parser = new SqlParser("select * from aaa where/*%if true*//*%end*/ /*%end*/");
         try {
             parser.parse();
             fail();
@@ -114,8 +112,7 @@ public class JdbcExceptionTest extends TestCase {
     }
 
     public void testTestLiteralNotFound() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb = /*bbb*/ 'ccc')");
+        SqlParser parser = new SqlParser("select * from aaa where bbb = /*bbb*/ 'ccc')");
         try {
             parser.parse();
             fail();
@@ -126,11 +123,10 @@ public class JdbcExceptionTest extends TestCase {
     }
 
     public void testSqlBuildingFailed() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb = \n/*bbb*/'ccc'");
+        SqlParser parser = new SqlParser("select * from aaa where bbb = \n/*bbb*/'ccc'");
         SqlNode sqlNode = parser.parse();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath");
         try {
             builder.build(sqlNode, Function.identity());
             fail();
@@ -141,13 +137,12 @@ public class JdbcExceptionTest extends TestCase {
     }
 
     public void testBindValueTypeNotIterable() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb in /*bbb*/(1,2,3)");
+        SqlParser parser = new SqlParser("select * from aaa where bbb in /*bbb*/(1,2,3)");
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(int.class, 1));
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, SqlLogType.FORMATTED);
         try {
             builder.build(sqlNode, Function.identity());
             fail();
@@ -158,13 +153,12 @@ public class JdbcExceptionTest extends TestCase {
     }
 
     public void testCollectionOfBindValueContainsNull() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb in /*bbb*/(1,2,3)");
+        SqlParser parser = new SqlParser("select * from aaa where bbb in /*bbb*/(1,2,3)");
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(List.class, Arrays.asList(1, null)));
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator, SqlLogType.FORMATTED);
         try {
             builder.build(sqlNode, Function.identity());
             fail();

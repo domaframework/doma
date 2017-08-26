@@ -40,8 +40,8 @@ public interface AutoFunctionDao {
             @Out Reference<Integer> arg3);
 
     @Function
-    PhoneNumber executeFunction2(@In PhoneNumber arg1,
-            @InOut Reference<PhoneNumber> arg2, @Out Reference<PhoneNumber> arg3);
+    PhoneNumber executeFunction2(@In PhoneNumber arg1, @InOut Reference<PhoneNumber> arg2,
+            @Out Reference<PhoneNumber> arg3);
 
     @Function
     List<String> executeFunction3(@ResultSet List<String> arg1);

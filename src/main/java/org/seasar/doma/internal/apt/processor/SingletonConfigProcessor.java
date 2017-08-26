@@ -48,14 +48,13 @@ public class SingletonConfigProcessor extends AbstractProcessor {
     }
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver()) {
             return true;
         }
         for (TypeElement a : annotations) {
-            for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
+            for (TypeElement typeElement : ElementFilter
+                    .typesIn(roundEnv.getElementsAnnotatedWith(a))) {
                 handleTypeElement(typeElement, this::validate);
             }
         }
@@ -73,40 +72,34 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         validateMethod(typeElement, mirror.getMethodValue());
     }
 
-    private void validateClass(TypeElement typeElement,
-            SingletonConfigReflection mirror) {
+    private void validateClass(TypeElement typeElement, SingletonConfigReflection mirror) {
         if (!ctx.getTypes().isAssignable(typeElement.asType(), Config.class)) {
-            throw new AptException(Message.DOMA4253, typeElement,
-                    mirror.getAnnotationMirror());
+            throw new AptException(Message.DOMA4253, typeElement, mirror.getAnnotationMirror());
         }
     }
 
     private void validateConstructors(TypeElement typeElement) {
-        ElementFilter
-                .constructorsIn(typeElement.getEnclosedElements())
+        ElementFilter.constructorsIn(typeElement.getEnclosedElements())
                 .stream()
                 .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
                 .findAny()
-                .ifPresent(
-                        c -> {
-                            throw new AptException(Message.DOMA4256, c);
-                        });
+                .ifPresent(c -> {
+                    throw new AptException(Message.DOMA4256, c);
+                });
     }
 
     private void validateMethod(TypeElement typeElement, String methodName) {
         Optional<ExecutableElement> method = ElementFilter
                 .methodsIn(typeElement.getEnclosedElements())
                 .stream()
-                .filter(m -> m.getModifiers().containsAll(
-                        EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-                .filter(m -> ctx.getTypes().isAssignable(m.getReturnType(),
-                        Config.class))
+                .filter(m -> m.getModifiers()
+                        .containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
+                .filter(m -> ctx.getTypes().isAssignable(m.getReturnType(), Config.class))
                 .filter(m -> m.getParameters().isEmpty())
                 .filter(m -> m.getSimpleName().toString().equals(methodName))
                 .findAny();
         if (!method.isPresent()) {
-            throw new AptException(Message.DOMA4254, typeElement,
-                    new Object[] { methodName });
+            throw new AptException(Message.DOMA4254, typeElement, new Object[] { methodName });
         }
     }
 }

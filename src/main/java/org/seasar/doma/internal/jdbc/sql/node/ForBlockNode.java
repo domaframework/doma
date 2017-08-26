@@ -58,8 +58,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
 
     @Override
     public void appendNode(SqlNode child) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "addNode");
+        throw new JdbcUnsupportedOperationException(getClass().getName(), "addNode");
     }
 
     protected void appendNodeInternal(SqlNode child) {

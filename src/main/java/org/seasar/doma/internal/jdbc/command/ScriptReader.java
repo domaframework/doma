@@ -104,8 +104,7 @@ public class ScriptReader {
                 }
             }
         } catch (IOException e) {
-            throw new JdbcException(Message.DOMA2078, e,
-                    query.getScriptFilePath(), e);
+            throw new JdbcException(Message.DOMA2078, e, query.getScriptFilePath(), e);
         }
     }
 
@@ -137,8 +136,7 @@ public class ScriptReader {
      */
     protected BufferedReader createBufferedReader() throws IOException {
         InputStream inputStream = query.getScriptFileUrl().openStream();
-        return new BufferedReader(new InputStreamReader(inputStream,
-                Constants.UTF_8));
+        return new BufferedReader(new InputStreamReader(inputStream, Constants.UTF_8));
     }
 
     /**
@@ -173,8 +171,7 @@ public class ScriptReader {
          * インスタンスを構築します
          */
         protected SqlBuilder() {
-            sqlBlockContext = query.getConfig().getDialect()
-                    .createScriptBlockContext();
+            sqlBlockContext = query.getConfig().getDialect().createScriptBlockContext();
         }
 
         /**

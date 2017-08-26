@@ -46,8 +46,7 @@ public class ScriptReflection extends AbstractReflection {
 
     private final AnnotationValue sqlLog;
 
-    ScriptReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    ScriptReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.haltOnError = assertNotNullValue(values, HALT_ON_ERROR);
@@ -84,8 +83,7 @@ public class ScriptReflection extends AbstractReflection {
     }
 
     public SqlLogType getSqlLogValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(sqlLog);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
         if (enumConstant == null) {
             throw new AptIllegalStateException(SQL_LOG);
         }

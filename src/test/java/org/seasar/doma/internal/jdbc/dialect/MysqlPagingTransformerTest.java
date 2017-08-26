@@ -37,8 +37,8 @@ public class MysqlPagingTransformerTest extends TestCase {
         MysqlPagingTransformer transformer = new MysqlPagingTransformer(5, 10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
@@ -46,11 +46,10 @@ public class MysqlPagingTransformerTest extends TestCase {
     public void testOffsetLimit_forUpdate() throws Exception {
         String expected = "select * from emp order by emp.id  limit 5, 10 for update";
         MysqlPagingTransformer transformer = new MysqlPagingTransformer(5, 10);
-        SqlParser parser = new SqlParser(
-                "select * from emp order by emp.id for update");
+        SqlParser parser = new SqlParser("select * from emp order by emp.id for update");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
@@ -60,8 +59,8 @@ public class MysqlPagingTransformerTest extends TestCase {
         MysqlPagingTransformer transformer = new MysqlPagingTransformer(5, -1);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
@@ -71,8 +70,8 @@ public class MysqlPagingTransformerTest extends TestCase {
         MysqlPagingTransformer transformer = new MysqlPagingTransformer(-1, 10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }

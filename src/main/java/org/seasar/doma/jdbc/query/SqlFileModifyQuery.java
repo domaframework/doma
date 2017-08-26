@@ -38,8 +38,7 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
  * @author taedium
  * 
  */
-public abstract class SqlFileModifyQuery extends AbstractQuery implements
-        ModifyQuery {
+public abstract class SqlFileModifyQuery extends AbstractQuery implements ModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
@@ -75,14 +74,13 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements
     }
 
     protected void prepareSql() {
-        SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(method,
-                sqlFilePath, config.getDialect());
+        SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath,
+                config.getDialect());
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions(),
-                config.getClassHelper());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                kind, sqlFile.getPath(), evaluator, sqlLogType,
-                this::expandColumns, this::populateValues);
+                config.getDialect().getExpressionFunctions(), config.getClassHelper());
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, kind,
+                sqlFile.getPath(), evaluator, sqlLogType, this::expandColumns,
+                this::populateValues);
         sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
     }
 

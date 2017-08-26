@@ -35,8 +35,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class StandardPagingTransformer extends
-        SimpleSqlNodeVisitor<SqlNode, Void> {
+public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
 
     protected final long offset;
 
@@ -76,8 +75,7 @@ public class StandardPagingTransformer extends
         subStatement.setGroupByClauseNode(node.getGroupByClauseNode());
         subStatement.setHavingClauseNode(node.getHavingClauseNode());
 
-        OrderByClauseNode orderBy = new OrderByClauseNode(
-                originalOrderBy.getWordNode());
+        OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
         for (SqlNode child : originalOrderBy.getChildren()) {
             if (child instanceof WordNode) {
                 WordNode wordNode = (WordNode) child;
@@ -96,11 +94,9 @@ public class StandardPagingTransformer extends
         SelectClauseNode select = new SelectClauseNode("select");
         select.appendNode(new FragmentNode(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.appendNode(new FragmentNode(
-                " ( select temp_.*, row_number() over( "));
+        from.appendNode(new FragmentNode(" ( select temp_.*, row_number() over( "));
         from.appendNode(orderBy);
-        from.appendNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME
-                + " from ( "));
+        from.appendNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME + " from ( "));
         from.appendNode(subStatement);
         from.appendNode(new FragmentNode(") as temp_ ) as temp2_ "));
         WhereClauseNode where = new WhereClauseNode("where");

@@ -37,8 +37,7 @@ public abstract class AbstractPropertyMeta {
 
     protected final ColumnReflection columnReflection;
 
-    protected AbstractPropertyMeta(VariableElement fieldElement, String name,
-            CtType ctType,
+    protected AbstractPropertyMeta(VariableElement fieldElement, String name, CtType ctType,
             ColumnReflection columnReflection) {
         assertNotNull(fieldElement, name, ctType);
         this.fieldElement = fieldElement;
@@ -72,18 +71,15 @@ public abstract class AbstractPropertyMeta {
     }
 
     public boolean isColumnInsertable() {
-        return columnReflection != null ? columnReflection.getInsertableValue()
-                : true;
+        return columnReflection != null ? columnReflection.getInsertableValue() : true;
     }
 
     public boolean isColumnUpdatable() {
-        return columnReflection != null ? columnReflection.getUpdatableValue()
-                : true;
+        return columnReflection != null ? columnReflection.getUpdatableValue() : true;
     }
 
     public boolean isColumnQuoteRequired() {
-        return columnReflection != null ? columnReflection.getQuoteValue()
-                : false;
+        return columnReflection != null ? columnReflection.getQuoteValue() : false;
     }
 
 }

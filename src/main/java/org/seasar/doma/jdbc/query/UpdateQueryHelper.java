@@ -51,9 +51,8 @@ public class UpdateQueryHelper<E> {
     protected final String[] excludedPropertyNames;
 
     public UpdateQueryHelper(Config config, EntityDesc<E> entityDesc,
-            String[] includedPropertyNames, String[] excludedPropertyNames,
-            boolean nullExcluded, boolean versionIgnored,
-            boolean optimisticLockExceptionSuppressed,
+            String[] includedPropertyNames, String[] excludedPropertyNames, boolean nullExcluded,
+            boolean versionIgnored, boolean optimisticLockExceptionSuppressed,
             boolean unchangedPropertyIncluded) {
         this.config = config;
         this.entityDesc = entityDesc;
@@ -69,8 +68,7 @@ public class UpdateQueryHelper<E> {
         int capacity = entityDesc.getEntityPropertyDescs().size();
         List<EntityPropertyDesc<E, ?>> results = new ArrayList<>(capacity);
         E originalStates = entityDesc.getOriginalStates(entity);
-        for (EntityPropertyDesc<E, ?> propertyDesc : entityDesc
-                .getEntityPropertyDescs()) {
+        for (EntityPropertyDesc<E, ?> propertyDesc : entityDesc.getEntityPropertyDescs()) {
             if (!propertyDesc.isUpdatable()) {
                 continue;
             }
@@ -124,26 +122,22 @@ public class UpdateQueryHelper<E> {
         return true;
     }
 
-    protected boolean isChanged(E entity, E originalStates,
-            EntityPropertyDesc<E, ?> propertyDesc) {
-        Wrapper<?> wrapper = propertyDesc.createProperty().load(entity)
-                .getWrapper();
+    protected boolean isChanged(E entity, E originalStates, EntityPropertyDesc<E, ?> propertyDesc) {
+        Wrapper<?> wrapper = propertyDesc.createProperty().load(entity).getWrapper();
         Wrapper<?> originalWrapper = propertyDesc.createProperty()
-                .load(originalStates).getWrapper();
+                .load(originalStates)
+                .getWrapper();
         return !wrapper.hasEqualValue(originalWrapper.get());
     }
 
-    public void populateValues(E entity,
-            List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
-            VersionPropertyDesc<E, ?, ?> versionPropertyDesc,
-            SqlContext context) {
+    public void populateValues(E entity, List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
+            VersionPropertyDesc<E, ?, ?> versionPropertyDesc, SqlContext context) {
         Dialect dialect = config.getDialect();
         Naming naming = config.getNaming();
         for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
             Property<E, ?> property = propertyDesc.createProperty();
             property.load(entity);
-            context.appendSql(propertyDesc.getColumnName(naming::apply,
-                    dialect::applyQuote));
+            context.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
             context.appendSql(" = ");
             context.appendParameter(property.asInParameter());
             context.appendSql(", ");
@@ -151,8 +145,8 @@ public class UpdateQueryHelper<E> {
         if (!versionIgnored && versionPropertyDesc != null) {
             Property<E, ?> property = versionPropertyDesc.createProperty();
             property.load(entity);
-            context.appendSql(versionPropertyDesc.getColumnName(naming::apply,
-                    dialect::applyQuote));
+            context.appendSql(
+                    versionPropertyDesc.getColumnName(naming::apply, dialect::applyQuote));
             context.appendSql(" = ");
             context.appendParameter(property.asInParameter());
             context.appendSql(" + 1");

@@ -29,8 +29,7 @@ import org.seasar.doma.jdbc.query.Query;
  * @author taedium
  * 
  */
-public class MapResultListParameter extends
-        AbstractResultListParameter<Map<String, Object>> {
+public class MapResultListParameter extends AbstractResultListParameter<Map<String, Object>> {
 
     protected final MapKeyNamingType mapKeyNamingType;
 

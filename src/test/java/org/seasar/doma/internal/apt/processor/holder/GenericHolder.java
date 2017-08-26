@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.processor.holder;
 
-
 /**
  * @author taedium
  * @see "https://gist.github.com/4257111"

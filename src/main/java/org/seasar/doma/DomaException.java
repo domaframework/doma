@@ -57,8 +57,7 @@ public class DomaException extends RuntimeException {
      * @param args
      *            メッセージへの引数
      */
-    public DomaException(MessageResource messageResource, Throwable cause,
-            Object... args) {
+    public DomaException(MessageResource messageResource, Throwable cause, Object... args) {
         super(messageResource.getMessage(args), cause);
         this.messageResource = messageResource;
         this.args = args;

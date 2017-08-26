@@ -42,8 +42,7 @@ public class InsertCommandTest extends TestCase {
         emp.setSalary(new BigDecimal(1000));
         emp.setVersion(10);
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -56,9 +55,7 @@ public class InsertCommandTest extends TestCase {
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals(
-                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
-                sql);
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(Integer.valueOf(1), bindValues.get(0).getValue());
@@ -74,8 +71,7 @@ public class InsertCommandTest extends TestCase {
         emp.setSalary(new BigDecimal(1000));
         emp.setVersion(null);
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
-                _Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
@@ -88,9 +84,7 @@ public class InsertCommandTest extends TestCase {
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals(
-                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
-                sql);
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());

@@ -35,8 +35,8 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  *            結果
  */
-public class ScalarStreamHandler<BASIC, CONTAINER, RESULT> extends
-        AbstractStreamHandler<CONTAINER, RESULT> {
+public class ScalarStreamHandler<BASIC, CONTAINER, RESULT>
+        extends AbstractStreamHandler<CONTAINER, RESULT> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
@@ -48,8 +48,7 @@ public class ScalarStreamHandler<BASIC, CONTAINER, RESULT> extends
     }
 
     @Override
-    protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(
-            SelectQuery query) {
+    protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(SelectQuery query) {
         return new ScalarProvider<>(supplier, query);
     }
 

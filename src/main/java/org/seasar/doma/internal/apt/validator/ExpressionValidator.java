@@ -74,8 +74,7 @@ import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.message.Message;
 
-public class ExpressionValidator implements
-        ExpressionNodeVisitor<TypeDeclaration, Void> {
+public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaration, Void> {
 
     private final Context ctx;
 
@@ -89,25 +88,19 @@ public class ExpressionValidator implements
 
     private final String exprFunctionsClassName;
 
-    public ExpressionValidator(Context ctx,
-            ExecutableElement methodElement,
+    public ExpressionValidator(Context ctx, ExecutableElement methodElement,
             Map<String, TypeMirror> parameterTypeMap) {
-        this(ctx, methodElement, parameterTypeMap,
-                ctx.getOptions().getExprFunctions());
+        this(ctx, methodElement, parameterTypeMap, ctx.getOptions().getExprFunctions());
     }
 
-    public ExpressionValidator(Context ctx,
-            ExecutableElement methodElement,
-            Map<String, TypeMirror> parameterTypeMap,
-            String exprFunctionsClassName) {
+    public ExpressionValidator(Context ctx, ExecutableElement methodElement,
+            Map<String, TypeMirror> parameterTypeMap, String exprFunctionsClassName) {
         assertNotNull(ctx, methodElement, parameterTypeMap);
         this.ctx = ctx;
         this.methodElement = methodElement;
-        this.parameterTypeMap = new HashMap<String, TypeMirror>(
-                parameterTypeMap);
+        this.parameterTypeMap = new HashMap<String, TypeMirror>(parameterTypeMap);
         this.validatedParameterNames = new HashSet<String>();
-        this.unknownTypeDeclaration = ctx.getDeclarations()
-                .newUnknownTypeDeclaration();
+        this.unknownTypeDeclaration = ctx.getDeclarations().newUnknownTypeDeclaration();
         this.exprFunctionsClassName = exprFunctionsClassName;
     }
 
@@ -165,39 +158,37 @@ public class ExpressionValidator implements
         return handleNullUnavailableComparisonOperation(node, p);
     }
 
-    private TypeDeclaration handleNullAvailableComparisonOperation(
-            ComparisonOperatorNode node, Void p) {
+    private TypeDeclaration handleNullAvailableComparisonOperation(ComparisonOperatorNode node,
+            Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
         if (left.isNullType() || right.isNullType() || left.isComparable(right)) {
-            return ctx.getDeclarations()
-                    .newTypeDeclaration(boolean.class);
+            return ctx.getDeclarations().newTypeDeclaration(boolean.class);
         }
         ExpressionLocation location = node.getLocation();
-        throw new AptException(Message.DOMA4116, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(), node.getExpression(),
-                node.getLeftNode().toString(), left.getBinaryName(),
-                node.getRightNode().toString(), right.getBinaryName() });
+        throw new AptException(Message.DOMA4116, methodElement,
+                new Object[] { location.getExpression(), location.getPosition(),
+                        node.getExpression(), node.getLeftNode().toString(), left.getBinaryName(),
+                        node.getRightNode().toString(), right.getBinaryName() });
     }
 
-    private TypeDeclaration handleNullUnavailableComparisonOperation(
-            ComparisonOperatorNode node, Void p) {
+    private TypeDeclaration handleNullUnavailableComparisonOperation(ComparisonOperatorNode node,
+            Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
         if (left.isNullType() || right.isNullType()) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4139, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), node.getExpression() });
+            throw new AptException(Message.DOMA4139, methodElement, new Object[] {
+                    location.getExpression(), location.getPosition(), node.getExpression() });
         }
         if (left.isComparable(right)) {
-            return ctx.getDeclarations()
-                    .newTypeDeclaration(boolean.class);
+            return ctx.getDeclarations().newTypeDeclaration(boolean.class);
         }
         ExpressionLocation location = node.getLocation();
-        throw new AptException(Message.DOMA4116, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(), node.getExpression(),
-                node.getLeftNode().toString(), left.getBinaryName(),
-                node.getRightNode().toString(), right.getBinaryName() });
+        throw new AptException(Message.DOMA4116, methodElement,
+                new Object[] { location.getExpression(), location.getPosition(),
+                        node.getExpression(), node.getLeftNode().toString(), left.getBinaryName(),
+                        node.getRightNode().toString(), right.getBinaryName() });
     }
 
     @Override
@@ -210,25 +201,23 @@ public class ExpressionValidator implements
         return handleLogicalBinaryOperatorNode(node, p);
     }
 
-    private TypeDeclaration handleLogicalBinaryOperatorNode(
-            LogicalBinaryOperatorNode node, Void p) {
+    private TypeDeclaration handleLogicalBinaryOperatorNode(LogicalBinaryOperatorNode node,
+            Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
         if (!left.isBooleanType()) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(
-                    Message.DOMA4117,
-                    methodElement,
-                    new Object[] { location.getExpression(),
-                            location.getPosition(), node.getExpression(),
-                            node.getLeftNode().toString(), left.getBinaryName() });
+            throw new AptException(Message.DOMA4117, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getExpression(), node.getLeftNode().toString(),
+                            left.getBinaryName() });
         }
         if (!right.isBooleanType()) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4118, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), node.getExpression(),
-                    node.getRightNode().toString(),
-                    right.getBinaryName() });
+            throw new AptException(Message.DOMA4118, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getExpression(), node.getRightNode().toString(),
+                            right.getBinaryName() });
         }
         return ctx.getDeclarations().newTypeDeclaration(boolean.class);
     }
@@ -237,13 +226,12 @@ public class ExpressionValidator implements
     public TypeDeclaration visitNotOperatorNode(NotOperatorNode node, Void p) {
         TypeDeclaration result = node.getNode().accept(this, p);
         if (result.isBooleanType()) {
-            return ctx.getDeclarations()
-                    .newTypeDeclaration(boolean.class);
+            return ctx.getDeclarations().newTypeDeclaration(boolean.class);
         }
         ExpressionLocation location = node.getLocation();
-        throw new AptException(Message.DOMA4119, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(), node.getExpression(),
-                node.getNode().toString(), result.getBinaryName() });
+        throw new AptException(Message.DOMA4119, methodElement,
+                new Object[] { location.getExpression(), location.getPosition(),
+                        node.getExpression(), node.getNode().toString(), result.getBinaryName() });
     }
 
     @Override
@@ -255,35 +243,30 @@ public class ExpressionValidator implements
                 return left.emulateConcatOperation(right);
             }
             ExpressionLocation location = node.getLocation();
-            throw new AptException(
-                    Message.DOMA4126,
-                    methodElement,
-                    new Object[] { location.getExpression(),
-                            location.getPosition(), node.getExpression(),
-                            node.getLeftNode().toString(), left.getBinaryName() });
+            throw new AptException(Message.DOMA4126, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getExpression(), node.getLeftNode().toString(),
+                            left.getBinaryName() });
         }
         return handleArithmeticOperatorNode(node, left, right, p);
     }
 
     @Override
-    public TypeDeclaration visitSubtractOperatorNode(SubtractOperatorNode node,
-            Void p) {
+    public TypeDeclaration visitSubtractOperatorNode(SubtractOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
         return handleArithmeticOperatorNode(node, left, right, p);
     }
 
     @Override
-    public TypeDeclaration visitMultiplyOperatorNode(MultiplyOperatorNode node,
-            Void p) {
+    public TypeDeclaration visitMultiplyOperatorNode(MultiplyOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
         return handleArithmeticOperatorNode(node, left, right, p);
     }
 
     @Override
-    public TypeDeclaration visitDivideOperatorNode(DivideOperatorNode node,
-            Void p) {
+    public TypeDeclaration visitDivideOperatorNode(DivideOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
         return handleArithmeticOperatorNode(node, left, right, p);
@@ -296,32 +279,28 @@ public class ExpressionValidator implements
         return handleArithmeticOperatorNode(node, left, right, p);
     }
 
-    private TypeDeclaration handleArithmeticOperatorNode(
-            ArithmeticOperatorNode node, TypeDeclaration left,
-            TypeDeclaration right, Void p) {
+    private TypeDeclaration handleArithmeticOperatorNode(ArithmeticOperatorNode node,
+            TypeDeclaration left, TypeDeclaration right, Void p) {
         if (!left.isNumberType()) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(
-                    Message.DOMA4120,
-                    methodElement,
-                    new Object[] { location.getExpression(),
-                            location.getPosition(), node.getExpression(),
-                            node.getLeftNode().toString(), left.getBinaryName() });
+            throw new AptException(Message.DOMA4120, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getExpression(), node.getLeftNode().toString(),
+                            left.getBinaryName() });
         }
         if (!right.isNumberType()) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4121, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), node.getExpression(),
-                    node.getRightNode().toString(),
-                    right.getBinaryName() });
+            throw new AptException(Message.DOMA4121, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getExpression(), node.getRightNode().toString(),
+                            right.getBinaryName() });
         }
         return left.emulateArithmeticOperation(right);
     }
 
     @Override
     public TypeDeclaration visitLiteralNode(LiteralNode node, Void p) {
-        TypeMirror type = node.getValueClass() == void.class
-                ? ctx.getTypes().getNullType()
+        TypeMirror type = node.getValueClass() == void.class ? ctx.getTypes().getNullType()
                 : ctx.getTypes().getType(node.getValueClass());
         return ctx.getDeclarations().newTypeDeclaration(type);
     }
@@ -342,28 +321,26 @@ public class ExpressionValidator implements
         TypeElement typeElement = ctx.getElements().getTypeElement(className);
         if (typeElement == null) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4138, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), className });
+            throw new AptException(Message.DOMA4138, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(), className });
         }
-        TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(
-                        typeElement.asType());
+        TypeDeclaration typeDeclaration = ctx.getDeclarations()
+                .newTypeDeclaration(typeElement.asType());
         List<ConstructorDeclaration> constructorDeclarations = typeDeclaration
                 .getConstructorDeclarations(parameterTypeDeclarations);
         if (constructorDeclarations.size() == 0) {
             ExpressionLocation location = node.getLocation();
-            String signature = createConstructorSignature(className,
-                    parameterTypeDeclarations);
-            throw new AptException(Message.DOMA4115, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), signature });
+            String signature = createConstructorSignature(className, parameterTypeDeclarations);
+            throw new AptException(Message.DOMA4115, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(), signature });
         }
         if (constructorDeclarations.size() == 1) {
             return typeDeclaration;
         }
         ExpressionLocation location = node.getLocation();
-        String signature = createConstructorSignature(className,
-                parameterTypeDeclarations);
-        throw new AptException(Message.DOMA4127, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(), signature });
+        String signature = createConstructorSignature(className, parameterTypeDeclarations);
+        throw new AptException(Message.DOMA4127, methodElement,
+                new Object[] { location.getExpression(), location.getPosition(), signature });
     }
 
     private String createConstructorSignature(String className,
@@ -393,10 +370,8 @@ public class ExpressionValidator implements
     }
 
     @Override
-    public TypeDeclaration visitMethodOperatorNode(MethodOperatorNode node,
-            Void p) {
-        TypeDeclaration typeDeclaration = node.getTargetObjectNode().accept(
-                this, p);
+    public TypeDeclaration visitMethodOperatorNode(MethodOperatorNode node, Void p) {
+        TypeDeclaration typeDeclaration = node.getTargetObjectNode().accept(this, p);
         List<TypeDeclaration> parameterTypeDeclarations = new ParameterCollector()
                 .collect(node.getParametersNode());
         String methodName = node.getMethodName();
@@ -404,40 +379,35 @@ public class ExpressionValidator implements
                 .getMethodDeclarations(methodName, parameterTypeDeclarations);
         if (methodDeclarations.size() == 0) {
             ExpressionLocation location = node.getLocation();
-            String methodSignature = createMethodSignature(methodName,
-                    parameterTypeDeclarations);
-            throw new AptException(Message.DOMA4071, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(),
-                    node.getTargetObjectNode().getExpression(),
-                    typeDeclaration.getBinaryName(), methodSignature });
+            String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
+            throw new AptException(Message.DOMA4071, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getTargetObjectNode().getExpression(),
+                            typeDeclaration.getBinaryName(), methodSignature });
         }
         if (methodDeclarations.size() == 1) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(0);
-            TypeDeclaration returnTypeDeclaration = methodDeclaration
-                    .getReturnTypeDeclaration();
+            TypeDeclaration returnTypeDeclaration = methodDeclaration.getReturnTypeDeclaration();
             if (returnTypeDeclaration != null) {
                 return convertIfOptional(returnTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
-        String methodSignature = createMethodSignature(methodName,
-                parameterTypeDeclarations);
-        throw new AptException(Message.DOMA4073, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(),
-                node.getTargetObjectNode().getExpression(),
-                typeDeclaration.getBinaryName(), methodSignature });
+        String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
+        throw new AptException(Message.DOMA4073, methodElement,
+                new Object[] { location.getExpression(), location.getPosition(),
+                        node.getTargetObjectNode().getExpression(), typeDeclaration.getBinaryName(),
+                        methodSignature });
     }
 
     @Override
-    public TypeDeclaration visitStaticMethodOperatorNode(
-            StaticMethodOperatorNode node, Void p) {
+    public TypeDeclaration visitStaticMethodOperatorNode(StaticMethodOperatorNode node, Void p) {
         String className = node.getClassName();
-        TypeElement typeElement = ctx.getElements()
-                .getTypeElement(node.getClassName());
+        TypeElement typeElement = ctx.getElements().getTypeElement(node.getClassName());
         if (typeElement == null) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4145, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), className });
+            throw new AptException(Message.DOMA4145, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(), className });
         }
         TypeDeclaration typeDeclaration = ctx.getDeclarations()
                 .newTypeDeclaration(typeElement.asType());
@@ -445,36 +415,28 @@ public class ExpressionValidator implements
                 .collect(node.getParametersNode());
         String methodName = node.getMethodName();
         List<MethodDeclaration> methodDeclarations = typeDeclaration
-                .getStaticMethodDeclarations(methodName,
-                        parameterTypeDeclarations);
+                .getStaticMethodDeclarations(methodName, parameterTypeDeclarations);
         if (methodDeclarations.size() == 0) {
             ExpressionLocation location = node.getLocation();
-            String methodSignature = createMethodSignature(methodName,
-                    parameterTypeDeclarations);
-            throw new AptException(
-                    Message.DOMA4146,
-                    methodElement,
-                    new Object[] { location.getExpression(),
-                            location.getPosition(), className, methodSignature });
+            String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
+            throw new AptException(Message.DOMA4146, methodElement, new Object[] {
+                    location.getExpression(), location.getPosition(), className, methodSignature });
         }
         if (methodDeclarations.size() == 1) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(0);
-            TypeDeclaration returnTypeDeclaration = methodDeclaration
-                    .getReturnTypeDeclaration();
+            TypeDeclaration returnTypeDeclaration = methodDeclaration.getReturnTypeDeclaration();
             if (returnTypeDeclaration != null) {
                 return convertIfOptional(returnTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
-        String methodSignature = createMethodSignature(methodName,
-                parameterTypeDeclarations);
-        throw new AptException(Message.DOMA4147, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(), className, methodSignature });
+        String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
+        throw new AptException(Message.DOMA4147, methodElement, new Object[] {
+                location.getExpression(), location.getPosition(), className, methodSignature });
     }
 
     @Override
-    public TypeDeclaration visitFunctionOperatorNode(FunctionOperatorNode node,
-            Void p) {
+    public TypeDeclaration visitFunctionOperatorNode(FunctionOperatorNode node, Void p) {
         TypeDeclaration typeDeclaration = getExpressionFunctionsDeclaration(node);
         List<TypeDeclaration> parameterTypeDeclarations = new ParameterCollector()
                 .collect(node.getParametersNode());
@@ -483,15 +445,13 @@ public class ExpressionValidator implements
                 .getMethodDeclarations(methodName, parameterTypeDeclarations);
         if (methodDeclarations.size() == 0) {
             ExpressionLocation location = node.getLocation();
-            String methodSignature = createMethodSignature(methodName,
-                    parameterTypeDeclarations);
-            throw new AptException(Message.DOMA4072, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), methodSignature });
+            String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
+            throw new AptException(Message.DOMA4072, methodElement, new Object[] {
+                    location.getExpression(), location.getPosition(), methodSignature });
         }
         if (methodDeclarations.size() == 1) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(0);
-            TypeDeclaration returnTypeDeclaration = methodDeclaration
-                    .getReturnTypeDeclaration();
+            TypeDeclaration returnTypeDeclaration = methodDeclaration.getReturnTypeDeclaration();
             if (returnTypeDeclaration != null) {
                 return returnTypeDeclaration;
             }
@@ -499,26 +459,23 @@ public class ExpressionValidator implements
         throw new AptIllegalStateException(methodName);
     }
 
-    private TypeDeclaration getExpressionFunctionsDeclaration(
-            FunctionOperatorNode node) {
+    private TypeDeclaration getExpressionFunctionsDeclaration(FunctionOperatorNode node) {
         if (exprFunctionsClassName == null) {
-            return ctx.getDeclarations()
-                    .newTypeDeclaration(ExpressionFunctions.class);
+            return ctx.getDeclarations().newTypeDeclaration(ExpressionFunctions.class);
         }
-        TypeElement element = ctx.getElements()
-                .getTypeElement(exprFunctionsClassName);
+        TypeElement element = ctx.getElements().getTypeElement(exprFunctionsClassName);
         if (element == null) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4189, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), node.getMethodName(),
-                    exprFunctionsClassName });
+            throw new AptException(Message.DOMA4189, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getMethodName(), exprFunctionsClassName });
         }
         TypeMirror type = element.asType();
         if (!ctx.getTypes().isAssignable(type, ExpressionFunctions.class)) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4190, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), node.getMethodName(),
-                    exprFunctionsClassName });
+            throw new AptException(Message.DOMA4190, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(),
+                            node.getMethodName(), exprFunctionsClassName });
         }
         return ctx.getDeclarations().newTypeDeclaration(type);
     }
@@ -541,51 +498,44 @@ public class ExpressionValidator implements
 
     @Override
     public TypeDeclaration visitFieldOperatorNode(FieldOperatorNode node, Void p) {
-        TypeDeclaration typeDeclaration = node.getTargetObjectNode().accept(
-                this, p);
+        TypeDeclaration typeDeclaration = node.getTargetObjectNode().accept(this, p);
         String fieldName = node.getFieldName();
-        FieldDeclaration fieldDeclaration = typeDeclaration
-                .getFieldDeclaration(fieldName);
+        FieldDeclaration fieldDeclaration = typeDeclaration.getFieldDeclaration(fieldName);
         if (fieldDeclaration != null) {
-            TypeDeclaration fieldTypeDeclaration = fieldDeclaration
-                    .getTypeDeclaration();
+            TypeDeclaration fieldTypeDeclaration = fieldDeclaration.getTypeDeclaration();
             if (fieldTypeDeclaration != null) {
                 return convertIfOptional(fieldTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
-        throw new AptException(Message.DOMA4114, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(),
-                node.getTargetObjectNode().getExpression(),
-                typeDeclaration.getBinaryName(), fieldName });
+        throw new AptException(Message.DOMA4114, methodElement,
+                new Object[] { location.getExpression(), location.getPosition(),
+                        node.getTargetObjectNode().getExpression(), typeDeclaration.getBinaryName(),
+                        fieldName });
     }
 
     @Override
-    public TypeDeclaration visitStaticFieldOperatorNode(
-            StaticFieldOperatorNode node, Void p) {
+    public TypeDeclaration visitStaticFieldOperatorNode(StaticFieldOperatorNode node, Void p) {
         String className = node.getClassName();
-        TypeElement typeElement = ctx.getElements()
-                .getTypeElement(node.getClassName());
+        TypeElement typeElement = ctx.getElements().getTypeElement(node.getClassName());
         if (typeElement == null) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4145, methodElement, new Object[] { location.getExpression(),
-                    location.getPosition(), className });
+            throw new AptException(Message.DOMA4145, methodElement,
+                    new Object[] { location.getExpression(), location.getPosition(), className });
         }
         TypeDeclaration typeDeclaration = ctx.getDeclarations()
                 .newTypeDeclaration(typeElement.asType());
         String fieldName = node.getFieldName();
-        FieldDeclaration fieldDeclaration = typeDeclaration
-                .getStaticFieldDeclaration(fieldName);
+        FieldDeclaration fieldDeclaration = typeDeclaration.getStaticFieldDeclaration(fieldName);
         if (fieldDeclaration != null) {
-            TypeDeclaration fieldTypeDeclaration = fieldDeclaration
-                    .getTypeDeclaration();
+            TypeDeclaration fieldTypeDeclaration = fieldDeclaration.getTypeDeclaration();
             if (fieldTypeDeclaration != null) {
                 return convertIfOptional(fieldTypeDeclaration);
             }
         }
         ExpressionLocation location = node.getLocation();
-        throw new AptException(Message.DOMA4148, methodElement, new Object[] { location.getExpression(),
-                location.getPosition(), className, fieldName });
+        throw new AptException(Message.DOMA4148, methodElement, new Object[] {
+                location.getExpression(), location.getPosition(), className, fieldName });
     }
 
     private TypeDeclaration convertIfOptional(TypeDeclaration typeDeclaration) {
@@ -594,14 +544,11 @@ public class ExpressionValidator implements
                     .getTypeParameterDeclarations()
                     .stream()
                     .findFirst()
-                    .orElseThrow(
-                            () -> new AptIllegalStateException(typeDeclaration
-                                    .toString()));
-            return ctx.getDeclarations().newTypeDeclaration(
-                    typeParameterDeclaration.getActualType());
-        } else if (typeDeclaration.is(OptionalInt.class)) {
+                    .orElseThrow(() -> new AptIllegalStateException(typeDeclaration.toString()));
             return ctx.getDeclarations()
-                    .newTypeDeclaration(Integer.class);
+                    .newTypeDeclaration(typeParameterDeclaration.getActualType());
+        } else if (typeDeclaration.is(OptionalInt.class)) {
+            return ctx.getDeclarations().newTypeDeclaration(Integer.class);
         } else if (typeDeclaration.is(OptionalLong.class)) {
             return ctx.getDeclarations().newTypeDeclaration(Long.class);
         } else if (typeDeclaration.is(OptionalDouble.class)) {
@@ -616,15 +563,14 @@ public class ExpressionValidator implements
         TypeMirror type = parameterTypeMap.get(variableName);
         if (type == null) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(Message.DOMA4067, methodElement, new Object[] { variableName, location.getPosition() });
+            throw new AptException(Message.DOMA4067, methodElement,
+                    new Object[] { variableName, location.getPosition() });
         }
         validatedParameterNames.add(variableName);
         return ctx.getDeclarations().newTypeDeclaration(type);
     }
 
-    private class ParameterCollector
-            implements
-            ExpressionNodeVisitor<Void, List<TypeDeclaration>> {
+    private class ParameterCollector implements ExpressionNodeVisitor<Void, List<TypeDeclaration>> {
 
         public List<TypeDeclaration> collect(ExpressionNode node) {
             List<TypeDeclaration> results = new ArrayList<TypeDeclaration>();
@@ -633,50 +579,43 @@ public class ExpressionValidator implements
         }
 
         @Override
-        public Void visitEqOperatorNode(EqOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitEqOperatorNode(EqOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitNeOperatorNode(NeOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitNeOperatorNode(NeOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitGeOperatorNode(GeOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitGeOperatorNode(GeOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitGtOperatorNode(GtOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitGtOperatorNode(GtOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitLeOperatorNode(LeOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitLeOperatorNode(LeOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitLtOperatorNode(LtOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitLtOperatorNode(LtOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitCommaOperatorNode(CommaOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitCommaOperatorNode(CommaOperatorNode node, List<TypeDeclaration> p) {
             for (ExpressionNode expressionNode : node.getNodes()) {
                 expressionNode.accept(this, p);
             }
@@ -696,92 +635,80 @@ public class ExpressionValidator implements
         }
 
         @Override
-        public Void visitOrOperatorNode(OrOperatorNode node,
+        public Void visitOrOperatorNode(OrOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitAndOperatorNode(AndOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitNotOperatorNode(NotOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitAddOperatorNode(AddOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitSubtractOperatorNode(SubtractOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitMultiplyOperatorNode(MultiplyOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitDivideOperatorNode(DivideOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitModOperatorNode(ModOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitNewOperatorNode(NewOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitMethodOperatorNode(MethodOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitStaticMethodOperatorNode(StaticMethodOperatorNode node,
                 List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitAndOperatorNode(AndOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitFunctionOperatorNode(FunctionOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
 
         @Override
-        public Void visitNotOperatorNode(NotOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitAddOperatorNode(AddOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitSubtractOperatorNode(SubtractOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitMultiplyOperatorNode(MultiplyOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitDivideOperatorNode(DivideOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitModOperatorNode(ModOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitNewOperatorNode(NewOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitMethodOperatorNode(MethodOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitStaticMethodOperatorNode(
-                StaticMethodOperatorNode node, List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitFunctionOperatorNode(FunctionOperatorNode node,
-                List<TypeDeclaration> p) {
-            validate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitFieldOperatorNode(FieldOperatorNode node,
-                List<TypeDeclaration> p) {
+        public Void visitFieldOperatorNode(FieldOperatorNode node, List<TypeDeclaration> p) {
             validate(node, p);
             return null;
         }
@@ -805,8 +732,7 @@ public class ExpressionValidator implements
         }
 
         protected void validate(ExpressionNode node, List<TypeDeclaration> p) {
-            TypeDeclaration result = ExpressionValidator.this
-                    .validateInternal(node);
+            TypeDeclaration result = ExpressionValidator.this.validateInternal(node);
             p.add(result);
         }
 

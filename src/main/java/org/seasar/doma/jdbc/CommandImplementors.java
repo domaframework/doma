@@ -82,8 +82,8 @@ public interface CommandImplementors {
      *            結果セットのハンドラ
      * @return コマンド
      */
-    default <RESULT> SelectCommand<RESULT> createSelectCommand(Method method,
-            SelectQuery query, ResultSetHandler<RESULT> resultSetHandler) {
+    default <RESULT> SelectCommand<RESULT> createSelectCommand(Method method, SelectQuery query,
+            ResultSetHandler<RESULT> resultSetHandler) {
         return new SelectCommand<>(query, resultSetHandler);
     }
 
@@ -96,8 +96,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default DeleteCommand createDeleteCommand(Method method,
-            DeleteQuery query) {
+    default DeleteCommand createDeleteCommand(Method method, DeleteQuery query) {
         return new DeleteCommand(query);
     }
 
@@ -110,8 +109,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default InsertCommand createInsertCommand(Method method,
-            InsertQuery query) {
+    default InsertCommand createInsertCommand(Method method, InsertQuery query) {
         return new InsertCommand(query);
     }
 
@@ -124,8 +122,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default UpdateCommand createUpdateCommand(Method method,
-            UpdateQuery query) {
+    default UpdateCommand createUpdateCommand(Method method, UpdateQuery query) {
         return new UpdateCommand(query);
     }
 
@@ -138,8 +135,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default BatchDeleteCommand createBatchDeleteCommand(Method method,
-            BatchDeleteQuery query) {
+    default BatchDeleteCommand createBatchDeleteCommand(Method method, BatchDeleteQuery query) {
         return new BatchDeleteCommand(query);
     }
 
@@ -152,8 +148,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default BatchInsertCommand createBatchInsertCommand(Method method,
-            BatchInsertQuery query) {
+    default BatchInsertCommand createBatchInsertCommand(Method method, BatchInsertQuery query) {
         return new BatchInsertCommand(query);
     }
 
@@ -166,8 +161,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default BatchUpdateCommand createBatchUpdateCommand(Method method,
-            BatchUpdateQuery query) {
+    default BatchUpdateCommand createBatchUpdateCommand(Method method, BatchUpdateQuery query) {
         return new BatchUpdateCommand(query);
     }
 
@@ -182,8 +176,8 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default <RESULT> FunctionCommand<RESULT> createFunctionCommand(
-            Method method, FunctionQuery<RESULT> query) {
+    default <RESULT> FunctionCommand<RESULT> createFunctionCommand(Method method,
+            FunctionQuery<RESULT> query) {
         return new FunctionCommand<>(query);
     }
 
@@ -196,8 +190,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default ProcedureCommand createProcedureCommand(Method method,
-            ProcedureQuery query) {
+    default ProcedureCommand createProcedureCommand(Method method, ProcedureQuery query) {
         return new ProcedureCommand(query);
     }
 
@@ -227,8 +220,7 @@ public interface CommandImplementors {
      *            クエリ
      * @return コマンド
      */
-    default ScriptCommand createScriptCommand(Method method,
-            ScriptQuery query) {
+    default ScriptCommand createScriptCommand(Method method, ScriptQuery query) {
         return new ScriptCommand(query);
     }
 
@@ -246,9 +238,8 @@ public interface CommandImplementors {
      * @return コマンド
      * @since 2.14.0
      */
-    default <RESULT> SqlProcessorCommand<RESULT> createSqlProcessorCommand(
-            Method method, SqlProcessorQuery query,
-            BiFunction<Config, PreparedSql, RESULT> handler) {
+    default <RESULT> SqlProcessorCommand<RESULT> createSqlProcessorCommand(Method method,
+            SqlProcessorQuery query, BiFunction<Config, PreparedSql, RESULT> handler) {
         return new SqlProcessorCommand<>(query, handler);
     }
 }

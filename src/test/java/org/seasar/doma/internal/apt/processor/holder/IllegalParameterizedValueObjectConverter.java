@@ -23,12 +23,11 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * 
  */
 @ExternalHolder
-public class IllegalParameterizedValueObjectConverter implements
-        HolderConverter<ParameterizedValueObject<?, String>, String> {
+public class IllegalParameterizedValueObjectConverter
+        implements HolderConverter<ParameterizedValueObject<?, String>, String> {
 
     @Override
-    public String fromHolderToValue(
-            ParameterizedValueObject<?, String> holder) {
+    public String fromHolderToValue(ParameterizedValueObject<?, String> holder) {
         return null;
     }
 

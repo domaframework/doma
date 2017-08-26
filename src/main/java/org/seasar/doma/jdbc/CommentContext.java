@@ -53,8 +53,7 @@ public class CommentContext {
      * @param method
      *            Daoのメソッド
      */
-    public CommentContext(String className, String methodName, Config config,
-            Method method) {
+    public CommentContext(String className, String methodName, Config config, Method method) {
         if (className == null) {
             throw new DomaNullPointerException("className");
         }

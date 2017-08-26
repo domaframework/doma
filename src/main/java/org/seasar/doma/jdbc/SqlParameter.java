@@ -30,6 +30,5 @@ public interface SqlParameter {
      */
     Object getValue();
 
-    <R, P, TH extends Throwable> R accept(
-            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH;
+    <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p) throws TH;
 }

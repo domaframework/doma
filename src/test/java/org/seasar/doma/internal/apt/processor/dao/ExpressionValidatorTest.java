@@ -44,13 +44,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target, "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("notFound").parse();
             try {
@@ -58,9 +57,8 @@ public class ExpressionValidatorTest extends AptTestCase {
                 fail();
             } catch (AptException expected) {
                 System.out.println(expected);
-                assertEquals(Message.DOMA4067,
-                        expected.getMessageResource());
-            }            
+                assertEquals(Message.DOMA4067, expected.getMessageResource());
+            }
         }));
         compile();
         assertTrue(getCompiledResult());
@@ -70,17 +68,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("emp.equals(emp)")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("emp.equals(emp)").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isBooleanType());
         }));
@@ -92,17 +87,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser(
-                    "\"aaa\".equals(\"aaa\")").parse();
+            ExpressionNode node = new ExpressionParser("\"aaa\".equals(\"aaa\")").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isBooleanType());
         }));
@@ -114,18 +106,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement,
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
                     parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser(
-                    "emp.notFound(1, \"aaa\".length())").parse();
+            ExpressionNode node = new ExpressionParser("emp.notFound(1, \"aaa\".length())").parse();
             try {
                 validator.validate(node);
                 fail();
@@ -142,17 +130,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("emp.hoge(\"aaa\")")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("emp.hoge(\"aaa\")").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
         }));
@@ -164,18 +149,15 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement,
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
                     parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser(
-                    "emp.hoge(new java.lang.Integer(1))").parse();
+            ExpressionNode node = new ExpressionParser("emp.hoge(new java.lang.Integer(1))")
+                    .parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
         }));
@@ -187,17 +169,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser(
-                    "emp.foo(new java.lang.Integer(1))").parse();
+            ExpressionNode node = new ExpressionParser("emp.foo(new java.lang.Integer(1))").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
         }));
@@ -209,17 +188,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            String expression = String.format("@%s@staticMethod(\"aaa\")",
-                    Emp.class.getName());
+            String expression = String.format("@%s@staticMethod(\"aaa\")", Emp.class.getName());
             ExpressionNode node = new ExpressionParser(expression).parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
@@ -232,17 +208,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser(
-                    "@Xxx@staticMethod(\"aaa\")").parse();
+            ExpressionNode node = new ExpressionParser("@Xxx@staticMethod(\"aaa\")").parse();
             try {
                 validator.validate(node);
                 fail();
@@ -259,17 +232,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            String expression = String.format("@%s@getName()",
-                    Emp.class.getName());
+            String expression = String.format("@%s@getName()", Emp.class.getName());
             ExpressionNode node = new ExpressionParser(expression).parse();
             try {
                 validator.validate(node);
@@ -287,17 +257,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            String expression = String.format("@%s@staticField",
-                    Emp.class.getName());
+            String expression = String.format("@%s@staticField", Emp.class.getName());
             ExpressionNode node = new ExpressionParser(expression).parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isTextType());
@@ -310,17 +277,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("@Xxx@staticField")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("@Xxx@staticField").parse();
             try {
                 validator.validate(node);
                 fail();
@@ -337,14 +301,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             String expression = String.format("@%s@name", Emp.class.getName());
             ExpressionNode node = new ExpressionParser(expression).parse();
@@ -365,17 +327,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("@prefix(emp.name)")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("@prefix(emp.name)").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isTextType());
         }));
@@ -388,17 +347,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("@hoge(emp.name)")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("@hoge(emp.name)").parse();
             try {
                 validator.validate(node);
                 fail();
@@ -416,18 +372,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    MyExpressionFunctions.class.getName());
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap, MyExpressionFunctions.class.getName());
 
-            ExpressionNode node = new ExpressionParser("@hello(emp.name)")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isTextType());
         }));
@@ -440,18 +392,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    MyExpressionFunctions.class.getName());
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap, MyExpressionFunctions.class.getName());
 
-            ExpressionNode node = new ExpressionParser("@prefix(emp.name)")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("@prefix(emp.name)").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isTextType());
         }));
@@ -464,18 +412,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    "nonExistent");
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap, "nonExistent");
 
-            ExpressionNode node = new ExpressionParser("@hello(emp.name)")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
             try {
                 validator.validate(node);
                 fail();
@@ -493,14 +437,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
                     .getParameterTypeMap(methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap,
-                    "java.lang.String");
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap, "java.lang.String");
 
             ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
             try {
@@ -520,18 +462,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap,
-                    MyExpressionFunctions.class.getName());
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap, MyExpressionFunctions.class.getName());
 
-            ExpressionNode node = new ExpressionParser("@hoge(emp.name)")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("@hoge(emp.name)").parse();
             try {
                 validator.validate(node);
                 fail();
@@ -548,17 +486,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser(
-                    "new java.lang.String(1, 2)").parse();
+            ExpressionNode node = new ExpressionParser("new java.lang.String(1, 2)").parse();
             try {
                 validator.validate(node);
                 fail();
@@ -575,14 +510,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("emp.id").parse();
             TypeDeclaration result = validator.validate(node);
@@ -596,14 +529,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("person.name").parse();
             TypeDeclaration result = validator.validate(node);
@@ -617,14 +548,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("person.age").parse();
             TypeDeclaration result = validator.validate(node);
@@ -638,14 +567,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("person.salary").parse();
             TypeDeclaration result = validator.validate(node);
@@ -659,17 +586,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("person.temperature")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("person.temperature").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
         }));
@@ -681,17 +605,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("person.staticName")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("person.staticName").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isTextType());
         }));
@@ -703,17 +624,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("person.staticAge")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("person.staticAge").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
         }));
@@ -725,14 +643,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("emp.getId()").parse();
             TypeDeclaration result = validator.validate(node);
@@ -746,17 +662,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("person.getName()")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("person.getName()").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isTextType());
         }));
@@ -768,17 +681,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("person.getAge()")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("person.getAge()").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
         }));
@@ -790,17 +700,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("person.getStaticName()")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("person.getStaticName()").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isTextType());
         }));
@@ -812,17 +719,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target,
                     "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("person.getStaticAge()")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("person.getStaticAge()").parse();
             TypeDeclaration result = validator.validate(node);
             assertTrue(result.isNumberType());
         }));
@@ -834,16 +738,15 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target, "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser(
-                    "emp.id == new java.lang.Integer(1)").parse();
+            ExpressionNode node = new ExpressionParser("emp.id == new java.lang.Integer(1)")
+                    .parse();
             TypeDeclaration result = validator.validate(node);
             assertFalse(result.isUnknownType());
         }));
@@ -855,14 +758,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("emp.add(2, 3)").parse();
             TypeDeclaration result = validator.validate(node);
@@ -876,17 +777,14 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
-            ExpressionNode node = new ExpressionParser("emp.add(2, 3) == 5")
-                    .parse();
+            ExpressionNode node = new ExpressionParser("emp.add(2, 3) == 5").parse();
             TypeDeclaration result = validator.validate(node);
             assertFalse(result.isUnknownType());
         }));
@@ -898,14 +796,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(
-                    ctx, methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("true").parse();
             validator.validate(node);
@@ -919,14 +815,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("1 + 2").parse();
             TypeDeclaration result = validator.validate(node);
@@ -940,14 +834,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("1 + \"2\"").parse();
             try {
@@ -966,14 +858,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("\"1\" + \"2\"").parse();
             TypeDeclaration result = validator.validate(node);
@@ -987,14 +877,12 @@ public class ExpressionValidatorTest extends AptTestCase {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         addProcessor(new AptProcessor(ctx -> {
-            ExecutableElement methodElement = ctx.getElements()
-                    .getMethodElement(target,
-                    "testEmp", Emp.class);
+            ExecutableElement methodElement = ctx.getElements().getMethodElement(target, "testEmp",
+                    Emp.class);
             Map<String, TypeMirror> parameterTypeMap = ctx.getElements()
-                    .getParameterTypeMap(
-                    methodElement);
-            ExpressionValidator validator = new ExpressionValidator(ctx,
-                    methodElement, parameterTypeMap);
+                    .getParameterTypeMap(methodElement);
+            ExpressionValidator validator = new ExpressionValidator(ctx, methodElement,
+                    parameterTypeMap);
 
             ExpressionNode node = new ExpressionParser("\"2\" + 1").parse();
             try {

@@ -28,9 +28,8 @@ import java.lang.annotation.Target;
  * <p>
  * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
  * <ul>
- * <li> {@link GenerationType#SEQUENCE} を指定した場合、{@link SequenceGenerator} が必要です。
- * <li>
- * {@link GenerationType#TABLE} を指定した場合、 {@link TableGenerator} が必要です。
+ * <li>{@link GenerationType#SEQUENCE} を指定した場合、{@link SequenceGenerator} が必要です。
+ * <li>{@link GenerationType#TABLE} を指定した場合、 {@link TableGenerator} が必要です。
  * </ul>
  * 
  * <h3>例:</h3>

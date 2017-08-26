@@ -31,8 +31,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  * @param <ENTITY>
  */
-public class EntityStreamHandler<ENTITY, RESULT> extends
-        AbstractStreamHandler<ENTITY, RESULT> {
+public class EntityStreamHandler<ENTITY, RESULT> extends AbstractStreamHandler<ENTITY, RESULT> {
 
     protected final EntityDesc<ENTITY> entityDesc;
 
@@ -45,8 +44,7 @@ public class EntityStreamHandler<ENTITY, RESULT> extends
 
     @Override
     protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
-        return new EntityProvider<>(entityDesc, query,
-                query.isResultMappingEnsured());
+        return new EntityProvider<>(entityDesc, query, query.isResultMappingEnsured());
     }
 
 }

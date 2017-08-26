@@ -72,8 +72,7 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
      *            JDBCに関するロガー
      */
     protected KeepAliveLocalTransaction(DataSource dataSource,
-            ThreadLocal<LocalTransactionContext> localTxContextHolder,
-            JdbcLogger jdbcLogger) {
+            ThreadLocal<LocalTransactionContext> localTxContextHolder, JdbcLogger jdbcLogger) {
         super(dataSource, localTxContextHolder, jdbcLogger);
     }
 
@@ -90,11 +89,9 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
      *            デフォルトのトランザクション分離レベル
      */
     protected KeepAliveLocalTransaction(DataSource dataSource,
-            ThreadLocal<LocalTransactionContext> localTxContextHolder,
-            JdbcLogger jdbcLogger,
+            ThreadLocal<LocalTransactionContext> localTxContextHolder, JdbcLogger jdbcLogger,
             TransactionIsolationLevel defaultTransactionIsolationLevel) {
-        super(dataSource, localTxContextHolder, jdbcLogger,
-                defaultTransactionIsolationLevel);
+        super(dataSource, localTxContextHolder, jdbcLogger, defaultTransactionIsolationLevel);
     }
 
     /**
@@ -139,10 +136,8 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
      * トランザクションを終了しますがJDBCの接続は閉じません。
      */
     @Override
-    protected void endInternal(LocalTransactionContext context,
-            String callerMethodName) {
-        jdbcLogger.logTransactionEnded(className, callerMethodName,
-                context.getId());
+    protected void endInternal(LocalTransactionContext context, String callerMethodName) {
+        jdbcLogger.logTransactionEnded(className, callerMethodName, context.getId());
     }
 
     @Override

@@ -27,8 +27,7 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
     private final SequenceGeneratorReflection sequenceGeneratorReflection;
 
-    public SequenceIdGeneratorMeta(
-            SequenceGeneratorReflection sequenceGeneratorReflection) {
+    public SequenceIdGeneratorMeta(SequenceGeneratorReflection sequenceGeneratorReflection) {
         assertNotNull(sequenceGeneratorReflection);
         this.sequenceGeneratorReflection = sequenceGeneratorReflection;
     }

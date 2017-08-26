@@ -35,8 +35,7 @@ public class EntityConstructorMeta {
             List<EntityPropertyMeta> entityPropertyMetas) {
         assertNotNull(constructorElement, entityPropertyMetas);
         this.constructorElement = constructorElement;
-        this.entityPropertyMetas = Collections
-                .unmodifiableList(entityPropertyMetas);
+        this.entityPropertyMetas = Collections.unmodifiableList(entityPropertyMetas);
     }
 
     public ExecutableElement getConstructorElement() {

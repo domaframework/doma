@@ -42,8 +42,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class CallableSqlParameterBinder extends
-        AbstractParameterBinder<CallableStatement, SqlParameter> {
+public class CallableSqlParameterBinder
+        extends AbstractParameterBinder<CallableStatement, SqlParameter> {
 
     protected final Query query;
 
@@ -53,8 +53,8 @@ public class CallableSqlParameterBinder extends
     }
 
     @Override
-    public void bind(CallableStatement callableStatement,
-            List<? extends SqlParameter> parameters) throws SQLException {
+    public void bind(CallableStatement callableStatement, List<? extends SqlParameter> parameters)
+            throws SQLException {
         assertNotNull(callableStatement, parameters);
         BindingVisitor visitor = new BindingVisitor(query, callableStatement);
         for (SqlParameter parameter : parameters) {
@@ -62,8 +62,7 @@ public class CallableSqlParameterBinder extends
         }
     }
 
-    protected class BindingVisitor implements
-            SqlParameterVisitor<Void, Void, SQLException> {
+    protected class BindingVisitor implements SqlParameterVisitor<Void, Void, SQLException> {
 
         protected final Dialect dialect;
 
@@ -80,16 +79,16 @@ public class CallableSqlParameterBinder extends
         }
 
         @Override
-        public <BASIC> Void visitInParameter(InParameter<BASIC> parameter,
-                Void p) throws SQLException {
+        public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Void p)
+                throws SQLException {
             bindInParameter(parameter);
             index++;
             return null;
         }
 
         @Override
-        public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter,
-                Void p) throws SQLException {
+        public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter, Void p)
+                throws SQLException {
             registerOutParameter(parameter);
             index++;
             return null;
@@ -105,45 +104,41 @@ public class CallableSqlParameterBinder extends
         }
 
         @Override
-        public <ELEMENT> Void visitListParameter(
-                ListParameter<ELEMENT> parameter, Void p) throws SQLException {
+        public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter, Void p)
+                throws SQLException {
             registerListParameter(parameter);
             return null;
         }
 
         @Override
         public <BASIC, RESULT> Void visitSingleResultParameter(
-                SingleResultParameter<BASIC, RESULT> parameter, Void p)
-                throws SQLException {
+                SingleResultParameter<BASIC, RESULT> parameter, Void p) throws SQLException {
             registerOutParameter(parameter);
             index++;
             return null;
         }
 
         @Override
-        public <ELEMENT> Void visitResultListParameter(
-                ResultListParameter<ELEMENT> parameter, Void p)
-                throws SQLException {
+        public <ELEMENT> Void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
+                Void p) throws SQLException {
             registerListParameter(parameter);
             return null;
         }
 
-        protected <BASIC> void bindInParameter(InParameter<BASIC> parameter)
-                throws SQLException {
-            CallableSqlParameterBinder.this.bindInParameter(callableStatement,
-                    parameter, index, jdbcMappingVisitor);
+        protected <BASIC> void bindInParameter(InParameter<BASIC> parameter) throws SQLException {
+            CallableSqlParameterBinder.this.bindInParameter(callableStatement, parameter, index,
+                    jdbcMappingVisitor);
         }
 
-        protected <BASIC> void registerOutParameter(
-                JdbcMappable<BASIC> parameter) throws SQLException {
+        protected <BASIC> void registerOutParameter(JdbcMappable<BASIC> parameter)
+                throws SQLException {
             Wrapper<BASIC> wrapper = parameter.getWrapper();
             wrapper.accept(jdbcMappingVisitor,
-                    new JdbcOutParameterRegistrar(callableStatement, index),
-                    parameter);
+                    new JdbcOutParameterRegistrar(callableStatement, index), parameter);
         }
 
-        protected <ELEMENT> void registerListParameter(
-                ListParameter<ELEMENT> parameter) throws SQLException {
+        protected <ELEMENT> void registerListParameter(ListParameter<ELEMENT> parameter)
+                throws SQLException {
             if (dialect.supportsResultSetReturningAsOutParameter()) {
                 JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
                 resultSetType.registerOutParameter(callableStatement, index);

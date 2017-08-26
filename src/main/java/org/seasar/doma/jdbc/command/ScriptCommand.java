@@ -56,11 +56,9 @@ public class ScriptCommand implements Command<Void> {
         try {
             ScriptReader reader = new ScriptReader(query);
             try {
-                for (String script = reader.readSql(); script != null; script = reader
-                        .readSql()) {
-                    ScriptSql sql = new ScriptSql(script,
-                            query.getScriptFilePath(), query.getSqlLogType(),
-                            query::comment);
+                for (String script = reader.readSql(); script != null; script = reader.readSql()) {
+                    ScriptSql sql = new ScriptSql(script, query.getScriptFilePath(),
+                            query.getSqlLogType(), query::comment);
                     Statement statement = JdbcUtil.createStatement(connection);
                     try {
                         log(sql);
@@ -68,8 +66,7 @@ public class ScriptCommand implements Command<Void> {
                         statement.execute(script);
                     } catch (Exception e) {
                         if (query.getHaltOnError()) {
-                            throw new ScriptException(e, sql,
-                                    reader.getLineNumber());
+                            throw new ScriptException(e, sql, reader.getLineNumber());
                         }
                         if (savedScriptException == null) {
                             savedScriptException = new ScriptException(e, sql,
@@ -108,10 +105,10 @@ public class ScriptCommand implements Command<Void> {
 
     protected static class ScriptSql extends AbstractSql<SqlParameter> {
 
-        public ScriptSql(String rawSql, String sqlFilePath,
-                SqlLogType sqlLogType, Function<String, String> converter) {
-            super(SqlKind.SCRIPT, rawSql, rawSql, sqlFilePath, Collections
-                    .emptyList(), sqlLogType, converter);
+        public ScriptSql(String rawSql, String sqlFilePath, SqlLogType sqlLogType,
+                Function<String, String> converter) {
+            super(SqlKind.SCRIPT, rawSql, rawSql, sqlFilePath, Collections.emptyList(), sqlLogType,
+                    converter);
         }
 
     }

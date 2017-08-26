@@ -54,8 +54,7 @@ public interface Wrapper<BASIC> {
     /**
      * 値の型がプリミティブ型のボックス型であればプリミティブ型のデフォルト値をボックスした値を返します。
      * 
-     * @return 
-     *         値の型がプリミティブ型のボックス型のであればプリミティブ型のデフォルト値をボックスした値、値の型がプリミティブ型のボックス型でない場合
+     * @return 値の型がプリミティブ型のボックス型のであればプリミティブ型のデフォルト値をボックスした値、値の型がプリミティブ型のボックス型でない場合
      *         {@code null}
      * @since 1.5.0
      */
@@ -101,7 +100,7 @@ public interface Wrapper<BASIC> {
      * @throws DomaNullPointerException
      *             ビジターが {@code null} の場合
      */
-    <R, P, Q, TH extends Throwable> R accept(
-            WrapperVisitor<R, P, Q, TH> visitor, P p, Q q) throws TH;
+    <R, P, Q, TH extends Throwable> R accept(WrapperVisitor<R, P, Q, TH> visitor, P p, Q q)
+            throws TH;
 
 }

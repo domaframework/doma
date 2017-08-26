@@ -47,8 +47,7 @@ public class H212126Dialect extends StandardDialect {
      * インスタンスを構築します。
      */
     public H212126Dialect() {
-        this(new H212126JdbcMappingVisitor(),
-                new H212126SqlLogFormattingVisitor(),
+        this(new H212126JdbcMappingVisitor(), new H212126SqlLogFormattingVisitor(),
                 new H212126ExpressionFunctions());
     }
 
@@ -82,8 +81,8 @@ public class H212126Dialect extends StandardDialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public H212126Dialect(ExpressionFunctions expressionFunctions) {
-        this(new H212126JdbcMappingVisitor(),
-                new H212126SqlLogFormattingVisitor(), expressionFunctions);
+        this(new H212126JdbcMappingVisitor(), new H212126SqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -98,8 +97,7 @@ public class H212126Dialect extends StandardDialect {
      */
     public H212126Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new H212126ExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new H212126ExpressionFunctions());
     }
 
     /**
@@ -131,9 +129,8 @@ public class H212126Dialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String catalogName,
-            String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
+    public PreparedSql getIdentitySelectSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
@@ -146,8 +143,7 @@ public class H212126Dialect extends StandardDialect {
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
@@ -167,17 +163,15 @@ public class H212126Dialect extends StandardDialect {
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        H212126PagingTransformer transformer = new H212126PagingTransformer(
-                offset, limit);
+        H212126PagingTransformer transformer = new H212126PagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        H212126ForUpdateTransformer transformer = new H212126ForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        H212126ForUpdateTransformer transformer = new H212126ForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
@@ -197,8 +191,7 @@ public class H212126Dialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
+    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
         return type == SelectForUpdateType.NORMAL && !withTargets;
     }
 
@@ -208,8 +201,7 @@ public class H212126Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class H212126JdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class H212126JdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
     /**
@@ -218,8 +210,7 @@ public class H212126Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class H212126SqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class H212126SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
     /**
@@ -228,8 +219,7 @@ public class H212126Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class H212126ExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class H212126ExpressionFunctions extends StandardExpressionFunctions {
 
         public H212126ExpressionFunctions() {
             super();

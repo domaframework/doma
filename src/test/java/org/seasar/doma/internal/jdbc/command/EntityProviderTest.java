@@ -75,8 +75,7 @@ public class EntityProviderTest extends TestCase {
         metaData.columns.add(new ColumnMetaData("version"));
         metaData.columns.add(new ColumnMetaData("unknown"));
         MockResultSet resultSet = new MockResultSet(metaData);
-        resultSet.rows
-                .add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
+        resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
         resultSet.next();
 
         _Emp entityDesc = _Emp.getSingletonInternal();
@@ -97,8 +96,7 @@ public class EntityProviderTest extends TestCase {
         metaData.columns.add(new ColumnMetaData("version"));
         metaData.columns.add(new ColumnMetaData("unknown"));
         MockResultSet resultSet = new MockResultSet(metaData);
-        resultSet.rows
-                .add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
+        resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
         resultSet.next();
 
         _Emp entityDesc = _Emp.getSingletonInternal();
@@ -207,11 +205,9 @@ public class EntityProviderTest extends TestCase {
 
     }
 
-    protected static class EmptyUnknownColumnHandler implements
-            UnknownColumnHandler {
+    protected static class EmptyUnknownColumnHandler implements UnknownColumnHandler {
         @Override
-        public void handle(Query query, EntityDesc<?> entityDesc,
-                String unknownColumnName) {
+        public void handle(Query query, EntityDesc<?> entityDesc, String unknownColumnName) {
         }
     }
 

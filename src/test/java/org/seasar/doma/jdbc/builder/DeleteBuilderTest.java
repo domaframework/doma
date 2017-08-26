@@ -43,8 +43,8 @@ public class DeleteBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("salary = ").param(int.class, 10);
 
-        String sql = String.format("delete from Emp%n" + "where%n"
-                + "name = ?%n" + "and%n" + "salary = ?");
+        String sql = String
+                .format("delete from Emp%n" + "where%n" + "name = ?%n" + "and%n" + "salary = ?");
         assertEquals(sql, builder.getSql().getRawSql());
 
         builder.execute();
@@ -58,8 +58,8 @@ public class DeleteBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("salary = ").literal(int.class, 10);
 
-        String sql = String.format("delete from Emp%n" + "where%n"
-                + "name = 'aaa'%n" + "and%n" + "salary = 10");
+        String sql = String.format(
+                "delete from Emp%n" + "where%n" + "name = 'aaa'%n" + "and%n" + "salary = 10");
         assertEquals(sql, builder.getSql().getRawSql());
 
         builder.execute();

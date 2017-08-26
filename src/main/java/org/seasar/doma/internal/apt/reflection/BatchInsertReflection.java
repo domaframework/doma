@@ -26,8 +26,7 @@ import javax.lang.model.element.AnnotationValue;
  */
 public class BatchInsertReflection extends BatchModifyReflection {
 
-    BatchInsertReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    BatchInsertReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror, values);
     }
 

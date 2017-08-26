@@ -28,14 +28,11 @@ public class NotOperatorNodeTest extends TestCase {
 
     protected ExpressionLocation location = new ExpressionLocation("", 0);
 
-    protected LiteralNode trueLiteral = new LiteralNode(location, "true", true,
-            boolean.class);
+    protected LiteralNode trueLiteral = new LiteralNode(location, "true", true, boolean.class);
 
-    protected LiteralNode falseLiteral = new LiteralNode(location, "false",
-            false, boolean.class);
+    protected LiteralNode falseLiteral = new LiteralNode(location, "false", false, boolean.class);
 
-    protected LiteralNode nullLiteral = new LiteralNode(location, "null", null,
-            Object.class);
+    protected LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
 
     public void test_true() throws Exception {
         NotOperatorNode node = new NotOperatorNode(location, "!");

@@ -55,10 +55,10 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(SqlLogType logType, Sql<?> sql,
-            Throwable cause, Throwable rootCause) {
-        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
-                sql.getSqlFilePath(), cause, rootCause);
+    public SqlExecutionException(SqlLogType logType, Sql<?> sql, Throwable cause,
+            Throwable rootCause) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath(),
+                cause, rootCause);
     }
 
     /**
@@ -79,11 +79,10 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(SqlLogType logType, SqlKind kind,
-            String rawSql, String formattedSql, String sqlFilePath,
-            Throwable cause, Throwable rootCause) {
-        super(Message.DOMA2009, cause, sqlFilePath, choiceSql(logType, rawSql,
-                formattedSql), cause, rootCause);
+    public SqlExecutionException(SqlLogType logType, SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath, Throwable cause, Throwable rootCause) {
+        super(Message.DOMA2009, cause, sqlFilePath, choiceSql(logType, rawSql, formattedSql), cause,
+                rootCause);
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
@@ -109,9 +108,8 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    protected SqlExecutionException(MessageResource messageCode, SqlKind kind,
-            String rawSql, String formattedSql, String sqlFilePath,
-            Throwable cause, Throwable rootCause) {
+    protected SqlExecutionException(MessageResource messageCode, SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath, Throwable cause, Throwable rootCause) {
         super(messageCode, cause, sqlFilePath, rawSql, cause, rootCause);
         this.kind = kind;
         this.rawSql = rawSql;

@@ -41,13 +41,11 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <TARGET>
  *            反復処理対象
  */
-public abstract class AbstractIterationHandler<TARGET, RESULT> implements
-        ResultSetHandler<RESULT> {
+public abstract class AbstractIterationHandler<TARGET, RESULT> implements ResultSetHandler<RESULT> {
 
     protected final IterationCallback<TARGET, RESULT> iterationCallback;
 
-    public AbstractIterationHandler(
-            IterationCallback<TARGET, RESULT> iterationCallback) {
+    public AbstractIterationHandler(IterationCallback<TARGET, RESULT> iterationCallback) {
         assertNotNull(iterationCallback);
         this.iterationCallback = iterationCallback;
     }
@@ -56,8 +54,7 @@ public abstract class AbstractIterationHandler<TARGET, RESULT> implements
     public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
             ResultSetRowIndexConsumer consumer) throws SQLException {
         ObjectProvider<TARGET> provider = createObjectProvider(query);
-        Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query,
-                consumer, provider);
+        Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query, consumer, provider);
         try {
             if (query.getFetchType() == FetchType.EAGER) {
                 // consume ResultSet
@@ -82,6 +79,5 @@ public abstract class AbstractIterationHandler<TARGET, RESULT> implements
         return iterationCallback.postIterate(candidate, context);
     }
 
-    protected abstract ObjectProvider<TARGET> createObjectProvider(
-            SelectQuery query);
+    protected abstract ObjectProvider<TARGET> createObjectProvider(SelectQuery query);
 }

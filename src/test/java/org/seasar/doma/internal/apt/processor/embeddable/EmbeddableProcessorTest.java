@@ -132,8 +132,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructor() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructor.class;
         EmbeddableProcessor processor = new EmbeddableProcessor();
         addProcessor(processor);
@@ -144,8 +143,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructorStaticName() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructorStaticName.class;
         EmbeddableProcessor processor = new EmbeddableProcessor();
         addProcessor(processor);
@@ -156,8 +154,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructorAccess_private() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructorAccess_private.class;
         EmbeddableProcessor processor = new EmbeddableProcessor();
         addProcessor(processor);
@@ -168,8 +165,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
     }
 
     public void testLombokAllArgsConstructorAccess_none() throws Exception {
-        addOption("-Adoma.lombok.AllArgsConstructor="
-                + AllArgsConstructor.class.getName());
+        addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
         Class<?> target = LombokAllArgsConstructorAccess_none.class;
         EmbeddableProcessor processor = new EmbeddableProcessor();
         addProcessor(processor);

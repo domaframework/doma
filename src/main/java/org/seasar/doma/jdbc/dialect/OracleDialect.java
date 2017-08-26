@@ -34,8 +34,7 @@ public class OracleDialect extends Oracle11Dialect {
      * インスタンスを構築します。
      */
     public OracleDialect() {
-        this(new OracleJdbcMappingVisitor(),
-                new OracleSqlLogFormattingVisitor(),
+        this(new OracleJdbcMappingVisitor(), new OracleSqlLogFormattingVisitor(),
                 new OracleExpressionFunctions());
     }
 
@@ -69,8 +68,8 @@ public class OracleDialect extends Oracle11Dialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public OracleDialect(ExpressionFunctions expressionFunctions) {
-        this(new OracleJdbcMappingVisitor(),
-                new OracleSqlLogFormattingVisitor(), expressionFunctions);
+        this(new OracleJdbcMappingVisitor(), new OracleSqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -85,8 +84,7 @@ public class OracleDialect extends Oracle11Dialect {
      */
     public OracleDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new OracleExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new OracleExpressionFunctions());
     }
 
     /**
@@ -126,32 +124,28 @@ public class OracleDialect extends Oracle11Dialect {
      * Oracle用の {@link JdbcMappingVisitor} の実装です。
      * 
      */
-    public static class OracleJdbcMappingVisitor
-            extends Oracle11JdbcMappingVisitor {
+    public static class OracleJdbcMappingVisitor extends Oracle11JdbcMappingVisitor {
     }
 
     /**
      * Oracle用の {@link SqlLogFormattingVisitor} の実装です。
      * 
      */
-    public static class OracleSqlLogFormattingVisitor
-            extends Oracle11SqlLogFormattingVisitor {
+    public static class OracleSqlLogFormattingVisitor extends Oracle11SqlLogFormattingVisitor {
     }
 
     /**
      * Oracle用の {@link ExpressionFunctions} です。
      * 
      */
-    public static class OracleExpressionFunctions
-            extends Oracle11ExpressionFunctions {
+    public static class OracleExpressionFunctions extends Oracle11ExpressionFunctions {
     }
 
     /**
      * Oracle用の {@link ScriptBlockContext} です。
      * 
      */
-    public static class OracleScriptBlockContext
-            extends Oracle11ScriptBlockContext {
+    public static class OracleScriptBlockContext extends Oracle11ScriptBlockContext {
     }
 
 }

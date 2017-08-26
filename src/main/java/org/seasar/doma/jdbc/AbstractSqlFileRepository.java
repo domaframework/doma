@@ -48,13 +48,11 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
         }
         if (!path.startsWith(Constants.SQL_PATH_PREFIX)) {
             throw new DomaIllegalArgumentException("path",
-                    "The path does not start with '"
-                            + Constants.SQL_PATH_PREFIX + "'");
+                    "The path does not start with '" + Constants.SQL_PATH_PREFIX + "'");
         }
         if (!path.endsWith(Constants.SQL_PATH_SUFFIX)) {
             throw new DomaIllegalArgumentException("path",
-                    "The path does not end with '" + Constants.SQL_PATH_SUFFIX
-                            + "'");
+                    "The path does not end with '" + Constants.SQL_PATH_SUFFIX + "'");
         }
         if (dialect == null) {
             throw new DomaNullPointerException("dialect");
@@ -77,8 +75,8 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
      * @throws JdbcException
      *             上記以外で例外が発生した場合
      */
-    protected abstract SqlFile getSqlFileWithCacheControl(Method method,
-            String path, Dialect dialect);
+    protected abstract SqlFile getSqlFileWithCacheControl(Method method, String path,
+            Dialect dialect);
 
     /**
      * SQLファイルを作成します。

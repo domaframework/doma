@@ -69,7 +69,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
         printGenerated();
         if (parameterized) {
             iprint("public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
-                    // @formatter:off
+            // @formatter:off
                     /* 1 */codeSpec.getSimpleName(),
                     /* 2 */AbstractHolderDesc.class.getName(),
                     /* 3 */holderMeta.getValueTypeName(),
@@ -78,7 +78,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
                     // @formatter:on
         } else {
             iprint("public final class %1$s extends %2$s<%3$s, %4$s> {%n",
-                    // @formatter:off
+            // @formatter:off
                     /* 1 */codeSpec.getSimpleName(),
                     /* 2 */AbstractHolderDesc.class.getName(),
                     /* 3 */holderMeta.getValueTypeName(),
@@ -129,7 +129,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
         }
         iprint("@Override%n");
         iprint("protected %1$s newHolder(%2$s value) {%n",
-                // @formatter:off
+        // @formatter:off
                 /* 1 */holderTypeName,
                 /* 2 */holderMeta.getValueTypeName());
                 // @formatter:on
@@ -145,7 +145,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
     private void printGetBasicValueMethod() {
         iprint("@Override%n");
         iprint("protected %1$s getBasicValue(%2$s holder) {%n",
-                // @formatter:off
+        // @formatter:off
                 /* 1 */holderMeta.getValueTypeName(),
                 /* 2 */holderTypeName);
                 // @formatter:on
@@ -189,12 +189,12 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
         if (parameterized) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
             iprint("public static <%1$s> %2$s<%1$s> getSingletonInternal() {%n",
-                    // @formatter:off
+            // @formatter:off
                     /* 1 */codeSpec.getTypeParamsName(),
                     /* 2 */codeSpec.getSimpleName());
                     // @formatter:on
             iprint("    return (%2$s<%1$s>) singleton;%n",
-                    // @formatter:off
+            // @formatter:off
                     /* 1 */codeSpec.getTypeParamsName(),
                     /* 2 */codeSpec.getSimpleName());
                     // @formatter:on

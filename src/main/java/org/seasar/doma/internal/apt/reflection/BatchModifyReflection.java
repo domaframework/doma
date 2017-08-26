@@ -67,8 +67,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
 
     private final AnnotationValue exclude;
 
-    BatchModifyReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    BatchModifyReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(annotationMirror, values);
 
@@ -80,8 +79,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
 
         // nullable values
         this.ignoreVersion = values.get(IGNORE_VERSION);
-        this.suppressOptimisticLockException = values
-                .get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
+        this.suppressOptimisticLockException = values.get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
         this.include = values.get(INCLUDE);
         this.exclude = values.get(EXCLUDE);
     }
@@ -151,8 +149,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
     }
 
     public SqlLogType getSqlLogValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(sqlLog);
+        VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
         if (enumConstant == null) {
             throw new AptIllegalStateException(SQL_LOG);
         }

@@ -43,8 +43,7 @@ public class DaoMethodNotFoundException extends JdbcException {
      * @param signature
      *            メソッドのシグネチャ
      */
-    public DaoMethodNotFoundException(Throwable cause, String className,
-            String signature) {
+    public DaoMethodNotFoundException(Throwable cause, String className, String signature) {
         super(Message.DOMA2215, cause, className, signature, cause);
         this.className = className;
         this.signature = signature;

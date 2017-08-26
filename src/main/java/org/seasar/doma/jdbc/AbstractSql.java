@@ -20,9 +20,8 @@ public abstract class AbstractSql<P extends SqlParameter> implements Sql<P> {
 
     protected final SqlLogType sqlLogType;
 
-    protected AbstractSql(SqlKind kind, CharSequence rawSql,
-            CharSequence formattedSql, String sqlFilePath,
-            List<? extends P> parameters, SqlLogType sqlLogType,
+    protected AbstractSql(SqlKind kind, CharSequence rawSql, CharSequence formattedSql,
+            String sqlFilePath, List<? extends P> parameters, SqlLogType sqlLogType,
             Function<String, String> commenter) {
         if (kind == null) {
             throw new DomaNullPointerException("kind");

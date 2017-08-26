@@ -84,8 +84,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class ExpressionEvaluator implements
-        ExpressionNodeVisitor<EvaluationResult, Void> {
+public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResult, Void> {
 
     protected final Map<String, Value> variableValues;
 
@@ -98,10 +97,8 @@ public class ExpressionEvaluator implements
         });
     }
 
-    public ExpressionEvaluator(ExpressionFunctions expressionFunctions,
-            ClassHelper classHelper) {
-        this(Collections.<String, Value> emptyMap(), expressionFunctions,
-                classHelper);
+    public ExpressionEvaluator(ExpressionFunctions expressionFunctions, ClassHelper classHelper) {
+        this(Collections.<String, Value> emptyMap(), expressionFunctions, classHelper);
     }
 
     public ExpressionEvaluator(Map<String, Value> variableValues,
@@ -154,8 +151,8 @@ public class ExpressionEvaluator implements
             return new EvaluationResult(c1.compareTo(c2) == 0, boolean.class);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(Message.DOMA3008, e,
-                    location.getExpression(), node.getExpression(), e);
+            throw new ExpressionException(Message.DOMA3008, e, location.getExpression(),
+                    node.getExpression(), e);
         }
     }
 
@@ -177,8 +174,8 @@ public class ExpressionEvaluator implements
             return new EvaluationResult(c1.compareTo(c2) != 0, boolean.class);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(Message.DOMA3008, e,
-                    location.getExpression(), node.getExpression(), e);
+            throw new ExpressionException(Message.DOMA3008, e, location.getExpression(),
+                    node.getExpression(), e);
         }
     }
 
@@ -186,41 +183,36 @@ public class ExpressionEvaluator implements
     public EvaluationResult visitGeOperatorNode(GeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
         Object right = node.getRightNode().accept(this, p).getValue();
-        return new EvaluationResult(compare(node, left, right) >= 0,
-                boolean.class);
+        return new EvaluationResult(compare(node, left, right) >= 0, boolean.class);
     }
 
     @Override
     public EvaluationResult visitGtOperatorNode(GtOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
         Object right = node.getRightNode().accept(this, p).getValue();
-        return new EvaluationResult(compare(node, left, right) > 0,
-                boolean.class);
+        return new EvaluationResult(compare(node, left, right) > 0, boolean.class);
     }
 
     @Override
     public EvaluationResult visitLeOperatorNode(LeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
         Object right = node.getRightNode().accept(this, p).getValue();
-        return new EvaluationResult(compare(node, left, right) <= 0,
-                boolean.class);
+        return new EvaluationResult(compare(node, left, right) <= 0, boolean.class);
     }
 
     @Override
     public EvaluationResult visitLtOperatorNode(LtOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
         Object right = node.getRightNode().accept(this, p).getValue();
-        return new EvaluationResult(compare(node, left, right) < 0,
-                boolean.class);
+        return new EvaluationResult(compare(node, left, right) < 0, boolean.class);
     }
 
     protected int compare(ComparisonOperatorNode node, Object left, Object right)
             throws ClassCastException {
         if (left == null || right == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(Message.DOMA3009,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression());
+            throw new ExpressionException(Message.DOMA3009, location.getExpression(),
+                    location.getPosition(), node.getExpression());
         }
         try {
             @SuppressWarnings("unchecked")
@@ -230,9 +222,8 @@ public class ExpressionEvaluator implements
             return c1.compareTo(c2);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(Message.DOMA3008, e,
-                    location.getExpression(), location.getPosition(),
-                    node.getExpression(), e);
+            throw new ExpressionException(Message.DOMA3008, e, location.getExpression(),
+                    location.getPosition(), node.getExpression(), e);
         }
     }
 
@@ -259,11 +250,9 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitAddOperatorNode(AddOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
-                leftNode, p);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node, leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
-                rightNode, p);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
 
         Text leftText = createText(node, leftNode, leftResult);
         if (leftText != null) {
@@ -285,33 +274,28 @@ public class ExpressionEvaluator implements
         return leftNumber.add(rightNumber);
     }
 
-    protected Text createText(OperatorNode operatoNode,
-            ExpressionNode operandNode, EvaluationResult evaluationResult) {
+    protected Text createText(OperatorNode operatoNode, ExpressionNode operandNode,
+            EvaluationResult evaluationResult) {
         if (!Text.isAcceptable(evaluationResult.getValueClass())) {
             return null;
         }
-        return new Text(operatoNode, evaluationResult.getValue(),
-                evaluationResult.getValueClass());
+        return new Text(operatoNode, evaluationResult.getValue(), evaluationResult.getValueClass());
     }
 
-    protected void throwNotTextException(OperatorNode operatorNode,
-            ExpressionNode operandNode, EvaluationResult evaluationResult) {
+    protected void throwNotTextException(OperatorNode operatorNode, ExpressionNode operandNode,
+            EvaluationResult evaluationResult) {
         ExpressionLocation location = operandNode.getLocation();
-        throw new ExpressionException(Message.DOMA3020,
-                location.getExpression(), location.getPosition(),
-                operatorNode.getExpression(), evaluationResult.getValue(),
+        throw new ExpressionException(Message.DOMA3020, location.getExpression(),
+                location.getPosition(), operatorNode.getExpression(), evaluationResult.getValue(),
                 evaluationResult.getValueClass().getName());
     }
 
     @Override
-    public EvaluationResult visitSubtractOperatorNode(
-            SubtractOperatorNode node, Void p) {
+    public EvaluationResult visitSubtractOperatorNode(SubtractOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
-                leftNode, p);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node, leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
-                rightNode, p);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
         Number leftNumber = createNumber(node, leftNode, leftResult);
         if (leftNumber == null) {
             throwNotNumberException(node, leftNode, leftResult);
@@ -324,14 +308,11 @@ public class ExpressionEvaluator implements
     }
 
     @Override
-    public EvaluationResult visitMultiplyOperatorNode(
-            MultiplyOperatorNode node, Void p) {
+    public EvaluationResult visitMultiplyOperatorNode(MultiplyOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
-                leftNode, p);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node, leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
-                rightNode, p);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
         Number leftNumber = createNumber(node, leftNode, leftResult);
         if (leftNumber == null) {
             throwNotNumberException(node, leftNode, leftResult);
@@ -344,14 +325,11 @@ public class ExpressionEvaluator implements
     }
 
     @Override
-    public EvaluationResult visitDivideOperatorNode(DivideOperatorNode node,
-            Void p) {
+    public EvaluationResult visitDivideOperatorNode(DivideOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
-                leftNode, p);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node, leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
-                rightNode, p);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
         Number leftNumber = createNumber(node, leftNode, leftResult);
         if (leftNumber == null) {
             throwNotNumberException(node, leftNode, leftResult);
@@ -366,11 +344,9 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitModOperatorNode(ModOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
-                leftNode, p);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node, leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
-                rightNode, p);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
         Number leftNumber = createNumber(node, leftNode, leftResult);
         if (leftNumber == null) {
             throwNotNumberException(node, leftNode, leftResult);
@@ -382,8 +358,8 @@ public class ExpressionEvaluator implements
         return leftNumber.mod(rightNumber);
     }
 
-    protected Number createNumber(ArithmeticOperatorNode operatoNode,
-            ExpressionNode operandNode, EvaluationResult evaluationResult) {
+    protected Number createNumber(ArithmeticOperatorNode operatoNode, ExpressionNode operandNode,
+            EvaluationResult evaluationResult) {
         if (!Number.isAcceptable(evaluationResult.getValueClass())) {
             return null;
         }
@@ -394,20 +370,18 @@ public class ExpressionEvaluator implements
     protected void throwNotNumberException(ArithmeticOperatorNode operatorNode,
             ExpressionNode operandNode, EvaluationResult evaluationResult) {
         ExpressionLocation location = operandNode.getLocation();
-        throw new ExpressionException(Message.DOMA3013,
-                location.getExpression(), location.getPosition(),
-                operatorNode.getExpression(), evaluationResult.getValue(),
+        throw new ExpressionException(Message.DOMA3013, location.getExpression(),
+                location.getPosition(), operatorNode.getExpression(), evaluationResult.getValue(),
                 evaluationResult.getValueClass().getName());
     }
 
-    protected EvaluationResult evaluateNotNullableOperandNode(
-            ExpressionNode operatorNode, ExpressionNode operandNode, Void p) {
+    protected EvaluationResult evaluateNotNullableOperandNode(ExpressionNode operatorNode,
+            ExpressionNode operandNode, Void p) {
         EvaluationResult evaluationResult = operandNode.accept(this, p);
         if (evaluationResult.getValue() == null) {
             ExpressionLocation location = operandNode.getLocation();
-            throw new ExpressionException(Message.DOMA3015,
-                    location.getExpression(), location.getPosition(),
-                    operatorNode.getExpression());
+            throw new ExpressionException(Message.DOMA3015, location.getExpression(),
+                    location.getPosition(), operatorNode.getExpression());
         }
         return evaluationResult;
     }
@@ -425,38 +399,33 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitNewOperatorNode(NewOperatorNode node, Void p) {
         ParameterCollector collector = new ParameterCollector();
-        ParameterCollection collection = collector.collect(node
-                .getParametersNode());
+        ParameterCollection collection = collector.collect(node.getParametersNode());
         ExpressionLocation location = node.getLocation();
         String className = node.getClassName();
         Class<?> clazz = forClassName(location, className);
-        Constructor<?> constructor = findConstructor(location, clazz,
-                collection.getParamTypes());
+        Constructor<?> constructor = findConstructor(location, clazz, collection.getParamTypes());
         if (constructor == null) {
-            String signature = ConstructorUtil.createSignature(clazz,
-                    collection.getParamTypes());
-            throw new ExpressionException(Message.DOMA3006,
-                    location.getExpression(), location.getPosition(), signature);
+            String signature = ConstructorUtil.createSignature(clazz, collection.getParamTypes());
+            throw new ExpressionException(Message.DOMA3006, location.getExpression(),
+                    location.getPosition(), signature);
         }
-        return invokeConstructor(location, clazz, constructor,
-                collection.getParams());
+        return invokeConstructor(location, clazz, constructor, collection.getParams());
     }
 
-    protected Class<?> forClassName(ExpressionLocation location,
-            String className) {
+    protected Class<?> forClassName(ExpressionLocation location, String className) {
         try {
             return classHelper.forName(className);
         } catch (WrapException e) {
-            throw new ExpressionException(Message.DOMA3005, e.getCause(),
-                    location.getExpression(), location.getPosition(), className);
+            throw new ExpressionException(Message.DOMA3005, e.getCause(), location.getExpression(),
+                    location.getPosition(), className);
         } catch (Exception e) {
-            throw new ExpressionException(Message.DOMA3005, e,
-                    location.getExpression(), location.getPosition(), className);
+            throw new ExpressionException(Message.DOMA3005, e, location.getExpression(),
+                    location.getPosition(), className);
         }
     }
 
-    protected Constructor<?> findConstructor(ExpressionLocation location,
-            Class<?> clazz, Class<?>... paramTypes) {
+    protected Constructor<?> findConstructor(ExpressionLocation location, Class<?> clazz,
+            Class<?>... paramTypes) {
         outer: for (Constructor<?> constructor : clazz.getConstructors()) {
             Class<?>[] types = constructor.getParameterTypes();
             if (types.length == paramTypes.length) {
@@ -471,81 +440,70 @@ public class ExpressionEvaluator implements
         return null;
     }
 
-    protected EvaluationResult invokeConstructor(ExpressionLocation location,
-            Class<?> clazz, Constructor<?> constructor, Object... params) {
+    protected EvaluationResult invokeConstructor(ExpressionLocation location, Class<?> clazz,
+            Constructor<?> constructor, Object... params) {
         Object value = null;
         try {
             value = ConstructorUtil.newInstance(constructor, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(Message.DOMA3007, cause,
-                    location.getExpression(), location.getPosition(),
-                    ConstructorUtil.createSignature(constructor), cause);
+            throw new ExpressionException(Message.DOMA3007, cause, location.getExpression(),
+                    location.getPosition(), ConstructorUtil.createSignature(constructor), cause);
         }
         return new EvaluationResult(value, clazz);
     }
 
     @Override
-    public EvaluationResult visitMethodOperatorNode(MethodOperatorNode node,
-            Void p) {
+    public EvaluationResult visitMethodOperatorNode(MethodOperatorNode node, Void p) {
         ExpressionNode targetObjectNode = node.getTargetObjectNode();
         EvaluationResult targetResult = targetObjectNode.accept(this, p);
         Object target = targetResult.getValue();
         if (target == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(Message.DOMA3027,
-                    location.getExpression(), location.getPosition(),
-                    targetObjectNode.getExpression(), node.getMethodName());
+            throw new ExpressionException(Message.DOMA3027, location.getExpression(),
+                    location.getPosition(), targetObjectNode.getExpression(), node.getMethodName());
         }
         Class<?> targetClass = target.getClass();
         ParameterCollector collector = new ParameterCollector();
-        ParameterCollection collection = collector.collect(node
-                .getParametersNode());
+        ParameterCollection collection = collector.collect(node.getParametersNode());
         ExpressionLocation location = node.getLocation();
         Method method = findMethod(node.getMethodName(), target, targetClass,
                 collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
-            throw new ExpressionException(Message.DOMA3002,
-                    location.getExpression(), location.getPosition(),
-                    targetClass.getName(), signature);
+            throw new ExpressionException(Message.DOMA3002, location.getExpression(),
+                    location.getPosition(), targetClass.getName(), signature);
         }
-        return invokeMethod(location, method, target, targetClass,
-                collection.getParamTypes(), collection.getParams());
+        return invokeMethod(location, method, target, targetClass, collection.getParamTypes(),
+                collection.getParams());
     }
 
     @Override
-    public EvaluationResult visitStaticMethodOperatorNode(
-            StaticMethodOperatorNode node, Void p) {
-        Class<?> targetClass = forClassName(node.getLocation(),
-                node.getClassName());
+    public EvaluationResult visitStaticMethodOperatorNode(StaticMethodOperatorNode node, Void p) {
+        Class<?> targetClass = forClassName(node.getLocation(), node.getClassName());
         ParameterCollector collector = new ParameterCollector();
-        ParameterCollection collection = collector.collect(node
-                .getParametersNode());
+        ParameterCollection collection = collector.collect(node.getParametersNode());
         ExpressionLocation location = node.getLocation();
         Method method = findMethod(node.getMethodName(), null, targetClass,
                 collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
-            throw new ExpressionException(Message.DOMA3002,
-                    location.getExpression(), location.getPosition(),
-                    targetClass.getName(), signature);
+            throw new ExpressionException(Message.DOMA3002, location.getExpression(),
+                    location.getPosition(), targetClass.getName(), signature);
         }
-        return invokeMethod(location, method, null, targetClass,
-                collection.getParamTypes(), collection.getParams());
+        return invokeMethod(location, method, null, targetClass, collection.getParamTypes(),
+                collection.getParams());
     }
 
-    protected Method findMethod(String methodName, Object target,
-            Class<?> targetClass, Class<?>[] paramTypes) {
-        Method result = findMethodFromInterfaces(methodName, target,
-                targetClass, paramTypes);
+    protected Method findMethod(String methodName, Object target, Class<?> targetClass,
+            Class<?>[] paramTypes) {
+        Method result = findMethodFromInterfaces(methodName, target, targetClass, paramTypes);
         if (result != null) {
             return result;
         }
-        return findMethodFromClasses(methodName, target, targetClass,
-                paramTypes);
+        return findMethodFromClasses(methodName, target, targetClass, paramTypes);
     }
 
     protected Method findMethodFromInterfaces(String methodName, Object target,
@@ -564,8 +522,8 @@ public class ExpressionEvaluator implements
         return findSuiteMethod(methods, target, targetClass, paramTypes);
     }
 
-    protected Method findMethodFromClasses(String methodName, Object target,
-            Class<?> targetClass, Class<?>[] paramTypes) {
+    protected Method findMethodFromClasses(String methodName, Object target, Class<?> targetClass,
+            Class<?>[] paramTypes) {
         LinkedList<Method> methods = new LinkedList<Method>();
         for (Class<?> clazz = targetClass; clazz != null
                 && clazz != Object.class; clazz = clazz.getSuperclass()) {
@@ -578,16 +536,15 @@ public class ExpressionEvaluator implements
         return findSuiteMethod(methods, target, targetClass, paramTypes);
     }
 
-    protected Method findSuiteMethod(List<Method> methods, Object target,
-            Class<?> targetClass, Class<?>[] argTypes) {
+    protected Method findSuiteMethod(List<Method> methods, Object target, Class<?> targetClass,
+            Class<?>[] argTypes) {
         CandidateMethod candidate = null;
         outer: for (Method method : methods) {
             Class<?> paramTypes[] = method.getParameterTypes();
             if (paramTypes.length == argTypes.length) {
                 int degreeOfcoincidence = 0;
                 for (int i = 0; i < paramTypes.length; i++) {
-                    int difference = calculateHierarchyDifference(
-                            paramTypes[i], argTypes[i], 0);
+                    int difference = calculateHierarchyDifference(paramTypes[i], argTypes[i], 0);
                     if (difference == -1) {
                         continue outer;
                     }
@@ -596,8 +553,7 @@ public class ExpressionEvaluator implements
                 if (degreeOfcoincidence == 0) {
                     return method;
                 }
-                if (candidate == null
-                        || degreeOfcoincidence < candidate.degreeOfcoincidence) {
+                if (candidate == null || degreeOfcoincidence < candidate.degreeOfcoincidence) {
                     candidate = new CandidateMethod(degreeOfcoincidence, method);
                 }
             }
@@ -605,23 +561,22 @@ public class ExpressionEvaluator implements
         return candidate != null ? candidate.method : null;
     }
 
-    protected int calculateHierarchyDifference(Class<?> paramType,
-            Class<?> argType, int initDifference) {
+    protected int calculateHierarchyDifference(Class<?> paramType, Class<?> argType,
+            int initDifference) {
         int difference = initDifference;
         if (paramType.equals(Object.class) && argType.isInterface()) {
             return Integer.MAX_VALUE;
         }
         for (Class<?> type = argType; type != null; type = type.getSuperclass()) {
             if (paramType.equals(type)
-                    || paramType.equals(ClassUtil
-                            .toBoxedPrimitiveTypeIfPossible(type))) {
+                    || paramType.equals(ClassUtil.toBoxedPrimitiveTypeIfPossible(type))) {
                 return difference;
             }
             difference++;
             if (paramType.isInterface()) {
                 for (Class<?> interfaceClass : type.getInterfaces()) {
-                    int result = calculateHierarchyDifference(paramType,
-                            interfaceClass, difference);
+                    int result = calculateHierarchyDifference(paramType, interfaceClass,
+                            difference);
                     if (result != -1) {
                         return result;
                     }
@@ -643,76 +598,65 @@ public class ExpressionEvaluator implements
         return null;
     }
 
-    protected EvaluationResult invokeMethod(ExpressionLocation location,
-            Method method, Object target, Class<?> targetClass,
-            Class<?>[] paramTypes, Object[] params) {
+    protected EvaluationResult invokeMethod(ExpressionLocation location, Method method,
+            Object target, Class<?> targetClass, Class<?>[] paramTypes, Object[] params) {
         Object value;
         try {
             value = MethodUtil.invoke(method, target, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(Message.DOMA3001, cause,
-                    location.getExpression(), location.getPosition(),
-                    targetClass.getName(), method.getName(), cause);
+            throw new ExpressionException(Message.DOMA3001, cause, location.getExpression(),
+                    location.getPosition(), targetClass.getName(), method.getName(), cause);
         }
         return createEvaluationResult(target, value, method.getReturnType(),
                 method.getGenericReturnType());
     }
 
     @Override
-    public EvaluationResult visitFunctionOperatorNode(
-            FunctionOperatorNode node, Void p) {
+    public EvaluationResult visitFunctionOperatorNode(FunctionOperatorNode node, Void p) {
         Class<?> targetClass = expressionFunctions.getClass();
         ParameterCollector collector = new ParameterCollector();
-        ParameterCollection collection = collector.collect(node
-                .getParametersNode());
+        ParameterCollection collection = collector.collect(node.getParametersNode());
         ExpressionLocation location = node.getLocation();
-        Method method = findMethod(node.getMethodName(), expressionFunctions,
-                targetClass, collection.getParamTypes());
+        Method method = findMethod(node.getMethodName(), expressionFunctions, targetClass,
+                collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
-            throw new ExpressionException(Message.DOMA3028,
-                    location.getExpression(), location.getPosition(), signature);
+            throw new ExpressionException(Message.DOMA3028, location.getExpression(),
+                    location.getPosition(), signature);
         }
-        return invokeMethod(node.getLocation(), method, expressionFunctions,
-                targetClass, collection.getParamTypes(), collection.getParams());
+        return invokeMethod(node.getLocation(), method, expressionFunctions, targetClass,
+                collection.getParamTypes(), collection.getParams());
     }
 
     @Override
-    public EvaluationResult visitFieldOperatorNode(FieldOperatorNode node,
-            Void p) {
-        EvaluationResult targetResult = node.getTargetObjectNode().accept(this,
-                p);
+    public EvaluationResult visitFieldOperatorNode(FieldOperatorNode node, Void p) {
+        EvaluationResult targetResult = node.getTargetObjectNode().accept(this, p);
         Object target = targetResult.getValue();
         ExpressionLocation location = node.getLocation();
         Field field = findField(node.getFieldName(), target.getClass());
         if (field == null) {
-            throw new ExpressionException(Message.DOMA3018,
-                    location.getExpression(), location.getPosition(), target
-                            .getClass().getName(), node.getFieldName());
+            throw new ExpressionException(Message.DOMA3018, location.getExpression(),
+                    location.getPosition(), target.getClass().getName(), node.getFieldName());
         }
         return getFieldValue(location, field, target);
     }
 
     @Override
-    public EvaluationResult visitStaticFieldOperatorNode(
-            StaticFieldOperatorNode node, Void p) {
-        Class<?> targetClass = forClassName(node.getLocation(),
-                node.getClassName());
+    public EvaluationResult visitStaticFieldOperatorNode(StaticFieldOperatorNode node, Void p) {
+        Class<?> targetClass = forClassName(node.getLocation(), node.getClassName());
         ExpressionLocation location = node.getLocation();
         Field field = findStaticField(node.getFieldName(), targetClass);
         if (field == null) {
-            throw new ExpressionException(Message.DOMA3033,
-                    location.getExpression(), location.getPosition(),
-                    targetClass.getName(), node.getFieldName());
+            throw new ExpressionException(Message.DOMA3033, location.getExpression(),
+                    location.getPosition(), targetClass.getName(), node.getFieldName());
         }
         return getFieldValue(location, field, null);
     }
 
     protected Field findField(String fieldName, Class<?> targetClass) {
-        for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz
-                .getSuperclass()) {
+        for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
             try {
                 Field field = clazz.getDeclaredField(fieldName);
                 field.setAccessible(true);
@@ -731,56 +675,48 @@ public class ExpressionEvaluator implements
         return null;
     }
 
-    protected EvaluationResult getFieldValue(ExpressionLocation location,
-            Field field, Object target) {
+    protected EvaluationResult getFieldValue(ExpressionLocation location, Field field,
+            Object target) {
         Object value;
         try {
             value = FieldUtil.get(field, target);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(Message.DOMA3019, cause,
-                    location.getExpression(), location.getPosition(), target
-                            .getClass().getName(), field.getName(), cause);
+            throw new ExpressionException(Message.DOMA3019, cause, location.getExpression(),
+                    location.getPosition(), target.getClass().getName(), field.getName(), cause);
         }
-        return createEvaluationResult(target, value, field.getType(),
-                field.getGenericType());
+        return createEvaluationResult(target, value, field.getType(), field.getGenericType());
     }
 
-    protected EvaluationResult createEvaluationResult(Object target,
-            Object value, Class<?> valueClass, Type genericType) {
+    protected EvaluationResult createEvaluationResult(Object target, Object value,
+            Class<?> valueClass, Type genericType) {
         if (value instanceof Optional<?>) {
             Optional<?> optional = (Optional<?>) value;
             if (genericType instanceof ParameterizedType) {
                 ParameterizedType parameterizedType = (ParameterizedType) genericType;
-                Type[] typeArguments = parameterizedType
-                        .getActualTypeArguments();
-                if (typeArguments.length > 0
-                        && typeArguments[0] instanceof Class) {
+                Type[] typeArguments = parameterizedType.getActualTypeArguments();
+                if (typeArguments.length > 0 && typeArguments[0] instanceof Class) {
                     Object elementValue = optional.orElse(null);
-                    return new EvaluationResult(elementValue,
-                            (Class<?>) typeArguments[0]);
+                    return new EvaluationResult(elementValue, (Class<?>) typeArguments[0]);
                 }
             }
         } else if (value instanceof OptionalInt) {
             OptionalInt optional = (OptionalInt) value;
-            Integer nullable = optional.isPresent() ? optional.getAsInt()
-                    : null;
+            Integer nullable = optional.isPresent() ? optional.getAsInt() : null;
             return new EvaluationResult(nullable, Integer.class);
         } else if (value instanceof OptionalLong) {
             OptionalLong optional = (OptionalLong) value;
-            Long nullable = optional.isPresent() ? Long.valueOf(optional
-                    .getAsLong()) : null;
+            Long nullable = optional.isPresent() ? Long.valueOf(optional.getAsLong()) : null;
             return new EvaluationResult(nullable, Long.class);
         } else if (value instanceof OptionalDouble) {
             OptionalDouble optional = (OptionalDouble) value;
-            Double nullable = optional.isPresent() ? Double.valueOf(optional
-                    .getAsDouble()) : null;
+            Double nullable = optional.isPresent() ? Double.valueOf(optional.getAsDouble()) : null;
             return new EvaluationResult(nullable, Double.class);
         }
         if (target != null) {
             if (genericType instanceof TypeVariable) {
-                Class<?> typeArgument = GenericsUtil.inferTypeArgument(
-                        target.getClass(), (TypeVariable<?>) genericType);
+                Class<?> typeArgument = GenericsUtil.inferTypeArgument(target.getClass(),
+                        (TypeVariable<?>) genericType);
                 if (typeArgument != null) {
                     return new EvaluationResult(value, typeArgument);
                 }
@@ -795,16 +731,14 @@ public class ExpressionEvaluator implements
         Value value = variableValues.get(node.getExpression());
         if (value == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(Message.DOMA3003,
-                    location.getExpression(), location.getPosition(),
-                    variableName);
+            throw new ExpressionException(Message.DOMA3003, location.getExpression(),
+                    location.getPosition(), variableName);
         }
         return new EvaluationResult(value.getValue(), value.getType());
     }
 
     @Override
-    public EvaluationResult visitCommaOperatorNode(CommaOperatorNode node,
-            Void p) {
+    public EvaluationResult visitCommaOperatorNode(CommaOperatorNode node, Void p) {
         return new EvaluationResult(null, Void.class);
     }
 
@@ -819,8 +753,7 @@ public class ExpressionEvaluator implements
 
         protected final String stringValue;
 
-        protected Text(OperatorNode operatorNode, Object value,
-                Class<?> valueClass) {
+        protected Text(OperatorNode operatorNode, Object value, Class<?> valueClass) {
             assertNotNull(operatorNode);
             assertNotNull(value);
             assertNotNull(isAcceptable(valueClass));
@@ -867,8 +800,7 @@ public class ExpressionEvaluator implements
 
         protected final Integer priority;
 
-        protected Number(ArithmeticOperatorNode operatorNode, Object value,
-                Class<?> valueClass) {
+        protected Number(ArithmeticOperatorNode operatorNode, Object value, Class<?> valueClass) {
             assertNotNull(operatorNode);
             assertNotNull(value);
             assertTrue(isAcceptable(valueClass));
@@ -983,23 +915,20 @@ public class ExpressionEvaluator implements
 
         protected void handleArithmeticException(ArithmeticException e) {
             ExpressionLocation location = operatorNode.getLocation();
-            throw new ExpressionException(Message.DOMA3014, e,
-                    location.getExpression(), operatorNode.getExpression(),
-                    location.getPosition(), e);
+            throw new ExpressionException(Message.DOMA3014, e, location.getExpression(),
+                    operatorNode.getExpression(), location.getPosition(), e);
         }
 
-        protected EvaluationResult createEvaluationResult(Number other,
-                BigDecimal newValue) {
-            Class<?> realClass = this.priority >= other.priority ? this.realClass
-                    : other.realClass;
+        protected EvaluationResult createEvaluationResult(Number other, BigDecimal newValue) {
+            Class<?> realClass = this.priority >= other.priority ? this.realClass : other.realClass;
             Object narrowedValue = narrowValue(newValue, realClass);
             return new EvaluationResult(narrowedValue, realClass);
         }
 
     }
 
-    protected class ParameterCollector implements
-            ExpressionNodeVisitor<Void, List<EvaluationResult>> {
+    protected class ParameterCollector
+            implements ExpressionNodeVisitor<Void, List<EvaluationResult>> {
 
         public ParameterCollection collect(ExpressionNode node) {
             List<EvaluationResult> evaluationResults = new ArrayList<EvaluationResult>();
@@ -1008,50 +937,43 @@ public class ExpressionEvaluator implements
         }
 
         @Override
-        public Void visitEqOperatorNode(EqOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitEqOperatorNode(EqOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitNeOperatorNode(NeOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitNeOperatorNode(NeOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitGeOperatorNode(GeOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitGeOperatorNode(GeOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitGtOperatorNode(GtOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitGtOperatorNode(GtOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitLeOperatorNode(LeOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitLeOperatorNode(LeOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitLtOperatorNode(LtOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitLtOperatorNode(LtOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitCommaOperatorNode(CommaOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitCommaOperatorNode(CommaOperatorNode node, List<EvaluationResult> p) {
             for (ExpressionNode expressionNode : node.getNodes()) {
                 expressionNode.accept(this, p);
             }
@@ -1065,99 +987,86 @@ public class ExpressionEvaluator implements
         }
 
         @Override
-        public Void visitVariableNode(VariableNode node,
+        public Void visitVariableNode(VariableNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitOrOperatorNode(OrOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitAndOperatorNode(AndOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitNotOperatorNode(NotOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitAddOperatorNode(AddOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitSubtractOperatorNode(SubtractOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitMultiplyOperatorNode(MultiplyOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitDivideOperatorNode(DivideOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitModOperatorNode(ModOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitNewOperatorNode(NewOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitMethodOperatorNode(MethodOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitStaticMethodOperatorNode(StaticMethodOperatorNode node,
                 List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitOrOperatorNode(OrOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitFunctionOperatorNode(FunctionOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
 
         @Override
-        public Void visitAndOperatorNode(AndOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitNotOperatorNode(NotOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitAddOperatorNode(AddOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitSubtractOperatorNode(SubtractOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitMultiplyOperatorNode(MultiplyOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitDivideOperatorNode(DivideOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitModOperatorNode(ModOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitNewOperatorNode(NewOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitMethodOperatorNode(MethodOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitStaticMethodOperatorNode(
-                StaticMethodOperatorNode node, List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitFunctionOperatorNode(FunctionOperatorNode node,
-                List<EvaluationResult> p) {
-            evaluate(node, p);
-            return null;
-        }
-
-        @Override
-        public Void visitFieldOperatorNode(FieldOperatorNode node,
-                List<EvaluationResult> p) {
+        public Void visitFieldOperatorNode(FieldOperatorNode node, List<EvaluationResult> p) {
             evaluate(node, p);
             return null;
         }
@@ -1181,8 +1090,7 @@ public class ExpressionEvaluator implements
         }
 
         protected void evaluate(ExpressionNode node, List<EvaluationResult> p) {
-            EvaluationResult evaluationResult = ExpressionEvaluator.this
-                    .evaluateInternal(node);
+            EvaluationResult evaluationResult = ExpressionEvaluator.this.evaluateInternal(node);
             p.add(evaluationResult);
         }
 

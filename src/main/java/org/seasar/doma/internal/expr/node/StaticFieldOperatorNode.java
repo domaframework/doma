@@ -38,8 +38,8 @@ public class StaticFieldOperatorNode implements OperatorNode {
         return PRIORITY;
     }
 
-    public StaticFieldOperatorNode(ExpressionLocation location,
-            String expression, String className, String fieldName) {
+    public StaticFieldOperatorNode(ExpressionLocation location, String expression, String className,
+            String fieldName) {
         assertNotNull(location, fieldName);
         this.location = location;
         this.expression = expression;

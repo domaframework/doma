@@ -31,7 +31,6 @@ import org.seasar.doma.jdbc.Reference;
 public interface AutoProcedureOptionalParameterDao {
 
     @Procedure
-    void executeProcedure(@In Optional<Integer> arg1,
-            @Out Reference<Optional<Integer>> arg2);
+    void executeProcedure(@In Optional<Integer> arg1, @Out Reference<Optional<Integer>> arg2);
 
 }

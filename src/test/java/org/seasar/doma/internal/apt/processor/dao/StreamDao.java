@@ -35,8 +35,7 @@ import example.holder.PhoneNumber;
 public interface StreamDao {
 
     @Select(strategy = SelectType.STREAM)
-    Integer selectByIdAndName(Integer id, String name,
-            Function<Stream<Emp>, Integer> mapper);
+    Integer selectByIdAndName(Integer id, String name, Function<Stream<Emp>, Integer> mapper);
 
     @Select(strategy = SelectType.STREAM)
     <R> R selectById(Integer id, Function<Stream<PhoneNumber>, R> mapper);
@@ -48,8 +47,7 @@ public interface StreamDao {
     String selectWithHogeFunction(HogeFunction mapper);
 
     @Select(strategy = SelectType.STREAM, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
-    <R> R selectByIdAsMap(Integer id,
-            Function<Stream<Map<String, Object>>, R> callback);
+    <R> R selectByIdAsMap(Integer id, Function<Stream<Map<String, Object>>, R> callback);
 
     public class HogeFunction implements Function<Stream<String>, String> {
 

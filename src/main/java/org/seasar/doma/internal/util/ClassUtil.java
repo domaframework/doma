@@ -32,8 +32,8 @@ import org.seasar.doma.internal.WrapException;
  */
 public final class ClassUtil {
 
-    public static <T> Constructor<T> getConstructor(Class<T> clazz,
-            Class<?>... parameterTypes) throws WrapException {
+    public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes)
+            throws WrapException {
         try {
             return clazz.getConstructor(parameterTypes);
         } catch (SecurityException e) {
@@ -43,8 +43,8 @@ public final class ClassUtil {
         }
     }
 
-    public static <T> Method getMethod(Class<T> clazz, String name,
-            Class<?>... parameterTypes) throws WrapException {
+    public static <T> Method getMethod(Class<T> clazz, String name, Class<?>... parameterTypes)
+            throws WrapException {
         try {
             return clazz.getMethod(name, parameterTypes);
         } catch (SecurityException e) {
@@ -66,8 +66,7 @@ public final class ClassUtil {
         }
     }
 
-    public static <T> Field getDeclaredField(Class<T> clazz, String name)
-            throws WrapException {
+    public static <T> Field getDeclaredField(Class<T> clazz, String name) throws WrapException {
         assertNotNull(clazz, name);
         try {
             return clazz.getDeclaredField(name);

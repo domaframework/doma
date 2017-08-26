@@ -23,8 +23,7 @@ public class FieldDeclaration {
 
     private final TypeDeclaration typeDeclaration;
 
-    FieldDeclaration(VariableElement element,
-            TypeDeclaration typeDeclaration) {
+    FieldDeclaration(VariableElement element, TypeDeclaration typeDeclaration) {
         this.element = element;
         this.typeDeclaration = typeDeclaration;
     }

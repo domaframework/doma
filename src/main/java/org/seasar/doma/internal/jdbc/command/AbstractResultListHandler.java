@@ -33,8 +33,8 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <ELEMENT>
  *            要素
  */
-public abstract class AbstractResultListHandler<ELEMENT> implements
-        ResultSetHandler<List<ELEMENT>> {
+public abstract class AbstractResultListHandler<ELEMENT>
+        implements ResultSetHandler<List<ELEMENT>> {
 
     protected final ResultSetHandler<List<ELEMENT>> handler;
 
@@ -47,9 +47,8 @@ public abstract class AbstractResultListHandler<ELEMENT> implements
     }
 
     @Override
-    public Supplier<List<ELEMENT>> handle(ResultSet resultSet,
-            SelectQuery query, ResultSetRowIndexConsumer consumer)
-            throws SQLException {
+    public Supplier<List<ELEMENT>> handle(ResultSet resultSet, SelectQuery query,
+            ResultSetRowIndexConsumer consumer) throws SQLException {
         return handler.handle(resultSet, query, consumer);
     }
 

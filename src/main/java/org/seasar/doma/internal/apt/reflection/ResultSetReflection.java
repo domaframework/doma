@@ -36,14 +36,11 @@ public class ResultSetReflection extends AbstractReflection {
 
     private final AnnotationValue ensureResultMapping;
 
-    ResultSetReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    ResultSetReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
-        this.ensureResultMapping = assertNotNullValue(values,
-                ENSURE_RESULT_MAPPING);
+        this.ensureResultMapping = assertNotNullValue(values, ENSURE_RESULT_MAPPING);
     }
-
 
     public AnnotationValue getEnsureResultMapping() {
         return ensureResultMapping;

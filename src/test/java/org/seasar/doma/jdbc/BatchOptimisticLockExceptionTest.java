@@ -24,8 +24,8 @@ import junit.framework.TestCase;
 public class BatchOptimisticLockExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        BatchOptimisticLockException e = new BatchOptimisticLockException(
-                SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb");
+        BatchOptimisticLockException e = new BatchOptimisticLockException(SqlLogType.FORMATTED,
+                SqlKind.UPDATE, "aaa", "bbb");
         System.out.println(e.getMessage());
         assertSame(SqlKind.UPDATE, e.getKind());
         assertEquals("aaa", e.getRawSql());

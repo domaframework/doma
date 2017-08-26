@@ -38,8 +38,7 @@ public class FunctionOperatorNode implements OperatorNode {
         return PRIORITY;
     }
 
-    public FunctionOperatorNode(ExpressionLocation location, String expression,
-            String methodName) {
+    public FunctionOperatorNode(ExpressionLocation location, String expression, String methodName) {
         assertNotNull(location, methodName);
         this.location = location;
         this.expression = expression;

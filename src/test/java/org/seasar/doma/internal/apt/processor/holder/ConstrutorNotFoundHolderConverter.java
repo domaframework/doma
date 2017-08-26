@@ -24,8 +24,7 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * 
  */
 @ExternalHolder
-public class ConstrutorNotFoundHolderConverter implements
-        HolderConverter<ValueObject, String> {
+public class ConstrutorNotFoundHolderConverter implements HolderConverter<ValueObject, String> {
 
     private ConstrutorNotFoundHolderConverter() {
     }

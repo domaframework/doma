@@ -57,8 +57,8 @@ public class MssqlDialect extends Mssql2008Dialect {
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor) {
-        this(jdbcMappingVisitor, new MssqlSqlLogFormattingVisitor(),
-                new MssqlExpressionFunctions(), false);
+        this(jdbcMappingVisitor, new MssqlSqlLogFormattingVisitor(), new MssqlExpressionFunctions(),
+                false);
     }
 
     /**
@@ -69,8 +69,8 @@ public class MssqlDialect extends Mssql2008Dialect {
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
     public MssqlDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(new MssqlJdbcMappingVisitor(), sqlLogFormattingVisitor,
-                new MssqlExpressionFunctions(), false);
+        this(new MssqlJdbcMappingVisitor(), sqlLogFormattingVisitor, new MssqlExpressionFunctions(),
+                false);
     }
 
     /**
@@ -80,8 +80,8 @@ public class MssqlDialect extends Mssql2008Dialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public MssqlDialect(ExpressionFunctions expressionFunctions) {
-        this(new MssqlJdbcMappingVisitor(), new MssqlSqlLogFormattingVisitor(),
-                expressionFunctions, false);
+        this(new MssqlJdbcMappingVisitor(), new MssqlSqlLogFormattingVisitor(), expressionFunctions,
+                false);
     }
 
     /**
@@ -96,8 +96,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new MssqlExpressionFunctions(), false);
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new MssqlExpressionFunctions(), false);
     }
 
     /**
@@ -115,8 +114,7 @@ public class MssqlDialect extends Mssql2008Dialect {
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions,
-                false);
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions, false);
     }
 
     /**
@@ -135,8 +133,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
-            ExpressionFunctions expressionFunctions,
-            boolean pagingForceOffsetFetch) {
+            ExpressionFunctions expressionFunctions, boolean pagingForceOffsetFetch) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
         this.pagingForceOffsetFetch = pagingForceOffsetFetch;
     }
@@ -147,24 +144,22 @@ public class MssqlDialect extends Mssql2008Dialect {
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        MssqlForUpdateTransformer transformer = new MssqlForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        MssqlForUpdateTransformer transformer = new MssqlForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        MssqlPagingTransformer transformer = new MssqlPagingTransformer(offset,
-                limit, this.pagingForceOffsetFetch);
+        MssqlPagingTransformer transformer = new MssqlPagingTransformer(offset, limit,
+                this.pagingForceOffsetFetch);
         return transformer.transform(sqlNode);
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
@@ -189,8 +184,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      * @author taedium
      * 
      */
-    public static class MssqlJdbcMappingVisitor extends
-            Mssql2008JdbcMappingVisitor {
+    public static class MssqlJdbcMappingVisitor extends Mssql2008JdbcMappingVisitor {
     }
 
     /**
@@ -199,8 +193,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      * @author taedium
      * 
      */
-    public static class MssqlSqlLogFormattingVisitor extends
-            Mssql2008SqlLogFormattingVisitor {
+    public static class MssqlSqlLogFormattingVisitor extends Mssql2008SqlLogFormattingVisitor {
     }
 
     /**
@@ -209,8 +202,7 @@ public class MssqlDialect extends Mssql2008Dialect {
      * @author taedium
      * 
      */
-    public static class MssqlExpressionFunctions extends
-            Mssql2008ExpressionFunctions {
+    public static class MssqlExpressionFunctions extends Mssql2008ExpressionFunctions {
 
         public MssqlExpressionFunctions() {
             super();
@@ -231,7 +223,6 @@ public class MssqlDialect extends Mssql2008Dialect {
      * 
      * @author taedium
      */
-    public static class MssqlScriptBlockContext extends
-            Mssql2008ScriptBlockContext {
+    public static class MssqlScriptBlockContext extends Mssql2008ScriptBlockContext {
     }
 }

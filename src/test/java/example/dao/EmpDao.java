@@ -43,8 +43,7 @@ public interface EmpDao {
     Emp selectById(Integer id, SelectOptions option);
 
     @Select
-    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions option);
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions option);
 
     @Select
     List<Emp> selectByExample(Emp emp);

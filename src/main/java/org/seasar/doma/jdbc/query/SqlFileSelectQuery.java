@@ -45,9 +45,8 @@ public class SqlFileSelectQuery extends AbstractSelectQuery {
         SqlNode transformedSqlNode = config.getDialect()
                 .transformSelectSqlNode(sqlFile.getSqlNode(), options);
         buildSql((evaluator, expander) -> {
-            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                    config, SqlKind.SELECT, sqlFilePath, evaluator, sqlLogType,
-                    expander);
+            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                    sqlFilePath, evaluator, sqlLogType, expander);
             return sqlBuilder.build(transformedSqlNode, this::comment);
         });
     }

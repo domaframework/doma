@@ -48,8 +48,7 @@ public class TableReflection extends AbstractReflection {
 
     private final AnnotationValue quote;
 
-    TableReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    TableReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.catalog = assertNotNullValue(values, CATALOG);

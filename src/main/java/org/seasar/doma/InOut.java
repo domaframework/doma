@@ -39,8 +39,7 @@ import java.lang.annotation.Target;
  * 
  * <pre>
  * EmployeeDao dao = new EmployeeDaoImpl();
- * Reference&lt;BigDecimal&gt; salaryRef = new Reference&lt;BigDecimal&gt;(
- *         new BigDecimal(1000));
+ * Reference&lt;BigDecimal&gt; salaryRef = new Reference&lt;BigDecimal&gt;(new BigDecimal(1000));
  * dao.updateSalary(1, salaryRef);
  * BigDecimal salary = salaryRef.get();
  * </pre>

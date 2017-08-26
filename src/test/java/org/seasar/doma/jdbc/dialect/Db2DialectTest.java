@@ -37,12 +37,10 @@ public class Db2DialectTest extends TestCase {
         assertEquals("a!!a!%a!_a!％a!＿%", functions.prefix("a!a%a_a％a＿", '!'));
     }
 
-    public void testExpressionFunctions_prefix_escapeWithDefault()
-            throws Exception {
+    public void testExpressionFunctions_prefix_escapeWithDefault() throws Exception {
         Db2Dialect dialect = new Db2Dialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%",
-                functions.prefix("a\\a%a_a％a＿", '\\'));
+        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿", '\\'));
     }
 
 }

@@ -35,8 +35,7 @@ public class EmbeddableConstructorMeta {
             List<EmbeddablePropertyMeta> embeddablePropertyMetas) {
         assertNotNull(constructorElement, embeddablePropertyMetas);
         this.constructorElement = constructorElement;
-        this.embeddablePropertyMetas = Collections
-                .unmodifiableList(embeddablePropertyMetas);
+        this.embeddablePropertyMetas = Collections.unmodifiableList(embeddablePropertyMetas);
     }
 
     public ExecutableElement getConstructorElement() {

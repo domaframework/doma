@@ -54,18 +54,17 @@ public class CallableSqlParameterFetcher {
         this.query = query;
     }
 
-    public void fetch(CallableStatement callableStatement,
-            List<? extends SqlParameter> parameters) throws SQLException {
+    public void fetch(CallableStatement callableStatement, List<? extends SqlParameter> parameters)
+            throws SQLException {
         assertNotNull(callableStatement, parameters);
-        FetchingVisitor fetchngVisitor = new FetchingVisitor(query,
-                callableStatement);
+        FetchingVisitor fetchngVisitor = new FetchingVisitor(query, callableStatement);
         for (SqlParameter parameter : parameters) {
             parameter.accept(fetchngVisitor, null);
         }
     }
 
-    protected static class FetchingVisitor implements
-            SqlParameterVisitor<Void, Void, SQLException> {
+    protected static class FetchingVisitor
+            implements SqlParameterVisitor<Void, Void, SQLException> {
 
         protected final ModuleQuery query;
 
@@ -77,8 +76,7 @@ public class CallableSqlParameterFetcher {
 
         protected int index = 1;
 
-        public FetchingVisitor(ModuleQuery query,
-                CallableStatement callableStatement) {
+        public FetchingVisitor(ModuleQuery query, CallableStatement callableStatement) {
             this.query = query;
             this.dialect = query.getConfig().getDialect();
             this.jdbcMappingVisitor = dialect.getJdbcMappingVisitor();
@@ -86,15 +84,15 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public <BASIC> Void visitInParameter(InParameter<BASIC> parameter,
-                Void p) throws SQLException {
+        public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Void p)
+                throws SQLException {
             index++;
             return null;
         }
 
         @Override
-        public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter,
-                Void p) throws SQLException {
+        public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter, Void p)
+                throws SQLException {
             fetchOutParameter(parameter);
             parameter.updateReference();
             index++;
@@ -111,25 +109,23 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public <ELEMENT> Void visitListParameter(
-                ListParameter<ELEMENT> parameter, Void p) throws SQLException {
+        public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter, Void p)
+                throws SQLException {
             fetchListParameter(parameter);
             return null;
         }
 
         @Override
         public <BASIC, RESULT> Void visitSingleResultParameter(
-                SingleResultParameter<BASIC, RESULT> parameter, Void p)
-                throws SQLException {
+                SingleResultParameter<BASIC, RESULT> parameter, Void p) throws SQLException {
             fetchOutParameter(parameter);
             index++;
             return null;
         }
 
         @Override
-        public <ELEMENT> Void visitResultListParameter(
-                ResultListParameter<ELEMENT> parameter, Void p)
-                throws SQLException {
+        public <ELEMENT> Void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
+                Void p) throws SQLException {
             fetchListParameter(parameter);
             return null;
         }
@@ -137,27 +133,25 @@ public class CallableSqlParameterFetcher {
         protected <BASIC> void fetchOutParameter(JdbcMappable<BASIC> parameter)
                 throws SQLException {
             Wrapper<?> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, new JdbcOutParameterGetter(
-                    callableStatement, index), parameter);
+            wrapper.accept(jdbcMappingVisitor, new JdbcOutParameterGetter(callableStatement, index),
+                    parameter);
         }
 
-        protected <ELEMENT> void fetchListParameter(
-                ListParameter<ELEMENT> parameter) throws SQLException {
-            ObjectProvider<ELEMENT> provider = parameter
-                    .createObjectProvider(query);
+        protected <ELEMENT> void fetchListParameter(ListParameter<ELEMENT> parameter)
+                throws SQLException {
+            ObjectProvider<ELEMENT> provider = parameter.createObjectProvider(query);
             consumeResultSet(parameter.getName(),
                     resultSet -> parameter.add(provider.get(resultSet)));
         }
 
-        protected void consumeResultSet(String parameterName,
-                ResultSetConsumer consumer) throws SQLException {
+        protected void consumeResultSet(String parameterName, ResultSetConsumer consumer)
+                throws SQLException {
             if (dialect.supportsResultSetReturningAsOutParameter()) {
                 JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
-                ResultSet resultSet = resultSetType.getValue(callableStatement,
-                        index);
+                ResultSet resultSet = resultSetType.getValue(callableStatement, index);
                 if (resultSet == null) {
-                    throw new JdbcException(Message.DOMA2137, index,
-                            parameterName, query.getQualifiedName());
+                    throw new JdbcException(Message.DOMA2137, index, parameterName,
+                            query.getQualifiedName());
                 }
                 try {
                     while (resultSet.next()) {
@@ -169,9 +163,8 @@ public class CallableSqlParameterFetcher {
                 index++;
             } else {
                 ResultSet resultSet = callableStatement.getResultSet();
-                while (resultSet == null
-                        && (callableStatement.getMoreResults() || callableStatement
-                                .getUpdateCount() > -1)) {
+                while (resultSet == null && (callableStatement.getMoreResults()
+                        || callableStatement.getUpdateCount() > -1)) {
                     resultSet = callableStatement.getResultSet();
                 }
                 if (resultSet == null) {
@@ -183,8 +176,7 @@ public class CallableSqlParameterFetcher {
                         consumer.accept(resultSet);
                     }
                 } finally {
-                    callableStatement
-                            .getMoreResults(Statement.CLOSE_CURRENT_RESULT);
+                    callableStatement.getMoreResults(Statement.CLOSE_CURRENT_RESULT);
                 }
             }
         }

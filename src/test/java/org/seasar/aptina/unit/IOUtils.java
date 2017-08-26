@@ -80,8 +80,7 @@ class IOUtils {
      * @throws IOException
      *             入出力例外が発生した場合
      */
-    public static String readString(final File file, final Charset charset)
-            throws IOException {
+    public static String readString(final File file, final Charset charset) throws IOException {
         return new String(readBytes(file), charset);
     }
 
@@ -96,8 +95,7 @@ class IOUtils {
      * @throws IOException
      *             入出力例外が発生した場合
      */
-    public static String readString(final File file, final String charsetName)
-            throws IOException {
+    public static String readString(final File file, final String charsetName) throws IOException {
         return readString(file, Charset.forName(charsetName));
     }
 
@@ -151,8 +149,8 @@ class IOUtils {
      * @throws IOException
      *             入出力例外が発生した場合
      */
-    public static String readString(final InputStream is,
-            final String charsetName) throws IOException {
+    public static String readString(final InputStream is, final String charsetName)
+            throws IOException {
         return readString(is, Charset.forName(charsetName));
     }
 

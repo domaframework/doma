@@ -68,8 +68,7 @@ public class BuiltinTableIdGeneratorTest extends TestCase {
         assertEquals("update aaa set VALUE = VALUE + ? where PK = ?",
                 connection.preparedStatement.sql);
         assertEquals(2, connection.preparedStatement.bindValues.size());
-        assertEquals("select VALUE from aaa where PK = ?",
-                connection2.preparedStatement.sql);
+        assertEquals("select VALUE from aaa where PK = ?", connection2.preparedStatement.sql);
         assertEquals(1, connection2.preparedStatement.bindValues.size());
     }
 

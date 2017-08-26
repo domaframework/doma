@@ -56,8 +56,7 @@ public class WhitespaceNode extends AbstractSqlNode {
 
     @Override
     public void appendNode(SqlNode child) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "addNode");
+        throw new JdbcUnsupportedOperationException(getClass().getName(), "addNode");
 
     }
 

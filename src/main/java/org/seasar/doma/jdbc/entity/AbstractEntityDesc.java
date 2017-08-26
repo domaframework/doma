@@ -36,15 +36,12 @@ public abstract class AbstractEntityDesc<ENTITY> implements EntityDesc<ENTITY> {
     }
 
     @Override
-    public String getQualifiedTableName(
-            BiFunction<NamingType, String, String> namingFunction,
+    public String getQualifiedTableName(BiFunction<NamingType, String, String> namingFunction,
             Function<String, String> quoteFunction) {
         String catalogName = getCatalogName();
         String schemaName = getSchemaName();
         String tableName = getTableName(namingFunction);
-        Function<String, String> mapper = isQuoteRequired() ? quoteFunction
-                : Function.identity();
-        return DatabaseObjectUtil.getQualifiedName(mapper, catalogName,
-                schemaName, tableName);
+        Function<String, String> mapper = isQuoteRequired() ? quoteFunction : Function.identity();
+        return DatabaseObjectUtil.getQualifiedName(mapper, catalogName, schemaName, tableName);
     }
 }

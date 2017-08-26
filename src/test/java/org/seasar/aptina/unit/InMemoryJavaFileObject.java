@@ -51,8 +51,7 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
      * @param charset
      *            文字セット
      */
-    public InMemoryJavaFileObject(final URI uri, final Kind kind,
-            final Charset charset) {
+    public InMemoryJavaFileObject(final URI uri, final Kind kind, final Charset charset) {
         super(uri, kind);
         this.charset = charset;
     }
@@ -69,8 +68,8 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
      * @param content
      *            ファイルの内容
      */
-    public InMemoryJavaFileObject(final URI uri, final Kind kind,
-            final Charset charset, final byte[] content) {
+    public InMemoryJavaFileObject(final URI uri, final Kind kind, final Charset charset,
+            final byte[] content) {
         super(uri, kind);
         this.charset = charset;
         this.content = content;
@@ -79,8 +78,7 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
     @Override
     public InputStream openInputStream() throws IOException {
         return new ByteArrayInputStream(content != null ? content
-                : outputStream != null ? outputStream.toByteArray()
-                        : new byte[0]);
+                : outputStream != null ? outputStream.toByteArray() : new byte[0]);
     }
 
     @Override
@@ -96,11 +94,9 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
     }
 
     @Override
-    public CharSequence getCharContent(final boolean ignoreEncodingErrors)
-            throws IOException {
-        return new String(
-            IOUtils.readBytes(openInputStream()),
-            charset == null ? Charset.defaultCharset() : charset);
+    public CharSequence getCharContent(final boolean ignoreEncodingErrors) throws IOException {
+        return new String(IOUtils.readBytes(openInputStream()),
+                charset == null ? Charset.defaultCharset() : charset);
     }
 
 }

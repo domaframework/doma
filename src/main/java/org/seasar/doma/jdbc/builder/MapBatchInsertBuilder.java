@@ -42,16 +42,22 @@ import org.seasar.doma.message.Message;
  * <pre>
  * MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(config, "Emp");
  * builder.batchSize(10);
- * builder.execute(new ArrayList&lt;Map&lt;String, Object&gt;&gt;() {{
- *     add(new LinkedHashMap&lt;String, Object&gt;() {{
- *         put(&quot;name&quot;, &quot;SMITH&quot;);
- *         put(&quot;salary&quot;, 1000);
- *     }});
- *     add(new LinkedHashMap&lt;String, Object&gt;() {{
- *         put(&quot;name", &quot;ALLEN&quot;);
- *         put(&quot;salary&quot;, 2000);
- *     }});
- * }});
+ * builder.execute(new ArrayList&lt;Map&lt;String, Object&gt;&gt;() {
+ *     {
+ *         add(new LinkedHashMap&lt;String, Object&gt;() {
+ *             {
+ *                 put(&quot;name&quot;, &quot;SMITH&quot;);
+ *                 put(&quot;salary&quot;, 1000);
+ *             }
+ *         });
+ *         add(new LinkedHashMap&lt;String, Object&gt;() {
+ *             {
+ *                 put(&quot;name", &quot;ALLEN&quot;);
+ *                 put(&quot;salary&quot;, 2000);
+ *             }
+ *         });
+ *     }
+ * });
  * </pre>
  *
  * <h4>実行されるSQL</h4>
@@ -106,9 +112,8 @@ public class MapBatchInsertBuilder {
     /**
      * パラメータからINSERT文を組み立てて実行します。
      *
-     * @return 更新された件数の配列。
-     *             戻り値の配列の要素の数はパラメータのparameterの要素の数と等しくなります。
-     *             配列のそれぞれの要素が更新された件数を返します。
+     * @return 更新された件数の配列。 戻り値の配列の要素の数はパラメータのparameterの要素の数と等しくなります。
+     *         配列のそれぞれの要素が更新された件数を返します。
      * @param parameter
      *            INSERT文の生成元となるMapのリスト
      * @throws DomaNullPointerException
@@ -130,7 +135,7 @@ public class MapBatchInsertBuilder {
         }
         if (executor.getMethodName() == null) {
             executor.callerMethodName("execute");
-        }        
+        }
         final Set<String> keySet = new LinkedHashSet<>(parameter.iterator().next().keySet());
         final int keySetSize = keySet.size();
         return executor.execute(parameter, (map, builder) -> {
@@ -138,10 +143,10 @@ public class MapBatchInsertBuilder {
                 throw new JdbcException(Message.DOMA2231);
             }
             builder.sql("insert into ")
-            .sql(tableName)
-            .sql(" (")
-            .sql(keySet.stream().collect(Collectors.joining(", ")))
-            .sql(")");
+                    .sql(tableName)
+                    .sql(" (")
+                    .sql(keySet.stream().collect(Collectors.joining(", ")))
+                    .sql(")");
             builder.sql("values (");
             keySet.forEach(key -> {
                 if (!map.containsKey(key)) {

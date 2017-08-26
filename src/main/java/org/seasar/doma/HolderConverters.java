@@ -34,8 +34,7 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * <h3>例:</h3>
  * 
  * <pre>
- * &#064;HolderConverters({ SalaryConverter.class, DayConverter.class,
- *         LocationConverter.class })
+ * &#064;HolderConverters({ SalaryConverter.class, DayConverter.class, LocationConverter.class })
  * public class HolderConvertersProvider {
  * }
  * </pre>

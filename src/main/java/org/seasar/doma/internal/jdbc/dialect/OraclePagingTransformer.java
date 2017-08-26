@@ -52,8 +52,8 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
         SelectClauseNode select = new SelectClauseNode("select");
         select.appendNode(new FragmentNode(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.appendNode(new FragmentNode(" ( select temp_.*, rownum "
-                + ROWNUMBER_COLUMN_NAME + " from ( "));
+        from.appendNode(new FragmentNode(
+                " ( select temp_.*, rownum " + ROWNUMBER_COLUMN_NAME + " from ( "));
         from.appendNode(subStatement);
         from.appendNode(new FragmentNode(" ) temp_ ) "));
         WhereClauseNode where = new WhereClauseNode("where");

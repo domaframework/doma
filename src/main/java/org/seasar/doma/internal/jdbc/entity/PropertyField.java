@@ -59,8 +59,8 @@ public class PropertyField<ENTITY> {
             try {
                 FieldUtil.setAccessible(field, true);
             } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), clazz.getName(), name);
+                throw new EntityPropertyAccessException(wrapException.getCause(), clazz.getName(),
+                        name);
             }
         }
         return field;
@@ -92,8 +92,8 @@ public class PropertyField<ENTITY> {
         try {
             return FieldUtil.get(field, target);
         } catch (WrapException wrapException) {
-            throw new EntityPropertyAccessException(wrapException.getCause(),
-                    entityClass.getName(), path);
+            throw new EntityPropertyAccessException(wrapException.getCause(), entityClass.getName(),
+                    path);
         }
     }
 
@@ -109,8 +109,8 @@ public class PropertyField<ENTITY> {
         try {
             FieldUtil.set(field, entity, value);
         } catch (WrapException wrapException) {
-            throw new EntityPropertyAccessException(wrapException.getCause(),
-                    entityClass.getName(), path);
+            throw new EntityPropertyAccessException(wrapException.getCause(), entityClass.getName(),
+                    path);
         }
     }
 

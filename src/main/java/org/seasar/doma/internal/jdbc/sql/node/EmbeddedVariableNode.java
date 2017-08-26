@@ -28,8 +28,7 @@ public class EmbeddedVariableNode extends AbstractSqlNode {
 
     protected final String text;
 
-    public EmbeddedVariableNode(SqlLocation location, String variableName,
-            String text) {
+    public EmbeddedVariableNode(SqlLocation location, String variableName, String text) {
         assertNotNull(location, variableName, text);
         this.location = location;
         this.variableName = variableName;

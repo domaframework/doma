@@ -26,8 +26,8 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class MysqlForUpdateTransformer extends StandardForUpdateTransformer {
 
-    public MysqlForUpdateTransformer(SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
+    public MysqlForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
         super(forUpdateType, waitSeconds, aliases);
     }
 

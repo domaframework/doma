@@ -32,23 +32,27 @@ public class MapInsertBuilderTest extends TestCase {
     @SuppressWarnings("serial")
     public void test() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
-        builder.execute(new LinkedHashMap<String, Object>(){{
-            put("name", "SMITH");
-            put("salary", 100);
-        }});
-    }   
+        builder.execute(new LinkedHashMap<String, Object>() {
+            {
+                put("name", "SMITH");
+                put("salary", 100);
+            }
+        });
+    }
 
     @SuppressWarnings("serial")
     public void testGetSql() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
 
-        builder.execute(new LinkedHashMap<String, Object>(){{
-            put("name", "SMITH");
-            put("salary", 100);
-        }});
+        builder.execute(new LinkedHashMap<String, Object>() {
+            {
+                put("name", "SMITH");
+                put("salary", 100);
+            }
+        });
 
-        String expectedSql = String.format("insert into Emp" + " (name, salary)%n"
-                + "values (?, ?)");
+        String expectedSql = String
+                .format("insert into Emp" + " (name, salary)%n" + "values (?, ?)");
         assertEquals(expectedSql, builder.getSql().getRawSql());
 
         List<? extends SqlParameter> parameters = builder.getSql().getParameters();
@@ -60,13 +64,15 @@ public class MapInsertBuilderTest extends TestCase {
     @SuppressWarnings("serial")
     public void testNullValue() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
-        builder.execute(new LinkedHashMap<String, Object>(){{
-            put("name", null);
-            put("salary", 100);
-        }});
+        builder.execute(new LinkedHashMap<String, Object>() {
+            {
+                put("name", null);
+                put("salary", 100);
+            }
+        });
 
-        String expectedSql = String.format("insert into Emp" + " (name, salary)%n"
-                + "values (%nNULL, ?)");
+        String expectedSql = String
+                .format("insert into Emp" + " (name, salary)%n" + "values (%nNULL, ?)");
         assertEquals(expectedSql, builder.getSql().getRawSql());
 
         List<? extends SqlParameter> parameters = builder.getSql().getParameters();
@@ -77,13 +83,15 @@ public class MapInsertBuilderTest extends TestCase {
     @SuppressWarnings("serial")
     public void testLastNullValue() throws Exception {
         MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
-        builder.execute(new LinkedHashMap<String, Object>(){{
-            put("salary", 100);
-            put("name", null);
-        }});
+        builder.execute(new LinkedHashMap<String, Object>() {
+            {
+                put("salary", 100);
+                put("name", null);
+            }
+        });
 
-        String expectedSql = String.format("insert into Emp" + " (salary, name)%n"
-                + "values (?, %nNULL)");
+        String expectedSql = String
+                .format("insert into Emp" + " (salary, name)%n" + "values (?, %nNULL)");
         assertEquals(expectedSql, builder.getSql().getRawSql());
 
         List<? extends SqlParameter> parameters = builder.getSql().getParameters();

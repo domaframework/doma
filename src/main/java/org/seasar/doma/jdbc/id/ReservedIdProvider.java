@@ -50,8 +50,7 @@ public class ReservedIdProvider implements IdProvider {
 
     protected int index = 0;
 
-    public ReservedIdProvider(Config config, EntityDesc<?> entityDesc,
-            int reservationSize) {
+    public ReservedIdProvider(Config config, EntityDesc<?> entityDesc, int reservationSize) {
         assertNotNull(config, entityDesc);
         this.config = config;
         this.entityDesc = entityDesc;
@@ -73,8 +72,8 @@ public class ReservedIdProvider implements IdProvider {
             identities = getIdentities();
         }
         if (identities.length <= index) {
-            throw new IllegalStateException(String.format(
-                    "identities.length=%d, index=%d", identities.length, index));
+            throw new IllegalStateException(
+                    String.format("identities.length=%d, index=%d", identities.length, index));
         }
         return identities[index++];
     }
@@ -85,8 +84,7 @@ public class ReservedIdProvider implements IdProvider {
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql);
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
             try {
                 logger.logSql(getClass().getName(), "getIdentities", sql);
                 setupOptions(preparedStatement);
@@ -96,14 +94,12 @@ public class ReservedIdProvider implements IdProvider {
                         identities[i] = resultSet.getLong(1);
                     }
                 } catch (final SQLException e) {
-                    throw new JdbcException(Message.DOMA2083, e,
-                            entityDesc.getName(), e);
+                    throw new JdbcException(Message.DOMA2083, e, entityDesc.getName(), e);
                 } finally {
                     JdbcUtil.close(resultSet, logger);
                 }
             } catch (SQLException e) {
-                throw new JdbcException(Message.DOMA2083, e,
-                        entityDesc.getName(), e);
+                throw new JdbcException(Message.DOMA2083, e, entityDesc.getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
@@ -119,18 +115,14 @@ public class ReservedIdProvider implements IdProvider {
         String catalogName = entityDesc.getCatalogName();
         String schemaName = entityDesc.getSchemaName();
         String tableName = entityDesc.getTableName(naming::apply);
-        String idColumnName = entityDesc.getGeneratedIdPropertyDesc()
-                .getColumnName(naming::apply);
+        String idColumnName = entityDesc.getGeneratedIdPropertyDesc().getColumnName(naming::apply);
         boolean isQuoteRequired = entityDesc.isQuoteRequired();
-        boolean isIdColumnQuoteRequired = entityDesc.getGeneratedIdPropertyDesc()
-        		.isQuoteRequired();
-        return dialect.getIdentityReservationSql(catalogName, schemaName,
-                tableName, idColumnName, isQuoteRequired,
-                isIdColumnQuoteRequired, reservationSize);
+        boolean isIdColumnQuoteRequired = entityDesc.getGeneratedIdPropertyDesc().isQuoteRequired();
+        return dialect.getIdentityReservationSql(catalogName, schemaName, tableName, idColumnName,
+                isQuoteRequired, isIdColumnQuoteRequired, reservationSize);
     }
 
-    protected void setupOptions(PreparedStatement preparedStatement)
-            throws SQLException {
+    protected void setupOptions(PreparedStatement preparedStatement) throws SQLException {
         if (config.getFetchSize() > 0) {
             preparedStatement.setFetchSize(config.getFetchSize());
         }

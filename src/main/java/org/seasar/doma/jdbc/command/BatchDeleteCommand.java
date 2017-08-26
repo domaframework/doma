@@ -33,8 +33,8 @@ public class BatchDeleteCommand extends BatchModifyCommand<BatchDeleteQuery> {
     }
 
     @Override
-    protected int[] executeInternal(PreparedStatement preparedStatement,
-            List<PreparedSql> sqls) throws SQLException {
+    protected int[] executeInternal(PreparedStatement preparedStatement, List<PreparedSql> sqls)
+            throws SQLException {
         return executeBatch(preparedStatement, sqls);
     }
 

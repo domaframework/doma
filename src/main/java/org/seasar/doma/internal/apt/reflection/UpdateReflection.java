@@ -26,8 +26,7 @@ import javax.lang.model.element.AnnotationValue;
  */
 public class UpdateReflection extends ModifyReflection {
 
-    UpdateReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    UpdateReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror, values);
     }
 

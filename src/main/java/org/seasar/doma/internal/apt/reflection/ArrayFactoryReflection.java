@@ -36,8 +36,7 @@ public class ArrayFactoryReflection extends AbstractReflection {
 
     private final AnnotationValue typeName;
 
-    ArrayFactoryReflection(AnnotationMirror annotationMirror,
-            Map<String, AnnotationValue> values) {
+    ArrayFactoryReflection(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
         super(annotationMirror);
         assertNotNull(values);
         this.typeName = assertNotNullValue(values, TYPE_NAME);

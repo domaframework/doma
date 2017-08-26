@@ -67,8 +67,7 @@ public final class AssertionUtil {
         }
     }
 
-    public static void assertNotNull(Object o, Object o1, Object o2, Object o3,
-            Object o4) {
+    public static void assertNotNull(Object o, Object o1, Object o2, Object o3, Object o4) {
         if (o == null) {
             throw new AssertionError("Null. index = 0");
         }
@@ -127,13 +126,12 @@ public final class AssertionUtil {
         if (expected == null) {
             if (actual != null) {
                 throw new AssertionError(
-                        "Not equals. expected is null, but actual is ["
-                                + actual + "]");
+                        "Not equals. expected is null, but actual is [" + actual + "]");
             }
         }
         if (!expected.equals(actual)) {
-            throw new AssertionError("Not equals. expected is [" + expected
-                    + "], but actual is [" + actual + "]");
+            throw new AssertionError(
+                    "Not equals. expected is [" + expected + "], but actual is [" + actual + "]");
         }
     }
 

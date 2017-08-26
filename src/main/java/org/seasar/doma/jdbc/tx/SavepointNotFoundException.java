@@ -26,8 +26,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.1.0
  */
-public class SavepointNotFoundException extends JdbcException implements
-        Serializable {
+public class SavepointNotFoundException extends JdbcException implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -51,16 +51,14 @@ public class LocalTransactionDataSourceTest extends TestCase {
     }
 
     public void testIsWrapperFor() throws Exception {
-        DataSource dataSource = new LocalTransactionDataSource(
-                new MockDataSource());
+        DataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
         assertTrue(dataSource.isWrapperFor(LocalTransactionDataSource.class));
         assertTrue(dataSource.isWrapperFor(MockDataSource.class));
         assertFalse(dataSource.isWrapperFor(Runnable.class));
     }
 
     public void testUnwrap() throws Exception {
-        DataSource dataSource = new LocalTransactionDataSource(
-                new MockDataSource());
+        DataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
         assertNotNull(dataSource.unwrap(LocalTransactionDataSource.class));
         assertNotNull(dataSource.unwrap(MockDataSource.class));
         try {

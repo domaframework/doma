@@ -34,8 +34,7 @@ import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
  * @author taedium
  * 
  */
-public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
-        UpdateQuery {
+public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuery {
 
     protected EntityHandler<?> entityHandler;
 
@@ -127,8 +126,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void setEntityAndEntityDesc(String name, E entity,
-            EntityDesc<E> entityDesc) {
+    public <E> void setEntityAndEntityDesc(String name, E entity, EntityDesc<E> entityDesc) {
         entityHandler = new EntityHandler<E>(name, entity, entityDesc);
     }
 
@@ -140,8 +138,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         this.versionIgnored |= versionIgnored;
     }
 
-    public void setOptimisticLockExceptionSuppressed(
-            boolean optimisticLockExceptionSuppressed) {
+    public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
@@ -172,15 +169,14 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void init() {
-            helper = new UpdateQueryHelper<E>(config, entityDesc,
-                    includedPropertyNames, excludedPropertyNames, nullExcluded,
-                    versionIgnored, optimisticLockExceptionSuppressed,
-                    unchangedPropertyIncluded);
+            helper = new UpdateQueryHelper<E>(config, entityDesc, includedPropertyNames,
+                    excludedPropertyNames, nullExcluded, versionIgnored,
+                    optimisticLockExceptionSuppressed, unchangedPropertyIncluded);
         }
 
         protected void preUpdate() {
-            SqlFilePreUpdateContext<E> context = new SqlFilePreUpdateContext<E>(
-                    entityDesc, method, config);
+            SqlFilePreUpdateContext<E> context = new SqlFilePreUpdateContext<E>(entityDesc, method,
+                    config);
             entityDesc.preUpdate(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
@@ -194,13 +190,12 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected boolean hasTargetPropertyDescs() {
-            return targetPropertyDescs != null
-                    && !targetPropertyDescs.isEmpty();
+            return targetPropertyDescs != null && !targetPropertyDescs.isEmpty();
         }
 
         protected void postUpdate() {
-            SqlFilePostUpdateContext<E> context = new SqlFilePostUpdateContext<E>(
-                    entityDesc, method, config);
+            SqlFilePostUpdateContext<E> context = new SqlFilePostUpdateContext<E>(entityDesc,
+                    method, config);
             entityDesc.postUpdate(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
@@ -223,17 +218,14 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void populateValues(SqlContext context) {
-            helper.populateValues(entity, targetPropertyDescs,
-                    versionPropertyDesc, context);
+            helper.populateValues(entity, targetPropertyDescs, versionPropertyDesc, context);
         }
 
     }
 
-    protected static class SqlFilePreUpdateContext<E> extends
-            AbstractPreUpdateContext<E> {
+    protected static class SqlFilePreUpdateContext<E> extends AbstractPreUpdateContext<E> {
 
-        public SqlFilePreUpdateContext(EntityDesc<E> entityDesc, Method method,
-                Config config) {
+        public SqlFilePreUpdateContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
 
@@ -249,11 +241,9 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
     }
 
-    protected static class SqlFilePostUpdateContext<E> extends
-            AbstractPostUpdateContext<E> {
+    protected static class SqlFilePostUpdateContext<E> extends AbstractPostUpdateContext<E> {
 
-        public SqlFilePostUpdateContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFilePostUpdateContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
 

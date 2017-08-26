@@ -21,8 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
  * @author taedium
  * 
  */
-public abstract class AbstractArithmeticOperatorNode implements
-        ArithmeticOperatorNode {
+public abstract class AbstractArithmeticOperatorNode implements ArithmeticOperatorNode {
 
     protected final ExpressionLocation location;
 
@@ -34,8 +33,8 @@ public abstract class AbstractArithmeticOperatorNode implements
 
     protected ExpressionNode rightNode;
 
-    protected AbstractArithmeticOperatorNode(ExpressionLocation location,
-            String expreexpression, int priority) {
+    protected AbstractArithmeticOperatorNode(ExpressionLocation location, String expreexpression,
+            int priority) {
         assertNotNull(location, expreexpression);
         this.location = location;
         this.expression = expreexpression;

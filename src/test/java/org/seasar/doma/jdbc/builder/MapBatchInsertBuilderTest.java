@@ -40,36 +40,48 @@ public class MapBatchInsertBuilderTest extends TestCase {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         builder.callerClassName(getClass().getName());
         builder.callerMethodName("test");
-        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "SMITH");
-                put("salary", 1000);
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salary", 2000);
-            }});
-        }};
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {
+            {
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "SMITH");
+                        put("salary", 1000);
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salary", 2000);
+                    }
+                });
+            }
+        };
         builder.execute(employees);
-    }   
+    }
 
     @SuppressWarnings("serial")
     public void testGetSqls() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
-        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "SMITH");
-                put("salary", 1001);
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salary", 2001);
-            }});
-        }};
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {
+            {
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "SMITH");
+                        put("salary", 1001);
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salary", 2001);
+                    }
+                });
+            }
+        };
         builder.execute(employees);
 
-        String expectedSql = String.format("insert into Emp" + " (name, salary)%n"
-                + "values (?, ?)");
+        String expectedSql = String
+                .format("insert into Emp" + " (name, salary)%n" + "values (?, ?)");
         List<? extends Sql<?>> sqls = builder.getSqls();
         assertEquals(2, sqls.size());
         assertEquals(expectedSql, sqls.get(0).getRawSql());
@@ -88,20 +100,26 @@ public class MapBatchInsertBuilderTest extends TestCase {
     @SuppressWarnings("serial")
     public void testNullValue() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
-        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", null);
-                put("salary", 1000);
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salary", null);
-            }});
-        }};
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {
+            {
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", null);
+                        put("salary", 1000);
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salary", null);
+                    }
+                });
+            }
+        };
         builder.execute(employees);
 
-        String expectedSql = String.format("insert into Emp" + " (name, salary)%n"
-                + "values (?, ?)");
+        String expectedSql = String
+                .format("insert into Emp" + " (name, salary)%n" + "values (?, ?)");
         List<? extends Sql<?>> sqls = builder.getSqls();
         assertEquals(2, sqls.size());
         assertEquals(expectedSql, sqls.get(0).getRawSql());
@@ -120,20 +138,28 @@ public class MapBatchInsertBuilderTest extends TestCase {
     @SuppressWarnings("serial")
     public void testChangeType() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
-        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", null);
-                put("salary", 1000);
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salary", null);
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "WORD");
-                put("salary", "3000");
-            }});
-        }};
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {
+            {
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", null);
+                        put("salary", 1000);
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salary", null);
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "WORD");
+                        put("salary", "3000");
+                    }
+                });
+            }
+        };
         try {
             builder.execute(employees);
         } catch (JdbcException e) {
@@ -146,16 +172,22 @@ public class MapBatchInsertBuilderTest extends TestCase {
     @SuppressWarnings("serial")
     public void testNotEqualMapSize() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
-        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "SMITH");
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salary", 2000);
-            }});
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {
+            {
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "SMITH");
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salary", 2000);
+                    }
+                });
 
-        }};
+            }
+        };
         try {
             builder.execute(employees);
         } catch (JdbcException e) {
@@ -168,20 +200,26 @@ public class MapBatchInsertBuilderTest extends TestCase {
     @SuppressWarnings("serial")
     public void testHashMap() throws Exception {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
-        List<Map<String, Object>> employees = new ArrayList<Map<String, Object>>() {{
-            add(new HashMap<String, Object>() {{
-                put("name", "SMITH");
-                put("salary", 1002);
-            }});
-            add(new HashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salary", 2002);
-            }});
-        }};
+        List<Map<String, Object>> employees = new ArrayList<Map<String, Object>>() {
+            {
+                add(new HashMap<String, Object>() {
+                    {
+                        put("name", "SMITH");
+                        put("salary", 1002);
+                    }
+                });
+                add(new HashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salary", 2002);
+                    }
+                });
+            }
+        };
         builder.execute(employees);
 
-        String expectedSql = String.format("insert into Emp" + " (name, salary)%n"
-                + "values (?, ?)");
+        String expectedSql = String
+                .format("insert into Emp" + " (name, salary)%n" + "values (?, ?)");
         List<? extends Sql<?>> sqls = builder.getSqls();
         assertEquals(2, sqls.size());
         assertEquals(expectedSql, sqls.get(0).getRawSql());
@@ -214,16 +252,22 @@ public class MapBatchInsertBuilderTest extends TestCase {
         MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
         builder.callerClassName(getClass().getName());
         builder.callerMethodName("test");
-        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {{
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "SMITH");
-                put("salary", 1000);
-            }});
-            add(new LinkedHashMap<String, Object>() {{
-                put("name", "ALLEN");
-                put("salaree", 2000);
-            }});
-        }};
+        List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>() {
+            {
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "SMITH");
+                        put("salary", 1000);
+                    }
+                });
+                add(new LinkedHashMap<String, Object>() {
+                    {
+                        put("name", "ALLEN");
+                        put("salaree", 2000);
+                    }
+                });
+            }
+        };
         try {
             builder.execute(employees);
         } catch (JdbcException e) {
@@ -231,6 +275,6 @@ public class MapBatchInsertBuilderTest extends TestCase {
             return;
         }
         fail();
-    } 
+    }
 
 }

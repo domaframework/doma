@@ -50,8 +50,7 @@ public class Mssql2008Dialect extends StandardDialect {
      * インスタンスを構築します。
      */
     public Mssql2008Dialect() {
-        this(new Mssql2008JdbcMappingVisitor(),
-                new Mssql2008SqlLogFormattingVisitor(),
+        this(new Mssql2008JdbcMappingVisitor(), new Mssql2008SqlLogFormattingVisitor(),
                 new Mssql2008ExpressionFunctions());
     }
 
@@ -85,8 +84,8 @@ public class Mssql2008Dialect extends StandardDialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public Mssql2008Dialect(ExpressionFunctions expressionFunctions) {
-        this(new Mssql2008JdbcMappingVisitor(),
-                new Mssql2008SqlLogFormattingVisitor(), expressionFunctions);
+        this(new Mssql2008JdbcMappingVisitor(), new Mssql2008SqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -101,8 +100,7 @@ public class Mssql2008Dialect extends StandardDialect {
      */
     public Mssql2008Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new Mssql2008ExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new Mssql2008ExpressionFunctions());
     }
 
     /**
@@ -129,18 +127,16 @@ public class Mssql2008Dialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        Mssql2008ForUpdateTransformer transformer = new Mssql2008ForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        Mssql2008ForUpdateTransformer transformer = new Mssql2008ForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        Mssql2008PagingTransformer transformer = new Mssql2008PagingTransformer(
-                offset, limit);
+        Mssql2008PagingTransformer transformer = new Mssql2008PagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
@@ -159,8 +155,7 @@ public class Mssql2008Dialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
+    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
         return (type == SelectForUpdateType.NORMAL || type == SelectForUpdateType.NOWAIT)
                 && !withTargets;
     }
@@ -191,8 +186,7 @@ public class Mssql2008Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Mssql2008JdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
+    public static class Mssql2008JdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
     /**
@@ -201,8 +195,7 @@ public class Mssql2008Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Mssql2008SqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
+    public static class Mssql2008SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
     /**
@@ -211,8 +204,7 @@ public class Mssql2008Dialect extends StandardDialect {
      * @author taedium
      * 
      */
-    public static class Mssql2008ExpressionFunctions extends
-            StandardExpressionFunctions {
+    public static class Mssql2008ExpressionFunctions extends StandardExpressionFunctions {
 
         private final static char[] DEFAULT_WILDCARDS = { '%', '_', '[' };
 
@@ -236,8 +228,7 @@ public class Mssql2008Dialect extends StandardDialect {
      * @author taedium
      * @since 1.7.0
      */
-    public static class Mssql2008ScriptBlockContext extends
-            StandardScriptBlockContext {
+    public static class Mssql2008ScriptBlockContext extends StandardScriptBlockContext {
 
         protected Mssql2008ScriptBlockContext() {
             sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));

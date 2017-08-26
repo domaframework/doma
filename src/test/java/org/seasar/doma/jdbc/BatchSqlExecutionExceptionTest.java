@@ -24,9 +24,8 @@ import junit.framework.TestCase;
 public class BatchSqlExecutionExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        BatchSqlExecutionException e = new BatchSqlExecutionException(
-                SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb",
-                new Exception(), new RuntimeException());
+        BatchSqlExecutionException e = new BatchSqlExecutionException(SqlLogType.FORMATTED,
+                SqlKind.UPDATE, "aaa", "bbb", new Exception(), new RuntimeException());
         assertSame(SqlKind.UPDATE, e.getKind());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getSqlFilePath());

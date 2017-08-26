@@ -29,7 +29,8 @@ import example.dao.ExampleConfig;
  * 
  */
 @Dao(config = ExampleConfig.class)
-@AnnotateWith(annotations = { @Annotation(target = AnnotationTarget.CLASS, type = ClassAnnotation.class, elements = "aaa = 1, bbb = true") })
+@AnnotateWith(annotations = {
+        @Annotation(target = AnnotationTarget.CLASS, type = ClassAnnotation.class, elements = "aaa = 1, bbb = true") })
 public interface ConfigAnnotateWithDao {
 
     @Insert

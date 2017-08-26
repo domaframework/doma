@@ -34,14 +34,13 @@ public class BytesType extends AbstractJdbcType<byte[]> {
     }
 
     @Override
-    protected byte[] doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected byte[] doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getBytes(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            byte[] value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, byte[] value)
+            throws SQLException {
         preparedStatement.setBytes(index, value);
     }
 

@@ -44,12 +44,10 @@ public interface Naming {
     static Naming SNAKE_UPPER_CASE = new Adapter(NamingType.SNAKE_UPPER_CASE);
 
     /** {@link NamingType#LENIENT_SNAKE_LOWER_CASE} へのアダプタ */
-    static Naming LENIENT_SNAKE_LOWER_CASE = new Adapter(
-            NamingType.LENIENT_SNAKE_LOWER_CASE);
+    static Naming LENIENT_SNAKE_LOWER_CASE = new Adapter(NamingType.LENIENT_SNAKE_LOWER_CASE);
 
     /** {@link NamingType#LENIENT_SNAKE_UPPER_CASE} へのアダプタ */
-    static Naming LENIENT_SNAKE_UPPER_CASE = new Adapter(
-            NamingType.LENIENT_SNAKE_UPPER_CASE);
+    static Naming LENIENT_SNAKE_UPPER_CASE = new Adapter(NamingType.LENIENT_SNAKE_UPPER_CASE);
 
     /** デフォルトの規約 */
     static Naming DEFAULT = NONE;

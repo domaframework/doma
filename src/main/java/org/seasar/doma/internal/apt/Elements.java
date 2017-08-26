@@ -67,8 +67,7 @@ public class Elements implements javax.lang.model.util.Elements {
     }
 
     public String getPackageExcludedBinaryName(TypeElement typeElement) {
-        String binaryName = getBinaryName(typeElement)
-                .toString();
+        String binaryName = getBinaryName(typeElement).toString();
         int pos = binaryName.lastIndexOf('.');
         if (pos < 0) {
             return binaryName;
@@ -78,8 +77,7 @@ public class Elements implements javax.lang.model.util.Elements {
 
     public String getParameterName(VariableElement variableElement) {
         assertNotNull(variableElement);
-        ParameterName parameterName = variableElement
-                .getAnnotation(ParameterName.class);
+        ParameterName parameterName = variableElement.getAnnotation(ParameterName.class);
         if (parameterName != null && !parameterName.value().isEmpty()) {
             return parameterName.value();
         }
@@ -121,12 +119,10 @@ public class Elements implements javax.lang.model.util.Elements {
         return getTypeElement(clazz.getCanonicalName());
     }
 
-    public TypeElement getEnclosedTypeElement(TypeElement typeElement,
-            List<String> enclosedNames) {
+    public TypeElement getEnclosedTypeElement(TypeElement typeElement, List<String> enclosedNames) {
         TypeElement enclosing = typeElement;
         for (String enclosedName : enclosedNames) {
-            for (TypeElement enclosed : ElementFilter
-                    .typesIn(enclosing.getEnclosedElements())) {
+            for (TypeElement enclosed : ElementFilter.typesIn(enclosing.getEnclosedElements())) {
                 if (enclosed.getSimpleName().contentEquals(enclosedName)) {
                     enclosing = enclosed;
                     break;
@@ -142,23 +138,19 @@ public class Elements implements javax.lang.model.util.Elements {
                 type -> ctx.getTypes().isSameType(type, annotationClass));
     }
 
-    public AnnotationMirror getAnnotationMirror(Element element,
-            String annotationClassName) {
+    public AnnotationMirror getAnnotationMirror(Element element, String annotationClassName) {
         return getAnnotationMirrorInternal(element, type -> {
             TypeElement typeElement = ctx.getTypes().toTypeElement(type);
             if (typeElement == null) {
                 return false;
             }
-            return typeElement.getQualifiedName()
-                    .contentEquals(annotationClassName);
+            return typeElement.getQualifiedName().contentEquals(annotationClassName);
         });
     }
 
-    private AnnotationMirror getAnnotationMirrorInternal(
-            Element element, 
+    private AnnotationMirror getAnnotationMirrorInternal(Element element,
             Predicate<DeclaredType> predicate) {
-        for (AnnotationMirror annotationMirror : element
-                .getAnnotationMirrors()) {
+        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
             DeclaredType annotationType = annotationMirror.getAnnotationType();
             if (predicate.test(annotationType)) {
                 return annotationMirror;
@@ -167,8 +159,7 @@ public class Elements implements javax.lang.model.util.Elements {
         return null;
     }
 
-    public ExecutableElement getNoArgConstructor(
-            TypeElement typeElement) {
+    public ExecutableElement getNoArgConstructor(TypeElement typeElement) {
         for (ExecutableElement constructor : ElementFilter
                 .constructorsIn(typeElement.getEnclosedElements())) {
             if (constructor.getParameters().isEmpty()) {
@@ -178,8 +169,7 @@ public class Elements implements javax.lang.model.util.Elements {
         return null;
     }
 
-    public Map<String, AnnotationValue> getValuesWithDefaults(
-            AnnotationMirror annotationMirror) {
+    public Map<String, AnnotationValue> getValuesWithDefaults(AnnotationMirror annotationMirror) {
         Map<String, AnnotationValue> map = new HashMap<>();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : getElementValuesWithDefaults(
                 annotationMirror).entrySet()) {
@@ -206,34 +196,33 @@ public class Elements implements javax.lang.model.util.Elements {
     public List<VariableElement> getUnhiddenFields(TypeElement typeElement,
             Predicate<TypeElement> filter) {
         List<VariableElement> allFields = hierarchy(typeElement).stream()
-                .filter(filter).flatMap(t -> {
-                    List<VariableElement> fields = ElementFilter
-                            .fieldsIn(t.getEnclosedElements());
+                .filter(filter)
+                .flatMap(t -> {
+                    List<VariableElement> fields = ElementFilter.fieldsIn(t.getEnclosedElements());
                     Collections.reverse(fields);
                     return fields.stream();
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
         Collections.reverse(allFields);
         return allFields.stream()
-                .filter(hidden -> !allFields.stream()
-                        .anyMatch(hider -> hides(hider, hidden)))
+                .filter(hidden -> !allFields.stream().anyMatch(hider -> hides(hider, hidden)))
                 .collect(Collectors.toList());
     }
 
-    public ExecutableElement getMethodElement(Class<?> clazz,
-            String methodName, Class<?>... parameterClasses) {
+    public ExecutableElement getMethodElement(Class<?> clazz, String methodName,
+            Class<?>... parameterClasses) {
         List<Class<?>> parameters = Arrays.asList(parameterClasses);
         TypeElement typeElement = getTypeElement(clazz);
         return hierarchy(typeElement).stream()
-                .flatMap(t -> ElementFilter.methodsIn(t.getEnclosedElements())
-                        .stream())
+                .flatMap(t -> ElementFilter.methodsIn(t.getEnclosedElements()).stream())
                 .filter(m -> m.getSimpleName().contentEquals(methodName))
                 .filter(m -> m.getParameters().size() == parameters.size())
                 .filter(m -> isSameType(m.getParameters(), parameters))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 
-    private <E extends Element> boolean isSameType(List<E> lhs,
-            List<Class<?>> rhs) {
+    private <E extends Element> boolean isSameType(List<E> lhs, List<Class<?>> rhs) {
         int i = 0;
         for (Iterator<E> it = lhs.iterator(); it.hasNext();) {
             TypeMirror parameterType = it.next().asType();
@@ -246,8 +235,7 @@ public class Elements implements javax.lang.model.util.Elements {
         return true;
     }
 
-    public LinkedHashMap<String, TypeMirror> getParameterTypeMap(
-            ExecutableElement methodElement) {
+    public LinkedHashMap<String, TypeMirror> getParameterTypeMap(ExecutableElement methodElement) {
         LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<String, TypeMirror>();
         for (VariableElement parameter : methodElement.getParameters()) {
             String name = parameter.getSimpleName().toString();
@@ -262,8 +250,7 @@ public class Elements implements javax.lang.model.util.Elements {
         return elementUtls.getElementValuesWithDefaults(annotationMirror);
     }
 
-    public List<? extends AnnotationMirror> getAllAnnotationMirrors(
-            Element element) {
+    public List<? extends AnnotationMirror> getAllAnnotationMirrors(Element element) {
         return elementUtls.getAllAnnotationMirrors(element);
     }
 
@@ -303,8 +290,8 @@ public class Elements implements javax.lang.model.util.Elements {
         return elementUtls.isFunctionalInterface(typeElement);
     }
 
-    public boolean overrides(ExecutableElement overrider,
-            ExecutableElement overridden, TypeElement typeElement) {
+    public boolean overrides(ExecutableElement overrider, ExecutableElement overridden,
+            TypeElement typeElement) {
         return elementUtls.overrides(overrider, overridden, typeElement);
     }
 

@@ -64,8 +64,8 @@ public class Result<ENTITY> {
      * エンティティを返します。
      * 
      * @return エンティティ
-     * @see <a
-     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     * @see <a href=
+     *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>
      */
     public ENTITY component1() {
@@ -76,8 +76,8 @@ public class Result<ENTITY> {
      * 更新件数を返します。
      * 
      * @return 更新件数
-     * @see <a
-     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     * @see <a href=
+     *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>
      */
     public int component2() {

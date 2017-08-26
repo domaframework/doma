@@ -41,8 +41,7 @@ public interface MapKeyNaming {
      * @throws DomaNullPointerException
      *             {@code mapKeyNamingType} もしくは {@code text} が {@code null} の場合
      */
-    default String apply(Method method, MapKeyNamingType mapKeyNamingType,
-            String text) {
+    default String apply(Method method, MapKeyNamingType mapKeyNamingType, String text) {
         if (mapKeyNamingType == null) {
             throw new DomaNullPointerException("mapKeyNamingType");
         }

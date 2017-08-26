@@ -37,8 +37,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author bakenezumi
  *
  */
-public abstract class SqlBatchModifyQuery extends AbstractQuery implements
-    BatchModifyQuery {
+public abstract class SqlBatchModifyQuery extends AbstractQuery implements BatchModifyQuery {
 
     protected final SqlKind kind;
 
@@ -89,10 +88,9 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements
                 }
             };
             ExpressionEvaluator evaluator = new ExpressionEvaluator(map,
-                    config.getDialect().getExpressionFunctions(),
-                    config.getClassHelper());
-            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                    kind, null, evaluator, sqlLogType);
+                    config.getDialect().getExpressionFunctions(), config.getClassHelper());
+            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, kind, null,
+                    evaluator, sqlLogType);
             PreparedSql sql = sqlBuilder.build(sqlNode, this::comment);
             sqls.add(sql);
         });

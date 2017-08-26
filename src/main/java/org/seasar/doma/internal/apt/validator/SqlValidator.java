@@ -77,8 +77,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     protected final ExpressionValidator expressionValidator;
 
     public SqlValidator(Context ctx, ExecutableElement methodElement,
-            LinkedHashMap<String, TypeMirror> parameterTypeMap, String path,
-            boolean expandable, boolean populatable) {
+            LinkedHashMap<String, TypeMirror> parameterTypeMap, String path, boolean expandable,
+            boolean populatable) {
         assertNotNull(ctx, methodElement, parameterTypeMap, path);
         this.ctx = ctx;
         this.methodElement = methodElement;
@@ -86,25 +86,19 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         this.path = path;
         this.expandable = expandable;
         this.populatable = populatable;
-        expressionValidator = new ExpressionValidator(ctx, methodElement,
-                parameterTypeMap);
+        expressionValidator = new ExpressionValidator(ctx, methodElement, parameterTypeMap);
     }
 
     public void validate(SqlNode sqlNode) {
         try {
             sqlNode.accept(this, null);
-            Set<String> validatedParameterNames = expressionValidator
-                    .getValidatedParameterNames();
+            Set<String> validatedParameterNames = expressionValidator.getValidatedParameterNames();
             for (String parameterName : parameterTypeMap.keySet()) {
                 if (!validatedParameterNames.contains(parameterName)) {
-                    for (VariableElement parameterElement : methodElement
-                            .getParameters()) {
-                        if (parameterElement.getSimpleName().contentEquals(
-                                parameterName)) {
-                            ctx.getNotifier().send(Kind.ERROR,
-                                    Message.DOMA4122,
-                                    parameterElement, new Object[] { path,
-                                            parameterName });
+                    for (VariableElement parameterElement : methodElement.getParameters()) {
+                        if (parameterElement.getSimpleName().contentEquals(parameterName)) {
+                            ctx.getNotifier().send(Kind.ERROR, Message.DOMA4122, parameterElement,
+                                    new Object[] { path, parameterName });
                         }
                     }
                 }
@@ -129,21 +123,20 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     protected Void visitValueNode(ValueNode node, Void p) {
         SqlLocation location = node.getLocation();
         String variableName = node.getVariableName();
-        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
-                variableName);
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location, variableName);
         if (node.getWordNode() != null) {
             if (!isScalar(typeDeclaration)) {
                 String sql = getSql(location);
-                throw new AptException(Message.DOMA4153, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                        location.getPosition(), variableName,
-                        typeDeclaration.getBinaryName() });
+                throw new AptException(Message.DOMA4153, methodElement,
+                        new Object[] { path, sql, location.getLineNumber(), location.getPosition(),
+                                variableName, typeDeclaration.getBinaryName() });
             }
         } else {
             if (!isScalarIterable(typeDeclaration)) {
                 String sql = getSql(location);
-                throw new AptException(Message.DOMA4161, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                        location.getPosition(), variableName,
-                        typeDeclaration.getBinaryName() });
+                throw new AptException(Message.DOMA4161, methodElement,
+                        new Object[] { path, sql, location.getLineNumber(), location.getPosition(),
+                                variableName, typeDeclaration.getBinaryName() });
             }
         }
         visitNode(node, p);
@@ -158,22 +151,20 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
     protected boolean isScalarIterable(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
-        IterableCtType iterableCtType = ctx.getCtTypes()
-                .newIterableCtType(typeMirror);
+        IterableCtType iterableCtType = ctx.getCtTypes().newIterableCtType(typeMirror);
         if (iterableCtType != null) {
-            return iterableCtType.getElementCtType().accept(
-                    new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
-                            false) {
+            return iterableCtType.getElementCtType()
+                    .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
 
                         @Override
-                        public Boolean visitBasicCtType(BasicCtType ctType,
-                                Void p) throws RuntimeException {
+                        public Boolean visitBasicCtType(BasicCtType ctType, Void p)
+                                throws RuntimeException {
                             return true;
                         }
 
                         @Override
-                        public Boolean visitHolderCtType(HolderCtType ctType,
-                                Void p) throws RuntimeException {
+                        public Boolean visitHolderCtType(HolderCtType ctType, Void p)
+                                throws RuntimeException {
                             return true;
                         }
 
@@ -195,13 +186,12 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     public Void visitIfNode(IfNode node, Void p) {
         SqlLocation location = node.getLocation();
         String expression = node.getExpression();
-        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
-                expression);
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
         if (!typeDeclaration.isBooleanType()) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4140, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getBinaryName() });
+            throw new AptException(Message.DOMA4140, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(), location.getPosition(),
+                            expression, typeDeclaration.getBinaryName() });
         }
         visitNode(node, p);
         return null;
@@ -211,13 +201,12 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     public Void visitElseifNode(ElseifNode node, Void p) {
         SqlLocation location = node.getLocation();
         String expression = node.getExpression();
-        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
-                expression);
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
         if (!typeDeclaration.isBooleanType()) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4141, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getBinaryName() });
+            throw new AptException(Message.DOMA4141, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(), location.getPosition(),
+                            expression, typeDeclaration.getBinaryName() });
         }
         visitNode(node, p);
         return null;
@@ -228,55 +217,47 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         SqlLocation location = node.getLocation();
         String identifier = node.getIdentifier();
         String expression = node.getExpression();
-        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
-                expression);
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
         TypeMirror typeMirror = typeDeclaration.getType();
         if (!ctx.getTypes().isAssignable(typeMirror, Iterable.class)) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4149, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getBinaryName() });
+            throw new AptException(Message.DOMA4149, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(), location.getPosition(),
+                            expression, typeDeclaration.getBinaryName() });
         }
         DeclaredType declaredType = ctx.getTypes().toDeclaredType(typeMirror);
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.isEmpty()) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4150, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getBinaryName() });
+            throw new AptException(Message.DOMA4150, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(), location.getPosition(),
+                            expression, typeDeclaration.getBinaryName() });
         }
 
-        TypeMirror originalIdentifierType = expressionValidator
-                .removeParameterType(identifier);
+        TypeMirror originalIdentifierType = expressionValidator.removeParameterType(identifier);
         expressionValidator.putParameterType(identifier, typeArgs.get(0));
         String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
-        TypeMirror originalHasNextType = expressionValidator
-                .removeParameterType(hasNextVariable);
+        TypeMirror originalHasNextType = expressionValidator.removeParameterType(hasNextVariable);
         expressionValidator.putParameterType(hasNextVariable,
                 ctx.getTypes().getType(boolean.class));
         String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
-        TypeMirror originalIndexType = expressionValidator
-                .removeParameterType(indexVariable);
-        expressionValidator.putParameterType(indexVariable,
-                ctx.getTypes().getType(int.class));
+        TypeMirror originalIndexType = expressionValidator.removeParameterType(indexVariable);
+        expressionValidator.putParameterType(indexVariable, ctx.getTypes().getType(int.class));
         visitNode(node, p);
         if (originalIdentifierType == null) {
             expressionValidator.removeParameterType(identifier);
         } else {
-            expressionValidator.putParameterType(identifier,
-                    originalIdentifierType);
+            expressionValidator.putParameterType(identifier, originalIdentifierType);
         }
         if (originalHasNextType == null) {
             expressionValidator.removeParameterType(hasNextVariable);
         } else {
-            expressionValidator.putParameterType(hasNextVariable,
-                    originalHasNextType);
+            expressionValidator.putParameterType(hasNextVariable, originalHasNextType);
         }
         if (originalIndexType == null) {
             expressionValidator.removeParameterType(indexVariable);
         } else {
-            expressionValidator.putParameterType(indexVariable,
-                    originalIndexType);
+            expressionValidator.putParameterType(indexVariable, originalIndexType);
         }
         return null;
     }
@@ -286,8 +267,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         if (!expandable) {
             SqlLocation location = node.getLocation();
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4257, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition() });
+            throw new AptException(Message.DOMA4257, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(), location.getPosition() });
         }
         return visitNode(node, p);
     }
@@ -297,8 +278,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         if (!populatable) {
             SqlLocation location = node.getLocation();
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4270, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition() });
+            throw new AptException(Message.DOMA4270, methodElement,
+                    new Object[] { path, sql, location.getLineNumber(), location.getPosition() });
         }
         Iterator<String> it = parameterTypeMap.keySet().iterator();
         if (it.hasNext()) {
@@ -319,8 +300,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         return null;
     }
 
-    protected TypeDeclaration validateExpressionVariable(SqlLocation location,
-            String expression) {
+    protected TypeDeclaration validateExpressionVariable(SqlLocation location, String expression) {
         ExpressionNode expressionNode = parseExpression(location, expression);
         try {
             return expressionValidator.validate(expressionNode);
@@ -328,20 +308,19 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             throw e;
         } catch (AptException e) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4092, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition(), e.getMessage() });
+            throw new AptException(Message.DOMA4092, methodElement, new Object[] { path, sql,
+                    location.getLineNumber(), location.getPosition(), e.getMessage() });
         }
     }
 
-    protected ExpressionNode parseExpression(SqlLocation location,
-            String expression) {
+    protected ExpressionNode parseExpression(SqlLocation location, String expression) {
         try {
             ExpressionParser parser = new ExpressionParser(expression);
             return parser.parse();
         } catch (ExpressionException e) {
             String sql = getSql(location);
-            throw new AptException(Message.DOMA4092, methodElement, new Object[] { path, sql, location.getLineNumber(),
-                    location.getPosition(), e.getMessage() });
+            throw new AptException(Message.DOMA4092, methodElement, new Object[] { path, sql,
+                    location.getLineNumber(), location.getPosition(), e.getMessage() });
         }
     }
 

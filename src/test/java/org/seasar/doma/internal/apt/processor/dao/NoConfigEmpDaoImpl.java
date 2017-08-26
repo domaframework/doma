@@ -43,8 +43,7 @@ public class NoConfigEmpDaoImpl extends AbstractDao implements NoConfigEmpDao {
     }
 
     @Override
-    public List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions options) {
+    public List<Emp> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions options) {
         return null;
     }
 

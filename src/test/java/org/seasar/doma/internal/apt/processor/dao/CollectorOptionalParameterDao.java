@@ -32,8 +32,7 @@ import example.holder.PhoneNumber;
 public interface CollectorOptionalParameterDao {
 
     @Select(strategy = SelectType.COLLECT)
-    <R> R selectById(Integer id,
-            Collector<Optional<PhoneNumber>, ?, R> collector);
+    <R> R selectById(Integer id, Collector<Optional<PhoneNumber>, ?, R> collector);
 
     @Select(strategy = SelectType.COLLECT)
     <R extends Number> R select(Collector<Optional<String>, ?, R> mapper);

@@ -23,8 +23,7 @@ public class TypeParameterDeclaration {
 
     private final TypeMirror actualType;
 
-    TypeParameterDeclaration(TypeMirror formalType,
-            TypeMirror actualType) {
+    TypeParameterDeclaration(TypeMirror formalType, TypeMirror actualType) {
         this.formalType = formalType;
         this.actualType = actualType;
     }

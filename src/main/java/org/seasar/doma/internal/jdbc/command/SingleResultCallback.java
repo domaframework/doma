@@ -27,8 +27,7 @@ import org.seasar.doma.jdbc.IterationContext;
  * @param <TARGET>
  *            処理対象
  */
-public class SingleResultCallback<TARGET> implements
-        IterationCallback<TARGET, TARGET> {
+public class SingleResultCallback<TARGET> implements IterationCallback<TARGET, TARGET> {
 
     protected final Supplier<TARGET> supplier;
 

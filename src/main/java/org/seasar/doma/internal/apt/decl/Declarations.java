@@ -59,16 +59,16 @@ public class Declarations {
         List<TypeParameterDeclaration> typeParameterDeclarations = createTypeParameterDeclarations(
                 type);
         List<TypeDeclaration> supertypeDeclarations = ctx.getTypes()
-                .supertypes(type).stream().map(this::newTypeDeclaration)
+                .supertypes(type)
+                .stream()
+                .map(this::newTypeDeclaration)
                 .collect(Collectors.toList());
-        return new TypeDeclaration(ctx, type, typeParameterDeclarations,
-                supertypeDeclarations);
+        return new TypeDeclaration(ctx, type, typeParameterDeclarations, supertypeDeclarations);
     }
 
     public TypeDeclaration newUnknownTypeDeclaration() {
         TypeMirror type = ctx.getTypes().getNoType(TypeKind.NONE);
-        return new TypeDeclaration(ctx, type, Collections.emptyList(),
-                Collections.emptyList());
+        return new TypeDeclaration(ctx, type, Collections.emptyList(), Collections.emptyList());
     }
 
     public TypeDeclaration newBooleanTypeDeclaration() {
@@ -76,25 +76,23 @@ public class Declarations {
         return newTypeDeclaration(type);
     }
 
-    public List<TypeParameterDeclaration> createTypeParameterDeclarations(
-            TypeMirror type) {
+    public List<TypeParameterDeclaration> createTypeParameterDeclarations(TypeMirror type) {
         assertNotNull(type);
         TypeElement typeElement = ctx.getTypes().toTypeElement(type);
         if (typeElement == null) {
             return Collections.emptyList();
         }
-        Stream<TypeMirror> formalParams = typeElement.getTypeParameters()
-                .stream().map(Element::asType);
+        Stream<TypeMirror> formalParams = typeElement.getTypeParameters().stream().map(
+                Element::asType);
         DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
-        Stream<TypeMirror> actualParams = declaredType
-                .getTypeArguments().stream().map(Function.identity());
+        Stream<TypeMirror> actualParams = declaredType.getTypeArguments().stream().map(
+                Function.identity());
         return Zip.stream(formalParams, actualParams)
                 .map(p -> newTypeParameterDeclaration(p.fst, p.snd))
                 .collect(Collectors.toList());
     }
 
-    public FieldDeclaration newFieldDeclaration(
-            VariableElement fieldElement,
+    public FieldDeclaration newFieldDeclaration(VariableElement fieldElement,
             List<TypeParameterDeclaration> typeParameterDeclarations) {
         assertNotNull(fieldElement, typeParameterDeclarations);
         assertTrue(
@@ -107,27 +105,23 @@ public class Declarations {
         return new FieldDeclaration(fieldElement, typeDeclaration);
     }
 
-    public ConstructorDeclaration newConstructorDeclaration(
-            ExecutableElement constructorElement) {
+    public ConstructorDeclaration newConstructorDeclaration(ExecutableElement constructorElement) {
         assertNotNull(constructorElement);
         assertTrue(constructorElement.getKind() == ElementKind.CONSTRUCTOR);
         return new ConstructorDeclaration(constructorElement);
     }
 
-    public MethodDeclaration newMethodDeclaration(
-            ExecutableElement methodElement,
+    public MethodDeclaration newMethodDeclaration(ExecutableElement methodElement,
             List<TypeParameterDeclaration> typeParameterDeclarations) {
         assertNotNull(methodElement, typeParameterDeclarations);
         assertTrue(methodElement.getKind() == ElementKind.METHOD);
-        TypeMirror returnTypeMirror = resolveTypeParameter(
-                methodElement.getReturnType(),
+        TypeMirror returnTypeMirror = resolveTypeParameter(methodElement.getReturnType(),
                 typeParameterDeclarations);
-        TypeDeclaration returnTypeDeclaration = newTypeDeclaration(
-                returnTypeMirror);
+        TypeDeclaration returnTypeDeclaration = newTypeDeclaration(returnTypeMirror);
         return new MethodDeclaration(methodElement, returnTypeDeclaration);
     }
 
-    public  TypeParameterDeclaration newTypeParameterDeclaration(TypeMirror formalType,
+    public TypeParameterDeclaration newTypeParameterDeclaration(TypeMirror formalType,
             TypeMirror actualType) {
         assertNotNull(formalType, actualType);
         return new TypeParameterDeclaration(formalType, actualType);

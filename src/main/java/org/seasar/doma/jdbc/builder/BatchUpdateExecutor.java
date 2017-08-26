@@ -38,10 +38,9 @@ import org.seasar.doma.jdbc.query.SqlBatchUpdateQuery;
  * <h4>Java</h4>
  *
  * <pre>
- * List&lt;Employee&gt; employees = Arrays.asList(new Employee[] {
- *     new Employee(10, &quot;SMITH&quot;, new BigDecimal(&quot;1000&quot;)),
- *     new Employee(20, &quot;ALLEN&quot;, new BigDecimal(&quot;2000&quot;))
- * });
+ * List&lt;Employee&gt; employees = Arrays
+ *         .asList(new Employee[] { new Employee(10, &quot;SMITH&quot;, new BigDecimal(&quot;1000&quot;)),
+ *                 new Employee(20, &quot;ALLEN&quot;, new BigDecimal(&quot;2000&quot;)) });
  * BatchUpdateExecutor executor = BatchUpdateExecutor.newInstance(config);
  * executor.batchSize(10);
  * executor.execute(employees, (emp, builder) -&gt; {
@@ -181,14 +180,12 @@ public class BatchUpdateExecutor {
      * @param <P>
      *            パラメータの型
      * @param params
-     *             1要素が1クエリのパラメータの元となる {@link java.lang.Iterable} なもの
+     *            1要素が1クエリのパラメータの元となる {@link java.lang.Iterable} なもの
      * @param buildConsumer
-     *             {@link BatchBuilder} を使って1回分のクエリを組み立てるラムダ式。
-     *             第一パラメータには params の要素が、
-     *             第二パラメータには {@link BatchBuilder} のインスタンスが渡ります。
-     * @return 更新された件数の配列。
-     *             戻り値の配列の要素の数はパラメータのparamsの要素の数と等しくなります。
-     *             配列のそれぞれの要素が更新された件数を返します。
+     *            {@link BatchBuilder} を使って1回分のクエリを組み立てるラムダ式。 第一パラメータには params
+     *            の要素が、 第二パラメータには {@link BatchBuilder} のインスタンスが渡ります。
+     * @return 更新された件数の配列。 戻り値の配列の要素の数はパラメータのparamsの要素の数と等しくなります。
+     *         配列のそれぞれの要素が更新された件数を返します。
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      * @throws UniqueConstraintException
@@ -219,7 +216,7 @@ public class BatchUpdateExecutor {
      * 
      * @return 組み立てられたSQL
      */
-    public List<? extends Sql<?>> getSqls() {      
+    public List<? extends Sql<?>> getSqls() {
         return query.getSqls();
     }
 

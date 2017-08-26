@@ -29,8 +29,7 @@ public class EntityResultListParameterMeta implements ResultListParameterMeta {
 
     private final boolean ensureResultMapping;
 
-    public EntityResultListParameterMeta(EntityCtType entityCtType,
-            boolean ensureResultMapping) {
+    public EntityResultListParameterMeta(EntityCtType entityCtType, boolean ensureResultMapping) {
         assertNotNull(entityCtType);
         this.entityCtType = entityCtType;
         this.ensureResultMapping = ensureResultMapping;

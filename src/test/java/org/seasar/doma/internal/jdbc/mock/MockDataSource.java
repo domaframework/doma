@@ -47,8 +47,7 @@ public class MockDataSource extends MockWrapper implements DataSource {
     }
 
     @Override
-    public Connection getConnection(String username, String password)
-            throws SQLException {
+    public Connection getConnection(String username, String password) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }

@@ -27,12 +27,11 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
  *            基本型のコンテナ
  * 
  */
-public class ScalarSingleResultHandler<BASIC, CONTAINER> extends
-        AbstractSingleResultHandler<CONTAINER> {
+public class ScalarSingleResultHandler<BASIC, CONTAINER>
+        extends AbstractSingleResultHandler<CONTAINER> {
 
     public ScalarSingleResultHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
         super(new ScalarIterationHandler<>(supplier,
-                new SingleResultCallback<CONTAINER>(() -> supplier.get()
-                        .getDefault())));
+                new SingleResultCallback<CONTAINER>(() -> supplier.get().getDefault())));
     }
 }

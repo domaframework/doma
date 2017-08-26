@@ -37,8 +37,8 @@ public class StandardCountGettingTransformerTest extends TestCase {
         StandardCountGettingTransformer transformer = new StandardCountGettingTransformer();
         SqlParser parser = new SqlParser("select * from emp");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }
@@ -48,8 +48,8 @@ public class StandardCountGettingTransformerTest extends TestCase {
         StandardCountGettingTransformer transformer = new StandardCountGettingTransformer();
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
         PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
         assertEquals(expected, sql.getRawSql());
     }

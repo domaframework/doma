@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
  * @author taedium
  * 
  */
-public class NoDefaultConstructorEntityListener implements
-        EntityListener<NoDefaultConstructorEntityListenerEntity> {
+public class NoDefaultConstructorEntityListener
+        implements EntityListener<NoDefaultConstructorEntityListenerEntity> {
 
     public NoDefaultConstructorEntityListener(int i) {
     }

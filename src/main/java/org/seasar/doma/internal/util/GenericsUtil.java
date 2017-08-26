@@ -28,12 +28,10 @@ import java.lang.reflect.TypeVariable;
  */
 public final class GenericsUtil {
 
-    public static Class<?> inferTypeArgument(Class<?> clazz,
-            TypeVariable<?> typeVariable) {
+    public static Class<?> inferTypeArgument(Class<?> clazz, TypeVariable<?> typeVariable) {
         assertNotNull(clazz, typeVariable);
 
-        TypeArgumentInferrer inferrer = new TypeArgumentInferrer(clazz,
-                typeVariable);
+        TypeArgumentInferrer inferrer = new TypeArgumentInferrer(clazz, typeVariable);
         Type arg = inferrer.infer();
         if (arg instanceof Class) {
             return (Class<?>) arg;
@@ -55,8 +53,7 @@ public final class GenericsUtil {
             this.index = getTypeParameterIndex(genericDeclaration, typeVariable);
         }
 
-        private int getTypeParameterIndex(
-                GenericDeclaration genericDeclaration,
+        private int getTypeParameterIndex(GenericDeclaration genericDeclaration,
                 TypeVariable<?> typeVariable) {
             Type[] types = genericDeclaration.getTypeParameters();
             for (int i = 0, len = types.length; i < len; i++) {
@@ -80,8 +77,7 @@ public final class GenericsUtil {
             Class<?>[] interfaces = clazz.getInterfaces();
             Type[] interfaceTypes = clazz.getGenericInterfaces();
             for (int i = 0; i < interfaces.length; i++) {
-                Type arg = getTypeArgumentRecursive(interfaces[i],
-                        interfaceTypes[i]);
+                Type arg = getTypeArgumentRecursive(interfaces[i], interfaceTypes[i]);
                 if (arg != null) {
                     return arg;
                 }
@@ -122,8 +118,7 @@ public final class GenericsUtil {
         }
 
         protected Type getTypeArgument(Class<?> clazz, Type type) {
-            if (genericDeclaration == clazz
-                    && type instanceof ParameterizedType) {
+            if (genericDeclaration == clazz && type instanceof ParameterizedType) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type[] args = parameterizedType.getActualTypeArguments();
                 if (index < args.length) {

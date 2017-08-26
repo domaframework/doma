@@ -32,29 +32,22 @@ public class StringUtilTest extends TestCase {
     }
 
     public void testFromSnakeCaseToCamelCase() throws Exception {
-        assertEquals("aaaBbbCcc",
-                StringUtil.fromSnakeCaseToCamelCase("AAA_BBB_CCC"));
-        assertEquals("aaaBbbCcc",
-                StringUtil.fromSnakeCaseToCamelCase("aaa_bbb_ccc"));
+        assertEquals("aaaBbbCcc", StringUtil.fromSnakeCaseToCamelCase("AAA_BBB_CCC"));
+        assertEquals("aaaBbbCcc", StringUtil.fromSnakeCaseToCamelCase("aaa_bbb_ccc"));
         assertEquals("abc", StringUtil.fromSnakeCaseToCamelCase("ABC"));
         assertEquals("abc", StringUtil.fromSnakeCaseToCamelCase("abc"));
     }
 
     public void testFromCamelCaseToSnakeCase() throws Exception {
-        assertEquals("aaa_bbb_ccc",
-                StringUtil.fromCamelCaseToSnakeCase("aaaBbbCcc"));
+        assertEquals("aaa_bbb_ccc", StringUtil.fromCamelCaseToSnakeCase("aaaBbbCcc"));
         assertEquals("abc", StringUtil.fromCamelCaseToSnakeCase("abc"));
-        assertEquals("aa1_bbb_ccc",
-                StringUtil.fromCamelCaseToSnakeCase("aa1BbbCcc"));
+        assertEquals("aa1_bbb_ccc", StringUtil.fromCamelCaseToSnakeCase("aa1BbbCcc"));
     }
 
     public void testFromCamelCaseToSnakeCaseWithLenient() throws Exception {
-        assertEquals("aaa_bbb_ccc",
-                StringUtil.fromCamelCaseToSnakeCaseWithLenient("aaaBbbCcc"));
-        assertEquals("abc",
-                StringUtil.fromCamelCaseToSnakeCaseWithLenient("abc"));
-        assertEquals("aa1bbb_ccc",
-                StringUtil.fromCamelCaseToSnakeCaseWithLenient("aa1BbbCcc"));
+        assertEquals("aaa_bbb_ccc", StringUtil.fromCamelCaseToSnakeCaseWithLenient("aaaBbbCcc"));
+        assertEquals("abc", StringUtil.fromCamelCaseToSnakeCaseWithLenient("abc"));
+        assertEquals("aa1bbb_ccc", StringUtil.fromCamelCaseToSnakeCaseWithLenient("aa1BbbCcc"));
     }
 
     public void testIsWhitespace() throws Exception {

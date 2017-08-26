@@ -26,8 +26,7 @@ import org.seasar.doma.jdbc.SqlKind;
  * @param <RESULT>
  *            結果
  */
-public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements
-        FunctionQuery<RESULT> {
+public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements FunctionQuery<RESULT> {
 
     protected ResultParameter<RESULT> resultParameter;
 
@@ -42,9 +41,8 @@ public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements
     }
 
     protected void prepareSql() {
-        CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                SqlKind.FUNCTION, qualifiedName, parameters, sqlLogType,
-                resultParameter);
+        CallableSqlBuilder builder = new CallableSqlBuilder(config, SqlKind.FUNCTION, qualifiedName,
+                parameters, sqlLogType, resultParameter);
         sql = builder.build(this::comment);
     }
 

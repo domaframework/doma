@@ -27,8 +27,7 @@ import org.seasar.doma.message.Message;
 public class ExpressionExceptionTest extends TestCase {
 
     public void testMethodInvocationFailed() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new java.util.ArrayList().get(0)");
+        ExpressionParser parser = new ExpressionParser("new java.util.ArrayList().get(0)");
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {
@@ -91,8 +90,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
 
     public void testConstructorNotFound() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new java.lang.String(10B)");
+        ExpressionParser parser = new ExpressionParser("new java.lang.String(10B)");
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {
@@ -105,8 +103,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
 
     public void testConstructorInvocationFailed() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new java.util.ArrayList(-1)");
+        ExpressionParser parser = new ExpressionParser("new java.util.ArrayList(-1)");
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {

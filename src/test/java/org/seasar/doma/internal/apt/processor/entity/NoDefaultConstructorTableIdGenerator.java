@@ -21,8 +21,7 @@ import org.seasar.doma.jdbc.id.BuiltinTableIdGenerator;
  * @author taedium
  * 
  */
-public class NoDefaultConstructorTableIdGenerator extends
-        BuiltinTableIdGenerator {
+public class NoDefaultConstructorTableIdGenerator extends BuiltinTableIdGenerator {
 
     private NoDefaultConstructorTableIdGenerator() {
     }

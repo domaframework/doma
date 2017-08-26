@@ -35,20 +35,18 @@ public class BlobType extends AbstractJdbcType<Blob> {
     }
 
     @Override
-    protected Blob doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Blob doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getBlob(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Blob value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Blob value)
+            throws SQLException {
         preparedStatement.setBlob(index, value);
     }
 
     @Override
-    protected Blob doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Blob doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getBlob(index);
     }
 

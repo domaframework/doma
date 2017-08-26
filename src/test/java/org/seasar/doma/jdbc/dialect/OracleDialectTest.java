@@ -48,12 +48,10 @@ public class OracleDialectTest extends TestCase {
         assertEquals("a!!a!%a!_a!％a!＿%", functions.prefix("a!a%a_a％a＿", '!'));
     }
 
-    public void testExpressionFunctions_prefix_escapeWithBackslash()
-            throws Exception {
+    public void testExpressionFunctions_prefix_escapeWithBackslash() throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%",
-                functions.prefix("a\\a%a_a％a＿", '\\'));
+        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿", '\\'));
     }
 
     public void testDateFormat() throws Exception {
@@ -84,8 +82,8 @@ public class OracleDialectTest extends TestCase {
     public void testUtilDateFormat() throws Exception {
         OracleDialect dialect = new OracleDialect();
         SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
-        UtilDateWrapper wrapper = new UtilDateWrapper(new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:sss.SSS").parse("2009-01-23 12:34:56.789"));
+        UtilDateWrapper wrapper = new UtilDateWrapper(
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:sss.SSS").parse("2009-01-23 12:34:56.789"));
         assertEquals("timestamp'2009-01-23 12:34:56.789'",
                 wrapper.accept(visitor, new ConvertToLogFormatFunction(), null));
     }

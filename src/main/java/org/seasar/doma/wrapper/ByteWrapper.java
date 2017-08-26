@@ -23,8 +23,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class ByteWrapper extends AbstractWrapper<Byte> implements
-        NumberWrapper<Byte> {
+public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<Byte> {
 
     /**
      * インスタンスを構築します。
@@ -70,8 +69,8 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
     }
 
     @Override
-    public <R, P, Q, TH extends Throwable> R accept(
-            WrapperVisitor<R, P, Q, TH> visitor, P p, Q q) throws TH {
+    public <R, P, Q, TH extends Throwable> R accept(WrapperVisitor<R, P, Q, TH> visitor, P p, Q q)
+            throws TH {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }

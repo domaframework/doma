@@ -53,44 +53,31 @@ public class ScalarsTest extends TestCase {
         assertNotNull(Scalars.wrap(true, boolean.class, false, classHelper));
         assertNotNull(Scalars.wrap(true, Boolean.class, false, classHelper));
         assertNotNull(Scalars.wrap((byte) 1, byte.class, false, classHelper));
-        assertNotNull(Scalars.wrap(Byte.valueOf((byte) 1), Byte.class, false,
-                classHelper));
+        assertNotNull(Scalars.wrap(Byte.valueOf((byte) 1), Byte.class, false, classHelper));
         assertNotNull(Scalars.wrap((short) 1, short.class, false, classHelper));
-        assertNotNull(Scalars.wrap(Short.valueOf((short) 1), Short.class, false,
-                classHelper));
+        assertNotNull(Scalars.wrap(Short.valueOf((short) 1), Short.class, false, classHelper));
         assertNotNull(Scalars.wrap(1, int.class, false, classHelper));
-        assertNotNull(Scalars.wrap(Integer.valueOf(1), Integer.class, false,
-                classHelper));
+        assertNotNull(Scalars.wrap(Integer.valueOf(1), Integer.class, false, classHelper));
         assertNotNull(Scalars.wrap(1L, long.class, false, classHelper));
-        assertNotNull(
-                Scalars.wrap(Long.valueOf(1), Long.class, false, classHelper));
+        assertNotNull(Scalars.wrap(Long.valueOf(1), Long.class, false, classHelper));
         assertNotNull(Scalars.wrap(1f, float.class, false, classHelper));
-        assertNotNull(Scalars.wrap(Float.valueOf(1), Float.class, false,
-                classHelper));
+        assertNotNull(Scalars.wrap(Float.valueOf(1), Float.class, false, classHelper));
         assertNotNull(Scalars.wrap(1d, double.class, false, classHelper));
-        assertNotNull(Scalars.wrap(Double.valueOf(1), Double.class, false,
-                classHelper));
-        assertNotNull(Scalars.wrap(new byte[] { 1 }, byte[].class, false,
-                classHelper));
+        assertNotNull(Scalars.wrap(Double.valueOf(1), Double.class, false, classHelper));
+        assertNotNull(Scalars.wrap(new byte[] { 1 }, byte[].class, false, classHelper));
         assertNotNull(Scalars.wrap("", String.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new BigDecimal("1"), BigDecimal.class,
-                false, classHelper));
-        assertNotNull(Scalars.wrap(new BigInteger("1"), BigInteger.class,
-                false, classHelper));
-        assertNotNull(Scalars.wrap(Date.valueOf("2009-01-23"), Date.class,
-                false, classHelper));
-        assertNotNull(Scalars.wrap(Time.valueOf("12:34:56"), Time.class, false,
+        assertNotNull(Scalars.wrap(new BigDecimal("1"), BigDecimal.class, false, classHelper));
+        assertNotNull(Scalars.wrap(new BigInteger("1"), BigInteger.class, false, classHelper));
+        assertNotNull(Scalars.wrap(Date.valueOf("2009-01-23"), Date.class, false, classHelper));
+        assertNotNull(Scalars.wrap(Time.valueOf("12:34:56"), Time.class, false, classHelper));
+        assertNotNull(Scalars.wrap(Timestamp.valueOf("2009-01-23 12:34:56"), Timestamp.class, false,
                 classHelper));
-        assertNotNull(Scalars.wrap(Timestamp.valueOf("2009-01-23 12:34:56"),
-                Timestamp.class, false, classHelper));
-        assertNotNull(Scalars.wrap(new java.util.Date(), java.util.Date.class,
+        assertNotNull(Scalars.wrap(new java.util.Date(), java.util.Date.class, false, classHelper));
+        assertNotNull(
+                Scalars.wrap(LocalDate.of(2009, 01, 23), LocalDate.class, false, classHelper));
+        assertNotNull(Scalars.wrap(LocalDateTime.of(2009, 01, 23, 12, 34, 56), LocalDateTime.class,
                 false, classHelper));
-        assertNotNull(Scalars.wrap(LocalDate.of(2009, 01, 23), LocalDate.class,
-                false, classHelper));
-        assertNotNull(Scalars.wrap(LocalDateTime.of(2009, 01, 23, 12, 34, 56),
-                LocalDateTime.class, false, classHelper));
-        assertNotNull(Scalars.wrap(LocalTime.of(12, 34, 56), LocalTime.class,
-                false, classHelper));
+        assertNotNull(Scalars.wrap(LocalTime.of(12, 34, 56), LocalTime.class, false, classHelper));
         assertNotNull(Scalars.wrap(null, Array.class, false, classHelper));
         assertNotNull(Scalars.wrap(null, Blob.class, false, classHelper));
         assertNotNull(Scalars.wrap(null, Clob.class, false, classHelper));
@@ -98,8 +85,8 @@ public class ScalarsTest extends TestCase {
     }
 
     public void testWrapBasic_primitiveType() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(Integer.valueOf(10),
-                int.class, false, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(Integer.valueOf(10), int.class, false,
+                classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -111,8 +98,7 @@ public class ScalarsTest extends TestCase {
     }
 
     public void testWrapBasic_null() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class,
-                false, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class, false, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -125,8 +111,8 @@ public class ScalarsTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testWrapBasic_optional() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(Integer.valueOf(10),
-                Integer.class, true, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(Integer.valueOf(10), Integer.class, true,
+                classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -141,8 +127,7 @@ public class ScalarsTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testWrapBasic_optional_null() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class,
-                true, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class, true, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -156,8 +141,8 @@ public class ScalarsTest extends TestCase {
     }
 
     public void testWrapEnum() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA,
-                MyEnum.class, false, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA, MyEnum.class, false,
+                classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -169,8 +154,7 @@ public class ScalarsTest extends TestCase {
     }
 
     public void testWrapEnum_null() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class,
-                false, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class, false, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -183,8 +167,7 @@ public class ScalarsTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testWrapEnum_optional() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA,
-                MyEnum.class, true, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA, MyEnum.class, true, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -199,8 +182,7 @@ public class ScalarsTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testWrapEnum_optional_null() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class,
-                true, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class, true, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -215,8 +197,8 @@ public class ScalarsTest extends TestCase {
 
     public void testWrapHolder() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber,
-                PhoneNumber.class, false, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber, PhoneNumber.class, false,
+                classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -229,8 +211,8 @@ public class ScalarsTest extends TestCase {
 
     public void testWrapHolder_subclass() throws Exception {
         PhoneNumber phoneNumber = new InternationalPhoneNumber("123-456-789");
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber,
-                InternationalPhoneNumber.class, false, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber, InternationalPhoneNumber.class,
+                false, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -242,8 +224,7 @@ public class ScalarsTest extends TestCase {
     }
 
     public void testWrapHolder_null() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class,
-                false, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class, false, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -259,8 +240,8 @@ public class ScalarsTest extends TestCase {
     @SuppressWarnings("unchecked")
     public void testWrapHolder_option() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber,
-                PhoneNumber.class, true, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(phoneNumber, PhoneNumber.class, true,
+                classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();
@@ -275,8 +256,7 @@ public class ScalarsTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testWrapHolder_option_null() throws Exception {
-        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class,
-                true, classHelper);
+        Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class, true, classHelper);
         assertNotNull(supplier);
 
         Scalar<?, ?> scalar = supplier.get();

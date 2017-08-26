@@ -35,20 +35,18 @@ public class TimeType extends AbstractJdbcType<Time> {
     }
 
     @Override
-    protected Time doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Time doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getTime(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Time value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Time value)
+            throws SQLException {
         preparedStatement.setTime(index, value);
     }
 
     @Override
-    protected Time doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Time doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getTime(index);
     }
 

@@ -52,8 +52,7 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * @throws SQLException
      *             SQL例外
      */
-    T getValue(ResultSet resultSet, int index) throws DomaNullPointerException,
-            SQLException;
+    T getValue(ResultSet resultSet, int index) throws DomaNullPointerException, SQLException;
 
     /**
      * {@link PreparedStatement} に値を設定します。
@@ -71,8 +70,7 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * @throws SQLException
      *             SQL例外
      */
-    void setValue(PreparedStatement preparedStatement, int index, T value)
-            throws SQLException;
+    void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
 
     /**
      * {@link CallableStatement} にOUTパラメータを登録します。
@@ -88,8 +86,7 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * @throws SQLException
      *             SQL例外
      */
-    void registerOutParameter(CallableStatement callableStatement, int index)
-            throws SQLException;
+    void registerOutParameter(CallableStatement callableStatement, int index) throws SQLException;
 
     /**
      * {@link CallableStatement} から値を取得します。
@@ -106,7 +103,6 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
      * @throws SQLException
      *             SQL例外
      */
-    T getValue(CallableStatement callableStatement, int index)
-            throws SQLException;
+    T getValue(CallableStatement callableStatement, int index) throws SQLException;
 
 }

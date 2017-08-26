@@ -116,8 +116,7 @@ public class StandardDialect implements Dialect {
      * インスタンスを構築します。
      */
     public StandardDialect() {
-        this(new StandardJdbcMappingVisitor(),
-                new StandardSqlLogFormattingVisitor(),
+        this(new StandardJdbcMappingVisitor(), new StandardSqlLogFormattingVisitor(),
                 new StandardExpressionFunctions());
     }
 
@@ -151,8 +150,8 @@ public class StandardDialect implements Dialect {
      *            SQLのコメント式で利用可能な関数群
      */
     public StandardDialect(ExpressionFunctions expressionFunctions) {
-        this(new StandardJdbcMappingVisitor(),
-                new StandardSqlLogFormattingVisitor(), expressionFunctions);
+        this(new StandardJdbcMappingVisitor(), new StandardSqlLogFormattingVisitor(),
+                expressionFunctions);
     }
 
     /**
@@ -167,8 +166,7 @@ public class StandardDialect implements Dialect {
      */
     public StandardDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new StandardExpressionFunctions());
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new StandardExpressionFunctions());
     }
 
     /**
@@ -222,8 +220,7 @@ public class StandardDialect implements Dialect {
         if (offset >= 0 || limit >= 0) {
             transformed = toPagingSqlNode(transformed, offset, limit);
         }
-        SelectForUpdateType forUpdateType = SelectOptionsAccessor
-                .getForUpdateType(options);
+        SelectForUpdateType forUpdateType = SelectOptionsAccessor.getForUpdateType(options);
         if (forUpdateType != null) {
             String[] aliases = SelectOptionsAccessor.getAliases(options);
             if (!supportsSelectForUpdate(forUpdateType, false)) {
@@ -253,8 +250,7 @@ public class StandardDialect implements Dialect {
                 }
             }
             int waitSeconds = SelectOptionsAccessor.getWaitSeconds(options);
-            transformed = toForUpdateSqlNode(transformed, forUpdateType,
-                    waitSeconds, aliases);
+            transformed = toForUpdateSqlNode(transformed, forUpdateType, waitSeconds, aliases);
         }
         return transformed;
     }
@@ -282,8 +278,7 @@ public class StandardDialect implements Dialect {
      * @return 変換されたSQLノード
      */
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        StandardPagingTransformer transformer = new StandardPagingTransformer(
-                offset, limit);
+        StandardPagingTransformer transformer = new StandardPagingTransformer(offset, limit);
         return transformer.transform(sqlNode);
     }
 
@@ -300,11 +295,10 @@ public class StandardDialect implements Dialect {
      *            ロック対象のカラムやテーブルのエイリアス
      * @return 変換されたSQLノード
      */
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        StandardForUpdateTransformer transformer = new StandardForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        StandardForUpdateTransformer transformer = new StandardForUpdateTransformer(forUpdateType,
+                waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
@@ -425,8 +419,7 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
+    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
         return false;
     }
 
@@ -437,29 +430,25 @@ public class StandardDialect implements Dialect {
 
     @Override
     public JdbcType<ResultSet> getResultSetType() {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "getResultSetType");
+        throw new JdbcUnsupportedOperationException(getClass().getName(), "getResultSetType");
     }
 
     @Override
-    public Sql<?> getIdentitySelectSql(String catalogName, String schemaName,
-            String tableName, String columnName, boolean isQuoteRequired,
-            boolean isIdColumnQuoteRequired) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "getIdentitySelectSql");
+    public Sql<?> getIdentitySelectSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
+        throw new JdbcUnsupportedOperationException(getClass().getName(), "getIdentitySelectSql");
     }
 
     @Override
-    public Sql<?> getIdentityReservationSql(String catalogName,
-            String schemaName, String tableName, String columnName,
-            boolean isQuoteRequired, boolean isIdColumnQuoteRequired, int reservationSize) {
+    public Sql<?> getIdentityReservationSql(String catalogName, String schemaName, String tableName,
+            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired,
+            int reservationSize) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getIdentityReservationSql");
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getSequenceNextValString");
     }
@@ -517,157 +506,155 @@ public class StandardDialect implements Dialect {
      * @author taedium
      * 
      */
-    public static class StandardJdbcMappingVisitor implements
-            JdbcMappingVisitor {
+    public static class StandardJdbcMappingVisitor implements JdbcMappingVisitor {
 
         @Override
-        public Void visitArrayWrapper(ArrayWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitArrayWrapper(ArrayWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.ARRAY);
         }
 
         @Override
-        public Void visitBigDecimalWrapper(BigDecimalWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitBigDecimalWrapper(BigDecimalWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BIG_DECIMAL);
         }
 
         @Override
-        public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BIG_INTEGER);
         }
 
         @Override
-        public Void visitBlobWrapper(BlobWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitBlobWrapper(BlobWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q)
+                throws SQLException {
             return p.apply(wrapper, JdbcTypes.BLOB);
         }
 
         @Override
-        public Void visitBooleanWrapper(BooleanWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitBooleanWrapper(BooleanWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BOOLEAN);
         }
 
         @Override
-        public Void visitByteWrapper(ByteWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitByteWrapper(ByteWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q)
+                throws SQLException {
             return p.apply(wrapper, JdbcTypes.BYTE);
         }
 
         @Override
-        public Void visitBytesWrapper(BytesWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitBytesWrapper(BytesWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.BYTES);
         }
 
         @Override
-        public Void visitClobWrapper(ClobWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitClobWrapper(ClobWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q)
+                throws SQLException {
             return p.apply(wrapper, JdbcTypes.CLOB);
         }
 
         @Override
-        public Void visitDateWrapper(DateWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitDateWrapper(DateWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q)
+                throws SQLException {
             return p.apply(wrapper, JdbcTypes.DATE);
         }
 
         @Override
-        public Void visitDoubleWrapper(DoubleWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitDoubleWrapper(DoubleWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.DOUBLE);
         }
 
         @Override
-        public Void visitFloatWrapper(FloatWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitFloatWrapper(FloatWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.FLOAT);
         }
 
         @Override
-        public Void visitIntegerWrapper(IntegerWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitIntegerWrapper(IntegerWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.INTEGER);
         }
 
         @Override
-        public Void visitLocalDateWrapper(LocalDateWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitLocalDateWrapper(LocalDateWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.LOCAL_DATE);
         }
 
         @Override
-        public Void visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.LOCAL_DATE_TIME);
         }
 
         @Override
-        public Void visitLocalTimeWrapper(LocalTimeWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitLocalTimeWrapper(LocalTimeWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.LOCAL_TIME);
         }
 
         @Override
-        public Void visitLongWrapper(LongWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitLongWrapper(LongWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q)
+                throws SQLException {
             return p.apply(wrapper, JdbcTypes.LONG);
         }
 
         @Override
-        public Void visitNClobWrapper(NClobWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitNClobWrapper(NClobWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.NCLOB);
         }
 
         @Override
-        public Void visitShortWrapper(ShortWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitShortWrapper(ShortWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.SHORT);
         }
 
         @Override
-        public Void visitStringWrapper(StringWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitStringWrapper(StringWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.STRING);
         }
 
         @Override
-        public Void visitSQLXMLWrapper(SQLXMLWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitSQLXMLWrapper(SQLXMLWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.SQLXML);
         }
 
         @Override
-        public Void visitTimeWrapper(TimeWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitTimeWrapper(TimeWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q)
+                throws SQLException {
             return p.apply(wrapper, JdbcTypes.TIME);
         }
 
         @Override
-        public Void visitTimestampWrapper(TimestampWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitTimestampWrapper(TimestampWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.TIMESTAMP);
         }
 
         @Override
-        public <E extends Enum<E>> Void visitEnumWrapper(
-                EnumWrapper<E> wrapper, JdbcMappingFunction p, JdbcMappingHint q)
-                throws SQLException {
+        public <E extends Enum<E>> Void visitEnumWrapper(EnumWrapper<E> wrapper,
+                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
         }
 
         @Override
-        public Void visitUtilDateWrapper(UtilDateWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitUtilDateWrapper(UtilDateWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.UTIL_DATE);
         }
 
         @Override
-        public Void visitObjectWrapper(ObjectWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+        public Void visitObjectWrapper(ObjectWrapper wrapper, JdbcMappingFunction p,
+                JdbcMappingHint q) throws SQLException {
             return p.apply(wrapper, JdbcTypes.OBJECT);
         }
 
@@ -679,84 +666,82 @@ public class StandardDialect implements Dialect {
      * @author taedium
      * 
      */
-    public static class StandardSqlLogFormattingVisitor implements
-            SqlLogFormattingVisitor {
+    public static class StandardSqlLogFormattingVisitor implements SqlLogFormattingVisitor {
 
         @Override
-        public String visitArrayWrapper(ArrayWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitArrayWrapper(ArrayWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.ARRAY);
         }
 
         @Override
-        public String visitBigDecimalWrapper(BigDecimalWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitBigDecimalWrapper(BigDecimalWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, JdbcTypes.BIG_DECIMAL);
         }
 
         @Override
-        public String visitBigIntegerWrapper(BigIntegerWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitBigIntegerWrapper(BigIntegerWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BIG_INTEGER);
         }
 
         @Override
-        public String visitBlobWrapper(BlobWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitBlobWrapper(BlobWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BLOB);
         }
 
         @Override
-        public String visitBooleanWrapper(BooleanWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitBooleanWrapper(BooleanWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BOOLEAN);
         }
 
         @Override
-        public String visitByteWrapper(ByteWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitByteWrapper(ByteWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BYTE);
         }
 
         @Override
-        public String visitBytesWrapper(BytesWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitBytesWrapper(BytesWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.BYTES);
         }
 
         @Override
-        public String visitClobWrapper(ClobWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitClobWrapper(ClobWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.CLOB);
         }
 
         @Override
-        public String visitDateWrapper(DateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitDateWrapper(DateWrapper wrapper, SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.DATE);
         }
 
         @Override
-        public String visitDoubleWrapper(DoubleWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitDoubleWrapper(DoubleWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.DOUBLE);
         }
 
         @Override
-        public String visitFloatWrapper(FloatWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitFloatWrapper(FloatWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.FLOAT);
         }
 
         @Override
-        public String visitIntegerWrapper(IntegerWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitIntegerWrapper(IntegerWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, JdbcTypes.INTEGER);
         }
 
         @Override
-        public String visitLocalDateWrapper(LocalDateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitLocalDateWrapper(LocalDateWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.LOCAL_DATE);
         }
 
@@ -767,69 +752,66 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String visitLocalTimeWrapper(LocalTimeWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitLocalTimeWrapper(LocalTimeWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.LOCAL_TIME);
         }
 
         @Override
-        public String visitLongWrapper(LongWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitLongWrapper(LongWrapper wrapper, SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.LONG);
         }
 
         @Override
-        public String visitNClobWrapper(NClobWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitNClobWrapper(NClobWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.NCLOB);
         }
 
         @Override
-        public String visitShortWrapper(ShortWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitShortWrapper(ShortWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.SHORT);
         }
 
         @Override
-        public String visitStringWrapper(StringWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitStringWrapper(StringWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, JdbcTypes.STRING);
         }
 
         @Override
-        public String visitSQLXMLWrapper(SQLXMLWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
+        public String visitSQLXMLWrapper(SQLXMLWrapper wrapper, SqlLogFormattingFunction p, Void q)
+                throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.SQLXML);
         }
 
         @Override
-        public String visitTimeWrapper(TimeWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitTimeWrapper(TimeWrapper wrapper, SqlLogFormattingFunction p, Void q) {
             return p.apply(wrapper, JdbcTypes.TIME);
         }
 
         @Override
-        public String visitTimestampWrapper(TimestampWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitTimestampWrapper(TimestampWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, JdbcTypes.TIMESTAMP);
         }
 
         @Override
-        public <E extends Enum<E>> String visitEnumWrapper(
-                EnumWrapper<E> wrapper, SqlLogFormattingFunction p, Void q)
-                throws RuntimeException {
+        public <E extends Enum<E>> String visitEnumWrapper(EnumWrapper<E> wrapper,
+                SqlLogFormattingFunction p, Void q) throws RuntimeException {
             return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
         }
 
         @Override
-        public String visitUtilDateWrapper(UtilDateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitUtilDateWrapper(UtilDateWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, JdbcTypes.UTIL_DATE);
         }
 
         @Override
-        public String visitObjectWrapper(ObjectWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
+        public String visitObjectWrapper(ObjectWrapper wrapper, SqlLogFormattingFunction p,
+                Void q) {
             return p.apply(wrapper, JdbcTypes.OBJECT);
         }
 
@@ -841,8 +823,7 @@ public class StandardDialect implements Dialect {
      * @author taedium
      * 
      */
-    public static class StandardExpressionFunctions implements
-            ExpressionFunctions {
+    public static class StandardExpressionFunctions implements ExpressionFunctions {
 
         /** デフォルトのエスケープ文字 */
         private static char DEFAULT_ESCAPE_CHAR = '$';
@@ -890,8 +871,8 @@ public class StandardDialect implements Dialect {
         protected StandardExpressionFunctions(char escapeChar, char[] wildcards) {
             this.escapeChar = escapeChar;
             this.wildcards = wildcards != null ? wildcards : DEFAULT_WILDCARDS;
-            this.defaultWildcardReplacementPattern = createWildcardReplacementPattern(
-                    escapeChar, this.wildcards);
+            this.defaultWildcardReplacementPattern = createWildcardReplacementPattern(escapeChar,
+                    this.wildcards);
             this.defaultReplacement = createWildcardReplacement(escapeChar);
         }
 
@@ -908,9 +889,8 @@ public class StandardDialect implements Dialect {
          *            デフォルトのワイルドカード置換文字列正規表現
          * 
          */
-        protected StandardExpressionFunctions(char escapeChar,
-                char[] wildcards, Pattern defaultWildcardReplacementPattern,
-                String defaultReplacement) {
+        protected StandardExpressionFunctions(char escapeChar, char[] wildcards,
+                Pattern defaultWildcardReplacementPattern, String defaultReplacement) {
             this.escapeChar = escapeChar;
             this.wildcards = wildcards != null ? wildcards : DEFAULT_WILDCARDS;
             this.defaultWildcardReplacementPattern = defaultWildcardReplacementPattern;
@@ -930,8 +910,7 @@ public class StandardDialect implements Dialect {
             if (text == null) {
                 return null;
             }
-            return escapeWildcard(defaultWildcardReplacementPattern, text,
-                    defaultReplacement);
+            return escapeWildcard(defaultWildcardReplacementPattern, text, defaultReplacement);
         }
 
         @Override
@@ -939,8 +918,8 @@ public class StandardDialect implements Dialect {
             if (text == null) {
                 return null;
             }
-            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
-                    text, defaultReplacement);
+            String escaped = escapeWildcard(defaultWildcardReplacementPattern, text,
+                    defaultReplacement);
             return escaped + "%";
         }
 
@@ -957,8 +936,8 @@ public class StandardDialect implements Dialect {
             if (text == null) {
                 return null;
             }
-            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
-                    text, defaultReplacement);
+            String escaped = escapeWildcard(defaultWildcardReplacementPattern, text,
+                    defaultReplacement);
             return "%" + escaped;
         }
 
@@ -978,8 +957,8 @@ public class StandardDialect implements Dialect {
             if (text.isEmpty()) {
                 return "%";
             }
-            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
-                    text, defaultReplacement);
+            String escaped = escapeWildcard(defaultWildcardReplacementPattern, text,
+                    defaultReplacement);
             return "%" + escaped + "%";
         }
 
@@ -1004,8 +983,7 @@ public class StandardDialect implements Dialect {
          * @return エスケープされた文字列
          */
         protected String escapeWildcard(String input, char escapeChar) {
-            Pattern pattern = createWildcardReplacementPattern(escapeChar,
-                    wildcards);
+            Pattern pattern = createWildcardReplacementPattern(escapeChar, wildcards);
             String replacement = createWildcardReplacement(escapeChar);
             return escapeWildcard(pattern, input, replacement);
         }
@@ -1021,8 +999,7 @@ public class StandardDialect implements Dialect {
          *            置換文字列正規表現
          * @return エスケープされた文字列
          */
-        protected String escapeWildcard(Pattern pattern, String input,
-                String replacement) {
+        protected String escapeWildcard(Pattern pattern, String input, String replacement) {
             Matcher matcher = pattern.matcher(input);
             return matcher.replaceAll(replacement);
         }
@@ -1135,8 +1112,7 @@ public class StandardDialect implements Dialect {
          *            ワイルドカード
          * @return パターン
          */
-        protected Pattern createWildcardReplacementPattern(char escapeChar,
-                char[] wildcards) {
+        protected Pattern createWildcardReplacementPattern(char escapeChar, char[] wildcards) {
             StringBuilder buf = new StringBuilder();
             buf.append("[");
             for (char wildcard : wildcards) {
@@ -1191,8 +1167,7 @@ public class StandardDialect implements Dialect {
      * @author taedium
      * @since 1.7.0
      */
-    public static class StandardScriptBlockContext implements
-            ScriptBlockContext {
+    public static class StandardScriptBlockContext implements ScriptBlockContext {
 
         /** ブロックの開始を表すキーワードの連なりのリスト */
         protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<List<String>>();

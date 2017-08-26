@@ -44,8 +44,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  * @param <RESULT>
  *            結果
  */
-public abstract class AbstractStreamHandler<TARGET, RESULT> implements
-        ResultSetHandler<RESULT> {
+public abstract class AbstractStreamHandler<TARGET, RESULT> implements ResultSetHandler<RESULT> {
 
     protected final Function<Stream<TARGET>, RESULT> mapper;
 
@@ -58,18 +57,15 @@ public abstract class AbstractStreamHandler<TARGET, RESULT> implements
     public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
             ResultSetRowIndexConsumer consumer) throws SQLException {
         ObjectProvider<TARGET> provider = createObjectProvider(query);
-        Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query,
-                consumer, provider);
+        Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query, consumer, provider);
         try {
             if (query.getFetchType() == FetchType.EAGER) {
                 // consume ResultSet
                 List<TARGET> list = IteratorUtil.toList(iterator);
                 return () -> mapper.apply(list.stream());
             } else {
-                Spliterator<TARGET> spliterator = Spliterators
-                        .spliteratorUnknownSize(iterator, 0);
-                Stream<TARGET> stream = StreamSupport
-                        .stream(spliterator, false);
+                Spliterator<TARGET> spliterator = Spliterators.spliteratorUnknownSize(iterator, 0);
+                Stream<TARGET> stream = StreamSupport.stream(spliterator, false);
                 RESULT result = mapper.apply(stream);
                 return () -> result;
             }
@@ -78,7 +74,6 @@ public abstract class AbstractStreamHandler<TARGET, RESULT> implements
         }
     }
 
-    protected abstract ObjectProvider<TARGET> createObjectProvider(
-            SelectQuery query);
+    protected abstract ObjectProvider<TARGET> createObjectProvider(SelectQuery query);
 
 }

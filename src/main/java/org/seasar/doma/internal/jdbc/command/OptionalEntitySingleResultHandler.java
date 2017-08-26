@@ -25,12 +25,11 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
  * 
  * @param <ENTITY>
  */
-public class OptionalEntitySingleResultHandler<ENTITY> extends
-        AbstractSingleResultHandler<Optional<ENTITY>> {
+public class OptionalEntitySingleResultHandler<ENTITY>
+        extends AbstractSingleResultHandler<Optional<ENTITY>> {
 
     public OptionalEntitySingleResultHandler(EntityDesc<ENTITY> entityDesc) {
-        super(new EntityIterationHandler<>(entityDesc,
-                new OptionalSingleResultCallback<ENTITY>()));
+        super(new EntityIterationHandler<>(entityDesc, new OptionalSingleResultCallback<ENTITY>()));
     }
 
 }

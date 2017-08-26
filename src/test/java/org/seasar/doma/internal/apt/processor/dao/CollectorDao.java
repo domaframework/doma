@@ -39,8 +39,7 @@ import example.holder.PhoneNumber;
 public interface CollectorDao {
 
     @Select(strategy = SelectType.COLLECT)
-    Integer selectByIdAndName(Integer id, String name,
-            Collector<Emp, ?, Integer> collector);
+    Integer selectByIdAndName(Integer id, String name, Collector<Emp, ?, Integer> collector);
 
     @Select(strategy = SelectType.COLLECT)
     <R> R selectById(Integer id, Collector<PhoneNumber, ?, R> collector);
@@ -52,8 +51,7 @@ public interface CollectorDao {
     String selectWithHogeCollector(HogeCollector collector);
 
     @Select(strategy = SelectType.COLLECT, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
-    <R> R selectByIdAsMap(Integer id,
-            Collector<Map<String, Object>, ?, R> collector);
+    <R> R selectByIdAsMap(Integer id, Collector<Map<String, Object>, ?, R> collector);
 
     public class HogeCollector implements Collector<String, String, String> {
 

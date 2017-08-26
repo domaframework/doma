@@ -37,8 +37,7 @@ class ClassUtils {
      *            単純名
      * @return 完全限定名
      */
-    public static String getQualifiedName(final String packageName,
-            final String simpleName) {
+    public static String getQualifiedName(final String packageName, final String simpleName) {
         if (isEmpty(packageName)) {
             return simpleName;
         }

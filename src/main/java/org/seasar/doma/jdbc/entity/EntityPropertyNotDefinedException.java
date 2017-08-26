@@ -40,8 +40,7 @@ public class EntityPropertyNotDefinedException extends JdbcException {
      * @param entityPropertyName
      *            エンティティプロパティの名前
      */
-    public EntityPropertyNotDefinedException(String entityClassName,
-            String entityPropertyName) {
+    public EntityPropertyNotDefinedException(String entityClassName, String entityPropertyName) {
         super(Message.DOMA2207, entityClassName, entityPropertyName);
         this.entityClassName = entityClassName;
         this.entityPropertyName = entityPropertyName;

@@ -40,8 +40,7 @@ public final class AnnotationValueUtil {
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
-            public Void visitArray(List<? extends AnnotationValue> values,
-                    Void p) {
+            public Void visitArray(List<? extends AnnotationValue> values, Void p) {
                 for (AnnotationValue value : values) {
                     value.accept(this, p);
                 }
@@ -66,8 +65,7 @@ public final class AnnotationValueUtil {
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
-            public Void visitArray(List<? extends AnnotationValue> values,
-                    Void p) {
+            public Void visitArray(List<? extends AnnotationValue> values, Void p) {
                 for (AnnotationValue value : values) {
                     value.accept(this, p);
                 }
@@ -92,8 +90,7 @@ public final class AnnotationValueUtil {
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
-            public Void visitArray(List<? extends AnnotationValue> values,
-                    Void p) {
+            public Void visitArray(List<? extends AnnotationValue> values, Void p) {
                 for (AnnotationValue value : values) {
                     value.accept(this, p);
                 }
@@ -118,8 +115,7 @@ public final class AnnotationValueUtil {
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
-            public Void visitArray(List<? extends AnnotationValue> values,
-                    Void p) {
+            public Void visitArray(List<? extends AnnotationValue> values, Void p) {
                 for (AnnotationValue value : values) {
                     value.accept(this, p);
                 }
@@ -196,47 +192,42 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        return value.accept(
-                new SimpleAnnotationValueVisitor8<TypeMirror, Void>() {
+        return value.accept(new SimpleAnnotationValueVisitor8<TypeMirror, Void>() {
 
-                    @Override
-                    public TypeMirror visitType(TypeMirror t, Void p) {
-                        return t;
-                    }
+            @Override
+            public TypeMirror visitType(TypeMirror t, Void p) {
+                return t;
+            }
 
-                }, null);
+        }, null);
     }
 
     public static AnnotationMirror toAnnotationMirror(AnnotationValue value) {
         if (value == null) {
             return null;
         }
-        return value.accept(
-                new SimpleAnnotationValueVisitor8<AnnotationMirror, Void>() {
+        return value.accept(new SimpleAnnotationValueVisitor8<AnnotationMirror, Void>() {
 
-                    @Override
-                    public AnnotationMirror visitAnnotation(AnnotationMirror a,
-                            Void p) {
-                        return a;
-                    }
+            @Override
+            public AnnotationMirror visitAnnotation(AnnotationMirror a, Void p) {
+                return a;
+            }
 
-                }, null);
+        }, null);
     }
 
     public static VariableElement toEnumConstant(AnnotationValue value) {
         if (value == null) {
             return null;
         }
-        return value.accept(
-                new SimpleAnnotationValueVisitor8<VariableElement, Void>() {
+        return value.accept(new SimpleAnnotationValueVisitor8<VariableElement, Void>() {
 
-                    @Override
-                    public VariableElement visitEnumConstant(VariableElement c,
-                            Void p) {
-                        return c;
-                    }
+            @Override
+            public VariableElement visitEnumConstant(VariableElement c, Void p) {
+                return c;
+            }
 
-                }, null);
+        }, null);
     }
 
     public static boolean isEqual(Object object, AnnotationValue value) {

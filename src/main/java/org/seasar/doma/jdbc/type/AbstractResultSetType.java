@@ -44,28 +44,24 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
      * サポートしません。
      */
     @Override
-    public ResultSet getValue(ResultSet resultSet, int index)
-            throws SQLException {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "getValue");
+    public ResultSet getValue(ResultSet resultSet, int index) throws SQLException {
+        throw new JdbcUnsupportedOperationException(getClass().getName(), "getValue");
     }
 
     /**
      * サポートしません。
      */
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index,
-            ResultSet value) throws SQLException {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "setValue");
+    public void setValue(PreparedStatement preparedStatement, int index, ResultSet value)
+            throws SQLException {
+        throw new JdbcUnsupportedOperationException(getClass().getName(), "setValue");
     }
 
     /**
      * {@code null} を返します。
      */
     @Override
-    protected ResultSet doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected ResultSet doGetValue(ResultSet resultSet, int index) throws SQLException {
         return null;
     }
 
@@ -73,13 +69,13 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
      * 何も行いません。
      */
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            ResultSet value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, ResultSet value)
+            throws SQLException {
     }
 
     @Override
-    protected ResultSet doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException {
+    protected ResultSet doGetValue(CallableStatement callableStatement, int index)
+            throws SQLException {
         Object resultSet = callableStatement.getObject(index);
         return (ResultSet) resultSet;
     }

@@ -30,8 +30,8 @@ import org.seasar.doma.jdbc.query.Query;
  * @author taedium
  * 
  */
-public class PreparedSqlParameterBinder extends
-        AbstractParameterBinder<PreparedStatement, InParameter<?>> {
+public class PreparedSqlParameterBinder
+        extends AbstractParameterBinder<PreparedStatement, InParameter<?>> {
 
     protected final Query query;
 
@@ -41,15 +41,15 @@ public class PreparedSqlParameterBinder extends
     }
 
     @Override
-    public void bind(PreparedStatement preparedStatement,
-            List<? extends InParameter<?>> paramters) throws SQLException {
+    public void bind(PreparedStatement preparedStatement, List<? extends InParameter<?>> paramters)
+            throws SQLException {
         assertNotNull(preparedStatement, paramters);
         int index = 1;
-        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
+        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig()
+                .getDialect()
                 .getJdbcMappingVisitor();
         for (InParameter<?> parameter : paramters) {
-            bindInParameter(preparedStatement, parameter, index,
-                    jdbcMappingVisitor);
+            bindInParameter(preparedStatement, parameter, index, jdbcMappingVisitor);
             index++;
         }
     }

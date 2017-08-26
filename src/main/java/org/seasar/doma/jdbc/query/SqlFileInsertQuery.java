@@ -30,8 +30,7 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
  * @author taedium
  * 
  */
-public class SqlFileInsertQuery extends SqlFileModifyQuery implements
-        InsertQuery {
+public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuery {
 
     protected boolean nullExcluded;
 
@@ -83,8 +82,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void setEntityAndEntityDesc(String name, E entity,
-            EntityDesc<E> entityDesc) {
+    public <E> void setEntityAndEntityDesc(String name, E entity, EntityDesc<E> entityDesc) {
         entityHandler = new EntityHandler<E>(name, entity, entityDesc);
     }
 
@@ -108,8 +106,8 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         }
 
         protected void preInsert() {
-            SqlFilePreInsertContext<E> context = new SqlFilePreInsertContext<E>(
-                    entityDesc, method, config);
+            SqlFilePreInsertContext<E> context = new SqlFilePreInsertContext<E>(entityDesc, method,
+                    config);
             entityDesc.preInsert(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
@@ -118,8 +116,8 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         }
 
         protected void postInsert() {
-            SqlFilePostInsertContext<E> context = new SqlFilePostInsertContext<E>(
-                    entityDesc, method, config);
+            SqlFilePostInsertContext<E> context = new SqlFilePostInsertContext<E>(entityDesc,
+                    method, config);
             entityDesc.postInsert(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
@@ -129,20 +127,16 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
 
     }
 
-    protected static class SqlFilePreInsertContext<E> extends
-            AbstractPreInsertContext<E> {
+    protected static class SqlFilePreInsertContext<E> extends AbstractPreInsertContext<E> {
 
-        public SqlFilePreInsertContext(EntityDesc<E> entityDesc, Method method,
-                Config config) {
+        public SqlFilePreInsertContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
     }
 
-    protected static class SqlFilePostInsertContext<E> extends
-            AbstractPostInsertContext<E> {
+    protected static class SqlFilePostInsertContext<E> extends AbstractPostInsertContext<E> {
 
-        public SqlFilePostInsertContext(EntityDesc<E> entityDesc,
-                Method method, Config config) {
+        public SqlFilePostInsertContext(EntityDesc<E> entityDesc, Method method, Config config) {
             super(entityDesc, method, config);
         }
     }

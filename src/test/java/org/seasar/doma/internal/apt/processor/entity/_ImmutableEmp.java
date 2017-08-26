@@ -93,8 +93,7 @@ public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
     }
 
     @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
         return null;
     }
@@ -106,33 +105,27 @@ public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
     }
 
     @Override
-    public void preDelete(ImmutableEmp entity,
-            PreDeleteContext<ImmutableEmp> context) {
+    public void preDelete(ImmutableEmp entity, PreDeleteContext<ImmutableEmp> context) {
     }
 
     @Override
-    public void preInsert(ImmutableEmp entity,
-            PreInsertContext<ImmutableEmp> context) {
+    public void preInsert(ImmutableEmp entity, PreInsertContext<ImmutableEmp> context) {
     }
 
     @Override
-    public void preUpdate(ImmutableEmp entity,
-            PreUpdateContext<ImmutableEmp> context) {
+    public void preUpdate(ImmutableEmp entity, PreUpdateContext<ImmutableEmp> context) {
     }
 
     @Override
-    public void postDelete(ImmutableEmp entity,
-            PostDeleteContext<ImmutableEmp> context) {
+    public void postDelete(ImmutableEmp entity, PostDeleteContext<ImmutableEmp> context) {
     }
 
     @Override
-    public void postInsert(ImmutableEmp entity,
-            PostInsertContext<ImmutableEmp> context) {
+    public void postInsert(ImmutableEmp entity, PostInsertContext<ImmutableEmp> context) {
     }
 
     @Override
-    public void postUpdate(ImmutableEmp entity,
-            PostUpdateContext<ImmutableEmp> context) {
+    public void postUpdate(ImmutableEmp entity, PostUpdateContext<ImmutableEmp> context) {
     }
 
     @Override

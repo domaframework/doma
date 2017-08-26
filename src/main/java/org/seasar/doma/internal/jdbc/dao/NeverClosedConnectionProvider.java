@@ -44,8 +44,7 @@ class NeverClosedConnectionProvider implements DataSource {
     }
 
     @Override
-    public Connection getConnection(String username, String password)
-            throws SQLException {
+    public Connection getConnection(String username, String password) throws SQLException {
         return connection;
     }
 

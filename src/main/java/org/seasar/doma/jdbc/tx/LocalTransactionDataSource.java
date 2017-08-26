@@ -111,8 +111,7 @@ public final class LocalTransactionDataSource implements DataSource {
      *             ローカルトランザクションがまだ開始されていない場合
      */
     @Override
-    public Connection getConnection(String username, String password)
-            throws SQLException {
+    public Connection getConnection(String username, String password) throws SQLException {
         return getConnectionInternal();
     }
 
@@ -180,8 +179,7 @@ public final class LocalTransactionDataSource implements DataSource {
         if (jdbcLogger == null) {
             throw new DomaNullPointerException("jdbcLogger");
         }
-        return new LocalTransaction(dataSource, localTxContextHolder,
-                jdbcLogger);
+        return new LocalTransaction(dataSource, localTxContextHolder, jdbcLogger);
     }
 
     /**
@@ -203,8 +201,8 @@ public final class LocalTransactionDataSource implements DataSource {
         if (transactionIsolationLevel == null) {
             throw new DomaNullPointerException("transactionIsolationLevel");
         }
-        return new LocalTransaction(dataSource, localTxContextHolder,
-                jdbcLogger, transactionIsolationLevel);
+        return new LocalTransaction(dataSource, localTxContextHolder, jdbcLogger,
+                transactionIsolationLevel);
     }
 
     /**
@@ -216,13 +214,11 @@ public final class LocalTransactionDataSource implements DataSource {
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      */
-    public KeepAliveLocalTransaction getKeepAliveLocalTransaction(
-            JdbcLogger jdbcLogger) {
+    public KeepAliveLocalTransaction getKeepAliveLocalTransaction(JdbcLogger jdbcLogger) {
         if (jdbcLogger == null) {
             throw new DomaNullPointerException("jdbcLogger");
         }
-        return new KeepAliveLocalTransaction(dataSource, localTxContextHolder,
-                jdbcLogger);
+        return new KeepAliveLocalTransaction(dataSource, localTxContextHolder, jdbcLogger);
     }
 
     /**
@@ -236,8 +232,7 @@ public final class LocalTransactionDataSource implements DataSource {
      * @throws DomaNullPointerException
      *             引数のいずれかが {@code null} の場合
      */
-    public KeepAliveLocalTransaction getKeepAliveLocalTransaction(
-            JdbcLogger jdbcLogger,
+    public KeepAliveLocalTransaction getKeepAliveLocalTransaction(JdbcLogger jdbcLogger,
             TransactionIsolationLevel transactionIsolationLevel) {
         if (jdbcLogger == null) {
             throw new DomaNullPointerException("jdbcLogger");
@@ -245,8 +240,8 @@ public final class LocalTransactionDataSource implements DataSource {
         if (transactionIsolationLevel == null) {
             throw new DomaNullPointerException("transactionIsolationLevel");
         }
-        return new KeepAliveLocalTransaction(dataSource, localTxContextHolder,
-                jdbcLogger, transactionIsolationLevel);
+        return new KeepAliveLocalTransaction(dataSource, localTxContextHolder, jdbcLogger,
+                transactionIsolationLevel);
     }
 
     @Override

@@ -33,8 +33,7 @@ public class NewOperatorNode implements OperatorNode {
 
     protected ExpressionNode parametersNode;
 
-    public NewOperatorNode(ExpressionLocation location, String expression,
-            String className) {
+    public NewOperatorNode(ExpressionLocation location, String expression, String className) {
         assertNotNull(location, expression, className);
         this.location = location;
         this.expression = expression;

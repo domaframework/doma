@@ -152,19 +152,16 @@ public class SqlTokenizer {
                                             char c9 = buf.get();
                                             if (buf.hasRemaining()) {
                                                 char c10 = buf.get();
-                                                peekTenChars(c, c2, c3, c4, c5,
-                                                        c6, c7, c8, c9, c10);
+                                                peekTenChars(c, c2, c3, c4, c5, c6, c7, c8, c9,
+                                                        c10);
                                             } else {
-                                                peekNineChars(c, c2, c3, c4,
-                                                        c5, c6, c7, c8, c9);
+                                                peekNineChars(c, c2, c3, c4, c5, c6, c7, c8, c9);
                                             }
                                         } else {
-                                            peekEightChars(c, c2, c3, c4, c5,
-                                                    c6, c7, c8);
+                                            peekEightChars(c, c2, c3, c4, c5, c6, c7, c8);
                                         }
                                     } else {
-                                        peekSevenChars(c, c2, c3, c4, c5, c6,
-                                                c7);
+                                        peekSevenChars(c, c2, c3, c4, c5, c6, c7);
                                     }
                                 } else {
                                     peekSixChars(c, c2, c3, c4, c5, c6);
@@ -189,13 +186,12 @@ public class SqlTokenizer {
         }
     }
 
-    protected void peekTenChars(char c, char c2, char c3, char c4, char c5,
-            char c6, char c7, char c8, char c9, char c10) {
-        if ((c == 'f' || c == 'F') && (c2 == 'o' || c2 == 'O')
-                && (c3 == 'r' || c3 == 'R') && (isWhitespace(c4))
-                && (c5 == 'u' || c5 == 'U') && (c6 == 'p' || c6 == 'P')
-                && (c7 == 'd' || c7 == 'D') && (c8 == 'a' || c8 == 'A')
-                && (c9 == 't' || c9 == 'T') && (c10 == 'e' || c10 == 'E')) {
+    protected void peekTenChars(char c, char c2, char c3, char c4, char c5, char c6, char c7,
+            char c8, char c9, char c10) {
+        if ((c == 'f' || c == 'F') && (c2 == 'o' || c2 == 'O') && (c3 == 'r' || c3 == 'R')
+                && (isWhitespace(c4)) && (c5 == 'u' || c5 == 'U') && (c6 == 'p' || c6 == 'P')
+                && (c7 == 'd' || c7 == 'D') && (c8 == 'a' || c8 == 'A') && (c9 == 't' || c9 == 'T')
+                && (c10 == 'e' || c10 == 'E')) {
             type = FOR_UPDATE_WORD;
             if (isWordTerminated()) {
                 return;
@@ -205,12 +201,11 @@ public class SqlTokenizer {
         peekNineChars(c, c2, c3, c4, c5, c6, c7, c8, c9);
     }
 
-    protected void peekNineChars(char c, char c2, char c3, char c4, char c5,
-            char c6, char c7, char c8, char c9) {
-        if ((c == 'i' || c == 'I') && (c2 == 'n' || c2 == 'N')
-                && (c3 == 't' || c3 == 'T') && ((c4 == 'e' || c4 == 'E'))
-                && (c5 == 'r' || c5 == 'R') && (c6 == 's' || c6 == 'S')
-                && (c7 == 'e' || c7 == 'E') && (c8 == 'c' || c8 == 'C')
+    protected void peekNineChars(char c, char c2, char c3, char c4, char c5, char c6, char c7,
+            char c8, char c9) {
+        if ((c == 'i' || c == 'I') && (c2 == 'n' || c2 == 'N') && (c3 == 't' || c3 == 'T')
+                && ((c4 == 'e' || c4 == 'E')) && (c5 == 'r' || c5 == 'R')
+                && (c6 == 's' || c6 == 'S') && (c7 == 'e' || c7 == 'E') && (c8 == 'c' || c8 == 'C')
                 && (c9 == 't' || c9 == 'T')) {
             type = INTERSECT_WORD;
             if (isWordTerminated()) {
@@ -221,27 +216,25 @@ public class SqlTokenizer {
         peekEightChars(c, c2, c3, c4, c5, c6, c7, c8);
     }
 
-    protected void peekEightChars(char c, char c2, char c3, char c4, char c5,
-            char c6, char c7, char c8) {
-        if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R')
-                && (c3 == 'o' || c3 == 'O') && (c4 == 'u' || c4 == 'U')
-                && (c5 == 'p' || c5 == 'P') && (isWhitespace(c6))
+    protected void peekEightChars(char c, char c2, char c3, char c4, char c5, char c6, char c7,
+            char c8) {
+        if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R') && (c3 == 'o' || c3 == 'O')
+                && (c4 == 'u' || c4 == 'U') && (c5 == 'p' || c5 == 'P') && (isWhitespace(c6))
                 && (c7 == 'b' || c7 == 'B') && (c8 == 'y' || c8 == 'Y')) {
             type = GROUP_BY_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 'o' || c == 'O') && (c2 == 'r' || c2 == 'R')
-                && (c3 == 'd' || c3 == 'D') && (c4 == 'e' || c4 == 'E')
-                && (c5 == 'r' || c5 == 'R') && (Character.isWhitespace(c6))
-                && (c7 == 'b' || c7 == 'B') && (c8 == 'y' || c8 == 'Y')) {
+        } else if ((c == 'o' || c == 'O') && (c2 == 'r' || c2 == 'R') && (c3 == 'd' || c3 == 'D')
+                && (c4 == 'e' || c4 == 'E') && (c5 == 'r' || c5 == 'R')
+                && (Character.isWhitespace(c6)) && (c7 == 'b' || c7 == 'B')
+                && (c8 == 'y' || c8 == 'Y')) {
             type = ORDER_BY_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 'o' || c == 'O') && (c2 == 'p' || c2 == 'P')
-                && (c3 == 't' || c3 == 'T') && (c4 == 'i' || c4 == 'I')
-                && (c5 == 'o' || c5 == 'O') && (c6 == 'n' || c6 == 'N')
+        } else if ((c == 'o' || c == 'O') && (c2 == 'p' || c2 == 'P') && (c3 == 't' || c3 == 'T')
+                && (c4 == 'i' || c4 == 'I') && (c5 == 'o' || c5 == 'O') && (c6 == 'n' || c6 == 'N')
                 && (isWhitespace(c7)) && (c8 == '(')) {
             type = OPTION_WORD;
             buf.position(buf.position() - 2);
@@ -251,38 +244,36 @@ public class SqlTokenizer {
         peekSevenChars(c, c2, c3, c4, c5, c6, c7);
     }
 
-    protected void peekSevenChars(char c, char c2, char c3, char c4, char c5,
-            char c6, char c7) {
+    protected void peekSevenChars(char c, char c2, char c3, char c4, char c5, char c6, char c7) {
         buf.position(buf.position() - 1);
         peekSixChars(c, c2, c3, c4, c5, c6);
     }
 
-    protected void peekSixChars(char c, char c2, char c3, char c4, char c5,
-            char c6) {
-        if ((c == 's' || c == 'S') && (c2 == 'e' || c2 == 'E')
-                && (c3 == 'l' || c3 == 'L') && (c4 == 'e' || c4 == 'E')
-                && (c5 == 'c' || c5 == 'C') && (c6 == 't' || c6 == 'T')) {
+    protected void peekSixChars(char c, char c2, char c3, char c4, char c5, char c6) {
+        if ((c == 's' || c == 'S') && (c2 == 'e' || c2 == 'E') && (c3 == 'l' || c3 == 'L')
+                && (c4 == 'e' || c4 == 'E') && (c5 == 'c' || c5 == 'C')
+                && (c6 == 't' || c6 == 'T')) {
             type = SELECT_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 'h' || c == 'H') && (c2 == 'a' || c2 == 'A')
-                && (c3 == 'v' || c3 == 'V') && (c4 == 'i' || c4 == 'I')
-                && (c5 == 'n' || c5 == 'N') && (c6 == 'g' || c6 == 'G')) {
+        } else if ((c == 'h' || c == 'H') && (c2 == 'a' || c2 == 'A') && (c3 == 'v' || c3 == 'V')
+                && (c4 == 'i' || c4 == 'I') && (c5 == 'n' || c5 == 'N')
+                && (c6 == 'g' || c6 == 'G')) {
             type = HAVING_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 'e' || c == 'E') && (c2 == 'x' || c2 == 'X')
-                && (c3 == 'c' || c3 == 'C') && (c4 == 'e' || c4 == 'E')
-                && (c5 == 'p' || c5 == 'P') && (c6 == 't' || c6 == 'T')) {
+        } else if ((c == 'e' || c == 'E') && (c2 == 'x' || c2 == 'X') && (c3 == 'c' || c3 == 'C')
+                && (c4 == 'e' || c4 == 'E') && (c5 == 'p' || c5 == 'P')
+                && (c6 == 't' || c6 == 'T')) {
             type = EXCEPT_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 'u' || c == 'U') && (c2 == 'p' || c2 == 'P')
-                && (c3 == 'd' || c3 == 'D') && (c4 == 'a' || c4 == 'A')
-                && (c5 == 't' || c5 == 'T') && (c6 == 'e' || c6 == 'E')) {
+        } else if ((c == 'u' || c == 'U') && (c2 == 'p' || c2 == 'P') && (c3 == 'd' || c3 == 'D')
+                && (c4 == 'a' || c4 == 'A') && (c5 == 't' || c5 == 'T')
+                && (c6 == 'e' || c6 == 'E')) {
             type = UPDATE_WORD;
             if (isWordTerminated()) {
                 return;
@@ -293,23 +284,20 @@ public class SqlTokenizer {
     }
 
     protected void peekFiveChars(char c, char c2, char c3, char c4, char c5) {
-        if ((c == 'w' || c == 'W') && (c2 == 'h' || c2 == 'H')
-                && (c3 == 'e' || c3 == 'E') && (c4 == 'r' || c4 == 'R')
-                && (c5 == 'e' || c5 == 'E')) {
+        if ((c == 'w' || c == 'W') && (c2 == 'h' || c2 == 'H') && (c3 == 'e' || c3 == 'E')
+                && (c4 == 'r' || c4 == 'R') && (c5 == 'e' || c5 == 'E')) {
             type = WHERE_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 'u' || c == 'U') && (c2 == 'n' || c2 == 'N')
-                && (c3 == 'i' || c3 == 'I') && (c4 == 'o' || c4 == 'O')
-                && (c5 == 'n' || c5 == 'N')) {
+        } else if ((c == 'u' || c == 'U') && (c2 == 'n' || c2 == 'N') && (c3 == 'i' || c3 == 'I')
+                && (c4 == 'o' || c4 == 'O') && (c5 == 'n' || c5 == 'N')) {
             type = UNION_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 'm' || c == 'M') && (c2 == 'i' || c2 == 'I')
-                && (c3 == 'n' || c3 == 'N') && (c4 == 'u' || c4 == 'U')
-                && (c5 == 's' || c5 == 'S')) {
+        } else if ((c == 'm' || c == 'M') && (c2 == 'i' || c2 == 'I') && (c3 == 'n' || c3 == 'N')
+                && (c4 == 'u' || c4 == 'U') && (c5 == 's' || c5 == 'S')) {
             type = MINUS_WORD;
             if (isWordTerminated()) {
                 return;
@@ -320,8 +308,8 @@ public class SqlTokenizer {
     }
 
     protected void peekFourChars(char c, char c2, char c3, char c4) {
-        if ((c == 'f' || c == 'F') && (c2 == 'r' || c2 == 'R')
-                && (c3 == 'o' || c3 == 'O') && (c4 == 'm' || c4 == 'M')) {
+        if ((c == 'f' || c == 'F') && (c2 == 'r' || c2 == 'R') && (c3 == 'o' || c3 == 'O')
+                && (c4 == 'm' || c4 == 'M')) {
             type = FROM_WORD;
             if (isWordTerminated()) {
                 return;
@@ -332,14 +320,12 @@ public class SqlTokenizer {
     }
 
     protected void peekThreeChars(char c, char c2, char c3) {
-        if ((c == 'a' || c == 'A') && (c2 == 'n' || c2 == 'N')
-                && (c3 == 'd' || c3 == 'D')) {
+        if ((c == 'a' || c == 'A') && (c2 == 'n' || c2 == 'N') && (c3 == 'd' || c3 == 'D')) {
             type = AND_WORD;
             if (isWordTerminated()) {
                 return;
             }
-        } else if ((c == 's' || c == 'S') && (c2 == 'e' || c2 == 'E')
-                && (c3 == 't' || c3 == 'T')) {
+        } else if ((c == 's' || c == 'S') && (c2 == 'e' || c2 == 'E') && (c3 == 't' || c3 == 'T')) {
             type = SET_WORD;
             if (isWordTerminated()) {
                 return;
@@ -386,8 +372,7 @@ public class SqlTokenizer {
                                     }
                                 } else if (buf.hasRemaining()) {
                                     char c7 = buf.get();
-                                    if (c4 == 'e' && c5 == 'l' && c6 == 's'
-                                            && c7 == 'e') {
+                                    if (c4 == 'e' && c5 == 'l' && c6 == 's' && c7 == 'e') {
                                         if (isBlockCommentDirectiveTerminated()) {
                                             type = ELSE_BLOCK_COMMENT;
                                         } else {
@@ -400,8 +385,7 @@ public class SqlTokenizer {
                                                             type = ELSEIF_BLOCK_COMMENT;
                                                         }
                                                     } else {
-                                                        buf.position(buf
-                                                                .position() - 6);
+                                                        buf.position(buf.position() - 6);
                                                     }
                                                 } else {
                                                     buf.position(buf.position() - 5);
@@ -412,8 +396,7 @@ public class SqlTokenizer {
                                         char c8 = buf.get();
                                         if (buf.hasRemaining()) {
                                             char c9 = buf.get();
-                                            if (c4 == 'e' && c5 == 'x'
-                                                    && c6 == 'p' && c7 == 'a'
+                                            if (c4 == 'e' && c5 == 'x' && c6 == 'p' && c7 == 'a'
                                                     && c8 == 'n' && c9 == 'd') {
                                                 if (isBlockCommentDirectiveTerminated()) {
                                                     type = EXPAND_BLOCK_COMMENT;
@@ -422,19 +405,14 @@ public class SqlTokenizer {
                                                 char c10 = buf.get();
                                                 if (buf.hasRemaining()) {
                                                     char c11 = buf.get();
-                                                    if (c4 == 'p' && c5 == 'o'
-                                                            && c6 == 'p'
-                                                            && c7 == 'u'
-                                                            && c8 == 'l'
-                                                            && c9 == 'a'
-                                                            && c10 == 't'
-                                                            && c11 == 'e') {
+                                                    if (c4 == 'p' && c5 == 'o' && c6 == 'p'
+                                                            && c7 == 'u' && c8 == 'l' && c9 == 'a'
+                                                            && c10 == 't' && c11 == 'e') {
                                                         if (isBlockCommentDirectiveTerminated()) {
                                                             type = POPULATE_BLOCK_COMMENT;
                                                         }
                                                     } else {
-                                                        buf.position(buf
-                                                                .position() - 8);
+                                                        buf.position(buf.position() - 8);
                                                     }
                                                 } else {
                                                     buf.position(buf.position() - 7);
@@ -459,14 +437,11 @@ public class SqlTokenizer {
                         }
                     }
                     if (type != IF_BLOCK_COMMENT && type != FOR_BLOCK_COMMENT
-                            && type != END_BLOCK_COMMENT
-                            && type != ELSE_BLOCK_COMMENT
-                            && type != ELSEIF_BLOCK_COMMENT
-                            && type != EXPAND_BLOCK_COMMENT
+                            && type != END_BLOCK_COMMENT && type != ELSE_BLOCK_COMMENT
+                            && type != ELSEIF_BLOCK_COMMENT && type != EXPAND_BLOCK_COMMENT
                             && type != POPULATE_BLOCK_COMMENT) {
                         int pos = buf.position() - lineStartPosition;
-                        throw new JdbcException(Message.DOMA2119, sql,
-                                lineNumber, pos);
+                        throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
                     }
                 }
                 buf.position(buf.position() - 1);
@@ -479,8 +454,7 @@ public class SqlTokenizer {
                     if (c3 == '*' && c4 == '/') {
                         return;
                     }
-                    if ((c3 == '\r' && c4 == '\n')
-                            || (c3 == '\r' || c3 == '\n')) {
+                    if ((c3 == '\r' && c4 == '\n') || (c3 == '\r' || c3 == '\n')) {
                         currentLineNumber++;
                     }
                     buf.reset();
@@ -568,8 +542,7 @@ public class SqlTokenizer {
                         return;
                     }
                     int pos = buf.position() - lineStartPosition;
-                    throw new JdbcException(Message.DOMA2101, sql, lineNumber,
-                            pos);
+                    throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
                 }
                 if (!isWordPart(c2)) {
                     buf.reset();

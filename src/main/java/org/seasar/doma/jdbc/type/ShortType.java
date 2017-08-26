@@ -39,14 +39,13 @@ public class ShortType extends AbstractJdbcType<Short> {
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Short value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Short value)
+            throws SQLException {
         preparedStatement.setShort(index, value);
     }
 
     @Override
-    protected Short doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Short doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getShort(index);
     }
 

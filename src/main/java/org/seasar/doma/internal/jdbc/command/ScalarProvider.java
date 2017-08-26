@@ -33,8 +33,7 @@ import org.seasar.doma.jdbc.query.Query;
  * @author nakamura-to
  * 
  */
-public class ScalarProvider<BASIC, CONTAINER> extends
-        AbstractObjectProvider<CONTAINER> {
+public class ScalarProvider<BASIC, CONTAINER> extends AbstractObjectProvider<CONTAINER> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
@@ -49,13 +48,11 @@ public class ScalarProvider<BASIC, CONTAINER> extends
      * @param supplier
      * @param query
      */
-    public ScalarProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier,
-            Query query) {
+    public ScalarProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier, Query query) {
         assertNotNull(supplier, query);
         this.supplier = supplier;
         this.query = query;
-        this.jdbcMappingVisitor = query.getConfig().getDialect()
-                .getJdbcMappingVisitor();
+        this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
     }
 
     @Override
@@ -72,8 +69,7 @@ public class ScalarProvider<BASIC, CONTAINER> extends
         int columnCount = getColumnCount(resultSet);
         if (columnCount != 1) {
             Sql<?> sql = query.getSql();
-            throw new NonSingleColumnException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
+            throw new NonSingleColumnException(query.getConfig().getExceptionSqlLogType(), sql);
         }
         columnCountValidated = true;
     }

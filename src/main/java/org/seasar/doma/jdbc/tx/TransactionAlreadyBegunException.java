@@ -26,8 +26,7 @@ import org.seasar.doma.message.Message;
  * @author nakamura-to
  * @since 2.0.0
  */
-public class TransactionAlreadyBegunException extends JdbcException implements
-        Serializable {
+public class TransactionAlreadyBegunException extends JdbcException implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

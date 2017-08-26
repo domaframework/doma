@@ -28,13 +28,11 @@ public interface SqlParameterVisitor<R, P, TH extends Throwable> {
     <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> R visitInOutParameter(
             INOUT parameter, P p) throws TH;
 
-    <ELEMENT> R visitListParameter(ListParameter<ELEMENT> parameter, P p)
-            throws TH;
+    <ELEMENT> R visitListParameter(ListParameter<ELEMENT> parameter, P p) throws TH;
 
-    <BASIC, RESULT> R visitSingleResultParameter(
-            SingleResultParameter<BASIC, RESULT> parameter, P p) throws TH;
+    <BASIC, RESULT> R visitSingleResultParameter(SingleResultParameter<BASIC, RESULT> parameter,
+            P p) throws TH;
 
-    <ELEMENT> R visitResultListParameter(
-            ResultListParameter<ELEMENT> parameter, P p) throws TH;
+    <ELEMENT> R visitResultListParameter(ResultListParameter<ELEMENT> parameter, P p) throws TH;
 
 }

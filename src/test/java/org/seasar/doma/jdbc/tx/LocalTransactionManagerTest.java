@@ -37,21 +37,20 @@ public class LocalTransactionManagerTest extends TestCase {
     private final UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger() {
 
         @Override
-        public void logTransactionBegun(String callerClassName,
-                String callerMethodName, String transactionId) {
+        public void logTransactionBegun(String callerClassName, String callerMethodName,
+                String transactionId) {
             LocalTransactionManagerTest.counter++;
         }
 
         @Override
-        public void logTransactionEnded(String callerClassName,
-                String callerMethodName, String transactionId) {
+        public void logTransactionEnded(String callerClassName, String callerMethodName,
+                String transactionId) {
             LocalTransactionManagerTest.counter--;
         }
 
     };
 
-    private final LocalTransaction transaction = dataSource
-            .getLocalTransaction(jdbcLogger);
+    private final LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
 
     @Override
     protected void setUp() throws Exception {
@@ -60,8 +59,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testRequired_blcok() throws Exception {
-        TransactionManager manager = new LocalTransactionManager(
-                transaction);
+        TransactionManager manager = new LocalTransactionManager(transaction);
         StringBuilder log = new StringBuilder();
         log.append(LocalTransactionManagerTest.counter);
         manager.required(() -> {
@@ -76,8 +74,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testRequired_supplier() throws Exception {
-        LocalTransactionManager manager = new LocalTransactionManager(
-                transaction);
+        LocalTransactionManager manager = new LocalTransactionManager(transaction);
         String result = manager.required(() -> {
             return "aaa";
         });
@@ -85,8 +82,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testRequiresNew_blcok() throws Exception {
-        TransactionManager manager = new LocalTransactionManager(
-                transaction);
+        TransactionManager manager = new LocalTransactionManager(transaction);
         StringBuilder log = new StringBuilder();
         log.append(LocalTransactionManagerTest.counter);
         manager.requiresNew(() -> {
@@ -101,8 +97,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testRequiresNew_supplier() throws Exception {
-        LocalTransactionManager manager = new LocalTransactionManager(
-                transaction);
+        LocalTransactionManager manager = new LocalTransactionManager(transaction);
         String result = manager.requiresNew(() -> {
             return "aaa";
         });
@@ -110,8 +105,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testNotSupported_block() throws Exception {
-        TransactionManager manager = new LocalTransactionManager(
-                transaction);
+        TransactionManager manager = new LocalTransactionManager(transaction);
         StringBuilder log = new StringBuilder();
         log.append(LocalTransactionManagerTest.counter);
         manager.notSupported(() -> {
@@ -126,8 +120,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testNotSupported_supplier() throws Exception {
-        LocalTransactionManager manager = new LocalTransactionManager(
-                transaction);
+        LocalTransactionManager manager = new LocalTransactionManager(transaction);
         String result = manager.notSupported(() -> {
             return "aaa";
         });
@@ -135,8 +128,7 @@ public class LocalTransactionManagerTest extends TestCase {
     }
 
     public void testNotSupported_in_tx() throws Exception {
-        LocalTransactionManager manager = new LocalTransactionManager(
-                transaction);
+        LocalTransactionManager manager = new LocalTransactionManager(transaction);
         StringBuilder log = new StringBuilder();
         log.append(LocalTransactionManagerTest.counter);
         manager.required(() -> {

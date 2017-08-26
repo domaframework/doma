@@ -40,11 +40,10 @@ public final class IOUtil {
 
     protected static final int BUF_SIZE = 8192;
 
-    public static String readAsString(InputStream inputStream)
-            throws WrapException {
+    public static String readAsString(InputStream inputStream) throws WrapException {
         assertNotNull(inputStream);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                inputStream, Constants.UTF_8));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(inputStream, Constants.UTF_8));
         StringBuilder buf = new StringBuilder(200);
         try {
             CharBuffer c = CharBuffer.allocate(BUF_SIZE);

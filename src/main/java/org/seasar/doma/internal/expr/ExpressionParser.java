@@ -81,8 +81,7 @@ public class ExpressionParser {
         this(expression, expression, 0);
     }
 
-    protected ExpressionParser(String expression, String originalExpression,
-            int startPosition) {
+    protected ExpressionParser(String expression, String originalExpression, int startPosition) {
         assertNotNull(expression, originalExpression);
         this.expression = expression;
         this.originalExpression = originalExpression;
@@ -136,8 +135,8 @@ public class ExpressionParser {
             }
             case ILLEGAL_NUMBER_LITERAL: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(Message.DOMA3012,
-                        location.getExpression(), location.getPosition(), token);
+                throw new ExpressionException(Message.DOMA3012, location.getExpression(),
+                        location.getPosition(), token);
             }
             case TRUE_LITERAL: {
                 parseTrueLiteral();
@@ -236,8 +235,8 @@ public class ExpressionParser {
             }
             case OTHER: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(Message.DOMA3011,
-                        location.getExpression(), location.getPosition(), token);
+                throw new ExpressionException(Message.DOMA3011, location.getExpression(),
+                        location.getPosition(), token);
             }
             case EOE: {
                 break outer;
@@ -262,13 +261,12 @@ public class ExpressionParser {
     protected void parseOpenedParens() {
         int start = tokenizer.getPosition();
         String subExpression = expression.substring(start);
-        ExpressionParser parser = new ExpressionParser(subExpression,
-                originalExpression, start);
+        ExpressionParser parser = new ExpressionParser(subExpression, originalExpression, start);
         ExpressionNode childExpressionNode = parser.parse();
         if (parser.tokenType != CLOSED_PARENS) {
             ExpressionLocation location = getLocation();
-            throw new ExpressionException(Message.DOMA3026,
-                    location.getExpression(), location.getPosition());
+            throw new ExpressionException(Message.DOMA3026, location.getExpression(),
+                    location.getPosition());
         }
         int end = start + parser.tokenizer.getPosition();
         tokenizer.setPosition(end, true);
@@ -282,15 +280,13 @@ public class ExpressionParser {
 
     protected void parseStringLiteral() {
         String value = token.substring(1, token.length() - 1);
-        LiteralNode node = new LiteralNode(getLocation(), token, value,
-                String.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, value, String.class);
         expressionNodes.push(node);
     }
 
     protected void parseCharLiteral() {
         char value = token.charAt(1);
-        LiteralNode node = new LiteralNode(getLocation(), token, value,
-                char.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, value, char.class);
         expressionNodes.push(node);
     }
 
@@ -298,8 +294,7 @@ public class ExpressionParser {
         int start = token.charAt(0) == '+' ? 1 : 0;
         int end = token.length();
         Integer value = Integer.valueOf(token.substring(start, end));
-        LiteralNode node = new LiteralNode(getLocation(), token, value,
-                int.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, value, int.class);
         expressionNodes.push(node);
     }
 
@@ -307,8 +302,7 @@ public class ExpressionParser {
         int start = token.charAt(0) == '+' ? 1 : 0;
         int end = token.length() - 1;
         Long value = Long.valueOf(token.substring(start, end));
-        LiteralNode node = new LiteralNode(getLocation(), token, value,
-                long.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, value, long.class);
         expressionNodes.push(node);
     }
 
@@ -316,8 +310,7 @@ public class ExpressionParser {
         int start = token.charAt(0) == '+' ? 1 : 0;
         int end = token.length() - 1;
         Float value = Float.valueOf(token.substring(start, end));
-        LiteralNode node = new LiteralNode(getLocation(), token, value,
-                float.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, value, float.class);
         expressionNodes.push(node);
     }
 
@@ -325,8 +318,7 @@ public class ExpressionParser {
         int start = token.charAt(0) == '+' ? 1 : 0;
         int end = token.length() - 1;
         Double value = Double.valueOf(token.substring(start, end));
-        LiteralNode node = new LiteralNode(getLocation(), token, value,
-                double.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, value, double.class);
         expressionNodes.push(node);
     }
 
@@ -334,33 +326,28 @@ public class ExpressionParser {
         int start = 0;
         int end = token.length() - 1;
         BigDecimal value = new BigDecimal(token.substring(start, end));
-        LiteralNode node = new LiteralNode(getLocation(), token, value,
-                BigDecimal.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, value, BigDecimal.class);
         expressionNodes.push(node);
     }
 
     protected void parseTrueLiteral() {
-        LiteralNode node = new LiteralNode(getLocation(), token, true,
-                boolean.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, true, boolean.class);
         expressionNodes.push(node);
     }
 
     protected void parseFalseLiteral() {
-        LiteralNode node = new LiteralNode(getLocation(), token, false,
-                boolean.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, false, boolean.class);
         expressionNodes.push(node);
     }
 
     protected void parseNullLiteral() {
-        LiteralNode node = new LiteralNode(getLocation(), token, null,
-                void.class);
+        LiteralNode node = new LiteralNode(getLocation(), token, null, void.class);
         expressionNodes.push(node);
     }
 
     protected void parseMethodOperand() {
         String name = token.substring(1);
-        MethodOperatorNode node = new MethodOperatorNode(getLocation(), token,
-                name);
+        MethodOperatorNode node = new MethodOperatorNode(getLocation(), token, name);
         tokenType = tokenizer.next();
         assertEquals(OPENED_PARENS, tokenType);
         parseOpenedParens();
@@ -372,8 +359,8 @@ public class ExpressionParser {
         assertTrue(pos > -1);
         String className = token.substring(1, pos);
         String methodName = token.substring(pos + 1);
-        StaticMethodOperatorNode node = new StaticMethodOperatorNode(
-                getLocation(), token, className, methodName);
+        StaticMethodOperatorNode node = new StaticMethodOperatorNode(getLocation(), token,
+                className, methodName);
         tokenType = tokenizer.next();
         assertEquals(OPENED_PARENS, tokenType);
         parseOpenedParens();
@@ -382,8 +369,7 @@ public class ExpressionParser {
 
     protected void parseFunctionOperand() {
         String name = token.substring(1);
-        FunctionOperatorNode node = new FunctionOperatorNode(getLocation(),
-                token, name);
+        FunctionOperatorNode node = new FunctionOperatorNode(getLocation(), token, name);
         tokenType = tokenizer.next();
         assertEquals(OPENED_PARENS, tokenType);
         parseOpenedParens();
@@ -392,8 +378,7 @@ public class ExpressionParser {
 
     protected void parseFieldOperand() {
         String name = token.substring(1);
-        FieldOperatorNode node = new FieldOperatorNode(getLocation(), token,
-                name);
+        FieldOperatorNode node = new FieldOperatorNode(getLocation(), token, name);
         reduce(node);
     }
 
@@ -402,8 +387,8 @@ public class ExpressionParser {
         assertTrue(pos > -1);
         String className = token.substring(1, pos);
         String fieldName = token.substring(pos + 1);
-        StaticFieldOperatorNode node = new StaticFieldOperatorNode(
-                getLocation(), token, className, fieldName);
+        StaticFieldOperatorNode node = new StaticFieldOperatorNode(getLocation(), token, className,
+                fieldName);
         reduce(node);
     }
 
@@ -414,8 +399,7 @@ public class ExpressionParser {
                 buf.append(tokenizer.getToken());
             }
         }
-        NewOperatorNode node = new NewOperatorNode(getLocation(), token, buf
-                .toString().trim());
+        NewOperatorNode node = new NewOperatorNode(getLocation(), token, buf.toString().trim());
         parseOpenedParens();
         reduce(node);
     }
@@ -427,8 +411,7 @@ public class ExpressionParser {
             if (currentNode.getPriority() > operatorNodes.peek().getPriority()) {
                 operatorNodes.push(currentNode);
             } else {
-                for (Iterator<OperatorNode> it = operatorNodes.iterator(); it
-                        .hasNext();) {
+                for (Iterator<OperatorNode> it = operatorNodes.iterator(); it.hasNext();) {
                     OperatorNode operatorNode = it.next();
                     if (operatorNode.getPriority() > currentNode.getPriority()) {
                         reduce(operatorNode);
@@ -454,7 +437,6 @@ public class ExpressionParser {
     }
 
     protected ExpressionLocation getLocation() {
-        return new ExpressionLocation(originalExpression, startPosition
-                + tokenizer.getPosition());
+        return new ExpressionLocation(originalExpression, startPosition + tokenizer.getPosition());
     }
 }

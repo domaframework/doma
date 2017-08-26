@@ -50,12 +50,10 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setName("bbb");
         emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                Emp.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -78,12 +76,10 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setSalary(new BigDecimal(2000));
         emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                Emp.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -92,8 +88,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update emp set name = ?, salary = ? where id = ?",
-                sql.getRawSql());
+        assertEquals("update emp set name = ?, salary = ? where id = ?", sql.getRawSql());
         List<InParameter<?>> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
@@ -101,8 +96,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("update emp set name = ?, salary = ? where id = ?",
-                sql.getRawSql());
+        assertEquals("update emp set name = ?, salary = ? where id = ?", sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertNull(parameters.get(0).getWrapper().get());
@@ -111,12 +105,10 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     }
 
     public void testIsExecutable() throws Exception {
-        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                Emp.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -136,12 +128,10 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setName("bbb");
         emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                Emp.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                "testPopulate"));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -152,8 +142,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
 
         assertEquals(2, query.getSqls().size());
         Sql<?> sql = query.getSql();
-        assertEquals(
-                "update aaa set NAME = ?, SALARY = ?, VERSION = ? + 1 where id = ?",
+        assertEquals("update aaa set NAME = ?, SALARY = ?, VERSION = ? + 1 where id = ?",
                 sql.getRawSql());
     }
 
@@ -168,12 +157,10 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setName("bbb");
         emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                Emp.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                "testPopulate"));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -185,8 +172,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
 
         assertEquals(2, query.getSqls().size());
         Sql<?> sql = query.getSql();
-        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
     }
 
     public void testPopulate_exclude() throws Exception {
@@ -200,12 +186,10 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setName("bbb");
         emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                Emp.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                "testPopulate"));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -217,8 +201,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
 
         assertEquals(2, query.getSqls().size());
         Sql<?> sql = query.getSql();
-        assertEquals("update aaa set SALARY = ?, VERSION = ? + 1 where id = ?",
-                sql.getRawSql());
+        assertEquals("update aaa set SALARY = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
     }
 
     public void testPopulate_ignoreVersion() throws Exception {
@@ -232,12 +215,10 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setName("bbb");
         emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                Emp.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                "testPopulate"));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
         query.setParameterName("e");
         query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -249,8 +230,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
 
         assertEquals(2, query.getSqls().size());
         Sql<?> sql = query.getSql();
-        assertEquals(
-                "update aaa set NAME = ?, SALARY = ?, VERSION = ? where id = ?",
+        assertEquals("update aaa set NAME = ?, SALARY = ?, VERSION = ? where id = ?",
                 sql.getRawSql());
     }
 

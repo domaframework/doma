@@ -30,14 +30,11 @@ import org.seasar.doma.jdbc.PreparedSql;
 public interface SqlProcessorDao {
 
     @SqlProcessor
-    <R> R process_typeParameter(Integer id,
-            BiFunction<Config, PreparedSql, R> handler);
+    <R> R process_typeParameter(Integer id, BiFunction<Config, PreparedSql, R> handler);
 
     @SqlProcessor
-    String process_string(Integer id,
-            BiFunction<Config, PreparedSql, String> handler);
+    String process_string(Integer id, BiFunction<Config, PreparedSql, String> handler);
 
     @SqlProcessor
-    void process_void(Integer id,
-            BiFunction<Config, PreparedSql, Void> handler);
+    void process_void(Integer id, BiFunction<Config, PreparedSql, Void> handler);
 }

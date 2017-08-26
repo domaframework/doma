@@ -37,8 +37,7 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
         return procedureReflection;
     }
 
-    public void setProcedureReflection(
-            ProcedureReflection procedureReflection) {
+    public void setProcedureReflection(ProcedureReflection procedureReflection) {
         this.procedureReflection = procedureReflection;
     }
 

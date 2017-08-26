@@ -27,8 +27,7 @@ public class BiFunctionCtType extends AbstractCtType {
 
     private final AnyCtType resultCtType;
 
-    BiFunctionCtType(Context ctx, TypeMirror type, 
-            CtType firstArgCtType, CtType secondArgCtType,
+    BiFunctionCtType(Context ctx, TypeMirror type, CtType firstArgCtType, CtType secondArgCtType,
             AnyCtType resultCtType) {
         super(ctx, type);
         this.firstArgCtType = firstArgCtType;
@@ -49,8 +48,7 @@ public class BiFunctionCtType extends AbstractCtType {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
         return visitor.visitBiFunctionCtType(this, p);
     }
 }

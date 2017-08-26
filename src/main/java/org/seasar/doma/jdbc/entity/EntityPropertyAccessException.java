@@ -42,10 +42,9 @@ public class EntityPropertyAccessException extends JdbcException {
      * @param entityPropertyName
      *            エンティティプロパティの名前
      */
-    public EntityPropertyAccessException(Throwable cause,
-            String entityClassName, String entityPropertyName) {
-        super(Message.DOMA2208, cause, entityClassName, entityPropertyName,
-                cause);
+    public EntityPropertyAccessException(Throwable cause, String entityClassName,
+            String entityPropertyName) {
+        super(Message.DOMA2208, cause, entityClassName, entityPropertyName, cause);
         this.entityClassName = entityClassName;
         this.entityPropertyName = entityPropertyName;
     }

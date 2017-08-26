@@ -42,34 +42,29 @@ public class GenericUtilTest extends TestCase {
     public void testInterfaceReturnType() throws Exception {
         // type argument T1 is generic
         Class<?> arg = GenericsUtil.inferTypeArgument(Ccc2.class,
-                (TypeVariable<?>) Aaa2.class.getMethod("m1", Object.class)
-                        .getGenericReturnType());
+                (TypeVariable<?>) Aaa2.class.getMethod("m1", Object.class).getGenericReturnType());
         assertNull(arg);
 
         // type argument T2 is generic
         arg = GenericsUtil.inferTypeArgument(Ccc2.class,
-                (TypeVariable<?>) Aaa2.class.getMethod("m2", Object.class)
-                        .getGenericReturnType());
+                (TypeVariable<?>) Aaa2.class.getMethod("m2", Object.class).getGenericReturnType());
         assertNull(arg);
 
         // type argument T3 is concrete
         arg = GenericsUtil.inferTypeArgument(Ccc2.class,
-                (TypeVariable<?>) Aaa2.class.getMethod("m3", Object.class)
-                        .getGenericReturnType());
+                (TypeVariable<?>) Aaa2.class.getMethod("m3", Object.class).getGenericReturnType());
         assertEquals(Boolean.class, arg);
     }
 
     public void testClassReturnType() throws Exception {
         // type argument T1 is concrete
         Class<?> arg = GenericsUtil.inferTypeArgument(Ccc2.class,
-                (TypeVariable<?>) Bbb2.class.getMethod("m1", Object.class)
-                        .getGenericReturnType());
+                (TypeVariable<?>) Bbb2.class.getMethod("m1", Object.class).getGenericReturnType());
         assertEquals(String.class, arg);
 
         // type argument T2 is generic
         arg = GenericsUtil.inferTypeArgument(Ccc2.class,
-                (TypeVariable<?>) Bbb2.class.getMethod("m2", Object.class)
-                        .getGenericReturnType());
+                (TypeVariable<?>) Bbb2.class.getMethod("m2", Object.class).getGenericReturnType());
         assertNull(arg);
     }
 

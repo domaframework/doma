@@ -65,8 +65,7 @@ public class IdGenerationConfig {
      * @param idProvider
      *            識別子プロバイダ
      */
-    public IdGenerationConfig(Config config, EntityDesc<?> entityDesc,
-            IdProvider idProvider) {
+    public IdGenerationConfig(Config config, EntityDesc<?> entityDesc, IdProvider idProvider) {
         assertNotNull(config, entityDesc, idProvider);
         this.config = config;
         this.entityDesc = entityDesc;

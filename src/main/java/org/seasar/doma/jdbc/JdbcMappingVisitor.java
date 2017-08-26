@@ -29,6 +29,5 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * 
  */
 public interface JdbcMappingVisitor
-        extends
-        WrapperVisitor<Void, JdbcMappingFunction, JdbcMappingHint, SQLException> {
+        extends WrapperVisitor<Void, JdbcMappingFunction, JdbcMappingHint, SQLException> {
 }

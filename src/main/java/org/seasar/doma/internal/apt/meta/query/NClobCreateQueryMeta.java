@@ -35,8 +35,7 @@ public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
         return nClobFactoryReflection;
     }
 
-    public void setNClobFactoryReflection(
-            NClobFactoryReflection nClobFactoryReflection) {
+    public void setNClobFactoryReflection(NClobFactoryReflection nClobFactoryReflection) {
         this.nClobFactoryReflection = nClobFactoryReflection;
     }
 

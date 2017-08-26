@@ -11,7 +11,8 @@ public interface InterfaceHolder {
 
     static InterfaceHolder of(String value) {
         return Arrays.<InterfaceHolder> stream(DefinedColor.values())
-                .filter(a -> a.getValue().equals(value)).findFirst()
+                .filter(a -> a.getValue().equals(value))
+                .findFirst()
                 .orElseGet(() -> new Color(value));
     }
 

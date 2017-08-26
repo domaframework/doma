@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.IterationContext;
  * @author nakamura-to
  * 
  */
-public class OptionalSingleResultCallback<TARGET> implements
-        IterationCallback<TARGET, Optional<TARGET>> {
+public class OptionalSingleResultCallback<TARGET>
+        implements IterationCallback<TARGET, Optional<TARGET>> {
 
     protected final Function<TARGET, Optional<TARGET>> mapper;
 
@@ -36,8 +36,7 @@ public class OptionalSingleResultCallback<TARGET> implements
         this(Optional::ofNullable);
     }
 
-    public OptionalSingleResultCallback(
-            Function<TARGET, Optional<TARGET>> mapper) {
+    public OptionalSingleResultCallback(Function<TARGET, Optional<TARGET>> mapper) {
         assertNotNull(mapper);
         this.mapper = mapper;
     }

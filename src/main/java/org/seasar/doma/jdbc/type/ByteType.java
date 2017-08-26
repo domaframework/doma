@@ -39,14 +39,13 @@ public class ByteType extends AbstractJdbcType<Byte> {
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Byte value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Byte value)
+            throws SQLException {
         preparedStatement.setByte(index, value);
     }
 
     @Override
-    protected Byte doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected Byte doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getByte(index);
     }
 

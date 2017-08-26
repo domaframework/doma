@@ -71,12 +71,10 @@ public class ResultMappingException extends JdbcException {
      *            SQLファイルのパス
      */
     public ResultMappingException(SqlLogType logType, String entityClassName,
-            List<String> unmappedPropertyNames,
-            List<String> expectedColumnNames, SqlKind kind, String rawSql,
-            String formattedSql, String sqlFilePath) {
-        super(Message.DOMA2216, entityClassName, unmappedPropertyNames,
-                expectedColumnNames, sqlFilePath, choiceSql(logType, rawSql,
-                        formattedSql));
+            List<String> unmappedPropertyNames, List<String> expectedColumnNames, SqlKind kind,
+            String rawSql, String formattedSql, String sqlFilePath) {
+        super(Message.DOMA2216, entityClassName, unmappedPropertyNames, expectedColumnNames,
+                sqlFilePath, choiceSql(logType, rawSql, formattedSql));
         this.entityClassName = entityClassName;
         this.unmappedPropertyNames = unmappedPropertyNames;
         this.expectedColumnNames = expectedColumnNames;

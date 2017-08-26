@@ -67,8 +67,8 @@ public class BatchResult<ENTITY> {
      * エンティティのリストを返します。
      * 
      * @return エンティティのリスト
-     * @see <a
-     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     * @see <a href=
+     *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>
      */
     public List<ENTITY> component1() {
@@ -79,8 +79,8 @@ public class BatchResult<ENTITY> {
      * 更新件数の配列を返します。
      * 
      * @return 更新件数の配列
-     * @see <a
-     *      href="https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
+     * @see <a href=
+     *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>
      */
     public int[] component2() {
@@ -89,8 +89,7 @@ public class BatchResult<ENTITY> {
 
     @Override
     public String toString() {
-        return "BatchResult(entities=" + entities + ", counts="
-                + Arrays.toString(counts) + ")";
+        return "BatchResult(entities=" + entities + ", counts=" + Arrays.toString(counts) + ")";
     }
 
 }

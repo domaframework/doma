@@ -23,8 +23,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
-public class MessageResourceBundle extends
-        AbstractMessageResourceBundle<Message> {
+public class MessageResourceBundle extends AbstractMessageResourceBundle<Message> {
 
     /**
      * インスタンスを構築します。

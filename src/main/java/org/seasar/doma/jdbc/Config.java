@@ -265,7 +265,6 @@ public interface Config {
             return p.getConfig();
         }
         throw new DomaIllegalArgumentException("provider",
-                Message.DOMA2218.getMessage("provider",
-                        ConfigProvider.class.getName()));
+                Message.DOMA2218.getMessage("provider", ConfigProvider.class.getName()));
     }
 }

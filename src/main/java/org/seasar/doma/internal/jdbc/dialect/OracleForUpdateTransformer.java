@@ -27,8 +27,8 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class OracleForUpdateTransformer extends StandardForUpdateTransformer {
 
-    public OracleForUpdateTransformer(SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
+    public OracleForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
         super(forUpdateType, waitSeconds, aliases);
     }
 

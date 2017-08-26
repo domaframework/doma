@@ -36,7 +36,6 @@ public interface EnsureResultDao {
     Emp selectById(Integer id, SelectOptions options);
 
     @Select(ensureResult = true)
-    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions options);
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions options);
 
 }

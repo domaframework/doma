@@ -35,20 +35,18 @@ public class NClobType extends AbstractJdbcType<NClob> {
     }
 
     @Override
-    protected NClob doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected NClob doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getNClob(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            NClob value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, NClob value)
+            throws SQLException {
         preparedStatement.setNClob(index, value);
     }
 
     @Override
-    protected NClob doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+    protected NClob doGetValue(CallableStatement callableStatement, int index) throws SQLException {
         return callableStatement.getNClob(index);
     }
 

@@ -51,11 +51,11 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * 
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
- * <li> {@link DomaNullPointerException} パラメータに {@code null} を渡した場合
- * <li> {@link UniqueConstraintException} 一意制約違反が発生した場合
- * <li> {@link SqlFileNotFoundException} {@code sqlFile} 要素の値が {@code true}
+ * <li>{@link DomaNullPointerException} パラメータに {@code null} を渡した場合
+ * <li>{@link UniqueConstraintException} 一意制約違反が発生した場合
+ * <li>{@link SqlFileNotFoundException} {@code sqlFile} 要素の値が {@code true}
  * で、SQLファイルが見つからなかった場合
- * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
+ * <li>{@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
  * 
  * @author taedium

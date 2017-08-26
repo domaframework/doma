@@ -34,21 +34,20 @@ public class LocalDateType extends AbstractJdbcType<LocalDate> {
     }
 
     @Override
-    public LocalDate doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    public LocalDate doGetValue(ResultSet resultSet, int index) throws SQLException {
         Date date = resultSet.getDate(index);
         return date != null ? date.toLocalDate() : null;
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            LocalDate value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, LocalDate value)
+            throws SQLException {
         preparedStatement.setDate(index, Date.valueOf(value));
     }
 
     @Override
-    protected LocalDate doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException {
+    protected LocalDate doGetValue(CallableStatement callableStatement, int index)
+            throws SQLException {
         Date date = callableStatement.getDate(index);
         return date != null ? date.toLocalDate() : null;
     }

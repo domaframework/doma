@@ -34,14 +34,13 @@ public class BooleanType extends AbstractJdbcType<Boolean> {
     }
 
     @Override
-    protected Boolean doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected Boolean doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getBoolean(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Boolean value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, Boolean value)
+            throws SQLException {
         preparedStatement.setBoolean(index, value);
     }
 

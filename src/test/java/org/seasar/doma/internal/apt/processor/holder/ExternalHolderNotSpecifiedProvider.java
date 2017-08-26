@@ -21,7 +21,6 @@ import org.seasar.doma.HolderConverters;
  * @author taedium
  * 
  */
-@HolderConverters({ MondayConverter.class, TuesdayConverter.class,
-        WednesdayConverter.class })
+@HolderConverters({ MondayConverter.class, TuesdayConverter.class, WednesdayConverter.class })
 public class ExternalHolderNotSpecifiedProvider {
 }

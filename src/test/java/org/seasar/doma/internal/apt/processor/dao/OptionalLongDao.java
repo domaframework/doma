@@ -56,17 +56,14 @@ public interface OptionalLongDao {
     <R> R selectAllAge(Collector<OptionalLong, ?, R> mapper);
 
     @org.seasar.doma.Function
-    OptionalLong getSingleResult(@In OptionalLong in,
-            @InOut Reference<OptionalLong> inout,
-            @Out Reference<OptionalLong> out,
-            @ResultSet List<OptionalLong> resultSet);
+    OptionalLong getSingleResult(@In OptionalLong in, @InOut Reference<OptionalLong> inout,
+            @Out Reference<OptionalLong> out, @ResultSet List<OptionalLong> resultSet);
 
     @org.seasar.doma.Function
     List<OptionalLong> getResultList();
 
     @Procedure
     void execute(@In OptionalLong in, @InOut Reference<OptionalLong> inout,
-            @Out Reference<OptionalLong> out,
-            @ResultSet List<OptionalLong> resultSet);
+            @Out Reference<OptionalLong> out, @ResultSet List<OptionalLong> resultSet);
 
 }

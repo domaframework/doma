@@ -34,14 +34,13 @@ public class StringType extends AbstractJdbcType<String> {
     }
 
     @Override
-    protected String doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
+    protected String doGetValue(ResultSet resultSet, int index) throws SQLException {
         return resultSet.getString(index);
     }
 
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            String value) throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, String value)
+            throws SQLException {
         preparedStatement.setString(index, value);
     }
 

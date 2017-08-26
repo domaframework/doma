@@ -329,8 +329,7 @@ public class SqlTokenizerTest extends TestCase {
     }
 
     public void testBindBlockComment_followingQuote() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer(
-                "where /*aaa*/'2001-01-01 12:34:56'");
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*aaa*/'2001-01-01 12:34:56'");
         assertEquals(WHERE_WORD, tokenizer.next());
         assertEquals("where", tokenizer.getToken());
         assertEquals(WHITESPACE, tokenizer.next());
@@ -419,8 +418,7 @@ public class SqlTokenizerTest extends TestCase {
     }
 
     public void testLiteralBlockComment_followingQuote() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer(
-                "where /*^aaa*/'2001-01-01 12:34:56'");
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*^aaa*/'2001-01-01 12:34:56'");
         assertEquals(WHERE_WORD, tokenizer.next());
         assertEquals("where", tokenizer.getToken());
         assertEquals(WHITESPACE, tokenizer.next());
@@ -462,8 +460,7 @@ public class SqlTokenizerTest extends TestCase {
     }
 
     public void testForBlockComment() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer(
-                "where /*%for element : list*/bbb");
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*%for element : list*/bbb");
         assertEquals(WHERE_WORD, tokenizer.next());
         assertEquals("where", tokenizer.getToken());
         assertEquals(WHITESPACE, tokenizer.next());
@@ -551,8 +548,7 @@ public class SqlTokenizerTest extends TestCase {
     }
 
     public void testLineNumber() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer(
-                "aaa\nbbb\nccc\n/* \nddd\n */");
+        SqlTokenizer tokenizer = new SqlTokenizer("aaa\nbbb\nccc\n/* \nddd\n */");
         assertEquals(1, tokenizer.getLineNumber());
         assertEquals(WORD, tokenizer.next());
         assertEquals("aaa", tokenizer.getToken());

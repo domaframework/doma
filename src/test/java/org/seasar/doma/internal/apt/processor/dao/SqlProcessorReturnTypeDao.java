@@ -30,6 +30,5 @@ import org.seasar.doma.jdbc.PreparedSql;
 public interface SqlProcessorReturnTypeDao {
 
     @SqlProcessor
-    String process(Integer id,
-            BiFunction<Config, PreparedSql, Integer> handler);
+    String process(Integer id, BiFunction<Config, PreparedSql, Integer> handler);
 }
