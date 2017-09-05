@@ -28,11 +28,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
-/**
- * @author taedium
- * @param <ELEMENT>
- *            リストの要素
- */
 public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
         implements BatchDeleteQuery {
 

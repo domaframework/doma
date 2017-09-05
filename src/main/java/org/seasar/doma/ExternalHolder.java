@@ -23,9 +23,13 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
 /**
- * 任意のクラスをドメインクラスとして扱うことを示します。
- * 
- * <h3>例:</h3>
+ * Indicates to handle an arbitrary class as if it was a {@link Holder}
+ * annotated class.
+ * <p>
+ * The annotated class must implement {@link HolderConverter}.
+ * <p>
+ * In the bellow code, the SalaryConverter class handles the Salary class as a
+ * {@link Holder} annotated class:
  * 
  * <pre>
  * &#064;ExternalHolder
@@ -40,11 +44,10 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  *     }
  * }
  * </pre>
+ * <p>
+ * The annotated instance is required to be thread safe.
  * 
- * 注釈されたクラスはスレッドセーフでなければいけません。
- * 
- * @author taedium
- * @since 1.25.0
+ * @see Holder
  * @see HolderConverter
  * @see HolderConverters
  */

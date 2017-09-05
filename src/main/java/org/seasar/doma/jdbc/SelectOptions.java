@@ -21,63 +21,46 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * 検索系SQLを実行する際のオプションです。
- * <p>
- * {@link #get()}でインスタンスを取得し、メソッド呼び出しをチェインさせることができます。
- * 
- * <h3>例</h3>
+ * The options for an SQL SELECT statement.
  * 
  * <pre>
  * SelectOptions options = SelectOptions.get().offset(10).limit(50).forUpdate();
  * </pre>
- * 
- * @author taedium
- * 
  */
 public class SelectOptions implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /** ページングのオフセット */
     protected long offset = -1;
 
-    /** ページングのリミット */
     protected long limit = -1;
 
-    /** 集計するかどうか */
     protected boolean count;
 
-    /** 集計サイズ */
     protected long countSize = -1;
 
-    /** 悲観的排他制御の種別 */
     protected SelectForUpdateType forUpdateType;
 
-    /** 悲観的排他制御の待機時間（秒） */
     protected int waitSeconds;
 
-    /** 悲観的排他制御のロック対象のエイリアスの配列 */
     protected String[] aliases = new String[] {};
 
-    /**
-     * インスタンスを構築します。
-     */
     protected SelectOptions() {
     }
 
     /**
-     * インスタンスを取得するためのファクトリメソッドです。
+     * Creates a new {@link SelectOptions} instance.
      * 
-     * @return 新しい {@link SelectOptions}
+     * @return the new {@link SelectOptions} instance
      */
     public static SelectOptions get() {
         return new SelectOptions();
     }
 
     /**
-     * 悲観的排他制御用のSQLへ変換することを示します。
+     * Indicates to apply pessimistic locking.
      * 
-     * @return このインスタンス
+     * @return this instance
      */
     public SelectOptions forUpdate() {
         forUpdateType = SelectForUpdateType.NORMAL;
@@ -85,11 +68,11 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * ロック対象のテーブルやカラムのエイリアスを指定し、悲観的排他制御用のSQLへ変換することを示します。
+     * Indicates to apply pessimistic locking with specified aliases.
      * 
      * @param aliases
-     *            テーブルやカラムのエイリアス
-     * @return このインスタンス
+     *            aliases of the table or the column
+     * @return this instance
      */
     public SelectOptions forUpdate(String... aliases) {
         if (aliases == null) {
@@ -101,9 +84,9 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * ロックの取得を待機しない悲観的排他制御用のSQLへ変換することを示します。
+     * Indicates to apply no-wait pessimistic locking.
      * 
-     * @return このインスタンス
+     * @return the instance
      */
     public SelectOptions forUpdateNowait() {
         forUpdateType = SelectForUpdateType.NOWAIT;
@@ -111,11 +94,11 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * ロック対象のテーブルやカラムのエイリアスを指定し、ロックの取得を待機しない悲観的排他制御用のSQLへ変換することを示します。
+     * Indicates to apply no-wait pessimistic locking with specified aliases.
      * 
      * @param aliases
-     *            テーブルやカラムのエイリアス
-     * @return このインスタンス
+     *            aliases of the table or the column
+     * @return this instance
      */
     public SelectOptions forUpdateNowait(String... aliases) {
         if (aliases == null) {
@@ -127,11 +110,11 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * ロックの取得まで指定された時間待機する悲観的排他制御用のSQLへ変換することを示します。
+     * Indicates to apply pessimistic locking with specified wait seconds.
      * 
      * @param waitSeconds
-     *            待機時間（秒）
-     * @return このインスタンス
+     *            the wait seconds
+     * @return this instance
      */
     public SelectOptions forUpdateWait(int waitSeconds) {
         if (waitSeconds < 0) {
@@ -143,13 +126,14 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * ロック対象のテーブルやカラムのエイリアスを指定し、ロックの取得まで指定された時間待機する悲観的排他制御用のSQLへ変換することを示します。
+     * Indicates to apply pessimistic locking with specified wait seconds and
+     * aliases.
      * 
      * @param waitSeconds
-     *            待機時間（秒）
+     *            the wait seconds
      * @param aliases
-     *            テーブルやカラムのエイリアス
-     * @return このインスタンス
+     *            aliases of the table or the column
+     * @return this instance
      */
     public SelectOptions forUpdateWait(int waitSeconds, String... aliases) {
         if (waitSeconds < 0) {
@@ -165,11 +149,11 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * オフセットを指定してページング用のSQLへ変換することを示します。
+     * Indicates to apply the the specified offset.
      * 
      * @param offset
-     *            オフセット
-     * @return このインスタンス
+     *            the offset
+     * @return this instance
      */
     public SelectOptions offset(int offset) {
         if (offset < 0) {
@@ -180,11 +164,11 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * リミットを指定してページング用のSQLへ変換することを示します。
+     * Indicates to apply the specified limit.
      * 
      * @param limit
-     *            リミット
-     * @return このインスタンス
+     *            the limit
+     * @return this instance
      */
     public SelectOptions limit(int limit) {
         if (limit < 0) {
@@ -195,9 +179,9 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * 集計することを示します。
+     * Indicates to count all rows.
      * 
-     * @return このインスタンス
+     * @return this instance
      */
     public SelectOptions count() {
         this.count = true;
@@ -205,11 +189,12 @@ public class SelectOptions implements Serializable {
     }
 
     /**
-     * 集計を返します。
+     * Returns the count of all rows.
      * <p>
-     * Daoのメソッドを実行する前に{@link #count()}を呼び出していない場合 {@code -1} を返します。
+     * If {@link #count()} is not invoked before the DAO method execution, this
+     * method returns {@code -1}.
      * 
-     * @return 集計サイズ
+     * @return the count of all rows
      */
     public long getCount() {
         return countSize;

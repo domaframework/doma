@@ -20,35 +20,34 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 
 /**
- * アプリケーションにより割り当てられる識別子のプロパティ型です。
- * 
- * @author nakamura-to
+ * A description for an identity property whose value is assigned by an
+ * application.
  * 
  * @param <ENTITY>
- *            エンティティの型
+ *            the entity type
  * @param <BASIC>
- *            プロパティの基本型
+ *            the basic type
  * @param <CONTAINER>
- *            プロパティのドメイン型
+ *            the container type
  */
 public class AssignedIdPropertyDesc<ENTITY, BASIC, CONTAINER>
         extends DefaultPropertyDesc<ENTITY, BASIC, CONTAINER> {
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param entityClass
-     *            エンティティのクラス
+     *            the entity class
      * @param scalarSupplier
-     *            ラッパーのサプライヤ
+     *            the supplier of the scalar value
      * @param name
-     *            プロパティの名前
+     *            the qualified name of the property
      * @param columnName
-     *            カラム名
+     *            the column name
      * @param namingType
-     *            ネーミング規約
+     *            the naming convention
      * @param quoteRequired
-     *            カラム名に引用符が必要とされるかどうか
+     *            whether the column name requires quotation marks
      */
     public AssignedIdPropertyDesc(Class<ENTITY> entityClass,
             Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier, String name, String columnName,

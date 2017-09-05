@@ -16,10 +16,7 @@
 package org.seasar.doma;
 
 /**
- * Javaのアクセスレベルを表します。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * Defines access levels in The Java Language.
  */
 public enum AccessLevel {
 
@@ -29,7 +26,7 @@ public enum AccessLevel {
     /** {@code protected} */
     PROTECTED("protected"),
 
-    /** パッケージプライベート */
+    /** package private */
     PACKAGE("");
 
     private final String modifier;
@@ -39,9 +36,7 @@ public enum AccessLevel {
     }
 
     /**
-     * 修飾子を返します。
-     * 
-     * @return 修飾子
+     * Returns the modifier's name.
      */
     public String getModifier() {
         return modifier;

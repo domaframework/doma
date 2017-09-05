@@ -21,9 +21,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ドメインクラスを示します。ドメインクラスとは、カラムに対応付け可能な値クラスです。
- * 
- * <h3>例1:コンストラクタで生成するケース</h3>
+ * Indicates a value holder class.
+ * <p>
+ * The holder class is the user defined type that wraps a basic value. It can be
+ * mapped to a database column.
+ * <p>
+ * Instantiation by constructor:
  * 
  * <pre>
  * &#064;Holder(valueType = String.class)
@@ -41,7 +44,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * 
- * <h3>例2:ファクトリメソッドで生成するケース</h3>
+ * Instantiation by factory method:
  * 
  * <pre>
  * &#064;Holder(valueType = String.class, factoryMethod = &quot;of&quot;)
@@ -62,45 +65,35 @@ import java.lang.annotation.Target;
  *     }
  * }
  * </pre>
- * 
- * @author taedium
- * 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Holder {
 
     /**
-     * ドメインクラスが扱う値型(基本型)を返します。
-     * 
-     * @return ドメインクラスが扱う値型(基本型)
+     * The value type that is wrapped by the holder class.
      */
     Class<?> valueType();
 
     /**
-     * ドメインクラスのファクトリメソッドの名前を返します。
+     * The factory method name.
      * <p>
-     * デフォルトの値である {@code "new"} はコンストラクタで生成することを意味します。
-     * 
-     * @return ドメインクラスのファクトリメソッドの名前
-     * @since 1.12.0
+     * The factory method that accepts the wrapped value as an argument.
+     * <p>
+     * The default value {@code "new"} means constructor usage.
      */
     String factoryMethod() default "new";
 
     /**
-     * ドメインクラスが扱う値に対するアクセッサーメソッドの名前を返します。
-     * 
-     * @return ドメインクラスが扱う値に対するアクセッサーメソッドの名前
+     * The accessor method name.
+     * <p>
+     * The accessor method returns the wrapped value.
      */
     String accessorMethod() default "getValue";
 
     /**
-     * ファクトリメソッドで {@code null} を受け入れるかどうかを返します。
-     * <p>
-     * {@code null} をドメインクラスで扱いたい場合 {@code true} を設定します。
-     * 
-     * @return ファクトリメソッドで {@code null} を受け入れるかどうか
-     * @since 2.0.0
+     * Whether the constructor or the factory method accepts {@code null} as an
+     * argument.
      */
     boolean acceptNull() default false;
 

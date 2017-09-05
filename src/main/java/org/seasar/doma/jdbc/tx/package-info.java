@@ -14,8 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * トランザクションに関するクラスを提供します。
- * 
- * @since 1.1.0
+ * Provides transaction related classes.
  */
 package org.seasar.doma.jdbc.tx;

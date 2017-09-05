@@ -32,68 +32,67 @@ import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
- * /** デフォルトのプロパティ型です。
- * 
- * @author nakamura-to
+ * A description for a default property.
  * 
  * @param <ENTITY>
- *            エンティティの型
+ *            the entity type
  * @param <BASIC>
- *            プロパティの基本型
+ *            the basic type
  * @param <CONTAINER>
- *            プロパティのドメイン型
+ *            the container type
  */
 public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
         implements EntityPropertyDesc<ENTITY, BASIC> {
 
-    /** エンティティのクラス */
+    /** the entity class */
     protected final Class<ENTITY> entityClass;
 
+    /** the supplier of the scalar value */
     protected final Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier;
 
-    /** プロパティの名前 */
+    /** the qualified name of the property */
     protected final String name;
 
-    /** プロパティの単純名 */
+    /** the simple name of the property */
     protected final String simpleName;
 
-    /** カラム名 */
+    /** the column name */
     protected final String columnName;
 
-    /** ネーミング規約 */
+    /** the naming convention */
     protected final NamingType namingType;
 
-    /** 挿入可能かどうか */
+    /** whether the property is insertable */
     protected final boolean insertable;
 
-    /** 更新可能かどうか */
+    /** whether the property is updatable */
     protected final boolean updatable;
 
-    /** 引用符が必要とされるかどうか */
+    /** whether the column name requires quotation marks */
     protected final boolean quoteRequired;
 
-    /** プロパティのフィールド */
+    /** the field of the property */
     protected final PropertyField<ENTITY> field;
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param entityClass
-     *            エンティティのクラス
+     *            the entity class
      * @param scalarSupplier
-     *            ラッパーのサプライヤ
+     *            the supplier of the scalar value
      * @param name
-     *            プロパティの名前
+     *            the qualified name of the property
      * @param columnName
-     *            カラム名
+     *            the column name
      * @param namingType
-     *            ネーミング規約
+     *            the naming convention
      * @param insertable
-     *            挿入可能かどうか
+     *            whether the property is insertable
      * @param updatable
-     *            更新可能かどうか
+     *            whether the property is updatable
      * @param quoteRequired
-     *            カラム名に引用符が必要とされるかどうか
+     *            whether the column name requires quotation marks
      */
     public DefaultPropertyDesc(Class<ENTITY> entityClass,
             Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier, String name, String columnName,
@@ -183,19 +182,19 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
     }
 
     /**
-     * 必要ならばエンティティに値を設定して返します。
+     * Modifies the property if necessary.
      * 
      * @param <VALUE>
-     *            値の型
+     *            the value type
      * @param entityDesc
-     *            エンティティタイプ
+     *            the entity description
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param visitor
-     *            ビジター
+     *            the visitor
      * @param value
-     *            値
-     * @return 値が変更されたエンティティもしくは変更されていないエンティティ
+     *            the value
+     * @return the entity whose property may be changed
      */
     protected <VALUE> ENTITY modifyIfNecessary(EntityDesc<ENTITY> entityDesc, ENTITY entity,
             WrapperVisitor<Boolean, VALUE, Void, RuntimeException> visitor, VALUE value) {
@@ -226,9 +225,6 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
         }
     }
 
-    /**
-     * @author nakamura-to
-     */
     protected class DefaultProperty implements Property<ENTITY, BASIC> {
 
         protected final Scalar<BASIC, CONTAINER> scalar;

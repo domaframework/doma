@@ -23,6 +23,7 @@ import java.sql.Statement;
 import java.util.Collections;
 import java.util.function.Function;
 
+import org.seasar.doma.Script;
 import org.seasar.doma.internal.jdbc.command.ScriptReader;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.AbstractSql;
@@ -35,8 +36,9 @@ import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.ScriptQuery;
 
 /**
- * @author taedium
+ * A command for an SQL script.
  * 
+ * @see Script
  */
 public class ScriptCommand implements Command<Void> {
 

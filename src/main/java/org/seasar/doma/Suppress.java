@@ -23,19 +23,14 @@ import java.lang.annotation.Target;
 import org.seasar.doma.message.Message;
 
 /**
- * 警告メッセージを抑制することを示します。
- * 
- * @author taedium
- * @since 1.10.0
+ * Used to suppress warning messages.
  */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Suppress {
 
     /**
-     * 抑制対象の警告メッセージを返します。
-     * 
-     * @return 抑制対象の警告メッセージ
+     * The messages that should be suppressed.
      */
     Message[] messages();
 }

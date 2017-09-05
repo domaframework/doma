@@ -20,10 +20,8 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link OriginalStates}が注釈されたフィールドがエンティティクラスで見つからない場合にスローされる例外です。
- * 
- * @author taedium
- * @since 1.20.0
+ * Thrown to indicate that the field that is annotated with
+ * {@link OriginalStates} is not found in an entity.
  */
 public class OriginalStatesNotFoundException extends JdbcException {
 
@@ -33,16 +31,6 @@ public class OriginalStatesNotFoundException extends JdbcException {
 
     private final String fieldName;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param cause
-     *            原因
-     * @param entityClassName
-     *            エンティティクラスの名前
-     * @param fieldName
-     *            フィールドの名前
-     */
     public OriginalStatesNotFoundException(Throwable cause, String entityClassName,
             String fieldName) {
         super(Message.DOMA2213, cause, entityClassName, fieldName, cause);
@@ -50,20 +38,10 @@ public class OriginalStatesNotFoundException extends JdbcException {
         this.fieldName = fieldName;
     }
 
-    /**
-     * エンティティクラスの名前を返します。
-     * 
-     * @return エンティティクラスの名前
-     */
     public String getEntityClassName() {
         return entityClassName;
     }
 
-    /**
-     * フィールドの名前を返します。
-     * 
-     * @return フィールドの名前
-     */
     public String getFieldName() {
         return fieldName;
     }

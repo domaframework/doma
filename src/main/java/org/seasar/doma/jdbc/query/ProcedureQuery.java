@@ -16,8 +16,7 @@
 package org.seasar.doma.jdbc.query;
 
 /**
- * @author taedium
- * 
+ * An object used for building a stored procedure statement.
  */
 public interface ProcedureQuery extends ModuleQuery {
 

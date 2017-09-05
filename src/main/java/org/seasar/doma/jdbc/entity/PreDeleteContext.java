@@ -22,57 +22,50 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * 削除処理の前処理のコンテキストです。
+ * A context for a pre process of a delete.
  * 
  * @param <E>
- *            エンティティの型
- * @author taedium
- * @since 1.11.0
+ *            the entity type
  */
 public interface PreDeleteContext<E> {
 
     /**
-     * エンティティのメタタイプを返します。
+     * Returns the entity description.
      * 
-     * @return エンティティのメタタイプ
+     * @return the entity description
      */
     public EntityDesc<E> getEntityDesc();
 
     /**
-     * {@link Delete} が注釈されたメソッドを返します。
+     * The method that is annotated with {@link Delete}.
      * 
-     * @return メソッド
-     * @since 1.27.0
+     * @return the method
      */
     public Method getMethod();
 
     /**
-     * JDBCに関する設定を返します。
+     * Returns the configuration.
      * 
-     * @return JDBCに関する設定
-     * @since 1.27.0
+     * @return the configuration
      */
     public Config getConfig();
 
     /**
-     * 新しいエンティティを返します。
+     * Returns the new entity.
      * 
-     * @return 新しいエンティティ
-     * @since 1.35.0
+     * @return the new entity
      */
     public E getNewEntity();
 
     /**
-     * 新しいエンティティを設定します。
+     * Sets the new entity.
      * <p>
-     * このメソッドは、 {@link PreDeleteContext#getEntityDesc()}
-     * に対応するエンティティがイミュータブルである場合にのみ利用してください。
+     * This method is available, when the entity is immutable.
      * 
      * @param newEntity
-     *            エンティティ
+     *            the entity
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @since 1.34.0
+     *             if {@code newEntity} is {@code null}
      */
     public void setNewEntity(E newEntity);
 

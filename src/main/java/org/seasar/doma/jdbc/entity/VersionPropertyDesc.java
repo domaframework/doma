@@ -22,35 +22,33 @@ import org.seasar.doma.wrapper.NumberWrapper;
 import org.seasar.doma.wrapper.NumberWrapperVisitor;
 
 /**
- * バージョンのプロパティ型です。
- * 
- * @author nakamura-to
+ * A description for a version property.
  * 
  * @param <ENTITY>
- *            エンティティの型
+ *            the entity type
  * @param <BASIC>
- *            プロパティの基本型
+ *            the basic type
  * @param <CONTAINER>
- *            プロパティのドメイン型
+ *            the container of the basic type
  */
 public class VersionPropertyDesc<ENTITY, BASIC extends Number, CONTAINER>
         extends DefaultPropertyDesc<ENTITY, BASIC, CONTAINER> {
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param entityClass
-     *            エンティティのクラス
+     *            the entity class
      * @param scalarSupplier
-     *            ラッパーのサプライヤ
+     *            the supplier of a scalar
      * @param name
-     *            プロパティの名前
+     *            the name of the property
      * @param columnName
-     *            カラム名
+     *            the name of the column
      * @param namingType
-     *            ネーミング規約
+     *            naming convention
      * @param quoteRequired
-     *            カラム名に引用符が必要とされるかどうか
+     *            whether the column name requires quotation marks
      */
     public VersionPropertyDesc(Class<ENTITY> entityClass,
             Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier, String name, String columnName,
@@ -64,28 +62,28 @@ public class VersionPropertyDesc<ENTITY, BASIC extends Number, CONTAINER>
     }
 
     /**
-     * 必要であればバージョンの値を設定します。
+     * If necessary, sets the value to the version property.
      * 
      * @param entityDesc
-     *            エンティティのタイプ
+     *            the entity description
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param value
-     *            バージョンの値
-     * @return エンティティ
+     *            the value
+     * @return the entity
      */
     public ENTITY setIfNecessary(EntityDesc<ENTITY> entityDesc, ENTITY entity, Number value) {
         return modifyIfNecessary(entityDesc, entity, new ValueSetter(), value);
     }
 
     /**
-     * バージョン番号をインクリメントします。
+     * Increments the version value.
      * 
      * @param entityDesc
-     *            エンティティのタイプ
+     *            the entity description
      * @param entity
-     *            エンティティ
-     * @return エンティティ
+     *            the entity
+     * @return the entity
      */
     public ENTITY increment(EntityDesc<ENTITY> entityDesc, ENTITY entity) {
         return modifyIfNecessary(entityDesc, entity, new Incrementer(), null);

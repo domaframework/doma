@@ -23,29 +23,25 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * {@link Config} の実装クラスがシングルトンであることを示します。
+ * Indicates that the annotated class is an implementation class of the
+ * {@link Config} interface and it is a singleton.
  * <p>
- * このアノテーションが注釈されたクラスは、自身のシングルトンを提供する static なメソッドを持たなければいけません。 また、コンストラクタはすべて
- * private でなければいけません。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * The annotated class must have a static method that returns a singleton. The
+ * all constructors of the class must be private.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SingletonConfig {
 
     /**
-     * シングルトンを提供するメソッドの名前です。
+     * The static method name that returns a singleton.
      * <p>
-     * 対応するメソッドは次の条件を満たす必要があります。
+     * The method must meet following requirements:
      * <ul>
-     * <li>修飾子として public static を持つ</li>
-     * <li>戻り値の型はこのアノテーションが注釈されたクラス</li>
-     * <li>パラメータの数は0</li>
+     * <li>public and static</li>
+     * <li>the return type is same as the annotated class</li>
+     * <li>has no parameter</li>
      * </ul>
-     * 
-     * @return シングルトンを提供するメソッドの名前
      */
     String method() default "singleton";
 }

@@ -18,24 +18,14 @@ package org.seasar.doma.jdbc;
 import java.util.Optional;
 
 /**
- * マッピングに関するヒント情報です。
- * <p>
- * {@link JdbcMappingVisitor} の実装クラスにおいて、次のマッピングのカスタマイズに利用できます。
- * 
- * <ul>
- * <li>JavaのクラスからSQLの型へのマッピング（JavaからSQLのバインド変数へのマッピング）</li>
- * <li>SQLの型からJavaのクラスへのマッピング（SQLの結果セットからJavaのマッピング）</li>
- * </ul>
- * 
- * @author nakamura-to
- * 
+ * A hint about mapping.
  */
 public interface JdbcMappingHint {
 
     /**
-     * ドメインクラスにマッピングされている場合、そのドメインクラスを返します。
+     * Returns the holder class if this object is mapped to the holder class.
      * 
-     * @return ドメインクラス
+     * @return the holder class
      */
     Optional<Class<?>> getHolderClass();
 }

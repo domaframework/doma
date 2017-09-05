@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * メッセージに関するクラスを提供します。
+ * Provides messages.
  */
 package org.seasar.doma.message;

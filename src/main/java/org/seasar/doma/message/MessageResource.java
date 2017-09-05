@@ -16,51 +16,42 @@
 package org.seasar.doma.message;
 
 /**
- * メッセージのリソースを表します。
+ * A message resource.
  * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
- * <p>
- * 
- * @author taedium
- * 
+ * This interface implementation instance must be thread safe.
  */
 public interface MessageResource {
 
     /**
-     * 一意のコードを返します。
+     * Returns a message code.
      * 
-     * @return コード
+     * @return a message code
      */
     String getCode();
 
     /**
-     * メッセージパターンの文字列を返します。
-     * <p>
-     * この文字列は{0}や{1}といった置換パラメータを含みます。
+     * Returns the string that contains replacement parameters such as {0} and
+     * {1}.
      * 
-     * @return メッセージパターンの文字列
+     * @return the string that contains replacement parameters
      */
     String getMessagePattern();
 
     /**
-     * メッセージコードを含んだメッセージを返します。
-     * <p>
-     * メッセージパターンに含まれる置換パラメータは引数により解決されます。
+     * Returns the message that contains a message code.
      * 
      * @param args
-     *            置換パラメータに対応する引数
-     * @return メッセージ
+     *            the arguments that corresponds to replacement parameters
+     * @return the message
      */
     String getMessage(Object... args);
 
     /**
-     * メッセージコードを含まないメッセージを返します。
-     * <p>
-     * メッセージパターンに含まれる置換パラメータは引数により解決されます。
+     * Returns the message that does not contains a message code.
      * 
      * @param args
-     *            置換パラメータに対応する引数
-     * @return メッセージ
+     *            the arguments that corresponds to replacement parameters
+     * @return the message
      */
     String getSimpleMessage(Object... args);
 }

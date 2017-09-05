@@ -28,9 +28,6 @@ import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/**
- * @author taedium
- */
 public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
 
     protected String scriptFilePath;

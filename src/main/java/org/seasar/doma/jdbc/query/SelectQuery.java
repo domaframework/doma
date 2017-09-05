@@ -21,8 +21,7 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
- * @author taedium
- * 
+ * An object used for building an SQL SELECT statement.
  */
 public interface SelectQuery extends Query {
 

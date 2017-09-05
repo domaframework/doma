@@ -19,108 +19,99 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * エンティティのプロパティ型を表します。
- * 
+ * A entity property description.
  * <p>
- * このインタフェースの実装はスレッドセーフであることは要求されません。
- * </p>
- * 
- * @author taedium
+ * This instance is not required to be thread safe.
  * 
  * @param <ENTITY>
- *            エンティティの型
+ *            the entity type
  * @param <BASIC>
- *            基本型
+ *            the basic type
  */
 public interface EntityPropertyDesc<ENTITY, BASIC> {
 
     /**
-     * プロパティの名前を返します。
+     * Returns the property name.
      * 
-     * @return 名前
+     * @return the property name
      */
     String getName();
 
     /**
-     * カラム名を返します。
-     * <p>
-     * ネーミング規約が適用されます。
+     * Return the column name.
      * 
      * @param namingFunction
-     *            ネーミング規約を適用する関数
-     * @return カラム名
-     * @since 2.2.0
+     *            the function that applies naming convention
+     * @return the name of the column.
      */
     String getColumnName(BiFunction<NamingType, String, String> namingFunction);
 
     /**
-     * カラム名を返します。
-     * <p>
-     * ネーミング規約が適用されます。
-     * <p>
-     * 引用符が適用されます。
+     * Return the column name.
      * 
      * @param namingFunction
-     *            ネーミング規約を適用する関数
+     *            the function that applies naming convention
      * @param quoteFunction
-     *            引用符を適用する関数
-     * @return カラム名
-     * @since 2.2.0
+     *            the function that applies quotation marks
+     * @return the name of the column
      */
     String getColumnName(BiFunction<NamingType, String, String> namingFunction,
             Function<String, String> quoteFunction);
 
     /**
-     * カラム名において引用符が必要とされるかどうかを返します。
+     * Whether quotation marks are required to the column name.
      * 
-     * @return 引用符が必要とされる場合 {@code true}
+     * @return {@code true} if required
      */
     boolean isQuoteRequired();
 
     /**
-     * 識別子かどうかを返します。
+     * Whether this property is an identifier
      * 
-     * @return 識別子の場合 {@code true}
+     * @return {@code true} if this property is an identifier
      */
     boolean isId();
 
     /**
-     * バージョンかどうかを返します。
+     * Whether this property is a version
      * 
-     * @return バージョンの場合 {@code true}
+     * @return {@code true} if this property is a version
      */
     boolean isVersion();
 
     /**
-     * 挿入可能かどうかを返します。
+     * Whether the column that is mapped to this property is included in SQL
+     * INSERT statements.
      * 
-     * @return 挿入可能の場合 {@code true}
+     * @return {@code true} if included in SQL INSERT statements.
      */
     boolean isInsertable();
 
     /**
-     * 更新可能かどうかを返します。
+     * Whether the column that is mapped to this property is included in SQL
+     * UPDATE statements.
      * 
-     * @return 更新可能の場合 {@code true}
+     * @return {@code true} if included in SQL UPDATE statements.
      */
     boolean isUpdatable();
 
     /**
-     * プロパティを作ります。
+     * Creates the property.
      * 
-     * @return プロパティ
+     * @return the property
      */
     Property<ENTITY, BASIC> createProperty();
 
     /**
-     * プロパティの値をコピーします。
+     * Copies this property value.
      * <p>
-     * deep copy を行います。 ただし、{@code Blob} など JDBC に依存する値はコピーしません。
+     * This method does deep copy. But this method does not copy JDBC specific
+     * objects such as {@code Blob}.
      * 
      * @param dest
-     *            コピー先のエンティティ
+     *            the entity that is the copy destination
      * @param src
-     *            コピー元のエンティティ
+     *            the entity that is the copy source
      */
     void copy(ENTITY dest, ENTITY src);
 

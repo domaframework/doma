@@ -21,11 +21,12 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 
 /**
- * 明示的に破棄されるまでJDBC接続を維持し続けるローカルトランザクションです。
+ * A local transaction that keeps a JDBC connection open until the transaction
+ * is explicitly destroyed.
  * <p>
- * ただし、例外が発生した場合、接続は閉じられます。
+ * But the connection is closed, if any exceptions are thrown.
  * <p>
- * このクラスはスレッドセーフです。
+ * This instance is thread safe.
  * 
  * <pre>
  * KeepAliveLocalTransaction tx = AppConfig.getKeepAliveLocalTransaction();
@@ -55,21 +56,18 @@ import org.seasar.doma.jdbc.JdbcLogger;
  *     tx.destroy();
  * }
  * </pre>
- * 
- * @author taedium
- * @since 1.21.0
  */
 public class KeepAliveLocalTransaction extends LocalTransaction {
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param dataSource
-     *            データソース
+     *            the data source
      * @param localTxContextHolder
-     *            ローカルトランザクションコンテキストのホルダー
+     *            the holder of the transaction context
      * @param jdbcLogger
-     *            JDBCに関するロガー
+     *            the logger
      */
     protected KeepAliveLocalTransaction(DataSource dataSource,
             ThreadLocal<LocalTransactionContext> localTxContextHolder, JdbcLogger jdbcLogger) {
@@ -77,16 +75,16 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
     }
 
     /**
-     * デフォルトのトランザクション分離レベルを指定してインスタンスを構築します。
+     * Creates an instance with the specified transaction isolation level.
      * 
      * @param dataSource
-     *            データソース
+     *            the data source
      * @param localTxContextHolder
-     *            ローカルトランザクションコンテキストのホルダー
+     *            the holder of the transaction context
      * @param jdbcLogger
-     *            JDBCに関するロガー
+     *            the logger
      * @param defaultTransactionIsolationLevel
-     *            デフォルトのトランザクション分離レベル
+     *            the default transaction isolation level
      */
     protected KeepAliveLocalTransaction(DataSource dataSource,
             ThreadLocal<LocalTransactionContext> localTxContextHolder, JdbcLogger jdbcLogger,
@@ -95,14 +93,15 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
     }
 
     /**
-     * トランザクションコンテキストを初期化します。
+     * Initializes a transaction context.
      * <p>
-     * この操作によりJDBCの接続が確立されます。
+     * This method establishes a JDBC connection.
      * <p>
-     * このメソッドを呼び出さずに最初の {@link #begin()} を呼び出した場合、その時点でJDBCの接続が確立されます。
+     * If you invoke {@link #begin()} before invoking this method, the
+     * {@link #begin()} method establishes a JDBC connection.
      * 
      * @throws JdbcException
-     *             JDBCの接続に失敗した場合
+     *             if a JDBC related error occurs
      */
     public void init() {
         getLocalTransactionContext();
@@ -118,11 +117,11 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
     }
 
     /**
-     * トランザクションコンテキストを破棄します。
+     * Destroy the transaction context.
      * <p>
-     * この操作によりJDBCの接続が閉じられます。
+     * This method closes the JDBC connection.
      * <p>
-     * このメソッドは、実行時例外をスローしません。
+     * This method does not throw any exceptions.
      */
     public void destroy() {
         LocalTransactionContext context = localTxContextHolder.get();
@@ -133,7 +132,7 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
     }
 
     /**
-     * トランザクションを終了しますがJDBCの接続は閉じません。
+     * Ends the transaction, but does not close the JDBC connection.
      */
     @Override
     protected void endInternal(LocalTransactionContext context, String callerMethodName) {

@@ -16,8 +16,7 @@
 package org.seasar.doma.jdbc;
 
 /**
- * @author taedium
- * 
+ * A visitor for {@link SqlParameter}.
  */
 public interface SqlParameterVisitor<R, P, TH extends Throwable> {
 

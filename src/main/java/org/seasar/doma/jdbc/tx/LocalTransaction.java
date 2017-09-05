@@ -30,19 +30,17 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.message.Message;
 
 /**
- * ローカルトランザクションです。
+ * A local transaction.
  * <p>
- * このクラスはスレッドセーフです。
+ * This instance is thread safe.
  * <p>
- * {@link #begin()} もしくは {@link #begin(TransactionIsolationLevel)}
- * でトランザクションを開始した後、トランザクションは必ず {@link #commit()} もしくは {@link #rollback()}
- * で終了してください。 {@code rollback()}は、{@code begin()} が成功する前や {@code commit()}
- * が成功した後に呼び出された場合、実質的には何も行いません。したがって、次のように記述できます。
+ * Begin a transaction by {@link #begin()} or
+ * {@link #begin(TransactionIsolationLevel)} and end the transaction always by
+ * {@link #commit()} or {@link #rollback()}.
  * 
  * <pre>
  * LocalTransaction tx = AppConfig.getLocalTransaction();
  * try {
- *     // 開始
  *     tx.begin();
  * 
  *     Employee employee = dao.selectById(1);
@@ -50,29 +48,26 @@ import org.seasar.doma.message.Message;
  *     employee.setJobType(JobType.PRESIDENT);
  *     dao.update(employee);
  * 
- *     // コミット
  *     tx.commit();
  * } finally {
- *     // ロールバック
  *     tx.rollback();
  * }
  * </pre>
  * 
- * トランザクションを終了した後、 同じインスタンスに対して {@code begin()} もしくは
- * {@code begin(TransactionIsolationLevel)} を呼び出した場合、新しいトランザクションを開始できます。
+ * Same instance can handle multiple transactions sequentially.
  * 
  * <pre>
  * LocalTransaction tx = AppConfig.getLocalTransaction();
+ * // transaction 1
  * try {
- *     // トランザクションAの開始
  *     tx.begin();
  *     ...
  *     tx.commit();
  * } finally {
  *     tx.rollback();
  * }
+ * // transaction 2
  * try {
- *     // トランザクションBの開始
  *     tx.begin();
  *     ...
  *     tx.commit();
@@ -81,56 +76,27 @@ import org.seasar.doma.message.Message;
  * }
  * </pre>
  * 
- * トランザクション開始後、このクラスのいずれかのメソッドが例外をスローした場合、 トランザクションは直ちにロールバックされます。
+ * Any exceptions that are thrown from this class methods roll back the
+ * transaction.
  * <p>
- * 
- * @author taedium
- * @since 1.1.0
  */
 public class LocalTransaction {
 
-    /** データソース */
     protected final DataSource dataSource;
 
-    /** ローカルトランザクションコンテキストのホルダー */
     protected final ThreadLocal<LocalTransactionContext> localTxContextHolder;
 
-    /** JDBCに関するロガー */
     protected final JdbcLogger jdbcLogger;
 
-    /** デフォルトのトランザクション分離レベル、指定されない場合 {@code null} */
     protected final TransactionIsolationLevel defaultTransactionIsolationLevel;
 
-    /** クラス名 */
     protected final String className;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param dataSource
-     *            データソース
-     * @param localTxContextHolder
-     *            ローカルトランザクションコンテキストのホルダー
-     * @param jdbcLogger
-     *            JDBCに関するロガー
-     */
     protected LocalTransaction(DataSource dataSource,
             ThreadLocal<LocalTransactionContext> localTxContextHolder, JdbcLogger jdbcLogger) {
         this(dataSource, localTxContextHolder, jdbcLogger, null);
     }
 
-    /**
-     * デフォルトのトランザクション分離レベルを指定してインスタンスを構築します。
-     * 
-     * @param dataSource
-     *            データソース
-     * @param localTxContextHolder
-     *            ローカルトランザクションコンテキストのホルダー
-     * @param jdbcLogger
-     *            JDBCに関するロガー
-     * @param defaultTransactionIsolationLevel
-     *            デフォルトのトランザクション分離レベル
-     */
     protected LocalTransaction(DataSource dataSource,
             ThreadLocal<LocalTransactionContext> localTxContextHolder, JdbcLogger jdbcLogger,
             TransactionIsolationLevel defaultTransactionIsolationLevel) {
@@ -143,36 +109,28 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションを開始します。
-     * <p>
-     * このメソッドを呼び出した場合、{@link #commit()} もしくは {@link #rollback()}
-     * を呼び出し、ローカルトランザクションを終了する必要があります。同一スレッド内であれば、 異なるインスタンスの {@link #commit()}
-     * もしくは {@link #rollback()} でも構いません。
+     * Begin this transaction.
      * 
      * @throws TransactionAlreadyBegunException
-     *             ローカルトランザクションがすでに開始されている場合
+     *             if this transaction is already begun
      * @throws JdbcException
-     *             トランザクションの開始に失敗した場合
+     *             if a JDBC related error occurs
      */
     public void begin() {
         beginInternal(defaultTransactionIsolationLevel, "begin");
     }
 
     /**
-     * トランザクション分離レベルを指定してローカルトランザクションを開始します。
-     * <p>
-     * このメソッドを呼び出した場合、{@link #commit()} もしくは {@link #rollback()}
-     * を呼び出し、ローカルトランザクションを終了する必要があります。同一スレッド内であれば、 異なるインスタンスの {@link #commit()}
-     * もしくは {@link #rollback()} でも構いません。
+     * Begin this transaction with the specified transaction isolation level.
      * 
      * @param transactionIsolationLevel
-     *            トランザクション分離レベル
+     *            the transaction isolation level
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if the {@code transactionIsolationLevel} is {@code null}
      * @throws TransactionAlreadyBegunException
-     *             ローカルトランザクションがすでに開始されている場合
+     *             if this transaction is already begun
      * @throws JdbcException
-     *             トランザクションの開始に失敗した場合
+     *             if a JDBC related error occurs
      */
     public void begin(TransactionIsolationLevel transactionIsolationLevel) {
         if (transactionIsolationLevel == null) {
@@ -181,14 +139,6 @@ public class LocalTransaction {
         beginInternal(transactionIsolationLevel, "begin");
     }
 
-    /**
-     * 内部的にローカルトランザクションを開始します。
-     * 
-     * @param transactionIsolationLevel
-     *            トランザクション分離レベル
-     * @param callerMethodName
-     *            呼び出し元のメソッド名
-     */
     protected void beginInternal(TransactionIsolationLevel transactionIsolationLevel,
             String callerMethodName) {
         assertNotNull(callerMethodName);
@@ -230,11 +180,6 @@ public class LocalTransaction {
         jdbcLogger.logTransactionBegun(className, callerMethodName, context.getId());
     }
 
-    /**
-     * ローカルトランザクションコンテキストを返します。
-     * 
-     * @return ローカルトランザクションコンテキスト
-     */
     protected LocalTransactionContext getLocalTransactionContext() {
         LocalTransactionContext context = new LocalTransactionContext(() -> {
             return JdbcUtil.getConnection(dataSource);
@@ -244,17 +189,12 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションをコミットします。
-     * <p>
-     * このメソッドを呼び出す前に {@link #begin()} または
-     * {@link #begin(TransactionIsolationLevel)}
-     * を呼び出し、ローカルトランザクションを開始しておく必要があります。 同一スレッド内であれば、 異なるインスタンスの
-     * {@link #begin()} または {@link #begin(TransactionIsolationLevel)} でも構いません。
+     * Commits this transaction.
      * 
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
+     *             if this transaction is not yet begun
      * @throws JdbcException
-     *             コミットに失敗した場合
+     *             if a JDBC related error occurs
      */
     public void commit() {
         LocalTransactionContext context = localTxContextHolder.get();
@@ -278,11 +218,12 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションを中断します。
+     * Suspends this transaction.
      * 
-     * @return 中断されたトランザクションを表すトランザクションコンテキスト
+     * @return the transaction context that is required to resume this
+     *         transaction
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
+     *             if this transaction is not yet begun
      */
     public LocalTransactionContext suspend() {
         LocalTransactionContext context = localTxContextHolder.get();
@@ -294,14 +235,13 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションを再開します。
+     * Resumes this transaction.
      * <p>
-     * アクティブなローカルトランザクションが存在する場合、そのトランザクションをロールバックします。
-     * <p>
-     * このメソッドは、例外をスローしません。
+     * This method does not throw any exceptions.
      * 
      * @param context
-     *            中断されたトランザクションを表すトランザクションコンテキスト
+     *            the transaction context that is returned from
+     *            {@link #suspend()}
      */
     public void resume(LocalTransactionContext context) {
         LocalTransactionContext currentContext = localTxContextHolder.get();
@@ -312,24 +252,16 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションをロールバックします。
+     * Undoes all changes made in this transaction.
      * <p>
-     * ローカルトランザクションが開始されていない場合、何もおこないません。
+     * If this transaction is not begun, this method does nothing.
      * <p>
-     * このメソッドは、例外をスローしません。
+     * This method does not throw any exceptions.
      */
     public void rollback() {
         rollbackInternal("rollback");
     }
 
-    /**
-     * 内部的にロールバックします。
-     * <p>
-     * このメソッドは、実行時例外をスローしません。
-     * 
-     * @param callerMethodName
-     *            呼び出し元のメソッド名
-     */
     protected void rollbackInternal(String callerMethodName) {
         assertNotNull(callerMethodName);
         LocalTransactionContext context = localTxContextHolder.get();
@@ -353,23 +285,18 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションのセーブポイントを作成します。
-     * <p>
-     * このメソッドを呼び出す前に {@link #begin()} または
-     * {@link #begin(TransactionIsolationLevel)}
-     * を呼び出し、ローカルトランザクションを開始しておく必要があります。 同一スレッド内であれば、 異なるインスタンスの
-     * {@link #begin()} または {@link #begin(TransactionIsolationLevel)} でも構いません。
+     * Creates a save point with the specified name.
      * 
      * @param savepointName
-     *            セーブポイントの名前
+     *            the name of the save point
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if the {@code savepointName} is {@code null}
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
+     *             if this transaction is not yet begun
      * @throws SavepointAlreadyExistsException
-     *             セーブポイントがすでに存在する場合
+     *             if the save point already exists
      * @throws JdbcException
-     *             セーブポイントの作成に失敗した場合
+     *             if a JDBC related error occurs
      */
     public void setSavepoint(String savepointName) {
         if (savepointName == null) {
@@ -398,16 +325,15 @@ public class LocalTransaction {
     }
 
     /**
-     * このローカルトランザクションでセーブポイントを保持しているかどうかを返します。
+     * Whether this transaction has the specified save point.
      * 
      * @param savepointName
-     *            セーブポイントの名前
+     *            the name of the save point
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if the {@code savepointName} is {@code null}
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
-     * @return セーブポイントを保持している場合 {@code ture}
-     * @since 1.2.0
+     *             if this transaction is not yet begun
+     * @return {@code true} if this transaction has the save point
      */
     public boolean hasSavepoint(String savepointName) {
         if (savepointName == null) {
@@ -422,21 +348,17 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションから指定されたセーブポイントと以降のセーブポイントを削除します。
-     * <p>
-     * このメソッドを呼び出す前に {@link #begin()} または
-     * {@link #begin(TransactionIsolationLevel)}
-     * を呼び出し、ローカルトランザクションを開始しておく必要があります。 同一スレッド内であれば、 異なるインスタンスの
-     * {@link #begin()} または {@link #begin(TransactionIsolationLevel)} でも構いません。
+     * Removes the specified save point and subsequent save points from this
+     * transaction.
      * 
      * @param savepointName
-     *            セーブポイントの名前
+     *            the name of the save point
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if the {@code savepointName} is {@code null}
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
+     *             if this transaction is not yet begun
      * @throws JdbcException
-     *             セーブポイントの削除に失敗した場合
+     *             if a JDBC related error occurs
      */
     public void releaseSavepoint(String savepointName) {
         if (savepointName == null) {
@@ -464,23 +386,18 @@ public class LocalTransaction {
     }
 
     /**
-     * 指定されたセーブポイントが設定されたあとに行われたすべての変更をロールバックします。
-     * <p>
-     * このメソッドを呼び出す前に {@link #begin()} または
-     * {@link #begin(TransactionIsolationLevel)}
-     * を呼び出し、ローカルトランザクションを開始しておく必要があります。 同一スレッド内であれば、 異なるインスタンスの
-     * {@link #begin()} または {@link #begin(TransactionIsolationLevel)} でも構いません。
+     * Undoes all changes made after the given save point.
      * 
      * @param savepointName
-     *            セーブポイントの名前
+     *            the name of the save point
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if the {@code savepointName} is {@code null}
      * @throws SavepointNotFoundException
-     *             セーブポイントが見つからない場合
+     *             if the save point is not found
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
+     *             if this transaction is not yet begun
      * @throws JdbcException
-     *             セーブポイントへのロールバックに失敗した場合
+     *             if a JDBC related error occurs
      */
     public void rollback(String savepointName) {
         if (savepointName == null) {
@@ -507,14 +424,6 @@ public class LocalTransaction {
         jdbcLogger.logTransactionSavepointRolledback(className, "rollback", id, savepointName);
     }
 
-    /**
-     * ローカルトランザクションを終了します。
-     * <p>
-     * このメソッドは、実行時例外をスローしません。
-     * 
-     * @param callerMethodName
-     *            呼び出し元のメソッド名
-     */
     protected void end(String callerMethodName) {
         assertNotNull(callerMethodName);
         LocalTransactionContext context = localTxContextHolder.get();
@@ -531,14 +440,14 @@ public class LocalTransaction {
     }
 
     /**
-     * トランザクションコンテキストを開放します。
+     * Releases the transaction context.
      * <p>
-     * このメソッドは、実行時例外をスローしません。
+     * This method does not throw any exceptions.
      * 
      * @param context
-     *            トランザクションコンテキスト
+     *            the transaction context
      * @param callerMethodName
-     *            呼び出し元のメソッド名
+     *            the caller method name
      */
     protected void release(LocalTransactionContext context, String callerMethodName) {
         assertNotNull(context, callerMethodName);
@@ -572,7 +481,7 @@ public class LocalTransaction {
     }
 
     /**
-     * トランザクションを識別するための文字列表現を返します。
+     * Returns an unique string to identify this transaction.
      */
     @Override
     public String toString() {
@@ -582,9 +491,9 @@ public class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションがアクティブな場合 {@code true} を返します。
+     * Whether this transaction is active.
      * 
-     * @return ローカルトランザクションがアクティブな場合 {@code true}
+     * @return {@code true} if this transaction is active
      */
     public boolean isActive() {
         return isActiveInternal(localTxContextHolder.get());
@@ -595,7 +504,7 @@ public class LocalTransaction {
     }
 
     /**
-     * 現在のトランザクションをロールバックすることを予約します。
+     * Marks this transaction to undo in the end of the transaction.
      */
     public void setRollbackOnly() {
         LocalTransactionContext context = localTxContextHolder.get();
@@ -605,9 +514,9 @@ public class LocalTransaction {
     }
 
     /**
-     * 現在のトランザクションがロールバックされるように予約されているかどうかを返します。
+     * Whether this transaction is marked to be undone.
      * 
-     * @return ロールバックされる場合 {@code true}
+     * @return {@code true} if the current transaction is marked.
      */
     public boolean isRollbackOnly() {
         LocalTransactionContext context = localTxContextHolder.get();

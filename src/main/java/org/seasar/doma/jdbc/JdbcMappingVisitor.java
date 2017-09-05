@@ -17,16 +17,14 @@ package org.seasar.doma.jdbc;
 
 import java.sql.SQLException;
 
+import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
- * {@link Wrapper} をJDBCの型とマッピングする {@link WrapperVisitor} の拡張です。
+ * A visitor that maps between {@link Wrapper} and {@link JdbcType}.
  * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
- * 
- * @author taedium
- * 
+ * The implementation class must be thread safe.
  */
 public interface JdbcMappingVisitor
         extends WrapperVisitor<Void, JdbcMappingFunction, JdbcMappingHint, SQLException> {

@@ -28,31 +28,11 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link HolderDesc} のファクトリクラスです。
- * 
- * @author taedium
- * @since 1.8.0
+ * A factory for holder descriptions.
  */
 public final class HolderDescFactory {
 
-    /**
-     * {@link HolderDesc} のインスタンスを生成します。
-     * 
-     * @param <BASIC>
-     *            基本型
-     * @param <HOLDER>
-     *            ドメイン型
-     * @param holderClass
-     *            ドメインクラス
-     * @return {@link HolderDesc} のインスタンス
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             ドメインクラスに {@link Holder} もしくは {@code EnumHolder} が注釈されていない場合
-     * @throws HolderDescNotFoundException
-     *             ドメインクラスに対応するメタクラスが見つからない場合
-     * @since 2.0.0
-     */
+    @Deprecated
     public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getHolderDesc(
             Class<HOLDER> holderClass) {
         return getHolderDesc(holderClass, new ClassHelper() {
@@ -60,24 +40,23 @@ public final class HolderDescFactory {
     }
 
     /**
-     * {@link ClassHelper} を使って {@link HolderDesc} のインスタンスを生成します。
+     * Returns the holder description.
      * 
      * @param <BASIC>
-     *            基本型
+     *            the basic type
      * @param <HOLDER>
-     *            ドメイン型
+     *            the holder type
      * @param holderClass
-     *            ドメインクラス
+     *            the holder class
      * @param classHelper
-     *            クラスヘルパー
-     * @return {@link HolderDesc} のインスタンス
+     *            the class helper
+     * @return the holder description
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if any arguments are {@code null}
      * @throws DomaIllegalArgumentException
-     *             ドメインクラスに {@link Holder} もしくは {@code EnumHolder} が注釈されていない場合
+     *             if the holder class is not annotated with the {@link Holder}
      * @throws HolderDescNotFoundException
-     *             ドメインクラスに対応するメタクラスが見つからない場合
-     * @since 1.27.0
+     *             if the holder description is not found
      */
     public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getHolderDesc(Class<HOLDER> holderClass,
             ClassHelper classHelper) {
@@ -104,20 +83,7 @@ public final class HolderDescFactory {
         }
     }
 
-    /**
-     * {@link HolderDesc} のインスタンスを生成します。
-     * 
-     * @param <BASIC>
-     *            基本型
-     * @param <HOLDER>
-     *            ドメイン型
-     * @param holderClass
-     *            ドメインクラス
-     * @return {@link HolderDesc} のインスタンス、存在しない場合 {@code null}
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @since 2.0.0
-     */
+    @Deprecated
     public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getExternalHolderDesc(
             Class<HOLDER> holderClass) {
         return getExternalHolderDesc(holderClass, new ClassHelper() {
@@ -125,20 +91,20 @@ public final class HolderDescFactory {
     }
 
     /**
-     * {@link ClassHelper} を使って {@link HolderDesc} のインスタンスを生成します。
+     * Returns the external holder description.
      * 
      * @param <BASIC>
-     *            基本型
+     *            the basic type
      * @param <HOLDER>
-     *            ドメイン型
+     *            the holder type
      * @param holderClass
-     *            ドメインクラス
+     *            the holder class
      * @param classHelper
-     *            クラスヘルパー
-     * @return {@link HolderDesc} のインスタンス、存在しない場合 {@code null}
+     *            the class helper
+     * @return the external holder description or {@code null} if it is not
+     *         found
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @since 1.27.0
+     *             if any arguments are {@code null}
      */
     public static <BASIC, HOLDER> HolderDesc<BASIC, HOLDER> getExternalHolderDesc(
             Class<HOLDER> holderClass, ClassHelper classHelper) {

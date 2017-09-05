@@ -38,26 +38,25 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
- * ローカルトランザクションと連動するコネクションです。
+ * A connection for local transactions.
  * <p>
- * {@code close()} の呼び出しを無視します。
+ * Ignores the invocation of the {@code close()} method.
  * 
  * @see LocalTransaction
- * @author taedium
- * @since 1.1.0
  */
 class LocalTransactionConnection implements Connection {
 
-    /** コネクション */
     private final Connection connection;
 
     private final int preservedTransactionIsolation;
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param connection
-     *            コネクション
+     *            the internal connection
+     * @param preservedTransactionIsolation
+     *            the transaction isolation to be preserved
      */
     public LocalTransactionConnection(Connection connection, int preservedTransactionIsolation) {
         assertNotNull(connection);
@@ -71,9 +70,9 @@ class LocalTransactionConnection implements Connection {
     }
 
     /**
-     * ラップされたコネクションを返します。
+     * Returns the wrapped internal connection.
      * 
-     * @return ラップされたコネクション
+     * @return the internal connection
      */
     public Connection getWrappedConnection() {
         return connection;

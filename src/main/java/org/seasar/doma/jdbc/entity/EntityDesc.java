@@ -23,221 +23,207 @@ import java.util.function.Function;
 import org.seasar.doma.Entity;
 
 /**
- * エンティティのメタタイプです。
- * 
+ * A description for an entity class.
  * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
- * </p>
- * 
- * @author taedium
+ * The implementation instance must be thread safe.
  * 
  * @param <ENTITY>
- *            エンティティの型
+ *            the entity type
  */
 public interface EntityDesc<ENTITY> {
 
     /**
-     * エンティティがイミュータブルかどうかを返します。
+     * Whether the entity is immutable.
      * 
-     * @return イミュータブルの場合 {@code true}
-     * @since 1.34.0
+     * @return {@code true} if the entity is immutable
      */
     boolean isImmutable();
 
     /**
-     * エンティティの名前を返します。
+     * Returns the entity name
      * 
-     * @return 名前
+     * @return the entity name
      */
     String getName();
 
     /**
-     * カタログ名を返します。
+     * Returns the catalog name.
      * 
-     * @return カタログ名
+     * @return the catalog name
      */
     String getCatalogName();
 
     /**
-     * スキーマ名を返します。
+     * Returns the schema name.
      * 
-     * @return スキーマ名
+     * @return the schema name
      */
     String getSchemaName();
 
     /**
-     * テーブル名を返します。
-     * <p>
-     * ネーミング規約が適用されます。
+     * Returns the table name.
      * 
      * @param namingFunction
-     *            ネーミング規約を適用する関数
-     * @return テーブル名
-     * @since 2.2.0
+     *            the function that applies naming convention
+     * @return the table name
      */
     String getTableName(BiFunction<NamingType, String, String> namingFunction);
 
     /**
-     * 完全修飾されたテーブル名を返します。
-     * <p>
-     * テーブル名には、ネーミング規約が適用されます。
-     * <p>
-     * カタログ、スキーマ、テーブル名は引用符で区切られます。
+     * Returns the qualified table name.
      * 
      * @param namingFunction
-     *            ネーミング規約を適用する関数
+     *            the function that applies naming convention
      * @param quoteFunction
-     *            引用符を適用する関数
-     * @return 完全修飾されたテーブル名
-     * @since 2.2.0
+     *            the function that applies quotation marks
+     * @return the qualified table name
      */
     String getQualifiedTableName(BiFunction<NamingType, String, String> namingFunction,
             Function<String, String> quoteFunction);
 
     /**
-     * カタログ、スキーマ、テーブル名において引用符が必要とされるかどうかを返します。
+     * Returns quotation marks are required for catalog, schema, table.
      * 
-     * @return 引用符が必要とされる場合 {@code true}
+     * @return {@code true} if quotation marks are required
      */
     boolean isQuoteRequired();
 
     /**
-     * ネーミング規約を返します。
-     * <p>
-     * {@link Entity#naming()} に指定された値を返します。指定されていない場合は {@literal null} を返します。
+     * Returns the naming convention.
      * 
-     * @return ネーミング規約
+     * @return the naming convention or {@code null}
+     * @see {@link Entity#naming()}
      */
     NamingType getNamingType();
 
     /**
-     * 自動生成される識別子のプロパティ型を返します。
+     * Returns the identity property descriptions whose values are generated.
      * 
-     * @return 自動生成される識別子のプロパティ型
+     * @return the identity property descriptions
      */
     GeneratedIdPropertyDesc<ENTITY, ?, ?> getGeneratedIdPropertyDesc();
 
     /**
-     * バージョンのプロパティ型を返します。
+     * Returns the version property description
      * 
-     * @return バージョンのプロパティ型
+     * @return the version property description
      */
     VersionPropertyDesc<ENTITY, ?, ?> getVersionPropertyDesc();
 
     /**
-     * 識別子のプロパティ型のリストを返します。
+     * Returns the identity property descriptions
      * 
-     * @return 識別子のプロパティ型のリスト
+     * @return the identity property descriptions
      */
     List<EntityPropertyDesc<ENTITY, ?>> getIdPropertyDescs();
 
     /**
-     * 名前を指定してプロパティ型を返します。
+     * Returns the property description with the name.
      * 
      * @param __name
-     *            プロパティ名
-     * @return プロパティ名、存在しない場合 {@code null}
+     *            the name of the property
+     * @return the name of the property or {@code null} if the property is not
+     *         found
      */
     EntityPropertyDesc<ENTITY, ?> getEntityPropertyDesc(String __name);
 
     /**
-     * プロパティ型のリストを返します。
+     * Returns the property descriptions.
      * 
-     * @return プロパティ型のリスト
+     * @return the property descriptions
      */
     List<EntityPropertyDesc<ENTITY, ?>> getEntityPropertyDescs();
 
     /**
-     * 新しいエンティティをインスタンス化します。
+     * Instantiate a new entity.
      * 
      * @param __args
-     *            プロパティ
-     * @return 新しいエンティティ
-     * @since 1.34.0
+     *            the arguments
+     * @return an entity
      */
     ENTITY newEntity(Map<String, Property<ENTITY, ?>> __args);
 
     /**
-     * エンティティのクラスを返します。
+     * Returns the entity class.
      * 
-     * @return エンティティのクラス
+     * @return the entity class
      */
     Class<ENTITY> getEntityClass();
 
     /**
-     * 現在の状態を保存します。
+     * Saves the current states.
      * 
      * @param entity
-     *            現在の状態
+     *            the current states
      */
     void saveCurrentStates(ENTITY entity);
 
     /**
-     * 元の状態を返します。
+     * Returns the original states.
      * 
      * @param entity
-     *            元の状態
-     * @return 元の状態、存在しない場合 {@code null}
+     *            the original states
+     * @return the original states or {@code null} if it does not exist
      */
     ENTITY getOriginalStates(ENTITY entity);
 
     /**
-     * 挿入処理の前処理を行います。
+     * Handles the entity before an insert.
      * 
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param context
-     *            コンテキスト
+     *            the context
      */
     void preInsert(ENTITY entity, PreInsertContext<ENTITY> context);
 
     /**
-     * 更新処理の前処理を行います。
+     * Handles the entity before an update.
      * 
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param context
-     *            コンテキスト
+     *            the context
      */
     void preUpdate(ENTITY entity, PreUpdateContext<ENTITY> context);
 
     /**
-     * 削除処理の前処理を行います。
+     * Handles the entity before a delete.
      * 
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param context
-     *            コンテキスト
+     *            the context
      */
     void preDelete(ENTITY entity, PreDeleteContext<ENTITY> context);
 
     /**
-     * 挿入処理の後処理を行います。
+     * Handles the entity after an insert.
      * 
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param context
-     *            コンテキスト
+     *            the context
      */
     void postInsert(ENTITY entity, PostInsertContext<ENTITY> context);
 
     /**
-     * 更新処理の後処理を行います。
+     * Handles the entity after an update.
      * 
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param context
-     *            コンテキスト
+     *            the context
      */
     void postUpdate(ENTITY entity, PostUpdateContext<ENTITY> context);
 
     /**
-     * 削除処理の後処理を行います。
+     * Handles the entity after a delete.
      * 
      * @param entity
-     *            エンティティ
+     *            the entity
      * @param context
-     *            コンテキスト
+     *            the context
      */
     void postDelete(ENTITY entity, PostDeleteContext<ENTITY> context);
 }

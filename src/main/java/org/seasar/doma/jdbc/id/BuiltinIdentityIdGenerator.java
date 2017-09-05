@@ -27,10 +27,7 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link IdentityIdGenerator} のデフォルトの実装です。
- * 
- * @author taedium
- * 
+ * The built-in implementation for {@link IdentityIdGenerator}.
  */
 public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements IdentityIdGenerator {
 
@@ -76,15 +73,16 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements I
     }
 
     /**
-     * {@link Statement#getGeneratedKeys()} を使用してデータベースで生成された値を取得します。
+     * Retrieves the generated value by using
+     * {@link Statement#getGeneratedKeys()}.
      * 
      * @param config
-     *            識別子生成の設定
+     *            the configuration
      * @param statement
-     *            INSERT文を実行した {@link Statement}
-     * @return 識別子
+     *            the SQL INSERT statement
+     * @return the generated value
      * @throws JdbcException
-     *             識別子の取得に失敗した場合
+     *             if the generation is failed
      */
     protected long getGeneratedValue(IdGenerationConfig config, Statement statement) {
         try {
@@ -96,13 +94,13 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements I
     }
 
     /**
-     * 専用のSQLを使用してデータベースで生成された値を取得します。
+     * Retrieves the generated value by using a specific SQL.
      * 
      * @param config
-     *            識別子生成の設定
-     * @return 識別子
+     *            the configuration
+     * @return the generated value
      * @throws JdbcException
-     *             識別子の取得に失敗した場合
+     *             if the generation is failed
      */
     protected long getGeneratedValue(IdGenerationConfig config) {
         Naming naming = config.getNaming();

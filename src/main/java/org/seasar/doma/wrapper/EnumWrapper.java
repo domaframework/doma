@@ -18,36 +18,34 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Enum} のラッパーです。
- * 
- * @author taedium
+ * A wrapper for the {@link Enum} class.
  * 
  * @param <E>
- *            {@link Enum} の型
+ *            The enum type subclass
  */
 public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param enumClass
-     *            {@link Enum} のクラス
+     *            the {@link Enum} class
      * @throws DomaNullPointerException
-     *             {@link Enum} のクラスが {@code null} の場合
+     *             if the {@code enumClass} is {@code null}
      */
     public EnumWrapper(Class<E> enumClass) {
         this(enumClass, null);
     }
 
     /**
-     * 値を指定してインスタンスを構築します。
+     * Creates an instance with a value.
      * 
      * @param enumClass
-     *            {@link Enum} のクラス
+     *            the {@link Enum} class
      * @param value
-     *            値
+     *            the enum value
      * @throws DomaNullPointerException
-     *             {@link Enum} のクラスが {@code null} の場合
+     *             if the {@code enumClass} is {@code null}
      */
     public EnumWrapper(Class<E> enumClass, E value) {
         super(enumClass, value);

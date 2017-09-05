@@ -18,87 +18,85 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * 基本型の値のラッパーです。
+ * A wrapper for a basic type.
  * <p>
- * このインタフェースの実装はスレッドセーフであることを要求されません。
- * 
- * @author taedium
+ * The implementation instance is not required to be thread safe.
  * 
  * @param <BASIC>
- *            基本型
+ *            The basic type
  */
 public interface Wrapper<BASIC> {
 
     /**
-     * 値を返します。
+     * Returns the value.
+     * <p>
+     * The value may be {@code null}.
      * 
-     * @return 値、{@code null} でありうる
+     * @return the value.
      */
     BASIC get();
 
     /**
-     * 値を設定します。
+     * Sets the value.
      * 
      * @param value
-     *            値
+     *            the value
      */
     void set(BASIC value);
 
     /**
-     * 値のコピーを返します。
+     * Return a copy of the value.
      * 
-     * @return 値のコピー
+     * @return a copy of the value
      */
     BASIC getCopy();
 
     /**
-     * 値の型がプリミティブ型のボックス型であればプリミティブ型のデフォルト値をボックスした値を返します。
+     * Returns the default value.
      * 
-     * @return 値の型がプリミティブ型のボックス型のであればプリミティブ型のデフォルト値をボックスした値、値の型がプリミティブ型のボックス型でない場合
-     *         {@code null}
-     * @since 1.5.0
+     * @return the boxed default value of a primitive type if this is a wrapper
+     *         for a boxed type, else {@code null}
      */
     BASIC getDefault();
 
     /**
-     * 等しい値を持っている場合 {@code true} を返します。
+     * Whether this object has an equal value to the other one.
      * 
      * @param other
-     *            値
-     * @return 等しい値を持っている場合 {@code true}
+     *            the other object
+     * @return {@code true} if this object has an equal value to the other one.
      */
     boolean hasEqualValue(Object other);
 
     /**
-     * 基本型のクラスを返します。
+     * Returns the class of the basic type.
      * 
-     * @return 基本型のクラス
-     * @since 2.0.0
+     * @return the class of the basic type
      */
     Class<BASIC> getBasicClass();
 
     /**
-     * ビジターを受け入れます。
+     * Accept a visitor.
      * 
      * @param <R>
-     *            戻り値の型
+     *            The result
      * @param <P>
-     *            1番目のパラメータの型
+     *            The first parameter type
      * @param <Q>
-     *            2番目のパラメータの型
+     *            The second parameter type
      * @param <TH>
-     *            例外の型
+     *            The error or exception type
      * @param visitor
-     *            ビジター
+     *            the visitor
      * @param p
-     *            1番目のパラメータ
+     *            the first parameter
      * @param q
-     *            2番目のパラメータ
-     * @return 戻り値
+     *            the second parameter
+     * @return the result
      * @throws TH
-     *             例外
+     *             the error or exception type
      * @throws DomaNullPointerException
-     *             ビジターが {@code null} の場合
+     *             if {@code visitor} is {@code null}
      */
     <R, P, Q, TH extends Throwable> R accept(WrapperVisitor<R, P, Q, TH> visitor, P p, Q q)
             throws TH;

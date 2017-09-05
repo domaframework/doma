@@ -16,38 +16,21 @@
 package org.seasar.doma.wrapper;
 
 /**
- * {@link Wrapper} の骨格実装です。
- * 
- * @author taedium
+ * A skeletal implementation for the {@link Wrapper} interface .
+ *
  * @param <BASIC>
- *            基本型
+ *            the basic type
  */
 public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
 
-    /** 基本型のクラス */
     protected Class<BASIC> basicClass;
 
-    /** 値 */
     protected BASIC value;
 
-    /**
-     * クラスを指定してインスタンスを構築します。
-     * 
-     * @param basicClass
-     *            基本型のクラス
-     */
     protected AbstractWrapper(Class<BASIC> basicClass) {
         this.basicClass = basicClass;
     }
 
-    /**
-     * クラスと値を指定してインスタンスを構築します。
-     * 
-     * @param basicClass
-     *            基本型のクラス
-     * @param value
-     *            値
-     */
     protected AbstractWrapper(Class<BASIC> basicClass, BASIC value) {
         this(basicClass);
         doSet(value);
@@ -58,12 +41,6 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
         doSet(value);
     }
 
-    /**
-     * 値を設定します。
-     * 
-     * @param value
-     *            値
-     */
     protected void doSet(BASIC value) {
         this.value = value;
     }
@@ -73,11 +50,6 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
         return doGet();
     }
 
-    /**
-     * 値を返します。
-     * 
-     * @return 値
-     */
     protected BASIC doGet() {
         return value;
     }
@@ -87,11 +59,6 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
         return doGetCopy();
     }
 
-    /**
-     * 値のコピーを返します。
-     * 
-     * @return 値のコピーを返します。
-     */
     protected BASIC doGetCopy() {
         return doGet();
     }
@@ -106,13 +73,6 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
         return doHasEqualValue(otherValue);
     }
 
-    /**
-     * 等しい値を持っているかどうか判定します。
-     * 
-     * @param otherValue
-     *            値
-     * @return 等しい値を持っている場合 {@code true}
-     */
     protected boolean doHasEqualValue(Object otherValue) {
         BASIC value = doGet();
         if (value == null) {

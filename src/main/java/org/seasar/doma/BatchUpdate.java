@@ -30,11 +30,10 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
- * バッチ更新処理を示します。
+ * Indicates a batch update.
  * <p>
- * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * 
- * <h3>例:</h3>
+ * The annotated method must be a member of a {@link Dao} annotated interface.
+ * <p>
  * 
  * <pre>
  * &#064;Entity
@@ -50,17 +49,17 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * }
  * </pre>
  * 
- * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * The method may throw following exceptions:
  * <ul>
- * <li>{@link DomaNullPointerException} パラメータに {@code null} を渡した場合
- * <li>{@link OptimisticLockException} 楽観的排他制御が有効で更新件数が0件の場合
- * <li>{@link UniqueConstraintException} 一意制約違反が発生した場合
- * <li>{@link SqlFileNotFoundException} {@code sqlFile} 要素の値が {@code true}
- * で、SQLファイルが見つからなかった場合
- * <li>{@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
+ * <li>{@link DomaNullPointerException} if any of the method parameters are
+ * {@code null}
+ * <li>{@link OptimisticLockException} if optimistic locking is enabled and an
+ * update count is 0 for each entity
+ * <li>{@link UniqueConstraintException} if an unique constraint is violated
+ * <li>{@link SqlFileNotFoundException} if {@code sqlFile} is {@code true} and
+ * the SQL file is not found
+ * <li>{@link JdbcException} if a JDBC related error occurs
  * </ul>
- * 
- * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -68,83 +67,64 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 public @interface BatchUpdate {
 
     /**
-     * SQLファイルにマッピングするかどうかを返します。
-     * 
-     * @return SQLファイルにマッピングするかどうか
+     * Whether an annotated method is mapped to an SQL file.
      */
     boolean sqlFile() default false;
 
     /**
-     * クエリタイムアウト（秒）を返します。
+     * The query timeout in seconds.
      * <p>
-     * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
+     * If not specified, {@link Config#getQueryTimeout()} is used.
      * 
-     * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
 
     /**
-     * バッチサイズを返します。
+     * The batch size.
      * <p>
-     * 指定しない場合、{@link Config#getBatchSize()}が使用されます。
+     * If not specified, {@link Config#getBatchSize()} is used.
      * <p>
-     * {@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。
-     * バッチ対象の数がバッチサイズを上回る場合、バッチサイズの数だけ {@link PreparedStatement#addBatch()}
-     * を呼び出し、 {@link PreparedStatement#executeBatch()} を実行するということを繰り返します。
+     * This value is used when {@link PreparedStatement#executeBatch()} is
+     * executed.
      * 
-     * @return バッチサイズ
      * @see PreparedStatement#addBatch()
-     * @since 1.21.0
      */
     int batchSize() default -1;
 
     /**
-     * 楽観的排他制御用のバージョン番号を無視するかどうかを返します。
+     * Whether a version property is ignored.
      * <p>
-     * {@code true} の場合、更新条件にバージョン番号を含めません。
-     * 
-     * @return 楽観的排他制御用のバージョン番号を無視するかどうか
-     * @since 1.7.0
+     * If {@code true}, a column that mapped to the version property is excluded
+     * from SQL UPDATE statements.
      */
     boolean ignoreVersion() default false;
 
     /**
-     * UPDATE文のSET句に含めるプロパティ名の配列を返します。
+     * The properties whose mapped columns are included in SQL UPDATE
+     * statements.
      * <p>
-     * ここに指定できるのは、カラム名ではなく更新対象エンティティクラスのプロパティ名です。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return UPDATE文のSET句に含めるプロパティ名の配列
+     * Only if {@link #sqlFile()} is {@code false}, this value is used.
      */
     String[] include() default {};
 
     /**
-     * UPDATE文のSET句から除外するプロパティ名の配列を返します。
+     * The properties whose mapped columns are excluded from SQL UPDATE
+     * statements.
      * <p>
-     * ここに指定できるのは、カラム名ではなく更新対象エンティティクラスのプロパティ名です。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return UPDATE文のSET句から除外するプロパティ名の配列
+     * Only if {@link #sqlFile()} is {@code false}, this value is used.
      */
     String[] exclude() default {};
 
     /**
-     * 更新結果が1件でない場合にスローされる {@link OptimisticLockException} を抑制するかどうかを返します。
+     * Whether {@link OptimisticLockException} is suppressed.
      * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return 更新結果が1件でない場合にスローされる {@link OptimisticLockException} を抑制するかどうか
+     * Only if {@link #sqlFile()} is {@code false}, this element value is used.
      */
     boolean suppressOptimisticLockException() default false;
 
     /**
-     * SQLのログの出力形式を返します。
-     * 
-     * @return SQLログの出力形式
-     * @since 2.0.0
+     * The output format of SQL logs.
      */
     SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

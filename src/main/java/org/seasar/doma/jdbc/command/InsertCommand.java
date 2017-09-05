@@ -18,11 +18,13 @@ package org.seasar.doma.jdbc.command;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.seasar.doma.Insert;
 import org.seasar.doma.jdbc.query.InsertQuery;
 
 /**
- * @author taedium
+ * A command for an SQL INSERT statement.
  * 
+ * @see Insert
  */
 public class InsertCommand extends ModifyCommand<InsertQuery> {
 

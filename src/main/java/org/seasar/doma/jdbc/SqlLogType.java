@@ -19,31 +19,28 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * SQLのログの出力形式です。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * Defines the SQL log formats.
  */
 public enum SqlLogType {
 
     /**
-     * 未加工SQL。
+     * The raw SQL.
      * <p>
-     * SQL中のバインドパラメータは {@code ?} で表されます。
+     * The bind variables are displayed as {@code ?}.
      */
     RAW,
 
     /**
-     * フォーマット済みSQL。
-     * 
+     * The formatted SQL.
      * <p>
-     * SQL中のバインドパラメータはフォーマットされて表されます。 フォーマットには
-     * {@link Dialect#getSqlLogFormattingVisitor()} が返すオブジェクトが使用されます。
+     * The bind variables are replaced with the string representations of the
+     * parameters. The string representations is determined by the object that
+     * is return from {@link Dialect#getSqlLogFormattingVisitor()}.
      */
     FORMATTED,
 
     /**
-     * 無出力。
+     * No output.
      */
     NONE
 }

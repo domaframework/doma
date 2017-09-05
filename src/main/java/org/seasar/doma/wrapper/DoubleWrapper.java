@@ -18,26 +18,14 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Double} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link Double} class.
  */
 public class DoubleWrapper extends AbstractWrapper<Double> implements NumberWrapper<Double> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public DoubleWrapper() {
         super(Double.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public DoubleWrapper(Double value) {
         super(Double.class, value);
     }

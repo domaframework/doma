@@ -20,55 +20,38 @@ import java.util.List;
 import org.seasar.doma.message.Message;
 
 /**
- * エンティティのすべてのプロパティに対し、結果セットのカラムがマッピングされない場合にスローされます。
- * 
- * @author taedium
- * @since 1.34.0
+ * Thrown to indicate that all properties in an entity are not mapped to columns
+ * in a result set.
  */
 public class ResultMappingException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
-    /** マッピング対象のエンティティクラスの名前 */
     protected final String entityClassName;
 
-    /** マッピングされなかったプロパティの名前のリスト */
     protected final List<String> unmappedPropertyNames;
 
-    /** 期待されるカラムの名前のリスト */
     protected final List<String> expectedColumnNames;
 
-    /** SQLの種別 */
     protected final SqlKind kind;
 
-    /** 未加工SQL */
     protected final String rawSql;
 
-    /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
-    /** SQLファイルのパス */
     protected final String sqlFilePath;
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param logType
-     *            ログタイプ
      * @param entityClassName
-     *            マッピング対象のエンティティクラスの名前
      * @param unmappedPropertyNames
-     *            マッピングされなかったプロパティの名前のリスト
      * @param expectedColumnNames
-     *            期待されるカラムの名前のリスト
      * @param kind
-     *            SQLの種別
      * @param rawSql
-     *            未加工SQL
      * @param formattedSql
-     *            フォーマット済みSQL
      * @param sqlFilePath
-     *            SQLファイルのパス
      */
     public ResultMappingException(SqlLogType logType, String entityClassName,
             List<String> unmappedPropertyNames, List<String> expectedColumnNames, SqlKind kind,
@@ -85,63 +68,63 @@ public class ResultMappingException extends JdbcException {
     }
 
     /**
-     * マッピング対象のエンティティクラスの名前を返します。
+     * Returns the entity class name.
      * 
-     * @return マッピング対象のエンティティクラスの名前
+     * @return the entity class name
      */
     public String getEntityClassName() {
         return entityClassName;
     }
 
     /**
-     * マッピングされなかったプロパティの名前のリストを返します。
+     * Returns the unmapped property names.
      * 
-     * @return マッピングされなかったプロパティの名前のリスト
+     * @return the unmapped property names
      */
     public List<String> getUnmappedPropertyNames() {
         return unmappedPropertyNames;
     }
 
     /**
-     * 期待されるカラムの名前のリストを返します。
+     * Returns the expected column names.
      * 
-     * @return 期待されるカラムの名前のリスト
+     * @return the expected column names
      */
     public List<String> getExpectedColumnNames() {
         return expectedColumnNames;
     }
 
     /**
-     * SQLの種別を返します。
+     * Returns the SQL kind.
      * 
-     * @return SQLの種別
+     * @return the SQL kind
      */
     public SqlKind getKind() {
         return kind;
     }
 
     /**
-     * 未加工SQLを返します。
+     * Returns the raw SQL string.
      * 
-     * @return 未加工SQL
+     * @return the raw SQL string
      */
     public String getRawSql() {
         return rawSql;
     }
 
     /**
-     * フォーマット済みSQLを返します。
+     * Returns the formatted SQL string.
      * 
-     * @return フォーマット済みSQL、存在しない場合 {@code null}
+     * @return the formatted SQL string or {@code null} if it does not exist
      */
     public String getFormattedSql() {
         return formattedSql;
     }
 
     /**
-     * SQLファイルのパスを返します。
+     * Returns the SQL file path
      * 
-     * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+     * @return the SQL file path or {@code null} if the SQL is auto generated
      */
     public String getSqlFilePath() {
         return sqlFilePath;

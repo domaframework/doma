@@ -18,26 +18,14 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Short} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link Short} class.
  */
 public class ShortWrapper extends AbstractWrapper<Short> implements NumberWrapper<Short> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public ShortWrapper() {
         super(Short.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public ShortWrapper(Short value) {
         super(Short.class, value);
     }

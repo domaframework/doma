@@ -25,83 +25,82 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlLogFormatter;
 
 /**
- * {@literal JDBC} の型を表現します。 型ごとに異なる処理を抽象化します。
+ * An object that converts JDBC data from SQL types to Java types, and vice
+ * versa.
  * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
+ * The implementation instance must be thread safe.
  * <p>
- * 
- * @author taedium
  * 
  * @param <T>
- *            JDBCで扱う型
+ *            the Java type
  */
 public interface JdbcType<T> extends SqlLogFormatter<T> {
 
     /**
-     * {@link ResultSet} から値を取得します。
+     * Retrieves the column value from the {@link ResultSet} object.
      * 
      * @param resultSet
-     *            結果セット
+     *            the result set
      * @param index
-     *            インデックス
-     * @return 値
+     *            the column index
+     * @return the column value
      * @throws DomaNullPointerException
-     *             {@code resultSet} が {@code null} の場合
+     *             if {@code resultSet} is {@code null}
      * @throws DomaIllegalArgumentException
-     *             {@code index} が {@literal 1} 以下の場合
+     *             if {@code index} is {@literal 1} and below
      * @throws SQLException
-     *             SQL例外
+     *             if {@code resultSet} throws {@link SQLException}
      */
     T getValue(ResultSet resultSet, int index) throws DomaNullPointerException, SQLException;
 
     /**
-     * {@link PreparedStatement} に値を設定します。
+     * Sets the value to the {@link PreparedStatement} object.
      * 
      * @param preparedStatement
-     *            文
+     *            the prepared statement
      * @param index
-     *            インデックス
+     *            the parameter index
      * @param value
      *            値
      * @throws DomaNullPointerException
-     *             {@code preparedStatement} が {@code null} の場合
+     *             if {@code preparedStatement} is {@code null}
      * @throws DomaIllegalArgumentException
-     *             {@code index} が {@literal 1} 以下の場合
+     *             {@code index} is {@literal 1} and below
      * @throws SQLException
-     *             SQL例外
+     *             if {@code preparedStatement} throws {@link SQLException}
      */
     void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
 
     /**
-     * {@link CallableStatement} にOUTパラメータを登録します。
+     * Registers the OUT parameter to the {@link CallableStatement} object.
      * 
      * @param callableStatement
-     *            文
+     *            the callable statement
      * @param index
-     *            インデックス
+     *            the parameter index
      * @throws DomaNullPointerException
-     *             {@code callableStatement} が {@code null} の場合
+     *             if {@code callableStatement} is {@code null}
      * @throws DomaIllegalArgumentException
-     *             {@code index} が {@literal 1} 以下の場合
+     *             if {@code index} is {@literal 1} and below
      * @throws SQLException
-     *             SQL例外
+     *             if {@code callableStatement} throws {@link SQLException}
      */
     void registerOutParameter(CallableStatement callableStatement, int index) throws SQLException;
 
     /**
-     * {@link CallableStatement} から値を取得します。
+     * Retrieves the value from the {@link CallableStatement} object.
      * 
      * @param callableStatement
-     *            文
+     *            the callable statement
      * @param index
-     *            インデックス
-     * @return 値
+     *            the parameter index
+     * @return the value
      * @throws DomaNullPointerException
-     *             {@code callableStatement} が {@code null} の場合
+     *             if {@code callableStatement} is {@code null}
      * @throws DomaIllegalArgumentException
-     *             {@code index} が {@literal 1} 以下の場合
+     *             if {@code index} is {@literal 1} and below
      * @throws SQLException
-     *             SQL例外
+     *             if {@code callableStatement} throws {@link SQLException}
      */
     T getValue(CallableStatement callableStatement, int index) throws SQLException;
 

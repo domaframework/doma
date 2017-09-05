@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Long} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#BIGINT} and {@link Long}.
  */
 public class LongType extends AbstractJdbcType<Long> {
 

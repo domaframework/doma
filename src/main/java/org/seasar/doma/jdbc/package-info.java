@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * {@literal JDBC} に関するインタフェースやクラスを提供します。
+ * Provides {@literal JDBC} related interfaces and classes.
  */
 package org.seasar.doma.jdbc;

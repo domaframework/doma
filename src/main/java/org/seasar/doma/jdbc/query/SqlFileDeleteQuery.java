@@ -26,10 +26,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
-/**
- * @author taedium
- * 
- */
 public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuery {
 
     protected EntityHandler<?> entityHandler;

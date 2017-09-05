@@ -26,10 +26,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 
-/**
- * @author taedium
- * 
- */
 public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuery {
 
     protected boolean nullExcluded;

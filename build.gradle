@@ -49,6 +49,7 @@ javadoc {
     options.docEncoding = encoding
     options.links 'http://docs.oracle.com/javase/jp/8/docs/api/'
     options.use = true
+    options.addStringOption('Xdoclint:none', '-quiet')
     exclude '**/internal/**'
 }
 

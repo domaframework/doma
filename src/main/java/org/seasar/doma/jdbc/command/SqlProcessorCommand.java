@@ -19,13 +19,17 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.BiFunction;
 
+import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 
 /**
- * @author nakamura
- *
+ * A command to handle an SQL statement.
+ * 
+ * @param <RESULT>
+ *            the result type
+ * @see SqlProcessor
  */
 public class SqlProcessorCommand<RESULT> implements Command<RESULT> {
 

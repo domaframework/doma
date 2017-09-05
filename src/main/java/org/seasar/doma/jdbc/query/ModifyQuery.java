@@ -20,8 +20,7 @@ import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
- * @author taedium
- * 
+ * An object used for building an SQL statement that modifies database data.
  */
 public interface ModifyQuery extends Query {
 

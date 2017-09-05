@@ -32,85 +32,37 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * DB2用の方言です。
- * 
- * @author taedium
- * 
+ * A dialect for Db2.
  */
 public class Db2Dialect extends StandardDialect {
 
-    /** 一意制約違反を表す {@literal SQLState} */
+    /** the {@literal SQLState} code that represents unique violation */
     protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
 
-    /**
-     * インスタンスを構築します。
-     */
     public Db2Dialect() {
         this(new Db2JdbcMappingVisitor(), new Db2SqlLogFormattingVisitor(),
                 new Db2ExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     */
     public Db2Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new Db2SqlLogFormattingVisitor(), new Db2ExpressionFunctions());
     }
 
-    /**
-     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public Db2Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new Db2JdbcMappingVisitor(), sqlLogFormattingVisitor, new Db2ExpressionFunctions());
     }
 
-    /**
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public Db2Dialect(ExpressionFunctions expressionFunctions) {
         this(new Db2JdbcMappingVisitor(), new Db2SqlLogFormattingVisitor(), expressionFunctions);
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public Db2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor, new Db2ExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public Db2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
@@ -185,30 +137,12 @@ public class Db2Dialect extends StandardDialect {
         return new Db2ScriptBlockContext();
     }
 
-    /**
-     * DB2用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class Db2JdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
-    /**
-     * DB2用の {@link SqlLogFormattingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class Db2SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
-    /**
-     * DB2用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class Db2ExpressionFunctions extends StandardExpressionFunctions {
 
         private final static char[] DEFAULT_WILDCARDS = { '%', '_', '％', '＿' };
@@ -227,12 +161,6 @@ public class Db2Dialect extends StandardDialect {
 
     }
 
-    /**
-     * DB2用の {@link ScriptBlockContext} です。
-     * 
-     * @author taedium
-     * @since 1.7.0
-     */
     public static class Db2ScriptBlockContext extends StandardScriptBlockContext {
 
         protected Db2ScriptBlockContext() {

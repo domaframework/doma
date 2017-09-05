@@ -18,8 +18,7 @@ package org.seasar.doma.jdbc.query;
 import java.sql.Statement;
 
 /**
- * @author taedium
- * 
+ * An object that builds SQL INSERT statements.
  */
 public interface InsertQuery extends ModifyQuery {
 

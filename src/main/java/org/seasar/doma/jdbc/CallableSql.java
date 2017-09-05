@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * 
- * @author taedium
- * 
+ * A callable SQL.
  */
 public class CallableSql extends AbstractSql<SqlParameter> {
 

@@ -18,75 +18,70 @@ package org.seasar.doma.jdbc.entity;
 import java.lang.reflect.Method;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * 更新処理の後処理のコンテキストです。
+ * A context for a post process of an update.
  * 
  * @param <E>
- *            エンティティの型
- * @author taedium
- * @since 1.11.0
+ *            the entity type
  */
 public interface PostUpdateContext<E> {
 
     /**
-     * プロパティが変更されたかどうかを返します。
+     * Whether the entity property is changed.
      * <p>
-     * {@link Update#sqlFile()} に {@code false} が指定されたDaoメソッドによる実行でない場合、常に
-     * {@code true}を返します。
+     * This method always returns {@code true}, when {@link Update#sqlFile()} is
+     * {@code true}.
      * 
      * @param propertyName
-     *            プロパティ名
-     * @return プロパティが変更されているかどうか
+     *            the name of property
+     * @return {@code true} if it is changed
      * @exception EntityPropertyNotDefinedException
-     *                プロパティがエンティティに定義されていない場合
+     *                if the property is not defined in the entity
+     * @see OriginalStates
      */
     public boolean isPropertyChanged(String propertyName);
 
     /**
-     * エンティティのメタタイプを返します。
+     * Returns the entity description.
      * 
-     * @return エンティティのメタタイプ
+     * @return the entity description
      */
     public EntityDesc<E> getEntityDesc();
 
     /**
-     * {@link Update} が注釈されたメソッドを返します。
+     * The method that is annotated with {@link Update}.
      * 
-     * @return メソッド
-     * @since 1.27.0
+     * @return the method
      */
     public Method getMethod();
 
     /**
-     * JDBCに関する設定を返します。
+     * Returns the configuration.
      * 
-     * @return JDBCに関する設定
-     * @since 1.27.0
+     * @return the configuration
      */
     public Config getConfig();
 
     /**
-     * 新しいエンティティを返します。
+     * Returns the new entity.
      * 
-     * @return 新しいエンティティ
-     * @since 1.35.0
+     * @return the new entity
      */
     public E getNewEntity();
 
     /**
-     * 新しいエンティティを設定します。
+     * Sets the new entity.
      * <p>
-     * このメソッドは、 {@link PostUpdateContext#getEntityDesc()}
-     * に対応するエンティティがイミュータブルである場合にのみ利用してください。
+     * This method is available, when the entity is immutable.
      * 
      * @param newEntity
-     *            エンティティ
+     *            the entity
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @since 1.34.0
+     *             if {@code newEntity} is {@code null}
      */
     public void setNewEntity(E newEntity);
 

@@ -25,14 +25,12 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.entity.PropertyField;
 
 /**
+ * A description for an embedded property.
  * 
- * @author nakamura-to
- * @since 2.10.0
- *
  * @param <ENTITY>
- *            エンティティクラスの型
+ *            the entity type
  * @param <EMBEDDABLE>
- *            エンベッダブルクラスの型
+ *            the embeddable type
  */
 public class EmbeddedPropertyDesc<ENTITY, EMBEDDABLE> {
 

@@ -20,26 +20,14 @@ import java.sql.Timestamp;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Timestamp} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link Timestamp} class.
  */
 public class TimestampWrapper extends AbstractWrapper<Timestamp> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public TimestampWrapper() {
         super(Timestamp.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public TimestampWrapper(Timestamp value) {
         super(Timestamp.class, value);
     }

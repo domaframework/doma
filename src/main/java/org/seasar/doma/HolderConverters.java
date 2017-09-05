@@ -23,15 +23,12 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
 /**
- * {@link HolderConverter} を複数登録します。
+ * Indicates an aggregation of {@link HolderConverter} classes.
  * <p>
- * このアノテーションの{@code value} 要素に指定される {@code HolderConverter} のクラスには
- * {@link ExternalHolder} が注釈されていないければいけません。
- * 
- * このアノテーションが注釈されたクラスの完全修飾名は、注釈処理のオプションに登録する必要があります。オプションのキーは
- * {@code doma.holder.converters} です。
- * 
- * <h3>例:</h3>
+ * The full qualified name of the annotated class must be specified in
+ * annotation processing options. The option key is
+ * {@code doma.holder.converters}.
+ * <p>
  * 
  * <pre>
  * &#064;HolderConverters({ SalaryConverter.class, DayConverter.class, LocationConverter.class })
@@ -39,19 +36,14 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
  * }
  * </pre>
  * 
- * @author taedium
- * @since 1.25.0
  * @see HolderConverter
- * @see ExternalHolder
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface HolderConverters {
 
     /**
-     * {@code HolderConverter} のクラスの配列を返します。
-     * 
-     * @return {@code HolderConverter} のクラスの配列
+     * The aggregation of {@code HolderConverter} classes.
      */
     Class<? extends HolderConverter<?, ?>>[] value() default {};
 }

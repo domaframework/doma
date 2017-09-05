@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Double} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#DOUBLE} and {@link Double}.
  */
 public class DoubleType extends AbstractJdbcType<Double> {
 

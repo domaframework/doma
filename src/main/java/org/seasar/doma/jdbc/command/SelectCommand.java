@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.seasar.doma.FetchType;
+import org.seasar.doma.Select;
 import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
@@ -36,9 +37,11 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
- * @author taedium
+ * A command for an SQL SELECT statement.
+ * 
  * @param <RESULT>
- *            結果
+ *            the result type
+ * @see Select
  */
 public class SelectCommand<RESULT> implements Command<RESULT> {
 

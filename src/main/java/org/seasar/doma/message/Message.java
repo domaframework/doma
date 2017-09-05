@@ -24,10 +24,7 @@ import java.util.ResourceBundle;
 import org.seasar.doma.internal.message.MessageResourceBundle;
 
 /**
- * デフォルトロケール用のメッセージの列挙です。
- * 
- * @author taedium
- * 
+ * Defines messages that are sent to application developers.
  */
 public enum Message implements MessageResource {
 

@@ -24,10 +24,6 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 
-/**
- * @author taedium
- * 
- */
 class BuildingHelper {
 
     private static final String lineSeparator = System.getProperty("line.separator");

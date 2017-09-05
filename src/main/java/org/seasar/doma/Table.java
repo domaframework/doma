@@ -21,11 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * データベースのテーブルを示します。
+ * Indicates a database table.
  * <p>
- * このアノテーションは、エンティティクラスに対して有効です。
- * 
- * <h3>例:</h3>
+ * This annotation must be used in conjunction with the {@link Entity}
+ * annotation.
+ * <p>
  * 
  * <pre>
  * &#064;Entity
@@ -34,41 +34,31 @@ import java.lang.annotation.Target;
  *     ...
  * }
  * </pre>
- * 
- * @author taedium
- * 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 
     /**
-     * カタログ名を返します。
-     * 
-     * @return カタログ名
+     * The catalog name.
      */
     String catalog() default "";
 
     /**
-     * スキーマ名を返します。
-     * 
-     * @return スキーマ名
+     * The schema name.
      */
     String schema() default "";
 
     /**
-     * テーブル名を返します。
+     * The table name.
      * <p>
-     * 指定しない場合、テーブル名は {@link Entity#naming()} に指定した列挙型 によって解決されます。
-     * 
-     * @return テーブル名
+     * If not specified, the table name is resolved by {@link Entity#naming()}.
      */
     String name() default "";
 
     /**
-     * カタログ、スキーマ、テーブル名を引用符で囲むかどうかを返します。
-     * 
-     * @return 引用符で囲むかどうか
+     * Whether quotation marks are used for the catalog name, the schema name
+     * and the table name.
      */
     boolean quote() default false;
 }

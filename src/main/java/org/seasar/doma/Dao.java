@@ -23,18 +23,10 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * Daoインタフェースであることを示します。
+ * Indicates a DAO interface.
  * <p>
- * このアノテーションは、トップレベルのインタフェースに指定できます。
- * 
+ * The annotated interface must be a top level interface.
  * <p>
- * Daoインタフェースは、他のDaoインタフェースを1つのみ拡張できます。
- * 
- * <p>
- * インタフェースのメンバメソッドには、メタアノテーション {@link DaoMethod}
- * でマークされたアノテーションのいずれかを指定しなければいけません。
- * 
- * <h3>例:</h3>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -45,7 +37,27 @@ import org.seasar.doma.jdbc.Config;
  * }
  * </pre>
  * 
- * @author taedium
+ * <p>
+ * The interface can extend another DAO interface:
+ *
+ * <pre>
+ * &#064;Dao(config = AppConfig.class)
+ * public interface WorkerDao {
+ * 
+ *     &#064;Insert
+ *     int insert(Worker worker);
+ * }
+ * </pre>
+ * 
+ * <pre>
+ * &#064;Dao(config = AppConfig.class)
+ * public interface EmployeeDao extends WorkerDao {
+ * 
+ *     &#064;Insert
+ *     int insert(Employee employee);
+ * }
+ * </pre>
+ * 
  * @see ArrayFactory
  * @see BatchDelete
  * @see BatchInsert
@@ -59,6 +71,7 @@ import org.seasar.doma.jdbc.Config;
  * @see Procedure
  * @see Select
  * @see Script
+ * @see SqlProcessor
  * @see Update
  */
 @Target(ElementType.TYPE)
@@ -66,25 +79,21 @@ import org.seasar.doma.jdbc.Config;
 public @interface Dao {
 
     /**
-     * Daoを実行する際の設定（ {@literal JDBC} の接続情報や {@literal RDBMS} の方言等）を返します。
+     * The runtime configuration.
      * <p>
-     * この要素に値を指定しないでデフォルトの値を使用する場合、 Daoの実装クラスには {@code Config} を受け取る
-     * {@code public} なコンストラクタが生成されます。
+     * If a user defined class is specified, a generated DAO implementation
+     * class has a public no-arg constructor that instantiates the user defined
+     * class in the constructor.
      * <p>
-     * {@code Config}
-     * 以外のクラスを指定する場合、そのクラスは、引数なしのpublicなコンストラクタを持つ具象クラスでなければいけません。
-     * その場合、Daoの実装クラスには引数なしの {@code public} なコンストラクタが生成されます。
-     * この要素に指定されたクラスは、そのコンストラクタの中でインスタンス化されます。
-     * 
-     * @return Daoを実行する際の設定
+     * If it is not specified, a generated DAO implementation class has a public
+     * constructor that accepts a single {@link Config} instance as an argument.
+     * In this case, the {@link Config} instance can be injected by using
+     * {@link AnnotateWith}.
      */
     Class<? extends Config> config() default Config.class;
 
     /**
-     * Daoの実装クラスのアクセスレベルを返します。
-     * 
-     * @return Daoの実装クラスのアクセスレベル
-     * @since 2.0.0
+     * The access level of the DAO implementation class.
      */
     AccessLevel accessLevel() default AccessLevel.PUBLIC;
 }

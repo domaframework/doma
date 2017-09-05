@@ -22,9 +22,10 @@ import java.util.function.Supplier;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
- * @author taedium
+ * A {@link ResultSet} handler.
+ * 
  * @param <RESULT>
- *            結果
+ *            the result type
  */
 public interface ResultSetHandler<RESULT> {
 

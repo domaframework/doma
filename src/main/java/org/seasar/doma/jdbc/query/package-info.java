@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * クエリを表すインタフェースやクラスを提供します。
+ * Provides query objects that build SQL statements.
  */
 package org.seasar.doma.jdbc.query;

@@ -21,23 +21,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ストアドファンクションやストアドプロシージャーへのINパラメータを示します。
+ * Indicates a IN parameter of stored functions or stored procedures.
  * <p>
- * このアノテーションが注釈されるパラメータは、 {@link Function} もしくは {@link Procedure}
- * が注釈されたメソッドのパラメータでなければいけません。
- * 
- * <h3>例:</h3>
+ * The annotated parameter must be one of the parameters of the method that is
+ * annotated with {@link Function} or {@link Procedure}.
+ * <p>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void updateSalary(@In Integer id, @In BigDecimal salary);
+ *     void updateSalary(&#064;In Integer id, &#064;In BigDecimal salary);
  * }
  * </pre>
- * 
- * @author taedium
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

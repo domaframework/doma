@@ -21,9 +21,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * エンベッダブルクラスを示します。エンベッダブルクラスはエンティティに組み込み可能で複数のプロパティをまとめる役割を担います。
+ * Indicates an embeddable class.
  * <p>
- * エンベッダブルクラスにはすべてのプロパティをパラメータに含んだ非privateなコンストラクタが必要です。
+ * The embeddable class can be embedded into an entity class.
+ * <p>
+ * The embeddable class must have a non-private constructor that accepts all
+ * properties of the class as arguments.
  * 
  * <pre>
  * &#064;Embeddable
@@ -62,11 +65,7 @@ import java.lang.annotation.Target;
  * </pre>
  * 
  * <p>
- * 注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
- * <p>
- * 
- * @author nakamura-to
- * @since 2.10.0
+ * The embeddable instance is not required to be thread safe.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

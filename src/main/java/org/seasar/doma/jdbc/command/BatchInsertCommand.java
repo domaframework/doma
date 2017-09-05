@@ -19,14 +19,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.seasar.doma.BatchInsert;
 import org.seasar.doma.jdbc.BatchUniqueConstraintException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
 
 /**
- * @author taedium
+ * A command for a batch of SQL INSERT statements.
  * 
+ * @see BatchInsert
  */
 public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
 

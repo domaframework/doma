@@ -29,88 +29,40 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * HSQLDB用の方言です。
- * 
- * @author taedium
- * 
+ * A dialect for HSQLDB.
  */
 public class HsqldbDialect extends StandardDialect {
 
-    /** 一意制約違反を表すエラーコード */
+    /** the error code that represents unique violation */
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = -104;
 
-    /**
-     * インスタンスを構築します。
-     */
     public HsqldbDialect() {
         this(new HsqldbJdbcMappingVisitor(), new HsqldbSqlLogFormattingVisitor(),
                 new HsqldbExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     */
     public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new HsqldbSqlLogFormattingVisitor(),
                 new HsqldbExpressionFunctions());
     }
 
-    /**
-     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public HsqldbDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new HsqldbJdbcMappingVisitor(), sqlLogFormattingVisitor,
                 new HsqldbExpressionFunctions());
     }
 
-    /**
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public HsqldbDialect(ExpressionFunctions expressionFunctions) {
         this(new HsqldbJdbcMappingVisitor(), new HsqldbSqlLogFormattingVisitor(),
                 expressionFunctions);
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor, new HsqldbExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
@@ -183,30 +135,12 @@ public class HsqldbDialect extends StandardDialect {
         return true;
     }
 
-    /**
-     * HSQLDB用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class HsqldbJdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
-    /**
-     * HSQLDB用の {@link SqlLogFormattingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class HsqldbSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
-    /**
-     * HSQLDB用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class HsqldbExpressionFunctions extends StandardExpressionFunctions {
 
         public HsqldbExpressionFunctions() {

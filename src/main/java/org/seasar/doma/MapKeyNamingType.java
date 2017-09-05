@@ -18,17 +18,15 @@ package org.seasar.doma;
 import org.seasar.doma.internal.util.StringUtil;
 
 /**
- * マップのキーのネーミング規約を表します。
+ * Defines naming convention rules for the keys contained in a
+ * {@code Map<Object, String>} object.
  * <p>
- * カラム名に規約を適用し、マップのキー名を求めます。
- * 
- * @author taedium
- * @since 1.17.0
+ * The key name is resolved from a column name by applying this convention.
  */
 public enum MapKeyNamingType {
 
     /**
-     * 何も行いません。
+     * Does nothing.
      */
     NONE {
 
@@ -43,9 +41,9 @@ public enum MapKeyNamingType {
     },
 
     /**
-     * アンダースコア区切りの文字列をキャメルケースに変換します。
+     * Converts an underscore separated string to a camel case string.
      * <p>
-     * たとえば、<code>AAA_BBB</code> を <code>aaaBbb</code> に変換します。
+     * For example, {@code AAA_BBB} is converted to {@code aaaBbb}.
      */
     CAMEL_CASE {
 
@@ -60,9 +58,9 @@ public enum MapKeyNamingType {
     },
 
     /**
-     * 大文字に変換します。
+     * Converts a string to an upper case string.
      * <p>
-     * たとえば、<code>aaaBbb</code> を <code>AAABBB</code> に変換します。
+     * For example、{@code aaaBbb} is converted to {@code AAABBB}.
      */
     UPPER_CASE {
 
@@ -77,9 +75,9 @@ public enum MapKeyNamingType {
     },
 
     /**
-     * 小文字に変換します。
+     * Converts a string to an lower case string.
      * <p>
-     * たとえば、<code>aaaBbb</code> を <code>aaabbb</code> に変換します。
+     * For example, {@code aaaBbb} is converted to {@code aaabbb}.
      */
     LOWER_CASE {
 
@@ -94,11 +92,11 @@ public enum MapKeyNamingType {
     };
 
     /**
-     * ネーミング規約を適用します。
+     * Applies this naming conversion.
      * 
      * @param text
-     *            規約が適用される文字列
-     * @return 規約が適用された文字列
+     *            the text
+     * @return the converted text
      */
     public abstract String apply(String text);
 }

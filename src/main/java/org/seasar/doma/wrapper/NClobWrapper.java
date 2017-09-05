@@ -20,26 +20,14 @@ import java.sql.NClob;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link NClob} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link NClob} class.
  */
 public class NClobWrapper extends AbstractWrapper<NClob> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public NClobWrapper() {
         super(NClob.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public NClobWrapper(NClob value) {
         super(NClob.class, value);
     }

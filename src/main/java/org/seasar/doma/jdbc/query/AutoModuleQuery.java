@@ -24,10 +24,6 @@ import org.seasar.doma.jdbc.CallableSql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 
-/**
- * @author taedium
- * 
- */
 public abstract class AutoModuleQuery extends AbstractQuery implements ModuleQuery {
 
     protected CallableSql sql;

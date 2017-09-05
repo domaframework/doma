@@ -23,10 +23,7 @@ import java.sql.Time;
 import java.sql.Types;
 
 /**
- * {@link Time} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#TIME} and {@link Time}.
  */
 public class TimeType extends AbstractJdbcType<Time> {
 

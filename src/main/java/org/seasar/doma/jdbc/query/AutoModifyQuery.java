@@ -22,16 +22,11 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @param <ENTITY>
- *            エンティティ
- */
 public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements ModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};

@@ -22,13 +22,12 @@ import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
 /**
- * @author nakamura-to
- * @since 2.3.0
+ * A helper for {@link BatchUpdateQuery}.
  */
 public class BatchUpdateQueryHelper<E> {
 

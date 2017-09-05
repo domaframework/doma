@@ -22,31 +22,28 @@ import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * {@link Wrapper} と {@link JdbcType} をマッピングする処理を表します。
+ * A function that maps between {@link Wrapper} and {@link JdbcType}.
  * <p>
- * このインタフェースの実装はスレッドセーフであることを要求されません。
- * 
- * @author taedium
- * 
+ * The implementation is not required to be thread safe.
  */
 public interface JdbcMappingFunction {
 
     /**
-     * この処理を適用します。
+     * Applies this function.
      * 
      * @param <R>
-     *            戻り値の型
+     *            the return type
      * @param <V>
-     *            マッピング対象の値の型
+     *            the basic type
      * @param wrapper
-     *            ラッパー
+     *            the wrapper
      * @param jdbcType
-     *            JDBC型
-     * @return マッピング処理の結果
+     *            the JDBC type
+     * @return the mapping result
      * @throws DomaNullPointerException
-     *             いずれかの引数が {@code null} の場合
+     *             if any arguments are {@code null}
      * @throws SQLException
-     *             SQLに関する例外が発生した場合
+     *             if an SQL related error occurs
      */
     <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType) throws SQLException;
 }

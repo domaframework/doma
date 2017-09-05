@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link String} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#VARCHAR} and {@link String}.
  */
 public class StringType extends AbstractJdbcType<String> {
 

@@ -19,10 +19,6 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * @author taedium
- * 
- */
 public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
 
     @Override

@@ -23,10 +23,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link BigDecimal} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#DECIMAL} and {@link BigDecimal}.
  */
 public class BigDecimalType extends AbstractJdbcType<BigDecimal> {
 

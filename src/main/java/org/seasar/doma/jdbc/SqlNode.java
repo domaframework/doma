@@ -20,38 +20,35 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * SQLの文字列の解析結果です。
+ * An SQL node.
  * <p>
- * このインタフェースの実装はスレッドセーフであることは要求されません。
+ * The implementation class is not required to be thread safe.
  * <p>
- * このインスタンスのライフサイクルを制御できない場合は参照専用として扱わなければいけません。
- * 
- * @author taedium
- * 
+ * Treat this object for read only when you can not control its life cycle.
  */
 public interface SqlNode {
 
     /**
-     * 子ノードのリストを返します。
+     * Returns the children list.
      * 
-     * @return 子ノードのリスト
+     * @return the children list
      */
     List<SqlNode> getChildren();
 
     /**
-     * ビジターを受け入れ、ビジターの適切なメソッドにディスパッチします。
+     * Accepts the visitor.
      * 
      * @param <R>
-     *            戻り値の型
+     *            the result type
      * @param <P>
-     *            パラメータの型
+     *            the parameter type
      * @param visitor
-     *            ビジター
+     *            the visitor
      * @param p
-     *            パラメータ
-     * @return ビジターで処理された値
+     *            the parameter for the visitor
+     * @return the result
      * @throws DomaNullPointerException
-     *             ビジターが {@code null} の場合
+     *             if {@code visitor} is {@code null}
      */
     <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p);
 }

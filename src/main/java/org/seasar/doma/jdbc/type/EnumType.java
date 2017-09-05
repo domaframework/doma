@@ -26,12 +26,10 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link Enum} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
+ * A JDBC type for {@link Types#VARCHAR} and {@link Enum}.
  * 
  * @param <E>
- *            {@link Enum} の型
+ *            the enum subclass
  */
 public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
 

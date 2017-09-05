@@ -18,54 +18,47 @@ package org.seasar.doma.jdbc;
 import java.sql.ResultSet;
 
 /**
- * {@link ResultSet} にマッピングされるオブジェクト群を1件ずつ処理するコールバックです。
+ * A callback that is invoked from a {@link ResultSet} iteration process.
  * <p>
- * {@link #iterate(Object, IterationContext)} は、 {@code ResultSet}
- * のループ中にオブジェクトがインスタンス化された直後に呼び出されます。
- * <p>
- * このインタフェースの実装はスレッドセーフであることを要求されません。
- * 
- * @author taedium
+ * The implementation class is not required to be thread safe.
  * 
  * @param <TARGET>
- *            処理対象の型。すなわち、基本型、ドメインクラス、エンティティクラス、もしくは {@code Map<String, Object>}
+ *            the mapping target type
  * @param <RESULT>
- *            戻り値の型
+ *            the result type
  */
 public interface IterationCallback<TARGET, RESULT> {
 
     /**
-     * デフォルトの戻り値を返します。
+     * Returns the default value.
      * 
-     * @return デフォルトの戻り値
-     * @since 2.0.0
+     * @return the default value
      */
     default RESULT defaultResult() {
         return null;
     }
 
     /**
-     * 処理対象のオブジェクト群を順に1件ずつ処理します。
-     * <p>
-     * 全件を処理する前に処理を中断するには、 {@link IterationContext#exit()}を呼び出します。
+     * Invoked from a {@link ResultSet} iteration process.
      * 
      * @param target
-     *            {@link ResultSet} の1行にマッピングされたオブジェクト
+     *            the object that is mapped to a row of {@link ResultSet}
      * @param context
-     *            実行コンテキスト
-     * @return 任意の実行結果
+     *            the execution context
+     * @return the result type
      */
     RESULT iterate(TARGET target, IterationContext context);
 
     /**
-     * {@code iterate} の実行後に呼び出され、任意の処理を実行します。
+     * Executes post process of {@link #iterate(Object, IterationContext)}.
      * 
      * @param result
-     *            {@code iterate} の実行結果
+     *            the result of {@link #iterate(Object, IterationContext)} or
+     *            the result of {@link #defaultResult()} if {@link ResultSet}
+     *            has no rows
      * @param context
-     *            実行コンテキスト
-     * @return 実行結果
-     * @since 2.0.0
+     *            the execution context
+     * @return the result
      */
     default RESULT postIterate(RESULT result, IterationContext context) {
         return result;

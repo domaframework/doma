@@ -18,23 +18,20 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.Message;
 
 /**
- * SQLファイルが見つからない場合にスローされる例外です。
- * 
- * @author taedium
- * 
+ * Thrown to indicate that the SQL file is not found.
  */
 public class SqlFileNotFoundException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
-    /** 見つからないSQLファイルのパス */
+    /** the SQL file path */
     protected final String path;
 
     /**
-     * SQLファイルのパスを指定してインスタンスを構築します。
+     * Creates an instance.
      * 
      * @param path
-     *            見つからないSQLファイルのパス
+     *            the SQL file path
      */
     public SqlFileNotFoundException(String path) {
         super(Message.DOMA2011, path);
@@ -42,9 +39,9 @@ public class SqlFileNotFoundException extends JdbcException {
     }
 
     /**
-     * 見つからないSQLファイルのパスを返します。
+     * Returns the SQL file path.
      * 
-     * @return 見つからないSQLファイルのパス
+     * @return the SQL file path
      */
     public String getPath() {
         return path;

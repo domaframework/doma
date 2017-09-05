@@ -29,170 +29,161 @@ import org.seasar.doma.jdbc.tx.TransactionManager;
 import org.seasar.doma.message.Message;
 
 /**
- * JDBCに関する設定です。
+ * A runtime configuration for DAOs.
  * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
- * 
- * @author taedium
- * 
+ * The implementation must be thread safe.
  */
 public interface Config {
 
     /**
-     * データソースを返します。
+     * Returns the data source.
      * 
-     * @return データソース
+     * @return the data source
      */
     DataSource getDataSource();
 
     /**
-     * RDBMSの方言を返します。
+     * Returns the SQL dialect.
      * 
-     * @return RDBMSの方言
+     * @return the SQL dialect
      */
     Dialect getDialect();
 
     /**
-     * データソース名を返します。
+     * Returns the name of the data source.
      * <p>
-     * データソースを複数扱う場合、データソースごとに異なる名前を返さなければいけません。この値は、シーケンスやテーブルを使用した識別子の自動生成機能で、
-     * 生成した識別子をデータソースごとに管理するために使用されます。
+     * Each data source must have an unique name when multiple data sources are
+     * used in an application.
      * 
-     * @return データソース名
+     * @return the name of the data source
      */
     default String getDataSourceName() {
         return getClass().getName();
     }
 
     /**
-     * SQLファイルのリポジトリを返します。
+     * Returns the SQL file repository.
      * 
-     * @return SQLファイルのリポジトリ
+     * @return the SQL file repository
      */
     default SqlFileRepository getSqlFileRepository() {
         return ConfigSupport.defaultSqlFileRepository;
     }
 
     /**
-     * JDBCロガーを返します。
+     * Returns the JDBC logger.
      * 
-     * @return JDBCロガー
+     * @return the JDBC logger
      */
     default JdbcLogger getJdbcLogger() {
         return ConfigSupport.defaultJdbcLogger;
     }
 
     /**
-     * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーを返します。
-     * <p>
-     * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーは、テーブルを使用した識別子の自動生成機能において、
-     * テーブルの更新処理を新しいトランザクション内で実行するために使われます。
+     * Returns the transaction controller whose transaction attribute is
+     * {@code REQUIRES_NEW}.
      * 
-     * @return {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラー
+     * @return the transaction controller whose transaction attribute is
+     *         {@code REQUIRES_NEW}
      */
     default RequiresNewController getRequiresNewController() {
         return ConfigSupport.defaultRequiresNewController;
     }
 
     /**
-     * クラスのヘルパーを返します。
+     * Returns the class helper.
      * 
-     * @return クラスのヘルパー
-     * @since 1.27.0
+     * @return the class helper
      */
     default ClassHelper getClassHelper() {
         return ConfigSupport.defaultClassHelper;
     }
 
     /**
-     * {@link Command} の実装クラスのファクトリを返します。
+     * Returns the factory for {@link Command} implementation classes.
      * 
-     * @return {@link Command} の実装クラスのファクトリ
-     * @since 2.0.0
+     * @return the factory for {@link Command} implementation classes
      */
     default CommandImplementors getCommandImplementors() {
         return ConfigSupport.defaultCommandImplementors;
     }
 
     /**
-     * {@link Query} の実装クラスのファクトリを返します。
+     * Returns the factory for {@link Query} implementation classes.
      * 
-     * @return {@link Query} の実装クラスのファクトリ
-     * @since 2.0.0
+     * @return the factory for {@link Query} implementation classes
      */
     default QueryImplementors getQueryImplementors() {
         return ConfigSupport.defaultQueryImplementors;
     }
 
     /**
-     * 例外に含めるSQLログのタイプを返します。
+     * Returns the SQL log type that determines the SQL log format in
+     * exceptions.
      * 
-     * @return SQLログのタイプ
-     * @since 1.22.0
+     * @return the SQL log type
      */
     default SqlLogType getExceptionSqlLogType() {
         return SqlLogType.FORMATTED;
     }
 
     /**
-     * 未知のカラムのハンドラを返します。
+     * Returns the unknown column handler.
      * 
-     * @return 未知のカラムのハンドラ
-     * @since 2.0.0
+     * @return the unknown column handler
      */
     default UnknownColumnHandler getUnknownColumnHandler() {
         return ConfigSupport.defaultUnknownColumnHandler;
     }
 
     /**
-     * ネーミング規約のコントローラを返します。
+     * Returns the naming convention controller.
      * 
-     * @return ネーミング規約のコントローラ
-     * @since 2.2.0
+     * @return the naming convention controller
      */
     default Naming getNaming() {
         return ConfigSupport.defaultNaming;
     }
 
     /**
-     * マップのキーのネーミング規約のコントローラを返します。
+     * Returns a naming convention controller for keys contained in a
+     * {@code Map<String, Object>} object.
      * 
-     * @return マップのキーのネーミング規約のコントローラ
+     * @return a naming convention controller for keys contained in a
+     *         {@code Map<String, Object>} object
      */
     default MapKeyNaming getMapKeyNaming() {
         return ConfigSupport.defaultMapKeyNaming;
     }
 
     /**
-     * トランザクションマネジャーを返します。
-     * <p>
-     * デフォルトの実装では {@link UnsupportedOperationException} をスローします。
+     * Returns the transaction manager.
      * 
-     * @return トランザクションマネジャー
+     * @return the transaction manager
      * @throws UnsupportedOperationException
-     *             {@link TransactionManager} のインタフェースを使ったトランザクションをサポートしない場合
-     * @since 2.0.0
+     *             if this configuration does not support transactions by the
+     *             transaction manager
      */
     default TransactionManager getTransactionManager() {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * SQLのコメンターを返します。
+     * Returns the commenter for SQL strings.
      * 
-     * @return SQLのコメンター
-     * @since 2.1.0
+     * @return the commenter for SQL strings
      */
     default Commenter getCommenter() {
         return ConfigSupport.defaultCommenter;
     }
 
     /**
-     * 最大行数の制限値を返します。
+     * Returns the maximum number of rows for a {@code ResultSet} object.
      * <p>
-     * 0以下の値は、 {@link Statement#setMaxRows(int)}へは渡されません。
+     * If the value is greater than or equal to 1, it is passed to
+     * {@link Statement#setMaxRows(int)}.
      * 
-     * @return 最大行数の制限値
+     * @return he maximum number of rows
      * @see Statement#setMaxRows(int)
      */
     default int getMaxRows() {
@@ -200,11 +191,12 @@ public interface Config {
     }
 
     /**
-     * フェッチサイズを返します。
+     * Returns the fetch size.
      * <p>
-     * 0以下の値は、 {@link Statement#setFetchSize(int)}へは渡されません。
+     * If the value is greater than or equal to 1, it is passed to
+     * {@link Statement#setFetchSize(int)}.
      * 
-     * @return フェッチサイズ
+     * @return the fetch size
      * @see Statement#setFetchSize(int)
      */
     default int getFetchSize() {
@@ -212,11 +204,12 @@ public interface Config {
     }
 
     /**
-     * クエリタイムアウト（秒）を返します。
+     * Returns the query timeout limit in seconds.
      * <p>
-     * 0以下の値は、 {@link Statement#setQueryTimeout(int)}へは渡されません。
+     * If the value is greater than or equal to 1, it is passed to
+     * {@link Statement#setQueryTimeout(int)}.
      * 
-     * @return クエリタイムアウト（秒）
+     * @return the query timeout limit in seconds
      * @see Statement#setQueryTimeout(int)
      */
     default int getQueryTimeout() {
@@ -224,15 +217,12 @@ public interface Config {
     }
 
     /**
-     * バッチサイズを返します。
+     * Returns the batch size.
      * <p>
-     * {@literal 1} 以下の値は、 {@literal 1} とみなされます。
+     * If the value is less than 1, it is regarded as 1.
      * 
-     * {@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。
-     * バッチ対象の数がバッチサイズを上回る場合、バッチサイズの数だけ {@link PreparedStatement#addBatch()}
-     * を呼び出し、 {@link PreparedStatement#executeBatch()} を実行するということを繰り返します。
-     * 
-     * @return バッチサイズを返します。
+     * @return the batch size
+     * @see PreparedStatement#executeBatch()
      * @see PreparedStatement#addBatch()
      */
     default int getBatchSize() {
@@ -240,24 +230,22 @@ public interface Config {
     }
 
     /**
-     * {@link EntityListener} のプロバイダを返します。
+     * Returns the provider for {@link EntityListener}.
      * 
-     * @return {@link EntityListener} のプロバイダ
-     * @since 2.2.0
+     * @return the provider for {@link EntityListener}
      */
     default EntityListenerProvider getEntityListenerProvider() {
         return ConfigSupport.defaultEntityListenerProvider;
     }
 
     /**
-     * {@link ConfigProvider} から {@link Config} を取得します。
+     * Retrieves a {@link Config} object from the {@code provider} parameter.
      * 
      * @param provider
-     *            {@link ConfigProvider} を実装していることを期待されるオブジェクト
-     * @return {@link ConfigProvider} が返した {@link Config}
+     *            the instance of {@link ConfigProvider}
+     * @return the configuration
      * @throws DomaIllegalArgumentException
-     *             {@code provider} が {@link ConfigProvider} でない場合
-     * @since 2.0.0
+     *             if {@code provider} is not {@link ConfigProvider}
      */
     static Config get(Object provider) {
         if (provider instanceof ConfigProvider) {

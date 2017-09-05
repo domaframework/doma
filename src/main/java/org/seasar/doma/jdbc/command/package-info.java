@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * クエリを実行するクラスやインタフェースを提供します。
+ * Provides classes and interfaces to execute SQL statements.
  */
 package org.seasar.doma.jdbc.command;

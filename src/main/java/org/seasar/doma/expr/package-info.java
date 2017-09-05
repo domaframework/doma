@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * 式に関するクラスを提供します。
+ * Provides class related to expressions.
  */
 package org.seasar.doma.expr;

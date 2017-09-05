@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * 
- * @author taedium
- * 
+ * A prepared SQL.
  */
 public class PreparedSql extends AbstractSql<InParameter<?>> {
 

@@ -36,11 +36,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 
-/**
- * @author taedium
- * @param <ELEMENT>
- *            リストの要素
- */
 public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
         implements BatchModifyQuery {
 

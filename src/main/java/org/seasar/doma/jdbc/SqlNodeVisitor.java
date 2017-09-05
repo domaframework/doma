@@ -50,16 +50,14 @@ import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 
 /**
- * {@link SqlNode} へのビジターです。
+ * A visitor for {@link SqlNode}.
  * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
- * 
- * @author taedium
+ * The implementation class must be thread safe.
  * 
  * @param <R>
- *            戻り値の型
+ *            the result type
  * @param <P>
- *            パラメータの型
+ *            the parameter type
  */
 public interface SqlNodeVisitor<R, P> {
 

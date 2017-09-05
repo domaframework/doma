@@ -25,10 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * {@link Date} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * @since 1.9.0
+ * A JDBC type for {@link Types#TIMESTAMP} and {@link Date}.
  */
 public class UtilDateType extends AbstractJdbcType<Date> {
 

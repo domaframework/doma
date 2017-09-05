@@ -17,23 +17,7 @@ package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
-import org.seasar.doma.ArrayFactory;
-import org.seasar.doma.BatchDelete;
-import org.seasar.doma.BatchInsert;
-import org.seasar.doma.BatchUpdate;
-import org.seasar.doma.BlobFactory;
-import org.seasar.doma.ClobFactory;
-import org.seasar.doma.Delete;
-import org.seasar.doma.Insert;
-import org.seasar.doma.NClobFactory;
-import org.seasar.doma.Procedure;
-import org.seasar.doma.SQLXMLFactory;
-import org.seasar.doma.Script;
-import org.seasar.doma.Select;
-import org.seasar.doma.SqlProcessor;
-import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.command.BatchUpdateCommand;
@@ -62,25 +46,22 @@ import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 import org.seasar.doma.jdbc.query.UpdateQuery;
 
 /**
- * {@link Command} の実装クラスのファクトリです。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * A factory for the {@link Command} implementation classes.
  */
 public interface CommandImplementors {
 
     /**
-     * {@link Select} に対応したコマンドを作成します。
+     * Creates a {@link SelectCommand} object.
      * 
      * @param <RESULT>
-     *            検索結果の型
+     *            the result type of the command
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
+     *            the query
      * @param resultSetHandler
-     *            結果セットのハンドラ
-     * @return コマンド
+     *            the result set handler
+     * @return the command
      */
     default <RESULT> SelectCommand<RESULT> createSelectCommand(Method method, SelectQuery query,
             ResultSetHandler<RESULT> resultSetHandler) {
@@ -88,93 +69,93 @@ public interface CommandImplementors {
     }
 
     /**
-     * {@link Delete} に対応したコマンドを作成します。
+     * Creates a {@link DeleteCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default DeleteCommand createDeleteCommand(Method method, DeleteQuery query) {
         return new DeleteCommand(query);
     }
 
     /**
-     * {@link Insert} に対応したコマンドを作成します。
+     * Creates an {@link InsertCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default InsertCommand createInsertCommand(Method method, InsertQuery query) {
         return new InsertCommand(query);
     }
 
     /**
-     * {@link Update} に対応したコマンドを作成します。
+     * Creates an {@link UpdateCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default UpdateCommand createUpdateCommand(Method method, UpdateQuery query) {
         return new UpdateCommand(query);
     }
 
     /**
-     * {@link BatchDelete} に対応したコマンドを作成します。
+     * Creates a {@link BatchDeleteCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default BatchDeleteCommand createBatchDeleteCommand(Method method, BatchDeleteQuery query) {
         return new BatchDeleteCommand(query);
     }
 
     /**
-     * {@link BatchInsert} に対応したコマンドを作成します。
+     * Creates a {@link BatchInsertCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default BatchInsertCommand createBatchInsertCommand(Method method, BatchInsertQuery query) {
         return new BatchInsertCommand(query);
     }
 
     /**
-     * {@link BatchUpdate} に対応したコマンドを作成します。
+     * Creates a {@link BatchUpdateCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default BatchUpdateCommand createBatchUpdateCommand(Method method, BatchUpdateQuery query) {
         return new BatchUpdateCommand(query);
     }
 
     /**
-     * {@link Function} に対応したコマンドを作成します。
+     * Creates a {@link FunctionCommand} object.
      * 
      * @param <RESULT>
-     *            戻り値
+     *            the result type of the command
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default <RESULT> FunctionCommand<RESULT> createFunctionCommand(Method method,
             FunctionQuery<RESULT> query) {
@@ -182,29 +163,28 @@ public interface CommandImplementors {
     }
 
     /**
-     * {@link Procedure} に対応したコマンドを作成します。
+     * Creates a {@link ProcedureCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default ProcedureCommand createProcedureCommand(Method method, ProcedureQuery query) {
         return new ProcedureCommand(query);
     }
 
     /**
-     * {@link ArrayFactory}、{@link BlobFactory}、{@link ClobFactory}、
-     * {@link NClobFactory}、{@link SQLXMLFactory} に対応したコマンドを作成します。
+     * Creates a {@link CreateCommand} object.
      * 
      * @param <RESULT>
-     *            戻り値
+     *            the result type of the command
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default <RESULT> CreateCommand<RESULT> createCreateCommand(Method method,
             CreateQuery<RESULT> query) {
@@ -212,31 +192,30 @@ public interface CommandImplementors {
     }
 
     /**
-     * {@link Script} に対応したコマンドを作成します。
+     * Creates a {@link ScriptCommand} object.
      * 
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
-     * @return コマンド
+     *            the query
+     * @return the command
      */
     default ScriptCommand createScriptCommand(Method method, ScriptQuery query) {
         return new ScriptCommand(query);
     }
 
     /**
-     * {@link SqlProcessor} に対応したコマンドを作成します。
+     * Creates a {@link SqlProcessorCommand} object
      * 
      * @param <RESULT>
-     *            ハンドラで処理された結果
+     *            the result type of the command
      * @param method
-     *            Dao メソッド
+     *            the DAO method
      * @param query
-     *            クエリ
+     *            the query
      * @param handler
-     *            SQLのハンドラ
-     * @return コマンド
-     * @since 2.14.0
+     *            the SQL handler
+     * @return the command
      */
     default <RESULT> SqlProcessorCommand<RESULT> createSqlProcessorCommand(Method method,
             SqlProcessorQuery query, BiFunction<Config, PreparedSql, RESULT> handler) {

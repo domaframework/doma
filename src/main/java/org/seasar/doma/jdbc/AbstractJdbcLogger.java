@@ -23,23 +23,21 @@ import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.message.Message;
 
 /**
- * JDBCに関するロガーの骨格実装です。
+ * A skeletal implementation of the {@link JdbcLogger} interface.
  * 
- * @author nakamura-to
- * @since 2.0.0
  * @param <LEVEL>
- *            ログレベル
+ *            The log level
  */
 public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
 
-    /** デフォルトのログレベル */
+    /** the default log level */
     protected LEVEL defaultLevel;
 
     /**
-     * ログレベルを指定してインスタンスを構築します。
+     * Creates an instance with a log level.
      * 
      * @param level
-     *            ログレベル
+     *            the log level
      */
     protected AbstractJdbcLogger(LEVEL level) {
         if (level == null) {
@@ -49,18 +47,18 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
     }
 
     /**
-     * 例外をログ出力します。
+     * Logs an error or an exception.
      * 
      * @param level
-     *            ログレベル
+     *            the log level
      * @param callerClassName
-     *            呼び出し元のクラス名
+     *            the caller class name
      * @param callerMethodName
-     *            呼び出し元のメソッド名
+     *            the caller method name
      * @param throwable
-     *            例外
+     *            the error or exception
      * @param messageSupplier
-     *            メッセージのサプライヤ
+     *            the message supplier
      */
     protected abstract void log(LEVEL level, String callerClassName, String callerMethodName,
             Throwable throwable, Supplier<String> messageSupplier);

@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * エンティティの識別子に関するクラスやインタフェースを提供します。
+ * Provides classes that are related to identity generation of entity.
  */
 package org.seasar.doma.jdbc.id;

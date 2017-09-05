@@ -28,11 +28,10 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
- * 挿入処理を示します。
+ * Indicates a insert.
  * <p>
- * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * 
- * <h3>例:</h3>
+ * The annotated method must be a member of a {@link Dao} annotated interface.
+ * <p>
  * 
  * <pre>
  * &#064;Entity
@@ -48,16 +47,15 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * }
  * </pre>
  * 
- * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * The method may throw following exceptions:
  * <ul>
- * <li>{@link DomaNullPointerException} パラメータに {@code null}を渡した場合
- * <li>{@link UniqueConstraintException} 一意制約違反が発生した場合
- * <li>{@link SqlFileNotFoundException} {@code sqlFile} 要素が {@code true}
- * で、SQLファイルが見つからなかった場合
- * <li>{@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
+ * <li>{@link DomaNullPointerException} if any of the method parameters are
+ * {@code null}
+ * <li>{@link UniqueConstraintException} if an unique constraint is violated
+ * <li>{@link SqlFileNotFoundException} if {@code sqlFile} is {@code true} and
+ * the SQL file is not found
+ * <li>{@link JdbcException} if a JDBC related error occurs
  * </ul>
- * 
- * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -65,58 +63,44 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 public @interface Insert {
 
     /**
-     * SQLファイルにマッピングするかどうかを返します。
-     * 
-     * @return SQLファイルにマッピングするかどうか
+     * Whether the annotated method is mapped to an SQL file.
      */
     boolean sqlFile() default false;
 
     /**
-     * クエリタイムアウト（秒）を返します。
+     * The query timeout in seconds.
      * <p>
-     * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
+     * If not specified, {@link Config#getQueryTimeout()} is used.
      * 
-     * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
 
     /**
-     * INSERT文で {@code null} のプロパティに対応するカラムを除去するかどうかを返します。
+     * Whether SQL NULL columns are excluded from SQL INSERT statements.
      * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return カラムを除去するかどうか
+     * Only if {@link #sqlFile()} is {@code false}, this element value is used.
      */
     boolean excludeNull() default false;
 
     /**
-     * INSERT文に含めるプロパティ名の配列を返します。
+     * The properties whose mapped columns are included in SQL INSERT
+     * statements.
      * <p>
-     * ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return 含めるプロパティ名の配列
+     * Only if {@link #sqlFile()} is {@code false}, this element value is used.
      */
     String[] include() default {};
 
     /**
-     * INSERT文から除去するプロパティ名の配列を返します。
+     * The properties whose mapped columns are excluded from SQL INSERT
+     * statements.
      * <p>
-     * ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return 除去するプロパティ名の配列
+     * Only if {@link #sqlFile()} is {@code false}, this element value is used.
      */
     String[] exclude() default {};
 
     /**
-     * SQLのログの出力形式を返します。
-     * 
-     * @return SQLログの出力形式
-     * @since 2.0.0
+     * The output format of SQL logs.
      */
     SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

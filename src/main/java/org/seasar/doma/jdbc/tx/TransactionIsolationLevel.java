@@ -18,10 +18,8 @@ package org.seasar.doma.jdbc.tx;
 import java.sql.Connection;
 
 /**
- * トランザクション分離レベルを示します。
+ * Defines transaction isolation levels.
  * 
- * @author taedium
- * @since 1.1.0
  */
 public enum TransactionIsolationLevel {
 
@@ -37,6 +35,7 @@ public enum TransactionIsolationLevel {
     /** @see Connection#TRANSACTION_SERIALIZABLE */
     SERIALIZABLE(Connection.TRANSACTION_SERIALIZABLE),
 
+    /** the default level */
     DEFAULT(-1);
 
     private int level;
@@ -46,13 +45,15 @@ public enum TransactionIsolationLevel {
     }
 
     /**
-     * トランザクション分離レベルをあらわす定数を返します。
+     * Returns the constant that represents a transaction isolation level.
+     * <p>
+     * {@literal -1} indicates the default transaction isolation level.
      * 
-     * @return トランザクション分離レベルをあらわす定数
      * @see Connection#TRANSACTION_READ_UNCOMMITTED
      * @see Connection#TRANSACTION_READ_COMMITTED
      * @see Connection#TRANSACTION_REPEATABLE_READ
      * @see Connection#TRANSACTION_SERIALIZABLE
+     * @return the constant
      */
     public int getLevel() {
         return level;

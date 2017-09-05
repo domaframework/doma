@@ -18,57 +18,26 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.Message;
 
 /**
- * 結果セットに未知のカラムが存在する場合、つまりプロパティへマッピングできない場合にスローされます。
- * <p>
- * 
- * @author taedium
- * 
+ * Thrown to indicate that there is the column that is unknown to an entity.
  */
 public class UnknownColumnException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
-    /** 未知のカラム名 */
     protected final String columnName;
 
-    /** マッピングを期待されるプロパティの名前 */
     protected final String expectedPropertyName;
 
-    /** マッピング対象のエンティティクラスの名前 */
     protected final String entityClassName;
 
-    /** SQLの種別 */
     protected final SqlKind kind;
 
-    /** 未加工SQL */
     protected final String rawSql;
 
-    /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
-    /** SQLファイルのパス */
     protected final String sqlFilePath;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param logType
-     *            ログタイプ
-     * @param columnName
-     *            未知のカラム名
-     * @param expectedPropertyName
-     *            マッピングを期待されるプロパティの名前
-     * @param entityClassName
-     *            マッピング対象のエンティティクラスの名前
-     * @param kind
-     *            SQLの種別
-     * @param rawSql
-     *            未加工SQL
-     * @param formattedSql
-     *            フォーマット済みSQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
-     */
     public UnknownColumnException(SqlLogType logType, String columnName,
             String expectedPropertyName, String entityClassName, SqlKind kind, String rawSql,
             String formattedSql, String sqlFilePath) {
@@ -84,64 +53,65 @@ public class UnknownColumnException extends JdbcException {
     }
 
     /**
-     * SQLの種別を返します。
+     * Returns the SQL kind.
      * 
-     * @return SQLの種別
-     * @since 1.5.0
+     * @return the SQL kind
      */
     public SqlKind getKind() {
         return kind;
     }
 
     /**
-     * マッピング対象のエンティティクラスの名前を返します。
+     * Returns the entity class name.
      * 
-     * @return マッピング対象のエンティティクラスの名前
+     * @return the entity class name
      */
     public String getEntityClassName() {
         return entityClassName;
     }
 
     /**
-     * 未知のカラム名を返します。
+     * Returns the unknown column name.
      * 
-     * @return 未知のカラム名
+     * @return the unknown column name
      */
     public String getColumnName() {
         return columnName;
     }
 
     /**
-     * マッピングを期待されるプロパティの名前を返します。
+     * Returns the expected property name that is mapped to the unknown column
+     * name.
      * 
-     * @return マッピングを期待されるプロパティの名前
+     * @return the expected property name
      */
     public String getExpectedPropertyName() {
         return expectedPropertyName;
     }
 
     /**
-     * 未加工SQLを返します。
+     * Returns the raw SQL string.
      * 
-     * @return 未加工SQL
+     * @return the raw SQL string
      */
     public String getRawSql() {
         return rawSql;
     }
 
     /**
-     * フォーマット済みSQLを返します。
+     * Returns the formatted SQL string
      * 
-     * @return フォーマット済みSQL、存在しない場合 {@code null}
+     * @return the formatted SQL or {@code null} if this exception is thrown in
+     *         the batch process
      */
     public String getFormattedSql() {
         return formattedSql;
     }
 
     /**
-     * SQLファイルのパスを返します。
+     * Returns the SQL file path.
      * 
-     * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+     * @return the SQL file path or {@code null} if the SQL is auto generated
      */
     public String getSqlFilePath() {
         return sqlFilePath;

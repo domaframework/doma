@@ -23,10 +23,6 @@ import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-/**
- * @author taedium
- * 
- */
 public class SqlFileSelectQuery extends AbstractSelectQuery {
 
     protected String sqlFilePath;

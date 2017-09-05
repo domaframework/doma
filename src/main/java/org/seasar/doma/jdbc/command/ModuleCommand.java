@@ -31,11 +31,12 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModuleQuery;
 
 /**
- * @author taedium
+ * An abstract class for commands that executes {@link CallableStatement}.
+ * 
  * @param <QUERY>
- *            クエリ
+ *            the query type
  * @param <RESULT>
- *            結果
+ *            the result type
  */
 public abstract class ModuleCommand<QUERY extends ModuleQuery, RESULT> implements Command<RESULT> {
 

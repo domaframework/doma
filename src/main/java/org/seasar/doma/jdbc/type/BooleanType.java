@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Boolean} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#BOOLEAN} and {@link Boolean}.
  */
 public class BooleanType extends AbstractJdbcType<Boolean> {
 

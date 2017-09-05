@@ -23,10 +23,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Blob} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#BLOB} and {@link Blob}.
  */
 public class BlobType extends AbstractJdbcType<Blob> {
 

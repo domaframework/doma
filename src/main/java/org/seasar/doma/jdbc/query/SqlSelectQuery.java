@@ -22,10 +22,6 @@ import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-/**
- * @author taedium
- * 
- */
 public class SqlSelectQuery extends AbstractSelectQuery {
 
     protected SqlNode sqlNode;

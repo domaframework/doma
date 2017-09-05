@@ -21,25 +21,24 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.MapKeyNamingType;
 
 /**
- * マップのキーのネーミング規約の適用を制御します。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * A naming convention controller for the keys contained in a
+ * {@code Map<String, Object>} object.
  */
 public interface MapKeyNaming {
 
     /**
-     * マップのキーのネーミング規約を適用します。
+     * Applies the naming convention.
      * 
      * @param method
-     *            Daoのメソッド、クエリビルダを使った場合には {@code null}
+     *            the DAO method or {@code null} if the SQL is built with the
+     *            query builder
      * @param mapKeyNamingType
-     *            マップのキーのネーミング規約
+     *            the naming convention
      * @param text
-     *            規約が適用される文字列
-     * @return 規約が適用された文字列
+     *            the text
+     * @return the converted text
      * @throws DomaNullPointerException
-     *             {@code mapKeyNamingType} もしくは {@code text} が {@code null} の場合
+     *             if {@code mapKeyNamingType} or {@code text} is {@code null}
      */
     default String apply(Method method, MapKeyNamingType mapKeyNamingType, String text) {
         if (mapKeyNamingType == null) {

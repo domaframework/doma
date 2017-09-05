@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@code byte[]} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#BINARY} and {@code byte[]}.
  */
 public class BytesType extends AbstractJdbcType<byte[]> {
 

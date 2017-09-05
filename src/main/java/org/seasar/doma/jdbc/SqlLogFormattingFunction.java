@@ -18,25 +18,22 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * SQLのバインド変数の値をSQLのログ用文字列に変換する処理を表します。
+ * A function that converts the {@link Wrapper} values to the SQL log formats.
  * <p>
- * このインタフェースの実装はスレッドセーフであることを要求されません。
- * 
- * @author taedium
- * 
+ * The implementation class is not required to be thread safe.
  */
 public interface SqlLogFormattingFunction {
 
     /**
-     * この処理を適用します。
+     * Apply this function.
      * 
      * @param <V>
-     *            値の型
+     *            the basic type
      * @param wrapper
-     *            SQLのバインド変数にマッピングされるラッパー
+     *            the wrapper value
      * @param formatter
-     *            ログ用のフォーマッタ
-     * @return フォーマットされた文字列
+     *            the formatter
+     * @return the converted string
      */
     <V> String apply(Wrapper<V> wrapper, SqlLogFormatter<V> formatter);
 }

@@ -19,25 +19,22 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 /**
- * 検索結果を扱う戦略です。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * Defines strategies for handling an object that is mapped to a result set.
  */
 public enum SelectType {
 
     /**
-     * 結果を戻り値で取得します。
+     * The object is returned from a method.
      */
     RETURN,
 
     /**
-     * {@link Stream} を使って処理します。
+     * The object is handled by using {@link Stream}.
      */
     STREAM,
 
     /**
-     * {@link Collector} を使って処理します。
+     * The object is handled by using {@link Collector}.
      */
     COLLECT;
 }

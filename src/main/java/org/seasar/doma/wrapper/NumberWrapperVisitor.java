@@ -16,16 +16,16 @@
 package org.seasar.doma.wrapper;
 
 /**
- * @author nakamura-to
- * @since 2.0.0
+ * A visitor for the {@link NumberWrapper} interface.
+ * 
  * @param <R>
- *            戻り値
+ *            The result type
  * @param <P>
- *            1番目のパラメータ
+ *            The first parameter type
  * @param <Q>
- *            2番目のパラメータ
+ *            The second parameter type
  * @param <TH>
- *            例外
+ *            The error or exception type
  */
 public interface NumberWrapperVisitor<R, P, Q, TH extends Throwable>
         extends WrapperVisitor<R, P, Q, TH> {

@@ -28,30 +28,27 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link EntityDesc} のファクトリクラスです。
- * 
- * @author taedium
- * @since 1.8.0
+ * A factory for entity descriptions.
  */
 public final class EntityDescFactory {
 
     /**
-     * {@link EntityDesc} のインスタンスを生成します。
+     * Returns the entity description.
      * 
      * @param <E>
-     *            エンティティの型
+     *            the entity type
      * @param entityClass
-     *            エンティティクラス
+     *            the entity class
      * @param classHelper
-     *            クラスヘルパー
-     * @return {@link EntityDesc} のインスタンス
+     *            the class helper
+     * @return the entity description
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if any arguments are {@code null}
      * @throws DomaIllegalArgumentException
-     *             エンティティクラスに {@link Entity} が注釈されていない場合
+     *             if the entity class is not annotated with the {@link Entity}
+     *             annotation
      * @throws EntityDescNotFoundException
-     *             エンティティクラスに対応するメタクラスが見つからない場合
-     * @since 1.27.0
+     *             if the entity description is not found
      */
     public static <E> EntityDesc<E> getEntityDesc(Class<E> entityClass, ClassHelper classHelper) {
         if (entityClass == null) {

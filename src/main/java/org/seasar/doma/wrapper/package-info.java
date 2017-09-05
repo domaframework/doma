@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * 値のラッパークラスとそのビジターを提供します。
+ * Provides wrapper classes and visitor classes for them.
  */
 package org.seasar.doma.wrapper;

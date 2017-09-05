@@ -16,8 +16,7 @@
 package org.seasar.doma.jdbc.query;
 
 /**
- * @author taedium
- * 
+ * An object used for building an SQL UPDATE statement.
  */
 public interface UpdateQuery extends ModifyQuery {
 

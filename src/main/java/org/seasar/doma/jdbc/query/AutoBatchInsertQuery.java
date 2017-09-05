@@ -32,19 +32,14 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.ReservedIdProvider;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @param <ENTITY>
- *            エンティティ
- */
 public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         implements BatchInsertQuery {
 

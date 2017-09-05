@@ -16,20 +16,19 @@
 package org.seasar.doma.jdbc;
 
 /**
- * 値をSQLのログ用文字列に変換するフォーマッタです。
+ * The formatter that converts the value to the SQL log format.
  * 
- * @author taedium
  * @param <T>
- *            値
+ *            the value type
  */
 public interface SqlLogFormatter<T> {
 
     /**
-     * 値をSQLのログ用文字列に変換します。
+     * Converts the value to the SQL log format.
      * 
      * @param value
-     *            値
-     * @return ログ用文字列
+     *            the value
+     * @return the SQL log format
      */
     String convertToLogFormat(T value);
 }

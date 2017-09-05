@@ -29,29 +29,25 @@ import org.seasar.doma.jdbc.SimpleDataSource;
 import org.seasar.doma.message.Message;
 
 /**
- * ローカルトランザクションと連動するデータソースです。
+ * A data source for local transactions.
  * <p>
- * このクラスはスレッドセーフです。
+ * This instance is thread safe.
  * 
  * @see LocalTransaction
- * @author taedium
- * @since 1.1.0
  */
 public final class LocalTransactionDataSource implements DataSource {
 
-    /** コネクションのホルダー */
     private final ThreadLocal<LocalTransactionContext> localTxContextHolder = new ThreadLocal<LocalTransactionContext>();
 
-    /** データソース */
     private final DataSource dataSource;
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param dataSource
-     *            データソース
+     *            the internal data source
      * @throws DomaNullPointerException
-     *             {@code dataSource} が {@code null} の場合
+     *             if the {@code dataSource} is {@code null}
      */
     public LocalTransactionDataSource(DataSource dataSource) {
         if (dataSource == null) {
@@ -61,16 +57,16 @@ public final class LocalTransactionDataSource implements DataSource {
     }
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance with information about the connection.
      * 
      * @param url
-     *            JDBCのURL
+     *            a database url
      * @param user
-     *            JDBCのユーザー
+     *            the database user
      * @param password
-     *            JDBCのパスワード
+     *            the user's password
      * @throws DomaNullPointerException
-     *             {@code url} が {@code null} の場合
+     *             if the {@code url} is {@code null}
      */
     public LocalTransactionDataSource(String url, String user, String password) {
         if (url == null) {
@@ -90,11 +86,10 @@ public final class LocalTransactionDataSource implements DataSource {
     /**
      * {@inheritDoc}
      * <p>
-     * このメソッドを実行する前にローカルトランザクションを開始しておかなければいけません。
      * 
      * @see LocalTransaction
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
+     *             if the transaction is not yet begun
      */
     @Override
     public Connection getConnection() throws SQLException {
@@ -104,11 +99,10 @@ public final class LocalTransactionDataSource implements DataSource {
     /**
      * {@inheritDoc}
      * <p>
-     * このメソッドを実行する前にローカルトランザクションを開始しておかなければいけません。
      * 
      * @see LocalTransaction
      * @throws TransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
+     *             if the transaction is not yet begun
      */
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
@@ -167,13 +161,13 @@ public final class LocalTransactionDataSource implements DataSource {
     }
 
     /**
-     * ローカルトランザクションを返します。
+     * Returns a local transaction.
      * 
      * @param jdbcLogger
-     *            JDBCに関するロガー
-     * @return ローカルトランザクション
+     *            the logger
+     * @return the transaction
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if the {@code jdbcLogger} is {@code null}
      */
     public LocalTransaction getLocalTransaction(JdbcLogger jdbcLogger) {
         if (jdbcLogger == null) {
@@ -183,15 +177,15 @@ public final class LocalTransactionDataSource implements DataSource {
     }
 
     /**
-     * デフォルトのトランザクション分離レベルを指定してローカルトランザクションを返します。
+     * Returns a local transaction with the specified transaction level.
      * 
      * @param jdbcLogger
-     *            JDBCに関するロガー
+     *            the logger
      * @param transactionIsolationLevel
-     *            デフォルトのトランザクション分離レベル
-     * @return ローカルトランザクション
+     *            the transaction isolation level
+     * @return the transaction
      * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
+     *             if any arguments are {@code null}
      */
     public LocalTransaction getLocalTransaction(JdbcLogger jdbcLogger,
             TransactionIsolationLevel transactionIsolationLevel) {
@@ -206,13 +200,13 @@ public final class LocalTransactionDataSource implements DataSource {
     }
 
     /**
-     * 明示的に破棄されるまで接続を維持し続けるローカルトランザクションを返します。
+     * Returns a keep alive local transaction.
      * 
      * @param jdbcLogger
-     *            JDBCに関するロガー
-     * @return ローカルトランザクション
+     *            the logger
+     * @return the transaction
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if the {@code jdbcLogger} is {@code null}
      */
     public KeepAliveLocalTransaction getKeepAliveLocalTransaction(JdbcLogger jdbcLogger) {
         if (jdbcLogger == null) {
@@ -222,15 +216,16 @@ public final class LocalTransactionDataSource implements DataSource {
     }
 
     /**
-     * デフォルトのトランザクション分離レベルを指定して、明示的に破棄されるまで接続を維持し続けるローカルトランザクションを返します。
+     * Returns a keep alive local transaction with the specified transaction
+     * level.
      * 
      * @param jdbcLogger
-     *            JDBCに関するロガー
+     *            the logger
      * @param transactionIsolationLevel
-     *            デフォルトのトランザクション分離レベル
-     * @return ローカルトランザクション
+     *            the isolation level
+     * @return the transaction
      * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
+     *             if any arguments are {@code null}
      */
     public KeepAliveLocalTransaction getKeepAliveLocalTransaction(JdbcLogger jdbcLogger,
             TransactionIsolationLevel transactionIsolationLevel) {

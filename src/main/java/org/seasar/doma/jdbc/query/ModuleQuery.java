@@ -19,8 +19,8 @@ import org.seasar.doma.jdbc.CallableSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
- * @author taedium
- * 
+ * An object used for building a statement that invoke a database module such as
+ * a procedure.
  */
 public interface ModuleQuery extends Query {
 

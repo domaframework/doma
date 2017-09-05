@@ -20,26 +20,14 @@ import java.util.Arrays;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@code byte[]} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@code byte[]} class.
  */
 public class BytesWrapper extends AbstractWrapper<byte[]> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public BytesWrapper() {
         super(byte[].class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public BytesWrapper(byte[] value) {
         super(byte[].class, value);
     }

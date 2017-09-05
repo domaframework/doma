@@ -23,10 +23,7 @@ import java.sql.SQLXML;
 import java.sql.Types;
 
 /**
- * {@link SQLXML} 用の {@link JdbcType} の実装です。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * A JDBC type for {@link Types#SQLXML} and {@link SQLXML}.
  */
 public class SQLXMLType extends AbstractJdbcType<SQLXML> {
 

@@ -30,87 +30,42 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * Microsoft SQL Server用の方言です。
- * 
- * @author taedium
- * @since 1.30.0
+ * A dialect for Microsoft SQL Server.
  */
 public class MssqlDialect extends Mssql2008Dialect {
 
+    /**
+     * whether this dialect forces to use the OFFSET FETCH Clause for a paging
+     */
     private boolean pagingForceOffsetFetch;
 
-    /**
-     * インスタンスを構築します。
-     */
     public MssqlDialect() {
         this(new MssqlJdbcMappingVisitor(), new MssqlSqlLogFormattingVisitor(),
                 new MssqlExpressionFunctions(), false);
     }
 
-    /**
-     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new MssqlSqlLogFormattingVisitor(), new MssqlExpressionFunctions(),
                 false);
     }
 
-    /**
-     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public MssqlDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new MssqlJdbcMappingVisitor(), sqlLogFormattingVisitor, new MssqlExpressionFunctions(),
                 false);
     }
 
-    /**
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public MssqlDialect(ExpressionFunctions expressionFunctions) {
         this(new MssqlJdbcMappingVisitor(), new MssqlSqlLogFormattingVisitor(), expressionFunctions,
                 false);
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor, new MssqlExpressionFunctions(), false);
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
@@ -118,18 +73,13 @@ public class MssqlDialect extends Mssql2008Dialect {
     }
 
     /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
      * 
      * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
      * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
      * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
      * @param pagingForceOffsetFetch
-     *            ページングを行う際、常に OFFSET-FETCH で行うかどうか
+     *            whether this dialect forces to use the OFFSET FETCH Clause for
+     *            a paging
      */
     public MssqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
@@ -178,30 +128,12 @@ public class MssqlDialect extends Mssql2008Dialect {
         return new MssqlScriptBlockContext();
     }
 
-    /**
-     * Microsoft SQL Server用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class MssqlJdbcMappingVisitor extends Mssql2008JdbcMappingVisitor {
     }
 
-    /**
-     * Microsoft SQL Server用の {@link SqlLogFormattingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class MssqlSqlLogFormattingVisitor extends Mssql2008SqlLogFormattingVisitor {
     }
 
-    /**
-     * Microsoft SQL Server用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class MssqlExpressionFunctions extends Mssql2008ExpressionFunctions {
 
         public MssqlExpressionFunctions() {
@@ -218,11 +150,6 @@ public class MssqlDialect extends Mssql2008Dialect {
 
     }
 
-    /**
-     * Microsoft SQL Server用の {@link ScriptBlockContext} です。
-     * 
-     * @author taedium
-     */
     public static class MssqlScriptBlockContext extends Mssql2008ScriptBlockContext {
     }
 }

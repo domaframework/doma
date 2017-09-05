@@ -19,48 +19,44 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappable;
 
 /**
- * プロパティです。
- * 
- * @author nakamura-to
+ * An entity property.
  * 
  * @param <ENTITY>
- *            エンティティの型
+ *            the entity type
  * @param <BASIC>
- *            基本型
- * @since 2.0.0
+ *            the basic type
  */
 public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
 
     /**
-     * プロパティの値を返します。
+     * Returns the value of this property.
      * 
-     * @return プロパティの値
+     * @return the value of this property
      */
     Object get();
 
     /**
-     * エンティティからこのインスタンスへ値を読み込みます。
+     * Loads the value from the entity to this property.
      * 
      * @param entity
-     *            エンティティ
-     * @return このインスタンス
+     *            the entity
+     * @return this instance
      */
     Property<ENTITY, BASIC> load(ENTITY entity);
 
     /**
-     * エンティティへこのインスタンスが保持する値を保存します。
+     * Saves the value from this property to the entity.
      * 
      * @param entity
-     *            エンティティ
-     * @return このインスタンス
+     *            the entity
+     * @return this instance
      */
     Property<ENTITY, BASIC> save(ENTITY entity);
 
     /**
-     * このプロパティを入力用パラメータとして返します。
+     * Returns this property as {@link InParameter}.
      * 
-     * @return 入力用パラメータ
-     * @since 2.4.0
+     * @return the input parameter
      */
     InParameter<BASIC> asInParameter();
 

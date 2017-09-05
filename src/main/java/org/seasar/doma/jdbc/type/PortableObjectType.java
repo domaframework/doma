@@ -22,11 +22,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * DB固有の型用の {@link JdbcType} の実装です。
- * {@link PreparedStatement#setObject(int, Object, int)} を使って値を設定します。
+ * A JDBC type for {@link Types#OTHER}.
  * 
- * @author nakamura-to
- * @since 2.4.0
+ * @see {@link PreparedStatement#setObject(int, Object, int)}
  */
 public class PortableObjectType<T> extends AbstractJdbcType<T> {
 

@@ -21,12 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * エンティティクラスのフィールドのアノテーションであることを示します。
- * <p>
- * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
- * 
- * @author taedium
- * 
+ * Indicates that an annotated annotation may be applied to fields of
+ * {@link Entity} annotated classes.
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)

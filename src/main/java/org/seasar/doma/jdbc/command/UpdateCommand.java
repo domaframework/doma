@@ -18,11 +18,13 @@ package org.seasar.doma.jdbc.command;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.query.UpdateQuery;
 
 /**
- * @author taedium
+ * A command for an SQL UPDATE statement.
  * 
+ * @see Update
  */
 public class UpdateCommand extends ModifyCommand<UpdateQuery> {
 

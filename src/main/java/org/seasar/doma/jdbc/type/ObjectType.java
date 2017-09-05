@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Object} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#OTHER} and {@link Object}.
  */
 public class ObjectType extends AbstractJdbcType<Object> {
 

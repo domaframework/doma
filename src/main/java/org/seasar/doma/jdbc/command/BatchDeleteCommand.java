@@ -19,12 +19,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.seasar.doma.BatchDelete;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.BatchDeleteQuery;
 
 /**
- * @author taedium
+ * A command for a batch of SQL DELETE statements.
  * 
+ * @see BatchDelete
  */
 public class BatchDeleteCommand extends BatchModifyCommand<BatchDeleteQuery> {
 

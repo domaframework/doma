@@ -16,28 +16,22 @@
 package org.seasar.doma.jdbc;
 
 /**
- * スクリプト内のSQLブロックのコンテキストです。
- * <p>
- * スクリプトの解析中に、SQLがステートメントではなくブロック（ステートメントの集合）として扱われているかどうかを判断するために使用されます。
- * <p>
- * 
- * @author taedium
- * @since 1.7.0
+ * A context that corresponds to an SQL block in a script file.
  */
 public interface ScriptBlockContext {
 
     /**
-     * SQLのキーワードを追加します。
+     * Adds the SQL keyword.
      * 
      * @param keyword
-     *            SQLのキーワード
+     *            the SQL keyword
      */
     void addKeyword(String keyword);
 
     /**
-     * ブロックを処理しているかどうかを返します。
+     * Whether this context is in an SQL block.
      * 
-     * @return ブロックを処理している場合 {@code true}
+     * @return {@code true} if this context is in an SQL block
      */
     boolean isInBlock();
 }

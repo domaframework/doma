@@ -17,11 +17,6 @@ package org.seasar.doma.jdbc.query;
 
 import org.seasar.doma.jdbc.Sql;
 
-/**
- * @author taedium
- * @param <RESULT>
- *            結果
- */
 public abstract class AbstractCreateQuery<RESULT> extends AbstractQuery
         implements CreateQuery<RESULT> {
 

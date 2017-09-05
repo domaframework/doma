@@ -22,15 +22,14 @@ import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * @author nakamura-to
- * @since 2.3.0
+ * A helper for {@link UpdateQuery}.
  */
 public class UpdateQueryHelper<E> {
 

@@ -22,8 +22,8 @@ import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
- * @author taedium
- * 
+ * An object used for building a batch of SQL statements that modify database
+ * data.
  */
 public interface BatchModifyQuery extends Query {
 

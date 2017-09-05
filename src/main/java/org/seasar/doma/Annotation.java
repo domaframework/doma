@@ -19,34 +19,30 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * アノテーションを示します。
- * 
- * @author taedium
- * @see AnnotateWith
+ * Used in conjunction with the {@link AnnotateWith} annotation to indicate
+ * which kind of annotation is specified for generated code.
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Annotation {
 
     /**
-     * 注釈する対象を返します。
-     * 
-     * @return 注釈する対象
+     * The location where the annotation is specified.
      */
     AnnotationTarget target();
 
     /**
-     * アノテーションの型を返します。
-     * 
-     * @return アノテーションの型
+     * The annotation class that this annotation represents.
      */
     Class<? extends java.lang.annotation.Annotation> type();
 
     /**
-     * アノテーションの要素を返します。
+     * The annotation elements as a set of key-value pair.
      * <p>
-     * 「要素名 = 値」 形式で文字列を記述します。 複数存在する場合はカンマで区切ります。
+     * Represented in CSV format:
      * 
-     * @return アノテーションの要素
+     * <pre>
+     * elementName1=value1, elementName2=value2
+     * </pre>
      */
     String elements() default "";
 }

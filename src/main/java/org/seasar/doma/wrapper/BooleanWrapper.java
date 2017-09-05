@@ -18,26 +18,14 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Boolean} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link Boolean} class.
  */
 public class BooleanWrapper extends AbstractWrapper<Boolean> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public BooleanWrapper() {
         super(Boolean.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public BooleanWrapper(Boolean value) {
         super(Boolean.class, value);
     }

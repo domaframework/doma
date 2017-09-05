@@ -24,8 +24,7 @@ import java.sql.Types;
 import java.time.LocalTime;
 
 /**
- * @author nakamura-to
- * @since 2.0.0
+ * A JDBC type for {@link Types#TIME} and {@link LocalTime}.
  */
 public class LocalTimeType extends AbstractJdbcType<LocalTime> {
 

@@ -19,12 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * イミュータブルなエンティティに対するバッチ更新やバッチ挿入の結果を表します。
+ * A batch processing result for immutable entities.
  * 
- * @author taedium
  * @param <ENTITY>
- *            エンティティ
- * @since 1.34.0
+ *            the entity type
  */
 public class BatchResult<ENTITY> {
 
@@ -33,11 +31,12 @@ public class BatchResult<ENTITY> {
     private final List<ENTITY> entities;
 
     /**
+     * Creates an instance.
      * 
      * @param counts
-     *            更新件数の配列
+     *            the array of the affected row count
      * @param entities
-     *            エンティティのリスト
+     *            the entity list
      */
     public BatchResult(int[] counts, List<ENTITY> entities) {
         this.counts = counts;
@@ -45,28 +44,27 @@ public class BatchResult<ENTITY> {
     }
 
     /**
-     * 更新件数の配列を返します。
+     * Returns the array of the affected row count.
      * 
-     * 
-     * @return 更新件数の配列
+     * @return the array of the affected row count
      */
     public int[] getCounts() {
         return counts;
     }
 
     /**
-     * エンティティのリストを返します。
+     * Returns the entity list.
      * 
-     * @return エンティティのリスト
+     * @return the entity list
      */
     public List<ENTITY> getEntities() {
         return entities;
     }
 
     /**
-     * エンティティのリストを返します。
+     * Returns the entity list.
      * 
-     * @return エンティティのリスト
+     * @return the entity list
      * @see <a href=
      *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>
@@ -76,9 +74,9 @@ public class BatchResult<ENTITY> {
     }
 
     /**
-     * 更新件数の配列を返します。
+     * Returns the array of the affected row count.
      * 
-     * @return 更新件数の配列
+     * @return the array of the affected row count
      * @see <a href=
      *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>

@@ -18,26 +18,14 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Float} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link Float} class.
  */
 public class FloatWrapper extends AbstractWrapper<Float> implements NumberWrapper<Float> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public FloatWrapper() {
         super(Float.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public FloatWrapper(Float value) {
         super(Float.class, value);
     }

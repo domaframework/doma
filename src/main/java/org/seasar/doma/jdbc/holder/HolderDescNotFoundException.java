@@ -19,10 +19,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * ドメインクラスに対応するドメイン記述クラスが見つからない場合にスローされる例外です。
- * 
- * @author taedium
- * @since 1.8.0
+ * Thrown to indicate that the holder description is not found.
  */
 public class HolderDescNotFoundException extends JdbcException {
 
@@ -32,16 +29,6 @@ public class HolderDescNotFoundException extends JdbcException {
 
     private final String holderDescClassName;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param cause
-     *            原因
-     * @param holderClassName
-     *            ドメインクラスの名前
-     * @param holderDescClassName
-     *            ドメイン記述クラスの名前
-     */
     public HolderDescNotFoundException(Throwable cause, String holderClassName,
             String holderDescClassName) {
         super(Message.DOMA2202, cause, holderClassName, holderDescClassName, cause);
@@ -49,20 +36,10 @@ public class HolderDescNotFoundException extends JdbcException {
         this.holderDescClassName = holderDescClassName;
     }
 
-    /**
-     * ドメインクラスの名前を返します。
-     * 
-     * @return ドメインクラスの名前
-     */
     public String getHolderClassName() {
         return holderClassName;
     }
 
-    /**
-     * ドメインタイプクラスの名前を返します。
-     * 
-     * @return ドメインタイプクラスの名前
-     */
     public String getHolderDescClassName() {
         return holderDescClassName;
     }

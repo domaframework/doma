@@ -18,42 +18,39 @@ package org.seasar.doma.jdbc.id;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * データベースのシーケンスを使用するジェネレータです。
- * 
- * @author taedium
- * 
+ * A generator that uses a database SEQUENCE.
  */
 public interface SequenceIdGenerator extends IdGenerator {
 
     /**
-     * シーケンスの完全修飾名を設定します。
+     * Sets the qualified name of the sequence.
      * 
      * @param qualifiedSequenceName
-     *            シーケンスの完全修飾名
+     *            the qualified name of the sequence
      */
     void setQualifiedSequenceName(String qualifiedSequenceName);
 
     /**
-     * 初期値を設定します。
+     * Sets the initial value.
      * 
      * @param initialValue
-     *            初期値
+     *            the initial value
      */
     void setInitialValue(long initialValue);
 
     /**
-     * 割り当てサイズを設定します。
+     * Sets the allocation size.
      * 
      * @param allocationSize
-     *            割り当てサイズ
+     *            the allocation size
      */
     void setAllocationSize(long allocationSize);
 
     /**
-     * このジェネレータを初期化します。
+     * Initializes this generator.
      * 
      * @throws JdbcException
-     *             初期化に失敗した場合
+     *             if the initialization is failed
      */
     void initialize();
 }

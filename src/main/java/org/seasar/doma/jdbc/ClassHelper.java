@@ -18,25 +18,21 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.internal.WrapException;
 
 /**
- * クラスのヘルパーです。
- * <p>
- * クラスの扱いに関してアプリケーションサーバやフレームワークの差異を抽象化します。
- * 
- * @author taedium
- * @since 1.27.0
+ * A helper for classes.
  */
 public interface ClassHelper {
 
     /**
-     * 指定された文字列名を持つクラスまたはインタフェースに関連付けられた、{@link Class} オブジェクトを返します。
+     * Returns the {@code Class} object associated with the class or interface
+     * with the given string name.
      * 
      * @param <T>
-     *            クラスの型
+     *            the type of the class
      * @param className
-     *            要求するクラスの完全指定の名前
-     * @return 指定された名前を持つクラスの {@link Class} オブジェクト
+     *            the full qualified name of the class
+     * @return the object of the class
      * @throws Exception
-     *             例外
+     *             if the class is not found
      * @see Class#forName(String)
      */
     @SuppressWarnings("unchecked")

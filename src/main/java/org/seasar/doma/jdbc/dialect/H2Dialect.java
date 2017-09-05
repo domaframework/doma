@@ -25,85 +25,37 @@ import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * H2用の方言です。
- * 
- * @author taedium
- * 
+ * A dialect for H2.
  */
 public class H2Dialect extends H212126Dialect {
 
-    /** 一意制約違反を表すエラーコード */
+    /** the error code that represents unique violation */
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 23505;
 
-    /**
-     * インスタンスを構築します。
-     */
     public H2Dialect() {
         this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
                 new H2ExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     */
     public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new H2SqlLogFormattingVisitor(), new H2ExpressionFunctions());
     }
 
-    /**
-     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public H2Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new H2JdbcMappingVisitor(), sqlLogFormattingVisitor, new H2ExpressionFunctions());
     }
 
-    /**
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public H2Dialect(ExpressionFunctions expressionFunctions) {
         this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(), expressionFunctions);
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor, new H2ExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
@@ -133,30 +85,12 @@ public class H2Dialect extends H212126Dialect {
         return transformer.transform(sqlNode);
     }
 
-    /**
-     * H2用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class H2JdbcMappingVisitor extends H212126JdbcMappingVisitor {
     }
 
-    /**
-     * H2用の {@link SqlLogFormattingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class H2SqlLogFormattingVisitor extends H212126SqlLogFormattingVisitor {
     }
 
-    /**
-     * H2用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class H2ExpressionFunctions extends H212126ExpressionFunctions {
 
         public H2ExpressionFunctions() {

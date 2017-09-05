@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * ドメインに関するクラスやインタフェースを提供します。
+ * Provides the classes that are related to holder.
  */
 package org.seasar.doma.jdbc.holder;

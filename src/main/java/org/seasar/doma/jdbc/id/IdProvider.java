@@ -16,28 +16,25 @@
 package org.seasar.doma.jdbc.id;
 
 /**
- * 識別子プロバイダです。
- * 
- * @author nakamura-to
- * @since 2.5.0
+ * An identity provider.
  */
 public interface IdProvider {
 
     /**
-     * 識別子を返せるならば {@literal true}
+     * Whether this provider can return the identity value.
      * 
-     * @return 識別子を返せるかどうか
+     * @return {@code true} if this provider can return the identity value
      */
     boolean isAvailable();
 
     /**
-     * 識別子を返します。
+     * Provides the identity value.
      * 
-     * @return 識別子
+     * @return the identity value
      * @throws IllegalStateException
-     *             不正な内部状態により識別子を返せない場合
+     *             if an illegal state is detected
      * @throws UnsupportedOperationException
-     *             このメソッドの呼び出しをサポートしていない場合
+     *             if this method is not supported
      */
     long get();
 }

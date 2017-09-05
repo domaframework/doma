@@ -21,12 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Daoインタフェースのメソッドのアノテーションであることを示します。
- * <p>
- * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
- * 
- * @author taedium
- * 
+ * Indicates that the annotated annotation may be applied to methods of
+ * {@link Dao} annotated interfaces.
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)

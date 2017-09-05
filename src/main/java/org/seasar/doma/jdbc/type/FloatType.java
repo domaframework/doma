@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Float} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#FLOAT} and {@link Float}.
  */
 public class FloatType extends AbstractJdbcType<Float> {
 

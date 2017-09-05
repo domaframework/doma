@@ -25,11 +25,10 @@ import java.sql.Connection;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * {@link Blob} のインスタンスを生成することを示します。
+ * Indicates to create a {@link Blob} instance.
  * <p>
- * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * 
- * <h3>例:</h3>
+ * The annotated method must be a member of a {@link Dao} annotated interface.
+ * <p>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -40,13 +39,11 @@ import org.seasar.doma.jdbc.JdbcException;
  * }
  * </pre>
  * 
- * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * The method may throw following exceptions:
  * <ul>
- * <li>{@link DomaNullPointerException} パラメータに {@code null}を渡した場合
- * <li>{@link JdbcException} JDBCに関する例外が発生した場合
+ * <li>{@link JdbcException} if a JDBC related error occurs
  * </ul>
  * 
- * @author taedium
  * @see Connection#createBlob()
  */
 @Target(ElementType.METHOD)

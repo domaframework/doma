@@ -19,10 +19,6 @@ import java.sql.Statement;
 
 import org.seasar.doma.jdbc.SqlKind;
 
-/**
- * @author bakenezumi
- *
- */
 public class SqlBatchInsertQuery extends SqlBatchModifyQuery implements BatchInsertQuery {
 
     public SqlBatchInsertQuery() {

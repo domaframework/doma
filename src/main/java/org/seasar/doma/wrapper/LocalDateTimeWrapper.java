@@ -20,24 +20,14 @@ import java.time.LocalDateTime;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * @author nakamura-to
- * @since 2.0.0
+ * A wrapper for the {@link LocalDateTime} class.
  */
 public class LocalDateTimeWrapper extends AbstractWrapper<LocalDateTime> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public LocalDateTimeWrapper() {
         super(LocalDateTime.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public LocalDateTimeWrapper(LocalDateTime value) {
         super(LocalDateTime.class, value);
     }

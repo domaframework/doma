@@ -44,10 +44,6 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
 
-/**
- * @author nakamura-to
- *
- */
 public abstract class AbstractSelectQuery extends AbstractQuery implements SelectQuery {
 
     protected final Map<String, Value> parameters = new HashMap<String, Value>();

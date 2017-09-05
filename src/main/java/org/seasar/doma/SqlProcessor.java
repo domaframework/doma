@@ -21,11 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * SQLテンプレートで組み立てられたSQLを扱うことを示します。
+ * Indicates that the annotated method handles an SQL statement that is built
+ * from an SQL template.
  * <p>
- * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * 
- * <h3>例:</h3>
+ * The annotated method must be a member of a {@link Dao} annotated interface.
+ * <p>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -34,9 +34,6 @@ import java.lang.annotation.Target;
  *     &lt;R&gt; R process(Integer id, BiFunction&lt;Config, PreparedSql, R&gt; handler);
  * }
  * </pre>
- * 
- * @author nakamura
- * @since 2.14.0
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

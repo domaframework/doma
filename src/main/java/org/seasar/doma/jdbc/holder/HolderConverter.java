@@ -19,18 +19,13 @@ import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.HolderConverters;
 
 /**
- * 任意の型の値を基本型の値と相互に変換します。つまり 、任意の型をドメインクラスとして扱うことを可能にします。
+ * A converter between a value holder and a value.
  * <p>
- * 通常、このインタフェースの実装クラスには {@link ExternalHolder} を注釈します。また、 実装クラスは
- * {@link HolderConverters} に登録して使用します。
+ * You can use an arbitrary type for the value holder. The value's type must be
+ * one of the basic types.
  * <p>
- * 1番目の型パラメータは、 次の制約を満たす必要があります。
- * <ul>
- * <li>トップレベルのクラスである。
- * <li>パッケージに属する。
- * </ul>
- * 
- * <h3>例:</h3>
+ * The implementation class should be annotated with {@link ExternalHolder} and
+ * be registered to {@link HolderConverters}.
  * 
  * <pre>
  * &#064;ExtenalHolder
@@ -46,33 +41,31 @@ import org.seasar.doma.HolderConverters;
  * }
  * </pre>
  * 
- * @author taedium
- * @since 1.25.0
  * @see ExternalHolder
  * @see HolderConverters
  * 
  * @param <HOLDER>
- *            ドメイン型
+ *            the holder type
  * @param <BASIC>
- *            基本型
+ *            the basic type
  */
 public interface HolderConverter<HOLDER, BASIC> {
 
     /**
-     * ドメインから値へ変換します。
+     * Converts the value holder to the value.
      * 
      * @param holder
-     *            ドメイン
-     * @return 値
+     *            the value holder
+     * @return the value
      */
     BASIC fromHolderToValue(HOLDER holder);
 
     /**
-     * 値からドメインへ変換します。
+     * Converts the value to the value holder
      * 
      * @param value
-     *            値
-     * @return ドメイン
+     *            the value
+     * @return the value hodler
      */
     HOLDER fromValueToHolder(BASIC value);
 }

@@ -16,18 +16,16 @@
 package org.seasar.doma.wrapper;
 
 /**
- * {@link Wrapper} のビジターです。
- * 
- * @author taedium
+ * A visitor for the {@link Wrapper} interface.
  * 
  * @param <R>
- *            戻り値の型
+ *            The result type
  * @param <P>
- *            1番目のパラメータの型
+ *            The first parameter type
  * @param <Q>
- *            2番目のパラメータの型
+ *            The second parameter type
  * @param <TH>
- *            例外の型
+ *            The error or exception type
  */
 public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
 

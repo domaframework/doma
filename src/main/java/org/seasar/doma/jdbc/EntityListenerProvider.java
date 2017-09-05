@@ -5,32 +5,27 @@ import java.util.function.Supplier;
 import org.seasar.doma.jdbc.entity.EntityListener;
 
 /**
- * {@link EntityListener} のプロバイダです。
+ * A provider for an {@link EntityListener} object.
  *
  * @author backpaper0
- * @since 2.2.0
  */
 public interface EntityListenerProvider {
 
     /**
-     * {@link EntityListener} のインスタンスを取得します。
+     * Returns an {@link EntityListener} object.
      * <p>
-     * デフォルトの実装では単純に {@link Supplier#get()} を実行して取得したインスタンスを返します。
-     * 
-     * {@link EntityListener} をDIコンテナで管理したい場合などはこのメソッドをオーバーライドし、
-     * DIコンテナから取得したインスタンスを返すようにしてください。
-     * 
-     * このメソッドは{@code null}を返してはいけません。
+     * This method must not return {@code null}.
      * 
      * @param listenerClass
-     *            {@link EntityListener} の実装クラス
+     *            the implementation class of {@link EntityListener}
      * @param listenerSupplier
-     *            {@link EntityListener} のインスタンスを返す {@link Supplier}
+     *            the {@link Supplier} object that provides an
+     *            {@link EntityListener} object
      * @param <ENTITY>
-     *            エンティティの型
+     *            the entity type
      * @param <LISTENER>
-     *            リスナーの型
-     * @return {@link EntityListener} のインスタンス
+     *            the entity listener type
+     * @return an {@link EntityListener} object
      */
     default <ENTITY, LISTENER extends EntityListener<ENTITY>> LISTENER get(
             Class<LISTENER> listenerClass, Supplier<LISTENER> listenerSupplier) {

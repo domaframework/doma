@@ -16,8 +16,7 @@
 package org.seasar.doma.jdbc.query;
 
 /**
- * @author taedium
- * 
+ * An object used for building a batch of SQL DELETE statements.
  */
 public interface BatchDeleteQuery extends BatchModifyQuery {
 

@@ -29,15 +29,10 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
-/**
- * @author taedium
- * @param <ENTITY>
- *            エンティティ
- */
 public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements UpdateQuery {
 
     protected boolean nullExcluded;

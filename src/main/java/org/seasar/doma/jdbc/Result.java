@@ -16,12 +16,10 @@
 package org.seasar.doma.jdbc;
 
 /**
- * イミュータブルなエンティティに対する更新や挿入の結果を表します。
+ * A processing result for an immutable entity.
  * 
- * @author taedium
  * @param <ENTITY>
- *            エンティティ
- * @since 1.34.0
+ *            the entity type
  */
 public class Result<ENTITY> {
 
@@ -30,12 +28,12 @@ public class Result<ENTITY> {
     private final ENTITY entity;
 
     /**
-     * インスタンスを構築します。
+     * Creates an instance.
      * 
      * @param count
-     *            更新件数
+     *            the affected row count
      * @param entity
-     *            エンティティ
+     *            the entity
      */
     public Result(int count, ENTITY entity) {
         this.count = count;
@@ -43,27 +41,27 @@ public class Result<ENTITY> {
     }
 
     /**
-     * 更新件数を返します。
+     * Returns the affected row count.
      * 
-     * @return 更新件数
+     * @return the affected row count
      */
     public int getCount() {
         return count;
     }
 
     /**
-     * エンティティを返します。
+     * Returns the entity.
      * 
-     * @return エンティティ
+     * @return the entity
      */
     public ENTITY getEntity() {
         return entity;
     }
 
     /**
-     * エンティティを返します。
+     * Returns the entity.
      * 
-     * @return エンティティ
+     * @return the entity
      * @see <a href=
      *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>
@@ -73,9 +71,9 @@ public class Result<ENTITY> {
     }
 
     /**
-     * 更新件数を返します。
+     * Returns the affected row count.
      * 
-     * @return 更新件数
+     * @return the affected row count
      * @see <a href=
      *      "https://kotlinlang.org/docs/reference/multi-declarations.html">Destructuring
      *      Declarations</a>

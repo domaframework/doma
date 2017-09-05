@@ -16,19 +16,16 @@
 package org.seasar.doma.jdbc;
 
 /**
- * 悲観的排他制御の種別です。
- * 
- * @author taedium
- * 
+ * Defines the kinds of pessimistic locking.
  */
 public enum SelectForUpdateType {
 
-    /** 通常の方法を用いることを示します。 */
+    /** indicate to get a lock in the normal way */
     NORMAL,
 
-    /** ロックを取得するまで待機しないことを示します。 */
+    /** indicates to get a lock without waiting */
     NOWAIT,
 
-    /** ロックを取得するまで待機することを示します */
+    /** indicates to get a lock with waiting */
     WAIT
 }

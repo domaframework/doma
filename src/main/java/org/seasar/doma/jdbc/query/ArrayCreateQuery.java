@@ -21,10 +21,6 @@ import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * @author taedium
- * 
- */
 public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
     protected String typeName;

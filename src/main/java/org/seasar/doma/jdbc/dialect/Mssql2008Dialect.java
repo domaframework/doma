@@ -27,94 +27,46 @@ import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * Microsoft SQL Server 2008用の方言です。
- * 
- * @author taedium
- * 
+ * A dialect for Microsoft SQL Server 2008 and below.
  */
 public class Mssql2008Dialect extends StandardDialect {
 
-    /** 一意制約違反を表すエラーコード */
+    /** the error code that represents unique violation */
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 2627;
 
-    /** 開始の引用符 */
+    /** the quotation mark of the start */
     protected static final char OPEN_QUOTE = '[';
 
-    /** 終了の引用符 */
+    /** the quotation mark of the end */
     protected static final char CLOSE_QUOTE = ']';
 
-    /**
-     * インスタンスを構築します。
-     */
     public Mssql2008Dialect() {
         this(new Mssql2008JdbcMappingVisitor(), new Mssql2008SqlLogFormattingVisitor(),
                 new Mssql2008ExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     */
     public Mssql2008Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new Mssql2008SqlLogFormattingVisitor(),
                 new Mssql2008ExpressionFunctions());
     }
 
-    /**
-     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public Mssql2008Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new Mssql2008JdbcMappingVisitor(), sqlLogFormattingVisitor,
                 new Mssql2008ExpressionFunctions());
     }
 
-    /**
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public Mssql2008Dialect(ExpressionFunctions expressionFunctions) {
         this(new Mssql2008JdbcMappingVisitor(), new Mssql2008SqlLogFormattingVisitor(),
                 expressionFunctions);
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
     public Mssql2008Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor, new Mssql2008ExpressionFunctions());
     }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
     public Mssql2008Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
@@ -180,30 +132,12 @@ public class Mssql2008Dialect extends StandardDialect {
         return new Mssql2008ScriptBlockContext();
     }
 
-    /**
-     * Microsoft SQL Server 2008用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class Mssql2008JdbcMappingVisitor extends StandardJdbcMappingVisitor {
     }
 
-    /**
-     * Microsoft SQL Server 2008用の {@link SqlLogFormattingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class Mssql2008SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
     }
 
-    /**
-     * Microsoft SQL Server 2008用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
     public static class Mssql2008ExpressionFunctions extends StandardExpressionFunctions {
 
         private final static char[] DEFAULT_WILDCARDS = { '%', '_', '[' };
@@ -222,12 +156,6 @@ public class Mssql2008Dialect extends StandardDialect {
 
     }
 
-    /**
-     * Microsoft SQL Server 2008用の {@link ScriptBlockContext} です。
-     * 
-     * @author taedium
-     * @since 1.7.0
-     */
     public static class Mssql2008ScriptBlockContext extends StandardScriptBlockContext {
 
         protected Mssql2008ScriptBlockContext() {

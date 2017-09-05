@@ -18,26 +18,14 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Integer} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link Integer} class.
  */
 public class IntegerWrapper extends AbstractWrapper<Integer> implements NumberWrapper<Integer> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public IntegerWrapper() {
         super(Integer.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public IntegerWrapper(Integer value) {
         super(Integer.class, value);
     }

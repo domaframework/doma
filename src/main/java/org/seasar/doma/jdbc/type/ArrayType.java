@@ -23,10 +23,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Array} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#ARRAY} and {@link Array}.
  */
 public class ArrayType extends AbstractJdbcType<Array> {
 

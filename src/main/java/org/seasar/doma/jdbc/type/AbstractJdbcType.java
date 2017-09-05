@@ -25,27 +25,25 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link JdbcType} の骨格実装です。
- * 
- * @author taedium
+ * A skeletal implementation for the {@link JdbcType} interface .
  * 
  * @param <T>
- *            JDBCで扱う型
+ *            the basic type
  */
 public abstract class AbstractJdbcType<T> implements JdbcType<T> {
 
     /**
-     * SQL型
+     * the SQL type
      * 
      * @see Types
      */
     protected final int type;
 
     /**
-     * SQL型を指定してインスタンスを構築します。
+     * Creates an instance.
      * 
      * @param type
-     *            SQL型
+     *            the SQL type
      */
     protected AbstractJdbcType(int type) {
         this.type = type;
@@ -117,54 +115,13 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
         return doConvertToLogFormat(value);
     }
 
-    /**
-     * サブクラスで {@link ResultSet} から値を取得します。
-     * 
-     * @param resultSet
-     *            結果セット
-     * @param index
-     *            インデックス
-     * @return 値
-     * @throws SQLException
-     *             SQL例外が発生した場合
-     */
     protected abstract T doGetValue(ResultSet resultSet, int index) throws SQLException;
 
-    /**
-     * サブクラスで {@link PreparedStatement} に値を設定します。
-     * 
-     * @param preparedStatement
-     *            準備された文
-     * @param index
-     *            インデックス
-     * @param value
-     *            値
-     * @throws SQLException
-     *             SQL例外が発生した場合
-     */
     protected abstract void doSetValue(PreparedStatement preparedStatement, int index, T value)
             throws SQLException;
 
-    /**
-     * サブクラスで {@link CallableStatement} から値を取得します。
-     * 
-     * @param callableStatement
-     *            ストアドファンクションまたはプロシージャーを実行可能な文
-     * @param index
-     *            インデックス
-     * @return 値
-     * @throws SQLException
-     *             SQL例外が発生した場合
-     */
     protected abstract T doGetValue(CallableStatement callableStatement, int index)
             throws SQLException;
 
-    /**
-     * サブクラスで値をログ用フォーマットの文字列に変換します。
-     * 
-     * @param value
-     *            値
-     * @return ログ用フォーマットの文字列
-     */
     protected abstract String doConvertToLogFormat(T value);
 }

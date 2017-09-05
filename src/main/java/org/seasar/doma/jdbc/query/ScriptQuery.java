@@ -20,8 +20,7 @@ import java.net.URL;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
- * @author taedium
- * @since 1.7.0
+ * An object used for building an SQL script.
  */
 public interface ScriptQuery extends Query {
 

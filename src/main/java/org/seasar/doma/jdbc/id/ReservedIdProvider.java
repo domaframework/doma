@@ -33,8 +33,7 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 
 /**
- * @author nakamura-to
- * @since 2.5.0
+ * An identity provider that reserves identity values in advance.
  */
 public class ReservedIdProvider implements IdProvider {
 

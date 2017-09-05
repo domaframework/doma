@@ -33,9 +33,10 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModifyQuery;
 
 /**
- * @author taedium
+ * An abstract class for commands that modify database data.
+ * 
  * @param <QUERY>
- *            クエリ
+ *            the query type
  */
 public abstract class ModifyCommand<QUERY extends ModifyQuery> implements Command<Integer> {
 

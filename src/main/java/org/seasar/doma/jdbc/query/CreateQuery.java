@@ -19,9 +19,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * @author taedium
+ * An object used for preparing to create a JDBC object.
+ * 
  * @param <RESULT>
- *            結果
+ *            the result type
  */
 public interface CreateQuery<RESULT> extends Query {
 

@@ -16,12 +16,10 @@
 package org.seasar.doma.wrapper;
 
 /**
- * {@link Number} のラッパーです。
- * 
- * @author taedium
+ * A wrapper for the {@link Number} class.
  * 
  * @param <BASIC>
- *            値の型
+ *            The number type subclass
  */
 public interface NumberWrapper<BASIC extends Number> extends Wrapper<BASIC> {
 
@@ -29,12 +27,12 @@ public interface NumberWrapper<BASIC extends Number> extends Wrapper<BASIC> {
     void set(Number value);
 
     /**
-     * 値をインクリメントします。
+     * Increments this object.
      */
     void increment();
 
     /**
-     * 値をデクリメントします。
+     * Decrements this object.
      */
     void decrement();
 

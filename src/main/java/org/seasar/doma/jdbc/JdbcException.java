@@ -19,52 +19,30 @@ import org.seasar.doma.DomaException;
 import org.seasar.doma.message.MessageResource;
 
 /**
- * JDBCに関する例外です。
- * 
- * @author taedium
- * 
+ * Thrown to indicate a JDBC related error.
  */
 public class JdbcException extends DomaException {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param messageCode
-     *            メッセージコード
-     * @param args
-     *            メッセージへの引数
-     */
     public JdbcException(MessageResource messageCode, Object... args) {
         super(messageCode, args);
     }
 
-    /**
-     * この例外の原因となった {@link Throwable} を指定してインスタンスを構築します。
-     * 
-     * @param messageCode
-     *            メッセージコード
-     * @param cause
-     *            原因
-     * @param args
-     *            メッセージへの引数
-     */
     public JdbcException(MessageResource messageCode, Throwable cause, Object... args) {
         super(messageCode, cause, args);
     }
 
     /**
-     * ログタイプに応じてログ用SQLを選択します。
+     * Chooses the SQL string for logging depending on the log type
      * 
      * @param logType
-     *            ログタイプ
+     *            the log type
      * @param rawSql
-     *            未加工SQL
+     *            the raw SQL string
      * @param formattedSql
-     *            フォーマット済みSQL
-     * @return ログ用SQL
-     * @since 1.22.0
+     *            the formatted SQL string
+     * @return the SQL string
      */
     protected static String choiceSql(SqlLogType logType, String rawSql, String formattedSql) {
         switch (logType) {

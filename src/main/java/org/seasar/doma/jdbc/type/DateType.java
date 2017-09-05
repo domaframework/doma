@@ -23,10 +23,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Date} 用の {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#DATE} and {@link Date}.
  */
 public class DateType extends AbstractJdbcType<Date> {
 

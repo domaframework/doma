@@ -22,10 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * {@link Boolean} を JDBCの {@link Integer} に適応させる {@link JdbcType} の実装です。
- * 
- * @author taedium
- * 
+ * A JDBC type for {@link Types#INTEGER} and {@link Boolean}.
  */
 public class IntegerAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
 

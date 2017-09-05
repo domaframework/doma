@@ -28,11 +28,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 
-/**
- * @author taedium
- * @param <ELEMENT>
- *            リストの要素
- */
 public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
         implements BatchInsertQuery {
 

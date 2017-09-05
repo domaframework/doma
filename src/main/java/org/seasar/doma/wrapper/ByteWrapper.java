@@ -18,26 +18,14 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Byte} のラッパーです。
- * 
- * @author taedium
- * 
+ * A wrapper for the {@link Byte} class.
  */
 public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<Byte> {
 
-    /**
-     * インスタンスを構築します。
-     */
     public ByteWrapper() {
         super(Byte.class);
     }
 
-    /**
-     * 値を指定してインスタンスを構築します。
-     * 
-     * @param value
-     *            値
-     */
     public ByteWrapper(Byte value) {
         super(Byte.class, value);
     }

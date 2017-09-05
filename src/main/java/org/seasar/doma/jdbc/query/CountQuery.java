@@ -22,10 +22,6 @@ import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-/**
- * @author taedium
- * 
- */
 public class CountQuery extends AbstractSelectQuery {
 
     protected SqlNode sqlNode;

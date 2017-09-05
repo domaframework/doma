@@ -28,15 +28,10 @@ import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.EntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
-/**
- * @author taedium
- * @param <ELEMENT>
- *            リストの要素
- */
 public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
         implements BatchUpdateQuery {
 

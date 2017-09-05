@@ -21,8 +21,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 
 /**
- * @author taedium
- * 
+ * An object used for building an SQL statement.
  */
 public interface Query {
 

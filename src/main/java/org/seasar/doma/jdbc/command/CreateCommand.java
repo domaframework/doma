@@ -18,15 +18,26 @@ package org.seasar.doma.jdbc.command;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.seasar.doma.ArrayFactory;
+import org.seasar.doma.BlobFactory;
+import org.seasar.doma.ClobFactory;
+import org.seasar.doma.NClobFactory;
+import org.seasar.doma.SQLXMLFactory;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.query.CreateQuery;
 import org.seasar.doma.message.Message;
 
 /**
- * @author taedium
+ * A command to create a JDBC object that is mapped to the SQL type.
+ * 
  * @param <RESULT>
- *            結果
+ *            the result type
+ * @see ArrayFactory
+ * @see BlobFactory
+ * @see ClobFactory
+ * @see NClobFactory
+ * @see SQLXMLFactory
  */
 public class CreateCommand<RESULT> implements Command<RESULT> {
 

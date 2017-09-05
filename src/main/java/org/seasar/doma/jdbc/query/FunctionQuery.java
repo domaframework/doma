@@ -16,9 +16,10 @@
 package org.seasar.doma.jdbc.query;
 
 /**
- * @author taedium
+ * An object used for building a stored function statement.
+ * 
  * @param <RESULT>
- *            結果
+ *            the result type
  */
 public interface FunctionQuery<RESULT> extends ModuleQuery {
 

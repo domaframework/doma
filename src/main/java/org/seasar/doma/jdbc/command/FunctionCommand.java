@@ -18,12 +18,15 @@ package org.seasar.doma.jdbc.command;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 
+import org.seasar.doma.Function;
 import org.seasar.doma.jdbc.query.FunctionQuery;
 
 /**
- * @author taedium
+ * A command for a stored FUNCTION.
+ * 
  * @param <RESULT>
- *            結果
+ *            the result teype
+ * @see Function
  */
 public class FunctionCommand<RESULT> extends ModuleCommand<FunctionQuery<RESULT>, RESULT> {
 

@@ -35,9 +35,10 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchModifyQuery;
 
 /**
- * @author taedium
+ * An abstract class for batch commands.
+ * 
  * @param <QUERY>
- *            クエリ
+ *            the query type
  */
 public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> implements Command<int[]> {
 

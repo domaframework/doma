@@ -19,10 +19,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * エンティティクラスに対応するエンティティ記述クラスが見つからない場合にスローされる例外です。
- * 
- * @author taedium
- * @since 1.8.0
+ * Thrown to indicate that an entity description is not found.
  */
 public class EntityDescNotFoundException extends JdbcException {
 
@@ -32,16 +29,6 @@ public class EntityDescNotFoundException extends JdbcException {
 
     private final String entityDescClassName;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param cause
-     *            原因
-     * @param entityClassName
-     *            エンティティクラスの名前
-     * @param entityDescClassName
-     *            エンティティ記述クラスの名前
-     */
     public EntityDescNotFoundException(Throwable cause, String entityClassName,
             String entityDescClassName) {
         super(Message.DOMA2203, cause, entityClassName, entityDescClassName, cause);
@@ -49,20 +36,10 @@ public class EntityDescNotFoundException extends JdbcException {
         this.entityDescClassName = entityDescClassName;
     }
 
-    /**
-     * エンティティクラスの名前を返します。
-     * 
-     * @return エンティティクラスの名前
-     */
     public String getEntityClassName() {
         return entityClassName;
     }
 
-    /**
-     * エンティティ記述クラスの名前を返します。
-     * 
-     * @return エンティティ記述クラスの名前
-     */
     public String getEntityDescClassName() {
         return entityDescClassName;
     }

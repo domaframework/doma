@@ -19,10 +19,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * エンティティプロパティがエンティティクラスに定義されていない場合にスローされる例外です。
- * 
- * @author taedium
- * @since 1.11.0
+ * Thrown to indicate that a property is not defined in an entity.
  */
 public class EntityPropertyNotDefinedException extends JdbcException {
 
@@ -32,34 +29,16 @@ public class EntityPropertyNotDefinedException extends JdbcException {
 
     private final String entityPropertyName;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param entityClassName
-     *            エンティティクラスの名前
-     * @param entityPropertyName
-     *            エンティティプロパティの名前
-     */
     public EntityPropertyNotDefinedException(String entityClassName, String entityPropertyName) {
         super(Message.DOMA2207, entityClassName, entityPropertyName);
         this.entityClassName = entityClassName;
         this.entityPropertyName = entityPropertyName;
     }
 
-    /**
-     * エンティティクラスの名前を返します。
-     * 
-     * @return エンティティクラスの名前
-     */
     public String getEntityClassName() {
         return entityClassName;
     }
 
-    /**
-     * エンティティプロパティの名前を返します。
-     * 
-     * @return エンティティプロパティの名前
-     */
     public String getEntityPropertyName() {
         return entityPropertyName;
     }

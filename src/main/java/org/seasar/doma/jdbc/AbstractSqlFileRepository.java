@@ -28,13 +28,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link SqlFileRepository} の骨格実装です。
- * <p>
- * SQLファイルの解析結果をキャッシュするには
- * {@link #getSqlFileWithCacheControl(Method, String, Dialect)} を実装してください。
- * 
- * @author taedium
- * 
+ * A skeletal implementation of the {@link SqlFileRepository} interface.
  */
 public abstract class AbstractSqlFileRepository implements SqlFileRepository {
 

@@ -16,10 +16,7 @@
 package org.seasar.doma.jdbc;
 
 /**
- * SQLの呼び出し元に関するコメンターです。
- * 
- * @author nakamura-to
- * @since 2.1.0
+ * A commenter of an SQL issuer.
  */
 public class CallerCommenter implements Commenter {
 

@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * {@literal RDBMS} の方言を提供します。
+ * Provides {@literal RDBMS} dialects.
  */
 package org.seasar.doma.jdbc.dialect;

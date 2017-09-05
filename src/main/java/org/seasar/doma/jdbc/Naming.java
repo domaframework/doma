@@ -20,73 +20,62 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
- * ネーミング規約の適用を制御します。
- * 
- * @author nakamura-to
- *
- * @since 2.2.0
+ * A naming convention controller.
  */
 public interface Naming {
 
-    /** {@link NamingType#NONE} へのアダプタ */
+    /** the adapter for {@link NamingType#NONE} */
     static Naming NONE = new Adapter(NamingType.NONE);
 
-    /** {@link NamingType#LOWER_CASE} へのアダプタ */
+    /** the adapter for {@link NamingType#LOWER_CASE} */
     static Naming LOWER_CASE = new Adapter(NamingType.LOWER_CASE);
 
-    /** {@link NamingType#UPPER_CASE} へのアダプタ */
+    /** the adapter for {@link NamingType#UPPER_CASE} */
     static Naming UPPER_CASE = new Adapter(NamingType.UPPER_CASE);
 
-    /** {@link NamingType#SNAKE_LOWER_CASE} へのアダプタ */
+    /** the adapter for {@link NamingType#SNAKE_LOWER_CASE} */
     static Naming SNAKE_LOWER_CASE = new Adapter(NamingType.SNAKE_LOWER_CASE);
 
-    /** {@link NamingType#SNAKE_UPPER_CASE} へのアダプタ */
+    /** the adapter for {@link NamingType#SNAKE_UPPER_CASE} */
     static Naming SNAKE_UPPER_CASE = new Adapter(NamingType.SNAKE_UPPER_CASE);
 
-    /** {@link NamingType#LENIENT_SNAKE_LOWER_CASE} へのアダプタ */
+    /** the adapter for {@link NamingType#LENIENT_SNAKE_LOWER_CASE} */
     static Naming LENIENT_SNAKE_LOWER_CASE = new Adapter(NamingType.LENIENT_SNAKE_LOWER_CASE);
 
-    /** {@link NamingType#LENIENT_SNAKE_UPPER_CASE} へのアダプタ */
+    /** the adapter for {@link NamingType#LENIENT_SNAKE_UPPER_CASE} */
     static Naming LENIENT_SNAKE_UPPER_CASE = new Adapter(NamingType.LENIENT_SNAKE_UPPER_CASE);
 
-    /** デフォルトの規約 */
+    /** the default convention */
     static Naming DEFAULT = NONE;
 
     /**
-     * ネーミング規約を適用します。
+     * Applies the naming convention.
      * 
      * @param namingType
-     *            ネーミング規約。{@literal null} の場合、 {@link Entity#naming()}
-     *            に明示的な指定が存在しないことを意味します。
+     *            the naming convention. If this parameter is {@code null},
+     *            {@link Entity#naming()} does not have explicit value.
      * @param text
-     *            規約が適用される文字列
-     * @return 規約が適用された文字列
+     *            the text
+     * @return the converted text
      * @throws DomaNullPointerException
-     *             {@code text} が {@literal null} の場合
+     *             if {@code text} is {@code null}
      */
     String apply(NamingType namingType, String text);
 
     /**
-     * ネーミング規約が適用された文字列を適用前の文字列に戻します。
-     * <p>
-     * 正確に元に戻せないことがあります。
+     * Reverts the text to the original as much as possible.
      * 
      * @param namingType
-     *            ネーミング規約。{@literal null} の場合、 {@link Entity#naming()}
-     *            に明示的な指定が存在しないことを意味します。
+     *            the naming convention. If this parameter is {@code null},
+     *            {@link Entity#naming()} does not have explicit value.
      * @param text
-     *            ネーミング規約適用後の文字列
-     * @return ネーミング規約適用前の文字列
+     *            the text that is converted by this convention
+     * @return the original
      * @throws DomaNullPointerException
-     *             {@code text} が {@literal null} の場合
+     *             if {@code text} is {@code null}
      */
     String revert(NamingType namingType, String text);
 
-    /**
-     * {@link NamingType} へのアダプタです。
-     * 
-     * @author nakamura-to
-     */
     static class Adapter implements Naming {
 
         protected final NamingType namingType;

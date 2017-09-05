@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -33,10 +33,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 
-/**
- * @author bakenezumi
- *
- */
 public abstract class SqlBatchModifyQuery extends AbstractQuery implements BatchModifyQuery {
 
     protected final SqlKind kind;

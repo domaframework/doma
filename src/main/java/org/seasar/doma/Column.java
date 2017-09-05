@@ -21,11 +21,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * データベースのテーブルのカラムを示します。
+ * Indicates a database column.
  * <p>
- * このアノテーションが注釈されるフィールドは、 エンティティクラスのメンバでなければいけません。
- * 
- * <h3>例:</h3>
+ * The annotated field must be a member of an {@link Entity} annotated class.
+ * <p>
  * 
  * <pre>
  * &#064;Entity
@@ -40,41 +39,30 @@ import java.lang.annotation.Target;
  *     ...
  * }
  * </pre>
- * 
- * @author taedium
- * 
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 
     /**
-     * カラム名を返します。
+     * The name of the column.
      * <p>
-     * 指定しない場合、カラム名は {@link Entity#naming()} に指定した列挙型 によって解決されます。
-     * 
-     * @return カラム名
+     * If not specified, the name is resolved by {@link Entity#naming()}.
      */
     String name() default "";
 
     /**
-     * プロパティに対応するカラムをINSERT文に含めるかどうかを返します。
-     * 
-     * @return カラムをINSERT文に含めるかどうか
+     * Whether the column is included in SQL INSERT statements.
      */
     boolean insertable() default true;
 
     /**
-     * プロパティに対応するカラムをUPDATE文のSET句に含めるかどうかを返します。
-     * 
-     * @return カラムをUPDATE文のSET句に含めるかどうか
+     * Whether the column is included in SQL UPDATE statements.
      */
     boolean updatable() default true;
 
     /**
-     * カラム名を引用符で囲むかどうかを返します。
-     * 
-     * @return カラム名を引用符で囲むかどうか
+     * Whether the column name is enclosed by quotation marks in SQL statements.
      */
     boolean quote() default false;
 }
