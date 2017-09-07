@@ -29,6 +29,7 @@ import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.TableGenerator;
+import org.seasar.doma.TenantId;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -76,6 +77,7 @@ public class EntityPropertyMetaFactory {
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
+        doTenantId(propertyMeta, fieldElement, entityMeta);
         doColumn(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
     }
@@ -384,6 +386,28 @@ public class EntityPropertyMetaFactory {
                                 fieldElement.getSimpleName() });
             }
             propertyMeta.setVersion(true);
+        }
+    }
+
+    protected void doTenantId(EntityPropertyMeta propertyMeta,
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        TenantId tenantId = fieldElement.getAnnotation(TenantId.class);
+        if (tenantId != null) {
+            if (propertyMeta.isEmbedded()) {
+                throw new AptException(Message.DOMA4441, env, fieldElement,
+                        new Object[] {
+                                entityMeta.getEntityElement()
+                                        .getQualifiedName(),
+                                fieldElement.getSimpleName() });
+            }
+            if (entityMeta.hasTenantIdPropertyMeta()) {
+                throw new AptException(Message.DOMA4442, env, fieldElement,
+                        new Object[] {
+                                entityMeta.getEntityElement()
+                                        .getQualifiedName(),
+                                fieldElement.getSimpleName() });
+            }
+            propertyMeta.setTenantId(true);
         }
     }
 

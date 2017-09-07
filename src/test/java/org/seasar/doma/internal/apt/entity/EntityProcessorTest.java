@@ -804,4 +804,14 @@ public class EntityProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4426);
     }
 
+    public void testTenantId() throws Exception {
+        Class<?> target = TenantIdEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
 }

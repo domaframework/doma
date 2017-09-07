@@ -60,6 +60,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -193,67 +194,77 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 if (pm.isId()) {
                     if (pm.getIdGeneratorMeta() != null) {
                         iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s, __idGenerator);%n",
-                        /* 1 */GeneratedIdPropertyType.class.getName(),
-                        /* 2 */entityMeta.getEntityTypeName(),
-                        /* 3 */basicCtType.getBoxedTypeName(),
-                        /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
-                        /* 6 */entityMeta.getEntityTypeName(),
-                        /* 7 */newWrapperExpr, /* 8 */domainType,
-                        /* 9 */pm.getBoxedTypeName(),
-                        /* 10 */NULL,
-                        /* 11 */Object.class.getName(),
-                        /* 12 */pm.getFieldName(),
-                        /* 13 */pm.getBoxedClassName(),
-                        /* 14 */domainTypeName,
-                        /* 15 */pm.isColumnQuoteRequired());
+                                /* 1 */GeneratedIdPropertyType.class.getName(),
+                                /* 2 */entityMeta.getEntityTypeName(),
+                                /* 3 */basicCtType.getBoxedTypeName(),
+                                /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
+                                /* 6 */entityMeta.getEntityTypeName(),
+                                /* 7 */newWrapperExpr, /* 8 */domainType,
+                                /* 9 */pm.getBoxedTypeName(), /* 10 */NULL,
+                                /* 11 */Object.class.getName(),
+                                /* 12 */pm.getFieldName(),
+                                /* 13 */pm.getBoxedClassName(),
+                                /* 14 */domainTypeName,
+                                /* 15 */pm.isColumnQuoteRequired());
                     } else {
                         iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
-                        /* 1 */AssignedIdPropertyType.class.getName(),
-                        /* 2 */entityMeta.getEntityTypeName(),
-                        /* 3 */basicCtType.getBoxedTypeName(),
-                        /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
-                        /* 6 */entityMeta.getEntityTypeName(),
-                        /* 7 */newWrapperExpr, /* 8 */domainType,
-                        /* 9 */pm.getBoxedTypeName(),
-                        /* 10 */NULL,
-                        /* 11 */Object.class.getName(),
-                        /* 12 */pm.getFieldName(),
-                        /* 13 */pm.getBoxedClassName(),
-                        /* 14 */domainTypeName,
-                        /* 15 */pm.isColumnQuoteRequired());
+                                /* 1 */AssignedIdPropertyType.class.getName(),
+                                /* 2 */entityMeta.getEntityTypeName(),
+                                /* 3 */basicCtType.getBoxedTypeName(),
+                                /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
+                                /* 6 */entityMeta.getEntityTypeName(),
+                                /* 7 */newWrapperExpr, /* 8 */domainType,
+                                /* 9 */pm.getBoxedTypeName(), /* 10 */NULL,
+                                /* 11 */Object.class.getName(),
+                                /* 12 */pm.getFieldName(),
+                                /* 13 */pm.getBoxedClassName(),
+                                /* 14 */domainTypeName,
+                                /* 15 */pm.isColumnQuoteRequired());
                     }
                 } else if (pm.isVersion()) {
                     iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
-                    /* 1 */VersionPropertyType.class.getName(),
-                    /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */basicCtType.getBoxedTypeName(),
-                    /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
-                    /* 6 */entityMeta.getEntityTypeName(),
-                    /* 7 */newWrapperExpr, /* 8 */domainType,
-                    /* 9 */pm.getBoxedTypeName(),
-                    /* 10 */NULL,
-                    /* 11 */Object.class.getName(),
-                    /* 12 */pm.getFieldName(),
-                    /* 13 */pm.getBoxedClassName(),
-                    /* 14 */domainTypeName,
-                    /* 15 */pm.isColumnQuoteRequired());
+                            /* 1 */VersionPropertyType.class.getName(),
+                            /* 2 */entityMeta.getEntityTypeName(),
+                            /* 3 */basicCtType.getBoxedTypeName(),
+                            /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
+                            /* 6 */entityMeta.getEntityTypeName(),
+                            /* 7 */newWrapperExpr, /* 8 */domainType,
+                            /* 9 */pm.getBoxedTypeName(), /* 10 */NULL,
+                            /* 11 */Object.class.getName(),
+                            /* 12 */pm.getFieldName(),
+                            /* 13 */pm.getBoxedClassName(),
+                            /* 14 */domainTypeName,
+                            /* 15 */pm.isColumnQuoteRequired());
+                } else if (pm.isTenantId()) {
+                    iprint("public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
+                            /* 1 */TenantIdPropertyType.class.getName(),
+                            /* 2 */entityMeta.getEntityTypeName(),
+                            /* 3 */basicCtType.getBoxedTypeName(),
+                            /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
+                            /* 6 */entityMeta.getEntityTypeName(),
+                            /* 7 */newWrapperExpr, /* 8 */domainType,
+                            /* 9 */pm.getBoxedTypeName(), /* 10 */NULL,
+                            /* 11 */Object.class.getName(),
+                            /* 12 */pm.getFieldName(),
+                            /* 13 */pm.getBoxedClassName(),
+                            /* 14 */domainTypeName,
+                            /* 15 */pm.isColumnQuoteRequired());
                 } else {
                     iprint("public final %1$s<%13$s, %2$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, %15$s.class, %3$s.class, () -> %9$s, %12$s, %10$s, \"%4$s\", \"%5$s\", __namingType, %6$s, %7$s, %17$s);%n",
-                    /* 1 */DefaultPropertyType.class.getName(),
-                    /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */basicCtType.getBoxedTypeName(),
-                    /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
-                    /* 6 */pm.isColumnInsertable(),
-                    /* 7 */pm.isColumnUpdatable(),
-                    /* 8 */entityMeta.getEntityTypeName(),
-                    /* 9 */newWrapperExpr, /* 10 */domainType,
-                    /* 11 */pm.getBoxedTypeName(),
-                    /* 12 */NULL,
-                    /* 13 */Object.class.getName(),
-                    /* 14 */pm.getFieldName(),
-                    /* 15 */pm.getBoxedClassName(),
-                    /* 16 */domainTypeName,
-                    /* 17 */pm.isColumnQuoteRequired());
+                            /* 1 */DefaultPropertyType.class.getName(),
+                            /* 2 */entityMeta.getEntityTypeName(),
+                            /* 3 */basicCtType.getBoxedTypeName(),
+                            /* 4 */pm.getName(), /* 5 */pm.getColumnName(),
+                            /* 6 */pm.isColumnInsertable(),
+                            /* 7 */pm.isColumnUpdatable(),
+                            /* 8 */entityMeta.getEntityTypeName(),
+                            /* 9 */newWrapperExpr, /* 10 */domainType,
+                            /* 11 */pm.getBoxedTypeName(), /* 12 */NULL,
+                            /* 13 */Object.class.getName(),
+                            /* 14 */pm.getFieldName(),
+                            /* 15 */pm.getBoxedClassName(),
+                            /* 16 */domainTypeName,
+                            /* 17 */pm.isColumnQuoteRequired());
                 }
             }
             print("%n");
@@ -403,6 +414,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printGetIdPropertyTypesMethod();
         printGetGeneratedIdPropertyTypeMethod();
         printGetVersionPropertyTypeMethod();
+        printGetTenantIdPropertyTypeMethod();
         printNewEntityMethod();
         printGetEntityClassMethod();
         printGetOriginalStatesMethod();
@@ -605,6 +617,21 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 VersionPropertyType.class.getName(),
                 entityMeta.getEntityTypeName(), Object.class.getName());
         iprint("    return %1$s;%n", versionName);
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printGetTenantIdPropertyTypeMethod() {
+        String tenantIdName = "null";
+        if (entityMeta.hasTenantIdPropertyMeta()) {
+            EntityPropertyMeta pm = entityMeta.getTenanatIdPropertyMeta();
+            tenantIdName = pm.getFieldName();
+        }
+        iprint("@Override%n");
+        iprint("public %1$s<%3$s, %2$s, ?, ?> getTenantIdPropertyType() {%n",
+                TenantIdPropertyType.class.getName(),
+                entityMeta.getEntityTypeName(), Object.class.getName());
+        iprint("    return %1$s;%n", tenantIdName);
         iprint("}%n");
         print("%n");
     }

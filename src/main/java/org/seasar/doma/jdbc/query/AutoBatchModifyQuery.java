@@ -27,6 +27,7 @@ import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.message.Message;
 
@@ -51,6 +52,8 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
     protected final EntityType<ENTITY> entityType;
 
     protected VersionPropertyType<? super ENTITY, ENTITY, ?, ?> versionPropertyType;
+
+    protected TenantIdPropertyType<? super ENTITY, ENTITY, ?, ?> tenantIdPropertyType;
 
     protected boolean optimisticLockCheckRequired;
 
@@ -78,6 +81,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
     protected void prepareIdAndVersionPropertyTypes() {
         idPropertyTypes = entityType.getIdPropertyTypes();
         versionPropertyType = entityType.getVersionPropertyType();
+        tenantIdPropertyType = entityType.getTenantIdPropertyType();
     }
 
     protected void validateIdExistent() {

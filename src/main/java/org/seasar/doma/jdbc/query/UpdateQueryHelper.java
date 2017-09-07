@@ -80,6 +80,9 @@ public class UpdateQueryHelper<E> {
             if (!versionIgnored && propertyType.isVersion()) {
                 continue;
             }
+            if (propertyType.isTenantId()) {
+                continue;
+            }
             if (nullExcluded) {
                 Property<E, ?> property = propertyType.createProperty();
                 property.load(entity);

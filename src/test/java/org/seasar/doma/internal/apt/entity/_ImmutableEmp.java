@@ -30,6 +30,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -51,7 +52,8 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public EntityPropertyType<ImmutableEmp, ?> getEntityPropertyType(String name) {
+    public EntityPropertyType<ImmutableEmp, ?> getEntityPropertyType(
+            String name) {
 
         return null;
     }
@@ -108,6 +110,11 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     @Override
     public VersionPropertyType<Object, ImmutableEmp, ?, ?> getVersionPropertyType() {
 
+        return null;
+    }
+
+    @Override
+    public TenantIdPropertyType<Object, ImmutableEmp, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

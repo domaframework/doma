@@ -65,6 +65,8 @@ public class EntityPropertyMeta {
 
     protected boolean version;
 
+    protected boolean tenantId;
+
     protected ColumnMirror columnMirror;
 
     protected IdGeneratorMeta idGeneratorMeta;
@@ -125,6 +127,14 @@ public class EntityPropertyMeta {
 
     public void setVersion(boolean version) {
         this.version = version;
+    }
+
+    public boolean isTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(boolean tenantId) {
+        this.tenantId = tenantId;
     }
 
     public IdGeneratorMeta getIdGeneratorMeta() {

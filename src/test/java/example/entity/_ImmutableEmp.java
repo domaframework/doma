@@ -38,6 +38,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 @Generated("")
@@ -106,13 +107,15 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
     @Override
     public ImmutableEmp newEntity(Map<String, Property<ImmutableEmp, ?>> args) {
-        return new ImmutableEmp((Integer) (args.containsKey("id") ? args.get(
-                "id").get() : null), (String) (args.containsKey("name") ? args
-                .get("name").get() : null),
-                (BigDecimal) (args.containsKey("salary") ? args.get("salary")
-                        .get() : null),
-                (Integer) (args.containsKey("version") ? args.get("version")
-                        .get() : null));
+        return new ImmutableEmp(
+                (Integer) (args.containsKey("id") ? args.get("id").get()
+                        : null),
+                (String) (args.containsKey("name") ? args.get("name").get()
+                        : null),
+                (BigDecimal) (args.containsKey("salary")
+                        ? args.get("salary").get() : null),
+                (Integer) (args.containsKey("version")
+                        ? args.get("version").get() : null));
     }
 
     @Override
@@ -153,6 +156,11 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     @Override
     public VersionPropertyType<Object, ImmutableEmp, ?, ?> getVersionPropertyType() {
         return version;
+    }
+
+    @Override
+    public TenantIdPropertyType<Object, ImmutableEmp, ?, ?> getTenantIdPropertyType() {
+        return null;
     }
 
     @Override

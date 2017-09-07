@@ -92,8 +92,7 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void preInsert(
-            NotTopLevelEntity.Hoge entity,
+    public void preInsert(NotTopLevelEntity.Hoge entity,
             org.seasar.doma.jdbc.entity.PreInsertContext<NotTopLevelEntity.Hoge> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
         org.seasar.doma.jdbc.entity.NullEntityListener __listener = context
@@ -104,8 +103,7 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void preUpdate(
-            NotTopLevelEntity.Hoge entity,
+    public void preUpdate(NotTopLevelEntity.Hoge entity,
             org.seasar.doma.jdbc.entity.PreUpdateContext<NotTopLevelEntity.Hoge> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
         org.seasar.doma.jdbc.entity.NullEntityListener __listener = context
@@ -116,8 +114,7 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void preDelete(
-            NotTopLevelEntity.Hoge entity,
+    public void preDelete(NotTopLevelEntity.Hoge entity,
             org.seasar.doma.jdbc.entity.PreDeleteContext<NotTopLevelEntity.Hoge> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
         org.seasar.doma.jdbc.entity.NullEntityListener __listener = context
@@ -128,8 +125,7 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void postInsert(
-            NotTopLevelEntity.Hoge entity,
+    public void postInsert(NotTopLevelEntity.Hoge entity,
             org.seasar.doma.jdbc.entity.PostInsertContext<NotTopLevelEntity.Hoge> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
         org.seasar.doma.jdbc.entity.NullEntityListener __listener = context
@@ -140,8 +136,7 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void postUpdate(
-            NotTopLevelEntity.Hoge entity,
+    public void postUpdate(NotTopLevelEntity.Hoge entity,
             org.seasar.doma.jdbc.entity.PostUpdateContext<NotTopLevelEntity.Hoge> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
         org.seasar.doma.jdbc.entity.NullEntityListener __listener = context
@@ -152,8 +147,7 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void postDelete(
-            NotTopLevelEntity.Hoge entity,
+    public void postDelete(NotTopLevelEntity.Hoge entity,
             org.seasar.doma.jdbc.entity.PostDeleteContext<NotTopLevelEntity.Hoge> context) {
         Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
         org.seasar.doma.jdbc.entity.NullEntityListener __listener = context
@@ -185,6 +179,11 @@ public final class _NotTopLevelEntity__Hoge extends
 
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyType() {
+        return null;
+    }
+
+    @Override
+    public TenantIdPropertyType<Object, NotTopLevelEntity.Hoge, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

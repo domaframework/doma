@@ -172,6 +172,11 @@ public final class _PrivateOriginalStatesEntity extends org.seasar.doma.jdbc.ent
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity = new org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity();
         if (__args.get("name") != null) __args.get("name").save(entity);

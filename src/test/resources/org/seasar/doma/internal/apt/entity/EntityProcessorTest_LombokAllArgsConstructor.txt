@@ -175,6 +175,11 @@ public final class _LombokAllArgsConstructor extends org.seasar.doma.jdbc.entity
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.LombokAllArgsConstructor, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.LombokAllArgsConstructor newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.LombokAllArgsConstructor, ?>> __args) {
         return new org.seasar.doma.internal.apt.entity.LombokAllArgsConstructor(
             (java.lang.Integer)(__args.get("id") != null ? __args.get("id").get() : null),

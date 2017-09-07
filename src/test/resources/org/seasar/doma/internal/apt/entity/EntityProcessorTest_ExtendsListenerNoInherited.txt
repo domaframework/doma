@@ -175,6 +175,11 @@ public final class _Child2NoInheritingEntity extends org.seasar.doma.jdbc.entity
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity entity = new org.seasar.doma.internal.apt.entity.Child2NoInheritingEntity();
         if (__args.get("aaa") != null) __args.get("aaa").save(entity);

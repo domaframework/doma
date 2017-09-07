@@ -37,6 +37,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 @Generated("")
@@ -112,7 +113,8 @@ public class _Dept extends AbstractEntityType<Dept> {
     }
 
     @Override
-    public EntityPropertyType<Dept, ?> getEntityPropertyType(String propertyName) {
+    public EntityPropertyType<Dept, ?> getEntityPropertyType(
+            String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
 
@@ -132,6 +134,11 @@ public class _Dept extends AbstractEntityType<Dept> {
 
     @Override
     public VersionPropertyType<Object, Dept, ?, ?> getVersionPropertyType() {
+        return null;
+    }
+
+    @Override
+    public TenantIdPropertyType<Object, Dept, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

@@ -171,6 +171,11 @@ public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractE
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.AbstractEntity, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.AbstractEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.AbstractEntity, ?>> __args) {
         return null;
     }

@@ -261,6 +261,11 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     }
 
     @Override
+    public boolean isTenantId() {
+        return false;
+    }
+
+    @Override
     public boolean isInsertable() {
         return insertable;
     }

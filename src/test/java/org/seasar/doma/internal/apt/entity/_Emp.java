@@ -30,6 +30,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -108,6 +109,11 @@ public class _Emp extends AbstractEntityType<Emp> {
     @Override
     public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
 
+        return null;
+    }
+
+    @Override
+    public TenantIdPropertyType<Object, Emp, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

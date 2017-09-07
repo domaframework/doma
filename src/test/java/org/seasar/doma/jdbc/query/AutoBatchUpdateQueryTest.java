@@ -20,15 +20,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
+import example.entity.Salesman;
 import example.entity._Emp;
+import example.entity._Salesman;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -254,6 +255,57 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         query.setEntities(Collections.<Emp> emptyList());
         query.prepare();
         assertFalse(query.isExecutable());
+    }
+
+    public void testTenantId() throws Exception {
+        Salesman s1 = new Salesman();
+        s1.setId(10);
+        s1.setName("aaa");
+        s1.setTenantId("bbb");
+        s1.setVersion(100);
+
+        Salesman s2 = new Salesman();
+        s2.setId(20);
+        s2.setSalary(new BigDecimal(2000));
+        s2.setTenantId("bbb");
+        s2.setVersion(200);
+
+        AutoBatchUpdateQuery<Salesman> query = new AutoBatchUpdateQuery<Salesman>(
+                _Salesman.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setEntities(Arrays.asList(s1, s2));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.prepare();
+
+        PreparedSql sql = query.getSqls().get(0);
+        assertEquals(
+                "update SALESMAN set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ? and TENANT_ID = ?",
+                sql.getRawSql());
+        List<InParameter<?>> parameters = sql.getParameters();
+        assertEquals(6, parameters.size());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertTrue(parameters.get(1).getWrapper().get() == null);
+        assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
+        assertEquals("bbb", parameters.get(5).getWrapper().get());
+
+        sql = query.getSqls().get(1);
+        assertEquals(
+                "update SALESMAN set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ? and TENANT_ID = ?",
+                sql.getRawSql());
+        parameters = sql.getParameters();
+        assertEquals(6, parameters.size());
+        assertTrue(parameters.get(0).getWrapper().get() == null);
+        assertEquals(new BigDecimal(2000),
+                parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
+        assertEquals("bbb", parameters.get(5).getWrapper().get());
     }
 
 }

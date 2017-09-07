@@ -150,6 +150,8 @@ public interface EntityType<ENTITY> {
      */
     VersionPropertyType<? super ENTITY, ENTITY, ?, ?> getVersionPropertyType();
 
+    TenantIdPropertyType<? super ENTITY, ENTITY, ?, ?> getTenantIdPropertyType();
+
     /**
      * 識別子のプロパティ型のリストを返します。
      * 

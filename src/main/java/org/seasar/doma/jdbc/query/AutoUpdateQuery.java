@@ -61,7 +61,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         assertNotNull(method, entityType, entity);
         setupHelper();
         preUpdate();
-        prepareIdAndVersionPropertyTypes();
+        prepareSpecialPropertyTypes();
         validateIdExistent();
         prepareOptions();
         prepareOptimisticLock();
@@ -115,8 +115,10 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         builder.appendSql(" set ");
         helper.populateValues(entity, targetPropertyTypes, versionPropertyType,
                 builder);
+        boolean whereClauseAppended = false;
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
+            whereClauseAppended = true;
             for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(entity);
@@ -129,14 +131,29 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
             builder.cutBackSql(5);
         }
         if (!versionIgnored && versionPropertyType != null) {
-            if (idPropertyTypes.size() == 0) {
-                builder.appendSql(" where ");
-            } else {
+            if (whereClauseAppended) {
                 builder.appendSql(" and ");
+            } else {
+                builder.appendSql(" where ");
+                whereClauseAppended = true;
             }
             Property<ENTITY, ?> property = versionPropertyType.createProperty();
             property.load(entity);
             builder.appendSql(versionPropertyType.getColumnName(naming::apply,
+                    dialect::applyQuote));
+            builder.appendSql(" = ");
+            builder.appendParameter(property.asInParameter());
+        }
+        if (tenantIdPropertyType != null) {
+            if (whereClauseAppended) {
+                builder.appendSql(" and ");
+            } else {
+                builder.appendSql(" where ");
+                whereClauseAppended = true;
+            }
+            Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();
+            property.load(entity);
+            builder.appendSql(tenantIdPropertyType.getColumnName(naming::apply,
                     dialect::applyQuote));
             builder.appendSql(" = ");
             builder.appendParameter(property.asInParameter());
