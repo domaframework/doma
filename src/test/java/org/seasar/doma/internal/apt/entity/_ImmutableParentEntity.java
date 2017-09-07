@@ -31,10 +31,11 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-public class _ImmutableParentEntity extends
-        AbstractEntityType<ImmutableParentEntity> {
+public class _ImmutableParentEntity
+        extends AbstractEntityType<ImmutableParentEntity> {
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
@@ -93,7 +94,8 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public ImmutableParentEntity getOriginalStates(ImmutableParentEntity entity) {
+    public ImmutableParentEntity getOriginalStates(
+            ImmutableParentEntity entity) {
 
         return null;
     }
@@ -120,6 +122,11 @@ public class _ImmutableParentEntity extends
     @Override
     public VersionPropertyType<Object, ImmutableParentEntity, ?, ?> getVersionPropertyType() {
 
+        return null;
+    }
+
+    @Override
+    public TenantIdPropertyType<Object, ImmutableParentEntity, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

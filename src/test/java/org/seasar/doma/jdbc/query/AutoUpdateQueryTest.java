@@ -18,15 +18,16 @@ package org.seasar.doma.jdbc.query;
 import java.math.BigDecimal;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
+import example.entity.Salesman;
 import example.entity._Emp;
+import example.entity._Salesman;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -216,6 +217,38 @@ public class AutoUpdateQueryTest extends TestCase {
         query.prepare();
 
         assertFalse(query.isExecutable());
+    }
+
+    public void testTenantId() throws Exception {
+        Salesman salesman = new Salesman();
+        salesman.setId(10);
+        salesman.setName("aaa");
+        salesman.setTenantId("bbb");
+        salesman.setVersion(100);
+
+        AutoUpdateQuery<Salesman> query = new AutoUpdateQuery<Salesman>(
+                _Salesman.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setEntity(salesman);
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.prepare();
+
+        PreparedSql sql = query.getSql();
+        assertEquals(
+                "update SALESMAN set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ? and TENANT_ID = ?",
+                sql.getRawSql());
+
+        List<InParameter<?>> parameters = sql.getParameters();
+        assertEquals(6, parameters.size());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertNull(parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
+        assertEquals("bbb", parameters.get(5).getWrapper().get());
     }
 
 }

@@ -165,6 +165,11 @@ public final class _GenericListener1Entity extends org.seasar.doma.jdbc.entity.A
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.GenericListener1Entity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.GenericListener1Entity entity = new org.seasar.doma.internal.apt.entity.GenericListener1Entity();
         return entity;

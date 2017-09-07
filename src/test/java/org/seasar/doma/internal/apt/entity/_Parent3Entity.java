@@ -31,6 +31,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
@@ -123,6 +124,11 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     }
 
     @Override
+    public TenantIdPropertyType<Object, Parent3Entity, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public void preDelete(Parent3Entity entity,
             PreDeleteContext<Parent3Entity> context) {
     }
@@ -172,7 +178,8 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
     }
 
     @Override
-    public Parent3Entity newEntity(Map<String, Property<Parent3Entity, ?>> args) {
+    public Parent3Entity newEntity(
+            Map<String, Property<Parent3Entity, ?>> args) {
         return null;
     }
 

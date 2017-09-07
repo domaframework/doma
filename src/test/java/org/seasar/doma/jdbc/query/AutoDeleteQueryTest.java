@@ -17,15 +17,16 @@ package org.seasar.doma.jdbc.query;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 import example.entity.Emp;
+import example.entity.Salesman;
 import example.entity._Emp;
+import example.entity._Salesman;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -100,4 +101,34 @@ public class AutoDeleteQueryTest extends TestCase {
         assertEquals(1, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
     }
+
+    public void testTenantId() throws Exception {
+        Salesman salesman = new Salesman();
+        salesman.setId(10);
+        salesman.setName("aaa");
+        salesman.setTenantId("bbb");
+        salesman.setVersion(100);
+
+        AutoDeleteQuery<Salesman> query = new AutoDeleteQuery<Salesman>(
+                _Salesman.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setConfig(runtimeConfig);
+        query.setEntity(salesman);
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.prepare();
+
+        PreparedSql sql = query.getSql();
+        assertEquals(
+                "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?",
+                sql.getRawSql());
+
+        List<InParameter<?>> parameters = sql.getParameters();
+        assertEquals(3, parameters.size());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals("bbb", parameters.get(2).getWrapper().get());
+    }
+
 }

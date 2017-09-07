@@ -37,6 +37,7 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
 
@@ -163,6 +164,11 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
     @Override
     public VersionPropertyType<Object, IdGeneratedEmp, ?, ?> getVersionPropertyType() {
         return version;
+    }
+
+    @Override
+    public TenantIdPropertyType<Object, IdGeneratedEmp, ?, ?> getTenantIdPropertyType() {
+        return null;
     }
 
     @Override

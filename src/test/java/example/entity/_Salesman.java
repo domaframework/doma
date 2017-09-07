@@ -42,36 +42,38 @@ import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 @Generated("")
-public class _Emp extends AbstractEntityType<Emp> {
+public class _Salesman extends AbstractEntityType<Salesman> {
 
-    private static _Emp singleton = new _Emp();
-
-    private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<Emp> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(
-            Emp.class, "originalStates");
+    private static _Salesman singleton = new _Salesman();
 
     private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public final AssignedIdPropertyType<Object, Emp, Integer, Object> id = new AssignedIdPropertyType<>(
-            Emp.class, Integer.class, Integer.class,
+    public final AssignedIdPropertyType<Object, Salesman, Integer, Object> id = new AssignedIdPropertyType<>(
+            Salesman.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "id", "ID", __namingType, false);
 
-    public final DefaultPropertyType<Object, Emp, String, Object> name = new DefaultPropertyType<>(
-            Emp.class, String.class, String.class,
+    public final DefaultPropertyType<Object, Salesman, String, Object> name = new DefaultPropertyType<>(
+            Salesman.class, String.class, String.class,
             () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
             "name", "NAME", __namingType, true, true, false);
 
-    public final DefaultPropertyType<Object, Emp, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
-            Emp.class, BigDecimal.class, BigDecimal.class,
+    public final DefaultPropertyType<Object, Salesman, BigDecimal, BigDecimal> salary = new DefaultPropertyType<>(
+            Salesman.class, BigDecimal.class, BigDecimal.class,
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null,
             "salary", "SALARY", __namingType, true, true, false);
 
-    public final VersionPropertyType<Object, Emp, Integer, Integer> version = new VersionPropertyType<>(
-            Emp.class, Integer.class, Integer.class,
+    public final TenantIdPropertyType<Object, Salesman, String, String> tenantId = new TenantIdPropertyType<>(
+            Salesman.class, String.class, String.class,
+            () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
+            "tenantId", "TENANT_ID", __namingType, false);
+
+    public final VersionPropertyType<Object, Salesman, Integer, Integer> version = new VersionPropertyType<>(
+            Salesman.class, Integer.class, Integer.class,
             () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
             "version", "VERSION", __namingType, false);
 
-    private final String __name = "Emp";
+    private final String __name = "Salesman";
 
     private final String __catalogName = null;
 
@@ -79,26 +81,28 @@ public class _Emp extends AbstractEntityType<Emp> {
 
     private final String __tableName = "";
 
-    private final List<EntityPropertyType<Emp, ?>> __idPropertyTypes;
+    private final List<EntityPropertyType<Salesman, ?>> __idPropertyTypes;
 
-    private final List<EntityPropertyType<Emp, ?>> __entityPropertyTypes;
+    private final List<EntityPropertyType<Salesman, ?>> __entityPropertyTypes;
 
-    private final Map<String, EntityPropertyType<Emp, ?>> __entityPropertyTypeMap;
+    private final Map<String, EntityPropertyType<Salesman, ?>> __entityPropertyTypeMap;
 
-    private _Emp() {
-        List<EntityPropertyType<Emp, ?>> __idList = new ArrayList<>();
+    private _Salesman() {
+        List<EntityPropertyType<Salesman, ?>> __idList = new ArrayList<>();
         __idList.add(id);
         __idPropertyTypes = Collections.unmodifiableList(__idList);
-        List<EntityPropertyType<Emp, ?>> __list = new ArrayList<>();
+        List<EntityPropertyType<Salesman, ?>> __list = new ArrayList<>();
         __list.add(id);
         __list.add(name);
         __list.add(salary);
+        __list.add(tenantId);
         __list.add(version);
         __entityPropertyTypes = Collections.unmodifiableList(__list);
-        Map<String, EntityPropertyType<Emp, ?>> __map = new HashMap<>();
+        Map<String, EntityPropertyType<Salesman, ?>> __map = new HashMap<>();
         __map.put("id", id);
         __map.put("name", name);
         __map.put("salary", salary);
+        __map.put("tenantId", tenantId);
         __map.put("version", version);
         __entityPropertyTypeMap = Collections.unmodifiableMap(__map);
     }
@@ -109,15 +113,15 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public Emp newEntity(Map<String, Property<Emp, ?>> args) {
-        Emp entity = new Emp();
+    public Salesman newEntity(Map<String, Property<Salesman, ?>> args) {
+        Salesman entity = new Salesman();
         args.values().forEach(v -> v.save(entity));
         return entity;
     }
 
     @Override
-    public Class<Emp> getEntityClass() {
-        return Emp.class;
+    public Class<Salesman> getEntityClass() {
+        return Salesman.class;
     }
 
     @Override
@@ -126,77 +130,70 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<Salesman, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public EntityPropertyType<Emp, ?> getEntityPropertyType(
+    public EntityPropertyType<Salesman, ?> getEntityPropertyType(
             String propertyName) {
         return __entityPropertyTypeMap.get(propertyName);
     }
 
     @Override
-    public void saveCurrentStates(Emp __entity) {
-        Emp __currentStates = new Emp();
-        id.copy(__currentStates, __entity);
-        name.copy(__currentStates, __entity);
-        salary.copy(__currentStates, __entity);
-        version.copy(__currentStates, __entity);
-        __originalStatesAccessor.set(__entity, __currentStates);
+    public void saveCurrentStates(Salesman __entity) {
     }
 
     @Override
-    public Emp getOriginalStates(Emp entity) {
-        if (entity.originalStates instanceof Emp) {
-            Emp originalStates = (Emp) entity.originalStates;
-            return originalStates;
-        }
+    public Salesman getOriginalStates(Salesman entity) {
         return null;
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Salesman, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, Salesman, ?, ?> getVersionPropertyType() {
         return version;
     }
 
     @Override
-    public TenantIdPropertyType<Object, Emp, ?, ?> getTenantIdPropertyType() {
-        return null;
+    public TenantIdPropertyType<Object, Salesman, ?, ?> getTenantIdPropertyType() {
+        return tenantId;
     }
 
     @Override
-    public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<Salesman, ?>> getIdPropertyTypes() {
         return __idPropertyTypes;
     }
 
     @Override
-    public void preInsert(Emp entity, PreInsertContext<Emp> context) {
+    public void preInsert(Salesman entity, PreInsertContext<Salesman> context) {
     }
 
     @Override
-    public void preUpdate(Emp entity, PreUpdateContext<Emp> context) {
+    public void preUpdate(Salesman entity, PreUpdateContext<Salesman> context) {
     }
 
     @Override
-    public void preDelete(Emp entity, PreDeleteContext<Emp> context) {
+    public void preDelete(Salesman entity, PreDeleteContext<Salesman> context) {
     }
 
     @Override
-    public void postInsert(Emp entity, PostInsertContext<Emp> context) {
+    public void postInsert(Salesman entity,
+            PostInsertContext<Salesman> context) {
     }
 
     @Override
-    public void postUpdate(Emp entity, PostUpdateContext<Emp> context) {
+    public void postUpdate(Salesman entity,
+            PostUpdateContext<Salesman> context) {
     }
 
     @Override
-    public void postDelete(Emp entity, PostDeleteContext<Emp> context) {
+    public void postDelete(Salesman entity,
+            PostDeleteContext<Salesman> context) {
     }
 
     @Override
@@ -233,7 +230,7 @@ public class _Emp extends AbstractEntityType<Emp> {
         return false;
     }
 
-    public static _Emp getSingletonInternal() {
+    public static _Salesman getSingletonInternal() {
         return singleton;
     }
 }

@@ -181,6 +181,11 @@ public final class _OptionalIntEntity extends org.seasar.doma.jdbc.entity.Abstra
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OptionalIntEntity, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.OptionalIntEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.OptionalIntEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.OptionalIntEntity entity = new org.seasar.doma.internal.apt.entity.OptionalIntEntity();
         if (__args.get("id") != null) __args.get("id").save(entity);

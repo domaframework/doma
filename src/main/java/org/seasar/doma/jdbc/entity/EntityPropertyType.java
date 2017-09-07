@@ -109,6 +109,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
      */
     boolean isVersion();
 
+    boolean isTenantId();
+
     /**
      * 挿入可能かどうかを返します。
      * 

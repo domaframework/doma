@@ -60,6 +60,8 @@ public class EntityMeta implements TypeElementMeta {
 
     protected EntityPropertyMeta versionPropertyMeta;
 
+    protected EntityPropertyMeta tenantIdPropertyMeta;
+
     protected EntityPropertyMeta generatedIdPropertyMeta;
 
     protected String entityName;
@@ -127,6 +129,9 @@ public class EntityMeta implements TypeElementMeta {
         if (propertyMeta.isVersion()) {
             versionPropertyMeta = propertyMeta;
         }
+        if (propertyMeta.isTenantId()) {
+            tenantIdPropertyMeta = propertyMeta;
+        }
     }
 
     public List<EntityPropertyMeta> getAllPropertyMetas() {
@@ -146,6 +151,14 @@ public class EntityMeta implements TypeElementMeta {
 
     public EntityPropertyMeta getVersionPropertyMeta() {
         return versionPropertyMeta;
+    }
+
+    public boolean hasTenantIdPropertyMeta() {
+        return tenantIdPropertyMeta != null;
+    }
+
+    public EntityPropertyMeta getTenanatIdPropertyMeta() {
+        return tenantIdPropertyMeta;
     }
 
     public boolean hasGeneratedIdPropertyMeta() {

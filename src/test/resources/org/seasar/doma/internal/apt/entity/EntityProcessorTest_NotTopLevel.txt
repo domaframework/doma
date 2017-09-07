@@ -165,6 +165,11 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge, ?>> __args) {
         org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge entity = new org.seasar.doma.internal.apt.entity.NotTopLevelEntity.Hoge();
         return entity;

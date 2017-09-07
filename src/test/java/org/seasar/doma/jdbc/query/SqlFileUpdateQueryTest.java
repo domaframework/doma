@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import junit.framework.TestCase;
-
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -38,10 +36,12 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import junit.framework.TestCase;
 
 /**
  * @author nakamura-to
@@ -59,7 +59,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
         query.setCallerClassName("aaa");
@@ -94,7 +95,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
         query.setCallerClassName("aaa");
@@ -123,7 +125,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
         query.setNullExcluded(true);
@@ -152,7 +155,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp,
                 new PreUpdate(_Emp.getSingletonInternal()));
@@ -183,7 +187,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
         query.setVersionIgnored(true);
@@ -213,7 +218,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
         query.setIncludedPropertyNames("name");
@@ -243,7 +249,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
         query.setExcludedPropertyNames("name");
@@ -271,7 +278,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
         query.setConfig(runtimeConfig);
         query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
         query.setCallerClassName("aaa");
@@ -286,7 +294,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
     public void testNonEntity() throws Exception {
         SqlFileUpdateQuery query = new SqlFileUpdateQuery();
         query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setSqlFilePath("META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testNonEntity.sql");
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testNonEntity.sql");
         query.setConfig(runtimeConfig);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -369,6 +378,11 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
         public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
             return emp.getVersionPropertyType();
+        }
+
+        @Override
+        public TenantIdPropertyType<Object, Emp, ?, ?> getTenantIdPropertyType() {
+            return emp.getTenantIdPropertyType();
         }
 
         public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {

@@ -60,7 +60,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
         assertNotNull(method, entityType, entity);
         executable = true;
         preInsert();
-        prepareIdAndVersionPropertyTypes();
+        prepareSpecialPropertyTypes();
         prepareOptions();
         prepareTargetPropertyType();
         prepareIdValue();
@@ -79,8 +79,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements
     }
 
     @Override
-    protected void prepareIdAndVersionPropertyTypes() {
-        super.prepareIdAndVersionPropertyTypes();
+    protected void prepareSpecialPropertyTypes() {
+        super.prepareSpecialPropertyTypes();
         generatedIdPropertyType = entityType.getGeneratedIdPropertyType();
         if (generatedIdPropertyType != null) {
             idGenerationConfig = new IdGenerationConfig(config, entityType);

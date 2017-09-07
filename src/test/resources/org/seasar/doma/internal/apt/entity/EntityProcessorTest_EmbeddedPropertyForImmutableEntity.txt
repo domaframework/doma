@@ -176,6 +176,11 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableUser, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.ImmutableUser newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.ImmutableUser, ?>> __args) {
         return new org.seasar.doma.internal.apt.entity.ImmutableUser(
             (java.lang.Integer)(__args.get("id") != null ? __args.get("id").get() : null),

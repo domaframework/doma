@@ -118,8 +118,10 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql(" set ");
         helper.populateValues(currentEntity, targetPropertyTypes,
                 versionPropertyType, builder);
+        boolean whereClauseAppended = false;
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
+            whereClauseAppended = true;
             for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
                 Property<ENTITY, ?> property = propertyType.createProperty();
                 property.load(currentEntity);
@@ -132,10 +134,11 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             builder.cutBackSql(5);
         }
         if (versionPropertyType != null && !versionIgnored) {
-            if (idPropertyTypes.size() == 0) {
-                builder.appendSql(" where ");
-            } else {
+            if (whereClauseAppended) {
                 builder.appendSql(" and ");
+            } else {
+                builder.appendSql(" where ");
+                whereClauseAppended = true;
             }
             Property<ENTITY, ?> property = versionPropertyType.createProperty();
             property.load(currentEntity);
@@ -144,6 +147,22 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             builder.appendSql(" = ");
             builder.appendParameter(property.asInParameter());
         }
+        if (tenantIdPropertyType != null) {
+            if (whereClauseAppended) {
+                builder.appendSql(" and ");
+            } else {
+                builder.appendSql(" where ");
+                whereClauseAppended = true;
+            }
+            Property<ENTITY, ?> property = tenantIdPropertyType
+                    .createProperty();
+            property.load(currentEntity);
+            builder.appendSql(tenantIdPropertyType.getColumnName(naming::apply,
+                    dialect::applyQuote));
+            builder.appendSql(" = ");
+            builder.appendParameter(property.asInParameter());
+        }
+
         PreparedSql sql = builder.build(this::comment);
         sqls.add(sql);
     }

@@ -175,6 +175,11 @@ public final class _LombokValue extends org.seasar.doma.jdbc.entity.AbstractEnti
     }
 
     @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.LombokValue, ?, ?> getTenantIdPropertyType() {
+        return null;
+    }
+
+    @Override
     public org.seasar.doma.internal.apt.entity.LombokValue newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.entity.LombokValue, ?>> __args) {
         return new org.seasar.doma.internal.apt.entity.LombokValue(
             (java.lang.Integer)(__args.get("id") != null ? __args.get("id").get() : null),

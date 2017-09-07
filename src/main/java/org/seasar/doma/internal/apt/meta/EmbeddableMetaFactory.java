@@ -47,6 +47,7 @@ import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.ParameterName;
+import org.seasar.doma.TenantId;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.Constants;
@@ -205,6 +206,11 @@ public class EmbeddableMetaFactory implements
                                         fieldElement.getSimpleName() });
                     } else if (fieldElement.getAnnotation(Version.class) != null) {
                         throw new AptException(Message.DOMA4290, env,
+                                fieldElement, new Object[] {
+                                        embeddableElement.getQualifiedName(),
+                                        fieldElement.getSimpleName() });
+                    } else if (fieldElement.getAnnotation(TenantId.class) != null) {
+                        throw new AptException(Message.DOMA4443, env,
                                 fieldElement, new Object[] {
                                         embeddableElement.getQualifiedName(),
                                         fieldElement.getSimpleName() });

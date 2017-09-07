@@ -69,6 +69,9 @@ public class BatchUpdateQueryHelper<E> {
                 targetPropertyTypes.add(p);
                 continue;
             }
+            if (p.isTenantId()) {
+                continue;
+            }
             if (!isTargetPropertyName(p.getName())) {
                 continue;
             }
