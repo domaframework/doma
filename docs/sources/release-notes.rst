@@ -2,6 +2,18 @@
 リリースノート
 ==============
 
+v2.17.0: 2017-09-09
+======================
+
+* `GH203 <https://github.com/domaframework/doma/pull/203>`_
+  Add `@TenantId` to support the partitioned approach of multi-tenancy
+* `GH202 <https://github.com/domaframework/doma/pull/202>`_
+  Update url
+* `GH200 <https://github.com/domaframework/doma/pull/200>`_
+  Fix typo
+* `GH199 <https://github.com/domaframework/doma/pull/199>`_
+  Fix the use of the wrong class `java.lang.reflect.Modifier`
+
 v2.16.1: 2017-05-14
 ======================
 
