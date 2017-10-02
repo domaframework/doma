@@ -144,6 +144,21 @@ public class OracleDialect extends Oracle11Dialect {
      */
     public static class OracleExpressionFunctions
             extends Oracle11ExpressionFunctions {
+
+        private final static char[] DEFAULT_WILDCARDS = { '%', '_' };
+
+        public OracleExpressionFunctions() {
+            super(DEFAULT_WILDCARDS);
+        }
+
+        public OracleExpressionFunctions(char[] wildcards) {
+            super(wildcards);
+        }
+
+        public OracleExpressionFunctions(char escapeChar, char[] wildcards) {
+            super(escapeChar, wildcards);
+        }
+
     }
 
     /**
