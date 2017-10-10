@@ -61,7 +61,7 @@ ignoreVersion
 
 .. code-block:: java
 
-  @Delete(includeVersion = true)
+  @Delete(ignoreVersion = true)
   int delete(Employee employee);
 
 suppressOptimisticLockException
@@ -128,7 +128,7 @@ ignoreVersion
 
 .. code-block:: java
 
-  @Delete(sqlFile = true, includeVersion = true)
+  @Delete(sqlFile = true, ignoreVersion = true)
   int delete(Employee employee);
 
 suppressOptimisticLockException
