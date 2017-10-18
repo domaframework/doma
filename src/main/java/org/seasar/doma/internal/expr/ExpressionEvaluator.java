@@ -838,7 +838,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
             } else if (clazz == Float.class || clazz == float.class) {
                 return value.floatValue();
             } else if (clazz == Long.class || clazz == long.class) {
-                return value.floatValue();
+                return value.longValue();
             } else if (clazz == Integer.class || clazz == int.class) {
                 return value.intValue();
             } else if (clazz == Short.class || clazz == short.class) {
