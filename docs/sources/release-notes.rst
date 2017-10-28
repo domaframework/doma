@@ -2,6 +2,18 @@
 リリースノート
 ==============
 
+v2.18.0: 2017-10-28
+======================
+
+* `GH208 <https://github.com/domaframework/doma/pull/208>`_
+  Use `javax.annotation.processing.Generated` on JDK 9
+* `GH207 <https://github.com/domaframework/doma/pull/207>`_
+  If the result of the expression is `Long`, it is evaluated as `Float`.
+* `GH206 <https://github.com/domaframework/doma/pull/206>`_
+  Fix a wrong annotation parameter in a Docs example. 
+* `GH205 <https://github.com/domaframework/doma/pull/205>`_
+  Remove full-width `％` and `＿` from wild cards in Oracle dialect
+
 v2.17.0: 2017-09-09
 ======================
 
