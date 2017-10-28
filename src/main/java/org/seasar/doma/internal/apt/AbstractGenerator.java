@@ -21,10 +21,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Formatter;
 
-import javax.annotation.Generated;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
@@ -111,9 +112,15 @@ public abstract class AbstractGenerator implements Generator {
     }
 
     protected void printGenerated() {
-        iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\")%n",
-                Generated.class.getName(), Artifact.getName(),
-                Options.getVersion(env), Options.getDate(env));
+        String annotationElements = String.format(
+                "value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\"",
+                Artifact.getName(), Options.getVersion(env),
+                Options.getDate(env));
+        TypeMirror generatedTypeMirror = getGeneratedTypeMirror();
+        if (generatedTypeMirror == null) {
+            iprint("// %s%n", annotationElements);
+        }
+        iprint("@%s(%s)%n", generatedTypeMirror, annotationElements);
     }
 
     protected void printValidateVersionStaticInitializer() {
@@ -163,6 +170,21 @@ public abstract class AbstractGenerator implements Generator {
         if (formatter != null) {
             formatter.close();
         }
+    }
+
+    private TypeMirror getGeneratedTypeMirror() {
+        Elements elements = env.getElementUtils();
+        TypeElement java8 = elements
+                .getTypeElement("javax.annotation.Generated");
+        if (java8 != null) {
+            return java8.asType();
+        }
+        TypeElement java9 = elements
+                .getTypeElement("javax.annotation.processing.Generated");
+        if (java9 != null) {
+            return java9.asType();
+        }
+        return null;
     }
 
 }
