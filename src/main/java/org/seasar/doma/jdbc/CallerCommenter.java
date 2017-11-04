@@ -16,7 +16,8 @@
 package org.seasar.doma.jdbc;
 
 /**
- * A commenter of an SQL issuer.
+ * A commenter that appends information about the caller class and the caller
+ * method.
  */
 public class CallerCommenter implements Commenter {
 

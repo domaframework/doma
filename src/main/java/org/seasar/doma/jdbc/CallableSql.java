@@ -15,11 +15,14 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.sql.CallableStatement;
 import java.util.List;
 import java.util.function.Function;
 
 /**
  * A callable SQL.
+ * <p>
+ * This is related to {@link CallableStatement}.
  */
 public class CallableSql extends AbstractSql<SqlParameter> {
 

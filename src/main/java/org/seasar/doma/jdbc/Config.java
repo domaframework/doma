@@ -183,7 +183,7 @@ public interface Config {
      * If the value is greater than or equal to 1, it is passed to
      * {@link Statement#setMaxRows(int)}.
      * 
-     * @return he maximum number of rows
+     * @return the maximum number of rows
      * @see Statement#setMaxRows(int)
      */
     default int getMaxRows() {

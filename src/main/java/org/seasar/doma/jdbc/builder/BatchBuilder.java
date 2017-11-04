@@ -15,10 +15,10 @@
  */
 package org.seasar.doma.jdbc.builder;
 
-import java.util.function.Supplier;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcException;
@@ -28,10 +28,9 @@ import org.seasar.doma.jdbc.query.SqlBatchModifyQuery;
 import org.seasar.doma.message.Message;
 
 /**
- * バッチ更新で利用される、SQL文を組み立てるクラスです。
+ * A builder that builds an SQL statement for a batch execution.
  *
  * @author bakenezumi
- * @since 2.14.0
  */
 public abstract class BatchBuilder {
 
@@ -69,37 +68,37 @@ public abstract class BatchBuilder {
     }
 
     /**
-     * SQLの断片を追加します。
-     *
+     * Appends an SQL fragment.
+     * 
      * @param sql
-     *            SQLの断片
-     * @return このインスタンス
+     *            the SQL fragment
+     * @return a builder
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code sql} is {@code null}
      */
     public abstract BatchBuilder sql(String sql);
 
     /**
-     * 最後に追加したSQLもしくはパラメータを削除します。
-     *
-     * @return このインスタンス
+     * Removes the last SQL fragment or parameter.
+     * 
+     * @return a builder
      */
     public abstract BatchBuilder removeLast();
 
     /**
-     * パラメータを追加します。
+     * Appends a parameter.
      * <p>
-     * パラメータの型には、基本型とドメインクラスを指定できます。
-     *
+     * The parameter type must be one of basic types or holder types.
+     * 
      * @param <P>
-     *            パラメータの型
+     *            the parameter type
      * @param paramClass
-     *            パラメータの要素のクラス
+     *            the parameter class
      * @param param
-     *            パラメータ
-     * @return このインスタンス
+     *            the parameter
+     * @return a builder
      * @throws DomaNullPointerException
-     *             {@code paramClass} が {@code null} の場合
+     *             if {@code paramClass} is {@code null}
      */
     public <P> BatchBuilder param(Class<P> paramClass, P param) {
         if (paramClass == null) {
@@ -109,19 +108,19 @@ public abstract class BatchBuilder {
     }
 
     /**
-     * リテラルとしてパラメータを追加します。
+     * Appends a parameter as literal.
      * <p>
-     * パラメータの型には、基本型とドメインクラスを指定できます。
-     *
+     * The parameter type must be one of basic types or holder types.
+     * 
      * @param <P>
-     *            パラメータの型
+     *            the parameter type
      * @param paramClass
-     *            パラメータのクラス
+     *            the parameter class
      * @param param
-     *            パラメータ
-     * @return このインスタンス
+     *            the parameter
+     * @return a builder
      * @throws DomaNullPointerException
-     *             {@code paramClass} が {@code null} の場合
+     *             if {@code paramClass} is {@code null}
      */
     public <P> BatchBuilder literal(Class<P> paramClass, P param) {
         if (paramClass == null) {
@@ -248,19 +247,16 @@ public abstract class BatchBuilder {
                 throw new JdbcException(Message.DOMA2230);
             }
             if (paramClass != batchParam.paramClass) {
-                // BatchParamの初期値が型:Object、値:nullの場合に限り型を上書き
                 if (batchParam.paramClass == Object.class) {
                     final BatchParam<P> newBatchParam = new BatchParam<P>(batchParam, paramClass);
                     newBatchParam.add(param);
                     helper.modifyParam(newBatchParam);
                 } else if (param == null && paramClass == Object.class) {
-                    // 型違いは型:Object、値:nullの場合のみ許可
                     batchParam.add(null);
                 } else {
                     throw new JdbcException(Message.DOMA2229);
                 }
             } else {
-                // paramClass == batchParam.paramClass であるため下記キャストは常に安全
                 @SuppressWarnings("unchecked")
                 final BatchParam<P> castedBatchParam = (BatchParam<P>) batchParam;
                 castedBatchParam.add(param);

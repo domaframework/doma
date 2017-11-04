@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc;
 
 /**
- * Default values for a {@link Config} object.
+ * Default values for {@link Config} objects.
  */
 public final class ConfigSupport {
 

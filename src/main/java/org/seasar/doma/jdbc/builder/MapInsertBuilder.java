@@ -28,11 +28,10 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
- * MAPからINSERT文を自動的に組み立てて実行するクラスです。
+ * A builder that builds an SQL INSERT statement from a map.
  * <p>
- * このクラスはスレッドセーフではありません。
+ * This is not thread safe.
  * 
- * <h3>例</h3>
  * <h4>Java</h4>
  * 
  * <pre>
@@ -43,7 +42,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * }});
  * </pre>
  * 
- * <h4>実行されるSQL</h4>
+ * <h4>built SQL</h4>
  * 
  * <pre>
  * insert into Emp
@@ -51,9 +50,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * values('SMITH', 1000)
  * </pre>
  * 
- * 
  * @author bakenezumi
- * @since 2.13.1
  */
 public class MapInsertBuilder {
 
@@ -68,15 +65,15 @@ public class MapInsertBuilder {
     }
 
     /**
-     * ファクトリメソッドです。
+     * Creates a new instance.
      * 
      * @param config
-     *            設定
+     *            the configuration
      * @param tableName
-     *            テーブル名
-     * @return INSERT文を組み立てるビルダー
+     *            the table name
+     * @return a builder
      * @throws DomaNullPointerException
-     *             引数が{@code null} の場合
+     *             if {@code config} or {@code tableName} is {@code null}
      */
     public static MapInsertBuilder newInstance(Config config, String tableName) {
         if (config == null) {
@@ -89,19 +86,19 @@ public class MapInsertBuilder {
     }
 
     /**
-     * パラメータからINSERT文を組み立てて実行します。
+     * Executes an SQL INSERT statement.
      * 
-     * @return 更新件数
+     * @return the affected rows count
      * @param parameter
-     *            INSERT文の生成元となるMap
+     *            the parameter
      * @throws DomaNullPointerException
-     *             parameterがnullの場合
+     *             if {@code parameter} is {@code null}
      * @throws DomaIllegalArgumentException
-     *             parameterが空の場合
+     *             if {@code parameter} is empty
      * @throws UniqueConstraintException
-     *             一意制約違反が発生した場合
+     *             if an unique constraint violation occurs
      * @throws JdbcException
-     *             上記以外でJDBCに関する例外が発生した場合
+     *             if a JDBC related error occurs
      */
     public int execute(Map<String, Object> parameter) {
         if (parameter == null) {
@@ -120,8 +117,6 @@ public class MapInsertBuilder {
             if (value == null) {
                 builder.sql("NULL").sql(", ");
             } else {
-                // 静的な型指定が行えないためObjectにキャストしている
-                // BatchBuilder内で下記clazzを利用した型チェックが行われているため安全である
                 @SuppressWarnings("unchecked")
                 final Class<Object> clazz = (Class<Object>) value.getClass();
                 builder.param(clazz, value).sql(", ");
@@ -132,12 +127,12 @@ public class MapInsertBuilder {
     }
 
     /**
-     * クエリタイムアウト（秒）を設定します。
+     * Sets the query timeout limit in seconds.
      * <p>
-     * 指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
+     * If not specified, the value of {@link Config#getQueryTimeout()} is used.
      * 
      * @param queryTimeout
-     *            クエリタイムアウト（秒）
+     *            the query timeout limit in seconds
      * @see Statement#setQueryTimeout(int)
      */
     public void queryTimeout(int queryTimeout) {
@@ -145,38 +140,38 @@ public class MapInsertBuilder {
     }
 
     /**
-     * SQLのログの出力形式を設定します。
+     * Sets the SQL log format.
      * 
      * @param sqlLogType
-     *            SQLのログの出力形式
+     *            the SQL log format type
      */
     public void sqlLogType(SqlLogType sqlLogType) {
         builder.sqlLogType(sqlLogType);
     }
 
     /**
-     * 呼び出し元のクラス名です。
+     * Sets the caller class name.
      * <p>
-     * 指定しない場合このクラスの名前が使用されます。
+     * If not specified, the class name of this instance is used.
      * 
      * @param className
-     *            呼び出し元のクラス名
+     *            the caller class name
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code className} is {@code null}
      */
     public void callerClassName(String className) {
         builder.callerClassName(className);
     }
 
     /**
-     * 呼び出し元のメソッド名です。
+     * Sets the caller method name.
      * <p>
-     * 指定しない場合このSQLを生成するメソッド（{@link #execute})）の名前が使用されます。
-     *
+     * if not specified, {@code execute} is used.
+     * 
      * @param methodName
-     *            呼び出し元のメソッド名
+     *            the caller method name
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code methodName} is {@code null}
      */
     public void callerMethodName(String methodName) {
         if (methodName == null) {
@@ -186,9 +181,9 @@ public class MapInsertBuilder {
     }
 
     /**
-     * 組み立てられたSQLを返します。
+     * Returns the built SQL.
      * 
-     * @return 組み立てられたSQL
+     * @return the built SQL
      */
     public Sql<?> getSql() {
         return builder.getSql();

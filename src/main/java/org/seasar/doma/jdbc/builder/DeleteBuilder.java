@@ -26,11 +26,10 @@ import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.query.SqlDeleteQuery;
 
 /**
- * DELETE文を組み立て実行するクラスです。
+ * A builder for an SQL DELETE statement.
  * <p>
- * このクラスはスレッドセーフではありません。
+ * This is not thread safe.
  * 
- * <h3>例</h3>
  * <h4>Java</h4>
  * 
  * <pre>
@@ -43,7 +42,7 @@ import org.seasar.doma.jdbc.query.SqlDeleteQuery;
  * builder.execute();
  * </pre>
  * 
- * <h4>実行されるSQL</h4>
+ * <h4>built SQL</h4>
  * 
  * <pre>
  * delete from Emp
@@ -81,13 +80,13 @@ public class DeleteBuilder {
     }
 
     /**
-     * ファクトリメソッドです。
+     * Creates a new instance.
      * 
      * @param config
-     *            設定
-     * @return DELETE文を組み立てるビルダー
+     *            the configuration
+     * @return a builder
      * @throws DomaNullPointerException
-     *             引数が{@code null} の場合
+     *             if {@code config} is {@code null}
      */
     public static DeleteBuilder newInstance(Config config) {
         if (config == null) {
@@ -97,13 +96,13 @@ public class DeleteBuilder {
     }
 
     /**
-     * SQLの断片を追加します。
+     * Appends an SQL fragment.
      * 
      * @param sql
-     *            SQLの断片
-     * @return このインスタンス
+     *            the SQL fragment
+     * @return a builder
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code sql} is {@code null}
      */
     public DeleteBuilder sql(String sql) {
         if (sql == null) {
@@ -114,9 +113,9 @@ public class DeleteBuilder {
     }
 
     /**
-     * 最後に追加したSQLもしくはパラメータを削除します。
+     * Removes the last SQL fragment or parameter.
      * 
-     * @return このインスタンス
+     * @return a builder
      */
     public DeleteBuilder removeLast() {
         helper.removeLast();
@@ -124,19 +123,19 @@ public class DeleteBuilder {
     }
 
     /**
-     * パラメータを追加します。
+     * Appends a parameter.
      * <p>
-     * パラメータの型には、基本型とドメインクラスを指定できます。
+     * The parameter type must be one of basic types or holder types.
      * 
      * @param <P>
-     *            パラメータの型
+     *            the parameter type
      * @param paramClass
-     *            パラメータのクラス
+     *            the parameter class
      * @param param
-     *            パラメータ
-     * @return このインスタンス
+     *            the parameter
+     * @return a builder
      * @throws DomaNullPointerException
-     *             {@code parameterClass} が {@code null} の場合
+     *             if {@code paramClass} is {@code null}
      */
     public <P> DeleteBuilder param(Class<P> paramClass, P param) {
         if (paramClass == null) {
@@ -146,19 +145,19 @@ public class DeleteBuilder {
     }
 
     /**
-     * リテラルとしてパラメータを追加します。
+     * Appends a parameter as literal.
      * <p>
-     * パラメータの型には、基本型とドメインクラスを指定できます。
+     * The parameter type must be one of basic types or holder types.
      * 
      * @param <P>
-     *            パラメータの型
+     *            the parameter type
      * @param paramClass
-     *            パラメータのクラス
+     *            the parameter class
      * @param param
-     *            パラメータ
-     * @return このインスタンス
+     *            the parameter
+     * @return a builder
      * @throws DomaNullPointerException
-     *             {@code parameterClass} が {@code null} の場合
+     *             if {@code paramClass} is {@code null}
      */
     public <P> DeleteBuilder literal(Class<P> paramClass, P param) {
         if (paramClass == null) {
@@ -174,11 +173,11 @@ public class DeleteBuilder {
     }
 
     /**
-     * SQLを実行します。
+     * Executes an SQL DELETE statement.
      * 
-     * @return 更新件数
+     * @return the affected rows count
      * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     *             if a JDBC related error occurs
      */
     public int execute() {
         if (query.getMethodName() == null) {
@@ -201,12 +200,12 @@ public class DeleteBuilder {
     }
 
     /**
-     * クエリタイムアウト（秒）を設定します。
+     * Sets the query timeout limit in seconds.
      * <p>
-     * 指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
+     * If not specified, the value of {@link Config#getQueryTimeout()} is used.
      * 
      * @param queryTimeout
-     *            クエリタイムアウト（秒）
+     *            the query timeout limit in seconds
      * @see Statement#setQueryTimeout(int)
      */
     public void queryTimeout(int queryTimeout) {
@@ -214,10 +213,10 @@ public class DeleteBuilder {
     }
 
     /**
-     * SQLのログの出力形式を設定します。
+     * Sets the SQL log format.
      * 
      * @param sqlLogType
-     *            SQLのログの出力形式
+     *            the SQL log format type
      */
     public void sqlLogType(SqlLogType sqlLogType) {
         if (sqlLogType == null) {
@@ -227,14 +226,14 @@ public class DeleteBuilder {
     }
 
     /**
-     * 呼び出し元のクラス名です。
+     * Sets the caller class name.
      * <p>
-     * 指定しない場合このクラスの名前が使用されます。
+     * If not specified, the class name of this instance is used.
      * 
      * @param className
-     *            呼び出し元のクラス名
+     *            the caller class name
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code className} is {@code null}
      */
     public void callerClassName(String className) {
         if (className == null) {
@@ -244,14 +243,14 @@ public class DeleteBuilder {
     }
 
     /**
-     * 呼び出し元のメソッド名です。
+     * Sets the caller method name.
      * <p>
-     * 指定しない場合このSQLを生成するメソッド（{@link #execute()})）の名前が使用されます。
+     * if not specified, {@code execute} is used.
      * 
      * @param methodName
-     *            呼び出し元のメソッド名
+     *            the caller method name
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code methodName} is {@code null}
      */
     public void callerMethodName(String methodName) {
         if (methodName == null) {
@@ -261,9 +260,9 @@ public class DeleteBuilder {
     }
 
     /**
-     * 組み立てられたSQLを返します。
+     * Returns the built SQL.
      * 
-     * @return 組み立てられたSQL
+     * @return the built SQL
      */
     public Sql<?> getSql() {
         if (query.getMethodName() == null) {

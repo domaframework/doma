@@ -16,9 +16,8 @@
 package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
-
-import java.util.function.BiConsumer;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
@@ -29,11 +28,10 @@ import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.query.SqlBatchDeleteQuery;
 
 /**
- * DELETE文を組み立てバッチ実行するクラスです。
+ * An executor that execute SQL DELETE statements in batches.
  * <p>
- * このクラスはスレッドセーフではありません。
+ * This is not thread safe.
  *
- * <h3>例</h3>
  * <h4>Java</h4>
  *
  * <pre>
@@ -51,7 +49,7 @@ import org.seasar.doma.jdbc.query.SqlBatchDeleteQuery;
  * });
  * </pre>
  *
- * <h4>実行されるSQL</h4>
+ * <h4>built SQLs</h4>
  *
  * <pre>
  * delete from Emp
@@ -67,9 +65,7 @@ import org.seasar.doma.jdbc.query.SqlBatchDeleteQuery;
  * salary = 2000
  * </pre>
  *
- *
  * @author bakenezumi
- * @since 2.14.0
  */
 public class BatchDeleteExecutor {
 
@@ -83,13 +79,13 @@ public class BatchDeleteExecutor {
     }
 
     /**
-     * ファクトリメソッドです。
-     *
+     * Creates a new instance.
+     * 
      * @param config
-     *            設定
-     * @return INSERT文をバッチ実行するビルダー
+     *            the configuration
+     * @return a executor
      * @throws DomaNullPointerException
-     *             引数が{@code null} の場合
+     *             if {@code config} is {@code null}
      */
     public static BatchDeleteExecutor newInstance(Config config) {
         if (config == null) {
@@ -99,12 +95,12 @@ public class BatchDeleteExecutor {
     }
 
     /**
-     * クエリタイムアウト（秒）を設定します。
+     * Sets the query timeout limit in seconds.
      * <p>
-     * 指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
-     *
+     * If not specified, the value of {@link Config#getQueryTimeout()} is used.
+     * 
      * @param queryTimeout
-     *            クエリタイムアウト（秒）
+     *            the query timeout limit in seconds
      * @see Statement#setQueryTimeout(int)
      */
     public void queryTimeout(int queryTimeout) {
@@ -112,10 +108,10 @@ public class BatchDeleteExecutor {
     }
 
     /**
-     * SQLのログの出力形式を設定します。
-     *
+     * Sets the SQL log format.
+     * 
      * @param sqlLogType
-     *            SQLのログの出力形式
+     *            the SQL log format type
      */
     public void sqlLogType(SqlLogType sqlLogType) {
         if (sqlLogType == null) {
@@ -125,26 +121,26 @@ public class BatchDeleteExecutor {
     }
 
     /**
-     * バッチサイズを設定します。
+     * Sets the batch size.
      * <p>
-     * 指定しない場合、 {@link Config#getBatchSize()} が使用されます。
+     * If not specified, the value of {@link Config#getBatchSize()} is used.
      *
      * @param batchSize
-     *            バッチサイズ
+     *            the batch size
      */
     public void batchSize(int batchSize) {
         query.setBatchSize(batchSize);
     }
 
     /**
-     * 呼び出し元のクラス名です。
+     * Sets the caller class name.
      * <p>
-     * 指定しない場合このクラスの名前が使用されます。
-     *
+     * If not specified, the class name of this instance is used.
+     * 
      * @param className
-     *            呼び出し元のクラス名
+     *            the caller class name
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code className} is {@code null}
      */
     public void callerClassName(String className) {
         if (className == null) {
@@ -154,14 +150,14 @@ public class BatchDeleteExecutor {
     }
 
     /**
-     * 呼び出し元のメソッド名です。
+     * Sets the caller method name.
      * <p>
-     * 指定しない場合このSQLを生成するメソッド（{@link #execute})）の名前が使用されます。
-     *
+     * if not specified, {@code execute} is used.
+     * 
      * @param methodName
-     *            呼び出し元のメソッド名
+     *            the caller method name
      * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     *             if {@code methodName} is {@code null}
      */
     public void callerMethodName(String methodName) {
         if (methodName == null) {
@@ -171,21 +167,20 @@ public class BatchDeleteExecutor {
     }
 
     /**
-     * SQLを実行します。
+     * Executes SQL DELETE statements.
      *
      * @param <P>
-     *            パラメータの型
+     *            the parameter type
      * @param params
-     *            1要素が1クエリのパラメータの元となる {@link java.lang.Iterable} なもの
+     *            the parameters
      * @param buildConsumer
-     *            {@link BatchBuilder} を使って1回分のクエリを組み立てるラムダ式。 第一パラメータには params
-     *            の要素が、 第二パラメータには {@link BatchBuilder} のインスタンスが渡ります。
-     * @return 更新された件数の配列。 戻り値の配列の要素の数はパラメータのparamsの要素の数と等しくなります。
-     *         配列のそれぞれの要素が更新された件数を返します。
+     *            the code block that builds SQL statements
+     * @return the array whose each element contains affected rows count. The
+     *         array length is equal to the {@code parameter} size.
      * @throws DomaNullPointerException
-     *             引数が{@code null} の場合
+     *             if {@code params} or {@code buildConsumer} is {@code null}
      * @throws JdbcException
-     *             上記以外でJDBCに関する例外が発生した場合
+     *             if a JDBC related error occurs
      */
     public <P> int[] execute(Iterable<P> params, BiConsumer<P, BatchBuilder> buildConsumer) {
         if (params == null) {
@@ -206,9 +201,9 @@ public class BatchDeleteExecutor {
     }
 
     /**
-     * 組み立てられたSQLを返します。
+     * Returns the built SQL.
      * 
-     * @return 組み立てられたSQL
+     * @return the built SQL
      */
     public List<? extends Sql<?>> getSqls() {
         return query.getSqls();

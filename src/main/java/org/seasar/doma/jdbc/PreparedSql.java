@@ -15,11 +15,14 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.function.Function;
 
 /**
  * A prepared SQL.
+ * <p>
+ * This is related to {@link PreparedStatement}.
  */
 public class PreparedSql extends AbstractSql<InParameter<?>> {
 
