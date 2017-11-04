@@ -918,7 +918,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String escape(String text, char escapeChar) {
+        public String escape(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
@@ -926,7 +926,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String escape(String text) {
+        public String escape(CharSequence text) {
             if (text == null) {
                 return null;
             }
@@ -935,7 +935,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String prefix(String text) {
+        public String prefix(CharSequence text) {
             if (text == null) {
                 return null;
             }
@@ -945,7 +945,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String prefix(String text, char escapeChar) {
+        public String prefix(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
@@ -953,7 +953,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String suffix(String text) {
+        public String suffix(CharSequence text) {
             if (text == null) {
                 return null;
             }
@@ -963,7 +963,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String suffix(String text, char escapeChar) {
+        public String suffix(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
@@ -971,11 +971,11 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String infix(String text) {
+        public String infix(CharSequence text) {
             if (text == null) {
                 return null;
             }
-            if (text.isEmpty()) {
+            if (text.length() == 0) {
                 return "%";
             }
             String escaped = escapeWildcard(defaultWildcardReplacementPattern,
@@ -984,11 +984,11 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String infix(String text, char escapeChar) {
+        public String infix(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
-            if (text.isEmpty()) {
+            if (text.length() == 0) {
                 return "%";
             }
             return "%" + escapeWildcard(text, escapeChar) + "%";
@@ -1003,7 +1003,7 @@ public class StandardDialect implements Dialect {
          *            エスケープ文字
          * @return エスケープされた文字列
          */
-        protected String escapeWildcard(String input, char escapeChar) {
+        protected String escapeWildcard(CharSequence input, char escapeChar) {
             Pattern pattern = createWildcardReplacementPattern(escapeChar,
                     wildcards);
             String replacement = createWildcardReplacement(escapeChar);
@@ -1021,7 +1021,7 @@ public class StandardDialect implements Dialect {
          *            置換文字列正規表現
          * @return エスケープされた文字列
          */
-        protected String escapeWildcard(Pattern pattern, String input,
+        protected String escapeWildcard(Pattern pattern, CharSequence input,
                 String replacement) {
             Matcher matcher = pattern.matcher(input);
             return matcher.replaceAll(replacement);
