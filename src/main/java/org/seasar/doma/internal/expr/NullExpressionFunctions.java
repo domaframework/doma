@@ -15,43 +15,61 @@ import org.seasar.doma.internal.util.CharSequenceUtil;
 public class NullExpressionFunctions implements ExpressionFunctions {
 
     @Override
-    public String escape(String text) {
+    public String escape(CharSequence text) {
         return null;
     }
 
     @Override
-    public String escape(String text, char escapeChar) {
+    public String escape(CharSequence text, char escapeChar) {
         return null;
     }
 
     @Override
-    public String prefix(String text) {
-        return text;
+    public String prefix(CharSequence text) {
+        if (text == null) {
+            return null;
+        }
+        return text.toString();
     }
 
     @Override
-    public String prefix(String text, char escape) {
-        return text;
+    public String prefix(CharSequence text, char escape) {
+        if (text == null) {
+            return null;
+        }
+        return text.toString();
     }
 
     @Override
-    public String suffix(String text) {
-        return text;
+    public String suffix(CharSequence text) {
+        if (text == null) {
+            return null;
+        }
+        return text.toString();
     }
 
     @Override
-    public String suffix(String text, char escape) {
-        return text;
+    public String suffix(CharSequence text, char escape) {
+        if (text == null) {
+            return null;
+        }
+        return text.toString();
     }
 
     @Override
-    public String infix(String text) {
-        return text;
+    public String infix(CharSequence text) {
+        if (text == null) {
+            return null;
+        }
+        return text.toString();
     }
 
     @Override
-    public String infix(String text, char escapeChar) {
-        return text;
+    public String infix(CharSequence text, char escapeChar) {
+        if (text == null) {
+            return null;
+        }
+        return text.toString();
     }
 
     @Override

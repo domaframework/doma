@@ -710,7 +710,7 @@ public class StandardDialect implements Dialect {
         }
 
         /**
-         * 
+         *
          * @param wildcards
          *            the wild card characters for the SQL LIKE operator
          */
@@ -719,7 +719,7 @@ public class StandardDialect implements Dialect {
         }
 
         /**
-         * 
+         *
          * @param escapeChar
          *            the escape character for the SQL LIKE operator
          * @param wildcards
@@ -734,7 +734,7 @@ public class StandardDialect implements Dialect {
         }
 
         /**
-         * 
+         *
          * @param escapeChar
          *            the escape character for the SQL LIKE operator
          * @param wildcards
@@ -753,7 +753,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String escape(String text, char escapeChar) {
+        public String escape(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
@@ -761,7 +761,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String escape(String text) {
+        public String escape(CharSequence text) {
             if (text == null) {
                 return null;
             }
@@ -769,7 +769,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String prefix(String text) {
+        public String prefix(CharSequence text) {
             if (text == null) {
                 return null;
             }
@@ -779,7 +779,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String prefix(String text, char escapeChar) {
+        public String prefix(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
@@ -787,7 +787,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String suffix(String text) {
+        public String suffix(CharSequence text) {
             if (text == null) {
                 return null;
             }
@@ -797,7 +797,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String suffix(String text, char escapeChar) {
+        public String suffix(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
@@ -805,11 +805,11 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String infix(String text) {
+        public String infix(CharSequence text) {
             if (text == null) {
                 return null;
             }
-            if (text.isEmpty()) {
+            if (text.length() == 0) {
                 return "%";
             }
             String escaped = escapeWildcard(defaultWildcardReplacementPattern, text,
@@ -818,11 +818,11 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String infix(String text, char escapeChar) {
+        public String infix(CharSequence text, char escapeChar) {
             if (text == null) {
                 return null;
             }
-            if (text.isEmpty()) {
+            if (text.length() == 0) {
                 return "%";
             }
             return "%" + escapeWildcard(text, escapeChar) + "%";
@@ -830,14 +830,14 @@ public class StandardDialect implements Dialect {
 
         /**
          * Escapes wild card characters.
-         * 
+         *
          * @param input
          *            the target string for escaping
          * @param escapeChar
          *            the escape character
          * @return the escaped string
          */
-        protected String escapeWildcard(String input, char escapeChar) {
+        protected String escapeWildcard(CharSequence input, char escapeChar) {
             Pattern pattern = createWildcardReplacementPattern(escapeChar, wildcards);
             String replacement = createWildcardReplacement(escapeChar);
             return escapeWildcard(pattern, input, replacement);
@@ -845,7 +845,7 @@ public class StandardDialect implements Dialect {
 
         /**
          * Escapes wild card characters with the regular expression.
-         * 
+         *
          * @param pattern
          *            the regular expression pattern
          * @param input
@@ -854,7 +854,7 @@ public class StandardDialect implements Dialect {
          *            the replacement string
          * @return the escaped string
          */
-        protected String escapeWildcard(Pattern pattern, String input, String replacement) {
+        protected String escapeWildcard(Pattern pattern, CharSequence input, String replacement) {
             Matcher matcher = pattern.matcher(input);
             return matcher.replaceAll(replacement);
         }
@@ -961,7 +961,7 @@ public class StandardDialect implements Dialect {
         /**
          * Creates the regular expression pattern that is represents the wild
          * card characters .
-         * 
+         *
          * @param escapeChar
          *            the escape character
          * @param wildcards
@@ -987,7 +987,7 @@ public class StandardDialect implements Dialect {
 
         /**
          * Create the replacement string that replaces wild card characters.
-         * 
+         *
          * @param escapeChar
          *            the escape character
          * @return the replacement string

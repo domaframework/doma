@@ -21,7 +21,7 @@ public interface ExpressionFunctions {
      *            the target text
      * @return the escaped text
      */
-    String escape(String text);
+    String escape(CharSequence text);
 
     /**
      * Escapes the SQL LIKE wild card characters in a target string by using a
@@ -33,7 +33,7 @@ public interface ExpressionFunctions {
      *            the escape character
      * @return the escaped text
      */
-    String escape(String text, char escapeChar);
+    String escape(CharSequence text, char escapeChar);
 
     /**
      * Escapes the SQL LIKE wild card characters in a target string by using the
@@ -46,7 +46,7 @@ public interface ExpressionFunctions {
      *            the prefix text
      * @return the text for a prefix search
      */
-    String prefix(String prefix);
+    String prefix(CharSequence prefix);
 
     /**
      * Escapes the SQL LIKE wild card characters in a target string by using a
@@ -59,7 +59,7 @@ public interface ExpressionFunctions {
      *            the escape character
      * @return the text for a prefix search
      */
-    String prefix(String prefix, char escapeChar);
+    String prefix(CharSequence prefix, char escapeChar);
 
     /**
      * Escapes the SQL LIKE wild card characters in a target string by using the
@@ -72,7 +72,7 @@ public interface ExpressionFunctions {
      *            the suffix text
      * @return the text for a suffix search
      */
-    String suffix(String suffix);
+    String suffix(CharSequence suffix);
 
     /**
      * Escapes the SQL LIKE wild card characters in a target string by using a
@@ -85,7 +85,7 @@ public interface ExpressionFunctions {
      *            the escape character
      * @return the text for a suffix search
      */
-    String suffix(String suffix, char escapeChar);
+    String suffix(CharSequence suffix, char escapeChar);
 
     /**
      * Escapes the SQL LIKE wild card characters in a target string by using the
@@ -98,7 +98,7 @@ public interface ExpressionFunctions {
      *            the infix text
      * @return the text for a infix search
      */
-    String infix(String infix);
+    String infix(CharSequence infix);
 
     /**
      * Escapes the SQL LIKE wild card characters in a target string by using a
@@ -111,7 +111,7 @@ public interface ExpressionFunctions {
      *            the escape character
      * @return the text for a infix search
      */
-    String infix(String infix, char escapeChar);
+    String infix(CharSequence infix, char escapeChar);
 
     /**
      * Round down a time part of {@link java.util.Date}.
