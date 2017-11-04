@@ -281,7 +281,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     protected void doMethodElement(ExecutableElement methodElement,
             DaoMeta daoMeta) {
-        if (methodElement.getModifiers().contains(Modifier.STATIC)) {
+        Set<Modifier> modifiers = methodElement.getModifiers();
+        if (modifiers.contains(Modifier.STATIC)
+                || modifiers.contains(Modifier.PRIVATE)) {
             return;
         }
         validateMethod(methodElement, daoMeta);
