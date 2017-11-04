@@ -231,7 +231,7 @@ staticフィールドへのアクセス
 
 ここでは、 ``@prefix(employee.employeeName)`` というように、 ``employee.employeeName`` 
 を ``@prefix`` 関数に渡しています。
-``@prefix`` 関数は、パラメータで受け取る文字列を前方一致検索用の文字列に変換します。
+``@prefix`` 関数は、パラメータで受け取る文字シーケンスを前方一致検索用の文字列に変換します。
 また、特別な意味を持つ文字をエスケープします。
 たとえば ``employee.employeeName`` の値が ``ABC`` である場合、 値は ``ABC%`` に変換されます。
 もし、 ``employee.employeeName`` の値が ``AB%C`` というように ``%`` を含んでいる場合、
@@ -239,25 +239,25 @@ staticフィールドへのアクセス
 
 使用可能な関数のシグネチャは以下のとおりです。
 
-String @escape(String text, char escapeChar = '$')
+String @escape(CharSequence text, char escapeChar = '$')
   LIKE演算のためのエスケープを行うことを示します。
   戻り値は入力値をエスケープした文字列です。
   ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。
   引数に ``null`` を渡した場合、 ``null`` を返します。
 
-String @prefix(String prefix, char escapeChar = '$')
+String @prefix(CharSequence prefix, char escapeChar = '$')
   前方一致検索を行うことを示します。
   戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。
   ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。
   引数に ``null`` を渡した場合、 ``null`` を返します。
 
-String @infix(String infix, char escapeChar = '$')
+String @infix(CharSequence infix, char escapeChar = '$')
   中間一致検索を行うことを示します。
   戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。
   ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。
   引数に ``null`` を渡した場合、 ``null`` を返します。
 
-String @suffix(String suffix, char escapeChar = '$')
+String @suffix(CharSequence suffix, char escapeChar = '$')
   後方一致検索を行うことを示します。
   戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。
   ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。

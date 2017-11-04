@@ -32,83 +32,83 @@ public interface ExpressionFunctions {
      * Like演算子用のエスケープを行います。
      * 
      * @param text
-     *            エスケープ対象の文字列
+     *            エスケープ対象の文字シーケンス
      * @return エスケープされた文字列
      */
-    String escape(String text);
+    String escape(CharSequence text);
 
     /**
      * Like演算子用のエスケープを行います。
      * 
      * @param text
-     *            エスケープ対象の文字列
+     *            エスケープ対象の文字シーケンス
      * @param escapeChar
      *            エスケープ文字
      * @return エスケープされた文字列
      */
-    String escape(String text, char escapeChar);
+    String escape(CharSequence text, char escapeChar);
 
     /**
      * 前方一致検索を行うことを示します。
      * 
      * @param prefix
-     *            前に置かれる文字列
+     *            前に置かれる文字シーケンス
      * @return 前方一致検索のための文字列
      */
-    String prefix(String prefix);
+    String prefix(CharSequence prefix);
 
     /**
      * エスケープ文字を指定して前方一致検索を行うことを示します。
      * 
      * @param prefix
-     *            前に置かれる文字列
+     *            前に置かれる文字シーケンス
      * @param escapeChar
      *            エスケープ文字
      * @return 前方一致検索のための文字列
      */
-    String prefix(String prefix, char escapeChar);
+    String prefix(CharSequence prefix, char escapeChar);
 
     /**
      * 後方一致検索を行うことを示します。
      * 
      * @param suffix
-     *            後に置かれる文字列
+     *            後に置かれる文字シーケンス
      * @return 後方一致検索のための文字列
      */
-    String suffix(String suffix);
+    String suffix(CharSequence suffix);
 
     /**
      * エスケープ文字を指定して後方一致検索を行うことを示します。
      * 
      * @param suffix
-     *            後に置かれる文字列
+     *            後に置かれる文字シーケンス
      * @param escapeChar
      *            エスケープ文字
      * @return 後方一致検索のための文字列
      */
-    String suffix(String suffix, char escapeChar);
+    String suffix(CharSequence suffix, char escapeChar);
 
     /**
      * 中間一致検索を行うことを示します。
      * 
      * @param infix
-     *            含まれる文字列
+     *            含まれる文字シーケンス
      * @return 中間一致検索のための文字列
      * @since 1.33.0
      */
-    String infix(String infix);
+    String infix(CharSequence infix);
 
     /**
      * エスケープ文字を指定して中間一致検索を行うことを示します。
      * 
      * @param infix
-     *            含まれる文字列
+     *            含まれる文字シーケンス
      * @param escapeChar
      *            エスケープ文字
      * @return 中間一致検索のための文字列
      * @since 1.33.0
      */
-    String infix(String infix, char escapeChar);
+    String infix(CharSequence infix, char escapeChar);
 
     /**
      * 日付の時刻部分を切り捨てます。
