@@ -2,6 +2,14 @@
 リリースノート
 ==============
 
+v2.19.0: 2017-11-19
+======================
+
+* `GH211 <https://github.com/domaframework/doma/pull/211>`_
+  Use `CharSequence` as parameter in expression functions
+* `GH210 <https://github.com/domaframework/doma/pull/210>`_
+  Support private methods in DAO classes
+
 v2.18.0: 2017-10-28
 ======================
 
