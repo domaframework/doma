@@ -13,23 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.message;
-
-import org.seasar.doma.message.Message;
+package org.seasar.doma.message;
 
 /**
- * {@link Message} を扱うリソースバンドルです。
- * 
- * @author taedium
- * 
+ * A resource bundle for {@link Message_ja}.
  */
-public class MessageResourceBundle extends AbstractMessageResourceBundle<Message> {
+public class MessageResourceBundle_ja extends AbstractMessageResourceBundle<Message_ja> {
 
     /**
-     * インスタンスを構築します。
+     * Create an instance.
      */
-    public MessageResourceBundle() {
-        super(Message.class);
+    public MessageResourceBundle_ja() {
+        super(Message_ja.class);
     }
 
 }

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.message;
+package org.seasar.doma.message;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -23,31 +23,27 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.message.MessageResource;
 
 /**
- * {@link Enum} で表現されたメッセージコードを扱うリソースバンドルです。
- * 
- * @author taedium
- * 
+ * A resource bundle for {@link MessageResource}.
  */
 public abstract class AbstractMessageResourceBundle<M extends Enum<M> & MessageResource>
         extends ResourceBundle {
 
-    protected final Class<M> messageCodeClass;
+    protected final Class<M> messageResourceClass;
 
-    protected AbstractMessageResourceBundle(Class<M> messageCodeClass) {
-        if (messageCodeClass == null) {
-            throw new DomaNullPointerException("messageCodeClass");
+    protected AbstractMessageResourceBundle(Class<M> messageResourceClass) {
+        if (messageResourceClass == null) {
+            throw new DomaNullPointerException("messageResourceClass");
         }
-        this.messageCodeClass = messageCodeClass;
+        this.messageResourceClass = messageResourceClass;
     }
 
     @Override
     public Enumeration<String> getKeys() {
         List<String> keys = new LinkedList<String>();
-        for (M messageCode : EnumSet.allOf(messageCodeClass)) {
-            keys.add(messageCode.getCode());
+        for (M messageResource : EnumSet.allOf(messageResourceClass)) {
+            keys.add(messageResource.getCode());
         }
         return Collections.enumeration(keys);
     }
@@ -57,7 +53,12 @@ public abstract class AbstractMessageResourceBundle<M extends Enum<M> & MessageR
         if (key == null) {
             throw new DomaNullPointerException("key");
         }
-        M messageCode = Enum.valueOf(messageCodeClass, key);
-        return messageCode.getMessagePattern();
+        M messageResource;
+        try {
+            messageResource = Enum.valueOf(messageResourceClass, key);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+        return messageResource.getMessagePattern();
     }
 }

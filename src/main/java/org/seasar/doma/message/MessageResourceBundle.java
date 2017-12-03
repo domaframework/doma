@@ -13,7 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+package org.seasar.doma.message;
+
 /**
- * アプリケーションに通知されるメッセージを扱うクラスを提供します。
+ * A resource bundle for {@link Message}.
  */
-package org.seasar.doma.internal.message;
+public class MessageResourceBundle extends AbstractMessageResourceBundle<Message> {
+
+    /**
+     * Create an instance.
+     */
+    public MessageResourceBundle() {
+        super(Message.class);
+    }
+
+}
