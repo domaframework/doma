@@ -51,12 +51,6 @@ import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.UtilDateWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * 値を適切な {@link Scalar} でラップするクラスです。
- * 
- * @author taedium
- * 
- */
 public final class Scalars {
 
     public static Supplier<Scalar<?, ?>> wrap(Object value, Class<?> valueClass, boolean optional,
@@ -82,19 +76,6 @@ public final class Scalars {
         return result;
     }
 
-    /**
-     * 基本型（ただし列挙型を除く）の値をラップします。
-     * 
-     * @param value
-     *            値
-     * @param valueClass
-     *            値クラス
-     * @param optional
-     *            オプション型かどうか
-     * @param primitive
-     *            プリミティブかどうか
-     * @return ラッパー、値が基本型（ただし列挙型を除く）でない場合 {@code null}
-     */
     protected static Supplier<Scalar<?, ?>> wrapBasicObject(Object value, Class<?> valueClass,
             boolean optional, boolean primitive) {
         assertNotNull(valueClass);
@@ -210,17 +191,6 @@ public final class Scalars {
         }
     }
 
-    /**
-     * 列挙型の値をラップします。
-     * 
-     * @param value
-     *            値
-     * @param valueClass
-     *            値クラス
-     * @param optional
-     *            オプション型かどうか
-     * @return ラッパー、値が列挙型でない場合 {@code null}
-     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected static Supplier<Scalar<?, ?>> wrapEnumObject(Object value, Class<?> valueClass,
             boolean optional) {
@@ -236,23 +206,6 @@ public final class Scalars {
         return null;
     }
 
-    /**
-     * ドメインクラスのオブジェクトをラップします。
-     * 
-     * @param <BASIC>
-     *            基本型
-     * @param <HOLDER>
-     *            ドメイン型
-     * @param value
-     *            値
-     * @param valueClass
-     *            値クラス
-     * @param optional
-     *            オプション型かどうか
-     * @param classHelper
-     *            クラスヘルパー
-     * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
-     */
     protected static <BASIC, HOLDER> Supplier<Scalar<?, ?>> wrapHolderObject(Object value,
             Class<HOLDER> valueClass, boolean optional, ClassHelper classHelper) {
         HolderDesc<BASIC, HOLDER> holderDesc;
