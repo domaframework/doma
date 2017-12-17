@@ -36,7 +36,7 @@ public interface PreUpdateContext<E> {
      * This method always returns {@code true}, when {@link Update#sqlFile()} is
      * {@code true}.
      * 
-     * @return @code true} if the entity is changed
+     * @return {@code true} if the entity is changed
      */
     public boolean isEntityChanged();
 

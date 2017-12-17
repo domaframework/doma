@@ -157,15 +157,6 @@ public class SimpleDataSource implements DataSource {
         return getConnectionInternal(info);
     }
 
-    /**
-     * 内部的にコネクションを返します。
-     * 
-     * @param info
-     *            JDBCドライバへのプロパティ
-     * @return コネクション
-     * @throws SQLException
-     *             SQLに関する例外が発生した場合
-     */
     protected Connection getConnectionInternal(Properties info) throws SQLException {
         if (url == null) {
             throw new SQLException(Message.DOMA5002.getMessage());

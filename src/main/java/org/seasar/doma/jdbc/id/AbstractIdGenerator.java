@@ -27,23 +27,20 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link IdGenerator} の骨格実装です。
- * 
- * @author taedium
- * 
+ * A skeletal implementation of the {@link IdGenerator} interface.
  */
 public abstract class AbstractIdGenerator implements IdGenerator {
 
     /**
-     * 生成された識別子を取得するSQLを実行します。
+     * Executes the SQL and gets a generated identity.
      * 
      * @param config
-     *            識別子生成の設定
+     *            the configuration for identity generation
      * @param sql
-     *            生成された識別子を取得するSQL
-     * @return SQLにより取得された値
+     *            the SQL to get the generated identityL
+     * @return the generated identity
      * @throws JdbcException
-     *             生成された識別子の取得に失敗した場合
+     *             if a JDBC related error occurs
      */
     protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql) {
         JdbcLogger logger = config.getJdbcLogger();
@@ -66,14 +63,14 @@ public abstract class AbstractIdGenerator implements IdGenerator {
     }
 
     /**
-     * {@code preparedStatement} に対しオプションの設定を行います。
+     * Set up options for the {@code preparedStatement} object.
      * 
      * @param config
-     *            識別子生成の設定
+     *            the configuration for identity generation
      * @param preparedStatement
-     *            準備された文
+     *            the prepared statement
      * @throws SQLException
-     *             SQL例外が発生した場合
+     *             if operations for the {@code preparedStatement} are failed
      */
     protected void setupOptions(IdGenerationConfig config, PreparedStatement preparedStatement)
             throws SQLException {
@@ -89,15 +86,15 @@ public abstract class AbstractIdGenerator implements IdGenerator {
     }
 
     /**
-     * {@link ResultSet} から生成された識別子の値を取得します。
+     * Retrieves a generated identity from the {@link ResultSet} object.
      * 
      * @param config
-     *            識別子生成の設定
+     *            the configuration for identity generation
      * @param resultSet
-     *            結果セット
-     * @return 生成された識別子の値
+     *            the result set
+     * @return the generated identity
      * @throws JdbcException
-     *             識別子の取得に失敗した場合
+     *             if a JDBC related error occurs
      */
     protected long getGeneratedValue(IdGenerationConfig config, ResultSet resultSet) {
         JdbcLogger logger = config.getJdbcLogger();

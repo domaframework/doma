@@ -55,31 +55,31 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
     }
 
     /**
-     * キャッシュを制御してSQLファイルを返します。
+     * Returns the SQL file in consideration of cache control.
      * 
      * @param method
-     *            Daoのメソッド
+     *            the Dao method
      * @param path
-     *            SQLファイルのパス
+     *            the SQL file path
      * @param dialect
-     *            方言
-     * @return SQLファイル
+     *            the dialect
+     * @return the SQL file
      * @throws SqlFileNotFoundException
-     *             SQLファイルが見つからない場合
+     *             if the SQL file is not found
      * @throws JdbcException
-     *             上記以外で例外が発生した場合
+     *             if an error occurs
      */
     protected abstract SqlFile getSqlFileWithCacheControl(Method method, String path,
             Dialect dialect);
 
     /**
-     * SQLファイルを作成します。
+     * Creates the SQL file.
      * 
      * @param path
-     *            SQLのパス
+     *            the SQL file path
      * @param dialect
-     *            方言
-     * @return SQLファイル
+     *            the dialect
+     * @return the SQL file
      */
     protected final SqlFile createSqlFile(String path, Dialect dialect) {
         String primaryPath = getPrimaryPath(path, dialect);
@@ -97,24 +97,24 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
     }
 
     /**
-     * SQLファイルを見つける際の優先パスを取得します。
+     * Returns the primary path to find SQL file for specific RDBMS.
      * 
      * @param path
-     *            SQLのパス
+     *            the SQL file path
      * @param dialect
-     *            方言
-     * @return RDBMS固有の名前を含んだSQLのパス
+     *            the dialect
+     * @return the primary path
      */
     protected final String getPrimaryPath(String path, Dialect dialect) {
         return SqlFileUtil.convertToDbmsSpecificPath(path, dialect);
     }
 
     /**
-     * SQLを解析します。
+     * Parses the SQL string.
      * 
      * @param sql
-     *            SQLの文字列
-     * @return SQLの解析結果
+     *            the SQL string
+     * @return the SQL node
      */
     protected final SqlNode parse(String sql) {
         SqlParser parser = new SqlParser(sql);
@@ -122,11 +122,11 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
     }
 
     /**
-     * SQLファイルからSQLを取り出し返します。
+     * Retrieves the SQL string from the SQL file.
      * 
      * @param path
-     *            パス
-     * @return SQLの文字列
+     *            the SQL file path
+     * @return the SQL string
      */
     protected final String getSql(String path) {
         try {
