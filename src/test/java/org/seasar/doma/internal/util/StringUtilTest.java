@@ -44,12 +44,6 @@ public class StringUtilTest extends TestCase {
         assertEquals("aa1_bbb_ccc", StringUtil.fromCamelCaseToSnakeCase("aa1BbbCcc"));
     }
 
-    public void testFromCamelCaseToSnakeCaseWithLenient() throws Exception {
-        assertEquals("aaa_bbb_ccc", StringUtil.fromCamelCaseToSnakeCaseWithLenient("aaaBbbCcc"));
-        assertEquals("abc", StringUtil.fromCamelCaseToSnakeCaseWithLenient("abc"));
-        assertEquals("aa1bbb_ccc", StringUtil.fromCamelCaseToSnakeCaseWithLenient("aa1BbbCcc"));
-    }
-
     public void testIsWhitespace() throws Exception {
         assertFalse(StringUtil.isWhitespace(""));
         assertTrue(StringUtil.isWhitespace(" "));

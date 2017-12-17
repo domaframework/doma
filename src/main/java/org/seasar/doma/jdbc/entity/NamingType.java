@@ -110,56 +110,6 @@ public enum NamingType {
     },
 
     /**
-     * @deprecated
-     */
-    @Deprecated
-    LENIENT_SNAKE_UPPER_CASE {
-
-        @Override
-        public String apply(String text) {
-            if (text == null) {
-                throw new DomaNullPointerException("text");
-            }
-            String s = StringUtil.fromCamelCaseToSnakeCaseWithLenient(text);
-            return s.toUpperCase();
-        }
-
-        @Override
-        public String revert(String text) {
-            if (text == null) {
-                throw new DomaNullPointerException("text");
-            }
-            return StringUtil.fromSnakeCaseToCamelCase(text);
-        }
-
-    },
-
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    LENIENT_SNAKE_LOWER_CASE {
-
-        @Override
-        public String apply(String text) {
-            if (text == null) {
-                throw new DomaNullPointerException("text");
-            }
-            String s = StringUtil.fromCamelCaseToSnakeCaseWithLenient(text);
-            return s.toLowerCase();
-        }
-
-        @Override
-        public String revert(String text) {
-            if (text == null) {
-                throw new DomaNullPointerException("text");
-            }
-            return StringUtil.fromSnakeCaseToCamelCase(text);
-        }
-
-    },
-
-    /**
      * Converts the camel case text to the upper case text.
      * <p>
      * For examples:

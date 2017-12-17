@@ -96,33 +96,15 @@ public final class StringUtil {
      *         {@code text} が空文字の場合は空文字を返します。
      */
     public static String fromCamelCaseToSnakeCase(String text) {
-        return fromCamelCaseToSnakeCaseInternal(text, false);
+        return fromCamelCaseToSnakeCaseInternal(text);
     }
 
-    /**
-     * キャメルケースをアンダースコア区切りに変換します。
-     * <p>
-     * 数字の直後に大文字が続く場合、アンダースコア区切りの対象となりません。
-     * 
-     * @param text
-     *            文字列
-     * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
-     *         {@code text} が空文字の場合は空文字を返します。
-     */
-    public static String fromCamelCaseToSnakeCaseWithLenient(String text) {
-        return fromCamelCaseToSnakeCaseInternal(text, true);
-    }
-
-    private static String fromCamelCaseToSnakeCaseInternal(String text, boolean lenient) {
+    private static String fromCamelCaseToSnakeCaseInternal(String text) {
         if (isNullOrEmpty(text)) {
             return text;
         }
-        Function<Character, Boolean> isNotUpperCase;
-        if (lenient) {
-            isNotUpperCase = Character::isLowerCase;
-        } else {
-            isNotUpperCase = c -> Character.isLowerCase(c) || Character.isDigit(c);
-        }
+        Function<Character, Boolean> isNotUpperCase = c -> Character.isLowerCase(c)
+                || Character.isDigit(c);
         StringBuilder result = new StringBuilder();
         CharBuffer buf = CharBuffer.wrap(text);
         while (buf.hasRemaining()) {
