@@ -214,6 +214,7 @@ public class TypeDeclaration {
             for (FieldDeclaration hider : hiders) {
                 if (ctx.getElements().hides(hider.getElement(), hidden.getElement())) {
                     it.remove();
+                    break;
                 }
             }
         }
@@ -275,6 +276,7 @@ public class TypeDeclaration {
                 if (ctx.getElements().overrides(overrider.getElement(), overridden.getElement(),
                         overriderTypeElement)) {
                     it.remove();
+                    break;
                 }
             }
         }
@@ -290,6 +292,7 @@ public class TypeDeclaration {
                 if (ctx.getTypes().isAssignable(subtype, supertype)) {
                     if (ctx.getElements().hides(hider.getElement(), hidden.getElement())) {
                         it.remove();
+                        break;
                     }
                 }
             }
