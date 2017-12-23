@@ -1119,4 +1119,13 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4188);
     }
 
+    public void testIssue214() throws Exception {
+        Class<?> target = Issue214Dao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
 }
