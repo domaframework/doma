@@ -2,6 +2,14 @@
 リリースノート
 ==============
 
+v2.19.1: 2018-01-08
+======================
+
+* `GH216 <https://github.com/domaframework/doma/pull/216>`_
+  Document that the auto-generated value is set only if the identity field is either null or less than 0
+* `GH215 <https://github.com/domaframework/doma/pull/215>`_
+  Fix TypeDeclaration#removeOverriddenMethodDeclarations to prevent IllegalStateException
+
 v2.19.0: 2017-11-19
 ======================
 
