@@ -55,6 +55,8 @@ SQLの自動生成による挿入
 :doc:`../entity` の識別子に、 ``@GeneratedValue`` が注釈されている場合、
 識別子が自動的に生成され設定されます。
 
+注意点については :ref:`identity-auto-generation` を参照ください。
+
 バージョン番号
 --------------
 
