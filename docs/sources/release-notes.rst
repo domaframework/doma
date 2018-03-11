@@ -2,6 +2,12 @@
 リリースノート
 ==============
 
+v2.19.2: 2018-03-11
+======================
+
+* `GH220 <https://github.com/domaframework/doma/pull/220>`_
+  Fix broken local transaction
+
 v2.19.1: 2018-01-08
 ======================
 
