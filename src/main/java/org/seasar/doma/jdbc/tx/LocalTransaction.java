@@ -202,8 +202,8 @@ public class LocalTransaction {
             throw new TransactionAlreadyBegunException(id);
         }
         context = getLocalTransactionContext();
-        context.begin((connection) -> {
-            assertNotNull(connection);
+        context.begin(() -> {
+            Connection connection = JdbcUtil.getConnection(dataSource);
             int transactionIsolation;
             try {
                 transactionIsolation = connection.getTransactionIsolation();
@@ -241,9 +241,7 @@ public class LocalTransaction {
      * @return ローカルトランザクションコンテキスト
      */
     protected LocalTransactionContext getLocalTransactionContext() {
-        LocalTransactionContext context = new LocalTransactionContext(() -> {
-            return JdbcUtil.getConnection(dataSource);
-        });
+        LocalTransactionContext context = new LocalTransactionContext();
         localTxContextHolder.set(context);
         return context;
     }
