@@ -320,6 +320,43 @@ public class SqlFileUpdateQueryTest extends TestCase {
         assertTrue(query.isExecutable());
     }
 
+    public void testOriginalStates_unchanged() throws Exception {
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setSalary(BigDecimal.ZERO);
+        emp.setVersion(100);
+        emp.originalStates = new Emp();
+        emp.originalStates.setId(emp.getId());
+        emp.originalStates.setName(emp.getName());
+        emp.originalStates.setSalary(emp.getSalary());
+        emp.originalStates.setVersion(emp.getVersion());
+
+        SqlFileUpdateQuery query = new SqlFileUpdateQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
+        query.setSqlFilePath(
+                "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testOriginalStates.sql");
+        query.setConfig(runtimeConfig);
+        query.setEntityAndEntityType("emp", emp, _Emp.getSingletonInternal());
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setSqlLogType(SqlLogType.FORMATTED);
+        query.addParameter("emp", Emp.class, emp);
+        query.prepare();
+
+        UpdateQuery updateQuery = query;
+        PreparedSql sql = updateQuery.getSql();
+        assertEquals("update aaa set VERSION = ? + 1 where id = ?",
+                sql.getRawSql());
+        assertEquals("update aaa set VERSION = 100 + 1 where id = 10",
+                sql.getFormattedSql());
+        List<? extends InParameter<?>> parameters = sql.getParameters();
+        assertEquals(2, parameters.size());
+        assertEquals(new Integer(100), parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+        assertFalse(query.isExecutable());
+    }
+
     public static class PreUpdate implements EntityType<Emp> {
 
         protected final _Emp emp;
