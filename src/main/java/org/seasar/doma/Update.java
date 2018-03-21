@@ -17,22 +17,22 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * Indicates an update.
  * <p>
  * The annotated method must be a member of a {@link Dao} annotated interface.
- * <p>
- * 
+ *
+ *
  * <pre>
  * &#064;Entity
  * public class Employee {
  *     ...
  * }
- * 
+ *
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
- * 
+ *
  *     &#064;Update
  *     int update(Employee employee);
  * }
  * </pre>
- * 
+ * <p>
  * The method may throw following exceptions:
  * <ul>
  * <li>{@link DomaNullPointerException} if any of the method parameters are
@@ -59,7 +59,7 @@ public @interface Update {
      * The query timeout in seconds.
      * <p>
      * If not specified, {@link Config#getQueryTimeout()} is used.
-     * 
+     *
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
@@ -83,12 +83,8 @@ public @interface Update {
      * Whether columns mapped to unchanged properties are included in SQL UPDATE
      * statements.
      * <p>
-     * この要素に対する指定は、更新対象のエンティティが {@link OriginalStates} が注釈されたプロパティをもつ場合、かつ
-     * {@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * <p>
-     * Only if {@link #sqlFile()} is {@code false} and the method parameter type
-     * is entity class that has a {@link OriginalStates} annotated filed, this
-     * element value is used.
+     * Only if the method parameter type is entity class that has a {@link OriginalStates} annotated filed,
+     * this element value is used.
      */
     boolean includeUnchanged() default false;
 
