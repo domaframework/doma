@@ -6,7 +6,6 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.Conventions;
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
@@ -51,9 +50,6 @@ public final class EntityDescFactory {
             Class<E> clazz = classHelper.forName(entityDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
-        } catch (WrapException e) {
-            throw new EntityDescNotFoundException(e.getCause(), entityClass.getName(),
-                    entityDescClassName);
         } catch (Exception e) {
             throw new EntityDescNotFoundException(e.getCause(), entityClass.getName(),
                     entityDescClassName);

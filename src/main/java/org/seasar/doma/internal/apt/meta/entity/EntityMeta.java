@@ -23,8 +23,6 @@ public class EntityMeta implements TypeElementMeta {
 
     private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
 
-    private final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
-
     private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
     private final EntityReflection entityReflection;
@@ -46,8 +44,6 @@ public class EntityMeta implements TypeElementMeta {
     private String entityTypeName;
 
     private OriginalStatesMeta originalStatesMeta;
-
-    private EntityConstructorMeta constructorMeta;
 
     public EntityMeta(EntityReflection entityReflection, TypeElement entityElement) {
         assertNotNull(entityReflection, entityElement);
@@ -90,7 +86,6 @@ public class EntityMeta implements TypeElementMeta {
     public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
         assertNotNull(propertyMeta);
         allPropertyMetas.add(propertyMeta);
-        allPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
         if (propertyMeta.isId()) {
             idPropertyMetas.add(propertyMeta);
             if (propertyMeta.getIdGeneratorMeta() != null) {
@@ -103,10 +98,7 @@ public class EntityMeta implements TypeElementMeta {
     }
 
     public List<EntityPropertyMeta> getAllPropertyMetas() {
-        if (constructorMeta == null) {
-            return allPropertyMetas;
-        }
-        return constructorMeta.getEntityPropertyMetas();
+        return allPropertyMetas;
     }
 
     public List<EntityPropertyMeta> getIdPropertyMetas() {
@@ -174,7 +166,7 @@ public class EntityMeta implements TypeElementMeta {
     }
 
     public boolean isQuoteRequired() {
-        return tableReflection != null ? tableReflection.getQuoteValue() : false;
+        return tableReflection != null && tableReflection.getQuoteValue();
     }
 
     public boolean isAbstract() {

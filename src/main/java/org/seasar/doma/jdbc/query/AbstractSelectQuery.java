@@ -31,7 +31,7 @@ import org.seasar.doma.wrapper.LongWrapper;
 
 public abstract class AbstractSelectQuery extends AbstractQuery implements SelectQuery {
 
-    protected final Map<String, Value> parameters = new HashMap<String, Value>();
+    protected final Map<String, Value> parameters = new HashMap<>();
 
     protected SelectOptions options = SelectOptions.get();
 
@@ -114,7 +114,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
         query.setSqlLogType(sqlLogType);
         query.addParameters(parameters);
         query.prepare();
-        SelectCommand<Long> command = new SelectCommand<Long>(query,
+        SelectCommand<Long> command = new SelectCommand<>(query,
                 new ScalarSingleResultHandler<>(() -> new BasicScalar<>(new LongWrapper(), true)));
         long count = command.execute();
         query.complete();

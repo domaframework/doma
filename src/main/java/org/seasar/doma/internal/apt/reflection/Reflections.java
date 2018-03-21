@@ -138,10 +138,10 @@ public class Reflections {
         return newInstance(field, Column.class, ColumnReflection::new);
     }
 
-    public DaoReflection newDaoReflection(TypeElement interfaze) {
-        assertNotNull(interfaze);
-        return newInstance(interfaze, Dao.class,
-                (annotationMirror, values) -> new DaoReflection(annotationMirror, values));
+    public DaoReflection newDaoReflection(TypeElement iface) {
+        assertNotNull(iface);
+        return newInstance(iface, Dao.class,
+                DaoReflection::new);
     }
 
     public DeleteReflection newDeleteReflection(ExecutableElement method) {
@@ -166,9 +166,9 @@ public class Reflections {
                         method.getSimpleName().toString(), values));
     }
 
-    public HolderConvertersReflection newHolderConvertersReflection(TypeElement interfaze) {
-        assertNotNull(interfaze);
-        return newInstance(interfaze, HolderConverters.class, HolderConvertersReflection::new);
+    public HolderConvertersReflection newHolderConvertersReflection(TypeElement iface) {
+        assertNotNull(iface);
+        return newInstance(iface, HolderConverters.class, HolderConvertersReflection::new);
     }
 
     public HolderReflection newHolderReflection(TypeElement clazz) {

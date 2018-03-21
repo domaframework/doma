@@ -196,7 +196,7 @@ public enum Message_ja implements MessageResource {
     DOMA4030("@SequenceGeneratorを使用する場合、同じフィールドに@GeneratedValue(strategy = GenerationType.SEQUENCE)を指定しなければいけません。"),
     DOMA4031("@TableGeneratorを使用する場合、同じフィールドに@GeneratedValue(strategy = GenerationType.TABLE)を指定しなければいけません。"),
     DOMA4033("@GeneratedValueを使用する場合、同じフィールドに@Idを指定しなければいけません。"),
-    DOMA4034("@GeneratedValueのstrategy要素にGenerationType.SEQUECNEを指定する場合、@SequenceGeneratorの指定も必要です。"),
+    DOMA4034("@GeneratedValueのstrategy要素にGenerationType.SEQUENCEを指定する場合、@SequenceGeneratorの指定も必要です。"),
     DOMA4035("@GeneratedValueのstrategy要素にGenerationType.TABLEを指定する場合、@TableGeneratorの指定も必要です。"),
     DOMA4036("@GeneratedValueを使用する場合、エンティティクラスの階層で@Idは１つのみでなければいけません。"),
     DOMA4037("複数の@GeneratedValueが見つかりました。@GeneratedValueは1つでなければいけません。"),
@@ -453,7 +453,7 @@ public enum Message_ja implements MessageResource {
 
     private final String messagePattern;
 
-    private Message_ja(String messagePattern) {
+    Message_ja(String messagePattern) {
         this.messagePattern = messagePattern;
     }
 

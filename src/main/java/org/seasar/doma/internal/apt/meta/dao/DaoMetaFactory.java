@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -334,15 +333,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         if (dir == null) {
             return Collections.emptySet();
         }
-        String[] fileNames = dir.list(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(Constants.SQL_PATH_SUFFIX)
-                        || name.endsWith(Constants.SCRIPT_PATH_SUFFIX);
-            }
-        });
-        return new HashSet<String>(Arrays.asList(fileNames));
+        String[] fileNames = dir.list((dir1, name) -> name.endsWith(Constants.SQL_PATH_SUFFIX)
+                || name.endsWith(Constants.SCRIPT_PATH_SUFFIX));
+        return new HashSet<>(Arrays.asList(fileNames));
     }
 
     private File getDir(String dirPath) {

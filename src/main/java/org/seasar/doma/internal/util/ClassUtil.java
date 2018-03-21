@@ -21,9 +21,7 @@ public final class ClassUtil {
             throws WrapException {
         try {
             return clazz.getConstructor(parameterTypes);
-        } catch (SecurityException e) {
-            throw new WrapException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             throw new WrapException(e);
         }
     }
@@ -32,9 +30,7 @@ public final class ClassUtil {
             throws WrapException {
         try {
             return clazz.getMethod(name, parameterTypes);
-        } catch (SecurityException e) {
-            throw new WrapException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             throw new WrapException(e);
         }
     }
@@ -44,9 +40,7 @@ public final class ClassUtil {
         assertNotNull(clazz, name, parameterTypes);
         try {
             return clazz.getDeclaredMethod(name, parameterTypes);
-        } catch (SecurityException e) {
-            throw new WrapException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             throw new WrapException(e);
         }
     }
@@ -55,9 +49,7 @@ public final class ClassUtil {
         assertNotNull(clazz, name);
         try {
             return clazz.getDeclaredField(name);
-        } catch (SecurityException e) {
-            throw new WrapException(e);
-        } catch (NoSuchFieldException e) {
+        } catch (SecurityException | NoSuchFieldException e) {
             throw new WrapException(e);
         }
     }

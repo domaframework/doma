@@ -24,36 +24,36 @@ class NeverClosedConnectionProvider implements DataSource {
     }
 
     @Override
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         return connection;
     }
 
     @Override
-    public Connection getConnection(String username, String password) throws SQLException {
+    public Connection getConnection(String username, String password) {
         return connection;
     }
 
     @Override
-    public int getLoginTimeout() throws SQLException {
+    public int getLoginTimeout() {
         return 0;
     }
 
     @Override
-    public PrintWriter getLogWriter() throws SQLException {
+    public PrintWriter getLogWriter() {
         return null;
     }
 
     @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
+    public void setLoginTimeout(int seconds) {
 
     }
 
     @Override
-    public void setLogWriter(PrintWriter out) throws SQLException {
+    public void setLogWriter(PrintWriter out) {
     }
 
     @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(Class<?> iface) {
         return iface != null && iface.isAssignableFrom(getClass());
     }
 

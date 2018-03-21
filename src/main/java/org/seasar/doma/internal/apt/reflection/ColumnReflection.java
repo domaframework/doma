@@ -71,7 +71,7 @@ public class ColumnReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(INSERTABLE);
         }
-        return value.booleanValue();
+        return value;
     }
 
     public boolean getUpdatableValue() {
@@ -79,7 +79,7 @@ public class ColumnReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(UPDATABLE);
         }
-        return value.booleanValue();
+        return value;
     }
 
     public boolean getQuoteValue() {
@@ -87,6 +87,6 @@ public class ColumnReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(QUOTE);
         }
-        return value.booleanValue();
+        return value;
     }
 }

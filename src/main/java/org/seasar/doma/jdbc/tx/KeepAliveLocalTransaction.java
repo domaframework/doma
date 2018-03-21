@@ -20,7 +20,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
  *     try {
  *         tx.begin();
  *         Employee employee = dao.selectById(1);
- *         employee.setName(&quot;hoge&quot;);
+ *         employee.setName(&quot;SMITH&quot;);
  *         employee.setJobType(JobType.PRESIDENT);
  *         dao.update(employee);
  *         tx.commit();

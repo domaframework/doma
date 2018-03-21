@@ -39,10 +39,10 @@ import org.seasar.doma.message.Message;
 public class ScriptReader {
 
     /** クエリ */
-    protected ScriptQuery query;
+    protected final ScriptQuery query;
 
     /** トークナイザ */
-    protected ScriptTokenizer tokenizer;
+    protected final ScriptTokenizer tokenizer;
 
     /** リーダ */
     protected BufferedReader reader;
@@ -156,13 +156,13 @@ public class ScriptReader {
         protected boolean completed;
 
         /** SQLの文字列を保持するバッファ */
-        protected StringBuilder buf = new StringBuilder(300);
+        protected final StringBuilder buf = new StringBuilder(300);
 
         /** SQLのキーワードを管理するリスト */
-        protected List<String> wordList = new ArrayList<String>();
+        protected List<String> wordList = new ArrayList<>();
 
         /** SQLブロックのコンテキスト */
-        protected ScriptBlockContext sqlBlockContext;
+        protected final ScriptBlockContext sqlBlockContext;
 
         /** 行が変更された場合{@code true} */
         protected boolean lineChanged;

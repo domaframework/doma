@@ -56,15 +56,15 @@ public abstract class AbstractPropertyMeta {
     }
 
     public boolean isColumnInsertable() {
-        return columnReflection != null ? columnReflection.getInsertableValue() : true;
+        return columnReflection == null || columnReflection.getInsertableValue();
     }
 
     public boolean isColumnUpdatable() {
-        return columnReflection != null ? columnReflection.getUpdatableValue() : true;
+        return columnReflection == null || columnReflection.getUpdatableValue();
     }
 
     public boolean isColumnQuoteRequired() {
-        return columnReflection != null ? columnReflection.getQuoteValue() : false;
+        return columnReflection != null && columnReflection.getQuoteValue();
     }
 
 }

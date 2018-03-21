@@ -22,14 +22,14 @@ public class ShortWrapper extends AbstractWrapper<Short> implements NumberWrappe
 
     @Override
     public Short getDefault() {
-        return Short.valueOf((short) 0);
+        return (short) 0;
     }
 
     @Override
     public void increment() {
         Short value = doGet();
         if (value != null) {
-            doSet((short) (value.shortValue() + 1));
+            doSet((short) (value + 1));
         }
     }
 
@@ -37,7 +37,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements NumberWrappe
     public void decrement() {
         Short value = doGet();
         if (value != null) {
-            doSet((short) (value.shortValue() - 1));
+            doSet((short) (value - 1));
         }
     }
 

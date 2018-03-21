@@ -126,9 +126,9 @@ public class SqlFileSelectQueryMetaFactory
      */
     private class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlFileSelectQueryMeta queryMeta;
+        private final SqlFileSelectQueryMeta queryMeta;
 
-        private QueryParameterMeta parameterMeta;
+        private final QueryParameterMeta parameterMeta;
 
         public ParamCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryParameterMeta parameterMeta) {
@@ -180,9 +180,9 @@ public class SqlFileSelectQueryMetaFactory
     private class ParamFunctionTargetCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlFileSelectQueryMeta queryMeta;
+        private final SqlFileSelectQueryMeta queryMeta;
 
-        private QueryParameterMeta parameterMeta;
+        private final QueryParameterMeta parameterMeta;
 
         public ParamFunctionTargetCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryParameterMeta parameterMeta) {
@@ -287,9 +287,9 @@ public class SqlFileSelectQueryMetaFactory
     private class ParamCollectorTargetCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlFileSelectQueryMeta queryMeta;
+        private final SqlFileSelectQueryMeta queryMeta;
 
-        private QueryParameterMeta parameterMeta;
+        private final QueryParameterMeta parameterMeta;
 
         public ParamCollectorTargetCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryParameterMeta parameterMeta) {
@@ -383,11 +383,11 @@ public class SqlFileSelectQueryMetaFactory
      */
     private class ReturnCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlFileSelectQueryMeta queryMeta;
+        private final SqlFileSelectQueryMeta queryMeta;
 
-        private QueryReturnMeta returnMeta;
+        private final QueryReturnMeta returnMeta;
 
-        private SuppressReflection suppressReflection;
+        private final SuppressReflection suppressReflection;
 
         public ReturnCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
             this.queryMeta = queryMeta;
@@ -491,9 +491,9 @@ public class SqlFileSelectQueryMetaFactory
     private class ReturnListElementCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlFileSelectQueryMeta queryMeta;
+        private final SqlFileSelectQueryMeta queryMeta;
 
-        private QueryReturnMeta returnMeta;
+        private final QueryReturnMeta returnMeta;
 
         public ReturnListElementCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryReturnMeta returnMeta) {
@@ -567,9 +567,9 @@ public class SqlFileSelectQueryMetaFactory
     private class ReturnStreamElementCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlFileSelectQueryMeta queryMeta;
+        private final SqlFileSelectQueryMeta queryMeta;
 
-        private QueryReturnMeta returnMeta;
+        private final QueryReturnMeta returnMeta;
 
         public ReturnStreamElementCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryReturnMeta returnMeta) {
@@ -643,9 +643,9 @@ public class SqlFileSelectQueryMetaFactory
     private class ReturnOptionalElementCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlFileSelectQueryMeta queryMeta;
+        private final SqlFileSelectQueryMeta queryMeta;
 
-        private QueryReturnMeta returnMeta;
+        private final QueryReturnMeta returnMeta;
 
         public ReturnOptionalElementCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryReturnMeta returnMeta) {
@@ -693,7 +693,7 @@ public class SqlFileSelectQueryMetaFactory
     private class ReturnListOptionalElementCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private QueryReturnMeta returnMeta;
+        private final QueryReturnMeta returnMeta;
 
         public ReturnListOptionalElementCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryReturnMeta returnMeta) {
@@ -725,7 +725,7 @@ public class SqlFileSelectQueryMetaFactory
     private class ReturnStreamOptionalElementCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private QueryReturnMeta returnMeta;
+        private final QueryReturnMeta returnMeta;
 
         protected ReturnStreamOptionalElementCtTypeVisitor(SqlFileSelectQueryMeta queryMeta,
                 QueryReturnMeta returnMeta) {

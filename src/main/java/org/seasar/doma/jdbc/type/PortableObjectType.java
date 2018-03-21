@@ -9,7 +9,7 @@ import java.sql.Types;
 /**
  * A JDBC type for {@link Types#OTHER}.
  * 
- * @see {@link PreparedStatement#setObject(int, Object, int)}
+ * @see PreparedStatement#setObject(int, Object, int)
  */
 public class PortableObjectType<T> extends AbstractJdbcType<T> {
 

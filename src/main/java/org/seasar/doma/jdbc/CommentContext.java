@@ -17,7 +17,7 @@ public class CommentContext {
 
     protected final Config config;
 
-    protected final Optional<Method> method;
+    protected final Method method;
 
     /**
      * Creates an instance.
@@ -44,7 +44,7 @@ public class CommentContext {
         this.className = className;
         this.methodName = methodName;
         this.config = config;
-        this.method = Optional.ofNullable(method);
+        this.method = method;
     }
 
     /**
@@ -81,7 +81,7 @@ public class CommentContext {
      * @return the DAO method or {@link Optional#empty()} if it does not exit
      */
     public Optional<Method> getMethod() {
-        return method;
+        return Optional.ofNullable(method);
     }
 
 }

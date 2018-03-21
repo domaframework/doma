@@ -13,7 +13,7 @@ import org.seasar.doma.HolderConverters;
  * be registered to {@link HolderConverters}.
  * 
  * <pre>
- * &#064;ExtenalHolder
+ * &#064;ExternalHolder
  * public class SalaryConverter implements HolderConverter&lt;Salary, BigDecimal&gt; {
  * 
  *     public BigDecimal fromHolderToValue(Salary holder) {
@@ -50,7 +50,7 @@ public interface HolderConverter<HOLDER, BASIC> {
      * 
      * @param value
      *            the value
-     * @return the value hodler
+     * @return the value holder
      */
     HOLDER fromValueToHolder(BASIC value);
 }

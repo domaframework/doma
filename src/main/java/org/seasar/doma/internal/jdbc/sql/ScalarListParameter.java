@@ -26,7 +26,7 @@ public class ScalarListParameter<BASIC, CONTAINER> extends AbstractListParameter
 
     @Override
     public ScalarProvider<BASIC, CONTAINER> createObjectProvider(Query query) {
-        return new ScalarProvider<BASIC, CONTAINER>(suppler, query);
+        return new ScalarProvider<>(suppler, query);
     }
 
 }

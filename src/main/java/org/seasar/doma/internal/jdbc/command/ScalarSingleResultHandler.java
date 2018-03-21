@@ -17,6 +17,6 @@ public class ScalarSingleResultHandler<BASIC, CONTAINER>
 
     public ScalarSingleResultHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
         super(new ScalarIterationHandler<>(supplier,
-                new SingleResultCallback<CONTAINER>(() -> supplier.get().getDefault())));
+                new SingleResultCallback<>(() -> supplier.get().getDefault())));
     }
 }

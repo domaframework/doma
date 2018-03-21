@@ -55,7 +55,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements HolderDesc<BA
         @Override
         public Optional<Class<?>> getHolderClass() {
             Class<?> c = AbstractHolderDesc.this.getHolderClass();
-            return Optional.<Class<?>> of(c);
+            return Optional.of(c);
         }
 
         @Override
@@ -96,7 +96,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements HolderDesc<BA
         @Override
         public Optional<Class<?>> getHolderClass() {
             Class<?> clazz = AbstractHolderDesc.this.getHolderClass();
-            return Optional.<Class<?>> of(clazz);
+            return Optional.of(clazz);
         }
 
         @SuppressWarnings("unchecked")

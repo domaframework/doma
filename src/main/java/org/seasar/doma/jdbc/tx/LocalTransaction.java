@@ -29,7 +29,7 @@ import org.seasar.doma.message.Message;
  *     tx.begin();
  * 
  *     Employee employee = dao.selectById(1);
- *     employee.setName(&quot;hoge&quot;);
+ *     employee.setName(&quot;SMITH&quot;);
  *     employee.setJobType(JobType.PRESIDENT);
  *     dao.update(employee);
  * 
@@ -147,6 +147,7 @@ public class LocalTransaction {
                     && transactionIsolationLevel != TransactionIsolationLevel.DEFAULT) {
                 int level = transactionIsolationLevel.getLevel();
                 try {
+                    //noinspection MagicConstant
                     connection.setTransactionIsolation(level);
                 } catch (SQLException e) {
                     closeConnection(connection);
@@ -166,9 +167,7 @@ public class LocalTransaction {
     }
 
     protected LocalTransactionContext getLocalTransactionContext() {
-        LocalTransactionContext context = new LocalTransactionContext(() -> {
-            return JdbcUtil.getConnection(dataSource);
-        });
+        LocalTransactionContext context = new LocalTransactionContext(() -> JdbcUtil.getConnection(dataSource));
         localTxContextHolder.set(context);
         return context;
     }
@@ -256,6 +255,7 @@ public class LocalTransaction {
         if (context.hasConnection()) {
             LocalTransactionConnection connection = context.getConnection();
             String id = context.getId();
+            //noinspection CatchMayIgnoreException
             try {
                 connection.rollback();
                 jdbcLogger.logTransactionRolledback(className, callerMethodName, id);
@@ -436,9 +436,6 @@ public class LocalTransaction {
      */
     protected void release(LocalTransactionContext context, String callerMethodName) {
         assertNotNull(context, callerMethodName);
-        if (context == null) {
-            return;
-        }
         localTxContextHolder.set(null);
         if (!context.hasConnection()) {
             return;
@@ -446,13 +443,16 @@ public class LocalTransaction {
         LocalTransactionConnection connection = context.getConnection();
         int isolationLevel = connection.getPreservedTransactionIsolation();
         if (isolationLevel != Connection.TRANSACTION_NONE) {
+            //noinspection CatchMayIgnoreException
             try {
+                //noinspection MagicConstant
                 connection.setTransactionIsolation(isolationLevel);
             } catch (SQLException ignored) {
                 jdbcLogger.logTransactionIsolationSettingFailure(className, callerMethodName,
                         isolationLevel, ignored);
             }
         }
+        //noinspection CatchMayIgnoreException
         try {
             connection.setAutoCommit(true);
         } catch (SQLException ignored) {

@@ -20,8 +20,8 @@ public interface EntityListener<ENTITY> {
      *            the entity
      * @param context
      *            the context
-     * @see {@code Insert}
-     * @see {@code BatchInsert}
+     * @see org.seasar.doma.Insert
+     * @see org.seasar.doma.BatchInsert
      */
     default void preInsert(ENTITY entity, PreInsertContext<ENTITY> context) {
     }
@@ -33,8 +33,8 @@ public interface EntityListener<ENTITY> {
      *            the entity
      * @param context
      *            the context
-     * @see {@code Update}
-     * @see {@code BatchUpdate}
+     * @see org.seasar.doma.Update
+     * @see org.seasar.doma.BatchUpdate
      */
     default void preUpdate(ENTITY entity, PreUpdateContext<ENTITY> context) {
     }
@@ -46,8 +46,8 @@ public interface EntityListener<ENTITY> {
      *            the entity
      * @param context
      *            the context
-     * @see {@code Delete}
-     * @see {@code BatchDelete}
+     * @see org.seasar.doma.Delete
+     * @see org.seasar.doma.BatchDelete
      */
     default void preDelete(ENTITY entity, PreDeleteContext<ENTITY> context) {
     }
@@ -59,8 +59,8 @@ public interface EntityListener<ENTITY> {
      *            the entity
      * @param context
      *            the context
-     * @see {@code Insert}
-     * @see {@code BatchInsert}
+     * @see org.seasar.doma.Insert
+     * @see org.seasar.doma.BatchInsert
      */
     default void postInsert(ENTITY entity, PostInsertContext<ENTITY> context) {
     }
@@ -72,8 +72,8 @@ public interface EntityListener<ENTITY> {
      *            the entity
      * @param context
      *            the context
-     * @see {@code Update}
-     * @see {@code BatchUpdate}
+     * @see org.seasar.doma.Update
+     * @see org.seasar.doma.BatchUpdate
      */
     default void postUpdate(ENTITY entity, PostUpdateContext<ENTITY> context) {
     }
@@ -85,8 +85,8 @@ public interface EntityListener<ENTITY> {
      *            the entity
      * @param context
      *            the context
-     * @see {@code Delete}
-     * @see {@code BatchDelete}
+     * @see org.seasar.doma.Delete
+     * @see org.seasar.doma.BatchDelete
      */
     default void postDelete(ENTITY entity, PostDeleteContext<ENTITY> context) {
     }

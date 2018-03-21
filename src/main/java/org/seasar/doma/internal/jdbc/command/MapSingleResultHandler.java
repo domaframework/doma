@@ -12,7 +12,7 @@ public class MapSingleResultHandler extends AbstractSingleResultHandler<Map<Stri
 
     public MapSingleResultHandler(MapKeyNamingType keyNamingType) {
         super(new MapIterationHandler<>(keyNamingType,
-                new SingleResultCallback<Map<String, Object>>()));
+                new SingleResultCallback<>()));
     }
 
 }

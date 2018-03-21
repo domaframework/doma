@@ -70,7 +70,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void preInsert() {
-        AutoBatchPreInsertContext<ENTITY> context = new AutoBatchPreInsertContext<ENTITY>(
+        AutoBatchPreInsertContext<ENTITY> context = new AutoBatchPreInsertContext<>(
                 entityDesc, method, config);
         entityDesc.preInsert(currentEntity, context);
         if (context.getNewEntity() != null) {
@@ -124,9 +124,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     protected void prepareIdValue() {
         if (generatedIdPropertyDesc != null && idGenerationConfig != null) {
-            ENTITY newEntity = generatedIdPropertyDesc.preInsert(entityDesc, currentEntity,
+            currentEntity = generatedIdPropertyDesc.preInsert(entityDesc, currentEntity,
                     idGenerationConfig);
-            currentEntity = newEntity;
         }
     }
 
@@ -186,7 +185,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void postInsert() {
-        AutoBatchPostInsertContext<ENTITY> context = new AutoBatchPostInsertContext<ENTITY>(
+        AutoBatchPostInsertContext<ENTITY> context = new AutoBatchPostInsertContext<>(
                 entityDesc, method, config);
         entityDesc.postInsert(currentEntity, context);
         if (context.getNewEntity() != null) {

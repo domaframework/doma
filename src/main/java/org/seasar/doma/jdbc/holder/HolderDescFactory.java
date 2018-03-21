@@ -104,8 +104,6 @@ public final class HolderDescFactory {
             Class<HOLDER> clazz = classHelper.forName(holderDescClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
-        } catch (WrapException e) {
-            return null;
         } catch (Exception e) {
             return null;
         }

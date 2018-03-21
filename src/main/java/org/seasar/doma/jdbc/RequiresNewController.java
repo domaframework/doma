@@ -24,10 +24,8 @@ public interface RequiresNewController {
      * @return the result
      * @throws DomaNullPointerException
      *             if ｛@code callback} is {@code null}
-     * @throws Throwable
-     *             if an exception is thrown in the process of｛@code callback}
      */
-    default <R> R requiresNew(Callback<R> callback) throws Throwable {
+    default <R> R requiresNew(Callback<R> callback) {
         if (callback == null) {
             throw new DomaNullPointerException("callback");
         }

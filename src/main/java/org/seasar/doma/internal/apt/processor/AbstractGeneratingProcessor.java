@@ -70,6 +70,6 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
     protected abstract CodeSpec createCodeSpec(M meta);
 
     protected abstract Generator createGenerator(M meta, CodeSpec codeSpec, Formatter formatter)
-            throws IOException;
+            ;
 
 }

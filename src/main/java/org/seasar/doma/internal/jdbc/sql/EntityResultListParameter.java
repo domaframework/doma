@@ -15,11 +15,11 @@ import org.seasar.doma.jdbc.query.Query;
  */
 public class EntityResultListParameter<ENTITY> extends AbstractResultListParameter<ENTITY> {
 
-    EntityDesc<ENTITY> entityDesc;
-    boolean resultMappingEnsured;
+    final EntityDesc<ENTITY> entityDesc;
+    final boolean resultMappingEnsured;
 
     public EntityResultListParameter(EntityDesc<ENTITY> entityDesc, boolean resultMappingEnsured) {
-        super(new ArrayList<ENTITY>());
+        super(new ArrayList<>());
         assertNotNull(entityDesc);
         this.entityDesc = entityDesc;
         this.resultMappingEnsured = resultMappingEnsured;

@@ -76,7 +76,7 @@ public interface QueryImplementors {
      *            the DAO method
      * @param entityDesc
      *            the entity description
-     * @return
+     * @return the query
      */
     default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(Method method,
             EntityDesc<ENTITY> entityDesc) {
@@ -284,7 +284,7 @@ public interface QueryImplementors {
     }
 
     /**
-     * Creates an {@linkArrayCreateQuery } object.
+     * Creates an {@link ArrayCreateQuery } object.
      * 
      * @param method
      *            the DAO method

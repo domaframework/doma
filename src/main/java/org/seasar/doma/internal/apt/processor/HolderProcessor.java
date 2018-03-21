@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -41,8 +40,7 @@ public class HolderProcessor extends AbstractGeneratingProcessor<HolderMeta> {
     }
 
     @Override
-    protected Generator createGenerator(HolderMeta meta, CodeSpec codeSpec, Formatter formatter)
-            throws IOException {
+    protected Generator createGenerator(HolderMeta meta, CodeSpec codeSpec, Formatter formatter) {
         assertNotNull(meta, codeSpec, formatter);
         return new HolderDescGenerator(ctx, meta, codeSpec, formatter);
     }

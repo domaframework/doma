@@ -27,7 +27,7 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
      *             if invoked
      */
     @Override
-    public ResultSet getValue(ResultSet resultSet, int index) throws SQLException {
+    public ResultSet getValue(ResultSet resultSet, int index) {
         throw new JdbcUnsupportedOperationException(getClass().getName(), "getValue");
     }
 
@@ -36,8 +36,7 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
      *             if invoked
      */
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, ResultSet value)
-            throws SQLException {
+    public void setValue(PreparedStatement preparedStatement, int index, ResultSet value) {
         throw new JdbcUnsupportedOperationException(getClass().getName(), "setValue");
     }
 
@@ -45,7 +44,7 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
      * @return {@code null}
      */
     @Override
-    protected ResultSet doGetValue(ResultSet resultSet, int index) throws SQLException {
+    protected ResultSet doGetValue(ResultSet resultSet, int index) {
         return null;
     }
 
@@ -53,8 +52,7 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
      * Does nothing.
      */
     @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index, ResultSet value)
-            throws SQLException {
+    protected void doSetValue(PreparedStatement preparedStatement, int index, ResultSet value) {
     }
 
     @Override

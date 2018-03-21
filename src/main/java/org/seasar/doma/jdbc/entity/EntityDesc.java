@@ -77,7 +77,7 @@ public interface EntityDesc<ENTITY> {
      * Returns the naming convention.
      * 
      * @return the naming convention or {@code null}
-     * @see {@link Entity#naming()}
+     * @see Entity#naming()
      */
     NamingType getNamingType();
 

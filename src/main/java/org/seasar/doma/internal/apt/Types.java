@@ -149,10 +149,10 @@ public class Types implements javax.lang.model.util.Types {
         if (t2.getKind() == TypeKind.VOID) {
             return t1.getKind() == TypeKind.VOID;
         }
-        TypeMirror erasuredType1 = erasure(t1);
-        TypeMirror erasuredType2 = erasure(t2);
-        return typeUtils.isSameType(erasuredType1, erasuredType2)
-                || erasuredType1.equals(erasuredType2);
+        TypeMirror erasureType1 = erasure(t1);
+        TypeMirror erasureType2 = erasure(t2);
+        return typeUtils.isSameType(erasureType1, erasureType2)
+                || erasureType1.equals(erasureType2);
     }
 
     public boolean isSameType(Pair<TypeMirror, TypeMirror> pair) {
@@ -233,30 +233,6 @@ public class Types implements javax.lang.model.util.Types {
         }, p);
 
         return p.toString();
-    }
-
-    public String getBoxedTypeName(TypeMirror type) {
-        assertNotNull(type);
-        switch (type.getKind()) {
-        case BOOLEAN:
-            return Boolean.class.getName();
-        case BYTE:
-            return Byte.class.getName();
-        case SHORT:
-            return Short.class.getName();
-        case INT:
-            return Integer.class.getName();
-        case LONG:
-            return Long.class.getName();
-        case FLOAT:
-            return Float.class.getName();
-        case DOUBLE:
-            return Double.class.getName();
-        case CHAR:
-            return Character.class.getName();
-        default:
-            return getTypeName(type);
-        }
     }
 
     public String getTypeParameterName(TypeMirror type) {

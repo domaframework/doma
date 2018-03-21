@@ -22,14 +22,14 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements NumberWr
 
     @Override
     public Integer getDefault() {
-        return Integer.valueOf(0);
+        return 0;
     }
 
     @Override
     public void increment() {
         Integer value = doGet();
         if (value != null) {
-            doSet(value.intValue() + 1);
+            doSet(value + 1);
         }
     }
 
@@ -37,7 +37,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements NumberWr
     public void decrement() {
         Integer value = doGet();
         if (value != null) {
-            doSet(value.intValue() - 1);
+            doSet(value - 1);
         }
     }
 

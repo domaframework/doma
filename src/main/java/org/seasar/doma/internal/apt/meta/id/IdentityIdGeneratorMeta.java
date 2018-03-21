@@ -15,7 +15,7 @@ public class IdentityIdGeneratorMeta implements IdGeneratorMeta {
 
     @Override
     public <R, P> R accept(IdGeneratorMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistIdentityIdGeneratorMeta(this, p);
+        return visitor.visitIdentityIdGeneratorMeta(this, p);
     }
 
 }

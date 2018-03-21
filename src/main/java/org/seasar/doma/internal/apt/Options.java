@@ -47,7 +47,7 @@ public final class Options {
 
     public static final String LOMBOK_VALUE = "doma.lombok.Value";
 
-    private static Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
+    private static final Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
 
     private final Context ctx;
 
@@ -61,7 +61,7 @@ public final class Options {
 
     public boolean isTestEnabled() {
         String test = getOption(Options.TEST);
-        return Boolean.valueOf(test).booleanValue();
+        return Boolean.valueOf(test);
     }
 
     public String getVersion() {
@@ -80,17 +80,15 @@ public final class Options {
 
     public boolean isDebugEnabled() {
         String debug = getOption(Options.DEBUG);
-        return Boolean.valueOf(debug).booleanValue();
+        return Boolean.valueOf(debug);
     }
 
     public String getDaoPackage() {
-        String pkg = getOption(Options.DAO_PACKAGE);
-        return pkg != null ? pkg : null;
+        return getOption(Options.DAO_PACKAGE);
     }
 
     public String getDaoSubpackage() {
-        String subpackage = getOption(Options.DAO_SUBPACKAGE);
-        return subpackage != null ? subpackage : null;
+        return getOption(Options.DAO_SUBPACKAGE);
     }
 
     public String getDaoSuffix() {
@@ -107,23 +105,21 @@ public final class Options {
     }
 
     public String getExprFunctions() {
-        String name = getOption(Options.EXPR_FUNCTIONS);
-        return name != null ? name : null;
+        return getOption(Options.EXPR_FUNCTIONS);
     }
 
     public String getHolderConverters() {
-        String converters = getOption(Options.HOLDER_CONVERTERS);
-        return converters != null ? converters : null;
+        return getOption(Options.HOLDER_CONVERTERS);
     }
 
     public boolean getSqlValidation() {
         String v = getOption(Options.SQL_VALIDATION);
-        return v != null ? Boolean.valueOf(v).booleanValue() : true;
+        return v == null || Boolean.valueOf(v);
     }
 
     public boolean getVersionValidation() {
         String v = getOption(Options.VERSION_VALIDATION);
-        return v != null ? Boolean.valueOf(v).booleanValue() : true;
+        return v == null || Boolean.valueOf(v);
     }
 
     public String getLombokAllArgsConstructor() {

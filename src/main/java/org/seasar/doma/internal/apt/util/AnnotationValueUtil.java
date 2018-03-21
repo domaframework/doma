@@ -21,7 +21,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        final List<String> results = new ArrayList<String>();
+        final List<String> results = new ArrayList<>();
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
@@ -46,7 +46,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        final List<TypeMirror> results = new ArrayList<TypeMirror>();
+        final List<TypeMirror> results = new ArrayList<>();
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
@@ -71,7 +71,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        final List<AnnotationMirror> results = new ArrayList<AnnotationMirror>();
+        final List<AnnotationMirror> results = new ArrayList<>();
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override
@@ -96,7 +96,7 @@ public final class AnnotationValueUtil {
         if (value == null) {
             return null;
         }
-        final List<VariableElement> results = new ArrayList<VariableElement>();
+        final List<VariableElement> results = new ArrayList<>();
         value.accept(new SimpleAnnotationValueVisitor8<Void, Void>() {
 
             @Override

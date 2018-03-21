@@ -107,11 +107,8 @@ public class NodePreparedSqlBuilder
     public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath,
             ExpressionEvaluator evaluator, SqlLogType sqlLogType) {
         this(config, kind, sqlFilePath, evaluator, sqlLogType,
-                new Function<ExpandNode, List<String>>() {
-                    @Override
-                    public List<String> apply(ExpandNode node) {
-                        throw new UnsupportedOperationException();
-                    }
+                node -> {
+                    throw new UnsupportedOperationException();
                 });
     }
 
@@ -119,11 +116,8 @@ public class NodePreparedSqlBuilder
             ExpressionEvaluator evaluator, SqlLogType sqlLogType,
             Function<ExpandNode, List<String>> columnsExpander) {
         this(config, kind, sqlFilePath, evaluator, sqlLogType, columnsExpander,
-                new BiConsumer<PopulateNode, SqlContext>() {
-                    @Override
-                    public void accept(PopulateNode node, SqlContext context) {
-                        throw new UnsupportedOperationException();
-                    }
+                (node, context) -> {
+                    throw new UnsupportedOperationException();
                 });
     }
 
@@ -248,11 +242,11 @@ public class NodePreparedSqlBuilder
                 throw new JdbcException(Message.DOMA2117, location.getSql(),
                         location.getLineNumber(), location.getPosition(), node.getText());
             }
-            if (fragment.indexOf("--") > -1) {
+            if (fragment.contains("--")) {
                 throw new JdbcException(Message.DOMA2122, location.getSql(),
                         location.getLineNumber(), location.getPosition(), node.getText());
             }
-            if (fragment.indexOf("/*") > -1) {
+            if (fragment.contains("/*")) {
                 throw new JdbcException(Message.DOMA2123, location.getSql(),
                         location.getLineNumber(), location.getPosition(), node.getText());
             }
@@ -704,6 +698,7 @@ public class NodePreparedSqlBuilder
 
         private boolean available;
 
+        @SuppressWarnings("CopyConstructorMissesField")
         protected Context(Context context) {
             this(context.config, context.evaluator);
         }
@@ -760,7 +755,7 @@ public class NodePreparedSqlBuilder
         }
 
         protected <BASIC, CONTAINER> void addBindValue(Scalar<BASIC, CONTAINER> scalar) {
-            appendParameterInternal(new ScalarInParameter<BASIC, CONTAINER>(scalar));
+            appendParameterInternal(new ScalarInParameter<>(scalar));
         }
 
         protected <BASIC> void appendParameter(InParameter<BASIC> parameter) {

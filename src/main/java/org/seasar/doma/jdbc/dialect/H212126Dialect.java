@@ -7,7 +7,6 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.H212126ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.H212126PagingTransformer;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -76,7 +75,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call identity()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
+                Collections.emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class H212126Dialect extends StandardDialect {
         }
         String rawSql = "call next value for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
+                Collections.emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override

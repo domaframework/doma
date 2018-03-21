@@ -102,9 +102,9 @@ public class SqlProcessorQueryMetaFactory
      */
     private class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlProcessorQueryMeta queryMeta;
+        private final SqlProcessorQueryMeta queryMeta;
 
-        private QueryParameterMeta parameterMeta;
+        private final QueryParameterMeta parameterMeta;
 
         public ParamCtTypeVisitor(SqlProcessorQueryMeta queryMeta,
                 QueryParameterMeta parameterMeta) {
@@ -136,7 +136,7 @@ public class SqlProcessorQueryMetaFactory
     private class ParamBiFunctionFirstArgCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlProcessorQueryMeta queryMeta;
+        private final SqlProcessorQueryMeta queryMeta;
 
         public ParamBiFunctionFirstArgCtTypeVisitor(SqlProcessorQueryMeta queryMeta) {
             this.queryMeta = queryMeta;
@@ -161,7 +161,7 @@ public class SqlProcessorQueryMetaFactory
     private class ParamBiFunctionSecondArgCtTypeVisitor
             extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-        private SqlProcessorQueryMeta queryMeta;
+        private final SqlProcessorQueryMeta queryMeta;
 
         public ParamBiFunctionSecondArgCtTypeVisitor(SqlProcessorQueryMeta queryMeta) {
             this.queryMeta = queryMeta;

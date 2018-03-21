@@ -8,8 +8,8 @@ public class OptionalDoubleCtType extends ScalarCtType {
 
     private final CtType elementCtType;
 
-    OptionalDoubleCtType(Context ctx, TypeMirror typeMirro, CtType elementCtType) {
-        super(ctx, typeMirro);
+    OptionalDoubleCtType(Context ctx, TypeMirror typeMirror, CtType elementCtType) {
+        super(ctx, typeMirror);
         this.elementCtType = elementCtType;
     }
 

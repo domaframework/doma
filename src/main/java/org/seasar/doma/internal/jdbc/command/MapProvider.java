@@ -17,10 +17,6 @@ import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.ObjectWrapper;
 
-/***
- * 
- * @author nakamura-to
- */
 public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
     protected final Query query;
@@ -31,11 +27,6 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
     protected Map<Integer, String> indexMap;
 
-    /**
-     * 
-     * @param query
-     * @param mapKeyNamingType
-     */
     public MapProvider(Query query, MapKeyNamingType mapKeyNamingType) {
         assertNotNull(query, mapKeyNamingType);
         this.query = query;
@@ -45,14 +36,14 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
     @Override
     public Map<String, Object> get(ResultSet resultSet) throws SQLException {
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<>();
         if (indexMap == null) {
             indexMap = createIndexMap(resultSet.getMetaData());
         }
         for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
             Integer index = entry.getKey();
             String key = entry.getValue();
-            BasicScalar<Object> scalar = new BasicScalar<>(() -> new ObjectWrapper(), false);
+            BasicScalar<Object> scalar = new BasicScalar<>(ObjectWrapper::new, false);
             fetch(resultSet, scalar, index, jdbcMappingVisitor);
             map.put(key, scalar.get());
         }
@@ -63,7 +54,7 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
             throws SQLException {
         MapKeyNaming naming = query.getConfig().getMapKeyNaming();
         Method method = query.getMethod();
-        HashMap<Integer, String> indexMap = new HashMap<Integer, String>();
+        HashMap<Integer, String> indexMap = new HashMap<>();
         int count = resultSetMeta.getColumnCount();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);

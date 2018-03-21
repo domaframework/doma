@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +34,11 @@ public class Elements implements javax.lang.model.util.Elements {
 
     private final Context ctx;
 
-    private final javax.lang.model.util.Elements elementUtls;
+    private final javax.lang.model.util.Elements elementUtils;
 
     public Elements(Context ctx) {
         this.ctx = ctx;
-        this.elementUtls = ctx.getEnv().getElementUtils();
+        this.elementUtils = ctx.getEnv().getElementUtils();
     }
 
     public String getPackageName(Element element) {
@@ -48,7 +47,7 @@ public class Elements implements javax.lang.model.util.Elements {
     }
 
     public Name getBinaryName(TypeElement typeElement) {
-        return elementUtls.getBinaryName(typeElement);
+        return elementUtils.getBinaryName(typeElement);
     }
 
     public String getPackageExcludedBinaryName(TypeElement typeElement) {
@@ -93,7 +92,7 @@ public class Elements implements javax.lang.model.util.Elements {
                     Arrays.asList(parts).subList(1, parts.length));
         }
         try {
-            return elementUtls.getTypeElement(className);
+            return elementUtils.getTypeElement(className);
         } catch (NullPointerException ignored) {
             return null;
         }
@@ -190,7 +189,7 @@ public class Elements implements javax.lang.model.util.Elements {
                 .collect(Collectors.toList());
         Collections.reverse(allFields);
         return allFields.stream()
-                .filter(hidden -> !allFields.stream().anyMatch(hider -> hides(hider, hidden)))
+                .filter(hidden -> allFields.stream().noneMatch(hider -> hides(hider, hidden)))
                 .collect(Collectors.toList());
     }
 
@@ -209,8 +208,8 @@ public class Elements implements javax.lang.model.util.Elements {
 
     private <E extends Element> boolean isSameType(List<E> lhs, List<Class<?>> rhs) {
         int i = 0;
-        for (Iterator<E> it = lhs.iterator(); it.hasNext();) {
-            TypeMirror parameterType = it.next().asType();
+        for (E lh : lhs) {
+            TypeMirror parameterType = lh.asType();
             Class<?> parameterClass = rhs.get(i);
             if (!ctx.getTypes().isSameType(parameterType, parameterClass)) {
                 return false;
@@ -221,7 +220,7 @@ public class Elements implements javax.lang.model.util.Elements {
     }
 
     public LinkedHashMap<String, TypeMirror> getParameterTypeMap(ExecutableElement methodElement) {
-        LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<String, TypeMirror>();
+        LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<>();
         for (VariableElement parameter : methodElement.getParameters()) {
             String name = parameter.getSimpleName().toString();
             TypeMirror type = parameter.asType();
@@ -232,56 +231,56 @@ public class Elements implements javax.lang.model.util.Elements {
 
     public Map<? extends ExecutableElement, ? extends AnnotationValue> getElementValuesWithDefaults(
             AnnotationMirror annotationMirror) {
-        return elementUtls.getElementValuesWithDefaults(annotationMirror);
+        return elementUtils.getElementValuesWithDefaults(annotationMirror);
     }
 
     public List<? extends AnnotationMirror> getAllAnnotationMirrors(Element element) {
-        return elementUtls.getAllAnnotationMirrors(element);
+        return elementUtils.getAllAnnotationMirrors(element);
     }
 
     public List<? extends Element> getAllMembers(TypeElement typeElement) {
-        return elementUtls.getAllMembers(typeElement);
+        return elementUtils.getAllMembers(typeElement);
     }
 
     public String getConstantExpression(Object value) {
-        return elementUtls.getConstantExpression(value);
+        return elementUtils.getConstantExpression(value);
     }
 
     public String getDocComment(Element element) {
-        return elementUtls.getDocComment(element);
+        return elementUtils.getDocComment(element);
     }
 
     public Name getName(CharSequence cs) {
-        return elementUtls.getName(cs);
+        return elementUtils.getName(cs);
     }
 
     public PackageElement getPackageElement(CharSequence name) {
-        return elementUtls.getPackageElement(name);
+        return elementUtils.getPackageElement(name);
     }
 
     public PackageElement getPackageOf(Element element) {
-        return elementUtls.getPackageOf(element);
+        return elementUtils.getPackageOf(element);
     }
 
     public boolean hides(Element hider, Element hidden) {
-        return elementUtls.hides(hider, hidden);
+        return elementUtils.hides(hider, hidden);
     }
 
     public boolean isDeprecated(Element element) {
-        return elementUtls.isDeprecated(element);
+        return elementUtils.isDeprecated(element);
     }
 
     public boolean isFunctionalInterface(TypeElement typeElement) {
-        return elementUtls.isFunctionalInterface(typeElement);
+        return elementUtils.isFunctionalInterface(typeElement);
     }
 
     public boolean overrides(ExecutableElement overrider, ExecutableElement overridden,
             TypeElement typeElement) {
-        return elementUtls.overrides(overrider, overridden, typeElement);
+        return elementUtils.overrides(overrider, overridden, typeElement);
     }
 
     public void printElements(Writer writer, Element... elements) {
-        elementUtls.printElements(writer, elements);
+        elementUtils.printElements(writer, elements);
     }
 
 }

@@ -25,7 +25,7 @@ public class BatchSqlValidator extends SqlValidator {
 
     private boolean forWarningNotified;
 
-    private SuppressReflection suppressReflection;
+    private final SuppressReflection suppressReflection;
 
     public BatchSqlValidator(Context ctx, ExecutableElement methodElement,
             LinkedHashMap<String, TypeMirror> parameterTypeMap, String path, boolean expandable,

@@ -40,7 +40,7 @@ public class BatchUpdateQueryHelper<E> {
     }
 
     public List<EntityPropertyDesc<E, ?>> getTargetPropertyDescs() {
-        List<EntityPropertyDesc<E, ?>> targetPropertyDescs = new ArrayList<EntityPropertyDesc<E, ?>>(
+        List<EntityPropertyDesc<E, ?>> targetPropertyDescs = new ArrayList<>(
                 entityDesc.getEntityPropertyDescs().size());
         for (EntityPropertyDesc<E, ?> p : entityDesc.getEntityPropertyDescs()) {
             if (!p.isUpdatable()) {

@@ -36,7 +36,7 @@ public class ResultSetReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
         }
-        return value.booleanValue();
+        return value;
     }
 
 }

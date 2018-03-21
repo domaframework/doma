@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -42,8 +41,7 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
     }
 
     @Override
-    protected Generator createGenerator(EntityMeta meta, CodeSpec codeSpec, Formatter formatter)
-            throws IOException {
+    protected Generator createGenerator(EntityMeta meta, CodeSpec codeSpec, Formatter formatter) {
         assertNotNull(meta, codeSpec, formatter);
         return new EntityDescGenerator(ctx, meta, codeSpec, formatter);
     }

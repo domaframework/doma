@@ -12,7 +12,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 public class WhitespaceNode extends AbstractSqlNode {
 
-    protected static final Map<String, WhitespaceNode> nodeMap = new HashMap<String, WhitespaceNode>();
+    protected static final Map<String, WhitespaceNode> nodeMap = new HashMap<>();
     static {
         nodeMap.put(String.valueOf('\u0009'), new WhitespaceNode('\u0009'));
         nodeMap.put(String.valueOf('\u000B'), new WhitespaceNode('\u000B'));

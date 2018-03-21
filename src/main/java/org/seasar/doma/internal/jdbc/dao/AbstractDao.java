@@ -67,7 +67,7 @@ public abstract class AbstractDao implements ConfigProvider {
         if (connection == null) {
             throw new DomaNullPointerException("connection");
         }
-        DataSource dataSource = null;
+        DataSource dataSource;
         if (connection instanceof NeverClosedConnection) {
             dataSource = new NeverClosedConnectionProvider((NeverClosedConnection) connection);
         } else {

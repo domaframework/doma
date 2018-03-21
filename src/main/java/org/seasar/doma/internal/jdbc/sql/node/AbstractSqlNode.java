@@ -13,7 +13,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public abstract class AbstractSqlNode implements AppendableSqlNode {
 
-    protected final List<SqlNode> children = new ArrayList<SqlNode>();
+    protected final List<SqlNode> children = new ArrayList<>();
 
     @Override
     public void appendNode(SqlNode child) {

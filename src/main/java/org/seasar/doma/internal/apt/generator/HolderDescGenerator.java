@@ -52,7 +52,7 @@ public class HolderDescGenerator extends AbstractGenerator {
             iprint(" */%n");
         }
         printGenerated();
-        if (holderMeta.isParametarized()) {
+        if (holderMeta.isParameterized()) {
             iprint("public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
             // @formatter:off
                     /* 1 */codeSpec.getSimpleName(),
@@ -82,7 +82,7 @@ public class HolderDescGenerator extends AbstractGenerator {
     }
 
     private void printFields() {
-        if (holderMeta.isParametarized()) {
+        if (holderMeta.isParameterized()) {
             iprint("@SuppressWarnings(\"rawtypes\")%n");
         }
         iprint("private static final %1$s singleton = new %1$s();%n", codeSpec.getSimpleName());
@@ -175,12 +175,12 @@ public class HolderDescGenerator extends AbstractGenerator {
     }
 
     private void printGetHolderClassMethod() {
-        if (holderMeta.isParametarized()) {
+        if (holderMeta.isParameterized()) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
         }
         iprint("@Override%n");
         iprint("public Class<%1$s> getHolderClass() {%n", typeName);
-        if (holderMeta.isParametarized()) {
+        if (holderMeta.isParameterized()) {
             iprint("    Class<?> clazz = %1$s.class;%n",
                     holderMeta.getHolderElement().getQualifiedName());
             iprint("    return (Class<%1$s>) clazz;%n", typeName);
@@ -195,7 +195,7 @@ public class HolderDescGenerator extends AbstractGenerator {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");
-        if (holderMeta.isParametarized()) {
+        if (holderMeta.isParameterized()) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
             iprint("public static <%1$s> %2$s<%1$s> getSingletonInternal() {%n",
             // @formatter:off

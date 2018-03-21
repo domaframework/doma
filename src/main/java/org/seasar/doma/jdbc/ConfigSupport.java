@@ -5,33 +5,33 @@ package org.seasar.doma.jdbc;
  */
 public final class ConfigSupport {
 
-    public static SqlFileRepository defaultSqlFileRepository = new GreedyCacheSqlFileRepository();
+    public static final SqlFileRepository defaultSqlFileRepository = new GreedyCacheSqlFileRepository();
 
-    public static JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
+    public static final JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
 
-    public static RequiresNewController defaultRequiresNewController = new RequiresNewController() {
+    public static final RequiresNewController defaultRequiresNewController = new RequiresNewController() {
     };
 
-    public static ClassHelper defaultClassHelper = new ClassHelper() {
+    public static final ClassHelper defaultClassHelper = new ClassHelper() {
     };
 
-    public static CommandImplementors defaultCommandImplementors = new CommandImplementors() {
+    public static final CommandImplementors defaultCommandImplementors = new CommandImplementors() {
     };
 
-    public static QueryImplementors defaultQueryImplementors = new QueryImplementors() {
+    public static final QueryImplementors defaultQueryImplementors = new QueryImplementors() {
     };
 
-    public static UnknownColumnHandler defaultUnknownColumnHandler = new UnknownColumnHandler() {
+    public static final UnknownColumnHandler defaultUnknownColumnHandler = new UnknownColumnHandler() {
     };
 
-    public static Naming defaultNaming = Naming.DEFAULT;
+    public static final Naming defaultNaming = Naming.DEFAULT;
 
-    public static MapKeyNaming defaultMapKeyNaming = new MapKeyNaming() {
+    public static final MapKeyNaming defaultMapKeyNaming = new MapKeyNaming() {
     };
 
-    public static Commenter defaultCommenter = new Commenter() {
+    public static final Commenter defaultCommenter = new Commenter() {
     };
 
-    public static EntityListenerProvider defaultEntityListenerProvider = new EntityListenerProvider() {
+    public static final EntityListenerProvider defaultEntityListenerProvider = new EntityListenerProvider() {
     };
 }

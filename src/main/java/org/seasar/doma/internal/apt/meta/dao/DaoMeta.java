@@ -24,7 +24,7 @@ import org.seasar.doma.internal.apt.reflection.DaoReflection;
  */
 public class DaoMeta implements TypeElementMeta {
 
-    private final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
+    private final List<QueryMeta> queryMetas = new ArrayList<>();
 
     private final DaoReflection daoReflection;
 
@@ -80,7 +80,7 @@ public class DaoMeta implements TypeElementMeta {
                 || annotateWithReflection.getAnnotationsValue() == null) {
             return Collections.emptyList();
         }
-        List<AnnotationReflection> results = new ArrayList<AnnotationReflection>();
+        List<AnnotationReflection> results = new ArrayList<>();
         for (AnnotationReflection annotationReflection : annotateWithReflection
                 .getAnnotationsValue()) {
             if (target.name()

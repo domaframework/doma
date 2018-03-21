@@ -26,7 +26,7 @@ public abstract class AbstractMessageResourceBundle<M extends Enum<M> & MessageR
 
     @Override
     public Enumeration<String> getKeys() {
-        List<String> keys = new LinkedList<String>();
+        List<String> keys = new LinkedList<>();
         for (M messageResource : EnumSet.allOf(messageResourceClass)) {
             keys.add(messageResource.getCode());
         }

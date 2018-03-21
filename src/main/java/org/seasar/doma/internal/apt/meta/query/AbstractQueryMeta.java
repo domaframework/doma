@@ -15,7 +15,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.query.Query;
 
 /**
@@ -28,19 +27,19 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected final ExecutableElement executableElement;
 
-    protected List<String> typeParameterNames = new ArrayList<String>();
+    protected final List<String> typeParameterNames = new ArrayList<>();
 
-    protected List<String> thrownTypeNames = new ArrayList<String>();
+    protected final List<String> thrownTypeNames = new ArrayList<>();
 
     protected QueryKind queryKind;
 
-    protected LinkedHashMap<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<String, TypeMirror>();
+    protected final LinkedHashMap<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<>();
 
     protected QueryReturnMeta returnMeta;
 
-    protected List<QueryParameterMeta> parameterMetas = new ArrayList<QueryParameterMeta>();
+    protected final List<QueryParameterMeta> parameterMetas = new ArrayList<>();
 
-    protected List<String> fileNames = new ArrayList<String>();
+    protected final List<String> fileNames = new ArrayList<>();
 
     protected AbstractQueryMeta(ExecutableElement method) {
         assertNotNull(method);
@@ -88,7 +87,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         if (queryKind == null) {
             return null;
         }
-        return (Class<? extends Command>) queryKind.getCommandClass();
+        return queryKind.getCommandClass();
     }
 
     @Override

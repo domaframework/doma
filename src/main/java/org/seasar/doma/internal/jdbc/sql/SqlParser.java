@@ -59,7 +59,7 @@ public class SqlParser {
     protected static final Pattern LITERAL_PATTERN = Pattern
             .compile("[-+'.0-9]|.*'|true|false|null", Pattern.CASE_INSENSITIVE);
 
-    protected final Deque<AppendableSqlNode> nodeStack = new LinkedList<AppendableSqlNode>();
+    protected final Deque<AppendableSqlNode> nodeStack = new LinkedList<>();
 
     protected final String sql;
 
@@ -395,34 +395,34 @@ public class SqlParser {
     }
 
     protected void parseBindVariableBlockComment() {
-        String varialbeName = tokenType.extract(token);
-        if (varialbeName.isEmpty()) {
+        String variableName = tokenType.extract(token);
+        if (variableName.isEmpty()) {
             throw new JdbcException(Message.DOMA2120, sql, tokenizer.getLineNumber(),
                     tokenizer.getPosition(), token);
         }
-        BindVariableNode node = new BindVariableNode(getLocation(), varialbeName, token);
+        BindVariableNode node = new BindVariableNode(getLocation(), variableName, token);
         appendNode(node);
         push(node);
     }
 
     protected void parseLiteralVariableBlockComment() {
-        String varialbeName = tokenType.extract(token);
-        if (varialbeName.isEmpty()) {
+        String variableName = tokenType.extract(token);
+        if (variableName.isEmpty()) {
             throw new JdbcException(Message.DOMA2228, sql, tokenizer.getLineNumber(),
                     tokenizer.getPosition(), token);
         }
-        LiteralVariableNode node = new LiteralVariableNode(getLocation(), varialbeName, token);
+        LiteralVariableNode node = new LiteralVariableNode(getLocation(), variableName, token);
         appendNode(node);
         push(node);
     }
 
     protected void parseEmbeddedVariableBlockComment() {
-        String varialbeName = tokenType.extract(token);
-        if (varialbeName.isEmpty()) {
+        String variableName = tokenType.extract(token);
+        if (variableName.isEmpty()) {
             throw new JdbcException(Message.DOMA2121, sql, tokenizer.getLineNumber(),
                     tokenizer.getPosition(), token);
         }
-        EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(), varialbeName, token);
+        EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(), variableName, token);
         appendNode(node);
         push(node);
     }

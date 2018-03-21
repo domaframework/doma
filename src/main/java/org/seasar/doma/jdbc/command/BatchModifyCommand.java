@@ -138,8 +138,8 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
             if (!query.isOptimisticLockCheckRequired()) {
                 return;
             }
-            for (int i = 0; i < rows.length; ++i) {
-                if (rows[i] != 1) {
+            for (int row : rows) {
+                if (row != 1) {
                     throw new BatchOptimisticLockException(
                             query.getConfig().getExceptionSqlLogType(), sql);
                 }

@@ -14,10 +14,6 @@ import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.query.Query;
 
-/**
- * @author nakamura-to
- * 
- */
 public class ScalarProvider<BASIC, CONTAINER> extends AbstractObjectProvider<CONTAINER> {
 
     protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
@@ -28,11 +24,6 @@ public class ScalarProvider<BASIC, CONTAINER> extends AbstractObjectProvider<CON
 
     protected boolean columnCountValidated;
 
-    /**
-     * 
-     * @param supplier
-     * @param query
-     */
     public ScalarProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier, Query query) {
         assertNotNull(supplier, query);
         this.supplier = supplier;

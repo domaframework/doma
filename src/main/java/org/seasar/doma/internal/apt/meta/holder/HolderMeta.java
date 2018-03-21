@@ -15,7 +15,7 @@ public class HolderMeta implements TypeElementMeta {
 
     private final TypeMirror type;
 
-    private final boolean parametarized;
+    private final boolean parameterized;
 
     private final BasicCtType basicCtType;
 
@@ -26,7 +26,7 @@ public class HolderMeta implements TypeElementMeta {
         assertNotNull(typeElement, type, holderReflection, basicCtType);
         this.holderElement = typeElement;
         this.type = type;
-        this.parametarized = !typeElement.getTypeParameters().isEmpty();
+        this.parameterized = !typeElement.getTypeParameters().isEmpty();
         this.holderReflection = holderReflection;
         this.basicCtType = basicCtType;
     }
@@ -67,8 +67,8 @@ public class HolderMeta implements TypeElementMeta {
         return "new".equals(holderReflection.getFactoryMethodValue());
     }
 
-    public boolean isParametarized() {
-        return parametarized;
+    public boolean isParameterized() {
+        return parameterized;
     }
 
 }

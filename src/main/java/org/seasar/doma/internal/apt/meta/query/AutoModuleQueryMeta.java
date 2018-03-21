@@ -14,7 +14,7 @@ import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMeta;
  */
 public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
 
-    protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<CallableSqlParameterMeta>();
+    protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<>();
 
     protected AutoModuleQueryMeta(ExecutableElement method) {
         super(method);

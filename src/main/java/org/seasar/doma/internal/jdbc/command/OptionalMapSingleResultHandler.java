@@ -15,7 +15,7 @@ public class OptionalMapSingleResultHandler
 
     public OptionalMapSingleResultHandler(MapKeyNamingType keyNamingType) {
         super(new MapIterationHandler<>(keyNamingType,
-                new OptionalSingleResultCallback<Map<String, Object>>()));
+                new OptionalSingleResultCallback<>()));
     }
 
 }

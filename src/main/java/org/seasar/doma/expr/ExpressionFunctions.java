@@ -145,7 +145,7 @@ public interface ExpressionFunctions {
      * 
      * @param localDateTime
      *            the target localDateTime
-     * @return the localDateTime whose time part is rouded down
+     * @return the localDateTime whose time part is rounded down
      */
     LocalDateTime roundDownTimePart(LocalDateTime localDateTime);
 
@@ -190,7 +190,7 @@ public interface ExpressionFunctions {
      * 
      * @param localDateTime
      *            the target localDateTime
-     * @return the localDateTime whose time part is rouded up
+     * @return the localDateTime whose time part is rounded up
      */
     LocalDateTime roundUpTimePart(LocalDateTime localDateTime);
 

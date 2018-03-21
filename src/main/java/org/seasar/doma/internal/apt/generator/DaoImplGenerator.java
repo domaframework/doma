@@ -1092,9 +1092,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
         protected void printEnteringStatements(QueryMeta m) {
             iprint("entering(\"%1$s\", \"%2$s\"", codeSpec, m.getName());
-            for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it
-                    .hasNext();) {
-                QueryParameterMeta parameterMeta = it.next();
+            for (QueryParameterMeta parameterMeta : m.getParameterMetas()) {
                 print(", %1$s", parameterMeta.getName());
             }
             print(");%n");
@@ -1120,26 +1118,23 @@ public class DaoImplGenerator extends AbstractGenerator {
         }
 
         protected void printPrerequisiteStatements(QueryMeta m) {
-            for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it
-                    .hasNext();) {
-                QueryParameterMeta parameterMeta = it.next();
+            for (QueryParameterMeta parameterMeta : m.getParameterMetas()) {
                 if (parameterMeta.isNullable()) {
                     continue;
                 }
                 String paramName = parameterMeta.getName();
                 iprint("if (%1$s == null) {%n", paramName);
                 iprint("    throw new %1$s(\"%2$s\");%n",
-                // @formatter:off
+                        // @formatter:off
                         /* 1 */DomaNullPointerException.class.getName(),
                         /* 2 */paramName);
-                        // @formatter:on
+                // @formatter:on
                 iprint("}%n");
             }
         }
 
         protected void printAddParameterStatements(List<QueryParameterMeta> ParameterMetas) {
-            for (Iterator<QueryParameterMeta> it = ParameterMetas.iterator(); it.hasNext();) {
-                QueryParameterMeta parameterMeta = it.next();
+            for (QueryParameterMeta parameterMeta : ParameterMetas) {
                 if (parameterMeta.isBindable()) {
                     CtType ctType = parameterMeta.getCtType();
                     ctType.accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
@@ -1148,10 +1143,10 @@ public class DaoImplGenerator extends AbstractGenerator {
                         protected Void defaultAction(CtType ctType, Void p)
                                 throws RuntimeException {
                             iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                            // @formatter:off
+                                    // @formatter:off
                                     /* 1 */parameterMeta.getName(),
                                     /* 2 */ctType.getQualifiedName());
-                                    // @formatter:on
+                            // @formatter:on
                             return null;
                         }
 
@@ -1159,10 +1154,10 @@ public class DaoImplGenerator extends AbstractGenerator {
                         public Void visitOptionalCtType(OptionalCtType ctType, Void p)
                                 throws RuntimeException {
                             iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.orElse(null));%n",
-                            // @formatter:off
+                                    // @formatter:off
                                     /* 1 */parameterMeta.getName(),
                                     /* 2 */ctType.getElementCtType().getQualifiedName());
-                                    // @formatter:on
+                            // @formatter:on
                             return null;
                         }
 
@@ -1170,10 +1165,10 @@ public class DaoImplGenerator extends AbstractGenerator {
                         public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
                                 throws RuntimeException {
                             iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsInt() : null);%n",
-                            // @formatter:off
+                                    // @formatter:off
                                     /* 1 */parameterMeta.getName(),
                                     /* 2 */Integer.class.getName());
-                                    // @formatter:on
+                            // @formatter:on
                             return null;
                         }
 
@@ -1181,10 +1176,10 @@ public class DaoImplGenerator extends AbstractGenerator {
                         public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
                                 throws RuntimeException {
                             iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsLong() : null);%n",
-                            // @formatter:off
+                                    // @formatter:off
                                     /* 1 */parameterMeta.getName(),
                                     /* 2 */Long.class.getName());
-                                    // @formatter:on
+                            // @formatter:on
                             return null;
                         }
 
@@ -1192,10 +1187,10 @@ public class DaoImplGenerator extends AbstractGenerator {
                         public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void p)
                                 throws RuntimeException {
                             iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsDouble() : null);%n",
-                            // @formatter:off
+                                    // @formatter:off
                                     /* 1 */parameterMeta.getName(),
                                     /* 2 */Double.class.getName());
-                                    // @formatter:on
+                            // @formatter:on
                             return null;
                         }
 

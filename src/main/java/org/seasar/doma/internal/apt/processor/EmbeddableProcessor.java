@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -41,8 +40,7 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
     }
 
     @Override
-    protected Generator createGenerator(EmbeddableMeta meta, CodeSpec codeSpec, Formatter formatter)
-            throws IOException {
+    protected Generator createGenerator(EmbeddableMeta meta, CodeSpec codeSpec, Formatter formatter) {
         assertNotNull(meta, codeSpec, formatter);
         return new EmbeddableDescGenerator(ctx, meta, codeSpec, formatter);
     }

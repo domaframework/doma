@@ -124,7 +124,7 @@ public final class AssertionUtil {
         throw new AssertionError("Unreachable.");
     }
 
-    public static <T> T assertUnreachable(String message) {
+    public static <T> void assertUnreachable(String message) {
         throw new AssertionError("Unreachable. " + message);
     }
 

@@ -56,7 +56,7 @@ public class ScriptReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(HALT_ON_ERROR);
         }
-        return value.booleanValue();
+        return value;
     }
 
     public String getBlockDelimiterValue() {

@@ -26,18 +26,6 @@ public class ResultMappingException extends JdbcException {
 
     protected final String sqlFilePath;
 
-    /**
-     * Creates an instance.
-     * 
-     * @param logType
-     * @param entityClassName
-     * @param unmappedPropertyNames
-     * @param expectedColumnNames
-     * @param kind
-     * @param rawSql
-     * @param formattedSql
-     * @param sqlFilePath
-     */
     public ResultMappingException(SqlLogType logType, String entityClassName,
             List<String> unmappedPropertyNames, List<String> expectedColumnNames, SqlKind kind,
             String rawSql, String formattedSql, String sqlFilePath) {

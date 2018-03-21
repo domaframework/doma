@@ -22,7 +22,7 @@ import org.seasar.doma.message.Message;
  */
 public final class LocalTransactionDataSource implements DataSource {
 
-    private final ThreadLocal<LocalTransactionContext> localTxContextHolder = new ThreadLocal<LocalTransactionContext>();
+    private final ThreadLocal<LocalTransactionContext> localTxContextHolder = new ThreadLocal<>();
 
     private final DataSource dataSource;
 
@@ -77,7 +77,7 @@ public final class LocalTransactionDataSource implements DataSource {
      *             if the transaction is not yet begun
      */
     @Override
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         return getConnectionInternal();
     }
 
@@ -90,7 +90,7 @@ public final class LocalTransactionDataSource implements DataSource {
      *             if the transaction is not yet begun
      */
     @Override
-    public Connection getConnection(String username, String password) throws SQLException {
+    public Connection getConnection(String username, String password) {
         return getConnectionInternal();
     }
 

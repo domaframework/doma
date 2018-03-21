@@ -22,14 +22,14 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<
 
     @Override
     public Byte getDefault() {
-        return Byte.valueOf((byte) 0);
+        return (byte) 0;
     }
 
     @Override
     public void increment() {
         Byte value = doGet();
         if (value != null) {
-            doSet((byte) (value.byteValue() + 1));
+            doSet((byte) (value + 1));
         }
     }
 
@@ -37,7 +37,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<
     public void decrement() {
         Byte value = doGet();
         if (value != null) {
-            doSet((byte) (value.byteValue() - 1));
+            doSet((byte) (value - 1));
         }
     }
 

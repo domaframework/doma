@@ -16,7 +16,7 @@ public enum AccessLevel {
 
     private final String modifier;
 
-    private AccessLevel(String modifier) {
+    AccessLevel(String modifier) {
         this.modifier = modifier;
     }
 

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
@@ -82,7 +83,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 SqlLogType.FORMATTED);
         selectSql = new PreparedSql(SqlKind.SELECT, createSelectRawSql(),
                 createSelectFormattedSql(), null,
-                Arrays.asList(new ScalarInParameter<>(
+                Collections.singletonList(new ScalarInParameter<>(
                         () -> new BasicScalar<>(new StringWrapper(), false), pkColumnValue)),
                 SqlLogType.FORMATTED);
     }
@@ -149,13 +150,9 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     protected long getNewInitialValue(final IdGenerationConfig config) {
         RequiresNewController controller = config.getRequiresNewController();
         try {
-            Long value = controller.requiresNew(new RequiresNewController.Callback<Long>() {
-
-                @Override
-                public Long execute() {
-                    updateId(config, updateSql);
-                    return selectId(config, selectSql);
-                }
+            Long value = controller.requiresNew(() -> {
+                updateId(config, updateSql);
+                return selectId(config, selectSql);
             });
             return value - allocationSize;
         } catch (Throwable t) {

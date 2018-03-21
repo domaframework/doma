@@ -64,7 +64,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
 
     @Override
     public <E> void setEntityAndEntityDesc(String name, E entity, EntityDesc<E> entityDesc) {
-        entityHandler = new EntityHandler<E>(name, entity, entityDesc);
+        entityHandler = new EntityHandler<>(name, entity, entityDesc);
     }
 
     public void setNullExcluded(boolean nullExcluded) {
@@ -73,11 +73,11 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
 
     protected class EntityHandler<E> {
 
-        protected String name;
+        protected final String name;
 
         protected E entity;
 
-        protected EntityDesc<E> entityDesc;
+        protected final EntityDesc<E> entityDesc;
 
         protected EntityHandler(String name, E entity, EntityDesc<E> entityDesc) {
             assertNotNull(name, entity, entityDesc);
@@ -87,7 +87,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
         }
 
         protected void preInsert() {
-            SqlFilePreInsertContext<E> context = new SqlFilePreInsertContext<E>(entityDesc, method,
+            SqlFilePreInsertContext<E> context = new SqlFilePreInsertContext<>(entityDesc, method,
                     config);
             entityDesc.preInsert(entity, context);
             if (context.getNewEntity() != null) {
@@ -97,7 +97,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
         }
 
         protected void postInsert() {
-            SqlFilePostInsertContext<E> context = new SqlFilePostInsertContext<E>(entityDesc,
+            SqlFilePostInsertContext<E> context = new SqlFilePostInsertContext<>(entityDesc,
                     method, config);
             entityDesc.postInsert(entity, context);
             if (context.getNewEntity() != null) {

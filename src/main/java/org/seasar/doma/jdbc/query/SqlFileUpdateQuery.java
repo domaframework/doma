@@ -108,7 +108,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
     @Override
     public <E> void setEntityAndEntityDesc(String name, E entity, EntityDesc<E> entityDesc) {
-        entityHandler = new EntityHandler<E>(name, entity, entityDesc);
+        entityHandler = new EntityHandler<>(name, entity, entityDesc);
     }
 
     public void setNullExcluded(boolean nullExcluded) {
@@ -129,13 +129,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
     protected class EntityHandler<E> {
 
-        protected String name;
+        protected final String name;
 
         protected E entity;
 
-        protected EntityDesc<E> entityDesc;
+        protected final EntityDesc<E> entityDesc;
 
-        protected VersionPropertyDesc<E, ?, ?> versionPropertyDesc;
+        protected final VersionPropertyDesc<E, ?, ?> versionPropertyDesc;
 
         protected List<EntityPropertyDesc<E, ?>> targetPropertyDescs;
 
@@ -150,13 +150,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
         }
 
         protected void init() {
-            helper = new UpdateQueryHelper<E>(config, entityDesc, includedPropertyNames,
+            helper = new UpdateQueryHelper<>(config, entityDesc, includedPropertyNames,
                     excludedPropertyNames, nullExcluded, versionIgnored,
                     optimisticLockExceptionSuppressed, unchangedPropertyIncluded);
         }
 
         protected void preUpdate() {
-            SqlFilePreUpdateContext<E> context = new SqlFilePreUpdateContext<E>(entityDesc, method,
+            SqlFilePreUpdateContext<E> context = new SqlFilePreUpdateContext<>(entityDesc, method,
                     config);
             entityDesc.preUpdate(entity, context);
             if (context.getNewEntity() != null) {
@@ -175,7 +175,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
         }
 
         protected void postUpdate() {
-            SqlFilePostUpdateContext<E> context = new SqlFilePostUpdateContext<E>(entityDesc,
+            SqlFilePostUpdateContext<E> context = new SqlFilePostUpdateContext<>(entityDesc,
                     method, config);
             entityDesc.postUpdate(entity, context);
             if (context.getNewEntity() != null) {

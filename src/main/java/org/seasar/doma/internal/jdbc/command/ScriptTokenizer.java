@@ -26,7 +26,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 public class ScriptTokenizer {
 
     /** SQLブロックの区切り文字 */
-    protected String blockDelimiter;
+    protected final String blockDelimiter;
 
     /** SQLの行 */
     protected String line;
@@ -154,11 +154,9 @@ public class ScriptTokenizer {
         switch (type) {
         case END_OF_FILE:
             token = null;
-            type = END_OF_FILE;
             return END_OF_FILE;
         case END_OF_LINE:
             token = "";
-            type = END_OF_LINE;
             return END_OF_LINE;
         case BLOCK_DELIMITER:
             token = line;
@@ -223,12 +221,14 @@ public class ScriptTokenizer {
             return QUOTE;
         case WORD:
             int wordStartPos = pos;
+            //noinspection StatementWithEmptyBody
             for (; type == WORD && pos < length; peek(nextPos)) {
             }
             token = line.substring(wordStartPos, pos);
             return WORD;
         case OTHER:
             int otherStartPos = pos;
+            //noinspection StatementWithEmptyBody
             for (; type == OTHER && pos < length; peek(nextPos)) {
             }
             token = line.substring(otherStartPos, pos);

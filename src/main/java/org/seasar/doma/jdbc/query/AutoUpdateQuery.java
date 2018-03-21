@@ -50,7 +50,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
 
     protected void setupHelper() {
-        helper = new UpdateQueryHelper<ENTITY>(config, entityDesc, includedPropertyNames,
+        helper = new UpdateQueryHelper<>(config, entityDesc, includedPropertyNames,
                 excludedPropertyNames, nullExcluded, versionIgnored,
                 optimisticLockExceptionSuppressed, unchangedPropertyIncluded);
     }
@@ -58,7 +58,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     protected void preUpdate() {
         List<EntityPropertyDesc<ENTITY, ?>> targetPropertyDescs = helper
                 .getTargetPropertyDescs(entity);
-        AutoPreUpdateContext<ENTITY> context = new AutoPreUpdateContext<ENTITY>(entityDesc, method,
+        AutoPreUpdateContext<ENTITY> context = new AutoPreUpdateContext<>(entityDesc, method,
                 config, targetPropertyDescs);
         entityDesc.preUpdate(entity, context);
         if (context.getNewEntity() != null) {
@@ -136,7 +136,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
         if (!versionIgnored && versionPropertyDesc != null) {
             targetPropertyDescs.add(versionPropertyDesc);
         }
-        AutoPostUpdateContext<ENTITY> context = new AutoPostUpdateContext<ENTITY>(entityDesc,
+        AutoPostUpdateContext<ENTITY> context = new AutoPostUpdateContext<>(entityDesc,
                 method, config, targetPropertyDescs);
         entityDesc.postUpdate(entity, context);
         if (context.getNewEntity() != null) {
@@ -169,7 +169,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
                 List<EntityPropertyDesc<E, ?>> targetPropertyDescs) {
             super(entityDesc, method, config);
             assertNotNull(targetPropertyDescs);
-            changedPropertyNames = new HashSet<String>(targetPropertyDescs.size());
+            changedPropertyNames = new HashSet<>(targetPropertyDescs.size());
             for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
                 changedPropertyNames.add(propertyDesc.getName());
             }
@@ -195,7 +195,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
                 List<EntityPropertyDesc<E, ?>> targetPropertyDescs) {
             super(entityDesc, method, config);
             assertNotNull(targetPropertyDescs);
-            changedPropertyNames = new HashSet<String>(targetPropertyDescs.size());
+            changedPropertyNames = new HashSet<>(targetPropertyDescs.size());
             for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
                 changedPropertyNames.add(propertyDesc.getName());
             }

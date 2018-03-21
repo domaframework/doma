@@ -83,8 +83,8 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
         assertNotNull(ctx, methodElement, parameterTypeMap);
         this.ctx = ctx;
         this.methodElement = methodElement;
-        this.parameterTypeMap = new HashMap<String, TypeMirror>(parameterTypeMap);
-        this.validatedParameterNames = new HashSet<String>();
+        this.parameterTypeMap = new HashMap<>(parameterTypeMap);
+        this.validatedParameterNames = new HashSet<>();
         this.unknownTypeDeclaration = ctx.getDeclarations().newUnknownTypeDeclaration();
         this.exprFunctionsClassName = exprFunctionsClassName;
     }
@@ -558,7 +558,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     private class ParameterCollector implements ExpressionNodeVisitor<Void, List<TypeDeclaration>> {
 
         public List<TypeDeclaration> collect(ExpressionNode node) {
-            List<TypeDeclaration> results = new ArrayList<TypeDeclaration>();
+            List<TypeDeclaration> results = new ArrayList<>();
             node.accept(this, results);
             return results;
         }

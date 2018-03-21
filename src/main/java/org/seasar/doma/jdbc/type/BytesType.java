@@ -34,6 +34,7 @@ public class BytesType extends AbstractJdbcType<byte[]> {
 
     @Override
     protected String doConvertToLogFormat(byte[] value) {
+        //noinspection ImplicitArrayToString
         return value.toString();
     }
 }

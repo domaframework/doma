@@ -28,7 +28,7 @@ public class Conventions {
         String packageName = ClassUtil.getPackageName(binaryName);
         String simpleName = ClassUtil.getSimpleName(binaryName);
         String base = "";
-        if (packageName != null && packageName.length() > 0) {
+        if (packageName.length() > 0) {
             base = packageName + ".";
         }
         return base + Constants.DESC_PREFIX + simpleName;
@@ -40,7 +40,7 @@ public class Conventions {
         List<String> enclosingNames = ClassUtil.getEnclosingNames(binaryName);
         String simpleName = ClassUtil.getSimpleName(binaryName);
         String base = "";
-        if (packageName != null && packageName.length() > 0) {
+        if (packageName.length() > 0) {
             base = packageName + ".";
         }
         return base + enclosingNames.stream().map(n -> n + Constants.DESC_NAME_DELIMITER).collect(

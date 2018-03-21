@@ -66,7 +66,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void preUpdate() {
-        AutoBatchPreUpdateContext<ENTITY> context = new AutoBatchPreUpdateContext<ENTITY>(
+        AutoBatchPreUpdateContext<ENTITY> context = new AutoBatchPreUpdateContext<>(
                 entityDesc, method, config);
         entityDesc.preUpdate(currentEntity, context);
         if (context.getNewEntity() != null) {
@@ -144,7 +144,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void postUpdate() {
-        AutoBatchPostUpdateContext<ENTITY> context = new AutoBatchPostUpdateContext<ENTITY>(
+        AutoBatchPostUpdateContext<ENTITY> context = new AutoBatchPostUpdateContext<>(
                 entityDesc, method, config);
         entityDesc.postUpdate(currentEntity, context);
         if (context.getNewEntity() != null) {

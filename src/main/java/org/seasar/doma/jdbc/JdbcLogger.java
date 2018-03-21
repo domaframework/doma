@@ -187,7 +187,7 @@ public interface JdbcLogger {
      *            the caller method name
      * @param e
      *            the cause of the failure
-     * @see {@link Connection#setAutoCommit(boolean)}
+     * @see Connection#setAutoCommit(boolean)
      */
     void logAutoCommitEnablingFailure(String callerClassName, String callerMethodName,
             SQLException e);
@@ -203,7 +203,7 @@ public interface JdbcLogger {
      *            the transaction isolation level
      * @param e
      *            the cause of the failure
-     * @see {@link Connection#setTransactionIsolation(int)}
+     * @see Connection#setTransactionIsolation(int)
      */
     void logTransactionIsolationSettingFailure(String callerClassName, String callerMethodName,
             int transactionIsolationLevel, SQLException e);
@@ -217,7 +217,7 @@ public interface JdbcLogger {
      *            the caller method name
      * @param e
      *            the cause of the failure
-     * @see {@link Connection#close()}
+     * @see Connection#close()
      */
     void logConnectionClosingFailure(String callerClassName, String callerMethodName,
             SQLException e);
@@ -231,7 +231,7 @@ public interface JdbcLogger {
      *            the caller method name
      * @param e
      *            the cause of the failure
-     * @see {@link Statement#close()}
+     * @see Statement#close()
      */
     void logStatementClosingFailure(String callerClassName, String callerMethodName,
             SQLException e);
@@ -245,7 +245,7 @@ public interface JdbcLogger {
      *            the caller method name
      * @param e
      *            the cause of the failure
-     * @see {@link ResultSet#close()}
+     * @see ResultSet#close()
      */
     void logResultSetClosingFailure(String callerClassName, String callerMethodName,
             SQLException e);

@@ -17,9 +17,7 @@ public final class FieldUtil {
         assertNotNull(field);
         try {
             return field.get(target);
-        } catch (IllegalArgumentException e) {
-            throw new WrapException(e);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new WrapException(e);
         }
     }
@@ -28,9 +26,7 @@ public final class FieldUtil {
         assertNotNull(field);
         try {
             field.set(target, value);
-        } catch (IllegalArgumentException e) {
-            throw new WrapException(e);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new WrapException(e);
         }
     }

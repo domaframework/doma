@@ -79,7 +79,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     private Strategy createStrategy() {
         ValueReflection valueReflection = ctx.getReflections().newValueReflection(holderElement);
         if (valueReflection != null) {
-            return new ValueStragety(valueReflection);
+            return new ValueStrategy(valueReflection);
         }
         return new DefaultStrategy();
     }
@@ -154,6 +154,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
             }
             NestingKind nestingKind = typeElement.getNestingKind();
             if (nestingKind == NestingKind.TOP_LEVEL) {
+                //noinspection UnnecessaryReturnStatement
                 return;
             } else if (nestingKind == NestingKind.MEMBER) {
                 Set<Modifier> modifiers = typeElement.getModifiers();
@@ -307,11 +308,11 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
     }
 
-    protected class ValueStragety extends DefaultStrategy {
+    protected class ValueStrategy extends DefaultStrategy {
 
         private final ValueReflection valueReflection;
 
-        public ValueStragety(ValueReflection valueReflection) {
+        public ValueStrategy(ValueReflection valueReflection) {
             this.valueReflection = valueReflection;
         }
 

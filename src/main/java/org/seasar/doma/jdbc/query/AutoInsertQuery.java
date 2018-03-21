@@ -49,7 +49,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
 
     protected void preInsert() {
-        AutoPreInsertContext<ENTITY> context = new AutoPreInsertContext<ENTITY>(entityDesc, method,
+        AutoPreInsertContext<ENTITY> context = new AutoPreInsertContext<>(entityDesc, method,
                 config);
         entityDesc.preInsert(entity, context);
         if (context.getNewEntity() != null) {
@@ -106,9 +106,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
     protected void prepareIdValue() {
         if (generatedIdPropertyDesc != null && idGenerationConfig != null) {
-            ENTITY newEntity = generatedIdPropertyDesc.preInsert(entityDesc, entity,
+            entity = generatedIdPropertyDesc.preInsert(entityDesc, entity,
                     idGenerationConfig);
-            entity = newEntity;
         }
     }
 
@@ -145,9 +144,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     @Override
     public void generateId(Statement statement) {
         if (generatedIdPropertyDesc != null && idGenerationConfig != null) {
-            ENTITY newEntity = generatedIdPropertyDesc.postInsert(entityDesc, entity,
+            entity = generatedIdPropertyDesc.postInsert(entityDesc, entity,
                     idGenerationConfig, statement);
-            entity = newEntity;
         }
     }
 
@@ -157,7 +155,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
 
     protected void postInsert() {
-        AutoPostInsertContext<ENTITY> context = new AutoPostInsertContext<ENTITY>(entityDesc,
+        AutoPostInsertContext<ENTITY> context = new AutoPostInsertContext<>(entityDesc,
                 method, config);
         entityDesc.postInsert(entity, context);
         if (context.getNewEntity() != null) {

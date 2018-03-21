@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  */
 public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
 
-    protected final ConcurrentMap<String, SqlFile> sqlFileMap = new ConcurrentHashMap<String, SqlFile>(
+    protected final ConcurrentMap<String, SqlFile> sqlFileMap = new ConcurrentHashMap<>(
             200);
 
     @Override

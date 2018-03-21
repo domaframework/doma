@@ -10,7 +10,7 @@ import org.seasar.doma.jdbc.query.FunctionQuery;
  * A command for a stored FUNCTION.
  * 
  * @param <RESULT>
- *            the result teype
+ *            the result type
  * @see Function
  */
 public class FunctionCommand<RESULT> extends ModuleCommand<FunctionQuery<RESULT>, RESULT> {

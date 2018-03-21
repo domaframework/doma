@@ -6,7 +6,6 @@ import java.util.Collections;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.SqlitePagingTransformer;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -72,7 +71,7 @@ public class SqliteDialect extends StandardDialect {
         }
         String rawSql = "select last_insert_rowid()";
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
+                Collections.emptyList(), SqlLogType.FORMATTED);
     }
 
     @Override

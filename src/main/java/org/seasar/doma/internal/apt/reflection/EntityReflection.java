@@ -73,7 +73,7 @@ public class EntityReflection extends AbstractReflection {
         if (result == null) {
             throw new AptIllegalStateException(IMMUTABLE);
         }
-        return result.booleanValue();
+        return result;
     }
 
 }

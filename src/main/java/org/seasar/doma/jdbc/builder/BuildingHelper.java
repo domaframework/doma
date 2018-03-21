@@ -13,7 +13,7 @@ class BuildingHelper {
 
     private static final String lineSeparator = System.getProperty("line.separator");
 
-    private final LinkedList<Item> items = new LinkedList<Item>();
+    private final LinkedList<Item> items = new LinkedList<>();
 
     BuildingHelper() {
     }
@@ -41,7 +41,7 @@ class BuildingHelper {
     }
 
     List<Param> getParams() {
-        List<Param> results = new ArrayList<Param>();
+        List<Param> results = new ArrayList<>();
         for (Item item : items) {
             if (item.kind == ItemKind.PARAM) {
                 results.add(item.param);

@@ -13,7 +13,7 @@ import org.seasar.doma.message.Message;
  */
 public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
 
-    private boolean forceOffsetFetch;
+    private final boolean forceOffsetFetch;
 
     public MssqlPagingTransformer(long offset, long limit, boolean forceOffsetFetch) {
         super(offset, limit);

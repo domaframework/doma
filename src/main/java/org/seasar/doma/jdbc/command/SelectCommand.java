@@ -117,6 +117,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
             if (result instanceof Stream) {
                 @SuppressWarnings("resource")
                 Stream<?> stream = (Stream<?>) result;
+                //noinspection ResultOfMethodCallIgnored
                 stream.onClose(closeHandler);
             } else {
                 closeHandler.run();

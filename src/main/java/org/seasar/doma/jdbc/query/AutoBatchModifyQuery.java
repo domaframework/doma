@@ -103,14 +103,14 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
     public void setEntities(Iterable<ENTITY> entities) {
         assertNotNull(entities);
         if (entities instanceof Collection<?>) {
-            this.entities = new ArrayList<ENTITY>((Collection<ENTITY>) entities);
+            this.entities = new ArrayList<>((Collection<ENTITY>) entities);
         } else {
-            this.entities = new ArrayList<ENTITY>();
+            this.entities = new ArrayList<>();
             for (ENTITY entity : entities) {
                 this.entities.add(entity);
             }
         }
-        this.sqls = new ArrayList<PreparedSql>(this.entities.size());
+        this.sqls = new ArrayList<>(this.entities.size());
     }
 
     public List<ENTITY> getEntities() {

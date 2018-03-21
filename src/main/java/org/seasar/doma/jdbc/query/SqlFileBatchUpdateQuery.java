@@ -126,9 +126,9 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected class EntityHandler {
 
-        protected EntityDesc<ELEMENT> entityDesc;
+        protected final EntityDesc<ELEMENT> entityDesc;
 
-        protected VersionPropertyDesc<ELEMENT, ?, ?> versionPropertyDesc;
+        protected final VersionPropertyDesc<ELEMENT, ?, ?> versionPropertyDesc;
 
         protected List<EntityPropertyDesc<ELEMENT, ?>> targetPropertyDescs;
 
@@ -146,7 +146,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
         }
 
         protected void preUpdate() {
-            SqlFileBatchPreUpdateContext<ELEMENT> context = new SqlFileBatchPreUpdateContext<ELEMENT>(
+            SqlFileBatchPreUpdateContext<ELEMENT> context = new SqlFileBatchPreUpdateContext<>(
                     entityDesc, method, config);
             entityDesc.preUpdate(currentEntity, context);
             if (context.getNewEntity() != null) {
@@ -159,7 +159,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
         }
 
         protected void postUpdate() {
-            SqlFileBatchPostUpdateContext<ELEMENT> context = new SqlFileBatchPostUpdateContext<ELEMENT>(
+            SqlFileBatchPostUpdateContext<ELEMENT> context = new SqlFileBatchPostUpdateContext<>(
                     entityDesc, method, config);
             entityDesc.postUpdate(currentEntity, context);
             if (context.getNewEntity() != null) {

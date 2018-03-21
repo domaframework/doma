@@ -152,7 +152,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                 .filter(Objects::nonNull)
                 .flatMap(a -> a.getElementValues().entrySet().stream())
                 .filter(e -> e.getKey().getSimpleName().contentEquals(entityElementName))
-                .map(e -> e.getValue());
+                .map(Map.Entry::getValue);
     }
 
     private interface Strategy {
@@ -201,6 +201,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             }
             NestingKind nestingKind = typeElement.getNestingKind();
             if (nestingKind == NestingKind.TOP_LEVEL) {
+                //noinspection UnnecessaryReturnStatement
                 return;
             } else if (nestingKind == NestingKind.MEMBER) {
                 Set<Modifier> modifiers = typeElement.getModifiers();
@@ -287,8 +288,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             TypeParameterElement typeParam = listenerElement.getTypeParameters()
                     .get(typeParamIndex);
 
-            for (TypeMirror interfase : listenerElement.getInterfaces()) {
-                DeclaredType declaredType = ctx.getTypes().toDeclaredType(interfase);
+            for (TypeMirror iface : listenerElement.getInterfaces()) {
+                DeclaredType declaredType = ctx.getTypes().toDeclaredType(iface);
                 if (declaredType == null) {
                     continue;
                 }
@@ -420,8 +421,10 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             for (VariableElement fieldElement : getFields()) {
                 try {
                     if (fieldElement.getAnnotation(Transient.class) != null) {
+                        //noinspection UnnecessaryContinue
                         continue;
                     } else if (fieldElement.getModifiers().contains(Modifier.STATIC)) {
+                        //noinspection UnnecessaryContinue
                         continue;
                     } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
                         doOriginalStatesField(fieldElement, entityMeta);
@@ -536,7 +539,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         }
 
         private EntityConstructorMeta getConstructorMeta(EntityMeta entityMeta) {
-            Map<String, EntityPropertyMeta> entityPropertyMetaMap = new HashMap<String, EntityPropertyMeta>();
+            Map<String, EntityPropertyMeta> entityPropertyMetaMap = new HashMap<>();
             for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
                 entityPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
             }

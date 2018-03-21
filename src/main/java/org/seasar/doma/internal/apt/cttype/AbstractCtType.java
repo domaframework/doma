@@ -60,9 +60,7 @@ public abstract class AbstractCtType implements CtType {
             if (declaredType == null) {
                 throw new AptIllegalStateException(type.toString());
             }
-            if (declaredType.getTypeArguments().isEmpty()) {
-                return true;
-            }
+            return declaredType.getTypeArguments().isEmpty();
         }
         return false;
     }

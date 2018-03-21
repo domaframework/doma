@@ -83,7 +83,7 @@ public class StandardDialect implements Dialect {
     protected static final char CLOSE_QUOTE = '"';
 
     /** the set of {@literal SQLState} code that represents unique violation */
-    protected static final Set<String> UNIQUE_CONSTRAINT_VIOLATION_STATE_CODES = new HashSet<String>(
+    protected static final Set<String> UNIQUE_CONSTRAINT_VIOLATION_STATE_CODES = new HashSet<>(
             Arrays.asList("23", "27", "44"));
 
     /** the visitor that maps {@link Wrapper} to {@link JdbcType} */
@@ -517,7 +517,7 @@ public class StandardDialect implements Dialect {
         @Override
         public <E extends Enum<E>> Void visitEnumWrapper(EnumWrapper<E> wrapper,
                 JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
-            return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
+            return p.apply(wrapper, new EnumType<>(wrapper.getBasicClass()));
         }
 
         @Override
@@ -668,7 +668,7 @@ public class StandardDialect implements Dialect {
         @Override
         public <E extends Enum<E>> String visitEnumWrapper(EnumWrapper<E> wrapper,
                 SqlLogFormattingFunction p, Void q) throws RuntimeException {
-            return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
+            return p.apply(wrapper, new EnumType<>(wrapper.getBasicClass()));
         }
 
         @Override
@@ -688,7 +688,7 @@ public class StandardDialect implements Dialect {
     public static class StandardExpressionFunctions implements ExpressionFunctions {
 
         /** the default escape character */
-        private static char DEFAULT_ESCAPE_CHAR = '$';
+        private static final char DEFAULT_ESCAPE_CHAR = '$';
 
         /** the default wild card characters */
         private final static char[] DEFAULT_WILDCARDS = { '%', '_' };
@@ -864,7 +864,7 @@ public class StandardDialect implements Dialect {
             if (date == null) {
                 return null;
             }
-            Calendar calendar = makeRoundedDownClandar(date);
+            Calendar calendar = makeRoundedDownCalendar(date);
             return new java.util.Date(calendar.getTimeInMillis());
         }
 
@@ -873,7 +873,7 @@ public class StandardDialect implements Dialect {
             if (date == null) {
                 return null;
             }
-            Calendar calendar = makeRoundedDownClandar(date);
+            Calendar calendar = makeRoundedDownCalendar(date);
             return new Date(calendar.getTimeInMillis());
         }
 
@@ -882,7 +882,7 @@ public class StandardDialect implements Dialect {
             if (timestamp == null) {
                 return null;
             }
-            Calendar calendar = makeRoundedDownClandar(timestamp);
+            Calendar calendar = makeRoundedDownCalendar(timestamp);
             return new Timestamp(calendar.getTimeInMillis());
         }
 
@@ -894,7 +894,7 @@ public class StandardDialect implements Dialect {
             return localDateTime.truncatedTo(ChronoUnit.DAYS);
         }
 
-        protected Calendar makeRoundedDownClandar(java.util.Date date) {
+        protected Calendar makeRoundedDownCalendar(java.util.Date date) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -909,7 +909,7 @@ public class StandardDialect implements Dialect {
             if (date == null) {
                 return null;
             }
-            Calendar calendar = makeRoundedUpClandar(date);
+            Calendar calendar = makeRoundedUpCalendar(date);
             return new java.util.Date(calendar.getTimeInMillis());
         }
 
@@ -918,7 +918,7 @@ public class StandardDialect implements Dialect {
             if (date == null) {
                 return null;
             }
-            Calendar calendar = makeRoundedUpClandar(date);
+            Calendar calendar = makeRoundedUpCalendar(date);
             return new Date(calendar.getTimeInMillis());
         }
 
@@ -927,7 +927,7 @@ public class StandardDialect implements Dialect {
             if (timestamp == null) {
                 return null;
             }
-            Calendar calendar = makeRoundedUpClandar(timestamp);
+            Calendar calendar = makeRoundedUpCalendar(timestamp);
             return new Timestamp(calendar.getTimeInMillis());
         }
 
@@ -947,7 +947,7 @@ public class StandardDialect implements Dialect {
             return localDateTime.plusDays(1).truncatedTo(ChronoUnit.DAYS);
         }
 
-        protected Calendar makeRoundedUpClandar(java.util.Date date) {
+        protected Calendar makeRoundedUpCalendar(java.util.Date date) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.DATE, 1);
@@ -1023,10 +1023,10 @@ public class StandardDialect implements Dialect {
     public static class StandardScriptBlockContext implements ScriptBlockContext {
 
         /** the key wards that represents the start of a block */
-        protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<List<String>>();
+        protected final List<List<String>> sqlBlockStartKeywordsList = new ArrayList<>();
 
         /** the key words */
-        protected List<String> keywords = new ArrayList<String>();
+        protected final List<String> keywords = new ArrayList<>();
 
         /** {@code true} if this context is inside of a block */
         protected boolean inBlock;

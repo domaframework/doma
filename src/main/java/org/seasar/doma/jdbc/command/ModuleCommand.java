@@ -27,7 +27,7 @@ public abstract class ModuleCommand<QUERY extends ModuleQuery, RESULT> implement
 
     protected final QUERY query;
 
-    protected CallableSql sql;
+    protected final CallableSql sql;
 
     protected ModuleCommand(QUERY query) {
         assertNotNull(query);

@@ -69,7 +69,7 @@ class LocalTransactionConnection implements Connection {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         // do nothing.
     }
 

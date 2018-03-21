@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import java.util.Formatter;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -50,8 +49,7 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
     }
 
     @Override
-    protected Generator createGenerator(DaoMeta meta, CodeSpec codeSpec, Formatter formatter)
-            throws IOException {
+    protected Generator createGenerator(DaoMeta meta, CodeSpec codeSpec, Formatter formatter) {
         assertNotNull(meta, codeSpec, formatter);
         return new DaoImplGenerator(ctx, meta, codeSpec, formatter);
     }

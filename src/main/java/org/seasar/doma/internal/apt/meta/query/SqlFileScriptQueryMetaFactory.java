@@ -68,11 +68,11 @@ public class SqlFileScriptQueryMetaFactory
         String filePath = ScriptFileUtil.buildPath(getDaoElement().getQualifiedName().toString(),
                 queryMeta.getName());
         File file = getFile(queryMeta, filePath);
-        File[] siblingfiles = getSiblingFiles(queryMeta, file);
+        File[] siblingFiles = getSiblingFiles(queryMeta, file);
         String methodName = queryMeta.getName();
-        for (File siblingfile : siblingfiles) {
-            if (ScriptFileUtil.isScriptFile(siblingfile, methodName)) {
-                String fileName = siblingfile.getName();
+        for (File siblingFile : siblingFiles) {
+            if (ScriptFileUtil.isScriptFile(siblingFile, methodName)) {
+                String fileName = siblingFile.getName();
                 queryMeta.addFileName(fileName);
             }
         }

@@ -22,14 +22,14 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
 
     @Override
     public Long getDefault() {
-        return Long.valueOf(0L);
+        return 0L;
     }
 
     @Override
     public void increment() {
         Long value = doGet();
         if (value != null) {
-            doSet(value.longValue() + 1L);
+            doSet(value + 1L);
         }
     }
 
@@ -37,7 +37,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
     public void decrement() {
         Long value = doGet();
         if (value != null) {
-            doSet(value.longValue() - 1L);
+            doSet(value - 1L);
         }
     }
 

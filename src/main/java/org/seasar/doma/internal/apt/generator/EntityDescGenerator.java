@@ -754,13 +754,13 @@ public class EntityDescGenerator extends AbstractGenerator {
     private class IdGeneratorGenerator implements IdGeneratorMetaVisitor<Void, Void> {
 
         @Override
-        public Void visistIdentityIdGeneratorMeta(IdentityIdGeneratorMeta m, Void p) {
+        public Void visitIdentityIdGeneratorMeta(IdentityIdGeneratorMeta m, Void p) {
             iprint("private final %1$s __idGenerator = new %1$s();%n", m.getIdGeneratorClassName());
             return null;
         }
 
         @Override
-        public Void visistSequenceIdGeneratorMeta(SequenceIdGeneratorMeta m, Void p) {
+        public Void visitSequenceIdGeneratorMeta(SequenceIdGeneratorMeta m, Void p) {
             iprint("private final %1$s __idGenerator = new %1$s();%n", m.getIdGeneratorClassName());
             iprint("{%n");
             iprint("    __idGenerator.setQualifiedSequenceName(\"%1$s\");%n",
@@ -773,7 +773,7 @@ public class EntityDescGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistTableIdGeneratorMeta(TableIdGeneratorMeta m, Void p) {
+        public Void visitTableIdGeneratorMeta(TableIdGeneratorMeta m, Void p) {
             iprint("private final %1$s __idGenerator = new %1$s();%n", m.getIdGeneratorClassName());
             iprint("{%n");
             iprint("    __idGenerator.setQualifiedTableName(\"%1$s\");%n",

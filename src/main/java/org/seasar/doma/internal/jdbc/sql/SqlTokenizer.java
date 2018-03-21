@@ -84,7 +84,6 @@ public class SqlTokenizer {
         switch (type) {
         case EOF:
             token = null;
-            type = EOF;
             return EOF;
         case EOL:
             lineStartPosition = buf.position();
@@ -561,13 +560,10 @@ public class SqlTokenizer {
         if (buf.hasRemaining()) {
             char c = buf.get();
             buf.reset();
-            if (!isWordPart(c)) {
-                return true;
-            }
+            return !isWordPart(c);
         } else {
             return true;
         }
-        return false;
     }
 
     protected boolean isBlockCommentDirectiveTerminated() {
@@ -575,13 +571,10 @@ public class SqlTokenizer {
         if (buf.hasRemaining()) {
             char c = buf.get();
             buf.reset();
-            if (!isWordPart(c)) {
-                return true;
-            }
+            return !isWordPart(c);
         } else {
             return true;
         }
-        return false;
     }
 
     protected boolean isWordPart(char c) {

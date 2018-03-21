@@ -22,14 +22,14 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements NumberWrap
 
     @Override
     public Double getDefault() {
-        return Double.valueOf(0d);
+        return 0d;
     }
 
     @Override
     public void increment() {
         Double value = doGet();
         if (value != null) {
-            doSet(value.doubleValue() + 1d);
+            doSet(value + 1d);
         }
     }
 
@@ -37,7 +37,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements NumberWrap
     public void decrement() {
         Double value = doGet();
         if (value != null) {
-            doSet(value.doubleValue() - 1d);
+            doSet(value - 1d);
         }
     }
 

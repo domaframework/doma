@@ -19,7 +19,7 @@ public class MapResultListParameter extends AbstractResultListParameter<Map<Stri
     protected final MapKeyNamingType mapKeyNamingType;
 
     public MapResultListParameter(MapKeyNamingType mapKeyNamingType) {
-        super(new ArrayList<Map<String, Object>>());
+        super(new ArrayList<>());
         assertNotNull(mapKeyNamingType);
         this.mapKeyNamingType = mapKeyNamingType;
     }

@@ -128,6 +128,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             }
             NestingKind nestingKind = typeElement.getNestingKind();
             if (nestingKind == NestingKind.TOP_LEVEL) {
+                //noinspection UnnecessaryReturnStatement
                 return;
             } else if (nestingKind == NestingKind.MEMBER) {
                 Set<Modifier> modifiers = typeElement.getModifiers();
@@ -148,8 +149,10 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             for (VariableElement fieldElement : getFieldElements(embeddableElement)) {
                 try {
                     if (fieldElement.getAnnotation(Transient.class) != null) {
+                        //noinspection UnnecessaryContinue
                         continue;
                     } else if (fieldElement.getModifiers().contains(Modifier.STATIC)) {
+                        //noinspection UnnecessaryContinue
                         continue;
                     } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
                         throw new AptException(Message.DOMA4286, fieldElement);
@@ -217,15 +220,15 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             embeddableMeta.setConstructorMeta(constructorMeta);
         }
 
-        private EmbeddableConstructorMeta getConstructorMeta(TypeElement embeddapleElement,
+        private EmbeddableConstructorMeta getConstructorMeta(TypeElement embeddableElement,
                 EmbeddableMeta embeddableMeta) {
-            Map<String, EmbeddablePropertyMeta> propertyMetaMap = new HashMap<String, EmbeddablePropertyMeta>();
+            Map<String, EmbeddablePropertyMeta> propertyMetaMap = new HashMap<>();
             for (EmbeddablePropertyMeta propertyMeta : embeddableMeta
                     .getEmbeddablePropertyMetas()) {
                 propertyMetaMap.put(propertyMeta.getName(), propertyMeta);
             }
             outer: for (ExecutableElement constructor : ElementFilter
-                    .constructorsIn(embeddapleElement.getEnclosedElements())) {
+                    .constructorsIn(embeddableElement.getEnclosedElements())) {
                 List<EmbeddablePropertyMeta> propertyMetaList = new ArrayList<>();
                 for (VariableElement param : constructor.getParameters()) {
                     String name = ctx.getElements().getParameterName(param);

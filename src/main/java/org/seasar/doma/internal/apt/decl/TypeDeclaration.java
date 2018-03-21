@@ -32,7 +32,7 @@ import org.seasar.doma.internal.util.Zip;
 
 public class TypeDeclaration {
 
-    private static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<String, Integer>();
+    private static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<>();
     static {
         NUMBER_PRIORITY_MAP.put(BigDecimal.class.getName(), 80);
         NUMBER_PRIORITY_MAP.put(BigInteger.class.getName(), 70);
@@ -79,12 +79,12 @@ public class TypeDeclaration {
             Integer result = NUMBER_PRIORITY_MAP
                     .get(ctx.getElements().getBinaryName(typeElement).toString());
             if (result != null) {
-                return result.intValue();
+                return result;
             }
         }
         Integer result = NUMBER_PRIORITY_MAP.get(type.getKind().name().toLowerCase());
         if (result != null) {
-            return result.intValue();
+            return result;
         }
         return 0;
     }
@@ -183,8 +183,8 @@ public class TypeDeclaration {
         return getFieldDeclarationInternal(name, true);
     }
 
-    public FieldDeclaration getFieldDeclarationInternal(String name, boolean statik) {
-        List<FieldDeclaration> candidates = getCandidateFieldDeclaration(name, statik);
+    public FieldDeclaration getFieldDeclarationInternal(String name, boolean isStatic) {
+        List<FieldDeclaration> candidates = getCandidateFieldDeclaration(name, isStatic);
         removeHiddenFieldDeclarations(candidates);
 
         if (candidates.size() == 0) {
@@ -196,19 +196,19 @@ public class TypeDeclaration {
         throw new AptIllegalStateException(name);
     }
 
-    public List<FieldDeclaration> getCandidateFieldDeclaration(String name, boolean statik) {
+    public List<FieldDeclaration> getCandidateFieldDeclaration(String name, boolean isStatic) {
         return Stream.concat(Stream.of(this), supertypeDeclarations.stream())
                 .map(t -> t.typeElement)
                 .filter(Objects::nonNull)
                 .flatMap(t -> ElementFilter.fieldsIn(t.getEnclosedElements()).stream())
-                .filter(v -> !statik || v.getModifiers().contains(Modifier.STATIC))
+                .filter(v -> !isStatic || v.getModifiers().contains(Modifier.STATIC))
                 .filter(v -> v.getSimpleName().contentEquals(name))
                 .map(v -> ctx.getDeclarations().newFieldDeclaration(v, typeParameterDeclarations))
                 .collect(Collectors.toList());
     }
 
     private void removeHiddenFieldDeclarations(List<FieldDeclaration> candidates) {
-        List<FieldDeclaration> hiders = new LinkedList<FieldDeclaration>(candidates);
+        List<FieldDeclaration> hiders = new LinkedList<>(candidates);
         for (Iterator<FieldDeclaration> it = candidates.iterator(); it.hasNext();) {
             FieldDeclaration hidden = it.next();
             for (FieldDeclaration hider : hiders) {
@@ -230,9 +230,9 @@ public class TypeDeclaration {
     }
 
     private List<MethodDeclaration> getMethodDeclarationsInternal(String name,
-            List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
+            List<TypeDeclaration> parameterTypeDeclarations, boolean isStatic) {
         List<MethodDeclaration> candidates = getCandidateMethodDeclarations(name,
-                parameterTypeDeclarations, statik);
+                parameterTypeDeclarations, isStatic);
         removeOverriddenMethodDeclarations(candidates);
         removeHiddenMethodDeclarations(candidates);
         if (candidates.size() == 1) {
@@ -247,12 +247,12 @@ public class TypeDeclaration {
     }
 
     private List<MethodDeclaration> getCandidateMethodDeclarations(String name,
-            List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
+            List<TypeDeclaration> parameterTypeDeclarations, boolean isStatic) {
         return Stream.concat(Stream.of(this), supertypeDeclarations.stream())
                 .map(t -> t.typeElement)
                 .filter(Objects::nonNull)
                 .flatMap(t -> ElementFilter.methodsIn(t.getEnclosedElements()).stream())
-                .filter(e -> !statik || e.getModifiers().contains(Modifier.STATIC))
+                .filter(e -> !isStatic || e.getModifiers().contains(Modifier.STATIC))
                 .filter(e -> e.getModifiers().contains(Modifier.PUBLIC))
                 .filter(e -> e.getSimpleName().contentEquals(name))
                 .filter(e -> e.getReturnType().getKind() != TypeKind.VOID)
@@ -263,7 +263,7 @@ public class TypeDeclaration {
     }
 
     private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
-        List<MethodDeclaration> overriders = new LinkedList<MethodDeclaration>(candidates);
+        List<MethodDeclaration> overriders = new LinkedList<>(candidates);
         for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext();) {
             MethodDeclaration overridden = it.next();
             for (MethodDeclaration overrider : overriders) {
@@ -281,7 +281,7 @@ public class TypeDeclaration {
     }
 
     private void removeHiddenMethodDeclarations(List<MethodDeclaration> candidates) {
-        List<MethodDeclaration> hiders = new LinkedList<MethodDeclaration>(candidates);
+        List<MethodDeclaration> hiders = new LinkedList<>(candidates);
         for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext();) {
             MethodDeclaration hidden = it.next();
             for (MethodDeclaration hider : hiders) {

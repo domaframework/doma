@@ -57,7 +57,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void preDelete() {
-        AutoBatchPreDeleteContext<ENTITY> context = new AutoBatchPreDeleteContext<ENTITY>(
+        AutoBatchPreDeleteContext<ENTITY> context = new AutoBatchPreDeleteContext<>(
                 entityDesc, method, config);
         entityDesc.preDelete(currentEntity, context);
         if (context.getNewEntity() != null) {
@@ -119,7 +119,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
 
     protected void postDelete() {
-        AutoBatchPostDeleteContext<ENTITY> context = new AutoBatchPostDeleteContext<ENTITY>(
+        AutoBatchPostDeleteContext<ENTITY> context = new AutoBatchPostDeleteContext<>(
                 entityDesc, method, config);
         entityDesc.postDelete(currentEntity, context);
         if (context.getNewEntity() != null) {

@@ -24,10 +24,6 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
-/**
- * @author nakamura-to
- * 
- */
 public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
     protected final EntityDesc<ENTITY> entityDesc;
@@ -42,10 +38,6 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
     protected Map<Integer, EntityPropertyDesc<ENTITY, ?>> indexMap;
 
-    /**
-     * @param entityDesc
-     * @param query
-     */
     public EntityProvider(EntityDesc<ENTITY> entityDesc, Query query,
             boolean resultMappingEnsured) {
         assertNotNull(entityDesc, query);

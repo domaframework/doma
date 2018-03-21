@@ -40,7 +40,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
 
     protected void preDelete() {
-        AutoPreDeleteContext<ENTITY> context = new AutoPreDeleteContext<ENTITY>(entityDesc, method,
+        AutoPreDeleteContext<ENTITY> context = new AutoPreDeleteContext<>(entityDesc, method,
                 config);
         entityDesc.preDelete(entity, context);
         if (context.getNewEntity() != null) {
@@ -96,7 +96,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
 
     protected void postDelete() {
-        AutoPostDeleteContext<ENTITY> context = new AutoPostDeleteContext<ENTITY>(entityDesc,
+        AutoPostDeleteContext<ENTITY> context = new AutoPostDeleteContext<>(entityDesc,
                 method, config);
         entityDesc.postDelete(entity, context);
         if (context.getNewEntity() != null) {

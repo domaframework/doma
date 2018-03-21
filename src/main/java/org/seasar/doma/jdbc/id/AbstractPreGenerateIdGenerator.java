@@ -16,7 +16,7 @@ public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator
     protected long allocationSize;
 
     // the keys are data source names and the values are identity contexts
-    protected ConcurrentMap<String, IdContext> idContextMap = new ConcurrentHashMap<String, IdContext>();
+    protected final ConcurrentMap<String, IdContext> idContextMap = new ConcurrentHashMap<>();
 
     /**
      * Sets the initial value.

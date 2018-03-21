@@ -22,14 +22,14 @@ public class FloatWrapper extends AbstractWrapper<Float> implements NumberWrappe
 
     @Override
     public Float getDefault() {
-        return Float.valueOf(0f);
+        return 0f;
     }
 
     @Override
     public void increment() {
         Float value = doGet();
         if (value != null) {
-            doSet(value.floatValue() + 1f);
+            doSet(value + 1f);
         }
     }
 
@@ -37,7 +37,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements NumberWrappe
     public void decrement() {
         Float value = doGet();
         if (value != null) {
-            doSet(value.floatValue() - 1f);
+            doSet(value - 1f);
         }
     }
 

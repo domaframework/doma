@@ -13,7 +13,7 @@ public class CommaOperatorNode implements OperatorNode {
 
     protected static final int PRIORITY = 0;
 
-    protected final List<ExpressionNode> expressionNodes = new ArrayList<ExpressionNode>();
+    protected final List<ExpressionNode> expressionNodes = new ArrayList<>();
 
     protected final ExpressionLocation location;
 

@@ -12,7 +12,7 @@ public class MapResultListHandler extends AbstractResultListHandler<Map<String, 
 
     public MapResultListHandler(MapKeyNamingType keyNamingType) {
         super(new MapIterationHandler<>(keyNamingType,
-                new ResultListCallback<Map<String, Object>>()));
+                new ResultListCallback<>()));
     }
 
 }

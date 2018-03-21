@@ -21,5 +21,5 @@ public enum SelectType {
     /**
      * The object is handled by using {@link Collector}.
      */
-    COLLECT;
+    COLLECT
 }

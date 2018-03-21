@@ -15,13 +15,7 @@ public final class ConstructorUtil {
             throws WrapException {
         try {
             return constructor.newInstance(params);
-        } catch (IllegalArgumentException e) {
-            throw new WrapException(e);
-        } catch (InstantiationException e) {
-            throw new WrapException(e);
-        } catch (IllegalAccessException e) {
-            throw new WrapException(e);
-        } catch (InvocationTargetException e) {
+        } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             throw new WrapException(e);
         }
     }

@@ -17,5 +17,5 @@ public enum FetchType {
      * <p>
      * Less memory usage and more Database connected time.
      */
-    LAZY;
+    LAZY
 }

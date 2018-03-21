@@ -27,7 +27,7 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements Modify
 
     protected String sqlFilePath;
 
-    protected final Map<String, Value> parameters = new LinkedHashMap<String, Value>();
+    protected final Map<String, Value> parameters = new LinkedHashMap<>();
 
     protected PreparedSql sql;
 

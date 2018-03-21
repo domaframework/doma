@@ -19,28 +19,28 @@ public interface PostInsertContext<E> {
      * 
      * @return the entity description
      */
-    public EntityDesc<E> getEntityDesc();
+    EntityDesc<E> getEntityDesc();
 
     /**
      * The method that is annotated with {@link Insert}.
      * 
      * @return the method
      */
-    public Method getMethod();
+    Method getMethod();
 
     /**
      * Returns the configuration.
      * 
      * @return the configuration
      */
-    public Config getConfig();
+    Config getConfig();
 
     /**
      * Returns the new entity.
      * 
      * @return the new entity
      */
-    public E getNewEntity();
+    E getNewEntity();
 
     /**
      * Sets the new entity.
@@ -52,6 +52,6 @@ public interface PostInsertContext<E> {
      * @throws DomaNullPointerException
      *             if {@code newEntity} is {@code null}
      */
-    public void setNewEntity(E newEntity);
+    void setNewEntity(E newEntity);
 
 }

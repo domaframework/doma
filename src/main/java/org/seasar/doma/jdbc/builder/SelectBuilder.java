@@ -534,7 +534,7 @@ public class SelectBuilder {
         EntityDesc<ELEMENT> entityDesc = EntityDescFactory.getEntityDesc(elementClass,
                 config.getClassHelper());
         query.setEntityDesc(entityDesc);
-        ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<ELEMENT>(entityDesc);
+        ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<>(entityDesc);
         return execute(handler);
     }
 
@@ -941,7 +941,7 @@ public class SelectBuilder {
 
     private <RESULT> RESULT execute(ResultSetHandler<RESULT> resultSetHandler) {
         prepare();
-        SelectCommand<RESULT> command = new SelectCommand<RESULT>(query, resultSetHandler);
+        SelectCommand<RESULT> command = new SelectCommand<>(query, resultSetHandler);
         RESULT result = command.execute();
         query.complete();
         return result;

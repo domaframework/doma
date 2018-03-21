@@ -79,7 +79,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected class EntityHandler {
 
-        protected EntityDesc<ELEMENT> entityDesc;
+        protected final EntityDesc<ELEMENT> entityDesc;
 
         protected EntityHandler(EntityDesc<ELEMENT> entityDesc) {
             assertNotNull(entityDesc);
@@ -87,7 +87,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
         }
 
         protected void preInsert() {
-            SqlFileBatchPreInsertContext<ELEMENT> context = new SqlFileBatchPreInsertContext<ELEMENT>(
+            SqlFileBatchPreInsertContext<ELEMENT> context = new SqlFileBatchPreInsertContext<>(
                     entityDesc, method, config);
             entityDesc.preInsert(currentEntity, context);
             if (context.getNewEntity() != null) {
@@ -96,7 +96,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
         }
 
         protected void postInsert() {
-            SqlFileBatchPostInsertContext<ELEMENT> context = new SqlFileBatchPostInsertContext<ELEMENT>(
+            SqlFileBatchPostInsertContext<ELEMENT> context = new SqlFileBatchPostInsertContext<>(
                     entityDesc, method, config);
             entityDesc.postInsert(currentEntity, context);
             if (context.getNewEntity() != null) {

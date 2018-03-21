@@ -21,9 +21,9 @@ public final class Artifact {
         return VERSION;
     }
 
-    public static void validateVersion(String generationtimeVersion) {
-        if (!VERSION.equals(generationtimeVersion)) {
-            throw new DomaException(Message.DOMA0003, VERSION, generationtimeVersion);
+    public static void validateVersion(String generationTimeVersion) {
+        if (!VERSION.equals(generationTimeVersion)) {
+            throw new DomaException(Message.DOMA0003, VERSION, generationTimeVersion);
         }
     }
 }

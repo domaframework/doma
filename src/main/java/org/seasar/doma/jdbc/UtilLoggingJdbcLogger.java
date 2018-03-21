@@ -16,7 +16,7 @@ public class UtilLoggingJdbcLogger extends AbstractJdbcLogger<Level> {
     /**
      * Creates an instance.
      * <p>
-     * The log level is {@link Level#INFO}. The logger name is the full qualifed
+     * The log level is {@link Level#INFO}. The logger name is the full qualified
      * name of {@link UtilLoggingJdbcLogger}.
      */
     public UtilLoggingJdbcLogger() {
@@ -26,7 +26,7 @@ public class UtilLoggingJdbcLogger extends AbstractJdbcLogger<Level> {
     /**
      * Creates an instance with the specified log level.
      * <p>
-     * The logger name is the full qualifed name of
+     * The logger name is the full qualified name of
      * {@link UtilLoggingJdbcLogger}.
      * 
      * @param level

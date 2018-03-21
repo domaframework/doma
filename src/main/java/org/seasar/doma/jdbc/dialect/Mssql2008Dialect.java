@@ -1,7 +1,7 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.List;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
@@ -144,14 +144,14 @@ public class Mssql2008Dialect extends StandardDialect {
     public static class Mssql2008ScriptBlockContext extends StandardScriptBlockContext {
 
         protected Mssql2008ScriptBlockContext() {
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+            sqlBlockStartKeywordsList.add(List.of("create", "procedure"));
+            sqlBlockStartKeywordsList.add(List.of("create", "function"));
+            sqlBlockStartKeywordsList.add(List.of("create", "trigger"));
+            sqlBlockStartKeywordsList.add(List.of("alter", "procedure"));
+            sqlBlockStartKeywordsList.add(List.of("alter", "function"));
+            sqlBlockStartKeywordsList.add(List.of("alter", "trigger"));
+            sqlBlockStartKeywordsList.add(List.of("declare"));
+            sqlBlockStartKeywordsList.add(List.of("begin"));
         }
     }
 }

@@ -185,9 +185,9 @@ public final class Scalars {
     protected static <BASIC> Supplier<Scalar<?, ?>> createBasicScalarSupplier(
             Supplier<Wrapper<BASIC>> wrapperSupplier, boolean optional, boolean primitive) {
         if (optional) {
-            return () -> new OptionalBasicScalar<BASIC>(wrapperSupplier);
+            return () -> new OptionalBasicScalar<>(wrapperSupplier);
         } else {
-            return () -> new BasicScalar<BASIC>(wrapperSupplier, primitive);
+            return () -> new BasicScalar<>(wrapperSupplier, primitive);
         }
     }
 

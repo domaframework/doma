@@ -146,7 +146,7 @@ public abstract class BatchModifyReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(SQL_FILE);
         }
-        return value.booleanValue();
+        return value;
     }
 
 }

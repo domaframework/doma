@@ -19,28 +19,30 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
+import java.util.Objects;
+
 /**
  * A naming convention controller.
  */
 public interface Naming {
 
     /** the adapter for {@link NamingType#NONE} */
-    static Naming NONE = new Adapter(NamingType.NONE);
+    Naming NONE = new Adapter(NamingType.NONE);
 
     /** the adapter for {@link NamingType#LOWER_CASE} */
-    static Naming LOWER_CASE = new Adapter(NamingType.LOWER_CASE);
+    Naming LOWER_CASE = new Adapter(NamingType.LOWER_CASE);
 
     /** the adapter for {@link NamingType#UPPER_CASE} */
-    static Naming UPPER_CASE = new Adapter(NamingType.UPPER_CASE);
+    Naming UPPER_CASE = new Adapter(NamingType.UPPER_CASE);
 
     /** the adapter for {@link NamingType#SNAKE_LOWER_CASE} */
-    static Naming SNAKE_LOWER_CASE = new Adapter(NamingType.SNAKE_LOWER_CASE);
+    Naming SNAKE_LOWER_CASE = new Adapter(NamingType.SNAKE_LOWER_CASE);
 
     /** the adapter for {@link NamingType#SNAKE_UPPER_CASE} */
-    static Naming SNAKE_UPPER_CASE = new Adapter(NamingType.SNAKE_UPPER_CASE);
+    Naming SNAKE_UPPER_CASE = new Adapter(NamingType.SNAKE_UPPER_CASE);
 
     /** the default convention */
-    static Naming DEFAULT = NONE;
+    Naming DEFAULT = NONE;
 
     /**
      * Applies the naming convention.
@@ -70,7 +72,7 @@ public interface Naming {
      */
     String revert(NamingType namingType, String text);
 
-    static class Adapter implements Naming {
+    class Adapter implements Naming {
 
         protected final NamingType namingType;
 
@@ -86,10 +88,7 @@ public interface Naming {
             if (text == null) {
                 throw new DomaNullPointerException("text");
             }
-            if (namingType == null) {
-                return this.namingType.apply(text);
-            }
-            return namingType.apply(text);
+            return Objects.requireNonNullElse(namingType, this.namingType).apply(text);
         }
 
         @Override
@@ -97,10 +96,7 @@ public interface Naming {
             if (text == null) {
                 throw new DomaNullPointerException("text");
             }
-            if (namingType == null) {
-                return this.namingType.revert(text);
-            }
-            return namingType.revert(text);
+            return Objects.requireNonNullElse(namingType, this.namingType).revert(text);
         }
     }
 

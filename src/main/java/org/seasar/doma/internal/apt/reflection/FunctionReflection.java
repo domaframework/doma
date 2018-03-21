@@ -112,7 +112,7 @@ public class FunctionReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(QUOTE);
         }
-        return value.booleanValue();
+        return value;
     }
 
     public int getQueryTimeoutValue() {
@@ -120,7 +120,7 @@ public class FunctionReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(QUERY_TIMEOUT);
         }
-        return value.intValue();
+        return value;
     }
 
     public MapKeyNamingType getMapKeyNamingValue() {
@@ -136,7 +136,7 @@ public class FunctionReflection extends AbstractReflection {
         if (value == null) {
             throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
         }
-        return value.booleanValue();
+        return value;
     }
 
     public SqlLogType getSqlLogValue() {

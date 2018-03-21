@@ -39,7 +39,6 @@ public class ExpressionTokenizer {
         switch (type) {
         case EOE:
             token = null;
-            type = EOE;
             return EOE;
         default:
             ExpressionTokenType currentType = type;
@@ -208,19 +207,24 @@ public class ExpressionTokenizer {
         }
         if (Character.isWhitespace(c)) {
             type = WHITESPACE;
+            //noinspection UnnecessaryReturnStatement
             return;
         } else if (c == ',') {
             type = COMMA_OPERATOR;
+            //noinspection UnnecessaryReturnStatement
             return;
         } else if (c == '(') {
             type = OPENED_PARENS;
+            //noinspection UnnecessaryReturnStatement
             return;
         } else if (c == ')') {
             type = CLOSED_PARENS;
             binaryOpAvailable = true;
+            //noinspection UnnecessaryReturnStatement
             return;
         } else if (c == '!') {
             type = NOT_OPERATOR;
+            //noinspection UnnecessaryReturnStatement
             return;
         } else if (c == '\'') {
             type = CHAR_LITERAL;
@@ -387,6 +391,7 @@ public class ExpressionTokenizer {
             buf.mark();
             char c2 = buf.get();
             if (Character.isDigit(c2)) {
+                //noinspection UnnecessaryContinue
                 continue;
             } else if (c2 == '.') {
                 if (decimal) {
