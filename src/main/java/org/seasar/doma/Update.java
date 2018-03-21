@@ -105,10 +105,7 @@ public @interface Update {
     /**
      * UPDATE文のSET句に変更されていないプロパティに対応するカラムを含めるかどうかを返します。
      * <p>
-     * この要素に対する指定は、更新対象のエンティティが {@link OriginalStates} が注釈されたプロパティをもつ場合、かつ
-     * {@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * この要素に対する指定は、更新対象のエンティティが {@link OriginalStates} が注釈されたプロパティをもつ場合にのみ有効です。
      * 
      * @return カラムを含めるかどうか
      */
