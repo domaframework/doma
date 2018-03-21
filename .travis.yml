@@ -1,6 +1,5 @@
 sudo: false
 language: java
-jdk: oraclejdk8
 branches:
   only:
     - master
@@ -12,6 +11,23 @@ env:
   - secure: aUAq4P0vQWcD3+yG4Ool0tc8uAN3+eWEG8/xn2aXfAcP+vAr6p8lgG889+AFs8wlWoAfVErDEpVR2NBPiZLRLEInPVeb7NXV80mAo40K55J0Qk+XIiBLIziTBTZy07/BcWyC4DqzQYxEmSoRJrMiZw3W4k/kbJXojOZBYfP2Ij4=
   - secure: A376fnvLFnEHLcGju1UU8VQOkHaeB4ib5I8e+CdunZmhaU2x6gHfQElbyYLuASOKurq5S0DhzBQYciGnsARnhu4ur+W2YCw001ar02EYNDd0CA0t2Hcsx5c8X9GgUE2ZwEdAFJPZHtOjnV2/8xEf3In5QzduLAEYZIRZD2AJONA=
   - secure: ZtNxg0Vb1Z+Mt9cAfF2v7dgH6fWjcX6wADS5z3n2gXeS0W2BxyCtgvJ3SWSXygBGEht01tJQbCMhcgcoRvPW658v3ezc7ffhtEFmmycjLliOePt5TH7wprNVlumSnApv0P7bgRgxgQL4PqQztwQmQ+O9X1joHdjRpIs3fqfWK6E=
+before_install:
+  - wget https://raw.githubusercontent.com/sormuras/bach/master/install-jdk.sh
+matrix:
+  include:
+# 10
+    - env: oraclejdk10
+      env: JDK_RELEASE='Oracle JDK 10'
+      install: true
+    - env: JDK_RELEASE='OpenJDK 10'
+      install: . ./install-jdk.sh -F 10
+# 11
+    - env: JDK_RELEASE='Oracle JDK 11-ea'
+      install: . ./install-jdk.sh -F 11 -L BCL
+    - env: JDK_RELEASE='OpenJDK 11-ea'
+      install: . ./install-jdk.sh -F 11 -L GPL
+  allow_failures:
+    - env: JDK_RELEASE='Oracle JDK 10'
 after_success:
 - chmod +x publish.sh
 - ./publish.sh
