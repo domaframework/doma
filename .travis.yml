@@ -29,6 +29,8 @@ matrix:
       install: . ./install-jdk.sh -F 11 -L GPL
   allow_failures:
     - env: JDK_RELEASE='Oracle JDK 10'
+    - env: JDK_RELEASE='Oracle JDK 11-ea'
+    - env: JDK_RELEASE='OpenJDK 11-ea'
 after_success:
 - chmod +x publish.sh
 - ./publish.sh
