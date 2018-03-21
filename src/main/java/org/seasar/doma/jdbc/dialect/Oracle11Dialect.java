@@ -399,7 +399,7 @@ public class Oracle11Dialect extends StandardDialect {
         protected Oracle11ScriptBlockContext() {
             sqlBlockStartKeywordsList.add(List.of("create", "or", "replace", "procedure"));
             sqlBlockStartKeywordsList.add(List.of("create", "or", "replace", "function"));
-            sqlBlockStartKeywordsList.add(List.of("create", "or", "replace", "triger"));
+            sqlBlockStartKeywordsList.add(List.of("create", "or", "replace", "trigger"));
             sqlBlockStartKeywordsList.add(List.of("create", "procedure"));
             sqlBlockStartKeywordsList.add(List.of("create", "function"));
             sqlBlockStartKeywordsList.add(List.of("create", "trigger"));
