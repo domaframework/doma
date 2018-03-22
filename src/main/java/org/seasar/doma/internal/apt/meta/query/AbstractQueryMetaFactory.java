@@ -2,7 +2,9 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -60,10 +62,13 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void validateEntityPropertyNames(TypeMirror entityType,
             AnnotationMirror annotationMirror, AnnotationValue includeValue,
             AnnotationValue excludeValue) {
-        List<String> includedPropertyNames = AnnotationValueUtil.toStringList(includeValue);
-        List<String> excludedPropertyNames = AnnotationValueUtil.toStringList(excludeValue);
-        if (includedPropertyNames != null && !includedPropertyNames.isEmpty()
-                || excludedPropertyNames != null && !excludedPropertyNames.isEmpty()) {
+        List<String> includedPropertyNames = Objects.requireNonNullElse(
+                AnnotationValueUtil.toStringList(includeValue),
+                Collections.emptyList());
+        List<String> excludedPropertyNames = Objects.requireNonNullElse(
+                AnnotationValueUtil.toStringList(excludeValue),
+                Collections.emptyList());
+        if (!includedPropertyNames.isEmpty() || !excludedPropertyNames.isEmpty()) {
             EntityPropertyNameCollector collector = new EntityPropertyNameCollector(ctx);
             Set<String> names = collector.collect(entityType);
             for (String included : includedPropertyNames) {

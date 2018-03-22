@@ -333,8 +333,12 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         if (dir == null) {
             return Collections.emptySet();
         }
-        String[] fileNames = dir.list((dir1, name) -> name.endsWith(Constants.SQL_PATH_SUFFIX)
+        String[] fileNames = dir.list((__, name) ->
+                name.endsWith(Constants.SQL_PATH_SUFFIX)
                 || name.endsWith(Constants.SCRIPT_PATH_SUFFIX));
+        if (fileNames == null) {
+            return Collections.emptySet();
+        }
         return new HashSet<>(Arrays.asList(fileNames));
     }
 

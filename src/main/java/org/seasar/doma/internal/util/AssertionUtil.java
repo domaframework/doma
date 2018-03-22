@@ -109,7 +109,9 @@ public final class AssertionUtil {
 
     public static <T> void assertEquals(T expected, T actual) {
         if (expected == null) {
-            if (actual != null) {
+            if (actual == null) {
+                return;
+            } else {
                 throw new AssertionError(
                         "Not equals. expected is null, but actual is [" + actual + "]");
             }

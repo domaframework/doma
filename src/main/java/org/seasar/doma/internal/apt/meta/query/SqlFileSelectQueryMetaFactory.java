@@ -104,7 +104,7 @@ public class SqlFileSelectQueryMetaFactory
             if (returnCtType == null
                     || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
                 throw new AptException(Message.DOMA4246, methodElement,
-                        new Object[] { returnMeta.getType(), returnCtType.getTypeName() });
+                        new Object[] { returnMeta.getType() });
             }
         } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
             CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
@@ -112,7 +112,7 @@ public class SqlFileSelectQueryMetaFactory
             if (returnCtType == null
                     || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
                 throw new AptException(Message.DOMA4265, methodElement,
-                        new Object[] { returnMeta.getType(), returnCtType.getTypeName() });
+                        new Object[] { returnMeta.getType() });
             }
         } else {
             returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta, returnMeta), null);

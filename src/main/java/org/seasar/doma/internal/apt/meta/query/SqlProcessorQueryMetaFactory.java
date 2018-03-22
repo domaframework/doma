@@ -81,7 +81,7 @@ public class SqlProcessorQueryMetaFactory
         AnyCtType resultCtType = biFunctionCtType.getResultCtType();
         if (resultCtType == null || !isConvertibleReturnType(returnMeta, resultCtType)) {
             throw new AptException(Message.DOMA4436, methodElement,
-                    new Object[] { returnMeta.getType(), resultCtType.getTypeName() });
+                    new Object[] { returnMeta.getType() });
         }
     }
 
