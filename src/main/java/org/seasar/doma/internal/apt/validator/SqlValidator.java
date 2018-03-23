@@ -14,7 +14,6 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
@@ -88,8 +87,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
                     }
                 }
             }
-        } catch (AptIllegalStateException e) {
-            throw e;
         } catch (AptException e) {
             ctx.getNotifier().send(e);
         }
@@ -289,8 +286,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         ExpressionNode expressionNode = parseExpression(location, expression);
         try {
             return expressionValidator.validate(expressionNode);
-        } catch (AptIllegalStateException e) {
-            throw e;
         } catch (AptException e) {
             String sql = getSql(location);
             throw new AptException(Message.DOMA4092, methodElement, new Object[] { path, sql,

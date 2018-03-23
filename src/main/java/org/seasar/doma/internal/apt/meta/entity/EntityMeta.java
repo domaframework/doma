@@ -3,9 +3,7 @@ package org.seasar.doma.internal.apt.meta.entity;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
