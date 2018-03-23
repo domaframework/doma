@@ -12,7 +12,7 @@ Doma uses [Pluggable Annotation Processing API][apt] to generate source code and
 Major versions
 ---------------------
 
-| Version                                | Status            | Repository                             | Brunch |
+| Version                                | Status            | Repository                             | Branch |
 | -------------------------------------- | ----------------- | -------------------------------------- | ------ |
 | [Doma 1](http://doma.seasar.org/)      | stable            | https://github.com/seasarorg/doma      | master |
 | [Doma 2](http://doma.readthedocs.org/) | stable            | https://github.com/domaframework/doma/ | master |
