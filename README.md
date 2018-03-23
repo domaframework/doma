@@ -14,7 +14,7 @@ Major versions
 
 | Version                                | Status            | Repository                             | Branch |
 | -------------------------------------- | ----------------- | -------------------------------------- | ------ |
-| [Doma 1](http://doma.seasar.org/)      | stable            | https://github.com/seasarorg/doma      | master |
+| [Doma 1](http://doma.seasar.org/)      | stable            | https://github.com/seasarorg/doma/     | master |
 | [Doma 2](http://doma.readthedocs.org/) | stable            | https://github.com/domaframework/doma/ | master |
 | Doma 3                                 | under development | https://github.com/domaframework/doma/ | doma-3 |
 
