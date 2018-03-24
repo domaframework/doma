@@ -29,8 +29,8 @@ public class ScalarResultListParameterMeta implements ResultListParameterMeta {
     }
 
     @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitScalarResultListParameterMeta(this, p);
+    public <P> void accept(CallableSqlParameterMetaVisitor<P> visitor, P p) {
+        visitor.visitScalarResultListParameterMeta(this, p);
     }
 
 }

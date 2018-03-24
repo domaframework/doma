@@ -49,7 +49,7 @@ public class CallableSqlParameterFetcher {
     }
 
     protected static class FetchingVisitor
-            implements SqlParameterVisitor<Void, Void, SQLException> {
+            implements SqlParameterVisitor<Void, SQLException> {
 
         protected final ModuleQuery query;
 
@@ -69,49 +69,43 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Void p) {
+        public <BASIC> void visitInParameter(InParameter<BASIC> parameter, Void p) {
             index++;
-            return null;
         }
 
         @Override
-        public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter, Void p)
+        public <BASIC> void visitOutParameter(OutParameter<BASIC> parameter, Void p)
                 throws SQLException {
             fetchOutParameter(parameter);
             parameter.updateReference();
             index++;
-            return null;
         }
 
         @Override
-        public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> Void visitInOutParameter(
+        public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> void visitInOutParameter(
                 INOUT parameter, Void p) throws SQLException {
             fetchOutParameter(parameter);
             parameter.updateReference();
             index++;
-            return null;
         }
 
         @Override
-        public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter, Void p)
+        public <ELEMENT> void visitListParameter(ListParameter<ELEMENT> parameter, Void p)
                 throws SQLException {
             fetchListParameter(parameter);
-            return null;
         }
 
         @Override
-        public <BASIC, RESULT> Void visitSingleResultParameter(
+        public <BASIC, RESULT> void visitSingleResultParameter(
                 SingleResultParameter<BASIC, RESULT> parameter, Void p) throws SQLException {
             fetchOutParameter(parameter);
             index++;
-            return null;
         }
 
         @Override
-        public <ELEMENT> Void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
-                Void p) throws SQLException {
+        public <ELEMENT> void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
+                                                       Void p) throws SQLException {
             fetchListParameter(parameter);
-            return null;
         }
 
         protected <BASIC> void fetchOutParameter(JdbcMappable<BASIC> parameter)

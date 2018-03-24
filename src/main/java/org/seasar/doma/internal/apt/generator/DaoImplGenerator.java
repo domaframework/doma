@@ -393,10 +393,10 @@ public class DaoImplGenerator extends AbstractGenerator {
      * 
      * @author nakamura-to
      */
-    private class MethodBodyGenerator implements QueryMetaVisitor<Void, String> {
+    private class MethodBodyGenerator implements QueryMetaVisitor<String> {
 
         @Override
-        public Void visitSqlFileSelectQueryMeta(final SqlFileSelectQueryMeta m, String methodName) {
+        public void visitSqlFileSelectQueryMeta(final SqlFileSelectQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -481,11 +481,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             }
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, String methodName) {
+        public void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -520,11 +519,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", null);%n", codeSpec, m.getName());
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitAutoModifyQueryMeta(AutoModifyQueryMeta m, String methodName) {
+        public void visitAutoModifyQueryMeta(AutoModifyQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -602,11 +600,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("return __result;%n");
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, String methodName) {
+        public void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -702,11 +699,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("return __result;%n");
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, String methodName) {
+        public void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -775,11 +771,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("return __result;%n");
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m,
+        public void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m,
                 String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
@@ -856,11 +851,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("return __result;%n");
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, String methodName) {
+        public void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -906,11 +900,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("return __result;%n");
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, String methodName) {
+        public void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -946,11 +939,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", null);%n", codeSpec, m.getName());
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m, String methodName) {
+        public void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -979,11 +971,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("return __result;%n");
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, String methodName) {
+        public void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, String methodName) {
             printArrayCreateEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -1014,11 +1005,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             iprint("return __result;%n");
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitDefaultQueryMeta(DefaultQueryMeta m, String methodName) {
+        public void visitDefaultQueryMeta(DefaultQueryMeta m, String methodName) {
             printEnteringStatements(m);
 
             QueryReturnMeta returnMeta = m.getReturnMeta();
@@ -1044,11 +1034,10 @@ public class DaoImplGenerator extends AbstractGenerator {
             }
 
             printThrowingStatements(m);
-            return null;
         }
 
         @Override
-        public Void visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m, String methodName) {
+        public void visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m, String methodName) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -1087,7 +1076,6 @@ public class DaoImplGenerator extends AbstractGenerator {
             }
 
             printThrowingStatements(m);
-            return null;
         }
 
         protected void printEnteringStatements(QueryMeta m) {
@@ -1207,22 +1195,21 @@ public class DaoImplGenerator extends AbstractGenerator {
      * 
      */
     private class CallableSqlParameterStatementGenerator
-            implements CallableSqlParameterMetaVisitor<Void, AutoModuleQueryMeta> {
+            implements CallableSqlParameterMetaVisitor<AutoModuleQueryMeta> {
 
         @Override
-        public Void visitScalarListParameterMeta(final ScalarListParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitScalarListParameterMeta(final ScalarListParameterMeta m,
+                                                 AutoModuleQueryMeta p) {
             iprint("__query.addParameter(new %1$s<>(%2$s, %3$s, \"%3$s\"));%n",
             // @formatter:off
                     /* 1 */ScalarListParameter.class.getName(),
                     /* 2 */m.getScalarCtType().accept(new ScalarSupplierCodeBuilder(), m.isOptional()),
                     /* 3 */m.getName());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitEntityListParameterMeta(EntityListParameterMeta m, AutoModuleQueryMeta p) {
+        public void visitEntityListParameterMeta(EntityListParameterMeta m, AutoModuleQueryMeta p) {
             EntityCtType entityCtType = m.getEntityCtType();
             iprint("__query.addParameter(new %1$s<%2$s>(%3$s, %4$s, \"%4$s\", %5$s));%n",
             // @formatter:off
@@ -1232,11 +1219,10 @@ public class DaoImplGenerator extends AbstractGenerator {
                     /* 4 */m.getName(),
                     /* 5 */m.getEnsureResultMapping());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitMapListParameterMeta(MapListParameterMeta m, AutoModuleQueryMeta p) {
+        public void visitMapListParameterMeta(MapListParameterMeta m, AutoModuleQueryMeta p) {
             MapKeyNamingType namingType = p.getMapKeyNamingType();
             iprint("__query.addParameter(new %1$s(%2$s.%3$s, %4$s, \"%4$s\"));%n",
             // @formatter:off
@@ -1245,59 +1231,54 @@ public class DaoImplGenerator extends AbstractGenerator {
                     /* 3 */namingType.name(),
                     /* 4 */m.getName());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitScalarInOutParameterMeta(final ScalarInOutParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitScalarInOutParameterMeta(final ScalarInOutParameterMeta m,
+                                                  AutoModuleQueryMeta p) {
             iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             // @formatter:off
                     /* 1 */ScalarInOutParameter.class.getName(),
                     /* 2 */m.getScalarCtType().accept(new ScalarSupplierCodeBuilder(), m.isOptional()),
                     /* 3 */m.getName());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitScalarOutParameterMeta(final ScalarOutParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitScalarOutParameterMeta(final ScalarOutParameterMeta m,
+                                                AutoModuleQueryMeta p) {
             iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             // @formatter:off
                     /* 1 */ScalarOutParameter.class.getName(),
                     /* 2 */m.getScalarCtType().accept(new ScalarSupplierCodeBuilder(), m.isOptional()),
                     /* 3 */m.getName());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitScalarInParameterMeta(final ScalarInParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitScalarInParameterMeta(final ScalarInParameterMeta m,
+                                               AutoModuleQueryMeta p) {
             iprint("__query.addParameter(new %1$s<>(%2$s, %3$s));%n",
             // @formatter:off
                     /* 1 */ScalarInParameter.class.getName(),
                     /* 2 */m.getScalarCtType().accept(new ScalarSupplierCodeBuilder(), m.isOptional()),
                     /* 3 */m.getName());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitScalarResultListParameterMeta(ScalarResultListParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitScalarResultListParameterMeta(ScalarResultListParameterMeta m,
+                                                       AutoModuleQueryMeta p) {
             iprint("__query.setResultParameter(new %1$s<>(%2$s));%n",
             // @formatter:off
                     /* 1 */ScalarResultListParameter.class.getName(),
                     /* 2 */m.getScalarCtType().accept(new ScalarSupplierCodeBuilder(), m.isOptional()));
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitEntityResultListParameterMeta(EntityResultListParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitEntityResultListParameterMeta(EntityResultListParameterMeta m,
+                                                       AutoModuleQueryMeta p) {
             EntityCtType entityCtType = m.getEntityCtType();
             iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s, %4$s));%n",
             // @formatter:off
@@ -1306,12 +1287,11 @@ public class DaoImplGenerator extends AbstractGenerator {
                     /* 3 */entityDesc(entityCtType),
                     /* 4 */m.getEnsureResultMapping());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitMapResultListParameterMeta(MapResultListParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitMapResultListParameterMeta(MapResultListParameterMeta m,
+                                                    AutoModuleQueryMeta p) {
             MapKeyNamingType namingType = p.getMapKeyNamingType();
             iprint("__query.setResultParameter(new %1$s(%2$s.%3$s));%n",
             // @formatter:off
@@ -1319,18 +1299,16 @@ public class DaoImplGenerator extends AbstractGenerator {
                     /* 2 */namingType.getDeclaringClass().getName(),
                     /* 3 */namingType.name());
                     // @formatter:on
-            return null;
         }
 
         @Override
-        public Void visitScalarSingleResultParameterMeta(ScalarSingleResultParameterMeta m,
-                AutoModuleQueryMeta p) {
+        public void visitScalarSingleResultParameterMeta(ScalarSingleResultParameterMeta m,
+                                                         AutoModuleQueryMeta p) {
             iprint("__query.setResultParameter(new %1$s<>(%2$s));%n",
             // @formatter:off
                     /* 1 */ScalarSingleResultParameter.class.getName(),
                     /* 2 */m.getScalarCtType().accept(new ScalarSupplierCodeBuilder(), m.isOptional()));
                     // @formatter:on
-            return null;
         }
 
     }

@@ -19,9 +19,8 @@ public interface SqlParameter {
      *            the visitor
      * @param p
      *            the parameter
-     * @return the value that is processed by the visitor
      * @throws TH
      *             the exception
      */
-    <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p) throws TH;
+    <P, TH extends Throwable> void accept(SqlParameterVisitor<P, TH> visitor, P p) throws TH;
 }

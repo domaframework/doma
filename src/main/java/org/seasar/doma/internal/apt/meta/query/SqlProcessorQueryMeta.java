@@ -22,8 +22,8 @@ public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
     }
 
     @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitSqlProcessorQueryMeta(this, p);
+    public <P> void accept(QueryMetaVisitor<P> visitor, P p) {
+        visitor.visitSqlProcessorQueryMeta(this, p);
     }
 
     public SqlProcessorReflection getSqlProcessorReflection() {

@@ -22,8 +22,8 @@ public class MapResultListParameterMeta implements ResultListParameterMeta {
     }
 
     @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitMapResultListParameterMeta(this, p);
+    public <P> void accept(CallableSqlParameterMetaVisitor<P> visitor, P p) {
+        visitor.visitMapResultListParameterMeta(this, p);
     }
 
 }

@@ -751,16 +751,15 @@ public class EntityDescGenerator extends AbstractGenerator {
                 entityMeta.getListenerElement().getQualifiedName());
     }
 
-    private class IdGeneratorGenerator implements IdGeneratorMetaVisitor<Void, Void> {
+    private class IdGeneratorGenerator implements IdGeneratorMetaVisitor<Void> {
 
         @Override
-        public Void visitIdentityIdGeneratorMeta(IdentityIdGeneratorMeta m, Void p) {
+        public void visitIdentityIdGeneratorMeta(IdentityIdGeneratorMeta m, Void p) {
             iprint("private final %1$s __idGenerator = new %1$s();%n", m.getIdGeneratorClassName());
-            return null;
         }
 
         @Override
-        public Void visitSequenceIdGeneratorMeta(SequenceIdGeneratorMeta m, Void p) {
+        public void visitSequenceIdGeneratorMeta(SequenceIdGeneratorMeta m, Void p) {
             iprint("private final %1$s __idGenerator = new %1$s();%n", m.getIdGeneratorClassName());
             iprint("{%n");
             iprint("    __idGenerator.setQualifiedSequenceName(\"%1$s\");%n",
@@ -769,11 +768,10 @@ public class EntityDescGenerator extends AbstractGenerator {
             iprint("    __idGenerator.setAllocationSize(%1$s);%n", m.getAllocationSize());
             iprint("    __idGenerator.initialize();%n");
             iprint("}%n");
-            return null;
         }
 
         @Override
-        public Void visitTableIdGeneratorMeta(TableIdGeneratorMeta m, Void p) {
+        public void visitTableIdGeneratorMeta(TableIdGeneratorMeta m, Void p) {
             iprint("private final %1$s __idGenerator = new %1$s();%n", m.getIdGeneratorClassName());
             iprint("{%n");
             iprint("    __idGenerator.setQualifiedTableName(\"%1$s\");%n",
@@ -785,7 +783,6 @@ public class EntityDescGenerator extends AbstractGenerator {
             iprint("    __idGenerator.setValueColumnName(\"%1$s\");%n", m.getValueColumnName());
             iprint("    __idGenerator.initialize();%n");
             iprint("}%n");
-            return null;
         }
     }
 

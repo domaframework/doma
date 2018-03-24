@@ -47,7 +47,7 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
     }
 
     @Override
-    public <R, P> R accept(IdGeneratorMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitSequenceIdGeneratorMeta(this, p);
+    public <P> void accept(IdGeneratorMetaVisitor<P> visitor, P p) {
+        visitor.visitSequenceIdGeneratorMeta(this, p);
     }
 }

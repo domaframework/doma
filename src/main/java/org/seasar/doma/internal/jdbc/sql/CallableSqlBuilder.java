@@ -27,7 +27,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  */
 public class CallableSqlBuilder
-        implements SqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
+        implements SqlParameterVisitor<CallableSqlBuilder.Context, RuntimeException> {
 
     protected final Config config;
 
@@ -88,7 +88,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Context p)
+    public <BASIC> void visitInParameter(InParameter<BASIC> parameter, Context p)
             throws RuntimeException {
         Wrapper<BASIC> wrapper = parameter.getWrapper();
         p.appendRawSql("?, ");
@@ -96,50 +96,44 @@ public class CallableSqlBuilder
                 formattingFunction, null));
         p.appendFormattedSql(", ");
         p.addParameter(parameter);
-        return null;
     }
 
     @Override
-    public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter, Context p)
+    public <BASIC> void visitOutParameter(OutParameter<BASIC> parameter, Context p)
             throws RuntimeException {
         p.appendRawSql("?, ");
         p.appendFormattedSql("?, ");
         p.addParameter(parameter);
-        return null;
     }
 
     @Override
-    public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> Void visitInOutParameter(
+    public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> void visitInOutParameter(
             INOUT parameter, Context p) throws RuntimeException {
         visitInParameter(parameter, p);
-        return null;
     }
 
     @Override
-    public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter, Context p)
+    public <ELEMENT> void visitListParameter(ListParameter<ELEMENT> parameter, Context p)
             throws RuntimeException {
         if (config.getDialect().supportsResultSetReturningAsOutParameter()) {
             p.appendRawSql("?, ");
             p.appendFormattedSql("?, ");
             p.addParameter(parameter);
         }
-        return null;
     }
 
     @Override
-    public <BASIC, RESULT> Void visitSingleResultParameter(
+    public <BASIC, RESULT> void visitSingleResultParameter(
             SingleResultParameter<BASIC, RESULT> parameter, Context p) throws RuntimeException {
         p.appendRawSql("? ");
         p.appendFormattedSql("? ");
-        return null;
     }
 
     @Override
-    public <ELEMENT> Void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
-            Context p) throws RuntimeException {
+    public <ELEMENT> void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
+                                                   Context p) throws RuntimeException {
         p.appendRawSql("? ");
         p.appendFormattedSql("? ");
-        return null;
     }
 
     protected class Context {

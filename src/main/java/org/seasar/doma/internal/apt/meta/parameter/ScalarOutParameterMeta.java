@@ -36,8 +36,8 @@ public class ScalarOutParameterMeta implements CallableSqlParameterMeta {
     }
 
     @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitScalarOutParameterMeta(this, p);
+    public <P> void accept(CallableSqlParameterMetaVisitor<P> visitor, P p) {
+        visitor.visitScalarOutParameterMeta(this, p);
     }
 
 }

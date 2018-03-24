@@ -45,9 +45,9 @@ public class ScalarOutParameter<BASIC, CONTAINER> implements OutParameter<BASIC>
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p)
+    public <P, TH extends Throwable> void accept(SqlParameterVisitor<P, TH> visitor, P p)
             throws TH {
-        return visitor.visitOutParameter(this, p);
+        visitor.visitOutParameter(this, p);
     }
 
 }

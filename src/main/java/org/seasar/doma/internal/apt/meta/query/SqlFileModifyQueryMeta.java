@@ -85,7 +85,7 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
     }
 
     @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitSqlFileModifyQueryMeta(this, p);
+    public <P> void accept(QueryMetaVisitor<P> visitor, P p) {
+        visitor.visitSqlFileModifyQueryMeta(this, p);
     }
 }

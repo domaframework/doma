@@ -36,8 +36,8 @@ public class ScalarInParameterMeta implements CallableSqlParameterMeta {
     }
 
     @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitScalarInParameterMeta(this, p);
+    public <P> void accept(CallableSqlParameterMetaVisitor<P> visitor, P p) {
+        visitor.visitScalarInParameterMeta(this, p);
     }
 
 }

@@ -47,7 +47,7 @@ public class CallableSqlParameterBinder
         }
     }
 
-    protected class BindingVisitor implements SqlParameterVisitor<Void, Void, SQLException> {
+    protected class BindingVisitor implements SqlParameterVisitor<Void, SQLException> {
 
         protected final Dialect dialect;
 
@@ -64,50 +64,44 @@ public class CallableSqlParameterBinder
         }
 
         @Override
-        public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Void p)
+        public <BASIC> void visitInParameter(InParameter<BASIC> parameter, Void p)
                 throws SQLException {
             bindInParameter(parameter);
             index++;
-            return null;
         }
 
         @Override
-        public <BASIC> Void visitOutParameter(OutParameter<BASIC> parameter, Void p)
+        public <BASIC> void visitOutParameter(OutParameter<BASIC> parameter, Void p)
                 throws SQLException {
             registerOutParameter(parameter);
             index++;
-            return null;
         }
 
         @Override
-        public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> Void visitInOutParameter(
+        public <BASIC, INOUT extends InParameter<BASIC> & OutParameter<BASIC>> void visitInOutParameter(
                 INOUT parameter, Void p) throws SQLException {
             bindInParameter(parameter);
             registerOutParameter(parameter);
             index++;
-            return null;
         }
 
         @Override
-        public <ELEMENT> Void visitListParameter(ListParameter<ELEMENT> parameter, Void p)
+        public <ELEMENT> void visitListParameter(ListParameter<ELEMENT> parameter, Void p)
                 throws SQLException {
             registerListParameter(parameter);
-            return null;
         }
 
         @Override
-        public <BASIC, RESULT> Void visitSingleResultParameter(
+        public <BASIC, RESULT> void visitSingleResultParameter(
                 SingleResultParameter<BASIC, RESULT> parameter, Void p) throws SQLException {
             registerOutParameter(parameter);
             index++;
-            return null;
         }
 
         @Override
-        public <ELEMENT> Void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
-                Void p) throws SQLException {
+        public <ELEMENT> void visitResultListParameter(ResultListParameter<ELEMENT> parameter,
+                                                       Void p) throws SQLException {
             registerListParameter(parameter);
-            return null;
         }
 
         protected <BASIC> void bindInParameter(InParameter<BASIC> parameter) throws SQLException {

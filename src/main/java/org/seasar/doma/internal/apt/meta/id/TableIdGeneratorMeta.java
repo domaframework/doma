@@ -59,7 +59,7 @@ public class TableIdGeneratorMeta implements IdGeneratorMeta {
     }
 
     @Override
-    public <R, P> R accept(IdGeneratorMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitTableIdGeneratorMeta(this, p);
+    public <P> void accept(IdGeneratorMetaVisitor<P> visitor, P p) {
+        visitor.visitTableIdGeneratorMeta(this, p);
     }
 }

@@ -56,8 +56,8 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
     }
 
     @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitAutoProcedureQueryMeta(this, p);
+    public <P> void accept(QueryMetaVisitor<P> visitor, P p) {
+        visitor.visitAutoProcedureQueryMeta(this, p);
     }
 
 }

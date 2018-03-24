@@ -4,29 +4,29 @@ package org.seasar.doma.internal.apt.meta.query;
  * @author taedium
  * 
  */
-public interface QueryMetaVisitor<R, P> {
+public interface QueryMetaVisitor<P> {
 
-    R visitSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, P p);
+    void visitSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, P p);
 
-    R visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, P p);
+    void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, P p);
 
-    R visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, P p);
+    void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, P p);
 
-    R visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, P p);
+    void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, P p);
 
-    R visitAutoModifyQueryMeta(AutoModifyQueryMeta m, P p);
+    void visitAutoModifyQueryMeta(AutoModifyQueryMeta m, P p);
 
-    R visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, P p);
+    void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, P p);
 
-    R visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, P p);
+    void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, P p);
 
-    R visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, P p);
+    void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, P p);
 
-    R visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, P p);
+    void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, P p);
 
-    R visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m, P p);
+    void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m, P p);
 
-    R visitDefaultQueryMeta(DefaultQueryMeta m, P p);
+    void visitDefaultQueryMeta(DefaultQueryMeta m, P p);
 
-    R visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m, P p);
+    void visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m, P p);
 }

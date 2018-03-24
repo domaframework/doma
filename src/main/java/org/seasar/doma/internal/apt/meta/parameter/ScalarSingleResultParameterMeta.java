@@ -29,8 +29,8 @@ public class ScalarSingleResultParameterMeta implements SingleResultParameterMet
     }
 
     @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitScalarSingleResultParameterMeta(this, p);
+    public <P> void accept(CallableSqlParameterMetaVisitor<P> visitor, P p) {
+        visitor.visitScalarSingleResultParameterMeta(this, p);
     }
 
 }

@@ -85,8 +85,8 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
     }
 
     @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitAutoModifyQueryMeta(this, p);
+    public <P> void accept(QueryMetaVisitor<P> visitor, P p) {
+        visitor.visitAutoModifyQueryMeta(this, p);
     }
 
 }
