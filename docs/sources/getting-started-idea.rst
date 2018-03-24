@@ -49,17 +49,28 @@ IntelliJ IDEA を起動して Import Project を実行し、clone した simple-
 .. image:: images/idea-welcome.png
    :width: 60 %
 
+|
+
+
 Import project from external model をチェックし、Gradle を選択します。 
 
 .. image:: images/idea-import-project.png
    :width: 100 %
+
+|
+
 
 Use auto import をチェックし、 Create separate module per source set のチェックを外します。最後に Finish を押してください。
 
 .. image:: images/idea-import-project-settings.png
    :width: 100 %
 
+|
+
+
 Build ツールウィンドウに synced successfully というメッセージが表示されればインポートは成功です。
+
+.. _idea-annotation-processor:
 
 Annotation Processor に関する設定
 =====================================
@@ -69,11 +80,16 @@ Project ツールウィンドウのコンテキストメニューから Open Mod
 .. image:: images/idea-open-module-settings.png
    :width: 100 %
 
+|
+
 Modules の Paths の設定画面を開き、Inherit project compile output path が選択されていることを確認してください。
 選択されていない場合は選択してください。
 
 .. image:: images/idea-output-path.png
    :width: 100 %
+
+|
+
 
 Preferrences から Build, Execution, Deployment > Compiler > Annotation Processors を開きます。
 Enable annotation processing をチェックしてください。
@@ -83,6 +99,9 @@ Production sources directory には gen/production 、Test sources directory に
 
 .. image:: images/idea-annotation-processors.png
    :width: 100 %
+
+|
+
 
 メニューから Build Project を実行してください。
 ビルドにより Annotation Processor により生成されたコードが gen/production に出力されます。

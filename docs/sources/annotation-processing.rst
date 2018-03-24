@@ -84,6 +84,11 @@ Eclipse
 
 プロジェクトの「Properties」-「Java Compiler」-「Annotation Processing」の項目でオプションを登録します。
 
+IntelliJ IDEA
+=============
+
+Preferrences から Build, Execution, Deployment > Compiler > Annotation Processors の画面を開き登録します。
+
 javac
 =====
 
