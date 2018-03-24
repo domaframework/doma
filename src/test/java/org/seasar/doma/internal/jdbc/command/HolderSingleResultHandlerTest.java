@@ -48,7 +48,7 @@ public class HolderSingleResultHandlerTest extends TestCase {
 
         ScalarSingleResultHandler<String, PhoneNumber> handler = new ScalarSingleResultHandler<>(
                 () -> _PhoneNumber.getSingletonInternal().createScalar());
-        PhoneNumber result = handler.handle(resultSet, query, (i, next) -> {
+        PhoneNumber result = handler.handle(resultSet, query, (__) -> {
         }).get();
         assertEquals("01-2345-6789", result.getValue());
     }
@@ -72,7 +72,7 @@ public class HolderSingleResultHandlerTest extends TestCase {
         ScalarSingleResultHandler<String, PhoneNumber> handler = new ScalarSingleResultHandler<>(
                 () -> _PhoneNumber.getSingletonInternal().createScalar());
         try {
-            handler.handle(resultSet, query, (i, next) -> {
+            handler.handle(resultSet, query, (__) -> {
             });
             fail();
         } catch (NonUniqueResultException expected) {

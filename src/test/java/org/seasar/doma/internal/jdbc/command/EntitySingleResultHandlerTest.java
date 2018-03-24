@@ -40,7 +40,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
                 _Emp.getSingletonInternal());
-        Emp emp = handler.handle(resultSet, query, (i, next) -> {
+        Emp emp = handler.handle(resultSet, query, (__) -> {
         }).get();
         assertEquals(Integer.valueOf(1), emp.getId());
         assertEquals("aaa", emp.getName());
@@ -66,7 +66,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
                 _Emp.getSingletonInternal());
         try {
-            handler.handle(resultSet, query, (i, next) -> {
+            handler.handle(resultSet, query, (__) -> {
             });
             fail();
         } catch (NonUniqueResultException expected) {

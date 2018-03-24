@@ -61,7 +61,7 @@ public class EntityIterationHandlerTest extends TestCase {
                     }
 
                 });
-        Integer result = handler.handle(resultSet, query, (i, next) -> {
+        Integer result = handler.handle(resultSet, query, (__) -> {
         }).get();
         assertEquals(Integer.valueOf(2), result);
     }
@@ -96,7 +96,7 @@ public class EntityIterationHandlerTest extends TestCase {
                     }
 
                 });
-        Integer result = handler.handle(resultSet, query, (i, next) -> {
+        Integer result = handler.handle(resultSet, query, (__) -> {
         }).get();
         assertEquals(Integer.valueOf(1), result);
     }

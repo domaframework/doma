@@ -49,7 +49,7 @@ public class BasicResultListHandlerTest extends TestCase {
 
         ScalarResultListHandler<String, String> handler = new ScalarResultListHandler<>(
                 () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
-        List<String> results = handler.handle(resultSet, query, (i, next) -> {
+        List<String> results = handler.handle(resultSet, query, (__) -> {
         }).get();
         assertEquals(2, results.size());
         assertEquals("aaa", results.get(0));
@@ -76,7 +76,7 @@ public class BasicResultListHandlerTest extends TestCase {
         ScalarResultListHandler<String, String> handler = new ScalarResultListHandler<>(
                 () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
         try {
-            handler.handle(resultSet, query, (i, next) -> {
+            handler.handle(resultSet, query, (__) -> {
             });
             fail();
         } catch (NonSingleColumnException expected) {

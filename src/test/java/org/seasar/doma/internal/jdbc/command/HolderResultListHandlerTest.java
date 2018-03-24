@@ -49,7 +49,7 @@ public class HolderResultListHandlerTest extends TestCase {
 
         ScalarResultListHandler<String, PhoneNumber> handler = new ScalarResultListHandler<>(
                 () -> _PhoneNumber.getSingletonInternal().createScalar());
-        List<PhoneNumber> results = handler.handle(resultSet, query, (i, next) -> {
+        List<PhoneNumber> results = handler.handle(resultSet, query, (__) -> {
         }).get();
         assertEquals(2, results.size());
         assertEquals("01-2345-6789", results.get(0).getValue());

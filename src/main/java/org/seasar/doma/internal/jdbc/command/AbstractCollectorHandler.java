@@ -2,11 +2,11 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
-import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
@@ -28,8 +28,8 @@ public abstract class AbstractCollectorHandler<TARGET, RESULT> implements Result
 
     @Override
     public Supplier<RESULT> handle(ResultSet resultSet, SelectQuery query,
-            ResultSetRowIndexConsumer consumer) throws SQLException {
-        return handler.handle(resultSet, query, consumer);
+                                   Consumer<ResultSetState> stateChecker) throws SQLException {
+        return handler.handle(resultSet, query, stateChecker);
     }
 
 }

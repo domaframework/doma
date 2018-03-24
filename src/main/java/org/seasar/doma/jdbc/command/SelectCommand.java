@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
+import org.seasar.doma.internal.jdbc.command.ResultSetState;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.NoResultException;
@@ -103,8 +104,8 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
     }
 
     protected Supplier<RESULT> handleResultSet(ResultSet resultSet) throws SQLException {
-        return resultSetHandler.handle(resultSet, query, (index, next) -> {
-            if (index == -1 && !next && query.isResultEnsured()) {
+        return resultSetHandler.handle(resultSet, query, (resultSetState) -> {
+            if (resultSetState == ResultSetState.NO_RESULT && query.isResultEnsured()) {
                 Sql<?> sql = query.getSql();
                 throw new NoResultException(query.getConfig().getExceptionSqlLogType(), sql);
             }

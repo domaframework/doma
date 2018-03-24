@@ -48,7 +48,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
 
         ScalarSingleResultHandler<String, String> handler = new ScalarSingleResultHandler<>(
                 () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
-        String result = handler.handle(resultSet, query, (i, next) -> {
+        String result = handler.handle(resultSet, query, (__) -> {
         }).get();
         assertEquals("aaa", result);
     }
@@ -72,7 +72,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         ScalarSingleResultHandler<String, String> handler = new ScalarSingleResultHandler<>(
                 () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
         try {
-            handler.handle(resultSet, query, (i, next) -> {
+            handler.handle(resultSet, query, (__) -> {
             });
             fail();
         } catch (NonUniqueResultException ignore) {
@@ -98,7 +98,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         ScalarSingleResultHandler<String, String> handler = new ScalarSingleResultHandler<>(
                 () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
         try {
-            handler.handle(resultSet, query, (i, next) -> {
+            handler.handle(resultSet, query, (__) -> {
             });
             fail();
         } catch (NonSingleColumnException ignore) {

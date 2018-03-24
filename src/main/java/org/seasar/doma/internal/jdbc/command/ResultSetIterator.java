@@ -7,14 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.seasar.doma.jdbc.ObjectProvider;
-import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * @author nakamura-to
- *
  */
 public class ResultSetIterator<TARGET> implements Iterator<TARGET> {
 
@@ -22,25 +21,25 @@ public class ResultSetIterator<TARGET> implements Iterator<TARGET> {
 
     protected final SelectQuery query;
 
-    protected final ResultSetRowIndexConsumer consumer;
+    protected final Consumer<ResultSetState> stateChecker;
 
     protected final ObjectProvider<TARGET> provider;
 
     protected boolean next;
 
-    protected long index = -1;
+    protected ResultSetState resultSetState;
 
     public ResultSetIterator(ResultSet resultSet, SelectQuery query,
-            ResultSetRowIndexConsumer consumer, ObjectProvider<TARGET> provider)
+                             Consumer<ResultSetState> stateChecker, ObjectProvider<TARGET> provider)
             throws SQLException {
-        assertNotNull(resultSet, query, consumer, provider);
+        assertNotNull(resultSet, query, stateChecker, provider);
         this.resultSet = resultSet;
         this.query = query;
-        this.consumer = consumer;
+        this.stateChecker = stateChecker;
         this.provider = provider;
         this.next = resultSet.next();
-        consumer.accept(index, next);
-        index++;
+        resultSetState = ResultSetState.UNKNOWN.apply(next);
+        stateChecker.accept(resultSetState);
     }
 
     @Override
@@ -57,8 +56,8 @@ public class ResultSetIterator<TARGET> implements Iterator<TARGET> {
         } catch (SQLException e) {
             throw new SQLRuntimeException(e);
         }
-        consumer.accept(index, next);
-        index++;
+        resultSetState = resultSetState.apply(next);
+        stateChecker.accept(resultSetState);
         return result;
     }
 
