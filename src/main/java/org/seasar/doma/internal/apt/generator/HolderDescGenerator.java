@@ -5,9 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Formatter;
 
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
-
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
@@ -15,19 +12,13 @@ import org.seasar.doma.internal.apt.meta.holder.HolderMeta;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
-/**
- * 
- * @author taedium
- * 
- */
 public class HolderDescGenerator extends AbstractGenerator {
 
     private final HolderMeta holderMeta;
 
     private final String typeName;
 
-    public HolderDescGenerator(Context ctx, HolderMeta holderMeta, CodeSpec codeSpec,
-            Formatter formatter) {
+    public HolderDescGenerator(Context ctx, HolderMeta holderMeta, CodeSpec codeSpec, Formatter formatter) {
         super(ctx, codeSpec, formatter);
         assertNotNull(holderMeta);
         this.holderMeta = holderMeta;
@@ -41,12 +32,12 @@ public class HolderDescGenerator extends AbstractGenerator {
     }
 
     private void printClass() {
-        TypeElement typeElement = holderMeta.getHolderElement();
+        var typeElement = holderMeta.getHolderElement();
         if (typeElement.getTypeParameters().isEmpty()) {
             iprint("/** */%n");
         } else {
             iprint("/**%n");
-            for (TypeParameterElement typeParam : typeElement.getTypeParameters()) {
+            for (var typeParam : typeElement.getTypeParameters()) {
                 iprint(" * @param <%1$s> %1$s%n", typeParam.getSimpleName());
             }
             iprint(" */%n");
@@ -54,21 +45,17 @@ public class HolderDescGenerator extends AbstractGenerator {
         printGenerated();
         if (holderMeta.isParameterized()) {
             iprint("public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
-            // @formatter:off
                     /* 1 */codeSpec.getSimpleName(),
                     /* 2 */AbstractHolderDesc.class.getName(),
                     /* 3 */ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
                     /* 4 */typeName,
                     /* 5 */codeSpec.getTypeParamsName());
-                    // @formatter:on
         } else {
             iprint("public final class %1$s extends %2$s<%3$s, %4$s> {%n",
-            // @formatter:off
                     /* 1 */codeSpec.getSimpleName(),
                     /* 2 */AbstractHolderDesc.class.getName(),
                     /* 3 */ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
                     /* 4 */typeName);
-                    // @formatter:on
         }
         print("%n");
         indent();
@@ -106,13 +93,11 @@ public class HolderDescGenerator extends AbstractGenerator {
     }
 
     private void printNewHolderMethod() {
-        boolean primitive = holderMeta.getBasicCtType().isPrimitive();
+        var primitive = holderMeta.getBasicCtType().isPrimitive();
         iprint("@Override%n");
         iprint("protected %1$s newHolder(%2$s value) {%n",
-        // @formatter:off
                 /* 1 */typeName,
                 /* 2 */ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()));
-                // @formatter:on
         if (!primitive && !holderMeta.getAcceptNull()) {
             iprint("    if (value == null) {%n");
             iprint("        return null;%n");
@@ -121,30 +106,22 @@ public class HolderDescGenerator extends AbstractGenerator {
         if (holderMeta.providesConstructor()) {
             if (primitive) {
                 iprint("    return new %1$s(%2$s.unbox(value));%n",
-                // @formatter:off
                         /* 1 */typeName,
                         /* 2 */BoxedPrimitiveUtil.class.getName());
-                        // @formatter:on
             } else {
                 iprint("    return new %1$s(value);%n",
-                // @formatter:off
                         /* 1 */typeName);
-                        // @formatter:on
             }
         } else {
             if (primitive) {
                 iprint("    return %1$s.%2$s(%3$s.unbox(value));%n",
-                // @formatter:off
                         /* 1 */holderMeta.getHolderElement().getQualifiedName(),
                         /* 2 */holderMeta.getFactoryMethod(),
                         /* 3 */BoxedPrimitiveUtil.class.getName());
-                        // @formatter:on
             } else {
                 iprint("    return %1$s.%2$s(value);%n",
-                // @formatter:off
                         /* 1 */holderMeta.getHolderElement().getQualifiedName(),
                         /* 2 */holderMeta.getFactoryMethod());
-                        // @formatter:on
             }
         }
         iprint("}%n");
@@ -154,10 +131,8 @@ public class HolderDescGenerator extends AbstractGenerator {
     private void printGetBasicValueMethod() {
         iprint("@Override%n");
         iprint("protected %1$s getBasicValue(%2$s holder) {%n",
-        // @formatter:off
                 /* 1 */ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
                 /* 2 */typeName);
-                // @formatter:on
         iprint("    if (holder == null) {%n");
         iprint("        return null;%n");
         iprint("    }%n");
@@ -198,15 +173,11 @@ public class HolderDescGenerator extends AbstractGenerator {
         if (holderMeta.isParameterized()) {
             iprint("@SuppressWarnings(\"unchecked\")%n");
             iprint("public static <%1$s> %2$s<%1$s> getSingletonInternal() {%n",
-            // @formatter:off
                     /* 1 */codeSpec.getTypeParamsName(),
                     /* 2 */codeSpec.getSimpleName());
-                    // @formatter:on
             iprint("    return (%2$s<%1$s>) singleton;%n",
-            // @formatter:off
-                    /* 1 */codeSpec.getTypeParamsName(), 
+                    /* 1 */codeSpec.getTypeParamsName(),
                     /* 2 */codeSpec.getSimpleName());
-                    // @formatter:on
         } else {
             iprint("public static %1$s getSingletonInternal() {%n", codeSpec.getSimpleName());
             iprint("    return singleton;%n");

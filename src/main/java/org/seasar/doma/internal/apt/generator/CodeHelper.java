@@ -36,8 +36,9 @@ final class CodeHelper {
 
     static String wrapperSupplier(BasicCtType ctType) {
         if (ctType.isEnum()) {
-            return String.format("() -> new %1$s(%2$s.class)", ctType.getWrapperTypeName(),
-                    ctType.getQualifiedName());
+            return String.format("() -> new %1$s(%2$s.class)",
+                    /* 1 */ctType.getWrapperTypeName(),
+                    /* 2 */ctType.getQualifiedName());
         }
         return String.format("%1$s::new", ctType.getWrapperTypeName());
     }

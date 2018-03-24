@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Formatter;
 
@@ -12,10 +11,6 @@ import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
-/**
- * @author taedium
- * 
- */
 public abstract class AbstractGenerator implements Generator {
 
     private static final String INDENT_SPACE = "    ";
@@ -71,7 +66,7 @@ public abstract class AbstractGenerator implements Generator {
     }
 
     protected void throwExceptionIfNecessary() {
-        IOException ioException = formatter.ioException();
+        var ioException = formatter.ioException();
         if (ioException != null) {
             formatter.close();
             throw new UncheckedIOException(ioException);
