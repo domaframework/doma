@@ -1,6 +1,6 @@
-=======================
-Getting Started
-=======================
+======================================
+はじめよう！ (IntelliJ IDEA)
+======================================
 
 .. contents:: 目次
    :depth: 3
@@ -10,14 +10,6 @@ Getting Started
 
 開発環境のセットアップ方法と基本的なデータベースアクセスの実行方法を紹介します。
 
-.. _IntelliJ Doma support plugin: https://github.com/siosio/DomaSupport
-
-.. note::
-
-  このドキュメントでは、IDE として Eclipse を用いますが、
-  Eclipse の代わりに IntelliJ IDEA を利用して開発することも可能です。
-  IntelliJ IDEA を利用する場合は、 `IntelliJ Doma support plugin`_ の併用をお奨めします。
-
 JDK のインストール
 ==================
 
@@ -25,69 +17,23 @@ JDK のインストール
 
 `JDK 8`_ をインストールしてください。
 
-Eclipse のインストール
-======================
+.. note::
 
-.. _Eclipse Standard 4.4: http://www.eclipse.org/downloads/
+  JDK 9 や JDK 10 もサポートされています。
 
-`Eclipse Standard 4.4`_ をインストールしてください。
+IntelliJ IDEA のインストール
+==================================
+
+.. _IntelliJ IDEA Community Edition: https://www.jetbrains.com/idea/download/
+
+`IntelliJ IDEA Community Edition`_ をインストールしてください。
+
+.. _IntelliJ Doma support plugin: https://plugins.jetbrains.com/plugin/7615-doma-support
 
 .. note::
 
-  Eclipse IDE for Java EE Developers など他のパッケージでも動作しますが
-  このドキュメントでは Eclipse Standard を対象とします。
-
-Eclipse プラグイン Doma Tools のインストール
-============================================
-
-Doma Tools は Java ファイルと SQL ファイルの相互遷移を可能にするプラグインです。
-Doma の利用に必須ではありませんが、このプラグインを使用すると生産性が高まります。
-
-Eclipse メニューバーから Help > Install New Software... と進み、
-'Work With' のテキストボックスに次のURLを入力してください。
-
-::
-
-  http://dl.bintray.com/domaframework/eclipse/
-
-以下の図のようにインストール可能なプラグインの候補が表示されるので
-Doma Tools の最新バージョンにチェックをつけてダイアログを進め
-インスートルを完了してください。
-
-.. image:: images/install-doma-tools.png
-
-ファイルの関連づけ
-------------------
-
-Doma Tools は、 SQL ファイルの更新をフックして注釈処理を実行します。
-そのためには、 SQL ファイルを Eclipse 内で開く必要があります。
-
-メニューバーから Eclipse > 環境設定... もしくは Window > Preference と選択し、設定画面を開いてください。
-
-以下の図が示すように ``.sql`` の拡張子をもつファイルを Text Editor に関連づけてください。
-
-.. image:: images/sql-file-association.png
-   :width: 80 %
-
-同様に ``.script`` の拡張子をもつファイルを Text Editor に関連づけてください。
-
-.. image:: images/script-file-association.png
-   :width: 80 %
-
-.. note::
-
-   Eclipse IDE for Java EE Developers を利用する場合は、
-   デフォルトでSQLファイルが専用のエディタに関連づけられているため
-   この手順をスキップできます。
-
-.. _Oracle SQL Developer: http://www.oracle.com/technetwork/developer-tools/sql-developer/overview/index.html
-.. _pgAdmin: http://www.pgadmin.org/
-
-.. note::
-
-  SQL は RDBMS 固有のツール（`Oracle SQL Developer`_ や `pgAdmin`_）で作成し、
-  完成したものを Eclipse のエディターにコピーするといった
-  開発スタイルをお奨めします。
+  このドキュメントでは、IDE として IntelliJ IDEA Community Edition を用います。
+  IntelliJ IDEA Ultimate Edition を利用する場合は、 `IntelliJ Doma support plugin`_ の併用をお奨めします。
 
 雛形プロジェクトのインポート
 ============================
@@ -98,36 +44,73 @@ GitHub から simple-boilerplate を clone してください。
 
   $ git clone https://github.com/domaframework/simple-boilerplate.git
 
-clone されたディレクトリに移動します。
+IntelliJ IDEA を起動して Import Project を実行し、clone した simple-boilerplate を選択します。
 
-.. code-block:: bash
+.. image:: images/idea-welcome.png
+   :width: 60 %
 
-  $ cd simple-boilerplate
-
-次のコマンドで Eclipse 用の設定ファイルを生成します。
-
-.. code-block:: bash
-
-  $ ./gradlew eclipse
-
-.. note::
-
-  Windows 環境では ``./gradlew eclipse`` とする代わりに ``gradlew eclipse`` としてください。
-
-.. note::
-
-  環境変数 ``JAVA_HOME`` に JDK 8 をインストールしたディレクトリを設定しておいてください。
-  gradlew の実行に必要です。
+|
 
 
-Eclipse のメニューからFile > Import... を実行し
-'Existing Projects into Workspace' を選んで simple-boilerplate をインポートします。
+Import project from external model をチェックし、Gradle を選択します。 
 
-.. image:: images/import.png
-   :width: 80 %
+.. image:: images/idea-import-project.png
+   :width: 100 %
 
-インポートが成功したことを確認するためにプロジェクトを選択して JUnit を実行してください。
-テストが1件成功すれば正常にインポートできています。
+|
+
+
+Use auto import をチェックし、 Create separate module per source set のチェックを外します。最後に Finish を押してください。
+
+.. image:: images/idea-import-project-settings.png
+   :width: 100 %
+
+|
+
+
+Build ツールウィンドウに synced successfully というメッセージが表示されればインポートは成功です。
+
+.. _idea-annotation-processor:
+
+Annotation Processor に関する設定
+=====================================
+
+Project ツールウィンドウのコンテキストメニューから Open Module Settings を選択します。
+
+.. image:: images/idea-open-module-settings.png
+   :width: 100 %
+
+|
+
+Modules の Paths の設定画面を開き、Inherit project compile output path が選択されていることを確認してください。
+選択されていない場合は選択してください。
+
+.. image:: images/idea-output-path.png
+   :width: 100 %
+
+|
+
+
+Preferrences から Build, Execution, Deployment > Compiler > Annotation Processors を開きます。
+Enable annotation processing をチェックしてください。
+Module content root をチェックしてください。
+Production sources directory には gen/production 、Test sources directory には gen/test と入力してください。
+最後に OK を押してください。
+
+.. image:: images/idea-annotation-processors.png
+   :width: 100 %
+
+|
+
+
+メニューから Build Project を実行してください。
+ビルドにより Annotation Processor により生成されたコードが gen/production に出力されます。
+Project ツールウィンドウのコンテキストメニューから Mark Directory as | Generated Sources Root を選択し、
+gen/production をソースパスに追加します。
+
+.. image:: images/idea-generated-sources-root.png
+   :width: 100 %
+
 
 雛形プロジェクトの構成
 ======================
@@ -187,43 +170,6 @@ EmployeeDaoTest.java
   テストメソッドごとにデータベーススキーマの作成と破棄を行っているため
   データの更新によって他のテストが影響を受けることはありません。
 
-Java と SQL の相互遷移
-======================
-
-``EmployeeDao.java`` では次のように定義されています。
-
-.. code-block:: java
-
-  @Dao(config = AppConfig.class)
-  public interface EmployeeDao {
-
-      @Select
-      List<Employee> selectAll();
-
-      @Select
-      Employee selectById(Integer id);
-
-      @Insert
-      int insert(Employee employee);
-
-      @Update
-      int update(Employee employee);
-
-      @Delete
-      int delete(Employee employee);
-
-  }
-
-Eclipse のエディタ上で ``selectById`` メソッドにカーソルを合わせ右クリックなどで
-コンテキストメニューを表示させてください。
-メニューの中から Doma > Jump to SQL を選択すると
-``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` ファイルへ遷移できます。
-
-次に、``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` ファイルの任意の場所に
-カーソルを置き、コンテキストメニューを表示させてください。
-メニューの中から Doma > Jump to Java を選択すると
-``EmployeeDao.java`` ファイルへ戻ってこられます。
-
 SQL ファイル
 ============
 
@@ -262,31 +208,23 @@ SQL ファイル
 
 ある年齢より小さい従業員を検索する処理を追加する手順を示します。
 
-``EmployeeDao`` に次のコードを追加してください。
+``EmployeeDao`` に次のコードを追加し、ビルドを実行してください。
 
 .. code-block:: java
 
    @Select
    List<Employee> selectByAge(Integer age);
 
-このとき、注釈処理により次のエラーメッセージが Eclilpse 上に表示されます。
+このとき、注釈処理により次のエラーメッセージが Message ツールウィンドウ に表示されます。
 
 ::
 
   [DOMA4019] ファイル[META-INF/boilerplate/dao/EmployeeDao/selectByAge.sql]が
   クラスパスから見つかりませんでした。
 
-Eclipse のエディタ上で ``selectByAge`` メソッドにカーソルを合わせ右クリックなどで
-コンテキストメニューを表示させ、メニューの中から Doma > Jump to SQL を選択してください。
+``src/main/resources/META-INF/boilerplate/dao/EmployeeDao`` の直下に
+`selectByAge.sql` という名前のファイルを作成し、ファイルは空のままにして再度ビルドしてください。
 
-SQL ファイルの新規作成を行うためのダイアログが次のように表示されます。
-
-.. image:: images/new-sql-file.png
-   :width: 80 %
-
-'Finish' を押してファイルを作成してください。
-
-ファイル作成後、ファイルを空のまま保管して ``EmployeeDao`` に戻ると
 エラーメッセージの内容が変わります。
 
 ::
@@ -304,7 +242,7 @@ SQL ファイルの新規作成を行うためのダイアログが次のよう�
   where
       age < /* age  */0
 
-これでエラーが解消されます。
+再度ビルドをするとエラーが解消されます。
 
 
 検索処理の実行
