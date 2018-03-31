@@ -5,7 +5,7 @@ import java.util.List;
 
 public class OutParameterData {
 
-  protected final List<Object> values = new ArrayList<Object>();
+  protected final List<Object> values = new ArrayList<>();
 
   public OutParameterData(Object... values) {
     for (var object : values) {

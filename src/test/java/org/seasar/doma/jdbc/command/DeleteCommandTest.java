@@ -22,7 +22,7 @@ public class DeleteCommandTest extends TestCase {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(10);
 
-    var query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -39,8 +39,8 @@ public class DeleteCommandTest extends TestCase {
 
     var bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(2, bindValues.size());
-    assertEquals(Integer.valueOf(1), bindValues.get(0).getValue());
-    assertEquals(Integer.valueOf(10), bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
+    assertEquals(10, bindValues.get(1).getValue());
   }
 
   public void testExecute_throwsOptimisticLockException() throws Exception {
@@ -52,7 +52,7 @@ public class DeleteCommandTest extends TestCase {
     var ps = new MockPreparedStatement();
     ps.updatedRows = 0;
     runtimeConfig.dataSource.connection = new MockConnection(ps);
-    var query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -74,7 +74,7 @@ public class DeleteCommandTest extends TestCase {
     emp.setName("aaa");
     emp.setVersion(100);
 
-    var query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);

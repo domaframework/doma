@@ -24,7 +24,7 @@ public class BatchUpdateCommandTest extends TestCase {
     emp2.setName("foo");
     emp2.setVersion(20);
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -51,7 +51,7 @@ public class BatchUpdateCommandTest extends TestCase {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp));
@@ -75,7 +75,7 @@ public class BatchUpdateCommandTest extends TestCase {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp));

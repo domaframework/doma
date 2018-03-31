@@ -35,11 +35,11 @@ public class CallableSqlParameterBinderTest extends TestCase {
     parameters.add(
         new ScalarInOutParameter<>(
             () -> new BasicScalar<>(new org.seasar.doma.wrapper.BigDecimalWrapper(), false),
-            new Reference<BigDecimal>(new BigDecimal(10))));
+            new Reference<>(new BigDecimal(10))));
     parameters.add(
         new ScalarOutParameter<>(
             () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper("bbb"), false),
-            new Reference<String>()));
+            new Reference<>()));
     var binder = new CallableSqlParameterBinder(new MyQuery());
     binder.bind(callableStatement, parameters);
 

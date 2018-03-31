@@ -70,7 +70,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     var command =
         getCommandImplementors()
             .createSelectCommand(
-                method0, query, new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+                method0, query, new EntitySingleResultHandler<>(_Emp.getSingletonInternal()));
     return command.execute();
   }
 
@@ -88,7 +88,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     var command =
         getCommandImplementors()
             .createSelectCommand(
-                method1, query, new EntityResultListHandler<Emp>(_Emp.getSingletonInternal()));
+                method1, query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
     return command.execute();
   }
 
@@ -104,7 +104,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     var command =
         getCommandImplementors()
             .createSelectCommand(
-                method2, query, new EntityResultListHandler<Emp>(_Emp.getSingletonInternal()));
+                method2, query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
     return command.execute();
   }
 
@@ -155,9 +155,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     var command =
         getCommandImplementors()
             .createSelectCommand(
-                method6,
-                query,
-                new EntityStreamHandler<Emp, Integer>(_Emp.getSingletonInternal(), mapper));
+                method6, query, new EntityStreamHandler<>(_Emp.getSingletonInternal(), mapper));
     return command.execute();
   }
 

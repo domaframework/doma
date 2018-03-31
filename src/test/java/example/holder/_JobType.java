@@ -1,13 +1,14 @@
 package example.holder;
 
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _JobType extends AbstractHolderDesc<Integer, JobType> {
 
   private static final _JobType singleton = new _JobType();
 
   private _JobType() {
-    super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    super(IntegerWrapper::new);
   }
 
   @Override

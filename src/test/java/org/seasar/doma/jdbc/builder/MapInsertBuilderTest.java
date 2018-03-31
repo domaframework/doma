@@ -11,7 +11,7 @@ public class MapInsertBuilderTest extends TestCase {
   public void test() throws Exception {
     var builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("name", "SMITH");
             put("salary", 100);
@@ -24,7 +24,7 @@ public class MapInsertBuilderTest extends TestCase {
     var builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
 
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("name", "SMITH");
             put("salary", 100);
@@ -44,7 +44,7 @@ public class MapInsertBuilderTest extends TestCase {
   public void testNullValue() throws Exception {
     var builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("name", null);
             put("salary", 100);
@@ -63,7 +63,7 @@ public class MapInsertBuilderTest extends TestCase {
   public void testLastNullValue() throws Exception {
     var builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("salary", 100);
             put("name", null);

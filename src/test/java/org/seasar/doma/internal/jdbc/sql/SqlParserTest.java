@@ -561,7 +561,7 @@ public class SqlParserTest extends TestCase {
         sql.getFormattedSql());
     assertEquals(2, sql.getParameters().size());
     assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
-    assertEquals(Integer.valueOf(5), sql.getParameters().get(1).getWrapper().get());
+    assertEquals(5, sql.getParameters().get(1).getWrapper().get());
   }
 
   public void testUpdate() throws Exception {
@@ -579,9 +579,9 @@ public class SqlParserTest extends TestCase {
     assertEquals("update aaa set no = ?, set name = ? where id = ?", sql.getRawSql());
     assertEquals("update aaa set no = 10, set name = 'hoge' where id = 100", sql.getFormattedSql());
     assertEquals(3, sql.getParameters().size());
-    assertEquals(Integer.valueOf(10), sql.getParameters().get(0).getWrapper().get());
+    assertEquals(10, sql.getParameters().get(0).getWrapper().get());
     assertEquals("hoge", sql.getParameters().get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(100), sql.getParameters().get(2).getWrapper().get());
+    assertEquals(100, sql.getParameters().get(2).getWrapper().get());
   }
 
   public void testFor() throws Exception {

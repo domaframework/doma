@@ -41,8 +41,7 @@ public class PreparedSqlBuilderTest extends TestCase {
     HolderDesc<String, PhoneNumber> phoneNumberType =
         HolderDescFactory.getHolderDesc(PhoneNumber.class, new ClassHelper() {});
     var phoneNumber = new PhoneNumber("03-1234-5678");
-    builder.appendParameter(
-        new ScalarInParameter<>(() -> phoneNumberType.createScalar(), phoneNumber));
+    builder.appendParameter(new ScalarInParameter<>(phoneNumberType::createScalar, phoneNumber));
     var sql = builder.build(Function.identity());
     assertEquals("select * from aaa where phoneNumber = ?", sql.toString());
   }

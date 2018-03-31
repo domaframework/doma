@@ -1,11 +1,12 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _Ver extends AbstractHolderDesc<Integer, Ver> {
 
   private _Ver() {
-    super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    super(IntegerWrapper::new);
   }
 
   @Override

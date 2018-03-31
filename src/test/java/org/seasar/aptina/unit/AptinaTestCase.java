@@ -17,7 +17,6 @@ package org.seasar.aptina.unit;
 
 import static java.util.Arrays.asList;
 import static org.seasar.aptina.unit.AssertionUtils.assertNotEmpty;
-import static org.seasar.aptina.unit.CollectionUtils.newArrayList;
 import static org.seasar.aptina.unit.IOUtils.closeSilently;
 import static org.seasar.aptina.unit.IOUtils.readString;
 
@@ -143,13 +142,13 @@ public abstract class AptinaTestCase extends TestCase {
 
   Writer out;
 
-  final List<String> options = newArrayList();
+  final List<String> options = new ArrayList<>();
 
-  final List<File> sourcePaths = newArrayList();
+  final List<File> sourcePaths = new ArrayList<>();
 
-  final List<Processor> processors = newArrayList();
+  final List<Processor> processors = new ArrayList<>();
 
-  final List<CompilationUnit> compilationUnits = newArrayList();
+  final List<CompilationUnit> compilationUnits = new ArrayList<>();
 
   JavaCompiler javaCompiler;
 
@@ -360,7 +359,7 @@ public abstract class AptinaTestCase extends TestCase {
    */
   protected void compile() throws IOException {
     javaCompiler = ToolProvider.getSystemJavaCompiler();
-    diagnostics = new DiagnosticCollector<JavaFileObject>();
+    diagnostics = new DiagnosticCollector<>();
     final DiagnosticListener<JavaFileObject> listener = new LoggingDiagnosticListener(diagnostics);
 
     standardJavaFileManager = javaCompiler.getStandardFileManager(listener, locale, charset);
@@ -771,7 +770,7 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IOException 入出力例外が発生した場合
    */
   List<JavaFileObject> getCompilationUnits() throws IOException {
-    final List<JavaFileObject> result = new ArrayList<JavaFileObject>(compilationUnits.size());
+    final List<JavaFileObject> result = new ArrayList<>(compilationUnits.size());
     for (final var compilationUnit : compilationUnits) {
       result.add(compilationUnit.getJavaFileObject());
     }

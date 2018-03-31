@@ -19,7 +19,7 @@ public class PreparedSqlParameterBinderTest extends TestCase {
 
   public void testBind() throws Exception {
     var preparedStatement = new MockPreparedStatement();
-    List<ScalarInParameter<?, ?>> parameters = new ArrayList<ScalarInParameter<?, ?>>();
+    List<ScalarInParameter<?, ?>> parameters = new ArrayList<>();
     parameters.add(
         new ScalarInParameter<>(
             () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false), "aaa"));

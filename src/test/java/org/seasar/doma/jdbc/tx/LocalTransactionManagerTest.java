@@ -57,11 +57,7 @@ public class LocalTransactionManagerTest extends TestCase {
 
   public void testRequired_supplier() throws Exception {
     var manager = new LocalTransactionManager(transaction);
-    var result =
-        manager.required(
-            () -> {
-              return "aaa";
-            });
+    var result = manager.required(() -> "aaa");
     assertEquals("aaa", result);
   }
 
@@ -84,11 +80,7 @@ public class LocalTransactionManagerTest extends TestCase {
 
   public void testRequiresNew_supplier() throws Exception {
     var manager = new LocalTransactionManager(transaction);
-    var result =
-        manager.requiresNew(
-            () -> {
-              return "aaa";
-            });
+    var result = manager.requiresNew(() -> "aaa");
     assertEquals("aaa", result);
   }
 
@@ -111,11 +103,7 @@ public class LocalTransactionManagerTest extends TestCase {
 
   public void testNotSupported_supplier() throws Exception {
     var manager = new LocalTransactionManager(transaction);
-    var result =
-        manager.notSupported(
-            () -> {
-              return "aaa";
-            });
+    var result = manager.notSupported(() -> "aaa");
     assertEquals("aaa", result);
   }
 

@@ -1,6 +1,7 @@
 package example.holder;
 
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class _InternationalPhoneNumber
     extends AbstractHolderDesc<String, InternationalPhoneNumber> {
@@ -8,7 +9,7 @@ public class _InternationalPhoneNumber
   private static final _InternationalPhoneNumber singleton = new _InternationalPhoneNumber();
 
   private _InternationalPhoneNumber() {
-    super(() -> new org.seasar.doma.wrapper.StringWrapper());
+    super(StringWrapper::new);
   }
 
   @Override

@@ -24,7 +24,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -48,7 +48,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -65,9 +65,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(5, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertTrue(parameters.get(1).getWrapper().get() == null);
-    assertEquals(Integer.valueOf(100), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(10), parameters.get(3).getWrapper().get());
-    assertEquals(Integer.valueOf(100), parameters.get(4).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(4).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -77,9 +77,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(5, parameters.size());
     assertTrue(parameters.get(0).getWrapper().get() == null);
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(200), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(20), parameters.get(3).getWrapper().get());
-    assertEquals(Integer.valueOf(200), parameters.get(4).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(4).getWrapper().get());
   }
 
   public void testOption_ignoreVersion() throws Exception {
@@ -93,7 +93,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -109,8 +109,8 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(100), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(10), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql.getRawSql());
@@ -118,8 +118,8 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(200), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(20), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
   }
 
   public void testOption_include() throws Exception {
@@ -133,7 +133,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setId(20);
     emp2.setVersion(200);
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -149,9 +149,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     var parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -159,9 +159,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
-    assertEquals(Integer.valueOf(200), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(20), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(200), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
+    assertEquals(200, parameters.get(3).getWrapper().get());
   }
 
   public void testOption_exclude() throws Exception {
@@ -175,7 +175,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setId(20);
     emp2.setVersion(200);
 
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -191,9 +191,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     var parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-    assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -201,13 +201,13 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
-    assertEquals(Integer.valueOf(200), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(20), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(200), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
+    assertEquals(200, parameters.get(3).getWrapper().get());
   }
 
   public void testIsExecutable() throws Exception {
-    var query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");

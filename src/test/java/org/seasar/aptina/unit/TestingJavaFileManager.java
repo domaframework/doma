@@ -15,14 +15,13 @@
  */
 package org.seasar.aptina.unit;
 
-import static org.seasar.aptina.unit.CollectionUtils.newHashMap;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.NoSuchFileException;
+import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.processing.Processor;
 import javax.tools.FileObject;
@@ -40,9 +39,9 @@ import javax.tools.StandardLocation;
  */
 class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
 
-  final Map<String, InMemoryJavaFileObject> fileObjects = newHashMap();
+  final Map<String, InMemoryJavaFileObject> fileObjects = new HashMap<>();
 
-  final Map<String, InMemoryJavaFileObject> javaFileObjects = newHashMap();
+  final Map<String, InMemoryJavaFileObject> javaFileObjects = new HashMap<>();
 
   final Charset charset;
 
@@ -107,8 +106,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
       }
       uri = originalFileObject.toUri();
       content = IOUtils.readBytes(originalFileObject.openInputStream());
-    } catch (final FileNotFoundException ignore) {
-    } catch (final NoSuchFileException ignore) {
+    } catch (final FileNotFoundException | NoSuchFileException ignore) {
     }
     final var fileObject =
         new InMemoryJavaFileObject(
@@ -145,8 +143,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
       final var originalFileObject = super.getJavaFileForOutput(location, className, kind, sibling);
       uri = originalFileObject.toUri();
       content = IOUtils.readBytes(originalFileObject.openInputStream());
-    } catch (final FileNotFoundException ignore) {
-    } catch (final NoSuchFileException ignore) {
+    } catch (final FileNotFoundException | NoSuchFileException ignore) {
     }
     final var fileObject =
         new InMemoryJavaFileObject(

@@ -16,7 +16,7 @@ public class AutoInsertQueryTest extends TestCase {
     emp.setId(10);
     emp.setName("aaa");
 
-    var query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -34,7 +34,7 @@ public class AutoInsertQueryTest extends TestCase {
     emp.setId(10);
     emp.setName("aaa");
 
-    var query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -48,10 +48,10 @@ public class AutoInsertQueryTest extends TestCase {
         "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(4, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
     assertNull(parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(1), parameters.get(3).getWrapper().get());
+    assertEquals(1, parameters.get(3).getWrapper().get());
   }
 
   public void testOption_excludeNull() throws Exception {
@@ -59,7 +59,7 @@ public class AutoInsertQueryTest extends TestCase {
     emp.setId(10);
     emp.setName("aaa");
 
-    var query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -73,9 +73,9 @@ public class AutoInsertQueryTest extends TestCase {
     assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(1), parameters.get(2).getWrapper().get());
+    assertEquals(1, parameters.get(2).getWrapper().get());
   }
 
   public void testOption_include() throws Exception {
@@ -84,7 +84,7 @@ public class AutoInsertQueryTest extends TestCase {
     emp.setName("aaa");
     emp.setSalary(new BigDecimal(200));
 
-    var query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -98,9 +98,9 @@ public class AutoInsertQueryTest extends TestCase {
     assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(1), parameters.get(2).getWrapper().get());
+    assertEquals(1, parameters.get(2).getWrapper().get());
   }
 
   public void testOption_exclude() throws Exception {
@@ -109,7 +109,7 @@ public class AutoInsertQueryTest extends TestCase {
     emp.setName("aaa");
     emp.setSalary(new BigDecimal(200));
 
-    var query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -123,8 +123,8 @@ public class AutoInsertQueryTest extends TestCase {
     assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(200), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(1), parameters.get(2).getWrapper().get());
+    assertEquals(1, parameters.get(2).getWrapper().get());
   }
 }

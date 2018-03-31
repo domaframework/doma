@@ -8,16 +8,14 @@ public class OriginalStatesAccessorTest extends TestCase {
     var states = new Hoge();
     var hoge = new Hoge();
     hoge.setOriginalStates(states);
-    var accessor =
-        new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
+    var accessor = new OriginalStatesAccessor<>(Hoge.class, "originalStates");
     assertSame(states, accessor.get(hoge));
   }
 
   public void testSet() throws Exception {
     var states = new Hoge();
     var hoge = new Hoge();
-    var accessor =
-        new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
+    var accessor = new OriginalStatesAccessor<>(Hoge.class, "originalStates");
     accessor.set(hoge, states);
     assertSame(states, hoge.getOriginalStates());
   }

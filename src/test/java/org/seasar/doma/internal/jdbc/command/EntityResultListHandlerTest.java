@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.jdbc.command;
 
-import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import junit.framework.TestCase;
@@ -41,7 +40,7 @@ public class EntityResultListHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    var handler = new EntityResultListHandler<Emp>(_Emp.getSingletonInternal());
+    var handler = new EntityResultListHandler<>(_Emp.getSingletonInternal());
     var entities = handler.handle(resultSet, query, (__) -> {}).get();
 
     assertEquals(2, entities.size());

@@ -2,6 +2,7 @@ package __.org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.internal.apt.processor.entity.PrimaryKey;
 import org.seasar.doma.internal.apt.processor.entity.PrimaryKeyConverter;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public final class _PrimaryKey
     extends org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.Integer, PrimaryKey> {
@@ -15,7 +16,7 @@ public final class _PrimaryKey
   private static final PrimaryKeyConverter converter = new PrimaryKeyConverter();
 
   private _PrimaryKey() {
-    super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    super(IntegerWrapper::new);
   }
 
   @Override

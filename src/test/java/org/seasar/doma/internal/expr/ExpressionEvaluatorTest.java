@@ -67,7 +67,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     var result =
         evaluator.invokeMethod(
             location, method, person, Person.class, new Class[] {}, new Object[] {});
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -90,7 +90,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     var result =
         evaluator.invokeMethod(
             location, method, null, Person.class, new Class[] {}, new Object[] {});
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -108,8 +108,7 @@ public class ExpressionEvaluatorTest extends TestCase {
   public void testFindMethod() throws Exception {
     var evaluator = new ExpressionEvaluator();
     var method =
-        evaluator.findMethod(
-            "add", new ArrayList<Object>(), ArrayList.class, new Class[] {Object.class});
+        evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {Object.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }
@@ -117,8 +116,7 @@ public class ExpressionEvaluatorTest extends TestCase {
   public void testFindMethod_String_is_subtype_of_Object() throws Exception {
     var evaluator = new ExpressionEvaluator();
     var method =
-        evaluator.findMethod(
-            "add", new ArrayList<Object>(), ArrayList.class, new Class[] {String.class});
+        evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {String.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }
@@ -126,8 +124,7 @@ public class ExpressionEvaluatorTest extends TestCase {
   public void testFindMethod_List_is_subtype_of_Object() throws Exception {
     var evaluator = new ExpressionEvaluator();
     var method =
-        evaluator.findMethod(
-            "add", new ArrayList<Object>(), ArrayList.class, new Class[] {List.class});
+        evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {List.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }
@@ -136,7 +133,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     var evaluator = new ExpressionEvaluator();
     var method =
         evaluator.findMethod(
-            "addAll", new ArrayList<Object>(), ArrayList.class, new Class[] {List.class});
+            "addAll", new ArrayList<>(), ArrayList.class, new Class[] {List.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }
@@ -158,9 +155,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 
   public void testFindMethod_autoBoxing() throws Exception {
     var evaluator = new ExpressionEvaluator();
-    var method =
-        evaluator.findMethod(
-            "compareTo", Integer.valueOf(1), Integer.class, new Class[] {int.class});
+    var method = evaluator.findMethod("compareTo", 1, Integer.class, new Class[] {int.class});
     assertNotNull(method);
     assertEquals(Integer.class, method.getDeclaringClass());
   }
@@ -262,7 +257,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     var evaluator = new ExpressionEvaluator();
     var field = Person.class.getField("staticAge");
     var result = evaluator.getFieldValue(location, field, null);
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -281,7 +276,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     var person = new Person();
     person.age = OptionalInt.of(10);
     var result = evaluator.getFieldValue(location, field, person);
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -301,7 +296,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     var person = new Person();
     person.salary = OptionalLong.of(10L);
     var result = evaluator.getFieldValue(location, field, person);
-    assertEquals(Long.valueOf(10L), result.getValue());
+    assertEquals(10L, result.getValue());
     assertEquals(Long.class, result.getValueClass());
   }
 
@@ -321,7 +316,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     var person = new Person();
     person.temperature = OptionalDouble.of(10L);
     var result = evaluator.getFieldValue(location, field, person);
-    assertEquals(Double.valueOf(10d), result.getValue());
+    assertEquals(10d, result.getValue());
     assertEquals(Double.class, result.getValueClass());
   }
 

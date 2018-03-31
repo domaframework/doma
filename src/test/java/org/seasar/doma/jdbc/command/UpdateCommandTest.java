@@ -19,7 +19,7 @@ public class UpdateCommandTest extends TestCase {
     emp.setVersion(10);
     emp.originalStates = new Emp();
 
-    var query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -37,9 +37,9 @@ public class UpdateCommandTest extends TestCase {
     var bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
     assertEquals("hoge", bindValues.get(0).getValue());
-    assertEquals(Integer.valueOf(10), bindValues.get(1).getValue());
-    assertEquals(Integer.valueOf(1), bindValues.get(2).getValue());
-    assertEquals(Integer.valueOf(10), bindValues.get(3).getValue());
+    assertEquals(10, bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(2).getValue());
+    assertEquals(10, bindValues.get(3).getValue());
   }
 
   public void testExecute_throwsOptimisticLockException() throws Exception {
@@ -50,7 +50,7 @@ public class UpdateCommandTest extends TestCase {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    var query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -74,7 +74,7 @@ public class UpdateCommandTest extends TestCase {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    var query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -100,7 +100,7 @@ public class UpdateCommandTest extends TestCase {
 
     emp.originalStates = states;
 
-    var query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -118,9 +118,9 @@ public class UpdateCommandTest extends TestCase {
     var bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
     assertEquals("hoge", bindValues.get(0).getValue());
-    assertEquals(Integer.valueOf(10), bindValues.get(1).getValue());
-    assertEquals(Integer.valueOf(1), bindValues.get(2).getValue());
-    assertEquals(Integer.valueOf(10), bindValues.get(3).getValue());
+    assertEquals(10, bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(2).getValue());
+    assertEquals(10, bindValues.get(3).getValue());
 
     var updatedStates = emp.originalStates;
     assertEquals(Integer.valueOf(1), updatedStates.getId());

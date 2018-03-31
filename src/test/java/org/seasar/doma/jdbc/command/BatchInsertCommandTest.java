@@ -23,7 +23,7 @@ public class BatchInsertCommandTest extends TestCase {
     emp2.setName("foo");
     emp2.setVersion(20);
 
-    var query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));

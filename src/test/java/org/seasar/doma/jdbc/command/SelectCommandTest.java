@@ -1,12 +1,9 @@
 package org.seasar.doma.jdbc.command;
 
-import example.entity.Emp;
 import example.entity._Emp;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import junit.framework.TestCase;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
@@ -49,8 +46,7 @@ public class SelectCommandTest extends TestCase {
     query.prepare();
 
     var command =
-        new SelectCommand<Emp>(
-            query, new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntitySingleResultHandler<>(_Emp.getSingletonInternal()));
     var entity = command.execute();
     query.complete();
 
@@ -92,8 +88,7 @@ public class SelectCommandTest extends TestCase {
     query.prepare();
 
     var command =
-        new SelectCommand<List<Emp>>(
-            query, new EntityResultListHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
     var entities = command.execute();
     query.complete();
 
@@ -144,8 +139,7 @@ public class SelectCommandTest extends TestCase {
     query.prepare();
 
     var command =
-        new SelectCommand<Emp>(
-            query, new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntitySingleResultHandler<>(_Emp.getSingletonInternal()));
     try {
       command.execute();
       fail();
@@ -178,10 +172,8 @@ public class SelectCommandTest extends TestCase {
     query.prepare();
 
     var command =
-        new SelectCommand<Stream<Emp>>(
-            query,
-            new EntityStreamHandler<Emp, Stream<Emp>>(
-                _Emp.getSingletonInternal(), Function.identity()));
+        new SelectCommand<>(
+            query, new EntityStreamHandler<>(_Emp.getSingletonInternal(), Function.identity()));
     try (var stream = command.execute()) {
       query.complete();
 

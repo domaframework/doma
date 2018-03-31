@@ -94,8 +94,7 @@ public abstract class AptTestCase extends AptinaTestCase {
 
   @Override
   protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
-    List<Diagnostic<? extends JavaFileObject>> results =
-        new ArrayList<Diagnostic<? extends JavaFileObject>>();
+    List<Diagnostic<? extends JavaFileObject>> results = new ArrayList<>();
     for (var diagnostic : super.getDiagnostics()) {
       switch (diagnostic.getKind()) {
         case ERROR:

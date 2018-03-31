@@ -21,7 +21,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
     emp2.setId(20);
     emp2.setName("bbb");
 
-    var query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -43,9 +43,9 @@ public class AutoBatchInsertQueryTest extends TestCase {
     var emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(Integer.valueOf(10));
+    emp2.setVersion(10);
 
-    var query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -59,19 +59,19 @@ public class AutoBatchInsertQueryTest extends TestCase {
         "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(4, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
     assertNull(parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(1), parameters.get(3).getWrapper().get());
+    assertEquals(1, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
         "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
-    assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(2).getWrapper().get());
-    assertEquals(Integer.valueOf(10), parameters.get(3).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
   }
 }

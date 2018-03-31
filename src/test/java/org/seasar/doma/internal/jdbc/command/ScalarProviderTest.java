@@ -16,6 +16,7 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.query.SelectQuery;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class ScalarProviderTest extends TestCase {
 
@@ -30,9 +31,7 @@ public class ScalarProviderTest extends TestCase {
 
     var provider =
         new ScalarProvider<>(
-            () ->
-                new org.seasar.doma.internal.jdbc.scalar.BasicScalar<String>(
-                    () -> new org.seasar.doma.wrapper.StringWrapper(), false),
+            () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(StringWrapper::new, false),
             new MySelectQuery());
     var result = provider.get(resultSet);
 
@@ -49,8 +48,7 @@ public class ScalarProviderTest extends TestCase {
     var provider =
         new ScalarProvider<>(
             () ->
-                new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<String>(
-                    () -> new org.seasar.doma.wrapper.StringWrapper()),
+                new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(StringWrapper::new),
             new MySelectQuery());
     var result = provider.get(resultSet);
 
@@ -66,7 +64,7 @@ public class ScalarProviderTest extends TestCase {
 
     HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber.getSingletonInternal();
 
-    var provider = new ScalarProvider<>(() -> holderDesc.createScalar(), new MySelectQuery());
+    var provider = new ScalarProvider<>(holderDesc::createScalar, new MySelectQuery());
     var result = provider.get(resultSet);
 
     assertEquals("hoge", result.getValue());
@@ -81,8 +79,7 @@ public class ScalarProviderTest extends TestCase {
 
     HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber.getSingletonInternal();
 
-    var provider =
-        new ScalarProvider<>(() -> holderDesc.createOptionalScalar(), new MySelectQuery());
+    var provider = new ScalarProvider<>(holderDesc::createOptionalScalar, new MySelectQuery());
     var result = provider.get(resultSet);
 
     assertEquals("hoge", result.get().getValue());

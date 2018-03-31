@@ -23,7 +23,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchInsertQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -49,7 +49,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchInsertQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -64,7 +64,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
     assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
     assertNull(parameters.get(2).getWrapper().get());
 
@@ -72,7 +72,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
     assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(2).getWrapper().get());
   }

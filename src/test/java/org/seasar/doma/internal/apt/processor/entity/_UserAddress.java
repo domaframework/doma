@@ -17,7 +17,7 @@ public class _UserAddress implements EmbeddableDesc<UserAddress> {
   public <ENTITY> List<EntityPropertyDesc<ENTITY, ?>> getEmbeddablePropertyDescs(
       String embeddedPropertyName, Class<ENTITY> entityClass, NamingType namingType) {
     return java.util.Arrays.asList(
-        new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, String, String>(
+        new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(
             entityClass,
             () -> new BasicScalar<>(new StringWrapper(), false),
             embeddedPropertyName + ".city",
@@ -26,7 +26,7 @@ public class _UserAddress implements EmbeddableDesc<UserAddress> {
             true,
             true,
             false),
-        new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<ENTITY, String, String>(
+        new org.seasar.doma.jdbc.entity.DefaultPropertyDesc<>(
             entityClass,
             () -> new BasicScalar<>(new StringWrapper(), false),
             embeddedPropertyName + ".street",

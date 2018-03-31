@@ -8,7 +8,7 @@ import org.seasar.doma.internal.util.AssertionUtil;
 
 public class MockResultSetMetaData extends MockWrapper implements ResultSetMetaData {
 
-  public final List<ColumnMetaData> columns = new ArrayList<ColumnMetaData>();
+  public final List<ColumnMetaData> columns = new ArrayList<>();
 
   @Override
   public String getCatalogName(int column) throws SQLException {

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RowData {
 
-  protected final List<Object> values = new ArrayList<Object>();
+  protected final List<Object> values = new ArrayList<>();
 
   public RowData(Object... values) {
     for (var object : values) {

@@ -17,6 +17,6 @@ public class IllegalSizeParametarizedOfSalary<T, U> {
   }
 
   public static <T, U, V> IllegalSizeParametarizedOfSalary<T, U> of(BigDecimal value) {
-    return new IllegalSizeParametarizedOfSalary<T, U>(value);
+    return new IllegalSizeParametarizedOfSalary<>(value);
   }
 }

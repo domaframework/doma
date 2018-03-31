@@ -208,17 +208,17 @@ public class BatchInsertExecutorTest extends TestCase {
   @SuppressWarnings("serial")
   public void testExecutorByMap() throws Exception {
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "SMITH");
                     put("salary", 500);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", null);

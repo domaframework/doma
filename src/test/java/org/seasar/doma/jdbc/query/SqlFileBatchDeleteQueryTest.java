@@ -22,7 +22,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchDeleteQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -44,7 +44,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
     var emp2 = new Emp();
     emp2.setName("bbb");
 
-    var query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchDeleteQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));

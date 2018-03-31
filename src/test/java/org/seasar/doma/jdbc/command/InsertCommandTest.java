@@ -19,7 +19,7 @@ public class InsertCommandTest extends TestCase {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(10);
 
-    var query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -35,10 +35,10 @@ public class InsertCommandTest extends TestCase {
     assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
 
     var bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
-    assertEquals(Integer.valueOf(1), bindValues.get(0).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
     assertEquals(new String("hoge"), bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-    assertEquals(Integer.valueOf(10), bindValues.get(3).getValue());
+    assertEquals(10, bindValues.get(3).getValue());
   }
 
   public void testExecute_defaultVersion() throws Exception {
@@ -48,7 +48,7 @@ public class InsertCommandTest extends TestCase {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(null);
 
-    var query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -65,9 +65,9 @@ public class InsertCommandTest extends TestCase {
 
     var bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
-    assertEquals(Integer.valueOf(1), bindValues.get(0).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
     assertEquals(new String("hoge"), bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-    assertEquals(Integer.valueOf(1), bindValues.get(3).getValue());
+    assertEquals(1, bindValues.get(3).getValue());
   }
 }

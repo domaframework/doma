@@ -21,7 +21,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     emp2.setId(20);
     emp2.setName("bbb");
 
-    var query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -42,9 +42,9 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     var emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(Integer.valueOf(10));
+    emp2.setVersion(10);
 
-    var query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -57,15 +57,15 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertTrue(parameters.get(1).getWrapper().get() == null);
 
     sql = query.getSqls().get(1);
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());
-    assertEquals(Integer.valueOf(10), parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(1).getWrapper().get());
   }
 
   public void testOption_ignoreVersion() throws Exception {
@@ -76,9 +76,9 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     var emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(Integer.valueOf(10));
+    emp2.setVersion(10);
 
-    var query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -92,12 +92,12 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(Integer.valueOf(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
   }
 }

@@ -36,14 +36,14 @@ public class FunctionCommandTest extends TestCase {
         new ScalarSingleResultParameter<>(() -> new BasicScalar<>(new IntegerWrapper(), false)));
     query.addParameter(new ScalarInParameter<>(() -> new BasicScalar<>(aaa, false), 40));
     query.addParameter(
-        new ScalarOutParameter<>(() -> new BasicScalar<>(bbb, false), new Reference<Integer>()));
+        new ScalarOutParameter<>(() -> new BasicScalar<>(bbb, false), new Reference<>()));
     query.addParameter(
-        new ScalarInOutParameter<>(() -> new BasicScalar<>(ccc, false), new Reference<Integer>()));
+        new ScalarInOutParameter<>(() -> new BasicScalar<>(ccc, false), new Reference<>()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
-    var result = new FunctionCommand<Integer>(query).execute();
+    var result = new FunctionCommand<>(query).execute();
     query.complete();
 
     assertNotNull(result);

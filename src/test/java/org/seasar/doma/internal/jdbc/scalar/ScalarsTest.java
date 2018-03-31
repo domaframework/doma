@@ -29,17 +29,17 @@ public class ScalarsTest extends TestCase {
     assertNotNull(Scalars.wrap(true, boolean.class, false, classHelper));
     assertNotNull(Scalars.wrap(true, Boolean.class, false, classHelper));
     assertNotNull(Scalars.wrap((byte) 1, byte.class, false, classHelper));
-    assertNotNull(Scalars.wrap(Byte.valueOf((byte) 1), Byte.class, false, classHelper));
+    assertNotNull(Scalars.wrap((byte) 1, Byte.class, false, classHelper));
     assertNotNull(Scalars.wrap((short) 1, short.class, false, classHelper));
-    assertNotNull(Scalars.wrap(Short.valueOf((short) 1), Short.class, false, classHelper));
+    assertNotNull(Scalars.wrap((short) 1, Short.class, false, classHelper));
     assertNotNull(Scalars.wrap(1, int.class, false, classHelper));
-    assertNotNull(Scalars.wrap(Integer.valueOf(1), Integer.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1, Integer.class, false, classHelper));
     assertNotNull(Scalars.wrap(1L, long.class, false, classHelper));
-    assertNotNull(Scalars.wrap(Long.valueOf(1), Long.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1L, Long.class, false, classHelper));
     assertNotNull(Scalars.wrap(1f, float.class, false, classHelper));
-    assertNotNull(Scalars.wrap(Float.valueOf(1), Float.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1f, Float.class, false, classHelper));
     assertNotNull(Scalars.wrap(1d, double.class, false, classHelper));
-    assertNotNull(Scalars.wrap(Double.valueOf(1), Double.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1d, Double.class, false, classHelper));
     assertNotNull(Scalars.wrap(new byte[] {1}, byte[].class, false, classHelper));
     assertNotNull(Scalars.wrap("", String.class, false, classHelper));
     assertNotNull(Scalars.wrap(new BigDecimal("1"), BigDecimal.class, false, classHelper));
@@ -62,15 +62,15 @@ public class ScalarsTest extends TestCase {
   }
 
   public void testWrapBasic_primitiveType() throws Exception {
-    var supplier = Scalars.wrap(Integer.valueOf(10), int.class, false, classHelper);
+    var supplier = Scalars.wrap(10, int.class, false, classHelper);
     assertNotNull(supplier);
 
     var scalar = supplier.get();
-    assertEquals(Integer.valueOf(10), scalar.get());
+    assertEquals(10, scalar.get());
 
     var wrapper = scalar.getWrapper();
     assertEquals(IntegerWrapper.class, wrapper.getClass());
-    assertEquals(Integer.valueOf(10), wrapper.get());
+    assertEquals(10, wrapper.get());
   }
 
   public void testWrapBasic_null() throws Exception {
@@ -87,7 +87,7 @@ public class ScalarsTest extends TestCase {
 
   @SuppressWarnings("unchecked")
   public void testWrapBasic_optional() throws Exception {
-    var supplier = Scalars.wrap(Integer.valueOf(10), Integer.class, true, classHelper);
+    var supplier = Scalars.wrap(10, Integer.class, true, classHelper);
     assertNotNull(supplier);
 
     var scalar = supplier.get();
@@ -97,7 +97,7 @@ public class ScalarsTest extends TestCase {
 
     var wrapper = scalar.getWrapper();
     assertEquals(IntegerWrapper.class, wrapper.getClass());
-    assertEquals(Integer.valueOf(10), wrapper.get());
+    assertEquals(10, wrapper.get());
   }
 
   @SuppressWarnings("unchecked")

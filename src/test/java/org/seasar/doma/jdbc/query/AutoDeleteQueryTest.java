@@ -13,7 +13,7 @@ public class AutoDeleteQueryTest extends TestCase {
   public void testPrepare() throws Exception {
     var emp = new Emp();
 
-    var query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -32,7 +32,7 @@ public class AutoDeleteQueryTest extends TestCase {
     emp.setName("aaa");
     emp.setVersion(100);
 
-    var query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -45,8 +45,8 @@ public class AutoDeleteQueryTest extends TestCase {
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
-    assertEquals(Integer.valueOf(100), parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
   }
 
   public void testOption_ignoreVersion() throws Exception {
@@ -55,7 +55,7 @@ public class AutoDeleteQueryTest extends TestCase {
     emp.setName("aaa");
     emp.setVersion(100);
 
-    var query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -69,6 +69,6 @@ public class AutoDeleteQueryTest extends TestCase {
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     var parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
   }
 }

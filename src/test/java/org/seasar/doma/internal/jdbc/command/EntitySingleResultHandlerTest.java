@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.jdbc.command;
 
-import example.entity.Emp;
 import example.entity._Emp;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
@@ -33,7 +32,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    var handler = new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal());
+    var handler = new EntitySingleResultHandler<>(_Emp.getSingletonInternal());
     var emp = handler.handle(resultSet, query, (__) -> {}).get();
     assertEquals(Integer.valueOf(1), emp.getId());
     assertEquals("aaa", emp.getName());
@@ -56,7 +55,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    var handler = new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal());
+    var handler = new EntitySingleResultHandler<>(_Emp.getSingletonInternal());
     try {
       handler.handle(resultSet, query, (__) -> {});
       fail();

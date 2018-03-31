@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.util;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import junit.framework.TestCase;
@@ -9,12 +8,8 @@ public class IOUtilTest extends TestCase {
 
   public void test() throws Exception {
     IOUtil.close(
-        new Closeable() {
-
-          @Override
-          public void close() throws IOException {
-            throw new IOException();
-          }
+        () -> {
+          throw new IOException();
         });
   }
 

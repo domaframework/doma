@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.jdbc.dao;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import javax.sql.DataSource;
@@ -69,15 +67,7 @@ public class AbstractDaoTest extends TestCase {
   private <T> T mock(Class<T> aClass) {
     var loader = Thread.currentThread().getContextClassLoader();
     Class<?>[] interfaces = {aClass};
-    InvocationHandler h =
-        new InvocationHandler() {
-
-          @Override
-          public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return null;
-          }
-        };
-    var proxy = Proxy.newProxyInstance(loader, interfaces, h);
+    var proxy = Proxy.newProxyInstance(loader, interfaces, (p, method, args) -> null);
     return aClass.cast(proxy);
   }
 }

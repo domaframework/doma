@@ -26,7 +26,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -52,7 +52,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -69,7 +69,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     assertEquals(3, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(10), parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("update emp set name = ?, salary = ? where id = ?", sql.getRawSql());
@@ -77,11 +77,11 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     assertEquals(3, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(Integer.valueOf(20), parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
   }
 
   public void testIsExecutable() throws Exception {
-    var query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -104,7 +104,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
@@ -133,7 +133,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
@@ -162,7 +162,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
@@ -191,7 +191,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    var query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));

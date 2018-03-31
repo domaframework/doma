@@ -116,7 +116,7 @@ public class ExpressionParserTest extends TestCase {
     var evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(String.class, "aaa"));
     var evaluationResult = evaluator.evaluate(expression);
-    assertEquals(Integer.valueOf(3), evaluationResult.getValue());
+    assertEquals(3, evaluationResult.getValue());
   }
 
   public void testMethod() throws Exception {
@@ -125,7 +125,7 @@ public class ExpressionParserTest extends TestCase {
     var evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(String.class, "aaa"));
     var evaluationResult = evaluator.evaluate(expression);
-    assertEquals(Integer.valueOf(3), evaluationResult.getValue());
+    assertEquals(3, evaluationResult.getValue());
   }
 
   public void testMethod2() throws Exception {
@@ -152,7 +152,7 @@ public class ExpressionParserTest extends TestCase {
     var evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
     var evaluationResult = evaluator.evaluate(expression);
-    assertEquals(Integer.valueOf(2), evaluationResult.getValue());
+    assertEquals(2, evaluationResult.getValue());
   }
 
   public void testMethod5() throws Exception {
@@ -161,7 +161,7 @@ public class ExpressionParserTest extends TestCase {
     var evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
     var evaluationResult = evaluator.evaluate(expression);
-    assertEquals(Integer.valueOf(2), evaluationResult.getValue());
+    assertEquals(2, evaluationResult.getValue());
   }
 
   public void testMethod6() throws Exception {
@@ -301,7 +301,7 @@ public class ExpressionParserTest extends TestCase {
     var expression = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var evaluationResult = evaluator.evaluate(expression);
-    assertEquals(Integer.valueOf(10), evaluationResult.getValue());
+    assertEquals(10, evaluationResult.getValue());
   }
 
   public void testEq() throws Exception {
@@ -614,19 +614,19 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Integer.valueOf(2), result.getValue());
+    assertEquals(2, result.getValue());
 
     parser = new ExpressionParser("+2");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Integer.valueOf(2), result.getValue());
+    assertEquals(2, result.getValue());
 
     parser = new ExpressionParser("-2");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Integer.valueOf(-2), result.getValue());
+    assertEquals(-2, result.getValue());
   }
 
   public void testLong() throws Exception {
@@ -634,19 +634,19 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Long.valueOf(2L), result.getValue());
+    assertEquals(2L, result.getValue());
 
     parser = new ExpressionParser("+2L");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Long.valueOf(2L), result.getValue());
+    assertEquals(2L, result.getValue());
 
     parser = new ExpressionParser("-2L");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Long.valueOf(-2), result.getValue());
+    assertEquals((long) -2, result.getValue());
   }
 
   public void testFloat() throws Exception {
@@ -654,19 +654,19 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Float.valueOf(2.5f), result.getValue());
+    assertEquals(2.5f, result.getValue());
 
     parser = new ExpressionParser("+2.5F");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Float.valueOf(2.5f), result.getValue());
+    assertEquals(2.5f, result.getValue());
 
     parser = new ExpressionParser("-2.5F");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Float.valueOf(-2.5f), result.getValue());
+    assertEquals(-2.5f, result.getValue());
   }
 
   public void testDouble() throws Exception {
@@ -674,19 +674,19 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Double.valueOf(2.5), result.getValue());
+    assertEquals(2.5, result.getValue());
 
     parser = new ExpressionParser("+2.5D");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Double.valueOf(2.5), result.getValue());
+    assertEquals(2.5, result.getValue());
 
     parser = new ExpressionParser("-2.5D");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(Double.valueOf(-2.5), result.getValue());
+    assertEquals(-2.5, result.getValue());
   }
 
   public void testBigDecimal() throws Exception {
@@ -714,7 +714,7 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Character.valueOf('a'), result.getValue());
+    assertEquals('a', result.getValue());
   }
 
   public void testAdd() throws Exception {
@@ -762,7 +762,7 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Integer.valueOf(14), result.getValue());
+    assertEquals(14, result.getValue());
   }
 
   public void testArithmeticOperators2() throws Exception {
@@ -770,7 +770,7 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Integer.valueOf(14), result.getValue());
+    assertEquals(14, result.getValue());
   }
 
   public void testArithmeticOperators3() throws Exception {
@@ -778,7 +778,7 @@ public class ExpressionParserTest extends TestCase {
     var node = parser.parse();
     var evaluator = new ExpressionEvaluator();
     var result = evaluator.evaluate(node);
-    assertEquals(Integer.valueOf(-3), result.getValue());
+    assertEquals(-3, result.getValue());
   }
 
   public void testConcat() throws Exception {

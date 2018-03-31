@@ -62,7 +62,7 @@ public class DefaultPropertyDescTest extends TestCase {
             true,
             true,
             false);
-    assertEquals("foo", propertyDesc.getColumnName((namingType, text) -> namingType.apply(text)));
+    assertEquals("foo", propertyDesc.getColumnName(NamingType::apply));
   }
 
   public void testGetColumnName_naiming_columnNotDefined() throws Exception {
@@ -76,7 +76,7 @@ public class DefaultPropertyDescTest extends TestCase {
             true,
             true,
             false);
-    assertEquals("HOGE", propertyDesc.getColumnName((namingType, text) -> namingType.apply(text)));
+    assertEquals("HOGE", propertyDesc.getColumnName(NamingType::apply));
   }
 
   public void testGetColumnName_naiming_quote_quoteRequired() throws Exception {
@@ -90,10 +90,7 @@ public class DefaultPropertyDescTest extends TestCase {
             true,
             true,
             true);
-    assertEquals(
-        "[HOGE]",
-        propertyDesc.getColumnName(
-            (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
+    assertEquals("[HOGE]", propertyDesc.getColumnName(NamingType::apply, text -> "[" + text + "]"));
   }
 
   public void testGetColumnName_naiming_quote_quoteNotRequired() throws Exception {
@@ -107,10 +104,7 @@ public class DefaultPropertyDescTest extends TestCase {
             true,
             true,
             false);
-    assertEquals(
-        "HOGE",
-        propertyDesc.getColumnName(
-            (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
+    assertEquals("HOGE", propertyDesc.getColumnName(NamingType::apply, text -> "[" + text + "]"));
   }
 
   public void testPrimitivePropertyDefaultValue() throws Exception {
