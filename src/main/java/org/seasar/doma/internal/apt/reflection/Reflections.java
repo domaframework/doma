@@ -12,7 +12,6 @@ import org.seasar.doma.*;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-/** @author nakamura */
 public class Reflections {
 
   private final Context ctx;

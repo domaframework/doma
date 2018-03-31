@@ -18,7 +18,6 @@ import org.seasar.doma.internal.apt.reflection.SingletonConfigReflection;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura-to */
 @SupportedAnnotationTypes({"org.seasar.doma.SingletonConfig"})
 @SupportedOptions({Options.RESOURCES_DIR, Options.TEST, Options.DEBUG})
 public class SingletonConfigProcessor extends AbstractProcessor {

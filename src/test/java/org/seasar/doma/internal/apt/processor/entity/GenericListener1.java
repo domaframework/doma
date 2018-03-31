@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.jdbc.entity.*;
 
-/** @author taedium */
 public class GenericListener1<T> implements EntityListener<T> {
 
   @Override

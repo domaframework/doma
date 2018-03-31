@@ -15,7 +15,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.util.Zip;
 
-/** @author nakamura */
 public class Declarations {
 
   private final Context ctx;

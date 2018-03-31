@@ -13,7 +13,6 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
-/** @author taedium */
 public class FunctionCommandTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

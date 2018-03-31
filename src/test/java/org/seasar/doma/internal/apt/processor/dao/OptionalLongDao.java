@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import org.seasar.doma.*;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author nakamura-to */
 @Dao(config = MyConfig.class)
 public interface OptionalLongDao {
 

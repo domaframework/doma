@@ -11,7 +11,6 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura */
 public class QueryParameterMetaFactory {
 
   private final Context ctx;

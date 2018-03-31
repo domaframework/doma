@@ -10,7 +10,6 @@ import org.seasar.doma.internal.jdbc.sql.node.*;
 import org.seasar.doma.jdbc.*;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class NodePreparedSqlBuilderTest extends TestCase {
 
   private final SqlLocation location = new SqlLocation("dummy sql", 0, 0);

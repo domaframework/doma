@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import org.seasar.doma.internal.expr.node.*;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionParser {
 
   protected final Deque<ExpressionNode> expressionNodes = new LinkedList<>();

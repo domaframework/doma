@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 
-/** @author taedium */
 public class MapResultListParameterMeta implements ResultListParameterMeta {
 
   private final MapCtType mapCtType;

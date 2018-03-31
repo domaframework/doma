@@ -5,7 +5,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.ClobFactoryReflection;
 
-/** @author taedium */
 public class ClobCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<ClobCreateQueryMeta> {
 

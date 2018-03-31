@@ -2,7 +2,6 @@ package org.seasar.doma.internal.expr.node;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-/** @author taedium */
 public abstract class AbstractArithmeticOperatorNode implements ArithmeticOperatorNode {
 
   protected final ExpressionLocation location;

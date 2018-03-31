@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.expr.util;
 
-/** @author taedium */
 public final class ExpressionUtil {
 
   protected static final char STRING_LITERAL_QUOTE = '"';

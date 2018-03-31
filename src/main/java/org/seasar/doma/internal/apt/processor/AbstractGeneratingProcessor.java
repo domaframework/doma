@@ -17,7 +17,6 @@ import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
     extends AbstractProcessor {
 

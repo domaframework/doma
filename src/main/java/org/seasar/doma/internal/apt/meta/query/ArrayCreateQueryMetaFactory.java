@@ -9,7 +9,6 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.ArrayFactoryReflection;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ArrayCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<ArrayCreateQueryMeta> {
 

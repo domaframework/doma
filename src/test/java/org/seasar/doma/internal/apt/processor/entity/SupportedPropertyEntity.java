@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.sql.*;
 import org.seasar.doma.Entity;
 
-/** @author taedium */
 @Entity
 public class SupportedPropertyEntity {
 

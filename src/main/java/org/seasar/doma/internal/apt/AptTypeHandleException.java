@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class AptTypeHandleException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;

@@ -5,7 +5,6 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-/** @author taedium */
 public class ForBlockNode extends AbstractSqlNode implements BlockNode {
 
   public static final String HAS_NEXT_SUFFIX = "_has_next";

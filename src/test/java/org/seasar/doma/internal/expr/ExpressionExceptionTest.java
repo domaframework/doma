@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionExceptionTest extends TestCase {
 
   public void testMethodInvocationFailed() throws Exception {

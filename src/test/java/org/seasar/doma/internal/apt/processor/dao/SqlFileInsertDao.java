@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface SqlFileInsertDao {
 

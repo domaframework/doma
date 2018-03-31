@@ -7,7 +7,6 @@ import java.util.function.Function;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
-/** @author nakamura-to */
 public class OptionalSingleResultCallback<TARGET>
     implements IterationCallback<TARGET, Optional<TARGET>> {
 

@@ -23,7 +23,6 @@ import org.seasar.doma.internal.apt.reflection.SequenceGeneratorReflection;
 import org.seasar.doma.internal.apt.reflection.TableGeneratorReflection;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class EntityPropertyMetaFactory {
 
   private final Context ctx;

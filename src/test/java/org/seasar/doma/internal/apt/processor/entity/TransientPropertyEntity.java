@@ -5,7 +5,6 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 
-/** @author taedium */
 @Entity
 public class TransientPropertyEntity {
 

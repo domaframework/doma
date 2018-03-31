@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
-/** @author nakamura-to */
 public class DefaultPropertyDescTest extends TestCase {
 
   @SuppressWarnings("unused")

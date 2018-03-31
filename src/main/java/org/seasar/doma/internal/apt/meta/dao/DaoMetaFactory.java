@@ -31,7 +31,6 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private static final String SINGLETON_CONFIG_FIELD_NAME = "INSTANCE";

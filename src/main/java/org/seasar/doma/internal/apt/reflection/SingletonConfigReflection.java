@@ -9,7 +9,6 @@ import javax.lang.model.element.AnnotationValue;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-/** @author nakamura-to */
 public class SingletonConfigReflection extends AbstractReflection {
 
   public static final String METHOD = "method";

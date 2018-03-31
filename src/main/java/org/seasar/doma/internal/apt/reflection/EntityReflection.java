@@ -12,7 +12,6 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-/** @author taedium */
 public class EntityReflection extends AbstractReflection {
 
   public static final String LISTENER = "listener";

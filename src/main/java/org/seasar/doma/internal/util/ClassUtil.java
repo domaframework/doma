@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import org.seasar.doma.internal.WrapException;
 
-/** @author taedium */
 public final class ClassUtil {
 
   public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes)

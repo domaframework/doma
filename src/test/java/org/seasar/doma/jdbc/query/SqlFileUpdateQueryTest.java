@@ -14,7 +14,6 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.*;
 
-/** @author nakamura-to */
 public class SqlFileUpdateQueryTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

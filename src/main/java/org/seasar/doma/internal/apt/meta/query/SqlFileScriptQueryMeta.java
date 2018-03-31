@@ -4,7 +4,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.reflection.ScriptReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
   private ScriptReflection scriptReflection;

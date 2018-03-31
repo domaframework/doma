@@ -4,7 +4,6 @@ import java.sql.Array;
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.Dao;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ArrayFactoryDao {
 

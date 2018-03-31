@@ -7,7 +7,6 @@ import java.util.*;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.expr.node.ExpressionLocation;
 
-/** @author taedium */
 public class ExpressionEvaluatorTest extends TestCase {
 
   protected ExpressionLocation location = new ExpressionLocation("dummy expression", 0);

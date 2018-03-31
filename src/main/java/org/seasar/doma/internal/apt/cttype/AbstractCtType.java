@@ -9,7 +9,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 
-/** @author taedium */
 public abstract class AbstractCtType implements CtType {
 
   protected final Context ctx;

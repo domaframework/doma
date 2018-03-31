@@ -4,7 +4,6 @@ import example.dao.ExampleConfig;
 import org.seasar.doma.*;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-/** @author taedium */
 @Dao(config = ExampleConfig.class)
 @AnnotateWith(
   annotations = {

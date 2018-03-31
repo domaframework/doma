@@ -2,7 +2,6 @@ package org.seasar.doma.internal.jdbc.sql.node;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-/** @author taedium */
 public abstract class AbstractClauseNode extends AbstractSqlNode implements ClauseNode {
 
   protected final WordNode wordNode;

@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class MysqlPagingTransformer extends StandardPagingTransformer {
 
   protected static final String MAXIMUM_LIMIT = "18446744073709551615";

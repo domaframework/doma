@@ -10,7 +10,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import org.seasar.doma.internal.util.AssertionUtil;
 
-/** @author taedium */
 public class MockConnection extends MockWrapper implements Connection {
 
   public MockStatement statement = new MockStatement();

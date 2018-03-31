@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.jdbc.mock;
 
-/** @author taedium */
 public class ColumnMetaData {
 
   protected final String label;

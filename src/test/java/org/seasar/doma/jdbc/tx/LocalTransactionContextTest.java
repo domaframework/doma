@@ -6,7 +6,6 @@ import java.sql.Savepoint;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 
-/** @author taedium */
 public class LocalTransactionContextTest extends TestCase {
 
   public void testReleaseAndGetSavepoint() throws Exception {

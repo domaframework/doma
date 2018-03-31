@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.cttype;
 
-/** @author taedium */
 public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVisitor<R, P, TH> {
 
   protected R defaultValue;

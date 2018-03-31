@@ -6,7 +6,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
-/** @author taedium */
 public class EmbeddableCtType extends AbstractCtType {
 
   private final String descClassName;

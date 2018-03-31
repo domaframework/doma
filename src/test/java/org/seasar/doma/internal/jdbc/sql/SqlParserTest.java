@@ -15,7 +15,6 @@ import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.*;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlParserTest extends TestCase {
 
   private final MockConfig config = new MockConfig();

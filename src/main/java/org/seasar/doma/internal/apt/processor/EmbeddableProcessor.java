@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
 
-/** @author nakamura-to */
 @SupportedAnnotationTypes({"org.seasar.doma.Embeddable"})
 @SupportedOptions({
   Options.VERSION_VALIDATION,

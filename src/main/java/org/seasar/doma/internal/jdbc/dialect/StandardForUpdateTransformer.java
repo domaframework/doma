@@ -7,7 +7,6 @@ import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class StandardForUpdateTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
 
   protected final SelectForUpdateType forUpdateType;

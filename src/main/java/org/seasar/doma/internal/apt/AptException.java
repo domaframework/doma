@@ -7,7 +7,6 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.message.MessageResource;
 
-/** @author taedium */
 public class AptException extends DomaException {
 
   private static final long serialVersionUID = 1L;

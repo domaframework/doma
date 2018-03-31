@@ -11,7 +11,6 @@ import org.seasar.doma.internal.apt.reflection.EntityReflection;
 import org.seasar.doma.internal.apt.reflection.TableReflection;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-/** @author taedium */
 public class EntityMeta implements TypeElementMeta {
 
   private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();

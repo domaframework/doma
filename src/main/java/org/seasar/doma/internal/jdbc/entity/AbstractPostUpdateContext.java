@@ -8,7 +8,6 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyNotDefinedException;
 import org.seasar.doma.jdbc.entity.PostUpdateContext;
 
-/** @author taedium */
 public abstract class AbstractPostUpdateContext<E> extends AbstractEntityListenerContext<E>
     implements PostUpdateContext<E> {
 

@@ -10,7 +10,6 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author taedium */
 public class ScalarResultListParameter<BASIC, CONTAINER>
     extends AbstractResultListParameter<CONTAINER> {
 

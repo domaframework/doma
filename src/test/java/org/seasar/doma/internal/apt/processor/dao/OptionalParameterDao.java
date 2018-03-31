@@ -6,7 +6,6 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author nakamura-to */
 @Dao(config = MyConfig.class)
 public interface OptionalParameterDao {
 

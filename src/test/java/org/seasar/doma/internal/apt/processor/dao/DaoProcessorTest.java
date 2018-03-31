@@ -4,7 +4,6 @@ import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.processor.DaoProcessor;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class DaoProcessorTest extends AptTestCase {
 
   @Override

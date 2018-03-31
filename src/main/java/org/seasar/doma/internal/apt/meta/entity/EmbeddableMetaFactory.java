@@ -18,7 +18,6 @@ import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
 import org.seasar.doma.internal.apt.reflection.ValueReflection;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura-to */
 public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableMeta> {
 
   private final Context ctx;

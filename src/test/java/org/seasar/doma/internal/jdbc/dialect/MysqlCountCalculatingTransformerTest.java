@@ -9,7 +9,6 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class MysqlCountCalculatingTransformerTest extends TestCase {
 
   public void test() throws Exception {

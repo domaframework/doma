@@ -3,7 +3,6 @@ package org.seasar.doma.internal;
 import junit.framework.TestCase;
 import org.seasar.doma.DomaException;
 
-/** @author taedium */
 public class ArtifactTest extends TestCase {
 
   public void testGetName() throws Exception {

@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.holder;
 
 import org.seasar.doma.Holder;
 
-/** @author taedium */
 @Holder(valueType = OfEnumHolder.JobType.class, factoryMethod = "of", acceptNull = true)
 public class OfEnumHolder {
 

@@ -7,7 +7,6 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface CollectorOptionalParameterDao {
 

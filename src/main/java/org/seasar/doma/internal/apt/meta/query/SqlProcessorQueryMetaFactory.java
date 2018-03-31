@@ -9,7 +9,6 @@ import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.apt.reflection.SqlProcessorReflection;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura */
 public class SqlProcessorQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlProcessorQueryMeta> {
 
@@ -83,7 +82,6 @@ public class SqlProcessorQueryMetaFactory
     return false;
   }
 
-  /** @author nakamura */
   private class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     private final SqlProcessorQueryMeta queryMeta;
@@ -110,7 +108,6 @@ public class SqlProcessorQueryMetaFactory
     }
   }
 
-  /** @author nakamura */
   private class ParamBiFunctionFirstArgCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -131,7 +128,6 @@ public class SqlProcessorQueryMetaFactory
     }
   }
 
-  /** @author nakamura */
   private class ParamBiFunctionSecondArgCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 

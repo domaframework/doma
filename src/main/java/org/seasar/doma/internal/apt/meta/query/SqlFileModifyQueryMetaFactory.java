@@ -9,7 +9,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.ModifyReflection;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlFileModifyQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileModifyQueryMeta> {
 

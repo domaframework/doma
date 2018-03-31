@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-/** @author taedium */
 public class OrderByClauseNode extends AbstractClauseNode {
 
   public OrderByClauseNode(String word) {

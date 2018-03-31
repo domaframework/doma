@@ -9,7 +9,6 @@ import javax.lang.model.element.AnnotationValue;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-/** @author taedium */
 public class ResultSetReflection extends AbstractReflection {
 
   public static final String ENSURE_RESULT_MAPPING = "ensureResultMapping";

@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.entity;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class OriginalStatesNotFoundExceptionTest extends TestCase {
 
   public void test() throws Exception {

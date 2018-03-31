@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.util.CharSequenceUtil;
 
-/** @author taedium */
 public class NullExpressionFunctions implements ExpressionFunctions {
 
   @Override

@@ -13,7 +13,6 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.Context;
 
-/** @author taedium */
 public class EntityPropertyNameCollector {
 
   private final Context ctx;

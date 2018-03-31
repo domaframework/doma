@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.holder;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class HolderDescNotFoundExceptionTest extends TestCase {
 
   public void test() throws Exception {

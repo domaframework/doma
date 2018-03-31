@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 import java.sql.Date;
 import org.seasar.doma.jdbc.entity.*;
 
-/** @author taedium */
 public class GenericListener4<E extends Date> implements EntityListener<E> {
 
   @Override

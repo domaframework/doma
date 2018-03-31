@@ -9,7 +9,6 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.holder.HolderDescFactory;
 
-/** @author nakamura-to */
 public class ScalarInOutParameterTest extends TestCase {
 
   public void testGetHolderClass() throws Exception {

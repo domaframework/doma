@@ -6,7 +6,6 @@ import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
-/** @author taedium */
 public class GreedyCacheSqlFileRepositoryTest extends TestCase {
 
   private Method method;

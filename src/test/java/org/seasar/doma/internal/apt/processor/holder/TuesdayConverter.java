@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.holder;
 
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
-/** @author taedium */
 // @ExternalHolder
 public class TuesdayConverter implements HolderConverter<Tuesday, String> {
 

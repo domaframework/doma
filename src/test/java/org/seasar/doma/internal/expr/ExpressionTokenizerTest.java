@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
 import junit.framework.TestCase;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionTokenizerTest extends TestCase {
 
   public void testVariableOperand() throws Exception {

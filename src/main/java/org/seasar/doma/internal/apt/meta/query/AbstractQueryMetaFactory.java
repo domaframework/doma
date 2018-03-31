@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     implements QueryMetaFactory {
 

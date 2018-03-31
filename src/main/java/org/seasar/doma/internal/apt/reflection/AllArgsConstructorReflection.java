@@ -10,7 +10,6 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-/** @author nakamura-to */
 public class AllArgsConstructorReflection extends AbstractReflection {
 
   public static final String STATIC_NAME = "staticName";

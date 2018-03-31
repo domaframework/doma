@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.reflection.TableGeneratorReflection;
 
-/** @author taedium */
 public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
   private final TableGeneratorReflection tableGeneratorReflection;

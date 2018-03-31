@@ -15,7 +15,6 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SelectBuilderTest extends TestCase {
 
   public void testGetSql() throws Exception {

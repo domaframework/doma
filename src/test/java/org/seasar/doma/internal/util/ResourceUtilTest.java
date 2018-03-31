@@ -3,7 +3,6 @@ package org.seasar.doma.internal.util;
 import java.io.InputStream;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class ResourceUtilTest extends TestCase {
 
   public void testGetResourceAsStream() throws Exception {

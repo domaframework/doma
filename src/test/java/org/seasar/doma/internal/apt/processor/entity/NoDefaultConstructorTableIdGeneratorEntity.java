@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.*;
 
-/** @author taedium */
 @Entity
 public class NoDefaultConstructorTableIdGeneratorEntity {
 

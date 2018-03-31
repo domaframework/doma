@@ -4,7 +4,6 @@ import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.*;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class StandardCountGettingTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
 
   protected boolean processed;

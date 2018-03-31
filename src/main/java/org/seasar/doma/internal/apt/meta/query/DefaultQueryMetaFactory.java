@@ -4,7 +4,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.Context;
 
-/** @author taedium */
 public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQueryMeta> {
 
   public DefaultQueryMetaFactory(Context ctx, ExecutableElement methodElement) {

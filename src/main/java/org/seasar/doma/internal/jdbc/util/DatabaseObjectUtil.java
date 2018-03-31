@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.Function;
 
-/** @author taedium */
 public final class DatabaseObjectUtil {
 
   public static String getQualifiedName(

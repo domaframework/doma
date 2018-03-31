@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class BigDecimalWrapperTest extends TestCase {
 
   /** */

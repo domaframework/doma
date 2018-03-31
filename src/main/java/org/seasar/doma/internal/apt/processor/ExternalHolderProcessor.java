@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMeta;
 import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMetaFactory;
 
-/** @author taedium */
 @SupportedAnnotationTypes({"org.seasar.doma.ExternalHolder"})
 @SupportedOptions({Options.VERSION_VALIDATION, Options.RESOURCES_DIR, Options.TEST, Options.DEBUG})
 public class ExternalHolderProcessor extends AbstractGeneratingProcessor<ExternalHolderMeta> {

@@ -15,7 +15,6 @@ import org.seasar.doma.internal.apt.reflection.AnnotateWithReflection;
 import org.seasar.doma.internal.apt.reflection.AnnotationReflection;
 import org.seasar.doma.internal.apt.reflection.DaoReflection;
 
-/** @author taedium */
 public class DaoMeta implements TypeElementMeta {
 
   private final List<QueryMeta> queryMetas = new ArrayList<>();

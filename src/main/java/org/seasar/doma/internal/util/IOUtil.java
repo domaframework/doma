@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
 
-/** @author taedium */
 public final class IOUtil {
 
   protected static final int BUF_SIZE = 8192;

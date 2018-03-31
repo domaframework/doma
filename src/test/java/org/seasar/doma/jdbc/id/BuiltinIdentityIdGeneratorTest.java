@@ -9,7 +9,6 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 
-/** @author taedium */
 public class BuiltinIdentityIdGeneratorTest extends TestCase {
 
   public void test_identitySelectSql() throws Exception {

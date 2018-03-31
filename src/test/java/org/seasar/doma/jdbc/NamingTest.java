@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc;
 import junit.framework.TestCase;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-/** @author nakamura-to */
 public class NamingTest extends TestCase {
 
   public void testNONE() throws Exception {

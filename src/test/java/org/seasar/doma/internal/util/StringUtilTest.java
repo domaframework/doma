@@ -2,7 +2,6 @@ package org.seasar.doma.internal.util;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class StringUtilTest extends TestCase {
 
   public void testCapitalize() throws Exception {

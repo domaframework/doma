@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import org.seasar.doma.jdbc.entity.*;
 
-/** @author taedium */
 public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 
   @Override

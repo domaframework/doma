@@ -3,7 +3,6 @@ package org.seasar.doma.message;
 import java.util.Locale;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class MessageTest extends TestCase {
 
   private Locale locale;

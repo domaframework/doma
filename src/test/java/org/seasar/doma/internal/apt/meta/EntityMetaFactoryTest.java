@@ -8,7 +8,6 @@ import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 import org.seasar.doma.internal.apt.processor.entity.NamingType1Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-/** @author taedium */
 public class EntityMetaFactoryTest extends AptTestCase {
 
   public void testNaming1Type() throws Exception {

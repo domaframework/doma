@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.holder;
 import java.math.BigDecimal;
 import org.seasar.doma.Holder;
 
-/** @author nakamura-to */
 public class Outer__illegalName {
 
   @Holder(valueType = BigDecimal.class)

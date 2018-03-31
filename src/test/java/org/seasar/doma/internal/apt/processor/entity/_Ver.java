@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
-/** @author taedium */
 public class _Ver extends AbstractHolderDesc<Integer, Ver> {
 
   private _Ver() {

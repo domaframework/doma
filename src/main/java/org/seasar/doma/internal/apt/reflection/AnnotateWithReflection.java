@@ -8,7 +8,6 @@ import java.util.List;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 
-/** @author taedium */
 public class AnnotateWithReflection extends AbstractReflection {
 
   private final AnnotationValue annotations;

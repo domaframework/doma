@@ -7,7 +7,6 @@ import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/** @author taedium */
 public class EntityIterationHandler<ENTITY, RESULT>
     extends AbstractIterationHandler<ENTITY, RESULT> {
 

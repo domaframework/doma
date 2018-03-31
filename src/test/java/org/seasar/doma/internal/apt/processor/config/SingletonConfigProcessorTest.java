@@ -4,7 +4,6 @@ import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.processor.SingletonConfigProcessor;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SingletonConfigProcessorTest extends AptTestCase {
 
   @Override

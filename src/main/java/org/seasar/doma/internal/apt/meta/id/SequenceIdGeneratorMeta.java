@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.reflection.SequenceGeneratorReflection;
 
-/** @author taedium */
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
   private final SequenceGeneratorReflection sequenceGeneratorReflection;

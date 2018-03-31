@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.generator.HolderDescGenerator;
 import org.seasar.doma.internal.apt.meta.holder.HolderMeta;
 import org.seasar.doma.internal.apt.meta.holder.HolderMetaFactory;
 
-/** @author taedium */
 @SupportedAnnotationTypes({"org.seasar.doma.Holder"})
 @SupportedOptions({
   Options.VERSION_VALIDATION,

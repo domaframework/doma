@@ -5,7 +5,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
 
-/** @author taedium */
 public class AbstractPostInsertContext<E> extends AbstractEntityListenerContext<E>
     implements PostInsertContext<E> {
 

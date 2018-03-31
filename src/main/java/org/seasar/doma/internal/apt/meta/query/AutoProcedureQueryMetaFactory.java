@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.reflection.ProcedureReflection;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class AutoProcedureQueryMetaFactory
     extends AutoModuleQueryMetaFactory<AutoProcedureQueryMeta> {
 

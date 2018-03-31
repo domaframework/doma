@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.jdbc.entity.*;
 
-/** @author taedium */
 public class GenericListener8<E> implements GenericListener7<E, String> {
 
   @Override

@@ -8,7 +8,6 @@ import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.reflection.BatchModifyReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   private EntityCtType entityCtType;

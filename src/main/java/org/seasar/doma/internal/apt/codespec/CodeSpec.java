@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.util.ClassUtil;
 
-/** @author nakamura */
 public class CodeSpec implements CharSequence {
 
   private final String qualifiedName;

@@ -7,7 +7,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
 
   private final boolean forceOffsetFetch;

@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
-/** @author taedium */
 @ExternalHolder
 public class VersionNoConverter implements HolderConverter<VersionNo, Integer> {
 

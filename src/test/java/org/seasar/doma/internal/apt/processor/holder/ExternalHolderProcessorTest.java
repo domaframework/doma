@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.processor.ExternalHolderProcessor;
 import org.seasar.doma.internal.apt.processor.holder.NestingValueObjectConverter.NestingValueObject;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExternalHolderProcessorTest extends AptTestCase {
 
   @Override

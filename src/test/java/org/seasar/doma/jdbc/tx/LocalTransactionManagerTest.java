@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.mock.MockConnection;
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 
-/** @author nakamura-to */
 public class LocalTransactionManagerTest extends TestCase {
 
   static int counter;

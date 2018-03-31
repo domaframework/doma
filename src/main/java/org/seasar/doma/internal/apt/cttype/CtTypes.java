@@ -33,7 +33,6 @@ import org.seasar.doma.jdbc.holder.HolderConverter;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.*;
 
-/** @author nakamura */
 public class CtTypes {
 
   private final Context ctx;

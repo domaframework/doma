@@ -13,7 +13,6 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class StandardDialectTest extends TestCase {
 
   public void testApplyQuote() {

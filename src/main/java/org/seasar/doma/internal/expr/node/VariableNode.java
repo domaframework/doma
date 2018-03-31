@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.expr.node;
 
-/** @author taedium */
 public class VariableNode implements ExpressionNode {
 
   protected final ExpressionLocation location;

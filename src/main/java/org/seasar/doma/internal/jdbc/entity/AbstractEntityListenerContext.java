@@ -7,7 +7,6 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 
-/** @author taedium */
 public abstract class AbstractEntityListenerContext<E> {
 
   protected final EntityDesc<E> entityDesc;

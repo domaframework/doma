@@ -8,7 +8,6 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.holder.HolderDescFactory;
 
-/** @author nakamura-to */
 public class ScalarInParameterTest extends TestCase {
 
   public void testGetHolderClass() throws Exception {

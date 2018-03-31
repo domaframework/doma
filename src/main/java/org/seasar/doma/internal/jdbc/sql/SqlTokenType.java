@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import org.seasar.doma.internal.util.StringUtil;
 
-/** @author taedium */
 public enum SqlTokenType {
   QUOTE,
 

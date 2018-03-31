@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-/** @author taedium */
 public class UpdateBuilderTest extends TestCase {
 
   public void test() throws Exception {

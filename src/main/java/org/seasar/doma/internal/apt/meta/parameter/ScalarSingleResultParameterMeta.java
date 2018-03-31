@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.ScalarCtType;
 
-/** @author taedium */
 public class ScalarSingleResultParameterMeta implements SingleResultParameterMeta {
 
   private final ScalarCtType scalarCtType;

@@ -7,7 +7,6 @@ import org.seasar.doma.Function;
 import org.seasar.doma.In;
 import org.seasar.doma.MapKeyNamingType;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface FunctionDao {
 

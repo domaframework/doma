@@ -13,7 +13,6 @@ import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 
-/** @author taedium */
 public class DeleteCommandTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

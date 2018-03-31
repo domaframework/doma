@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-/** @author taedium */
 public class ElseNode extends AbstractSqlNode implements SpaceStrippingNode {
 
   protected final String text;

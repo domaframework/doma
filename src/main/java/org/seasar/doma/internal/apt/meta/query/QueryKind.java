@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.meta.query;
 import org.seasar.doma.jdbc.command.*;
 import org.seasar.doma.jdbc.query.*;
 
-/** @author taedium */
 public enum QueryKind {
   SQLFILE_SELECT {
 

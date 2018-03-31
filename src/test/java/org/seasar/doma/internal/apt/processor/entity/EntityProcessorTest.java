@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class EntityProcessorTest extends AptTestCase {
 
   @Override

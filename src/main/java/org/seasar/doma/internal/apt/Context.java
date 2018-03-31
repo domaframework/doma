@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.cttype.CtTypes;
 import org.seasar.doma.internal.apt.decl.Declarations;
 import org.seasar.doma.internal.apt.reflection.Reflections;
 
-/** @author nakamura */
 public class Context {
 
   private final ProcessingEnvironment env;

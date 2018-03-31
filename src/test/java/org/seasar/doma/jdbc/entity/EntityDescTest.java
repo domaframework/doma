@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import junit.framework.TestCase;
 
-/** @author nakamura-to */
 public class EntityDescTest extends TestCase {
 
   public void test() throws Exception {

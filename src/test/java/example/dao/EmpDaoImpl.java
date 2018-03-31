@@ -20,7 +20,6 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.command.*;
 import org.seasar.doma.jdbc.query.*;
 
-/** @author taedium */
 @Generated("")
 public class EmpDaoImpl extends AbstractDao implements EmpDao {
 

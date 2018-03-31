@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.meta.id;
 
 import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
 
-/** @author taedium */
 public class IdentityIdGeneratorMeta implements IdGeneratorMeta {
 
   @Override

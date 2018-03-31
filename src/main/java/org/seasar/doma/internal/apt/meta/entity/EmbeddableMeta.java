@@ -9,7 +9,6 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
 
-/** @author nakamura-to */
 public class EmbeddableMeta implements TypeElementMeta {
 
   private final EmbeddableReflection embeddableReflection;

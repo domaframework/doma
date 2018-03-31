@@ -4,7 +4,6 @@ import example.entity.Emp;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Update;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 interface PackagePrivateDao {
 

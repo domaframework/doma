@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class OptimisticLockExceptionTest extends TestCase {
 
   public void test() throws Exception {

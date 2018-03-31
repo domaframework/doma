@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 
-/** @author nakamura-to */
 public class EntityConstructorMeta {
 
   private final ExecutableElement constructorElement;

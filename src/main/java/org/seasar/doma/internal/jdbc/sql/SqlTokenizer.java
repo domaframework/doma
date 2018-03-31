@@ -9,7 +9,6 @@ import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlTokenizer {
 
   protected final String sql;

@@ -13,7 +13,6 @@ import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class JdbcExceptionTest extends TestCase {
 
   private final MockConfig config = new MockConfig();

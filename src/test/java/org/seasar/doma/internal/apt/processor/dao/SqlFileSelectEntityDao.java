@@ -7,7 +7,6 @@ import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface SqlFileSelectEntityDao {
 

@@ -6,7 +6,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 
-/** @author taedium */
 public class LocalTransactionDataSourceTest extends TestCase {
 
   public void testGetConnection() throws Exception {

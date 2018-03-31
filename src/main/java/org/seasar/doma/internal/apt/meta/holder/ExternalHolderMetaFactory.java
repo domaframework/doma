@@ -19,7 +19,6 @@ import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExternalHolderMetaFactory implements TypeElementMetaFactory<ExternalHolderMeta> {
 
   private final Context ctx;

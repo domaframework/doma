@@ -13,7 +13,6 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/** @author taedium */
 public class EntityProviderTest extends TestCase {
 
   public void testGetEntity() throws Exception {

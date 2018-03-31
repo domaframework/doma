@@ -7,7 +7,6 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public final class JdbcUtil {
 
   public static Connection getConnection(DataSource dataSource) {

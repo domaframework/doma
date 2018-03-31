@@ -12,7 +12,6 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class AutoBatchUpdateQueryTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

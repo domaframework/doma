@@ -10,7 +10,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleAnnotationValueVisitor8;
 
-/** @author taedium */
 public final class AnnotationValueUtil {
 
   public static List<String> toStringList(AnnotationValue value) {

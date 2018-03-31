@@ -11,7 +11,6 @@ import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.reflection.SelectReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
   private SelectReflection selectReflection;

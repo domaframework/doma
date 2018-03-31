@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 
-/** @author nakamura-to */
 public class LocalTransactionConnectionTest extends TestCase {
 
   public void testIsWrapperFor() throws Exception {

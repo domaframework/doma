@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import org.seasar.doma.*;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ProcedureDao {
 

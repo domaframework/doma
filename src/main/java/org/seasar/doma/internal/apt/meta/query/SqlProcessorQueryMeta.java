@@ -4,7 +4,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.reflection.SqlProcessorReflection;
 
-/** @author nakamura */
 public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
 
   private SqlProcessorReflection sqlProcessorReflection;

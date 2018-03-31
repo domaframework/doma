@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
-/** @author taedium */
 public class BranchConverter implements HolderConverter<Branch, String> {
 
   @Override

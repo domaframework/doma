@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.builder;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-/** @author taedium */
 public class InsertBuilderTest extends TestCase {
 
   public void test() throws Exception {

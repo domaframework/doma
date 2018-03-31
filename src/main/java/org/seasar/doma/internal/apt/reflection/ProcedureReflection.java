@@ -12,7 +12,6 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class ProcedureReflection extends AbstractReflection {
 
   public static final String SQL_LOG = "sqlLog";

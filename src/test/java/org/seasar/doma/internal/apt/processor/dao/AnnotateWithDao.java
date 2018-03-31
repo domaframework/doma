@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.dao;
 import org.seasar.doma.*;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-/** @author taedium */
 @Dao
 @AnnotateWith(
   annotations = {

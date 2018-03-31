@@ -6,7 +6,6 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
-/** @author taedium */
 public class ExternalHolderMeta implements TypeElementMeta {
 
   private final TypeElement typeElement;

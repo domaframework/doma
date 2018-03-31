@@ -10,7 +10,6 @@ import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-/** @author taedium */
 public class BasicResultListHandlerTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

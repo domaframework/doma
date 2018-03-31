@@ -5,7 +5,6 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.reflection.ProcedureReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
   private ProcedureReflection procedureReflection;

@@ -6,7 +6,6 @@ import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class Db2PagingTransformer extends StandardPagingTransformer {
 
   public Db2PagingTransformer(long offset, long limit) {

@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author taedium */
 public class CommaOperatorNode implements OperatorNode {
 
   protected static final int PRIORITY = 0;

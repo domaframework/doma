@@ -8,7 +8,6 @@ import org.seasar.doma.AnnotateWith;
 import org.seasar.doma.Annotation;
 import org.seasar.doma.AnnotationTarget;
 
-/** @author taedium */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @AnnotateWith(

@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.*;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface EnsureResultMappingDao {
 

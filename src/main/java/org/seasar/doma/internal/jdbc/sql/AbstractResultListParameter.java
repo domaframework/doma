@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.jdbc.ResultListParameter;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
 
-/** @author taedium */
 public abstract class AbstractResultListParameter<ELEMENT> implements ResultListParameter<ELEMENT> {
 
   protected final List<ELEMENT> list;

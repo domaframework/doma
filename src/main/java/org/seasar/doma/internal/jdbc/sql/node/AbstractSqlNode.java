@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public abstract class AbstractSqlNode implements AppendableSqlNode {
 
   protected final List<SqlNode> children = new ArrayList<>();

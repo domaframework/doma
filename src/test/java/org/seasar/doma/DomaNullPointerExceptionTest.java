@@ -2,7 +2,6 @@ package org.seasar.doma;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class DomaNullPointerExceptionTest extends TestCase {
 
   public void test() throws Exception {

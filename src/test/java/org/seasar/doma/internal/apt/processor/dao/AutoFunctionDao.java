@@ -6,7 +6,6 @@ import org.seasar.doma.*;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface AutoFunctionDao {
 

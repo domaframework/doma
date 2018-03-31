@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.holder;
 
 import org.seasar.doma.Holder;
 
-/** @author nakamura-to */
 @Holder(valueType = Object.class)
 public final class ObjectHolder {
 

@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.nio.CharBuffer;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionTokenizer {
 
   protected final String expression;

@@ -9,7 +9,6 @@ import org.seasar.doma.jdbc.SingleResultParameter;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class ScalarSingleResultParameter<BASIC, CONTAINER>
     implements SingleResultParameter<BASIC, CONTAINER> {
 

@@ -9,7 +9,6 @@ import java.util.function.Function;
 import org.seasar.doma.jdbc.*;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class CallableSqlBuilder
     implements SqlParameterVisitor<CallableSqlBuilder.Context, RuntimeException> {
 

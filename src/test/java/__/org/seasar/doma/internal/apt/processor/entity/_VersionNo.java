@@ -3,7 +3,6 @@ package __.org.seasar.doma.internal.apt.processor.entity;
 import org.seasar.doma.internal.apt.processor.entity.VersionNo;
 import org.seasar.doma.internal.apt.processor.entity.VersionNoConverter;
 
-/** @author taedium */
 public final class _VersionNo
     extends org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.Integer, VersionNo> {
 

@@ -8,7 +8,6 @@ import org.seasar.doma.internal.apt.meta.parameter.*;
 import org.seasar.doma.internal.apt.reflection.FunctionReflection;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class AutoFunctionQueryMetaFactory
     extends AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
@@ -46,7 +45,6 @@ public class AutoFunctionQueryMetaFactory
     return returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta, returnMeta), false);
   }
 
-  /** @author nakamura-to */
   private class ReturnCtTypeVisitor
       extends SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 
@@ -89,7 +87,6 @@ public class AutoFunctionQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class IterableElementCtTypeVisitor
       extends SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 

@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import org.seasar.doma.*;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author taedium */
 @Dao(config = ExampleConfig.class)
 public interface EmpDao {
 

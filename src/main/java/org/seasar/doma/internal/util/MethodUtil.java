@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.seasar.doma.internal.WrapException;
 
-/** @author taedium */
 public final class MethodUtil {
 
   public static <T> T invoke(Method method, Object target, Object... params) throws WrapException {

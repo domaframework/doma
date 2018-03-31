@@ -10,7 +10,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.id.IdGeneratorMeta;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 
-/** @author taedium */
 public class EntityPropertyMeta extends AbstractPropertyMeta {
 
   private final String fieldPrefix;

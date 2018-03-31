@@ -5,7 +5,6 @@ import java.util.List;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
-/** @author nakamura-to */
 public class ResultListCallback<ELEMENT> implements IterationCallback<ELEMENT, List<ELEMENT>> {
 
   protected final List<ELEMENT> resultList = new ArrayList<>();

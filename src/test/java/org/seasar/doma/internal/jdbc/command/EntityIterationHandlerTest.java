@@ -11,7 +11,6 @@ import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-/** @author taedium */
 public class EntityIterationHandlerTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

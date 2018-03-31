@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ImmutableEmpDao {
 

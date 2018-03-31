@@ -12,7 +12,6 @@ import org.seasar.doma.AccessLevel;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-/** @author taedium */
 public class DaoReflection extends AbstractReflection {
 
   public static final String ACCESS_LEVEL = "accessLevel";

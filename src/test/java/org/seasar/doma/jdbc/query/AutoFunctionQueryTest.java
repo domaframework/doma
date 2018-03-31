@@ -6,7 +6,6 @@ import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarSingleResultParameter;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class AutoFunctionQueryTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

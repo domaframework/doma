@@ -5,7 +5,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 
-/** @author taedium */
 public class AbstractPostDeleteContext<E> extends AbstractEntityListenerContext<E>
     implements PostDeleteContext<E> {
 

@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class SqlitePagingTransformer extends StandardPagingTransformer {
 
   protected static final String MAXIMUM_LIMIT = String.valueOf(Long.MAX_VALUE);

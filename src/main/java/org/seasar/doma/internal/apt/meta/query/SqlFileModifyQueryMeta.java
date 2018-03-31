@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.reflection.ModifyReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   private EntityCtType entityCtType;

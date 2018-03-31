@@ -8,7 +8,6 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 
-/** @author taedium */
 public class BatchDeleteCommandTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

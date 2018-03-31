@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.seasar.doma.*;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface AutoFunctionOptionalParameterDao {
 

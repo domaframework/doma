@@ -17,7 +17,6 @@ import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class ScalarsTest extends TestCase {
 
   private final ClassHelper classHelper = new ClassHelper() {};

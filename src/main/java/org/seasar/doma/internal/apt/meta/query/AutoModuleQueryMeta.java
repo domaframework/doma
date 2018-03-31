@@ -6,7 +6,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMeta;
 
-/** @author taedium */
 public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
 
   protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<>();

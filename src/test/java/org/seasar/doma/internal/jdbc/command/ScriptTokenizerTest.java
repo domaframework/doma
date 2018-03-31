@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.*;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class ScriptTokenizerTest extends TestCase {
 
   private ScriptTokenizer tokenizer;

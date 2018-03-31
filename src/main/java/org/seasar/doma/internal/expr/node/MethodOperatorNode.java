@@ -2,7 +2,6 @@ package org.seasar.doma.internal.expr.node;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-/** @author taedium */
 public class MethodOperatorNode implements OperatorNode {
 
   protected static final int PRIORITY = 0;

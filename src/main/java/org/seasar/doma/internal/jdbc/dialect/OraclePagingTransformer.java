@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
 import org.seasar.doma.internal.jdbc.sql.node.*;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class OraclePagingTransformer extends StandardPagingTransformer {
 
   public OraclePagingTransformer(long offset, long limit) {

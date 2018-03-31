@@ -4,7 +4,6 @@ import org.seasar.doma.internal.jdbc.sql.node.*;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-/** @author nakamura-to */
 public class SimpleSqlNodeVisitor<R, P> implements SqlNodeVisitor<R, P> {
 
   protected R defaultAction(SqlNode node, P p) {

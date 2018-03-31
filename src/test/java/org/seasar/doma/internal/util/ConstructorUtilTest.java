@@ -3,7 +3,6 @@ package org.seasar.doma.internal.util;
 import java.lang.reflect.Constructor;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class ConstructorUtilTest extends TestCase {
 
   public void testToSignature() throws Exception {

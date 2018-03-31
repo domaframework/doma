@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.expr.node;
 
-/** @author taedium */
 public class LtOperatorNode extends AbstractComparisonOperatorNode {
 
   public LtOperatorNode(ExpressionLocation location, String opCode) {

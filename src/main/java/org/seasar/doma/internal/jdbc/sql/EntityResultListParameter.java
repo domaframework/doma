@@ -8,7 +8,6 @@ import org.seasar.doma.internal.jdbc.command.EntityProvider;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author taedium */
 public class EntityResultListParameter<ENTITY> extends AbstractResultListParameter<ENTITY> {
 
   final EntityDesc<ENTITY> entityDesc;

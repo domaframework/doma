@@ -11,7 +11,6 @@ import org.seasar.doma.internal.apt.reflection.SelectReflection;
 import org.seasar.doma.internal.apt.reflection.SuppressReflection;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlFileSelectQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileSelectQueryMeta> {
 
@@ -101,7 +100,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     private final SqlFileSelectQueryMeta queryMeta;
@@ -151,7 +149,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ParamFunctionTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -352,7 +349,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ReturnCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     private final SqlFileSelectQueryMeta queryMeta;
@@ -457,7 +453,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ReturnListElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -527,7 +522,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ReturnStreamElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -597,7 +591,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ReturnOptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -643,7 +636,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ReturnListOptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -671,7 +663,6 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   private class ReturnStreamOptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 

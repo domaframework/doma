@@ -5,7 +5,6 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-/** @author taedium */
 public class SelectStatementNode extends AbstractSqlNode implements WhereClauseAwareNode {
 
   protected SelectClauseNode selectClauseNode;

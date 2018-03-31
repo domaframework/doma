@@ -2,7 +2,6 @@ package org.seasar.doma.wrapper;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class FloatWrapperTest extends TestCase {
 
   /** */

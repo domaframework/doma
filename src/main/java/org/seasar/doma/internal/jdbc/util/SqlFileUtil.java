@@ -4,7 +4,6 @@ import java.io.File;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/** @author taedium */
 public final class SqlFileUtil {
 
   private static final String PREFIX = Constants.SQL_PATH_PREFIX;

@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.holder;
 
 import org.seasar.doma.Holder;
 
-/** @author taedium */
 @Holder(valueType = int.class, factoryMethod = "of")
 enum OfPrimitiveValueType {
   INT(1),

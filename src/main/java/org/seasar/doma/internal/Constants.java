@@ -2,7 +2,6 @@ package org.seasar.doma.internal;
 
 import java.nio.charset.Charset;
 
-/** @author taedium */
 public final class Constants {
 
   public static final String ROWNUMBER_COLUMN_NAME = "doma_rownumber_";

@@ -3,7 +3,6 @@ package __.org.seasar.doma.internal.apt.processor.entity;
 import org.seasar.doma.internal.apt.processor.entity.PrimaryKey;
 import org.seasar.doma.internal.apt.processor.entity.PrimaryKeyConverter;
 
-/** @author taedium */
 public final class _PrimaryKey
     extends org.seasar.doma.jdbc.holder.AbstractHolderDesc<java.lang.Integer, PrimaryKey> {
 

@@ -6,7 +6,6 @@ import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 
-/** @author nakamura */
 @Dao(config = MyConfig.class)
 public interface SqlProcessorReturnTypeDao {
 

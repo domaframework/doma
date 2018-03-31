@@ -7,7 +7,6 @@ import java.util.Iterator;
 import org.seasar.doma.internal.expr.node.*;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionReducer implements ExpressionNodeVisitor<Void, Deque<ExpressionNode>> {
 
   public void reduce(OperatorNode operator, Deque<ExpressionNode> operands) {

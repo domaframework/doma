@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.cttype;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
 
-/** @author taedium */
 public class MapCtType extends AbstractCtType {
 
   MapCtType(Context ctx, TypeMirror type) {

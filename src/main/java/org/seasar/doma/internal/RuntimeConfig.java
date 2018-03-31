@@ -7,7 +7,6 @@ import org.seasar.doma.jdbc.*;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.tx.TransactionManager;
 
-/** @author taedium */
 public class RuntimeConfig implements Config {
 
   protected final Config config;

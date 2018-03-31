@@ -10,7 +10,6 @@ import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura-to */
 public class EmbeddablePropertyMetaFactory {
 
   private final Context ctx;

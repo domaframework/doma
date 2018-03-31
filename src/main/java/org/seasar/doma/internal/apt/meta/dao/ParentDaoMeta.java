@@ -6,7 +6,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.reflection.DaoReflection;
 
-/** @author taedium */
 public class ParentDaoMeta {
 
   private final DaoReflection daoReflection;

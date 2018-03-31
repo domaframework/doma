@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-/** @author taedium */
 public class OriginalStatesMeta {
 
   private final TypeElement typeElement;

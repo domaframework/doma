@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.expr.node;
 
-/** @author taedium */
 public interface ExpressionNodeVisitor<R, P> {
 
   R visitAndOperatorNode(AndOperatorNode node, P p);

@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.*;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author taedium */
 @Dao
 public interface NoConfigEmpDao {
 

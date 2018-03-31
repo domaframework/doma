@@ -20,7 +20,6 @@ import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AptTestCase extends AptinaTestCase {
 
   @Override

@@ -5,7 +5,6 @@ import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.internal.apt.processor.HolderProcessor;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class HolderProcessorTest extends AptTestCase {
 
   @Override

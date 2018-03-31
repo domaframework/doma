@@ -2,7 +2,6 @@ package org.seasar.doma.internal.jdbc.util;
 
 import junit.framework.TestCase;
 
-/** @author nakamura-to */
 public class DatabaseObjectUtilTest extends TestCase {
 
   public void testGetQualifiedName() throws Exception {

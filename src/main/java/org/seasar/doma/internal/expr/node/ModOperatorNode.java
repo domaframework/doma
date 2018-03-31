@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.expr.node;
 
-/** @author taedium */
 public class ModOperatorNode extends AbstractArithmeticOperatorNode {
 
   protected static final int PRIORITY = 60;

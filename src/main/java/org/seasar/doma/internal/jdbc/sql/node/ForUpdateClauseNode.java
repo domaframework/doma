@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-/** @author taedium */
 public class ForUpdateClauseNode extends AbstractClauseNode {
 
   public ForUpdateClauseNode(String word) {

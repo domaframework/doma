@@ -4,7 +4,6 @@ import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.internal.apt.processor.holder.ConstrutorNotFoundHolderConverter.ValueObject;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
-/** @author taedium */
 @ExternalHolder
 public class ConstrutorNotFoundHolderConverter implements HolderConverter<ValueObject, String> {
 

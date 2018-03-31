@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc;
 import java.util.Collections;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class UtilLoggingJdbcLoggerTest extends TestCase {
 
   public void testLogSql() throws Exception {

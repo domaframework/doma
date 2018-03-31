@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.OriginalStates;
 
-/** @author taedium */
 @Entity(immutable = true)
 public class IllegalOriginalStatesImmutableEntity {
 

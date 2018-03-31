@@ -29,7 +29,6 @@ import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
   private final Context ctx;

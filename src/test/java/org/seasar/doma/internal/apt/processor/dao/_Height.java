@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
-/** @author taedium */
 public class _Height<T> extends AbstractHolderDesc<Integer, Height<T>> {
 
   private _Height() {

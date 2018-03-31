@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.Arrays;
 import org.seasar.doma.internal.util.AssertionUtil;
 
-/** @author taedium */
 public class MockStatement extends MockWrapper implements Statement {
 
   public boolean closed;

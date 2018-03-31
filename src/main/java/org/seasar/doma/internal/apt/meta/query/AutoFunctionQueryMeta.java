@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.meta.parameter.ResultParameterMeta;
 import org.seasar.doma.internal.apt.reflection.FunctionReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
   private ResultParameterMeta resultParameterMeta;

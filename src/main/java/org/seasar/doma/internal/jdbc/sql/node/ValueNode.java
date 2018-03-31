@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author nakamura-to */
 public abstract class ValueNode extends AbstractSqlNode {
 
   protected final SqlLocation location;

@@ -4,7 +4,6 @@ import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.internal.apt.processor.holder.NestingValueObjectConverter.NestingValueObject;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
-/** @author taedium */
 @ExternalHolder
 public class NestingValueObjectConverter implements HolderConverter<NestingValueObject, String> {
 

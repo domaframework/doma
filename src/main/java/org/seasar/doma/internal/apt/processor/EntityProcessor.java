@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 
-/** @author taedium */
 @SupportedAnnotationTypes({"org.seasar.doma.Entity"})
 @SupportedOptions({
   Options.ENTITY_FIELD_PREFIX,

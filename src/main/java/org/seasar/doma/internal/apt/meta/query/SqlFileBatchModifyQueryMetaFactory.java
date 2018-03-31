@@ -16,7 +16,6 @@ import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
 import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlFileBatchModifyQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileBatchModifyQueryMeta> {
 

@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 
-/** @author taedium */
 public class MapListParameterMeta implements CallableSqlParameterMeta {
 
   private final String name;

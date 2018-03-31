@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.dao;
 import java.math.BigDecimal;
 import org.seasar.doma.jdbc.Config;
 
-/** @author taedium */
 public class DelegateDaoDelegate {
 
   protected Config config;

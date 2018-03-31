@@ -7,7 +7,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 
-/** @author nakamura */
 public abstract class AbstractPropertyMeta {
 
   protected final String name;

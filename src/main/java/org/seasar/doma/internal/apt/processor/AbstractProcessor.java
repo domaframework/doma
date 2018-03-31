@@ -9,7 +9,6 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.*;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
 
   protected final Class<? extends Annotation> supportedAnnotationType;

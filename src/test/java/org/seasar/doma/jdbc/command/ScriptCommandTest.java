@@ -9,7 +9,6 @@ import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
-/** @author taedium */
 public class ScriptCommandTest extends TestCase {
 
   public void testExecute() throws Exception {

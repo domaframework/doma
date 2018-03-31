@@ -12,7 +12,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.reflection.BatchModifyReflection;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class AutoBatchModifyQueryMetaFactory
     extends AbstractQueryMetaFactory<AutoBatchModifyQueryMeta> {
 

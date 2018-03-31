@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class IOUtilTest extends TestCase {
 
   public void test() throws Exception {

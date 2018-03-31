@@ -10,7 +10,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author taedium */
 public abstract class AbstractQueryMeta implements QueryMeta {
 
   protected final String name;

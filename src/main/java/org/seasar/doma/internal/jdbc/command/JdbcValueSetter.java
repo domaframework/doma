@@ -10,7 +10,6 @@ import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class JdbcValueSetter implements JdbcMappingFunction {
 
   protected final PreparedStatement preparedStatement;

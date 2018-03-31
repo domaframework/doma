@@ -10,7 +10,6 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 
-/** @author taedium */
 public class InsertCommandTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();
