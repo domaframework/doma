@@ -121,9 +121,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "protected %1$s getBasicValue(%2$s holder) {%n",
-        // @formatter:off
         /* 1 */ holderMeta.getValueTypeName(), /* 2 */ holderTypeName);
-    // @formatter:on
     iprint("    if (holder == null) {%n");
     iprint("        return null;%n");
     iprint("    }%n");
