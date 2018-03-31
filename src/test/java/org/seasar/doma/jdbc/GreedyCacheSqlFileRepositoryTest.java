@@ -16,41 +16,41 @@ public class GreedyCacheSqlFileRepositoryTest extends TestCase {
   }
 
   public void testGetSqlFile() throws Exception {
-    StandardDialect dialect = new StandardDialect();
-    String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
-    GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
-    SqlFile sqlFile = repository.getSqlFile(method, path, dialect);
+    var dialect = new StandardDialect();
+    var path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
+    var repository = new GreedyCacheSqlFileRepository();
+    var sqlFile = repository.getSqlFile(method, path, dialect);
     assertNotNull(sqlFile);
-    SqlFile sqlFile2 = repository.getSqlFile(method, path, dialect);
+    var sqlFile2 = repository.getSqlFile(method, path, dialect);
     assertSame(sqlFile, sqlFile2);
     assertEquals(path, sqlFile.getPath());
   }
 
   public void testGetSqlFile_oracle() throws Exception {
-    OracleDialect dialect = new OracleDialect();
-    String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
-    GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
-    SqlFile sqlFile = repository.getSqlFile(method, path, dialect);
+    var dialect = new OracleDialect();
+    var path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
+    var repository = new GreedyCacheSqlFileRepository();
+    var sqlFile = repository.getSqlFile(method, path, dialect);
     assertEquals(
         "META-INF/" + getClass().getName().replace(".", "/") + "-oracle.sql", sqlFile.getPath());
   }
 
   public void testGetSqlFile_postgres() throws Exception {
-    PostgresDialect dialect = new PostgresDialect();
-    String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
-    GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
-    SqlFile sqlFile = repository.getSqlFile(method, path, dialect);
+    var dialect = new PostgresDialect();
+    var path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
+    var repository = new GreedyCacheSqlFileRepository();
+    var sqlFile = repository.getSqlFile(method, path, dialect);
     assertEquals(path, sqlFile.getPath());
   }
 
   public void testClearCache() throws Exception {
-    StandardDialect dialect = new StandardDialect();
-    String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
-    GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
-    SqlFile sqlFile = repository.getSqlFile(method, path, dialect);
+    var dialect = new StandardDialect();
+    var path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
+    var repository = new GreedyCacheSqlFileRepository();
+    var sqlFile = repository.getSqlFile(method, path, dialect);
     assertNotNull(sqlFile);
     repository.clearCache();
-    SqlFile sqlFile2 = repository.getSqlFile(method, path, dialect);
+    var sqlFile2 = repository.getSqlFile(method, path, dialect);
     assertNotSame(sqlFile, sqlFile2);
     assertEquals(path, sqlFile.getPath());
   }

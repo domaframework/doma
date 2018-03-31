@@ -16,7 +16,7 @@ public class TimeWrapper extends AbstractWrapper<Time> {
 
   @Override
   protected Time doGetCopy() {
-    Time original = get();
+    var original = get();
     if (original == null) {
       return null;
     }

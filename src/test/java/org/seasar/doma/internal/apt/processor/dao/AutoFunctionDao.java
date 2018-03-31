@@ -2,7 +2,12 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 import example.holder.PhoneNumber;
 import java.util.List;
-import org.seasar.doma.*;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Function;
+import org.seasar.doma.In;
+import org.seasar.doma.InOut;
+import org.seasar.doma.Out;
+import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.jdbc.Reference;
 

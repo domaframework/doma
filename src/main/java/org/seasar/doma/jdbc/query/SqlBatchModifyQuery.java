@@ -11,7 +11,11 @@ import java.util.stream.IntStream;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 
 public abstract class SqlBatchModifyQuery extends AbstractQuery implements BatchModifyQuery {
 
@@ -66,12 +70,12 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements Batch
                       parameters.forEach((key, value) -> put(key, value.get(i)));
                     }
                   };
-              ExpressionEvaluator evaluator =
+              var evaluator =
                   new ExpressionEvaluator(
                       map, config.getDialect().getExpressionFunctions(), config.getClassHelper());
-              NodePreparedSqlBuilder sqlBuilder =
+              var sqlBuilder =
                   new NodePreparedSqlBuilder(config, kind, null, evaluator, sqlLogType);
-              PreparedSql sql = sqlBuilder.build(sqlNode, this::comment);
+              var sql = sqlBuilder.build(sqlNode, this::comment);
               sqls.add(sql);
             });
   }

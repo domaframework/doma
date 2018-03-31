@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import javax.sql.DataSource;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
@@ -122,16 +121,16 @@ public class LocalTransaction {
   protected void beginInternal(
       TransactionIsolationLevel transactionIsolationLevel, String callerMethodName) {
     assertNotNull(callerMethodName);
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (isActiveInternal(context)) {
-      String id = context.getId();
+      var id = context.getId();
       rollbackInternal(callerMethodName);
       throw new TransactionAlreadyBegunException(id);
     }
     context = getLocalTransactionContext();
     context.begin(
         () -> {
-          Connection connection = JdbcUtil.getConnection(dataSource);
+          var connection = JdbcUtil.getConnection(dataSource);
           int transactionIsolation;
           try {
             transactionIsolation = connection.getTransactionIsolation();
@@ -141,7 +140,7 @@ public class LocalTransaction {
           }
           if (transactionIsolationLevel != null
               && transactionIsolationLevel != TransactionIsolationLevel.DEFAULT) {
-            int level = transactionIsolationLevel.getLevel();
+            var level = transactionIsolationLevel.getLevel();
             try {
               //noinspection MagicConstant
               connection.setTransactionIsolation(level);
@@ -162,7 +161,7 @@ public class LocalTransaction {
   }
 
   protected LocalTransactionContext getLocalTransactionContext() {
-    LocalTransactionContext context = new LocalTransactionContext();
+    var context = new LocalTransactionContext();
     localTxContextHolder.set(context);
     return context;
   }
@@ -174,12 +173,12 @@ public class LocalTransaction {
    * @throws JdbcException if a JDBC related error occurs
    */
   public void commit() {
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       throw new TransactionNotYetBegunException(Message.DOMA2046);
     }
     if (context.hasConnection()) {
-      LocalTransactionConnection connection = context.getConnection();
+      var connection = context.getConnection();
       try {
         connection.commit();
         jdbcLogger.logTransactionCommitted(className, "commit", context.getId());
@@ -201,7 +200,7 @@ public class LocalTransaction {
    * @throws TransactionNotYetBegunException if this transaction is not yet begun
    */
   public LocalTransactionContext suspend() {
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       throw new TransactionNotYetBegunException(Message.DOMA2046);
     }
@@ -217,7 +216,7 @@ public class LocalTransaction {
    * @param context the transaction context that is returned from {@link #suspend()}
    */
   public void resume(LocalTransactionContext context) {
-    LocalTransactionContext currentContext = localTxContextHolder.get();
+    var currentContext = localTxContextHolder.get();
     if (isActiveInternal(currentContext)) {
       rollbackInternal("resume");
     }
@@ -237,13 +236,13 @@ public class LocalTransaction {
 
   protected void rollbackInternal(String callerMethodName) {
     assertNotNull(callerMethodName);
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       return;
     }
     if (context.hasConnection()) {
-      LocalTransactionConnection connection = context.getConnection();
-      String id = context.getId();
+      var connection = context.getConnection();
+      var id = context.getId();
       //noinspection CatchMayIgnoreException
       try {
         connection.rollback();
@@ -272,17 +271,17 @@ public class LocalTransaction {
       rollbackInternal("setSavepoint");
       throw new DomaNullPointerException("savepointName");
     }
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       throw new TransactionNotYetBegunException(Message.DOMA2053, savepointName);
     }
-    String id = context.getId();
-    Savepoint savepoint = context.getSavepoint(savepointName);
+    var id = context.getId();
+    var savepoint = context.getSavepoint(savepointName);
     if (savepoint != null) {
       rollbackInternal("setSavepoint");
       throw new SavepointAlreadyExistsException(savepointName);
     }
-    LocalTransactionConnection connection = context.getConnection();
+    var connection = context.getConnection();
     try {
       savepoint = connection.setSavepoint(savepointName);
     } catch (SQLException e) {
@@ -306,7 +305,7 @@ public class LocalTransaction {
       rollbackInternal("hasSavepoint");
       throw new DomaNullPointerException("savepointName");
     }
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       throw new TransactionNotYetBegunException(Message.DOMA2057, savepointName);
     }
@@ -326,17 +325,17 @@ public class LocalTransaction {
       rollbackInternal("releaseSavepoint");
       throw new DomaNullPointerException("savepointName");
     }
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       throw new TransactionNotYetBegunException(Message.DOMA2061, savepointName);
     }
-    String id = context.getId();
-    Savepoint savepoint = context.releaseAndGetSavepoint(savepointName);
+    var id = context.getId();
+    var savepoint = context.releaseAndGetSavepoint(savepointName);
     if (savepoint == null) {
       rollbackInternal("releaseSavepoint");
       throw new SavepointNotFoundException(savepointName);
     }
-    LocalTransactionConnection connection = context.getConnection();
+    var connection = context.getConnection();
     try {
       connection.releaseSavepoint(savepoint);
     } catch (SQLException e) {
@@ -360,17 +359,17 @@ public class LocalTransaction {
       rollbackInternal("rollback");
       throw new DomaNullPointerException("savepointName");
     }
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       throw new TransactionNotYetBegunException(Message.DOMA2062, savepointName);
     }
-    String id = context.getId();
-    Savepoint savepoint = context.getSavepoint(savepointName);
+    var id = context.getId();
+    var savepoint = context.getSavepoint(savepointName);
     if (savepoint == null) {
       rollbackInternal("rollback");
       throw new SavepointNotFoundException(savepointName);
     }
-    LocalTransactionConnection connection = context.getConnection();
+    var connection = context.getConnection();
     try {
       connection.rollback(savepoint);
     } catch (SQLException e) {
@@ -382,7 +381,7 @@ public class LocalTransaction {
 
   protected void end(String callerMethodName) {
     assertNotNull(callerMethodName);
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (!isActiveInternal(context)) {
       return;
     }
@@ -409,8 +408,8 @@ public class LocalTransaction {
     if (!context.hasConnection()) {
       return;
     }
-    LocalTransactionConnection connection = context.getConnection();
-    int isolationLevel = connection.getPreservedTransactionIsolation();
+    var connection = context.getConnection();
+    var isolationLevel = connection.getPreservedTransactionIsolation();
     if (isolationLevel != Connection.TRANSACTION_NONE) {
       //noinspection CatchMayIgnoreException
       try {
@@ -437,8 +436,8 @@ public class LocalTransaction {
   /** Returns an unique string to identify this transaction. */
   @Override
   public String toString() {
-    LocalTransactionContext context = localTxContextHolder.get();
-    String transactionId = context != null ? context.getId() : "null";
+    var context = localTxContextHolder.get();
+    var transactionId = context != null ? context.getId() : "null";
     return "{LocalTransaction transactionId=" + transactionId + "}";
   }
 
@@ -457,7 +456,7 @@ public class LocalTransaction {
 
   /** Marks this transaction to undo in the end of the transaction. */
   public void setRollbackOnly() {
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (isActiveInternal(context)) {
       context.setRollbackOnly();
     }
@@ -469,7 +468,7 @@ public class LocalTransaction {
    * @return {@code true} if the current transaction is marked.
    */
   public boolean isRollbackOnly() {
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (isActiveInternal(context)) {
       return context.isRollbackOnly();
     }

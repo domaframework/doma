@@ -4,7 +4,11 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.function.BiConsumer;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
 
@@ -159,8 +163,8 @@ public class BatchInsertExecutor {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("execute");
     }
-    BatchBuilder builder = BatchBuilder.newInstance(query);
-    for (P p : params) {
+    var builder = BatchBuilder.newInstance(query);
+    for (var p : params) {
       buildConsumer.accept(p, builder);
       builder = builder.fixSql();
     }

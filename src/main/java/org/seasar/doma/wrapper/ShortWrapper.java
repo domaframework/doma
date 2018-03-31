@@ -25,7 +25,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements NumberWrappe
 
   @Override
   public void increment() {
-    Short value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet((short) (value + 1));
     }
@@ -33,7 +33,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements NumberWrappe
 
   @Override
   public void decrement() {
-    Short value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet((short) (value - 1));
     }

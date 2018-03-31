@@ -2,7 +2,11 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.lang.reflect.Method;
 import junit.framework.TestCase;
-import org.seasar.doma.internal.jdbc.mock.*;
+import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockResultSet;
+import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
+import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonSingleColumnException;
@@ -22,12 +26,12 @@ public class BasicSingleResultHandlerTest extends TestCase {
   }
 
   public void testHandle() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("aaa"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -36,21 +40,21 @@ public class BasicSingleResultHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    ScalarSingleResultHandler<String, String> handler =
+    var handler =
         new ScalarSingleResultHandler<>(
             () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
-    String result = handler.handle(resultSet, query, (__) -> {}).get();
+    var result = handler.handle(resultSet, query, (__) -> {}).get();
     assertEquals("aaa", result);
   }
 
   public void testHandle_NonUniqueResultException() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("aaa"));
     resultSet.rows.add(new RowData("bbb"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -59,7 +63,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    ScalarSingleResultHandler<String, String> handler =
+    var handler =
         new ScalarSingleResultHandler<>(
             () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
     try {
@@ -70,13 +74,13 @@ public class BasicSingleResultHandlerTest extends TestCase {
   }
 
   public void testHandle_NonSingleColumnException() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
     metaData.columns.add(new ColumnMetaData("y"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("aaa", "bbb"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -85,7 +89,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    ScalarSingleResultHandler<String, String> handler =
+    var handler =
         new ScalarSingleResultHandler<>(
             () -> new BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper(), false));
     try {

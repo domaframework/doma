@@ -25,7 +25,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements NumberWrappe
 
   @Override
   public void increment() {
-    Float value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value + 1f);
     }
@@ -33,7 +33,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements NumberWrappe
 
   @Override
   public void decrement() {
-    Float value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value - 1f);
     }

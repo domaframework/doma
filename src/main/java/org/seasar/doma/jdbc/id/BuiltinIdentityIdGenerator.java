@@ -1,13 +1,9 @@
 package org.seasar.doma.jdbc.id;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 
 /** The built-in implementation for {@link IdentityIdGenerator}. */
@@ -36,7 +32,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements I
 
   @Override
   public Long generatePreInsert(IdGenerationConfig config) {
-    IdProvider idProvider = config.getIdProvider();
+    var idProvider = config.getIdProvider();
     if (idProvider.isAvailable()) {
       return idProvider.get();
     }
@@ -64,7 +60,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements I
    */
   protected long getGeneratedValue(IdGenerationConfig config, Statement statement) {
     try {
-      final ResultSet resultSet = statement.getGeneratedKeys();
+      final var resultSet = statement.getGeneratedKeys();
       return getGeneratedValue(config, resultSet);
     } catch (final SQLException e) {
       throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc().getName(), e);
@@ -79,13 +75,13 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements I
    * @throws JdbcException if the generation is failed
    */
   protected long getGeneratedValue(IdGenerationConfig config) {
-    Naming naming = config.getNaming();
-    EntityDesc<?> entityDesc = config.getEntityDesc();
-    String catalogName = entityDesc.getCatalogName();
-    String schemaName = entityDesc.getSchemaName();
-    String tableName = entityDesc.getTableName(naming::apply);
-    String idColumnName = entityDesc.getGeneratedIdPropertyDesc().getColumnName(naming::apply);
-    Sql<?> sql =
+    var naming = config.getNaming();
+    var entityDesc = config.getEntityDesc();
+    var catalogName = entityDesc.getCatalogName();
+    var schemaName = entityDesc.getSchemaName();
+    var tableName = entityDesc.getTableName(naming::apply);
+    var idColumnName = entityDesc.getGeneratedIdPropertyDesc().getColumnName(naming::apply);
+    var sql =
         config
             .getDialect()
             .getIdentitySelectSql(

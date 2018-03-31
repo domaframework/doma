@@ -1,6 +1,10 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
-import org.seasar.doma.*;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Function;
+import org.seasar.doma.In;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 
 @Dao(config = MyConfig.class)
 public interface PrimitiveTypeDao {

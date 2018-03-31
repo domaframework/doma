@@ -1,29 +1,43 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Date;
+import java.sql.NClob;
+import java.sql.SQLXML;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.*;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
-import org.seasar.doma.internal.apt.annot.EntityAnnot;
-import org.seasar.doma.internal.apt.annot.HolderAnnot;
-import org.seasar.doma.internal.apt.annot.HolderConvertersAnnot;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -31,7 +45,31 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.*;
+import org.seasar.doma.wrapper.ArrayWrapper;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.BigIntegerWrapper;
+import org.seasar.doma.wrapper.BlobWrapper;
+import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.ByteWrapper;
+import org.seasar.doma.wrapper.BytesWrapper;
+import org.seasar.doma.wrapper.ClobWrapper;
+import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.DoubleWrapper;
+import org.seasar.doma.wrapper.EnumWrapper;
+import org.seasar.doma.wrapper.FloatWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
+import org.seasar.doma.wrapper.LongWrapper;
+import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ObjectWrapper;
+import org.seasar.doma.wrapper.SQLXMLWrapper;
+import org.seasar.doma.wrapper.ShortWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.TimeWrapper;
+import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class CtTypes {
 
@@ -49,11 +87,11 @@ public class CtTypes {
 
   public BasicCtType newBasicCtType(TypeMirror type) {
     assertNotNull(type);
-    Class<?> wrapperClass = type.accept(new WrapperClassMapper(ctx), null);
+    var wrapperClass = type.accept(new WrapperClassMapper(ctx), null);
     if (wrapperClass == null) {
       return null;
     }
-    TypeElement wrapperTypeElement = ctx.getElements().getTypeElement(wrapperClass);
+    var wrapperTypeElement = ctx.getElements().getTypeElement(wrapperClass);
     if (wrapperTypeElement == null) {
       return null;
     }
@@ -68,19 +106,19 @@ public class CtTypes {
 
   public BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
     assertNotNull(type);
-    DeclaredType biFunctionDeclaredType = getDeclaredTypeFromHierarchy(type, BiFunction.class);
+    var biFunctionDeclaredType = getDeclaredTypeFromHierarchy(type, BiFunction.class);
     if (biFunctionDeclaredType == null) {
       return null;
     }
     CtType firstArgCtType = null;
     CtType secondArgCtType = null;
     AnyCtType resultCtType = null;
-    List<? extends TypeMirror> typeArguments = biFunctionDeclaredType.getTypeArguments();
+    var typeArguments = biFunctionDeclaredType.getTypeArguments();
 
     if (typeArguments.size() == 3) {
-      TypeMirror firstArgTypeMirror = typeArguments.get(0);
-      TypeMirror secondArgTypeMirror = typeArguments.get(1);
-      TypeMirror resultTypeMirror = typeArguments.get(2);
+      var firstArgTypeMirror = typeArguments.get(0);
+      var secondArgTypeMirror = typeArguments.get(1);
+      var resultTypeMirror = typeArguments.get(2);
       firstArgCtType = toCtType(firstArgTypeMirror, List.of(this::newConfigCtType));
       secondArgCtType = toCtType(secondArgTypeMirror, List.of(this::newPreparedSqlCtType));
       resultCtType = newAnyCtType(resultTypeMirror);
@@ -91,17 +129,17 @@ public class CtTypes {
 
   public CollectorCtType newCollectorCtType(TypeMirror type) {
     assertNotNull(type);
-    DeclaredType collectorDeclaredType = getDeclaredTypeFromHierarchy(type, Collector.class);
+    var collectorDeclaredType = getDeclaredTypeFromHierarchy(type, Collector.class);
     if (collectorDeclaredType == null) {
       return null;
     }
 
-    List<? extends TypeMirror> typeArguments = collectorDeclaredType.getTypeArguments();
+    var typeArguments = collectorDeclaredType.getTypeArguments();
     CtType targetCtType = null;
     AnyCtType returnCtType = null;
     if (typeArguments.size() == 3) {
-      TypeMirror targetTypeMirror = typeArguments.get(0);
-      TypeMirror returnTypeMirror = typeArguments.get(2);
+      var targetTypeMirror = typeArguments.get(0);
+      var returnTypeMirror = typeArguments.get(2);
       targetCtType =
           toCtType(
               targetTypeMirror,
@@ -126,11 +164,11 @@ public class CtTypes {
 
   public EmbeddableCtType newEmbeddableCtType(TypeMirror type) {
     assertNotNull(type);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+    var typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
-    EmbeddableAnnot embeddableAnnot = ctx.getAnnots().newEmbeddableAnnot(typeElement);
+    var embeddableAnnot = ctx.getAnnots().newEmbeddableAnnot(typeElement);
     if (embeddableAnnot == null) {
       return null;
     }
@@ -139,11 +177,11 @@ public class CtTypes {
 
   public EntityCtType newEntityCtType(TypeMirror type) {
     assertNotNull(type);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+    var typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
-    EntityAnnot entityAnnot = ctx.getAnnots().newEntityAnnot(typeElement);
+    var entityAnnot = ctx.getAnnots().newEntityAnnot(typeElement);
     if (entityAnnot == null) {
       return null;
     }
@@ -152,17 +190,17 @@ public class CtTypes {
 
   public FunctionCtType newFunctionCtType(TypeMirror type) {
     assertNotNull(type);
-    DeclaredType functionDeclaredType = getDeclaredTypeFromHierarchy(type, Function.class);
+    var functionDeclaredType = getDeclaredTypeFromHierarchy(type, Function.class);
     if (functionDeclaredType == null) {
       return null;
     }
 
-    List<? extends TypeMirror> typeArguments = functionDeclaredType.getTypeArguments();
+    var typeArguments = functionDeclaredType.getTypeArguments();
     CtType targetCtType = null;
     AnyCtType returnCtType = null;
     if (typeArguments.size() == 2) {
-      TypeMirror targetTypeMirror = typeArguments.get(0);
-      TypeMirror returnTypeMirror = typeArguments.get(1);
+      var targetTypeMirror = typeArguments.get(0);
+      var returnTypeMirror = typeArguments.get(1);
       targetCtType =
           toCtType(targetTypeMirror, List.of(this::newStreamCtType, this::newPreparedSqlCtType));
       returnCtType = newAnyCtType(returnTypeMirror);
@@ -173,15 +211,15 @@ public class CtTypes {
 
   public HolderCtType newHolderCtType(TypeMirror type) {
     assertNotNull(type);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+    var typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
-    HolderInfo info = getHolderInfo(typeElement);
+    var info = getHolderInfo(typeElement);
     if (info == null) {
       return null;
     }
-    BasicCtType basicCtType = newBasicCtType(info.valueType);
+    var basicCtType = newBasicCtType(info.valueType);
     if (basicCtType == null) {
       return null;
     }
@@ -195,7 +233,7 @@ public class CtTypes {
   }
 
   private HolderInfo getHolderInfo(TypeElement typeElement) {
-    HolderAnnot holderAnnot = ctx.getAnnots().newHolderAnnot(typeElement);
+    var holderAnnot = ctx.getAnnots().newHolderAnnot(typeElement);
     if (holderAnnot != null) {
       return new HolderInfo(holderAnnot.getValueTypeValue(), false);
     }
@@ -203,37 +241,36 @@ public class CtTypes {
   }
 
   private HolderInfo getExternalHolderInfo(TypeElement typeElement) {
-    String csv = ctx.getOptions().getHolderConverters();
+    var csv = ctx.getOptions().getHolderConverters();
     if (csv == null) {
       return null;
     }
-    TypeMirror holderType = typeElement.asType();
-    for (String value : csv.split(",")) {
-      String className = value.trim();
+    var holderType = typeElement.asType();
+    for (var value : csv.split(",")) {
+      var className = value.trim();
       if (className.isEmpty()) {
         continue;
       }
-      TypeElement providerElement = ctx.getElements().getTypeElement(className);
+      var providerElement = ctx.getElements().getTypeElement(className);
       if (providerElement == null) {
         throw new AptIllegalOptionException(Message.DOMA4200.getMessage(className));
       }
-      HolderConvertersAnnot convertersMirror =
-          ctx.getAnnots().newHolderConvertersAnnot(providerElement);
+      var convertersMirror = ctx.getAnnots().newHolderConvertersAnnot(providerElement);
       if (convertersMirror == null) {
         throw new AptIllegalOptionException(Message.DOMA4201.getMessage(className));
       }
-      for (TypeMirror converterType : convertersMirror.getValueValue()) {
+      for (var converterType : convertersMirror.getValueValue()) {
         // converterType does not contain adequate information in
         // eclipse incremental compile, so reload typeMirror
         converterType = reloadTypeMirror(converterType);
         if (converterType == null) {
           continue;
         }
-        TypeMirror[] argTypes = getConverterArgTypes(converterType);
+        var argTypes = getConverterArgTypes(converterType);
         if (argTypes == null || !ctx.getTypes().isSameType(holderType, argTypes[0])) {
           continue;
         }
-        TypeMirror valueType = argTypes[1];
+        var valueType = argTypes[1];
         return new HolderInfo(valueType, true);
       }
     }
@@ -241,11 +278,11 @@ public class CtTypes {
   }
 
   private TypeMirror reloadTypeMirror(TypeMirror typeMirror) {
-    TypeElement typeElement = ctx.getTypes().toTypeElement(typeMirror);
+    var typeElement = ctx.getTypes().toTypeElement(typeMirror);
     if (typeElement == null) {
       return null;
     }
-    String binaryName = ctx.getElements().getBinaryName(typeElement).toString();
+    var binaryName = ctx.getElements().getBinaryName(typeElement).toString();
     typeElement = ctx.getElements().getTypeElement(binaryName);
     if (typeElement == null) {
       return null;
@@ -259,13 +296,13 @@ public class CtTypes {
         continue;
       }
       if (ctx.getTypes().isSameType(supertype, HolderConverter.class)) {
-        DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
+        var declaredType = ctx.getTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
-        List<? extends TypeMirror> args = declaredType.getTypeArguments();
+        var args = declaredType.getTypeArguments();
         assertEquals(2, args.size());
         return new TypeMirror[] {args.get(0), args.get(1)};
       }
-      TypeMirror[] argTypes = getConverterArgTypes(supertype);
+      var argTypes = getConverterArgTypes(supertype);
       if (argTypes != null) {
         return argTypes;
       }
@@ -287,16 +324,16 @@ public class CtTypes {
 
   public IterableCtType newIterableCtType(TypeMirror type) {
     assertNotNull(type);
-    TypeMirror supertype = ctx.getTypes().getSupertype(type, Iterable.class);
+    var supertype = ctx.getTypes().getSupertype(type, Iterable.class);
     if (supertype == null) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
+    var declaredType = ctx.getTypes().toDeclaredType(supertype);
     if (declaredType == null) {
       return null;
     }
     CtType elementCtType = null;
-    List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+    var typeArgs = declaredType.getTypeArguments();
     if (typeArgs.size() > 0) {
       elementCtType =
           toCtType(
@@ -315,11 +352,11 @@ public class CtTypes {
     if (!ctx.getTypes().isSameType(type, Map.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
-    List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+    var typeArgs = declaredType.getTypeArguments();
     if (typeArgs.size() != 2) {
       return null;
     }
@@ -337,7 +374,7 @@ public class CtTypes {
     if (!ctx.getTypes().isSameType(type, Optional.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
@@ -345,7 +382,7 @@ public class CtTypes {
     if (declaredType.getTypeArguments().isEmpty()) {
       elementCtType = null;
     } else {
-      TypeMirror typeArg = declaredType.getTypeArguments().get(0);
+      var typeArg = declaredType.getTypeArguments().get(0);
       elementCtType =
           toCtType(
               typeArg,
@@ -363,11 +400,11 @@ public class CtTypes {
     if (!ctx.getTypes().isSameType(type, OptionalDouble.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
-    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.DOUBLE);
+    var primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.DOUBLE);
     CtType elementCtType = newBasicCtType(primitiveType);
     return new OptionalDoubleCtType(ctx, type, elementCtType);
   }
@@ -377,11 +414,11 @@ public class CtTypes {
     if (!ctx.getTypes().isSameType(type, OptionalInt.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
-    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.INT);
+    var primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.INT);
     CtType elementCtType = newBasicCtType(primitiveType);
     return new OptionalIntCtType(ctx, type, elementCtType);
   }
@@ -391,11 +428,11 @@ public class CtTypes {
     if (!ctx.getTypes().isSameType(type, OptionalLong.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
-    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.LONG);
+    var primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.LONG);
     CtType elementCtType = newBasicCtType(primitiveType);
     return new OptionalLongCtType(ctx, type, elementCtType);
   }
@@ -410,11 +447,11 @@ public class CtTypes {
 
   public ReferenceCtType newReferenceCtType(TypeMirror type) {
     assertNotNull(type);
-    DeclaredType referenceDeclaredType = getDeclaredTypeFromHierarchy(type, Reference.class);
+    var referenceDeclaredType = getDeclaredTypeFromHierarchy(type, Reference.class);
     if (referenceDeclaredType == null) {
       return null;
     }
-    List<? extends TypeMirror> typeArgs = referenceDeclaredType.getTypeArguments();
+    var typeArgs = referenceDeclaredType.getTypeArguments();
     CtType referentCtType = null;
     if (typeArgs.size() == 1) {
       referentCtType =
@@ -441,11 +478,11 @@ public class CtTypes {
     if (!ctx.getTypes().isSameType(type, Stream.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
-    List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+    var typeArgs = declaredType.getTypeArguments();
     CtType elementCtType = null;
     if (typeArgs.size() > 0) {
       elementCtType =
@@ -468,7 +505,7 @@ public class CtTypes {
       if (ctx.getTypes().isSameType(supertype, clazz)) {
         return ctx.getTypes().toDeclaredType(supertype);
       }
-      DeclaredType result = getDeclaredTypeFromHierarchy(supertype, clazz);
+      var result = getDeclaredTypeFromHierarchy(supertype, clazz);
       if (result != null) {
         return result;
       }
@@ -503,14 +540,14 @@ public class CtTypes {
 
     @Override
     public Class<?> visitDeclared(DeclaredType t, Void p) {
-      TypeElement typeElement = ctx.getTypes().toTypeElement(t);
+      var typeElement = ctx.getTypes().toTypeElement(t);
       if (typeElement == null) {
         return null;
       }
       if (typeElement.getKind() == ElementKind.ENUM) {
         return EnumWrapper.class;
       }
-      String name = typeElement.getQualifiedName().toString();
+      var name = typeElement.getQualifiedName().toString();
       if (String.class.getName().equals(name)) {
         return StringWrapper.class;
       }

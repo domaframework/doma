@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
-import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
@@ -19,7 +18,7 @@ public class PreparedSqlParameterBinderTest extends TestCase {
   private final MockConfig runtimeConfig = new MockConfig();
 
   public void testBind() throws Exception {
-    MockPreparedStatement preparedStatement = new MockPreparedStatement();
+    var preparedStatement = new MockPreparedStatement();
     List<ScalarInParameter<?, ?>> parameters = new ArrayList<ScalarInParameter<?, ?>>();
     parameters.add(
         new ScalarInParameter<>(
@@ -28,12 +27,12 @@ public class PreparedSqlParameterBinderTest extends TestCase {
         new ScalarInParameter<>(
             () -> new BasicScalar<>(new org.seasar.doma.wrapper.BigDecimalWrapper(), false),
             new BigDecimal(10)));
-    PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(new MyQuery());
+    var binder = new PreparedSqlParameterBinder(new MyQuery());
     binder.bind(preparedStatement, parameters);
 
-    List<BindValue> bindValues = preparedStatement.bindValues;
+    var bindValues = preparedStatement.bindValues;
     assertEquals(2, bindValues.size());
-    BindValue bindValue = bindValues.get(0);
+    var bindValue = bindValues.get(0);
     assertEquals(1, bindValue.getIndex());
     assertEquals("aaa", bindValue.getValue());
     bindValue = bindValues.get(1);

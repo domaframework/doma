@@ -4,11 +4,8 @@ import example.entity.Emp;
 import example.entity._Emp;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoBatchInsertQueryTest extends TestCase {
@@ -16,15 +13,15 @@ public class AutoBatchInsertQueryTest extends TestCase {
   private final MockConfig runtimeConfig = new MockConfig();
 
   public void testPrepare() throws Exception {
-    Emp emp1 = new Emp();
+    var emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
 
-    Emp emp2 = new Emp();
+    var emp2 = new Emp();
     emp2.setId(20);
     emp2.setName("bbb");
 
-    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -39,16 +36,16 @@ public class AutoBatchInsertQueryTest extends TestCase {
   }
 
   public void testOption_default() throws Exception {
-    Emp emp1 = new Emp();
+    var emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
 
-    Emp emp2 = new Emp();
+    var emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(Integer.valueOf(10));
 
-    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -57,10 +54,10 @@ public class AutoBatchInsertQueryTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    PreparedSql sql = query.getSqls().get(0);
+    var sql = query.getSqls().get(0);
     assertEquals(
         "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql.getRawSql());
-    List<InParameter<?>> parameters = sql.getParameters();
+    var parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals(Integer.valueOf(10), parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());

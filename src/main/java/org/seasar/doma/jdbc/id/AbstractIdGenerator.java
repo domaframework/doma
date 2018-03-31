@@ -1,12 +1,10 @@
 package org.seasar.doma.jdbc.id;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.message.Message;
 
@@ -22,14 +20,14 @@ public abstract class AbstractIdGenerator implements IdGenerator {
    * @throws JdbcException if a JDBC related error occurs
    */
   protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql) {
-    JdbcLogger logger = config.getJdbcLogger();
-    Connection connection = JdbcUtil.getConnection(config.getDataSource());
+    var logger = config.getJdbcLogger();
+    var connection = JdbcUtil.getConnection(config.getDataSource());
     try {
-      PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
+      var preparedStatement = JdbcUtil.prepareStatement(connection, sql);
       try {
         logger.logSql(getClass().getName(), "getGeneratedId", sql);
         setupOptions(config, preparedStatement);
-        ResultSet resultSet = preparedStatement.executeQuery();
+        var resultSet = preparedStatement.executeQuery();
         return getGeneratedValue(config, resultSet);
       } catch (SQLException e) {
         throw new JdbcException(Message.DOMA2018, e, config.getEntityDesc().getName(), e);
@@ -70,7 +68,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
    * @throws JdbcException if a JDBC related error occurs
    */
   protected long getGeneratedValue(IdGenerationConfig config, ResultSet resultSet) {
-    JdbcLogger logger = config.getJdbcLogger();
+    var logger = config.getJdbcLogger();
     try {
       if (resultSet.next()) {
         return resultSet.getLong(1);

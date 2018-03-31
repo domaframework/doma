@@ -6,8 +6,19 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
-import org.seasar.doma.jdbc.*;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.jdbc.CallableSql;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.ListParameter;
+import org.seasar.doma.jdbc.OutParameter;
+import org.seasar.doma.jdbc.ResultListParameter;
+import org.seasar.doma.jdbc.ResultParameter;
+import org.seasar.doma.jdbc.SingleResultParameter;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.jdbc.SqlParameterVisitor;
 
 public class CallableSqlBuilder
     implements SqlParameterVisitor<CallableSqlBuilder.Context, RuntimeException> {
@@ -56,7 +67,7 @@ public class CallableSqlBuilder
 
   public CallableSql build(Function<String, String> commenter) {
     assertNotNull(commenter);
-    Context context = new Context();
+    var context = new Context();
     context.append("{");
     if (resultParameter != null) {
       resultParameter.accept(this, context);
@@ -65,12 +76,12 @@ public class CallableSqlBuilder
     context.append("call ");
     context.append(moduleName);
     context.append("(");
-    for (SqlParameter parameter : parameters) {
+    for (var parameter : parameters) {
       parameter.accept(this, context);
     }
     context.cutBackIfNecessary();
     context.append(")}");
-    LinkedList<SqlParameter> allParameters = new LinkedList<>(parameters);
+    var allParameters = new LinkedList<>(parameters);
     if (resultParameter != null) {
       allParameters.addFirst(resultParameter);
     }
@@ -86,7 +97,7 @@ public class CallableSqlBuilder
   @Override
   public <BASIC> void visitInParameter(InParameter<BASIC> parameter, Context p)
       throws RuntimeException {
-    Wrapper<BASIC> wrapper = parameter.getWrapper();
+    var wrapper = parameter.getWrapper();
     p.appendRawSql("?, ");
     p.appendFormattedSql(
         wrapper.accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null));

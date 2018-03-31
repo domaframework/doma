@@ -10,7 +10,11 @@ import org.seasar.doma.internal.jdbc.dialect.MysqlCountCalculatingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlNode;
 
 /** A dialect for MySQL. */
 public class MysqlDialect extends StandardDialect {
@@ -66,7 +70,7 @@ public class MysqlDialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    int code = getErrorCode(sqlException);
+    var code = getErrorCode(sqlException);
     return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES.contains(code);
   }
 
@@ -87,27 +91,26 @@ public class MysqlDialect extends StandardDialect {
 
   @Override
   protected SqlNode toCountCalculatingSqlNode(SqlNode sqlNode) {
-    MysqlCountCalculatingTransformer transformer = new MysqlCountCalculatingTransformer();
+    var transformer = new MysqlCountCalculatingTransformer();
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    MysqlPagingTransformer transformer = new MysqlPagingTransformer(offset, limit);
+    var transformer = new MysqlPagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    MysqlForUpdateTransformer transformer =
-        new MysqlForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new MysqlForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
-    MysqlCountGettingTransformer transformer = new MysqlCountGettingTransformer();
+    var transformer = new MysqlCountGettingTransformer();
     return transformer.transform(sqlNode);
   }
 

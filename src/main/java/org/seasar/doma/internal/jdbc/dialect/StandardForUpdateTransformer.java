@@ -26,8 +26,8 @@ public class StandardForUpdateTransformer extends SimpleSqlNodeVisitor<SqlNode, 
   }
 
   public SqlNode transform(SqlNode sqlNode) {
-    AnonymousNode result = new AnonymousNode();
-    for (SqlNode child : sqlNode.getChildren()) {
+    var result = new AnonymousNode();
+    for (var child : sqlNode.getChildren()) {
       result.appendNode(child.accept(this, null));
     }
     return result;

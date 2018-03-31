@@ -26,7 +26,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements HolderDesc<BA
 
   @Override
   public HolderScalar createScalar(HOLDER value) {
-    Wrapper<BASIC> wrapper = wrapperSupplier.get();
+    var wrapper = wrapperSupplier.get();
     wrapper.set(getBasicValue(value));
     return new HolderScalar(wrapper);
   }
@@ -38,7 +38,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements HolderDesc<BA
 
   @Override
   public OptionalHolderScalar createOptionalScalar(HOLDER value) {
-    Wrapper<BASIC> wrapper = wrapperSupplier.get();
+    var wrapper = wrapperSupplier.get();
     wrapper.set(getBasicValue(value));
     return new OptionalHolderScalar(wrapper);
   }
@@ -74,7 +74,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements HolderDesc<BA
 
     @Override
     public void set(HOLDER holder) {
-      BASIC value = getBasicValue(holder);
+      var value = getBasicValue(holder);
       wrapper.set(value);
     }
 
@@ -106,7 +106,7 @@ public abstract class AbstractHolderDesc<BASIC, HOLDER> implements HolderDesc<BA
 
     @Override
     public Optional<HOLDER> get() {
-      BASIC value = wrapper.get();
+      var value = wrapper.get();
       if (value == null && !AbstractHolderDesc.this.getBasicClass().isPrimitive()) {
         return getDefaultInternal();
       }

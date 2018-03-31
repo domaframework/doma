@@ -49,7 +49,7 @@ public final class LocalTransactionDataSource implements DataSource {
     if (url == null) {
       throw new DomaNullPointerException("url");
     }
-    SimpleDataSource simpleDataSource = new SimpleDataSource();
+    var simpleDataSource = new SimpleDataSource();
     simpleDataSource.setUrl(url);
     if (user != null) {
       simpleDataSource.setUser(user);
@@ -87,7 +87,7 @@ public final class LocalTransactionDataSource implements DataSource {
   }
 
   private Connection getConnectionInternal() {
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (context == null) {
       throw new TransactionNotYetBegunException(Message.DOMA2048);
     }

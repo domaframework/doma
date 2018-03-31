@@ -10,9 +10,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
@@ -62,9 +60,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void preUpdate() {
-    List<EntityPropertyDesc<ENTITY, ?>> targetPropertyDescs = helper.getTargetPropertyDescs(entity);
-    AutoPreUpdateContext<ENTITY> context =
-        new AutoPreUpdateContext<>(entityDesc, method, config, targetPropertyDescs);
+    var targetPropertyDescs = helper.getTargetPropertyDescs(entity);
+    var context = new AutoPreUpdateContext<>(entityDesc, method, config, targetPropertyDescs);
     entityDesc.preUpdate(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -88,17 +85,17 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void prepareSql() {
-    Naming naming = config.getNaming();
-    Dialect dialect = config.getDialect();
-    PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.UPDATE, sqlLogType);
+    var naming = config.getNaming();
+    var dialect = config.getDialect();
+    var builder = new PreparedSqlBuilder(config, SqlKind.UPDATE, sqlLogType);
     builder.appendSql("update ");
     builder.appendSql(entityDesc.getQualifiedTableName(naming::apply, dialect::applyQuote));
     builder.appendSql(" set ");
     helper.populateValues(entity, targetPropertyDescs, versionPropertyDesc, builder);
     if (idPropertyDescs.size() > 0) {
       builder.appendSql(" where ");
-      for (EntityPropertyDesc<ENTITY, ?> propertyDesc : idPropertyDescs) {
-        Property<ENTITY, ?> property = propertyDesc.createProperty();
+      for (var propertyDesc : idPropertyDescs) {
+        var property = propertyDesc.createProperty();
         property.load(entity);
         builder.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
         builder.appendSql(" = ");
@@ -135,12 +132,11 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void postUpdate() {
-    List<EntityPropertyDesc<ENTITY, ?>> targetPropertyDescs = helper.getTargetPropertyDescs(entity);
+    var targetPropertyDescs = helper.getTargetPropertyDescs(entity);
     if (!versionIgnored && versionPropertyDesc != null) {
       targetPropertyDescs.add(versionPropertyDesc);
     }
-    AutoPostUpdateContext<ENTITY> context =
-        new AutoPostUpdateContext<>(entityDesc, method, config, targetPropertyDescs);
+    var context = new AutoPostUpdateContext<>(entityDesc, method, config, targetPropertyDescs);
     entityDesc.postUpdate(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -176,7 +172,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       super(entityDesc, method, config);
       assertNotNull(targetPropertyDescs);
       changedPropertyNames = new HashSet<>(targetPropertyDescs.size());
-      for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
+      for (var propertyDesc : targetPropertyDescs) {
         changedPropertyNames.add(propertyDesc.getName());
       }
     }
@@ -205,7 +201,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       super(entityDesc, method, config);
       assertNotNull(targetPropertyDescs);
       changedPropertyNames = new HashSet<>(targetPropertyDescs.size());
-      for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
+      for (var propertyDesc : targetPropertyDescs) {
         changedPropertyNames.add(propertyDesc.getName());
       }
     }

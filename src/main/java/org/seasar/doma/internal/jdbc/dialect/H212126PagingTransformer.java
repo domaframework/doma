@@ -23,11 +23,11 @@ public class H212126PagingTransformer extends StandardPagingTransformer {
     }
     processed = true;
 
-    OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
+    var originalOrderBy = node.getOrderByClauseNode();
     OrderByClauseNode orderBy;
     if (originalOrderBy != null) {
       orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
-      for (SqlNode child : originalOrderBy.getChildren()) {
+      for (var child : originalOrderBy.getChildren()) {
         orderBy.appendNode(child);
       }
     } else {
@@ -44,7 +44,7 @@ public class H212126PagingTransformer extends StandardPagingTransformer {
       orderBy.appendNode(new FragmentNode(String.valueOf(offset)));
     }
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(node.getSelectClauseNode());
     result.setFromClauseNode(node.getFromClauseNode());
     result.setWhereClauseNode(node.getWhereClauseNode());

@@ -15,8 +15,6 @@
  */
 package org.seasar.aptina.unit;
 
-import java.util.Iterator;
-
 /**
  * 文字列を扱うユーティリティです．
  *
@@ -91,7 +89,7 @@ class StringUtils {
    */
   public static String join(
       final Iterable<? extends CharSequence> elements, final String separator) {
-    final StringBuilder buf = new StringBuilder();
+    final var buf = new StringBuilder();
     for (final CharSequence element : elements) {
       buf.append(element).append(separator);
     }
@@ -118,13 +116,13 @@ class StringUtils {
       final Iterable<? extends CharSequence> elements2,
       final String separator1,
       final String separator2) {
-    final StringBuilder buf = new StringBuilder();
-    final Iterator<? extends CharSequence> it = elements2.iterator();
+    final var buf = new StringBuilder();
+    final var it = elements2.iterator();
     for (final CharSequence element1 : elements1) {
       if (!it.hasNext()) {
         throw new IllegalArgumentException("elements1 > elements2");
       }
-      final CharSequence element2 = it.next();
+      final var element2 = it.next();
       buf.append(element1).append(separator1).append(element2).append(separator2);
     }
     if (it.hasNext()) {

@@ -7,7 +7,6 @@ import java.util.Formatter;
 import javax.lang.model.element.TypeParameterElement;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.holder.ExternalHolderMeta;
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
@@ -86,7 +85,7 @@ public class ExternalHolderDescGenerator extends AbstractGenerator {
 
   private void printConstructors() {
     iprint("private %1$s() {%n", codeSpec.getSimpleName());
-    BasicCtType basicCtType = holderMeta.getBasicCtType();
+    var basicCtType = holderMeta.getBasicCtType();
     iprint("    super(%1$s);%n", wrapperSupplier(basicCtType));
     iprint("}%n");
     print("%n");

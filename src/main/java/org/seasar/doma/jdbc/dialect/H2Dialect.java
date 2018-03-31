@@ -49,21 +49,20 @@ public class H2Dialect extends H212126Dialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    int code = getErrorCode(sqlException);
+    var code = getErrorCode(sqlException);
     return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    H2PagingTransformer transformer = new H2PagingTransformer(offset, limit);
+    var transformer = new H2PagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    H2ForUpdateTransformer transformer =
-        new H2ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new H2ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 

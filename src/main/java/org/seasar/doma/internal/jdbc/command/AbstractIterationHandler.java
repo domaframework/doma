@@ -34,15 +34,15 @@ public abstract class AbstractIterationHandler<TARGET, RESULT> implements Result
   public Supplier<RESULT> handle(
       ResultSet resultSet, SelectQuery query, Consumer<ResultSetState> stateChecker)
       throws SQLException {
-    ObjectProvider<TARGET> provider = createObjectProvider(query);
+    var provider = createObjectProvider(query);
     Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query, stateChecker, provider);
     try {
       if (query.getFetchType() == FetchType.EAGER) {
         // consume ResultSet
-        Iterator<TARGET> it = IteratorUtil.copy(iterator);
+        var it = IteratorUtil.copy(iterator);
         return () -> iterate(it);
       } else {
-        RESULT result = iterate(iterator);
+        var result = iterate(iterator);
         return () -> result;
       }
     } catch (SQLRuntimeException e) {
@@ -51,10 +51,10 @@ public abstract class AbstractIterationHandler<TARGET, RESULT> implements Result
   }
 
   protected RESULT iterate(Iterator<TARGET> iterator) {
-    IterationContext context = new IterationContext();
-    RESULT candidate = iterationCallback.defaultResult();
+    var context = new IterationContext();
+    var candidate = iterationCallback.defaultResult();
     while (!context.isExited() && iterator.hasNext()) {
-      TARGET target = iterator.next();
+      var target = iterator.next();
       candidate = iterationCallback.iterate(target, context);
     }
     return iterationCallback.postIterate(candidate, context);

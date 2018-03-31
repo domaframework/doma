@@ -42,7 +42,7 @@ public abstract class GenericHolder<T> {
     if (!getClass().isInstance(obj)) {
       return false;
     }
-    final GenericHolder<T> other = (GenericHolder<T>) obj;
+    final var other = (GenericHolder<T>) obj;
     return other.canEqual(this) && value.equals(other.value);
   }
 }

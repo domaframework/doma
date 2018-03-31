@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
@@ -10,7 +9,11 @@ import java.util.function.Function;
 import org.seasar.doma.Script;
 import org.seasar.doma.internal.jdbc.command.ScriptReader;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.AbstractSql;
+import org.seasar.doma.jdbc.ScriptException;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.ScriptQuery;
 
 /**
@@ -31,16 +34,16 @@ public class ScriptCommand implements Command<Void> {
 
   @Override
   public Void execute() {
-    Config config = query.getConfig();
-    Connection connection = JdbcUtil.getConnection(config.getDataSource());
+    var config = query.getConfig();
+    var connection = JdbcUtil.getConnection(config.getDataSource());
     try {
-      ScriptReader reader = new ScriptReader(query);
+      var reader = new ScriptReader(query);
       try {
-        for (String script = reader.readSql(); script != null; script = reader.readSql()) {
-          ScriptSql sql =
+        for (var script = reader.readSql(); script != null; script = reader.readSql()) {
+          var sql =
               new ScriptSql(
                   script, query.getScriptFilePath(), query.getSqlLogType(), query::comment);
-          Statement statement = JdbcUtil.createStatement(connection);
+          var statement = JdbcUtil.createStatement(connection);
           try {
             log(sql);
             setupOptions(statement);
@@ -67,7 +70,7 @@ public class ScriptCommand implements Command<Void> {
   }
 
   protected void log(ScriptSql sql) {
-    JdbcLogger logger = query.getConfig().getJdbcLogger();
+    var logger = query.getConfig().getJdbcLogger();
     logger.logSql(query.getClassName(), query.getMethodName(), sql);
   }
 

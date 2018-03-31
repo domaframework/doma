@@ -5,7 +5,14 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.MssqlForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MssqlPagingTransformer;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.ScriptBlockContext;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 
 /** A dialect for Microsoft SQL Server. */
 public class MssqlDialect extends Mssql2008Dialect {
@@ -81,15 +88,13 @@ public class MssqlDialect extends Mssql2008Dialect {
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    MssqlForUpdateTransformer transformer =
-        new MssqlForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new MssqlForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    MssqlPagingTransformer transformer =
-        new MssqlPagingTransformer(offset, limit, this.pagingForceOffsetFetch);
+    var transformer = new MssqlPagingTransformer(offset, limit, this.pagingForceOffsetFetch);
     return transformer.transform(sqlNode);
   }
 
@@ -98,7 +103,7 @@ public class MssqlDialect extends Mssql2008Dialect {
     if (qualifiedSequenceName == null) {
       throw new DomaNullPointerException("qualifiedSequenceName");
     }
-    String rawSql = "select next value for " + qualifiedSequenceName;
+    var rawSql = "select next value for " + qualifiedSequenceName;
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }

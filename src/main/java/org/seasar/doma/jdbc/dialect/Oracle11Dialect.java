@@ -1,6 +1,10 @@
 package org.seasar.doma.jdbc.dialect;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,11 +16,29 @@ import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.util.AssertionUtil;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingFunction;
+import org.seasar.doma.jdbc.JdbcMappingHint;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.ScriptBlockContext;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormatter;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
-import org.seasar.doma.wrapper.*;
+import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
+import org.seasar.doma.wrapper.TimeWrapper;
+import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 
 /** A dialect for Oracle Database 11g and below. */
 public class Oracle11Dialect extends StandardDialect {
@@ -80,14 +102,13 @@ public class Oracle11Dialect extends StandardDialect {
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    OracleForUpdateTransformer transformer =
-        new OracleForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new OracleForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    OraclePagingTransformer transformer = new OraclePagingTransformer(offset, limit);
+    var transformer = new OraclePagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
@@ -96,7 +117,7 @@ public class Oracle11Dialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    int code = getErrorCode(sqlException);
+    var code = getErrorCode(sqlException);
     return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
   }
 
@@ -105,7 +126,7 @@ public class Oracle11Dialect extends StandardDialect {
     if (qualifiedSequenceName == null) {
       throw new DomaNullPointerException("qualifiedSequenceName");
     }
-    String rawSql = "select " + qualifiedSequenceName + ".nextval from dual";
+    var rawSql = "select " + qualifiedSequenceName + ".nextval from dual";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
@@ -277,7 +298,7 @@ public class Oracle11Dialect extends StandardDialect {
         if (value == null) {
           return "null";
         }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return "timestamp'" + dateFormat.format(value) + "'";
       }
     }

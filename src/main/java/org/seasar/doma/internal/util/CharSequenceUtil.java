@@ -15,7 +15,7 @@ public final class CharSequenceUtil {
       return true;
     }
     for (int i = 0, length = charSequence.length(); i < length; i++) {
-      char ch = charSequence.charAt(i);
+      var ch = charSequence.charAt(i);
       if (!Character.isWhitespace(ch)) {
         return false;
       }

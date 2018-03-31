@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
 import java.util.LinkedHashMap;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
@@ -33,22 +32,22 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     if (!ctx.getOptions().getSqlValidation()) {
       return;
     }
-    String filePath =
+    var filePath =
         SqlFileUtil.buildPath(getDaoElement().getQualifiedName().toString(), queryMeta.getName());
-    File file = getFile(queryMeta, filePath);
-    File[] siblingFiles = getSiblingFiles(queryMeta, file);
-    String dirPath = SqlFileUtil.buildPath(getDaoElement().getQualifiedName().toString());
-    String methodName = queryMeta.getName();
-    for (File siblingFile : siblingFiles) {
+    var file = getFile(queryMeta, filePath);
+    var siblingFiles = getSiblingFiles(queryMeta, file);
+    var dirPath = SqlFileUtil.buildPath(getDaoElement().getQualifiedName().toString());
+    var methodName = queryMeta.getName();
+    for (var siblingFile : siblingFiles) {
       if (SqlFileUtil.isSqlFile(siblingFile, methodName)) {
-        String fileName = siblingFile.getName();
-        String sqlFilePath = dirPath + "/" + fileName;
-        String sql = getSql(siblingFile, sqlFilePath);
+        var fileName = siblingFile.getName();
+        var sqlFilePath = dirPath + "/" + fileName;
+        var sql = getSql(siblingFile, sqlFilePath);
         if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
           throw new AptException(Message.DOMA4020, methodElement, new Object[] {sqlFilePath});
         }
-        SqlNode sqlNode = createSqlNode(queryMeta, sqlFilePath, sql);
-        SqlValidator validator =
+        var sqlNode = createSqlNode(queryMeta, sqlFilePath, sql);
+        var validator =
             createSqlValidator(
                 queryMeta.getBindableParameterTypeMap(), sqlFilePath, expandable, populatable);
         validator.validate(sqlNode);
@@ -58,12 +57,12 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
   }
 
   protected File getFile(M queryMeta, String filePath) {
-    FileObject fileObject = getFileObject(filePath);
-    URI uri = fileObject.toUri();
+    var fileObject = getFileObject(filePath);
+    var uri = fileObject.toUri();
     if (!uri.isAbsolute()) {
       uri = new File(".").toURI().resolve(uri);
     }
-    File file = getCanonicalFile(new File(uri));
+    var file = getCanonicalFile(new File(uri));
     if (!file.exists()) {
       throw new AptException(
           Message.DOMA4019, methodElement, new Object[] {filePath, file.getAbsolutePath()});
@@ -88,8 +87,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
   }
 
   protected File[] getSiblingFiles(M queryMeta, File file) {
-    File dir = getDir(file);
-    File[] files = dir.listFiles();
+    var dir = getDir(file);
+    var files = dir.listFiles();
     if (files == null) {
       throw new AptException(Message.DOMA4144, methodElement, new Object[] {dir.getAbsolutePath()});
     }
@@ -97,7 +96,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
   }
 
   protected File getDir(File sqlFile) {
-    File dir = sqlFile.getParentFile();
+    var dir = sqlFile.getParentFile();
     if (dir == null) {
       assertUnreachable();
     }
@@ -116,7 +115,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     try {
       return IOUtil.readAsString(file);
     } catch (WrapException e) {
-      Throwable cause = e.getCause();
+      var cause = e.getCause();
       throw new AptException(
           Message.DOMA4068, methodElement, cause, new Object[] {filePath, cause});
     }
@@ -124,7 +123,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
   protected SqlNode createSqlNode(M queryMeta, String path, String sql) {
     try {
-      SqlParser sqlParser = new SqlParser(sql);
+      var sqlParser = new SqlParser(sql);
       return sqlParser.parse();
     } catch (JdbcException e) {
       throw new AptException(Message.DOMA4069, methodElement, e, new Object[] {path, e});

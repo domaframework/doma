@@ -1,6 +1,43 @@
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.ADD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.AND_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.BIGDECIMAL_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.CHAR_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.CLOSED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.COMMA_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.DIVIDE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.DOUBLE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.EOE;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.EQ_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FALSE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FIELD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FLOAT_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FUNCTION_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.GE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.GT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.ILLEGAL_NUMBER_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.INT_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LONG_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.METHOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.MOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.MULTIPLY_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NEW_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NOT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NULL_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OPENED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OR_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OTHER;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STATIC_FIELD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STATIC_METHOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STRING_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.SUBTRACT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.TRUE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.VARIABLE;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.WHITESPACE;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.nio.CharBuffer;
@@ -36,7 +73,7 @@ public class ExpressionTokenizer {
         token = null;
         return EOE;
       default:
-        ExpressionTokenType currentType = type;
+        var currentType = type;
         prepareToken();
         peek();
         return currentType;
@@ -68,15 +105,15 @@ public class ExpressionTokenizer {
 
   protected void peek() {
     if (buf.hasRemaining()) {
-      char c = buf.get();
+      var c = buf.get();
       if (buf.hasRemaining()) {
-        char c2 = buf.get();
+        var c2 = buf.get();
         if (buf.hasRemaining()) {
-          char c3 = buf.get();
+          var c3 = buf.get();
           if (buf.hasRemaining()) {
-            char c4 = buf.get();
+            var c4 = buf.get();
             if (buf.hasRemaining()) {
-              char c5 = buf.get();
+              var c5 = buf.get();
               peekFiveChars(c, c2, c3, c4, c5);
             } else {
               peekFourChars(c, c2, c3, c4);
@@ -226,7 +263,7 @@ public class ExpressionTokenizer {
       if (buf.hasRemaining()) {
         buf.get();
         if (buf.hasRemaining()) {
-          char c3 = buf.get();
+          var c3 = buf.get();
           if (c3 == '\'') {
             binaryOpAvailable = true;
             return;
@@ -236,13 +273,13 @@ public class ExpressionTokenizer {
       throw new ExpressionException(Message.DOMA3016, expression, buf.position());
     } else if (c == '"') {
       type = STRING_LITERAL;
-      boolean closed = false;
+      var closed = false;
       while (buf.hasRemaining()) {
-        char c2 = buf.get();
+        var c2 = buf.get();
         if (c2 == '"') {
           if (buf.hasRemaining()) {
             buf.mark();
-            char c3 = buf.get();
+            var c3 = buf.get();
             if (c3 != '"') {
               buf.reset();
               closed = true;
@@ -260,7 +297,7 @@ public class ExpressionTokenizer {
     } else if ((c == '+' || c == '-')) {
       buf.mark();
       if (buf.hasRemaining()) {
-        char c2 = buf.get();
+        var c2 = buf.get();
         if (Character.isDigit(c2)) {
           peekNumber();
           return;
@@ -275,7 +312,7 @@ public class ExpressionTokenizer {
       binaryOpAvailable = true;
       while (buf.hasRemaining()) {
         buf.mark();
-        char c2 = buf.get();
+        var c2 = buf.get();
         if (!Character.isJavaIdentifierPart(c2)) {
           buf.reset();
           break;
@@ -288,11 +325,11 @@ public class ExpressionTokenizer {
         throw new ExpressionException(Message.DOMA3021, expression, buf.position());
       }
       buf.mark();
-      char c2 = buf.get();
+      var c2 = buf.get();
       if (Character.isJavaIdentifierStart(c2)) {
         while (buf.hasRemaining()) {
           buf.mark();
-          char c3 = buf.get();
+          var c3 = buf.get();
           if (!Character.isJavaIdentifierPart(c3)) {
             if (c3 == '(') {
               type = METHOD_OPERATOR;
@@ -310,11 +347,11 @@ public class ExpressionTokenizer {
         throw new ExpressionException(Message.DOMA3023, expression, buf.position());
       }
       buf.mark();
-      char c2 = buf.get();
+      var c2 = buf.get();
       if (Character.isJavaIdentifierStart(c2)) {
         while (buf.hasRemaining()) {
           buf.mark();
-          char c3 = buf.get();
+          var c3 = buf.get();
           if (!Character.isJavaIdentifierPart(c3)) {
             if (c3 == '(') {
               type = FUNCTION_OPERATOR;
@@ -327,7 +364,7 @@ public class ExpressionTokenizer {
             } else if (c3 == '.') {
               while (buf.hasRemaining()) {
                 buf.mark();
-                char c4 = buf.get();
+                var c4 = buf.get();
                 if (!Character.isJavaIdentifierPart(c4)) {
                   if (c4 == '.') {
                     continue;
@@ -358,11 +395,11 @@ public class ExpressionTokenizer {
       throw new ExpressionException(Message.DOMA3029, expression, buf.position());
     }
     buf.mark();
-    char c = buf.get();
+    var c = buf.get();
     if (Character.isJavaIdentifierStart(c)) {
       while (buf.hasRemaining()) {
         buf.mark();
-        char c2 = buf.get();
+        var c2 = buf.get();
         if (!Character.isJavaIdentifierPart(c2)) {
           if (c2 == '(') {
             type = STATIC_METHOD_OPERATOR;
@@ -379,10 +416,10 @@ public class ExpressionTokenizer {
 
   protected void peekNumber() {
     type = INT_LITERAL;
-    boolean decimal = false;
+    var decimal = false;
     while (buf.hasRemaining()) {
       buf.mark();
-      char c2 = buf.get();
+      var c2 = buf.get();
       if (Character.isDigit(c2)) {
         //noinspection UnnecessaryContinue
         continue;
@@ -393,7 +430,7 @@ public class ExpressionTokenizer {
         }
         decimal = true;
         if (buf.hasRemaining()) {
-          char c3 = buf.get();
+          var c3 = buf.get();
           if (!Character.isDigit(c3)) {
             type = ILLEGAL_NUMBER_LITERAL;
             return;
@@ -428,7 +465,7 @@ public class ExpressionTokenizer {
   protected boolean isWordTerminated() {
     buf.mark();
     if (buf.hasRemaining()) {
-      char c = buf.get();
+      var c = buf.get();
       if (!Character.isJavaIdentifierPart(c)) {
         buf.reset();
         return true;

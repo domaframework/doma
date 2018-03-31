@@ -73,7 +73,7 @@ public class DaoMeta implements TypeElementMeta {
       return Collections.emptyList();
     }
     List<AnnotationAnnot> results = new ArrayList<>();
-    for (AnnotationAnnot annotationAnnot : annotateWithAnnot.getAnnotationsValue()) {
+    for (var annotationAnnot : annotateWithAnnot.getAnnotationsValue()) {
       if (target.name().contentEquals(annotationAnnot.getTargetValue().getSimpleName())) {
         results.add(annotationAnnot);
       }

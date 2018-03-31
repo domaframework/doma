@@ -5,7 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * Indicates a delete.

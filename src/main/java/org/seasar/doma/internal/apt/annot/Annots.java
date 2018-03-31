@@ -7,8 +7,40 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import javax.lang.model.element.*;
-import org.seasar.doma.*;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import org.seasar.doma.AnnotateWith;
+import org.seasar.doma.ArrayFactory;
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.BlobFactory;
+import org.seasar.doma.ClobFactory;
+import org.seasar.doma.Column;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Embeddable;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Holder;
+import org.seasar.doma.HolderConverters;
+import org.seasar.doma.Insert;
+import org.seasar.doma.NClobFactory;
+import org.seasar.doma.Procedure;
+import org.seasar.doma.ResultSet;
+import org.seasar.doma.SQLXMLFactory;
+import org.seasar.doma.Script;
+import org.seasar.doma.Select;
+import org.seasar.doma.SequenceGenerator;
+import org.seasar.doma.SingletonConfig;
+import org.seasar.doma.SqlProcessor;
+import org.seasar.doma.Suppress;
+import org.seasar.doma.Table;
+import org.seasar.doma.TableGenerator;
+import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
@@ -29,11 +61,10 @@ public class Annots {
 
   public AnnotateWithAnnot newAnnotateWithAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
-    AnnotationMirror annotateWith =
-        ctx.getElements().getAnnotationMirror(typeElement, AnnotateWith.class);
+    var annotateWith = ctx.getElements().getAnnotationMirror(typeElement, AnnotateWith.class);
     if (annotateWith == null) {
       for (AnnotationMirror annotationMirror : typeElement.getAnnotationMirrors()) {
-        TypeElement ownerElement =
+        var ownerElement =
             ctx.getElements().toTypeElement(annotationMirror.getAnnotationType().asElement());
         if (ownerElement == null) {
           continue;
@@ -47,10 +78,10 @@ public class Annots {
         return null;
       }
     }
-    Map<String, AnnotationValue> values = ctx.getElements().getValuesWithDefaults(annotateWith);
-    AnnotationValue annotations = values.get("annotations");
+    var values = ctx.getElements().getValuesWithDefaults(annotateWith);
+    var annotations = values.get("annotations");
     ArrayList<AnnotationAnnot> annotationsValue = new ArrayList<>();
-    for (AnnotationMirror annotationMirror : AnnotationValueUtil.toAnnotationList(annotations)) {
+    for (var annotationMirror : AnnotationValueUtil.toAnnotationList(annotations)) {
       annotationsValue.add(newAnnotationAnnot(annotationMirror));
     }
     return new AnnotateWithAnnot(annotateWith, annotations, annotationsValue);
@@ -58,7 +89,7 @@ public class Annots {
 
   private AnnotationAnnot newAnnotationAnnot(AnnotationMirror annotationMirror) {
     assertNotNull(annotationMirror);
-    Map<String, AnnotationValue> values = ctx.getElements().getValuesWithDefaults(annotationMirror);
+    var values = ctx.getElements().getValuesWithDefaults(annotationMirror);
     return new AnnotationAnnot(annotationMirror, values);
   }
 
@@ -226,12 +257,11 @@ public class Annots {
       Element element,
       Class<? extends Annotation> annotationClass,
       BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
-    AnnotationMirror annotationMirror =
-        ctx.getElements().getAnnotationMirror(element, annotationClass);
+    var annotationMirror = ctx.getElements().getAnnotationMirror(element, annotationClass);
     if (annotationMirror == null) {
       return null;
     }
-    Map<String, AnnotationValue> values = ctx.getElements().getValuesWithDefaults(annotationMirror);
+    var values = ctx.getElements().getValuesWithDefaults(annotationMirror);
     return biFunction.apply(annotationMirror, values);
   }
 
@@ -239,12 +269,11 @@ public class Annots {
       Element element,
       String annotationClassName,
       BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
-    AnnotationMirror annotationMirror =
-        ctx.getElements().getAnnotationMirror(element, annotationClassName);
+    var annotationMirror = ctx.getElements().getAnnotationMirror(element, annotationClassName);
     if (annotationMirror == null) {
       return null;
     }
-    Map<String, AnnotationValue> values = ctx.getElements().getValuesWithDefaults(annotationMirror);
+    var values = ctx.getElements().getValuesWithDefaults(annotationMirror);
     return biFunction.apply(annotationMirror, values);
   }
 }

@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.dao.DaoMetaFactory;
-import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
 
 @SupportedAnnotationTypes({"org.seasar.doma.Dao"})
 @SupportedOptions({
@@ -41,7 +40,7 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
 
   @Override
   protected CodeSpec createCodeSpec(DaoMeta meta) {
-    ParentDaoMeta parentDaoMeta = meta.getParentDaoMeta();
+    var parentDaoMeta = meta.getParentDaoMeta();
     TypeElement parentDaoElement = null;
     if (parentDaoMeta != null) {
       parentDaoElement = parentDaoMeta.getDaoElement();

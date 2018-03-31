@@ -5,8 +5,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import javax.lang.model.element.*;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -32,7 +36,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
   protected void doTypeParameters(M queryMeta) {
     for (TypeParameterElement element : methodElement.getTypeParameters()) {
-      String name = ctx.getTypes().getTypeParameterName(element.asType());
+      var name = ctx.getTypes().getTypeParameterName(element.asType());
       queryMeta.addTypeParameterName(name);
     }
   }
@@ -59,9 +63,9 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
         Objects.requireNonNullElse(
             AnnotationValueUtil.toStringList(excludeValue), Collections.emptyList());
     if (!includedPropertyNames.isEmpty() || !excludedPropertyNames.isEmpty()) {
-      EntityPropertyNameCollector collector = new EntityPropertyNameCollector(ctx);
-      Set<String> names = collector.collect(entityType);
-      for (String included : includedPropertyNames) {
+      var collector = new EntityPropertyNameCollector(ctx);
+      var names = collector.collect(entityType);
+      for (var included : includedPropertyNames) {
         if (!names.contains(included)) {
           throw new AptException(
               Message.DOMA4084,
@@ -71,7 +75,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
               new Object[] {included, entityType});
         }
       }
-      for (String excluded : excludedPropertyNames) {
+      for (var excluded : excludedPropertyNames) {
         if (!names.contains(excluded)) {
           throw new AptException(
               Message.DOMA4085,
@@ -89,13 +93,13 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
   }
 
   protected QueryParameterMeta createParameterMeta(VariableElement parameterElement) {
-    QueryParameterMetaFactory factory = new QueryParameterMetaFactory(ctx, parameterElement);
+    var factory = new QueryParameterMetaFactory(ctx, parameterElement);
     return factory.createQueryParameterMeta();
   }
 
   protected TypeElement getDaoElement() {
-    Element element = methodElement.getEnclosingElement();
-    TypeElement typeElement = ctx.getElements().toTypeElement(element);
+    var element = methodElement.getEnclosingElement();
+    var typeElement = ctx.getElements().toTypeElement(element);
     if (typeElement == null) {
       throw new AptIllegalStateException(methodElement.toString());
     }

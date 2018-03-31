@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
 public class EmbeddableCtType extends AbstractCtType {
 
@@ -13,7 +12,7 @@ public class EmbeddableCtType extends AbstractCtType {
   EmbeddableCtType(Context ctx, TypeMirror type) {
     super(ctx, type);
     assertNotNull(typeElement);
-    CodeSpec codeSpec = ctx.getCodeSpecs().newEmbeddableDescCodeSpec(typeElement);
+    var codeSpec = ctx.getCodeSpecs().newEmbeddableDescCodeSpec(typeElement);
     this.descClassName = codeSpec.getQualifiedName();
   }
 

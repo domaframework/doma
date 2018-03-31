@@ -57,7 +57,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
   }
 
   public void testBegin_failedToBegin() throws Exception {
-    final SQLException exception = new SQLException();
+    final var exception = new SQLException();
     MockConnection connection =
         new MockConnection() {
 
@@ -66,8 +66,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
             throw exception;
           }
         };
-    LocalTransactionDataSource dataSource =
-        new LocalTransactionDataSource(new MockDataSource(connection));
+    var dataSource = new LocalTransactionDataSource(new MockDataSource(connection));
     LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(jdbcLogger);
     try {
       transaction.begin();
@@ -80,7 +79,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
   }
 
   public void testBegin_failedToSetTransactionIsolation() throws Exception {
-    final SQLException exception = new SQLException();
+    final var exception = new SQLException();
     MockConnection connection =
         new MockConnection() {
 
@@ -89,8 +88,7 @@ public class KeepAliveLocalTransactionTest extends TestCase {
             throw exception;
           }
         };
-    LocalTransactionDataSource dataSource =
-        new LocalTransactionDataSource(new MockDataSource(connection));
+    var dataSource = new LocalTransactionDataSource(new MockDataSource(connection));
     LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(jdbcLogger);
     try {
       transaction.begin(TransactionIsolationLevel.READ_COMMITTED);

@@ -12,7 +12,9 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.util.ResourceUtil;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.message.Message;
 
 public class SqlParserTest extends TestCase {
@@ -20,13 +22,13 @@ public class SqlParserTest extends TestCase {
   private final MockConfig config = new MockConfig();
 
   public void testBindVariable() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
-    String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -38,12 +40,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testBindVariable_holder() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("phone", new Value(PhoneNumber.class, new PhoneNumber("01-2345-6789")));
-    String testSql = "select * from aaa where phone = /*phone*/'111'";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where phone = /*phone*/'111'";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -54,12 +56,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testBindVariable_in() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Arrays.asList("hoge", "foo")));
-    String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -71,12 +73,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testBindVariable_in_empty_iterable() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Collections.emptyList()));
-    String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -86,10 +88,10 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testBindVariable_endsWithBindVariableComment() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
-    String testSql = "select * from aaa where ename = /*name*/";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select * from aaa where ename = /*name*/";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -100,8 +102,8 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testBindVariable_emptyName() throws Exception {
-    String testSql = "select * from aaa where ename = /*   */'aaa'";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select * from aaa where ename = /*   */'aaa'";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -112,50 +114,50 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testBindVariable_stringLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*name*/'bbb'";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode node = parser.parse();
+    var testSql = "select * from aaa where ename = /*name*/'bbb'";
+    var parser = new SqlParser(testSql);
+    var node = parser.parse();
     assertNotNull(node);
   }
 
   public void testBindVariable_intLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*name*/10";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode node = parser.parse();
+    var testSql = "select * from aaa where ename = /*name*/10";
+    var parser = new SqlParser(testSql);
+    var node = parser.parse();
     assertNotNull(node);
   }
 
   public void testBindVariable_floatLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*name*/.0";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode node = parser.parse();
+    var testSql = "select * from aaa where ename = /*name*/.0";
+    var parser = new SqlParser(testSql);
+    var node = parser.parse();
     assertNotNull(node);
   }
 
   public void testBindVariable_booleanTrueLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*name*/true";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode node = parser.parse();
+    var testSql = "select * from aaa where ename = /*name*/true";
+    var parser = new SqlParser(testSql);
+    var node = parser.parse();
     assertNotNull(node);
   }
 
   public void testBindVariable_booleanFalseLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*name*/false";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode node = parser.parse();
+    var testSql = "select * from aaa where ename = /*name*/false";
+    var parser = new SqlParser(testSql);
+    var node = parser.parse();
     assertNotNull(node);
   }
 
   public void testBindVariable_nullLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*name*/null";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode node = parser.parse();
+    var testSql = "select * from aaa where ename = /*name*/null";
+    var parser = new SqlParser(testSql);
+    var node = parser.parse();
     assertNotNull(node);
   }
 
   public void testBindVariable_illegalLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*name*/bbb";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select * from aaa where ename = /*name*/bbb";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -166,13 +168,13 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testBindVariable_enum() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(MyEnum.class, MyEnum.BBB));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
-    String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -184,13 +186,13 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testLiteralVariable() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
-    String testSql = "select * from aaa where ename = /*^name*/'aaa' and sal = /*^salary*/-2000";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where ename = /*^name*/'aaa' and sal = /*^salary*/-2000";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -200,8 +202,8 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testLiteralVariable_emptyName() throws Exception {
-    String testSql = "select * from aaa where ename = /*^   */'aaa'";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select * from aaa where ename = /*^   */'aaa'";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -212,12 +214,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testLiteralVariable_in() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Arrays.asList("hoge", "foo")));
-    String testSql = "select * from aaa where ename in /*^name*/('aaa', 'bbb')";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where ename in /*^name*/('aaa', 'bbb')";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -227,10 +229,10 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testLiteralVariable_endsWithLiteralVariableComment() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
-    String testSql = "select * from aaa where ename = /*^name*/";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select * from aaa where ename = /*^name*/";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -241,8 +243,8 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testLiteralVariable_illegalLiteral() throws Exception {
-    String testSql = "select * from aaa where ename = /*^name*/bbb";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select * from aaa where ename = /*^name*/bbb";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -253,15 +255,15 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testEmbeddedVariable() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
     evaluator.add("orderBy", new Value(String.class, "order by name asc, salary"));
-    String testSql =
+    var testSql =
         "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -276,15 +278,15 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testEmbeddedVariable_inside() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
     evaluator.add("table", new Value(String.class, "aaa"));
-    String testSql =
+    var testSql =
         "select * from /*# table */ where ename = /*name*/'aaa' and sal = /*salary*/-2000";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -296,8 +298,8 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testEmbeddedVariable_emptyName() throws Exception {
-    String testSql = "select * from aaa where ename = /*#   */'aaa'";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select * from aaa where ename = /*#   */'aaa'";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -308,11 +310,11 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testExpand() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    String testSql = "select /*%expand*/* from aaa";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var evaluator = new ExpressionEvaluator();
+    var testSql = "select /*%expand*/* from aaa";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config,
                 SqlKind.SELECT,
@@ -326,11 +328,11 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testExpand_withSpace() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    String testSql = "select /*%expand */* from aaa";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var evaluator = new ExpressionEvaluator();
+    var testSql = "select /*%expand */* from aaa";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config,
                 SqlKind.SELECT,
@@ -344,11 +346,11 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testExpand_alias() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    String testSql = "select /*%expand \"a\"*/* from aaa a";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var evaluator = new ExpressionEvaluator();
+    var testSql = "select /*%expand \"a\"*/* from aaa a";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config,
                 SqlKind.SELECT,
@@ -362,8 +364,8 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testExpand_notAsteriskChar() throws Exception {
-    String testSql = "select /*%expand*/+ from aaa";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select /*%expand*/+ from aaa";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -374,8 +376,8 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testExpand_word() throws Exception {
-    String testSql = "select /*%expand*/'hoge' from aaa";
-    SqlParser parser = new SqlParser(testSql);
+    var testSql = "select /*%expand*/'hoge' from aaa";
+    var parser = new SqlParser(testSql);
     try {
       parser.parse();
       fail();
@@ -386,12 +388,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testIf() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
-    String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -402,12 +404,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testIf_fromClause() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("type", new Value(String.class, "a"));
-    String testSql = "select * from /*%if type == \"a\"*/aaa/*%else*/ bbb/*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from /*%if type == \"a\"*/aaa/*%else*/ bbb/*%end*/";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -416,12 +418,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testIf_selectClause() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("type", new Value(String.class, "a"));
-    String testSql = "select /*%if type == \"a\"*/aaa /*%else*/ bbb /*%end*/from ccc";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select /*%if type == \"a\"*/aaa /*%else*/ bbb /*%end*/from ccc";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -430,12 +432,12 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testIf_removeWhere() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
-    String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -445,13 +447,13 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testIf_removeAnd() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
-    String testSql =
+    var testSql =
         "select * from aaa where \n/*%if name != null*/bbb = /*name*/'ccc' \n/*%else*/\n --comment\nand ddd is null\n /*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -461,13 +463,13 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testIf_nest() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%if name == \"hoge\"*/and ddd = eee/*%end*//*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -477,14 +479,14 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testIf_nestContinuously() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("name2", new Value(String.class, null));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%if name != null*//*%if name2 == \"hoge\"*/ ddd = eee/*%end*//*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -494,13 +496,13 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testElseifBlock() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, ""));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%if name == null*/bbb is null\n/*%elseif name ==\"\"*/\nbbb = /*name*/'ccc'/*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -511,13 +513,13 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testElseBlock() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%if name == null*/bbb is null\n/*%elseif name == \"\"*/\n/*%else*/ bbb = /*name*/'ccc'/*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -528,11 +530,11 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testUnion() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    String testSql = "select * from aaa where /*%if false*//*%end*/union all select * from bbb";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var evaluator = new ExpressionEvaluator();
+    var testSql = "select * from aaa where /*%if false*//*%end*/union all select * from bbb";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -540,14 +542,14 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testSelect() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("count", new Value(Integer.class, 5));
-    String testSql =
+    var testSql =
         "select aaa.deptname, count(*) from aaa join bbb on aaa.id = bbb.id where aaa.name = /*name*/'ccc' group by aaa.deptname having count(*) > /*count*/10 order by aaa.name for update bbb";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -563,14 +565,14 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testUpdate() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("no", new Value(Integer.class, 10));
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("id", new Value(Integer.class, 100));
-    String testSql = "update aaa set no = /*no*/1, set name = /*name*/'name' where id = /*id*/1";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var testSql = "update aaa set no = /*no*/1, set name = /*name*/'name' where id = /*id*/1";
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -583,17 +585,17 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testFor() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    var evaluator = new ExpressionEvaluator();
+    var list = new ArrayList<String>();
     list.add("aaa");
     list.add("bbb");
     list.add("ccc");
     evaluator.add("names", new Value(List.class, list));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -608,14 +610,14 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testFor_removeWhere() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    var evaluator = new ExpressionEvaluator();
+    var list = new ArrayList<String>();
     evaluator.add("names", new Value(List.class, list));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -625,14 +627,14 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testFor_removeOr() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    var evaluator = new ExpressionEvaluator();
+    var list = new ArrayList<String>();
     evaluator.add("names", new Value(List.class, list));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/ or salary > 100";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -642,17 +644,17 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testFor_index() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    var evaluator = new ExpressionEvaluator();
+    var list = new ArrayList<String>();
     list.add("aaa");
     list.add("bbb");
     list.add("ccc");
     evaluator.add("names", new Value(List.class, list));
-    String testSql =
+    var testSql =
         "select * from aaa where /*%for n : names*/name/*# n_index */ = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -667,7 +669,7 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testValidate_ifEnd() throws Exception {
-    SqlParser parser = new SqlParser("select * from aaa /*%if true*/");
+    var parser = new SqlParser("select * from aaa /*%if true*/");
     try {
       parser.parse();
       fail();
@@ -678,7 +680,7 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testValidate_ifEnd_selectClause() throws Exception {
-    SqlParser parser = new SqlParser("select /*%if true*/* from aaa");
+    var parser = new SqlParser("select /*%if true*/* from aaa");
     try {
       parser.parse();
       fail();
@@ -689,7 +691,7 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testValidate_ifEnd_subquery() throws Exception {
-    SqlParser parser = new SqlParser("select *, (select /*%if true */ from aaa) x from aaa");
+    var parser = new SqlParser("select *, (select /*%if true */ from aaa) x from aaa");
     try {
       parser.parse();
       fail();
@@ -700,7 +702,7 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testValidate_forEnd() throws Exception {
-    SqlParser parser = new SqlParser("select * from aaa /*%for name : names*/");
+    var parser = new SqlParser("select * from aaa /*%for name : names*/");
     try {
       parser.parse();
       fail();
@@ -711,7 +713,7 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testValidate_unclosedParens() throws Exception {
-    SqlParser parser = new SqlParser("select * from (select * from bbb");
+    var parser = new SqlParser("select * from (select * from bbb");
     try {
       parser.parse();
       fail();
@@ -722,18 +724,18 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testValidate_enclosedParensByIfBlock() throws Exception {
-    SqlParser parser = new SqlParser("select * from /*%if true*/(select * from bbb)/*%end*/");
+    var parser = new SqlParser("select * from /*%if true*/(select * from bbb)/*%end*/");
     parser.parse();
   }
 
   public void testParens_removeAnd() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
-    String testSql =
+    var testSql =
         "select * from aaa where (\n/*%if name != null*/bbb = /*name*/'ccc'\n/*%else*/\nand ddd is null\n /*%end*/)";
-    SqlParser parser = new SqlParser(testSql);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var parser = new SqlParser(testSql);
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -743,10 +745,10 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testEmptyParens() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    SqlParser parser = new SqlParser("select rank()");
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var evaluator = new ExpressionEvaluator();
+    var parser = new SqlParser("select rank()");
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -754,10 +756,10 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testEmptyParens_whiteSpace() throws Exception {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    SqlParser parser = new SqlParser("select rank(   )");
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
+    var evaluator = new ExpressionEvaluator();
+    var parser = new SqlParser("select rank(   )");
+    var sqlNode = parser.parse();
+    var sql =
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
@@ -765,10 +767,10 @@ public class SqlParserTest extends TestCase {
   }
 
   public void testManyEol() throws Exception {
-    String path = "META-INF/" + getClass().getName().replace('.', '/') + "/manyEol.sql";
-    String sql = ResourceUtil.getResourceAsString(path);
-    SqlParser parser = new SqlParser(sql);
-    SqlNode sqlNode = parser.parse();
+    var path = "META-INF/" + getClass().getName().replace('.', '/') + "/manyEol.sql";
+    var sql = ResourceUtil.getResourceAsString(path);
+    var parser = new SqlParser(sql);
+    var sqlNode = parser.parse();
     assertNotNull(sqlNode);
   }
 

@@ -4,11 +4,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
@@ -45,10 +48,10 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
   @Override
   public HolderMeta createTypeElementMeta() {
     assertNotNull(holderElement);
-    BasicCtType basicCtType = createBasicCtType();
-    HolderMeta holderMeta =
+    var basicCtType = createBasicCtType();
+    var holderMeta =
         new HolderMeta(holderElement, holderElement.asType(), holderAnnot, basicCtType);
-    Strategy strategy = createStrategy();
+    var strategy = createStrategy();
     strategy.validateAcceptNull(holderMeta);
     strategy.validateClass(holderMeta);
     strategy.validateInitializer(holderMeta);
@@ -57,8 +60,8 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
   }
 
   private BasicCtType createBasicCtType() {
-    TypeMirror valueType = holderAnnot.getValueTypeValue();
-    BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
+    var valueType = holderAnnot.getValueTypeValue();
+    var basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
     if (basicCtType == null) {
       throw new AptException(
           Message.DOMA4102,
@@ -71,7 +74,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
   }
 
   private Strategy createStrategy() {
-    ValueAnnot valueAnnot = ctx.getAnnots().newValueAnnot(holderElement);
+    var valueAnnot = ctx.getAnnots().newValueAnnot(holderElement);
     if (valueAnnot != null) {
       return new ValueStrategy(valueAnnot);
     }
@@ -94,7 +97,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     @Override
     public void validateAcceptNull(HolderMeta holderMeta) {
       if (holderMeta.getBasicCtType().isPrimitive() && holderMeta.getAcceptNull()) {
-        HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
+        var holderAnnot = holderMeta.getHolderAnnot();
         throw new AptException(
             Message.DOMA4251,
             holderElement,
@@ -115,7 +118,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
         }
       } else if (holderElement.getKind() == ElementKind.ENUM) {
         if (holderMeta.providesConstructor()) {
-          HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
+          var holderAnnot = holderMeta.getHolderAnnot();
           throw new AptException(
               Message.DOMA4184,
               holderElement,
@@ -133,28 +136,28 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
           validateEnclosingElement(holderElement);
         }
       } else {
-        HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
+        var holderAnnot = holderMeta.getHolderAnnot();
         throw new AptException(Message.DOMA4105, holderElement, holderAnnot.getAnnotationMirror());
       }
     }
 
     private void validateEnclosingElement(Element element) {
-      TypeElement typeElement = ctx.getElements().toTypeElement(element);
+      var typeElement = ctx.getElements().toTypeElement(element);
       if (typeElement == null) {
         return;
       }
-      String simpleName = typeElement.getSimpleName().toString();
+      var simpleName = typeElement.getSimpleName().toString();
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
           || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
         throw new AptException(
             Message.DOMA4277, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
-      NestingKind nestingKind = typeElement.getNestingKind();
+      var nestingKind = typeElement.getNestingKind();
       if (nestingKind == NestingKind.TOP_LEVEL) {
         //noinspection UnnecessaryReturnStatement
         return;
       } else if (nestingKind == NestingKind.MEMBER) {
-        Set<Modifier> modifiers = typeElement.getModifiers();
+        var modifiers = typeElement.getModifiers();
         if (modifiers.containsAll(Arrays.asList(Modifier.STATIC, Modifier.PUBLIC))) {
           validateEnclosingElement(typeElement.getEnclosingElement());
         } else {
@@ -177,16 +180,15 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     }
 
     private void validateConstructor(HolderMeta holderMeta) {
-      for (ExecutableElement constructor :
-          ElementFilter.constructorsIn(holderElement.getEnclosedElements())) {
+      for (var constructor : ElementFilter.constructorsIn(holderElement.getEnclosedElements())) {
         if (constructor.getModifiers().contains(Modifier.PRIVATE)) {
           continue;
         }
-        List<? extends VariableElement> parameters = constructor.getParameters();
+        var parameters = constructor.getParameters();
         if (parameters.size() != 1) {
           continue;
         }
-        TypeMirror parameterType = parameters.get(0).asType();
+        var parameterType = parameters.get(0).asType();
         if (ctx.getTypes().isSameType(parameterType, holderMeta.getValueType())) {
           return;
         }
@@ -197,8 +199,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
     private void validateFactoryMethod(HolderMeta holderMeta) {
       outer:
-      for (ExecutableElement method :
-          ElementFilter.methodsIn(holderElement.getEnclosedElements())) {
+      for (var method : ElementFilter.methodsIn(holderElement.getEnclosedElements())) {
         if (!method.getSimpleName().contentEquals(holderMeta.getFactoryMethod())) {
           continue;
         }
@@ -211,23 +212,23 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
         if (method.getParameters().size() != 1) {
           continue;
         }
-        TypeMirror parameterType = method.getParameters().get(0).asType();
+        var parameterType = method.getParameters().get(0).asType();
         if (!ctx.getTypes().isAssignable(holderMeta.getValueType(), parameterType)) {
           continue;
         }
         if (!ctx.getTypes().isAssignable(method.getReturnType(), holderMeta.getType())) {
           continue;
         }
-        List<? extends TypeParameterElement> classTypeParams = holderElement.getTypeParameters();
-        List<? extends TypeParameterElement> methodTypeParams = method.getTypeParameters();
+        var classTypeParams = holderElement.getTypeParameters();
+        var methodTypeParams = method.getTypeParameters();
         if (classTypeParams.size() != methodTypeParams.size()) {
           continue;
         }
         for (Iterator<? extends TypeParameterElement> cit = classTypeParams.iterator(),
                 mit = methodTypeParams.iterator();
             cit.hasNext() && mit.hasNext(); ) {
-          TypeParameterElement classTypeParam = cit.next();
-          TypeParameterElement methodTypeParam = mit.next();
+          var classTypeParam = cit.next();
+          var methodTypeParam = mit.next();
           if (!ctx.getTypes().isSameType(classTypeParam.asType(), methodTypeParam.asType())) {
             continue outer;
           }
@@ -244,11 +245,10 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
     @Override
     public void validateAccessorMethod(HolderMeta holderMeta) {
-      TypeElement typeElement = holderElement;
-      TypeMirror typeMirror = holderElement.asType();
+      var typeElement = holderElement;
+      var typeMirror = holderElement.asType();
       for (; typeElement != null && typeMirror.getKind() != TypeKind.NONE; ) {
-        for (ExecutableElement method :
-            ElementFilter.methodsIn(typeElement.getEnclosedElements())) {
+        for (var method : ElementFilter.methodsIn(typeElement.getEnclosedElements())) {
           if (!method.getSimpleName().contentEquals(holderMeta.getAccessorMethod())) {
             continue;
           }
@@ -258,13 +258,13 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
           if (!method.getParameters().isEmpty()) {
             continue;
           }
-          TypeMirror returnType = method.getReturnType();
+          var returnType = method.getReturnType();
           if (ctx.getTypes().isAssignable(returnType, holderMeta.getValueType())) {
             return;
           }
-          TypeVariable typeVariable = ctx.getTypes().toTypeVariable(returnType);
+          var typeVariable = ctx.getTypes().toTypeVariable(returnType);
           if (typeVariable != null) {
-            TypeMirror inferredReturnType = inferType(typeVariable, typeElement, typeMirror);
+            var inferredReturnType = inferType(typeVariable, typeElement, typeMirror);
             if (inferredReturnType != null) {
               if (ctx.getTypes().isAssignable(inferredReturnType, holderMeta.getValueType())) {
                 return;
@@ -283,16 +283,16 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
     protected TypeMirror inferType(
         TypeVariable typeVariable, TypeElement classElement, TypeMirror classMirror) {
-      DeclaredType declaredType = ctx.getTypes().toDeclaredType(classMirror);
+      var declaredType = ctx.getTypes().toDeclaredType(classMirror);
       if (declaredType == null) {
         return null;
       }
-      List<? extends TypeMirror> args = declaredType.getTypeArguments();
+      var args = declaredType.getTypeArguments();
       if (args.isEmpty()) {
         return null;
       }
-      int argsSize = args.size();
-      int index = 0;
+      var argsSize = args.size();
+      var index = 0;
       for (TypeParameterElement typeParam : classElement.getTypeParameters()) {
         if (index >= argsSize) {
           break;
@@ -327,10 +327,10 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
     @Override
     public void validateAccessorMethod(HolderMeta holderMeta) {
-      VariableElement field = findSingleField(holderMeta);
-      String accessorMethod = inferAccessorMethod(field);
+      var field = findSingleField(holderMeta);
+      var accessorMethod = inferAccessorMethod(field);
       if (!accessorMethod.equals(holderMeta.getAccessorMethod())) {
-        HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
+        var holderAnnot = holderMeta.getHolderAnnot();
         throw new AptException(
             Message.DOMA4429,
             holderElement,
@@ -341,8 +341,8 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     }
 
     private String inferAccessorMethod(VariableElement field) {
-      String name = field.getSimpleName().toString();
-      String capitalizedName = StringUtil.capitalize(name);
+      var name = field.getSimpleName().toString();
+      var capitalizedName = StringUtil.capitalize(name);
       if (field.asType().getKind() == TypeKind.BOOLEAN) {
         if (name.startsWith("is") && (name.length() > 2 && Character.isUpperCase(name.charAt(2)))) {
           return name;
@@ -353,7 +353,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     }
 
     private VariableElement findSingleField(HolderMeta holderMeta) {
-      List<VariableElement> fields =
+      var fields =
           ElementFilter.fieldsIn(holderElement.getEnclosedElements())
               .stream()
               .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
@@ -364,7 +364,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
       if (fields.size() > 1) {
         throw new AptException(Message.DOMA4431, holderElement);
       }
-      VariableElement field = fields.get(0);
+      var field = fields.get(0);
       if (!ctx.getTypes().isAssignable(field.asType(), holderMeta.getValueType())) {
         throw new AptException(
             Message.DOMA4432, field, new Object[] {field.asType(), holderMeta.getValueType()});

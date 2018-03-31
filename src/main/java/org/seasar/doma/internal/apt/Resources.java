@@ -2,12 +2,15 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -34,10 +37,10 @@ public class Resources {
 
   public FileObject getResource(String relativePath) throws IOException {
     assertNotNull(relativePath);
-    Map<String, String> options = env.getOptions();
-    String resourcesDir = options.get(Options.RESOURCES_DIR);
+    var options = env.getOptions();
+    var resourcesDir = options.get(Options.RESOURCES_DIR);
     if (resourcesDir != null) {
-      Path path = Paths.get(resourcesDir, relativePath);
+      var path = Paths.get(resourcesDir, relativePath);
       return new FileObjectImpl(path);
     }
     return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);

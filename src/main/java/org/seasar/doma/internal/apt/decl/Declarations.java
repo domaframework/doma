@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
@@ -31,9 +33,8 @@ public class Declarations {
 
   public TypeDeclaration newTypeDeclaration(TypeMirror type) {
     assertNotNull(type);
-    List<TypeParameterDeclaration> typeParameterDeclarations =
-        createTypeParameterDeclarations(type);
-    List<TypeDeclaration> supertypeDeclarations =
+    var typeParameterDeclarations = createTypeParameterDeclarations(type);
+    var supertypeDeclarations =
         ctx.getTypes()
             .supertypes(type)
             .stream()
@@ -48,18 +49,18 @@ public class Declarations {
   }
 
   public TypeDeclaration newBooleanTypeDeclaration() {
-    TypeMirror type = ctx.getTypes().getType(boolean.class);
+    var type = ctx.getTypes().getType(boolean.class);
     return newTypeDeclaration(type);
   }
 
   public List<TypeParameterDeclaration> createTypeParameterDeclarations(TypeMirror type) {
     assertNotNull(type);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+    var typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement == null) {
       return Collections.emptyList();
     }
-    Stream<TypeMirror> formalParams = typeElement.getTypeParameters().stream().map(Element::asType);
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var formalParams = typeElement.getTypeParameters().stream().map(Element::asType);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     Stream<TypeMirror> actualParams =
         declaredType.getTypeArguments().stream().map(Function.identity());
     return Zip.stream(formalParams, actualParams)
@@ -74,8 +75,8 @@ public class Declarations {
         fieldElement.getKind() == ElementKind.FIELD
             || fieldElement.getKind() == ElementKind.ENUM_CONSTANT,
         fieldElement.getKind().toString());
-    TypeMirror typeMirror = resolveTypeParameter(fieldElement.asType(), typeParameterDeclarations);
-    TypeDeclaration typeDeclaration = newTypeDeclaration(typeMirror);
+    var typeMirror = resolveTypeParameter(fieldElement.asType(), typeParameterDeclarations);
+    var typeDeclaration = newTypeDeclaration(typeMirror);
     return new FieldDeclaration(fieldElement, typeDeclaration);
   }
 
@@ -89,9 +90,9 @@ public class Declarations {
       ExecutableElement methodElement, List<TypeParameterDeclaration> typeParameterDeclarations) {
     assertNotNull(methodElement, typeParameterDeclarations);
     assertTrue(methodElement.getKind() == ElementKind.METHOD);
-    TypeMirror returnTypeMirror =
+    var returnTypeMirror =
         resolveTypeParameter(methodElement.getReturnType(), typeParameterDeclarations);
-    TypeDeclaration returnTypeDeclaration = newTypeDeclaration(returnTypeMirror);
+    var returnTypeDeclaration = newTypeDeclaration(returnTypeMirror);
     return new MethodDeclaration(methodElement, returnTypeDeclaration);
   }
 
@@ -103,7 +104,7 @@ public class Declarations {
 
   private TypeMirror resolveTypeParameter(
       TypeMirror formalType, List<TypeParameterDeclaration> typeParameterDeclarations) {
-    for (TypeParameterDeclaration typeParameterDecl : typeParameterDeclarations) {
+    for (var typeParameterDecl : typeParameterDeclarations) {
       if (formalType.equals(typeParameterDecl.getFormalType())) {
         return typeParameterDecl.getActualType();
       }

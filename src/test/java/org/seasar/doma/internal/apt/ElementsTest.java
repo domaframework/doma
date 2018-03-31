@@ -1,11 +1,12 @@
 package org.seasar.doma.internal.apt;
 
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Collectors;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 public class ElementsTest extends AptTestCase {
@@ -15,9 +16,9 @@ public class ElementsTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              Elements elements = ctx.getElements();
-              TypeElement arrayListElement = elements.getTypeElement(ArrayList.class);
-              List<String> names =
+              var elements = ctx.getElements();
+              var arrayListElement = elements.getTypeElement(ArrayList.class);
+              var names =
                   elements
                       .hierarchy(arrayListElement)
                       .stream()
@@ -39,9 +40,9 @@ public class ElementsTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              Elements elements = ctx.getElements();
-              TypeElement objectElement = elements.getTypeElement(Object.class);
-              List<String> names =
+              var elements = ctx.getElements();
+              var objectElement = elements.getTypeElement(Object.class);
+              var names =
                   elements
                       .hierarchy(objectElement)
                       .stream()
@@ -60,19 +61,19 @@ public class ElementsTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              Elements elements = ctx.getElements();
-              TypeElement childTypeElement = elements.getTypeElement(Ccc.class);
-              List<VariableElement> fields =
+              var elements = ctx.getElements();
+              var childTypeElement = elements.getTypeElement(Ccc.class);
+              var fields =
                   elements.getUnhiddenFields(
                       childTypeElement, t -> !t.getSimpleName().contentEquals("Bbb"));
               assertEquals(3, fields.size());
-              VariableElement field0 = fields.get(0);
+              var field0 = fields.get(0);
               assertTrue(field0.getSimpleName().contentEquals("aaa"));
               assertTrue(field0.getEnclosingElement().getSimpleName().contentEquals("Aaa"));
-              VariableElement field1 = fields.get(1);
+              var field1 = fields.get(1);
               assertTrue(field1.getSimpleName().contentEquals("bbb"));
               assertTrue(field1.getEnclosingElement().getSimpleName().contentEquals("Ccc"));
-              VariableElement field2 = fields.get(2);
+              var field2 = fields.get(2);
               assertTrue(field2.getSimpleName().contentEquals("ddd"));
               assertTrue(field2.getEnclosingElement().getSimpleName().contentEquals("Ccc"));
             }));
@@ -85,13 +86,12 @@ public class ElementsTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              Elements elements = ctx.getElements();
-              ExecutableElement methodElement =
-                  elements.getMethodElement(Ddd.class, "aaa", Integer.class);
+              var elements = ctx.getElements();
+              var methodElement = elements.getMethodElement(Ddd.class, "aaa", Integer.class);
               assertNotNull(methodElement);
               assertTrue(methodElement.getSimpleName().contentEquals("aaa"));
-              List<? extends VariableElement> paramElements = methodElement.getParameters();
-              VariableElement paramElement = paramElements.get(0);
+              var paramElements = methodElement.getParameters();
+              var paramElement = paramElements.get(0);
               assertEquals(
                   Integer.class.getName(), ctx.getTypes().getTypeName(paramElement.asType()));
             }));
@@ -104,8 +104,8 @@ public class ElementsTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              Elements elements = ctx.getElements();
-              ExecutableElement methodElement =
+              var elements = ctx.getElements();
+              var methodElement =
                   elements.getMethodElement(
                       Eee.class, "aaa", String.class, Integer.class, Long.class);
               Map<String, TypeMirror> map = elements.getParameterTypeMap(methodElement);

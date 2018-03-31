@@ -7,7 +7,14 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Db2ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.Db2PagingTransformer;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.ScriptBlockContext;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 
 /** A dialect for Db2. */
 public class Db2Dialect extends StandardDialect {
@@ -54,14 +61,13 @@ public class Db2Dialect extends StandardDialect {
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    Db2ForUpdateTransformer transformer =
-        new Db2ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new Db2ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    Db2PagingTransformer transformer = new Db2PagingTransformer(offset, limit);
+    var transformer = new Db2PagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
@@ -70,7 +76,7 @@ public class Db2Dialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    String state = getSQLState(sqlException);
+    var state = getSQLState(sqlException);
     return UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE.equals(state);
   }
 
@@ -79,7 +85,7 @@ public class Db2Dialect extends StandardDialect {
     if (qualifiedSequenceName == null) {
       throw new DomaNullPointerException("qualifiedSequenceName");
     }
-    String rawSql = "values nextval for " + qualifiedSequenceName;
+    var rawSql = "values nextval for " + qualifiedSequenceName;
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }

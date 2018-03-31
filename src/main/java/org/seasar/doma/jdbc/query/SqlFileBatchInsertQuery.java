@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.sql.Statement;
-import java.util.ListIterator;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.Config;
@@ -24,7 +23,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
   @Override
   public void prepare() {
     super.prepare();
-    int size = elements.size();
+    var size = elements.size();
     if (size == 0) {
       return;
     }
@@ -36,7 +35,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     prepareOptions();
     prepareSql();
     elements.set(0, currentEntity);
-    for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext(); ) {
+    for (var it = elements.listIterator(1); it.hasNext(); ) {
       currentEntity = it.next();
       preInsert();
       prepareSql();
@@ -57,7 +56,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
   @Override
   public void complete() {
     if (entityHandler != null) {
-      for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext(); ) {
+      for (var it = elements.listIterator(); it.hasNext(); ) {
         currentEntity = it.next();
         entityHandler.postInsert();
         it.set(currentEntity);
@@ -85,8 +84,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
 
     protected void preInsert() {
-      SqlFileBatchPreInsertContext<ELEMENT> context =
-          new SqlFileBatchPreInsertContext<>(entityDesc, method, config);
+      var context = new SqlFileBatchPreInsertContext<>(entityDesc, method, config);
       entityDesc.preInsert(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();
@@ -94,8 +92,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
 
     protected void postInsert() {
-      SqlFileBatchPostInsertContext<ELEMENT> context =
-          new SqlFileBatchPostInsertContext<>(entityDesc, method, config);
+      var context = new SqlFileBatchPostInsertContext<>(entityDesc, method, config);
       entityDesc.postInsert(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();

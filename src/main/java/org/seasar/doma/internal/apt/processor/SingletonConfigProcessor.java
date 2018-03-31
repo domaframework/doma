@@ -1,12 +1,10 @@
 package org.seasar.doma.internal.apt.processor;
 
 import java.util.EnumSet;
-import java.util.Optional;
 import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
@@ -32,7 +30,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
       return true;
     }
     for (TypeElement a : annotations) {
-      for (TypeElement typeElement : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(a))) {
+      for (var typeElement : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(a))) {
         handleTypeElement(typeElement, this::validate);
       }
     }
@@ -40,7 +38,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   private void validate(TypeElement typeElement) {
-    SingletonConfigAnnot mirror = ctx.getAnnots().newSingletonConfigAnnot(typeElement);
+    var mirror = ctx.getAnnots().newSingletonConfigAnnot(typeElement);
     if (mirror == null) {
       throw new AptIllegalStateException("mirror must not be null");
     }
@@ -67,7 +65,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   private void validateMethod(TypeElement typeElement, String methodName) {
-    Optional<ExecutableElement> method =
+    var method =
         ElementFilter.methodsIn(typeElement.getEnclosedElements())
             .stream()
             .filter(m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))

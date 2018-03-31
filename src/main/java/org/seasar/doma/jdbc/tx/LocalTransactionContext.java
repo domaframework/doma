@@ -63,14 +63,14 @@ public class LocalTransactionContext {
 
   Savepoint releaseAndGetSavepoint(String savepointName) {
     assertNotNull(savepointName);
-    Savepoint result = savepointMap.get(savepointName);
+    var result = savepointMap.get(savepointName);
     if (result == null) {
       return null;
     }
-    int pos = savepointNames.lastIndexOf(savepointName);
+    var pos = savepointNames.lastIndexOf(savepointName);
     if (pos > -1) {
-      List<String> subList = savepointNames.subList(pos, savepointNames.size());
-      for (String name : subList) {
+      var subList = savepointNames.subList(pos, savepointNames.size());
+      for (var name : subList) {
         savepointMap.remove(name);
       }
       subList.clear();

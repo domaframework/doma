@@ -5,7 +5,13 @@ import java.util.Collections;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.SqlitePagingTransformer;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 
 /** A dialect for SQLite. */
 public class SqliteDialect extends StandardDialect {
@@ -65,14 +71,14 @@ public class SqliteDialect extends StandardDialect {
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
-    String rawSql = "select last_insert_rowid()";
+    var rawSql = "select last_insert_rowid()";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    SqlitePagingTransformer transformer = new SqlitePagingTransformer(offset, limit);
+    var transformer = new SqlitePagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
@@ -92,8 +98,8 @@ public class SqliteDialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    SQLException cause = getCauseSQLException(sqlException);
-    String message = cause.getMessage();
+    var cause = getCauseSQLException(sqlException);
+    var message = cause.getMessage();
     return message != null
         && message.startsWith("[SQLITE_CONSTRAINT]")
         && message.contains(" unique)");

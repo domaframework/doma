@@ -2,7 +2,11 @@ package org.seasar.doma.jdbc.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 
 /** A JDBC type for {@link Types#BIGINT} and {@link BigInteger}. */
 public class BigIntegerType extends AbstractJdbcType<BigInteger> {
@@ -13,7 +17,7 @@ public class BigIntegerType extends AbstractJdbcType<BigInteger> {
 
   @Override
   protected BigInteger doGetValue(ResultSet resultSet, int index) throws SQLException {
-    BigDecimal decimal = resultSet.getBigDecimal(index);
+    var decimal = resultSet.getBigDecimal(index);
     return decimal != null ? decimal.toBigInteger() : null;
   }
 
@@ -26,7 +30,7 @@ public class BigIntegerType extends AbstractJdbcType<BigInteger> {
   @Override
   protected BigInteger doGetValue(CallableStatement callableStatement, int index)
       throws SQLException {
-    BigDecimal decimal = callableStatement.getBigDecimal(index);
+    var decimal = callableStatement.getBigDecimal(index);
     return decimal != null ? decimal.toBigInteger() : null;
   }
 

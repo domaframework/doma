@@ -53,7 +53,7 @@ public class ColumnAnnot extends AbstractAnnot {
   }
 
   public String getNameValue() {
-    String value = AnnotationValueUtil.toString(name);
+    var value = AnnotationValueUtil.toString(name);
     if (value == null) {
       throw new AptIllegalStateException(NAME);
     }
@@ -61,7 +61,7 @@ public class ColumnAnnot extends AbstractAnnot {
   }
 
   public boolean getInsertableValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(insertable);
+    var value = AnnotationValueUtil.toBoolean(insertable);
     if (value == null) {
       throw new AptIllegalStateException(INSERTABLE);
     }
@@ -69,7 +69,7 @@ public class ColumnAnnot extends AbstractAnnot {
   }
 
   public boolean getUpdatableValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(updatable);
+    var value = AnnotationValueUtil.toBoolean(updatable);
     if (value == null) {
       throw new AptIllegalStateException(UPDATABLE);
     }
@@ -77,7 +77,7 @@ public class ColumnAnnot extends AbstractAnnot {
   }
 
   public boolean getQuoteValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(quote);
+    var value = AnnotationValueUtil.toBoolean(quote);
     if (value == null) {
       throw new AptIllegalStateException(QUOTE);
     }

@@ -5,18 +5,18 @@ import junit.framework.TestCase;
 public class OriginalStatesAccessorTest extends TestCase {
 
   public void testGet() throws Exception {
-    Hoge states = new Hoge();
-    Hoge hoge = new Hoge();
+    var states = new Hoge();
+    var hoge = new Hoge();
     hoge.setOriginalStates(states);
-    OriginalStatesAccessor<Hoge> accessor =
+    var accessor =
         new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
     assertSame(states, accessor.get(hoge));
   }
 
   public void testSet() throws Exception {
-    Hoge states = new Hoge();
-    Hoge hoge = new Hoge();
-    OriginalStatesAccessor<Hoge> accessor =
+    var states = new Hoge();
+    var hoge = new Hoge();
+    var accessor =
         new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
     accessor.set(hoge, states);
     assertSame(states, hoge.getOriginalStates());

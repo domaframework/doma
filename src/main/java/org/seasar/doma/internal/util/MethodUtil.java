@@ -12,7 +12,7 @@ public final class MethodUtil {
     assertNotNull(method);
     try {
       @SuppressWarnings("unchecked")
-      T result = (T) method.invoke(target, params);
+      var result = (T) method.invoke(target, params);
       return result;
     } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
       throw new WrapException(e);
@@ -20,10 +20,10 @@ public final class MethodUtil {
   }
 
   public static String createSignature(String methodName, Class<?>[] paramTypes) {
-    StringBuilder buf = new StringBuilder();
+    var buf = new StringBuilder();
     buf.append(methodName);
     buf.append("(");
-    for (Class<?> paramType : paramTypes) {
+    for (var paramType : paramTypes) {
       if (paramType.isArray()) {
         buf.append(paramType.getComponentType().getName());
         buf.append("[]");

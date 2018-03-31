@@ -10,7 +10,7 @@ public class SqlFileScriptQueryTest extends TestCase {
   private final MockConfig config = new MockConfig();
 
   public void testPrepare() throws Exception {
-    SqlFileScriptQuery query = new SqlFileScriptQuery();
+    var query = new SqlFileScriptQuery();
     query.setConfig(config);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -31,7 +31,7 @@ public class SqlFileScriptQueryTest extends TestCase {
 
   public void testPrepare_dbmsSpecific() throws Exception {
     config.dialect = new Mssql2008Dialect();
-    SqlFileScriptQuery query = new SqlFileScriptQuery();
+    var query = new SqlFileScriptQuery();
     query.setConfig(config);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -51,7 +51,7 @@ public class SqlFileScriptQueryTest extends TestCase {
   }
 
   public void testPrepare_ScriptFileNotFoundException() throws Exception {
-    SqlFileScriptQuery query = new SqlFileScriptQuery();
+    var query = new SqlFileScriptQuery();
     query.setConfig(config);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");

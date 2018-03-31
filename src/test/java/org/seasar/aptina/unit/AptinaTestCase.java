@@ -21,16 +21,29 @@ import static org.seasar.aptina.unit.CollectionUtils.newArrayList;
 import static org.seasar.aptina.unit.IOUtils.closeSilently;
 import static org.seasar.aptina.unit.IOUtils.readString;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.processing.Processor;
-import javax.tools.*;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.DiagnosticListener;
+import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.StandardLocation;
+import javax.tools.ToolProvider;
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
@@ -267,7 +280,7 @@ public abstract class AptinaTestCase extends TestCase {
    */
   protected void addSourcePath(final String... sourcePaths) {
     assertNotEmpty("sourcePaths", sourcePaths);
-    for (final String path : sourcePaths) {
+    for (final var path : sourcePaths) {
       this.sourcePaths.add(new File(path));
     }
   }
@@ -354,7 +367,7 @@ public abstract class AptinaTestCase extends TestCase {
     standardJavaFileManager.setLocation(StandardLocation.SOURCE_PATH, sourcePaths);
     testingJavaFileManager = new TestingJavaFileManager(standardJavaFileManager, charset);
 
-    final CompilationTask task =
+    final var task =
         javaCompiler.getTask(
             out, testingJavaFileManager, listener, options, null, getCompilationUnits());
     task.setProcessors(processors);
@@ -475,13 +488,13 @@ public abstract class AptinaTestCase extends TestCase {
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("className", className);
     assertCompiled();
-    final JavaFileObject javaFileObject =
+    final var javaFileObject =
         testingJavaFileManager.getJavaFileForInput(
             StandardLocation.SOURCE_OUTPUT, className, Kind.SOURCE);
     if (javaFileObject == null) {
       throw new SourceNotGeneratedException(className);
     }
-    final CharSequence content = javaFileObject.getCharContent(true);
+    final var content = javaFileObject.getCharContent(true);
     if (content == null) {
       throw new SourceNotGeneratedException(className);
     }
@@ -499,8 +512,8 @@ public abstract class AptinaTestCase extends TestCase {
       assertEquals(expected, actual);
       return;
     }
-    final BufferedReader expectedReader = new BufferedReader(new StringReader(expected.toString()));
-    final BufferedReader actualReader = new BufferedReader(new StringReader(actual));
+    final var expectedReader = new BufferedReader(new StringReader(expected.toString()));
+    final var actualReader = new BufferedReader(new StringReader(actual));
     try {
       assertEqualsByLine(expectedReader, actualReader);
     } catch (final IOException ignore) {
@@ -522,7 +535,7 @@ public abstract class AptinaTestCase extends TestCase {
       final BufferedReader expectedReader, final BufferedReader actualReader) throws IOException {
     String expectedLine;
     String actualLine;
-    int lineNo = 0;
+    var lineNo = 0;
     while ((expectedLine = expectedReader.readLine()) != null) {
       ++lineNo;
       actualLine = actualReader.readLine();
@@ -564,7 +577,7 @@ public abstract class AptinaTestCase extends TestCase {
       throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
     assertNotEmpty("className", className);
     assertCompiled();
-    final String actual = getGeneratedSource(className);
+    final var actual = getGeneratedSource(className);
     assertNotNull("actual", actual);
     assertEqualsByLine(expected == null ? null : expected.toString(), actual);
   }
@@ -718,7 +731,7 @@ public abstract class AptinaTestCase extends TestCase {
     assertNotEmpty("expectedResource", expectedResource);
     assertNotEmpty("className", className);
     assertCompiled();
-    final URL url = Thread.currentThread().getContextClassLoader().getResource(expectedResource);
+    final var url = Thread.currentThread().getContextClassLoader().getResource(expectedResource);
     if (url == null) {
       throw new FileNotFoundException(expectedResource);
     }
@@ -759,7 +772,7 @@ public abstract class AptinaTestCase extends TestCase {
    */
   List<JavaFileObject> getCompilationUnits() throws IOException {
     final List<JavaFileObject> result = new ArrayList<JavaFileObject>(compilationUnits.size());
-    for (final CompilationUnit compilationUnit : compilationUnits) {
+    for (final var compilationUnit : compilationUnits) {
       result.add(compilationUnit.getJavaFileObject());
     }
     return result;
@@ -787,7 +800,7 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IOException 入出力例外が発生した場合
    */
   String readFromResource(final URL url) throws IOException {
-    final InputStream is = url.openStream();
+    final var is = url.openStream();
     try {
       return readString(is, charset);
     } finally {
@@ -887,10 +900,10 @@ public abstract class AptinaTestCase extends TestCase {
 
     @Override
     public JavaFileObject getJavaFileObject() throws IOException {
-      final JavaFileObject javaFileObject =
+      final var javaFileObject =
           testingJavaFileManager.getJavaFileForOutput(
               StandardLocation.SOURCE_OUTPUT, className, Kind.SOURCE, null);
-      final Writer writer = javaFileObject.openWriter();
+      final var writer = javaFileObject.openWriter();
       try {
         writer.write(source);
       } finally {

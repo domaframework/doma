@@ -2,13 +2,10 @@ package org.seasar.doma.jdbc.builder;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.command.BatchUpdateCommand;
 import org.seasar.doma.jdbc.query.SqlBatchUpdateQuery;
 import org.seasar.doma.message.Message;
@@ -17,15 +14,15 @@ import org.seasar.doma.message.Message;
 public class BatchUpdateExecutorTest extends TestCase {
 
   private SqlBatchUpdateQuery mockQuery() {
-    final SqlBatchUpdateQuery query = new SqlBatchUpdateQuery();
+    final var query = new SqlBatchUpdateQuery();
     query.setConfig(new MockConfig());
     query.setSqlLogType(SqlLogType.FORMATTED);
     return query;
   }
 
   public void testBuilder() throws Exception {
-    SqlBatchUpdateQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -45,8 +42,8 @@ public class BatchUpdateExecutorTest extends TestCase {
   }
 
   public void testGetSql() throws Exception {
-    SqlBatchUpdateQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -62,23 +59,23 @@ public class BatchUpdateExecutorTest extends TestCase {
     builder.sql("ID = ").param(int.class, 20);
     builder = builder.fixSql();
 
-    String sql =
+    var sql =
         String.format(
             "update Emp%n" + "set%n" + "name = ?,%n" + "salary = ?%n" + "where%n" + "ID = ?");
 
-    List<? extends Sql<?>> sqls = builder.getSqls();
+    var sqls = builder.getSqls();
     assertEquals(2, sqls.size());
-    Sql<?> sql0 = sqls.get(0);
+    var sql0 = sqls.get(0);
     assertEquals(sql, sql0.getRawSql());
-    List<? extends SqlParameter> parameters0 = sql0.getParameters();
+    var parameters0 = sql0.getParameters();
     assertEquals(3, parameters0.size());
     assertEquals("SMITH", parameters0.get(0).getValue());
     assertEquals(new BigDecimal("1000"), parameters0.get(1).getValue());
     assertEquals(10, parameters0.get(2).getValue());
 
-    Sql<?> sql1 = sqls.get(1);
+    var sql1 = sqls.get(1);
     assertEquals(sql, sql1.getRawSql());
-    List<? extends SqlParameter> parameters1 = sql1.getParameters();
+    var parameters1 = sql1.getParameters();
     assertEquals(3, parameters1.size());
     assertEquals("ALLEN", parameters1.get(0).getValue());
     assertEquals(new BigDecimal("2000"), parameters1.get(1).getValue());
@@ -86,8 +83,8 @@ public class BatchUpdateExecutorTest extends TestCase {
   }
 
   public void testLiteral() throws Exception {
-    SqlBatchUpdateQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").literal(String.class, "SMITH").sql(",");
@@ -103,9 +100,9 @@ public class BatchUpdateExecutorTest extends TestCase {
     builder.sql("ID = ").param(int.class, 20);
     builder = builder.fixSql();
 
-    List<? extends Sql<?>> sqls = builder.getSqls();
+    var sqls = builder.getSqls();
     assertEquals(2, sqls.size());
-    Sql<?> sql0 = sqls.get(0);
+    var sql0 = sqls.get(0);
     assertEquals(
         String.format(
             "update Emp%n"
@@ -115,11 +112,11 @@ public class BatchUpdateExecutorTest extends TestCase {
                 + "where%n"
                 + "ID = ?"),
         sql0.getRawSql());
-    List<? extends SqlParameter> parameters0 = sql0.getParameters();
+    var parameters0 = sql0.getParameters();
     assertEquals(1, parameters0.size());
     assertEquals(10, parameters0.get(0).getValue());
 
-    Sql<?> sql1 = sqls.get(1);
+    var sql1 = sqls.get(1);
     assertEquals(
         String.format(
             "update Emp%n"
@@ -129,14 +126,14 @@ public class BatchUpdateExecutorTest extends TestCase {
                 + "where%n"
                 + "ID = ?"),
         sql1.getRawSql());
-    List<? extends SqlParameter> parameters1 = sql1.getParameters();
+    var parameters1 = sql1.getParameters();
     assertEquals(1, parameters1.size());
     assertEquals(20, parameters1.get(0).getValue());
   }
 
   public void testNotEqualParamCall() throws Exception {
-    SqlBatchUpdateQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -160,8 +157,8 @@ public class BatchUpdateExecutorTest extends TestCase {
   }
 
   public void testChangeType() throws Exception {
-    SqlBatchUpdateQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -185,8 +182,8 @@ public class BatchUpdateExecutorTest extends TestCase {
   }
 
   public void testParamToLiteral() throws Exception {
-    SqlBatchUpdateQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").param(String.class, "SMITH").sql(",");
@@ -221,13 +218,13 @@ public class BatchUpdateExecutorTest extends TestCase {
   }
 
   public void testExecutor() throws Exception {
-    List<Employee> employees =
+    var employees =
         Arrays.asList(
             new Employee[] {
               new Employee(10, "SMITH", new BigDecimal("1001")),
               new Employee(20, "ALLEN", new BigDecimal("2001"))
             });
-    BatchUpdateExecutor executor = BatchUpdateExecutor.newInstance(new MockConfig());
+    var executor = BatchUpdateExecutor.newInstance(new MockConfig());
     executor.execute(
         employees,
         (emp, builder) -> {

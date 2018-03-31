@@ -40,7 +40,7 @@ public class LocalTransactionManagerTest extends TestCase {
 
   public void testRequired_blcok() throws Exception {
     TransactionManager manager = new LocalTransactionManager(transaction);
-    StringBuilder log = new StringBuilder();
+    var log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
     manager.required(
         () -> {
@@ -56,8 +56,8 @@ public class LocalTransactionManagerTest extends TestCase {
   }
 
   public void testRequired_supplier() throws Exception {
-    LocalTransactionManager manager = new LocalTransactionManager(transaction);
-    String result =
+    var manager = new LocalTransactionManager(transaction);
+    var result =
         manager.required(
             () -> {
               return "aaa";
@@ -67,7 +67,7 @@ public class LocalTransactionManagerTest extends TestCase {
 
   public void testRequiresNew_blcok() throws Exception {
     TransactionManager manager = new LocalTransactionManager(transaction);
-    StringBuilder log = new StringBuilder();
+    var log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
     manager.requiresNew(
         () -> {
@@ -83,8 +83,8 @@ public class LocalTransactionManagerTest extends TestCase {
   }
 
   public void testRequiresNew_supplier() throws Exception {
-    LocalTransactionManager manager = new LocalTransactionManager(transaction);
-    String result =
+    var manager = new LocalTransactionManager(transaction);
+    var result =
         manager.requiresNew(
             () -> {
               return "aaa";
@@ -94,7 +94,7 @@ public class LocalTransactionManagerTest extends TestCase {
 
   public void testNotSupported_block() throws Exception {
     TransactionManager manager = new LocalTransactionManager(transaction);
-    StringBuilder log = new StringBuilder();
+    var log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
     manager.notSupported(
         () -> {
@@ -110,8 +110,8 @@ public class LocalTransactionManagerTest extends TestCase {
   }
 
   public void testNotSupported_supplier() throws Exception {
-    LocalTransactionManager manager = new LocalTransactionManager(transaction);
-    String result =
+    var manager = new LocalTransactionManager(transaction);
+    var result =
         manager.notSupported(
             () -> {
               return "aaa";
@@ -120,8 +120,8 @@ public class LocalTransactionManagerTest extends TestCase {
   }
 
   public void testNotSupported_in_tx() throws Exception {
-    LocalTransactionManager manager = new LocalTransactionManager(transaction);
-    StringBuilder log = new StringBuilder();
+    var manager = new LocalTransactionManager(transaction);
+    var log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
     manager.required(
         () -> {

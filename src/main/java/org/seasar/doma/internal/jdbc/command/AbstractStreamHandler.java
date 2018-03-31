@@ -5,8 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -38,17 +36,17 @@ public abstract class AbstractStreamHandler<TARGET, RESULT> implements ResultSet
   public Supplier<RESULT> handle(
       ResultSet resultSet, SelectQuery query, Consumer<ResultSetState> stateChecker)
       throws SQLException {
-    ObjectProvider<TARGET> provider = createObjectProvider(query);
+    var provider = createObjectProvider(query);
     Iterator<TARGET> iterator = new ResultSetIterator<>(resultSet, query, stateChecker, provider);
     try {
       if (query.getFetchType() == FetchType.EAGER) {
         // consume ResultSet
-        List<TARGET> list = IteratorUtil.toList(iterator);
+        var list = IteratorUtil.toList(iterator);
         return () -> mapper.apply(list.stream());
       } else {
-        Spliterator<TARGET> spliterator = Spliterators.spliteratorUnknownSize(iterator, 0);
-        Stream<TARGET> stream = StreamSupport.stream(spliterator, false);
-        RESULT result = mapper.apply(stream);
+        var spliterator = Spliterators.spliteratorUnknownSize(iterator, 0);
+        var stream = StreamSupport.stream(spliterator, false);
+        var result = mapper.apply(stream);
         return () -> result;
       }
     } catch (SQLRuntimeException e) {

@@ -5,7 +5,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
  * A builder that builds an SQL INSERT statement from a map.
@@ -92,7 +96,7 @@ public class MapInsertBuilder {
             builder.sql("NULL").sql(", ");
           } else {
             @SuppressWarnings("unchecked")
-            final Class<Object> clazz = (Class<Object>) value.getClass();
+            final var clazz = (Class<Object>) value.getClass();
             builder.param(clazz, value).sql(", ");
           }
         });

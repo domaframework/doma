@@ -89,7 +89,7 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
 
   @Override
   protected LocalTransactionContext getLocalTransactionContext() {
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (context != null) {
       return context;
     }
@@ -104,7 +104,7 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
    * <p>This method does not throw any exceptions.
    */
   public void destroy() {
-    LocalTransactionContext context = localTxContextHolder.get();
+    var context = localTxContextHolder.get();
     if (context == null) {
       return;
     }

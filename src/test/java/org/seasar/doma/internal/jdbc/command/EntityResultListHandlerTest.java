@@ -3,9 +3,12 @@ package org.seasar.doma.internal.jdbc.command;
 import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
-import java.util.List;
 import junit.framework.TestCase;
-import org.seasar.doma.internal.jdbc.mock.*;
+import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockResultSet;
+import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
+import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
@@ -22,14 +25,14 @@ public class EntityResultListHandlerTest extends TestCase {
   }
 
   public void testHandle() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData(1, "aaa"));
     resultSet.rows.add(new RowData(2, "bbb"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -38,12 +41,11 @@ public class EntityResultListHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    EntityResultListHandler<Emp> handler =
-        new EntityResultListHandler<Emp>(_Emp.getSingletonInternal());
-    List<Emp> entities = handler.handle(resultSet, query, (__) -> {}).get();
+    var handler = new EntityResultListHandler<Emp>(_Emp.getSingletonInternal());
+    var entities = handler.handle(resultSet, query, (__) -> {}).get();
 
     assertEquals(2, entities.size());
-    Emp emp = entities.get(0);
+    var emp = entities.get(0);
     assertEquals(Integer.valueOf(1), emp.getId());
     assertEquals("aaa", emp.getName());
     emp = entities.get(1);

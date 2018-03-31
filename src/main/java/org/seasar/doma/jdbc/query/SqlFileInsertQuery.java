@@ -85,8 +85,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
     }
 
     protected void preInsert() {
-      SqlFilePreInsertContext<E> context =
-          new SqlFilePreInsertContext<>(entityDesc, method, config);
+      var context = new SqlFilePreInsertContext<>(entityDesc, method, config);
       entityDesc.preInsert(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();
@@ -95,8 +94,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
     }
 
     protected void postInsert() {
-      SqlFilePostInsertContext<E> context =
-          new SqlFilePostInsertContext<>(entityDesc, method, config);
+      var context = new SqlFilePostInsertContext<>(entityDesc, method, config);
       entityDesc.postInsert(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();

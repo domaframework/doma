@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +82,7 @@ public class ScriptReader {
       if (reader == null) {
         reader = createBufferedReader();
       }
-      SqlBuilder builder = new SqlBuilder();
+      var builder = new SqlBuilder();
       readLineLoop:
       for (; ; ) {
         if (endOfLine) {
@@ -131,7 +130,7 @@ public class ScriptReader {
    * @throws IOException IOに関する例外が発生した場合
    */
   protected BufferedReader createBufferedReader() throws IOException {
-    InputStream inputStream = query.getScriptFileUrl().openStream();
+    var inputStream = query.getScriptFileUrl().openStream();
     return new BufferedReader(new InputStreamReader(inputStream, Constants.UTF_8));
   }
 
@@ -295,7 +294,7 @@ public class ScriptReader {
         return;
       }
       if (buf.length() > 0) {
-        char lastChar = buf.charAt(buf.length() - 1);
+        var lastChar = buf.charAt(buf.length() - 1);
         if (!Character.isWhitespace(lastChar)) {
           buf.append(' ');
         }
@@ -336,7 +335,7 @@ public class ScriptReader {
         assertUnreachable();
       }
 
-      String sql = buf.toString().trim();
+      var sql = buf.toString().trim();
       return endOfFile && sql.length() == 0 ? null : sql;
     }
   }

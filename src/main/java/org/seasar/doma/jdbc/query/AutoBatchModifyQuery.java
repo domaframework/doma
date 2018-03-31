@@ -77,9 +77,9 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   protected boolean isTargetPropertyName(String name) {
     if (includedPropertyNames.length > 0) {
-      for (String includedName : includedPropertyNames) {
+      for (var includedName : includedPropertyNames) {
         if (includedName.equals(name)) {
-          for (String excludedName : excludedPropertyNames) {
+          for (var excludedName : excludedPropertyNames) {
             if (excludedName.equals(name)) {
               return false;
             }
@@ -90,7 +90,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
       return false;
     }
     if (excludedPropertyNames.length > 0) {
-      for (String excludedName : excludedPropertyNames) {
+      for (var excludedName : excludedPropertyNames) {
         if (excludedName.equals(name)) {
           return false;
         }
@@ -106,7 +106,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
       this.entities = new ArrayList<>((Collection<ENTITY>) entities);
     } else {
       this.entities = new ArrayList<>();
-      for (ENTITY entity : entities) {
+      for (var entity : entities) {
         this.entities.add(entity);
       }
     }

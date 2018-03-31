@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class DomaNullPointerExceptionTest extends TestCase {
 
   public void test() throws Exception {
-    DomaNullPointerException e = new DomaNullPointerException("aaa");
+    var e = new DomaNullPointerException("aaa");
     assertEquals("aaa", e.getParameterName());
   }
 

@@ -6,7 +6,11 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
-import org.seasar.doma.internal.apt.*;
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.AptIllegalOptionException;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.AptTypeHandleException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.message.Message;
 
 public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
@@ -31,7 +35,7 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
   }
 
   protected void handleTypeElement(TypeElement typeElement, Consumer<TypeElement> handler) {
-    Annotation annotation = typeElement.getAnnotation(supportedAnnotationType);
+    var annotation = typeElement.getAnnotation(supportedAnnotationType);
     if (annotation == null) {
       return;
     }

@@ -4,7 +4,6 @@ import example.entity.IdGeneratedEmp;
 import example.entity._IdGeneratedEmp;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
@@ -12,15 +11,14 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 public class BuiltinIdentityIdGeneratorTest extends TestCase {
 
   public void test_identitySelectSql() throws Exception {
-    MockConfig config = new MockConfig();
+    var config = new MockConfig();
     config.setDialect(new PostgresDialect());
-    MockResultSet resultSet = config.dataSource.connection.preparedStatement.resultSet;
+    var resultSet = config.dataSource.connection.preparedStatement.resultSet;
     resultSet.rows.add(new RowData(11L));
 
-    BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
-    IdGenerationConfig idGenerationConfig =
-        new IdGenerationConfig(config, _IdGeneratedEmp.getSingletonInternal());
-    Long value =
+    var identityIdGenerator = new BuiltinIdentityIdGenerator();
+    var idGenerationConfig = new IdGenerationConfig(config, _IdGeneratedEmp.getSingletonInternal());
+    var value =
         identityIdGenerator.generatePostInsert(
             idGenerationConfig, config.dataSource.connection.preparedStatement);
     assertEquals(Long.valueOf(11), value);
@@ -30,18 +28,18 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
   }
 
   public void test_identityReservationSql() throws Exception {
-    MockConfig config = new MockConfig();
+    var config = new MockConfig();
     config.setDialect(new PostgresDialect());
-    MockResultSet resultSet = config.dataSource.connection.preparedStatement.resultSet;
+    var resultSet = config.dataSource.connection.preparedStatement.resultSet;
     resultSet.rows.add(new RowData(11L));
     resultSet.rows.add(new RowData(12L));
     resultSet.rows.add(new RowData(13L));
 
     EntityDesc<IdGeneratedEmp> entityDesc = _IdGeneratedEmp.getSingletonInternal();
-    BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
-    IdGenerationConfig idGenerationConfig =
+    var identityIdGenerator = new BuiltinIdentityIdGenerator();
+    var idGenerationConfig =
         new IdGenerationConfig(config, entityDesc, new ReservedIdProvider(config, entityDesc, 3));
-    Long value = identityIdGenerator.generatePreInsert(idGenerationConfig);
+    var value = identityIdGenerator.generatePreInsert(idGenerationConfig);
     assertEquals(Long.valueOf(11), value);
     assertEquals(
         "select nextval(pg_catalog.pg_get_serial_sequence('\"CATA\".\"EMP\"', 'id')) from generate_series(1, 3)",

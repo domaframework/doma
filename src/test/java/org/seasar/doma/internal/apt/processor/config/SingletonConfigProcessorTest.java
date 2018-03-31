@@ -14,7 +14,7 @@ public class SingletonConfigProcessorTest extends AptTestCase {
 
   public void testNoConfig() throws Exception {
     Class<?> target = NoConfig.class;
-    SingletonConfigProcessor processor = new SingletonConfigProcessor();
+    var processor = new SingletonConfigProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -24,7 +24,7 @@ public class SingletonConfigProcessorTest extends AptTestCase {
 
   public void testMethodNotFoundConfig() throws Exception {
     Class<?> target = MethodNotFoundConfig.class;
-    SingletonConfigProcessor processor = new SingletonConfigProcessor();
+    var processor = new SingletonConfigProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -34,7 +34,7 @@ public class SingletonConfigProcessorTest extends AptTestCase {
 
   public void testPublicConstructorConfig() throws Exception {
     Class<?> target = PublicConstructorConfig.class;
-    SingletonConfigProcessor processor = new SingletonConfigProcessor();
+    var processor = new SingletonConfigProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -44,7 +44,7 @@ public class SingletonConfigProcessorTest extends AptTestCase {
 
   public void testValidConfig() throws Exception {
     Class<?> target = ValidConfig.class;
-    SingletonConfigProcessor processor = new SingletonConfigProcessor();
+    var processor = new SingletonConfigProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();

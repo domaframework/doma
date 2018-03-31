@@ -6,9 +6,22 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.SelectAnnot;
 import org.seasar.doma.internal.apt.annot.SuppressAnnot;
-import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CollectorCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.FunctionCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
+import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.message.Message;
 
 public class SqlFileSelectQueryMetaFactory
@@ -20,7 +33,7 @@ public class SqlFileSelectQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    SqlFileSelectQueryMeta queryMeta = createSqlFileSelectQueryMeta();
+    var queryMeta = createSqlFileSelectQueryMeta();
     if (queryMeta == null) {
       return null;
     }
@@ -33,11 +46,11 @@ public class SqlFileSelectQueryMetaFactory
   }
 
   private SqlFileSelectQueryMeta createSqlFileSelectQueryMeta() {
-    SelectAnnot selectAnnot = ctx.getAnnots().newSelectAnnot(methodElement);
+    var selectAnnot = ctx.getAnnots().newSelectAnnot(methodElement);
     if (selectAnnot == null) {
       return null;
     }
-    SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(methodElement);
+    var queryMeta = new SqlFileSelectQueryMeta(methodElement);
     queryMeta.setSelectAnnot(selectAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
     return queryMeta;
@@ -46,7 +59,7 @@ public class SqlFileSelectQueryMetaFactory
   @Override
   protected void doParameters(final SqlFileSelectQueryMeta queryMeta) {
     for (VariableElement parameter : methodElement.getParameters()) {
-      final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+      final var parameterMeta = createParameterMeta(parameter);
       parameterMeta.getCtType().accept(new ParamCtTypeVisitor(queryMeta, parameterMeta), null);
       queryMeta.addParameterMeta(parameterMeta);
       if (parameterMeta.isBindable()) {
@@ -64,7 +77,7 @@ public class SqlFileSelectQueryMetaFactory
       }
     } else {
       if (queryMeta.getFunctionCtType() != null) {
-        SelectAnnot selectAnnot = queryMeta.getSelectAnnot();
+        var selectAnnot = queryMeta.getSelectAnnot();
         throw new AptException(
             Message.DOMA4248,
             methodElement,
@@ -76,20 +89,20 @@ public class SqlFileSelectQueryMetaFactory
 
   @Override
   protected void doReturnType(final SqlFileSelectQueryMeta queryMeta) {
-    final QueryReturnMeta returnMeta = createReturnMeta();
+    final var returnMeta = createReturnMeta();
     queryMeta.setReturnMeta(returnMeta);
 
     if (queryMeta.getSelectStrategyType() == SelectType.STREAM) {
-      FunctionCtType functionCtType = queryMeta.getFunctionCtType();
-      AnyCtType returnCtType = functionCtType.getReturnCtType();
+      var functionCtType = queryMeta.getFunctionCtType();
+      var returnCtType = functionCtType.getReturnCtType();
       if (returnCtType == null
           || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
             Message.DOMA4246, methodElement, new Object[] {returnMeta.getType()});
       }
     } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
-      CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
-      AnyCtType returnCtType = collectorCtType.getReturnCtType();
+      var collectorCtType = queryMeta.getCollectorCtType();
+      var returnCtType = collectorCtType.getReturnCtType();
       if (returnCtType == null
           || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
@@ -207,7 +220,7 @@ public class SqlFileSelectQueryMetaFactory
 
       @Override
       public Void visitOptionalCtType(OptionalCtType ctType, Void p) throws RuntimeException {
-        Boolean valid =
+        var valid =
             ctType
                 .getElementCtType()
                 .accept(
@@ -302,7 +315,7 @@ public class SqlFileSelectQueryMetaFactory
 
     @Override
     public Void visitOptionalCtType(OptionalCtType ctType, Void p) throws RuntimeException {
-      Boolean valid =
+      var valid =
           ctType
               .getElementCtType()
               .accept(

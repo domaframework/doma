@@ -31,7 +31,7 @@ public class JdbcValueGetter implements JdbcMappingFunction {
     if (jdbcType == null) {
       throw new DomaNullPointerException("jdbcType");
     }
-    V value = jdbcType.getValue(resultSet, index);
+    var value = jdbcType.getValue(resultSet, index);
     wrapper.set(value);
     return null;
   }

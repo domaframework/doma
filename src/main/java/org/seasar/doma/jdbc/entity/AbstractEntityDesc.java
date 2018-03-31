@@ -12,9 +12,9 @@ public abstract class AbstractEntityDesc<ENTITY> implements EntityDesc<ENTITY> {
   public String getQualifiedTableName(
       BiFunction<NamingType, String, String> namingFunction,
       Function<String, String> quoteFunction) {
-    String catalogName = getCatalogName();
-    String schemaName = getSchemaName();
-    String tableName = getTableName(namingFunction);
+    var catalogName = getCatalogName();
+    var schemaName = getSchemaName();
+    var tableName = getTableName(namingFunction);
     Function<String, String> mapper = isQuoteRequired() ? quoteFunction : Function.identity();
     return DatabaseObjectUtil.getQualifiedName(mapper, catalogName, schemaName, tableName);
   }

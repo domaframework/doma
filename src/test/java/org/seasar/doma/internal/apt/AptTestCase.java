@@ -1,6 +1,10 @@
 package org.seasar.doma.internal.apt;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.function.Consumer;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -39,13 +43,13 @@ public abstract class AptTestCase extends AptinaTestCase {
   }
 
   protected String getExpectedContent() throws Exception {
-    String path = getClass().getName().replace(".", "/");
-    String suffix = "_" + getName().substring("test".length()) + ".txt";
+    var path = getClass().getName().replace(".", "/");
+    var suffix = "_" + getName().substring("test".length()) + ".txt";
     return ResourceUtil.getResourceAsString(path + suffix);
   }
 
   protected void assertGeneratedSource(Class<?> originalClass) throws Exception {
-    String generatedClassName = getGeneratedClassName(originalClass);
+    var generatedClassName = getGeneratedClassName(originalClass);
     try {
       assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
     } catch (AssertionFailedError error) {
@@ -67,9 +71,9 @@ public abstract class AptTestCase extends AptinaTestCase {
   }
 
   protected void assertMessage(Message message) {
-    List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
+    var diagnostics = getDiagnostics();
     if (diagnostics.size() == 1) {
-      Message m = extractMessage(diagnostics.get(0));
+      var m = extractMessage(diagnostics.get(0));
       if (m == null) {
         fail();
       }
@@ -82,7 +86,7 @@ public abstract class AptTestCase extends AptinaTestCase {
   }
 
   protected void assertNoMessage() {
-    List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
+    var diagnostics = getDiagnostics();
     if (!diagnostics.isEmpty()) {
       fail();
     }
@@ -92,7 +96,7 @@ public abstract class AptTestCase extends AptinaTestCase {
   protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
     List<Diagnostic<? extends JavaFileObject>> results =
         new ArrayList<Diagnostic<? extends JavaFileObject>>();
-    for (Diagnostic<? extends JavaFileObject> diagnostic : super.getDiagnostics()) {
+    for (var diagnostic : super.getDiagnostics()) {
       switch (diagnostic.getKind()) {
         case ERROR:
         case WARNING:
@@ -107,18 +111,18 @@ public abstract class AptTestCase extends AptinaTestCase {
   }
 
   protected Message getMessageCode() {
-    for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
+    for (var diagnostic : getDiagnostics()) {
       return extractMessage(diagnostic);
     }
     return null;
   }
 
   protected Message extractMessage(Diagnostic<? extends JavaFileObject> diagnostic) {
-    String message = diagnostic.getMessage(getLocale());
-    int start = message.indexOf('[');
-    int end = message.indexOf(']');
+    var message = diagnostic.getMessage(getLocale());
+    var start = message.indexOf('[');
+    var end = message.indexOf(']');
     if (start > -1 && end > -1) {
-      String code = message.substring(start + 1, end);
+      var code = message.substring(start + 1, end);
       if (code.startsWith("DOMA")) {
         return Enum.valueOf(Message.class, code);
       }

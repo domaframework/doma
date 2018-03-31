@@ -8,8 +8,21 @@ import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ResultSetAnnot;
-import org.seasar.doma.internal.apt.cttype.*;
-import org.seasar.doma.internal.apt.meta.parameter.*;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
+import org.seasar.doma.internal.apt.cttype.ScalarCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.EntityListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.MapListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarOutParameterMeta;
 import org.seasar.doma.message.Message;
 
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
@@ -22,10 +35,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
   @Override
   protected void doParameters(M queryMeta) {
     for (VariableElement parameter : methodElement.getParameters()) {
-      QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+      var parameterMeta = createParameterMeta(parameter);
       queryMeta.addParameterMeta(parameterMeta);
 
-      CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(parameterMeta);
+      var callableSqlParameterMeta = createParameterMeta(parameterMeta);
       queryMeta.addCallableSqlParameterMeta(callableSqlParameterMeta);
 
       if (parameterMeta.isBindable()) {
@@ -35,7 +48,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
   }
 
   protected CallableSqlParameterMeta createParameterMeta(final QueryParameterMeta parameterMeta) {
-    ResultSetAnnot resultSetAnnot = ctx.getAnnots().newResultSetAnnot(parameterMeta.getElement());
+    var resultSetAnnot = ctx.getAnnots().newResultSetAnnot(parameterMeta.getElement());
     if (resultSetAnnot != null) {
       return createResultSetParameterMeta(parameterMeta, resultSetAnnot);
     }
@@ -53,7 +66,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
   protected CallableSqlParameterMeta createResultSetParameterMeta(
       final QueryParameterMeta parameterMeta, final ResultSetAnnot resultSetAnnot) {
-    IterableCtType iterableCtType =
+    var iterableCtType =
         parameterMeta.getCtType().accept(new ResultSetCtTypeVisitor(parameterMeta), null);
     return iterableCtType
         .getElementCtType()
@@ -66,7 +79,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
   protected CallableSqlParameterMeta createOutParameterMeta(
       final QueryParameterMeta parameterMeta) {
-    final ReferenceCtType referenceCtType =
+    final var referenceCtType =
         parameterMeta.getCtType().accept(new OutCtTypeVisitor(parameterMeta), null);
     return referenceCtType
         .getReferentCtType()
@@ -75,7 +88,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
   protected CallableSqlParameterMeta createInOutParameterMeta(
       final QueryParameterMeta parameterMeta) {
-    final ReferenceCtType referenceCtType =
+    final var referenceCtType =
         parameterMeta.getCtType().accept(new InOutCtTypeVisitor(parameterMeta), null);
     return referenceCtType
         .getReferentCtType()

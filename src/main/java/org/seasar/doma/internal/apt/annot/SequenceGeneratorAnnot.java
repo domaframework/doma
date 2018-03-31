@@ -72,7 +72,7 @@ public class SequenceGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getCatalogValue() {
-    String value = AnnotationValueUtil.toString(catalog);
+    var value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
       throw new AptIllegalStateException(CATALOG);
     }
@@ -80,7 +80,7 @@ public class SequenceGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getSchemaValue() {
-    String value = AnnotationValueUtil.toString(schema);
+    var value = AnnotationValueUtil.toString(schema);
     if (value == null) {
       throw new AptIllegalStateException(SCHEMA);
     }
@@ -88,7 +88,7 @@ public class SequenceGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getSequenceValue() {
-    String value = AnnotationValueUtil.toString(sequence);
+    var value = AnnotationValueUtil.toString(sequence);
     if (value == null) {
       throw new AptIllegalStateException(SEQUENCE);
     }
@@ -96,7 +96,7 @@ public class SequenceGeneratorAnnot extends AbstractAnnot {
   }
 
   public Long getInitialValueValue() {
-    Long value = AnnotationValueUtil.toLong(initialValue);
+    var value = AnnotationValueUtil.toLong(initialValue);
     if (value == null) {
       throw new AptIllegalStateException(INITIAL_VALUE);
     }
@@ -104,7 +104,7 @@ public class SequenceGeneratorAnnot extends AbstractAnnot {
   }
 
   public Long getAllocationSizeValue() {
-    Long value = AnnotationValueUtil.toLong(allocationSize);
+    var value = AnnotationValueUtil.toLong(allocationSize);
     if (value == null) {
       throw new AptIllegalStateException(ALLOCATION_SIZE);
     }
@@ -112,7 +112,7 @@ public class SequenceGeneratorAnnot extends AbstractAnnot {
   }
 
   public TypeMirror getImplementerValue() {
-    TypeMirror value = AnnotationValueUtil.toType(implementer);
+    var value = AnnotationValueUtil.toType(implementer);
     if (value == null) {
       throw new AptIllegalStateException(IMPLEMENTER);
     }

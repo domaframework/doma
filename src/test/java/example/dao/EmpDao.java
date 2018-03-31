@@ -5,7 +5,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import org.seasar.doma.*;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Script;
+import org.seasar.doma.Select;
+import org.seasar.doma.SelectType;
+import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.SelectOptions;
 
 @Dao(config = ExampleConfig.class)

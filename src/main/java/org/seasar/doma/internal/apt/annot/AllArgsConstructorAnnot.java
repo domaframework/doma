@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
@@ -36,7 +35,7 @@ public class AllArgsConstructorAnnot extends AbstractAnnot {
   }
 
   public String getStaticNameValue() {
-    String value = AnnotationValueUtil.toString(staticName);
+    var value = AnnotationValueUtil.toString(staticName);
     if (value == null) {
       throw new AptIllegalStateException("staticConstructor");
     }
@@ -44,7 +43,7 @@ public class AllArgsConstructorAnnot extends AbstractAnnot {
   }
 
   public boolean isAccessPrivate() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(access);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(access);
     if (enumConstant == null) {
       throw new AptIllegalStateException(ACCESS);
     }
@@ -52,7 +51,7 @@ public class AllArgsConstructorAnnot extends AbstractAnnot {
   }
 
   public boolean isAccessNone() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(access);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(access);
     if (enumConstant == null) {
       throw new AptIllegalStateException(ACCESS);
     }

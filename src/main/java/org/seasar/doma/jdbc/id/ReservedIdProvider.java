@@ -2,13 +2,12 @@ package org.seasar.doma.jdbc.id;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.jdbc.*;
-import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 
@@ -56,18 +55,18 @@ public class ReservedIdProvider implements IdProvider {
   }
 
   protected long[] getIdentities() {
-    long[] identities = new long[reservationSize];
-    Sql<?> sql = createSql();
-    JdbcLogger logger = config.getJdbcLogger();
-    Connection connection = JdbcUtil.getConnection(config.getDataSource());
+    var identities = new long[reservationSize];
+    var sql = createSql();
+    var logger = config.getJdbcLogger();
+    var connection = JdbcUtil.getConnection(config.getDataSource());
     try {
-      PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
+      var preparedStatement = JdbcUtil.prepareStatement(connection, sql);
       try {
         logger.logSql(getClass().getName(), "getIdentities", sql);
         setupOptions(preparedStatement);
-        ResultSet resultSet = preparedStatement.executeQuery();
+        var resultSet = preparedStatement.executeQuery();
         try {
-          for (int i = 0; i < reservationSize && resultSet.next(); i++) {
+          for (var i = 0; i < reservationSize && resultSet.next(); i++) {
             identities[i] = resultSet.getLong(1);
           }
         } catch (final SQLException e) {
@@ -87,14 +86,14 @@ public class ReservedIdProvider implements IdProvider {
   }
 
   protected Sql<?> createSql() {
-    Naming naming = config.getNaming();
-    Dialect dialect = config.getDialect();
-    String catalogName = entityDesc.getCatalogName();
-    String schemaName = entityDesc.getSchemaName();
-    String tableName = entityDesc.getTableName(naming::apply);
-    String idColumnName = entityDesc.getGeneratedIdPropertyDesc().getColumnName(naming::apply);
-    boolean isQuoteRequired = entityDesc.isQuoteRequired();
-    boolean isIdColumnQuoteRequired = entityDesc.getGeneratedIdPropertyDesc().isQuoteRequired();
+    var naming = config.getNaming();
+    var dialect = config.getDialect();
+    var catalogName = entityDesc.getCatalogName();
+    var schemaName = entityDesc.getSchemaName();
+    var tableName = entityDesc.getTableName(naming::apply);
+    var idColumnName = entityDesc.getGeneratedIdPropertyDesc().getColumnName(naming::apply);
+    var isQuoteRequired = entityDesc.isQuoteRequired();
+    var isIdColumnQuoteRequired = entityDesc.getGeneratedIdPropertyDesc().isQuoteRequired();
     return dialect.getIdentityReservationSql(
         catalogName,
         schemaName,

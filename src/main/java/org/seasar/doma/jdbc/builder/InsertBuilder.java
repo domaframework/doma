@@ -2,7 +2,11 @@ package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.query.SqlInsertQuery;
 
@@ -147,7 +151,7 @@ public class InsertBuilder {
       query.setCallerMethodName("execute");
     }
     prepare();
-    InsertCommand command = new InsertCommand(query);
+    var command = new InsertCommand(query);
     int result = command.execute();
     query.complete();
     return result;
@@ -155,7 +159,7 @@ public class InsertBuilder {
 
   private void prepare() {
     query.clearParameters();
-    for (Param p : helper.getParams()) {
+    for (var p : helper.getParams()) {
       query.addParameter(p.name, p.paramClass, p.param);
     }
     query.setSqlNode(helper.getSqlNode());

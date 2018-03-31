@@ -53,7 +53,7 @@ public class WhitespaceNode extends AbstractSqlNode {
   }
 
   public static WhitespaceNode of(String whitespace) {
-    WhitespaceNode whitespaceNode = nodeMap.get(whitespace);
+    var whitespaceNode = nodeMap.get(whitespace);
     if (whitespaceNode != null) {
       return whitespaceNode;
     }

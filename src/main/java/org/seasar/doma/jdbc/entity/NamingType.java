@@ -60,7 +60,7 @@ public enum NamingType {
       if (text == null) {
         throw new DomaNullPointerException("text");
       }
-      String s = StringUtil.fromCamelCaseToSnakeCase(text);
+      var s = StringUtil.fromCamelCaseToSnakeCase(text);
       return s.toUpperCase();
     }
 
@@ -90,7 +90,7 @@ public enum NamingType {
       if (text == null) {
         throw new DomaNullPointerException("text");
       }
-      String s = StringUtil.fromCamelCaseToSnakeCase(text);
+      var s = StringUtil.fromCamelCaseToSnakeCase(text);
       return s.toLowerCase();
     }
 

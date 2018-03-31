@@ -24,7 +24,7 @@ public class AbstractDaoTest extends TestCase {
 
   public void testConstructorParameter2() throws Exception {
     Config config = null;
-    Connection connection = mock(Connection.class);
+    var connection = mock(Connection.class);
     try {
       new AbstractDao(config, connection) {};
       fail();
@@ -34,7 +34,7 @@ public class AbstractDaoTest extends TestCase {
   }
 
   public void testConstructorParameter3() throws Exception {
-    Config config = mock(Config.class);
+    var config = mock(Config.class);
     Connection connection = null;
     try {
       new AbstractDao(config, connection) {};
@@ -46,7 +46,7 @@ public class AbstractDaoTest extends TestCase {
 
   public void testConstructorParameter4() throws Exception {
     Config config = null;
-    DataSource dataSource = mock(DataSource.class);
+    var dataSource = mock(DataSource.class);
     try {
       new AbstractDao(config, dataSource) {};
       fail();
@@ -56,7 +56,7 @@ public class AbstractDaoTest extends TestCase {
   }
 
   public void testConstructorParameter5() throws Exception {
-    Config config = mock(Config.class);
+    var config = mock(Config.class);
     DataSource dataSource = null;
     try {
       new AbstractDao(config, dataSource) {};
@@ -67,7 +67,7 @@ public class AbstractDaoTest extends TestCase {
   }
 
   private <T> T mock(Class<T> aClass) {
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    var loader = Thread.currentThread().getContextClassLoader();
     Class<?>[] interfaces = {aClass};
     InvocationHandler h =
         new InvocationHandler() {
@@ -77,7 +77,7 @@ public class AbstractDaoTest extends TestCase {
             return null;
           }
         };
-    Object proxy = Proxy.newProxyInstance(loader, interfaces, h);
+    var proxy = Proxy.newProxyInstance(loader, interfaces, h);
     return aClass.cast(proxy);
   }
 }

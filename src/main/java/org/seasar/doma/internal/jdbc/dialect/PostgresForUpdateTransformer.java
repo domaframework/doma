@@ -20,10 +20,10 @@ public class PostgresForUpdateTransformer extends StandardForUpdateTransformer {
     }
     processed = true;
 
-    StringBuilder buf = new StringBuilder(100);
+    var buf = new StringBuilder(100);
     if (aliases.length > 0) {
       buf.append(" of ");
-      for (String alias : aliases) {
+      for (var alias : aliases) {
         buf.append(alias);
         buf.append(", ");
       }
@@ -32,10 +32,10 @@ public class PostgresForUpdateTransformer extends StandardForUpdateTransformer {
     if (forUpdateType == SelectForUpdateType.NOWAIT) {
       buf.append(" nowait ");
     }
-    ForUpdateClauseNode forUpdate = new ForUpdateClauseNode("for update");
+    var forUpdate = new ForUpdateClauseNode("for update");
     forUpdate.appendNode(new FragmentNode(buf.toString()));
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(node.getSelectClauseNode());
     result.setFromClauseNode(node.getFromClauseNode());
     result.setWhereClauseNode(node.getWhereClauseNode());

@@ -109,7 +109,7 @@ public class SimpleDataSource implements DataSource {
 
   @Override
   public Connection getConnection() throws SQLException {
-    Properties info = new Properties();
+    var info = new Properties();
     info.putAll(properties);
     if (user != null) {
       info.setProperty("user", user);
@@ -122,7 +122,7 @@ public class SimpleDataSource implements DataSource {
 
   @Override
   public Connection getConnection(String user, String password) throws SQLException {
-    Properties info = new Properties();
+    var info = new Properties();
     info.putAll(properties);
     if (user != null) {
       info.setProperty("user", user);

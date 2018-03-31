@@ -162,8 +162,8 @@ public class BatchDeleteExecutor {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("execute");
     }
-    BatchBuilder builder = BatchBuilder.newInstance(query);
-    for (P p : params) {
+    var builder = BatchBuilder.newInstance(query);
+    for (var p : params) {
       buildConsumer.accept(p, builder);
       builder = builder.fixSql();
     }

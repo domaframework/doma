@@ -1,6 +1,5 @@
 package org.seasar.doma.jdbc.entity;
 
-import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
@@ -36,10 +35,10 @@ public final class EntityDescFactory {
       throw new DomaIllegalArgumentException(
           "entityClass", Message.DOMA2206.getMessage("entityClass"));
     }
-    String entityDescClassName = Conventions.createDescClassName(entityClass.getName());
+    var entityDescClassName = Conventions.createDescClassName(entityClass.getName());
     try {
       Class<E> clazz = classHelper.forName(entityDescClassName);
-      Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
+      var method = ClassUtil.getMethod(clazz, "getSingletonInternal");
       return MethodUtil.invoke(method, null);
     } catch (Exception e) {
       throw new EntityDescNotFoundException(

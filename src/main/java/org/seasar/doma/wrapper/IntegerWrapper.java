@@ -25,7 +25,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements NumberWr
 
   @Override
   public void increment() {
-    Integer value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value + 1);
     }
@@ -33,7 +33,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements NumberWr
 
   @Override
   public void decrement() {
-    Integer value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value - 1);
     }

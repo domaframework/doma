@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -46,7 +45,7 @@ public class ScriptAnnot extends AbstractAnnot {
   }
 
   public boolean getHaltOnErrorValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(haltOnError);
+    var value = AnnotationValueUtil.toBoolean(haltOnError);
     if (value == null) {
       throw new AptIllegalStateException(HALT_ON_ERROR);
     }
@@ -54,7 +53,7 @@ public class ScriptAnnot extends AbstractAnnot {
   }
 
   public String getBlockDelimiterValue() {
-    String value = AnnotationValueUtil.toString(blockDelimiter);
+    var value = AnnotationValueUtil.toString(blockDelimiter);
     if (value == null) {
       throw new AptIllegalStateException(BLOCK_DELIMITER);
     }
@@ -62,7 +61,7 @@ public class ScriptAnnot extends AbstractAnnot {
   }
 
   public SqlLogType getSqlLogValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
       throw new AptIllegalStateException(SQL_LOG);
     }

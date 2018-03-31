@@ -6,16 +6,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.ListIterator;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.*;
-import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityDesc;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
-import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.ReservedIdProvider;
 import org.seasar.doma.message.Message;
@@ -37,7 +35,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   public void prepare() {
     super.prepare();
     assertNotNull(method, entities, sqls);
-    int size = entities.size();
+    var size = entities.size();
     if (size == 0) {
       return;
     }
@@ -52,7 +50,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     prepareVersionValue();
     prepareSql();
     entities.set(0, currentEntity);
-    for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext(); ) {
+    for (var it = entities.listIterator(1); it.hasNext(); ) {
       currentEntity = it.next();
       preInsert();
       prepareIdValue();
@@ -65,8 +63,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   protected void preInsert() {
-    AutoBatchPreInsertContext<ENTITY> context =
-        new AutoBatchPreInsertContext<>(entityDesc, method, config);
+    var context = new AutoBatchPreInsertContext<>(entityDesc, method, config);
     entityDesc.preInsert(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();
@@ -92,7 +89,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void prepareTargetPropertyDescs() {
     targetPropertyDescs = new ArrayList<>(entityDesc.getEntityPropertyDescs().size());
-    for (EntityPropertyDesc<ENTITY, ?> propertyDesc : entityDesc.getEntityPropertyDescs()) {
+    for (var propertyDesc : entityDesc.getEntityPropertyDescs()) {
       if (!propertyDesc.isInsertable()) {
         continue;
       }
@@ -102,7 +99,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
           targetPropertyDescs.add(propertyDesc);
         }
         if (generatedIdPropertyDesc == null) {
-          Property<ENTITY, ?> property = propertyDesc.createProperty();
+          var property = propertyDesc.createProperty();
           property.load(currentEntity);
           if (property.getWrapper().get() == null) {
             throw new JdbcException(Message.DOMA2020, entityDesc.getName(), propertyDesc.getName());
@@ -131,27 +128,27 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   protected void prepareSql() {
-    Naming naming = config.getNaming();
-    Dialect dialect = config.getDialect();
-    PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.BATCH_INSERT, sqlLogType);
+    var naming = config.getNaming();
+    var dialect = config.getDialect();
+    var builder = new PreparedSqlBuilder(config, SqlKind.BATCH_INSERT, sqlLogType);
     builder.appendSql("insert into ");
     builder.appendSql(entityDesc.getQualifiedTableName(naming::apply, dialect::applyQuote));
     builder.appendSql(" (");
-    for (EntityPropertyDesc<ENTITY, ?> p : targetPropertyDescs) {
+    for (var p : targetPropertyDescs) {
       builder.appendSql(p.getColumnName(naming::apply, dialect::applyQuote));
       builder.appendSql(", ");
     }
     builder.cutBackSql(2);
     builder.appendSql(") values (");
-    for (EntityPropertyDesc<ENTITY, ?> propertyDesc : targetPropertyDescs) {
-      Property<ENTITY, ?> property = propertyDesc.createProperty();
+    for (var propertyDesc : targetPropertyDescs) {
+      var property = propertyDesc.createProperty();
       property.load(currentEntity);
       builder.appendParameter(property.asInParameter());
       builder.appendSql(", ");
     }
     builder.cutBackSql(2);
     builder.appendSql(")");
-    PreparedSql sql = builder.build(this::comment);
+    var sql = builder.build(this::comment);
     sqls.add(sql);
   }
 
@@ -163,7 +160,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   @Override
   public void generateId(Statement statement, int index) {
     if (generatedIdPropertyDesc != null && idGenerationConfig != null) {
-      ENTITY newEntity =
+      var newEntity =
           generatedIdPropertyDesc.postInsert(
               entityDesc, entities.get(index), idGenerationConfig, statement);
       entities.set(index, newEntity);
@@ -172,7 +169,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   @Override
   public void complete() {
-    for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext(); ) {
+    for (var it = entities.listIterator(); it.hasNext(); ) {
       currentEntity = it.next();
       postInsert();
       it.set(currentEntity);
@@ -180,8 +177,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   protected void postInsert() {
-    AutoBatchPostInsertContext<ENTITY> context =
-        new AutoBatchPostInsertContext<>(entityDesc, method, config);
+    var context = new AutoBatchPostInsertContext<>(entityDesc, method, config);
     entityDesc.postInsert(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();

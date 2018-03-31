@@ -28,7 +28,7 @@ public class HolderConvertersAnnot extends AbstractAnnot {
   }
 
   public List<TypeMirror> getValueValue() {
-    List<TypeMirror> typeList = AnnotationValueUtil.toTypeList(value);
+    var typeList = AnnotationValueUtil.toTypeList(value);
     if (typeList == null) {
       throw new AptIllegalStateException(VALUE);
     }

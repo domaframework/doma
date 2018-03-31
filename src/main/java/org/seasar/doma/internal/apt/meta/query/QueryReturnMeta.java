@@ -2,10 +2,8 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor8;
@@ -57,36 +55,36 @@ public class QueryReturnMeta {
   }
 
   public boolean isResult(EntityCtType entityCtType) {
-    TypeMirror type = ctType.getType();
+    var type = ctType.getType();
     if (!ctx.getTypes().isSameType(type, Result.class)) {
       return false;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return false;
     }
-    List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+    var typeArgs = declaredType.getTypeArguments();
     if (typeArgs.size() != 1) {
       return false;
     }
-    TypeMirror typeArg = typeArgs.get(0);
+    var typeArg = typeArgs.get(0);
     return ctx.getTypes().isSameType(typeArg, entityCtType.getType());
   }
 
   public boolean isBatchResult(EntityCtType entityCtType) {
-    TypeMirror type = ctType.getType();
+    var type = ctType.getType();
     if (!ctx.getTypes().isSameType(type, BatchResult.class)) {
       return false;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    var declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return false;
     }
-    List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+    var typeArgs = declaredType.getTypeArguments();
     if (typeArgs.size() != 1) {
       return false;
     }
-    TypeMirror typeArg = typeArgs.get(0);
+    var typeArg = typeArgs.get(0);
     return ctx.getTypes().isSameType(typeArg, entityCtType.getType());
   }
 

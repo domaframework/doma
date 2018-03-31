@@ -15,7 +15,17 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.*;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.BLOCK_DELIMITER;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.END_OF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.END_OF_FILE;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.END_OF_LINE;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.QUOTE;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.START_OF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.STATEMENT_DELIMITER;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.WORD;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 /**
@@ -91,15 +101,15 @@ public class ScriptTokenizer {
    */
   protected void peek(int index) {
     if (index < length) {
-      char c = line.charAt(index);
+      var c = line.charAt(index);
       if (c == '\'') {
         type = QUOTE;
         pos = index;
         nextPos = index + 1;
       } else {
-        int nextIndex = index + 1;
+        var nextIndex = index + 1;
         if (nextIndex < length) {
-          char c2 = line.charAt(nextIndex);
+          var c2 = line.charAt(nextIndex);
           if (c == '-' && c2 == '-') {
             type = LINE_COMMENT;
             pos = index;
@@ -172,11 +182,11 @@ public class ScriptTokenizer {
         nextPos = pos + 2;
         return START_OF_BLOCK_COMMENT;
       case BLOCK_COMMENT:
-        for (int i = nextPos; i < length; i++) {
-          char c = line.charAt(i);
-          int nextIndex = i + 1;
+        for (var i = nextPos; i < length; i++) {
+          var c = line.charAt(i);
+          var nextIndex = i + 1;
           if (nextIndex < length) {
-            char c2 = line.charAt(nextIndex);
+            var c2 = line.charAt(nextIndex);
             if (c == '*' && c2 == '/') {
               blockCommentStarted = false;
               token = line.substring(pos, i);
@@ -196,8 +206,8 @@ public class ScriptTokenizer {
         peek(nextPos);
         return END_OF_BLOCK_COMMENT;
       case QUOTE:
-        for (int i = nextPos; i < length; i++) {
-          char c = line.charAt(i);
+        for (var i = nextPos; i < length; i++) {
+          var c = line.charAt(i);
           if (c == '\'') {
             i++;
             if (i >= length) {
@@ -215,13 +225,13 @@ public class ScriptTokenizer {
         type = END_OF_LINE;
         return QUOTE;
       case WORD:
-        int wordStartPos = pos;
+        var wordStartPos = pos;
         //noinspection StatementWithEmptyBody
         for (; type == WORD && pos < length; peek(nextPos)) {}
         token = line.substring(wordStartPos, pos);
         return WORD;
       case OTHER:
-        int otherStartPos = pos;
+        var otherStartPos = pos;
         //noinspection StatementWithEmptyBody
         for (; type == OTHER && pos < length; peek(nextPos)) {}
         token = line.substring(otherStartPos, pos);

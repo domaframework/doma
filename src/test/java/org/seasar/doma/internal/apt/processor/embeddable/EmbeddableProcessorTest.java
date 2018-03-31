@@ -17,7 +17,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
 
   public void testSimple() throws Exception {
     Class<?> target = Address.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -27,7 +27,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
 
   public void testInheritance() throws Exception {
     Class<?> target = Derived.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -37,7 +37,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
 
   public void testAbstract() throws Exception {
     Class<?> target = AbstractEmbeddable.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -46,7 +46,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   }
 
   public void testNotTopLevel() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(NotTopLevel.class);
     compile();
@@ -55,7 +55,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   }
 
   public void testOuter_nonStatic() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer_nonStaticInner.class);
     compile();
@@ -64,7 +64,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   }
 
   public void testOuter_nonPublic() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer_nonPublicInner.class);
     compile();
@@ -73,7 +73,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   }
 
   public void testOuter_nonPublicMiddle() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer_nonPublicMiddle.class);
     compile();
@@ -82,7 +82,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   }
 
   public void testOuter__illegalName() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer__illegalName.class);
     compile();
@@ -93,7 +93,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   public void testLombokValue() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     Class<?> target = LombokValue.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -104,7 +104,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   public void testLombokValueStaticConstructor() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     Class<?> target = LombokValueStaticConstructor.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -115,7 +115,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   public void testLombokAllArgsConstructor() throws Exception {
     addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
     Class<?> target = LombokAllArgsConstructor.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -126,7 +126,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   public void testLombokAllArgsConstructorStaticName() throws Exception {
     addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
     Class<?> target = LombokAllArgsConstructorStaticName.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -137,7 +137,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   public void testLombokAllArgsConstructorAccess_private() throws Exception {
     addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
     Class<?> target = LombokAllArgsConstructorAccess_private.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -148,7 +148,7 @@ public class EmbeddableProcessorTest extends AptTestCase {
   public void testLombokAllArgsConstructorAccess_none() throws Exception {
     addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
     Class<?> target = LombokAllArgsConstructorAccess_none.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
+    var processor = new EmbeddableProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();

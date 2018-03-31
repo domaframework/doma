@@ -28,7 +28,7 @@ public class SelectOptionsTest extends TestCase {
   }
 
   public void testForUpdateWaitParameter1() throws Exception {
-    int waitSeconds = -1;
+    var waitSeconds = -1;
     try {
       SelectOptions.get().forUpdateWait(waitSeconds);
       fail();
@@ -39,7 +39,7 @@ public class SelectOptionsTest extends TestCase {
   }
 
   public void testForUpdateWaitParameter2() throws Exception {
-    int waitSeconds = -1;
+    var waitSeconds = -1;
     String[] aliases = {"a"};
     try {
       SelectOptions.get().forUpdateWait(waitSeconds, aliases);
@@ -51,7 +51,7 @@ public class SelectOptionsTest extends TestCase {
   }
 
   public void testForUpdateWaitParameter3() throws Exception {
-    int waitSeconds = 1;
+    var waitSeconds = 1;
     String[] aliases = null;
     try {
       SelectOptions.get().forUpdateWait(waitSeconds, aliases);
@@ -62,7 +62,7 @@ public class SelectOptionsTest extends TestCase {
   }
 
   public void testOffsetParameter() throws Exception {
-    int offset = -1;
+    var offset = -1;
     try {
       SelectOptions.get().offset(offset);
       fail();
@@ -73,7 +73,7 @@ public class SelectOptionsTest extends TestCase {
   }
 
   public void testLimitParameter() throws Exception {
-    int limit = -1;
+    var limit = -1;
     try {
       SelectOptions.get().limit(limit);
       fail();

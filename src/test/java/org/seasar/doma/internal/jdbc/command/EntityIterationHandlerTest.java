@@ -4,7 +4,11 @@ import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import junit.framework.TestCase;
-import org.seasar.doma.internal.jdbc.mock.*;
+import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockResultSet;
+import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
+import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -23,14 +27,14 @@ public class EntityIterationHandlerTest extends TestCase {
   }
 
   public void testHandle() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData(1, "aaa"));
     resultSet.rows.add(new RowData(2, "bbb"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -39,7 +43,7 @@ public class EntityIterationHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    EntityIterationHandler<Emp, Integer> handler =
+    var handler =
         new EntityIterationHandler<>(
             _Emp.getSingletonInternal(),
             new IterationCallback<Emp, Integer>() {
@@ -52,19 +56,19 @@ public class EntityIterationHandlerTest extends TestCase {
                 return count;
               }
             });
-    Integer result = handler.handle(resultSet, query, (__) -> {}).get();
+    var result = handler.handle(resultSet, query, (__) -> {}).get();
     assertEquals(Integer.valueOf(2), result);
   }
 
   public void testHandle_exits() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData(1, "aaa"));
     resultSet.rows.add(new RowData(2, "bbb"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -73,7 +77,7 @@ public class EntityIterationHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    EntityIterationHandler<Emp, Integer> handler =
+    var handler =
         new EntityIterationHandler<>(
             _Emp.getSingletonInternal(),
             new IterationCallback<Emp, Integer>() {
@@ -87,7 +91,7 @@ public class EntityIterationHandlerTest extends TestCase {
                 return count;
               }
             });
-    Integer result = handler.handle(resultSet, query, (__) -> {}).get();
+    var result = handler.handle(resultSet, query, (__) -> {}).get();
     assertEquals(Integer.valueOf(1), result);
   }
 }

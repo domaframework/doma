@@ -26,7 +26,7 @@ public class SingletonConfigAnnot extends AbstractAnnot {
   }
 
   public String getMethodValue() {
-    String methodName = AnnotationValueUtil.toString(method);
+    var methodName = AnnotationValueUtil.toString(method);
     if (methodName == null) {
       throw new AptIllegalStateException(METHOD);
     }

@@ -3,8 +3,34 @@ package org.seasar.doma.internal.expr;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.Deque;
-import java.util.Iterator;
-import org.seasar.doma.internal.expr.node.*;
+import org.seasar.doma.internal.expr.node.AddOperatorNode;
+import org.seasar.doma.internal.expr.node.AndOperatorNode;
+import org.seasar.doma.internal.expr.node.CommaOperatorNode;
+import org.seasar.doma.internal.expr.node.DivideOperatorNode;
+import org.seasar.doma.internal.expr.node.EmptyNode;
+import org.seasar.doma.internal.expr.node.EqOperatorNode;
+import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.expr.node.ExpressionNodeVisitor;
+import org.seasar.doma.internal.expr.node.FieldOperatorNode;
+import org.seasar.doma.internal.expr.node.FunctionOperatorNode;
+import org.seasar.doma.internal.expr.node.GeOperatorNode;
+import org.seasar.doma.internal.expr.node.GtOperatorNode;
+import org.seasar.doma.internal.expr.node.LeOperatorNode;
+import org.seasar.doma.internal.expr.node.LiteralNode;
+import org.seasar.doma.internal.expr.node.LtOperatorNode;
+import org.seasar.doma.internal.expr.node.MethodOperatorNode;
+import org.seasar.doma.internal.expr.node.ModOperatorNode;
+import org.seasar.doma.internal.expr.node.MultiplyOperatorNode;
+import org.seasar.doma.internal.expr.node.NeOperatorNode;
+import org.seasar.doma.internal.expr.node.NewOperatorNode;
+import org.seasar.doma.internal.expr.node.NotOperatorNode;
+import org.seasar.doma.internal.expr.node.OperatorNode;
+import org.seasar.doma.internal.expr.node.OrOperatorNode;
+import org.seasar.doma.internal.expr.node.ParensNode;
+import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
+import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
+import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
+import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.message.Message;
 
 public class ExpressionReducer implements ExpressionNodeVisitor<Void, Deque<ExpressionNode>> {
@@ -149,7 +175,7 @@ public class ExpressionReducer implements ExpressionNodeVisitor<Void, Deque<Expr
 
   @Override
   public Void visitCommaOperatorNode(CommaOperatorNode node, Deque<ExpressionNode> p) {
-    for (Iterator<ExpressionNode> it = p.descendingIterator(); it.hasNext(); ) {
+    for (var it = p.descendingIterator(); it.hasNext(); ) {
       node.addNode(it.next());
       it.remove();
     }
@@ -182,7 +208,7 @@ public class ExpressionReducer implements ExpressionNodeVisitor<Void, Deque<Expr
 
   protected ExpressionNode pop(OperatorNode node, Deque<ExpressionNode> p) {
     if (p.peek() == null) {
-      ExpressionLocation location = node.getLocation();
+      var location = node.getLocation();
       throw new ExpressionException(
           Message.DOMA3010, location.getExpression(), location.getPosition(), node.getExpression());
     }

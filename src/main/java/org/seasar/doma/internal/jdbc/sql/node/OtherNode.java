@@ -52,7 +52,7 @@ public class OtherNode extends AbstractSqlNode {
   }
 
   public static OtherNode of(String other) {
-    OtherNode otherNode = otherNodeMap.get(other);
+    var otherNode = otherNodeMap.get(other);
     if (otherNode != null) {
       return otherNode;
     }

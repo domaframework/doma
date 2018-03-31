@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
 public class EntityCtType extends AbstractCtType {
 
@@ -17,7 +16,7 @@ public class EntityCtType extends AbstractCtType {
     super(ctx, type);
     assertNotNull(typeElement);
     this.immutable = immutable;
-    CodeSpec codeSpec = ctx.getCodeSpecs().newEntityDescCodeSpec(typeElement);
+    var codeSpec = ctx.getCodeSpecs().newEntityDescCodeSpec(typeElement);
     this.descClassName = codeSpec.getQualifiedName();
   }
 

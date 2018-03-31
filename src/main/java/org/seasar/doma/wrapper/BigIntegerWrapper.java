@@ -29,7 +29,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger>
 
   @Override
   public void increment() {
-    BigInteger value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value.add(BigInteger.ONE));
     }
@@ -37,7 +37,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger>
 
   @Override
   public void decrement() {
-    BigInteger value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value.subtract(BigInteger.ONE));
     }

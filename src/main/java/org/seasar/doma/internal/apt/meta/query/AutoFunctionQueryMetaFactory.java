@@ -3,9 +3,18 @@ package org.seasar.doma.internal.apt.meta.query;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.FunctionAnnot;
-import org.seasar.doma.internal.apt.cttype.*;
-import org.seasar.doma.internal.apt.meta.parameter.*;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.ScalarCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.meta.parameter.EntityResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.MapResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarSingleResultParameterMeta;
 import org.seasar.doma.message.Message;
 
 public class AutoFunctionQueryMetaFactory
@@ -17,11 +26,11 @@ public class AutoFunctionQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    FunctionAnnot functionAnnot = ctx.getAnnots().newFunctionAnnot(methodElement);
+    var functionAnnot = ctx.getAnnots().newFunctionAnnot(methodElement);
     if (functionAnnot == null) {
       return null;
     }
-    AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(methodElement);
+    var queryMeta = new AutoFunctionQueryMeta(methodElement);
     queryMeta.setFunctionAnnot(functionAnnot);
     queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
     doTypeParameters(queryMeta);
@@ -33,9 +42,9 @@ public class AutoFunctionQueryMetaFactory
 
   @Override
   protected void doReturnType(AutoFunctionQueryMeta queryMeta) {
-    QueryReturnMeta returnMeta = createReturnMeta();
+    var returnMeta = createReturnMeta();
     queryMeta.setReturnMeta(returnMeta);
-    ResultParameterMeta resultParameterMeta = createResultParameterMeta(queryMeta, returnMeta);
+    var resultParameterMeta = createResultParameterMeta(queryMeta, returnMeta);
     queryMeta.setResultParameterMeta(resultParameterMeta);
   }
 

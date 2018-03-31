@@ -13,17 +13,17 @@ public class BatchDeleteCommandTest extends TestCase {
   private final MockConfig runtimeConfig = new MockConfig();
 
   public void testExecute() throws Exception {
-    Emp emp1 = new Emp();
+    var emp1 = new Emp();
     emp1.setId(1);
     emp1.setName("hoge");
     emp1.setVersion(10);
 
-    Emp emp2 = new Emp();
+    var emp2 = new Emp();
     emp2.setId(2);
     emp2.setName("foo");
     emp2.setVersion(20);
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    var query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -31,11 +31,11 @@ public class BatchDeleteCommandTest extends TestCase {
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
-    int[] rows = new BatchDeleteCommand(query).execute();
+    var rows = new BatchDeleteCommand(query).execute();
     query.complete();
 
     assertEquals(2, rows.length);
-    String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
+    var sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql);
   }
 }

@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.meta;
 
-import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
@@ -16,7 +15,7 @@ public class EntityMetaFactoryTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              EntityMeta entityMeta = createEntityMeta(ctx, target);
+              var entityMeta = createEntityMeta(ctx, target);
               assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
             }));
     compile();
@@ -29,7 +28,7 @@ public class EntityMetaFactoryTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              EntityMeta entityMeta = createEntityMeta(ctx, target);
+              var entityMeta = createEntityMeta(ctx, target);
               assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
             }));
     compile();
@@ -42,7 +41,7 @@ public class EntityMetaFactoryTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              EntityMeta entityMeta = createEntityMeta(ctx, target);
+              var entityMeta = createEntityMeta(ctx, target);
               assertEquals(NamingType.NONE, entityMeta.getNamingType());
             }));
     compile();
@@ -50,8 +49,8 @@ public class EntityMetaFactoryTest extends AptTestCase {
   }
 
   protected EntityMeta createEntityMeta(Context ctx, Class<?> clazz) {
-    TypeElement entityElement = ctx.getElements().getTypeElement(clazz);
-    EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx, entityElement);
+    var entityElement = ctx.getElements().getTypeElement(clazz);
+    var entityMetaFactory = new EntityMetaFactory(ctx, entityElement);
     return entityMetaFactory.createTypeElementMeta();
   }
 }

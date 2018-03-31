@@ -50,7 +50,7 @@ class ClassUtils {
    * @return パッケージ名または {@code null}
    */
   public static String getPackageName(final String qualifiedName) {
-    final int pos = qualifiedName.lastIndexOf('.');
+    final var pos = qualifiedName.lastIndexOf('.');
     if (pos == -1) {
       return null;
     }
@@ -85,8 +85,8 @@ class ClassUtils {
    */
   public static String[] getQualifiedNameArray(final Class<?>... classes) {
     assertNotNull("classes", classes);
-    final String[] qualifiedNames = new String[classes.length];
-    for (int i = 0; i < classes.length; ++i) {
+    final var qualifiedNames = new String[classes.length];
+    for (var i = 0; i < classes.length; ++i) {
       qualifiedNames[i] = getQualifiedName(classes[i]);
     }
     return qualifiedNames;
@@ -120,8 +120,8 @@ class ClassUtils {
    */
   public static String[] getSimpleNameArray(final Class<?>... classes) {
     assertNotNull("clsses", classes);
-    final String[] simpleNames = new String[classes.length];
-    for (int i = 0; i < classes.length; ++i) {
+    final var simpleNames = new String[classes.length];
+    for (var i = 0; i < classes.length; ++i) {
       simpleNames[i] = getSimpleName(classes[i]);
     }
     return simpleNames;

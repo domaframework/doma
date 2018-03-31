@@ -7,7 +7,7 @@ public class MockResultSetTest extends TestCase {
 
   public void testNext() throws Exception {
     @SuppressWarnings("resource")
-    MockResultSet resultSet = new MockResultSet();
+    var resultSet = new MockResultSet();
     resultSet.rows.add(new RowData("aaa"));
     resultSet.rows.add(new RowData("bbb"));
 
@@ -20,7 +20,7 @@ public class MockResultSetTest extends TestCase {
 
   public void testGetString() throws Exception {
     @SuppressWarnings("resource")
-    MockResultSet resultSet = new MockResultSet();
+    var resultSet = new MockResultSet();
     resultSet.rows.add(new RowData("aaa", "bbb"));
 
     assertTrue(resultSet.next());
@@ -30,7 +30,7 @@ public class MockResultSetTest extends TestCase {
 
   public void testGetInteger() throws Exception {
     @SuppressWarnings("resource")
-    MockResultSet resultSet = new MockResultSet();
+    var resultSet = new MockResultSet();
     resultSet.rows.add(new RowData(10, 20));
 
     assertTrue(resultSet.next());
@@ -40,7 +40,7 @@ public class MockResultSetTest extends TestCase {
 
   public void testGetBigDecimal() throws Exception {
     @SuppressWarnings("resource")
-    MockResultSet resultSet = new MockResultSet();
+    var resultSet = new MockResultSet();
     resultSet.rows.add(new RowData(new BigDecimal(10), new BigDecimal(20)));
 
     assertTrue(resultSet.next());

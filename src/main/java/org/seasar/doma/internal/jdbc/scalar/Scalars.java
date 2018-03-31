@@ -5,7 +5,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.SQLXML;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,7 +23,31 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.holder.HolderDesc;
 import org.seasar.doma.jdbc.holder.HolderDescFactory;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.*;
+import org.seasar.doma.wrapper.ArrayWrapper;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.BigIntegerWrapper;
+import org.seasar.doma.wrapper.BlobWrapper;
+import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.ByteWrapper;
+import org.seasar.doma.wrapper.BytesWrapper;
+import org.seasar.doma.wrapper.ClobWrapper;
+import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.DoubleWrapper;
+import org.seasar.doma.wrapper.EnumWrapper;
+import org.seasar.doma.wrapper.FloatWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
+import org.seasar.doma.wrapper.LongWrapper;
+import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ObjectWrapper;
+import org.seasar.doma.wrapper.SQLXMLWrapper;
+import org.seasar.doma.wrapper.ShortWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.TimeWrapper;
+import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 public final class Scalars {
@@ -24,14 +55,13 @@ public final class Scalars {
   public static Supplier<Scalar<?, ?>> wrap(
       Object value, Class<?> valueClass, boolean optional, ClassHelper classHelper) {
     assertNotNull(valueClass, classHelper);
-    Class<?> boxedClass = ClassUtil.toBoxedPrimitiveTypeIfPossible(valueClass);
+    var boxedClass = ClassUtil.toBoxedPrimitiveTypeIfPossible(valueClass);
     assertTrue(value == null || boxedClass.isInstance(value));
 
     if (Scalar.class.isAssignableFrom(boxedClass)) {
       return () -> (Scalar<?, ?>) value;
     }
-    Supplier<Scalar<?, ?>> result =
-        wrapBasicObject(value, boxedClass, optional, valueClass.isPrimitive());
+    var result = wrapBasicObject(value, boxedClass, optional, valueClass.isPrimitive());
     if (result == null) {
       result = wrapHolderObject(value, boxedClass, optional, classHelper);
       if (result == null) {
@@ -183,7 +213,7 @@ public final class Scalars {
     if (holderDesc == null) {
       return null;
     }
-    HOLDER holder = valueClass.cast(value);
+    var holder = valueClass.cast(value);
     if (optional) {
       return () -> holderDesc.createOptionalScalar(holder);
     } else {

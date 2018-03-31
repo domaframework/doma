@@ -226,7 +226,7 @@ public interface Config {
    */
   static Config get(Object provider) {
     if (provider instanceof ConfigProvider) {
-      ConfigProvider p = (ConfigProvider) provider;
+      var p = (ConfigProvider) provider;
       return p.getConfig();
     }
     throw new DomaIllegalArgumentException(

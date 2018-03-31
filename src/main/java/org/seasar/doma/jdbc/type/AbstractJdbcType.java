@@ -1,6 +1,10 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
@@ -35,7 +39,7 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
     if (index < 1) {
       throw new DomaIllegalArgumentException("index", "index < 1");
     }
-    T result = doGetValue(resultSet, index);
+    var result = doGetValue(resultSet, index);
     if (resultSet.wasNull()) {
       return null;
     }
@@ -78,7 +82,7 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
     if (index < 1) {
       throw new DomaIllegalArgumentException("index", "index < 1");
     }
-    T result = doGetValue(callableStatement, index);
+    var result = doGetValue(callableStatement, index);
     if (callableStatement.wasNull()) {
       return null;
     }

@@ -1,7 +1,6 @@
 package org.seasar.doma.jdbc.id;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.jdbc.Sql;
 
 /** The built-in implementation for {@link SequenceIdGenerator}. */
 public class BuiltinSequenceIdGenerator extends AbstractPreGenerateIdGenerator
@@ -19,7 +18,7 @@ public class BuiltinSequenceIdGenerator extends AbstractPreGenerateIdGenerator
 
   @Override
   protected long getNewInitialValue(IdGenerationConfig config) {
-    Sql<?> sql = config.getDialect().getSequenceNextValSql(qualifiedSequenceName, allocationSize);
+    var sql = config.getDialect().getSequenceNextValSql(qualifiedSequenceName, allocationSize);
     return getGeneratedValue(config, sql);
   }
 

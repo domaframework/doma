@@ -25,7 +25,7 @@ public class OptionalIntScalar implements Scalar<Integer, OptionalInt> {
 
   @Override
   public OptionalInt get() {
-    Integer value = wrapper.get();
+    var value = wrapper.get();
     return value != null ? OptionalInt.of(value) : OptionalInt.empty();
   }
 

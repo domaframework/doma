@@ -18,7 +18,7 @@ public class InsertCommand extends ModifyCommand<InsertQuery> {
 
   @Override
   protected int executeInternal(PreparedStatement preparedStatement) throws SQLException {
-    int rows = executeUpdate(preparedStatement);
+    var rows = executeUpdate(preparedStatement);
     query.generateId(preparedStatement);
     return rows;
   }

@@ -6,7 +6,13 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.H212126ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.H212126PagingTransformer;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 
 /** A dialect for H2 version 1.2.126 and below. */
 public class H212126Dialect extends StandardDialect {
@@ -72,7 +78,7 @@ public class H212126Dialect extends StandardDialect {
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
-    String rawSql = "call identity()";
+    var rawSql = "call identity()";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
@@ -82,7 +88,7 @@ public class H212126Dialect extends StandardDialect {
     if (qualifiedSequenceName == null) {
       throw new DomaNullPointerException("qualifiedSequenceName");
     }
-    String rawSql = "call next value for " + qualifiedSequenceName;
+    var rawSql = "call next value for " + qualifiedSequenceName;
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
@@ -92,21 +98,20 @@ public class H212126Dialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    int code = getErrorCode(sqlException);
+    var code = getErrorCode(sqlException);
     return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    H212126PagingTransformer transformer = new H212126PagingTransformer(offset, limit);
+    var transformer = new H212126PagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    H212126ForUpdateTransformer transformer =
-        new H212126ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new H212126ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 

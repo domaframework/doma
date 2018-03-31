@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -114,7 +113,7 @@ public abstract class ModifyAnnot extends AbstractAnnot {
   }
 
   public int getQueryTimeoutValue() {
-    Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+    var value = AnnotationValueUtil.toInteger(queryTimeout);
     if (value == null) {
       throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
@@ -146,7 +145,7 @@ public abstract class ModifyAnnot extends AbstractAnnot {
   }
 
   public SqlLogType getSqlLogValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
       throw new AptIllegalStateException(SQL_LOG);
     }
@@ -154,7 +153,7 @@ public abstract class ModifyAnnot extends AbstractAnnot {
   }
 
   public boolean getSqlFileValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(sqlFile);
+    var value = AnnotationValueUtil.toBoolean(sqlFile);
     if (value == null) {
       throw new AptIllegalStateException(SQL_FILE);
     }

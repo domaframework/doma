@@ -14,13 +14,13 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
   }
 
   public String getQualifiedSequenceName() {
-    StringBuilder buf = new StringBuilder();
-    String catalogName = sequenceGeneratorAnnot.getCatalogValue();
+    var buf = new StringBuilder();
+    var catalogName = sequenceGeneratorAnnot.getCatalogValue();
     if (!catalogName.isEmpty()) {
       buf.append(catalogName);
       buf.append(".");
     }
-    String schemaName = sequenceGeneratorAnnot.getCatalogValue();
+    var schemaName = sequenceGeneratorAnnot.getCatalogValue();
     if (!schemaName.isEmpty()) {
       buf.append(schemaName);
       buf.append(".");

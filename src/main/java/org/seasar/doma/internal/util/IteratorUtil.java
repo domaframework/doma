@@ -13,7 +13,7 @@ public final class IteratorUtil {
   }
 
   public static <T> Iterator<T> copy(Iterator<T> iterator) {
-    List<T> list = toList(iterator);
+    var list = toList(iterator);
     return list.iterator();
   }
 }

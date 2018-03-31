@@ -4,7 +4,14 @@ import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
-import org.seasar.doma.internal.jdbc.sql.node.*;
+import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
+import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
+import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
@@ -24,8 +31,8 @@ public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Voi
   }
 
   public SqlNode transform(SqlNode sqlNode) {
-    AnonymousNode result = new AnonymousNode();
-    for (SqlNode child : sqlNode.getChildren()) {
+    var result = new AnonymousNode();
+    for (var child : sqlNode.getChildren()) {
       result.appendNode(child.accept(this, null));
     }
     return result;
@@ -38,23 +45,23 @@ public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Voi
     }
     processed = true;
 
-    OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
+    var originalOrderBy = node.getOrderByClauseNode();
     if (originalOrderBy == null) {
       throw new JdbcException(Message.DOMA2201);
     }
-    SelectStatementNode subStatement = new SelectStatementNode();
+    var subStatement = new SelectStatementNode();
     subStatement.setSelectClauseNode(node.getSelectClauseNode());
     subStatement.setFromClauseNode(node.getFromClauseNode());
     subStatement.setWhereClauseNode(node.getWhereClauseNode());
     subStatement.setGroupByClauseNode(node.getGroupByClauseNode());
     subStatement.setHavingClauseNode(node.getHavingClauseNode());
 
-    OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
-    for (SqlNode child : originalOrderBy.getChildren()) {
+    var orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
+    for (var child : originalOrderBy.getChildren()) {
       if (child instanceof WordNode) {
-        WordNode wordNode = (WordNode) child;
-        String word = wordNode.getWord();
-        String[] names = word.split("\\.");
+        var wordNode = (WordNode) child;
+        var word = wordNode.getWord();
+        var names = word.split("\\.");
         if (names.length == 2) {
           orderBy.appendNode(new WordNode("temp_." + names[1]));
         } else {
@@ -65,15 +72,15 @@ public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Voi
       }
     }
 
-    SelectClauseNode select = new SelectClauseNode("select");
+    var select = new SelectClauseNode("select");
     select.appendNode(new FragmentNode(" * "));
-    FromClauseNode from = new FromClauseNode("from");
+    var from = new FromClauseNode("from");
     from.appendNode(new FragmentNode(" ( select temp_.*, row_number() over( "));
     from.appendNode(orderBy);
     from.appendNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME + " from ( "));
     from.appendNode(subStatement);
     from.appendNode(new FragmentNode(") as temp_ ) as temp2_ "));
-    WhereClauseNode where = new WhereClauseNode("where");
+    var where = new WhereClauseNode("where");
     where.appendNode(new FragmentNode(" "));
     if (offset >= 0) {
       where.appendNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " > "));
@@ -83,12 +90,12 @@ public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Voi
       if (offset >= 0) {
         where.appendNode(new FragmentNode(" and "));
       }
-      long bias = offset < 0 ? 0 : offset;
+      var bias = offset < 0 ? 0 : offset;
       where.appendNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
       where.appendNode(new FragmentNode(String.valueOf(bias + limit)));
     }
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(select);
     result.setFromClauseNode(from);
     result.setWhereClauseNode(where);

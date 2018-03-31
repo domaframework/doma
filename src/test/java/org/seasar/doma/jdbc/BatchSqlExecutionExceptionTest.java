@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class BatchSqlExecutionExceptionTest extends TestCase {
 
   public void test() throws Exception {
-    BatchSqlExecutionException e =
+    var e =
         new BatchSqlExecutionException(
             SqlLogType.FORMATTED,
             SqlKind.UPDATE,

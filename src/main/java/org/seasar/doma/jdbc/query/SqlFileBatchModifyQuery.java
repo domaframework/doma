@@ -12,7 +12,12 @@ import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlFile;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 
 public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
@@ -77,13 +82,13 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
   }
 
   protected void prepareSql() {
-    Value value = new Value(elementClass, currentEntity);
-    ExpressionEvaluator evaluator =
+    var value = new Value(elementClass, currentEntity);
+    var evaluator =
         new ExpressionEvaluator(
             Collections.singletonMap(parameterName, value),
             config.getDialect().getExpressionFunctions(),
             config.getClassHelper());
-    NodePreparedSqlBuilder sqlBuilder =
+    var sqlBuilder =
         new NodePreparedSqlBuilder(
             config,
             kind,
@@ -92,7 +97,7 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
             sqlLogType,
             this::expandColumns,
             this::populateValues);
-    PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
+    var sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
     sqls.add(sql);
   }
 
@@ -118,7 +123,7 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
       this.elements = new ArrayList<>((Collection<ELEMENT>) elements);
     } else {
       this.elements = new ArrayList<>();
-      for (ELEMENT element : elements) {
+      for (var element : elements) {
         this.elements.add(element);
       }
     }

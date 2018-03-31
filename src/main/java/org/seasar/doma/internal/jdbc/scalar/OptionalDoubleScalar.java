@@ -25,7 +25,7 @@ public class OptionalDoubleScalar implements Scalar<Double, OptionalDouble> {
 
   @Override
   public OptionalDouble get() {
-    Double value = wrapper.get();
+    var value = wrapper.get();
     return value != null ? OptionalDouble.of(value) : OptionalDouble.empty();
   }
 

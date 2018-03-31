@@ -25,7 +25,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements NumberWrap
 
   @Override
   public void increment() {
-    Double value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value + 1d);
     }
@@ -33,7 +33,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements NumberWrap
 
   @Override
   public void decrement() {
-    Double value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value - 1d);
     }

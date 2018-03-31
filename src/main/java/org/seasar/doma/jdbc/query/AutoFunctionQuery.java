@@ -21,7 +21,7 @@ public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements Functi
   }
 
   protected void prepareSql() {
-    CallableSqlBuilder builder =
+    var builder =
         new CallableSqlBuilder(
             config, SqlKind.FUNCTION, qualifiedName, parameters, sqlLogType, resultParameter);
     sql = builder.build(this::comment);

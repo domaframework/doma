@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.jdbc.BatchUniqueConstraintException;
 import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
 
 /**
@@ -26,10 +25,10 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
     if (query.isBatchSupported()) {
       return executeBatch(preparedStatement, sqls);
     }
-    int sqlSize = sqls.size();
-    int[] updatedRows = new int[sqlSize];
-    int i = 0;
-    for (PreparedSql sql : sqls) {
+    var sqlSize = sqls.size();
+    var updatedRows = new int[sqlSize];
+    var i = 0;
+    for (var sql : sqls) {
       log(sql);
       bindParameters(preparedStatement, sql);
       updatedRows[i] = executeUpdate(preparedStatement, sql);
@@ -44,7 +43,7 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
     try {
       return preparedStatement.executeUpdate();
     } catch (SQLException e) {
-      Dialect dialect = query.getConfig().getDialect();
+      var dialect = query.getConfig().getDialect();
       if (dialect.isUniqueConstraintViolated(e)) {
         throw new BatchUniqueConstraintException(
             query.getConfig().getExceptionSqlLogType(), sql, e);

@@ -1,6 +1,5 @@
 package org.seasar.doma.jdbc.command;
 
-import java.util.List;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
@@ -18,18 +17,17 @@ public class FunctionCommandTest extends TestCase {
   private final MockConfig runtimeConfig = new MockConfig();
 
   public void testExecute() throws Exception {
-    List<Object> outParameters =
-        runtimeConfig.dataSource.connection.callableStatement.outParameters;
+    var outParameters = runtimeConfig.dataSource.connection.callableStatement.outParameters;
     outParameters.add(10);
     outParameters.add(null);
     outParameters.add(20);
     outParameters.add(30);
 
-    IntegerWrapper aaa = new IntegerWrapper();
-    IntegerWrapper bbb = new IntegerWrapper(50);
-    IntegerWrapper ccc = new IntegerWrapper(60);
+    var aaa = new IntegerWrapper();
+    var bbb = new IntegerWrapper(50);
+    var ccc = new IntegerWrapper(60);
 
-    AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
+    var query = new AutoFunctionQuery<Integer>();
     query.setConfig(runtimeConfig);
     query.setCatalogName("xxx");
     query.setSchemaName("yyy");
@@ -45,7 +43,7 @@ public class FunctionCommandTest extends TestCase {
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
-    Integer result = new FunctionCommand<Integer>(query).execute();
+    var result = new FunctionCommand<Integer>(query).execute();
     query.complete();
 
     assertNotNull(result);
@@ -54,7 +52,7 @@ public class FunctionCommandTest extends TestCase {
     assertEquals(Integer.valueOf(20), bbb.get());
     assertEquals(Integer.valueOf(30), ccc.get());
 
-    String sql = runtimeConfig.dataSource.connection.callableStatement.sql;
+    var sql = runtimeConfig.dataSource.connection.callableStatement.sql;
     assertEquals("{? = call xxx.yyy.aaa(?, ?, ?)}", sql);
   }
 }

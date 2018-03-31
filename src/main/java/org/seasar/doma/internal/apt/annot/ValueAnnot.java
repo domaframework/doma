@@ -26,7 +26,7 @@ public class ValueAnnot extends AbstractAnnot {
   }
 
   public String getStaticConstructorValue() {
-    String value = AnnotationValueUtil.toString(staticConstructor);
+    var value = AnnotationValueUtil.toString(staticConstructor);
     if (value == null) {
       throw new AptIllegalStateException(STATIC_CONSTRUCTOR);
     }

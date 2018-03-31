@@ -20,8 +20,8 @@ public class DefaultPropertyDescTest extends TestCase {
   private Integer integer;
 
   public void testIsQuoteRequired_true() throws Exception {
-    boolean isQuoteRequired = true;
-    DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc =
+    var isQuoteRequired = true;
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new StringWrapper(), false),
@@ -36,8 +36,8 @@ public class DefaultPropertyDescTest extends TestCase {
   }
 
   public void testIsQuoteRequired_false() throws Exception {
-    boolean isQuoteRequired = false;
-    DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc =
+    var isQuoteRequired = false;
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new StringWrapper(), false),
@@ -52,7 +52,7 @@ public class DefaultPropertyDescTest extends TestCase {
   }
 
   public void testGetColumnName_naming_columnNameDefined() throws Exception {
-    DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc =
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new StringWrapper(), false),
@@ -66,7 +66,7 @@ public class DefaultPropertyDescTest extends TestCase {
   }
 
   public void testGetColumnName_naiming_columnNotDefined() throws Exception {
-    DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc =
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new StringWrapper(), false),
@@ -80,7 +80,7 @@ public class DefaultPropertyDescTest extends TestCase {
   }
 
   public void testGetColumnName_naiming_quote_quoteRequired() throws Exception {
-    DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc =
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new StringWrapper(), false),
@@ -97,7 +97,7 @@ public class DefaultPropertyDescTest extends TestCase {
   }
 
   public void testGetColumnName_naiming_quote_quoteNotRequired() throws Exception {
-    DefaultPropertyDesc<DefaultPropertyDescTest, String, String> propertyDesc =
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new StringWrapper(), false),
@@ -114,7 +114,7 @@ public class DefaultPropertyDescTest extends TestCase {
   }
 
   public void testPrimitivePropertyDefaultValue() throws Exception {
-    DefaultPropertyDesc<DefaultPropertyDescTest, Integer, Integer> propertyDesc =
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new IntegerWrapper(), true),
@@ -124,12 +124,12 @@ public class DefaultPropertyDescTest extends TestCase {
             true,
             true,
             false);
-    Property<DefaultPropertyDescTest, Integer> property = propertyDesc.createProperty();
+    var property = propertyDesc.createProperty();
     assertEquals(0, property.get());
   }
 
   public void testWrapperPropertyDefaultValue() throws Exception {
-    DefaultPropertyDesc<DefaultPropertyDescTest, Integer, Integer> propertyDesc =
+    var propertyDesc =
         new DefaultPropertyDesc<>(
             DefaultPropertyDescTest.class,
             () -> new BasicScalar<>(new IntegerWrapper(), false),
@@ -139,7 +139,7 @@ public class DefaultPropertyDescTest extends TestCase {
             true,
             true,
             false);
-    Property<DefaultPropertyDescTest, Integer> property = propertyDesc.createProperty();
+    var property = propertyDesc.createProperty();
     assertNull(property.get());
   }
 

@@ -16,8 +16,8 @@ public final class GenericsUtil {
   public static Class<?> inferTypeArgument(Class<?> clazz, TypeVariable<?> typeVariable) {
     assertNotNull(clazz, typeVariable);
 
-    TypeArgumentInferrer inferrer = new TypeArgumentInferrer(clazz, typeVariable);
-    Type arg = inferrer.infer();
+    var inferrer = new TypeArgumentInferrer(clazz, typeVariable);
+    var arg = inferrer.infer();
     if (arg instanceof Class) {
       return (Class<?>) arg;
     }
@@ -50,19 +50,19 @@ public final class GenericsUtil {
     }
 
     public Type infer() {
-      Class<?> superclass = clazz.getSuperclass();
-      Type superclassType = clazz.getGenericSuperclass();
+      var superclass = clazz.getSuperclass();
+      var superclassType = clazz.getGenericSuperclass();
       if (superclass != null) {
-        Type arg = getTypeArgumentRecursive(superclass, superclassType);
+        var arg = getTypeArgumentRecursive(superclass, superclassType);
         if (arg != null) {
           return arg;
         }
       }
 
-      Class<?>[] interfaces = clazz.getInterfaces();
-      Type[] interfaceTypes = clazz.getGenericInterfaces();
-      for (int i = 0; i < interfaces.length; i++) {
-        Type arg = getTypeArgumentRecursive(interfaces[i], interfaceTypes[i]);
+      var interfaces = clazz.getInterfaces();
+      var interfaceTypes = clazz.getGenericInterfaces();
+      for (var i = 0; i < interfaces.length; i++) {
+        var arg = getTypeArgumentRecursive(interfaces[i], interfaceTypes[i]);
         if (arg != null) {
           return arg;
         }
@@ -76,13 +76,13 @@ public final class GenericsUtil {
         return null;
       }
 
-      Type arg = getTypeArgument(clazz, type);
+      var arg = getTypeArgument(clazz, type);
       if (arg != null) {
         return arg;
       }
 
-      Class<?> superclass = clazz.getSuperclass();
-      Type superclassType = clazz.getGenericSuperclass();
+      var superclass = clazz.getSuperclass();
+      var superclassType = clazz.getGenericSuperclass();
       if (superclass != null) {
         arg = getTypeArgumentRecursive(superclass, superclassType);
         if (arg != null) {
@@ -90,9 +90,9 @@ public final class GenericsUtil {
         }
       }
 
-      Class<?>[] interfaces = clazz.getInterfaces();
-      Type[] interfaceTypes = clazz.getGenericInterfaces();
-      for (int i = 0; i < interfaces.length; i++) {
+      var interfaces = clazz.getInterfaces();
+      var interfaceTypes = clazz.getGenericInterfaces();
+      for (var i = 0; i < interfaces.length; i++) {
         arg = getTypeArgumentRecursive(interfaces[i], interfaceTypes[i]);
         if (arg != null) {
           return arg;
@@ -104,8 +104,8 @@ public final class GenericsUtil {
 
     protected Type getTypeArgument(Class<?> clazz, Type type) {
       if (genericDeclaration == clazz && type instanceof ParameterizedType) {
-        ParameterizedType parameterizedType = (ParameterizedType) type;
-        Type[] args = parameterizedType.getActualTypeArguments();
+        var parameterizedType = (ParameterizedType) type;
+        var args = parameterizedType.getActualTypeArguments();
         if (index < args.length) {
           return args[index];
         }

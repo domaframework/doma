@@ -7,7 +7,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.Formatter;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import javax.sql.DataSource;
@@ -17,14 +16,73 @@ import org.seasar.doma.FetchType;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
-import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
+import org.seasar.doma.internal.apt.cttype.ScalarCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.meta.dao.ConfigMeta;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.meta.parameter.*;
-import org.seasar.doma.internal.apt.meta.query.*;
-import org.seasar.doma.internal.jdbc.command.*;
+import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMetaVisitor;
+import org.seasar.doma.internal.apt.meta.parameter.EntityListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.EntityResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.MapListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.MapResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarInParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarResultListParameterMeta;
+import org.seasar.doma.internal.apt.meta.parameter.ScalarSingleResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.query.AbstractCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoBatchModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoModuleQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.DefaultQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryKind;
+import org.seasar.doma.internal.apt.meta.query.QueryMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryMetaVisitor;
+import org.seasar.doma.internal.apt.meta.query.QueryParameterMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryReturnMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMeta;
+import org.seasar.doma.internal.jdbc.command.EntityCollectorHandler;
+import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
+import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
+import org.seasar.doma.internal.jdbc.command.MapCollectorHandler;
+import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
+import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.MapStreamHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarCollectorHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarResultListHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarStreamHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
-import org.seasar.doma.internal.jdbc.sql.*;
+import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
+import org.seasar.doma.internal.jdbc.sql.EntityResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.MapListParameter;
+import org.seasar.doma.internal.jdbc.sql.MapResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarListParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarResultListParameter;
+import org.seasar.doma.internal.jdbc.sql.ScalarSingleResultParameter;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
@@ -72,7 +130,7 @@ public class DaoImplGenerator extends AbstractGenerator {
   }
 
   private void printStaticFields() {
-    int i = 0;
+    var i = 0;
     for (var queryMeta : daoMeta.getQueryMetas()) {
       var kind = queryMeta.getQueryKind();
       if (kind != QueryKind.DEFAULT) {
@@ -99,7 +157,7 @@ public class DaoImplGenerator extends AbstractGenerator {
       printDefaultConstructor(configMeta);
       if (daoMeta.getAnnotateWithAnnot() == null) {
         var parentDaoMeta = daoMeta.getParentDaoMeta();
-        boolean jdbcConstructorsNecessary =
+        var jdbcConstructorsNecessary =
             parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
         if (jdbcConstructorsNecessary) {
           printJdbcConstructor(configMeta, Connection.class, "connection");
@@ -226,7 +284,7 @@ public class DaoImplGenerator extends AbstractGenerator {
   private String toCSVFormat(List<String> values) {
     final var buf = new StringBuilder();
     if (values.size() > 0) {
-      for (String value : values) {
+      for (var value : values) {
         buf.append("\"");
         buf.append(value);
         buf.append("\", ");
@@ -238,7 +296,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private void printMethods() {
     var generator = new MethodBodyGenerator();
-    int i = 0;
+    var i = 0;
     for (var queryMeta : daoMeta.getQueryMetas()) {
       printMethod(generator, queryMeta, i);
       i++;
@@ -351,10 +409,10 @@ public class DaoImplGenerator extends AbstractGenerator {
         iprint("return __result;%n");
       } else {
         if (m.getSelectStrategyType() == SelectType.STREAM) {
-          FunctionCtType functionCtType = m.getFunctionCtType();
+          var functionCtType = m.getFunctionCtType();
           functionCtType.getTargetCtType().accept(new StreamStrategyGenerator(m, methodName), null);
         } else if (m.getSelectStrategyType() == SelectType.COLLECT) {
-          CollectorCtType collectorCtType = m.getCollectorCtType();
+          var collectorCtType = m.getCollectorCtType();
           collectorCtType
               .getTargetCtType()
               .accept(new CollectStrategyGenerator(m, methodName), false);
@@ -885,8 +943,8 @@ public class DaoImplGenerator extends AbstractGenerator {
         iprint("%1$s __result = ", returnMeta.getTypeName());
       }
       print("%1$s.super.%2$s(", daoMeta.getDaoElement().getQualifiedName(), m.getName());
-      for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
-        QueryParameterMeta parameterMeta = it.next();
+      for (var it = m.getParameterMetas().iterator(); it.hasNext(); ) {
+        var parameterMeta = it.next();
         print("%1$s", parameterMeta.getName());
         if (it.hasNext()) {
           print(", ");
@@ -947,7 +1005,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
     private void printEnteringStatements(QueryMeta m) {
       iprint("entering(\"%1$s\", \"%2$s\"", codeSpec, m.getName());
-      for (QueryParameterMeta parameterMeta : m.getParameterMetas()) {
+      for (var parameterMeta : m.getParameterMetas()) {
         print(", %1$s", parameterMeta.getName());
       }
       print(");%n");
@@ -978,7 +1036,7 @@ public class DaoImplGenerator extends AbstractGenerator {
         if (parameterMeta.isNullable()) {
           continue;
         }
-        String paramName = parameterMeta.getName();
+        var paramName = parameterMeta.getName();
         iprint("if (%1$s == null) {%n", paramName);
         iprint(
             "    throw new %1$s(\"%2$s\");%n",

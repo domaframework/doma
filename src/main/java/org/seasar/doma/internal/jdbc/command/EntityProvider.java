@@ -6,8 +6,16 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.*;
-import org.seasar.doma.jdbc.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ResultMappingException;
+import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
@@ -47,14 +55,14 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
       indexMap = createIndexMap(resultSet.getMetaData(), entityDesc);
     }
     Map<String, Property<ENTITY, ?>> states = new HashMap<>(indexMap.size());
-    for (Map.Entry<Integer, EntityPropertyDesc<ENTITY, ?>> entry : indexMap.entrySet()) {
-      Integer index = entry.getKey();
-      EntityPropertyDesc<ENTITY, ?> propertyDesc = entry.getValue();
-      Property<ENTITY, ?> property = propertyDesc.createProperty();
+    for (var entry : indexMap.entrySet()) {
+      var index = entry.getKey();
+      var propertyDesc = entry.getValue();
+      var property = propertyDesc.createProperty();
       fetch(resultSet, property, index, jdbcMappingVisitor);
       states.put(propertyDesc.getName(), property);
     }
-    ENTITY entity = entityDesc.newEntity(states);
+    var entity = entityDesc.newEntity(states);
     if (!entityDesc.isImmutable()) {
       entityDesc.saveCurrentStates(entity);
     }
@@ -64,14 +72,14 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
   protected HashMap<Integer, EntityPropertyDesc<ENTITY, ?>> createIndexMap(
       ResultSetMetaData resultSetMeta, EntityDesc<ENTITY> entityDesc) throws SQLException {
     HashMap<Integer, EntityPropertyDesc<ENTITY, ?>> indexMap = new HashMap<>();
-    HashMap<String, EntityPropertyDesc<ENTITY, ?>> columnNameMap = createColumnNameMap(entityDesc);
+    var columnNameMap = createColumnNameMap(entityDesc);
     Set<EntityPropertyDesc<ENTITY, ?>> unmappedPropertySet =
         resultMappingEnsured ? new HashSet<>(columnNameMap.values()) : Collections.emptySet();
-    int count = resultSetMeta.getColumnCount();
-    for (int i = 1; i < count + 1; i++) {
-      String columnName = resultSetMeta.getColumnLabel(i);
-      String lowerCaseColumnName = columnName.toLowerCase();
-      EntityPropertyDesc<ENTITY, ?> propertyDesc = columnNameMap.get(lowerCaseColumnName);
+    var count = resultSetMeta.getColumnCount();
+    for (var i = 1; i < count + 1; i++) {
+      var columnName = resultSetMeta.getColumnLabel(i);
+      var lowerCaseColumnName = columnName.toLowerCase();
+      var propertyDesc = columnNameMap.get(lowerCaseColumnName);
       if (propertyDesc == null) {
         if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
           continue;
@@ -90,11 +98,11 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
   protected HashMap<String, EntityPropertyDesc<ENTITY, ?>> createColumnNameMap(
       EntityDesc<ENTITY> entityDesc) {
-    Naming naming = query.getConfig().getNaming();
-    List<EntityPropertyDesc<ENTITY, ?>> propertyDescs = entityDesc.getEntityPropertyDescs();
+    var naming = query.getConfig().getNaming();
+    var propertyDescs = entityDesc.getEntityPropertyDescs();
     HashMap<String, EntityPropertyDesc<ENTITY, ?>> result = new HashMap<>(propertyDescs.size());
-    for (EntityPropertyDesc<ENTITY, ?> propertyDesc : propertyDescs) {
-      String columnName = propertyDesc.getColumnName(naming::apply);
+    for (var propertyDesc : propertyDescs) {
+      var columnName = propertyDesc.getColumnName(naming::apply);
       result.put(columnName.toLowerCase(), propertyDesc);
     }
     return result;
@@ -102,15 +110,15 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
   protected void throwResultMappingException(
       Set<EntityPropertyDesc<ENTITY, ?>> unmappedPropertySet) {
-    Naming naming = query.getConfig().getNaming();
-    int size = unmappedPropertySet.size();
+    var naming = query.getConfig().getNaming();
+    var size = unmappedPropertySet.size();
     List<String> unmappedPropertyNames = new ArrayList<>(size);
     List<String> expectedColumnNames = new ArrayList<>(size);
-    for (EntityPropertyDesc<ENTITY, ?> propertyDesc : unmappedPropertySet) {
+    for (var propertyDesc : unmappedPropertySet) {
       unmappedPropertyNames.add(propertyDesc.getName());
       expectedColumnNames.add(propertyDesc.getColumnName(naming::apply));
     }
-    Sql<?> sql = query.getSql();
+    var sql = query.getSql();
     throw new ResultMappingException(
         query.getConfig().getExceptionSqlLogType(),
         entityDesc.getEntityClass().getName(),

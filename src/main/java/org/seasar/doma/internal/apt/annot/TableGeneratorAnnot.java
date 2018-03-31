@@ -99,7 +99,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getCatalogValue() {
-    String value = AnnotationValueUtil.toString(catalog);
+    var value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
       throw new AptIllegalStateException(CATALOG);
     }
@@ -107,7 +107,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getSchemaValue() {
-    String value = AnnotationValueUtil.toString(schema);
+    var value = AnnotationValueUtil.toString(schema);
     if (value == null) {
       throw new AptIllegalStateException(SCHEMA);
     }
@@ -115,7 +115,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getTableValue() {
-    String value = AnnotationValueUtil.toString(table);
+    var value = AnnotationValueUtil.toString(table);
     if (value == null) {
       throw new AptIllegalStateException(TABLE);
     }
@@ -123,7 +123,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getPkColumnNameValue() {
-    String value = AnnotationValueUtil.toString(pkColumnName);
+    var value = AnnotationValueUtil.toString(pkColumnName);
     if (value == null) {
       throw new AptIllegalStateException(PK_COLUMN_NAME);
     }
@@ -131,7 +131,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getValueColumnNameValue() {
-    String value = AnnotationValueUtil.toString(valueColumnName);
+    var value = AnnotationValueUtil.toString(valueColumnName);
     if (value == null) {
       throw new AptIllegalStateException(VALUE_COLUMN_NAME);
     }
@@ -139,7 +139,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public String getPkColumnValueValue() {
-    String value = AnnotationValueUtil.toString(pkColumnValue);
+    var value = AnnotationValueUtil.toString(pkColumnValue);
     if (value == null) {
       throw new AptIllegalStateException(PK_COLUMN_VALUE);
     }
@@ -147,7 +147,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public Long getInitialValueValue() {
-    Long value = AnnotationValueUtil.toLong(initialValue);
+    var value = AnnotationValueUtil.toLong(initialValue);
     if (value == null) {
       throw new AptIllegalStateException(INITIAL_VALUE);
     }
@@ -155,7 +155,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public Long getAllocationSizeValue() {
-    Long value = AnnotationValueUtil.toLong(allocationSize);
+    var value = AnnotationValueUtil.toLong(allocationSize);
     if (value == null) {
       throw new AptIllegalStateException(ALLOCATION_SIZE);
     }
@@ -163,7 +163,7 @@ public class TableGeneratorAnnot extends AbstractAnnot {
   }
 
   public TypeMirror getImplementerValue() {
-    TypeMirror value = AnnotationValueUtil.toType(implementer);
+    var value = AnnotationValueUtil.toType(implementer);
     if (value == null) {
       throw new AptIllegalStateException(IMPLEMENTER);
     }

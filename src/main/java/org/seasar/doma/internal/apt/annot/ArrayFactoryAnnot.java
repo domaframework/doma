@@ -22,7 +22,7 @@ public class ArrayFactoryAnnot extends AbstractAnnot {
   }
 
   public String getTypeNameValue() {
-    String result = AnnotationValueUtil.toString(typeName);
+    var result = AnnotationValueUtil.toString(typeName);
     if (result == null) {
       throw new AptIllegalStateException(TYPE_NAME);
     }

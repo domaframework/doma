@@ -36,7 +36,7 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
 
   @Override
   public BASIC get() {
-    BASIC value = wrapper.get();
+    var value = wrapper.get();
     if (value == null) {
       return getDefaultInternal();
     }

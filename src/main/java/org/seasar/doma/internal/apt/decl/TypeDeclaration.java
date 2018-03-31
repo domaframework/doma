@@ -5,7 +5,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -70,13 +76,12 @@ public class TypeDeclaration {
   private static int determineNumberPriority(
       Context ctx, TypeMirror type, TypeElement typeElement) {
     if (typeElement != null) {
-      Integer result =
-          NUMBER_PRIORITY_MAP.get(ctx.getElements().getBinaryName(typeElement).toString());
+      var result = NUMBER_PRIORITY_MAP.get(ctx.getElements().getBinaryName(typeElement).toString());
       if (result != null) {
         return result;
       }
     }
-    Integer result = NUMBER_PRIORITY_MAP.get(type.getKind().name().toLowerCase());
+    var result = NUMBER_PRIORITY_MAP.get(type.getKind().name().toLowerCase());
     if (result != null) {
       return result;
     }
@@ -136,12 +141,11 @@ public class TypeDeclaration {
 
   public List<ConstructorDeclaration> getConstructorDeclarations(
       List<TypeDeclaration> parameterTypeDeclarations) {
-    List<ConstructorDeclaration> candidates =
-        getCandidateConstructorDeclarations(parameterTypeDeclarations);
+    var candidates = getCandidateConstructorDeclarations(parameterTypeDeclarations);
     if (candidates.size() == 1) {
       return candidates;
     }
-    ConstructorDeclaration constructorDeclaration =
+    var constructorDeclaration =
         findSuitableConstructorDeclaration(parameterTypeDeclarations, candidates);
     if (constructorDeclaration != null) {
       return Collections.singletonList(constructorDeclaration);
@@ -179,7 +183,7 @@ public class TypeDeclaration {
   }
 
   public FieldDeclaration getFieldDeclarationInternal(String name, boolean isStatic) {
-    List<FieldDeclaration> candidates = getCandidateFieldDeclaration(name, isStatic);
+    var candidates = getCandidateFieldDeclaration(name, isStatic);
     removeHiddenFieldDeclarations(candidates);
 
     if (candidates.size() == 0) {
@@ -204,9 +208,9 @@ public class TypeDeclaration {
 
   private void removeHiddenFieldDeclarations(List<FieldDeclaration> candidates) {
     List<FieldDeclaration> hiders = new LinkedList<>(candidates);
-    for (Iterator<FieldDeclaration> it = candidates.iterator(); it.hasNext(); ) {
-      FieldDeclaration hidden = it.next();
-      for (FieldDeclaration hider : hiders) {
+    for (var it = candidates.iterator(); it.hasNext(); ) {
+      var hidden = it.next();
+      for (var hider : hiders) {
         if (ctx.getElements().hides(hider.getElement(), hidden.getElement())) {
           it.remove();
           break;
@@ -227,14 +231,13 @@ public class TypeDeclaration {
 
   private List<MethodDeclaration> getMethodDeclarationsInternal(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean isStatic) {
-    List<MethodDeclaration> candidates =
-        getCandidateMethodDeclarations(name, parameterTypeDeclarations, isStatic);
+    var candidates = getCandidateMethodDeclarations(name, parameterTypeDeclarations, isStatic);
     removeOverriddenMethodDeclarations(candidates);
     removeHiddenMethodDeclarations(candidates);
     if (candidates.size() == 1) {
       return candidates;
     }
-    MethodDeclaration suitableMethodDeclaration =
+    var suitableMethodDeclaration =
         findSuitableMethodDeclaration(parameterTypeDeclarations, candidates);
     if (suitableMethodDeclaration != null) {
       return Collections.singletonList(suitableMethodDeclaration);
@@ -260,10 +263,10 @@ public class TypeDeclaration {
 
   private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
     List<MethodDeclaration> overriders = new LinkedList<>(candidates);
-    for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext(); ) {
-      MethodDeclaration overridden = it.next();
-      for (MethodDeclaration overrider : overriders) {
-        TypeElement overriderTypeElement =
+    for (var it = candidates.iterator(); it.hasNext(); ) {
+      var overridden = it.next();
+      for (var overrider : overriders) {
+        var overriderTypeElement =
             ctx.getElements().toTypeElement(overrider.getElement().getEnclosingElement());
         if (overriderTypeElement == null) {
           continue;
@@ -279,11 +282,11 @@ public class TypeDeclaration {
 
   private void removeHiddenMethodDeclarations(List<MethodDeclaration> candidates) {
     List<MethodDeclaration> hiders = new LinkedList<>(candidates);
-    for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext(); ) {
-      MethodDeclaration hidden = it.next();
-      for (MethodDeclaration hider : hiders) {
-        TypeMirror subtype = hider.getElement().getEnclosingElement().asType();
-        TypeMirror supertype = hidden.getElement().getEnclosingElement().asType();
+    for (var it = candidates.iterator(); it.hasNext(); ) {
+      var hidden = it.next();
+      for (var hider : hiders) {
+        var subtype = hider.getElement().getEnclosingElement().asType();
+        var supertype = hidden.getElement().getEnclosingElement().asType();
         if (ctx.getTypes().isAssignable(subtype, supertype)) {
           if (ctx.getElements().hides(hider.getElement(), hidden.getElement())) {
             it.remove();
@@ -307,7 +310,7 @@ public class TypeDeclaration {
     assertNotNull(other);
     assertTrue(isTextType());
     assertTrue(other.isTextType());
-    TypeMirror type = ctx.getTypes().getType(String.class);
+    var type = ctx.getTypes().getType(String.class);
     return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
@@ -315,7 +318,7 @@ public class TypeDeclaration {
     assertNotNull(other);
     assertTrue(isNumberType());
     assertTrue(other.isNumberType());
-    TypeMirror type = this.numberPriority >= other.numberPriority ? this.type : other.type;
+    var type = this.numberPriority >= other.numberPriority ? this.type : other.type;
     return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
@@ -350,8 +353,8 @@ public class TypeDeclaration {
       List<TypeDeclaration> typeDeclarations,
       List<? extends VariableElement> parameters,
       Predicate<Pair<TypeMirror, TypeMirror>> predicate) {
-    Stream<TypeMirror> fst = streamTypeDeclarations(typeDeclarations);
-    Stream<TypeMirror> snd = streamVariableElements(parameters);
+    var fst = streamTypeDeclarations(typeDeclarations);
+    var snd = streamVariableElements(parameters);
     return Zip.stream(fst, snd).allMatch(predicate);
   }
 

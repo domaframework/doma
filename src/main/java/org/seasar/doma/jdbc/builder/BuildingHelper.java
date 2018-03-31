@@ -40,7 +40,7 @@ class BuildingHelper {
 
   List<Param> getParams() {
     List<Param> results = new ArrayList<>();
-    for (Item item : items) {
+    for (var item : items) {
       if (item.kind == ItemKind.PARAM) {
         results.add(item.param);
       }
@@ -49,8 +49,8 @@ class BuildingHelper {
   }
 
   SqlNode getSqlNode() {
-    StringBuilder buf = new StringBuilder(200);
-    for (Item item : items) {
+    var buf = new StringBuilder(200);
+    for (var item : items) {
       switch (item.kind) {
         case SQL:
           buf.append(item.sql);
@@ -68,7 +68,7 @@ class BuildingHelper {
           break;
       }
     }
-    SqlParser parser = new SqlParser(buf.toString());
+    var parser = new SqlParser(buf.toString());
     return parser.parse();
   }
 
@@ -81,14 +81,14 @@ class BuildingHelper {
     private Param param;
 
     public static Item sql(String sql) {
-      Item item = new Item();
+      var item = new Item();
       item.kind = ItemKind.SQL;
       item.sql = sql;
       return item;
     }
 
     public static Item param(Param param) {
-      Item item = new Item();
+      var item = new Item();
       item.kind = ItemKind.PARAM;
       item.param = param;
       return item;

@@ -16,7 +16,7 @@ public class UtilDateWrapper extends AbstractWrapper<Date> {
 
   @Override
   protected Date doGetCopy() {
-    Date original = get();
+    var original = get();
     if (original == null) {
       return null;
     }

@@ -1,14 +1,23 @@
 package org.seasar.doma.internal.jdbc.command;
 
-import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Collections;
 import junit.framework.TestCase;
 import org.seasar.doma.FetchType;
-import org.seasar.doma.internal.jdbc.mock.*;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockResultSet;
+import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
+import org.seasar.doma.internal.jdbc.mock.RowData;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UnknownColumnException;
+import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -16,19 +25,18 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class EntityProviderTest extends TestCase {
 
   public void testGetEntity() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
     metaData.columns.add(new ColumnMetaData("salary"));
     metaData.columns.add(new ColumnMetaData("version"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100));
     resultSet.next();
 
-    _Emp entityDesc = _Emp.getSingletonInternal();
-    EntityProvider<Emp> provider =
-        new EntityProvider<>(entityDesc, new MySelectQuery(new MockConfig()), false);
-    Emp emp = provider.get(resultSet);
+    var entityDesc = _Emp.getSingletonInternal();
+    var provider = new EntityProvider<>(entityDesc, new MySelectQuery(new MockConfig()), false);
+    var emp = provider.get(resultSet);
 
     assertEquals(Integer.valueOf(1), emp.getId());
     assertEquals("aaa", emp.getName());
@@ -37,19 +45,18 @@ public class EntityProviderTest extends TestCase {
   }
 
   public void testGetEntity_UnknownColumnException() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
     metaData.columns.add(new ColumnMetaData("salary"));
     metaData.columns.add(new ColumnMetaData("version"));
     metaData.columns.add(new ColumnMetaData("unknown"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
     resultSet.next();
 
-    _Emp entityDesc = _Emp.getSingletonInternal();
-    EntityProvider<Emp> provider =
-        new EntityProvider<>(entityDesc, new MySelectQuery(new MockConfig()), false);
+    var entityDesc = _Emp.getSingletonInternal();
+    var provider = new EntityProvider<>(entityDesc, new MySelectQuery(new MockConfig()), false);
     try {
       provider.get(resultSet);
       fail();
@@ -58,21 +65,21 @@ public class EntityProviderTest extends TestCase {
   }
 
   public void testGetEntity_EmptyUnknownColumnHandler() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
     metaData.columns.add(new ColumnMetaData("salary"));
     metaData.columns.add(new ColumnMetaData("version"));
     metaData.columns.add(new ColumnMetaData("unknown"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100, "bbb"));
     resultSet.next();
 
-    _Emp entityDesc = _Emp.getSingletonInternal();
-    EntityProvider<Emp> provider =
+    var entityDesc = _Emp.getSingletonInternal();
+    var provider =
         new EntityProvider<>(
             entityDesc, new MySelectQuery(new EmptyUnknownColumnHandlerConfig()), false);
-    Emp emp = provider.get(resultSet);
+    var emp = provider.get(resultSet);
 
     assertEquals(Integer.valueOf(1), emp.getId());
     assertEquals("aaa", emp.getName());

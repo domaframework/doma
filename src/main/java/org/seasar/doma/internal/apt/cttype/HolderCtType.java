@@ -22,7 +22,7 @@ public class HolderCtType extends ScalarCtType {
     super(ctx, type);
     assertNotNull(basicCtType, codeSpecFactory, typeElement);
     this.basicCtType = basicCtType;
-    CodeSpec codeSpec = codeSpecFactory.apply(typeElement);
+    var codeSpec = codeSpecFactory.apply(typeElement);
     this.descClassName = codeSpec.getQualifiedName();
   }
 

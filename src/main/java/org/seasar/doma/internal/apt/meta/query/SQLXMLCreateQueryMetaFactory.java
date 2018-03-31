@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.meta.query;
 import java.sql.SQLXML;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.SQLXMLFactoryAnnot;
 
 public class SQLXMLCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<SQLXMLCreateQueryMeta> {
@@ -14,11 +13,11 @@ public class SQLXMLCreateQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    SQLXMLFactoryAnnot sqlxmlFactoryMirror = ctx.getAnnots().newSQLXMLFactoryAnnot(methodElement);
+    var sqlxmlFactoryMirror = ctx.getAnnots().newSQLXMLFactoryAnnot(methodElement);
     if (sqlxmlFactoryMirror == null) {
       return null;
     }
-    SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(methodElement);
+    var queryMeta = new SQLXMLCreateQueryMeta(methodElement);
     queryMeta.setSqlxmlFactoryAnnot(sqlxmlFactoryMirror);
     queryMeta.setQueryKind(QueryKind.SQLXML_FACTORY);
     doTypeParameters(queryMeta);

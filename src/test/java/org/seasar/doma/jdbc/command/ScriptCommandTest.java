@@ -12,7 +12,7 @@ import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 public class ScriptCommandTest extends TestCase {
 
   public void testExecute() throws Exception {
-    SqlFileScriptQuery query = new SqlFileScriptQuery();
+    var query = new SqlFileScriptQuery();
     query.setConfig(new MockConfig());
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -20,12 +20,12 @@ public class ScriptCommandTest extends TestCase {
     query.setBlockDelimiter("");
     query.prepare();
     query.setSqlLogType(SqlLogType.FORMATTED);
-    ScriptCommand command = new ScriptCommand(query);
+    var command = new ScriptCommand(query);
     command.execute();
   }
 
   public void testExecute_ScriptException() throws Exception {
-    MockConfig config = new MockConfig();
+    var config = new MockConfig();
     config.dataSource.connection.statement =
         new MockStatement() {
 
@@ -35,7 +35,7 @@ public class ScriptCommandTest extends TestCase {
           }
         };
 
-    SqlFileScriptQuery query = new SqlFileScriptQuery();
+    var query = new SqlFileScriptQuery();
     query.setConfig(config);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -44,7 +44,7 @@ public class ScriptCommandTest extends TestCase {
     query.setHaltOnError(true);
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
-    ScriptCommand command = new ScriptCommand(query);
+    var command = new ScriptCommand(query);
     try {
       command.execute();
       fail();

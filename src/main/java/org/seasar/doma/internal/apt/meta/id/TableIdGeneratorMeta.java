@@ -14,13 +14,13 @@ public class TableIdGeneratorMeta implements IdGeneratorMeta {
   }
 
   public String getQualifiedTableName() {
-    StringBuilder buf = new StringBuilder();
-    String catalogName = tableGeneratorAnnot.getCatalogValue();
+    var buf = new StringBuilder();
+    var catalogName = tableGeneratorAnnot.getCatalogValue();
     if (!catalogName.isEmpty()) {
       buf.append(catalogName);
       buf.append(".");
     }
-    String schemaName = tableGeneratorAnnot.getCatalogValue();
+    var schemaName = tableGeneratorAnnot.getCatalogValue();
     if (!schemaName.isEmpty()) {
       buf.append(schemaName);
       buf.append(".");

@@ -14,10 +14,13 @@ import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
-import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SelectOptionsAccessor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.command.SelectCommand;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
@@ -72,7 +75,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
 
   protected void buildSql(
       BiFunction<ExpressionEvaluator, Function<ExpandNode, List<String>>, PreparedSql> sqlBuilder) {
-    ExpressionEvaluator evaluator =
+    var evaluator =
         new ExpressionEvaluator(
             parameters, config.getDialect().getExpressionFunctions(), config.getClassHelper());
     sql = sqlBuilder.apply(evaluator, this::expandColumns);
@@ -80,12 +83,12 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
 
   protected List<String> expandColumns(ExpandNode node) {
     if (entityDesc == null) {
-      SqlLocation location = node.getLocation();
+      var location = node.getLocation();
       throw new JdbcException(
           Message.DOMA2144, location.getSql(), location.getLineNumber(), location.getPosition());
     }
-    Naming naming = config.getNaming();
-    Dialect dialect = config.getDialect();
+    var naming = config.getNaming();
+    var dialect = config.getDialect();
     return entityDesc
         .getEntityPropertyDescs()
         .stream()
@@ -94,7 +97,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
   }
 
   protected void executeCount(SqlNode sqlNode) {
-    CountQuery query = new CountQuery();
+    var query = new CountQuery();
     query.setCallerClassName(callerClassName);
     query.setCallerMethodName(callerMethodName);
     query.setMethod(method);
@@ -108,7 +111,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     query.setSqlLogType(sqlLogType);
     query.addParameters(parameters);
     query.prepare();
-    SelectCommand<Long> command =
+    var command =
         new SelectCommand<>(
             query,
             new ScalarSingleResultHandler<>(() -> new BasicScalar<>(new LongWrapper(), true)));

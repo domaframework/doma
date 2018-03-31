@@ -1,6 +1,10 @@
 package org.seasar.doma.internal.jdbc.mock;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.Statement;
 import java.util.Arrays;
 import org.seasar.doma.internal.util.AssertionUtil;
 
@@ -62,7 +66,7 @@ public class MockStatement extends MockWrapper implements Statement {
 
   @Override
   public int[] executeBatch() throws SQLException {
-    int[] results = new int[addBatchCount];
+    var results = new int[addBatchCount];
     Arrays.fill(results, updatedRows);
     addBatchCount = 0;
     return results;

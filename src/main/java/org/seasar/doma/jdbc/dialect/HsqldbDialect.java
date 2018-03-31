@@ -5,7 +5,13 @@ import java.util.Collections;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 
 /** A dialect for HSQLDB. */
 public class HsqldbDialect extends StandardDialect {
@@ -68,7 +74,7 @@ public class HsqldbDialect extends StandardDialect {
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
-    String rawSql = "call identity()";
+    var rawSql = "call identity()";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
@@ -78,7 +84,7 @@ public class HsqldbDialect extends StandardDialect {
     if (qualifiedSequenceName == null) {
       throw new DomaNullPointerException("qualifiedSequenceName");
     }
-    String rawSql =
+    var rawSql =
         "select next value for "
             + qualifiedSequenceName
             + " from information_schema.system_tables where table_name = 'SYSTEM_TABLES'";
@@ -91,13 +97,13 @@ public class HsqldbDialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    int code = getErrorCode(sqlException);
+    var code = getErrorCode(sqlException);
     return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    HsqldbPagingTransformer transformer = new HsqldbPagingTransformer(offset, limit);
+    var transformer = new HsqldbPagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 

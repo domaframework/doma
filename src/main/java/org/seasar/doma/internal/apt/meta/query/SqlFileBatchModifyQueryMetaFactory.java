@@ -1,9 +1,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
@@ -25,7 +23,7 @@ public class SqlFileBatchModifyQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    SqlFileBatchModifyQueryMeta queryMeta = createSqlFileBatchModifyQueryMeta();
+    var queryMeta = createSqlFileBatchModifyQueryMeta();
     if (queryMeta == null) {
       return null;
     }
@@ -38,7 +36,7 @@ public class SqlFileBatchModifyQueryMetaFactory
   }
 
   private SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta() {
-    SqlFileBatchModifyQueryMeta queryMeta = new SqlFileBatchModifyQueryMeta(methodElement);
+    var queryMeta = new SqlFileBatchModifyQueryMeta(methodElement);
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnots().newBatchInsertAnnot(methodElement);
     if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
@@ -62,8 +60,8 @@ public class SqlFileBatchModifyQueryMetaFactory
 
   @Override
   protected void doReturnType(SqlFileBatchModifyQueryMeta queryMeta) {
-    QueryReturnMeta returnMeta = createReturnMeta();
-    EntityCtType entityCtType = queryMeta.getEntityCtType();
+    var returnMeta = createReturnMeta();
+    var entityCtType = queryMeta.getEntityCtType();
     if (entityCtType != null && entityCtType.isImmutable()) {
       if (!returnMeta.isBatchResult(entityCtType)) {
         throw new AptException(Message.DOMA4223, returnMeta.getMethodElement());
@@ -78,13 +76,13 @@ public class SqlFileBatchModifyQueryMetaFactory
 
   @Override
   protected void doParameters(final SqlFileBatchModifyQueryMeta queryMeta) {
-    List<? extends VariableElement> parameters = methodElement.getParameters();
-    int size = parameters.size();
+    var parameters = methodElement.getParameters();
+    var size = parameters.size();
     if (size != 1) {
       throw new AptException(Message.DOMA4002, methodElement);
     }
-    QueryParameterMeta parameterMeta = createParameterMeta(parameters.get(0));
-    IterableCtType iterableCtType =
+    var parameterMeta = createParameterMeta(parameters.get(0));
+    var iterableCtType =
         parameterMeta
             .getCtType()
             .accept(
@@ -103,7 +101,7 @@ public class SqlFileBatchModifyQueryMetaFactory
                   }
                 },
                 null);
-    CtType elementCtType = iterableCtType.getElementCtType();
+    var elementCtType = iterableCtType.getElementCtType();
     queryMeta.setElementCtType(elementCtType);
     queryMeta.setElementsParameterName(parameterMeta.getName());
     elementCtType.accept(

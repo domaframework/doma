@@ -1,12 +1,9 @@
 package org.seasar.doma.internal.apt;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 
 public class TypesTest extends AptTestCase {
 
@@ -15,11 +12,11 @@ public class TypesTest extends AptTestCase {
     addProcessor(
         new AptProcessor(
             ctx -> {
-              Types types = ctx.getTypes();
-              TypeMirror type = types.getType(Ccc.class);
-              Collection<TypeMirror> collection = types.supertypes(type);
+              var types = ctx.getTypes();
+              var type = types.getType(Ccc.class);
+              var collection = types.supertypes(type);
               assertEquals(4, collection.size());
-              Set<String> set =
+              var set =
                   collection
                       .stream()
                       .map(types::toTypeElement)

@@ -1,15 +1,14 @@
 package org.seasar.doma.internal.expr;
 
 import junit.framework.TestCase;
-import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
 
 public class ExpressionExceptionTest extends TestCase {
 
   public void testMethodInvocationFailed() throws Exception {
-    ExpressionParser parser = new ExpressionParser("new java.util.ArrayList().get(0)");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("new java.util.ArrayList().get(0)");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -20,9 +19,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testMethodNotFound() throws Exception {
-    ExpressionParser parser = new ExpressionParser("\"aaa\".bbb()");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("\"aaa\".bbb()");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -33,9 +32,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testVariableUnresolvable() throws Exception {
-    ExpressionParser parser = new ExpressionParser("aaa.eq(100)");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("aaa.eq(100)");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -46,7 +45,7 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testDoubleQuotationNotClosed() throws Exception {
-    ExpressionParser parser = new ExpressionParser("\"bbb\" == \"bbb");
+    var parser = new ExpressionParser("\"bbb\" == \"bbb");
     try {
       parser.parse();
       fail();
@@ -57,9 +56,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testClassNotFound() throws Exception {
-    ExpressionParser parser = new ExpressionParser("new MyString()");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("new MyString()");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -70,9 +69,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testConstructorNotFound() throws Exception {
-    ExpressionParser parser = new ExpressionParser("new java.lang.String(10B)");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("new java.lang.String(10B)");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -83,9 +82,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testConstructorInvocationFailed() throws Exception {
-    ExpressionParser parser = new ExpressionParser("new java.util.ArrayList(-1)");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("new java.util.ArrayList(-1)");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -96,9 +95,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testComparisonFailed_incomparable() throws Exception {
-    ExpressionParser parser = new ExpressionParser("1 > true");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("1 > true");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -109,9 +108,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testComparisonFailed_null() throws Exception {
-    ExpressionParser parser = new ExpressionParser("1 > null");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("1 > null");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -122,7 +121,7 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testOperandNotFound() throws Exception {
-    ExpressionParser parser = new ExpressionParser("true &&");
+    var parser = new ExpressionParser("true &&");
     try {
       parser.parse();
       fail();
@@ -133,7 +132,7 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testUnsupportedTokenFound() throws Exception {
-    ExpressionParser parser = new ExpressionParser("5 & 5");
+    var parser = new ExpressionParser("5 & 5");
     try {
       parser.parse();
       fail();
@@ -144,7 +143,7 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testUnsupportedNumberLiteralFound() throws Exception {
-    ExpressionParser parser = new ExpressionParser("5aaa");
+    var parser = new ExpressionParser("5aaa");
     try {
       parser.parse();
       fail();
@@ -155,9 +154,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testOperandNotNumber() throws Exception {
-    ExpressionParser parser = new ExpressionParser("5 + \"10\"");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("5 + \"10\"");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -168,9 +167,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testOperandNotText() throws Exception {
-    ExpressionParser parser = new ExpressionParser("\"10\" + 5");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("\"10\" + 5");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -181,9 +180,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testArithmeticOperationFailed() throws Exception {
-    ExpressionParser parser = new ExpressionParser("5 / 0");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("5 / 0");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -194,9 +193,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testArithmeticOperationFailed_null() throws Exception {
-    ExpressionParser parser = new ExpressionParser("5 / null");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("5 / null");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();
@@ -207,7 +206,7 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testQuotationNotClosed() throws Exception {
-    ExpressionParser parser = new ExpressionParser(" 'aaa");
+    var parser = new ExpressionParser(" 'aaa");
     try {
       parser.parse();
       fail();
@@ -218,9 +217,9 @@ public class ExpressionExceptionTest extends TestCase {
   }
 
   public void testFieldNotFound() throws Exception {
-    ExpressionParser parser = new ExpressionParser("\"aaa\".bbb");
-    ExpressionNode node = parser.parse();
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var parser = new ExpressionParser("\"aaa\".bbb");
+    var node = parser.parse();
+    var evaluator = new ExpressionEvaluator();
     try {
       evaluator.evaluate(node);
       fail();

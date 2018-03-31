@@ -8,10 +8,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.JdbcMappable;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ListParameter;
+import org.seasar.doma.jdbc.OutParameter;
+import org.seasar.doma.jdbc.ResultListParameter;
+import org.seasar.doma.jdbc.SingleResultParameter;
+import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModuleQuery;
-import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -27,7 +35,7 @@ public class CallableSqlParameterFetcher {
   public void fetch(CallableStatement callableStatement, List<? extends SqlParameter> parameters)
       throws SQLException {
     assertNotNull(callableStatement, parameters);
-    FetchingVisitor fetchingVisitor = new FetchingVisitor(query, callableStatement);
+    var fetchingVisitor = new FetchingVisitor(query, callableStatement);
     for (SqlParameter parameter : parameters) {
       parameter.accept(fetchingVisitor, null);
     }
@@ -100,15 +108,15 @@ public class CallableSqlParameterFetcher {
 
     protected <ELEMENT> void fetchListParameter(ListParameter<ELEMENT> parameter)
         throws SQLException {
-      ObjectProvider<ELEMENT> provider = parameter.createObjectProvider(query);
+      var provider = parameter.createObjectProvider(query);
       consumeResultSet(parameter.getName(), resultSet -> parameter.add(provider.get(resultSet)));
     }
 
     protected void consumeResultSet(String parameterName, ResultSetConsumer consumer)
         throws SQLException {
       if (dialect.supportsResultSetReturningAsOutParameter()) {
-        JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
-        ResultSet resultSet = resultSetType.getValue(callableStatement, index);
+        var resultSetType = dialect.getResultSetType();
+        var resultSet = resultSetType.getValue(callableStatement, index);
         if (resultSet == null) {
           throw new JdbcException(Message.DOMA2137, index, parameterName, query.getQualifiedName());
         }
@@ -121,7 +129,7 @@ public class CallableSqlParameterFetcher {
         }
         index++;
       } else {
-        ResultSet resultSet = callableStatement.getResultSet();
+        var resultSet = callableStatement.getResultSet();
         while (resultSet == null
             && (callableStatement.getMoreResults() || callableStatement.getUpdateCount() > -1)) {
           resultSet = callableStatement.getResultSet();

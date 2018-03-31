@@ -114,7 +114,7 @@ public abstract class BatchBuilder {
 
   private void prepare() {
     query.clearParameters();
-    for (BatchParam<?> p : helper.getParams()) {
+    for (var p : helper.getParams()) {
       query.addParameter(p.name, p.paramClass, p.params);
     }
     query.setSqlNode(helper.getSqlNode());
@@ -126,8 +126,8 @@ public abstract class BatchBuilder {
       query.setCallerMethodName("execute");
     }
     prepare();
-    BatchModifyCommand<?> command = commandFactory.get();
-    int[] result = command.execute();
+    var command = commandFactory.get();
+    var result = command.execute();
     query.complete();
     return result;
   }
@@ -171,7 +171,7 @@ public abstract class BatchBuilder {
 
     @Override
     <P> BatchBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
-      BatchParam<P> batchParam = new BatchParam<>(paramClass, paramIndex, literal);
+      var batchParam = new BatchParam<>(paramClass, paramIndex, literal);
       batchParam.add(param);
       helper.appendParam(batchParam);
       paramNameMap.put(paramIndex.getValue(), batchParam.name);
@@ -219,18 +219,18 @@ public abstract class BatchBuilder {
 
     @Override
     <P> BatchBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
-      final String paramName = paramNameMap.get(paramIndex.getValue());
+      final var paramName = paramNameMap.get(paramIndex.getValue());
       if (paramName == null) {
         throw new JdbcException(Message.DOMA2231);
       }
-      final BatchParam<?> batchParam = helper.getParam(paramName);
+      final var batchParam = helper.getParam(paramName);
 
       if (literal != batchParam.literal) {
         throw new JdbcException(Message.DOMA2230);
       }
       if (paramClass != batchParam.paramClass) {
         if (batchParam.paramClass == Object.class) {
-          final BatchParam<P> newBatchParam = new BatchParam<>(batchParam, paramClass);
+          final var newBatchParam = new BatchParam<>(batchParam, paramClass);
           newBatchParam.add(param);
           helper.modifyParam(newBatchParam);
         } else if (param == null && paramClass == Object.class) {
@@ -240,7 +240,7 @@ public abstract class BatchBuilder {
         }
       } else {
         @SuppressWarnings("unchecked")
-        final BatchParam<P> castedBatchParam = (BatchParam<P>) batchParam;
+        final var castedBatchParam = (BatchParam<P>) batchParam;
         castedBatchParam.add(param);
       }
       paramIndex.increment();

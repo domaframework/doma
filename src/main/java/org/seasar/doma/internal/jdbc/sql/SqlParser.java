@@ -3,11 +3,45 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.seasar.doma.internal.jdbc.sql.node.*;
+import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
+import org.seasar.doma.internal.jdbc.sql.node.AppendableSqlNode;
+import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
+import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.EndNode;
+import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
+import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
+import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.UpdateStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhereClauseAwareNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
+import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
@@ -209,7 +243,7 @@ public class SqlParser {
 
   protected void parseSetOperatorWord() {
     validate();
-    AnonymousNode node = new AnonymousNode();
+    var node = new AnonymousNode();
     node.appendNode(new WordNode(token, true));
     if (isInSelectStatementNode()) {
       removeNodesTo(SelectStatementNode.class);
@@ -221,17 +255,17 @@ public class SqlParser {
 
   protected void parseSelectWord() {
     validate();
-    SelectStatementNode selectStatementNode = new SelectStatementNode();
+    var selectStatementNode = new SelectStatementNode();
     appendNode(selectStatementNode);
     push(selectStatementNode);
-    SelectClauseNode selectClauseNode = new SelectClauseNode(token);
+    var selectClauseNode = new SelectClauseNode(token);
     selectStatementNode.setSelectClauseNode(selectClauseNode);
     push(selectClauseNode);
   }
 
   protected void parseFromWord() {
     validate();
-    FromClauseNode node = new FromClauseNode(token);
+    var node = new FromClauseNode(token);
     if (isInSelectStatementNode()) {
       removeNodesTo(SelectStatementNode.class);
       SelectStatementNode selectStatementNode = peek();
@@ -244,7 +278,7 @@ public class SqlParser {
 
   protected void parseWhereWord() {
     validate();
-    WhereClauseNode node = new WhereClauseNode(token);
+    var node = new WhereClauseNode(token);
     if (isInWhereClauseAwareNode()) {
       removeNodesTo(WhereClauseAwareNode.class);
       WhereClauseAwareNode whereClauseAwareNode = peek();
@@ -257,7 +291,7 @@ public class SqlParser {
 
   protected void parseGroupByWord() {
     validate();
-    GroupByClauseNode node = new GroupByClauseNode(token);
+    var node = new GroupByClauseNode(token);
     if (isInSelectStatementNode()) {
       removeNodesTo(SelectStatementNode.class);
       SelectStatementNode selectStatementNode = peek();
@@ -270,7 +304,7 @@ public class SqlParser {
 
   protected void parseHavingWord() {
     validate();
-    HavingClauseNode node = new HavingClauseNode(token);
+    var node = new HavingClauseNode(token);
     if (isInSelectStatementNode()) {
       removeNodesTo(SelectStatementNode.class);
       SelectStatementNode selectStatementNode = peek();
@@ -283,7 +317,7 @@ public class SqlParser {
 
   protected void parseOrderByWord() {
     validate();
-    OrderByClauseNode node = new OrderByClauseNode(token);
+    var node = new OrderByClauseNode(token);
     if (isInSelectStatementNode()) {
       removeNodesTo(SelectStatementNode.class);
       SelectStatementNode selectStatementNode = peek();
@@ -296,7 +330,7 @@ public class SqlParser {
 
   protected void parseForUpdateWord() {
     validate();
-    ForUpdateClauseNode node = new ForUpdateClauseNode(token);
+    var node = new ForUpdateClauseNode(token);
     if (isInSelectStatementNode()) {
       removeNodesTo(SelectStatementNode.class);
       SelectStatementNode selectStatementNode = peek();
@@ -309,7 +343,7 @@ public class SqlParser {
 
   protected void parseOptionWord() {
     validate();
-    OptionClauseNode node = new OptionClauseNode(token);
+    var node = new OptionClauseNode(token);
     if (isInSelectStatementNode()) {
       removeNodesTo(SelectStatementNode.class);
       SelectStatementNode selectStatementNode = peek();
@@ -322,17 +356,17 @@ public class SqlParser {
 
   protected void parseUpdateWord() {
     validate();
-    UpdateStatementNode updateStatementNode = new UpdateStatementNode();
+    var updateStatementNode = new UpdateStatementNode();
     appendNode(updateStatementNode);
     push(updateStatementNode);
-    UpdateClauseNode updateClauseNode = new UpdateClauseNode(token);
+    var updateClauseNode = new UpdateClauseNode(token);
     updateStatementNode.setUpdateClauseNode(updateClauseNode);
     push(updateClauseNode);
   }
 
   protected void parseSetWord() {
     validate();
-    SetClauseNode node = new SetClauseNode(token);
+    var node = new SetClauseNode(token);
     if (isInUpdateStatementNode()) {
       removeNodesTo(UpdateStatementNode.class);
       UpdateStatementNode updateStatementNode = peek();
@@ -344,24 +378,24 @@ public class SqlParser {
   }
 
   protected void parseLogicalWord() {
-    String word = tokenType.extract(token);
-    LogicalOperatorNode node = new LogicalOperatorNode(word);
+    var word = tokenType.extract(token);
+    var node = new LogicalOperatorNode(word);
     appendNode(node);
     push(node);
   }
 
   protected void parseWord() {
-    WordNode node = new WordNode(token);
+    var node = new WordNode(token);
     appendNode(node);
   }
 
   protected void parseComment() {
-    CommentNode node = new CommentNode(token);
+    var node = new CommentNode(token);
     appendNode(node);
   }
 
   protected void parseOpenedParens() {
-    ParensNode parensNode = new ParensNode(getLocation());
+    var parensNode = new ParensNode(getLocation());
     appendNode(parensNode);
     push(parensNode);
   }
@@ -374,7 +408,7 @@ public class SqlParser {
     validate();
     removeNodesTo(ParensNode.class);
     ParensNode parensNode = pop();
-    for (SqlNode child : parensNode.getChildren()) {
+    for (var child : parensNode.getChildren()) {
       if (!(child instanceof WhitespaceNode) && !(child instanceof CommentNode)) {
         parensNode.setEmpty(false);
         break;
@@ -384,44 +418,44 @@ public class SqlParser {
   }
 
   protected void parseBindVariableBlockComment() {
-    String variableName = tokenType.extract(token);
+    var variableName = tokenType.extract(token);
     if (variableName.isEmpty()) {
       throw new JdbcException(
           Message.DOMA2120, sql, tokenizer.getLineNumber(), tokenizer.getPosition(), token);
     }
-    BindVariableNode node = new BindVariableNode(getLocation(), variableName, token);
+    var node = new BindVariableNode(getLocation(), variableName, token);
     appendNode(node);
     push(node);
   }
 
   protected void parseLiteralVariableBlockComment() {
-    String variableName = tokenType.extract(token);
+    var variableName = tokenType.extract(token);
     if (variableName.isEmpty()) {
       throw new JdbcException(
           Message.DOMA2228, sql, tokenizer.getLineNumber(), tokenizer.getPosition(), token);
     }
-    LiteralVariableNode node = new LiteralVariableNode(getLocation(), variableName, token);
+    var node = new LiteralVariableNode(getLocation(), variableName, token);
     appendNode(node);
     push(node);
   }
 
   protected void parseEmbeddedVariableBlockComment() {
-    String variableName = tokenType.extract(token);
+    var variableName = tokenType.extract(token);
     if (variableName.isEmpty()) {
       throw new JdbcException(
           Message.DOMA2121, sql, tokenizer.getLineNumber(), tokenizer.getPosition(), token);
     }
-    EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(), variableName, token);
+    var node = new EmbeddedVariableNode(getLocation(), variableName, token);
     appendNode(node);
     push(node);
   }
 
   protected void parseIfBlockComment() {
-    IfBlockNode ifBlockNode = new IfBlockNode();
+    var ifBlockNode = new IfBlockNode();
     appendNode(ifBlockNode);
     push(ifBlockNode);
-    String expression = tokenType.extract(token);
-    IfNode ifNode = new IfNode(getLocation(), expression, token);
+    var expression = tokenType.extract(token);
+    var ifNode = new IfNode(getLocation(), expression, token);
     ifBlockNode.setIfNode(ifNode);
     push(ifNode);
   }
@@ -437,8 +471,8 @@ public class SqlParser {
       throw new JdbcException(
           Message.DOMA2139, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
     }
-    String expression = tokenType.extract(token);
-    ElseifNode node = new ElseifNode(getLocation(), expression, token);
+    var expression = tokenType.extract(token);
+    var node = new ElseifNode(getLocation(), expression, token);
     ifBlockNode.addElseifNode(node);
     push(node);
   }
@@ -454,7 +488,7 @@ public class SqlParser {
       throw new JdbcException(
           Message.DOMA2141, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
     }
-    ElseNode node = new ElseNode(token);
+    var node = new ElseNode(token);
     ifBlockNode.setElseNode(node);
     push(node);
   }
@@ -466,48 +500,48 @@ public class SqlParser {
     }
     removeNodesTo(BlockNode.class);
     BlockNode blockNode = pop();
-    EndNode node = new EndNode(token);
+    var node = new EndNode(token);
     blockNode.setEndNode(node);
     push(node);
   }
 
   protected void parseForBlockComment() {
-    ForBlockNode forBlockNode = new ForBlockNode();
+    var forBlockNode = new ForBlockNode();
     appendNode(forBlockNode);
     push(forBlockNode);
-    String expr = tokenType.extract(token);
-    int pos = expr.indexOf(":");
+    var expr = tokenType.extract(token);
+    var pos = expr.indexOf(":");
     if (pos == -1) {
       throw new JdbcException(
           Message.DOMA2124, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
     }
-    String identifier = expr.substring(0, pos).trim();
+    var identifier = expr.substring(0, pos).trim();
     if (identifier.isEmpty()) {
       throw new JdbcException(
           Message.DOMA2125, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
     }
-    String expression = expr.substring(pos + 1).trim();
+    var expression = expr.substring(pos + 1).trim();
     if (expression.isEmpty()) {
       throw new JdbcException(
           Message.DOMA2126, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
     }
-    ForNode forNode = new ForNode(getLocation(), identifier, expression, token);
+    var forNode = new ForNode(getLocation(), identifier, expression, token);
     forBlockNode.setForNode(forNode);
     push(forNode);
   }
 
   protected void parseExpandBlockComment() {
-    String alias = tokenType.extract(token);
+    var alias = tokenType.extract(token);
     if (alias.isEmpty() || StringUtil.isWhitespace(alias)) {
       alias = "\"\"";
     }
-    ExpandNode node = new ExpandNode(getLocation(), alias, token);
+    var node = new ExpandNode(getLocation(), alias, token);
     appendNode(node);
     push(node);
   }
 
   protected void parsePopulateBlockComment() {
-    PopulateNode node = new PopulateNode(getLocation(), token);
+    var node = new PopulateNode(getLocation(), token);
     appendNode(node);
     push(node);
   }
@@ -517,12 +551,12 @@ public class SqlParser {
   }
 
   protected void parseEOL() {
-    EolNode node = new EolNode(token);
+    var node = new EolNode(token);
     appendNode(node);
   }
 
   protected boolean containsOnlyWhitespaces(SqlNode node) {
-    for (SqlNode child : node.getChildren()) {
+    for (var child : node.getChildren()) {
       if (!(child instanceof WhitespaceNode)) {
         return false;
       }
@@ -535,7 +569,7 @@ public class SqlParser {
   }
 
   protected void removeNodesTo(Class<? extends SqlNode> clazz) {
-    for (Iterator<AppendableSqlNode> it = nodeStack.iterator(); it.hasNext(); ) {
+    for (var it = nodeStack.iterator(); it.hasNext(); ) {
       SqlNode node = it.next();
       if (clazz.isInstance(node)) {
         break;
@@ -641,9 +675,9 @@ public class SqlParser {
     if (isAfterValueNode()) {
       ValueNode valueNode = pop();
       if (node instanceof WordNode) {
-        WordNode wordNode = (WordNode) node;
-        String word = wordNode.getWord();
-        Matcher matcher = LITERAL_PATTERN.matcher(word);
+        var wordNode = (WordNode) node;
+        var word = wordNode.getWord();
+        var matcher = LITERAL_PATTERN.matcher(word);
         if (matcher.lookingAt()) {
           valueNode.setWordNode(wordNode);
         } else {
@@ -656,7 +690,7 @@ public class SqlParser {
               word);
         }
       } else if (node instanceof ParensNode) {
-        ParensNode parensNode = (ParensNode) node;
+        var parensNode = (ParensNode) node;
         parensNode.setAttachedWithValue(true);
         valueNode.setParensNode(parensNode);
       } else {
@@ -670,7 +704,7 @@ public class SqlParser {
     } else if (isAfterExpandNode()) {
       ExpandNode expandNode = pop();
       if (node instanceof OtherNode) {
-        OtherNode otherNode = (OtherNode) node;
+        var otherNode = (OtherNode) node;
         if (!otherNode.getOther().equals("*")) {
           throw new JdbcException(
               Message.DOMA2143,
@@ -723,14 +757,14 @@ public class SqlParser {
     if (isInIfBlockNode()) {
       removeNodesTo(IfBlockNode.class);
       IfBlockNode ifBlockNode = pop();
-      SqlLocation location = ifBlockNode.getIfNode().getLocation();
+      var location = ifBlockNode.getIfNode().getLocation();
       throw new JdbcException(
           Message.DOMA2133, sql, location.getLineNumber(), location.getPosition());
     }
     if (isInForBlockNode()) {
       removeNodesTo(ForBlockNode.class);
       ForBlockNode forBlockNode = pop();
-      SqlLocation location = forBlockNode.getForNode().getLocation();
+      var location = forBlockNode.getForNode().getLocation();
       throw new JdbcException(
           Message.DOMA2134, sql, location.getLineNumber(), location.getPosition());
     }
@@ -740,7 +774,7 @@ public class SqlParser {
     if (isInParensNode()) {
       removeNodesTo(ParensNode.class);
       ParensNode parensNode = pop();
-      SqlLocation location = parensNode.getLocation();
+      var location = parensNode.getLocation();
       throw new JdbcException(
           Message.DOMA2135, sql, location.getLineNumber(), location.getPosition());
     }

@@ -10,8 +10,11 @@ import java.util.Map;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
-import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
-import org.seasar.doma.jdbc.entity.*;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EmbeddableDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.Property;
 
 public class EmbeddableDescGenerator extends AbstractGenerator {
 
@@ -104,7 +107,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     } else {
       iprint("    return new %1$s(%n", embeddableMeta.getEmbeddableElement().getQualifiedName());
       for (var it = embeddableMeta.getEmbeddablePropertyMetas().iterator(); it.hasNext(); ) {
-        EmbeddablePropertyMeta propertyMeta = it.next();
+        var propertyMeta = it.next();
         iprint(
             "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") != null "
                 + "? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",

@@ -57,15 +57,15 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
    * @return the SQL file
    */
   protected final SqlFile createSqlFile(String path, Dialect dialect) {
-    String primaryPath = getPrimaryPath(path, dialect);
-    String sql = getSql(primaryPath);
+    var primaryPath = getPrimaryPath(path, dialect);
+    var sql = getSql(primaryPath);
     if (sql != null) {
-      SqlNode sqlNode = parse(sql);
+      var sqlNode = parse(sql);
       return new SqlFile(primaryPath, sql, sqlNode);
     }
     sql = getSql(path);
     if (sql != null) {
-      SqlNode sqlNode = parse(sql);
+      var sqlNode = parse(sql);
       return new SqlFile(path, sql, sqlNode);
     }
     throw new SqlFileNotFoundException(path);
@@ -89,7 +89,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
    * @return the SQL node
    */
   protected final SqlNode parse(String sql) {
-    SqlParser parser = new SqlParser(sql);
+    var parser = new SqlParser(sql);
     return parser.parse();
   }
 
@@ -103,7 +103,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
     try {
       return ResourceUtil.getResourceAsString(path);
     } catch (WrapException e) {
-      Throwable cause = e.getCause();
+      var cause = e.getCause();
       throw new JdbcException(Message.DOMA2010, cause, path, cause);
     }
   }

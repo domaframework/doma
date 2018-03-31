@@ -63,10 +63,10 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, CONTAINER>
    * @param config the configuration
    */
   public void validateGenerationStrategy(IdGenerationConfig config) {
-    Dialect dialect = config.getDialect();
-    GenerationType generationType = idGenerator.getGenerationType();
+    var dialect = config.getDialect();
+    var generationType = idGenerator.getGenerationType();
     if (!isGenerationTypeSupported(generationType, dialect)) {
-      EntityDesc<?> entityDesc = config.getEntityDesc();
+      var entityDesc = config.getEntityDesc();
       throw new JdbcException(
           Message.DOMA2021, entityDesc.getName(), name, generationType.name(), dialect.getName());
     }
@@ -156,7 +156,7 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, CONTAINER>
         NumberWrapper<V> wrapper, Supplier<Long> valueSupplier, Void q) throws RuntimeException {
       Number currentValue = wrapper.get();
       if (currentValue == null || currentValue.intValue() < 0) {
-        Long value = valueSupplier.get();
+        var value = valueSupplier.get();
         if (value != null) {
           wrapper.set(value);
           return true;

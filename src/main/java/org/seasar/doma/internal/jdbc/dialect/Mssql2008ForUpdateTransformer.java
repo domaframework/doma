@@ -20,19 +20,19 @@ public class Mssql2008ForUpdateTransformer extends StandardForUpdateTransformer 
     }
     processed = true;
 
-    StringBuilder buf = new StringBuilder(100).append("with (updlock, rowlock");
+    var buf = new StringBuilder(100).append("with (updlock, rowlock");
     if (forUpdateType == SelectForUpdateType.NOWAIT) {
       buf.append(", nowait");
     }
     buf.append(") ");
-    FromClauseNode originalFrom = node.getFromClauseNode();
-    FromClauseNode from = new FromClauseNode(originalFrom.getWordNode());
-    for (SqlNode child : originalFrom.getChildren()) {
+    var originalFrom = node.getFromClauseNode();
+    var from = new FromClauseNode(originalFrom.getWordNode());
+    for (var child : originalFrom.getChildren()) {
       from.appendNode(child);
     }
     from.appendNode(new FragmentNode(buf.toString()));
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(node.getSelectClauseNode());
     result.setFromClauseNode(from);
     result.setWhereClauseNode(node.getWhereClauseNode());

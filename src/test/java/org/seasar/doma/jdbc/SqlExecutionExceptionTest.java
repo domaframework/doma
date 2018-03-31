@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class SqlExecutionExceptionTest extends TestCase {
 
   public void test() throws Exception {
-    SqlExecutionException e =
+    var e =
         new SqlExecutionException(
             SqlLogType.FORMATTED,
             SqlKind.UPDATE,

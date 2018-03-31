@@ -21,7 +21,7 @@ public class BatchUpdateCommand extends BatchModifyCommand<BatchUpdateQuery> {
   @Override
   protected int[] executeInternal(PreparedStatement preparedStatement, List<PreparedSql> sqls)
       throws SQLException {
-    int[] rows = executeBatch(preparedStatement, sqls);
+    var rows = executeBatch(preparedStatement, sqls);
     query.incrementVersions();
     return rows;
   }

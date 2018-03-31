@@ -2,7 +2,21 @@ package org.seasar.doma.internal.jdbc.mock;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.NClob;
+import java.sql.PreparedStatement;
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Savepoint;
+import java.sql.Statement;
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -249,8 +263,8 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-    String savepointName = savepoint.getSavepointName();
-    int pos = savepointNames.lastIndexOf(savepointName);
+    var savepointName = savepoint.getSavepointName();
+    var pos = savepointNames.lastIndexOf(savepointName);
     if (pos == -1) {
       throw new SQLException();
     }
@@ -264,7 +278,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public void rollback(Savepoint savepoint) throws SQLException {
-    String name = savepoint.getSavepointName();
+    var name = savepoint.getSavepointName();
     savepointNames.remove(name);
   }
 

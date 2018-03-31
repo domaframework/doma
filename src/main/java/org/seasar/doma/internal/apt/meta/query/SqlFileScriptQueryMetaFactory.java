@@ -1,10 +1,8 @@
 package org.seasar.doma.internal.apt.meta.query;
 
-import java.io.File;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.ScriptAnnot;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.message.Message;
 
@@ -17,7 +15,7 @@ public class SqlFileScriptQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    SqlFileScriptQueryMeta queryMeta = createSqlFileScriptQueryMeta();
+    var queryMeta = createSqlFileScriptQueryMeta();
     if (queryMeta == null) {
       return null;
     }
@@ -30,8 +28,8 @@ public class SqlFileScriptQueryMetaFactory
   }
 
   private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta() {
-    SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(methodElement);
-    ScriptAnnot scriptAnnot = ctx.getAnnots().newScriptAnnot(methodElement);
+    var queryMeta = new SqlFileScriptQueryMeta(methodElement);
+    var scriptAnnot = ctx.getAnnots().newScriptAnnot(methodElement);
     if (scriptAnnot == null) {
       return null;
     }
@@ -42,7 +40,7 @@ public class SqlFileScriptQueryMetaFactory
 
   @Override
   protected void doReturnType(SqlFileScriptQueryMeta queryMeta) {
-    QueryReturnMeta returnMeta = createReturnMeta();
+    var returnMeta = createReturnMeta();
     if (!returnMeta.isPrimitiveVoid()) {
       throw new AptException(Message.DOMA4172, returnMeta.getMethodElement());
     }
@@ -59,15 +57,15 @@ public class SqlFileScriptQueryMetaFactory
   @Override
   protected void doSqlFiles(
       SqlFileScriptQueryMeta queryMeta, boolean expandable, boolean populatable) {
-    String filePath =
+    var filePath =
         ScriptFileUtil.buildPath(
             getDaoElement().getQualifiedName().toString(), queryMeta.getName());
-    File file = getFile(queryMeta, filePath);
-    File[] siblingFiles = getSiblingFiles(queryMeta, file);
-    String methodName = queryMeta.getName();
-    for (File siblingFile : siblingFiles) {
+    var file = getFile(queryMeta, filePath);
+    var siblingFiles = getSiblingFiles(queryMeta, file);
+    var methodName = queryMeta.getName();
+    for (var siblingFile : siblingFiles) {
       if (ScriptFileUtil.isScriptFile(siblingFile, methodName)) {
-        String fileName = siblingFile.getName();
+        var fileName = siblingFile.getName();
         queryMeta.addFileName(fileName);
       }
     }

@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class SqlFileNotFoundExceptionTest extends TestCase {
 
   public void test() throws Exception {
-    SqlFileNotFoundException e = new SqlFileNotFoundException("aaa");
+    var e = new SqlFileNotFoundException("aaa");
     assertEquals("aaa", e.getPath());
     System.out.println(e.getMessage());
   }

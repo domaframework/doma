@@ -34,8 +34,8 @@ public interface MessageResource {
    * @return the message
    */
   default String getMessage(Object... args) {
-    String simpleMessage = getSimpleMessageInternal(args);
-    String code = getCode();
+    var simpleMessage = getSimpleMessageInternal(args);
+    var code = getCode();
     return "[" + code + "] " + simpleMessage;
   }
 
@@ -51,7 +51,7 @@ public interface MessageResource {
 
   private String getSimpleMessageInternal(Object... args) {
     try {
-      boolean fallback = false;
+      var fallback = false;
       ResourceBundle bundle;
       try {
         bundle = ResourceBundle.getBundle(MessageResourceBundle.class.getName());
@@ -59,16 +59,16 @@ public interface MessageResource {
         fallback = true;
         bundle = new MessageResourceBundle();
       }
-      String code = getCode();
-      String pattern = bundle.getString(code);
-      String message = MessageFormat.format(pattern, args);
+      var code = getCode();
+      var pattern = bundle.getString(code);
+      var message = MessageFormat.format(pattern, args);
       return fallback ? "(This is a fallback message) " + message : message;
     } catch (Throwable throwable) {
-      StringWriter sw = new StringWriter();
-      PrintWriter pw = new PrintWriter(sw);
+      var sw = new StringWriter();
+      var pw = new PrintWriter(sw);
       throwable.printStackTrace(pw);
-      StringBuilder arguments = new StringBuilder();
-      for (Object a : args) {
+      var arguments = new StringBuilder();
+      for (var a : args) {
         arguments.append(a);
         arguments.append(", ");
       }

@@ -6,7 +6,11 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Mssql2008ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.Mssql2008PagingTransformer;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlNode;
 
 /** A dialect for Microsoft SQL Server 2008 and below. */
 public class Mssql2008Dialect extends StandardDialect {
@@ -68,14 +72,13 @@ public class Mssql2008Dialect extends StandardDialect {
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    Mssql2008ForUpdateTransformer transformer =
-        new Mssql2008ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new Mssql2008ForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    Mssql2008PagingTransformer transformer = new Mssql2008PagingTransformer(offset, limit);
+    var transformer = new Mssql2008PagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
@@ -84,7 +87,7 @@ public class Mssql2008Dialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    int errorCode = getErrorCode(sqlException);
+    var errorCode = getErrorCode(sqlException);
     return errorCode == UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE;
   }
 

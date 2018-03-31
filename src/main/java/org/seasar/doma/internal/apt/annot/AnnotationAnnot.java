@@ -46,7 +46,7 @@ public class AnnotationAnnot extends AbstractAnnot {
   }
 
   public VariableElement getTargetValue() {
-    VariableElement value = AnnotationValueUtil.toEnumConstant(target);
+    var value = AnnotationValueUtil.toEnumConstant(target);
     if (value == null) {
       throw new AptIllegalStateException(TARGET);
     }
@@ -54,7 +54,7 @@ public class AnnotationAnnot extends AbstractAnnot {
   }
 
   public TypeMirror getTypeValue() {
-    TypeMirror value = AnnotationValueUtil.toType(type);
+    var value = AnnotationValueUtil.toType(type);
     if (value == null) {
       throw new AptIllegalStateException(TYPE);
     }
@@ -62,7 +62,7 @@ public class AnnotationAnnot extends AbstractAnnot {
   }
 
   public String getElementsValue() {
-    String value = AnnotationValueUtil.toString(elements);
+    var value = AnnotationValueUtil.toString(elements);
     if (value == null) {
       throw new AptIllegalStateException(ELEMENTS);
     }

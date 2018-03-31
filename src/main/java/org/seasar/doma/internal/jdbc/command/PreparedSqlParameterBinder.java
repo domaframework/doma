@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
 
 public class PreparedSqlParameterBinder
@@ -23,8 +22,8 @@ public class PreparedSqlParameterBinder
   public void bind(PreparedStatement preparedStatement, List<? extends InParameter<?>> parameters)
       throws SQLException {
     assertNotNull(preparedStatement, parameters);
-    int index = 1;
-    JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
+    var index = 1;
+    var jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
     for (InParameter<?> parameter : parameters) {
       bindInParameter(preparedStatement, parameter, index, jdbcMappingVisitor);
       index++;

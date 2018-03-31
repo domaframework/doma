@@ -1,11 +1,28 @@
 package example.entity;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import javax.annotation.processing.Generated;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.jdbc.entity.*;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -100,7 +117,7 @@ public class _Emp extends AbstractEntityDesc<Emp> {
 
   @Override
   public Emp newEntity(Map<String, Property<Emp, ?>> args) {
-    Emp entity = new Emp();
+    var entity = new Emp();
     args.values().forEach(v -> v.save(entity));
     return entity;
   }
@@ -127,7 +144,7 @@ public class _Emp extends AbstractEntityDesc<Emp> {
 
   @Override
   public void saveCurrentStates(Emp __entity) {
-    Emp __currentStates = new Emp();
+    var __currentStates = new Emp();
     id.copy(__currentStates, __entity);
     name.copy(__currentStates, __entity);
     salary.copy(__currentStates, __entity);
@@ -138,7 +155,7 @@ public class _Emp extends AbstractEntityDesc<Emp> {
   @Override
   public Emp getOriginalStates(Emp entity) {
     if (entity.originalStates instanceof Emp) {
-      Emp originalStates = (Emp) entity.originalStates;
+      var originalStates = (Emp) entity.originalStates;
       return originalStates;
     }
     return null;

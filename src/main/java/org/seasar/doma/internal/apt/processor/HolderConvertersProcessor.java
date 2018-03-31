@@ -5,13 +5,11 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.HolderConverters;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.annot.HolderConvertersAnnot;
 import org.seasar.doma.message.Message;
 
 /**
@@ -32,7 +30,7 @@ public class HolderConvertersProcessor extends AbstractProcessor {
       return true;
     }
     for (TypeElement a : annotations) {
-      for (TypeElement typeElement : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(a))) {
+      for (var typeElement : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(a))) {
         handleTypeElement(typeElement, this::validate);
       }
     }
@@ -40,9 +38,9 @@ public class HolderConvertersProcessor extends AbstractProcessor {
   }
 
   private void validate(TypeElement typeElement) {
-    HolderConvertersAnnot convertersMirror = ctx.getAnnots().newHolderConvertersAnnot(typeElement);
-    for (TypeMirror convType : convertersMirror.getValueValue()) {
-      TypeElement convElement = ctx.getTypes().toTypeElement(convType);
+    var convertersMirror = ctx.getAnnots().newHolderConvertersAnnot(typeElement);
+    for (var convType : convertersMirror.getValueValue()) {
+      var convElement = ctx.getTypes().toTypeElement(convType);
       if (convElement == null) {
         continue;
       }

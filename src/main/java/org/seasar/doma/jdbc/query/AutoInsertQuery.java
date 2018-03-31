@@ -10,13 +10,9 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
-import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
@@ -48,7 +44,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void preInsert() {
-    AutoPreInsertContext<ENTITY> context = new AutoPreInsertContext<>(entityDesc, method, config);
+    var context = new AutoPreInsertContext<>(entityDesc, method, config);
     entityDesc.preInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -69,11 +65,11 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected void prepareTargetPropertyDescs() {
     targetPropertyDescs = new ArrayList<>(entityDesc.getEntityPropertyDescs().size());
-    for (EntityPropertyDesc<ENTITY, ?> propertyDesc : entityDesc.getEntityPropertyDescs()) {
+    for (var propertyDesc : entityDesc.getEntityPropertyDescs()) {
       if (!propertyDesc.isInsertable()) {
         continue;
       }
-      Property<ENTITY, ?> property = propertyDesc.createProperty();
+      var property = propertyDesc.createProperty();
       property.load(entity);
       if (propertyDesc.isId()) {
         if (propertyDesc != generatedIdPropertyDesc
@@ -114,20 +110,20 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void prepareSql() {
-    Naming naming = config.getNaming();
-    Dialect dialect = config.getDialect();
-    PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.INSERT, sqlLogType);
+    var naming = config.getNaming();
+    var dialect = config.getDialect();
+    var builder = new PreparedSqlBuilder(config, SqlKind.INSERT, sqlLogType);
     builder.appendSql("insert into ");
     builder.appendSql(entityDesc.getQualifiedTableName(naming::apply, dialect::applyQuote));
     builder.appendSql(" (");
-    for (EntityPropertyDesc<ENTITY, ?> propertyDesc : targetPropertyDescs) {
+    for (var propertyDesc : targetPropertyDescs) {
       builder.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
       builder.appendSql(", ");
     }
     builder.cutBackSql(2);
     builder.appendSql(") values (");
-    for (EntityPropertyDesc<ENTITY, ?> propertyDesc : targetPropertyDescs) {
-      Property<ENTITY, ?> property = propertyDesc.createProperty();
+    for (var propertyDesc : targetPropertyDescs) {
+      var property = propertyDesc.createProperty();
       property.load(entity);
       builder.appendParameter(property.asInParameter());
       builder.appendSql(", ");
@@ -151,7 +147,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void postInsert() {
-    AutoPostInsertContext<ENTITY> context = new AutoPostInsertContext<>(entityDesc, method, config);
+    var context = new AutoPostInsertContext<>(entityDesc, method, config);
     entityDesc.postInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();

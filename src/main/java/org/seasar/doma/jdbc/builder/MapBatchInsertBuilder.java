@@ -8,7 +8,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.message.Message;
 
 /**
@@ -106,7 +110,7 @@ public class MapBatchInsertBuilder {
       executor.callerMethodName("execute");
     }
     final Set<String> keySet = new LinkedHashSet<>(parameter.iterator().next().keySet());
-    final int keySetSize = keySet.size();
+    final var keySetSize = keySet.size();
     return executor.execute(
         parameter,
         (map, builder) -> {
@@ -125,11 +129,11 @@ public class MapBatchInsertBuilder {
                 if (!map.containsKey(key)) {
                   throw new JdbcException(Message.DOMA2233, key);
                 }
-                Object value = map.get(key);
+                var value = map.get(key);
                 if (value == null) {
                   builder.param(Object.class, null).sql(", ");
                 } else {
-                  Class<Object> clazz = (Class<Object>) value.getClass();
+                  var clazz = (Class<Object>) value.getClass();
                   builder.param(clazz, value).sql(", ");
                 }
               });

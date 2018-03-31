@@ -2,27 +2,32 @@ package org.seasar.doma.internal.apt.validator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.HolderCtType;
-import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
-import org.seasar.doma.internal.jdbc.sql.node.*;
+import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForNode;
+import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
+import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
+import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
@@ -64,8 +69,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   public void validate(SqlNode sqlNode) {
     try {
       sqlNode.accept(this, null);
-      Set<String> validatedParameterNames = expressionValidator.getValidatedParameterNames();
-      for (String parameterName : parameterTypeMap.keySet()) {
+      var validatedParameterNames = expressionValidator.getValidatedParameterNames();
+      for (var parameterName : parameterTypeMap.keySet()) {
         if (!validatedParameterNames.contains(parameterName)) {
           for (VariableElement parameterElement : methodElement.getParameters()) {
             if (parameterElement.getSimpleName().contentEquals(parameterName)) {
@@ -95,12 +100,12 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   }
 
   protected Void visitValueNode(ValueNode node, Void p) {
-    SqlLocation location = node.getLocation();
-    String variableName = node.getVariableName();
-    TypeDeclaration typeDeclaration = validateExpressionVariable(location, variableName);
+    var location = node.getLocation();
+    var variableName = node.getVariableName();
+    var typeDeclaration = validateExpressionVariable(location, variableName);
     if (node.getWordNode() != null) {
       if (!isScalar(typeDeclaration)) {
-        String sql = getSql(location);
+        var sql = getSql(location);
         throw new AptException(
             Message.DOMA4153,
             methodElement,
@@ -115,7 +120,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       }
     } else {
       if (!isScalarIterable(typeDeclaration)) {
-        String sql = getSql(location);
+        var sql = getSql(location);
         throw new AptException(
             Message.DOMA4161,
             methodElement,
@@ -134,14 +139,14 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   }
 
   protected boolean isScalar(TypeDeclaration typeDeclaration) {
-    TypeMirror typeMirror = typeDeclaration.getType();
+    var typeMirror = typeDeclaration.getType();
     return ctx.getCtTypes().newBasicCtType(typeMirror) != null
         || ctx.getCtTypes().newHolderCtType(typeMirror) != null;
   }
 
   protected boolean isScalarIterable(TypeDeclaration typeDeclaration) {
-    TypeMirror typeMirror = typeDeclaration.getType();
-    IterableCtType iterableCtType = ctx.getCtTypes().newIterableCtType(typeMirror);
+    var typeMirror = typeDeclaration.getType();
+    var iterableCtType = ctx.getCtTypes().newIterableCtType(typeMirror);
     if (iterableCtType != null) {
       return iterableCtType
           .getElementCtType()
@@ -167,8 +172,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   @Override
   public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
-    SqlLocation location = node.getLocation();
-    String variableName = node.getVariableName();
+    var location = node.getLocation();
+    var variableName = node.getVariableName();
     validateExpressionVariable(location, variableName);
     visitNode(node, p);
     return null;
@@ -176,11 +181,11 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   @Override
   public Void visitIfNode(IfNode node, Void p) {
-    SqlLocation location = node.getLocation();
-    String expression = node.getExpression();
-    TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
+    var location = node.getLocation();
+    var expression = node.getExpression();
+    var typeDeclaration = validateExpressionVariable(location, expression);
     if (!typeDeclaration.isBooleanType()) {
-      String sql = getSql(location);
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4140,
           methodElement,
@@ -199,11 +204,11 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   @Override
   public Void visitElseifNode(ElseifNode node, Void p) {
-    SqlLocation location = node.getLocation();
-    String expression = node.getExpression();
-    TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
+    var location = node.getLocation();
+    var expression = node.getExpression();
+    var typeDeclaration = validateExpressionVariable(location, expression);
     if (!typeDeclaration.isBooleanType()) {
-      String sql = getSql(location);
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4141,
           methodElement,
@@ -222,13 +227,13 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   @Override
   public Void visitForNode(ForNode node, Void p) {
-    SqlLocation location = node.getLocation();
-    String identifier = node.getIdentifier();
-    String expression = node.getExpression();
-    TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
-    TypeMirror typeMirror = typeDeclaration.getType();
+    var location = node.getLocation();
+    var identifier = node.getIdentifier();
+    var expression = node.getExpression();
+    var typeDeclaration = validateExpressionVariable(location, expression);
+    var typeMirror = typeDeclaration.getType();
     if (!ctx.getTypes().isAssignable(typeMirror, Iterable.class)) {
-      String sql = getSql(location);
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4149,
           methodElement,
@@ -241,10 +246,10 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             typeDeclaration.getBinaryName()
           });
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(typeMirror);
-    List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+    var declaredType = ctx.getTypes().toDeclaredType(typeMirror);
+    var typeArgs = declaredType.getTypeArguments();
     if (typeArgs.isEmpty()) {
-      String sql = getSql(location);
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4150,
           methodElement,
@@ -258,13 +263,13 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
           });
     }
 
-    TypeMirror originalIdentifierType = expressionValidator.removeParameterType(identifier);
+    var originalIdentifierType = expressionValidator.removeParameterType(identifier);
     expressionValidator.putParameterType(identifier, typeArgs.get(0));
-    String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
-    TypeMirror originalHasNextType = expressionValidator.removeParameterType(hasNextVariable);
+    var hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
+    var originalHasNextType = expressionValidator.removeParameterType(hasNextVariable);
     expressionValidator.putParameterType(hasNextVariable, ctx.getTypes().getType(boolean.class));
-    String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
-    TypeMirror originalIndexType = expressionValidator.removeParameterType(indexVariable);
+    var indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
+    var originalIndexType = expressionValidator.removeParameterType(indexVariable);
     expressionValidator.putParameterType(indexVariable, ctx.getTypes().getType(int.class));
     visitNode(node, p);
     if (originalIdentifierType == null) {
@@ -288,8 +293,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   @Override
   public Void visitExpandNode(ExpandNode node, Void p) {
     if (!expandable) {
-      SqlLocation location = node.getLocation();
-      String sql = getSql(location);
+      var location = node.getLocation();
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4257,
           methodElement,
@@ -301,14 +306,14 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   @Override
   public Void visitPopulateNode(PopulateNode node, Void p) {
     if (!populatable) {
-      SqlLocation location = node.getLocation();
-      String sql = getSql(location);
+      var location = node.getLocation();
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4270,
           methodElement,
           new Object[] {path, sql, location.getLineNumber(), location.getPosition()});
     }
-    Iterator<String> it = parameterTypeMap.keySet().iterator();
+    var it = parameterTypeMap.keySet().iterator();
     if (it.hasNext()) {
       expressionValidator.addValidatedParameterName(it.next());
     }
@@ -321,18 +326,18 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   }
 
   protected Void visitNode(SqlNode node, Void p) {
-    for (SqlNode child : node.getChildren()) {
+    for (var child : node.getChildren()) {
       child.accept(this, p);
     }
     return null;
   }
 
   protected TypeDeclaration validateExpressionVariable(SqlLocation location, String expression) {
-    ExpressionNode expressionNode = parseExpression(location, expression);
+    var expressionNode = parseExpression(location, expression);
     try {
       return expressionValidator.validate(expressionNode);
     } catch (AptException e) {
-      String sql = getSql(location);
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4092,
           methodElement,
@@ -344,10 +349,10 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   protected ExpressionNode parseExpression(SqlLocation location, String expression) {
     try {
-      ExpressionParser parser = new ExpressionParser(expression);
+      var parser = new ExpressionParser(expression);
       return parser.parse();
     } catch (ExpressionException e) {
-      String sql = getSql(location);
+      var sql = getSql(location);
       throw new AptException(
           Message.DOMA4092,
           methodElement,
@@ -358,7 +363,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   }
 
   protected String getSql(SqlLocation location) {
-    String sql = location.getSql();
+    var sql = location.getSql();
     if (sql != null && sql.length() > SQL_MAX_LENGTH) {
       sql = sql.substring(0, SQL_MAX_LENGTH);
       sql += Message.DOMA4185.getSimpleMessage(SQL_MAX_LENGTH);

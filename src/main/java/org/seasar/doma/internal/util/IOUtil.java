@@ -2,9 +2,15 @@ package org.seasar.doma.internal.util;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.CharBuffer;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
@@ -15,10 +21,10 @@ public final class IOUtil {
 
   public static String readAsString(InputStream inputStream) throws WrapException {
     assertNotNull(inputStream);
-    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Constants.UTF_8));
-    StringBuilder buf = new StringBuilder(200);
+    var reader = new BufferedReader(new InputStreamReader(inputStream, Constants.UTF_8));
+    var buf = new StringBuilder(200);
     try {
-      CharBuffer c = CharBuffer.allocate(BUF_SIZE);
+      var c = CharBuffer.allocate(BUF_SIZE);
       while (reader.read(c) > -1) {
         c.flip();
         buf.append(c);
@@ -55,14 +61,14 @@ public final class IOUtil {
   }
 
   public static boolean endsWith(File file, String pathname) {
-    Path path = file.toPath();
-    Path other = Paths.get(pathname);
-    int i = path.getNameCount() - 1;
-    int j = other.getNameCount() - 1;
+    var path = file.toPath();
+    var other = Paths.get(pathname);
+    var i = path.getNameCount() - 1;
+    var j = other.getNameCount() - 1;
     for (; i >= 0 && j >= 0; i--, j--) {
       // avoid Path#equals to make comparison case sensitive
-      String element = path.getName(i).toString();
-      String otherElement = other.getName(j).toString();
+      var element = path.getName(i).toString();
+      var otherElement = other.getName(j).toString();
       if (!element.equals(otherElement)) {
         return false;
       }

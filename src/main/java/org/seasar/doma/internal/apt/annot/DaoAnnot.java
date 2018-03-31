@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.AccessLevel;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -46,7 +45,7 @@ public class DaoAnnot extends AbstractAnnot {
   }
 
   public TypeMirror getConfigValue() {
-    TypeMirror value = AnnotationValueUtil.toType(config);
+    var value = AnnotationValueUtil.toType(config);
     if (value == null) {
       throw new AptIllegalStateException(CONFIG);
     }
@@ -54,7 +53,7 @@ public class DaoAnnot extends AbstractAnnot {
   }
 
   public AccessLevel getAccessLevelValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(accessLevel);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(accessLevel);
     if (enumConstant == null) {
       throw new AptIllegalStateException(ACCESS_LEVEL);
     }

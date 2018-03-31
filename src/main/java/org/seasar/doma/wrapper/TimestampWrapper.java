@@ -16,11 +16,11 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
 
   @Override
   protected Timestamp doGetCopy() {
-    Timestamp original = get();
+    var original = get();
     if (original == null) {
       return null;
     }
-    Timestamp copy = new Timestamp(original.getTime());
+    var copy = new Timestamp(original.getTime());
     copy.setNanos(original.getNanos());
     return copy;
   }

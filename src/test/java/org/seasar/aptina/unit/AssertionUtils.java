@@ -70,7 +70,7 @@ class AssertionUtils {
     if (array.length == 0) {
       throw new AssertionError(name + " must not be empty");
     }
-    for (int i = 0; i < array.length; ++i) {
+    for (var i = 0; i < array.length; ++i) {
       if (array[i] == null) {
         throw new AssertionError(name + "[" + i + "] must not be null");
       }
@@ -92,7 +92,7 @@ class AssertionUtils {
     if (collection.isEmpty()) {
       throw new AssertionError(name + " must not be empty");
     }
-    int i = 0;
+    var i = 0;
     for (final Object element : collection) {
       if (element == null) {
         throw new AssertionError(name + "[" + i + "] must not be null");

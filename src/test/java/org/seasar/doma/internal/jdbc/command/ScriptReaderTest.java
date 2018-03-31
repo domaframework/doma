@@ -14,7 +14,7 @@ public class ScriptReaderTest extends TestCase {
 
   @Override
   public void setUp() {
-    MockConfig config = new MockConfig();
+    var config = new MockConfig();
     config.dialect = new Mssql2008Dialect();
     query =
         new SqlFileScriptQuery() {
@@ -35,13 +35,13 @@ public class ScriptReaderTest extends TestCase {
 
           @Override
           protected BufferedReader createBufferedReader() throws IOException {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.append("aaa;\n");
             buf.append("bbb\n");
             buf.append("go\n");
             buf.append("ccc\n");
             buf.append("ddd\n");
-            StringReader reader = new StringReader(buf.toString());
+            var reader = new StringReader(buf.toString());
             return new BufferedReader(reader);
           }
         };
@@ -57,9 +57,9 @@ public class ScriptReaderTest extends TestCase {
 
           @Override
           protected BufferedReader createBufferedReader() throws IOException {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.append("aaa; bbb; ccc;\n");
-            StringReader reader = new StringReader(buf.toString());
+            var reader = new StringReader(buf.toString());
             return new BufferedReader(reader);
           }
         };
@@ -75,10 +75,10 @@ public class ScriptReaderTest extends TestCase {
 
           @Override
           protected BufferedReader createBufferedReader() throws IOException {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.append("begin aaa; end\n");
             buf.append("go\n");
-            StringReader reader = new StringReader(buf.toString());
+            var reader = new StringReader(buf.toString());
             return new BufferedReader(reader);
           }
         };
@@ -92,10 +92,10 @@ public class ScriptReaderTest extends TestCase {
 
           @Override
           protected BufferedReader createBufferedReader() throws IOException {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.append("create trigger hoge begin aaa; end\n");
             buf.append("go\n");
-            StringReader reader = new StringReader(buf.toString());
+            var reader = new StringReader(buf.toString());
             return new BufferedReader(reader);
           }
         };
@@ -108,10 +108,10 @@ public class ScriptReaderTest extends TestCase {
         new ScriptReader(query) {
           @Override
           protected BufferedReader createBufferedReader() throws IOException {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.append("start aaa; end\n");
             buf.append("go\n");
-            StringReader reader = new StringReader(buf.toString());
+            var reader = new StringReader(buf.toString());
             return new BufferedReader(reader);
           }
         };
@@ -125,10 +125,10 @@ public class ScriptReaderTest extends TestCase {
 
           @Override
           protected BufferedReader createBufferedReader() throws IOException {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.append("select 1 ; /* aaa\n");
             buf.append("aaa */ select 2;");
-            StringReader reader = new StringReader(buf.toString());
+            var reader = new StringReader(buf.toString());
             return new BufferedReader(reader);
           }
         };
@@ -143,14 +143,14 @@ public class ScriptReaderTest extends TestCase {
 
           @Override
           protected BufferedReader createBufferedReader() throws IOException {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.append("/*\n");
             buf.append(" *\n");
             buf.append(" */\n");
             buf.append("select 1\n");
             buf.append("from \n");
             buf.append("hoge\n");
-            StringReader reader = new StringReader(buf.toString());
+            var reader = new StringReader(buf.toString());
             return new BufferedReader(reader);
           }
         };

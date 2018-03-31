@@ -11,7 +11,7 @@ public class AutoFunctionQueryTest extends TestCase {
   private final MockConfig runtimeConfig = new MockConfig();
 
   public void testPrepare() throws Exception {
-    AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
+    var query = new AutoFunctionQuery<Integer>();
     query.setConfig(runtimeConfig);
     query.setFunctionName("aaa");
     query.setResultParameter(

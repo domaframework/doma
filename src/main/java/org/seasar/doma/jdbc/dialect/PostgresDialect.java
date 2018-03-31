@@ -10,7 +10,15 @@ import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.ScriptBlockContext;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -71,14 +79,13 @@ public class PostgresDialect extends StandardDialect {
   @Override
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
-    PostgresForUpdateTransformer transformer =
-        new PostgresForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    var transformer = new PostgresForUpdateTransformer(forUpdateType, waitSeconds, aliases);
     return transformer.transform(sqlNode);
   }
 
   @Override
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-    PostgresPagingTransformer transformer = new PostgresPagingTransformer(offset, limit);
+    var transformer = new PostgresPagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
@@ -87,7 +94,7 @@ public class PostgresDialect extends StandardDialect {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
     }
-    String state = getSQLState(sqlException);
+    var state = getSQLState(sqlException);
     return UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE.equals(state);
   }
 
@@ -105,7 +112,7 @@ public class PostgresDialect extends StandardDialect {
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
-    String identitySeqFuncExpr =
+    var identitySeqFuncExpr =
         createIdentitySequenceFunctionExpression(
             catalogName,
             schemaName,
@@ -113,7 +120,7 @@ public class PostgresDialect extends StandardDialect {
             columnName,
             isQuoteRequired,
             isIdColumnQuoteRequired);
-    String rawSql = "select currval(" + identitySeqFuncExpr + ")";
+    var rawSql = "select currval(" + identitySeqFuncExpr + ")";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
@@ -133,7 +140,7 @@ public class PostgresDialect extends StandardDialect {
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
-    String identitySeqFuncExpr =
+    var identitySeqFuncExpr =
         createIdentitySequenceFunctionExpression(
             catalogName,
             schemaName,
@@ -141,7 +148,7 @@ public class PostgresDialect extends StandardDialect {
             columnName,
             isQuoteRequired,
             isIdColumnQuoteRequired);
-    String rawSql =
+    var rawSql =
         "select nextval("
             + identitySeqFuncExpr
             + ") from generate_series(1, "
@@ -158,13 +165,13 @@ public class PostgresDialect extends StandardDialect {
       String columnName,
       boolean isQuoteRequired,
       boolean isIdColumnQuoteRequired) {
-    String qualifiedTableName =
+    var qualifiedTableName =
         DatabaseObjectUtil.getQualifiedName(
             isQuoteRequired ? this::applyQuote : Function.identity(),
             catalogName,
             schemaName,
             tableName);
-    String colName = isIdColumnQuoteRequired ? columnName : columnName.toLowerCase();
+    var colName = isIdColumnQuoteRequired ? columnName : columnName.toLowerCase();
     return "pg_catalog.pg_get_serial_sequence('" + qualifiedTableName + "', '" + colName + "')";
   }
 
@@ -173,7 +180,7 @@ public class PostgresDialect extends StandardDialect {
     if (qualifiedSequenceName == null) {
       throw new DomaNullPointerException("qualifiedSequenceName");
     }
-    String rawSql = "select nextval('" + qualifiedSequenceName + "')";
+    var rawSql = "select nextval('" + qualifiedSequenceName + "')";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }

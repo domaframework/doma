@@ -5,8 +5,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import org.seasar.doma.jdbc.*;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlLogType;
 
 public class PreparedSqlBuilder implements SqlContext {
 
@@ -44,7 +48,7 @@ public class PreparedSqlBuilder implements SqlContext {
 
   public <BASIC> void appendParameter(InParameter<BASIC> parameter) {
     rawSql.append("?");
-    Wrapper<BASIC> wrapper = parameter.getWrapper();
+    var wrapper = parameter.getWrapper();
     formattedSql.append(
         wrapper.accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null));
     parameters.add(parameter);

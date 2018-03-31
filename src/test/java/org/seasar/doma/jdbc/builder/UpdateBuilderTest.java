@@ -7,7 +7,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 public class UpdateBuilderTest extends TestCase {
 
   public void test() throws Exception {
-    UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
+    var builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").param(String.class, "SMIHT").sql(",");
@@ -18,7 +18,7 @@ public class UpdateBuilderTest extends TestCase {
   }
 
   public void testGetSql() throws Exception {
-    UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
+    var builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").param(String.class, "SMIHT").sql(",");
@@ -26,7 +26,7 @@ public class UpdateBuilderTest extends TestCase {
     builder.sql("where");
     builder.sql("ID = ").param(int.class, 10);
 
-    String sql =
+    var sql =
         String.format(
             "update Emp%n" + "set%n" + "name = ?,%n" + "salary = ?%n" + "where%n" + "ID = ?");
     assertEquals(sql, builder.getSql().getRawSql());
@@ -35,7 +35,7 @@ public class UpdateBuilderTest extends TestCase {
   }
 
   public void testLiteral() throws Exception {
-    UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
+    var builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
     builder.sql("name = ").literal(String.class, "SMITH").sql(",");
@@ -43,7 +43,7 @@ public class UpdateBuilderTest extends TestCase {
     builder.sql("where");
     builder.sql("ID = ").param(int.class, 10);
 
-    String sql =
+    var sql =
         String.format(
             "update Emp%n"
                 + "set%n"

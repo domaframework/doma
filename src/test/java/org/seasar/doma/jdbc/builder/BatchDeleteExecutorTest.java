@@ -2,13 +2,10 @@ package org.seasar.doma.jdbc.builder;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.query.SqlBatchDeleteQuery;
 import org.seasar.doma.message.Message;
@@ -17,15 +14,15 @@ import org.seasar.doma.message.Message;
 public class BatchDeleteExecutorTest extends TestCase {
 
   private SqlBatchDeleteQuery mockQuery() {
-    final SqlBatchDeleteQuery query = new SqlBatchDeleteQuery();
+    final var query = new SqlBatchDeleteQuery();
     query.setConfig(new MockConfig());
     query.setSqlLogType(SqlLogType.FORMATTED);
     return query;
   }
 
   public void testBuilder() throws Exception {
-    SqlBatchDeleteQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").param(String.class, "SMITH");
@@ -43,8 +40,8 @@ public class BatchDeleteExecutorTest extends TestCase {
   }
 
   public void testGetSql() throws Exception {
-    SqlBatchDeleteQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").param(String.class, "SMITH");
@@ -58,29 +55,29 @@ public class BatchDeleteExecutorTest extends TestCase {
     builder.sql("salary = ").param(BigDecimal.class, new BigDecimal("2000"));
     builder = builder.fixSql();
 
-    String sql =
+    var sql =
         String.format("delete from Emp%n" + "where%n" + "name = ?%n" + "and%n" + "salary = ?");
 
-    List<? extends Sql<?>> sqls = builder.getSqls();
+    var sqls = builder.getSqls();
     assertEquals(2, sqls.size());
-    Sql<?> sql0 = sqls.get(0);
+    var sql0 = sqls.get(0);
     assertEquals(sql, sql0.getRawSql());
-    List<? extends SqlParameter> parameters0 = sql0.getParameters();
+    var parameters0 = sql0.getParameters();
     assertEquals(2, parameters0.size());
     assertEquals("SMITH", parameters0.get(0).getValue());
     assertEquals(new BigDecimal("1000"), parameters0.get(1).getValue());
 
-    Sql<?> sql1 = sqls.get(1);
+    var sql1 = sqls.get(1);
     assertEquals(sql, sql1.getRawSql());
-    List<? extends SqlParameter> parameters1 = sql1.getParameters();
+    var parameters1 = sql1.getParameters();
     assertEquals(2, parameters1.size());
     assertEquals("ALLEN", parameters1.get(0).getValue());
     assertEquals(new BigDecimal("2000"), parameters1.get(1).getValue());
   }
 
   public void testLiteral() throws Exception {
-    SqlBatchDeleteQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").literal(String.class, "SMITH");
@@ -94,28 +91,28 @@ public class BatchDeleteExecutorTest extends TestCase {
     builder.sql("salary = ").literal(BigDecimal.class, new BigDecimal("2000"));
     builder = builder.fixSql();
 
-    List<? extends Sql<?>> sqls = builder.getSqls();
+    var sqls = builder.getSqls();
     assertEquals(2, sqls.size());
-    Sql<?> sql0 = sqls.get(0);
+    var sql0 = sqls.get(0);
     assertEquals(
         String.format(
             "delete from Emp%n" + "where%n" + "name = 'SMITH'%n" + "and%n" + "salary = 1000"),
         sql0.getRawSql());
-    List<? extends SqlParameter> parameters0 = sql0.getParameters();
+    var parameters0 = sql0.getParameters();
     assertEquals(0, parameters0.size());
 
-    Sql<?> sql1 = sqls.get(1);
+    var sql1 = sqls.get(1);
     assertEquals(
         String.format(
             "delete from Emp%n" + "where%n" + "name = 'ALLEN'%n" + "and%n" + "salary = 2000"),
         sql1.getRawSql());
-    List<? extends SqlParameter> parameters1 = sql1.getParameters();
+    var parameters1 = sql1.getParameters();
     assertEquals(0, parameters1.size());
   }
 
   public void testNotEqualParamCall() throws Exception {
-    SqlBatchDeleteQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").param(String.class, "SMITH");
@@ -137,8 +134,8 @@ public class BatchDeleteExecutorTest extends TestCase {
   }
 
   public void testChangeType() throws Exception {
-    SqlBatchDeleteQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").param(String.class, "SMITH");
@@ -162,8 +159,8 @@ public class BatchDeleteExecutorTest extends TestCase {
   }
 
   public void testParamToLiteral() throws Exception {
-    SqlBatchDeleteQuery query = mockQuery();
-    BatchBuilder builder = BatchBuilder.newInstance(query);
+    var query = mockQuery();
+    var builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").param(String.class, "SMITH");
@@ -199,13 +196,13 @@ public class BatchDeleteExecutorTest extends TestCase {
   }
 
   public void testExecutor() throws Exception {
-    List<Employee> employees =
+    var employees =
         Arrays.asList(
             new Employee[] {
               new Employee(10, "SMITH", new BigDecimal("1001")),
               new Employee(20, "ALLEN", new BigDecimal("2001"))
             });
-    BatchDeleteExecutor executor = BatchDeleteExecutor.newInstance(new MockConfig());
+    var executor = BatchDeleteExecutor.newInstance(new MockConfig());
     executor.execute(
         employees,
         (emp, builder) -> {

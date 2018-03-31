@@ -2,12 +2,9 @@ package org.seasar.doma.jdbc.query;
 
 import example.entity.Emp;
 import java.util.Arrays;
-import java.util.List;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileBatchDeleteQueryTest extends TestCase {
@@ -15,17 +12,17 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
   private final MockConfig runtimeConfig = new MockConfig();
 
   public void testPrepare() throws Exception {
-    Emp emp1 = new Emp();
+    var emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
     emp1.setVersion(100);
 
-    Emp emp2 = new Emp();
+    var emp2 = new Emp();
     emp2.setId(20);
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -41,13 +38,13 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
   }
 
   public void testOption_default() throws Exception {
-    Emp emp1 = new Emp();
+    var emp1 = new Emp();
     emp1.setName("aaa");
 
-    Emp emp2 = new Emp();
+    var emp2 = new Emp();
     emp2.setName("bbb");
 
-    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    var query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
     query.setMethod(getClass().getDeclaredMethod(getName()));
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
@@ -58,9 +55,9 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    PreparedSql sql = query.getSqls().get(0);
+    var sql = query.getSqls().get(0);
     assertEquals("delete from emp where name = ?", sql.getRawSql());
-    List<InParameter<?>> parameters = sql.getParameters();
+    var parameters = sql.getParameters();
     assertEquals(1, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
 

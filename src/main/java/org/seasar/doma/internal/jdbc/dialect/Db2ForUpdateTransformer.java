@@ -19,9 +19,9 @@ public class Db2ForUpdateTransformer extends StandardForUpdateTransformer {
     }
     processed = true;
 
-    ForUpdateClauseNode forUpdate = new ForUpdateClauseNode("for update with rs");
+    var forUpdate = new ForUpdateClauseNode("for update with rs");
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(node.getSelectClauseNode());
     result.setFromClauseNode(node.getFromClauseNode());
     result.setWhereClauseNode(node.getWhereClauseNode());

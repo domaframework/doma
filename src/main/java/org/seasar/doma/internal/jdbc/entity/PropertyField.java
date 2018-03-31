@@ -20,10 +20,10 @@ public class PropertyField<ENTITY> {
     AssertionUtil.assertNotNull(path, entityClass);
     this.path = path;
     this.entityClass = entityClass;
-    String[] segments = path.split("\\.");
+    var segments = path.split("\\.");
     Class<?> clazz = entityClass;
-    for (String segment : segments) {
-      Field field = getField(clazz, segment);
+    for (var segment : segments) {
+      var field = getField(clazz, segment);
       fields.add(field);
       clazz = field.getType();
     }
@@ -31,7 +31,7 @@ public class PropertyField<ENTITY> {
   }
 
   private Field getField(Class<?> clazz, String name) {
-    Field field = findField(clazz, name);
+    var field = findField(clazz, name);
     if (field == null) {
       throw new EntityPropertyNotFoundException(clazz.getName(), name);
     }
@@ -46,7 +46,7 @@ public class PropertyField<ENTITY> {
   }
 
   private Field findField(Class<?> clazz, String name) {
-    for (Class<?> cl = clazz; cl != Object.class; cl = cl.getSuperclass()) {
+    for (var cl = clazz; cl != Object.class; cl = cl.getSuperclass()) {
       try {
         return cl.getDeclaredField(name);
       } catch (NoSuchFieldException ignored) {
@@ -58,7 +58,7 @@ public class PropertyField<ENTITY> {
   public Object getValue(ENTITY entity) {
     AssertionUtil.assertNotNull(entity);
     Object value = entity;
-    for (Field field : fields) {
+    for (var field : fields) {
       if (value == null) {
         break;
       }
@@ -94,12 +94,12 @@ public class PropertyField<ENTITY> {
   }
 
   public boolean isPrimitive() {
-    Field field = fields.getLast();
+    var field = fields.getLast();
     return field.getType().isPrimitive();
   }
 
   public Class<?> getType() {
-    Field field = fields.getLast();
+    var field = fields.getLast();
     return field.getType();
   }
 }

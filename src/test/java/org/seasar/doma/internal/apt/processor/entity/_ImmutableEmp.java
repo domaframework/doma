@@ -3,7 +3,18 @@ package org.seasar.doma.internal.apt.processor.entity;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import org.seasar.doma.jdbc.entity.*;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 

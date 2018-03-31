@@ -50,7 +50,7 @@ public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator
 
   @Override
   public Long generatePreInsert(IdGenerationConfig config) {
-    IdContext idContext = getIdContext(config);
+    var idContext = getIdContext(config);
     return idContext.getNextValue(config);
   }
 
@@ -66,13 +66,13 @@ public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator
    * @return the identity context
    */
   protected IdContext getIdContext(IdGenerationConfig config) {
-    String dataSourceName = config.getDataSourceName();
-    IdContext context = idContextMap.get(dataSourceName);
+    var dataSourceName = config.getDataSourceName();
+    var context = idContextMap.get(dataSourceName);
     if (context != null) {
       return context;
     }
     context = new IdContext();
-    IdContext existent = idContextMap.putIfAbsent(dataSourceName, context);
+    var existent = idContextMap.putIfAbsent(dataSourceName, context);
     if (existent != null) {
       return existent;
     }

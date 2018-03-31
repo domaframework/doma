@@ -14,7 +14,7 @@ enum OfPrimitiveValueType {
   }
 
   static OfPrimitiveValueType of(int value) {
-    for (OfPrimitiveValueType primitiveValue : OfPrimitiveValueType.values()) {
+    for (var primitiveValue : OfPrimitiveValueType.values()) {
       if (primitiveValue.value == value) {
         return primitiveValue;
       }

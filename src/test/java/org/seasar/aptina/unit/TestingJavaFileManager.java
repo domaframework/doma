@@ -25,8 +25,13 @@ import java.nio.charset.Charset;
 import java.nio.file.NoSuchFileException;
 import java.util.Map;
 import javax.annotation.processing.Processor;
-import javax.tools.*;
+import javax.tools.FileObject;
+import javax.tools.ForwardingJavaFileManager;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.StandardLocation;
 
 /**
  * {@link Processor}をテストする環境用の{@link JavaFileManager}の実装です。
@@ -62,7 +67,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
     if (relativeName.endsWith(".class")) {
       return getJavaFileForInput(location, packageName + "." + relativeName, Kind.CLASS);
     }
-    final String key = createKey(packageName, relativeName);
+    final var key = createKey(packageName, relativeName);
     if (fileObjects.containsKey(key)) {
       return fileObjects.get(key);
     }
@@ -82,7 +87,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
     if (relativeName.endsWith(".class")) {
       return getJavaFileForOutput(location, packageName + "." + relativeName, Kind.CLASS, sibling);
     }
-    final String key = createKey(packageName, relativeName);
+    final var key = createKey(packageName, relativeName);
     if (fileObjects.containsKey(key)) {
       return fileObjects.get(key);
     }
@@ -105,7 +110,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
     } catch (final FileNotFoundException ignore) {
     } catch (final NoSuchFileException ignore) {
     }
-    final InMemoryJavaFileObject fileObject =
+    final var fileObject =
         new InMemoryJavaFileObject(
             uri != null ? uri : toURI(location, packageName, relativeName),
             Kind.OTHER,
@@ -118,7 +123,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
   @Override
   public JavaFileObject getJavaFileForInput(
       final Location location, final String className, final Kind kind) throws IOException {
-    final String key = createKey(className, kind);
+    final var key = createKey(className, kind);
     if (fileObjects.containsKey(key)) {
       return fileObjects.get(key);
     }
@@ -129,7 +134,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
   public JavaFileObject getJavaFileForOutput(
       final Location location, final String className, final Kind kind, final FileObject sibling)
       throws IOException {
-    final String key = createKey(className, kind);
+    final var key = createKey(className, kind);
     if (fileObjects.containsKey(key)) {
       return fileObjects.get(key);
     }
@@ -137,14 +142,13 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
     byte[] content = null;
     URI uri = null;
     try {
-      final JavaFileObject originalFileObject =
-          super.getJavaFileForOutput(location, className, kind, sibling);
+      final var originalFileObject = super.getJavaFileForOutput(location, className, kind, sibling);
       uri = originalFileObject.toUri();
       content = IOUtils.readBytes(originalFileObject.openInputStream());
     } catch (final FileNotFoundException ignore) {
     } catch (final NoSuchFileException ignore) {
     }
-    final InMemoryJavaFileObject fileObject =
+    final var fileObject =
         new InMemoryJavaFileObject(
             uri != null ? uri : toURI(location, className), kind, charset, content);
     fileObjects.put(key, fileObject);
@@ -173,7 +177,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
    */
   public JavaFileObject getGeneratedJavaFile(
       final Location location, final String className, final Kind kind) throws IOException {
-    final String key = kind.name() + "::" + className;
+    final var key = kind.name() + "::" + className;
     if (fileObjects.containsKey(key)) {
       return fileObjects.get(key);
     }

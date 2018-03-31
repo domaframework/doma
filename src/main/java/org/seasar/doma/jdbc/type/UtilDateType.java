@@ -1,6 +1,11 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,7 +18,7 @@ public class UtilDateType extends AbstractJdbcType<Date> {
 
   @Override
   public Date doGetValue(ResultSet resultSet, int index) throws SQLException {
-    Timestamp timestamp = resultSet.getTimestamp(index);
+    var timestamp = resultSet.getTimestamp(index);
     if (timestamp == null) {
       return null;
     }
@@ -28,7 +33,7 @@ public class UtilDateType extends AbstractJdbcType<Date> {
 
   @Override
   protected Date doGetValue(CallableStatement callableStatement, int index) throws SQLException {
-    Timestamp timestamp = callableStatement.getTimestamp(index);
+    var timestamp = callableStatement.getTimestamp(index);
     if (timestamp == null) {
       return null;
     }
@@ -37,7 +42,7 @@ public class UtilDateType extends AbstractJdbcType<Date> {
 
   @Override
   protected String doConvertToLogFormat(Date value) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     return "'" + dateFormat.format(value) + "'";
   }
 }

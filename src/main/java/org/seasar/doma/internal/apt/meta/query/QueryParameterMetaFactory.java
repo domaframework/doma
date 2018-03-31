@@ -4,11 +4,19 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
+import org.seasar.doma.internal.apt.cttype.CollectorCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.FunctionCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.message.Message;
 
 public class QueryParameterMetaFactory {
@@ -24,21 +32,21 @@ public class QueryParameterMetaFactory {
   }
 
   public QueryParameterMeta createQueryParameterMeta() {
-    String name = ctx.getElements().getParameterName(parameterElement);
+    var name = ctx.getElements().getParameterName(parameterElement);
     if (name.startsWith(Constants.RESERVED_VARIABLE_NAME_PREFIX)) {
       throw new AptException(
           Message.DOMA4025,
           parameterElement,
           new Object[] {Constants.RESERVED_VARIABLE_NAME_PREFIX});
     }
-    CtType ctType = createCtType();
+    var ctType = createCtType();
     return new QueryParameterMeta(parameterElement, name, ctType);
   }
 
   private CtType createCtType() {
-    TypeMirror type = parameterElement.asType();
-    CtTypes ctTypes = ctx.getCtTypes();
-    CtType ctType =
+    var type = parameterElement.asType();
+    var ctTypes = ctx.getCtTypes();
+    var ctType =
         ctTypes.toCtType(
             type,
             List.of(

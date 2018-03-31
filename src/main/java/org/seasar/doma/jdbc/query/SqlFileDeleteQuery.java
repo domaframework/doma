@@ -98,8 +98,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuer
     }
 
     protected void preDelete() {
-      SqlFilePreDeleteContext<E> context =
-          new SqlFilePreDeleteContext<>(entityDesc, method, config);
+      var context = new SqlFilePreDeleteContext<>(entityDesc, method, config);
       entityDesc.preDelete(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();
@@ -108,8 +107,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuer
     }
 
     protected void postDelete() {
-      SqlFilePostDeleteContext<E> context =
-          new SqlFilePostDeleteContext<>(entityDesc, method, config);
+      var context = new SqlFilePostDeleteContext<>(entityDesc, method, config);
       entityDesc.postDelete(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();

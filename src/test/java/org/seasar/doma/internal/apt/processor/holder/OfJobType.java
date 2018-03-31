@@ -14,7 +14,7 @@ enum OfJobType {
   }
 
   static OfJobType of(String value) {
-    for (OfJobType jobType : OfJobType.values()) {
+    for (var jobType : OfJobType.values()) {
       if (jobType.value.equals(value)) {
         return jobType;
       }

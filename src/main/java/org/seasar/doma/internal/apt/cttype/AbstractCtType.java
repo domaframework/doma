@@ -43,7 +43,7 @@ public abstract class AbstractCtType implements CtType {
       this.hasWildcardType = false;
       this.hasTypevarType = false;
     } else {
-      DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+      var declaredType = ctx.getTypes().toDeclaredType(type);
       this.hasWildcardType = matchTypeArguments(declaredType, TypeKind.WILDCARD);
       this.hasTypevarType = matchTypeArguments(declaredType, TypeKind.TYPEVAR);
     }
@@ -51,7 +51,7 @@ public abstract class AbstractCtType implements CtType {
 
   private static boolean isRawType(Context ctx, TypeMirror type, TypeElement typeElement) {
     if (typeElement != null && !typeElement.getTypeParameters().isEmpty()) {
-      DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+      var declaredType = ctx.getTypes().toDeclaredType(type);
       if (declaredType == null) {
         throw new AptIllegalStateException(type.toString());
       }

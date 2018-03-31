@@ -17,9 +17,13 @@ package org.seasar.aptina.unit;
 
 import static org.seasar.aptina.unit.AssertionUtils.assertEquals;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 /**
@@ -136,12 +140,12 @@ class IOUtils {
     if (!file.exists()) {
       throw new FileNotFoundException(file.getPath());
     }
-    final FileInputStream is = new FileInputStream(file);
+    final var is = new FileInputStream(file);
     try {
-      final FileChannel channel = is.getChannel();
-      final int size = (int) channel.size();
-      final ByteBuffer buffer = ByteBuffer.allocate(size);
-      final int readSize = channel.read(buffer);
+      final var channel = is.getChannel();
+      final var size = (int) channel.size();
+      final var buffer = ByteBuffer.allocate(size);
+      final var readSize = channel.read(buffer);
       assertEquals(size, readSize);
       return buffer.array();
     } finally {
@@ -159,9 +163,9 @@ class IOUtils {
    * @throws IOException 入出力例外が発生した場合
    */
   public static byte[] readBytes(final InputStream is) throws IOException {
-    final int size = is.available();
-    final byte[] bytes = new byte[size];
-    int readSize = 0;
+    final var size = is.available();
+    final var bytes = new byte[size];
+    var readSize = 0;
     while (readSize < size) {
       readSize += is.read(bytes, readSize, size - readSize);
     }

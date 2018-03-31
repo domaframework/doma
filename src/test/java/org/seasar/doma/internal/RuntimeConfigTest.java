@@ -23,9 +23,9 @@ public class RuntimeConfigTest extends TestCase {
           }
         };
 
-    RuntimeConfig runtimeConfig = new RuntimeConfig(originalConfig);
+    var runtimeConfig = new RuntimeConfig(originalConfig);
 
-    MockEntityListener entityListener =
+    var entityListener =
         runtimeConfig
             .getEntityListenerProvider()
             .get(MockEntityListener.class, MockEntityListener::new);
@@ -42,7 +42,7 @@ public class RuntimeConfigTest extends TestCase {
           }
         };
 
-    RuntimeConfig runtimeConfig = new RuntimeConfig(originalConfig);
+    var runtimeConfig = new RuntimeConfig(originalConfig);
 
     try {
       runtimeConfig

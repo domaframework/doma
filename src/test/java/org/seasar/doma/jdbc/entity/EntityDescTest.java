@@ -1,7 +1,11 @@
 package org.seasar.doma.jdbc.entity;
 
-import example.entity.*;
 import example.entity.Dept;
+import example.entity.Emp;
+import example.entity.ImmutableEmp;
+import example.entity._Dept;
+import example.entity._Emp;
+import example.entity._ImmutableEmp;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,21 +19,21 @@ public class EntityDescTest extends TestCase {
   }
 
   public void testImmutable_newEntity() throws Exception {
-    ImmutableEmp emp = new ImmutableEmp(99, "hoge", BigDecimal.ONE, 1);
+    var emp = new ImmutableEmp(99, "hoge", BigDecimal.ONE, 1);
     EntityDesc<ImmutableEmp> entityDesc = _ImmutableEmp.getSingletonInternal();
     Map<String, Property<ImmutableEmp, ?>> args = new HashMap<>();
 
-    EntityPropertyDesc<ImmutableEmp, ?> idType = entityDesc.getEntityPropertyDesc("id");
-    Property<ImmutableEmp, ?> id = idType.createProperty();
+    var idType = entityDesc.getEntityPropertyDesc("id");
+    var id = idType.createProperty();
     id.load(emp);
     args.put(idType.getName(), id);
 
-    EntityPropertyDesc<ImmutableEmp, ?> salaryType = entityDesc.getEntityPropertyDesc("salary");
-    Property<ImmutableEmp, ?> salary = salaryType.createProperty();
+    var salaryType = entityDesc.getEntityPropertyDesc("salary");
+    var salary = salaryType.createProperty();
     salary.load(emp);
     args.put(salaryType.getName(), salary);
 
-    ImmutableEmp newEmp = entityDesc.newEntity(args);
+    var newEmp = entityDesc.newEntity(args);
 
     assertEquals(Integer.valueOf(99), newEmp.getId());
     assertNull(newEmp.getName());

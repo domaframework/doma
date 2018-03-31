@@ -1,13 +1,43 @@
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.CLOSED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OPENED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.WHITESPACE;
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.LinkedList;
-import org.seasar.doma.internal.expr.node.*;
+import org.seasar.doma.internal.expr.node.AddOperatorNode;
+import org.seasar.doma.internal.expr.node.AndOperatorNode;
+import org.seasar.doma.internal.expr.node.CommaOperatorNode;
+import org.seasar.doma.internal.expr.node.DivideOperatorNode;
+import org.seasar.doma.internal.expr.node.EmptyNode;
+import org.seasar.doma.internal.expr.node.EqOperatorNode;
+import org.seasar.doma.internal.expr.node.ExpressionLocation;
+import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.expr.node.FieldOperatorNode;
+import org.seasar.doma.internal.expr.node.FunctionOperatorNode;
+import org.seasar.doma.internal.expr.node.GeOperatorNode;
+import org.seasar.doma.internal.expr.node.GtOperatorNode;
+import org.seasar.doma.internal.expr.node.LeOperatorNode;
+import org.seasar.doma.internal.expr.node.LiteralNode;
+import org.seasar.doma.internal.expr.node.LtOperatorNode;
+import org.seasar.doma.internal.expr.node.MethodOperatorNode;
+import org.seasar.doma.internal.expr.node.ModOperatorNode;
+import org.seasar.doma.internal.expr.node.MultiplyOperatorNode;
+import org.seasar.doma.internal.expr.node.NeOperatorNode;
+import org.seasar.doma.internal.expr.node.NewOperatorNode;
+import org.seasar.doma.internal.expr.node.NotOperatorNode;
+import org.seasar.doma.internal.expr.node.OperatorNode;
+import org.seasar.doma.internal.expr.node.OrOperatorNode;
+import org.seasar.doma.internal.expr.node.ParensNode;
+import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
+import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
+import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
+import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.message.Message;
 
 public class ExpressionParser {
@@ -99,7 +129,7 @@ public class ExpressionParser {
           }
         case ILLEGAL_NUMBER_LITERAL:
           {
-            ExpressionLocation location = getLocation();
+            var location = getLocation();
             throw new ExpressionException(
                 Message.DOMA3012, location.getExpression(), location.getPosition(), token);
           }
@@ -223,7 +253,7 @@ public class ExpressionParser {
           }
         case OTHER:
           {
-            ExpressionLocation location = getLocation();
+            var location = getLocation();
             throw new ExpressionException(
                 Message.DOMA3011, location.getExpression(), location.getPosition(), token);
           }
@@ -245,23 +275,23 @@ public class ExpressionParser {
   }
 
   protected void parseVariable() {
-    VariableNode node = new VariableNode(getLocation(), token);
+    var node = new VariableNode(getLocation(), token);
     expressionNodes.push(node);
   }
 
   protected void parseOpenedParens() {
-    int start = tokenizer.getPosition();
-    String subExpression = expression.substring(start);
-    ExpressionParser parser = new ExpressionParser(subExpression, originalExpression, start);
-    ExpressionNode childExpressionNode = parser.parse();
+    var start = tokenizer.getPosition();
+    var subExpression = expression.substring(start);
+    var parser = new ExpressionParser(subExpression, originalExpression, start);
+    var childExpressionNode = parser.parse();
     if (parser.tokenType != CLOSED_PARENS) {
-      ExpressionLocation location = getLocation();
+      var location = getLocation();
       throw new ExpressionException(
           Message.DOMA3026, location.getExpression(), location.getPosition());
     }
-    int end = start + parser.tokenizer.getPosition();
+    var end = start + parser.tokenizer.getPosition();
     tokenizer.setPosition(end, true);
-    ParensNode node = new ParensNode(getLocation(), childExpressionNode);
+    var node = new ParensNode(getLocation(), childExpressionNode);
     expressionNodes.push(node);
   }
 
@@ -270,75 +300,75 @@ public class ExpressionParser {
   }
 
   protected void parseStringLiteral() {
-    String value = token.substring(1, token.length() - 1);
-    LiteralNode node = new LiteralNode(getLocation(), token, value, String.class);
+    var value = token.substring(1, token.length() - 1);
+    var node = new LiteralNode(getLocation(), token, value, String.class);
     expressionNodes.push(node);
   }
 
   protected void parseCharLiteral() {
-    char value = token.charAt(1);
-    LiteralNode node = new LiteralNode(getLocation(), token, value, char.class);
+    var value = token.charAt(1);
+    var node = new LiteralNode(getLocation(), token, value, char.class);
     expressionNodes.push(node);
   }
 
   protected void parseIntLiteral() {
-    int start = token.charAt(0) == '+' ? 1 : 0;
-    int end = token.length();
-    Integer value = Integer.valueOf(token.substring(start, end));
-    LiteralNode node = new LiteralNode(getLocation(), token, value, int.class);
+    var start = token.charAt(0) == '+' ? 1 : 0;
+    var end = token.length();
+    var value = Integer.valueOf(token.substring(start, end));
+    var node = new LiteralNode(getLocation(), token, value, int.class);
     expressionNodes.push(node);
   }
 
   protected void parseLongLiteral() {
-    int start = token.charAt(0) == '+' ? 1 : 0;
-    int end = token.length() - 1;
-    Long value = Long.valueOf(token.substring(start, end));
-    LiteralNode node = new LiteralNode(getLocation(), token, value, long.class);
+    var start = token.charAt(0) == '+' ? 1 : 0;
+    var end = token.length() - 1;
+    var value = Long.valueOf(token.substring(start, end));
+    var node = new LiteralNode(getLocation(), token, value, long.class);
     expressionNodes.push(node);
   }
 
   protected void parseFloatLiteral() {
-    int start = token.charAt(0) == '+' ? 1 : 0;
-    int end = token.length() - 1;
-    Float value = Float.valueOf(token.substring(start, end));
-    LiteralNode node = new LiteralNode(getLocation(), token, value, float.class);
+    var start = token.charAt(0) == '+' ? 1 : 0;
+    var end = token.length() - 1;
+    var value = Float.valueOf(token.substring(start, end));
+    var node = new LiteralNode(getLocation(), token, value, float.class);
     expressionNodes.push(node);
   }
 
   protected void parseDoubleLiteral() {
-    int start = token.charAt(0) == '+' ? 1 : 0;
-    int end = token.length() - 1;
-    Double value = Double.valueOf(token.substring(start, end));
-    LiteralNode node = new LiteralNode(getLocation(), token, value, double.class);
+    var start = token.charAt(0) == '+' ? 1 : 0;
+    var end = token.length() - 1;
+    var value = Double.valueOf(token.substring(start, end));
+    var node = new LiteralNode(getLocation(), token, value, double.class);
     expressionNodes.push(node);
   }
 
   protected void parseBigDecimalLiteral() {
-    int start = 0;
-    int end = token.length() - 1;
-    BigDecimal value = new BigDecimal(token.substring(start, end));
-    LiteralNode node = new LiteralNode(getLocation(), token, value, BigDecimal.class);
+    var start = 0;
+    var end = token.length() - 1;
+    var value = new BigDecimal(token.substring(start, end));
+    var node = new LiteralNode(getLocation(), token, value, BigDecimal.class);
     expressionNodes.push(node);
   }
 
   protected void parseTrueLiteral() {
-    LiteralNode node = new LiteralNode(getLocation(), token, true, boolean.class);
+    var node = new LiteralNode(getLocation(), token, true, boolean.class);
     expressionNodes.push(node);
   }
 
   protected void parseFalseLiteral() {
-    LiteralNode node = new LiteralNode(getLocation(), token, false, boolean.class);
+    var node = new LiteralNode(getLocation(), token, false, boolean.class);
     expressionNodes.push(node);
   }
 
   protected void parseNullLiteral() {
-    LiteralNode node = new LiteralNode(getLocation(), token, null, void.class);
+    var node = new LiteralNode(getLocation(), token, null, void.class);
     expressionNodes.push(node);
   }
 
   protected void parseMethodOperand() {
-    String name = token.substring(1);
-    MethodOperatorNode node = new MethodOperatorNode(getLocation(), token, name);
+    var name = token.substring(1);
+    var node = new MethodOperatorNode(getLocation(), token, name);
     tokenType = tokenizer.next();
     assertEquals(OPENED_PARENS, tokenType);
     parseOpenedParens();
@@ -346,12 +376,11 @@ public class ExpressionParser {
   }
 
   protected void parseStaticMethodOperand() {
-    int pos = token.lastIndexOf('@');
+    var pos = token.lastIndexOf('@');
     assertTrue(pos > -1);
-    String className = token.substring(1, pos);
-    String methodName = token.substring(pos + 1);
-    StaticMethodOperatorNode node =
-        new StaticMethodOperatorNode(getLocation(), token, className, methodName);
+    var className = token.substring(1, pos);
+    var methodName = token.substring(pos + 1);
+    var node = new StaticMethodOperatorNode(getLocation(), token, className, methodName);
     tokenType = tokenizer.next();
     assertEquals(OPENED_PARENS, tokenType);
     parseOpenedParens();
@@ -359,8 +388,8 @@ public class ExpressionParser {
   }
 
   protected void parseFunctionOperand() {
-    String name = token.substring(1);
-    FunctionOperatorNode node = new FunctionOperatorNode(getLocation(), token, name);
+    var name = token.substring(1);
+    var node = new FunctionOperatorNode(getLocation(), token, name);
     tokenType = tokenizer.next();
     assertEquals(OPENED_PARENS, tokenType);
     parseOpenedParens();
@@ -368,29 +397,28 @@ public class ExpressionParser {
   }
 
   protected void parseFieldOperand() {
-    String name = token.substring(1);
-    FieldOperatorNode node = new FieldOperatorNode(getLocation(), token, name);
+    var name = token.substring(1);
+    var node = new FieldOperatorNode(getLocation(), token, name);
     reduce(node);
   }
 
   protected void parseStaticFieldOperand() {
-    int pos = token.lastIndexOf('@');
+    var pos = token.lastIndexOf('@');
     assertTrue(pos > -1);
-    String className = token.substring(1, pos);
-    String fieldName = token.substring(pos + 1);
-    StaticFieldOperatorNode node =
-        new StaticFieldOperatorNode(getLocation(), token, className, fieldName);
+    var className = token.substring(1, pos);
+    var fieldName = token.substring(pos + 1);
+    var node = new StaticFieldOperatorNode(getLocation(), token, className, fieldName);
     reduce(node);
   }
 
   protected void parseNewOperand() {
-    StringBuilder buf = new StringBuilder();
+    var buf = new StringBuilder();
     for (; tokenizer.next() != OPENED_PARENS; ) {
       if (tokenType != WHITESPACE) {
         buf.append(tokenizer.getToken());
       }
     }
-    NewOperatorNode node = new NewOperatorNode(getLocation(), token, buf.toString().trim());
+    var node = new NewOperatorNode(getLocation(), token, buf.toString().trim());
     parseOpenedParens();
     reduce(node);
   }
@@ -402,8 +430,8 @@ public class ExpressionParser {
       if (currentNode.getPriority() > operatorNodes.peek().getPriority()) {
         operatorNodes.push(currentNode);
       } else {
-        for (Iterator<OperatorNode> it = operatorNodes.iterator(); it.hasNext(); ) {
-          OperatorNode operatorNode = it.next();
+        for (var it = operatorNodes.iterator(); it.hasNext(); ) {
+          var operatorNode = it.next();
           if (operatorNode.getPriority() > currentNode.getPriority()) {
             reduce(operatorNode);
             it.remove();
@@ -415,8 +443,8 @@ public class ExpressionParser {
   }
 
   protected void reduceAll() {
-    for (Iterator<OperatorNode> it = operatorNodes.iterator(); it.hasNext(); ) {
-      OperatorNode operator = it.next();
+    for (var it = operatorNodes.iterator(); it.hasNext(); ) {
+      var operator = it.next();
       reduce(operator);
       it.remove();
     }

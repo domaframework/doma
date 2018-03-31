@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
-import org.seasar.doma.jdbc.entity.Property;
 
 /** A helper for {@link BatchUpdateQuery}. */
 public class BatchUpdateQueryHelper<E> {
@@ -43,7 +40,7 @@ public class BatchUpdateQueryHelper<E> {
   public List<EntityPropertyDesc<E, ?>> getTargetPropertyDescs() {
     List<EntityPropertyDesc<E, ?>> targetPropertyDescs =
         new ArrayList<>(entityDesc.getEntityPropertyDescs().size());
-    for (EntityPropertyDesc<E, ?> p : entityDesc.getEntityPropertyDescs()) {
+    for (var p : entityDesc.getEntityPropertyDescs()) {
       if (!p.isUpdatable()) {
         continue;
       }
@@ -64,9 +61,9 @@ public class BatchUpdateQueryHelper<E> {
 
   protected boolean isTargetPropertyName(String name) {
     if (includedPropertyNames.length > 0) {
-      for (String includedName : includedPropertyNames) {
+      for (var includedName : includedPropertyNames) {
         if (includedName.equals(name)) {
-          for (String excludedName : excludedPropertyNames) {
+          for (var excludedName : excludedPropertyNames) {
             if (excludedName.equals(name)) {
               return false;
             }
@@ -77,7 +74,7 @@ public class BatchUpdateQueryHelper<E> {
       return false;
     }
     if (excludedPropertyNames.length > 0) {
-      for (String excludedName : excludedPropertyNames) {
+      for (var excludedName : excludedPropertyNames) {
         if (excludedName.equals(name)) {
           return false;
         }
@@ -92,10 +89,10 @@ public class BatchUpdateQueryHelper<E> {
       List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
       EntityPropertyDesc<E, ?> versionPropertyDesc,
       SqlContext context) {
-    Dialect dialect = config.getDialect();
-    Naming naming = config.getNaming();
-    for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
-      Property<E, ?> property = propertyDesc.createProperty();
+    var dialect = config.getDialect();
+    var naming = config.getNaming();
+    for (var propertyDesc : targetPropertyDescs) {
+      var property = propertyDesc.createProperty();
       property.load(entity);
       context.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
       context.appendSql(" = ");

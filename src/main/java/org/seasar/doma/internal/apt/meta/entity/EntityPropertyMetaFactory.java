@@ -4,20 +4,28 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.List;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.*;
+import org.seasar.doma.GeneratedValue;
+import org.seasar.doma.Id;
+import org.seasar.doma.SequenceGenerator;
+import org.seasar.doma.TableGenerator;
+import org.seasar.doma.Version;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.annot.SequenceGeneratorAnnot;
 import org.seasar.doma.internal.apt.annot.TableGeneratorAnnot;
-import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.cttype.AnyCtType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
@@ -36,12 +44,11 @@ public class EntityPropertyMetaFactory {
   }
 
   public EntityPropertyMeta createEntityPropertyMeta() {
-    String name = getName();
-    CtType ctType = createCtType();
-    ColumnAnnot columnAnnot = ctx.getAnnots().newColumnAnnot(fieldElement);
-    String filedPrefix = ctx.getOptions().getEntityFieldPrefix();
-    EntityPropertyMeta propertyMeta =
-        new EntityPropertyMeta(fieldElement, name, ctType, columnAnnot, filedPrefix);
+    var name = getName();
+    var ctType = createCtType();
+    var columnAnnot = ctx.getAnnots().newColumnAnnot(fieldElement);
+    var filedPrefix = ctx.getOptions().getEntityFieldPrefix();
+    var propertyMeta = new EntityPropertyMeta(fieldElement, name, ctType, columnAnnot, filedPrefix);
     doId(propertyMeta);
     doVersion(propertyMeta);
     doColumn(propertyMeta);
@@ -49,7 +56,7 @@ public class EntityPropertyMetaFactory {
   }
 
   private String getName() {
-    String name = fieldElement.getSimpleName().toString();
+    var name = fieldElement.getSimpleName().toString();
     if (name.startsWith(Constants.RESERVED_VARIABLE_NAME_PREFIX)) {
       throw new AptException(
           Message.DOMA4025, fieldElement, new Object[] {Constants.RESERVED_VARIABLE_NAME_PREFIX});
@@ -58,9 +65,9 @@ public class EntityPropertyMetaFactory {
   }
 
   private CtType createCtType() {
-    TypeMirror type = fieldElement.asType();
-    CtTypes ctTypes = ctx.getCtTypes();
-    CtType ctType =
+    var type = fieldElement.asType();
+    var ctTypes = ctx.getCtTypes();
+    var ctType =
         ctTypes.toCtType(
             type,
             List.of(
@@ -76,9 +83,9 @@ public class EntityPropertyMetaFactory {
   }
 
   private void doId(EntityPropertyMeta propertyMeta) {
-    Id id = fieldElement.getAnnotation(Id.class);
+    var id = fieldElement.getAnnotation(Id.class);
     if (id == null) {
-      GeneratedValue generatedValue = fieldElement.getAnnotation(GeneratedValue.class);
+      var generatedValue = fieldElement.getAnnotation(GeneratedValue.class);
       if (generatedValue == null) {
         validateSequenceGeneratorNotExistent(propertyMeta);
         validateTableGeneratorNotExistent(propertyMeta);
@@ -90,7 +97,7 @@ public class EntityPropertyMetaFactory {
       throw new AptException(Message.DOMA4302, fieldElement);
     }
     propertyMeta.setId(true);
-    final GeneratedValue generatedValue = fieldElement.getAnnotation(GeneratedValue.class);
+    final var generatedValue = fieldElement.getAnnotation(GeneratedValue.class);
     if (generatedValue == null) {
       validateSequenceGeneratorNotExistent(propertyMeta);
       validateTableGeneratorNotExistent(propertyMeta);
@@ -119,14 +126,14 @@ public class EntityPropertyMetaFactory {
   }
 
   private void validateSequenceGeneratorNotExistent(EntityPropertyMeta propertyMeta) {
-    SequenceGenerator sequenceGenerator = fieldElement.getAnnotation(SequenceGenerator.class);
+    var sequenceGenerator = fieldElement.getAnnotation(SequenceGenerator.class);
     if (sequenceGenerator != null) {
       throw new AptException(Message.DOMA4030, fieldElement);
     }
   }
 
   private void validateTableGeneratorNotExistent(EntityPropertyMeta propertyMeta) {
-    TableGenerator tableGenerator = fieldElement.getAnnotation(TableGenerator.class);
+    var tableGenerator = fieldElement.getAnnotation(TableGenerator.class);
     if (tableGenerator != null) {
       throw new AptException(Message.DOMA4031, fieldElement);
     }
@@ -137,20 +144,18 @@ public class EntityPropertyMetaFactory {
   }
 
   private void doSequenceIdGeneratorMeta(EntityPropertyMeta propertyMeta) {
-    SequenceGeneratorAnnot sequenceGeneratorAnnot =
-        ctx.getAnnots().newSequenceGeneratorAnnot(fieldElement);
+    var sequenceGeneratorAnnot = ctx.getAnnots().newSequenceGeneratorAnnot(fieldElement);
     if (sequenceGeneratorAnnot == null) {
       throw new AptException(Message.DOMA4034, fieldElement);
     }
     validateSequenceIdGenerator(propertyMeta, sequenceGeneratorAnnot);
-    SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(sequenceGeneratorAnnot);
+    var idGeneratorMeta = new SequenceIdGeneratorMeta(sequenceGeneratorAnnot);
     propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
   }
 
   private void validateSequenceIdGenerator(
       EntityPropertyMeta propertyMeta, SequenceGeneratorAnnot sequenceGeneratorAnnot) {
-    TypeElement typeElement =
-        ctx.getTypes().toTypeElement(sequenceGeneratorAnnot.getImplementerValue());
+    var typeElement = ctx.getTypes().toTypeElement(sequenceGeneratorAnnot.getImplementerValue());
     if (typeElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement");
     }
@@ -162,7 +167,7 @@ public class EntityPropertyMetaFactory {
           sequenceGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
-    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(typeElement);
+    var constructor = ctx.getElements().getNoArgConstructor(typeElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
           Message.DOMA4171,
@@ -174,19 +179,18 @@ public class EntityPropertyMetaFactory {
   }
 
   private void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta) {
-    TableGeneratorAnnot tableGeneratorAnnot = ctx.getAnnots().newTableGeneratorAnnot(fieldElement);
+    var tableGeneratorAnnot = ctx.getAnnots().newTableGeneratorAnnot(fieldElement);
     if (tableGeneratorAnnot == null) {
       throw new AptException(Message.DOMA4035, fieldElement);
     }
     validateTableIdGenerator(propertyMeta, tableGeneratorAnnot);
-    TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(tableGeneratorAnnot);
+    var idGeneratorMeta = new TableIdGeneratorMeta(tableGeneratorAnnot);
     propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
   }
 
   private void validateTableIdGenerator(
       EntityPropertyMeta propertyMeta, TableGeneratorAnnot tableGeneratorAnnot) {
-    TypeElement typeElement =
-        ctx.getTypes().toTypeElement(tableGeneratorAnnot.getImplementerValue());
+    var typeElement = ctx.getTypes().toTypeElement(tableGeneratorAnnot.getImplementerValue());
     if (typeElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement");
     }
@@ -198,7 +202,7 @@ public class EntityPropertyMetaFactory {
           tableGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
-    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(typeElement);
+    var constructor = ctx.getElements().getNoArgConstructor(typeElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
           Message.DOMA4169,
@@ -210,7 +214,7 @@ public class EntityPropertyMetaFactory {
   }
 
   private void doVersion(EntityPropertyMeta propertyMeta) {
-    Version version = fieldElement.getAnnotation(Version.class);
+    var version = fieldElement.getAnnotation(Version.class);
     if (version != null) {
       if (propertyMeta.isEmbedded()) {
         throw new AptException(Message.DOMA4304, fieldElement);
@@ -223,7 +227,7 @@ public class EntityPropertyMetaFactory {
   }
 
   private void doColumn(EntityPropertyMeta propertyMeta) {
-    ColumnAnnot columnAnnot = propertyMeta.getColumnAnnot();
+    var columnAnnot = propertyMeta.getColumnAnnot();
     if (columnAnnot == null) {
       return;
     }
@@ -249,7 +253,7 @@ public class EntityPropertyMetaFactory {
   }
 
   private boolean isNumber(CtType ctType) {
-    Boolean isNumber =
+    var isNumber =
         ctType.accept(
             new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
 
@@ -285,7 +289,7 @@ public class EntityPropertyMetaFactory {
 
               @Override
               public Boolean visitBasicCtType(BasicCtType ctType, Void p) throws RuntimeException {
-                TypeMirror boxedType = ctx.getTypes().boxIfPrimitive(ctType.getType());
+                var boxedType = ctx.getTypes().boxIfPrimitive(ctType.getType());
                 return ctx.getTypes().isAssignable(boxedType, Number.class);
               }
             },

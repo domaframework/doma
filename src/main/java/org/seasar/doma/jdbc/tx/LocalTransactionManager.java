@@ -109,7 +109,7 @@ public class LocalTransactionManager implements TransactionManager {
       TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
     assertNotNull(isolationLevel, supplier);
     if (transaction.isActive()) {
-      LocalTransactionContext context = transaction.suspend();
+      var context = transaction.suspend();
       try {
         return executeInTransaction(isolationLevel, supplier);
       } finally {
@@ -163,7 +163,7 @@ public class LocalTransactionManager implements TransactionManager {
       TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
     assertNotNull(isolationLevel, supplier);
     if (transaction.isActive()) {
-      LocalTransactionContext context = transaction.suspend();
+      var context = transaction.suspend();
       try {
         return supplier.get();
       } finally {
@@ -196,7 +196,7 @@ public class LocalTransactionManager implements TransactionManager {
     assertNotNull(isolationLevel, supplier);
     transaction.begin(isolationLevel);
     try {
-      RESULT result = supplier.get();
+      var result = supplier.get();
       if (!transaction.isRollbackOnly()) {
         transaction.commit();
       }

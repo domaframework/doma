@@ -1,24 +1,23 @@
 package org.seasar.doma.internal.util;
 
-import java.io.InputStream;
 import junit.framework.TestCase;
 
 public class ResourceUtilTest extends TestCase {
 
   public void testGetResourceAsStream() throws Exception {
-    String path = getClass().getName().replace(".", "/") + ".txt";
-    InputStream inputStream = ResourceUtil.getResourceAsStream(path);
+    var path = getClass().getName().replace(".", "/") + ".txt";
+    var inputStream = ResourceUtil.getResourceAsStream(path);
     assertNotNull(inputStream);
   }
 
   public void testGetResourceAsStream_nonexistentPath() throws Exception {
-    InputStream inputStream = ResourceUtil.getResourceAsStream("nonexistentPath");
+    var inputStream = ResourceUtil.getResourceAsStream("nonexistentPath");
     assertNull(inputStream);
   }
 
   public void testGetResourceAsString() throws Exception {
-    String path = getClass().getName().replace(".", "/") + ".txt";
-    String value = ResourceUtil.getResourceAsString(path);
+    var path = getClass().getName().replace(".", "/") + ".txt";
+    var value = ResourceUtil.getResourceAsString(path);
     assertEquals("aaa", value);
   }
 }

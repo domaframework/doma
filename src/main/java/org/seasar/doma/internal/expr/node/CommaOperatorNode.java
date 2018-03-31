@@ -51,8 +51,8 @@ public class CommaOperatorNode implements OperatorNode {
 
   @Override
   public String toString() {
-    StringBuilder buf = new StringBuilder();
-    for (ExpressionNode node : expressionNodes) {
+    var buf = new StringBuilder();
+    for (var node : expressionNodes) {
       buf.append(node.toString());
       buf.append(expression);
       buf.append(" ");

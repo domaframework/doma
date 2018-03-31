@@ -2,7 +2,11 @@ package org.seasar.doma.jdbc.builder;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 
@@ -50,7 +54,7 @@ class BatchBuildingHelper {
 
   Iterable<BatchParam<?>> getParams() {
     List<BatchParam<?>> results = new ArrayList<>();
-    for (Item item : items) {
+    for (var item : items) {
       if (item.kind == ItemKind.PARAM) {
         results.add(item.param);
       }
@@ -59,8 +63,8 @@ class BatchBuildingHelper {
   }
 
   SqlNode getSqlNode() {
-    StringBuilder buf = new StringBuilder(200);
-    for (Item item : items) {
+    var buf = new StringBuilder(200);
+    for (var item : items) {
       switch (item.kind) {
         case SQL:
           buf.append(item.sql);
@@ -78,7 +82,7 @@ class BatchBuildingHelper {
           break;
       }
     }
-    SqlParser parser = new SqlParser(buf.toString());
+    var parser = new SqlParser(buf.toString());
     return parser.parse();
   }
 
@@ -91,14 +95,14 @@ class BatchBuildingHelper {
     private BatchParam<?> param;
 
     public static Item sql(String sql) {
-      Item item = new Item();
+      var item = new Item();
       item.kind = ItemKind.SQL;
       item.sql = sql;
       return item;
     }
 
     public static Item param(BatchParam<?> param) {
-      Item item = new Item();
+      var item = new Item();
       item.kind = ItemKind.PARAM;
       item.param = param;
       return item;

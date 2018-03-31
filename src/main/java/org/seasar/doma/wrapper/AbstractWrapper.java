@@ -58,7 +58,7 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
   }
 
   protected boolean doHasEqualValue(Object otherValue) {
-    BASIC value = doGet();
+    var value = doGet();
     if (value == null) {
       return otherValue == null;
     }

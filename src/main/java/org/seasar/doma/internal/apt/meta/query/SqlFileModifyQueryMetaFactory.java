@@ -18,7 +18,7 @@ public class SqlFileModifyQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    SqlFileModifyQueryMeta queryMeta = createSqlFileModifyQueryMeta();
+    var queryMeta = createSqlFileModifyQueryMeta();
     if (queryMeta == null) {
       return null;
     }
@@ -31,7 +31,7 @@ public class SqlFileModifyQueryMetaFactory
   }
 
   private SqlFileModifyQueryMeta createSqlFileModifyQueryMeta() {
-    SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(methodElement);
+    var queryMeta = new SqlFileModifyQueryMeta(methodElement);
     ModifyAnnot modifyAnnot = ctx.getAnnots().newInsertAnnot(methodElement);
     if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
@@ -55,8 +55,8 @@ public class SqlFileModifyQueryMetaFactory
 
   @Override
   protected void doReturnType(SqlFileModifyQueryMeta queryMeta) {
-    QueryReturnMeta returnMeta = createReturnMeta();
-    EntityCtType entityCtType = queryMeta.getEntityCtType();
+    var returnMeta = createReturnMeta();
+    var entityCtType = queryMeta.getEntityCtType();
     if (entityCtType != null && entityCtType.isImmutable()) {
       if (!returnMeta.isResult(entityCtType)) {
         throw new AptException(Message.DOMA4222, returnMeta.getMethodElement());
@@ -72,7 +72,7 @@ public class SqlFileModifyQueryMetaFactory
   @Override
   protected void doParameters(final SqlFileModifyQueryMeta queryMeta) {
     for (VariableElement parameter : methodElement.getParameters()) {
-      final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+      final var parameterMeta = createParameterMeta(parameter);
       queryMeta.addParameterMeta(parameterMeta);
       if (parameterMeta.isBindable()) {
         queryMeta.addBindableParameterCtType(parameterMeta.getName(), parameterMeta.getCtType());

@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,8 +12,10 @@ import org.seasar.doma.Select;
 import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
 import org.seasar.doma.internal.jdbc.command.ResultSetState;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.jdbc.*;
-import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
@@ -41,16 +42,16 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
   @Override
   public RESULT execute() {
     Supplier<RESULT> supplier = null;
-    Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
+    var connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {
-      PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
+      var preparedStatement = JdbcUtil.prepareStatement(connection, sql);
       try {
         log();
         setupOptions(preparedStatement);
         bindParameters(preparedStatement);
         supplier = executeQuery(preparedStatement);
       } catch (SQLException e) {
-        Dialect dialect = query.getConfig().getDialect();
+        var dialect = query.getConfig().getDialect();
         throw new SqlExecutionException(
             query.getConfig().getExceptionSqlLogType(), sql, e, dialect.getRootCause(e));
       } finally {
@@ -63,7 +64,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
   }
 
   protected void log() {
-    JdbcLogger logger = query.getConfig().getJdbcLogger();
+    var logger = query.getConfig().getJdbcLogger();
     logger.logSql(query.getClassName(), query.getMethodName(), sql);
   }
 
@@ -80,13 +81,13 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
   }
 
   protected void bindParameters(PreparedStatement preparedStatement) throws SQLException {
-    PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(query);
+    var binder = new PreparedSqlParameterBinder(query);
     binder.bind(preparedStatement, sql.getParameters());
   }
 
   protected Supplier<RESULT> executeQuery(PreparedStatement preparedStatement) throws SQLException {
     Supplier<RESULT> supplier = null;
-    ResultSet resultSet = preparedStatement.executeQuery();
+    var resultSet = preparedStatement.executeQuery();
     try {
       supplier = handleResultSet(resultSet);
       return supplier;
@@ -109,10 +110,10 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
 
   protected void close(Supplier<RESULT> supplier, Runnable closeHandler) {
     if (supplier != null && query.isResultStream() && query.getFetchType() == FetchType.LAZY) {
-      RESULT result = supplier.get();
+      var result = supplier.get();
       if (result instanceof Stream) {
         @SuppressWarnings("resource")
-        Stream<?> stream = (Stream<?>) result;
+        var stream = (Stream<?>) result;
         //noinspection ResultOfMethodCallIgnored
         stream.onClose(closeHandler);
       } else {

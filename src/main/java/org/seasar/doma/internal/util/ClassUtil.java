@@ -51,7 +51,7 @@ public final class ClassUtil {
 
   public static String getPackageName(String binaryName) {
     assertNotNull(binaryName);
-    int pos = binaryName.lastIndexOf('.');
+    var pos = binaryName.lastIndexOf('.');
     if (pos < 0) {
       return "";
     }
@@ -60,8 +60,8 @@ public final class ClassUtil {
 
   public static List<String> getEnclosingNames(String binaryName) {
     assertNotNull(binaryName);
-    String packageExcludedName = getLastPart(binaryName, '.');
-    List<String> names = Arrays.asList(packageExcludedName.split("\\$"));
+    var packageExcludedName = getLastPart(binaryName, '.');
+    var names = Arrays.asList(packageExcludedName.split("\\$"));
     if (names.size() <= 1) {
       return Collections.emptyList();
     }
@@ -70,12 +70,12 @@ public final class ClassUtil {
 
   public static String getSimpleName(String binaryName) {
     assertNotNull(binaryName);
-    String packageExcludedName = getLastPart(binaryName, '.');
+    var packageExcludedName = getLastPart(binaryName, '.');
     return getLastPart(packageExcludedName, '$');
   }
 
   private static String getLastPart(String text, char ch) {
-    int pos = text.lastIndexOf(ch);
+    var pos = text.lastIndexOf(ch);
     if (pos < 0) {
       return text;
     }

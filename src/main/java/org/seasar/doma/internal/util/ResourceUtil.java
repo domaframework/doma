@@ -12,11 +12,11 @@ public final class ResourceUtil {
 
   public static URL getResource(String path) {
     assertNotNull(path);
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    var loader = Thread.currentThread().getContextClassLoader();
     if (loader == null) {
       return null;
     }
-    URL url = loader.getResource(path);
+    var url = loader.getResource(path);
     if (url == null) {
       url = ResourceUtil.class.getResource("/" + path);
     }
@@ -25,7 +25,7 @@ public final class ResourceUtil {
 
   public static InputStream getResourceAsStream(String path) {
     assertNotNull(path);
-    URL url = getResource(path);
+    var url = getResource(path);
     try {
       return url != null ? url.openStream() : null;
     } catch (IOException e) {
@@ -36,7 +36,7 @@ public final class ResourceUtil {
   public static String getResourceAsString(String path) throws WrapException {
     assertNotNull(path);
     assertTrue(path.length() > 0);
-    InputStream inputStream = getResourceAsStream(path);
+    var inputStream = getResourceAsStream(path);
     if (inputStream == null) {
       return null;
     }

@@ -1,10 +1,13 @@
 package org.seasar.doma.internal.jdbc.command;
 
-import example.holder.PhoneNumber;
 import example.holder._PhoneNumber;
 import java.lang.reflect.Method;
 import junit.framework.TestCase;
-import org.seasar.doma.internal.jdbc.mock.*;
+import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockResultSet;
+import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
+import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -22,12 +25,12 @@ public class HolderSingleResultHandlerTest extends TestCase {
   }
 
   public void testHandle() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("01-2345-6789"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -36,20 +39,20 @@ public class HolderSingleResultHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    ScalarSingleResultHandler<String, PhoneNumber> handler =
+    var handler =
         new ScalarSingleResultHandler<>(() -> _PhoneNumber.getSingletonInternal().createScalar());
-    PhoneNumber result = handler.handle(resultSet, query, (__) -> {}).get();
+    var result = handler.handle(resultSet, query, (__) -> {}).get();
     assertEquals("01-2345-6789", result.getValue());
   }
 
   public void testHandle_NonUniqueResultException() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("phoneNumber"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("01-2345-6789"));
     resultSet.rows.add(new RowData("02-2345-6789"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -58,7 +61,7 @@ public class HolderSingleResultHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    ScalarSingleResultHandler<String, PhoneNumber> handler =
+    var handler =
         new ScalarSingleResultHandler<>(() -> _PhoneNumber.getSingletonInternal().createScalar());
     try {
       handler.handle(resultSet, query, (__) -> {});

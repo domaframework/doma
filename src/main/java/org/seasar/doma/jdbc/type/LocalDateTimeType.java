@@ -1,6 +1,11 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDateTime;
 
 /** A JDBC type for {@link Types#TIMESTAMP} and {@link LocalDateTime}. */
@@ -12,7 +17,7 @@ public class LocalDateTimeType extends AbstractJdbcType<LocalDateTime> {
 
   @Override
   public LocalDateTime doGetValue(ResultSet resultSet, int index) throws SQLException {
-    Timestamp timestamp = resultSet.getTimestamp(index);
+    var timestamp = resultSet.getTimestamp(index);
     return timestamp != null ? timestamp.toLocalDateTime() : null;
   }
 
@@ -25,7 +30,7 @@ public class LocalDateTimeType extends AbstractJdbcType<LocalDateTime> {
   @Override
   protected LocalDateTime doGetValue(CallableStatement callableStatement, int index)
       throws SQLException {
-    Timestamp timestamp = callableStatement.getTimestamp(index);
+    var timestamp = callableStatement.getTimestamp(index);
     return timestamp != null ? timestamp.toLocalDateTime() : null;
   }
 

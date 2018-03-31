@@ -12,12 +12,12 @@ public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
 
   @Override
   protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {
-    SqlFile file = sqlFileMap.get(path);
+    var file = sqlFileMap.get(path);
     if (file != null) {
       return file;
     }
     file = createSqlFile(path, dialect);
-    SqlFile current = sqlFileMap.putIfAbsent(path, file);
+    var current = sqlFileMap.putIfAbsent(path, file);
     return current != null ? current : file;
   }
 

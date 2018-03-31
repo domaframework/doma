@@ -41,17 +41,17 @@ public class CodeSpecs {
   }
 
   private CodeSpec newDescCodeSpec(TypeElement typeElement, Function<Name, String> convention) {
-    Name binaryName = ctx.getElements().getBinaryName(typeElement);
-    String descClassName = convention.apply(binaryName);
-    String typeParamsName = createTypeParamsName(typeElement);
+    var binaryName = ctx.getElements().getBinaryName(typeElement);
+    var descClassName = convention.apply(binaryName);
+    var typeParamsName = createTypeParamsName(typeElement);
     return new CodeSpec(descClassName, typeParamsName);
   }
 
   public CodeSpec newDaoImplCodeSpec(TypeElement daoElement, TypeElement parentDaoElement) {
     assertNotNull(daoElement);
-    String name = buildDaoName(daoElement);
-    String typeParamsName = createTypeParamsName(daoElement);
-    CodeSpec parent = newParentDaoImplCodeSpec(parentDaoElement);
+    var name = buildDaoName(daoElement);
+    var typeParamsName = createTypeParamsName(daoElement);
+    var parent = newParentDaoImplCodeSpec(parentDaoElement);
     return new CodeSpec(name, typeParamsName, parent);
   }
 
@@ -59,24 +59,24 @@ public class CodeSpecs {
     if (parentDaoElement == null) {
       return null;
     }
-    String name = buildDaoName(parentDaoElement);
-    String typeParamsName = createTypeParamsName(parentDaoElement);
+    var name = buildDaoName(parentDaoElement);
+    var typeParamsName = createTypeParamsName(parentDaoElement);
     return new CodeSpec(name, typeParamsName);
   }
 
   private String buildDaoName(TypeElement daoElement) {
     class DaoNameBuilder {
       String prefix() {
-        String daoPackage = ctx.getOptions().getDaoPackage();
+        var daoPackage = ctx.getOptions().getDaoPackage();
         if (daoPackage != null) {
           return daoPackage + ".";
         }
-        String packageName = ctx.getElements().getPackageName(daoElement);
-        String base = "";
+        var packageName = ctx.getElements().getPackageName(daoElement);
+        var base = "";
         if (packageName != null && packageName.length() > 0) {
           base = packageName + ".";
         }
-        String daoSubpackage = ctx.getOptions().getDaoSubpackage();
+        var daoSubpackage = ctx.getOptions().getDaoSubpackage();
         if (daoSubpackage != null) {
           return base + daoSubpackage + ".";
         }

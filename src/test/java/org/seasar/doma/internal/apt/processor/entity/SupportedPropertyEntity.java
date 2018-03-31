@@ -2,7 +2,13 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.Time;
+import java.sql.Timestamp;
 import org.seasar.doma.Entity;
 
 @Entity

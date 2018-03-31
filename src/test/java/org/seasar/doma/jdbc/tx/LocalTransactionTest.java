@@ -28,7 +28,7 @@ public class LocalTransactionTest extends TestCase {
   }
 
   public void testBeginImlicitDefaultTransactionIsolationLevel() throws Exception {
-    LocalTransaction transaction =
+    var transaction =
         dataSource.getLocalTransaction(jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
     transaction.begin();
     assertTrue(transaction.isActive());
@@ -56,7 +56,7 @@ public class LocalTransactionTest extends TestCase {
   }
 
   public void testBeginAndGetConnection_failedToSetAutoCommit() throws Exception {
-    final SQLException exception = new SQLException();
+    final var exception = new SQLException();
     MockConnection connection =
         new MockConnection() {
 
@@ -65,9 +65,8 @@ public class LocalTransactionTest extends TestCase {
             throw exception;
           }
         };
-    LocalTransactionDataSource dataSource =
-        new LocalTransactionDataSource(new MockDataSource(connection));
-    LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
+    var dataSource = new LocalTransactionDataSource(new MockDataSource(connection));
+    var transaction = dataSource.getLocalTransaction(jdbcLogger);
 
     try {
       transaction.begin();
@@ -80,7 +79,7 @@ public class LocalTransactionTest extends TestCase {
   }
 
   public void testBegin_failedToSetTransactionIsolation() throws Exception {
-    final SQLException exception = new SQLException();
+    final var exception = new SQLException();
     MockConnection connection =
         new MockConnection() {
 
@@ -89,9 +88,8 @@ public class LocalTransactionTest extends TestCase {
             throw exception;
           }
         };
-    LocalTransactionDataSource dataSource =
-        new LocalTransactionDataSource(new MockDataSource(connection));
-    LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
+    var dataSource = new LocalTransactionDataSource(new MockDataSource(connection));
+    var transaction = dataSource.getLocalTransaction(jdbcLogger);
 
     try {
       transaction.begin(TransactionIsolationLevel.READ_COMMITTED);

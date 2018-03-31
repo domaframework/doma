@@ -16,7 +16,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
 
   @Override
   protected byte[] doGetCopy() {
-    byte[] original = get();
+    var original = get();
     if (original == null) {
       return null;
     }

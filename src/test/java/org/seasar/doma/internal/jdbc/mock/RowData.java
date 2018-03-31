@@ -8,7 +8,7 @@ public class RowData {
   protected final List<Object> values = new ArrayList<Object>();
 
   public RowData(Object... values) {
-    for (Object object : values) {
+    for (var object : values) {
       this.values.add(object);
     }
   }

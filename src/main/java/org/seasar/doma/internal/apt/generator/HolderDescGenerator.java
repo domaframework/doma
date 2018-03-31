@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Formatter;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.holder.HolderMeta;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
@@ -80,7 +79,7 @@ public class HolderDescGenerator extends AbstractGenerator {
 
   private void printConstructors() {
     iprint("private %1$s() {%n", codeSpec.getSimpleName());
-    BasicCtType basicCtType = holderMeta.getBasicCtType();
+    var basicCtType = holderMeta.getBasicCtType();
     iprint("    super(%1$s);%n", wrapperSupplier(basicCtType));
     iprint("}%n");
     print("%n");

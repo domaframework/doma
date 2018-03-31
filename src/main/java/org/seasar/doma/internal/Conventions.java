@@ -3,7 +3,6 @@ package org.seasar.doma.internal;
 import static java.util.stream.Collectors.joining;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
 import org.seasar.doma.internal.util.ClassUtil;
 
 public class Conventions {
@@ -20,10 +19,10 @@ public class Conventions {
 
   protected static String toFullDescClassName(CharSequence originalBinaryName) {
     assertNotNull(originalBinaryName);
-    String binaryName = normalizeBinaryName(originalBinaryName.toString());
-    String packageName = ClassUtil.getPackageName(binaryName);
-    String simpleName = ClassUtil.getSimpleName(binaryName);
-    String base = "";
+    var binaryName = normalizeBinaryName(originalBinaryName.toString());
+    var packageName = ClassUtil.getPackageName(binaryName);
+    var simpleName = ClassUtil.getSimpleName(binaryName);
+    var base = "";
     if (packageName.length() > 0) {
       base = packageName + ".";
     }
@@ -32,10 +31,10 @@ public class Conventions {
 
   protected static String normalizeBinaryName(String binaryName) {
     assertNotNull(binaryName);
-    String packageName = ClassUtil.getPackageName(binaryName);
-    List<String> enclosingNames = ClassUtil.getEnclosingNames(binaryName);
-    String simpleName = ClassUtil.getSimpleName(binaryName);
-    String base = "";
+    var packageName = ClassUtil.getPackageName(binaryName);
+    var enclosingNames = ClassUtil.getEnclosingNames(binaryName);
+    var simpleName = ClassUtil.getSimpleName(binaryName);
+    var base = "";
     if (packageName.length() > 0) {
       base = packageName + ".";
     }

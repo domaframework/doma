@@ -2,7 +2,33 @@ package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 import org.seasar.doma.jdbc.entity.EntityDesc;
-import org.seasar.doma.jdbc.query.*;
+import org.seasar.doma.jdbc.query.ArrayCreateQuery;
+import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
+import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
+import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
+import org.seasar.doma.jdbc.query.AutoDeleteQuery;
+import org.seasar.doma.jdbc.query.AutoFunctionQuery;
+import org.seasar.doma.jdbc.query.AutoInsertQuery;
+import org.seasar.doma.jdbc.query.AutoProcedureQuery;
+import org.seasar.doma.jdbc.query.AutoUpdateQuery;
+import org.seasar.doma.jdbc.query.BlobCreateQuery;
+import org.seasar.doma.jdbc.query.ClobCreateQuery;
+import org.seasar.doma.jdbc.query.NClobCreateQuery;
+import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.SQLXMLCreateQuery;
+import org.seasar.doma.jdbc.query.SqlDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery;
+import org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery;
+import org.seasar.doma.jdbc.query.SqlFileDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlFileInsertQuery;
+import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
+import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.jdbc.query.SqlFileUpdateQuery;
+import org.seasar.doma.jdbc.query.SqlInsertQuery;
+import org.seasar.doma.jdbc.query.SqlProcessorQuery;
+import org.seasar.doma.jdbc.query.SqlSelectQuery;
+import org.seasar.doma.jdbc.query.SqlUpdateQuery;
 
 /** A factory for the {@link Query} implementation classes. */
 public interface QueryImplementors {

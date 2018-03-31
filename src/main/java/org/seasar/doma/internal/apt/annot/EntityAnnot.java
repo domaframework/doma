@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -47,7 +46,7 @@ public class EntityAnnot extends AbstractAnnot {
   }
 
   public TypeMirror getListenerValue() {
-    TypeMirror result = AnnotationValueUtil.toType(listener);
+    var result = AnnotationValueUtil.toType(listener);
     if (result == null) {
       throw new AptIllegalStateException(LISTENER);
     }
@@ -55,7 +54,7 @@ public class EntityAnnot extends AbstractAnnot {
   }
 
   public NamingType getNamingValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(naming);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(naming);
     if (enumConstant == null) {
       throw new AptIllegalStateException(NAMING);
     }
@@ -63,7 +62,7 @@ public class EntityAnnot extends AbstractAnnot {
   }
 
   public boolean getImmutableValue() {
-    Boolean result = AnnotationValueUtil.toBoolean(immutable);
+    var result = AnnotationValueUtil.toBoolean(immutable);
     if (result == null) {
       throw new AptIllegalStateException(IMMUTABLE);
     }

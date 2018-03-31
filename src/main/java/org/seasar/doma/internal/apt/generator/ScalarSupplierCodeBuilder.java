@@ -1,8 +1,19 @@
 package org.seasar.doma.internal.apt.generator;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.cttype.*;
-import org.seasar.doma.internal.jdbc.scalar.*;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 
 class ScalarSupplierCodeBuilder extends SimpleCtTypeVisitor<String, Boolean, RuntimeException> {
 
@@ -62,8 +73,8 @@ class ScalarSupplierCodeBuilder extends SimpleCtTypeVisitor<String, Boolean, Run
   }
 
   private static String holderDesc(HolderCtType ctType) {
-    int pos = ctType.getTypeName().indexOf('<');
-    String typeArgDecl = "";
+    var pos = ctType.getTypeName().indexOf('<');
+    var typeArgDecl = "";
     if (pos > -1) {
       typeArgDecl = ctType.getTypeName().substring(pos);
     }

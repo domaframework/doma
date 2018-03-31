@@ -6,17 +6,17 @@ import junit.framework.TestCase;
 public class GenericUtilTest extends TestCase {
 
   public void testFieldType() throws Exception {
-    Class<?> arg1 =
+    var arg1 =
         GenericsUtil.inferTypeArgument(
             Bbb1.class, (TypeVariable<?>) Aaa1.class.getField("t1").getGenericType());
     assertEquals(String.class, arg1);
 
-    Class<?> arg2 =
+    var arg2 =
         GenericsUtil.inferTypeArgument(
             Bbb1.class, (TypeVariable<?>) Aaa1.class.getField("t2").getGenericType());
     assertEquals(Integer.class, arg2);
 
-    Class<?> arg3 =
+    var arg3 =
         GenericsUtil.inferTypeArgument(
             Bbb1.class, (TypeVariable<?>) Aaa1.class.getField("t3").getGenericType());
     assertNull(arg3);
@@ -24,7 +24,7 @@ public class GenericUtilTest extends TestCase {
 
   public void testInterfaceReturnType() throws Exception {
     // type argument T1 is generic
-    Class<?> arg =
+    var arg =
         GenericsUtil.inferTypeArgument(
             Ccc2.class,
             (TypeVariable<?>) Aaa2.class.getMethod("m1", Object.class).getGenericReturnType());
@@ -47,7 +47,7 @@ public class GenericUtilTest extends TestCase {
 
   public void testClassReturnType() throws Exception {
     // type argument T1 is concrete
-    Class<?> arg =
+    var arg =
         GenericsUtil.inferTypeArgument(
             Ccc2.class,
             (TypeVariable<?>) Bbb2.class.getMethod("m1", Object.class).getGenericReturnType());

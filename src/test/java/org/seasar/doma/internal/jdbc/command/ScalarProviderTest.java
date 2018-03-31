@@ -3,10 +3,13 @@ package org.seasar.doma.internal.jdbc.command;
 import example.holder.PhoneNumber;
 import example.holder._PhoneNumber;
 import java.lang.reflect.Method;
-import java.util.Optional;
 import junit.framework.TestCase;
 import org.seasar.doma.FetchType;
-import org.seasar.doma.internal.jdbc.mock.*;
+import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockResultSet;
+import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
+import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -19,69 +22,68 @@ public class ScalarProviderTest extends TestCase {
   private final MockConfig runtimeConfig = new MockConfig();
 
   public void testBasic() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("hoge"));
     resultSet.next();
 
-    ScalarProvider<String, String> provider =
+    var provider =
         new ScalarProvider<>(
             () ->
                 new org.seasar.doma.internal.jdbc.scalar.BasicScalar<String>(
                     () -> new org.seasar.doma.wrapper.StringWrapper(), false),
             new MySelectQuery());
-    String result = provider.get(resultSet);
+    var result = provider.get(resultSet);
 
     assertEquals("hoge", result);
   }
 
   public void testOptionalBasic() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("hoge"));
     resultSet.next();
 
-    ScalarProvider<String, Optional<String>> provider =
+    var provider =
         new ScalarProvider<>(
             () ->
                 new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<String>(
                     () -> new org.seasar.doma.wrapper.StringWrapper()),
             new MySelectQuery());
-    Optional<String> result = provider.get(resultSet);
+    var result = provider.get(resultSet);
 
     assertEquals("hoge", result.get());
   }
 
   public void testHolder() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("hoge"));
     resultSet.next();
 
     HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber.getSingletonInternal();
 
-    ScalarProvider<String, PhoneNumber> provider =
-        new ScalarProvider<>(() -> holderDesc.createScalar(), new MySelectQuery());
-    PhoneNumber result = provider.get(resultSet);
+    var provider = new ScalarProvider<>(() -> holderDesc.createScalar(), new MySelectQuery());
+    var result = provider.get(resultSet);
 
     assertEquals("hoge", result.getValue());
   }
 
   public void testOptionalHolder() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("hoge"));
     resultSet.next();
 
     HolderDesc<String, PhoneNumber> holderDesc = _PhoneNumber.getSingletonInternal();
 
-    ScalarProvider<String, Optional<PhoneNumber>> provider =
+    var provider =
         new ScalarProvider<>(() -> holderDesc.createOptionalScalar(), new MySelectQuery());
-    Optional<PhoneNumber> result = provider.get(resultSet);
+    var result = provider.get(resultSet);
 
     assertEquals("hoge", result.get().getValue());
   }

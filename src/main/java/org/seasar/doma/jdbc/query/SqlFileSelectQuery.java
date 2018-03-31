@@ -6,7 +6,6 @@ import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlNode;
 
 public class SqlFileSelectQuery extends AbstractSelectQuery {
 
@@ -22,11 +21,11 @@ public class SqlFileSelectQuery extends AbstractSelectQuery {
 
   protected void prepareSql() {
     sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
-    SqlNode transformedSqlNode =
+    var transformedSqlNode =
         config.getDialect().transformSelectSqlNode(sqlFile.getSqlNode(), options);
     buildSql(
         (evaluator, expander) -> {
-          NodePreparedSqlBuilder sqlBuilder =
+          var sqlBuilder =
               new NodePreparedSqlBuilder(
                   config, SqlKind.SELECT, sqlFilePath, evaluator, sqlLogType, expander);
           return sqlBuilder.build(transformedSqlNode, this::comment);

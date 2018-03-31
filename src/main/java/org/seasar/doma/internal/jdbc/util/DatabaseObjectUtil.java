@@ -12,7 +12,7 @@ public final class DatabaseObjectUtil {
       String schemaName,
       String simpleName) {
     assertNotNull(quoteFunction, simpleName);
-    StringBuilder buf = new StringBuilder();
+    var buf = new StringBuilder();
     if (catalogName != null && !catalogName.isEmpty()) {
       buf.append(quoteFunction.apply(catalogName)).append(".");
     }

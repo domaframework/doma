@@ -4,17 +4,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
-import java.util.ListIterator;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
 public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
@@ -32,7 +27,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   public void prepare() {
     super.prepare();
     assertNotNull(method, entities, sqls);
-    int size = entities.size();
+    var size = entities.size();
     if (size == 0) {
       return;
     }
@@ -46,7 +41,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     prepareOptimisticLock();
     prepareSql();
     entities.set(0, currentEntity);
-    for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext(); ) {
+    for (var it = entities.listIterator(1); it.hasNext(); ) {
       currentEntity = it.next();
       preDelete();
       prepareSql();
@@ -56,8 +51,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   protected void preDelete() {
-    AutoBatchPreDeleteContext<ENTITY> context =
-        new AutoBatchPreDeleteContext<>(entityDesc, method, config);
+    var context = new AutoBatchPreDeleteContext<>(entityDesc, method, config);
     entityDesc.preDelete(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();
@@ -73,15 +67,15 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   protected void prepareSql() {
-    Naming naming = config.getNaming();
-    Dialect dialect = config.getDialect();
-    PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.BATCH_DELETE, sqlLogType);
+    var naming = config.getNaming();
+    var dialect = config.getDialect();
+    var builder = new PreparedSqlBuilder(config, SqlKind.BATCH_DELETE, sqlLogType);
     builder.appendSql("delete from ");
     builder.appendSql(entityDesc.getQualifiedTableName(naming::apply, dialect::applyQuote));
     if (idPropertyDescs.size() > 0) {
       builder.appendSql(" where ");
-      for (EntityPropertyDesc<ENTITY, ?> propertyDesc : idPropertyDescs) {
-        Property<ENTITY, ?> property = propertyDesc.createProperty();
+      for (var propertyDesc : idPropertyDescs) {
+        var property = propertyDesc.createProperty();
         property.load(currentEntity);
         builder.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
         builder.appendSql(" = ");
@@ -102,13 +96,13 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
       builder.appendSql(" = ");
       builder.appendParameter(property.asInParameter());
     }
-    PreparedSql sql = builder.build(this::comment);
+    var sql = builder.build(this::comment);
     sqls.add(sql);
   }
 
   @Override
   public void complete() {
-    for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext(); ) {
+    for (var it = entities.listIterator(); it.hasNext(); ) {
       currentEntity = it.next();
       postDelete();
       it.set(currentEntity);
@@ -116,8 +110,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   protected void postDelete() {
-    AutoBatchPostDeleteContext<ENTITY> context =
-        new AutoBatchPostDeleteContext<>(entityDesc, method, config);
+    var context = new AutoBatchPostDeleteContext<>(entityDesc, method, config);
     entityDesc.postDelete(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();

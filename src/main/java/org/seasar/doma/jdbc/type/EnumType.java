@@ -1,6 +1,10 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
@@ -31,7 +35,7 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
 
   @Override
   protected E doGetValue(ResultSet resultSet, int index) throws SQLException {
-    String value = resultSet.getString(index);
+    var value = resultSet.getString(index);
     if (value == null) {
       return null;
     }
@@ -50,7 +54,7 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
 
   @Override
   protected E doGetValue(CallableStatement callableStatement, int index) throws SQLException {
-    String value = callableStatement.getString(index);
+    var value = callableStatement.getString(index);
     if (value == null) {
       return null;
     }

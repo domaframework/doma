@@ -1,11 +1,13 @@
 package org.seasar.doma.internal.jdbc.command;
 
-import example.holder.PhoneNumber;
 import example.holder._PhoneNumber;
 import java.lang.reflect.Method;
-import java.util.List;
 import junit.framework.TestCase;
-import org.seasar.doma.internal.jdbc.mock.*;
+import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockResultSet;
+import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
+import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
@@ -22,13 +24,13 @@ public class HolderResultListHandlerTest extends TestCase {
   }
 
   public void testHandle() throws Exception {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    var metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
-    MockResultSet resultSet = new MockResultSet(metaData);
+    var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("01-2345-6789"));
     resultSet.rows.add(new RowData("12-3456-7890"));
 
-    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    var query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
@@ -37,9 +39,9 @@ public class HolderResultListHandlerTest extends TestCase {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    ScalarResultListHandler<String, PhoneNumber> handler =
+    var handler =
         new ScalarResultListHandler<>(() -> _PhoneNumber.getSingletonInternal().createScalar());
-    List<PhoneNumber> results = handler.handle(resultSet, query, (__) -> {}).get();
+    var results = handler.handle(resultSet, query, (__) -> {}).get();
     assertEquals(2, results.size());
     assertEquals("01-2345-6789", results.get(0).getValue());
     assertEquals("12-3456-7890", results.get(1).getValue());

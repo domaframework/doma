@@ -5,8 +5,8 @@ import junit.framework.TestCase;
 public class UniqueConstraintExceptionTest extends TestCase {
 
   public void test() throws Exception {
-    Exception cause = new Exception();
-    UniqueConstraintException e =
+    var cause = new Exception();
+    var e =
         new UniqueConstraintException(
             SqlLogType.FORMATTED, SqlKind.INSERT, "aaa", "bbb", "ccc", cause);
     System.out.println(e.getMessage());

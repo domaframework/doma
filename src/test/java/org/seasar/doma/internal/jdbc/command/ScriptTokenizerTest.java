@@ -1,6 +1,16 @@
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.*;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.BLOCK_DELIMITER;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.END_OF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.END_OF_FILE;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.END_OF_LINE;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.LINE_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.QUOTE;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.START_OF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.STATEMENT_DELIMITER;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.WORD;
 
 import junit.framework.TestCase;
 

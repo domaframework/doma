@@ -54,7 +54,7 @@ public class HolderAnnot extends AbstractAnnot {
   }
 
   public TypeMirror getValueTypeValue() {
-    TypeMirror value = AnnotationValueUtil.toType(valueType);
+    var value = AnnotationValueUtil.toType(valueType);
     if (value == null) {
       throw new AptIllegalStateException(VALUE_TYPE);
     }
@@ -62,7 +62,7 @@ public class HolderAnnot extends AbstractAnnot {
   }
 
   public String getFactoryMethodValue() {
-    String value = AnnotationValueUtil.toString(factoryMethod);
+    var value = AnnotationValueUtil.toString(factoryMethod);
     if (value == null) {
       throw new AptIllegalStateException(FACTORY_METHOD);
     }
@@ -70,7 +70,7 @@ public class HolderAnnot extends AbstractAnnot {
   }
 
   public String getAccessorMethodValue() {
-    String value = AnnotationValueUtil.toString(accessorMethod);
+    var value = AnnotationValueUtil.toString(accessorMethod);
     if (value == null) {
       throw new AptIllegalStateException(ACCESSOR_METHOD);
     }
@@ -78,7 +78,7 @@ public class HolderAnnot extends AbstractAnnot {
   }
 
   public boolean getAcceptNullValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(acceptNull);
+    var value = AnnotationValueUtil.toBoolean(acceptNull);
     if (value == null) {
       throw new AptIllegalStateException(ACCEPT_NULL);
     }

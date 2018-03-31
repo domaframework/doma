@@ -6,7 +6,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 public class DeleteBuilderTest extends TestCase {
 
   public void test() throws Exception {
-    DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
+    var builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").param(String.class, "aaa");
@@ -16,14 +16,14 @@ public class DeleteBuilderTest extends TestCase {
   }
 
   public void testGetSql() throws Exception {
-    DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
+    var builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").param(String.class, "aaa");
     builder.sql("and");
     builder.sql("salary = ").param(int.class, 10);
 
-    String sql =
+    var sql =
         String.format("delete from Emp%n" + "where%n" + "name = ?%n" + "and%n" + "salary = ?");
     assertEquals(sql, builder.getSql().getRawSql());
 
@@ -31,14 +31,14 @@ public class DeleteBuilderTest extends TestCase {
   }
 
   public void testLiterall() throws Exception {
-    DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
+    var builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name = ").literal(String.class, "aaa");
     builder.sql("and");
     builder.sql("salary = ").literal(int.class, 10);
 
-    String sql =
+    var sql =
         String.format("delete from Emp%n" + "where%n" + "name = 'aaa'%n" + "and%n" + "salary = 10");
     assertEquals(sql, builder.getSql().getRawSql());
 

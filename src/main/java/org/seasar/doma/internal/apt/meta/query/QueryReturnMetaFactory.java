@@ -4,10 +4,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.message.Message;
 
 public class QueryReturnMetaFactory {
@@ -23,14 +26,14 @@ public class QueryReturnMetaFactory {
   }
 
   public QueryReturnMeta createQueryReturnMeta() {
-    CtType ctType = createCtType();
+    var ctType = createCtType();
     return new QueryReturnMeta(ctx, methodElement, ctType);
   }
 
   private CtType createCtType() {
-    TypeMirror returnType = methodElement.getReturnType();
-    CtTypes ctTypes = ctx.getCtTypes();
-    CtType ctType =
+    var returnType = methodElement.getReturnType();
+    var ctTypes = ctx.getCtTypes();
+    var ctType =
         ctTypes.toCtType(
             returnType,
             List.of(

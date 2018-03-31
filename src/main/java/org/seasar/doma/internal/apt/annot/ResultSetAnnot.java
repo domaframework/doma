@@ -26,7 +26,7 @@ public class ResultSetAnnot extends AbstractAnnot {
   }
 
   public boolean getEnsureResultMappingValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
+    var value = AnnotationValueUtil.toBoolean(ensureResultMapping);
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }

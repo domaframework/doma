@@ -6,7 +6,7 @@ import org.seasar.doma.jdbc.entity.NamingType;
 public class NamingTest extends TestCase {
 
   public void testNONE() throws Exception {
-    Naming naming = Naming.NONE;
+    var naming = Naming.NONE;
 
     assertEquals("hogeFoo", naming.apply(null, "hogeFoo"));
     assertEquals("hogeFoo", naming.revert(null, "hogeFoo"));
@@ -16,7 +16,7 @@ public class NamingTest extends TestCase {
   }
 
   public void testSNAKE_UPPER_CASE() throws Exception {
-    Naming naming = Naming.SNAKE_UPPER_CASE;
+    var naming = Naming.SNAKE_UPPER_CASE;
 
     assertEquals("HOGE_FOO", naming.apply(null, "hogeFoo"));
     assertEquals("hogeFoo", naming.revert(null, "HOGE_FOO"));

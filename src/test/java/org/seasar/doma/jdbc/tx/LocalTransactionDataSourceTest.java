@@ -9,15 +9,15 @@ import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 public class LocalTransactionDataSourceTest extends TestCase {
 
   public void testGetConnection() throws Exception {
-    UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
-    LocalTransactionDataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
+    var jdbcLogger = new UtilLoggingJdbcLogger();
+    var dataSource = new LocalTransactionDataSource(new MockDataSource());
     dataSource.getLocalTransaction(jdbcLogger).begin();
     dataSource.getConnection();
     dataSource.getLocalTransaction(jdbcLogger).commit();
   }
 
   public void testGetConnection_notYetBegun() throws Exception {
-    LocalTransactionDataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
+    var dataSource = new LocalTransactionDataSource(new MockDataSource());
     try {
       dataSource.getConnection();
       fail();

@@ -25,7 +25,7 @@ public class OptionalLongScalar implements Scalar<Long, OptionalLong> {
 
   @Override
   public OptionalLong get() {
-    Long value = wrapper.get();
+    var value = wrapper.get();
     return value != null ? OptionalLong.of(value) : OptionalLong.empty();
   }
 

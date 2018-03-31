@@ -8,7 +8,16 @@ import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.*;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.NoType;
+import javax.lang.model.type.NullType;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
+import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleElementVisitor8;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.TypeKindVisitor8;
@@ -27,7 +36,7 @@ public class Types implements javax.lang.model.util.Types {
 
   public TypeElement toTypeElement(TypeMirror type) {
     assertNotNull(type);
-    Element element = asElement(type);
+    var element = asElement(type);
     if (element == null) {
       return null;
     }
@@ -70,7 +79,7 @@ public class Types implements javax.lang.model.util.Types {
 
   public boolean isAssignable(TypeMirror lhs, Class<?> rhs) {
     assertNotNull(lhs, rhs);
-    TypeElement typeElement = ctx.getElements().getTypeElement(rhs);
+    var typeElement = ctx.getElements().getTypeElement(rhs);
     if (typeElement == null) {
       return false;
     }
@@ -94,8 +103,8 @@ public class Types implements javax.lang.model.util.Types {
     if (rhs.getKind() == TypeKind.VOID) {
       return lhs.getKind() == TypeKind.VOID;
     }
-    TypeMirror t1 = erasure(lhs);
-    TypeMirror t2 = erasure(rhs);
+    var t1 = erasure(lhs);
+    var t2 = erasure(rhs);
     if (isSameType(t1, t2) || t1.equals(t2)) {
       return true;
     }
@@ -117,7 +126,7 @@ public class Types implements javax.lang.model.util.Types {
     if (type.getKind() == TypeKind.VOID) {
       return clazz == void.class;
     }
-    TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
+    var typeElement = ctx.getElements().getTypeElement(clazz);
     if (typeElement == null) {
       return false;
     }
@@ -141,8 +150,8 @@ public class Types implements javax.lang.model.util.Types {
     if (t2.getKind() == TypeKind.VOID) {
       return t1.getKind() == TypeKind.VOID;
     }
-    TypeMirror erasureType1 = erasure(t1);
-    TypeMirror erasureType2 = erasure(t2);
+    var erasureType1 = erasure(t1);
+    var erasureType2 = erasure(t2);
     return typeUtils.isSameType(erasureType1, erasureType2) || erasureType1.equals(erasureType2);
   }
 
@@ -153,7 +162,7 @@ public class Types implements javax.lang.model.util.Types {
 
   public String getTypeName(TypeMirror type) {
     assertNotNull(type);
-    StringBuilder p = new StringBuilder();
+    var p = new StringBuilder();
     type.accept(
         new TypeKindVisitor8<Void, StringBuilder>() {
 
@@ -178,7 +187,7 @@ public class Types implements javax.lang.model.util.Types {
 
           @Override
           public Void visitDeclared(DeclaredType t, StringBuilder p) {
-            TypeElement e = toTypeElement(t);
+            var e = toTypeElement(t);
             if (e != null) {
               p.append(e.getQualifiedName());
             }
@@ -203,12 +212,12 @@ public class Types implements javax.lang.model.util.Types {
           @Override
           public Void visitWildcard(WildcardType t, StringBuilder p) {
             p.append("?");
-            TypeMirror extendsBound = t.getExtendsBound();
+            var extendsBound = t.getExtendsBound();
             if (extendsBound != null) {
               p.append(" extends ");
               extendsBound.accept(this, p);
             }
-            TypeMirror superBound = t.getSuperBound();
+            var superBound = t.getSuperBound();
             if (superBound != null) {
               p.append(" super ");
               superBound.accept(this, p);
@@ -229,7 +238,7 @@ public class Types implements javax.lang.model.util.Types {
 
   public String getTypeParameterName(TypeMirror type) {
     assertNotNull(type);
-    StringBuilder p = new StringBuilder();
+    var p = new StringBuilder();
     type.accept(
         new TypeKindVisitor8<Void, StringBuilder>() {
 
@@ -244,7 +253,7 @@ public class Types implements javax.lang.model.util.Types {
             if (p.length() == 0) {
               p.append(t);
             } else {
-              TypeElement e = boxedClass(t);
+              var e = boxedClass(t);
               p.append(e.getSimpleName());
             }
             return null;
@@ -259,7 +268,7 @@ public class Types implements javax.lang.model.util.Types {
 
           @Override
           public Void visitDeclared(DeclaredType t, StringBuilder p) {
-            TypeElement e = toTypeElement(t);
+            var e = toTypeElement(t);
             if (e != null) {
               p.append(e.getQualifiedName());
             }
@@ -278,13 +287,13 @@ public class Types implements javax.lang.model.util.Types {
           @Override
           public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
             p.append(t);
-            TypeMirror upperBound = t.getUpperBound();
-            String upperBoundName = ctx.getTypes().getTypeName(upperBound);
+            var upperBound = t.getUpperBound();
+            var upperBoundName = ctx.getTypes().getTypeName(upperBound);
             if (!Object.class.getName().equals(upperBoundName)) {
               p.append(" extends ");
               upperBound.accept(this, p);
             } else {
-              TypeMirror lowerBound = t.getLowerBound();
+              var lowerBound = t.getLowerBound();
               if (lowerBound.getKind() != TypeKind.NULL) {
                 p.append(" super ");
                 lowerBound.accept(this, p);
@@ -295,12 +304,12 @@ public class Types implements javax.lang.model.util.Types {
 
           @Override
           public Void visitWildcard(WildcardType t, StringBuilder p) {
-            TypeMirror extendsBound = t.getExtendsBound();
+            var extendsBound = t.getExtendsBound();
             if (extendsBound != null) {
               p.append("? extends ");
               extendsBound.accept(this, p);
             }
-            TypeMirror superBound = t.getSuperBound();
+            var superBound = t.getSuperBound();
             if (superBound != null) {
               p.append("? super ");
               superBound.accept(this, p);
@@ -366,7 +375,7 @@ public class Types implements javax.lang.model.util.Types {
     if (clazz == double.class) {
       return getPrimitiveType(TypeKind.DOUBLE);
     }
-    TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
+    var typeElement = ctx.getElements().getTypeElement(clazz);
     if (typeElement == null) {
       throw new AptIllegalStateException(clazz.getName());
     }
@@ -388,7 +397,7 @@ public class Types implements javax.lang.model.util.Types {
           if (isSameType(t, superclass)) {
             return t;
           }
-          TypeMirror candidate = getSupertype(t, superclass);
+          var candidate = getSupertype(t, superclass);
           if (candidate != null) {
             return candidate;
           }
@@ -477,11 +486,11 @@ public class Types implements javax.lang.model.util.Types {
       return;
     }
     for (TypeMirror supertype : directSupertypes(type)) {
-      TypeElement typeElement = toTypeElement(supertype);
+      var typeElement = toTypeElement(supertype);
       if (typeElement == null) {
         continue;
       }
-      String key = ctx.getElements().getBinaryName(typeElement).toString();
+      var key = ctx.getElements().getBinaryName(typeElement).toString();
       map.put(key, supertype);
       gatherSupertypes(supertype, map);
     }

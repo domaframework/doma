@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.ListIterator;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.SqlContext;
@@ -32,7 +31,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
   @Override
   public void prepare() {
     super.prepare();
-    int size = elements.size();
+    var size = elements.size();
     if (size == 0) {
       return;
     }
@@ -47,7 +46,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     prepareTargetPropertyDescs();
     prepareSql();
     elements.set(0, currentEntity);
-    for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext(); ) {
+    for (var it = elements.listIterator(1); it.hasNext(); ) {
       currentEntity = it.next();
       preUpdate();
       prepareSql();
@@ -98,7 +97,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
   @Override
   public void complete() {
     if (entityHandler != null) {
-      for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext(); ) {
+      for (var it = elements.listIterator(); it.hasNext(); ) {
         currentEntity = it.next();
         entityHandler.postUpdate();
         it.set(currentEntity);
@@ -151,8 +150,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
 
     protected void preUpdate() {
-      SqlFileBatchPreUpdateContext<ELEMENT> context =
-          new SqlFileBatchPreUpdateContext<>(entityDesc, method, config);
+      var context = new SqlFileBatchPreUpdateContext<>(entityDesc, method, config);
       entityDesc.preUpdate(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();
@@ -164,8 +162,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
 
     protected void postUpdate() {
-      SqlFileBatchPostUpdateContext<ELEMENT> context =
-          new SqlFileBatchPostUpdateContext<>(entityDesc, method, config);
+      var context = new SqlFileBatchPostUpdateContext<>(entityDesc, method, config);
       entityDesc.postUpdate(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();
@@ -183,8 +180,8 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected void incrementVersions() {
       if (versionPropertyDesc != null && !versionIgnored) {
-        for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext(); ) {
-          ELEMENT newEntity = versionPropertyDesc.increment(entityDesc, it.next());
+        for (var it = elements.listIterator(); it.hasNext(); ) {
+          var newEntity = versionPropertyDesc.increment(entityDesc, it.next());
           it.set(newEntity);
         }
       }

@@ -14,8 +14,8 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
 
   @Override
   public SqlNode transform(SqlNode sqlNode) {
-    AnonymousNode result = new AnonymousNode();
-    for (SqlNode child : sqlNode.getChildren()) {
+    var result = new AnonymousNode();
+    for (var child : sqlNode.getChildren()) {
       result.appendNode(child.accept(this, null));
     }
     return result;
@@ -31,11 +31,11 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
     }
     processed = true;
 
-    OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
+    var originalOrderBy = node.getOrderByClauseNode();
     OrderByClauseNode orderBy;
     if (originalOrderBy != null) {
       orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
-      for (SqlNode child : originalOrderBy.getChildren()) {
+      for (var child : originalOrderBy.getChildren()) {
         orderBy.appendNode(child);
       }
     } else {
@@ -43,7 +43,7 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
     }
     orderBy.appendNode(new FragmentNode(" fetch first " + limit + " rows only"));
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(node.getSelectClauseNode());
     result.setFromClauseNode(node.getFromClauseNode());
     result.setWhereClauseNode(node.getWhereClauseNode());

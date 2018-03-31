@@ -40,10 +40,10 @@ public class SqlProcessorQuery extends AbstractQuery {
 
   protected void prepareSql() {
     sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
-    ExpressionEvaluator evaluator =
+    var evaluator =
         new ExpressionEvaluator(
             parameters, config.getDialect().getExpressionFunctions(), config.getClassHelper());
-    NodePreparedSqlBuilder sqlBuilder =
+    var sqlBuilder =
         new NodePreparedSqlBuilder(
             config, SqlKind.SQL_PROCESSOR, sqlFilePath, evaluator, SqlLogType.FORMATTED);
     sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);

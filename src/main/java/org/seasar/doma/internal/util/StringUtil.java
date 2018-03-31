@@ -27,14 +27,14 @@ public final class StringUtil {
     if (isNullOrEmpty(text)) {
       return text;
     }
-    String[] array = text.split("_");
+    var array = text.split("_");
     if (array.length == 0) {
       return "";
     }
-    StringBuilder result = new StringBuilder();
+    var result = new StringBuilder();
     result.append(array[0].toLowerCase());
-    for (int i = 1; i < array.length; i++) {
-      String s = capitalize(array[i].toLowerCase());
+    for (var i = 1; i < array.length; i++) {
+      var s = capitalize(array[i].toLowerCase());
       result.append(s);
     }
     return result.toString();
@@ -50,14 +50,14 @@ public final class StringUtil {
     }
     Function<Character, Boolean> isNotUpperCase =
         c -> Character.isLowerCase(c) || Character.isDigit(c);
-    StringBuilder result = new StringBuilder();
-    CharBuffer buf = CharBuffer.wrap(text);
+    var result = new StringBuilder();
+    var buf = CharBuffer.wrap(text);
     while (buf.hasRemaining()) {
-      char c = buf.get();
+      var c = buf.get();
       result.append(Character.toLowerCase(c));
       buf.mark();
       if (buf.hasRemaining()) {
-        char c2 = buf.get();
+        var c2 = buf.get();
         if (isNotUpperCase.apply(c) && Character.isUpperCase(c2)) {
           result.append("_");
         }
@@ -77,7 +77,7 @@ public final class StringUtil {
     if (isNullOrEmpty(text)) {
       return false;
     }
-    for (char ch : text.toCharArray()) {
+    for (var ch : text.toCharArray()) {
       if (!Character.isWhitespace(ch)) {
         return false;
       }
@@ -89,9 +89,9 @@ public final class StringUtil {
     if (isNullOrEmpty(text)) {
       return text;
     }
-    char[] chars = text.toCharArray();
-    int start = 0;
-    int end = chars.length;
+    var chars = text.toCharArray();
+    var start = 0;
+    var end = chars.length;
 
     while ((start < end) && (Character.isWhitespace(chars[start]))) {
       start++;

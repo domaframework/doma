@@ -54,10 +54,10 @@ class DiagnosticUtils {
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics, final String className) {
     assertNotNull("className", className);
-    final String name = className.replace('.', '/') + ".java";
+    final var name = className.replace('.', '/') + ".java";
     final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
-    for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
-      final JavaFileObject source = diagnositc.getSource();
+    for (final var diagnositc : diagnostics) {
+      final var source = diagnositc.getSource();
       if (source != null && source.toUri().toString().endsWith(name)) {
         result.add(diagnositc);
       }
@@ -78,7 +78,7 @@ class DiagnosticUtils {
       final javax.tools.Diagnostic.Kind kind) {
     assertNotNull("kind", kind);
     final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
-    for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
+    for (final var diagnositc : diagnostics) {
       if (diagnositc.getKind().equals(kind)) {
         result.add(diagnositc);
       }
@@ -119,10 +119,10 @@ class DiagnosticUtils {
       final javax.tools.Diagnostic.Kind kind) {
     assertNotNull("className", className);
     assertNotNull("kind", kind);
-    final String name = className.replace('.', '/') + ".java";
+    final var name = className.replace('.', '/') + ".java";
     final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
-    for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
-      final JavaFileObject source = diagnositc.getSource();
+    for (final var diagnositc : diagnostics) {
+      final var source = diagnositc.getSource();
       if (source != null
           && source.toUri().toString().endsWith(name)
           && diagnositc.getKind().equals(kind)) {

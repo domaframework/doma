@@ -14,13 +14,13 @@ public class MysqlCountCalculatingTransformer extends StandardCountCalculatingTr
     }
     processed = true;
 
-    SelectClauseNode select = new SelectClauseNode("select");
+    var select = new SelectClauseNode("select");
     select.appendNode(new FragmentNode(" sql_calc_found_rows"));
-    for (SqlNode child : node.getSelectClauseNode().getChildren()) {
+    for (var child : node.getSelectClauseNode().getChildren()) {
       select.appendNode(child);
     }
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(select);
     result.setFromClauseNode(node.getFromClauseNode());
     result.setWhereClauseNode(node.getWhereClauseNode());

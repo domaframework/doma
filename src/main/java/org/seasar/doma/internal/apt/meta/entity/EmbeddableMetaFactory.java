@@ -2,12 +2,26 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.*;
-import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.ElementFilter;
-import org.seasar.doma.*;
+import org.seasar.doma.Embeddable;
+import org.seasar.doma.EntityField;
+import org.seasar.doma.GeneratedValue;
+import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
+import org.seasar.doma.Transient;
+import org.seasar.doma.Version;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -40,8 +54,8 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
   @Override
   public EmbeddableMeta createTypeElementMeta() {
-    EmbeddableMeta embeddableMeta = new EmbeddableMeta(embeddableAnnot, embeddableElement);
-    Strategy strategy = createStrategy(embeddableMeta);
+    var embeddableMeta = new EmbeddableMeta(embeddableAnnot, embeddableElement);
+    var strategy = createStrategy(embeddableMeta);
     strategy.doClass(embeddableMeta);
     strategy.doFields(embeddableMeta);
     strategy.doConstructor(embeddableMeta);
@@ -49,12 +63,11 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
   }
 
   private Strategy createStrategy(EmbeddableMeta embeddableMeta) {
-    ValueAnnot valueAnnot = ctx.getAnnots().newValueAnnot(embeddableElement);
+    var valueAnnot = ctx.getAnnots().newValueAnnot(embeddableElement);
     if (valueAnnot != null) {
       return new ValueStrategy(valueAnnot);
     }
-    AllArgsConstructorAnnot allArgsConstructorAnnot =
-        ctx.getAnnots().newAllArgsConstructorAnnot(embeddableElement);
+    var allArgsConstructorAnnot = ctx.getAnnots().newAllArgsConstructorAnnot(embeddableElement);
     if (allArgsConstructorAnnot != null) {
       return new AllArgsConstructorStrategy(allArgsConstructorAnnot);
     }
@@ -79,7 +92,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     public void validateClass(EmbeddableMeta embeddableMeta) {
       if (embeddableElement.getKind() != ElementKind.CLASS) {
-        EmbeddableAnnot embeddableAnnot = embeddableMeta.getEmbeddableAnnot();
+        var embeddableAnnot = embeddableMeta.getEmbeddableAnnot();
         throw new AptException(
             Message.DOMA4283, embeddableElement, embeddableAnnot.getAnnotationMirror());
       }
@@ -90,22 +103,22 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
     }
 
     private void validateEnclosingElement(Element element) {
-      TypeElement typeElement = ctx.getElements().toTypeElement(element);
+      var typeElement = ctx.getElements().toTypeElement(element);
       if (typeElement == null) {
         return;
       }
-      String simpleName = typeElement.getSimpleName().toString();
+      var simpleName = typeElement.getSimpleName().toString();
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
           || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
         throw new AptException(
             Message.DOMA4417, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
-      NestingKind nestingKind = typeElement.getNestingKind();
+      var nestingKind = typeElement.getNestingKind();
       if (nestingKind == NestingKind.TOP_LEVEL) {
         //noinspection UnnecessaryReturnStatement
         return;
       } else if (nestingKind == NestingKind.MEMBER) {
-        Set<Modifier> modifiers = typeElement.getModifiers();
+        var modifiers = typeElement.getModifiers();
         if (modifiers.containsAll(Arrays.asList(Modifier.STATIC, Modifier.PUBLIC))) {
           validateEnclosingElement(typeElement.getEnclosingElement());
         } else {
@@ -120,7 +133,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     @Override
     public void doFields(EmbeddableMeta embeddableMeta) {
-      for (VariableElement fieldElement : getFieldElements(embeddableElement)) {
+      for (var fieldElement : getFieldElements(embeddableElement)) {
         try {
           if (fieldElement.getAnnotation(Transient.class) != null) {
             //noinspection UnnecessaryContinue
@@ -149,9 +162,8 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
     private void doEmbeddablePropertyMeta(
         VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
       validateFieldAnnotation(fieldElement, embeddableMeta);
-      EmbeddablePropertyMetaFactory propertyMetaFactory =
-          new EmbeddablePropertyMetaFactory(ctx, fieldElement);
-      EmbeddablePropertyMeta propertyMeta = propertyMetaFactory.createEmbeddablePropertyMeta();
+      var propertyMetaFactory = new EmbeddablePropertyMetaFactory(ctx, fieldElement);
+      var propertyMeta = propertyMetaFactory.createEmbeddablePropertyMeta();
       embeddableMeta.addEmbeddablePropertyMeta(propertyMeta);
     }
 
@@ -164,8 +176,8 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
         VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
       TypeElement foundAnnotationTypeElement = null;
       for (AnnotationMirror annotation : fieldElement.getAnnotationMirrors()) {
-        DeclaredType declaredType = annotation.getAnnotationType();
-        TypeElement typeElement = ctx.getTypes().toTypeElement(declaredType);
+        var declaredType = annotation.getAnnotationType();
+        var typeElement = ctx.getTypes().toTypeElement(declaredType);
         if (typeElement.getAnnotation(EntityField.class) != null) {
           if (foundAnnotationTypeElement != null) {
             throw new AptException(
@@ -185,8 +197,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (embeddableMeta.isAbstract()) {
         return;
       }
-      EmbeddableConstructorMeta constructorMeta =
-          getConstructorMeta(embeddableElement, embeddableMeta);
+      var constructorMeta = getConstructorMeta(embeddableElement, embeddableMeta);
       if (constructorMeta == null) {
         throw new AptException(Message.DOMA4293, embeddableElement);
       }
@@ -199,21 +210,21 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
     private EmbeddableConstructorMeta getConstructorMeta(
         TypeElement embeddableElement, EmbeddableMeta embeddableMeta) {
       Map<String, EmbeddablePropertyMeta> propertyMetaMap = new HashMap<>();
-      for (EmbeddablePropertyMeta propertyMeta : embeddableMeta.getEmbeddablePropertyMetas()) {
+      for (var propertyMeta : embeddableMeta.getEmbeddablePropertyMetas()) {
         propertyMetaMap.put(propertyMeta.getName(), propertyMeta);
       }
       outer:
-      for (ExecutableElement constructor :
+      for (var constructor :
           ElementFilter.constructorsIn(embeddableElement.getEnclosedElements())) {
         List<EmbeddablePropertyMeta> propertyMetaList = new ArrayList<>();
         for (VariableElement param : constructor.getParameters()) {
-          String name = ctx.getElements().getParameterName(param);
-          TypeMirror paramType = param.asType();
-          EmbeddablePropertyMeta propertyMeta = propertyMetaMap.get(name);
+          var name = ctx.getElements().getParameterName(param);
+          var paramType = param.asType();
+          var propertyMeta = propertyMetaMap.get(name);
           if (propertyMeta == null) {
             continue outer;
           }
-          TypeMirror propertyType = propertyMeta.getType();
+          var propertyType = propertyMeta.getType();
           if (!ctx.getTypes().isSameType(paramType, propertyType)) {
             continue outer;
           }

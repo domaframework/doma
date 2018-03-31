@@ -1,7 +1,6 @@
 package org.seasar.doma.jdbc.entity;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -91,7 +90,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
     this.entityClass = entityClass;
     this.scalarSupplier = scalarSupplier;
     this.name = name;
-    int pos = name.lastIndexOf('.');
+    var pos = name.lastIndexOf('.');
     this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
     this.columnName = columnName;
     this.namingType = namingType;
@@ -108,9 +107,9 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
 
   @Override
   public void copy(ENTITY destEntity, ENTITY srcEntity) {
-    Property<ENTITY, BASIC> dest = createProperty();
+    var dest = createProperty();
     dest.load(destEntity);
-    Property<ENTITY, BASIC> src = createProperty();
+    var src = createProperty();
     src.load(srcEntity);
     dest.getWrapper().set(src.getWrapper().getCopy());
     dest.save(destEntity);
@@ -129,7 +128,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
   public String getColumnName(
       BiFunction<NamingType, String, String> namingFunction,
       Function<String, String> quoteFunction) {
-    String columnName = this.columnName;
+    var columnName = this.columnName;
     if (columnName.isEmpty()) {
       columnName = namingFunction.apply(namingType, simpleName);
     }
@@ -177,13 +176,13 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
       WrapperVisitor<Boolean, VALUE, Void, RuntimeException> visitor,
       VALUE value) {
     if (entityDesc.isImmutable()) {
-      List<EntityPropertyDesc<ENTITY, ?>> propertyDescs = entityDesc.getEntityPropertyDescs();
+      var propertyDescs = entityDesc.getEntityPropertyDescs();
       Map<String, Property<ENTITY, ?>> args = new HashMap<>(propertyDescs.size());
-      for (EntityPropertyDesc<ENTITY, ?> propertyDesc : propertyDescs) {
-        Property<ENTITY, ?> property = propertyDesc.createProperty();
+      for (var propertyDesc : propertyDescs) {
+        var property = propertyDesc.createProperty();
         property.load(entity);
         if (propertyDesc == this) {
-          Boolean modified = property.getWrapper().accept(visitor, value, null);
+          var modified = property.getWrapper().accept(visitor, value, null);
           if (modified == Boolean.FALSE) {
             return entity;
           }
@@ -192,9 +191,9 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
       }
       return entityDesc.newEntity(args);
     } else {
-      Property<ENTITY, BASIC> property = createProperty();
+      var property = createProperty();
       property.load(entity);
-      Boolean modified = property.getWrapper().accept(visitor, value, null);
+      var modified = property.getWrapper().accept(visitor, value, null);
       if (modified == Boolean.FALSE) {
         return entity;
       }
@@ -218,7 +217,7 @@ public class DefaultPropertyDesc<ENTITY, BASIC, CONTAINER>
 
     @Override
     public Property<ENTITY, BASIC> load(ENTITY entity) {
-      Object value = field.getValue(entity);
+      var value = field.getValue(entity);
       scalar.set(scalar.cast(value));
       return this;
     }

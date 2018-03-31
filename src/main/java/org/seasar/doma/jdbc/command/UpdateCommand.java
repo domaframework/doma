@@ -18,7 +18,7 @@ public class UpdateCommand extends ModifyCommand<UpdateQuery> {
 
   @Override
   protected int executeInternal(PreparedStatement preparedStatement) throws SQLException {
-    int rows = executeUpdate(preparedStatement);
+    var rows = executeUpdate(preparedStatement);
     query.incrementVersion();
     return rows;
   }

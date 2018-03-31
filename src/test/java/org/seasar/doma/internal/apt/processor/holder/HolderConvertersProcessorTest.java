@@ -13,7 +13,7 @@ public class HolderConvertersProcessorTest extends AptTestCase {
   }
 
   public void testDay() throws Exception {
-    HolderConvertersProcessor processor = new HolderConvertersProcessor();
+    var processor = new HolderConvertersProcessor();
     addProcessor(processor);
     addCompilationUnit(DayConvertersProvider.class);
     compile();
@@ -21,7 +21,7 @@ public class HolderConvertersProcessorTest extends AptTestCase {
   }
 
   public void testEmpty() throws Exception {
-    HolderConvertersProcessor processor = new HolderConvertersProcessor();
+    var processor = new HolderConvertersProcessor();
     addProcessor(processor);
     addCompilationUnit(EmptyConvertersProvider.class);
     compile();
@@ -29,7 +29,7 @@ public class HolderConvertersProcessorTest extends AptTestCase {
   }
 
   public void testExternalHolderNotSpecified() throws Exception {
-    HolderConvertersProcessor processor = new HolderConvertersProcessor();
+    var processor = new HolderConvertersProcessor();
     addProcessor(processor);
     addCompilationUnit(ExternalHolderNotSpecifiedProvider.class);
     compile();

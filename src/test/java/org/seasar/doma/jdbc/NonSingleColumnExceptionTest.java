@@ -5,8 +5,7 @@ import junit.framework.TestCase;
 public class NonSingleColumnExceptionTest extends TestCase {
 
   public void test() throws Exception {
-    NonSingleColumnException e =
-        new NonSingleColumnException(SqlLogType.FORMATTED, SqlKind.SELECT, "aaa", "bbb", "ccc");
+    var e = new NonSingleColumnException(SqlLogType.FORMATTED, SqlKind.SELECT, "aaa", "bbb", "ccc");
     System.out.println(e.getMessage());
     assertSame(SqlKind.SELECT, e.getKind());
     assertEquals("aaa", e.getRawSql());

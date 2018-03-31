@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.HashSet;
 import java.util.Set;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -29,10 +28,10 @@ public class EntityPropertyNameCollector {
   }
 
   private void collectNames(TypeMirror type, Set<String> names) {
-    for (TypeElement t = ctx.getTypes().toTypeElement(type);
+    for (var t = ctx.getTypes().toTypeElement(type);
         t != null && t.asType().getKind() != TypeKind.NONE;
         t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
-      for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
+      for (var field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
         if (isPersistent(field)) {
           names.add(field.getSimpleName().toString());
         }

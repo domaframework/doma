@@ -37,7 +37,7 @@ public class TableAnnot extends AbstractAnnot {
   }
 
   public String getCatalogValue() {
-    String value = AnnotationValueUtil.toString(catalog);
+    var value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
       throw new AptIllegalStateException(CATALOG);
     }
@@ -45,7 +45,7 @@ public class TableAnnot extends AbstractAnnot {
   }
 
   public String getSchemaValue() {
-    String value = AnnotationValueUtil.toString(schema);
+    var value = AnnotationValueUtil.toString(schema);
     if (value == null) {
       throw new AptIllegalStateException(CATALOG);
     }
@@ -53,7 +53,7 @@ public class TableAnnot extends AbstractAnnot {
   }
 
   public String getNameValue() {
-    String value = AnnotationValueUtil.toString(name);
+    var value = AnnotationValueUtil.toString(name);
     if (value == null) {
       throw new AptIllegalStateException(NAME);
     }
@@ -61,7 +61,7 @@ public class TableAnnot extends AbstractAnnot {
   }
 
   public boolean getQuoteValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(quote);
+    var value = AnnotationValueUtil.toBoolean(quote);
     if (value == null) {
       throw new AptIllegalStateException(QUOTE);
     }

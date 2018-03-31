@@ -25,7 +25,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<
 
   @Override
   public void increment() {
-    Byte value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet((byte) (value + 1));
     }
@@ -33,7 +33,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<
 
   @Override
   public void decrement() {
-    Byte value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet((byte) (value - 1));
     }

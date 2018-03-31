@@ -15,7 +15,22 @@ import org.seasar.doma.internal.apt.meta.id.IdGeneratorMetaVisitor;
 import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
-import org.seasar.doma.jdbc.entity.*;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.AssignedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EmbeddedPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.OriginalStatesAccessor;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 public class EntityDescGenerator extends AbstractGenerator {
 
@@ -286,7 +301,7 @@ public class EntityDescGenerator extends AbstractGenerator {
         /* 1 */ EntityPropertyDesc.class.getName(),
         /* 2 */ entityMeta.getEntityTypeName(),
         /* 3 */ entityMeta.getAllPropertyMetas().size());
-    for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+    for (var pm : entityMeta.getAllPropertyMetas()) {
       if (pm.isEmbedded()) {
         iprint("    __list.addAll(%1$s.getEmbeddablePropertyDescs());%n", pm.getFieldName());
         iprint("    __map.putAll(%1$s.getEmbeddablePropertyDescMap());%n", pm.getFieldName());
@@ -496,7 +511,7 @@ public class EntityDescGenerator extends AbstractGenerator {
   }
 
   private void printGetGeneratedIdPropertyDescMethod() {
-    String idName = "null";
+    var idName = "null";
     if (entityMeta.hasGeneratedIdPropertyMeta()) {
       var pm = entityMeta.getGeneratedIdPropertyMeta();
       idName = pm.getFieldName();
@@ -511,7 +526,7 @@ public class EntityDescGenerator extends AbstractGenerator {
   }
 
   private void printGetVersionPropertyDescMethod() {
-    String versionName = "null";
+    var versionName = "null";
     if (entityMeta.hasVersionPropertyMeta()) {
       var pm = entityMeta.getVersionPropertyMeta();
       versionName = pm.getFieldName();
@@ -619,7 +634,7 @@ public class EntityDescGenerator extends AbstractGenerator {
     iprint("public void saveCurrentStates(%1$s __entity) {%n", entityMeta.getEntityTypeName());
     if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
       iprint("    %1$s __currentStates = new %1$s();%n", entityMeta.getEntityTypeName());
-      for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+      for (var pm : entityMeta.getAllPropertyMetas()) {
         iprint("    %1$s.copy(__currentStates, __entity);%n", pm.getFieldName());
       }
       iprint("    __originalStatesAccessor.set(__entity, __currentStates);%n");

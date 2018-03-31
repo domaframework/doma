@@ -3,15 +3,20 @@ package org.seasar.doma.internal.jdbc.command;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.CallableStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.JdbcMappable;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ListParameter;
+import org.seasar.doma.jdbc.OutParameter;
+import org.seasar.doma.jdbc.ResultListParameter;
+import org.seasar.doma.jdbc.SingleResultParameter;
+import org.seasar.doma.jdbc.SqlParameter;
+import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.jdbc.command.JdbcOutParameterRegistrar;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.Query;
-import org.seasar.doma.jdbc.type.JdbcType;
-import org.seasar.doma.wrapper.Wrapper;
 
 public class CallableSqlParameterBinder
     extends AbstractParameterBinder<CallableStatement, SqlParameter> {
@@ -27,7 +32,7 @@ public class CallableSqlParameterBinder
   public void bind(CallableStatement callableStatement, List<? extends SqlParameter> parameters)
       throws SQLException {
     assertNotNull(callableStatement, parameters);
-    BindingVisitor visitor = new BindingVisitor(query, callableStatement);
+    var visitor = new BindingVisitor(query, callableStatement);
     for (SqlParameter parameter : parameters) {
       parameter.accept(visitor, null);
     }
@@ -95,7 +100,7 @@ public class CallableSqlParameterBinder
     }
 
     protected <BASIC> void registerOutParameter(JdbcMappable<BASIC> parameter) throws SQLException {
-      Wrapper<BASIC> wrapper = parameter.getWrapper();
+      var wrapper = parameter.getWrapper();
       wrapper.accept(
           jdbcMappingVisitor, new JdbcOutParameterRegistrar(callableStatement, index), parameter);
     }
@@ -103,7 +108,7 @@ public class CallableSqlParameterBinder
     protected <ELEMENT> void registerListParameter(ListParameter<ELEMENT> parameter)
         throws SQLException {
       if (dialect.supportsResultSetReturningAsOutParameter()) {
-        JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
+        var resultSetType = dialect.getResultSetType();
         resultSetType.registerOutParameter(callableStatement, index);
         index++;
       }

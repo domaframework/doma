@@ -10,13 +10,12 @@ public class EntityDescFactoryTest extends TestCase {
   private ClassHelper classHelper = new ClassHelper() {};
 
   public void testGetEntityDesc() throws Exception {
-    EntityDesc<Emp> desc = EntityDescFactory.getEntityDesc(Emp.class, classHelper);
+    var desc = EntityDescFactory.getEntityDesc(Emp.class, classHelper);
     assertNotNull(desc);
   }
 
   public void testGetEntityDesc_forNestedEntity() throws Exception {
-    EntityDesc<NotTopLevelEntity.Hoge> desc =
-        EntityDescFactory.getEntityDesc(NotTopLevelEntity.Hoge.class, classHelper);
+    var desc = EntityDescFactory.getEntityDesc(NotTopLevelEntity.Hoge.class, classHelper);
     assertNotNull(desc);
   }
 

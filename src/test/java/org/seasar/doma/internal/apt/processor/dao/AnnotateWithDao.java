@@ -1,6 +1,10 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
-import org.seasar.doma.*;
+import org.seasar.doma.AnnotateWith;
+import org.seasar.doma.Annotation;
+import org.seasar.doma.AnnotationTarget;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
 @Dao

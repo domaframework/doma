@@ -7,7 +7,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 public class ConfigTest extends TestCase {
 
   public void testGet() throws Exception {
-    Config config = Config.get(new Provider());
+    var config = Config.get(new Provider());
     assertNotNull(config);
   }
 

@@ -7,11 +7,8 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
 
 public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements DeleteQuery {
@@ -39,7 +36,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void preDelete() {
-    AutoPreDeleteContext<ENTITY> context = new AutoPreDeleteContext<>(entityDesc, method, config);
+    var context = new AutoPreDeleteContext<>(entityDesc, method, config);
     entityDesc.preDelete(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -55,15 +52,15 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void prepareSql() {
-    Naming naming = config.getNaming();
-    Dialect dialect = config.getDialect();
-    PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.DELETE, sqlLogType);
+    var naming = config.getNaming();
+    var dialect = config.getDialect();
+    var builder = new PreparedSqlBuilder(config, SqlKind.DELETE, sqlLogType);
     builder.appendSql("delete from ");
     builder.appendSql(entityDesc.getQualifiedTableName(naming::apply, dialect::applyQuote));
     if (idPropertyDescs.size() > 0) {
       builder.appendSql(" where ");
-      for (EntityPropertyDesc<ENTITY, ?> propertyDesc : idPropertyDescs) {
-        Property<ENTITY, ?> property = propertyDesc.createProperty();
+      for (var propertyDesc : idPropertyDescs) {
+        var property = propertyDesc.createProperty();
         property.load(entity);
         builder.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
         builder.appendSql(" = ");
@@ -93,7 +90,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void postDelete() {
-    AutoPostDeleteContext<ENTITY> context = new AutoPostDeleteContext<>(entityDesc, method, config);
+    var context = new AutoPostDeleteContext<>(entityDesc, method, config);
     entityDesc.postDelete(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();

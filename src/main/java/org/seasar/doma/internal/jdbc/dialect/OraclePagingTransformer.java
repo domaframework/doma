@@ -2,7 +2,11 @@ package org.seasar.doma.internal.jdbc.dialect;
 
 import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
 
-import org.seasar.doma.internal.jdbc.sql.node.*;
+import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
+import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.jdbc.SqlNode;
 
 public class OraclePagingTransformer extends StandardPagingTransformer {
@@ -18,7 +22,7 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
     }
     processed = true;
 
-    SelectStatementNode subStatement = new SelectStatementNode();
+    var subStatement = new SelectStatementNode();
     subStatement.setSelectClauseNode(node.getSelectClauseNode());
     subStatement.setFromClauseNode(node.getFromClauseNode());
     subStatement.setWhereClauseNode(node.getWhereClauseNode());
@@ -26,14 +30,14 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
     subStatement.setHavingClauseNode(node.getHavingClauseNode());
     subStatement.setOrderByClauseNode(node.getOrderByClauseNode());
 
-    SelectClauseNode select = new SelectClauseNode("select");
+    var select = new SelectClauseNode("select");
     select.appendNode(new FragmentNode(" * "));
-    FromClauseNode from = new FromClauseNode("from");
+    var from = new FromClauseNode("from");
     from.appendNode(
         new FragmentNode(" ( select temp_.*, rownum " + ROWNUMBER_COLUMN_NAME + " from ( "));
     from.appendNode(subStatement);
     from.appendNode(new FragmentNode(" ) temp_ ) "));
-    WhereClauseNode where = new WhereClauseNode("where");
+    var where = new WhereClauseNode("where");
     where.appendNode(new FragmentNode(" "));
     if (offset >= 0) {
       where.appendNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " > "));
@@ -44,11 +48,11 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
         where.appendNode(new FragmentNode(" and "));
       }
       where.appendNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
-      long bias = offset < 0 ? 0 : offset;
+      var bias = offset < 0 ? 0 : offset;
       where.appendNode(new FragmentNode(String.valueOf(bias + limit)));
     }
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(select);
     result.setFromClauseNode(from);
     result.setWhereClauseNode(where);

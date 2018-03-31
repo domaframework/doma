@@ -22,7 +22,7 @@ public enum SqlTokenType {
     public String extract(String token) {
       assertNotNull(token);
       assertTrue(token.length() >= 5);
-      String s = token.substring(2, token.length() - 2);
+      var s = token.substring(2, token.length() - 2);
       return StringUtil.trimWhitespace(s);
     }
   },
@@ -33,7 +33,7 @@ public enum SqlTokenType {
     public String extract(String token) {
       assertNotNull(token);
       assertTrue(token.length() >= 5);
-      String s = token.substring(3, token.length() - 2);
+      var s = token.substring(3, token.length() - 2);
       return StringUtil.trimWhitespace(s);
     }
   },
@@ -44,7 +44,7 @@ public enum SqlTokenType {
     public String extract(String token) {
       assertNotNull(token);
       assertTrue(token.length() >= 5);
-      String s = token.substring(3, token.length() - 2);
+      var s = token.substring(3, token.length() - 2);
       return StringUtil.trimWhitespace(s);
     }
   },

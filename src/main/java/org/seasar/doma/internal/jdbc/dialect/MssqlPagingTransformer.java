@@ -27,18 +27,18 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
       return super.appendTopNode(node);
     }
 
-    OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
+    var originalOrderBy = node.getOrderByClauseNode();
     if (originalOrderBy == null) {
       throw new JdbcException(Message.DOMA2201);
     }
 
-    OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
+    var orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
 
-    for (SqlNode child : originalOrderBy.getChildren()) {
+    for (var child : originalOrderBy.getChildren()) {
       orderBy.appendNode(child);
     }
 
-    String offset = this.offset <= 0 ? "0" : String.valueOf(this.offset);
+    var offset = this.offset <= 0 ? "0" : String.valueOf(this.offset);
 
     orderBy.appendNode(new FragmentNode(" offset "));
     orderBy.appendNode(new FragmentNode(offset));
@@ -49,7 +49,7 @@ public class MssqlPagingTransformer extends Mssql2008PagingTransformer {
       orderBy.appendNode(new FragmentNode(" rows only"));
     }
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(node.getSelectClauseNode());
     result.setFromClauseNode(node.getFromClauseNode());
     result.setWhereClauseNode(node.getWhereClauseNode());

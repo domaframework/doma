@@ -3,9 +3,12 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
@@ -54,7 +57,7 @@ public final class Options {
   }
 
   public boolean isTestEnabled() {
-    String test = getOption(Options.TEST);
+    var test = getOption(Options.TEST);
     return Boolean.valueOf(test);
   }
 
@@ -73,7 +76,7 @@ public final class Options {
   }
 
   public boolean isDebugEnabled() {
-    String debug = getOption(Options.DEBUG);
+    var debug = getOption(Options.DEBUG);
     return Boolean.valueOf(debug);
   }
 
@@ -86,12 +89,12 @@ public final class Options {
   }
 
   public String getDaoSuffix() {
-    String suffix = getOption(Options.DAO_SUFFIX);
+    var suffix = getOption(Options.DAO_SUFFIX);
     return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
   }
 
   public String getEntityFieldPrefix() {
-    String prefix = getOption(Options.ENTITY_FIELD_PREFIX);
+    var prefix = getOption(Options.ENTITY_FIELD_PREFIX);
     if ("none".equalsIgnoreCase(prefix)) {
       return "";
     }
@@ -107,42 +110,42 @@ public final class Options {
   }
 
   public boolean getSqlValidation() {
-    String v = getOption(Options.SQL_VALIDATION);
+    var v = getOption(Options.SQL_VALIDATION);
     return v == null || Boolean.valueOf(v);
   }
 
   public boolean getVersionValidation() {
-    String v = getOption(Options.VERSION_VALIDATION);
+    var v = getOption(Options.VERSION_VALIDATION);
     return v == null || Boolean.valueOf(v);
   }
 
   public String getLombokAllArgsConstructor() {
-    String name = getOption(Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
+    var name = getOption(Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
     return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
   }
 
   public String getLombokValue() {
-    String name = getOption(Options.LOMBOK_VALUE);
+    var name = getOption(Options.LOMBOK_VALUE);
     return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
   }
 
   private String getOption(String key) {
-    String v = env.getOptions().get(key);
+    var v = env.getOptions().get(key);
     if (v != null) {
       return v;
     }
-    String configPath = getConfigPath();
-    Map<String, String> config = getConfig(ctx.getResources(), configPath);
+    var configPath = getConfigPath();
+    var config = getConfig(ctx.getResources(), configPath);
     return config.get(key);
   }
 
   private String getConfigPath() {
-    String configPath = env.getOptions().get(Options.CONFIG_PATH);
+    var configPath = env.getOptions().get(Options.CONFIG_PATH);
     return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
   }
 
   private static Map<String, String> getConfig(Resources resources, String path) {
-    FileObject config = getFileObject(resources, path);
+    var config = getFileObject(resources, path);
     if (config == null) {
       return Collections.emptyMap();
     }
@@ -167,9 +170,9 @@ public final class Options {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   private static Map<String, String> loadProperties(FileObject config) throws IOException {
-    try (InputStream is = config.openInputStream();
-        InputStreamReader isr = new InputStreamReader(is, "UTF-8")) {
-      Properties props = new Properties();
+    try (var is = config.openInputStream();
+        var isr = new InputStreamReader(is, "UTF-8")) {
+      var props = new Properties();
       props.load(isr);
       return (Map<String, String>) new HashMap(props);
     }

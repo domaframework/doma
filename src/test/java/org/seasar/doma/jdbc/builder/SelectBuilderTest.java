@@ -4,21 +4,17 @@ import example.entity.Emp;
 import example.holder.PhoneNumber;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import junit.framework.TestCase;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.message.Message;
 
 public class SelectBuilderTest extends TestCase {
 
   public void testGetSql() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
     builder.sql("name").sql(",");
@@ -29,7 +25,7 @@ public class SelectBuilderTest extends TestCase {
     builder.sql("and");
     builder.sql("age > ").param(int.class, 20);
 
-    String sql =
+    var sql =
         String.format(
             "select%n"
                 + "id,%n"
@@ -42,19 +38,19 @@ public class SelectBuilderTest extends TestCase {
                 + "age > ?");
     assertEquals(sql, builder.getSql().getRawSql());
 
-    Emp emp = builder.getEntitySingleResult(Emp.class);
+    var emp = builder.getEntitySingleResult(Emp.class);
     assertNull(emp);
   }
 
   public void testRmoveLast() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("aaa").sql("bbb");
     builder.removeLast();
     assertEquals("aaa", builder.getSql().getRawSql());
   }
 
   public void testSingleResult_Entity() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
     builder.sql("name").sql(",");
@@ -64,12 +60,12 @@ public class SelectBuilderTest extends TestCase {
     builder.sql("name like ").param(String.class, "S%");
     builder.sql("and");
     builder.sql("age > ").param(int.class, 20);
-    Emp emp = builder.getEntitySingleResult(Emp.class);
+    var emp = builder.getEntitySingleResult(Emp.class);
     assertNull(emp);
   }
 
   public void testSingleResult_Map() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
     builder.sql("name").sql(",");
@@ -79,34 +75,34 @@ public class SelectBuilderTest extends TestCase {
     builder.sql("name like ").param(String.class, "S%");
     builder.sql("and");
     builder.sql("age > ").param(int.class, 20);
-    Map<String, Object> emp = builder.getMapSingleResult(MapKeyNamingType.CAMEL_CASE);
+    var emp = builder.getMapSingleResult(MapKeyNamingType.CAMEL_CASE);
     assertNull(emp);
   }
 
   public void testSingleResult_Holder() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa = ").param(String.class, "aaa");
     builder.sql("and");
     builder.sql("bbb = ").param(int.class, 100);
-    PhoneNumber phoneNumber = builder.getScalarSingleResult(PhoneNumber.class);
+    var phoneNumber = builder.getScalarSingleResult(PhoneNumber.class);
     assertNull(phoneNumber);
   }
 
   public void testSingleResult_Basic() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa = ").param(String.class, "aaa");
     builder.sql("and");
     builder.sql("bbb = ").param(int.class, 100);
-    String result = builder.getScalarSingleResult(String.class);
+    var result = builder.getScalarSingleResult(String.class);
     assertNull(result);
   }
 
   public void testSingleResult_DomaIllegalArgumentException() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("aaa").sql(",");
     builder.sql("bbb");
@@ -124,51 +120,51 @@ public class SelectBuilderTest extends TestCase {
   }
 
   public void testGetResultList_Entity() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select * from Emp");
     builder.sql("where");
     builder.sql("aaa = ").param(String.class, "aaa");
     builder.sql("and");
     builder.sql("bbb = ").param(int.class, 100);
-    List<Emp> list = builder.getEntityResultList(Emp.class);
+    var list = builder.getEntityResultList(Emp.class);
     assertNotNull(list);
   }
 
   public void testGetResultList_Map() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select * from Emp");
     builder.sql("where");
     builder.sql("aaa = ").param(String.class, "aaa");
     builder.sql("and");
     builder.sql("bbb = ").param(int.class, 100);
-    List<Map<String, Object>> list = builder.getMapResultList(MapKeyNamingType.CAMEL_CASE);
+    var list = builder.getMapResultList(MapKeyNamingType.CAMEL_CASE);
     assertNotNull(list);
   }
 
   public void testGetResultList_Holder() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa = ").param(String.class, "aaa");
     builder.sql("and");
     builder.sql("bbb = ").param(int.class, 100);
-    List<PhoneNumber> list = builder.getScalarResultList(PhoneNumber.class);
+    var list = builder.getScalarResultList(PhoneNumber.class);
     assertNotNull(list);
   }
 
   public void testGetResultList_Basic() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa = ").param(String.class, "aaa");
     builder.sql("and");
     builder.sql("bbb = ").param(int.class, 100);
-    List<String> list = builder.getScalarResultList(String.class);
+    var list = builder.getScalarResultList(String.class);
     assertNotNull(list);
   }
 
   public void testLiteral() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
     builder.sql("name").sql(",");
@@ -178,7 +174,7 @@ public class SelectBuilderTest extends TestCase {
     builder.sql("name = ").literal(String.class, "aaa");
     builder.sql("and");
     builder.sql("age > ").param(int.class, 20);
-    String sql =
+    var sql =
         String.format(
             "select%n"
                 + "id,%n"
@@ -193,7 +189,7 @@ public class SelectBuilderTest extends TestCase {
   }
 
   public void testLiteral_singleQuoteIncluded() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
     builder.sql("name").sql(",");
@@ -211,15 +207,15 @@ public class SelectBuilderTest extends TestCase {
   }
 
   public void testParams() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa in (").params(String.class, Arrays.asList("x", "y", "z")).sql(")");
-    Sql<?> sql = builder.getSql();
-    String rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in (?, ?, ?)");
+    var sql = builder.getSql();
+    var rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in (?, ?, ?)");
     assertEquals(rawSql, sql.getRawSql());
 
-    List<? extends SqlParameter> params = sql.getParameters();
+    var params = sql.getParameters();
     assertEquals(3, params.size());
     assertEquals("x", params.get(0).getValue());
     assertEquals("y", params.get(1).getValue());
@@ -227,41 +223,41 @@ public class SelectBuilderTest extends TestCase {
   }
 
   public void testParams_empty() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa in (").params(String.class, Collections.emptyList()).sql(")");
-    Sql<?> sql = builder.getSql();
-    String rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in (null)");
+    var sql = builder.getSql();
+    var rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in (null)");
     assertEquals(rawSql, sql.getRawSql());
 
-    List<? extends SqlParameter> params = sql.getParameters();
+    var params = sql.getParameters();
     assertEquals(0, params.size());
   }
 
   public void testLiterals() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa in (").literals(String.class, Arrays.asList("x", "y", "z")).sql(")");
-    Sql<?> sql = builder.getSql();
-    String rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in ('x', 'y', 'z')");
+    var sql = builder.getSql();
+    var rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in ('x', 'y', 'z')");
     assertEquals(rawSql, sql.getRawSql());
 
-    List<? extends SqlParameter> params = sql.getParameters();
+    var params = sql.getParameters();
     assertEquals(0, params.size());
   }
 
   public void testLiterals_empty() throws Exception {
-    SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+    var builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
     builder.sql("aaa in (").params(String.class, Collections.emptyList()).sql(")");
-    Sql<?> sql = builder.getSql();
-    String rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in (null)");
+    var sql = builder.getSql();
+    var rawSql = String.format("select ccc from Emp%n" + "where%n" + "aaa in (null)");
     assertEquals(rawSql, sql.getRawSql());
 
-    List<? extends SqlParameter> params = sql.getParameters();
+    var params = sql.getParameters();
     assertEquals(0, params.size());
   }
 }

@@ -15,7 +15,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testSalary() throws Exception {
     Class<?> target = Salary.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -25,7 +25,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testPrimitiveValue() throws Exception {
     Class<?> target = PrimitiveValueHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -35,7 +35,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testEnum() throws Exception {
     Class<?> target = EnumHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -44,7 +44,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testUnsupportedValueType() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(UnsupportedValueTypeHolder.class);
     compile();
@@ -53,7 +53,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testConstrutorNotFound() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(ConstrutorNotFoundHolder.class);
     compile();
@@ -62,7 +62,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testAccessorNotFound() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(AccessorNotFoundHolder.class);
     compile();
@@ -71,7 +71,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testInner() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer.class);
     compile();
@@ -80,7 +80,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testInner_deep() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer_deepInner.class);
     compile();
@@ -89,7 +89,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testInner_nonStatic() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer_nonStaticInner.class);
     compile();
@@ -98,7 +98,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testInner_nonPublic() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer_nonPublicInner.class);
     compile();
@@ -107,7 +107,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testInner_illegalName() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer__illegalName.class);
     compile();
@@ -116,7 +116,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testMiddle_nonPublic() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(Outer_nonPublicMiddle.class);
     compile();
@@ -125,7 +125,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testPackagePrivate() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(PackagePrivateHolder.class);
     compile();
@@ -134,7 +134,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testJobType() throws Exception {
     Class<?> target = JobType.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -144,7 +144,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testAbstractHolder() throws Exception {
     Class<?> target = AbstractHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -154,7 +154,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testOfSalary() throws Exception {
     Class<?> target = OfSalary.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -164,7 +164,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testOfPrimitiveValue() throws Exception {
     Class<?> target = OfPrimitiveValueHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -174,7 +174,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testOfEnum() throws Exception {
     Class<?> target = OfEnumHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -184,7 +184,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testOfJobType() throws Exception {
     Class<?> target = OfJobType.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -194,7 +194,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testOfPrimitiveValueType() throws Exception {
     Class<?> target = OfPrimitiveValueType.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -204,7 +204,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testOfAbstractHolder() throws Exception {
     Class<?> target = OfAbstractHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -214,7 +214,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testGenericHolder() throws Exception {
     Class<?> target = SpecificHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -225,7 +225,7 @@ public class HolderProcessorTest extends AptTestCase {
   public void testVersionCheckSuppressed() throws Exception {
     addOption("-Adoma.version.validation=false");
     Class<?> target = VersionCheckSuppressedHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -235,7 +235,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testParametarizedSalary() throws Exception {
     Class<?> target = ParametarizedSalary.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -245,7 +245,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testParametarizedOfSalary() throws Exception {
     Class<?> target = ParametarizedOfSalary.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -255,7 +255,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testIllegalSizeParametarizedOfSalary() throws Exception {
     Class<?> target = IllegalSizeParametarizedOfSalary.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -264,7 +264,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testIllegalTypeParametarizedOfSalary() throws Exception {
     Class<?> target = IllegalTypeParametarizedOfSalary.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -273,7 +273,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testNullRejection() throws Exception {
     Class<?> target = NullRejectionHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -283,7 +283,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testIllegalAcceptNullHolder() throws Exception {
     Class<?> target = IllegalAcceptNullHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -292,7 +292,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testObjectHolder() throws Exception {
     Class<?> target = ObjectHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -302,7 +302,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testInterface() throws Exception {
     Class<?> target = InterfaceHolder.class;
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -311,7 +311,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testInterfaceFactoryOfAttributeMustNotBeNew() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(InterfaceNew.class);
     compile();
@@ -320,7 +320,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testInterfaceInner() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(InterfaceOuter.class);
     compile();
@@ -329,7 +329,7 @@ public class HolderProcessorTest extends AptTestCase {
   }
 
   public void testAnnotationMustNotBeHolderClass() throws Exception {
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     addProcessor(processor);
     addCompilationUnit(AnnotationHolder.class);
     compile();
@@ -339,7 +339,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testLombokValue() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     Class<?> target = LombokValue.class;
     addProcessor(processor);
     addCompilationUnit(target);
@@ -350,7 +350,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testLombokValueStaticConstructor() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     Class<?> target = LombokValueStaticConstructor.class;
     addProcessor(processor);
     addCompilationUnit(target);
@@ -361,7 +361,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testLombokValueNoField() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     Class<?> target = LombokValueNoField.class;
     addProcessor(processor);
     addCompilationUnit(target);
@@ -372,7 +372,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testLombokValueTwoFields() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     Class<?> target = LombokValueTwoFields.class;
     addProcessor(processor);
     addCompilationUnit(target);
@@ -383,7 +383,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testLombokValueTypeNotAssignable() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     Class<?> target = LombokValueTypeNotAssignable.class;
     addProcessor(processor);
     addCompilationUnit(target);
@@ -394,7 +394,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testLombokValueAccessorMethod() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     Class<?> target = LombokValueAccessorMethod.class;
     addProcessor(processor);
     addCompilationUnit(target);
@@ -405,7 +405,7 @@ public class HolderProcessorTest extends AptTestCase {
 
   public void testLombokValueAccessorMethod_boolean() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    HolderProcessor processor = new HolderProcessor();
+    var processor = new HolderProcessor();
     Class<?> target = LombokValueAccessorMethod_boolean.class;
     addProcessor(processor);
     addCompilationUnit(target);

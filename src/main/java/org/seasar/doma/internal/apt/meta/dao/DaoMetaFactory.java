@@ -4,14 +4,17 @@ import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.File;
-import java.net.URI;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
@@ -22,11 +25,26 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
 import org.seasar.doma.internal.apt.annot.DaoAnnot;
 import org.seasar.doma.internal.apt.annot.SuppressAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.meta.query.*;
+import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoBatchModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.BlobCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.ClobCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.DefaultQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.NClobCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.QueryMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SQLXMLCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMetaFactory;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -61,7 +79,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     validateInterface();
     validateName();
 
-    DaoMeta daoMeta = new DaoMeta(daoAnnot, daoElement);
+    var daoMeta = new DaoMeta(daoAnnot, daoElement);
     doAnnotateWith(daoMeta);
     doParentDao(daoMeta);
     doConfig(daoMeta);
@@ -83,8 +101,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private void validateName() {
-    String name = daoElement.getSimpleName().toString();
-    String suffix = ctx.getOptions().getDaoSuffix();
+    var name = daoElement.getSimpleName().toString();
+    var suffix = ctx.getOptions().getDaoSuffix();
     if (name.endsWith(suffix)) {
       ctx.getNotifier().send(Kind.WARNING, Message.DOMA4026, daoElement, new Object[] {suffix});
     }
@@ -94,16 +112,16 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     if (!daoAnnot.hasUserDefinedConfig()) {
       return;
     }
-    TypeElement configElement = ctx.getTypes().toTypeElement(daoAnnot.getConfigValue());
+    var configElement = ctx.getTypes().toTypeElement(daoAnnot.getConfigValue());
     if (configElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement.");
     }
-    ConfigMeta configMeta = createConfigMeta(configElement);
+    var configMeta = createConfigMeta(configElement);
     daoMeta.setConfigMeta(configMeta);
   }
 
   private ConfigMeta createConfigMeta(TypeElement configElement) {
-    SingletonConfig singletonConfig = configElement.getAnnotation(SingletonConfig.class);
+    var singletonConfig = configElement.getAnnotation(SingletonConfig.class);
     if (singletonConfig == null) {
       if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
         throw new AptException(
@@ -113,7 +131,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName()});
       }
-      ExecutableElement constructor = ctx.getElements().getNoArgConstructor(configElement);
+      var constructor = ctx.getElements().getNoArgConstructor(configElement);
       if (constructor != null && constructor.getModifiers().contains(Modifier.PUBLIC)) {
         return ConfigMeta.byConstructor(configElement.asType());
       }
@@ -137,7 +155,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                     new Object[] {configElement.getQualifiedName()});
               });
     }
-    String methodName = singletonConfig.method();
+    var methodName = singletonConfig.method();
     return ElementFilter.methodsIn(configElement.getEnclosedElements())
         .stream()
         .filter(m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
@@ -158,14 +176,14 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private void doAnnotateWith(DaoMeta daoMeta) {
-    AnnotateWithAnnot annotateWithAnnot = ctx.getAnnots().newAnnotateWithAnnot(daoElement);
+    var annotateWithAnnot = ctx.getAnnots().newAnnotateWithAnnot(daoElement);
     if (annotateWithAnnot != null) {
       daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
     }
   }
 
   private void doParentDao(DaoMeta daoMeta) {
-    List<TypeElement> interfaces =
+    var interfaces =
         daoElement
             .getInterfaces()
             .stream()
@@ -177,10 +195,10 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                   }
                 })
             .collect(toList());
-    for (TypeElement typeElement : interfaces) {
-      DaoAnnot daoAnnot = ctx.getAnnots().newDaoAnnot(typeElement);
+    for (var typeElement : interfaces) {
+      var daoAnnot = ctx.getAnnots().newDaoAnnot(typeElement);
       if (daoAnnot == null) {
-        ExecutableElement nonDefaultMethod = findNonDefaultMethod(typeElement);
+        var nonDefaultMethod = findNonDefaultMethod(typeElement);
         if (nonDefaultMethod == null) {
           continue;
         }
@@ -190,13 +208,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       if (daoMeta.getParentDaoMeta() != null) {
         throw new AptException(Message.DOMA4188, daoElement);
       }
-      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot, typeElement);
+      var parentDaoMeta = new ParentDaoMeta(daoAnnot, typeElement);
       daoMeta.setParentDaoMeta(parentDaoMeta);
     }
   }
 
   private ExecutableElement findNonDefaultMethod(TypeElement interfaceElement) {
-    Optional<ExecutableElement> method =
+    var method =
         ElementFilter.methodsIn(interfaceElement.getEnclosedElements())
             .stream()
             .filter(m -> !m.isDefault())
@@ -205,11 +223,11 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       return method.get();
     }
     for (TypeMirror typeMirror : interfaceElement.getInterfaces()) {
-      TypeElement i = ctx.getTypes().toTypeElement(typeMirror);
+      var i = ctx.getTypes().toTypeElement(typeMirror);
       if (i == null) {
         throw new AptIllegalStateException("failed to convert to TypeElement.");
       }
-      ExecutableElement m = findNonDefaultMethod(i);
+      var m = findNonDefaultMethod(i);
       if (m != null) {
         return m;
       }
@@ -218,8 +236,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private void doMethods(DaoMeta daoMeta) {
-    for (ExecutableElement methodElement :
-        ElementFilter.methodsIn(daoElement.getEnclosedElements())) {
+    for (var methodElement : ElementFilter.methodsIn(daoElement.getEnclosedElements())) {
       try {
         doMethod(methodElement, daoMeta);
       } catch (AptException e) {
@@ -230,20 +247,20 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private void doMethod(ExecutableElement methodElement, DaoMeta daoMeta) {
-    Set<Modifier> modifiers = methodElement.getModifiers();
+    var modifiers = methodElement.getModifiers();
     if (modifiers.contains(Modifier.STATIC) || modifiers.contains(Modifier.PRIVATE)) {
       return;
     }
     validateMethod(methodElement, daoMeta);
-    QueryMeta queryMeta = createQueryMeta(methodElement, daoMeta);
+    var queryMeta = createQueryMeta(methodElement, daoMeta);
     daoMeta.addQueryMeta(queryMeta);
   }
 
   private void validateMethod(ExecutableElement methodElement, DaoMeta daoMeta) {
     TypeElement foundAnnotationTypeElement = null;
     for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
-      DeclaredType declaredType = annotation.getAnnotationType();
-      TypeElement typeElement = ctx.getTypes().toTypeElement(declaredType);
+      var declaredType = annotation.getAnnotationType();
+      var typeElement = ctx.getTypes().toTypeElement(declaredType);
       if (typeElement.getAnnotation(DaoMethod.class) != null) {
         if (foundAnnotationTypeElement != null) {
           throw new AptException(
@@ -263,9 +280,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private QueryMeta createQueryMeta(ExecutableElement methodElement, DaoMeta daoMeta) {
-    for (Supplier<QueryMetaFactory> supplier : createQueryMetaFactories(methodElement)) {
-      QueryMetaFactory factory = supplier.get();
-      QueryMeta queryMeta = factory.createQueryMeta();
+    for (var supplier : createQueryMetaFactories(methodElement)) {
+      var factory = supplier.get();
+      var queryMeta = factory.createQueryMeta();
       if (queryMeta != null) {
         return queryMeta;
       }
@@ -300,15 +317,15 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     if (!ctx.getOptions().getSqlValidation()) {
       return;
     }
-    String dirPath = SqlFileUtil.buildPath(daoElement.getQualifiedName().toString());
-    Set<String> fileNames = getFileNames(dirPath);
-    for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-      for (String fileName : queryMeta.getFileNames()) {
+    var dirPath = SqlFileUtil.buildPath(daoElement.getQualifiedName().toString());
+    var fileNames = getFileNames(dirPath);
+    for (var queryMeta : daoMeta.getQueryMetas()) {
+      for (var fileName : queryMeta.getFileNames()) {
         fileNames.remove(fileName);
       }
     }
     if (!isSuppressed(Message.DOMA4220)) {
-      for (String fileName : fileNames) {
+      for (var fileName : fileNames) {
         ctx.getNotifier()
             .send(
                 Kind.WARNING,
@@ -320,11 +337,11 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private Set<String> getFileNames(String dirPath) {
-    File dir = getDir(dirPath);
+    var dir = getDir(dirPath);
     if (dir == null) {
       return Collections.emptySet();
     }
-    String[] fileNames =
+    var fileNames =
         dir.list(
             (__, name) ->
                 name.endsWith(Constants.SQL_PATH_SUFFIX)
@@ -336,15 +353,15 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private File getDir(String dirPath) {
-    FileObject fileObject = getFileObject(dirPath);
+    var fileObject = getFileObject(dirPath);
     if (fileObject == null) {
       return null;
     }
-    URI uri = fileObject.toUri();
+    var uri = fileObject.toUri();
     if (!uri.isAbsolute()) {
       uri = new File(".").toURI().resolve(uri);
     }
-    File dir = new File(uri);
+    var dir = new File(uri);
     if (dir.exists() && dir.isDirectory()) {
       return dir;
     }

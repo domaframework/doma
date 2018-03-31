@@ -2,7 +2,11 @@ package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.command.UpdateCommand;
 import org.seasar.doma.jdbc.query.SqlUpdateQuery;
 
@@ -151,7 +155,7 @@ public class UpdateBuilder {
       query.setCallerMethodName("execute");
     }
     prepare();
-    UpdateCommand command = new UpdateCommand(query);
+    var command = new UpdateCommand(query);
     int result = command.execute();
     query.complete();
     return result;
@@ -159,7 +163,7 @@ public class UpdateBuilder {
 
   private void prepare() {
     query.clearParameters();
-    for (Param p : helper.getParams()) {
+    for (var p : helper.getParams()) {
       query.addParameter(p.name, p.paramClass, p.param);
     }
     query.setSqlNode(helper.getSqlNode());

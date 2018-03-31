@@ -1,7 +1,6 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.jdbc.entity.EntityDesc;
-import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.query.Query;
 
 /** A handler for the column that is unknown to an entity. */
@@ -16,9 +15,9 @@ public interface UnknownColumnHandler {
    * @throws UnknownColumnException if this handler does not allow the unknown column
    */
   default void handle(Query query, EntityDesc<?> entityDesc, String unknownColumnName) {
-    Sql<?> sql = query.getSql();
-    Naming naming = query.getConfig().getNaming();
-    NamingType namingType = entityDesc.getNamingType();
+    var sql = query.getSql();
+    var naming = query.getConfig().getNaming();
+    var namingType = entityDesc.getNamingType();
     throw new UnknownColumnException(
         query.getConfig().getExceptionSqlLogType(),
         unknownColumnName,

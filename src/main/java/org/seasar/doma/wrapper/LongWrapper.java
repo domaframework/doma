@@ -25,7 +25,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
 
   @Override
   public void increment() {
-    Long value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value + 1L);
     }
@@ -33,7 +33,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
 
   @Override
   public void decrement() {
-    Long value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value - 1L);
     }

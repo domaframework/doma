@@ -18,7 +18,7 @@ public interface ClassHelper {
   @SuppressWarnings("unchecked")
   default <T> Class<T> forName(String className) throws Exception {
     try {
-      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+      var classLoader = Thread.currentThread().getContextClassLoader();
       if (classLoader == null) {
         return (Class<T>) Class.forName(className);
       } else {

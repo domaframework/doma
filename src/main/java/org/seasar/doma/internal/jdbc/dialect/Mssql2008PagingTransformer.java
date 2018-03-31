@@ -14,8 +14,8 @@ public class Mssql2008PagingTransformer extends StandardPagingTransformer {
 
   @Override
   public SqlNode transform(SqlNode sqlNode) {
-    AnonymousNode result = new AnonymousNode();
-    for (SqlNode child : sqlNode.getChildren()) {
+    var result = new AnonymousNode();
+    for (var child : sqlNode.getChildren()) {
       result.appendNode(child.accept(this, null));
     }
     return result;
@@ -35,13 +35,13 @@ public class Mssql2008PagingTransformer extends StandardPagingTransformer {
   }
 
   protected SqlNode appendTopNode(SelectStatementNode node) {
-    SelectClauseNode select = new SelectClauseNode(node.getSelectClauseNode().getWordNode());
+    var select = new SelectClauseNode(node.getSelectClauseNode().getWordNode());
     select.appendNode(new FragmentNode(" top (" + limit + ")"));
-    for (SqlNode child : node.getSelectClauseNode().getChildren()) {
+    for (var child : node.getSelectClauseNode().getChildren()) {
       select.appendNode(child);
     }
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(select);
     result.setFromClauseNode(node.getFromClauseNode());
     result.setWhereClauseNode(node.getWhereClauseNode());

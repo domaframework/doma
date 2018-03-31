@@ -23,10 +23,10 @@ public final class ConstructorUtil {
   }
 
   public static String createSignature(Class<?> clazz, Class<?>[] paramTypes) {
-    StringBuilder buf = new StringBuilder();
+    var buf = new StringBuilder();
     buf.append(clazz.getName());
     buf.append("(");
-    for (Class<?> paramType : paramTypes) {
+    for (var paramType : paramTypes) {
       if (paramType.isArray()) {
         buf.append(paramType.getComponentType().getName());
         buf.append("[]");

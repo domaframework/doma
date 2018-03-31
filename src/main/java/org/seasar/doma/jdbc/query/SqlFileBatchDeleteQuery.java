@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
-import java.util.ListIterator;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.Config;
@@ -28,7 +27,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
   @Override
   public void prepare() {
     super.prepare();
-    int size = elements.size();
+    var size = elements.size();
     if (size == 0) {
       return;
     }
@@ -41,7 +40,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     prepareOptimisticLock();
     prepareSql();
     elements.set(0, currentEntity);
-    for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext(); ) {
+    for (var it = elements.listIterator(1); it.hasNext(); ) {
       currentEntity = it.next();
       preDelete();
       prepareSql();
@@ -65,7 +64,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
   @Override
   public void complete() {
     if (entityHandler != null) {
-      for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext(); ) {
+      for (var it = elements.listIterator(); it.hasNext(); ) {
         currentEntity = it.next();
         entityHandler.postDelete();
         it.set(currentEntity);
@@ -99,8 +98,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
 
     protected void preDelete() {
-      SqlFileBatchPreDeleteContext<ELEMENT> context =
-          new SqlFileBatchPreDeleteContext<>(entityDesc, method, config);
+      var context = new SqlFileBatchPreDeleteContext<>(entityDesc, method, config);
       entityDesc.preDelete(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();
@@ -108,8 +106,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
 
     protected void postDelete() {
-      SqlFileBatchPostDeleteContext<ELEMENT> context =
-          new SqlFileBatchPostDeleteContext<>(entityDesc, method, config);
+      var context = new SqlFileBatchPostDeleteContext<>(entityDesc, method, config);
       entityDesc.postDelete(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();

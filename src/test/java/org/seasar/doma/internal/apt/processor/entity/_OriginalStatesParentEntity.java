@@ -4,7 +4,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.jdbc.entity.*;
+import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
+import org.seasar.doma.jdbc.entity.DefaultPropertyDesc;
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
+import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _OriginalStatesParentEntity extends AbstractEntityDesc<OriginalStatesParentEntity> {

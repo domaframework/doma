@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
-import org.seasar.doma.wrapper.Wrapper;
 
 /** A helper for {@link UpdateQuery}. */
 public class UpdateQueryHelper<E> {
@@ -51,10 +48,10 @@ public class UpdateQueryHelper<E> {
   }
 
   public List<EntityPropertyDesc<E, ?>> getTargetPropertyDescs(E entity) {
-    int capacity = entityDesc.getEntityPropertyDescs().size();
+    var capacity = entityDesc.getEntityPropertyDescs().size();
     List<EntityPropertyDesc<E, ?>> results = new ArrayList<>(capacity);
-    E originalStates = entityDesc.getOriginalStates(entity);
-    for (EntityPropertyDesc<E, ?> propertyDesc : entityDesc.getEntityPropertyDescs()) {
+    var originalStates = entityDesc.getOriginalStates(entity);
+    for (var propertyDesc : entityDesc.getEntityPropertyDescs()) {
       if (!propertyDesc.isUpdatable()) {
         continue;
       }
@@ -65,7 +62,7 @@ public class UpdateQueryHelper<E> {
         continue;
       }
       if (nullExcluded) {
-        Property<E, ?> property = propertyDesc.createProperty();
+        var property = propertyDesc.createProperty();
         property.load(entity);
         if (property.getWrapper().get() == null) {
           continue;
@@ -74,7 +71,7 @@ public class UpdateQueryHelper<E> {
       if (unchangedPropertyIncluded
           || originalStates == null
           || isChanged(entity, originalStates, propertyDesc)) {
-        String name = propertyDesc.getName();
+        var name = propertyDesc.getName();
         if (!isTargetPropertyName(name)) {
           continue;
         }
@@ -86,9 +83,9 @@ public class UpdateQueryHelper<E> {
 
   protected boolean isTargetPropertyName(String name) {
     if (includedPropertyNames.length > 0) {
-      for (String includedName : includedPropertyNames) {
+      for (var includedName : includedPropertyNames) {
         if (includedName.equals(name)) {
-          for (String excludedName : excludedPropertyNames) {
+          for (var excludedName : excludedPropertyNames) {
             if (excludedName.equals(name)) {
               return false;
             }
@@ -99,7 +96,7 @@ public class UpdateQueryHelper<E> {
       return false;
     }
     if (excludedPropertyNames.length > 0) {
-      for (String excludedName : excludedPropertyNames) {
+      for (var excludedName : excludedPropertyNames) {
         if (excludedName.equals(name)) {
           return false;
         }
@@ -110,8 +107,8 @@ public class UpdateQueryHelper<E> {
   }
 
   protected boolean isChanged(E entity, E originalStates, EntityPropertyDesc<E, ?> propertyDesc) {
-    Wrapper<?> wrapper = propertyDesc.createProperty().load(entity).getWrapper();
-    Wrapper<?> originalWrapper = propertyDesc.createProperty().load(originalStates).getWrapper();
+    var wrapper = propertyDesc.createProperty().load(entity).getWrapper();
+    var originalWrapper = propertyDesc.createProperty().load(originalStates).getWrapper();
     return !wrapper.hasEqualValue(originalWrapper.get());
   }
 
@@ -120,10 +117,10 @@ public class UpdateQueryHelper<E> {
       List<EntityPropertyDesc<E, ?>> targetPropertyDescs,
       VersionPropertyDesc<E, ?, ?> versionPropertyDesc,
       SqlContext context) {
-    Dialect dialect = config.getDialect();
-    Naming naming = config.getNaming();
-    for (EntityPropertyDesc<E, ?> propertyDesc : targetPropertyDescs) {
-      Property<E, ?> property = propertyDesc.createProperty();
+    var dialect = config.getDialect();
+    var naming = config.getNaming();
+    for (var propertyDesc : targetPropertyDescs) {
+      var property = propertyDesc.createProperty();
       property.load(entity);
       context.appendSql(propertyDesc.getColumnName(naming::apply, dialect::applyQuote));
       context.appendSql(" = ");

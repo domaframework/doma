@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.VariableElement;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -78,7 +77,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public String getCatalogValue() {
-    String value = AnnotationValueUtil.toString(catalog);
+    var value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
       throw new AptIllegalStateException(CATALOG);
     }
@@ -86,7 +85,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public String getSchemaValue() {
-    String value = AnnotationValueUtil.toString(schema);
+    var value = AnnotationValueUtil.toString(schema);
     if (value == null) {
       throw new AptIllegalStateException(SCHEMA);
     }
@@ -94,7 +93,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public String getNameValue() {
-    String value = AnnotationValueUtil.toString(name);
+    var value = AnnotationValueUtil.toString(name);
     if (value == null || value.isEmpty()) {
       return defaultName;
     }
@@ -102,7 +101,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public boolean getQuoteValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(quote);
+    var value = AnnotationValueUtil.toBoolean(quote);
     if (value == null) {
       throw new AptIllegalStateException(QUOTE);
     }
@@ -110,7 +109,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public int getQueryTimeoutValue() {
-    Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+    var value = AnnotationValueUtil.toInteger(queryTimeout);
     if (value == null) {
       throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
@@ -118,7 +117,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public MapKeyNamingType getMapKeyNamingValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
     if (enumConstant == null) {
       throw new AptIllegalStateException(MAP_KEY_NAMING);
     }
@@ -126,7 +125,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public boolean getEnsureResultMappingValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
+    var value = AnnotationValueUtil.toBoolean(ensureResultMapping);
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }
@@ -134,7 +133,7 @@ public class FunctionAnnot extends AbstractAnnot {
   }
 
   public SqlLogType getSqlLogValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
       throw new AptIllegalStateException(SQL_LOG);
     }

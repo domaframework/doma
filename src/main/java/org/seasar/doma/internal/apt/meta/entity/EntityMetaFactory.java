@@ -2,13 +2,25 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.NestingKind;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
@@ -20,7 +32,6 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
-import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -51,12 +62,12 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
   @Override
   public EntityMeta createTypeElementMeta() {
-    EntityMeta entityMeta = new EntityMeta(entityAnnot, entityElement);
+    var entityMeta = new EntityMeta(entityAnnot, entityElement);
     entityMeta.setNamingType(resolveNamingType());
     entityMeta.setImmutable(resolveImmutable());
     entityMeta.setEntityTypeName(ctx.getTypes().getTypeName(entityElement.asType()));
 
-    Strategy strategy = createStrategy(entityMeta);
+    var strategy = createStrategy(entityMeta);
     strategy.doClass(entityMeta);
     strategy.doFields(entityMeta);
     strategy.validateGeneratedId(entityMeta);
@@ -66,12 +77,11 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
   }
 
   private Strategy createStrategy(EntityMeta entityMeta) {
-    ValueAnnot valueAnnot = ctx.getAnnots().newValueAnnot(entityElement);
+    var valueAnnot = ctx.getAnnots().newValueAnnot(entityElement);
     if (valueAnnot != null) {
       return new ValueStrategy(valueAnnot);
     }
-    AllArgsConstructorAnnot allArgsConstructorAnnot =
-        ctx.getAnnots().newAllArgsConstructorAnnot(entityElement);
+    var allArgsConstructorAnnot = ctx.getAnnots().newAllArgsConstructorAnnot(entityElement);
     if (allArgsConstructorAnnot != null) {
       return new AllArgsConstructorStrategy(allArgsConstructorAnnot);
     }
@@ -108,7 +118,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
   }
 
   private boolean resolveImmutable() {
-    List<Boolean> values =
+    var values =
         getEntityAnnotationElementValues(EntityAnnot.IMMUTABLE)
             .map(AnnotationValueUtil::toBoolean)
             .peek(
@@ -172,22 +182,22 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     private void validateEnclosingElement(Element element) {
-      TypeElement typeElement = ctx.getElements().toTypeElement(element);
+      var typeElement = ctx.getElements().toTypeElement(element);
       if (typeElement == null) {
         return;
       }
-      String simpleName = typeElement.getSimpleName().toString();
+      var simpleName = typeElement.getSimpleName().toString();
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
           || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
         throw new AptException(
             Message.DOMA4317, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
-      NestingKind nestingKind = typeElement.getNestingKind();
+      var nestingKind = typeElement.getNestingKind();
       if (nestingKind == NestingKind.TOP_LEVEL) {
         //noinspection UnnecessaryReturnStatement
         return;
       } else if (nestingKind == NestingKind.MEMBER) {
-        Set<Modifier> modifiers = typeElement.getModifiers();
+        var modifiers = typeElement.getModifiers();
         if (modifiers.containsAll(Arrays.asList(Modifier.STATIC, Modifier.PUBLIC))) {
           validateEnclosingElement(typeElement.getEnclosingElement());
         } else {
@@ -201,15 +211,15 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     private void doEntityListener(EntityMeta entityMeta) {
-      TypeMirror listenerType = entityAnnot.getListenerValue();
-      TypeElement listenerElement = ctx.getTypes().toTypeElement(listenerType);
+      var listenerType = entityAnnot.getListenerValue();
+      var listenerElement = ctx.getTypes().toTypeElement(listenerType);
       if (listenerElement == null) {
         throw new AptIllegalStateException("listenerElement");
       }
       validateListener(listenerElement);
 
-      TypeMirror inheritedListenerType = resolveListener();
-      TypeElement inheritedListenerElement = ctx.getTypes().toTypeElement(inheritedListenerType);
+      var inheritedListenerType = resolveListener();
+      var inheritedListenerElement = ctx.getTypes().toTypeElement(inheritedListenerType);
       if (inheritedListenerElement == null) {
         throw new AptIllegalStateException("inheritedListenerElement");
       }
@@ -230,7 +240,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             new Object[] {listenerElement.getQualifiedName()});
       }
 
-      ExecutableElement constructor = ctx.getElements().getNoArgConstructor(listenerElement);
+      var constructor = ctx.getElements().getNoArgConstructor(listenerElement);
       if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
         throw new AptException(
             Message.DOMA4167,
@@ -247,7 +257,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     private void validateGenericEntityListener(TypeElement listenerElement) {
-      List<? extends TypeParameterElement> typeParams = listenerElement.getTypeParameters();
+      var typeParams = listenerElement.getTypeParameters();
       if (typeParams.size() == 0) {
         throw new AptIllegalStateException("typeParams size should be more than 0");
       }
@@ -258,7 +268,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getListener());
       }
-      TypeParameterElement typeParam = typeParams.get(0);
+      var typeParam = typeParams.get(0);
       for (TypeMirror bound : typeParam.getBounds()) {
         if (!ctx.getTypes().isAssignable(entityElement.asType(), bound)) {
           throw new AptException(
@@ -281,17 +291,17 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     private TypeParameterElement findListenerTypeParam(
         TypeElement listenerElement, int typeParamIndex) {
-      TypeParameterElement typeParam = listenerElement.getTypeParameters().get(typeParamIndex);
+      var typeParam = listenerElement.getTypeParameters().get(typeParamIndex);
 
       for (TypeMirror iface : listenerElement.getInterfaces()) {
-        DeclaredType declaredType = ctx.getTypes().toDeclaredType(iface);
+        var declaredType = ctx.getTypes().toDeclaredType(iface);
         if (declaredType == null) {
           continue;
         }
-        int i = -1;
+        var i = -1;
         for (TypeMirror typeArg : declaredType.getTypeArguments()) {
           i++;
-          TypeVariable typeVariable = ctx.getTypes().toTypeVariable(typeArg);
+          var typeVariable = ctx.getTypes().toTypeVariable(typeArg);
           if (typeVariable == null) {
             continue;
           }
@@ -299,11 +309,11 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             if (ctx.getTypes().isSameType(declaredType, EntityListener.class)) {
               return typeParam;
             }
-            TypeElement typeElement = ctx.getTypes().toTypeElement(declaredType);
+            var typeElement = ctx.getTypes().toTypeElement(declaredType);
             if (typeElement == null) {
               throw new AptIllegalStateException(declaredType.toString());
             }
-            TypeParameterElement candidate = findListenerTypeParam(typeElement, i);
+            var candidate = findListenerTypeParam(typeElement, i);
             if (candidate != null) {
               return candidate;
             }
@@ -311,15 +321,15 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         }
       }
 
-      TypeMirror superclass = listenerElement.getSuperclass();
-      DeclaredType declaredType = ctx.getTypes().toDeclaredType(superclass);
+      var superclass = listenerElement.getSuperclass();
+      var declaredType = ctx.getTypes().toDeclaredType(superclass);
       if (declaredType == null) {
         return null;
       }
-      int i = -1;
+      var i = -1;
       for (TypeMirror typeArg : declaredType.getTypeArguments()) {
         i++;
-        TypeVariable typeVariable = ctx.getTypes().toTypeVariable(typeArg);
+        var typeVariable = ctx.getTypes().toTypeVariable(typeArg);
         if (typeVariable == null) {
           continue;
         }
@@ -327,11 +337,11 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
           if (ctx.getTypes().isSameType(declaredType, EntityListener.class)) {
             return typeParam;
           }
-          TypeElement typeElement = ctx.getTypes().toTypeElement(declaredType);
+          var typeElement = ctx.getTypes().toTypeElement(declaredType);
           if (typeElement == null) {
             throw new AptIllegalStateException(declaredType.toString());
           }
-          TypeParameterElement candidate = findListenerTypeParam(typeElement, i);
+          var candidate = findListenerTypeParam(typeElement, i);
           if (candidate != null) {
             return candidate;
           }
@@ -342,8 +352,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     private void validateNonGenericEntityListener(TypeElement listenerElement) {
-      TypeMirror listenerType = listenerElement.asType();
-      TypeMirror argumentType = getListenerArgumentType(listenerType);
+      var listenerType = listenerElement.asType();
+      var argumentType = getListenerArgumentType(listenerType);
       if (argumentType == null) {
         throw new AptException(
             Message.DOMA4202,
@@ -363,8 +373,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     private void validateInheritedListener(
         EntityMeta entityMeta, TypeElement inheritedListenerElement) {
-      List<? extends TypeParameterElement> typeParams =
-          inheritedListenerElement.getTypeParameters();
+      var typeParams = inheritedListenerElement.getTypeParameters();
       if (typeParams.size() == 0) {
         throw new AptException(
             Message.DOMA4230,
@@ -374,7 +383,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
               inheritedListenerElement.getQualifiedName(), entityElement.getQualifiedName()
             });
       }
-      TypeParameterElement typeParam = typeParams.get(0);
+      var typeParam = typeParams.get(0);
       for (TypeMirror bound : typeParam.getBounds()) {
         if (!ctx.getTypes().isAssignable(entityElement.asType(), bound)) {
           throw new AptException(
@@ -397,17 +406,17 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
           continue;
         }
         if (ctx.getTypes().isSameType(supertype, EntityListener.class)) {
-          DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
+          var declaredType = ctx.getTypes().toDeclaredType(supertype);
           if (declaredType == null) {
             throw new AptIllegalStateException("declaredType");
           }
-          List<? extends TypeMirror> args = declaredType.getTypeArguments();
+          var args = declaredType.getTypeArguments();
           if (args.size() != 1) {
             return null;
           }
           return args.get(0);
         }
-        TypeMirror argumentType = getListenerArgumentType(supertype);
+        var argumentType = getListenerArgumentType(supertype);
         if (argumentType != null) {
           return argumentType;
         }
@@ -416,7 +425,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     private void doTable(EntityMeta entityMeta) {
-      TableAnnot tableAnnot = ctx.getAnnots().newTableAnnot(entityElement);
+      var tableAnnot = ctx.getAnnots().newTableAnnot(entityElement);
       if (tableAnnot == null) {
         return;
       }
@@ -424,7 +433,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     public void doFields(EntityMeta entityMeta) {
-      for (VariableElement fieldElement : getFields()) {
+      for (var fieldElement : getFields()) {
         try {
           if (fieldElement.getAnnotation(Transient.class) != null) {
             //noinspection UnnecessaryContinue
@@ -458,24 +467,22 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
           throw new AptException(Message.DOMA4135, fieldElement);
         }
       }
-      TypeElement enclosingElement =
-          ctx.getElements().toTypeElement(fieldElement.getEnclosingElement());
+      var enclosingElement = ctx.getElements().toTypeElement(fieldElement.getEnclosingElement());
       if (enclosingElement == null) {
         throw new AptIllegalStateException(fieldElement.toString());
       }
       if (entityMeta.isImmutable() && entityElement.equals(enclosingElement)) {
         throw new AptException(Message.DOMA4224, fieldElement);
       }
-      OriginalStatesMeta originalStatesMeta =
+      var originalStatesMeta =
           new OriginalStatesMeta(entityElement, fieldElement, enclosingElement);
       entityMeta.setOriginalStatesMeta(originalStatesMeta);
     }
 
     private void doEntityPropertyMeta(VariableElement fieldElement, EntityMeta entityMeta) {
       validateFieldAnnotation(fieldElement, entityMeta);
-      EntityPropertyMetaFactory propertyMetaFactory =
-          new EntityPropertyMetaFactory(ctx, fieldElement);
-      EntityPropertyMeta propertyMeta = propertyMetaFactory.createEntityPropertyMeta();
+      var propertyMetaFactory = new EntityPropertyMetaFactory(ctx, fieldElement);
+      var propertyMeta = propertyMetaFactory.createEntityPropertyMeta();
       if (propertyMeta.getIdGeneratorMeta() != null && entityMeta.hasGeneratedIdPropertyMeta()) {
         throw new AptException(Message.DOMA4037, fieldElement);
       }
@@ -489,8 +496,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     private void validateFieldAnnotation(VariableElement fieldElement, EntityMeta entityMeta) {
       TypeElement foundAnnotationTypeElement = null;
       for (AnnotationMirror annotation : fieldElement.getAnnotationMirrors()) {
-        DeclaredType declaredType = annotation.getAnnotationType();
-        TypeElement typeElement = ctx.getTypes().toTypeElement(declaredType);
+        var declaredType = annotation.getAnnotationType();
+        var typeElement = ctx.getTypes().toTypeElement(declaredType);
         if (typeElement.getAnnotation(EntityField.class) != null) {
           if (foundAnnotationTypeElement != null) {
             throw new AptException(
@@ -528,7 +535,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         return;
       }
       if (entityMeta.isImmutable()) {
-        EntityConstructorMeta constructorMeta = getConstructorMeta(entityMeta);
+        var constructorMeta = getConstructorMeta(entityMeta);
         if (constructorMeta == null) {
           throw new AptException(Message.DOMA4281, entityElement);
         }
@@ -536,7 +543,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
           throw new AptException(Message.DOMA4221, entityElement);
         }
       } else {
-        ExecutableElement constructor = ctx.getElements().getNoArgConstructor(entityElement);
+        var constructor = ctx.getElements().getNoArgConstructor(entityElement);
         if (constructor == null || constructor.getModifiers().contains(Modifier.PRIVATE)) {
           throw new AptException(Message.DOMA4124, entityElement);
         }
@@ -545,21 +552,20 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     private EntityConstructorMeta getConstructorMeta(EntityMeta entityMeta) {
       Map<String, EntityPropertyMeta> entityPropertyMetaMap = new HashMap<>();
-      for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
+      for (var propertyMeta : entityMeta.getAllPropertyMetas()) {
         entityPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
       }
       outer:
-      for (ExecutableElement constructor :
-          ElementFilter.constructorsIn(entityElement.getEnclosedElements())) {
+      for (var constructor : ElementFilter.constructorsIn(entityElement.getEnclosedElements())) {
         List<EntityPropertyMeta> entityPropertyMetaList = new ArrayList<>();
         for (VariableElement param : constructor.getParameters()) {
-          String name = ctx.getElements().getParameterName(param);
-          TypeMirror paramType = param.asType();
-          EntityPropertyMeta propertyMeta = entityPropertyMetaMap.get(name);
+          var name = ctx.getElements().getParameterName(param);
+          var paramType = param.asType();
+          var propertyMeta = entityPropertyMetaMap.get(name);
           if (propertyMeta == null) {
             continue outer;
           }
-          TypeMirror propertyType = propertyMeta.getType();
+          var propertyType = propertyMeta.getType();
           if (!ctx.getTypes().isSameType(paramType, propertyType)) {
             continue outer;
           }

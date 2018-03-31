@@ -1,6 +1,11 @@
 package org.seasar.doma.message;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ResourceBundle;
 import org.seasar.doma.DomaNullPointerException;
 
 /** A resource bundle for {@link MessageResource}. */
@@ -19,7 +24,7 @@ public abstract class AbstractMessageResourceBundle<M extends Enum<M> & MessageR
   @Override
   public Enumeration<String> getKeys() {
     List<String> keys = new LinkedList<>();
-    for (M messageResource : EnumSet.allOf(messageResourceClass)) {
+    for (var messageResource : EnumSet.allOf(messageResourceClass)) {
       keys.add(messageResource.getCode());
     }
     return Collections.enumeration(keys);

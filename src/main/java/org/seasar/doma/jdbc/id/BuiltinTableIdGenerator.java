@@ -1,8 +1,5 @@
 package org.seasar.doma.jdbc.id;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +7,10 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -90,7 +90,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
   }
 
   protected String createUpdateRawSql() {
-    StringBuilder buf = new StringBuilder(100);
+    var buf = new StringBuilder(100);
     buf.append("update ");
     buf.append(qualifiedTableName);
     buf.append(" set ");
@@ -104,7 +104,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
   }
 
   protected String createUpdateFormattedSql() {
-    StringBuilder buf = new StringBuilder(100);
+    var buf = new StringBuilder(100);
     buf.append("update ");
     buf.append(qualifiedTableName);
     buf.append(" set ");
@@ -122,7 +122,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
   }
 
   protected String createSelectRawSql() {
-    StringBuilder buf = new StringBuilder(100);
+    var buf = new StringBuilder(100);
     buf.append("select ");
     buf.append(valueColumnName);
     buf.append(" from ");
@@ -134,7 +134,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
   }
 
   protected String createSelectFormattedSql() {
-    StringBuilder buf = new StringBuilder(100);
+    var buf = new StringBuilder(100);
     buf.append("select ");
     buf.append(valueColumnName);
     buf.append(" from ");
@@ -149,9 +149,9 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
 
   @Override
   protected long getNewInitialValue(final IdGenerationConfig config) {
-    RequiresNewController controller = config.getRequiresNewController();
+    var controller = config.getRequiresNewController();
     try {
-      Long value =
+      var value =
           controller.requiresNew(
               () -> {
                 updateId(config, updateSql);
@@ -164,16 +164,16 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
   }
 
   protected void updateId(IdGenerationConfig config, PreparedSql sql) {
-    JdbcLogger logger = config.getJdbcLogger();
-    Connection connection = JdbcUtil.getConnection(config.getDataSource());
+    var logger = config.getJdbcLogger();
+    var connection = JdbcUtil.getConnection(config.getDataSource());
     try {
-      PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
+      var preparedStatement = JdbcUtil.prepareStatement(connection, sql);
       try {
         logger.logSql(getClass().getName(), "updateId", sql);
         setupOptions(config, preparedStatement);
         preparedStatement.setLong(1, allocationSize);
         preparedStatement.setString(2, pkColumnValue);
-        int rows = preparedStatement.executeUpdate();
+        var rows = preparedStatement.executeUpdate();
         if (rows != 1) {
           throw new JdbcException(Message.DOMA2017, config.getEntityDesc().getName());
         }
@@ -188,17 +188,17 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
   }
 
   protected long selectId(IdGenerationConfig config, PreparedSql sql) {
-    JdbcLogger logger = config.getJdbcLogger();
-    Connection connection = JdbcUtil.getConnection(config.getDataSource());
+    var logger = config.getJdbcLogger();
+    var connection = JdbcUtil.getConnection(config.getDataSource());
     try {
-      PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
+      var preparedStatement = JdbcUtil.prepareStatement(connection, sql);
       try {
         logger.logSql(getClass().getName(), "selectId", sql);
         setupOptions(config, preparedStatement);
         preparedStatement.setString(1, pkColumnValue);
-        ResultSet resultSet = preparedStatement.executeQuery();
+        var resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-          Object result = resultSet.getObject(1);
+          var result = resultSet.getObject(1);
           if (result instanceof Number) {
             return ((Number) result).longValue();
           }

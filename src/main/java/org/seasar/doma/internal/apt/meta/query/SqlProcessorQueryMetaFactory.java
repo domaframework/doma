@@ -5,8 +5,12 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
-import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.cttype.AnyCtType;
+import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
+import org.seasar.doma.internal.apt.cttype.ConfigCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.PreparedSqlCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.message.Message;
 
 public class SqlProcessorQueryMetaFactory
@@ -18,7 +22,7 @@ public class SqlProcessorQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    SqlProcessorQueryMeta queryMeta = createSqlContentQueryMeta();
+    var queryMeta = createSqlContentQueryMeta();
     if (queryMeta == null) {
       return null;
     }
@@ -31,11 +35,11 @@ public class SqlProcessorQueryMetaFactory
   }
 
   private SqlProcessorQueryMeta createSqlContentQueryMeta() {
-    SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnots().newSqlProcessorAnnot(methodElement);
+    var sqlProcessorAnnot = ctx.getAnnots().newSqlProcessorAnnot(methodElement);
     if (sqlProcessorAnnot == null) {
       return null;
     }
-    SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(methodElement);
+    var queryMeta = new SqlProcessorQueryMeta(methodElement);
     queryMeta.setSqlProcessorAnnot(sqlProcessorAnnot);
     queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
     return queryMeta;
@@ -44,7 +48,7 @@ public class SqlProcessorQueryMetaFactory
   @Override
   protected void doParameters(SqlProcessorQueryMeta queryMeta) {
     for (VariableElement parameter : methodElement.getParameters()) {
-      final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+      final var parameterMeta = createParameterMeta(parameter);
       parameterMeta.getCtType().accept(new ParamCtTypeVisitor(queryMeta, parameterMeta), null);
       queryMeta.addParameterMeta(parameterMeta);
       if (parameterMeta.isBindable()) {
@@ -53,7 +57,7 @@ public class SqlProcessorQueryMetaFactory
     }
 
     if (queryMeta.getBiFunctionCtType() == null) {
-      SqlProcessorAnnot sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
+      var sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
       throw new AptException(
           Message.DOMA4433, methodElement, sqlProcessorAnnot.getAnnotationMirror());
     }
@@ -61,11 +65,11 @@ public class SqlProcessorQueryMetaFactory
 
   @Override
   protected void doReturnType(SqlProcessorQueryMeta queryMeta) {
-    final QueryReturnMeta returnMeta = createReturnMeta();
+    final var returnMeta = createReturnMeta();
     queryMeta.setReturnMeta(returnMeta);
 
-    BiFunctionCtType biFunctionCtType = queryMeta.getBiFunctionCtType();
-    AnyCtType resultCtType = biFunctionCtType.getResultCtType();
+    var biFunctionCtType = queryMeta.getBiFunctionCtType();
+    var resultCtType = biFunctionCtType.getResultCtType();
     if (resultCtType == null || !isConvertibleReturnType(returnMeta, resultCtType)) {
       throw new AptException(Message.DOMA4436, methodElement, new Object[] {returnMeta.getType()});
     }

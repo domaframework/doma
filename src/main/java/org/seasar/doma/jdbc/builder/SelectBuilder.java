@@ -7,15 +7,37 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import org.seasar.doma.*;
-import org.seasar.doma.internal.jdbc.command.*;
+import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.Entity;
+import org.seasar.doma.FetchType;
+import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
+import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
+import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
+import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.MapStreamHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarResultListHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ScalarStreamHandler;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.NonSingleColumnException;
+import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.ResultMappingException;
+import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.SelectCommand;
-import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.EntityDescFactory;
 import org.seasar.doma.jdbc.query.SqlSelectQuery;
 import org.seasar.doma.message.Message;
@@ -208,9 +230,9 @@ public class SelectBuilder {
   }
 
   private <E> SelectBuilder appendParams(Class<E> elementClass, List<E> params, boolean literal) {
-    SelectBuilder builder = this;
-    int index = 0;
-    for (E param : params) {
+    var builder = this;
+    var index = 0;
+    for (var param : params) {
       builder = builder.appendParam(elementClass, param, literal).sql(", ");
       index++;
     }
@@ -250,10 +272,9 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getEntitySingleResult");
     }
-    EntityDesc<RESULT> entityDesc =
-        EntityDescFactory.getEntityDesc(resultClass, config.getClassHelper());
+    var entityDesc = EntityDescFactory.getEntityDesc(resultClass, config.getClassHelper());
     query.setEntityDesc(entityDesc);
-    EntitySingleResultHandler<RESULT> handler = new EntitySingleResultHandler<>(entityDesc);
+    var handler = new EntitySingleResultHandler<>(entityDesc);
     return execute(handler);
   }
 
@@ -285,11 +306,9 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getOptionalEntitySingleResult");
     }
-    EntityDesc<RESULT> entityDesc =
-        EntityDescFactory.getEntityDesc(resultClass, config.getClassHelper());
+    var entityDesc = EntityDescFactory.getEntityDesc(resultClass, config.getClassHelper());
     query.setEntityDesc(entityDesc);
-    OptionalEntitySingleResultHandler<RESULT> handler =
-        new OptionalEntitySingleResultHandler<>(entityDesc);
+    var handler = new OptionalEntitySingleResultHandler<>(entityDesc);
     return execute(handler);
   }
 
@@ -315,7 +334,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getScalarSingleResult");
     }
-    Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass", resultClass, false);
+    var supplier = createScalarSupplier("resultClass", resultClass, false);
     ResultSetHandler<RESULT> handler = new ScalarSingleResultHandler(supplier);
     return execute(handler);
   }
@@ -345,7 +364,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getOptionalScalarSingleResult");
     }
-    Supplier<Scalar<?, ?>> supplier = createScalarSupplier("resultClass", resultClass, true);
+    var supplier = createScalarSupplier("resultClass", resultClass, true);
     ResultSetHandler<Optional<RESULT>> handler = new ScalarSingleResultHandler(supplier);
     return execute(handler);
   }
@@ -368,7 +387,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getMapSingleResult");
     }
-    MapSingleResultHandler handler = new MapSingleResultHandler(mapKeyNamingType);
+    var handler = new MapSingleResultHandler(mapKeyNamingType);
     return execute(handler);
   }
 
@@ -391,7 +410,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getOptionalMapSingleResult");
     }
-    OptionalMapSingleResultHandler handler = new OptionalMapSingleResultHandler(mapKeyNamingType);
+    var handler = new OptionalMapSingleResultHandler(mapKeyNamingType);
     return execute(handler);
   }
 
@@ -422,8 +441,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getEntityResultList");
     }
-    EntityDesc<ELEMENT> entityDesc =
-        EntityDescFactory.getEntityDesc(elementClass, config.getClassHelper());
+    var entityDesc = EntityDescFactory.getEntityDesc(elementClass, config.getClassHelper());
     query.setEntityDesc(entityDesc);
     ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<>(entityDesc);
     return execute(handler);
@@ -454,7 +472,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getScalarResultList");
     }
-    Supplier<Scalar<?, ?>> supplier = createScalarSupplier("elementClass", elementClass, false);
+    var supplier = createScalarSupplier("elementClass", elementClass, false);
     ResultSetHandler<List<ELEMENT>> handler = new ScalarResultListHandler(supplier);
     return execute(handler);
   }
@@ -486,7 +504,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getOptionalScalarResultList");
     }
-    Supplier<Scalar<?, ?>> supplier = createScalarSupplier("elementClass", elementClass, true);
+    var supplier = createScalarSupplier("elementClass", elementClass, true);
     ResultSetHandler<List<Optional<ELEMENT>>> handler = new ScalarResultListHandler(supplier);
     return execute(handler);
   }
@@ -506,7 +524,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("getMapResultList");
     }
-    MapResultListHandler handler = new MapResultListHandler(mapKeyNamingType);
+    var handler = new MapResultListHandler(mapKeyNamingType);
     return execute(handler);
   }
 
@@ -572,8 +590,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("streamEntity");
     }
-    EntityDesc<TARGET> entityDesc =
-        EntityDescFactory.getEntityDesc(targetClass, config.getClassHelper());
+    var entityDesc = EntityDescFactory.getEntityDesc(targetClass, config.getClassHelper());
     query.setEntityDesc(entityDesc);
     ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(entityDesc, mapper);
     return execute(handler);
@@ -633,7 +650,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("streamScalar");
     }
-    Supplier<Scalar<?, ?>> supplier = createScalarSupplier("targetClass", targetClass, false);
+    var supplier = createScalarSupplier("targetClass", targetClass, false);
     ResultSetHandler<RESULT> handler = new ScalarStreamHandler(supplier, mapper);
     return execute(handler);
   }
@@ -693,7 +710,7 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("streamOptionalScalar");
     }
-    Supplier<Scalar<?, ?>> supplier = createScalarSupplier("targetClass", targetClass, true);
+    var supplier = createScalarSupplier("targetClass", targetClass, true);
     ResultSetHandler<RESULT> handler = new ScalarStreamHandler(supplier, mapper);
     return execute(handler);
   }
@@ -742,21 +759,21 @@ public class SelectBuilder {
     if (query.getMethodName() == null) {
       query.setCallerMethodName("streamMap");
     }
-    MapStreamHandler<RESULT> handler = new MapStreamHandler<>(mapKeyNamingType, mapper);
+    var handler = new MapStreamHandler<>(mapKeyNamingType, mapper);
     return execute(handler);
   }
 
   private <RESULT> RESULT execute(ResultSetHandler<RESULT> resultSetHandler) {
     prepare();
-    SelectCommand<RESULT> command = new SelectCommand<>(query, resultSetHandler);
-    RESULT result = command.execute();
+    var command = new SelectCommand<>(query, resultSetHandler);
+    var result = command.execute();
     query.complete();
     return result;
   }
 
   private void prepare() {
     query.clearParameters();
-    for (Param p : helper.getParams()) {
+    for (var p : helper.getParams()) {
       query.addParameter(p.name, p.paramClass, p.param);
     }
     query.setSqlNode(helper.getSqlNode());

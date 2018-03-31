@@ -15,7 +15,7 @@ public class ExternalHolderProcessorTest extends AptTestCase {
   }
 
   public void testNotHolderConverter() throws Exception {
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(NotHolderConverter.class);
     compile();
@@ -24,7 +24,7 @@ public class ExternalHolderProcessorTest extends AptTestCase {
   }
 
   public void testAbstruct() throws Exception {
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(AbstractHolderConverter.class);
     compile();
@@ -33,7 +33,7 @@ public class ExternalHolderProcessorTest extends AptTestCase {
   }
 
   public void testConstrutorNotFound() throws Exception {
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(ConstrutorNotFoundHolderConverter.class);
     compile();
@@ -42,7 +42,7 @@ public class ExternalHolderProcessorTest extends AptTestCase {
   }
 
   public void testNotPersistent() throws Exception {
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(NotPersistentValueObjectConverter.class);
     compile();
@@ -51,12 +51,12 @@ public class ExternalHolderProcessorTest extends AptTestCase {
   }
 
   public void testNestingValueObjectConverter() throws Exception {
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(NestingValueObjectConverter.class);
     compile();
 
-    String generatedClassName =
+    var generatedClassName =
         "__.org.seasar.doma.internal.apt.processor.holder._"
             + NestingValueObjectConverter.class.getSimpleName()
             + "__"
@@ -72,12 +72,12 @@ public class ExternalHolderProcessorTest extends AptTestCase {
 
   public void testValueObjectConverter() throws Exception {
     Class<?> target = ValueObjectConverter.class;
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
 
-    String generatedClassName =
+    var generatedClassName =
         "__.org.seasar.doma.internal.apt.processor.holder._" + ValueObject.class.getSimpleName();
     try {
       assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
@@ -90,11 +90,11 @@ public class ExternalHolderProcessorTest extends AptTestCase {
 
   public void testParameterizedValueObjectConverter() throws Exception {
     Class<?> target = ParameterizedValueObjectConverter.class;
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
-    String generatedClassName =
+    var generatedClassName =
         "__.org.seasar.doma.internal.apt.processor.holder._"
             + ParameterizedValueObject.class.getSimpleName();
     try {
@@ -108,7 +108,7 @@ public class ExternalHolderProcessorTest extends AptTestCase {
 
   public void testIllegalParameterizedValueObjectConverter() throws Exception {
     Class<?> target = IllegalParameterizedValueObjectConverter.class;
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
     compile();
@@ -117,7 +117,7 @@ public class ExternalHolderProcessorTest extends AptTestCase {
   }
 
   public void testBytesConversion() throws Exception {
-    ExternalHolderProcessor processor = new ExternalHolderProcessor();
+    var processor = new ExternalHolderProcessor();
     addProcessor(processor);
     addCompilationUnit(UUIDConverter.class);
     compile();

@@ -31,7 +31,7 @@ public class JdbcOutParameterGetter implements JdbcMappingFunction {
     if (jdbcType == null) {
       throw new DomaNullPointerException("jdbcType");
     }
-    V value = jdbcType.getValue(callableStatement, index);
+    var value = jdbcType.getValue(callableStatement, index);
     wrapper.set(value);
     return null;
   }

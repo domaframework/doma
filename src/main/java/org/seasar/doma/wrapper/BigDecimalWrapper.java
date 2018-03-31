@@ -29,7 +29,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal>
 
   @Override
   public void increment() {
-    BigDecimal value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value.add(BigDecimal.ONE));
     }
@@ -37,7 +37,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal>
 
   @Override
   public void decrement() {
-    BigDecimal value = doGet();
+    var value = doGet();
     if (value != null) {
       doSet(value.subtract(BigDecimal.ONE));
     }

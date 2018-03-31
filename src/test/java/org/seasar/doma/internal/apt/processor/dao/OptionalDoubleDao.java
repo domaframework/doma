@@ -6,7 +6,14 @@ import java.util.OptionalDouble;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
-import org.seasar.doma.*;
+import org.seasar.doma.Dao;
+import org.seasar.doma.In;
+import org.seasar.doma.InOut;
+import org.seasar.doma.Out;
+import org.seasar.doma.Procedure;
+import org.seasar.doma.ResultSet;
+import org.seasar.doma.Select;
+import org.seasar.doma.SelectType;
 import org.seasar.doma.jdbc.Reference;
 
 @Dao(config = MyConfig.class)

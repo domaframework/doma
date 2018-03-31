@@ -2,7 +2,6 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import java.util.Map;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.ObjectWrapper;
 
@@ -39,10 +37,10 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
     if (indexMap == null) {
       indexMap = createIndexMap(resultSet.getMetaData());
     }
-    for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
-      Integer index = entry.getKey();
-      String key = entry.getValue();
-      BasicScalar<Object> scalar = new BasicScalar<>(ObjectWrapper::new, false);
+    for (var entry : indexMap.entrySet()) {
+      var index = entry.getKey();
+      var key = entry.getValue();
+      var scalar = new BasicScalar<>(ObjectWrapper::new, false);
       fetch(resultSet, scalar, index, jdbcMappingVisitor);
       map.put(key, scalar.get());
     }
@@ -51,13 +49,13 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
   protected HashMap<Integer, String> createIndexMap(ResultSetMetaData resultSetMeta)
       throws SQLException {
-    MapKeyNaming naming = query.getConfig().getMapKeyNaming();
-    Method method = query.getMethod();
+    var naming = query.getConfig().getMapKeyNaming();
+    var method = query.getMethod();
     HashMap<Integer, String> indexMap = new HashMap<>();
-    int count = resultSetMeta.getColumnCount();
-    for (int i = 1; i < count + 1; i++) {
-      String columnName = resultSetMeta.getColumnLabel(i);
-      String key = naming.apply(method, mapKeyNamingType, columnName);
+    var count = resultSetMeta.getColumnCount();
+    for (var i = 1; i < count + 1; i++) {
+      var columnName = resultSetMeta.getColumnLabel(i);
+      var key = naming.apply(method, mapKeyNamingType, columnName);
       indexMap.put(i, key);
     }
     return indexMap;

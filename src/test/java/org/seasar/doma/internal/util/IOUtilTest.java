@@ -19,14 +19,14 @@ public class IOUtilTest extends TestCase {
   }
 
   public void testEndWith_true() throws Exception {
-    File file = new File("/fuga/META-INF/piyo/HogeDao/selectById.sql");
-    String pathname = "META-INF/piyo/HogeDao/selectById.sql";
+    var file = new File("/fuga/META-INF/piyo/HogeDao/selectById.sql");
+    var pathname = "META-INF/piyo/HogeDao/selectById.sql";
     assertTrue(IOUtil.endsWith(file, pathname));
   }
 
   public void testEndWith_false() throws Exception {
-    File file = new File("/fuga/META-INF/piyo/hogeDao/selectById.sql");
-    String pathname = "META-INF/piyo/HogeDao/selectById.sql";
+    var file = new File("/fuga/META-INF/piyo/hogeDao/selectById.sql");
+    var pathname = "META-INF/piyo/HogeDao/selectById.sql";
     assertFalse(IOUtil.endsWith(file, pathname));
   }
 }

@@ -1,6 +1,8 @@
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.net.URL;
 import org.seasar.doma.internal.Constants;
@@ -45,7 +47,7 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
     assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
     assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
 
-    String dbmsSpecificPath =
+    var dbmsSpecificPath =
         ScriptFileUtil.convertToDbmsSpecificPath(scriptFilePath, config.getDialect());
     scriptFileUrl = ResourceUtil.getResource(dbmsSpecificPath);
     if (scriptFileUrl != null) {

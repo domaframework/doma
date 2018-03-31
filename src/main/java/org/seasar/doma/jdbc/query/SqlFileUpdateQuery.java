@@ -162,8 +162,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
     }
 
     protected void preUpdate() {
-      SqlFilePreUpdateContext<E> context =
-          new SqlFilePreUpdateContext<>(entityDesc, method, config);
+      var context = new SqlFilePreUpdateContext<>(entityDesc, method, config);
       entityDesc.preUpdate(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();
@@ -180,8 +179,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
     }
 
     protected void postUpdate() {
-      SqlFilePostUpdateContext<E> context =
-          new SqlFilePostUpdateContext<>(entityDesc, method, config);
+      var context = new SqlFilePostUpdateContext<>(entityDesc, method, config);
       entityDesc.postUpdate(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();

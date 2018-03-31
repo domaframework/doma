@@ -65,9 +65,9 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
 
   protected boolean isTargetPropertyName(String name) {
     if (includedPropertyNames.length > 0) {
-      for (String includedName : includedPropertyNames) {
+      for (var includedName : includedPropertyNames) {
         if (includedName.equals(name)) {
-          for (String excludedName : excludedPropertyNames) {
+          for (var excludedName : excludedPropertyNames) {
             if (excludedName.equals(name)) {
               return false;
             }
@@ -78,7 +78,7 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
       return false;
     }
     if (excludedPropertyNames.length > 0) {
-      for (String excludedName : excludedPropertyNames) {
+      for (var excludedName : excludedPropertyNames) {
         if (excludedName.equals(name)) {
           return false;
         }

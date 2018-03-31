@@ -8,7 +8,7 @@ public class ArrayCreateQueryTest extends TestCase {
   private final MockConfig config = new MockConfig();
 
   public void testPrepare() throws Exception {
-    ArrayCreateQuery query = new ArrayCreateQuery();
+    var query = new ArrayCreateQuery();
     query.setConfig(config);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");

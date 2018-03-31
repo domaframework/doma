@@ -15,7 +15,7 @@ public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQue
     if (!methodElement.isDefault()) {
       return null;
     }
-    DefaultQueryMeta queryMeta = new DefaultQueryMeta(methodElement);
+    var queryMeta = new DefaultQueryMeta(methodElement);
     queryMeta.setQueryKind(QueryKind.DEFAULT);
     doTypeParameters(queryMeta);
     doParameters(queryMeta);
@@ -27,7 +27,7 @@ public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQue
   @Override
   protected void doParameters(DefaultQueryMeta queryMeta) {
     for (VariableElement parameter : methodElement.getParameters()) {
-      QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+      var parameterMeta = createParameterMeta(parameter);
       queryMeta.addParameterMeta(parameterMeta);
       if (parameterMeta.isBindable()) {
         queryMeta.addBindableParameterCtType(parameterMeta.getName(), parameterMeta.getCtType());
@@ -37,7 +37,7 @@ public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQue
 
   @Override
   protected void doReturnType(DefaultQueryMeta queryMeta) {
-    QueryReturnMeta resultMeta = createReturnMeta();
+    var resultMeta = createReturnMeta();
     queryMeta.setReturnMeta(resultMeta);
   }
 }

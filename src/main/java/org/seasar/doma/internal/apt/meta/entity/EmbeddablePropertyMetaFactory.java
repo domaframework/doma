@@ -6,8 +6,12 @@ import java.util.List;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.ColumnAnnot;
-import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.cttype.AnyCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
+import org.seasar.doma.internal.apt.cttype.HolderCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.message.Message;
 
 public class EmbeddablePropertyMetaFactory {
@@ -23,15 +27,15 @@ public class EmbeddablePropertyMetaFactory {
   }
 
   public EmbeddablePropertyMeta createEmbeddablePropertyMeta() {
-    String name = fieldElement.getSimpleName().toString();
-    CtType ctType = resolveCtType();
-    ColumnAnnot columnAnnot = ctx.getAnnots().newColumnAnnot(fieldElement);
+    var name = fieldElement.getSimpleName().toString();
+    var ctType = resolveCtType();
+    var columnAnnot = ctx.getAnnots().newColumnAnnot(fieldElement);
     return new EmbeddablePropertyMeta(fieldElement, name, ctType, columnAnnot);
   }
 
   private CtType resolveCtType() {
-    CtTypes ctTypes = ctx.getCtTypes();
-    CtType ctType =
+    var ctTypes = ctx.getCtTypes();
+    var ctType =
         ctTypes.toCtType(
             fieldElement.asType(),
             List.of(

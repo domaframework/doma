@@ -74,8 +74,8 @@ public final class AssertionUtil {
     if (o == null) {
       throw new AssertionError("Null. index = 0");
     }
-    for (int i = 0; i < objects.length; i++) {
-      Object object = objects[i];
+    for (var i = 0; i < objects.length; i++) {
+      var object = objects[i];
       if (object == null) {
         throw new AssertionError("Null. index = " + (i + 1));
       }
@@ -86,7 +86,7 @@ public final class AssertionUtil {
     if (map == null) {
       throw new AssertionError("The map is null");
     }
-    V value = map.get(key);
+    var value = map.get(key);
     if (value == null) {
       throw new AssertionError("The value is null. key = [" + key + "].");
     }
@@ -95,8 +95,8 @@ public final class AssertionUtil {
 
   public static void assertTrue(boolean evalResult, Object... messages) {
     if (!evalResult) {
-      StringBuilder buf = new StringBuilder();
-      for (Object message : messages) {
+      var buf = new StringBuilder();
+      for (var message : messages) {
         buf.append(message.toString());
         buf.append(", ");
       }

@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNullValue;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.VariableElement;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
@@ -103,7 +102,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public int getQueryTimeoutValue() {
-    Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+    var value = AnnotationValueUtil.toInteger(queryTimeout);
     if (value == null) {
       throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
@@ -111,7 +110,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public int getFetchSizeValue() {
-    Integer value = AnnotationValueUtil.toInteger(fetchSize);
+    var value = AnnotationValueUtil.toInteger(fetchSize);
     if (value == null) {
       throw new AptIllegalStateException(FETCH_SIZE);
     }
@@ -119,7 +118,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public int getMaxRowsValue() {
-    Integer value = AnnotationValueUtil.toInteger(maxRows);
+    var value = AnnotationValueUtil.toInteger(maxRows);
     if (value == null) {
       throw new AptIllegalStateException(MAX_ROWS);
     }
@@ -127,7 +126,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public SelectType getStrategyValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(strategy);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(strategy);
     if (enumConstant == null) {
       throw new AptIllegalStateException(STRATEGY);
     }
@@ -135,7 +134,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public FetchType getFetchValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(fetch);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(fetch);
     if (enumConstant == null) {
       throw new AptIllegalStateException(FETCH);
     }
@@ -143,7 +142,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public boolean getEnsureResultValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(ensureResult);
+    var value = AnnotationValueUtil.toBoolean(ensureResult);
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT);
     }
@@ -151,7 +150,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public boolean getEnsureResultMappingValue() {
-    Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
+    var value = AnnotationValueUtil.toBoolean(ensureResultMapping);
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }
@@ -159,7 +158,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public MapKeyNamingType getMapKeyNamingValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
     if (enumConstant == null) {
       throw new AptIllegalStateException(MAP_KEY_NAMING);
     }
@@ -167,7 +166,7 @@ public class SelectAnnot extends AbstractAnnot {
   }
 
   public SqlLogType getSqlLogValue() {
-    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
+    var enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
       throw new AptIllegalStateException(SQL_LOG);
     }

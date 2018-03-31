@@ -101,7 +101,7 @@ public final class _NotTopLevelEntity__Hoge
       NotTopLevelEntity.Hoge entity,
       org.seasar.doma.jdbc.entity.PreInsertContext<NotTopLevelEntity.Hoge> context) {
     Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-    org.seasar.doma.jdbc.entity.NullEntityListener __listener =
+    var __listener =
         context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
     __listener.preInsert(entity, context);
   }
@@ -112,7 +112,7 @@ public final class _NotTopLevelEntity__Hoge
       NotTopLevelEntity.Hoge entity,
       org.seasar.doma.jdbc.entity.PreUpdateContext<NotTopLevelEntity.Hoge> context) {
     Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-    org.seasar.doma.jdbc.entity.NullEntityListener __listener =
+    var __listener =
         context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
     __listener.preUpdate(entity, context);
   }
@@ -123,7 +123,7 @@ public final class _NotTopLevelEntity__Hoge
       NotTopLevelEntity.Hoge entity,
       org.seasar.doma.jdbc.entity.PreDeleteContext<NotTopLevelEntity.Hoge> context) {
     Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-    org.seasar.doma.jdbc.entity.NullEntityListener __listener =
+    var __listener =
         context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
     __listener.preDelete(entity, context);
   }
@@ -134,7 +134,7 @@ public final class _NotTopLevelEntity__Hoge
       NotTopLevelEntity.Hoge entity,
       org.seasar.doma.jdbc.entity.PostInsertContext<NotTopLevelEntity.Hoge> context) {
     Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-    org.seasar.doma.jdbc.entity.NullEntityListener __listener =
+    var __listener =
         context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
     __listener.postInsert(entity, context);
   }
@@ -145,7 +145,7 @@ public final class _NotTopLevelEntity__Hoge
       NotTopLevelEntity.Hoge entity,
       org.seasar.doma.jdbc.entity.PostUpdateContext<NotTopLevelEntity.Hoge> context) {
     Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-    org.seasar.doma.jdbc.entity.NullEntityListener __listener =
+    var __listener =
         context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
     __listener.postUpdate(entity, context);
   }
@@ -156,7 +156,7 @@ public final class _NotTopLevelEntity__Hoge
       NotTopLevelEntity.Hoge entity,
       org.seasar.doma.jdbc.entity.PostDeleteContext<NotTopLevelEntity.Hoge> context) {
     Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
-    org.seasar.doma.jdbc.entity.NullEntityListener __listener =
+    var __listener =
         context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
     __listener.postDelete(entity, context);
   }
@@ -195,7 +195,7 @@ public final class _NotTopLevelEntity__Hoge
   public NotTopLevelEntity.Hoge newEntity(
       java.util.Map<String, org.seasar.doma.jdbc.entity.Property<NotTopLevelEntity.Hoge, ?>>
           __args) {
-    NotTopLevelEntity.Hoge entity = new NotTopLevelEntity.Hoge();
+    var entity = new NotTopLevelEntity.Hoge();
     return entity;
   }
 

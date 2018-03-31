@@ -11,7 +11,10 @@ import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 
 public abstract class SqlFileModifyQuery extends AbstractQuery implements ModifyQuery {
@@ -50,12 +53,12 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements Modify
   }
 
   protected void prepareSql() {
-    SqlFile sqlFile =
+    var sqlFile =
         config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
-    ExpressionEvaluator evaluator =
+    var evaluator =
         new ExpressionEvaluator(
             parameters, config.getDialect().getExpressionFunctions(), config.getClassHelper());
-    NodePreparedSqlBuilder sqlBuilder =
+    var sqlBuilder =
         new NodePreparedSqlBuilder(
             config,
             kind,

@@ -14,10 +14,10 @@ public class MysqlCountGettingTransformer extends StandardCountGettingTransforme
     }
     processed = true;
 
-    SelectClauseNode select = new SelectClauseNode("select");
+    var select = new SelectClauseNode("select");
     select.appendNode(new FragmentNode(" found_rows()"));
 
-    SelectStatementNode result = new SelectStatementNode();
+    var result = new SelectStatementNode();
     result.setSelectClauseNode(select);
     return result;
   }

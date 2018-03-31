@@ -1,6 +1,5 @@
 package org.seasar.doma.jdbc.holder;
 
-import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Holder;
@@ -44,10 +43,10 @@ public final class HolderDescFactory {
       throw new DomaIllegalArgumentException(
           "holderClass", Message.DOMA2205.getMessage(holderClass.getName()));
     }
-    String holderDescClassName = Conventions.createDescClassName(holderClass.getName());
+    var holderDescClassName = Conventions.createDescClassName(holderClass.getName());
     try {
       Class<HOLDER> clazz = classHelper.forName(holderDescClassName);
-      Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
+      var method = ClassUtil.getMethod(clazz, "getSingletonInternal");
       return MethodUtil.invoke(method, null);
     } catch (WrapException e) {
       throw new HolderDescNotFoundException(
@@ -81,10 +80,10 @@ public final class HolderDescFactory {
     if (classHelper == null) {
       throw new DomaNullPointerException("classHelper");
     }
-    String holderDescClassName = Conventions.createExternalDescClassName(holderClass.getName());
+    var holderDescClassName = Conventions.createExternalDescClassName(holderClass.getName());
     try {
       Class<HOLDER> clazz = classHelper.forName(holderDescClassName);
-      Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
+      var method = ClassUtil.getMethod(clazz, "getSingletonInternal");
       return MethodUtil.invoke(method, null);
     } catch (Exception e) {
       return null;
