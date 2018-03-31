@@ -22,11 +22,11 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
+import org.seasar.doma.internal.apt.annot.DaoAnnot;
+import org.seasar.doma.internal.apt.annot.SuppressAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.*;
-import org.seasar.doma.internal.apt.reflection.AnnotateWithReflection;
-import org.seasar.doma.internal.apt.reflection.DaoReflection;
-import org.seasar.doma.internal.apt.reflection.SuppressReflection;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -39,9 +39,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private final TypeElement daoElement;
 
-  private final DaoReflection daoReflection;
+  private final DaoAnnot daoAnnot;
 
-  private final SuppressReflection suppressReflection;
+  private final SuppressAnnot suppressAnnot;
 
   private boolean error;
 
@@ -49,11 +49,11 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     assertNotNull(ctx, interfaceElement);
     this.ctx = ctx;
     this.daoElement = interfaceElement;
-    daoReflection = ctx.getReflections().newDaoReflection(interfaceElement);
-    if (daoReflection == null) {
-      throw new AptIllegalStateException("daoReflection");
+    daoAnnot = ctx.getAnnots().newDaoAnnot(interfaceElement);
+    if (daoAnnot == null) {
+      throw new AptIllegalStateException("daoAnnot");
     }
-    suppressReflection = ctx.getReflections().newSuppressReflection(interfaceElement);
+    suppressAnnot = ctx.getAnnots().newSuppressAnnot(interfaceElement);
   }
 
   @Override
@@ -61,7 +61,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     validateInterface();
     validateName();
 
-    DaoMeta daoMeta = new DaoMeta(daoReflection, daoElement);
+    DaoMeta daoMeta = new DaoMeta(daoAnnot, daoElement);
     doAnnotateWith(daoMeta);
     doParentDao(daoMeta);
     doConfig(daoMeta);
@@ -72,7 +72,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private void validateInterface() {
     if (!daoElement.getKind().isInterface()) {
-      throw new AptException(Message.DOMA4014, daoElement, daoReflection.getAnnotationMirror());
+      throw new AptException(Message.DOMA4014, daoElement, daoAnnot.getAnnotationMirror());
     }
     if (daoElement.getNestingKind().isNested()) {
       throw new AptException(Message.DOMA4017, daoElement);
@@ -91,10 +91,10 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private void doConfig(DaoMeta daoMeta) {
-    if (!daoReflection.hasUserDefinedConfig()) {
+    if (!daoAnnot.hasUserDefinedConfig()) {
       return;
     }
-    TypeElement configElement = ctx.getTypes().toTypeElement(daoReflection.getConfigValue());
+    TypeElement configElement = ctx.getTypes().toTypeElement(daoAnnot.getConfigValue());
     if (configElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement.");
     }
@@ -109,8 +109,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         throw new AptException(
             Message.DOMA4163,
             daoElement,
-            daoReflection.getAnnotationMirror(),
-            daoReflection.getConfig(),
+            daoAnnot.getAnnotationMirror(),
+            daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName()});
       }
       ExecutableElement constructor = ctx.getElements().getNoArgConstructor(configElement);
@@ -132,8 +132,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 throw new AptException(
                     Message.DOMA4164,
                     daoElement,
-                    daoReflection.getAnnotationMirror(),
-                    daoReflection.getConfig(),
+                    daoAnnot.getAnnotationMirror(),
+                    daoAnnot.getConfig(),
                     new Object[] {configElement.getQualifiedName()});
               });
     }
@@ -151,17 +151,16 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
               throw new AptException(
                   Message.DOMA4255,
                   daoElement,
-                  daoReflection.getAnnotationMirror(),
-                  daoReflection.getConfig(),
+                  daoAnnot.getAnnotationMirror(),
+                  daoAnnot.getConfig(),
                   new Object[] {configElement.getQualifiedName(), methodName});
             });
   }
 
   private void doAnnotateWith(DaoMeta daoMeta) {
-    AnnotateWithReflection annotateWithReflection =
-        ctx.getReflections().newAnnotateWithReflection(daoElement);
-    if (annotateWithReflection != null) {
-      daoMeta.setAnnotateWithReflection(annotateWithReflection);
+    AnnotateWithAnnot annotateWithAnnot = ctx.getAnnots().newAnnotateWithAnnot(daoElement);
+    if (annotateWithAnnot != null) {
+      daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
     }
   }
 
@@ -179,8 +178,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 })
             .collect(toList());
     for (TypeElement typeElement : interfaces) {
-      DaoReflection daoReflection = ctx.getReflections().newDaoReflection(typeElement);
-      if (daoReflection == null) {
+      DaoAnnot daoAnnot = ctx.getAnnots().newDaoAnnot(typeElement);
+      if (daoAnnot == null) {
         ExecutableElement nonDefaultMethod = findNonDefaultMethod(typeElement);
         if (nonDefaultMethod == null) {
           continue;
@@ -191,7 +190,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       if (daoMeta.getParentDaoMeta() != null) {
         throw new AptException(Message.DOMA4188, daoElement);
       }
-      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoReflection, typeElement);
+      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot, typeElement);
       daoMeta.setParentDaoMeta(parentDaoMeta);
     }
   }
@@ -363,8 +362,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private boolean isSuppressed(Message message) {
-    if (suppressReflection != null) {
-      return suppressReflection.isSuppressed(message);
+    if (suppressAnnot != null) {
+      return suppressAnnot.isSuppressed(message);
     }
     return false;
   }

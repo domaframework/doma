@@ -6,9 +6,9 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.SelectAnnot;
+import org.seasar.doma.internal.apt.annot.SuppressAnnot;
 import org.seasar.doma.internal.apt.cttype.*;
-import org.seasar.doma.internal.apt.reflection.SelectReflection;
-import org.seasar.doma.internal.apt.reflection.SuppressReflection;
 import org.seasar.doma.message.Message;
 
 public class SqlFileSelectQueryMetaFactory
@@ -33,12 +33,12 @@ public class SqlFileSelectQueryMetaFactory
   }
 
   private SqlFileSelectQueryMeta createSqlFileSelectQueryMeta() {
-    SelectReflection selectReflection = ctx.getReflections().newSelectReflection(methodElement);
-    if (selectReflection == null) {
+    SelectAnnot selectAnnot = ctx.getAnnots().newSelectAnnot(methodElement);
+    if (selectAnnot == null) {
       return null;
     }
     SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(methodElement);
-    queryMeta.setSelectReflection(selectReflection);
+    queryMeta.setSelectAnnot(selectAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
     return queryMeta;
   }
@@ -64,12 +64,12 @@ public class SqlFileSelectQueryMetaFactory
       }
     } else {
       if (queryMeta.getFunctionCtType() != null) {
-        SelectReflection selectReflection = queryMeta.getSelectReflection();
+        SelectAnnot selectAnnot = queryMeta.getSelectAnnot();
         throw new AptException(
             Message.DOMA4248,
             methodElement,
-            selectReflection.getAnnotationMirror(),
-            selectReflection.getStrategy());
+            selectAnnot.getAnnotationMirror(),
+            selectAnnot.getStrategy());
       }
     }
   }
@@ -355,13 +355,12 @@ public class SqlFileSelectQueryMetaFactory
 
     private final QueryReturnMeta returnMeta;
 
-    private final SuppressReflection suppressReflection;
+    private final SuppressAnnot suppressAnnot;
 
     public ReturnCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
-      this.suppressReflection =
-          ctx.getReflections().newSuppressReflection(queryMeta.getMethodElement());
+      this.suppressAnnot = ctx.getAnnots().newSuppressAnnot(queryMeta.getMethodElement());
     }
 
     @Override
@@ -446,8 +445,8 @@ public class SqlFileSelectQueryMetaFactory
     }
 
     private boolean isSuppressed(Message message) {
-      if (suppressReflection != null) {
-        return suppressReflection.isSuppressed(message);
+      if (suppressAnnot != null) {
+        return suppressAnnot.isSuppressed(message);
       }
       return false;
     }

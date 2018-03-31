@@ -3,9 +3,9 @@ package org.seasar.doma.internal.apt.meta.query;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.FunctionAnnot;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.apt.meta.parameter.*;
-import org.seasar.doma.internal.apt.reflection.FunctionReflection;
 import org.seasar.doma.message.Message;
 
 public class AutoFunctionQueryMetaFactory
@@ -17,13 +17,12 @@ public class AutoFunctionQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    FunctionReflection functionReflection =
-        ctx.getReflections().newFunctionReflection(methodElement);
-    if (functionReflection == null) {
+    FunctionAnnot functionAnnot = ctx.getAnnots().newFunctionAnnot(methodElement);
+    if (functionAnnot == null) {
       return null;
     }
     AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(methodElement);
-    queryMeta.setFunctionReflection(functionReflection);
+    queryMeta.setFunctionAnnot(functionAnnot);
     queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);

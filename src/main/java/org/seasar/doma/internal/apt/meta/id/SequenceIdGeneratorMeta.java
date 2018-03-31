@@ -2,44 +2,44 @@ package org.seasar.doma.internal.apt.meta.id;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.apt.reflection.SequenceGeneratorReflection;
+import org.seasar.doma.internal.apt.annot.SequenceGeneratorAnnot;
 
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
-  private final SequenceGeneratorReflection sequenceGeneratorReflection;
+  private final SequenceGeneratorAnnot sequenceGeneratorAnnot;
 
-  public SequenceIdGeneratorMeta(SequenceGeneratorReflection sequenceGeneratorReflection) {
-    assertNotNull(sequenceGeneratorReflection);
-    this.sequenceGeneratorReflection = sequenceGeneratorReflection;
+  public SequenceIdGeneratorMeta(SequenceGeneratorAnnot sequenceGeneratorAnnot) {
+    assertNotNull(sequenceGeneratorAnnot);
+    this.sequenceGeneratorAnnot = sequenceGeneratorAnnot;
   }
 
   public String getQualifiedSequenceName() {
     StringBuilder buf = new StringBuilder();
-    String catalogName = sequenceGeneratorReflection.getCatalogValue();
+    String catalogName = sequenceGeneratorAnnot.getCatalogValue();
     if (!catalogName.isEmpty()) {
       buf.append(catalogName);
       buf.append(".");
     }
-    String schemaName = sequenceGeneratorReflection.getCatalogValue();
+    String schemaName = sequenceGeneratorAnnot.getCatalogValue();
     if (!schemaName.isEmpty()) {
       buf.append(schemaName);
       buf.append(".");
     }
-    buf.append(sequenceGeneratorReflection.getSequenceValue());
+    buf.append(sequenceGeneratorAnnot.getSequenceValue());
     return buf.toString();
   }
 
   public long getInitialValue() {
-    return sequenceGeneratorReflection.getInitialValueValue();
+    return sequenceGeneratorAnnot.getInitialValueValue();
   }
 
   public long getAllocationSize() {
-    return sequenceGeneratorReflection.getAllocationSizeValue();
+    return sequenceGeneratorAnnot.getAllocationSizeValue();
   }
 
   @Override
   public String getIdGeneratorClassName() {
-    return sequenceGeneratorReflection.getImplementerValue().toString();
+    return sequenceGeneratorAnnot.getImplementerValue().toString();
   }
 
   @Override

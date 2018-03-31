@@ -3,7 +3,7 @@ package org.seasar.doma.internal.apt.meta.query;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.reflection.ProcedureReflection;
+import org.seasar.doma.internal.apt.annot.ProcedureAnnot;
 import org.seasar.doma.message.Message;
 
 public class AutoProcedureQueryMetaFactory
@@ -15,14 +15,13 @@ public class AutoProcedureQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    ProcedureReflection procedureReflection =
-        ctx.getReflections().newProcedureReflection(methodElement);
-    if (procedureReflection == null) {
+    ProcedureAnnot procedureAnnot = ctx.getAnnots().newProcedureAnnot(methodElement);
+    if (procedureAnnot == null) {
       return null;
     }
     AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(methodElement);
     queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
-    queryMeta.setProcedureReflection(procedureReflection);
+    queryMeta.setProcedureAnnot(procedureAnnot);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);

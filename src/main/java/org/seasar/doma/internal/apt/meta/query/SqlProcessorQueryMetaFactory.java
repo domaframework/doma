@@ -5,8 +5,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
 import org.seasar.doma.internal.apt.cttype.*;
-import org.seasar.doma.internal.apt.reflection.SqlProcessorReflection;
 import org.seasar.doma.message.Message;
 
 public class SqlProcessorQueryMetaFactory
@@ -31,13 +31,12 @@ public class SqlProcessorQueryMetaFactory
   }
 
   private SqlProcessorQueryMeta createSqlContentQueryMeta() {
-    SqlProcessorReflection sqlProcessorReflection =
-        ctx.getReflections().newSqlProcessorReflection(methodElement);
-    if (sqlProcessorReflection == null) {
+    SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnots().newSqlProcessorAnnot(methodElement);
+    if (sqlProcessorAnnot == null) {
       return null;
     }
     SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(methodElement);
-    queryMeta.setSqlProcessorReflection(sqlProcessorReflection);
+    queryMeta.setSqlProcessorAnnot(sqlProcessorAnnot);
     queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
     return queryMeta;
   }
@@ -54,9 +53,9 @@ public class SqlProcessorQueryMetaFactory
     }
 
     if (queryMeta.getBiFunctionCtType() == null) {
-      SqlProcessorReflection sqlProcessorReflection = queryMeta.getSqlProcessorReflection();
+      SqlProcessorAnnot sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
       throw new AptException(
-          Message.DOMA4433, methodElement, sqlProcessorReflection.getAnnotationMirror());
+          Message.DOMA4433, methodElement, sqlProcessorAnnot.getAnnotationMirror());
     }
   }
 

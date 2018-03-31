@@ -4,9 +4,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.annot.HolderAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
-import org.seasar.doma.internal.apt.reflection.HolderReflection;
 
 public class HolderMeta implements TypeElementMeta {
 
@@ -18,18 +18,15 @@ public class HolderMeta implements TypeElementMeta {
 
   private final BasicCtType basicCtType;
 
-  private final HolderReflection holderReflection;
+  private final HolderAnnot holderAnnot;
 
   public HolderMeta(
-      TypeElement typeElement,
-      TypeMirror type,
-      HolderReflection holderReflection,
-      BasicCtType basicCtType) {
-    assertNotNull(typeElement, type, holderReflection, basicCtType);
+      TypeElement typeElement, TypeMirror type, HolderAnnot holderAnnot, BasicCtType basicCtType) {
+    assertNotNull(typeElement, type, holderAnnot, basicCtType);
     this.holderElement = typeElement;
     this.type = type;
     this.parameterized = !typeElement.getTypeParameters().isEmpty();
-    this.holderReflection = holderReflection;
+    this.holderAnnot = holderAnnot;
     this.basicCtType = basicCtType;
   }
 
@@ -46,27 +43,27 @@ public class HolderMeta implements TypeElementMeta {
   }
 
   public TypeMirror getValueType() {
-    return holderReflection.getValueTypeValue();
+    return holderAnnot.getValueTypeValue();
   }
 
   public String getFactoryMethod() {
-    return holderReflection.getFactoryMethodValue();
+    return holderAnnot.getFactoryMethodValue();
   }
 
   public String getAccessorMethod() {
-    return holderReflection.getAccessorMethodValue();
+    return holderAnnot.getAccessorMethodValue();
   }
 
   public boolean getAcceptNull() {
-    return holderReflection.getAcceptNullValue();
+    return holderAnnot.getAcceptNullValue();
   }
 
-  public HolderReflection getHolderReflection() {
-    return holderReflection;
+  public HolderAnnot getHolderAnnot() {
+    return holderAnnot;
   }
 
   public boolean providesConstructor() {
-    return "new".equals(holderReflection.getFactoryMethodValue());
+    return "new".equals(holderAnnot.getFactoryMethodValue());
   }
 
   public boolean isParameterized() {

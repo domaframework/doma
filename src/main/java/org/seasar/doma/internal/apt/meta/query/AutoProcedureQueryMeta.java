@@ -2,52 +2,52 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.internal.apt.reflection.ProcedureReflection;
+import org.seasar.doma.internal.apt.annot.ProcedureAnnot;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
-  private ProcedureReflection procedureReflection;
+  private ProcedureAnnot procedureAnnot;
 
   public AutoProcedureQueryMeta(ExecutableElement method) {
     super(method);
   }
 
-  public ProcedureReflection getProcedureReflection() {
-    return procedureReflection;
+  public ProcedureAnnot getProcedureAnnot() {
+    return procedureAnnot;
   }
 
-  public void setProcedureReflection(ProcedureReflection procedureReflection) {
-    this.procedureReflection = procedureReflection;
+  public void setProcedureAnnot(ProcedureAnnot procedureAnnot) {
+    this.procedureAnnot = procedureAnnot;
   }
 
   public String getCatalogName() {
-    return procedureReflection.getCatalogValue();
+    return procedureAnnot.getCatalogValue();
   }
 
   public String getSchemaName() {
-    return procedureReflection.getSchemaValue();
+    return procedureAnnot.getSchemaValue();
   }
 
   public String getProcedureName() {
-    return procedureReflection.getNameValue();
+    return procedureAnnot.getNameValue();
   }
 
   public boolean isQuoteRequired() {
-    return procedureReflection.getQuoteValue();
+    return procedureAnnot.getQuoteValue();
   }
 
   public int getQueryTimeout() {
-    return procedureReflection.getQueryTimeoutValue();
+    return procedureAnnot.getQueryTimeoutValue();
   }
 
   @Override
   public MapKeyNamingType getMapKeyNamingType() {
-    return procedureReflection.getMapKeyNamingValue();
+    return procedureAnnot.getMapKeyNamingValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return procedureReflection.getSqlLogValue();
+    return procedureAnnot.getSqlLogValue();
   }
 
   @Override

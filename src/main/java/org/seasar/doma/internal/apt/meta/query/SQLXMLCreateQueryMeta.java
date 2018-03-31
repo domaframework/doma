@@ -1,21 +1,21 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
-import org.seasar.doma.internal.apt.reflection.SQLXMLFactoryReflection;
+import org.seasar.doma.internal.apt.annot.SQLXMLFactoryAnnot;
 
 public class SQLXMLCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  private SQLXMLFactoryReflection sqlxmlFactoryReflection;
+  private SQLXMLFactoryAnnot sqlxmlFactoryAnnot;
 
   public SQLXMLCreateQueryMeta(ExecutableElement method) {
     super(method);
   }
 
-  public SQLXMLFactoryReflection getSqlxmlFactoryReflection() {
-    return sqlxmlFactoryReflection;
+  public SQLXMLFactoryAnnot getSqlxmlFactoryAnnot() {
+    return sqlxmlFactoryAnnot;
   }
 
-  public void setSqlxmlFactoryReflection(SQLXMLFactoryReflection sqlxmlFactoryMirror) {
-    this.sqlxmlFactoryReflection = sqlxmlFactoryMirror;
+  public void setSqlxmlFactoryAnnot(SQLXMLFactoryAnnot sqlxmlFactoryMirror) {
+    this.sqlxmlFactoryAnnot = sqlxmlFactoryMirror;
   }
 }

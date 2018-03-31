@@ -7,9 +7,9 @@ import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.ResultSetAnnot;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.apt.meta.parameter.*;
-import org.seasar.doma.internal.apt.reflection.ResultSetReflection;
 import org.seasar.doma.message.Message;
 
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
@@ -35,10 +35,9 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
   }
 
   protected CallableSqlParameterMeta createParameterMeta(final QueryParameterMeta parameterMeta) {
-    ResultSetReflection resultSetReflection =
-        ctx.getReflections().newResultSetReflection(parameterMeta.getElement());
-    if (resultSetReflection != null) {
-      return createResultSetParameterMeta(parameterMeta, resultSetReflection);
+    ResultSetAnnot resultSetAnnot = ctx.getAnnots().newResultSetAnnot(parameterMeta.getElement());
+    if (resultSetAnnot != null) {
+      return createResultSetParameterMeta(parameterMeta, resultSetAnnot);
     }
     if (parameterMeta.isAnnotated(In.class)) {
       return createInParameterMeta(parameterMeta);
@@ -53,12 +52,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
   }
 
   protected CallableSqlParameterMeta createResultSetParameterMeta(
-      final QueryParameterMeta parameterMeta, final ResultSetReflection resultSetReflection) {
+      final QueryParameterMeta parameterMeta, final ResultSetAnnot resultSetAnnot) {
     IterableCtType iterableCtType =
         parameterMeta.getCtType().accept(new ResultSetCtTypeVisitor(parameterMeta), null);
     return iterableCtType
         .getElementCtType()
-        .accept(new ResultSetElementCtTypeVisitor(parameterMeta, resultSetReflection), false);
+        .accept(new ResultSetElementCtTypeVisitor(parameterMeta, resultSetAnnot), false);
   }
 
   protected CallableSqlParameterMeta createInParameterMeta(final QueryParameterMeta parameterMeta) {
@@ -112,12 +111,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
     protected final QueryParameterMeta parameterMeta;
 
-    protected final ResultSetReflection resultSetReflection;
+    protected final ResultSetAnnot resultSetAnnot;
 
     public ResultSetElementCtTypeVisitor(
-        QueryParameterMeta parameterMeta, ResultSetReflection resultSetReflection) {
+        QueryParameterMeta parameterMeta, ResultSetAnnot resultSetAnnot) {
       this.parameterMeta = parameterMeta;
-      this.resultSetReflection = resultSetReflection;
+      this.resultSetAnnot = resultSetAnnot;
     }
 
     @Override
@@ -135,7 +134,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             Message.DOMA4157, parameterMeta.getElement(), new Object[] {ctType.getTypeName()});
       }
       return new EntityListParameterMeta(
-          parameterMeta.getName(), ctType, resultSetReflection.getEnsureResultMappingValue());
+          parameterMeta.getName(), ctType, resultSetAnnot.getEnsureResultMappingValue());
     }
 
     @Override

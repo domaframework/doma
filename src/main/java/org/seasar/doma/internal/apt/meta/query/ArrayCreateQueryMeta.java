@@ -1,13 +1,13 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
-import org.seasar.doma.internal.apt.reflection.ArrayFactoryReflection;
+import org.seasar.doma.internal.apt.annot.ArrayFactoryAnnot;
 
 public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
   private String elementsParameterName;
 
-  private ArrayFactoryReflection arrayFactoryReflection;
+  private ArrayFactoryAnnot arrayFactoryAnnot;
 
   public ArrayCreateQueryMeta(ExecutableElement method) {
     super(method);
@@ -21,12 +21,12 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
     this.elementsParameterName = elementsParameterName;
   }
 
-  void setArrayFactoryReflection(ArrayFactoryReflection arrayFactoryReflection) {
-    this.arrayFactoryReflection = arrayFactoryReflection;
+  void setArrayFactoryAnnot(ArrayFactoryAnnot arrayFactoryAnnot) {
+    this.arrayFactoryAnnot = arrayFactoryAnnot;
   }
 
   public String getArrayTypeName() {
-    return arrayFactoryReflection.getTypeNameValue();
+    return arrayFactoryAnnot.getTypeNameValue();
   }
 
   @Override

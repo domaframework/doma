@@ -4,7 +4,7 @@ import java.io.File;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.reflection.ScriptReflection;
+import org.seasar.doma.internal.apt.annot.ScriptAnnot;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.message.Message;
 
@@ -31,11 +31,11 @@ public class SqlFileScriptQueryMetaFactory
 
   private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta() {
     SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(methodElement);
-    ScriptReflection scriptReflection = ctx.getReflections().newScriptReflection(methodElement);
-    if (scriptReflection == null) {
+    ScriptAnnot scriptAnnot = ctx.getAnnots().newScriptAnnot(methodElement);
+    if (scriptAnnot == null) {
       return null;
     }
-    queryMeta.setScriptReflection(scriptReflection);
+    queryMeta.setScriptAnnot(scriptAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SCRIPT);
     return queryMeta;
   }

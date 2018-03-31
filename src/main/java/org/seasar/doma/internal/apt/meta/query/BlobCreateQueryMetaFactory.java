@@ -3,7 +3,7 @@ package org.seasar.doma.internal.apt.meta.query;
 import java.sql.Blob;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.reflection.BlobFactoryReflection;
+import org.seasar.doma.internal.apt.annot.BlobFactoryAnnot;
 
 public class BlobCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<BlobCreateQueryMeta> {
@@ -14,13 +14,12 @@ public class BlobCreateQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    BlobFactoryReflection blobFactoryReflection =
-        ctx.getReflections().newBlobFactoryReflection(methodElement);
-    if (blobFactoryReflection == null) {
+    BlobFactoryAnnot blobFactoryAnnot = ctx.getAnnots().newBlobFactoryAnnot(methodElement);
+    if (blobFactoryAnnot == null) {
       return null;
     }
     BlobCreateQueryMeta queryMeta = new BlobCreateQueryMeta(methodElement);
-    queryMeta.setBlobFactoryReflection(blobFactoryReflection);
+    queryMeta.setBlobFactoryAnnot(blobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.BLOB_FACTORY);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);

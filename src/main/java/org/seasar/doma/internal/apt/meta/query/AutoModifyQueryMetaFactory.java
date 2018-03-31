@@ -5,10 +5,10 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.ModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.reflection.ModifyReflection;
 import org.seasar.doma.message.Message;
 
 public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoModifyQueryMeta> {
@@ -32,21 +32,21 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
 
   private AutoModifyQueryMeta createAutoModifyQueryMeta() {
     AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(methodElement);
-    ModifyReflection modifyReflection = ctx.getReflections().newInsertReflection(methodElement);
-    if (modifyReflection != null && !modifyReflection.getSqlFileValue()) {
-      queryMeta.setModifyReflection(modifyReflection);
+    ModifyAnnot modifyAnnot = ctx.getAnnots().newInsertAnnot(methodElement);
+    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+      queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
       return queryMeta;
     }
-    modifyReflection = ctx.getReflections().newUpdateReflection(methodElement);
-    if (modifyReflection != null && !modifyReflection.getSqlFileValue()) {
-      queryMeta.setModifyReflection(modifyReflection);
+    modifyAnnot = ctx.getAnnots().newUpdateAnnot(methodElement);
+    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+      queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
       return queryMeta;
     }
-    modifyReflection = ctx.getReflections().newDeleteReflection(methodElement);
-    if (modifyReflection != null && !modifyReflection.getSqlFileValue()) {
-      queryMeta.setModifyReflection(modifyReflection);
+    modifyAnnot = ctx.getAnnots().newDeleteAnnot(methodElement);
+    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+      queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
       return queryMeta;
     }
@@ -102,11 +102,11 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     if (parameterMeta.isBindable()) {
       queryMeta.addBindableParameterCtType(parameterMeta.getName(), parameterMeta.getCtType());
     }
-    ModifyReflection modifyReflection = queryMeta.getModifyReflection();
+    ModifyAnnot modifyAnnot = queryMeta.getModifyAnnot();
     validateEntityPropertyNames(
         entityCtType.getType(),
-        modifyReflection.getAnnotationMirror(),
-        modifyReflection.getInclude(),
-        modifyReflection.getExclude());
+        modifyAnnot.getAnnotationMirror(),
+        modifyAnnot.getInclude(),
+        modifyAnnot.getExclude());
   }
 }

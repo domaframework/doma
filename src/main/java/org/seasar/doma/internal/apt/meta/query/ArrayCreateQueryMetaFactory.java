@@ -6,7 +6,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.reflection.ArrayFactoryReflection;
+import org.seasar.doma.internal.apt.annot.ArrayFactoryAnnot;
 import org.seasar.doma.message.Message;
 
 public class ArrayCreateQueryMetaFactory
@@ -18,13 +18,12 @@ public class ArrayCreateQueryMetaFactory
 
   @Override
   public QueryMeta createQueryMeta() {
-    ArrayFactoryReflection arrayFactoryReflection =
-        ctx.getReflections().newArrayFactoryReflection(methodElement);
-    if (arrayFactoryReflection == null) {
+    ArrayFactoryAnnot arrayFactoryAnnot = ctx.getAnnots().newArrayFactoryAnnot(methodElement);
+    if (arrayFactoryAnnot == null) {
       return null;
     }
     ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(methodElement);
-    queryMeta.setArrayFactoryReflection(arrayFactoryReflection);
+    queryMeta.setArrayFactoryAnnot(arrayFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.ARRAY_FACTORY);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);

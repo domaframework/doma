@@ -4,11 +4,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.id.IdGeneratorMeta;
-import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 
 public class EntityPropertyMeta extends AbstractPropertyMeta {
 
@@ -24,9 +24,9 @@ public class EntityPropertyMeta extends AbstractPropertyMeta {
       VariableElement fieldElement,
       String name,
       CtType ctType,
-      ColumnReflection columnReflection,
+      ColumnAnnot columnAnnot,
       String fieldPrefix) {
-    super(fieldElement, name, ctType, columnReflection);
+    super(fieldElement, name, ctType, columnAnnot);
     assertNotNull(fieldPrefix);
     this.fieldPrefix = fieldPrefix;
   }

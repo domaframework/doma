@@ -2,8 +2,8 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
+import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.reflection.BatchModifyReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
@@ -12,7 +12,7 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
   private String entitiesParameterName;
 
-  private BatchModifyReflection batchModifyReflection;
+  private BatchModifyAnnot batchModifyAnnot;
 
   public AutoBatchModifyQueryMeta(ExecutableElement method) {
     super(method);
@@ -34,40 +34,40 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
     this.entitiesParameterName = entitiesParameterName;
   }
 
-  BatchModifyReflection getBatchModifyReflection() {
-    return batchModifyReflection;
+  BatchModifyAnnot getBatchModifyAnnot() {
+    return batchModifyAnnot;
   }
 
-  void setBatchModifyReflection(BatchModifyReflection batchModifyReflection) {
-    this.batchModifyReflection = batchModifyReflection;
+  void setBatchModifyAnnot(BatchModifyAnnot batchModifyAnnot) {
+    this.batchModifyAnnot = batchModifyAnnot;
   }
 
   public int getQueryTimeout() {
-    return batchModifyReflection.getQueryTimeoutValue();
+    return batchModifyAnnot.getQueryTimeoutValue();
   }
 
   public int getBatchSize() {
-    return batchModifyReflection.getBatchSizeValue();
+    return batchModifyAnnot.getBatchSizeValue();
   }
 
   public Boolean getIgnoreVersion() {
-    return batchModifyReflection.getIgnoreVersionValue();
+    return batchModifyAnnot.getIgnoreVersionValue();
   }
 
   public Boolean getSuppressOptimisticLockException() {
-    return batchModifyReflection.getSuppressOptimisticLockExceptionValue();
+    return batchModifyAnnot.getSuppressOptimisticLockExceptionValue();
   }
 
   public List<String> getInclude() {
-    return batchModifyReflection.getIncludeValue();
+    return batchModifyAnnot.getIncludeValue();
   }
 
   public List<String> getExclude() {
-    return batchModifyReflection.getExcludeValue();
+    return batchModifyAnnot.getExcludeValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return batchModifyReflection.getSqlLogValue();
+    return batchModifyAnnot.getSqlLogValue();
   }
 
   @Override

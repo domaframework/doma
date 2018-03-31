@@ -47,7 +47,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private void printClass() {
     iprint("/** */%n");
-    for (var annotation : daoMeta.getAnnotationReflections(AnnotationTarget.CLASS)) {
+    for (var annotation : daoMeta.getAnnotationAnnots(AnnotationTarget.CLASS)) {
       iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
     }
     printGenerated();
@@ -97,7 +97,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     if (daoMeta.hasUserDefinedConfig()) {
       var configMeta = daoMeta.getConfigMeta();
       printDefaultConstructor(configMeta);
-      if (daoMeta.getAnnotateWithReflection() == null) {
+      if (daoMeta.getAnnotateWithAnnot() == null) {
         var parentDaoMeta = daoMeta.getParentDaoMeta();
         boolean jdbcConstructorsNecessary =
             parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
@@ -112,7 +112,7 @@ public class DaoImplGenerator extends AbstractGenerator {
         }
       }
     }
-    if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithReflection() != null) {
+    if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithAnnot() != null) {
       printInjectableConfigConstructor();
     }
   }
@@ -205,14 +205,13 @@ public class DaoImplGenerator extends AbstractGenerator {
     iprint("/**%n");
     iprint(" * @param config the config%n");
     iprint(" */%n");
-    for (var annotation : daoMeta.getAnnotationReflections(AnnotationTarget.CONSTRUCTOR)) {
+    for (var annotation : daoMeta.getAnnotationAnnots(AnnotationTarget.CONSTRUCTOR)) {
       iprint(
           "@%1$s(%2$s)%n",
           /* 1 */ annotation.getTypeValue(), /* 2 */ annotation.getElementsValue());
     }
     iprint("public %1$s(", codeSpec.getSimpleName());
-    for (var annotation :
-        daoMeta.getAnnotationReflections(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
+    for (var annotation : daoMeta.getAnnotationAnnots(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
       print(
           "@%1$s(%2$s) ", /* 1 */ annotation.getTypeValue(), /* 2 */ annotation.getElementsValue());
     }

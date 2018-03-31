@@ -4,17 +4,17 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.reflection.DaoReflection;
+import org.seasar.doma.internal.apt.annot.DaoAnnot;
 
 public class ParentDaoMeta {
 
-  private final DaoReflection daoReflection;
+  private final DaoAnnot daoAnnot;
 
   private final TypeElement daoElement;
 
-  public ParentDaoMeta(DaoReflection daoReflection, TypeElement daoElement) {
-    assertNotNull(daoReflection, daoElement);
-    this.daoReflection = daoReflection;
+  public ParentDaoMeta(DaoAnnot daoAnnot, TypeElement daoElement) {
+    assertNotNull(daoAnnot, daoElement);
+    this.daoAnnot = daoAnnot;
     this.daoElement = daoElement;
   }
 
@@ -27,6 +27,6 @@ public class ParentDaoMeta {
   }
 
   public boolean hasUserDefinedConfig() {
-    return daoReflection.hasUserDefinedConfig();
+    return daoAnnot.hasUserDefinedConfig();
   }
 }

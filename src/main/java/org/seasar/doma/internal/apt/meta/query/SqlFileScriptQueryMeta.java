@@ -1,35 +1,35 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
-import org.seasar.doma.internal.apt.reflection.ScriptReflection;
+import org.seasar.doma.internal.apt.annot.ScriptAnnot;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
-  private ScriptReflection scriptReflection;
+  private ScriptAnnot scriptAnnot;
 
   public SqlFileScriptQueryMeta(ExecutableElement method) {
     super(method);
   }
 
-  void setScriptReflection(ScriptReflection scriptReflection) {
-    this.scriptReflection = scriptReflection;
+  void setScriptAnnot(ScriptAnnot scriptAnnot) {
+    this.scriptAnnot = scriptAnnot;
   }
 
-  ScriptReflection getScriptReflection() {
-    return scriptReflection;
+  ScriptAnnot getScriptAnnot() {
+    return scriptAnnot;
   }
 
   public boolean getHaltOnError() {
-    return scriptReflection.getHaltOnErrorValue();
+    return scriptAnnot.getHaltOnErrorValue();
   }
 
   public String getBlockDelimiter() {
-    return scriptReflection.getBlockDelimiterValue();
+    return scriptAnnot.getBlockDelimiterValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return scriptReflection.getSqlLogValue();
+    return scriptAnnot.getSqlLogValue();
   }
 
   @Override

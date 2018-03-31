@@ -1,21 +1,21 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
-import org.seasar.doma.internal.apt.reflection.BlobFactoryReflection;
+import org.seasar.doma.internal.apt.annot.BlobFactoryAnnot;
 
 public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  private BlobFactoryReflection blobFactoryReflection;
+  private BlobFactoryAnnot blobFactoryAnnot;
 
   public BlobCreateQueryMeta(ExecutableElement method) {
     super(method);
   }
 
-  public BlobFactoryReflection getBlobFactoryReflection() {
-    return blobFactoryReflection;
+  public BlobFactoryAnnot getBlobFactoryAnnot() {
+    return blobFactoryAnnot;
   }
 
-  public void setBlobFactoryReflection(BlobFactoryReflection blobFactoryReflection) {
-    this.blobFactoryReflection = blobFactoryReflection;
+  public void setBlobFactoryAnnot(BlobFactoryAnnot blobFactoryAnnot) {
+    this.blobFactoryAnnot = blobFactoryAnnot;
   }
 }

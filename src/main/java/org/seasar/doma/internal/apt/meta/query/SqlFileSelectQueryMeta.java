@@ -4,16 +4,16 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
+import org.seasar.doma.internal.apt.annot.SelectAnnot;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
-import org.seasar.doma.internal.apt.reflection.SelectReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
-  private SelectReflection selectReflection;
+  private SelectAnnot selectAnnot;
 
   private String functionParameterName;
 
@@ -91,48 +91,48 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     this.entityCtType = entityCtType;
   }
 
-  public void setSelectReflection(SelectReflection selectReflection) {
-    this.selectReflection = selectReflection;
+  public void setSelectAnnot(SelectAnnot selectAnnot) {
+    this.selectAnnot = selectAnnot;
   }
 
-  public SelectReflection getSelectReflection() {
-    return selectReflection;
+  public SelectAnnot getSelectAnnot() {
+    return selectAnnot;
   }
 
   public int getFetchSize() {
-    return selectReflection.getFetchSizeValue();
+    return selectAnnot.getFetchSizeValue();
   }
 
   public int getMaxRows() {
-    return selectReflection.getMaxRowsValue();
+    return selectAnnot.getMaxRowsValue();
   }
 
   public int getQueryTimeout() {
-    return selectReflection.getQueryTimeoutValue();
+    return selectAnnot.getQueryTimeoutValue();
   }
 
   public SelectType getSelectStrategyType() {
-    return selectReflection.getStrategyValue();
+    return selectAnnot.getStrategyValue();
   }
 
   public FetchType getFetchType() {
-    return selectReflection.getFetchValue();
+    return selectAnnot.getFetchValue();
   }
 
   public boolean getEnsureResult() {
-    return selectReflection.getEnsureResultValue();
+    return selectAnnot.getEnsureResultValue();
   }
 
   public boolean getEnsureResultMapping() {
-    return selectReflection.getEnsureResultMappingValue();
+    return selectAnnot.getEnsureResultMappingValue();
   }
 
   public MapKeyNamingType getMapKeyNamingType() {
-    return selectReflection.getMapKeyNamingValue();
+    return selectAnnot.getMapKeyNamingValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return selectReflection.getSqlLogValue();
+    return selectAnnot.getSqlLogValue();
   }
 
   public boolean isExpandable() {

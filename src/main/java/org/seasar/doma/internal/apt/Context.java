@@ -1,10 +1,10 @@
 package org.seasar.doma.internal.apt;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import org.seasar.doma.internal.apt.annot.Annots;
 import org.seasar.doma.internal.apt.codespec.CodeSpecs;
 import org.seasar.doma.internal.apt.cttype.CtTypes;
 import org.seasar.doma.internal.apt.decl.Declarations;
-import org.seasar.doma.internal.apt.reflection.Reflections;
 
 public class Context {
 
@@ -18,8 +18,8 @@ public class Context {
     return env;
   }
 
-  public Reflections getReflections() {
-    return new Reflections(this);
+  public Annots getAnnots() {
+    return new Annots(this);
   }
 
   public CtTypes getCtTypes() {

@@ -17,10 +17,10 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.HolderAnnot;
+import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.reflection.HolderReflection;
-import org.seasar.doma.internal.apt.reflection.ValueReflection;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.message.Message;
 
@@ -30,15 +30,15 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
   private final TypeElement holderElement;
 
-  private final HolderReflection holderReflection;
+  private final HolderAnnot holderAnnot;
 
   public HolderMetaFactory(Context ctx, TypeElement classElement) {
     assertNotNull(ctx);
     this.ctx = ctx;
     this.holderElement = classElement;
-    holderReflection = ctx.getReflections().newHolderReflection(classElement);
-    if (holderReflection == null) {
-      throw new AptIllegalStateException("holderReflection");
+    holderAnnot = ctx.getAnnots().newHolderAnnot(classElement);
+    if (holderAnnot == null) {
+      throw new AptIllegalStateException("holderAnnot");
     }
   }
 
@@ -47,7 +47,7 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     assertNotNull(holderElement);
     BasicCtType basicCtType = createBasicCtType();
     HolderMeta holderMeta =
-        new HolderMeta(holderElement, holderElement.asType(), holderReflection, basicCtType);
+        new HolderMeta(holderElement, holderElement.asType(), holderAnnot, basicCtType);
     Strategy strategy = createStrategy();
     strategy.validateAcceptNull(holderMeta);
     strategy.validateClass(holderMeta);
@@ -57,23 +57,23 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
   }
 
   private BasicCtType createBasicCtType() {
-    TypeMirror valueType = holderReflection.getValueTypeValue();
+    TypeMirror valueType = holderAnnot.getValueTypeValue();
     BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
     if (basicCtType == null) {
       throw new AptException(
           Message.DOMA4102,
           holderElement,
-          holderReflection.getAnnotationMirror(),
-          holderReflection.getValueType(),
+          holderAnnot.getAnnotationMirror(),
+          holderAnnot.getValueType(),
           new Object[] {valueType});
     }
     return basicCtType;
   }
 
   private Strategy createStrategy() {
-    ValueReflection valueReflection = ctx.getReflections().newValueReflection(holderElement);
-    if (valueReflection != null) {
-      return new ValueStrategy(valueReflection);
+    ValueAnnot valueAnnot = ctx.getAnnots().newValueAnnot(holderElement);
+    if (valueAnnot != null) {
+      return new ValueStrategy(valueAnnot);
     }
     return new DefaultStrategy();
   }
@@ -94,12 +94,12 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
     @Override
     public void validateAcceptNull(HolderMeta holderMeta) {
       if (holderMeta.getBasicCtType().isPrimitive() && holderMeta.getAcceptNull()) {
-        HolderReflection holderReflection = holderMeta.getHolderReflection();
+        HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
         throw new AptException(
             Message.DOMA4251,
             holderElement,
-            holderReflection.getAnnotationMirror(),
-            holderReflection.getAcceptNull());
+            holderAnnot.getAnnotationMirror(),
+            holderAnnot.getAcceptNull());
       }
     }
 
@@ -115,12 +115,12 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
         }
       } else if (holderElement.getKind() == ElementKind.ENUM) {
         if (holderMeta.providesConstructor()) {
-          HolderReflection holderReflection = holderMeta.getHolderReflection();
+          HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
           throw new AptException(
               Message.DOMA4184,
               holderElement,
-              holderReflection.getAnnotationMirror(),
-              holderReflection.getFactoryMethod());
+              holderAnnot.getAnnotationMirror(),
+              holderAnnot.getFactoryMethod());
         }
         if (holderElement.getNestingKind().isNested()) {
           validateEnclosingElement(holderElement);
@@ -133,9 +133,8 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
           validateEnclosingElement(holderElement);
         }
       } else {
-        HolderReflection holderReflection = holderMeta.getHolderReflection();
-        throw new AptException(
-            Message.DOMA4105, holderElement, holderReflection.getAnnotationMirror());
+        HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
+        throw new AptException(Message.DOMA4105, holderElement, holderAnnot.getAnnotationMirror());
       }
     }
 
@@ -309,20 +308,20 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
   protected class ValueStrategy extends DefaultStrategy {
 
-    private final ValueReflection valueReflection;
+    private final ValueAnnot valueAnnot;
 
-    public ValueStrategy(ValueReflection valueReflection) {
-      this.valueReflection = valueReflection;
+    public ValueStrategy(ValueAnnot valueAnnot) {
+      this.valueAnnot = valueAnnot;
     }
 
     @Override
     public void validateInitializer(HolderMeta holderMeta) {
-      if (!valueReflection.getStaticConstructorValue().isEmpty()) {
+      if (!valueAnnot.getStaticConstructorValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4428,
             holderElement,
-            valueReflection.getAnnotationMirror(),
-            valueReflection.getStaticConstructor());
+            valueAnnot.getAnnotationMirror(),
+            valueAnnot.getStaticConstructor());
       }
     }
 
@@ -331,12 +330,12 @@ public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
       VariableElement field = findSingleField(holderMeta);
       String accessorMethod = inferAccessorMethod(field);
       if (!accessorMethod.equals(holderMeta.getAccessorMethod())) {
-        HolderReflection holderReflection = holderMeta.getHolderReflection();
+        HolderAnnot holderAnnot = holderMeta.getHolderAnnot();
         throw new AptException(
             Message.DOMA4429,
             holderElement,
-            holderReflection.getAnnotationMirror(),
-            holderReflection.getAccessorMethod(),
+            holderAnnot.getAnnotationMirror(),
+            holderAnnot.getAccessorMethod(),
             new Object[] {accessorMethod, holderMeta.getAccessorMethod()});
       }
     }

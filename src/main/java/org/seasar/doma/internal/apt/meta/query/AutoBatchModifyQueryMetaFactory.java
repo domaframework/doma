@@ -5,11 +5,11 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.reflection.BatchModifyReflection;
 import org.seasar.doma.message.Message;
 
 public class AutoBatchModifyQueryMetaFactory
@@ -34,22 +34,21 @@ public class AutoBatchModifyQueryMetaFactory
 
   private AutoBatchModifyQueryMeta createAutoBatchModifyQueryMeta() {
     AutoBatchModifyQueryMeta queryMeta = new AutoBatchModifyQueryMeta(methodElement);
-    BatchModifyReflection batchModifyReflection =
-        ctx.getReflections().newBatchInsertReflection(methodElement);
-    if (batchModifyReflection != null && !batchModifyReflection.getSqlFileValue()) {
-      queryMeta.setBatchModifyReflection(batchModifyReflection);
+    BatchModifyAnnot batchModifyAnnot = ctx.getAnnots().newBatchInsertAnnot(methodElement);
+    if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
+      queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
       return queryMeta;
     }
-    batchModifyReflection = ctx.getReflections().newBatchUpdateReflection(methodElement);
-    if (batchModifyReflection != null && !batchModifyReflection.getSqlFileValue()) {
-      queryMeta.setBatchModifyReflection(batchModifyReflection);
+    batchModifyAnnot = ctx.getAnnots().newBatchUpdateAnnot(methodElement);
+    if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
+      queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
       return queryMeta;
     }
-    batchModifyReflection = ctx.getReflections().newBatchDeleteReflection(methodElement);
-    if (batchModifyReflection != null && !batchModifyReflection.getSqlFileValue()) {
-      queryMeta.setBatchModifyReflection(batchModifyReflection);
+    batchModifyAnnot = ctx.getAnnots().newBatchDeleteAnnot(methodElement);
+    if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
+      queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);
       return queryMeta;
     }
@@ -124,11 +123,11 @@ public class AutoBatchModifyQueryMetaFactory
     if (parameterMeta.isBindable()) {
       queryMeta.addBindableParameterCtType(parameterMeta.getName(), parameterMeta.getCtType());
     }
-    BatchModifyReflection batchModifyReflection = queryMeta.getBatchModifyReflection();
+    BatchModifyAnnot batchModifyAnnot = queryMeta.getBatchModifyAnnot();
     validateEntityPropertyNames(
         entityCtType.getType(),
-        batchModifyReflection.getAnnotationMirror(),
-        batchModifyReflection.getInclude(),
-        batchModifyReflection.getExclude());
+        batchModifyAnnot.getAnnotationMirror(),
+        batchModifyAnnot.getInclude(),
+        batchModifyAnnot.getExclude());
   }
 }

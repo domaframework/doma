@@ -11,7 +11,7 @@ import org.seasar.doma.ExternalHolder;
 import org.seasar.doma.HolderConverters;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
+import org.seasar.doma.internal.apt.annot.HolderConvertersAnnot;
 import org.seasar.doma.message.Message;
 
 /**
@@ -40,8 +40,7 @@ public class HolderConvertersProcessor extends AbstractProcessor {
   }
 
   private void validate(TypeElement typeElement) {
-    HolderConvertersReflection convertersMirror =
-        ctx.getReflections().newHolderConvertersReflection(typeElement);
+    HolderConvertersAnnot convertersMirror = ctx.getAnnots().newHolderConvertersAnnot(typeElement);
     for (TypeMirror convType : convertersMirror.getValueValue()) {
       TypeElement convElement = ctx.getTypes().toTypeElement(convType);
       if (convElement == null) {

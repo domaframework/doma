@@ -4,8 +4,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.reflection.ColumnReflection;
 
 public abstract class AbstractPropertyMeta {
 
@@ -15,15 +15,15 @@ public abstract class AbstractPropertyMeta {
 
   protected final CtType ctType;
 
-  protected final ColumnReflection columnReflection;
+  protected final ColumnAnnot columnAnnot;
 
   protected AbstractPropertyMeta(
-      VariableElement fieldElement, String name, CtType ctType, ColumnReflection columnReflection) {
+      VariableElement fieldElement, String name, CtType ctType, ColumnAnnot columnAnnot) {
     assertNotNull(fieldElement, name, ctType);
     this.fieldElement = fieldElement;
     this.name = name;
     this.ctType = ctType;
-    this.columnReflection = columnReflection;
+    this.columnAnnot = columnAnnot;
   }
 
   public String getName() {
@@ -42,23 +42,23 @@ public abstract class AbstractPropertyMeta {
     return ctType.getType();
   }
 
-  public ColumnReflection getColumnReflection() {
-    return columnReflection;
+  public ColumnAnnot getColumnAnnot() {
+    return columnAnnot;
   }
 
   public String getColumnName() {
-    return columnReflection != null ? columnReflection.getNameValue() : "";
+    return columnAnnot != null ? columnAnnot.getNameValue() : "";
   }
 
   public boolean isColumnInsertable() {
-    return columnReflection == null || columnReflection.getInsertableValue();
+    return columnAnnot == null || columnAnnot.getInsertableValue();
   }
 
   public boolean isColumnUpdatable() {
-    return columnReflection == null || columnReflection.getUpdatableValue();
+    return columnAnnot == null || columnAnnot.getUpdatableValue();
   }
 
   public boolean isColumnQuoteRequired() {
-    return columnReflection != null && columnReflection.getQuoteValue();
+    return columnAnnot != null && columnAnnot.getQuoteValue();
   }
 }

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.internal.apt.annot.EntityAnnot;
+import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
-import org.seasar.doma.internal.apt.reflection.EntityReflection;
-import org.seasar.doma.internal.apt.reflection.TableReflection;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 public class EntityMeta implements TypeElementMeta {
@@ -17,7 +17,7 @@ public class EntityMeta implements TypeElementMeta {
 
   private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
-  private final EntityReflection entityReflection;
+  private final EntityAnnot entityAnnot;
 
   private final TypeElement entityElement;
 
@@ -27,7 +27,7 @@ public class EntityMeta implements TypeElementMeta {
 
   private TypeElement listenerElement;
 
-  private TableReflection tableReflection;
+  private TableAnnot tableAnnot;
 
   private EntityPropertyMeta versionPropertyMeta;
 
@@ -37,9 +37,9 @@ public class EntityMeta implements TypeElementMeta {
 
   private OriginalStatesMeta originalStatesMeta;
 
-  public EntityMeta(EntityReflection entityReflection, TypeElement entityElement) {
-    assertNotNull(entityReflection, entityElement);
-    this.entityReflection = entityReflection;
+  public EntityMeta(EntityAnnot entityAnnot, TypeElement entityElement) {
+    assertNotNull(entityAnnot, entityElement);
+    this.entityAnnot = entityAnnot;
     this.entityElement = entityElement;
   }
 
@@ -47,8 +47,8 @@ public class EntityMeta implements TypeElementMeta {
     return entityElement.getSimpleName().toString();
   }
 
-  public EntityReflection getEntityReflection() {
-    return entityReflection;
+  public EntityAnnot getEntityAnnot() {
+    return entityAnnot;
   }
 
   public TypeElement getEntityElement() {
@@ -71,8 +71,8 @@ public class EntityMeta implements TypeElementMeta {
     this.immutable = immutable;
   }
 
-  public void setTableMirror(TableReflection tableReflection) {
-    this.tableReflection = tableReflection;
+  public void setTableMirror(TableAnnot tableAnnot) {
+    this.tableAnnot = tableAnnot;
   }
 
   public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
@@ -146,19 +146,19 @@ public class EntityMeta implements TypeElementMeta {
   }
 
   public String getCatalogName() {
-    return tableReflection != null ? tableReflection.getCatalogValue() : "";
+    return tableAnnot != null ? tableAnnot.getCatalogValue() : "";
   }
 
   public String getSchemaName() {
-    return tableReflection != null ? tableReflection.getSchemaValue() : "";
+    return tableAnnot != null ? tableAnnot.getSchemaValue() : "";
   }
 
   public String getTableName() {
-    return tableReflection != null ? tableReflection.getNameValue() : "";
+    return tableAnnot != null ? tableAnnot.getNameValue() : "";
   }
 
   public boolean isQuoteRequired() {
-    return tableReflection != null && tableReflection.getQuoteValue();
+    return tableAnnot != null && tableAnnot.getQuoteValue();
   }
 
   public boolean isAbstract() {

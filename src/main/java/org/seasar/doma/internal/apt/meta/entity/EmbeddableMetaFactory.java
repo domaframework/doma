@@ -12,10 +12,10 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
+import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
+import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.reflection.AllArgsConstructorReflection;
-import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
-import org.seasar.doma.internal.apt.reflection.ValueReflection;
 import org.seasar.doma.message.Message;
 
 public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableMeta> {
@@ -24,7 +24,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
   private final TypeElement embeddableElement;
 
-  private final EmbeddableReflection embeddableReflection;
+  private final EmbeddableAnnot embeddableAnnot;
 
   private boolean error;
 
@@ -32,15 +32,15 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
     assertNotNull(ctx, embeddableElement);
     this.ctx = ctx;
     this.embeddableElement = embeddableElement;
-    embeddableReflection = ctx.getReflections().newEmbeddableReflection(embeddableElement);
-    if (embeddableReflection == null) {
-      throw new AptIllegalStateException("embeddableReflection");
+    embeddableAnnot = ctx.getAnnots().newEmbeddableAnnot(embeddableElement);
+    if (embeddableAnnot == null) {
+      throw new AptIllegalStateException("embeddableAnnot");
     }
   }
 
   @Override
   public EmbeddableMeta createTypeElementMeta() {
-    EmbeddableMeta embeddableMeta = new EmbeddableMeta(embeddableReflection, embeddableElement);
+    EmbeddableMeta embeddableMeta = new EmbeddableMeta(embeddableAnnot, embeddableElement);
     Strategy strategy = createStrategy(embeddableMeta);
     strategy.doClass(embeddableMeta);
     strategy.doFields(embeddableMeta);
@@ -49,14 +49,14 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
   }
 
   private Strategy createStrategy(EmbeddableMeta embeddableMeta) {
-    ValueReflection valueReflection = ctx.getReflections().newValueReflection(embeddableElement);
-    if (valueReflection != null) {
-      return new ValueStrategy(valueReflection);
+    ValueAnnot valueAnnot = ctx.getAnnots().newValueAnnot(embeddableElement);
+    if (valueAnnot != null) {
+      return new ValueStrategy(valueAnnot);
     }
-    AllArgsConstructorReflection allArgsConstructorReflection =
-        ctx.getReflections().newAllArgsConstructorReflection(embeddableElement);
-    if (allArgsConstructorReflection != null) {
-      return new AllArgsConstructorStrategy(allArgsConstructorReflection);
+    AllArgsConstructorAnnot allArgsConstructorAnnot =
+        ctx.getAnnots().newAllArgsConstructorAnnot(embeddableElement);
+    if (allArgsConstructorAnnot != null) {
+      return new AllArgsConstructorStrategy(allArgsConstructorAnnot);
     }
     return new DefaultStrategy();
   }
@@ -79,9 +79,9 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     public void validateClass(EmbeddableMeta embeddableMeta) {
       if (embeddableElement.getKind() != ElementKind.CLASS) {
-        EmbeddableReflection embeddableReflection = embeddableMeta.getEmbeddableReflection();
+        EmbeddableAnnot embeddableAnnot = embeddableMeta.getEmbeddableAnnot();
         throw new AptException(
-            Message.DOMA4283, embeddableElement, embeddableReflection.getAnnotationMirror());
+            Message.DOMA4283, embeddableElement, embeddableAnnot.getAnnotationMirror());
       }
       if (!embeddableElement.getTypeParameters().isEmpty()) {
         throw new AptException(Message.DOMA4285, embeddableElement);
@@ -229,56 +229,56 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
   private class AllArgsConstructorStrategy extends DefaultStrategy {
 
-    private final AllArgsConstructorReflection allArgsConstructorReflection;
+    private final AllArgsConstructorAnnot allArgsConstructorAnnot;
 
-    public AllArgsConstructorStrategy(AllArgsConstructorReflection allArgsConstructorReflection) {
-      assertNotNull(allArgsConstructorReflection);
-      this.allArgsConstructorReflection = allArgsConstructorReflection;
+    public AllArgsConstructorStrategy(AllArgsConstructorAnnot allArgsConstructorAnnot) {
+      assertNotNull(allArgsConstructorAnnot);
+      this.allArgsConstructorAnnot = allArgsConstructorAnnot;
     }
 
     @Override
     public void doConstructor(EmbeddableMeta embeddableMeta) {
-      if (!allArgsConstructorReflection.getStaticNameValue().isEmpty()) {
+      if (!allArgsConstructorAnnot.getStaticNameValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4424,
             embeddableElement,
-            allArgsConstructorReflection.getAnnotationMirror(),
-            allArgsConstructorReflection.getStaticName());
+            allArgsConstructorAnnot.getAnnotationMirror(),
+            allArgsConstructorAnnot.getStaticName());
       }
-      if (allArgsConstructorReflection.isAccessPrivate()) {
+      if (allArgsConstructorAnnot.isAccessPrivate()) {
         throw new AptException(
             Message.DOMA4425,
             embeddableElement,
-            allArgsConstructorReflection.getAnnotationMirror(),
-            allArgsConstructorReflection.getAccess());
+            allArgsConstructorAnnot.getAnnotationMirror(),
+            allArgsConstructorAnnot.getAccess());
       }
-      if (allArgsConstructorReflection.isAccessNone()) {
+      if (allArgsConstructorAnnot.isAccessNone()) {
         throw new AptException(
             Message.DOMA4427,
             embeddableElement,
-            allArgsConstructorReflection.getAnnotationMirror(),
-            allArgsConstructorReflection.getAccess());
+            allArgsConstructorAnnot.getAnnotationMirror(),
+            allArgsConstructorAnnot.getAccess());
       }
     }
   }
 
   private class ValueStrategy extends DefaultStrategy {
 
-    private final ValueReflection valueReflection;
+    private final ValueAnnot valueAnnot;
 
-    public ValueStrategy(ValueReflection valueReflection) {
-      assertNotNull(valueReflection);
-      this.valueReflection = valueReflection;
+    public ValueStrategy(ValueAnnot valueAnnot) {
+      assertNotNull(valueAnnot);
+      this.valueAnnot = valueAnnot;
     }
 
     @Override
     public void doConstructor(EmbeddableMeta embeddableMeta) {
-      if (!valueReflection.getStaticConstructorValue().isEmpty()) {
+      if (!valueAnnot.getStaticConstructorValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4423,
             embeddableElement,
-            valueReflection.getAnnotationMirror(),
-            valueReflection.getStaticConstructor());
+            valueAnnot.getAnnotationMirror(),
+            valueAnnot.getStaticConstructor());
       }
     }
   }

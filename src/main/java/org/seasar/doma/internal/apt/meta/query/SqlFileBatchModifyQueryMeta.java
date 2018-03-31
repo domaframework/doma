@@ -2,10 +2,10 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
+import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.reflection.BatchModifyReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
@@ -16,7 +16,7 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   private String elementsParameterName;
 
-  private BatchModifyReflection batchModifyReflection;
+  private BatchModifyAnnot batchModifyAnnot;
 
   public SqlFileBatchModifyQueryMeta(ExecutableElement method) {
     super(method);
@@ -46,40 +46,40 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
     this.elementsParameterName = entitiesParameterName;
   }
 
-  public BatchModifyReflection getBatchModifyReflection() {
-    return batchModifyReflection;
+  public BatchModifyAnnot getBatchModifyAnnot() {
+    return batchModifyAnnot;
   }
 
-  public void setBatchModifyReflection(BatchModifyReflection batchModifyReflection) {
-    this.batchModifyReflection = batchModifyReflection;
+  public void setBatchModifyAnnot(BatchModifyAnnot batchModifyAnnot) {
+    this.batchModifyAnnot = batchModifyAnnot;
   }
 
   public int getQueryTimeout() {
-    return batchModifyReflection.getQueryTimeoutValue();
+    return batchModifyAnnot.getQueryTimeoutValue();
   }
 
   public int getBatchSize() {
-    return batchModifyReflection.getBatchSizeValue();
+    return batchModifyAnnot.getBatchSizeValue();
   }
 
   public Boolean getIgnoreVersion() {
-    return batchModifyReflection.getIgnoreVersionValue();
+    return batchModifyAnnot.getIgnoreVersionValue();
   }
 
   public Boolean getSuppressOptimisticLockException() {
-    return batchModifyReflection.getSuppressOptimisticLockExceptionValue();
+    return batchModifyAnnot.getSuppressOptimisticLockExceptionValue();
   }
 
   public List<String> getInclude() {
-    return batchModifyReflection.getIncludeValue();
+    return batchModifyAnnot.getIncludeValue();
   }
 
   public List<String> getExclude() {
-    return batchModifyReflection.getExcludeValue();
+    return batchModifyAnnot.getExcludeValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return batchModifyReflection.getSqlLogValue();
+    return batchModifyAnnot.getSqlLogValue();
   }
 
   public boolean isPopulatable() {

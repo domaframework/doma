@@ -2,8 +2,8 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
+import org.seasar.doma.internal.apt.annot.ModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.reflection.ModifyReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
@@ -12,7 +12,7 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   private String entityParameterName;
 
-  private ModifyReflection modifyReflection;
+  private ModifyAnnot modifyAnnot;
 
   public SqlFileModifyQueryMeta(ExecutableElement method) {
     super(method);
@@ -34,44 +34,44 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
     this.entityParameterName = entityParameterName;
   }
 
-  public ModifyReflection getModifyReflection() {
-    return modifyReflection;
+  public ModifyAnnot getModifyAnnot() {
+    return modifyAnnot;
   }
 
-  public void setModifyReflection(ModifyReflection modifyReflection) {
-    this.modifyReflection = modifyReflection;
+  public void setModifyAnnot(ModifyAnnot modifyAnnot) {
+    this.modifyAnnot = modifyAnnot;
   }
 
   public int getQueryTimeout() {
-    return modifyReflection.getQueryTimeoutValue();
+    return modifyAnnot.getQueryTimeoutValue();
   }
 
   public Boolean getIgnoreVersion() {
-    return modifyReflection.getIgnoreVersionValue();
+    return modifyAnnot.getIgnoreVersionValue();
   }
 
   public Boolean getExcludeNull() {
-    return modifyReflection.getExcludeNullValue();
+    return modifyAnnot.getExcludeNullValue();
   }
 
   public Boolean getSuppressOptimisticLockException() {
-    return modifyReflection.getSuppressOptimisticLockExceptionValue();
+    return modifyAnnot.getSuppressOptimisticLockExceptionValue();
   }
 
   public Boolean getIncludeUnchanged() {
-    return modifyReflection.getIncludeUnchangedValue();
+    return modifyAnnot.getIncludeUnchangedValue();
   }
 
   public List<String> getInclude() {
-    return modifyReflection.getIncludeValue();
+    return modifyAnnot.getIncludeValue();
   }
 
   public List<String> getExclude() {
-    return modifyReflection.getExcludeValue();
+    return modifyAnnot.getExcludeValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return modifyReflection.getSqlLogValue();
+    return modifyAnnot.getSqlLogValue();
   }
 
   public boolean isPopulatable() {

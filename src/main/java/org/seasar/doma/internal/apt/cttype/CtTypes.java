@@ -20,11 +20,11 @@ import javax.lang.model.type.*;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
+import org.seasar.doma.internal.apt.annot.EntityAnnot;
+import org.seasar.doma.internal.apt.annot.HolderAnnot;
+import org.seasar.doma.internal.apt.annot.HolderConvertersAnnot;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
-import org.seasar.doma.internal.apt.reflection.EmbeddableReflection;
-import org.seasar.doma.internal.apt.reflection.EntityReflection;
-import org.seasar.doma.internal.apt.reflection.HolderConvertersReflection;
-import org.seasar.doma.internal.apt.reflection.HolderReflection;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.Reference;
@@ -130,9 +130,8 @@ public class CtTypes {
     if (typeElement == null) {
       return null;
     }
-    EmbeddableReflection embeddableReflection =
-        ctx.getReflections().newEmbeddableReflection(typeElement);
-    if (embeddableReflection == null) {
+    EmbeddableAnnot embeddableAnnot = ctx.getAnnots().newEmbeddableAnnot(typeElement);
+    if (embeddableAnnot == null) {
       return null;
     }
     return new EmbeddableCtType(ctx, type);
@@ -144,11 +143,11 @@ public class CtTypes {
     if (typeElement == null) {
       return null;
     }
-    EntityReflection entityReflection = ctx.getReflections().newEntityReflection(typeElement);
-    if (entityReflection == null) {
+    EntityAnnot entityAnnot = ctx.getAnnots().newEntityAnnot(typeElement);
+    if (entityAnnot == null) {
       return null;
     }
-    return new EntityCtType(ctx, type, entityReflection.getImmutableValue());
+    return new EntityCtType(ctx, type, entityAnnot.getImmutableValue());
   }
 
   public FunctionCtType newFunctionCtType(TypeMirror type) {
@@ -196,9 +195,9 @@ public class CtTypes {
   }
 
   private HolderInfo getHolderInfo(TypeElement typeElement) {
-    HolderReflection holderReflection = ctx.getReflections().newHolderReflection(typeElement);
-    if (holderReflection != null) {
-      return new HolderInfo(holderReflection.getValueTypeValue(), false);
+    HolderAnnot holderAnnot = ctx.getAnnots().newHolderAnnot(typeElement);
+    if (holderAnnot != null) {
+      return new HolderInfo(holderAnnot.getValueTypeValue(), false);
     }
     return getExternalHolderInfo(typeElement);
   }
@@ -218,8 +217,8 @@ public class CtTypes {
       if (providerElement == null) {
         throw new AptIllegalOptionException(Message.DOMA4200.getMessage(className));
       }
-      HolderConvertersReflection convertersMirror =
-          ctx.getReflections().newHolderConvertersReflection(providerElement);
+      HolderConvertersAnnot convertersMirror =
+          ctx.getAnnots().newHolderConvertersAnnot(providerElement);
       if (convertersMirror == null) {
         throw new AptIllegalOptionException(Message.DOMA4201.getMessage(className));
       }
