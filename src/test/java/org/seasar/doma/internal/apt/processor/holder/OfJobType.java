@@ -2,32 +2,28 @@ package org.seasar.doma.internal.apt.processor.holder;
 
 import org.seasar.doma.Holder;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Holder(valueType = String.class, factoryMethod = "of", acceptNull = true)
 enum OfJobType {
+  SALESEMAN("01"),
+  CLERK("02");
 
-    SALESEMAN("01"), CLERK("02");
+  private final String value;
 
-    private final String value;
+  private OfJobType(String value) {
+    this.value = value;
+  }
 
-    private OfJobType(String value) {
-        this.value = value;
+  static OfJobType of(String value) {
+    for (OfJobType jobType : OfJobType.values()) {
+      if (jobType.value.equals(value)) {
+        return jobType;
+      }
     }
+    return null;
+  }
 
-    static OfJobType of(String value) {
-        for (OfJobType jobType : OfJobType.values()) {
-            if (jobType.value.equals(value)) {
-                return jobType;
-            }
-        }
-        return null;
-    }
-
-    String getValue() {
-        return value;
-    }
-
+  String getValue() {
+    return value;
+  }
 }

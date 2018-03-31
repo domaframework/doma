@@ -6,9 +6,8 @@ import java.sql.SQLException;
 
 public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
 
-    @Override
-    public Blob create(Connection connection) throws SQLException {
-        return connection.createBlob();
-    }
-
+  @Override
+  public Blob create(Connection connection) throws SQLException {
+    return connection.createBlob();
+  }
 }

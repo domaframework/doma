@@ -7,25 +7,21 @@ import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class EntityIterationHandler<ENTITY, RESULT>
-        extends AbstractIterationHandler<ENTITY, RESULT> {
+    extends AbstractIterationHandler<ENTITY, RESULT> {
 
-    protected final EntityDesc<ENTITY> entityDesc;
+  protected final EntityDesc<ENTITY> entityDesc;
 
-    public EntityIterationHandler(EntityDesc<ENTITY> entityDesc,
-            IterationCallback<ENTITY, RESULT> iterationCallback) {
-        super(iterationCallback);
-        assertNotNull(entityDesc);
-        this.entityDesc = entityDesc;
-    }
+  public EntityIterationHandler(
+      EntityDesc<ENTITY> entityDesc, IterationCallback<ENTITY, RESULT> iterationCallback) {
+    super(iterationCallback);
+    assertNotNull(entityDesc);
+    this.entityDesc = entityDesc;
+  }
 
-    @Override
-    protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
-        return new EntityProvider<>(entityDesc, query, query.isResultMappingEnsured());
-    }
-
+  @Override
+  protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
+    return new EntityProvider<>(entityDesc, query, query.isResultMappingEnsured());
+  }
 }

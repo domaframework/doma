@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the annotated method handles an SQL statement that is built
- * from an SQL template.
+ * Indicates that the annotated method handles an SQL statement that is built from an SQL template.
+ *
+ * <p>The annotated method must be a member of a {@link Dao} annotated interface.
+ *
  * <p>
- * The annotated method must be a member of a {@link Dao} annotated interface.
- * <p>
- * 
+ *
  * <pre>
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
@@ -23,6 +23,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @DaoMethod
-public @interface SqlProcessor {
-
-}
+public @interface SqlProcessor {}

@@ -3,143 +3,119 @@ package org.seasar.doma.internal.apt.processor.entity;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import org.seasar.doma.jdbc.entity.*;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityDesc;
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyDesc;
-import org.seasar.doma.jdbc.entity.NamingType;
-import org.seasar.doma.jdbc.entity.PostDeleteContext;
-import org.seasar.doma.jdbc.entity.PostInsertContext;
-import org.seasar.doma.jdbc.entity.PostUpdateContext;
-import org.seasar.doma.jdbc.entity.PreDeleteContext;
-import org.seasar.doma.jdbc.entity.PreInsertContext;
-import org.seasar.doma.jdbc.entity.PreUpdateContext;
-import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
-
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class _ImmutableEmp extends AbstractEntityDesc<ImmutableEmp> {
 
-    @Override
-    public String getCatalogName() {
+  @Override
+  public String getCatalogName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public Class<ImmutableEmp> getEntityClass() {
+  @Override
+  public Class<ImmutableEmp> getEntityClass() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public EntityPropertyDesc<ImmutableEmp, ?> getEntityPropertyDesc(String name) {
+  @Override
+  public EntityPropertyDesc<ImmutableEmp, ?> getEntityPropertyDesc(String name) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public List<EntityPropertyDesc<ImmutableEmp, ?>> getEntityPropertyDescs() {
+  @Override
+  public List<EntityPropertyDesc<ImmutableEmp, ?>> getEntityPropertyDescs() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public GeneratedIdPropertyDesc<ImmutableEmp, ?, ?> getGeneratedIdPropertyDesc() {
+  @Override
+  public GeneratedIdPropertyDesc<ImmutableEmp, ?, ?> getGeneratedIdPropertyDesc() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public List<EntityPropertyDesc<ImmutableEmp, ?>> getIdPropertyDescs() {
+  @Override
+  public List<EntityPropertyDesc<ImmutableEmp, ?>> getIdPropertyDescs() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getName() {
+  @Override
+  public String getName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public ImmutableEmp getOriginalStates(ImmutableEmp entity) {
+  @Override
+  public ImmutableEmp getOriginalStates(ImmutableEmp entity) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getSchemaName() {
+  @Override
+  public String getSchemaName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
+  @Override
+  public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public VersionPropertyDesc<ImmutableEmp, ?, ?> getVersionPropertyDesc() {
+  @Override
+  public VersionPropertyDesc<ImmutableEmp, ?, ?> getVersionPropertyDesc() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public void preDelete(ImmutableEmp entity, PreDeleteContext<ImmutableEmp> context) {
-    }
+  @Override
+  public void preDelete(ImmutableEmp entity, PreDeleteContext<ImmutableEmp> context) {}
 
-    @Override
-    public void preInsert(ImmutableEmp entity, PreInsertContext<ImmutableEmp> context) {
-    }
+  @Override
+  public void preInsert(ImmutableEmp entity, PreInsertContext<ImmutableEmp> context) {}
 
-    @Override
-    public void preUpdate(ImmutableEmp entity, PreUpdateContext<ImmutableEmp> context) {
-    }
+  @Override
+  public void preUpdate(ImmutableEmp entity, PreUpdateContext<ImmutableEmp> context) {}
 
-    @Override
-    public void postDelete(ImmutableEmp entity, PostDeleteContext<ImmutableEmp> context) {
-    }
+  @Override
+  public void postDelete(ImmutableEmp entity, PostDeleteContext<ImmutableEmp> context) {}
 
-    @Override
-    public void postInsert(ImmutableEmp entity, PostInsertContext<ImmutableEmp> context) {
-    }
+  @Override
+  public void postInsert(ImmutableEmp entity, PostInsertContext<ImmutableEmp> context) {}
 
-    @Override
-    public void postUpdate(ImmutableEmp entity, PostUpdateContext<ImmutableEmp> context) {
-    }
+  @Override
+  public void postUpdate(ImmutableEmp entity, PostUpdateContext<ImmutableEmp> context) {}
 
-    @Override
-    public void saveCurrentStates(ImmutableEmp entity) {
+  @Override
+  public void saveCurrentStates(ImmutableEmp entity) {}
 
-    }
+  @Override
+  public NamingType getNamingType() {
+    return null;
+  }
 
-    @Override
-    public NamingType getNamingType() {
-        return null;
-    }
+  public static _ImmutableEmp getSingletonInternal() {
+    return null;
+  }
 
-    public static _ImmutableEmp getSingletonInternal() {
-        return null;
-    }
+  @Override
+  public boolean isImmutable() {
+    return false;
+  }
 
-    @Override
-    public boolean isImmutable() {
-        return false;
-    }
+  @Override
+  public ImmutableEmp newEntity(Map<String, Property<ImmutableEmp, ?>> args) {
+    return null;
+  }
 
-    @Override
-    public ImmutableEmp newEntity(Map<String, Property<ImmutableEmp, ?>> args) {
-        return null;
-    }
-
-    @Override
-    public boolean isQuoteRequired() {
-        return false;
-    }
-
+  @Override
+  public boolean isQuoteRequired() {
+    return false;
+  }
 }

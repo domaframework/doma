@@ -4,14 +4,13 @@ import javax.lang.model.element.ExecutableElement;
 
 public class ConstructorDeclaration {
 
-    private final ExecutableElement element;
+  private final ExecutableElement element;
 
-    ConstructorDeclaration(ExecutableElement element) {
-        this.element = element;
-    }
+  ConstructorDeclaration(ExecutableElement element) {
+    this.element = element;
+  }
 
-    public ExecutableElement getElement() {
-        return element;
-    }
-
+  public ExecutableElement getElement() {
+    return element;
+  }
 }

@@ -4,42 +4,38 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
-
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class EntityCtType extends AbstractCtType {
 
-    private final boolean immutable;
+  private final boolean immutable;
 
-    private final String descClassName;
+  private final String descClassName;
 
-    EntityCtType(Context ctx, TypeMirror type, boolean immutable) {
-        super(ctx, type);
-        assertNotNull(typeElement);
-        this.immutable = immutable;
-        CodeSpec codeSpec = ctx.getCodeSpecs().newEntityDescCodeSpec(typeElement);
-        this.descClassName = codeSpec.getQualifiedName();
-    }
+  EntityCtType(Context ctx, TypeMirror type, boolean immutable) {
+    super(ctx, type);
+    assertNotNull(typeElement);
+    this.immutable = immutable;
+    CodeSpec codeSpec = ctx.getCodeSpecs().newEntityDescCodeSpec(typeElement);
+    this.descClassName = codeSpec.getQualifiedName();
+  }
 
-    public boolean isImmutable() {
-        return immutable;
-    }
+  public boolean isImmutable() {
+    return immutable;
+  }
 
-    public boolean isAbstract() {
-        return typeElement.getModifiers().contains(Modifier.ABSTRACT);
-    }
+  public boolean isAbstract() {
+    return typeElement.getModifiers().contains(Modifier.ABSTRACT);
+  }
 
-    public String getDescClassName() {
-        return descClassName;
-    }
+  public String getDescClassName() {
+    return descClassName;
+  }
 
-    @Override
-    public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitEntityCtType(this, p);
-    }
+  @Override
+  public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    return visitor.visitEntityCtType(this, p);
+  }
 }

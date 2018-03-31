@@ -1,10 +1,7 @@
 package org.seasar.doma.internal.jdbc.sql.node;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface SpaceStrippingNode extends AppendableSqlNode {
 
-    void clearChildren();
+  void clearChildren();
 }

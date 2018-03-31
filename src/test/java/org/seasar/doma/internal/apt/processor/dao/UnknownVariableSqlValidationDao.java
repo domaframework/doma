@@ -7,7 +7,6 @@ import org.seasar.doma.internal.apt.processor.entity.Emp;
 @Dao(config = MyConfig.class)
 public interface UnknownVariableSqlValidationDao {
 
-    @Select
-    Emp select(Integer id);
-
+  @Select
+  Emp select(Integer id);
 }

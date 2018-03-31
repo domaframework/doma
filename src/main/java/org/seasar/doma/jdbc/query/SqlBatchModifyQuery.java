@@ -8,153 +8,150 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
-
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
-import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.SqlExecutionSkipCause;
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.*;
 
 public abstract class SqlBatchModifyQuery extends AbstractQuery implements BatchModifyQuery {
 
-    protected final SqlKind kind;
+  protected final SqlKind kind;
 
-    protected SqlNode sqlNode;
+  protected SqlNode sqlNode;
 
-    protected final Map<String, List<Value>> parameters = new LinkedHashMap<>();
+  protected final Map<String, List<Value>> parameters = new LinkedHashMap<>();
 
-    protected List<PreparedSql> sqls;
+  protected List<PreparedSql> sqls;
 
-    protected boolean optimisticLockCheckRequired;
+  protected boolean optimisticLockCheckRequired;
 
-    protected int batchSize = -1;
+  protected int batchSize = -1;
 
-    protected SqlLogType sqlLogType;
+  protected SqlLogType sqlLogType;
 
-    protected int parameterSize = -1;
+  protected int parameterSize = -1;
 
-    protected SqlBatchModifyQuery(SqlKind kind) {
-        assertNotNull(kind);
-        this.kind = kind;
+  protected SqlBatchModifyQuery(SqlKind kind) {
+    assertNotNull(kind);
+    this.kind = kind;
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
+    assertNotNull(sqlNode);
+    prepareOptions();
+    prepareSql();
+    assertNotNull(sqls);
+  }
+
+  protected void prepareOptions() {
+    if (queryTimeout <= 0) {
+      queryTimeout = config.getQueryTimeout();
     }
-
-    @Override
-    public void prepare() {
-        super.prepare();
-        assertNotNull(sqlNode);
-        prepareOptions();
-        prepareSql();
-        assertNotNull(sqls);
+    if (batchSize <= 0) {
+      batchSize = config.getBatchSize();
     }
+  }
 
-    protected void prepareOptions() {
-        if (queryTimeout <= 0) {
-            queryTimeout = config.getQueryTimeout();
-        }
-        if (batchSize <= 0) {
-            batchSize = config.getBatchSize();
-        }
+  protected void prepareSql() {
+    sqls = new ArrayList<>();
+    IntStream.rangeClosed(0, parameterSize - 1)
+        .forEach(
+            i -> {
+              @SuppressWarnings("serial")
+              Map<String, Value> map =
+                  new LinkedHashMap<>() {
+                    {
+                      parameters.forEach((key, value) -> put(key, value.get(i)));
+                    }
+                  };
+              ExpressionEvaluator evaluator =
+                  new ExpressionEvaluator(
+                      map, config.getDialect().getExpressionFunctions(), config.getClassHelper());
+              NodePreparedSqlBuilder sqlBuilder =
+                  new NodePreparedSqlBuilder(config, kind, null, evaluator, sqlLogType);
+              PreparedSql sql = sqlBuilder.build(sqlNode, this::comment);
+              sqls.add(sql);
+            });
+  }
+
+  @Override
+  public void complete() {}
+
+  public void setSqlNode(SqlNode sqlNode) {
+    this.sqlNode = sqlNode;
+  }
+
+  public void addParameter(String name, Class<?> type, List<?> values) {
+    assertNotNull(name, type);
+    assertNotNull(values);
+    List<Value> valueList = new ArrayList<>();
+    for (Object value : values) {
+      valueList.add(new Value(type, value));
     }
-
-    protected void prepareSql() {
-        sqls = new ArrayList<>();
-        IntStream.rangeClosed(0, parameterSize - 1).forEach(i -> {
-            @SuppressWarnings("serial")
-            Map<String, Value> map = new LinkedHashMap<>() {
-                {
-                    parameters.forEach((key, value) -> put(key, value.get(i)));
-                }
-            };
-            ExpressionEvaluator evaluator = new ExpressionEvaluator(map,
-                    config.getDialect().getExpressionFunctions(), config.getClassHelper());
-            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, kind, null,
-                    evaluator, sqlLogType);
-            PreparedSql sql = sqlBuilder.build(sqlNode, this::comment);
-            sqls.add(sql);
-        });
+    if (parameterSize == -1) {
+      parameterSize = valueList.size();
+    } else {
+      assertEquals(parameterSize, valueList.size());
     }
+    parameters.put(name, valueList);
+  }
 
-    @Override
-    public void complete() {
-    }
+  public void clearParameters() {
+    parameters.clear();
+  }
 
-    public void setSqlNode(SqlNode sqlNode) {
-        this.sqlNode = sqlNode;
-    }
+  public void setBatchSize(int batchSize) {
+    this.batchSize = batchSize;
+  }
 
-    public void addParameter(String name, Class<?> type, List<?> values) {
-        assertNotNull(name, type);
-        assertNotNull(values);
-        List<Value> valueList = new ArrayList<>();
-        for (Object value : values) {
-            valueList.add(new Value(type, value));
-        }
-        if (parameterSize == -1) {
-            parameterSize = valueList.size();
-        } else {
-            assertEquals(parameterSize, valueList.size());
-        }
-        parameters.put(name, valueList);
-    }
+  public void setSqlLogType(SqlLogType sqlLogType) {
+    this.sqlLogType = sqlLogType;
+  }
 
-    public void clearParameters() {
-        parameters.clear();
-    }
+  @Override
+  public PreparedSql getSql() {
+    return sqls.get(0);
+  }
 
-    public void setBatchSize(int batchSize) {
-        this.batchSize = batchSize;
-    }
+  @Override
+  public List<PreparedSql> getSqls() {
+    return sqls;
+  }
 
-    public void setSqlLogType(SqlLogType sqlLogType) {
-        this.sqlLogType = sqlLogType;
-    }
+  @Override
+  public boolean isOptimisticLockCheckRequired() {
+    return optimisticLockCheckRequired;
+  }
 
-    @Override
-    public PreparedSql getSql() {
-        return sqls.get(0);
-    }
+  @Override
+  public boolean isExecutable() {
+    return true;
+  }
 
-    @Override
-    public List<PreparedSql> getSqls() {
-        return sqls;
-    }
+  @Override
+  public SqlExecutionSkipCause getSqlExecutionSkipCause() {
+    return null;
+  }
 
-    @Override
-    public boolean isOptimisticLockCheckRequired() {
-        return optimisticLockCheckRequired;
-    }
+  @Override
+  public boolean isAutoGeneratedKeysSupported() {
+    return false;
+  }
 
-    @Override
-    public boolean isExecutable() {
-        return true;
-    }
+  @Override
+  public int getBatchSize() {
+    return batchSize;
+  }
 
-    @Override
-    public SqlExecutionSkipCause getSqlExecutionSkipCause() {
-        return null;
-    }
+  @Override
+  public SqlLogType getSqlLogType() {
+    return sqlLogType;
+  }
 
-    @Override
-    public boolean isAutoGeneratedKeysSupported() {
-        return false;
-    }
-
-    @Override
-    public int getBatchSize() {
-        return batchSize;
-    }
-
-    @Override
-    public SqlLogType getSqlLogType() {
-        return sqlLogType;
-    }
-
-    @Override
-    public String toString() {
-        return sqls != null ? sqls.toString() : null;
-    }
-
+  @Override
+  public String toString() {
+    return sqls != null ? sqls.toString() : null;
+  }
 }

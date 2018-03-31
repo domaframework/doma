@@ -7,39 +7,35 @@ import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class StandardForUpdateTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
 
-    protected final SelectForUpdateType forUpdateType;
+  protected final SelectForUpdateType forUpdateType;
 
-    protected final int waitSeconds;
+  protected final int waitSeconds;
 
-    protected final String[] aliases;
+  protected final String[] aliases;
 
-    protected boolean processed;
+  protected boolean processed;
 
-    public StandardForUpdateTransformer(SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        assertNotNull(forUpdateType);
-        this.forUpdateType = forUpdateType;
-        this.waitSeconds = waitSeconds;
-        this.aliases = aliases;
+  public StandardForUpdateTransformer(
+      SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
+    assertNotNull(forUpdateType);
+    this.forUpdateType = forUpdateType;
+    this.waitSeconds = waitSeconds;
+    this.aliases = aliases;
+  }
+
+  public SqlNode transform(SqlNode sqlNode) {
+    AnonymousNode result = new AnonymousNode();
+    for (SqlNode child : sqlNode.getChildren()) {
+      result.appendNode(child.accept(this, null));
     }
+    return result;
+  }
 
-    public SqlNode transform(SqlNode sqlNode) {
-        AnonymousNode result = new AnonymousNode();
-        for (SqlNode child : sqlNode.getChildren()) {
-            result.appendNode(child.accept(this, null));
-        }
-        return result;
-    }
-
-    @Override
-    protected SqlNode defaultAction(SqlNode node, Void p) {
-        return node;
-    }
-
+  @Override
+  protected SqlNode defaultAction(SqlNode node, Void p) {
+    return node;
+  }
 }

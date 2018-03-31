@@ -1,9 +1,4 @@
 package org.seasar.doma.internal.apt.processor.holder;
 
-/**
- * @author taedium
- *
- */
-public class ValueObject {
-
-}
+/** @author taedium */
+public class ValueObject {}

@@ -7,6 +7,6 @@ import org.seasar.doma.internal.apt.processor.entity.Emp;
 @Dao(config = MyConfig.class)
 public interface EmbeddedVariableDao {
 
-    @Select
-    Emp select(String orderBy);
+  @Select
+  Emp select(String orderBy);
 }

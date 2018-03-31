@@ -7,6 +7,6 @@ import org.seasar.doma.internal.apt.processor.entity.Emp;
 @Dao(config = MyConfig.class)
 public interface MultiParamMethodAccessSqlValidationDao {
 
-    @Select
-    Emp select(String name);
+  @Select
+  Emp select(String name);
 }

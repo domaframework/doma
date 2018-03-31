@@ -1,40 +1,38 @@
 package org.seasar.doma.jdbc;
 
-/**
- * Defines the SQL kinds.
- */
+/** Defines the SQL kinds. */
 public enum SqlKind {
 
-    /** select */
-    SELECT,
+  /** select */
+  SELECT,
 
-    /** insert */
-    INSERT,
+  /** insert */
+  INSERT,
 
-    /** update */
-    UPDATE,
+  /** update */
+  UPDATE,
 
-    /** delete */
-    DELETE,
+  /** delete */
+  DELETE,
 
-    /** batch insert */
-    BATCH_INSERT,
+  /** batch insert */
+  BATCH_INSERT,
 
-    /** batch update */
-    BATCH_UPDATE,
+  /** batch update */
+  BATCH_UPDATE,
 
-    /** batch delete */
-    BATCH_DELETE,
+  /** batch delete */
+  BATCH_DELETE,
 
-    /** stored procedure */
-    PROCEDURE,
+  /** stored procedure */
+  PROCEDURE,
 
-    /** stored function */
-    FUNCTION,
+  /** stored function */
+  FUNCTION,
 
-    /** script */
-    SCRIPT,
+  /** script */
+  SCRIPT,
 
-    /** sql processor */
-    SQL_PROCESSOR
+  /** sql processor */
+  SQL_PROCESSOR
 }

@@ -6,15 +6,14 @@ import javax.lang.model.element.AnnotationMirror;
 
 public abstract class AbstractReflection {
 
-    private final AnnotationMirror annotationMirror;
+  private final AnnotationMirror annotationMirror;
 
-    AbstractReflection(AnnotationMirror annotationMirror) {
-        assertNotNull(annotationMirror);
-        this.annotationMirror = annotationMirror;
-    }
+  AbstractReflection(AnnotationMirror annotationMirror) {
+    assertNotNull(annotationMirror);
+    this.annotationMirror = annotationMirror;
+  }
 
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
-    }
-
+  public AnnotationMirror getAnnotationMirror() {
+    return annotationMirror;
+  }
 }

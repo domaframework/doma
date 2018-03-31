@@ -6,9 +6,8 @@ import java.sql.SQLXML;
 
 public class SQLXMLCreateQuery extends AbstractCreateQuery<SQLXML> {
 
-    @Override
-    public SQLXML create(Connection connection) throws SQLException {
-        return connection.createSQLXML();
-    }
-
+  @Override
+  public SQLXML create(Connection connection) throws SQLException {
+    return connection.createSQLXML();
+  }
 }

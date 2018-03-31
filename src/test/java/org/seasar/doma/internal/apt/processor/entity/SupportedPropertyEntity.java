@@ -2,69 +2,58 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.NClob;
-import java.sql.Time;
-import java.sql.Timestamp;
-
+import java.sql.*;
 import org.seasar.doma.Entity;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Entity
 public class SupportedPropertyEntity {
 
-    boolean primitiveBoolean;
+  boolean primitiveBoolean;
 
-    byte primitiveByte;
+  byte primitiveByte;
 
-    short primitiveShort;
+  short primitiveShort;
 
-    int primitiveInt;
+  int primitiveInt;
 
-    long primitiveLong;
+  long primitiveLong;
 
-    float primitiveFloat;
+  float primitiveFloat;
 
-    double primitiveDouble;
+  double primitiveDouble;
 
-    byte[] primitiveBytes;
+  byte[] primitiveBytes;
 
-    Boolean booleanObject;
+  Boolean booleanObject;
 
-    Byte byteObject;
+  Byte byteObject;
 
-    Integer integerObject;
+  Integer integerObject;
 
-    Long longObject;
+  Long longObject;
 
-    Float floatObject;
+  Float floatObject;
 
-    Double doubleObject;
+  Double doubleObject;
 
-    String string;
+  String string;
 
-    Blob blob;
+  Blob blob;
 
-    Clob clob;
+  Clob clob;
 
-    NClob nclob;
+  NClob nclob;
 
-    Array array;
+  Array array;
 
-    BigDecimal bigDecimal;
+  BigDecimal bigDecimal;
 
-    BigInteger bigInteger;
+  BigInteger bigInteger;
 
-    Date date;
+  Date date;
 
-    Time time;
+  Time time;
 
-    Timestamp timestamp;
-
+  Timestamp timestamp;
 }

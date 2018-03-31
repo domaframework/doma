@@ -4,13 +4,10 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface AutoInsertDao {
 
-    @Insert
-    int insert(Emp entity);
+  @Insert
+  int insert(Emp entity);
 }

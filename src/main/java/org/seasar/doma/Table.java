@@ -7,11 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates a database table.
+ *
+ * <p>This annotation must be used in conjunction with the {@link Entity} annotation.
+ *
  * <p>
- * This annotation must be used in conjunction with the {@link Entity}
- * annotation.
- * <p>
- * 
+ *
  * <pre>
  * &#064;Entity
  * &#064;Table(name = &quot;EMP&quot;)
@@ -24,26 +24,19 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 
-    /**
-     * The catalog name.
-     */
-    String catalog() default "";
+  /** The catalog name. */
+  String catalog() default "";
 
-    /**
-     * The schema name.
-     */
-    String schema() default "";
+  /** The schema name. */
+  String schema() default "";
 
-    /**
-     * The table name.
-     * <p>
-     * If not specified, the table name is resolved by {@link Entity#naming()}.
-     */
-    String name() default "";
+  /**
+   * The table name.
+   *
+   * <p>If not specified, the table name is resolved by {@link Entity#naming()}.
+   */
+  String name() default "";
 
-    /**
-     * Whether quotation marks are used for the catalog name, the schema name
-     * and the table name.
-     */
-    boolean quote() default false;
+  /** Whether quotation marks are used for the catalog name, the schema name and the table name. */
+  boolean quote() default false;
 }

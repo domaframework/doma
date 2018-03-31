@@ -1,13 +1,9 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class EmpDto {
 
-    Integer id;
+  Integer id;
 
-    String name;
-
+  String name;
 }

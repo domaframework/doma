@@ -1,15 +1,11 @@
 package org.seasar.doma.internal.apt;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class AptIllegalStateException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public AptIllegalStateException(String message) {
-        super(message);
-    }
-
+  public AptIllegalStateException(String message) {
+    super(message);
+  }
 }

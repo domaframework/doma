@@ -1,10 +1,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface QueryMetaFactory {
 
-    QueryMeta createQueryMeta();
+  QueryMeta createQueryMeta();
 }

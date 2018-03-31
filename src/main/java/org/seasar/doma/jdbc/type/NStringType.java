@@ -1,40 +1,32 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
-/**
- * A JDBC type for {@link Types#NVARCHAR} and {@link String}.
- */
+/** A JDBC type for {@link Types#NVARCHAR} and {@link String}. */
 public class NStringType extends AbstractJdbcType<String> {
 
-    public NStringType() {
-        super(Types.NVARCHAR);
-    }
+  public NStringType() {
+    super(Types.NVARCHAR);
+  }
 
-    @Override
-    protected String doGetValue(ResultSet resultSet, int index) throws SQLException {
-        return resultSet.getNString(index);
-    }
+  @Override
+  protected String doGetValue(ResultSet resultSet, int index) throws SQLException {
+    return resultSet.getNString(index);
+  }
 
-    @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index, String value)
-            throws SQLException {
-        preparedStatement.setNString(index, value);
-    }
+  @Override
+  protected void doSetValue(PreparedStatement preparedStatement, int index, String value)
+      throws SQLException {
+    preparedStatement.setNString(index, value);
+  }
 
-    @Override
-    protected String doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
-        return callableStatement.getNString(index);
-    }
+  @Override
+  protected String doGetValue(CallableStatement callableStatement, int index) throws SQLException {
+    return callableStatement.getNString(index);
+  }
 
-    @Override
-    protected String doConvertToLogFormat(String value) {
-        return "'" + value + "'";
-    }
-
+  @Override
+  protected String doConvertToLogFormat(String value) {
+    return "'" + value + "'";
+  }
 }

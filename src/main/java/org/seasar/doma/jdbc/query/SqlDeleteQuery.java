@@ -4,8 +4,7 @@ import org.seasar.doma.jdbc.SqlKind;
 
 public class SqlDeleteQuery extends SqlModifyQuery implements DeleteQuery {
 
-    public SqlDeleteQuery() {
-        super(SqlKind.DELETE);
-    }
-
+  public SqlDeleteQuery() {
+    super(SqlKind.DELETE);
+  }
 }

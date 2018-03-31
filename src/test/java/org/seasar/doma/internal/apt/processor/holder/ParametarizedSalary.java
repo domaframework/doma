@@ -1,23 +1,19 @@
 package org.seasar.doma.internal.apt.processor.holder;
 
 import java.math.BigDecimal;
-
 import org.seasar.doma.Holder;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Holder(valueType = BigDecimal.class, acceptNull = true)
 public class ParametarizedSalary<T, U> {
 
-    private final BigDecimal value;
+  private final BigDecimal value;
 
-    public ParametarizedSalary(BigDecimal value) {
-        this.value = value;
-    }
+  public ParametarizedSalary(BigDecimal value) {
+    this.value = value;
+  }
 
-    public BigDecimal getValue() {
-        return value;
-    }
+  public BigDecimal getValue() {
+    return value;
+  }
 }

@@ -1,121 +1,117 @@
 package org.seasar.doma.internal.apt.cttype;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVisitor<R, P, TH> {
 
-    protected R defaultValue;
+  protected R defaultValue;
 
-    public SimpleCtTypeVisitor() {
-    }
+  public SimpleCtTypeVisitor() {}
 
-    public SimpleCtTypeVisitor(R defaultValue) {
-        this.defaultValue = defaultValue;
-    }
+  public SimpleCtTypeVisitor(R defaultValue) {
+    this.defaultValue = defaultValue;
+  }
 
-    protected R defaultAction(CtType ctType, P p) throws TH {
-        return defaultValue;
-    }
+  protected R defaultAction(CtType ctType, P p) throws TH {
+    return defaultValue;
+  }
 
-    @Override
-    public R visitAnyCtType(AnyCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitAnyCtType(AnyCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitBasicCtType(BasicCtType ctType, P p) throws TH {
-        return visitScalarCtType(ctType, p);
-    }
+  @Override
+  public R visitBasicCtType(BasicCtType ctType, P p) throws TH {
+    return visitScalarCtType(ctType, p);
+  }
 
-    @Override
-    public R visitHolderCtType(HolderCtType ctType, P p) throws TH {
-        return visitScalarCtType(ctType, p);
-    }
+  @Override
+  public R visitHolderCtType(HolderCtType ctType, P p) throws TH {
+    return visitScalarCtType(ctType, p);
+  }
 
-    @Override
-    public R visitEmbeddableCtType(EmbeddableCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitEmbeddableCtType(EmbeddableCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitEntityCtType(EntityCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitEntityCtType(EntityCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitIterableCtType(IterableCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitIterableCtType(IterableCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitCollectorCtType(CollectorCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitCollectorCtType(CollectorCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitReferenceCtType(ReferenceCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitReferenceCtType(ReferenceCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitMapCtType(MapCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitMapCtType(MapCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitOptionalCtType(OptionalCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitOptionalCtType(OptionalCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitOptionalIntCtType(OptionalIntCtType ctType, P p) throws TH {
-        return visitScalarCtType(ctType, p);
-    }
+  @Override
+  public R visitOptionalIntCtType(OptionalIntCtType ctType, P p) throws TH {
+    return visitScalarCtType(ctType, p);
+  }
 
-    @Override
-    public R visitOptionalLongCtType(OptionalLongCtType ctType, P p) throws TH {
-        return visitScalarCtType(ctType, p);
-    }
+  @Override
+  public R visitOptionalLongCtType(OptionalLongCtType ctType, P p) throws TH {
+    return visitScalarCtType(ctType, p);
+  }
 
-    @Override
-    public R visitOptionalDoubleCtType(OptionalDoubleCtType ctType, P p) throws TH {
-        return visitScalarCtType(ctType, p);
-    }
+  @Override
+  public R visitOptionalDoubleCtType(OptionalDoubleCtType ctType, P p) throws TH {
+    return visitScalarCtType(ctType, p);
+  }
 
-    @Override
-    public R visitFunctionCtType(FunctionCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitFunctionCtType(FunctionCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitStreamCtType(StreamCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitStreamCtType(StreamCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitBiFunctionCtType(BiFunctionCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitBiFunctionCtType(BiFunctionCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitConfigCtType(ConfigCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitConfigCtType(ConfigCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitPreparedSqlCtType(PreparedSqlCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitPreparedSqlCtType(PreparedSqlCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 
-    @Override
-    public R visitScalarCtType(ScalarCtType ctType, P p) throws TH {
-        return defaultAction(ctType, p);
-    }
+  @Override
+  public R visitScalarCtType(ScalarCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 }

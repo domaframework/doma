@@ -5,16 +5,13 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.ParentEntity;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface SqlFileInsertEntityDao {
 
-    @Insert(sqlFile = true)
-    int insert(Emp emp);
+  @Insert(sqlFile = true)
+  int insert(Emp emp);
 
-    @Insert(sqlFile = true)
-    int insertMultipleEntities(Emp emp, ParentEntity parentEntity);
+  @Insert(sqlFile = true)
+  int insertMultipleEntities(Emp emp, ParentEntity parentEntity);
 }

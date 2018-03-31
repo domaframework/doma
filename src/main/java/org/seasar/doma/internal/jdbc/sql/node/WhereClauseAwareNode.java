@@ -8,8 +8,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public interface WhereClauseAwareNode extends SqlNode {
 
-    WhereClauseNode getWhereClauseNode();
+  WhereClauseNode getWhereClauseNode();
 
-    void setWhereClauseNode(WhereClauseNode whereClauseNode);
-
+  void setWhereClauseNode(WhereClauseNode whereClauseNode);
 }

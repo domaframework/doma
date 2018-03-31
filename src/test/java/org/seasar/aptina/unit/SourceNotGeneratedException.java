@@ -19,26 +19,21 @@ import junit.framework.AssertionFailedError;
 
 /**
  * ソースが生成されなかった場合にスローされる例外です。
- * 
+ *
  * @author koichik
  */
 @SuppressWarnings("serial")
 public class SourceNotGeneratedException extends AssertionFailedError {
 
-    /**
-     * インスタンスを構築します。
-     */
-    public SourceNotGeneratedException() {
-    }
+  /** インスタンスを構築します。 */
+  public SourceNotGeneratedException() {}
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param message
-     *            メッセージ
-     */
-    public SourceNotGeneratedException(final String message) {
-        super(message);
-    }
-
+  /**
+   * インスタンスを構築します。
+   *
+   * @param message メッセージ
+   */
+  public SourceNotGeneratedException(final String message) {
+    super(message);
+  }
 }

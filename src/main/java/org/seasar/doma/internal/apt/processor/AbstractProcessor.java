@@ -2,70 +2,65 @@ package org.seasar.doma.internal.apt.processor;
 
 import java.lang.annotation.Annotation;
 import java.util.function.Consumer;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
-
-import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalOptionException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.AptTypeHandleException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.*;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
 
-    protected final Class<? extends Annotation> supportedAnnotationType;
+  protected final Class<? extends Annotation> supportedAnnotationType;
 
-    protected Context ctx;
+  protected Context ctx;
 
-    protected AbstractProcessor(Class<? extends Annotation> supportedAnnotationType) {
-        this.supportedAnnotationType = supportedAnnotationType;
+  protected AbstractProcessor(Class<? extends Annotation> supportedAnnotationType) {
+    this.supportedAnnotationType = supportedAnnotationType;
+  }
+
+  @Override
+  public synchronized void init(ProcessingEnvironment env) {
+    super.init(env);
+    this.ctx = new Context(env);
+  }
+
+  @Override
+  public SourceVersion getSupportedSourceVersion() {
+    return SourceVersion.latest();
+  }
+
+  protected void handleTypeElement(TypeElement typeElement, Consumer<TypeElement> handler) {
+    Annotation annotation = typeElement.getAnnotation(supportedAnnotationType);
+    if (annotation == null) {
+      return;
     }
-
-    @Override
-    public synchronized void init(ProcessingEnvironment env) {
-        super.init(env);
-        this.ctx = new Context(env);
+    if (ctx.getOptions().isDebugEnabled()) {
+      ctx.getNotifier()
+          .debug(
+              Message.DOMA4090,
+              new Object[] {getClass().getName(), typeElement.getQualifiedName()});
     }
-
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latest();
+    try {
+      handler.accept(typeElement);
+    } catch (AptException e) {
+      ctx.getNotifier().send(e);
+    } catch (AptIllegalOptionException e) {
+      ctx.getNotifier().send(Kind.ERROR, e.getMessage(), typeElement);
+      throw new AptTypeHandleException(typeElement, e);
+    } catch (AptIllegalStateException e) {
+      ctx.getNotifier().send(Kind.ERROR, Message.DOMA4039, typeElement, new Object[] {});
+      throw new AptTypeHandleException(typeElement, e);
+    } catch (RuntimeException e) {
+      ctx.getNotifier().send(Kind.ERROR, Message.DOMA4016, typeElement, new Object[] {});
+      throw new AptTypeHandleException(typeElement, e);
     }
-
-    protected void handleTypeElement(TypeElement typeElement, Consumer<TypeElement> handler) {
-        Annotation annotation = typeElement.getAnnotation(supportedAnnotationType);
-        if (annotation == null) {
-            return;
-        }
-        if (ctx.getOptions().isDebugEnabled()) {
-            ctx.getNotifier().debug(Message.DOMA4090,
-                    new Object[] { getClass().getName(), typeElement.getQualifiedName() });
-        }
-        try {
-            handler.accept(typeElement);
-        } catch (AptException e) {
-            ctx.getNotifier().send(e);
-        } catch (AptIllegalOptionException e) {
-            ctx.getNotifier().send(Kind.ERROR, e.getMessage(), typeElement);
-            throw new AptTypeHandleException(typeElement, e);
-        } catch (AptIllegalStateException e) {
-            ctx.getNotifier().send(Kind.ERROR, Message.DOMA4039, typeElement, new Object[] {});
-            throw new AptTypeHandleException(typeElement, e);
-        } catch (RuntimeException e) {
-            ctx.getNotifier().send(Kind.ERROR, Message.DOMA4016, typeElement, new Object[] {});
-            throw new AptTypeHandleException(typeElement, e);
-        }
-        if (ctx.getOptions().isDebugEnabled()) {
-            ctx.getNotifier().debug(Message.DOMA4091,
-                    new Object[] { getClass().getName(), typeElement.getQualifiedName() });
-        }
+    if (ctx.getOptions().isDebugEnabled()) {
+      ctx.getNotifier()
+          .debug(
+              Message.DOMA4091,
+              new Object[] {getClass().getName(), typeElement.getQualifiedName()});
     }
+  }
 }

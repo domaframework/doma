@@ -1,4 +1,2 @@
-/**
- * Provides the classes that are related to entity.
- */
+/** Provides the classes that are related to entity. */
 package org.seasar.doma.jdbc.entity;

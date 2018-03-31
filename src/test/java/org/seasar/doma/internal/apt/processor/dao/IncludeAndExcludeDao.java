@@ -4,13 +4,13 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface IncludeAndExcludeDao {
 
-    @Update(include = { "name", "salary" }, exclude = { "salary" })
-    int update(Emp emp);
+  @Update(
+    include = {"name", "salary"},
+    exclude = {"salary"}
+  )
+  int update(Emp emp);
 }

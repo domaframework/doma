@@ -5,14 +5,13 @@ import org.seasar.doma.Holder;
 @Holder(valueType = int.class)
 public class PrimitiveValueHolder {
 
-    private final int value;
+  private final int value;
 
-    public PrimitiveValueHolder(int value) {
-        this.value = value;
-    }
+  public PrimitiveValueHolder(int value) {
+    this.value = value;
+  }
 
-    public int getValue() {
-        return value;
-    }
-
+  public int getValue() {
+    return value;
+  }
 }

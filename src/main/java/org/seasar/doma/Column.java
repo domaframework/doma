@@ -7,20 +7,21 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates a database column.
+ *
+ * <p>The annotated field must be a member of an {@link Entity} annotated class.
+ *
  * <p>
- * The annotated field must be a member of an {@link Entity} annotated class.
- * <p>
- * 
+ *
  * <pre>
  * &#064;Entity
  * public class Employee {
- * 
+ *
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
  *     String employeeName;
- * 
+ *
  *     &#064;Column(name = &quot;SALARY&quot;)
  *     BigDecimal salary;
- *     
+ *
  *     ...
  * }
  * </pre>
@@ -29,25 +30,19 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 
-    /**
-     * The name of the column.
-     * <p>
-     * If not specified, the name is resolved by {@link Entity#naming()}.
-     */
-    String name() default "";
+  /**
+   * The name of the column.
+   *
+   * <p>If not specified, the name is resolved by {@link Entity#naming()}.
+   */
+  String name() default "";
 
-    /**
-     * Whether the column is included in SQL INSERT statements.
-     */
-    boolean insertable() default true;
+  /** Whether the column is included in SQL INSERT statements. */
+  boolean insertable() default true;
 
-    /**
-     * Whether the column is included in SQL UPDATE statements.
-     */
-    boolean updatable() default true;
+  /** Whether the column is included in SQL UPDATE statements. */
+  boolean updatable() default true;
 
-    /**
-     * Whether the column name is enclosed by quotation marks in SQL statements.
-     */
-    boolean quote() default false;
+  /** Whether the column name is enclosed by quotation marks in SQL statements. */
+  boolean quote() default false;
 }

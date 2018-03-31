@@ -4,5 +4,5 @@ import org.seasar.doma.jdbc.SqlNode;
 
 public interface AppendableSqlNode extends SqlNode {
 
-    void appendNode(SqlNode child);
+  void appendNode(SqlNode child);
 }

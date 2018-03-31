@@ -1,78 +1,73 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
-
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.meta.parameter.ResultParameterMeta;
 import org.seasar.doma.internal.apt.reflection.FunctionReflection;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
-    private ResultParameterMeta resultParameterMeta;
+  private ResultParameterMeta resultParameterMeta;
 
-    private FunctionReflection functionReflection;
+  private FunctionReflection functionReflection;
 
-    public AutoFunctionQueryMeta(ExecutableElement method) {
-        super(method);
-    }
+  public AutoFunctionQueryMeta(ExecutableElement method) {
+    super(method);
+  }
 
-    public ResultParameterMeta getResultParameterMeta() {
-        return resultParameterMeta;
-    }
+  public ResultParameterMeta getResultParameterMeta() {
+    return resultParameterMeta;
+  }
 
-    public void setResultParameterMeta(ResultParameterMeta resultParameterMeta) {
-        this.resultParameterMeta = resultParameterMeta;
-    }
+  public void setResultParameterMeta(ResultParameterMeta resultParameterMeta) {
+    this.resultParameterMeta = resultParameterMeta;
+  }
 
-    public FunctionReflection getFunctionReflection() {
-        return functionReflection;
-    }
+  public FunctionReflection getFunctionReflection() {
+    return functionReflection;
+  }
 
-    public void setFunctionReflection(FunctionReflection functionReflection) {
-        this.functionReflection = functionReflection;
-    }
+  public void setFunctionReflection(FunctionReflection functionReflection) {
+    this.functionReflection = functionReflection;
+  }
 
-    public String getCatalogName() {
-        return functionReflection.getCatalogValue();
-    }
+  public String getCatalogName() {
+    return functionReflection.getCatalogValue();
+  }
 
-    public String getSchemaName() {
-        return functionReflection.getSchemaValue();
-    }
+  public String getSchemaName() {
+    return functionReflection.getSchemaValue();
+  }
 
-    public String getFunctionName() {
-        return functionReflection.getNameValue();
-    }
+  public String getFunctionName() {
+    return functionReflection.getNameValue();
+  }
 
-    public boolean isQuoteRequired() {
-        return functionReflection.getQuoteValue();
-    }
+  public boolean isQuoteRequired() {
+    return functionReflection.getQuoteValue();
+  }
 
-    public int getQueryTimeout() {
-        return functionReflection.getQueryTimeoutValue();
-    }
+  public int getQueryTimeout() {
+    return functionReflection.getQueryTimeoutValue();
+  }
 
-    public boolean getEnsureResultMapping() {
-        return functionReflection.getEnsureResultMappingValue();
-    }
+  public boolean getEnsureResultMapping() {
+    return functionReflection.getEnsureResultMappingValue();
+  }
 
-    @Override
-    public MapKeyNamingType getMapKeyNamingType() {
-        return functionReflection.getMapKeyNamingValue();
-    }
+  @Override
+  public MapKeyNamingType getMapKeyNamingType() {
+    return functionReflection.getMapKeyNamingValue();
+  }
 
-    public SqlLogType getSqlLogType() {
-        return functionReflection.getSqlLogValue();
-    }
+  public SqlLogType getSqlLogType() {
+    return functionReflection.getSqlLogValue();
+  }
 
-    @Override
-    public <P> void accept(QueryMetaVisitor<P> visitor, P p) {
-        visitor.visitAutoFunctionQueryMeta(this, p);
-    }
-
+  @Override
+  public <P> void accept(QueryMetaVisitor<P> visitor, P p) {
+    visitor.visitAutoFunctionQueryMeta(this, p);
+  }
 }

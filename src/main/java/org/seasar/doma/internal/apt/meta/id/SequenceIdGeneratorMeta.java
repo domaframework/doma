@@ -4,50 +4,47 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.apt.reflection.SequenceGeneratorReflection;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
-    private final SequenceGeneratorReflection sequenceGeneratorReflection;
+  private final SequenceGeneratorReflection sequenceGeneratorReflection;
 
-    public SequenceIdGeneratorMeta(SequenceGeneratorReflection sequenceGeneratorReflection) {
-        assertNotNull(sequenceGeneratorReflection);
-        this.sequenceGeneratorReflection = sequenceGeneratorReflection;
-    }
+  public SequenceIdGeneratorMeta(SequenceGeneratorReflection sequenceGeneratorReflection) {
+    assertNotNull(sequenceGeneratorReflection);
+    this.sequenceGeneratorReflection = sequenceGeneratorReflection;
+  }
 
-    public String getQualifiedSequenceName() {
-        StringBuilder buf = new StringBuilder();
-        String catalogName = sequenceGeneratorReflection.getCatalogValue();
-        if (!catalogName.isEmpty()) {
-            buf.append(catalogName);
-            buf.append(".");
-        }
-        String schemaName = sequenceGeneratorReflection.getCatalogValue();
-        if (!schemaName.isEmpty()) {
-            buf.append(schemaName);
-            buf.append(".");
-        }
-        buf.append(sequenceGeneratorReflection.getSequenceValue());
-        return buf.toString();
+  public String getQualifiedSequenceName() {
+    StringBuilder buf = new StringBuilder();
+    String catalogName = sequenceGeneratorReflection.getCatalogValue();
+    if (!catalogName.isEmpty()) {
+      buf.append(catalogName);
+      buf.append(".");
     }
+    String schemaName = sequenceGeneratorReflection.getCatalogValue();
+    if (!schemaName.isEmpty()) {
+      buf.append(schemaName);
+      buf.append(".");
+    }
+    buf.append(sequenceGeneratorReflection.getSequenceValue());
+    return buf.toString();
+  }
 
-    public long getInitialValue() {
-        return sequenceGeneratorReflection.getInitialValueValue();
-    }
+  public long getInitialValue() {
+    return sequenceGeneratorReflection.getInitialValueValue();
+  }
 
-    public long getAllocationSize() {
-        return sequenceGeneratorReflection.getAllocationSizeValue();
-    }
+  public long getAllocationSize() {
+    return sequenceGeneratorReflection.getAllocationSizeValue();
+  }
 
-    @Override
-    public String getIdGeneratorClassName() {
-        return sequenceGeneratorReflection.getImplementerValue().toString();
-    }
+  @Override
+  public String getIdGeneratorClassName() {
+    return sequenceGeneratorReflection.getImplementerValue().toString();
+  }
 
-    @Override
-    public <P> void accept(IdGeneratorMetaVisitor<P> visitor, P p) {
-        visitor.visitSequenceIdGeneratorMeta(this, p);
-    }
+  @Override
+  public <P> void accept(IdGeneratorMetaVisitor<P> visitor, P p) {
+    visitor.visitSequenceIdGeneratorMeta(this, p);
+  }
 }

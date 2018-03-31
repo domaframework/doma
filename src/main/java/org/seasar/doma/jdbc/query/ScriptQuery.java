@@ -1,21 +1,18 @@
 package org.seasar.doma.jdbc.query;
 
 import java.net.URL;
-
 import org.seasar.doma.jdbc.SqlLogType;
 
-/**
- * An object used for building an SQL script.
- */
+/** An object used for building an SQL script. */
 public interface ScriptQuery extends Query {
 
-    URL getScriptFileUrl();
+  URL getScriptFileUrl();
 
-    String getScriptFilePath();
+  String getScriptFilePath();
 
-    String getBlockDelimiter();
+  String getBlockDelimiter();
 
-    boolean getHaltOnError();
+  boolean getHaltOnError();
 
-    SqlLogType getSqlLogType();
+  SqlLogType getSqlLogType();
 }

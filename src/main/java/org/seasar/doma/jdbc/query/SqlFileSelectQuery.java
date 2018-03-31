@@ -10,37 +10,37 @@ import org.seasar.doma.jdbc.SqlNode;
 
 public class SqlFileSelectQuery extends AbstractSelectQuery {
 
-    protected String sqlFilePath;
+  protected String sqlFilePath;
 
-    protected SqlFile sqlFile;
+  protected SqlFile sqlFile;
 
-    @Override
-    public void prepare() {
-        super.prepare();
-        assertNotNull(sqlFilePath);
-    }
+  @Override
+  public void prepare() {
+    super.prepare();
+    assertNotNull(sqlFilePath);
+  }
 
-    protected void prepareSql() {
-        sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath,
-                config.getDialect());
-        SqlNode transformedSqlNode = config.getDialect()
-                .transformSelectSqlNode(sqlFile.getSqlNode(), options);
-        buildSql((evaluator, expander) -> {
-            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
-                    sqlFilePath, evaluator, sqlLogType, expander);
-            return sqlBuilder.build(transformedSqlNode, this::comment);
+  protected void prepareSql() {
+    sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
+    SqlNode transformedSqlNode =
+        config.getDialect().transformSelectSqlNode(sqlFile.getSqlNode(), options);
+    buildSql(
+        (evaluator, expander) -> {
+          NodePreparedSqlBuilder sqlBuilder =
+              new NodePreparedSqlBuilder(
+                  config, SqlKind.SELECT, sqlFilePath, evaluator, sqlLogType, expander);
+          return sqlBuilder.build(transformedSqlNode, this::comment);
         });
-    }
+  }
 
-    @Override
-    public void complete() {
-        if (SelectOptionsAccessor.isCount(options)) {
-            executeCount(sqlFile.getSqlNode());
-        }
+  @Override
+  public void complete() {
+    if (SelectOptionsAccessor.isCount(options)) {
+      executeCount(sqlFile.getSqlNode());
     }
+  }
 
-    public void setSqlFilePath(String sqlFilePath) {
-        this.sqlFilePath = sqlFilePath;
-    }
-
+  public void setSqlFilePath(String sqlFilePath) {
+    this.sqlFilePath = sqlFilePath;
+  }
 }

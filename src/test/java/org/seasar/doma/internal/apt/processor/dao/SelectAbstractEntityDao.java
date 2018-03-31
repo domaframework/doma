@@ -4,15 +4,10 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.processor.entity.AbstractEntity;
 
-/**
- * 
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface SelectAbstractEntityDao {
 
-    @Select
-    AbstractEntity selectById(int id);
-
+  @Select
+  AbstractEntity selectById(int id);
 }

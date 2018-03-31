@@ -4,14 +4,11 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao
 @AnnotationConfig
 public interface AnnotationConfigDao {
 
-    @Insert
-    int insert(Emp emp);
+  @Insert
+  int insert(Emp emp);
 }

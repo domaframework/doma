@@ -1,3 +1,15 @@
+plugins {
+    id "com.github.sherter.google-java-format" version "0.6"
+}
+
+repositories {
+    jcenter()
+}
+
+googleJavaFormat {
+    toolVersion = '1.5'
+}
+
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'signing'
@@ -33,6 +45,8 @@ compileJava {
     }
     options.encoding = encoding
 }
+
+compileJava.dependsOn 'googleJavaFormat'
 
 compileTestJava {
     options.encoding = encoding

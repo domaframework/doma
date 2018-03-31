@@ -5,11 +5,10 @@ import java.sql.SQLException;
 
 /**
  * An object used for preparing to create a JDBC object.
- * 
- * @param <RESULT>
- *            the result type
+ *
+ * @param <RESULT> the result type
  */
 public interface CreateQuery<RESULT> extends Query {
 
-    RESULT create(Connection connection) throws SQLException;
+  RESULT create(Connection connection) throws SQLException;
 }

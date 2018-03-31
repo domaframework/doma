@@ -1,4 +1,2 @@
-/**
- * Provides class related to expressions.
- */
+/** Provides class related to expressions. */
 package org.seasar.doma.expr;

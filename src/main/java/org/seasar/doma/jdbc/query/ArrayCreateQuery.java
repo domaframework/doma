@@ -8,34 +8,34 @@ import java.sql.SQLException;
 
 public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
-    protected String typeName;
+  protected String typeName;
 
-    protected Object[] elements;
+  protected Object[] elements;
 
-    @Override
-    public void prepare() {
-        super.prepare();
-        assertNotNull(typeName, elements);
-    }
+  @Override
+  public void prepare() {
+    super.prepare();
+    assertNotNull(typeName, elements);
+  }
 
-    public String getTypeName() {
-        return typeName;
-    }
+  public String getTypeName() {
+    return typeName;
+  }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
+  public void setTypeName(String typeName) {
+    this.typeName = typeName;
+  }
 
-    public Object[] getElements() {
-        return elements;
-    }
+  public Object[] getElements() {
+    return elements;
+  }
 
-    public void setElements(Object[] elements) {
-        this.elements = elements;
-    }
+  public void setElements(Object[] elements) {
+    this.elements = elements;
+  }
 
-    @Override
-    public Array create(Connection connection) throws SQLException {
-        return connection.createArrayOf(typeName, elements);
-    }
+  @Override
+  public Array create(Connection connection) throws SQLException {
+    return connection.createArrayOf(typeName, elements);
+  }
 }

@@ -5,226 +5,254 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collections;
 import java.util.function.Function;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
-import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.ScriptBlockContext;
-import org.seasar.doma.jdbc.SelectForUpdateType;
-import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.*;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 
-/**
- * A dialect for PostgreSQL.
- */
+/** A dialect for PostgreSQL. */
 public class PostgresDialect extends StandardDialect {
 
-    /** the {@literal SQLState} that represents unique violation */
-    protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
+  /** the {@literal SQLState} that represents unique violation */
+  protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
 
-    /** the JDBC type for {@link ResultSet} */
-    protected static final JdbcType<ResultSet> RESULT_SET = new PostgresResultSetType();
+  /** the JDBC type for {@link ResultSet} */
+  protected static final JdbcType<ResultSet> RESULT_SET = new PostgresResultSetType();
 
-    public PostgresDialect() {
-        this(new PostgresJdbcMappingVisitor(), new PostgresSqlLogFormattingVisitor(),
-                new PostgresExpressionFunctions());
+  public PostgresDialect() {
+    this(
+        new PostgresJdbcMappingVisitor(),
+        new PostgresSqlLogFormattingVisitor(),
+        new PostgresExpressionFunctions());
+  }
+
+  public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor) {
+    this(
+        jdbcMappingVisitor,
+        new PostgresSqlLogFormattingVisitor(),
+        new PostgresExpressionFunctions());
+  }
+
+  public PostgresDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+    this(
+        new PostgresJdbcMappingVisitor(),
+        sqlLogFormattingVisitor,
+        new PostgresExpressionFunctions());
+  }
+
+  public PostgresDialect(ExpressionFunctions expressionFunctions) {
+    this(
+        new PostgresJdbcMappingVisitor(),
+        new PostgresSqlLogFormattingVisitor(),
+        expressionFunctions);
+  }
+
+  public PostgresDialect(
+      JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+    this(jdbcMappingVisitor, sqlLogFormattingVisitor, new PostgresExpressionFunctions());
+  }
+
+  public PostgresDialect(
+      JdbcMappingVisitor jdbcMappingVisitor,
+      SqlLogFormattingVisitor sqlLogFormattingVisitor,
+      ExpressionFunctions expressionFunctions) {
+    super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
+  }
+
+  @Override
+  public String getName() {
+    return "postgres";
+  }
+
+  @Override
+  protected SqlNode toForUpdateSqlNode(
+      SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
+    PostgresForUpdateTransformer transformer =
+        new PostgresForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    return transformer.transform(sqlNode);
+  }
+
+  @Override
+  protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
+    PostgresPagingTransformer transformer = new PostgresPagingTransformer(offset, limit);
+    return transformer.transform(sqlNode);
+  }
+
+  @Override
+  public boolean isUniqueConstraintViolated(SQLException sqlException) {
+    if (sqlException == null) {
+      throw new DomaNullPointerException("sqlException");
+    }
+    String state = getSQLState(sqlException);
+    return UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE.equals(state);
+  }
+
+  @Override
+  public PreparedSql getIdentitySelectSql(
+      String catalogName,
+      String schemaName,
+      String tableName,
+      String columnName,
+      boolean isQuoteRequired,
+      boolean isIdColumnQuoteRequired) {
+    if (tableName == null) {
+      throw new DomaNullPointerException("tableName");
+    }
+    if (columnName == null) {
+      throw new DomaNullPointerException("columnName");
+    }
+    String identitySeqFuncExpr =
+        createIdentitySequenceFunctionExpression(
+            catalogName,
+            schemaName,
+            tableName,
+            columnName,
+            isQuoteRequired,
+            isIdColumnQuoteRequired);
+    String rawSql = "select currval(" + identitySeqFuncExpr + ")";
+    return new PreparedSql(
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
+  }
+
+  @Override
+  public Sql<?> getIdentityReservationSql(
+      String catalogName,
+      String schemaName,
+      String tableName,
+      String columnName,
+      boolean isQuoteRequired,
+      boolean isIdColumnQuoteRequired,
+      int reservationSize) {
+    if (tableName == null) {
+      throw new DomaNullPointerException("tableName");
+    }
+    if (columnName == null) {
+      throw new DomaNullPointerException("columnName");
+    }
+    String identitySeqFuncExpr =
+        createIdentitySequenceFunctionExpression(
+            catalogName,
+            schemaName,
+            tableName,
+            columnName,
+            isQuoteRequired,
+            isIdColumnQuoteRequired);
+    String rawSql =
+        "select nextval("
+            + identitySeqFuncExpr
+            + ") from generate_series(1, "
+            + reservationSize
+            + ")";
+    return new PreparedSql(
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
+  }
+
+  protected String createIdentitySequenceFunctionExpression(
+      String catalogName,
+      String schemaName,
+      String tableName,
+      String columnName,
+      boolean isQuoteRequired,
+      boolean isIdColumnQuoteRequired) {
+    String qualifiedTableName =
+        DatabaseObjectUtil.getQualifiedName(
+            isQuoteRequired ? this::applyQuote : Function.identity(),
+            catalogName,
+            schemaName,
+            tableName);
+    String colName = isIdColumnQuoteRequired ? columnName : columnName.toLowerCase();
+    return "pg_catalog.pg_get_serial_sequence('" + qualifiedTableName + "', '" + colName + "')";
+  }
+
+  @Override
+  public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
+    if (qualifiedSequenceName == null) {
+      throw new DomaNullPointerException("qualifiedSequenceName");
+    }
+    String rawSql = "select nextval('" + qualifiedSequenceName + "')";
+    return new PreparedSql(
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
+  }
+
+  @Override
+  public boolean supportsIdentity() {
+    return true;
+  }
+
+  @Override
+  public boolean supportsSequence() {
+    return true;
+  }
+
+  @Override
+  public boolean supportsIdentityReservation() {
+    return true;
+  }
+
+  @Override
+  public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
+    return type == SelectForUpdateType.NORMAL || type == SelectForUpdateType.NOWAIT;
+  }
+
+  @Override
+  public boolean supportsResultSetReturningAsOutParameter() {
+    return true;
+  }
+
+  @Override
+  public JdbcType<ResultSet> getResultSetType() {
+    return RESULT_SET;
+  }
+
+  @Override
+  public ScriptBlockContext createScriptBlockContext() {
+    return new PostgresScriptBlockContext();
+  }
+
+  public static class PostgresResultSetType extends AbstractResultSetType {
+
+    public PostgresResultSetType() {
+      super(Types.OTHER);
+    }
+  }
+
+  public static class PostgresJdbcMappingVisitor extends StandardJdbcMappingVisitor {}
+
+  public static class PostgresSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {}
+
+  public static class PostgresExpressionFunctions extends StandardExpressionFunctions {
+
+    public PostgresExpressionFunctions() {
+      super();
     }
 
-    public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor) {
-        this(jdbcMappingVisitor, new PostgresSqlLogFormattingVisitor(),
-                new PostgresExpressionFunctions());
+    public PostgresExpressionFunctions(char[] wildcards) {
+      super(wildcards);
     }
 
-    public PostgresDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(new PostgresJdbcMappingVisitor(), sqlLogFormattingVisitor,
-                new PostgresExpressionFunctions());
+    protected PostgresExpressionFunctions(char escapeChar, char[] wildcards) {
+      super(escapeChar, wildcards);
     }
+  }
 
-    public PostgresDialect(ExpressionFunctions expressionFunctions) {
-        this(new PostgresJdbcMappingVisitor(), new PostgresSqlLogFormattingVisitor(),
-                expressionFunctions);
-    }
+  public static class PostgresScriptBlockContext implements ScriptBlockContext {
 
-    public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor,
-            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor, new PostgresExpressionFunctions());
-    }
+    protected boolean inBlock;
 
-    public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor,
-            SqlLogFormattingVisitor sqlLogFormattingVisitor,
-            ExpressionFunctions expressionFunctions) {
-        super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
+    @Override
+    public void addKeyword(String keyword) {
+      if ("$$".equals(keyword)) {
+        inBlock = !inBlock;
+      }
     }
 
     @Override
-    public String getName() {
-        return "postgres";
+    public boolean isInBlock() {
+      return inBlock;
     }
-
-    @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode, SelectForUpdateType forUpdateType,
-            int waitSeconds, String... aliases) {
-        PostgresForUpdateTransformer transformer = new PostgresForUpdateTransformer(forUpdateType,
-                waitSeconds, aliases);
-        return transformer.transform(sqlNode);
-    }
-
-    @Override
-    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        PostgresPagingTransformer transformer = new PostgresPagingTransformer(offset, limit);
-        return transformer.transform(sqlNode);
-    }
-
-    @Override
-    public boolean isUniqueConstraintViolated(SQLException sqlException) {
-        if (sqlException == null) {
-            throw new DomaNullPointerException("sqlException");
-        }
-        String state = getSQLState(sqlException);
-        return UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE.equals(state);
-    }
-
-    @Override
-    public PreparedSql getIdentitySelectSql(String catalogName, String schemaName, String tableName,
-            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired) {
-        if (tableName == null) {
-            throw new DomaNullPointerException("tableName");
-        }
-        if (columnName == null) {
-            throw new DomaNullPointerException("columnName");
-        }
-        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(catalogName,
-                schemaName, tableName, columnName, isQuoteRequired, isIdColumnQuoteRequired);
-        String rawSql = "select currval(" + identitySeqFuncExpr + ")";
-        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.emptyList(), SqlLogType.FORMATTED);
-    }
-
-    @Override
-    public Sql<?> getIdentityReservationSql(String catalogName, String schemaName, String tableName,
-            String columnName, boolean isQuoteRequired, boolean isIdColumnQuoteRequired,
-            int reservationSize) {
-        if (tableName == null) {
-            throw new DomaNullPointerException("tableName");
-        }
-        if (columnName == null) {
-            throw new DomaNullPointerException("columnName");
-        }
-        String identitySeqFuncExpr = createIdentitySequenceFunctionExpression(catalogName,
-                schemaName, tableName, columnName, isQuoteRequired, isIdColumnQuoteRequired);
-        String rawSql = "select nextval(" + identitySeqFuncExpr + ") from generate_series(1, " + reservationSize + ")";
-        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.emptyList(), SqlLogType.FORMATTED);
-    }
-
-    protected String createIdentitySequenceFunctionExpression(String catalogName, String schemaName,
-            String tableName, String columnName, boolean isQuoteRequired,
-            boolean isIdColumnQuoteRequired) {
-        String qualifiedTableName = DatabaseObjectUtil.getQualifiedName(
-                isQuoteRequired ? this::applyQuote : Function.identity(), catalogName, schemaName,
-                tableName);
-        String colName = isIdColumnQuoteRequired ? columnName : columnName.toLowerCase();
-        return "pg_catalog.pg_get_serial_sequence('" + qualifiedTableName + "', '" + colName + "')";
-    }
-
-    @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
-        if (qualifiedSequenceName == null) {
-            throw new DomaNullPointerException("qualifiedSequenceName");
-        }
-        String rawSql = "select nextval('" + qualifiedSequenceName + "')";
-        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.emptyList(), SqlLogType.FORMATTED);
-    }
-
-    @Override
-    public boolean supportsIdentity() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSequence() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsIdentityReservation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
-        return type == SelectForUpdateType.NORMAL || type == SelectForUpdateType.NOWAIT;
-    }
-
-    @Override
-    public boolean supportsResultSetReturningAsOutParameter() {
-        return true;
-    }
-
-    @Override
-    public JdbcType<ResultSet> getResultSetType() {
-        return RESULT_SET;
-    }
-
-    @Override
-    public ScriptBlockContext createScriptBlockContext() {
-        return new PostgresScriptBlockContext();
-    }
-
-    public static class PostgresResultSetType extends AbstractResultSetType {
-
-        public PostgresResultSetType() {
-            super(Types.OTHER);
-        }
-    }
-
-    public static class PostgresJdbcMappingVisitor extends StandardJdbcMappingVisitor {
-    }
-
-    public static class PostgresSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
-    }
-
-    public static class PostgresExpressionFunctions extends StandardExpressionFunctions {
-
-        public PostgresExpressionFunctions() {
-            super();
-        }
-
-        public PostgresExpressionFunctions(char[] wildcards) {
-            super(wildcards);
-        }
-
-        protected PostgresExpressionFunctions(char escapeChar, char[] wildcards) {
-            super(escapeChar, wildcards);
-        }
-
-    }
-
-    public static class PostgresScriptBlockContext implements ScriptBlockContext {
-
-        protected boolean inBlock;
-
-        @Override
-        public void addKeyword(String keyword) {
-            if ("$$".equals(keyword)) {
-                inBlock = !inBlock;
-            }
-        }
-
-        @Override
-        public boolean isInBlock() {
-            return inBlock;
-        }
-    }
-
+  }
 }

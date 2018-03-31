@@ -4,14 +4,10 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface IllegalModifyImmutableEmpDao {
 
-    @Insert
-    int insert(ImmutableEmp emp);
-
+  @Insert
+  int insert(ImmutableEmp emp);
 }

@@ -6,9 +6,8 @@ import java.sql.SQLException;
 
 public class NClobCreateQuery extends AbstractCreateQuery<NClob> {
 
-    @Override
-    public NClob create(Connection connection) throws SQLException {
-        return connection.createNClob();
-    }
-
+  @Override
+  public NClob create(Connection connection) throws SQLException {
+    return connection.createNClob();
+  }
 }

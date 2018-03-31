@@ -5,5 +5,5 @@ import org.seasar.doma.Holder;
 @Holder(valueType = Integer.class, factoryMethod = "of")
 public @interface AnnotationHolder {
 
-    String getValue();
+  String getValue();
 }

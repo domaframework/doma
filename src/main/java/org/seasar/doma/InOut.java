@@ -4,26 +4,25 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import org.seasar.doma.jdbc.Reference;
 
 /**
  * Indicates a INOUT parameter of stored functions or stored procedures.
+ *
+ * <p>The annotated parameter type must be {@link Reference}. The annotated parameter must be one of
+ * the parameters of the method that is annotated with {@link Function} or {@link Procedure}.
+ *
  * <p>
- * The annotated parameter type must be {@link Reference}. The annotated
- * parameter must be one of the parameters of the method that is annotated with
- * {@link Function} or {@link Procedure}.
- * <p>
- * 
+ *
  * <pre>
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
- * 
+ *
  *     &#064;Procedure
  *     void updateSalary(&#064;In Integer id, &#064;InOut Reference&lt;BigDecimal&gt; salary);
  * }
  * </pre>
- * 
+ *
  * <pre>
  * EmployeeDao dao = new EmployeeDaoImpl();
  * Reference&lt;BigDecimal&gt; salaryRef = new Reference&lt;BigDecimal&gt;(new BigDecimal(1000));
@@ -33,5 +32,4 @@ import org.seasar.doma.jdbc.Reference;
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface InOut {
-}
+public @interface InOut {}

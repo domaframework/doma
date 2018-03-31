@@ -5,15 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Indicates a parameter name.
- */
+/** Indicates a parameter name. */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ParameterName {
 
-    /**
-     * The parameter name.
-     */
-    String value() default "";
+  /** The parameter name. */
+  String value() default "";
 }

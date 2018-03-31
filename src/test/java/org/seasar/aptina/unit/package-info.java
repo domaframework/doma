@@ -13,7 +13,5 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/**
- * {@link javax.annotation.processing.Processor} の単体テストを支援するクラスを提供します．
- */
+/** {@link javax.annotation.processing.Processor} の単体テストを支援するクラスを提供します． */
 package org.seasar.aptina.unit;

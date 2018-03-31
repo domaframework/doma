@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.entity;
 
 import java.sql.Statement;
 import java.util.function.Supplier;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
@@ -16,169 +15,154 @@ import org.seasar.doma.wrapper.NumberWrapperVisitor;
 
 /**
  * A description for an identity property whose value is generated.
- * 
- * @param <ENTITY>
- *            the entity type
- * @param <BASIC>
- *            the basic type
- * @param <CONTAINER>
- *            the container type
+ *
+ * @param <ENTITY> the entity type
+ * @param <BASIC> the basic type
+ * @param <CONTAINER> the container type
  */
 public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, CONTAINER>
-        extends DefaultPropertyDesc<ENTITY, BASIC, CONTAINER> {
+    extends DefaultPropertyDesc<ENTITY, BASIC, CONTAINER> {
 
-    /** the identity generator */
-    protected final IdGenerator idGenerator;
+  /** the identity generator */
+  protected final IdGenerator idGenerator;
 
-    /**
-     * Creates an instance.
-     * 
-     * @param entityClass
-     *            the entity class
-     * @param scalarSupplier
-     *            the supplier of the scalar value
-     * @param name
-     *            the qualified name of the property
-     * @param columnName
-     *            the column name
-     * @param namingType
-     *            the naming convention
-     * @param idGenerator
-     *            the identity generator
-     * @param quoteRequired
-     *            whether the column name requires quotation marks
-     */
-    public GeneratedIdPropertyDesc(Class<ENTITY> entityClass,
-            Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier, String name, String columnName,
-            NamingType namingType, boolean quoteRequired, IdGenerator idGenerator) {
-        super(entityClass, scalarSupplier, name, columnName, namingType, true, true, quoteRequired);
-        if (idGenerator == null) {
-            throw new DomaNullPointerException("idGenerator");
-        }
-        this.idGenerator = idGenerator;
+  /**
+   * Creates an instance.
+   *
+   * @param entityClass the entity class
+   * @param scalarSupplier the supplier of the scalar value
+   * @param name the qualified name of the property
+   * @param columnName the column name
+   * @param namingType the naming convention
+   * @param idGenerator the identity generator
+   * @param quoteRequired whether the column name requires quotation marks
+   */
+  public GeneratedIdPropertyDesc(
+      Class<ENTITY> entityClass,
+      Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
+      String name,
+      String columnName,
+      NamingType namingType,
+      boolean quoteRequired,
+      IdGenerator idGenerator) {
+    super(entityClass, scalarSupplier, name, columnName, namingType, true, true, quoteRequired);
+    if (idGenerator == null) {
+      throw new DomaNullPointerException("idGenerator");
     }
+    this.idGenerator = idGenerator;
+  }
 
-    @Override
-    public boolean isId() {
+  @Override
+  public boolean isId() {
+    return true;
+  }
+
+  /**
+   * Validates the generation strategy.
+   *
+   * @param config the configuration
+   */
+  public void validateGenerationStrategy(IdGenerationConfig config) {
+    Dialect dialect = config.getDialect();
+    GenerationType generationType = idGenerator.getGenerationType();
+    if (!isGenerationTypeSupported(generationType, dialect)) {
+      EntityDesc<?> entityDesc = config.getEntityDesc();
+      throw new JdbcException(
+          Message.DOMA2021, entityDesc.getName(), name, generationType.name(), dialect.getName());
+    }
+  }
+
+  protected boolean isGenerationTypeSupported(GenerationType generationType, Dialect dialect) {
+    switch (generationType) {
+      case IDENTITY:
+        return dialect.supportsIdentity();
+      case SEQUENCE:
+        return dialect.supportsSequence();
+      default:
         return true;
     }
+  }
 
-    /**
-     * Validates the generation strategy.
-     * 
-     * @param config
-     *            the configuration
-     */
-    public void validateGenerationStrategy(IdGenerationConfig config) {
-        Dialect dialect = config.getDialect();
-        GenerationType generationType = idGenerator.getGenerationType();
-        if (!isGenerationTypeSupported(generationType, dialect)) {
-            EntityDesc<?> entityDesc = config.getEntityDesc();
-            throw new JdbcException(Message.DOMA2021, entityDesc.getName(), name,
-                    generationType.name(), dialect.getName());
+  /**
+   * Whether the identity is included into SQL INSERT statements.
+   *
+   * @param config the configuration
+   * @return {@code true} if the identity is included
+   */
+  public boolean isIncluded(IdGenerationConfig config) {
+    return idGenerator.includesIdentityColumn(config);
+  }
+
+  /**
+   * Whether the identity generation is supported in the batch insert.
+   *
+   * @param config the configuration
+   * @return {@code true} if the identity generation is supported
+   */
+  public boolean isBatchSupported(IdGenerationConfig config) {
+    return idGenerator.supportsBatch(config);
+  }
+
+  /**
+   * Whether {@link Statement#getGeneratedKeys()} is supported.
+   *
+   * @param config the configuration
+   * @return {@code true} if {@link Statement#getGeneratedKeys()} is supported
+   */
+  public boolean isAutoGeneratedKeysSupported(IdGenerationConfig config) {
+    return idGenerator.supportsAutoGeneratedKeys(config);
+  }
+
+  /**
+   * Generates an identity value before an SQL INSERT.
+   *
+   * @param entityDesc the entity description
+   * @param entity the entity
+   * @param config the configuration
+   * @return the entity whose identity value is generated
+   */
+  public ENTITY preInsert(EntityDesc<ENTITY> entityDesc, ENTITY entity, IdGenerationConfig config) {
+    return setIfNecessary(entityDesc, entity, () -> idGenerator.generatePreInsert(config));
+  }
+
+  /**
+   * Generates an identity value after an SQL INSERT.
+   *
+   * @param entityDesc the entity type
+   * @param entity the entity
+   * @param config the configuration
+   * @param statement the SQL INSERT statement
+   * @return the entity whose identity value is generated
+   */
+  public ENTITY postInsert(
+      EntityDesc<ENTITY> entityDesc,
+      ENTITY entity,
+      IdGenerationConfig config,
+      Statement statement) {
+    return setIfNecessary(
+        entityDesc, entity, () -> idGenerator.generatePostInsert(config, statement));
+  }
+
+  protected ENTITY setIfNecessary(
+      EntityDesc<ENTITY> entityDesc, ENTITY entity, Supplier<Long> supplier) {
+    return modifyIfNecessary(entityDesc, entity, new ValueSetter(), supplier);
+  }
+
+  protected static class ValueSetter
+      implements NumberWrapperVisitor<Boolean, Supplier<Long>, Void, RuntimeException> {
+
+    @Override
+    public <V extends Number> Boolean visitNumberWrapper(
+        NumberWrapper<V> wrapper, Supplier<Long> valueSupplier, Void q) throws RuntimeException {
+      Number currentValue = wrapper.get();
+      if (currentValue == null || currentValue.intValue() < 0) {
+        Long value = valueSupplier.get();
+        if (value != null) {
+          wrapper.set(value);
+          return true;
         }
+      }
+      return false;
     }
-
-    protected boolean isGenerationTypeSupported(GenerationType generationType, Dialect dialect) {
-        switch (generationType) {
-        case IDENTITY:
-            return dialect.supportsIdentity();
-        case SEQUENCE:
-            return dialect.supportsSequence();
-        default:
-            return true;
-        }
-    }
-
-    /**
-     * Whether the identity is included into SQL INSERT statements.
-     * 
-     * @param config
-     *            the configuration
-     * @return {@code true} if the identity is included
-     */
-    public boolean isIncluded(IdGenerationConfig config) {
-        return idGenerator.includesIdentityColumn(config);
-    }
-
-    /**
-     * Whether the identity generation is supported in the batch insert.
-     * 
-     * @param config
-     *            the configuration
-     * @return {@code true} if the identity generation is supported
-     */
-    public boolean isBatchSupported(IdGenerationConfig config) {
-        return idGenerator.supportsBatch(config);
-    }
-
-    /**
-     * Whether {@link Statement#getGeneratedKeys()} is supported.
-     * 
-     * @param config
-     *            the configuration
-     * @return {@code true} if {@link Statement#getGeneratedKeys()} is supported
-     */
-    public boolean isAutoGeneratedKeysSupported(IdGenerationConfig config) {
-        return idGenerator.supportsAutoGeneratedKeys(config);
-    }
-
-    /**
-     * Generates an identity value before an SQL INSERT.
-     * 
-     * @param entityDesc
-     *            the entity description
-     * @param entity
-     *            the entity
-     * @param config
-     *            the configuration
-     * @return the entity whose identity value is generated
-     */
-    public ENTITY preInsert(EntityDesc<ENTITY> entityDesc, ENTITY entity,
-            IdGenerationConfig config) {
-        return setIfNecessary(entityDesc, entity, () -> idGenerator.generatePreInsert(config));
-    }
-
-    /**
-     * Generates an identity value after an SQL INSERT.
-     * 
-     * @param entityDesc
-     *            the entity type
-     * @param entity
-     *            the entity
-     * @param config
-     *            the configuration
-     * @param statement
-     *            the SQL INSERT statement
-     * @return the entity whose identity value is generated
-     */
-    public ENTITY postInsert(EntityDesc<ENTITY> entityDesc, ENTITY entity,
-            IdGenerationConfig config, Statement statement) {
-        return setIfNecessary(entityDesc, entity,
-                () -> idGenerator.generatePostInsert(config, statement));
-    }
-
-    protected ENTITY setIfNecessary(EntityDesc<ENTITY> entityDesc, ENTITY entity,
-            Supplier<Long> supplier) {
-        return modifyIfNecessary(entityDesc, entity, new ValueSetter(), supplier);
-    }
-
-    protected static class ValueSetter
-            implements NumberWrapperVisitor<Boolean, Supplier<Long>, Void, RuntimeException> {
-
-        @Override
-        public <V extends Number> Boolean visitNumberWrapper(NumberWrapper<V> wrapper,
-                Supplier<Long> valueSupplier, Void q) throws RuntimeException {
-            Number currentValue = wrapper.get();
-            if (currentValue == null || currentValue.intValue() < 0) {
-                Long value = valueSupplier.get();
-                if (value != null) {
-                    wrapper.set(value);
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
+  }
 }

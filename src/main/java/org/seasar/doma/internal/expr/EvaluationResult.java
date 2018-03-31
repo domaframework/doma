@@ -1,44 +1,40 @@
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class EvaluationResult {
 
-    protected final Object value;
+  protected final Object value;
 
-    protected final Class<?> valueClass;
+  protected final Class<?> valueClass;
 
-    public EvaluationResult(Object value, Class<?> valueClass) {
-        assertNotNull(valueClass);
-        this.value = value;
-        this.valueClass = valueClass;
+  public EvaluationResult(Object value, Class<?> valueClass) {
+    assertNotNull(valueClass);
+    this.value = value;
+    this.valueClass = valueClass;
+  }
+
+  public Class<?> getValueClass() {
+    return valueClass;
+  }
+
+  public Object getValue() {
+    return value;
+  }
+
+  public boolean getBooleanValue() {
+    if (value instanceof Boolean) {
+      return (Boolean) value;
     }
+    return false;
+  }
 
-    public Class<?> getValueClass() {
-        return valueClass;
+  @Override
+  public String toString() {
+    if (value == null) {
+      return null;
     }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public boolean getBooleanValue() {
-        if (value instanceof Boolean) {
-            return (Boolean) value;
-        }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        if (value == null) {
-            return null;
-        }
-        return value.toString();
-    }
-
+    return value.toString();
+  }
 }

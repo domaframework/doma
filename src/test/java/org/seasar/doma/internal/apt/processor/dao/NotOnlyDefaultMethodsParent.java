@@ -1,10 +1,7 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
-/**
- * @author nakamura
- *
- */
+/** @author nakamura */
 public interface NotOnlyDefaultMethodsParent {
 
-    void aaa();
+  void aaa();
 }

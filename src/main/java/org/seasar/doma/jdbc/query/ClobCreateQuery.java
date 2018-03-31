@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class ClobCreateQuery extends AbstractCreateQuery<Clob> {
 
-    @Override
-    public Clob create(Connection connection) throws SQLException {
-        return connection.createClob();
-    }
+  @Override
+  public Clob create(Connection connection) throws SQLException {
+    return connection.createClob();
+  }
 }

@@ -1,4 +1,2 @@
-/**
- * Provides JDBC types.
- */
+/** Provides JDBC types. */
 package org.seasar.doma.jdbc.type;

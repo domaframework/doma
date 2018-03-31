@@ -2,19 +2,18 @@ package org.seasar.doma.jdbc.builder;
 
 class Param {
 
-    final String name;
+  final String name;
 
-    final Class<?> paramClass;
+  final Class<?> paramClass;
 
-    final Object param;
+  final Object param;
 
-    final boolean literal;
+  final boolean literal;
 
-    Param(Class<?> paramClass, Object param, ParamIndex index, boolean literal) {
-        this.paramClass = paramClass;
-        this.param = param;
-        this.name = "p" + index.getValue();
-        this.literal = literal;
-    }
-
+  Param(Class<?> paramClass, Object param, ParamIndex index, boolean literal) {
+    this.paramClass = paramClass;
+    this.param = param;
+    this.name = "p" + index.getValue();
+    this.literal = literal;
+  }
 }

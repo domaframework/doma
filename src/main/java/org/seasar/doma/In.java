@@ -7,15 +7,16 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates a IN parameter of stored functions or stored procedures.
+ *
+ * <p>The annotated parameter must be one of the parameters of the method that is annotated with
+ * {@link Function} or {@link Procedure}.
+ *
  * <p>
- * The annotated parameter must be one of the parameters of the method that is
- * annotated with {@link Function} or {@link Procedure}.
- * <p>
- * 
+ *
  * <pre>
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
- * 
+ *
  *     &#064;Procedure
  *     void updateSalary(&#064;In Integer id, &#064;In BigDecimal salary);
  * }
@@ -23,5 +24,4 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface In {
-}
+public @interface In {}

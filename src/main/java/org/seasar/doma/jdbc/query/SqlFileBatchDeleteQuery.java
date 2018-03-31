@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.util.ListIterator;
-
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.Config;
@@ -14,131 +13,129 @@ import org.seasar.doma.jdbc.entity.EntityDesc;
 import org.seasar.doma.jdbc.entity.VersionPropertyDesc;
 
 public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
-        implements BatchDeleteQuery {
+    implements BatchDeleteQuery {
 
-    protected EntityHandler entityHandler;
+  protected EntityHandler entityHandler;
 
-    protected boolean versionIgnored;
+  protected boolean versionIgnored;
 
-    protected boolean optimisticLockExceptionSuppressed;
+  protected boolean optimisticLockExceptionSuppressed;
 
-    public SqlFileBatchDeleteQuery(Class<ELEMENT> elementClass) {
-        super(elementClass, SqlKind.BATCH_DELETE);
+  public SqlFileBatchDeleteQuery(Class<ELEMENT> elementClass) {
+    super(elementClass, SqlKind.BATCH_DELETE);
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
+    int size = elements.size();
+    if (size == 0) {
+      return;
     }
+    executable = true;
+    sqlExecutionSkipCause = null;
+    currentEntity = elements.get(0);
+    preDelete();
+    prepareSqlFile();
+    prepareOptions();
+    prepareOptimisticLock();
+    prepareSql();
+    elements.set(0, currentEntity);
+    for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext(); ) {
+      currentEntity = it.next();
+      preDelete();
+      prepareSql();
+      it.set(currentEntity);
+    }
+    assertEquals(size, sqls.size());
+  }
 
-    @Override
-    public void prepare() {
-        super.prepare();
-        int size = elements.size();
-        if (size == 0) {
-            return;
-        }
-        executable = true;
-        sqlExecutionSkipCause = null;
-        currentEntity = elements.get(0);
-        preDelete();
-        prepareSqlFile();
-        prepareOptions();
-        prepareOptimisticLock();
-        prepareSql();
-        elements.set(0, currentEntity);
-        for (ListIterator<ELEMENT> it = elements.listIterator(1); it.hasNext();) {
-            currentEntity = it.next();
-            preDelete();
-            prepareSql();
-            it.set(currentEntity);
-        }
-        assertEquals(size, sqls.size());
+  protected void preDelete() {
+    if (entityHandler != null) {
+      entityHandler.preDelete();
+    }
+  }
+
+  protected void prepareOptimisticLock() {
+    if (entityHandler != null) {
+      entityHandler.prepareOptimisticLock();
+    }
+  }
+
+  @Override
+  public void complete() {
+    if (entityHandler != null) {
+      for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext(); ) {
+        currentEntity = it.next();
+        entityHandler.postDelete();
+        it.set(currentEntity);
+      }
+    }
+  }
+
+  @Override
+  public void setEntityDesc(EntityDesc<ELEMENT> entityDesc) {
+    entityHandler = new EntityHandler(entityDesc);
+  }
+
+  public void setVersionIgnored(boolean versionIgnored) {
+    this.versionIgnored = versionIgnored;
+  }
+
+  public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
+    this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
+  }
+
+  protected class EntityHandler {
+
+    protected final EntityDesc<ELEMENT> entityDesc;
+
+    protected final VersionPropertyDesc<ELEMENT, ?, ?> versionPropertyDesc;
+
+    protected EntityHandler(EntityDesc<ELEMENT> entityDesc) {
+      assertNotNull(entityDesc);
+      this.entityDesc = entityDesc;
+      this.versionPropertyDesc = entityDesc.getVersionPropertyDesc();
     }
 
     protected void preDelete() {
-        if (entityHandler != null) {
-            entityHandler.preDelete();
-        }
+      SqlFileBatchPreDeleteContext<ELEMENT> context =
+          new SqlFileBatchPreDeleteContext<>(entityDesc, method, config);
+      entityDesc.preDelete(currentEntity, context);
+      if (context.getNewEntity() != null) {
+        currentEntity = context.getNewEntity();
+      }
+    }
+
+    protected void postDelete() {
+      SqlFileBatchPostDeleteContext<ELEMENT> context =
+          new SqlFileBatchPostDeleteContext<>(entityDesc, method, config);
+      entityDesc.postDelete(currentEntity, context);
+      if (context.getNewEntity() != null) {
+        currentEntity = context.getNewEntity();
+      }
     }
 
     protected void prepareOptimisticLock() {
-        if (entityHandler != null) {
-            entityHandler.prepareOptimisticLock();
+      if (versionPropertyDesc != null && !versionIgnored) {
+        if (!optimisticLockExceptionSuppressed) {
+          optimisticLockCheckRequired = true;
         }
+      }
     }
+  }
 
-    @Override
-    public void complete() {
-        if (entityHandler != null) {
-            for (ListIterator<ELEMENT> it = elements.listIterator(); it.hasNext();) {
-                currentEntity = it.next();
-                entityHandler.postDelete();
-                it.set(currentEntity);
-            }
-        }
+  protected static class SqlFileBatchPreDeleteContext<E> extends AbstractPreDeleteContext<E> {
+
+    public SqlFileBatchPreDeleteContext(EntityDesc<E> entityDesc, Method method, Config config) {
+      super(entityDesc, method, config);
     }
+  }
 
-    @Override
-    public void setEntityDesc(EntityDesc<ELEMENT> entityDesc) {
-        entityHandler = new EntityHandler(entityDesc);
+  protected static class SqlFileBatchPostDeleteContext<E> extends AbstractPostDeleteContext<E> {
+
+    public SqlFileBatchPostDeleteContext(EntityDesc<E> entityDesc, Method method, Config config) {
+      super(entityDesc, method, config);
     }
-
-    public void setVersionIgnored(boolean versionIgnored) {
-        this.versionIgnored = versionIgnored;
-    }
-
-    public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
-        this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
-    }
-
-    protected class EntityHandler {
-
-        protected final EntityDesc<ELEMENT> entityDesc;
-
-        protected final VersionPropertyDesc<ELEMENT, ?, ?> versionPropertyDesc;
-
-        protected EntityHandler(EntityDesc<ELEMENT> entityDesc) {
-            assertNotNull(entityDesc);
-            this.entityDesc = entityDesc;
-            this.versionPropertyDesc = entityDesc.getVersionPropertyDesc();
-        }
-
-        protected void preDelete() {
-            SqlFileBatchPreDeleteContext<ELEMENT> context = new SqlFileBatchPreDeleteContext<>(
-                    entityDesc, method, config);
-            entityDesc.preDelete(currentEntity, context);
-            if (context.getNewEntity() != null) {
-                currentEntity = context.getNewEntity();
-            }
-        }
-
-        protected void postDelete() {
-            SqlFileBatchPostDeleteContext<ELEMENT> context = new SqlFileBatchPostDeleteContext<>(
-                    entityDesc, method, config);
-            entityDesc.postDelete(currentEntity, context);
-            if (context.getNewEntity() != null) {
-                currentEntity = context.getNewEntity();
-            }
-        }
-
-        protected void prepareOptimisticLock() {
-            if (versionPropertyDesc != null && !versionIgnored) {
-                if (!optimisticLockExceptionSuppressed) {
-                    optimisticLockCheckRequired = true;
-                }
-            }
-        }
-    }
-
-    protected static class SqlFileBatchPreDeleteContext<E> extends AbstractPreDeleteContext<E> {
-
-        public SqlFileBatchPreDeleteContext(EntityDesc<E> entityDesc, Method method,
-                Config config) {
-            super(entityDesc, method, config);
-        }
-    }
-
-    protected static class SqlFileBatchPostDeleteContext<E> extends AbstractPostDeleteContext<E> {
-
-        public SqlFileBatchPostDeleteContext(EntityDesc<E> entityDesc, Method method,
-                Config config) {
-            super(entityDesc, method, config);
-        }
-    }
+  }
 }

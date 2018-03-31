@@ -1,29 +1,23 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
 import javax.sql.DataSource;
-
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/**
- * @author nakamura-to
- *
- */
+/** @author nakamura-to */
 public class PlainSingletonConfig implements Config {
 
-    public static final PlainSingletonConfig INSTANCE = new PlainSingletonConfig();
+  public static final PlainSingletonConfig INSTANCE = new PlainSingletonConfig();
 
-    private PlainSingletonConfig() {
-    }
+  private PlainSingletonConfig() {}
 
-    @Override
-    public DataSource getDataSource() {
-        return null;
-    }
+  @Override
+  public DataSource getDataSource() {
+    return null;
+  }
 
-    @Override
-    public Dialect getDialect() {
-        return null;
-    }
-
+  @Override
+  public Dialect getDialect() {
+    return null;
+  }
 }

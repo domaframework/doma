@@ -3,44 +3,39 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
-
 import org.seasar.doma.jdbc.ListParameter;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public abstract class AbstractListParameter<ELEMENT> implements ListParameter<ELEMENT> {
 
-    protected final List<ELEMENT> list;
+  protected final List<ELEMENT> list;
 
-    protected final String name;
+  protected final String name;
 
-    public AbstractListParameter(List<ELEMENT> list, String name) {
-        assertNotNull(list, name);
-        this.list = list;
-        this.name = name;
-    }
+  public AbstractListParameter(List<ELEMENT> list, String name) {
+    assertNotNull(list, name);
+    this.list = list;
+    this.name = name;
+  }
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  @Override
+  public String getName() {
+    return name;
+  }
 
-    @Override
-    public void add(ELEMENT element) {
-        list.add(element);
-    }
+  @Override
+  public void add(ELEMENT element) {
+    list.add(element);
+  }
 
-    @Override
-    public Object getValue() {
-        return list;
-    }
+  @Override
+  public Object getValue() {
+    return list;
+  }
 
-    @Override
-    public <P, TH extends Throwable> void accept(SqlParameterVisitor<P, TH> visitor, P p)
-            throws TH {
-        visitor.visitListParameter(this, p);
-    }
+  @Override
+  public <P, TH extends Throwable> void accept(SqlParameterVisitor<P, TH> visitor, P p) throws TH {
+    visitor.visitListParameter(this, p);
+  }
 }

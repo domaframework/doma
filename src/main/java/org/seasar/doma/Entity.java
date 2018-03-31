@@ -4,57 +4,56 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 /**
  * Indicates an entity class.
- * <p>
- * The entity class represents a database relation (table or SQL result set). An
- * instance of the class represents a row.
- * <p>
- * The entity class can be defined as either mutable or immutable.
- * 
- * The mutable entity:
- * 
+ *
+ * <p>The entity class represents a database relation (table or SQL result set). An instance of the
+ * class represents a row.
+ *
+ * <p>The entity class can be defined as either mutable or immutable.
+ *
+ * <p>The mutable entity:
+ *
  * <pre>
  * &#064;Entity
  * public class Employee {
- * 
+ *
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
  *     Integer id;
- * 
+ *
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
  *     String employeeName;
- * 
+ *
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION&quot;)
  *     int version;
- *     
+ *
  *     ...
  * }
  * </pre>
- * 
+ *
  * The immutable entity:
- * 
+ *
  * <pre>
  * &#064;Entity(immutable = true)
  * public class Employee {
- * 
+ *
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
  *     final Integer id;
- * 
+ *
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
  *     final String employeeName;
- * 
+ *
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION&quot;)
  *     final int version;
- * 
+ *
  *     public Employee(Integer id, String employeeName, int version) {
  *         this.id = id;
  *         this.employeeName = employeeName;
@@ -63,9 +62,9 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  *     ...
  * }
  * </pre>
- * <p>
- * The entity instance is not required to be thread safe.
- * 
+ *
+ * <p>The entity instance is not required to be thread safe.
+ *
  * @see Table
  * @see Column
  * @see Id
@@ -77,32 +76,30 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
 
-    /**
-     * The entity listener class.
-     * <p>
-     * If not specified and the entity class inherits another entity class, this
-     * value is inherited from the parent entity class.
-     * <p>
-     * An instance of the entity lister class is instantiated only once per
-     * entity class.
-     */
-    @SuppressWarnings("rawtypes")
-    Class<? extends EntityListener> listener() default NullEntityListener.class;
+  /**
+   * The entity listener class.
+   *
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class.
+   *
+   * <p>An instance of the entity lister class is instantiated only once per entity class.
+   */
+  @SuppressWarnings("rawtypes")
+  Class<? extends EntityListener> listener() default NullEntityListener.class;
 
-    /**
-     * The naming convention that maps the entity class to the database table.
-     * <p>
-     * If not specified and the entity class inherits another entity class, this
-     * value is inherited from the parent entity class.
-     */
-    NamingType naming() default NamingType.NONE;
+  /**
+   * The naming convention that maps the entity class to the database table.
+   *
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class.
+   */
+  NamingType naming() default NamingType.NONE;
 
-    /**
-     * Whether the entity class is immutable.
-     * <p>
-     * If not specified and the entity class inherits another entity class, this
-     * value is inherited from the parent entity class. The values must be
-     * consistent in the hierarchy.
-     */
-    boolean immutable() default false;
+  /**
+   * Whether the entity class is immutable.
+   *
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class. The values must be consistent in the hierarchy.
+   */
+  boolean immutable() default false;
 }

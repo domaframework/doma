@@ -1,40 +1,32 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Types;
+import java.sql.*;
 
-/**
- * A JDBC type for {@link Types#TIME} and {@link Time}.
- */
+/** A JDBC type for {@link Types#TIME} and {@link Time}. */
 public class TimeType extends AbstractJdbcType<Time> {
 
-    public TimeType() {
-        super(Types.TIME);
-    }
+  public TimeType() {
+    super(Types.TIME);
+  }
 
-    @Override
-    protected Time doGetValue(ResultSet resultSet, int index) throws SQLException {
-        return resultSet.getTime(index);
-    }
+  @Override
+  protected Time doGetValue(ResultSet resultSet, int index) throws SQLException {
+    return resultSet.getTime(index);
+  }
 
-    @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index, Time value)
-            throws SQLException {
-        preparedStatement.setTime(index, value);
-    }
+  @Override
+  protected void doSetValue(PreparedStatement preparedStatement, int index, Time value)
+      throws SQLException {
+    preparedStatement.setTime(index, value);
+  }
 
-    @Override
-    protected Time doGetValue(CallableStatement callableStatement, int index) throws SQLException {
-        return callableStatement.getTime(index);
-    }
+  @Override
+  protected Time doGetValue(CallableStatement callableStatement, int index) throws SQLException {
+    return callableStatement.getTime(index);
+  }
 
-    @Override
-    protected String doConvertToLogFormat(Time value) {
-        return "'" + value + "'";
-    }
-
+  @Override
+  protected String doConvertToLogFormat(Time value) {
+    return "'" + value + "'";
+  }
 }

@@ -2,14 +2,13 @@ package org.seasar.doma.jdbc.builder;
 
 class ParamIndex {
 
-    private int value = 1;
+  private int value = 1;
 
-    void increment() {
-        value++;
-    }
+  void increment() {
+    value++;
+  }
 
-    int getValue() {
-        return value;
-    }
-
+  int getValue() {
+    return value;
+  }
 }

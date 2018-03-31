@@ -2,20 +2,17 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.Holder;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Holder(valueType = Integer.class)
 public class Identifier {
 
-    private final Integer value;
+  private final Integer value;
 
-    public Identifier(Integer value) {
-        this.value = value;
-    }
+  public Identifier(Integer value) {
+    this.value = value;
+  }
 
-    public Integer getValue() {
-        return value;
-    }
+  public Integer getValue() {
+    return value;
+  }
 }

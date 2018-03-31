@@ -4,41 +4,37 @@ import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.processor.HolderConvertersProcessor;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class HolderConvertersProcessorTest extends AptTestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        addOption("-Adoma.test=true");
-    }
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+    addOption("-Adoma.test=true");
+  }
 
-    public void testDay() throws Exception {
-        HolderConvertersProcessor processor = new HolderConvertersProcessor();
-        addProcessor(processor);
-        addCompilationUnit(DayConvertersProvider.class);
-        compile();
-        assertTrue(getCompiledResult());
-    }
+  public void testDay() throws Exception {
+    HolderConvertersProcessor processor = new HolderConvertersProcessor();
+    addProcessor(processor);
+    addCompilationUnit(DayConvertersProvider.class);
+    compile();
+    assertTrue(getCompiledResult());
+  }
 
-    public void testEmpty() throws Exception {
-        HolderConvertersProcessor processor = new HolderConvertersProcessor();
-        addProcessor(processor);
-        addCompilationUnit(EmptyConvertersProvider.class);
-        compile();
-        assertTrue(getCompiledResult());
-    }
+  public void testEmpty() throws Exception {
+    HolderConvertersProcessor processor = new HolderConvertersProcessor();
+    addProcessor(processor);
+    addCompilationUnit(EmptyConvertersProvider.class);
+    compile();
+    assertTrue(getCompiledResult());
+  }
 
-    public void testExternalHolderNotSpecified() throws Exception {
-        HolderConvertersProcessor processor = new HolderConvertersProcessor();
-        addProcessor(processor);
-        addCompilationUnit(ExternalHolderNotSpecifiedProvider.class);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4196);
-    }
-
+  public void testExternalHolderNotSpecified() throws Exception {
+    HolderConvertersProcessor processor = new HolderConvertersProcessor();
+    addProcessor(processor);
+    addCompilationUnit(ExternalHolderNotSpecifiedProvider.class);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4196);
+  }
 }

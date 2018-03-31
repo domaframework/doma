@@ -7,21 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
-
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -35,342 +26,351 @@ import org.seasar.doma.message.Message;
 
 public class HolderMetaFactory implements TypeElementMetaFactory<HolderMeta> {
 
-    private final Context ctx;
+  private final Context ctx;
 
-    private final TypeElement holderElement;
+  private final TypeElement holderElement;
 
-    private final HolderReflection holderReflection;
+  private final HolderReflection holderReflection;
 
-    public HolderMetaFactory(Context ctx, TypeElement classElement) {
-        assertNotNull(ctx);
-        this.ctx = ctx;
-        this.holderElement = classElement;
-        holderReflection = ctx.getReflections().newHolderReflection(classElement);
-        if (holderReflection == null) {
-            throw new AptIllegalStateException("holderReflection");
-        }
+  public HolderMetaFactory(Context ctx, TypeElement classElement) {
+    assertNotNull(ctx);
+    this.ctx = ctx;
+    this.holderElement = classElement;
+    holderReflection = ctx.getReflections().newHolderReflection(classElement);
+    if (holderReflection == null) {
+      throw new AptIllegalStateException("holderReflection");
+    }
+  }
+
+  @Override
+  public HolderMeta createTypeElementMeta() {
+    assertNotNull(holderElement);
+    BasicCtType basicCtType = createBasicCtType();
+    HolderMeta holderMeta =
+        new HolderMeta(holderElement, holderElement.asType(), holderReflection, basicCtType);
+    Strategy strategy = createStrategy();
+    strategy.validateAcceptNull(holderMeta);
+    strategy.validateClass(holderMeta);
+    strategy.validateInitializer(holderMeta);
+    strategy.validateAccessorMethod(holderMeta);
+    return holderMeta;
+  }
+
+  private BasicCtType createBasicCtType() {
+    TypeMirror valueType = holderReflection.getValueTypeValue();
+    BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
+    if (basicCtType == null) {
+      throw new AptException(
+          Message.DOMA4102,
+          holderElement,
+          holderReflection.getAnnotationMirror(),
+          holderReflection.getValueType(),
+          new Object[] {valueType});
+    }
+    return basicCtType;
+  }
+
+  private Strategy createStrategy() {
+    ValueReflection valueReflection = ctx.getReflections().newValueReflection(holderElement);
+    if (valueReflection != null) {
+      return new ValueStrategy(valueReflection);
+    }
+    return new DefaultStrategy();
+  }
+
+  protected interface Strategy {
+
+    void validateAcceptNull(HolderMeta holderMeta);
+
+    void validateClass(HolderMeta holderMeta);
+
+    void validateInitializer(HolderMeta holderMeta);
+
+    void validateAccessorMethod(HolderMeta holderMeta);
+  }
+
+  protected class DefaultStrategy implements Strategy {
+
+    @Override
+    public void validateAcceptNull(HolderMeta holderMeta) {
+      if (holderMeta.getBasicCtType().isPrimitive() && holderMeta.getAcceptNull()) {
+        HolderReflection holderReflection = holderMeta.getHolderReflection();
+        throw new AptException(
+            Message.DOMA4251,
+            holderElement,
+            holderReflection.getAnnotationMirror(),
+            holderReflection.getAcceptNull());
+      }
     }
 
     @Override
-    public HolderMeta createTypeElementMeta() {
-        assertNotNull(holderElement);
-        BasicCtType basicCtType = createBasicCtType();
-        HolderMeta holderMeta = new HolderMeta(holderElement, holderElement.asType(),
-                holderReflection, basicCtType);
-        Strategy strategy = createStrategy();
-        strategy.validateAcceptNull(holderMeta);
-        strategy.validateClass(holderMeta);
-        strategy.validateInitializer(holderMeta);
-        strategy.validateAccessorMethod(holderMeta);
-        return holderMeta;
+    public void validateClass(HolderMeta holderMeta) {
+      if (holderElement.getKind() == ElementKind.CLASS) {
+        if (holderMeta.providesConstructor()
+            && holderElement.getModifiers().contains(Modifier.ABSTRACT)) {
+          throw new AptException(Message.DOMA4132, holderElement);
+        }
+        if (holderElement.getNestingKind().isNested()) {
+          validateEnclosingElement(holderElement);
+        }
+      } else if (holderElement.getKind() == ElementKind.ENUM) {
+        if (holderMeta.providesConstructor()) {
+          HolderReflection holderReflection = holderMeta.getHolderReflection();
+          throw new AptException(
+              Message.DOMA4184,
+              holderElement,
+              holderReflection.getAnnotationMirror(),
+              holderReflection.getFactoryMethod());
+        }
+        if (holderElement.getNestingKind().isNested()) {
+          validateEnclosingElement(holderElement);
+        }
+      } else if (holderElement.getKind() == ElementKind.INTERFACE) {
+        if (holderMeta.providesConstructor()) {
+          throw new AptException(Message.DOMA4268, holderElement);
+        }
+        if (holderElement.getNestingKind().isNested()) {
+          validateEnclosingElement(holderElement);
+        }
+      } else {
+        HolderReflection holderReflection = holderMeta.getHolderReflection();
+        throw new AptException(
+            Message.DOMA4105, holderElement, holderReflection.getAnnotationMirror());
+      }
     }
 
-    private BasicCtType createBasicCtType() {
-        TypeMirror valueType = holderReflection.getValueTypeValue();
-        BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
-        if (basicCtType == null) {
-            throw new AptException(Message.DOMA4102, holderElement,
-                    holderReflection.getAnnotationMirror(), holderReflection.getValueType(),
-                    new Object[] { valueType });
+    private void validateEnclosingElement(Element element) {
+      TypeElement typeElement = ctx.getElements().toTypeElement(element);
+      if (typeElement == null) {
+        return;
+      }
+      String simpleName = typeElement.getSimpleName().toString();
+      if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
+          || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
+        throw new AptException(
+            Message.DOMA4277, typeElement, new Object[] {typeElement.getQualifiedName()});
+      }
+      NestingKind nestingKind = typeElement.getNestingKind();
+      if (nestingKind == NestingKind.TOP_LEVEL) {
+        //noinspection UnnecessaryReturnStatement
+        return;
+      } else if (nestingKind == NestingKind.MEMBER) {
+        Set<Modifier> modifiers = typeElement.getModifiers();
+        if (modifiers.containsAll(Arrays.asList(Modifier.STATIC, Modifier.PUBLIC))) {
+          validateEnclosingElement(typeElement.getEnclosingElement());
+        } else {
+          throw new AptException(
+              Message.DOMA4275, typeElement, new Object[] {typeElement.getQualifiedName()});
         }
-        return basicCtType;
+      } else {
+        throw new AptException(
+            Message.DOMA4276, typeElement, new Object[] {typeElement.getQualifiedName()});
+      }
     }
 
-    private Strategy createStrategy() {
-        ValueReflection valueReflection = ctx.getReflections().newValueReflection(holderElement);
-        if (valueReflection != null) {
-            return new ValueStrategy(valueReflection);
-        }
-        return new DefaultStrategy();
+    @Override
+    public void validateInitializer(HolderMeta holderMeta) {
+      if (holderMeta.providesConstructor()) {
+        validateConstructor(holderMeta);
+      } else {
+        validateFactoryMethod(holderMeta);
+      }
     }
 
-    protected interface Strategy {
-
-        void validateAcceptNull(HolderMeta holderMeta);
-
-        void validateClass(HolderMeta holderMeta);
-
-        void validateInitializer(HolderMeta holderMeta);
-
-        void validateAccessorMethod(HolderMeta holderMeta);
-
+    private void validateConstructor(HolderMeta holderMeta) {
+      for (ExecutableElement constructor :
+          ElementFilter.constructorsIn(holderElement.getEnclosedElements())) {
+        if (constructor.getModifiers().contains(Modifier.PRIVATE)) {
+          continue;
+        }
+        List<? extends VariableElement> parameters = constructor.getParameters();
+        if (parameters.size() != 1) {
+          continue;
+        }
+        TypeMirror parameterType = parameters.get(0).asType();
+        if (ctx.getTypes().isSameType(parameterType, holderMeta.getValueType())) {
+          return;
+        }
+      }
+      throw new AptException(
+          Message.DOMA4103, holderElement, new Object[] {holderMeta.getValueType()});
     }
 
-    protected class DefaultStrategy implements Strategy {
-
-        @Override
-        public void validateAcceptNull(HolderMeta holderMeta) {
-            if (holderMeta.getBasicCtType().isPrimitive() && holderMeta.getAcceptNull()) {
-                HolderReflection holderReflection = holderMeta.getHolderReflection();
-                throw new AptException(Message.DOMA4251, holderElement,
-                        holderReflection.getAnnotationMirror(), holderReflection.getAcceptNull());
-            }
+    private void validateFactoryMethod(HolderMeta holderMeta) {
+      outer:
+      for (ExecutableElement method :
+          ElementFilter.methodsIn(holderElement.getEnclosedElements())) {
+        if (!method.getSimpleName().contentEquals(holderMeta.getFactoryMethod())) {
+          continue;
         }
-
-        @Override
-        public void validateClass(HolderMeta holderMeta) {
-            if (holderElement.getKind() == ElementKind.CLASS) {
-                if (holderMeta.providesConstructor()
-                        && holderElement.getModifiers().contains(Modifier.ABSTRACT)) {
-                    throw new AptException(Message.DOMA4132, holderElement);
-                }
-                if (holderElement.getNestingKind().isNested()) {
-                    validateEnclosingElement(holderElement);
-                }
-            } else if (holderElement.getKind() == ElementKind.ENUM) {
-                if (holderMeta.providesConstructor()) {
-                    HolderReflection holderReflection = holderMeta.getHolderReflection();
-                    throw new AptException(Message.DOMA4184, holderElement,
-                            holderReflection.getAnnotationMirror(),
-                            holderReflection.getFactoryMethod());
-                }
-                if (holderElement.getNestingKind().isNested()) {
-                    validateEnclosingElement(holderElement);
-                }
-            } else if (holderElement.getKind() == ElementKind.INTERFACE) {
-                if (holderMeta.providesConstructor()) {
-                    throw new AptException(Message.DOMA4268, holderElement);
-                }
-                if (holderElement.getNestingKind().isNested()) {
-                    validateEnclosingElement(holderElement);
-                }
-            } else {
-                HolderReflection holderReflection = holderMeta.getHolderReflection();
-                throw new AptException(Message.DOMA4105, holderElement,
-                        holderReflection.getAnnotationMirror());
-            }
+        if (method.getModifiers().contains(Modifier.PRIVATE)) {
+          continue;
         }
+        if (!method.getModifiers().contains(Modifier.STATIC)) {
+          continue;
+        }
+        if (method.getParameters().size() != 1) {
+          continue;
+        }
+        TypeMirror parameterType = method.getParameters().get(0).asType();
+        if (!ctx.getTypes().isAssignable(holderMeta.getValueType(), parameterType)) {
+          continue;
+        }
+        if (!ctx.getTypes().isAssignable(method.getReturnType(), holderMeta.getType())) {
+          continue;
+        }
+        List<? extends TypeParameterElement> classTypeParams = holderElement.getTypeParameters();
+        List<? extends TypeParameterElement> methodTypeParams = method.getTypeParameters();
+        if (classTypeParams.size() != methodTypeParams.size()) {
+          continue;
+        }
+        for (Iterator<? extends TypeParameterElement> cit = classTypeParams.iterator(),
+                mit = methodTypeParams.iterator();
+            cit.hasNext() && mit.hasNext(); ) {
+          TypeParameterElement classTypeParam = cit.next();
+          TypeParameterElement methodTypeParam = mit.next();
+          if (!ctx.getTypes().isSameType(classTypeParam.asType(), methodTypeParam.asType())) {
+            continue outer;
+          }
+        }
+        return;
+      }
+      throw new AptException(
+          Message.DOMA4106,
+          holderElement,
+          new Object[] {
+            holderMeta.getFactoryMethod(), holderElement.asType(), holderMeta.getValueType()
+          });
+    }
 
-        private void validateEnclosingElement(Element element) {
-            TypeElement typeElement = ctx.getElements().toTypeElement(element);
-            if (typeElement == null) {
+    @Override
+    public void validateAccessorMethod(HolderMeta holderMeta) {
+      TypeElement typeElement = holderElement;
+      TypeMirror typeMirror = holderElement.asType();
+      for (; typeElement != null && typeMirror.getKind() != TypeKind.NONE; ) {
+        for (ExecutableElement method :
+            ElementFilter.methodsIn(typeElement.getEnclosedElements())) {
+          if (!method.getSimpleName().contentEquals(holderMeta.getAccessorMethod())) {
+            continue;
+          }
+          if (method.getModifiers().contains(Modifier.PRIVATE)) {
+            continue;
+          }
+          if (!method.getParameters().isEmpty()) {
+            continue;
+          }
+          TypeMirror returnType = method.getReturnType();
+          if (ctx.getTypes().isAssignable(returnType, holderMeta.getValueType())) {
+            return;
+          }
+          TypeVariable typeVariable = ctx.getTypes().toTypeVariable(returnType);
+          if (typeVariable != null) {
+            TypeMirror inferredReturnType = inferType(typeVariable, typeElement, typeMirror);
+            if (inferredReturnType != null) {
+              if (ctx.getTypes().isAssignable(inferredReturnType, holderMeta.getValueType())) {
                 return;
+              }
             }
-            String simpleName = typeElement.getSimpleName().toString();
-            if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-                    || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
-                throw new AptException(Message.DOMA4277, typeElement,
-                        new Object[] { typeElement.getQualifiedName() });
-            }
-            NestingKind nestingKind = typeElement.getNestingKind();
-            if (nestingKind == NestingKind.TOP_LEVEL) {
-                //noinspection UnnecessaryReturnStatement
-                return;
-            } else if (nestingKind == NestingKind.MEMBER) {
-                Set<Modifier> modifiers = typeElement.getModifiers();
-                if (modifiers.containsAll(Arrays.asList(Modifier.STATIC, Modifier.PUBLIC))) {
-                    validateEnclosingElement(typeElement.getEnclosingElement());
-                } else {
-                    throw new AptException(Message.DOMA4275, typeElement,
-                            new Object[] { typeElement.getQualifiedName() });
-                }
-            } else {
-                throw new AptException(Message.DOMA4276, typeElement,
-                        new Object[] { typeElement.getQualifiedName() });
-            }
+          }
         }
-
-        @Override
-        public void validateInitializer(HolderMeta holderMeta) {
-            if (holderMeta.providesConstructor()) {
-                validateConstructor(holderMeta);
-            } else {
-                validateFactoryMethod(holderMeta);
-            }
-        }
-
-        private void validateConstructor(HolderMeta holderMeta) {
-            for (ExecutableElement constructor : ElementFilter
-                    .constructorsIn(holderElement.getEnclosedElements())) {
-                if (constructor.getModifiers().contains(Modifier.PRIVATE)) {
-                    continue;
-                }
-                List<? extends VariableElement> parameters = constructor.getParameters();
-                if (parameters.size() != 1) {
-                    continue;
-                }
-                TypeMirror parameterType = parameters.get(0).asType();
-                if (ctx.getTypes().isSameType(parameterType, holderMeta.getValueType())) {
-                    return;
-                }
-            }
-            throw new AptException(Message.DOMA4103, holderElement,
-                    new Object[] { holderMeta.getValueType() });
-        }
-
-        private void validateFactoryMethod(HolderMeta holderMeta) {
-            outer: for (ExecutableElement method : ElementFilter
-                    .methodsIn(holderElement.getEnclosedElements())) {
-                if (!method.getSimpleName().contentEquals(holderMeta.getFactoryMethod())) {
-                    continue;
-                }
-                if (method.getModifiers().contains(Modifier.PRIVATE)) {
-                    continue;
-                }
-                if (!method.getModifiers().contains(Modifier.STATIC)) {
-                    continue;
-                }
-                if (method.getParameters().size() != 1) {
-                    continue;
-                }
-                TypeMirror parameterType = method.getParameters().get(0).asType();
-                if (!ctx.getTypes().isAssignable(holderMeta.getValueType(), parameterType)) {
-                    continue;
-                }
-                if (!ctx.getTypes().isAssignable(method.getReturnType(), holderMeta.getType())) {
-                    continue;
-                }
-                List<? extends TypeParameterElement> classTypeParams = holderElement
-                        .getTypeParameters();
-                List<? extends TypeParameterElement> methodTypeParams = method.getTypeParameters();
-                if (classTypeParams.size() != methodTypeParams.size()) {
-                    continue;
-                }
-                for (Iterator<? extends TypeParameterElement> cit = classTypeParams
-                        .iterator(), mit = methodTypeParams.iterator(); cit.hasNext()
-                                && mit.hasNext();) {
-                    TypeParameterElement classTypeParam = cit.next();
-                    TypeParameterElement methodTypeParam = mit.next();
-                    if (!ctx.getTypes().isSameType(classTypeParam.asType(),
-                            methodTypeParam.asType())) {
-                        continue outer;
-                    }
-                }
-                return;
-            }
-            throw new AptException(Message.DOMA4106, holderElement,
-                    new Object[] { holderMeta.getFactoryMethod(), holderElement.asType(),
-                            holderMeta.getValueType() });
-        }
-
-        @Override
-        public void validateAccessorMethod(HolderMeta holderMeta) {
-            TypeElement typeElement = holderElement;
-            TypeMirror typeMirror = holderElement.asType();
-            for (; typeElement != null && typeMirror.getKind() != TypeKind.NONE;) {
-                for (ExecutableElement method : ElementFilter
-                        .methodsIn(typeElement.getEnclosedElements())) {
-                    if (!method.getSimpleName().contentEquals(holderMeta.getAccessorMethod())) {
-                        continue;
-                    }
-                    if (method.getModifiers().contains(Modifier.PRIVATE)) {
-                        continue;
-                    }
-                    if (!method.getParameters().isEmpty()) {
-                        continue;
-                    }
-                    TypeMirror returnType = method.getReturnType();
-                    if (ctx.getTypes().isAssignable(returnType, holderMeta.getValueType())) {
-                        return;
-                    }
-                    TypeVariable typeVariable = ctx.getTypes().toTypeVariable(returnType);
-                    if (typeVariable != null) {
-                        TypeMirror inferredReturnType = inferType(typeVariable, typeElement,
-                                typeMirror);
-                        if (inferredReturnType != null) {
-                            if (ctx.getTypes().isAssignable(inferredReturnType,
-                                    holderMeta.getValueType())) {
-                                return;
-                            }
-                        }
-                    }
-                }
-                typeMirror = typeElement.getSuperclass();
-                typeElement = ctx.getTypes().toTypeElement(typeMirror);
-            }
-            throw new AptException(Message.DOMA4104, holderElement,
-                    new Object[] { holderMeta.getAccessorMethod(), holderMeta.getValueType() });
-        }
-
-        protected TypeMirror inferType(TypeVariable typeVariable, TypeElement classElement,
-                TypeMirror classMirror) {
-            DeclaredType declaredType = ctx.getTypes().toDeclaredType(classMirror);
-            if (declaredType == null) {
-                return null;
-            }
-            List<? extends TypeMirror> args = declaredType.getTypeArguments();
-            if (args.isEmpty()) {
-                return null;
-            }
-            int argsSize = args.size();
-            int index = 0;
-            for (TypeParameterElement typeParam : classElement.getTypeParameters()) {
-                if (index >= argsSize) {
-                    break;
-                }
-                if (ctx.getTypes().isSameType(typeVariable, typeParam.asType())) {
-                    return args.get(index);
-                }
-                index++;
-            }
-            return null;
-        }
-
+        typeMirror = typeElement.getSuperclass();
+        typeElement = ctx.getTypes().toTypeElement(typeMirror);
+      }
+      throw new AptException(
+          Message.DOMA4104,
+          holderElement,
+          new Object[] {holderMeta.getAccessorMethod(), holderMeta.getValueType()});
     }
 
-    protected class ValueStrategy extends DefaultStrategy {
-
-        private final ValueReflection valueReflection;
-
-        public ValueStrategy(ValueReflection valueReflection) {
-            this.valueReflection = valueReflection;
+    protected TypeMirror inferType(
+        TypeVariable typeVariable, TypeElement classElement, TypeMirror classMirror) {
+      DeclaredType declaredType = ctx.getTypes().toDeclaredType(classMirror);
+      if (declaredType == null) {
+        return null;
+      }
+      List<? extends TypeMirror> args = declaredType.getTypeArguments();
+      if (args.isEmpty()) {
+        return null;
+      }
+      int argsSize = args.size();
+      int index = 0;
+      for (TypeParameterElement typeParam : classElement.getTypeParameters()) {
+        if (index >= argsSize) {
+          break;
         }
-
-        @Override
-        public void validateInitializer(HolderMeta holderMeta) {
-            if (!valueReflection.getStaticConstructorValue().isEmpty()) {
-                throw new AptException(Message.DOMA4428, holderElement,
-                        valueReflection.getAnnotationMirror(),
-                        valueReflection.getStaticConstructor());
-            }
+        if (ctx.getTypes().isSameType(typeVariable, typeParam.asType())) {
+          return args.get(index);
         }
+        index++;
+      }
+      return null;
+    }
+  }
 
-        @Override
-        public void validateAccessorMethod(HolderMeta holderMeta) {
-            VariableElement field = findSingleField(holderMeta);
-            String accessorMethod = inferAccessorMethod(field);
-            if (!accessorMethod.equals(holderMeta.getAccessorMethod())) {
-                HolderReflection holderReflection = holderMeta.getHolderReflection();
-                throw new AptException(Message.DOMA4429, holderElement,
-                        holderReflection.getAnnotationMirror(),
-                        holderReflection.getAccessorMethod(),
-                        new Object[] { accessorMethod, holderMeta.getAccessorMethod() });
-            }
-        }
+  protected class ValueStrategy extends DefaultStrategy {
 
-        private String inferAccessorMethod(VariableElement field) {
-            String name = field.getSimpleName().toString();
-            String capitalizedName = StringUtil.capitalize(name);
-            if (field.asType().getKind() == TypeKind.BOOLEAN) {
-                if (name.startsWith("is")
-                        && (name.length() > 2 && Character.isUpperCase(name.charAt(2)))) {
-                    return name;
-                }
-                return "is" + capitalizedName;
-            }
-            return "get" + capitalizedName;
-        }
+    private final ValueReflection valueReflection;
 
-        private VariableElement findSingleField(HolderMeta holderMeta) {
-            List<VariableElement> fields = ElementFilter
-                    .fieldsIn(holderElement.getEnclosedElements())
-                    .stream()
-                    .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
-                    .collect(Collectors.toList());
-            if (fields.size() == 0) {
-                throw new AptException(Message.DOMA4430, holderElement);
-            }
-            if (fields.size() > 1) {
-                throw new AptException(Message.DOMA4431, holderElement);
-            }
-            VariableElement field = fields.get(0);
-            if (!ctx.getTypes().isAssignable(field.asType(), holderMeta.getValueType())) {
-                throw new AptException(Message.DOMA4432, field,
-                        new Object[] { field.asType(), holderMeta.getValueType() });
-            }
-            return field;
-        }
-
+    public ValueStrategy(ValueReflection valueReflection) {
+      this.valueReflection = valueReflection;
     }
 
+    @Override
+    public void validateInitializer(HolderMeta holderMeta) {
+      if (!valueReflection.getStaticConstructorValue().isEmpty()) {
+        throw new AptException(
+            Message.DOMA4428,
+            holderElement,
+            valueReflection.getAnnotationMirror(),
+            valueReflection.getStaticConstructor());
+      }
+    }
+
+    @Override
+    public void validateAccessorMethod(HolderMeta holderMeta) {
+      VariableElement field = findSingleField(holderMeta);
+      String accessorMethod = inferAccessorMethod(field);
+      if (!accessorMethod.equals(holderMeta.getAccessorMethod())) {
+        HolderReflection holderReflection = holderMeta.getHolderReflection();
+        throw new AptException(
+            Message.DOMA4429,
+            holderElement,
+            holderReflection.getAnnotationMirror(),
+            holderReflection.getAccessorMethod(),
+            new Object[] {accessorMethod, holderMeta.getAccessorMethod()});
+      }
+    }
+
+    private String inferAccessorMethod(VariableElement field) {
+      String name = field.getSimpleName().toString();
+      String capitalizedName = StringUtil.capitalize(name);
+      if (field.asType().getKind() == TypeKind.BOOLEAN) {
+        if (name.startsWith("is") && (name.length() > 2 && Character.isUpperCase(name.charAt(2)))) {
+          return name;
+        }
+        return "is" + capitalizedName;
+      }
+      return "get" + capitalizedName;
+    }
+
+    private VariableElement findSingleField(HolderMeta holderMeta) {
+      List<VariableElement> fields =
+          ElementFilter.fieldsIn(holderElement.getEnclosedElements())
+              .stream()
+              .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
+              .collect(Collectors.toList());
+      if (fields.size() == 0) {
+        throw new AptException(Message.DOMA4430, holderElement);
+      }
+      if (fields.size() > 1) {
+        throw new AptException(Message.DOMA4431, holderElement);
+      }
+      VariableElement field = fields.get(0);
+      if (!ctx.getTypes().isAssignable(field.asType(), holderMeta.getValueType())) {
+        throw new AptException(
+            Message.DOMA4432, field, new Object[] {field.asType(), holderMeta.getValueType()});
+      }
+      return field;
+    }
+  }
 }

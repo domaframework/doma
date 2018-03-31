@@ -1,14 +1,8 @@
 package org.seasar.doma.jdbc.holder;
 
 import java.math.BigDecimal;
-
 import org.seasar.doma.Holder;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Holder(valueType = BigDecimal.class)
-public class Money {
-
-}
+public class Money {}

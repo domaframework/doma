@@ -1,10 +1,11 @@
 package org.seasar.doma.internal.apt.lombok;
 
-/**
- * @author nakamura-to
- *
- */
+/** @author nakamura-to */
 public enum AccessLevel {
-
-    PUBLIC, MODULE, PROTECTED, PACKAGE, PRIVATE, NONE;
+  PUBLIC,
+  MODULE,
+  PROTECTED,
+  PACKAGE,
+  PRIVATE,
+  NONE;
 }

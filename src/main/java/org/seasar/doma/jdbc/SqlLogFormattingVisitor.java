@@ -5,9 +5,8 @@ import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * A visitor that converts the {@link Wrapper} values to the SQL log formats.
- * <p>
- * The implementation class must be thread safe.
+ *
+ * <p>The implementation class must be thread safe.
  */
 public interface SqlLogFormattingVisitor
-        extends WrapperVisitor<String, SqlLogFormattingFunction, Void, RuntimeException> {
-}
+    extends WrapperVisitor<String, SqlLogFormattingFunction, Void, RuntimeException> {}

@@ -5,14 +5,11 @@ import org.seasar.doma.In;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.jdbc.Reference;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ReferenceRawTypeParamDao {
 
-    @SuppressWarnings("rawtypes")
-    @Procedure
-    void select(@In Reference<Height> height);
+  @SuppressWarnings("rawtypes")
+  @Procedure
+  void select(@In Reference<Height> height);
 }

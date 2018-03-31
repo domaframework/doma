@@ -1,13 +1,9 @@
 package org.seasar.doma.internal.apt.meta.id;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface IdGeneratorMeta {
 
-    String getIdGeneratorClassName();
+  String getIdGeneratorClassName();
 
-    <P> void accept(IdGeneratorMetaVisitor<P> visitor, P p);
-
+  <P> void accept(IdGeneratorMetaVisitor<P> visitor, P p);
 }

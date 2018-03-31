@@ -5,13 +5,13 @@ import org.seasar.doma.Holder;
 @Holder(valueType = int.class)
 public abstract class AbstractHolder {
 
-    private final int value;
+  private final int value;
 
-    protected AbstractHolder(int value) {
-        this.value = value;
-    }
+  protected AbstractHolder(int value) {
+    this.value = value;
+  }
 
-    public int getValue() {
-        return value;
-    }
+  public int getValue() {
+    return value;
+  }
 }

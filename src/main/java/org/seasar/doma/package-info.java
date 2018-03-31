@@ -1,4 +1,2 @@
-/**
- * Provides annotations and exceptions.
- */
+/** Provides annotations and exceptions. */
 package org.seasar.doma;

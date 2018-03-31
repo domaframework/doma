@@ -4,12 +4,11 @@ import org.seasar.doma.jdbc.JdbcMappable;
 
 public interface Scalar<BASIC, CONTAINER> extends JdbcMappable<BASIC> {
 
-    CONTAINER cast(Object value);
+  CONTAINER cast(Object value);
 
-    CONTAINER get();
+  CONTAINER get();
 
-    CONTAINER getDefault();
+  CONTAINER getDefault();
 
-    void set(CONTAINER container);
-
+  void set(CONTAINER container);
 }

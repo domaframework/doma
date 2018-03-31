@@ -7,36 +7,33 @@ import org.seasar.doma.Version;
 @Entity
 public class PrimitivePropertyEntity {
 
-    @Id
-    int id;
+  @Id int id;
 
-    boolean bool;
+  boolean bool;
 
-    @Version
-    long version;
+  @Version long version;
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public boolean isBool() {
-        return bool;
-    }
+  public boolean isBool() {
+    return bool;
+  }
 
-    public void setBool(boolean bool) {
-        this.bool = bool;
-    }
+  public void setBool(boolean bool) {
+    this.bool = bool;
+  }
 
-    public long getVersion() {
-        return version;
-    }
+  public long getVersion() {
+    return version;
+  }
 
-    public void setVersion(long version) {
-        this.version = version;
-    }
-
+  public void setVersion(long version) {
+    this.version = version;
+  }
 }
