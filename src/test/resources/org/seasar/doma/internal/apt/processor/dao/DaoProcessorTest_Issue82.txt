@@ -59,10 +59,9 @@ public class Issue82DaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDa
             if (entity == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
-            org.seasar.doma.jdbc.query.SqlFileUpdateQuery __query = getQueryImplementors().createSqlFileUpdateQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateUpdateQuery __query = getQueryImplementors().createSqlTemplateUpdateQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/Issue82Dao/update.sql");
             __query.addParameter("entity", example.entity.Emp.class, entity);
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.Issue82DaoImpl");

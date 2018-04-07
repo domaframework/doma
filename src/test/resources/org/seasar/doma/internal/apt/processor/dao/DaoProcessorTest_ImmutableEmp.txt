@@ -271,10 +271,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.jdbc.query.SqlFileInsertQuery __query = getQueryImplementors().createSqlFileInsertQuery(__method6);
+            org.seasar.doma.jdbc.query.SqlTemplateInsertQuery __query = getQueryImplementors().createSqlTemplateInsertQuery(__method6);
             __query.setMethod(__method6);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ImmutableEmpDao/insert2.sql");
             __query.addParameter("emp", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class, emp);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("insert2");
@@ -304,10 +303,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.jdbc.query.SqlFileUpdateQuery __query = getQueryImplementors().createSqlFileUpdateQuery(__method7);
+            org.seasar.doma.jdbc.query.SqlTemplateUpdateQuery __query = getQueryImplementors().createSqlTemplateUpdateQuery(__method7);
             __query.setMethod(__method7);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ImmutableEmpDao/update2.sql");
             __query.addParameter("emp", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class, emp);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("update2");
@@ -340,10 +338,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.jdbc.query.SqlFileDeleteQuery __query = getQueryImplementors().createSqlFileDeleteQuery(__method8);
+            org.seasar.doma.jdbc.query.SqlTemplateDeleteQuery __query = getQueryImplementors().createSqlTemplateDeleteQuery(__method8);
             __query.setMethod(__method8);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ImmutableEmpDao/delete2.sql");
             __query.addParameter("emp", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class, emp);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("delete2");
@@ -372,11 +369,10 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = getQueryImplementors().createSqlFileBatchInsertQuery(__method9, org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+            org.seasar.doma.jdbc.query.SqlTemplateBatchInsertQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = getQueryImplementors().createSqlTemplateBatchInsertQuery(__method9, org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
             __query.setMethod(__method9);
             __query.setConfig(__config);
             __query.setElements(emp);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ImmutableEmpDao/batchInsert2.sql");
             __query.setParameterName("emp");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("batchInsert2");
@@ -406,11 +402,10 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = getQueryImplementors().createSqlFileBatchUpdateQuery(__method10, org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+            org.seasar.doma.jdbc.query.SqlTemplateBatchUpdateQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = getQueryImplementors().createSqlTemplateBatchUpdateQuery(__method10, org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
             __query.setMethod(__method10);
             __query.setConfig(__config);
             __query.setElements(emp);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ImmutableEmpDao/batchUpdate2.sql");
             __query.setParameterName("emp");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("batchUpdate2");
@@ -442,11 +437,10 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = getQueryImplementors().createSqlFileBatchDeleteQuery(__method11, org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+            org.seasar.doma.jdbc.query.SqlTemplateBatchDeleteQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = getQueryImplementors().createSqlTemplateBatchDeleteQuery(__method11, org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
             __query.setMethod(__method11);
             __query.setConfig(__config);
             __query.setElements(emp);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ImmutableEmpDao/batchDelete2.sql");
             __query.setParameterName("emp");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("batchDelete2");

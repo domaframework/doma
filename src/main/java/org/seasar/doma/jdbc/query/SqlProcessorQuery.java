@@ -8,23 +8,17 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlTemplate;
 
 public class SqlProcessorQuery extends AbstractQuery {
 
   protected final Map<String, Value> parameters = new HashMap<>();
 
-  protected String sqlFilePath;
-
-  protected SqlFile sqlFile;
+  protected SqlTemplate sqlFile;
 
   protected PreparedSql sql;
-
-  public void setSqlFilePath(String sqlFilePath) {
-    this.sqlFilePath = sqlFilePath;
-  }
 
   public void addParameter(String name, Class<?> type, Object value) {
     assertNotNull(name, type);
@@ -34,18 +28,17 @@ public class SqlProcessorQuery extends AbstractQuery {
   @Override
   public void prepare() {
     super.prepare();
-    assertNotNull(sqlFilePath);
     prepareSql();
   }
 
   protected void prepareSql() {
-    sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
+    sqlFile = config.getSqlTemplateRepository().getSqlTemplate(method, config.getDialect());
     var evaluator =
         new ExpressionEvaluator(
             parameters, config.getDialect().getExpressionFunctions(), config.getClassHelper());
     var sqlBuilder =
         new NodePreparedSqlBuilder(
-            config, SqlKind.SQL_PROCESSOR, sqlFilePath, evaluator, SqlLogType.FORMATTED);
+            config, SqlKind.SQL_PROCESSOR, sqlFile.getPath(), evaluator, SqlLogType.FORMATTED);
     sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
   }
 

@@ -42,10 +42,6 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
     this.modifyAnnot = modifyAnnot;
   }
 
-  public boolean getSqlFile() {
-    return modifyAnnot.getSqlFileValue();
-  }
-
   public int getQueryTimeout() {
     return modifyAnnot.getQueryTimeoutValue();
   }

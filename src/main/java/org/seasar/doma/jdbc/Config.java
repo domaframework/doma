@@ -45,12 +45,12 @@ public interface Config {
   }
 
   /**
-   * Returns the SQL file repository.
+   * Returns the SQL template repository.
    *
-   * @return the SQL file repository
+   * @return the SQL template repository
    */
-  default SqlFileRepository getSqlFileRepository() {
-    return ConfigSupport.defaultSqlFileRepository;
+  default SqlTemplateRepository getSqlTemplateRepository() {
+    return ConfigSupport.defaultSqlTemplateRepository;
   }
 
   /**

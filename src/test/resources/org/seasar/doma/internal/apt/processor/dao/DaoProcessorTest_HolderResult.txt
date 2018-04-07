@@ -64,10 +64,9 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public example.holder.PhoneNumber selectSingleResult() {
         entering("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/HolderResultDao/selectSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl");
             __query.setCallerMethodName("selectSingleResult");
             __query.setResultEnsured(false);
@@ -93,10 +92,9 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public java.util.Optional<example.holder.PhoneNumber> selectOptionalSingleResult() {
         entering("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectOptionalSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/HolderResultDao/selectOptionalSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl");
             __query.setCallerMethodName("selectOptionalSingleResult");
             __query.setResultEnsured(false);
@@ -122,10 +120,9 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public java.util.List<example.holder.PhoneNumber> selectResultList() {
         entering("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectResultList");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method2);
             __query.setMethod(__method2);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/HolderResultDao/selectResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl");
             __query.setCallerMethodName("selectResultList");
             __query.setResultEnsured(false);
@@ -151,10 +148,9 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public java.util.List<java.util.Optional<example.holder.PhoneNumber>> selectOptionalResultList() {
         entering("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl", "selectOptionalResultList");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/HolderResultDao/selectOptionalResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl");
             __query.setCallerMethodName("selectOptionalResultList");
             __query.setResultEnsured(false);
@@ -183,10 +179,9 @@ public class HolderResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method4);
             __query.setMethod(__method4);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/HolderResultDao/stream.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.HolderResultDaoImpl");
             __query.setCallerMethodName("stream");
             __query.setResultEnsured(false);

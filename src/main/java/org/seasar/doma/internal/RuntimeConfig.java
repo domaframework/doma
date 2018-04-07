@@ -14,8 +14,8 @@ import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
-import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlTemplateRepository;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.tx.TransactionManager;
@@ -53,8 +53,8 @@ public class RuntimeConfig implements Config {
   }
 
   @Override
-  public SqlFileRepository getSqlFileRepository() {
-    return config.getSqlFileRepository();
+  public SqlTemplateRepository getSqlTemplateRepository() {
+    return config.getSqlTemplateRepository();
   }
 
   @Override

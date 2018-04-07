@@ -37,8 +37,8 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * <ul>
  *   <li>{@link DomaNullPointerException} if any of the method parameters are {@code null}
  *   <li>{@link UniqueConstraintException} if an unique constraint is violated
- *   <li>{@link SqlFileNotFoundException} if {@code sqlFile} is {@code true} and the SQL file is not
- *       found
+ *   <li>{@link SqlFileNotFoundException} if {@link Sql#useFile()} is {@code true} and the SQL file
+ *       is not found
  *   <li>{@link JdbcException} if a JDBC related error occurs
  * </ul>
  */
@@ -46,9 +46,6 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 @Retention(RetentionPolicy.RUNTIME)
 @DaoMethod
 public @interface Insert {
-
-  /** Whether the annotated method is mapped to an SQL file. */
-  boolean sqlFile() default false;
 
   /**
    * The query timeout in seconds.
@@ -62,21 +59,21 @@ public @interface Insert {
   /**
    * Whether SQL NULL columns are excluded from SQL INSERT statements.
    *
-   * <p>Only if {@link #sqlFile()} is {@code false}, this element value is used.
+   * <p>When this annotation is used in combination with {@link Sql}, this element value is ignored.
    */
   boolean excludeNull() default false;
 
   /**
    * The properties whose mapped columns are included in SQL INSERT statements.
    *
-   * <p>Only if {@link #sqlFile()} is {@code false}, this element value is used.
+   * <p>When this annotation is used in combination with {@link Sql}, this element value is ignored.
    */
   String[] include() default {};
 
   /**
    * The properties whose mapped columns are excluded from SQL INSERT statements.
    *
-   * <p>Only if {@link #sqlFile()} is {@code false}, this element value is used.
+   * <p>When this annotation is used in combination with {@link Sql}, this element value is ignored.
    */
   String[] exclude() default {};
 

@@ -274,7 +274,7 @@ public enum Message implements MessageResource {
       "An unexpected error has occurred. Check the logs for more information. For example, if you use Eclipse, see the error log view."),
   DOMA4017("The Dao interface must be a top level interface."),
   DOMA4019("The file[{0}] is not found from the classpath. The absolute path is \"{1}\"."),
-  DOMA4020("The SQL file[{0}] is empty."),
+  DOMA4020("The SQL template is empty. PATH=[{0}]."),
   DOMA4021("The path[{0}] is a directory, but it must be a file. The absolute path is \"{1}\"."),
   DOMA4024(
       "The annotation @Version is duplicated. The filed that annotated with @Version must be only one in the class hierarchy."),
@@ -310,8 +310,8 @@ public enum Message implements MessageResource {
       "The parameters of the method that is annotated with @Function or @Procedure must be annotated with either of @In, @InOut, @Out or @ResultSet."),
   DOMA4067(
       "The parameter that corresponds to the variable[{0}] in the SQL at column[{1}] is not found in the method."),
-  DOMA4068("Failed to read the SQL file{0}]. The cause is as follows: {1}"),
-  DOMA4069("Failed to parse the SQL file{0}]. The cause is as follows: {1}"),
+  DOMA4068("Failed to read the SQL file[{0}]. The cause is as follows: {1}"),
+  DOMA4069("Failed to parse the SQL template. PATH=[{0}]. The cause is as follows: {1}"),
   DOMA4071(
       "The variable[{2}] in the expression[{0}] at column[{1}] does not have a public and non-void method[{4}]. The variable type is [{3}]."),
   DOMA4072("The function[{2}] in the expression[{0}] at column [{1}] is not found."),
@@ -333,7 +333,7 @@ public enum Message implements MessageResource {
   DOMA4090("The annotation processor[{0}] starts processing for the class[{1}]."),
   DOMA4091("The annotation processor[{0}] ends processing for the class[{1}]."),
   DOMA4092(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. The cause is as follows: {4} SQL[{1}]."),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. The cause is as follows: {4} SQL[{1}]."),
   DOMA4093("@Version can be annotated to the property that is compatible with the numerical type."),
   DOMA4095(
       "@GeneratedValue can be annotated to the property that is compatible with the numerical type."),
@@ -376,7 +376,7 @@ public enum Message implements MessageResource {
   DOMA4121(
       "The type[{4}] of the right operand[{3}] for the arithmetic operator[{2}] in the expression[{0}] at column[{1}] is not numeric."),
   DOMA4122(
-      "Failed to verify the SQL file[{0}]. The parameter[{1}] of the method is not referred in the SQL file."),
+      "Failed to verify the SQL template. [{0}]The parameter[{1}] of the method is not referred in the SQL template."),
   DOMA4124(
       "The mutable entity class must have a non-private and no-args constructor. To make it immutable, specify \"true\" to the immutable element of @Entity."),
   DOMA4125(
@@ -392,10 +392,10 @@ public enum Message implements MessageResource {
   DOMA4139(
       "The comparison operator[{2}] cannot be applied to the null literal in the expression[{0}] at column [{1}]."),
   DOMA4140(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. While the expression[{4}] in \"/*%if ...*/\" is evaluated as the type[{5}], the type must be either boolean or Boolean. SQL[{1}]"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. While the expression[{4}] in \"/*%if ...*/\" is evaluated as the type[{5}], the type must be either boolean or Boolean. SQL[{1}]"),
   DOMA4141(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. While the expression[{4}] in \"/*%elseif ...*/\" is evaluated as the type[{5}], the type must be either boolean or Boolean. SQL[{1}]"),
-  DOMA4143("Failed to get the SQL file[{0}]. The cause is as follows: {1}"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. While the expression[{4}] in \"/*%elseif ...*/\" is evaluated as the type[{5}], the type must be either boolean or Boolean. SQL[{1}]"),
+  DOMA4143("Failed to get the file[{0}]. The cause is as follows: {1}"),
   DOMA4144("Failed to recognize the children files of the directory[{0}]."),
   DOMA4145("The class[{2}] in the expression[{0}] at column [{1}] is not found."),
   DOMA4146(
@@ -405,11 +405,11 @@ public enum Message implements MessageResource {
   DOMA4148(
       "The class[{2}] in the expression[{0}] at column [{1}] does not have the static field[{3}]."),
   DOMA4149(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. While the expression[{4}] in \"/*%for ...*/\" is evaluated as the type[{5}], the type must be the subtype of java.lang.Iterable. SQL[{1}]"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. While the expression[{4}] in \"/*%for ...*/\" is evaluated as the type[{5}], the type must be the subtype of java.lang.Iterable. SQL[{1}]"),
   DOMA4150(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. While the expression[{4}] in \"/*%for ...*/\" is evaluated as the type[{5}], the type argument for the type is obscure. SQL[{1}]"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. While the expression[{4}] in \"/*%for ...*/\" is evaluated as the type[{5}], the type argument for the type is obscure. SQL[{1}]"),
   DOMA4153(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. The parameter type that corresponds to the bind or literal variable[{4}] must be the basic or holder type. But the actual type is [{5}]. You may forget to access its field or to invoke its method. SQL[{1}]"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. The parameter type that corresponds to the bind or literal variable[{4}] must be the basic or holder type. But the actual type is [{5}]. You may forget to access its field or to invoke its method. SQL[{1}]"),
   DOMA4154("The entity class[{0}] as the return type must not be abstract."),
   DOMA4155(
       "The entity class[{0}] that is the type argument of java.util.List as a return type must not be abstract."),
@@ -420,7 +420,7 @@ public enum Message implements MessageResource {
   DOMA4159("The type argument is required for the subtype of java.lang.Iterable."),
   DOMA4160("The subtype of java.lang.Iterable must not be wildcard."),
   DOMA4161(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. The parameter type that corresponds to the bind or literal variable[{4}] just before the open parenthesis must be the subtype of the java.lang.Iterable whose element  type is the basic or holder type. But the actual type is [{5}]. You may forget to access its field or to invoke its method. SQL[{1}]"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. The parameter type that corresponds to the bind or literal variable[{4}] just before the open parenthesis must be the subtype of the java.lang.Iterable whose element  type is the basic or holder type. But the actual type is [{5}]. You may forget to access its field or to invoke its method. SQL[{1}]"),
   DOMA4163("The user defined Config class must not abstract. The class[{0}] is abstract."),
   DOMA4164(
       "The user defined Config class must have a no-args and public constructor or have a public static final field that is named \"INSTANCE\".　The type of the field must be the subtype of org.seasar.doma.Config. The class[{0}] does not meet these requirements."),
@@ -443,14 +443,14 @@ public enum Message implements MessageResource {
   DOMA4177(
       "The factory method[{0}] is not found. The method must return the type[{1}], accept the parameter type[{2}] and be non-private and static."),
   DOMA4181(
-      "The SQL file[{0}] contains embedded variable comments. Because the SQL in a batch is immutable, the embedded variable comments cannot change the SQL dynamically. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4181 }') to the method."),
+      "The SQL template contains embedded variable comments. PATH=[{0}]. Because the SQL in a batch is immutable, the embedded variable comments cannot change the SQL dynamically. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4181 }') to the method."),
   DOMA4182(
-      "The SQL file[{0}] contains condition comments. Because the SQL in a batch is immutable, the condition comments cannot change the SQL dynamically. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4182 }') to the method."),
+      "The SQL template contains condition comments. PATH=[{0}]. Because the SQL in a batch is immutable, the condition comments cannot change the SQL dynamically. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4182 }') to the method."),
   DOMA4183(
-      "The SQL file[{0}] contains iteration comments. Because the SQL in a batch is immutable, the iteration comments cannot change the SQL dynamically. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4183 }') to the method."),
+      "The SQL template contains iteration comments. PATH=[{0}]. Because the SQL in a batch is immutable, the iteration comments cannot change the SQL dynamically. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4183 }') to the method."),
   DOMA4184(
       "When you annotate @Holder to the enum type, you cannot specify \"new\" to the factoryMethod element of @Holder because \"new\" means the usage of constructor. Specify the name of the factory method that is static and non-private."),
-  DOMA4185(" ... /** The SQL is too long. The only first {0} character are displayed. */"),
+  DOMA4185(" ... /** The SQL is too long. The only first {0} characters are displayed. */"),
   DOMA4186(
       "The type argument[{0}] is not supported for java.util.List. Supported types are as follows: basic type, holder class, entity class and java.util.Map<String, Object>."),
   DOMA4188("Interfaces annotated with @Dao must be only one as the parent interface."),
@@ -556,7 +556,7 @@ public enum Message implements MessageResource {
   DOMA4255("The method[{1}] is not found in the class[{0}]."),
   DOMA4256("The constructor of the class that is annotated with @SingletonConfig must be private."),
   DOMA4257(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. While the comment \"/*%expand ...*/\" is used, it cannot expand columns. Check that the method is annotated with @Select and the result set is mapped to the entity class. SQL[{1}]"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. While the comment \"/*%expand ...*/\" is used, it cannot expand columns. Check that the method is annotated with @Select and the result set is mapped to the entity class. SQL[{1}]"),
   DOMA4258("The parameter type[{0}] must not be the raw type."),
   DOMA4259(
       "The first or third type argument of the parameter type[{0}] must not be a wildcard type."),
@@ -575,7 +575,7 @@ public enum Message implements MessageResource {
   DOMA4268(
       "When you annotate @Holder to the interface, you cannot specify \\\"new\\\" to the factoryMethod element of @Holder because \"new\" means the usage of constructor. Specify the name of the factory method that is static and non-private."),
   DOMA4270(
-      "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. While the comment \"/*%populate */\" is used, it cannot generate the SET clause. Check that the method is annotated with either @Update or @BatchUpdate and the first parameter is mapped to the entity class. SQL[{1}]"),
+      "Failed to verify the SQL template on line [{2}] at column [{3}]. PATH=[{0}]. While the comment \"/*%populate */\" is used, it cannot generate the SET clause. Check that the method is annotated with either @Update or @BatchUpdate and the first parameter is mapped to the entity class. SQL[{1}]"),
   DOMA4271("The type argument[{0}] is not supported for java.util.stream.Stream as a return type."),
   DOMA4272(
       "The entity class[{0}] is not supported for the type argument of java.util.stream.Stream as a return type."),
@@ -674,6 +674,9 @@ public enum Message implements MessageResource {
   DOMA4439("The parameter type[{0}] must not contain a wildcard as a type argument."),
   DOMA4440(
       "The method[{0}] in the parent interface is not default method. When the parent interface is not annotated with @Dao, the all methods in the interface must be default methods."),
+  DOMA4441("The value element must be empty when the useFile element is true."),
+  DOMA4442("@Sql must not be annotated to the default method."),
+  DOMA4443("@Sql can not be used in combination with the annotation[{0}]."),
 
   // other
   DOMA5001(

@@ -27,10 +27,6 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
 
   public static final String QUERY_TIMEOUT = "queryTimeout";
 
-  public static final String SQL_FILE = "sqlFile";
-
-  private final AnnotationValue sqlFile;
-
   private final AnnotationValue queryTimeout;
 
   private final AnnotationValue batchSize;
@@ -50,7 +46,6 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
     assertNotNull(annotationMirror, values);
 
     // non null values
-    this.sqlFile = assertNotNullValue(values, SQL_FILE);
     this.queryTimeout = assertNotNullValue(values, QUERY_TIMEOUT);
     this.batchSize = assertNotNullValue(values, BATCH_SIZE);
     this.sqlLog = assertNotNullValue(values, SQL_LOG);
@@ -60,10 +55,6 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
     this.suppressOptimisticLockException = values.get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
     this.include = values.get(INCLUDE);
     this.exclude = values.get(EXCLUDE);
-  }
-
-  public AnnotationValue getSqlFile() {
-    return sqlFile;
   }
 
   public AnnotationValue getQueryTimeout() {
@@ -132,13 +123,5 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
       throw new AptIllegalStateException(SQL_LOG);
     }
     return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
-  }
-
-  public boolean getSqlFileValue() {
-    var value = AnnotationValueUtil.toBoolean(sqlFile);
-    if (value == null) {
-      throw new AptIllegalStateException(SQL_FILE);
-    }
-    return value;
   }
 }

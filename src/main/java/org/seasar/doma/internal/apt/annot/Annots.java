@@ -36,6 +36,7 @@ import org.seasar.doma.Script;
 import org.seasar.doma.Select;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.SingletonConfig;
+import org.seasar.doma.Sql;
 import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.Table;
@@ -214,6 +215,11 @@ public class Annots {
   public SuppressAnnot newSuppressAnnot(Element element) {
     assertNotNull(element);
     return newInstance(element, Suppress.class, SuppressAnnot::new);
+  }
+
+  public SqlAnnot newSqlAnnot(ExecutableElement method) {
+    assertNotNull(method);
+    return newInstance(method, Sql.class, SqlAnnot::new);
   }
 
   public SqlProcessorAnnot newSqlProcessorAnnot(ExecutableElement method) {

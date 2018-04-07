@@ -41,8 +41,7 @@ public class ScriptCommand implements Command<Void> {
       try {
         for (var script = reader.readSql(); script != null; script = reader.readSql()) {
           var sql =
-              new ScriptSql(
-                  script, query.getScriptFilePath(), query.getSqlLogType(), query::comment);
+              new ScriptSql(script, query.getSqlFilePath(), query.getSqlLogType(), query::comment);
           var statement = JdbcUtil.createStatement(connection);
           try {
             log(sql);

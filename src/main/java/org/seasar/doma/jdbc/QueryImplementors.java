@@ -17,30 +17,30 @@ import org.seasar.doma.jdbc.query.NClobCreateQuery;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SQLXMLCreateQuery;
 import org.seasar.doma.jdbc.query.SqlDeleteQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery;
-import org.seasar.doma.jdbc.query.SqlFileDeleteQuery;
-import org.seasar.doma.jdbc.query.SqlFileInsertQuery;
-import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
-import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
-import org.seasar.doma.jdbc.query.SqlFileUpdateQuery;
 import org.seasar.doma.jdbc.query.SqlInsertQuery;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 import org.seasar.doma.jdbc.query.SqlSelectQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateBatchDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateBatchInsertQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateBatchUpdateQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateInsertQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateSelectQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateUpdateQuery;
 import org.seasar.doma.jdbc.query.SqlUpdateQuery;
+import org.seasar.doma.jdbc.query.StaticScriptQuery;
 
 /** A factory for the {@link Query} implementation classes. */
 public interface QueryImplementors {
 
   /**
-   * Creates an {@link SqlFileSelectQuery} object.
+   * Creates an {@link SqlTemplateSelectQuery} object.
    *
    * @param method the DAO method
    * @return the query
    */
-  default SqlFileSelectQuery createSqlFileSelectQuery(Method method) {
-    return new SqlFileSelectQuery();
+  default SqlTemplateSelectQuery createSqlTemplateSelectQuery(Method method) {
+    return new SqlTemplateSelectQuery();
   }
 
   /**
@@ -54,13 +54,13 @@ public interface QueryImplementors {
   }
 
   /**
-   * Creates an {@link SqlFileScriptQuery} object.
+   * Creates an {@link StaticScriptQuery} object.
    *
    * @param method the DAO method
    * @return the query
    */
-  default SqlFileScriptQuery createSqlFileScriptQuery(Method method) {
-    return new SqlFileScriptQuery();
+  default StaticScriptQuery createStaticScriptQuery(Method method) {
+    return new StaticScriptQuery();
   }
 
   /**
@@ -100,33 +100,33 @@ public interface QueryImplementors {
   }
 
   /**
-   * Creates an {@link SqlFileDeleteQuery} object.
+   * Creates an {@link SqlTemplateDeleteQuery} object.
    *
    * @param method the DAO method
    * @return the query
    */
-  default SqlFileDeleteQuery createSqlFileDeleteQuery(Method method) {
-    return new SqlFileDeleteQuery();
+  default SqlTemplateDeleteQuery createSqlTemplateDeleteQuery(Method method) {
+    return new SqlTemplateDeleteQuery();
   }
 
   /**
-   * Creates an {@link SqlFileInsertQuery} object.
+   * Creates an {@link SqlTemplateInsertQuery} object.
    *
    * @param method the DAO method
    * @return the query
    */
-  default SqlFileInsertQuery createSqlFileInsertQuery(Method method) {
-    return new SqlFileInsertQuery();
+  default SqlTemplateInsertQuery createSqlTemplateInsertQuery(Method method) {
+    return new SqlTemplateInsertQuery();
   }
 
   /**
-   * Creates an {@link SqlFileUpdateQuery} object.
+   * Creates an {@link SqlTemplateUpdateQuery} object.
    *
    * @param method the DAO method
    * @return the query
    */
-  default SqlFileUpdateQuery createSqlFileUpdateQuery(Method method) {
-    return new SqlFileUpdateQuery();
+  default SqlTemplateUpdateQuery createSqlTemplateUpdateQuery(Method method) {
+    return new SqlTemplateUpdateQuery();
   }
 
   /**
@@ -196,39 +196,39 @@ public interface QueryImplementors {
   }
 
   /**
-   * Creates an {@link SqlFileBatchDeleteQuery} object.
+   * Creates an {@link SqlTemplateBatchDeleteQuery} object.
    *
    * @param method the DAO method
    * @param clazz the element class of the batch list
    * @return the query
    */
-  default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(
+  default <ELEMENT> SqlTemplateBatchDeleteQuery<ELEMENT> createSqlTemplateBatchDeleteQuery(
       Method method, Class<ELEMENT> clazz) {
-    return new SqlFileBatchDeleteQuery<>(clazz);
+    return new SqlTemplateBatchDeleteQuery<>(clazz);
   }
 
   /**
-   * Creates an {@link SqlFileBatchInsertQuery} object.
+   * Creates an {@link SqlTemplateBatchInsertQuery} object.
    *
    * @param method the DAO method
    * @param clazz the element class of the batch list
    * @return the query
    */
-  default <ELEMENT> SqlFileBatchInsertQuery<ELEMENT> createSqlFileBatchInsertQuery(
+  default <ELEMENT> SqlTemplateBatchInsertQuery<ELEMENT> createSqlTemplateBatchInsertQuery(
       Method method, Class<ELEMENT> clazz) {
-    return new SqlFileBatchInsertQuery<>(clazz);
+    return new SqlTemplateBatchInsertQuery<>(clazz);
   }
 
   /**
-   * Creates a {@link SqlFileBatchUpdateQuery} object.
+   * Creates a {@link SqlTemplateBatchUpdateQuery} object.
    *
    * @param method the DAO method
    * @param clazz the element class of the batch list
    * @return the query
    */
-  default <ELEMENT> SqlFileBatchUpdateQuery<ELEMENT> createSqlFileBatchUpdateQuery(
+  default <ELEMENT> SqlTemplateBatchUpdateQuery<ELEMENT> createSqlTemplateBatchUpdateQuery(
       Method method, Class<ELEMENT> clazz) {
-    return new SqlFileBatchUpdateQuery<>(clazz);
+    return new SqlTemplateBatchUpdateQuery<>(clazz);
   }
 
   /**

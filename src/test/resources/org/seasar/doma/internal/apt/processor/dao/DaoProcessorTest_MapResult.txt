@@ -62,10 +62,9 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
     public java.util.Map<java.lang.String, java.lang.Object> selectSingleResult() {
         entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/selectSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("selectSingleResult");
             __query.setResultEnsured(false);
@@ -91,10 +90,9 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
     public java.util.Optional<java.util.Map<java.lang.String, java.lang.Object>> selectOptionalSingleResult() {
         entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectOptionalSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/selectOptionalSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("selectOptionalSingleResult");
             __query.setResultEnsured(false);
@@ -120,10 +118,9 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
     public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> selectResultList() {
         entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectResultList");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method2);
             __query.setMethod(__method2);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/selectResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("selectResultList");
             __query.setResultEnsured(false);
@@ -152,10 +149,9 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/stream.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("stream");
             __query.setResultEnsured(false);

@@ -40,11 +40,11 @@ import org.seasar.doma.internal.apt.meta.query.NClobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.SQLXMLCreateQueryMetaFactory;
-import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMetaFactory;
-import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMetaFactory;
-import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMetaFactory;
-import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlTemplateBatchModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlTemplateModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlTemplateSelectQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.StaticScriptQueryMetaFactory;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -293,14 +293,14 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   private List<Supplier<QueryMetaFactory>> createQueryMetaFactories(
       ExecutableElement methodElement) {
     return List.of(
-        () -> new SqlFileSelectQueryMetaFactory(ctx, methodElement),
+        () -> new SqlTemplateSelectQueryMetaFactory(ctx, methodElement),
         () -> new AutoModifyQueryMetaFactory(ctx, methodElement),
         () -> new AutoBatchModifyQueryMetaFactory(ctx, methodElement),
         () -> new AutoFunctionQueryMetaFactory(ctx, methodElement),
         () -> new AutoProcedureQueryMetaFactory(ctx, methodElement),
-        () -> new SqlFileModifyQueryMetaFactory(ctx, methodElement),
-        () -> new SqlFileBatchModifyQueryMetaFactory(ctx, methodElement),
-        () -> new SqlFileScriptQueryMetaFactory(ctx, methodElement),
+        () -> new SqlTemplateModifyQueryMetaFactory(ctx, methodElement),
+        () -> new SqlTemplateBatchModifyQueryMetaFactory(ctx, methodElement),
+        () -> new StaticScriptQueryMetaFactory(ctx, methodElement),
         () -> new DefaultQueryMetaFactory(ctx, methodElement),
         () -> new ArrayCreateQueryMetaFactory(ctx, methodElement),
         () -> new BlobCreateQueryMetaFactory(ctx, methodElement),

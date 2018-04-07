@@ -31,19 +31,19 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
   private AutoModifyQueryMeta createAutoModifyQueryMeta() {
     var queryMeta = new AutoModifyQueryMeta(methodElement);
     ModifyAnnot modifyAnnot = ctx.getAnnots().newInsertAnnot(methodElement);
-    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+    if (modifyAnnot != null && sqlAnnot == null) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
       return queryMeta;
     }
     modifyAnnot = ctx.getAnnots().newUpdateAnnot(methodElement);
-    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+    if (modifyAnnot != null && sqlAnnot == null) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
       return queryMeta;
     }
     modifyAnnot = ctx.getAnnots().newDeleteAnnot(methodElement);
-    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+    if (modifyAnnot != null && sqlAnnot == null) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
       return queryMeta;

@@ -14,7 +14,7 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.message.Message;
 
 public class SqlProcessorQueryMetaFactory
-    extends AbstractSqlFileQueryMetaFactory<SqlProcessorQueryMeta> {
+    extends AbstractSqlTemplateQueryMetaFactory<SqlProcessorQueryMeta> {
 
   public SqlProcessorQueryMetaFactory(Context ctx, ExecutableElement methodElement) {
     super(ctx, methodElement);
@@ -26,11 +26,12 @@ public class SqlProcessorQueryMetaFactory
     if (queryMeta == null) {
       return null;
     }
+    doAnnotation(queryMeta, queryMeta.getSqlProcessorAnnot());
     doTypeParameters(queryMeta);
     doParameters(queryMeta);
     doReturnType(queryMeta);
     doThrowTypes(queryMeta);
-    doSqlFiles(queryMeta, false, false);
+    doSqlTemplate(queryMeta);
     return queryMeta;
   }
 

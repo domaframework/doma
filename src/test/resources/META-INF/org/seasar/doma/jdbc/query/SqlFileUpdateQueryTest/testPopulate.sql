@@ -1,1 +1,0 @@
-update aaa set /*%populate */ id = id where id = /* emp.id */1

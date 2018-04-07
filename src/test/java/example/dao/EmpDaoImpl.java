@@ -14,7 +14,6 @@ import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -59,9 +58,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
   @Override
   public Emp selectById(Integer id, SelectOptions option) {
-    var query = getQueryImplementors().createSqlFileSelectQuery(method0);
+    var query = getQueryImplementors().createSqlTemplateSelectQuery(method0);
     query.setConfig(__config);
-    query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao", "selectById"));
     query.addParameter("id", Integer.class, id);
     query.setOptions(option);
     query.setCallerClassName("example.dao.EmpDao");
@@ -76,9 +74,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
   @Override
   public List<Emp> selectByNameAndSalary(String name, BigDecimal salary, SelectOptions option) {
-    var query = getQueryImplementors().createSqlFileSelectQuery(method1);
+    var query = getQueryImplementors().createSqlTemplateSelectQuery(method1);
     query.setConfig(__config);
-    query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao", "selectByNameAndSalary"));
     query.addParameter("name", String.class, name);
     query.addParameter("salary", BigDecimal.class, salary);
     query.setOptions(option);
@@ -94,9 +91,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
   @Override
   public List<Emp> selectByExample(Emp emp) {
-    var query = getQueryImplementors().createSqlFileSelectQuery(method2);
+    var query = getQueryImplementors().createSqlTemplateSelectQuery(method2);
     query.setConfig(__config);
-    query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao", "selectByNameAndSalary"));
     query.addParameter("emp", Emp.class, emp);
     query.setCallerClassName("example.dao.EmpDao");
     query.setCallerMethodName("selectByNameAndSalary");
@@ -146,9 +142,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
   @Override
   public Integer stream(Function<Stream<Emp>, Integer> mapper) {
-    var query = getQueryImplementors().createSqlFileSelectQuery(method6);
+    var query = getQueryImplementors().createSqlTemplateSelectQuery(method6);
     query.setConfig(__config);
-    query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao", "iterate"));
     query.setCallerClassName("example.dao.EmpDao");
     query.setCallerMethodName("iterate");
     query.prepare();
@@ -161,9 +156,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
   @Override
   public void execute() {
-    var query = getQueryImplementors().createSqlFileScriptQuery(method7);
+    var query = getQueryImplementors().createStaticScriptQuery(method7);
     query.setConfig(__config);
-    query.setScriptFilePath(SqlFileUtil.buildPath("example.dao.EmpDao", "execute"));
     query.setCallerClassName("example.dao.EmpDao");
     query.setCallerMethodName("execute");
     query.prepare();

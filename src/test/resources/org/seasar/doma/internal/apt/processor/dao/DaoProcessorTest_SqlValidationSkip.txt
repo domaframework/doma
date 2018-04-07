@@ -56,10 +56,9 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
     public java.lang.String selectById(java.lang.String name) {
         entering("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl", "selectById", name);
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlValidationSkipDao/selectById.sql");
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl");
             __query.setCallerMethodName("selectById");

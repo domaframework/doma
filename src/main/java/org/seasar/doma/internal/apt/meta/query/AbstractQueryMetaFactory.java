@@ -15,6 +15,8 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.AbstractAnnot;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.message.Message;
 
@@ -27,11 +29,26 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
   protected final QueryReturnMetaFactory queryReturnMetaFactory;
 
+  protected final SqlAnnot sqlAnnot;
+
   protected AbstractQueryMetaFactory(Context ctx, ExecutableElement methodElement) {
     assertNotNull(ctx, methodElement);
     this.ctx = ctx;
     this.methodElement = methodElement;
     this.queryReturnMetaFactory = new QueryReturnMetaFactory(ctx, methodElement);
+    this.sqlAnnot = ctx.getAnnots().newSqlAnnot(methodElement);
+  }
+
+  protected void doAnnotation(M queryMeta, AbstractAnnot targetAnnot) {
+    var sqlAnnot = ctx.getAnnots().newSqlAnnot(methodElement);
+    if (sqlAnnot == null) {
+      return;
+    }
+    throw new AptException(
+        Message.DOMA4443,
+        methodElement,
+        sqlAnnot.getAnnotationMirror(),
+        new Object[] {targetAnnot.getAnnotationMirror()});
   }
 
   protected void doTypeParameters(M queryMeta) {

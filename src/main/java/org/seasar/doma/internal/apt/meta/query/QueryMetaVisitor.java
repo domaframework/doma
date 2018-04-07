@@ -2,13 +2,13 @@ package org.seasar.doma.internal.apt.meta.query;
 
 public interface QueryMetaVisitor<P> {
 
-  void visitSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, P p);
+  void visitSqlTemplateSelectQueryMeta(SqlTemplateSelectQueryMeta m, P p);
 
-  void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, P p);
+  void visitSqlTemplateModifyQueryMeta(SqlTemplateModifyQueryMeta m, P p);
 
-  void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, P p);
+  void visitSqlTemplateBatchModifyQueryMeta(SqlTemplateBatchModifyQueryMeta m, P p);
 
-  void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, P p);
+  void visitStaticScriptQueryMeta(StaticScriptQueryMeta m, P p);
 
   void visitAutoModifyQueryMeta(AutoModifyQueryMeta m, P p);
 

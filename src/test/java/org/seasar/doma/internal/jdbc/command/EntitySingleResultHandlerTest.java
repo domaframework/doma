@@ -7,10 +7,9 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateSelectQuery;
 
 public class EntitySingleResultHandlerTest extends TestCase {
 
@@ -23,9 +22,8 @@ public class EntitySingleResultHandlerTest extends TestCase {
     var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData(1, "aaa"));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(getClass().getMethod(getName()));
@@ -46,9 +44,8 @@ public class EntitySingleResultHandlerTest extends TestCase {
     resultSet.rows.add(new RowData(1, "aaa"));
     resultSet.rows.add(new RowData(2, "bbb"));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(getClass().getMethod(getName()));

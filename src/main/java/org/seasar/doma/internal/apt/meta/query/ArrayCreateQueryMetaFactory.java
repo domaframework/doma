@@ -22,6 +22,7 @@ public class ArrayCreateQueryMetaFactory
     var queryMeta = new ArrayCreateQueryMeta(methodElement);
     queryMeta.setArrayFactoryAnnot(arrayFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.ARRAY_FACTORY);
+    doAnnotation(queryMeta, arrayFactoryAnnot);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);

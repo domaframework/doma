@@ -16,7 +16,8 @@ public interface PreUpdateContext<E> {
   /**
    * Whether the entity is changed.
    *
-   * <p>This method always returns {@code true}, when {@link Update#sqlFile()} is {@code true}.
+   * <p>This method always returns {@code true}, when {@link Update} is used in combination with
+   * {@link org.seasar.doma.Sql}.
    *
    * @return {@code true} if the entity is changed
    */
@@ -25,7 +26,8 @@ public interface PreUpdateContext<E> {
   /**
    * Whether the entity property is changed.
    *
-   * <p>This method always returns {@code true}, when {@link Update#sqlFile()} is {@code true}.
+   * <p>This method always returns {@code true}, when {@link Update} is used in combination with
+   * {@link org.seasar.doma.Sql}.
    *
    * @param propertyName the name of property
    * @return {@code true} if the property is changed

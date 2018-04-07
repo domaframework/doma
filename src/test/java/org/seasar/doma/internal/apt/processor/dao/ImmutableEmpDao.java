@@ -7,6 +7,7 @@ import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
+import org.seasar.doma.Sql;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 import org.seasar.doma.jdbc.BatchResult;
@@ -33,21 +34,27 @@ public interface ImmutableEmpDao {
   @BatchDelete
   BatchResult<ImmutableEmp> batchDelete(List<ImmutableEmp> emp);
 
-  @Insert(sqlFile = true)
+  @Sql(useFile = true)
+  @Insert
   Result<ImmutableEmp> insert2(ImmutableEmp emp);
 
-  @Update(sqlFile = true)
+  @Sql(useFile = true)
+  @Update
   Result<ImmutableEmp> update2(ImmutableEmp emp);
 
-  @Delete(sqlFile = true)
+  @Sql(useFile = true)
+  @Delete
   Result<ImmutableEmp> delete2(ImmutableEmp emp);
 
-  @BatchInsert(sqlFile = true)
+  @Sql(useFile = true)
+  @BatchInsert
   BatchResult<ImmutableEmp> batchInsert2(List<ImmutableEmp> emp);
 
-  @BatchUpdate(sqlFile = true)
+  @Sql(useFile = true)
+  @BatchUpdate
   BatchResult<ImmutableEmp> batchUpdate2(List<ImmutableEmp> emp);
 
-  @BatchDelete(sqlFile = true)
+  @Sql(useFile = true)
+  @BatchDelete
   BatchResult<ImmutableEmp> batchDelete2(List<ImmutableEmp> emp);
 }

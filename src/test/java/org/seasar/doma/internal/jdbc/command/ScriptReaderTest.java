@@ -6,18 +6,18 @@ import java.io.StringReader;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
-import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
+import org.seasar.doma.jdbc.query.StaticScriptQuery;
 
 public class ScriptReaderTest extends TestCase {
 
-  private SqlFileScriptQuery query;
+  private StaticScriptQuery query;
 
   @Override
   public void setUp() {
     var config = new MockConfig();
     config.dialect = new Mssql2008Dialect();
     query =
-        new SqlFileScriptQuery() {
+        new StaticScriptQuery() {
 
           @Override
           public void prepare() {}

@@ -61,10 +61,9 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EnsureResultDao/selectById.sql");
             __query.setOptions(options);
             __query.setEntityDesc(example.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
@@ -96,10 +95,9 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EnsureResultDao/selectByNameAndSalary.sql");
             __query.setOptions(options);
             __query.setEntityDesc(example.entity._Emp.getSingletonInternal());
             __query.addParameter("name", java.lang.String.class, name);

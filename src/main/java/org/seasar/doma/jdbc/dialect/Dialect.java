@@ -240,7 +240,7 @@ public interface Dialect {
   ExpressionFunctions getExpressionFunctions();
 
   /**
-   * Creates the context object to handle an SQL block in a script.
+   * Creates the context object to process an SQL block in a script.
    *
    * @return the context object
    */

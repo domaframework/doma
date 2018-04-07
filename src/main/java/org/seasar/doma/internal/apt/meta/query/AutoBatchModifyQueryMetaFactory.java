@@ -33,19 +33,19 @@ public class AutoBatchModifyQueryMetaFactory
   private AutoBatchModifyQueryMeta createAutoBatchModifyQueryMeta() {
     var queryMeta = new AutoBatchModifyQueryMeta(methodElement);
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnots().newBatchInsertAnnot(methodElement);
-    if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
+    if (batchModifyAnnot != null && sqlAnnot == null) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
       return queryMeta;
     }
     batchModifyAnnot = ctx.getAnnots().newBatchUpdateAnnot(methodElement);
-    if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
+    if (batchModifyAnnot != null && sqlAnnot == null) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
       return queryMeta;
     }
     batchModifyAnnot = ctx.getAnnots().newBatchDeleteAnnot(methodElement);
-    if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
+    if (batchModifyAnnot != null && sqlAnnot == null) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);
       return queryMeta;

@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.holder.HolderConverter;
 
 /**
- * Indicates to handle an arbitrary class as if it was a {@link Holder} annotated class.
+ * Indicates to process an arbitrary class as if it was a {@link Holder} annotated class.
  *
  * <p>The annotated class must implement {@link HolderConverter}.
  *

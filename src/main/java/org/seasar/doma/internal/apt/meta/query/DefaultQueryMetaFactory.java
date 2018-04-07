@@ -2,7 +2,10 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.AbstractAnnot;
+import org.seasar.doma.message.Message;
 
 public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQueryMeta> {
 
@@ -17,11 +20,20 @@ public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQue
     }
     var queryMeta = new DefaultQueryMeta(methodElement);
     queryMeta.setQueryKind(QueryKind.DEFAULT);
+    doAnnotation(queryMeta, null);
     doTypeParameters(queryMeta);
     doParameters(queryMeta);
     doReturnType(queryMeta);
     doThrowTypes(queryMeta);
     return queryMeta;
+  }
+
+  @Override
+  protected void doAnnotation(DefaultQueryMeta queryMeta, AbstractAnnot targetAnnot) {
+    if (sqlAnnot == null) {
+      return;
+    }
+    throw new AptException(Message.DOMA4442, methodElement, sqlAnnot.getAnnotationMirror());
   }
 
   @Override

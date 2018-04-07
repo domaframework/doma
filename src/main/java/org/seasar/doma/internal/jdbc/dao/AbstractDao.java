@@ -95,8 +95,8 @@ public abstract class AbstractDao implements ConfigProvider {
     if (config.getDialect() == null) {
       throw new ConfigException(config.getClass().getName(), "getDialect");
     }
-    if (config.getSqlFileRepository() == null) {
-      throw new ConfigException(config.getClass().getName(), "getSqlFileRepository");
+    if (config.getSqlTemplateRepository() == null) {
+      throw new ConfigException(config.getClass().getName(), "getSqlTemplateRepository");
     }
     if (config.getJdbcLogger() == null) {
       throw new ConfigException(config.getClass().getName(), "getJdbcLogger");

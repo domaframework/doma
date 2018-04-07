@@ -4,19 +4,18 @@ import java.sql.SQLException;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockStatement;
-import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
+import org.seasar.doma.jdbc.query.StaticScriptQuery;
 
 public class ScriptCommandTest extends TestCase {
 
   public void testExecute() throws Exception {
-    var query = new SqlFileScriptQuery();
+    var query = new StaticScriptQuery();
     query.setConfig(new MockConfig());
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));
+    query.setMethod(getClass().getMethod(getName()));
     query.setBlockDelimiter("");
     query.prepare();
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -35,11 +34,11 @@ public class ScriptCommandTest extends TestCase {
           }
         };
 
-    var query = new SqlFileScriptQuery();
+    var query = new StaticScriptQuery();
     query.setConfig(config);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));
+    query.setMethod(getClass().getMethod(getName()));
     query.setBlockDelimiter("");
     query.setHaltOnError(true);
     query.setSqlLogType(SqlLogType.FORMATTED);

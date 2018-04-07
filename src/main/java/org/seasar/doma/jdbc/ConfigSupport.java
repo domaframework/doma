@@ -3,8 +3,8 @@ package org.seasar.doma.jdbc;
 /** Default values for {@link Config} objects. */
 public final class ConfigSupport {
 
-  public static final SqlFileRepository defaultSqlFileRepository =
-      new GreedyCacheSqlFileRepository();
+  public static final SqlTemplateRepository defaultSqlTemplateRepository =
+      new GreedyCacheSqlTemplateRepository();
 
   public static final JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
 

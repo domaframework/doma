@@ -86,8 +86,8 @@ SQLファイルのリポジトリ
 ``SqlFileRepository`` は SQL ファイルのリポジトリを扱うインタフェースです。
 実装クラスには次のものがあります。
 
-* org.seasar.doma.jdbc.GreedyCacheSqlFileRepository
-* org.seasar.doma.jdbc.NoCacheSqlFileRepository
+* org.seasar.doma.jdbc.GreedyCacheSqlTemplateRepository
+* org.seasar.doma.jdbc.NoCacheSqlTemplateRepository
 
 ``GreedyCacheSqlFileRepository`` は、読み込んだSQLファイルの内容をパースし、
 その結果をメモリが許す限り最大限にキャッシュします。

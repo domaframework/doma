@@ -33,6 +33,7 @@ public class AutoFunctionQueryMetaFactory
     var queryMeta = new AutoFunctionQueryMeta(methodElement);
     queryMeta.setFunctionAnnot(functionAnnot);
     queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
+    doAnnotation(queryMeta, functionAnnot);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);

@@ -58,10 +58,9 @@ public class ScriptDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
     public void createTables() {
         entering("org.seasar.doma.internal.apt.processor.dao.ScriptDaoImpl", "createTables");
         try {
-            org.seasar.doma.jdbc.query.SqlFileScriptQuery __query = getQueryImplementors().createSqlFileScriptQuery(__method0);
+            org.seasar.doma.jdbc.query.StaticScriptQuery __query = getQueryImplementors().createStaticScriptQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setScriptFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ScriptDao/createTables.script");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ScriptDaoImpl");
             __query.setCallerMethodName("createTables");
             __query.setBlockDelimiter("");
@@ -82,10 +81,9 @@ public class ScriptDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
     public void dropTables() {
         entering("org.seasar.doma.internal.apt.processor.dao.ScriptDaoImpl", "dropTables");
         try {
-            org.seasar.doma.jdbc.query.SqlFileScriptQuery __query = getQueryImplementors().createSqlFileScriptQuery(__method1);
+            org.seasar.doma.jdbc.query.StaticScriptQuery __query = getQueryImplementors().createStaticScriptQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setScriptFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ScriptDao/dropTables.script");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ScriptDaoImpl");
             __query.setCallerMethodName("dropTables");
             __query.setBlockDelimiter("GO");

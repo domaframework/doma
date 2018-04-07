@@ -9,7 +9,7 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 
 /**
- * A command to handle an SQL statement.
+ * A command to process an SQL statement.
  *
  * @param <RESULT> the result type
  * @see SqlProcessor

@@ -4,7 +4,7 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 
-public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
+public class SqlProcessorQueryMeta extends AbstractSqlTemplateQueryMeta {
 
   private SqlProcessorAnnot sqlProcessorAnnot;
 

@@ -64,10 +64,9 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     public java.lang.String selectSingleResult() {
         entering("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl", "selectSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/BasicResultDao/selectSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl");
             __query.setCallerMethodName("selectSingleResult");
             __query.setResultEnsured(false);
@@ -93,10 +92,9 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     public java.util.Optional<java.lang.String> selectOptionalSingleResult() {
         entering("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl", "selectOptionalSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/BasicResultDao/selectOptionalSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl");
             __query.setCallerMethodName("selectOptionalSingleResult");
             __query.setResultEnsured(false);
@@ -122,10 +120,9 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     public java.util.List<java.lang.String> selectResultList() {
         entering("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl", "selectResultList");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method2);
             __query.setMethod(__method2);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/BasicResultDao/selectResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl");
             __query.setCallerMethodName("selectResultList");
             __query.setResultEnsured(false);
@@ -151,10 +148,9 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
     public java.util.List<java.util.Optional<java.lang.String>> selectOptionalResultList() {
         entering("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl", "selectOptionalResultList");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/BasicResultDao/selectOptionalResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl");
             __query.setCallerMethodName("selectOptionalResultList");
             __query.setResultEnsured(false);
@@ -183,10 +179,9 @@ public class BasicResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method4);
             __query.setMethod(__method4);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/BasicResultDao/stream.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.BasicResultDaoImpl");
             __query.setCallerMethodName("stream");
             __query.setResultEnsured(false);

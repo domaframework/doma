@@ -27,22 +27,22 @@ import org.seasar.doma.jdbc.query.ClobCreateQuery;
 import org.seasar.doma.jdbc.query.NClobCreateQuery;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SQLXMLCreateQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchDeleteQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchInsertQuery;
-import org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery;
-import org.seasar.doma.jdbc.query.SqlFileDeleteQuery;
-import org.seasar.doma.jdbc.query.SqlFileInsertQuery;
-import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
-import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
-import org.seasar.doma.jdbc.query.SqlFileUpdateQuery;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateBatchDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateBatchInsertQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateBatchUpdateQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateDeleteQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateInsertQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateSelectQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateUpdateQuery;
+import org.seasar.doma.jdbc.query.StaticScriptQuery;
 
 public enum QueryKind {
   SQLFILE_SELECT {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileSelectQuery.class;
+      return SqlTemplateSelectQuery.class;
     }
 
     @SuppressWarnings("rawtypes")
@@ -55,7 +55,7 @@ public enum QueryKind {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileScriptQuery.class;
+      return StaticScriptQuery.class;
     }
 
     @SuppressWarnings("rawtypes")
@@ -68,7 +68,7 @@ public enum QueryKind {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileInsertQuery.class;
+      return SqlTemplateInsertQuery.class;
     }
 
     @SuppressWarnings("rawtypes")
@@ -81,7 +81,7 @@ public enum QueryKind {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileUpdateQuery.class;
+      return SqlTemplateUpdateQuery.class;
     }
 
     @SuppressWarnings("rawtypes")
@@ -94,7 +94,7 @@ public enum QueryKind {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileDeleteQuery.class;
+      return SqlTemplateDeleteQuery.class;
     }
 
     @SuppressWarnings("rawtypes")
@@ -107,7 +107,7 @@ public enum QueryKind {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileBatchInsertQuery.class;
+      return SqlTemplateBatchInsertQuery.class;
     }
 
     @SuppressWarnings("rawtypes")
@@ -120,7 +120,7 @@ public enum QueryKind {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileBatchUpdateQuery.class;
+      return SqlTemplateBatchUpdateQuery.class;
     }
 
     @SuppressWarnings("rawtypes")
@@ -133,7 +133,7 @@ public enum QueryKind {
 
     @Override
     public Class<? extends Query> getQueryClass() {
-      return SqlFileBatchDeleteQuery.class;
+      return SqlTemplateBatchDeleteQuery.class;
     }
 
     @SuppressWarnings("rawtypes")

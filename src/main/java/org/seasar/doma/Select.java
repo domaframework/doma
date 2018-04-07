@@ -53,8 +53,8 @@ import org.seasar.doma.jdbc.UnknownColumnException;
  *
  * <ul>
  *   <li>{@link DomaNullPointerException} if any of the method parameters are {@code null}
- *   <li>{@link SqlFileNotFoundException} if {@code sqlFile} is {@code true} and a SQL file is not
- *       found
+ *   <li>{@link SqlFileNotFoundException} if {@link Sql#useFile()} is {@code true} and the SQL file
+ *       is not found
  *   <li>{@link UnknownColumnException} if a property whose mapped column is included in a result
  *       set is not found
  *   <li>{@link NonUniqueResultException} if an unique row is expected but two or more rows are

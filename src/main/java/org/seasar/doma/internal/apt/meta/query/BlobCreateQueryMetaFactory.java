@@ -20,6 +20,7 @@ public class BlobCreateQueryMetaFactory
     var queryMeta = new BlobCreateQueryMeta(methodElement);
     queryMeta.setBlobFactoryAnnot(blobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.BLOB_FACTORY);
+    doAnnotation(queryMeta, blobFactoryAnnot);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);

@@ -53,11 +53,11 @@ import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.query.QueryParameterMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryReturnMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlTemplateBatchModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlTemplateModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlTemplateSelectQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.StaticScriptQueryMeta;
 import org.seasar.doma.internal.jdbc.command.EntityCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
@@ -83,8 +83,6 @@ import org.seasar.doma.internal.jdbc.sql.ScalarListParameter;
 import org.seasar.doma.internal.jdbc.sql.ScalarOutParameter;
 import org.seasar.doma.internal.jdbc.sql.ScalarResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.ScalarSingleResultParameter;
-import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 
 public class DaoImplGenerator extends AbstractGenerator {
@@ -350,7 +348,8 @@ public class DaoImplGenerator extends AbstractGenerator {
   private class MethodBodyGenerator implements QueryMetaVisitor<String> {
 
     @Override
-    public void visitSqlFileSelectQueryMeta(final SqlFileSelectQueryMeta m, String methodName) {
+    public void visitSqlTemplateSelectQueryMeta(
+        final SqlTemplateSelectQueryMeta m, String methodName) {
       printEnteringStatements(m);
       printPrerequisiteStatements(m);
 
@@ -361,10 +360,6 @@ public class DaoImplGenerator extends AbstractGenerator {
           /* 3 */ methodName);
       iprint("__query.setMethod(%1$s);%n", methodName);
       iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
       if (m.getSelectOptionsCtType() != null) {
         iprint("__query.setOptions(%1$s);%n", m.getSelectOptionsParameterName());
       }
@@ -433,7 +428,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     }
 
     @Override
-    public void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, String methodName) {
+    public void visitStaticScriptQueryMeta(StaticScriptQueryMeta m, String methodName) {
       printEnteringStatements(m);
       printPrerequisiteStatements(m);
 
@@ -444,10 +439,6 @@ public class DaoImplGenerator extends AbstractGenerator {
           /* 3 */ methodName);
       iprint("__query.setMethod(%1$s);%n", methodName);
       iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setScriptFilePath(\"%1$s\");%n",
-          ScriptFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
       iprint("__query.setCallerClassName(\"%1$s\");%n", codeSpec);
       iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
       iprint("__query.setBlockDelimiter(\"%1$s\");%n", m.getBlockDelimiter());
@@ -548,7 +539,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     }
 
     @Override
-    public void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, String methodName) {
+    public void visitSqlTemplateModifyQueryMeta(SqlTemplateModifyQueryMeta m, String methodName) {
       printEnteringStatements(m);
       printPrerequisiteStatements(m);
 
@@ -559,10 +550,6 @@ public class DaoImplGenerator extends AbstractGenerator {
           /* 3 */ methodName);
       iprint("__query.setMethod(%1$s);%n", methodName);
       iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
 
       printAddParameterStatements(m.getParameterMetas());
 
@@ -709,7 +696,8 @@ public class DaoImplGenerator extends AbstractGenerator {
     }
 
     @Override
-    public void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, String methodName) {
+    public void visitSqlTemplateBatchModifyQueryMeta(
+        SqlTemplateBatchModifyQueryMeta m, String methodName) {
       printEnteringStatements(m);
       printPrerequisiteStatements(m);
 
@@ -723,10 +711,6 @@ public class DaoImplGenerator extends AbstractGenerator {
       iprint("__query.setMethod(%1$s);%n", methodName);
       iprint("__query.setConfig(__config);%n");
       iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
       iprint("__query.setParameterName(\"%1$s\");%n", m.getElementsParameterName());
       iprint("__query.setCallerClassName(\"%1$s\");%n", codeSpec);
       iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -969,10 +953,6 @@ public class DaoImplGenerator extends AbstractGenerator {
           m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
       iprint("__query.setMethod(%1$s);%n", methodName);
       iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
 
       printAddParameterStatements(m.getParameterMetas());
 
@@ -1211,7 +1191,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private class StreamStrategyGenerator extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    private final SqlFileSelectQueryMeta m;
+    private final SqlTemplateSelectQueryMeta m;
 
     private final String methodName;
 
@@ -1223,7 +1203,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
     private final String functionParamName;
 
-    private StreamStrategyGenerator(SqlFileSelectQueryMeta m, String methodName) {
+    private StreamStrategyGenerator(SqlTemplateSelectQueryMeta m, String methodName) {
       this.m = m;
       this.methodName = methodName;
       this.returnMeta = m.getReturnMeta();
@@ -1252,7 +1232,7 @@ public class DaoImplGenerator extends AbstractGenerator {
   private class StreamHandlerGenerator
       extends SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
 
-    private final SqlFileSelectQueryMeta m;
+    private final SqlTemplateSelectQueryMeta m;
 
     private final String methodName;
 
@@ -1265,7 +1245,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     private final String functionParamName;
 
     private StreamHandlerGenerator(
-        SqlFileSelectQueryMeta m,
+        SqlTemplateSelectQueryMeta m,
         String methodName,
         String returnTypeName,
         String commandClassName,
@@ -1333,7 +1313,7 @@ public class DaoImplGenerator extends AbstractGenerator {
   private class CollectStrategyGenerator
       extends SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
 
-    private final SqlFileSelectQueryMeta m;
+    private final SqlTemplateSelectQueryMeta m;
 
     private final String methodName;
 
@@ -1345,7 +1325,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
     private final String collectorParamName;
 
-    private CollectStrategyGenerator(SqlFileSelectQueryMeta m, String methodName) {
+    private CollectStrategyGenerator(SqlTemplateSelectQueryMeta m, String methodName) {
       this.m = m;
       this.methodName = methodName;
       this.returnMeta = m.getReturnMeta();
@@ -1408,7 +1388,7 @@ public class DaoImplGenerator extends AbstractGenerator {
   private class ReturnStrategyGenerator
       extends SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
 
-    private final SqlFileSelectQueryMeta m;
+    private final SqlTemplateSelectQueryMeta m;
 
     private final String methodName;
 
@@ -1418,7 +1398,7 @@ public class DaoImplGenerator extends AbstractGenerator {
 
     private final String commandName;
 
-    private ReturnStrategyGenerator(SqlFileSelectQueryMeta m, String methodName) {
+    private ReturnStrategyGenerator(SqlTemplateSelectQueryMeta m, String methodName) {
       this.m = m;
       this.methodName = methodName;
       this.returnTypeName = m.getReturnMeta().getTypeName();

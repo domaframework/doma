@@ -16,9 +16,8 @@ import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateSelectQuery;
 
 public class SelectCommandTest extends TestCase {
 
@@ -34,9 +33,8 @@ public class SelectCommandTest extends TestCase {
     resultSet.rows.add(new RowData(1, "hoge", new BigDecimal(10000), 100));
     runtimeConfig.dataSource.connection = new MockConnection(new MockPreparedStatement(resultSet));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.addParameter("name", String.class, "hoge");
     query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
     query.setMethod(getClass().getMethod(getName()));
@@ -77,9 +75,8 @@ public class SelectCommandTest extends TestCase {
     resultSet.rows.add(new RowData(3, "bar", new BigDecimal(30000), 300));
     runtimeConfig.dataSource.connection = new MockConnection(new MockPreparedStatement(resultSet));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.addParameter("salary", BigDecimal.class, new BigDecimal(5000));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -126,9 +123,8 @@ public class SelectCommandTest extends TestCase {
     var resultSet = new MockResultSet(metaData);
     runtimeConfig.dataSource.connection = new MockConnection(new MockPreparedStatement(resultSet));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.addParameter("name", String.class, "hoge");
     query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
     query.setMethod(getClass().getMethod(getName()));
@@ -159,9 +155,8 @@ public class SelectCommandTest extends TestCase {
     resultSet.rows.add(new RowData(3, "bar", new BigDecimal(30000), 300));
     runtimeConfig.dataSource.connection = new MockConnection(new MockPreparedStatement(resultSet));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.addParameter("salary", BigDecimal.class, new BigDecimal(5000));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");

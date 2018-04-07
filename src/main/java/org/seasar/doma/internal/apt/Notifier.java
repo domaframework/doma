@@ -3,6 +3,8 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.Messager;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.message.MessageResource;
@@ -29,6 +31,18 @@ public final class Notifier {
   public void send(Kind kind, String message, Element element) {
     assertNotNull(kind, message, element);
     messager.printMessage(kind, message, element);
+  }
+
+  public void send(
+      Kind kind,
+      MessageResource messageResource,
+      Element element,
+      AnnotationMirror annotationMirror,
+      AnnotationValue annotationValue,
+      Object[] args) {
+    assertNotNull(kind, messageResource, element, args);
+    messager.printMessage(
+        kind, messageResource.getMessage(args), element, annotationMirror, annotationValue);
   }
 
   public void send(AptException e) {

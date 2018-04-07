@@ -29,7 +29,8 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * The method may throw following exceptions:
  *
  * <ul>
- *   <li>{@link ScriptFileNotFoundException} if a script file is not found
+ *   <li>{@link ScriptFileNotFoundException} if {@link Sql#useFile()} is {@code true} and the script
+ *       file is not found
  *   <li>{@link ScriptException} if an exception is thrown while executing a script
  *   <li>{@link JdbcException} if a JDBC related error occurs
  * </ul>

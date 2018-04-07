@@ -20,6 +20,7 @@ public class NClobCreateQueryMetaFactory
     var queryMeta = new NClobCreateQueryMeta(methodElement);
     queryMeta.setNClobFactoryAnnot(nClobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.NCLOB_FACTORY);
+    doAnnotation(queryMeta, nClobFactoryAnnot);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);

@@ -16,7 +16,8 @@ public interface PostUpdateContext<E> {
   /**
    * Whether the entity property is changed.
    *
-   * <p>This method always returns {@code true}, when {@link Update#sqlFile()} is {@code true}.
+   * <p>This method always returns {@code true}, when {@link Update} is used in combination with
+   * {@link org.seasar.doma.Sql}.
    *
    * @param propertyName the name of property
    * @return {@code true} if it is changed

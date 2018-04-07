@@ -1,8 +1,9 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
-import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptTestCase;
-import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
+import org.seasar.doma.internal.apt.expr.ExpressionValidator;
+import org.seasar.doma.internal.apt.sql.BatchSqlValidator;
+import org.seasar.doma.internal.apt.sql.SqlTemplate;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.message.Message;
 
@@ -24,12 +25,18 @@ public class BatchSqlValidatorTest extends AptTestCase {
               var methodElement =
                   ctx.getElements().getMethodElement(target, "testEmbeddedVariable", String.class);
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
               var parser = new SqlParser("select * from emp /*# orderBy */");
               var sqlNode = parser.parse();
-              sqlNode.accept(validator, null);
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      false);
+              validator.validate();
             }));
     compile();
     assertTrue(getCompiledResult());
@@ -46,12 +53,18 @@ public class BatchSqlValidatorTest extends AptTestCase {
                   ctx.getElements()
                       .getMethodElement(target, "testEmbeddedVariableSuppressed", String.class);
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
               var parser = new SqlParser("select * from emp /*# orderBy */");
               var sqlNode = parser.parse();
-              sqlNode.accept(validator, null);
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      false);
+              validator.validate();
             }));
     compile();
     assertTrue(getCompiledResult());
@@ -66,12 +79,18 @@ public class BatchSqlValidatorTest extends AptTestCase {
             ctx -> {
               var methodElement = ctx.getElements().getMethodElement(target, "testIf");
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
               var parser = new SqlParser("select * from emp where /*%if true*/ id = 1 /*%end */");
               var sqlNode = parser.parse();
-              sqlNode.accept(validator, null);
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      false);
+              validator.validate();
             }));
     compile();
     assertTrue(getCompiledResult());
@@ -86,12 +105,18 @@ public class BatchSqlValidatorTest extends AptTestCase {
             ctx -> {
               var methodElement = ctx.getElements().getMethodElement(target, "testIfSuppressed");
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
               var parser = new SqlParser("select * from emp where /*%if true*/ id = 1 /*%end */");
               var sqlNode = parser.parse();
-              sqlNode.accept(validator, null);
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      false);
+              validator.validate();
             }));
     compile();
     assertTrue(getCompiledResult());
@@ -108,14 +133,20 @@ public class BatchSqlValidatorTest extends AptTestCase {
                   ctx.getElements()
                       .getMethodElement(target, "testIfAndEmbeddedVariable", String.class);
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
               var parser =
                   new SqlParser(
                       "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
               var sqlNode = parser.parse();
-              sqlNode.accept(validator, null);
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      false);
+              validator.validate();
             }));
     compile();
     assertTrue(getCompiledResult());
@@ -133,14 +164,20 @@ public class BatchSqlValidatorTest extends AptTestCase {
                       .getMethodElement(
                           target, "testIfAndEmbeddedVariableSuppressed", String.class);
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
               var parser =
                   new SqlParser(
                       "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
               var sqlNode = parser.parse();
-              sqlNode.accept(validator, null);
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      false);
+              validator.validate();
             }));
     compile();
     assertTrue(getCompiledResult());
@@ -156,12 +193,18 @@ public class BatchSqlValidatorTest extends AptTestCase {
               var methodElement =
                   ctx.getElements().getMethodElement(target, "testPopulate", String.class);
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, true);
               var parser = new SqlParser("update emp set /*%populate*/ id = id");
               var sqlNode = parser.parse();
-              sqlNode.accept(validator, null);
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      true);
+              validator.validate();
             }));
     compile();
     assertTrue(getCompiledResult());
@@ -177,20 +220,21 @@ public class BatchSqlValidatorTest extends AptTestCase {
               var methodElement =
                   ctx.getElements().getMethodElement(target, "testPopulate", String.class);
               var parameterTypeMap = ctx.getElements().getParameterTypeMap(methodElement);
-              var validator =
-                  new BatchSqlValidator(
-                      ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
               var parser = new SqlParser("update emp set /*%populate*/ id = id");
               var sqlNode = parser.parse();
-              try {
-                sqlNode.accept(validator, null);
-                fail();
-              } catch (AptException expected) {
-                System.out.println(expected.getMessage());
-                assertEquals(Message.DOMA4270, expected.getMessageResource());
-              }
+              var sqlTemplate = new SqlTemplate(ctx, methodElement, "aaa/bbbDao/ccc.sql", sqlNode);
+              var validator =
+                  new BatchSqlValidator(
+                      ctx,
+                      methodElement,
+                      sqlTemplate,
+                      new ExpressionValidator(ctx, parameterTypeMap),
+                      false,
+                      false);
+              validator.validate();
             }));
     compile();
-    assertTrue(getCompiledResult());
+    assertFalse(getCompiledResult());
+    assertEquals(Message.DOMA4270, getMessageCode());
   }
 }

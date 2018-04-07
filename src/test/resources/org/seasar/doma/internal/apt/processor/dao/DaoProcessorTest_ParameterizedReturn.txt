@@ -56,10 +56,9 @@ public class ParameterizedReturnDaoImpl extends org.seasar.doma.internal.jdbc.da
     public org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String> select() {
         entering("org.seasar.doma.internal.apt.processor.dao.ParameterizedReturnDaoImpl", "select");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ParameterizedReturnDao/select.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ParameterizedReturnDaoImpl");
             __query.setCallerMethodName("select");
             __query.setResultEnsured(false);

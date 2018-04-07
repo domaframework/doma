@@ -60,10 +60,9 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
     public int selectById(int id) {
         entering("org.seasar.doma.internal.apt.processor.dao.PrimitiveTypeDaoImpl", "selectById", id);
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/PrimitiveTypeDao/selectById.sql");
             __query.addParameter("id", int.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.PrimitiveTypeDaoImpl");
             __query.setCallerMethodName("selectById");
@@ -90,10 +89,9 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
     public int update(int id) {
         entering("org.seasar.doma.internal.apt.processor.dao.PrimitiveTypeDaoImpl", "update", id);
         try {
-            org.seasar.doma.jdbc.query.SqlFileUpdateQuery __query = getQueryImplementors().createSqlFileUpdateQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateUpdateQuery __query = getQueryImplementors().createSqlTemplateUpdateQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/PrimitiveTypeDao/update.sql");
             __query.addParameter("id", int.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.PrimitiveTypeDaoImpl");
             __query.setCallerMethodName("update");

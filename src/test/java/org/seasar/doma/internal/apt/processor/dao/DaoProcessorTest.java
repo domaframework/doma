@@ -12,8 +12,8 @@ public class DaoProcessorTest extends AptTestCase {
     addOption("-Adoma.test=true");
   }
 
-  public void testSqlFileSelectEntity() throws Exception {
-    Class<?> target = SqlFileSelectEntityDao.class;
+  public void testSqlTemplateSelectEntity() throws Exception {
+    Class<?> target = SqlTemplateSelectEntityDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -22,8 +22,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testSqlFileSelectMap() throws Exception {
-    Class<?> target = SqlFileSelectMapDao.class;
+  public void testSqlTemplateSelectMap() throws Exception {
+    Class<?> target = SqlTemplateSelectMapDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -32,8 +32,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testSqlFileSelectHolder() throws Exception {
-    Class<?> target = SqlFileSelectHolderDao.class;
+  public void testSqlTemplateSelectHolder() throws Exception {
+    Class<?> target = SqlTemplateSelectHolderDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -42,8 +42,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testSqlFileSelectBasic() throws Exception {
-    Class<?> target = SqlFileSelectBasicDao.class;
+  public void testSqlTemplateSelectBasic() throws Exception {
+    Class<?> target = SqlTemplateSelectBasicDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -62,8 +62,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testSqlFileInsert() throws Exception {
-    Class<?> target = SqlFileInsertDao.class;
+  public void testSqlTemplateInsert() throws Exception {
+    Class<?> target = SqlTemplateInsertDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -72,8 +72,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testSqlFileInsertEntity() throws Exception {
-    Class<?> target = SqlFileInsertEntityDao.class;
+  public void testSqlTemplateInsertEntity() throws Exception {
+    Class<?> target = SqlTemplateInsertEntityDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -172,8 +172,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testSqlFileBatchUpdate() throws Exception {
-    Class<?> target = SqlFileBatchUpdateDao.class;
+  public void testSqlTemplateBatchUpdate() throws Exception {
+    Class<?> target = SqlTemplateBatchUpdateDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -182,8 +182,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testSqlFileBatchUpdateEntity() throws Exception {
-    Class<?> target = SqlFileBatchUpdateEntityDao.class;
+  public void testSqlTemplateBatchUpdateEntity() throws Exception {
+    Class<?> target = SqlTemplateBatchUpdateEntityDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -369,8 +369,8 @@ public class DaoProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
-  public void testEmptySqlFile() throws Exception {
-    Class<?> target = EmptySqlFileDao.class;
+  public void testEmptySqlTemplate() throws Exception {
+    Class<?> target = EmptySqlTemplateDao.class;
     var processor = new DaoProcessor();
     addProcessor(processor);
     addCompilationUnit(target);
@@ -1107,5 +1107,35 @@ public class DaoProcessorTest extends AptTestCase {
     addCompilationUnit(target);
     compile();
     assertTrue(getCompiledResult());
+  }
+
+  public void testIllegalSqlAnnotation() throws Exception {
+    Class<?> target = IllegalSqlAnnotationDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4441);
+  }
+
+  public void testSqlAnnotationOnDefaultMethod() throws Exception {
+    Class<?> target = SqlAnnotationOnDefaultMethodDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4442);
+  }
+
+  public void testIllegalSqlAnnotationCombination() throws Exception {
+    Class<?> target = IllegalSqlAnnotationCombinationDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4443);
   }
 }

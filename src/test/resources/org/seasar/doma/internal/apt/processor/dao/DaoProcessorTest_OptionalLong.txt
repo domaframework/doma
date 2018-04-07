@@ -73,10 +73,9 @@ public class OptionalLongDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (id == null) {
                 throw new org.seasar.doma.DomaNullPointerException("id");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/OptionalLongDao/selectById.sql");
             __query.setEntityDesc(example.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Long.class, id.isPresent() ? id.getAsLong() : null);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalLongDaoImpl");
@@ -107,10 +106,9 @@ public class OptionalLongDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (id == null) {
                 throw new org.seasar.doma.DomaNullPointerException("id");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/OptionalLongDao/selectAgeById.sql");
             __query.addParameter("id", java.lang.Long.class, id.isPresent() ? id.getAsLong() : null);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalLongDaoImpl");
             __query.setCallerMethodName("selectAgeById");
@@ -137,10 +135,9 @@ public class OptionalLongDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     public java.util.List<java.util.OptionalLong> selectAllAge() {
         entering("org.seasar.doma.internal.apt.processor.dao.OptionalLongDaoImpl", "selectAllAge");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method2);
             __query.setMethod(__method2);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/OptionalLongDao/selectAllAge.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalLongDaoImpl");
             __query.setCallerMethodName("selectAllAge");
             __query.setResultEnsured(false);
@@ -169,10 +166,9 @@ public class OptionalLongDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/OptionalLongDao/selectAllAge.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalLongDaoImpl");
             __query.setCallerMethodName("selectAllAge");
             __query.setResultEnsured(false);
@@ -201,10 +197,9 @@ public class OptionalLongDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method4);
             __query.setMethod(__method4);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/OptionalLongDao/selectAllAge.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.OptionalLongDaoImpl");
             __query.setCallerMethodName("selectAllAge");
             __query.setResultEnsured(false);

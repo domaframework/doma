@@ -25,9 +25,9 @@ public class JdbcExceptionTest extends TestCase {
   }
 
   public void testSqlFileNotFound() throws Exception {
-    var repository = new GreedyCacheSqlFileRepository();
+    var repository = new GreedyCacheSqlTemplateRepository();
     try {
-      repository.getSqlFile(method, "META-INF/aaa/bbb.sql", new StandardDialect());
+      repository.getSqlTemplate(method, new StandardDialect());
       fail();
     } catch (SqlFileNotFoundException e) {
       System.out.println(e.getMessage());

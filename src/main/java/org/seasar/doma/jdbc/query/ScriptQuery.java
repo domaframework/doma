@@ -1,14 +1,15 @@
 package org.seasar.doma.jdbc.query;
 
-import java.net.URL;
+import java.io.IOException;
+import java.io.Reader;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /** An object used for building an SQL script. */
 public interface ScriptQuery extends Query {
 
-  URL getScriptFileUrl();
+  Reader openReader() throws IOException;
 
-  String getScriptFilePath();
+  String getSqlFilePath();
 
   String getBlockDelimiter();
 

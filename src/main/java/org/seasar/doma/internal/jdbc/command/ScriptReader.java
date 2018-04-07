@@ -20,60 +20,36 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.query.ScriptQuery;
 import org.seasar.doma.message.Message;
 
-/**
- * SQLスクリプトファイルのリーダです。
- *
- * @author taedium
- */
 public class ScriptReader {
 
-  /** クエリ */
   protected final ScriptQuery query;
 
-  /** トークナイザ */
   protected final ScriptTokenizer tokenizer;
 
-  /** リーダ */
   protected BufferedReader reader;
 
-  /** 行番号のカウント */
   protected int lineCount;
 
-  /** 処理対象のSQLの先頭の行番号 */
   protected int lineNumber;
 
-  /** ファイルの終端に達した場合{@code true} */
   protected boolean endOfFile;
 
-  /** 行の終端に達した場合{@code true} */
   protected boolean endOfLine = true;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param query クエリ
-   */
   public ScriptReader(ScriptQuery query) {
     assertNotNull(query);
     this.query = query;
     this.tokenizer = new ScriptTokenizer(query.getBlockDelimiter());
   }
 
-  /**
-   * SQLステートメントもしくはSQLブロックを読み取ります。
-   *
-   * @return ファイルの終端に達していなければSQL、ファイルの終端に達していれば{@code null}
-   */
   public String readSql() {
     if (endOfFile) {
       return null;
@@ -103,76 +79,42 @@ public class ScriptReader {
         }
       }
     } catch (IOException e) {
-      throw new JdbcException(Message.DOMA2078, e, query.getScriptFilePath(), e);
+      throw new JdbcException(Message.DOMA2078, e, query.getSqlFilePath(), e);
     }
   }
 
-  /**
-   * 処理対象のSQLの先頭の行番号を返します。
-   *
-   * <p>行番号は1から始まります。
-   *
-   * @return 行番号
-   */
   public int getLineNumber() {
     return lineNumber;
   }
 
-  /** クローズします。 */
   public void close() {
     IOUtil.close(reader);
   }
 
-  /**
-   * SQLスクリプトファイルに対する{@link BufferedReader}を作成します。
-   *
-   * @return {@link BufferedReader}
-   * @throws IOException IOに関する例外が発生した場合
-   */
   protected BufferedReader createBufferedReader() throws IOException {
-    var inputStream = query.getScriptFileUrl().openStream();
-    return new BufferedReader(new InputStreamReader(inputStream, Constants.UTF_8));
+    return new BufferedReader(query.openReader());
   }
 
-  /**
-   * SQLのビルダです。
-   *
-   * @author taedium
-   */
   protected class SqlBuilder {
 
-    /** 次のトークンが必要な場合{@code true} */
     protected boolean tokenRequired;
 
-    /** 次の行が必要な場合{@code true} */
     protected boolean lineRequired;
 
-    /** SQLの組み立てが完了した場合{@code true} */
     protected boolean completed;
 
-    /** SQLの文字列を保持するバッファ */
     protected final StringBuilder buf = new StringBuilder(300);
 
-    /** SQLのキーワードを管理するリスト */
     protected List<String> wordList = new ArrayList<>();
 
-    /** SQLブロックのコンテキスト */
     protected final ScriptBlockContext sqlBlockContext;
 
-    /** 行が変更された場合{@code true} */
     protected boolean lineChanged;
 
-    /** インスタンスを構築します */
     protected SqlBuilder() {
       sqlBlockContext = query.getConfig().getDialect().createScriptBlockContext();
     }
 
-    /**
-     * SQL文を組み立てます。
-     *
-     * @param tokenType トークンのタイプ
-     * @param token トークン
-     */
     protected void build(ScriptTokenType tokenType, String token) {
       reset();
       if (buf.length() == 0) {
@@ -215,80 +157,50 @@ public class ScriptReader {
       }
     }
 
-    /** リセットします。 */
     protected void reset() {
       endOfLine = false;
       requireToken();
     }
 
-    /**
-     * 次のトークンが必要な場合{@code true}を返します。
-     *
-     * @return 次のトークンが必要な場合{@code true}
-     */
     protected boolean isTokenRequired() {
       return tokenRequired;
     }
 
-    /** 次のトークンを要求します。 */
     protected void requireToken() {
       tokenRequired = true;
       lineRequired = false;
       completed = false;
     }
 
-    /**
-     * 次の行が必要な場合{@code true}を返します。
-     *
-     * @return 次の行が必要な場合{@code true}
-     */
     protected boolean isLineRequired() {
       return lineRequired;
     }
 
-    /** 次の行を要求します。 */
     protected void requireLine() {
       lineRequired = true;
       tokenRequired = false;
       completed = false;
     }
 
-    /**
-     * SQLの組み立てが完了した場合{@code true}を返します。
-     *
-     * @return SQLの組み立てが完了した場合{@code true}
-     */
     protected boolean isCompleted() {
       return completed;
     }
 
-    /** SQLの組み立てを完了します。 */
     protected void complete() {
       completed = true;
       tokenRequired = false;
       lineRequired = false;
     }
 
-    /**
-     * 単語を追加します。
-     *
-     * @param word 単語
-     */
     protected void appendWord(String word) {
       sqlBlockContext.addKeyword(word);
     }
 
-    /**
-     * トークンを追加します。
-     *
-     * @param token トークン
-     */
     protected void appendToken(String token) {
       appendWhitespaceIfNecessary();
       buf.append(token);
     }
 
-    /** 必要ならば空白を追加します。 */
     protected void appendWhitespaceIfNecessary() {
       if (!lineChanged) {
         return;
@@ -302,34 +214,18 @@ public class ScriptReader {
       lineChanged = false;
     }
 
-    /** 行が変更されたことを通知します。 */
     protected void notifyLineChanged() {
       lineChanged = true;
     }
 
-    /**
-     * SQLブロックの内側を組み立てている場合{@code true}を返します。
-     *
-     * @return SQLブロックの内側を組み立てている場合{@code true}
-     */
     protected boolean isInBlock() {
       return sqlBlockContext.isInBlock();
     }
 
-    /**
-     * SQLが空の場合{@code true}を返します。
-     *
-     * @return SQLが空の場合{@code true}
-     */
     protected boolean isSqlEmpty() {
       return buf.toString().trim().length() == 0;
     }
 
-    /**
-     * SQLを返します。
-     *
-     * @return SQL
-     */
     protected String getSql() {
       if (!completed) {
         assertUnreachable();

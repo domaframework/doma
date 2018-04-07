@@ -4,12 +4,12 @@ import javax.sql.DataSource;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
+import org.seasar.doma.jdbc.GreedyCacheSqlTemplateRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
-import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.SqlTemplateRepository;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
@@ -20,7 +20,7 @@ public class MockConfig implements Config {
 
   public Dialect dialect = new StandardDialect();
 
-  protected SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
+  protected SqlTemplateRepository sqlTemplateRepository = new GreedyCacheSqlTemplateRepository();
 
   protected JdbcLogger sqlLogger = new UtilLoggingJdbcLogger();
 
@@ -50,8 +50,8 @@ public class MockConfig implements Config {
   }
 
   @Override
-  public SqlFileRepository getSqlFileRepository() {
-    return sqlFileRepository;
+  public SqlTemplateRepository getSqlTemplateRepository() {
+    return sqlTemplateRepository;
   }
 
   @Override

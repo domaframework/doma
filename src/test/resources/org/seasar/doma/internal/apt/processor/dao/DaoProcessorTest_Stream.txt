@@ -67,10 +67,9 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/StreamDao/selectByIdAndName.sql");
             __query.setEntityDesc(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.addParameter("name", java.lang.String.class, name);
@@ -102,10 +101,9 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/StreamDao/selectById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl");
             __query.setCallerMethodName("selectById");
@@ -135,10 +133,9 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method2);
             __query.setMethod(__method2);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/StreamDao/select.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl");
             __query.setCallerMethodName("select");
             __query.setResultEnsured(false);
@@ -167,10 +164,9 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method3);
             __query.setMethod(__method3);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/StreamDao/selectWithHogeFunction.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl");
             __query.setCallerMethodName("selectWithHogeFunction");
             __query.setResultEnsured(false);
@@ -199,10 +195,9 @@ public class StreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
             if (callback == null) {
                 throw new org.seasar.doma.DomaNullPointerException("callback");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method4);
             __query.setMethod(__method4);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/StreamDao/selectByIdAsMap.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.StreamDaoImpl");
             __query.setCallerMethodName("selectByIdAsMap");

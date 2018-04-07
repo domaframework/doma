@@ -8,11 +8,10 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.jdbc.query.SqlTemplateSelectQuery;
 
 public class BasicSingleResultHandlerTest extends TestCase {
 
@@ -31,9 +30,8 @@ public class BasicSingleResultHandlerTest extends TestCase {
     var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("aaa"));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(method);
@@ -54,9 +52,8 @@ public class BasicSingleResultHandlerTest extends TestCase {
     resultSet.rows.add(new RowData("aaa"));
     resultSet.rows.add(new RowData("bbb"));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(method);
@@ -80,9 +77,8 @@ public class BasicSingleResultHandlerTest extends TestCase {
     var resultSet = new MockResultSet(metaData);
     resultSet.rows.add(new RowData("aaa", "bbb"));
 
-    var query = new SqlFileSelectQuery();
+    var query = new SqlTemplateSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(method);

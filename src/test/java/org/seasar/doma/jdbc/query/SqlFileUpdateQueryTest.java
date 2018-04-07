@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import junit.framework.TestCase;
+import org.seasar.doma.Sql;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -28,16 +29,15 @@ public class SqlFileUpdateQueryTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate() throws Exception {
     var emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setVersion(100);
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setCallerClassName("aaa");
@@ -62,6 +62,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate_states() throws Exception {
     var emp = new Emp();
     emp.setId(10);
@@ -69,10 +70,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setVersion(100);
     emp.originalStates = new Emp();
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setCallerClassName("aaa");
@@ -92,16 +91,15 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate_excludeNull() throws Exception {
     var emp = new Emp();
     emp.setId(10);
     emp.setName("hoge");
     emp.setVersion(100);
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setNullExcluded(true);
@@ -121,15 +119,14 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate_excludeNull_updateNullableInPreUpdate() throws Exception {
     var emp = new Emp();
     emp.setId(10);
     emp.setVersion(100);
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, new PreUpdate(_Emp.getSingletonInternal()));
     query.setNullExcluded(true);
@@ -149,6 +146,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate_ignoreVersion() throws Exception {
     var emp = new Emp();
     emp.setId(10);
@@ -156,10 +154,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setVersion(100);
     emp.originalStates = new Emp();
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setVersionIgnored(true);
@@ -179,6 +175,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate_include() throws Exception {
     var emp = new Emp();
     emp.setId(10);
@@ -186,10 +183,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setSalary(new BigDecimal(200));
     emp.setVersion(100);
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setIncludedPropertyNames("name");
@@ -209,6 +204,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate_exclude() throws Exception {
     var emp = new Emp();
     emp.setId(10);
@@ -216,10 +212,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setSalary(new BigDecimal(200));
     emp.setVersion(100);
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setExcludedPropertyNames("name");
@@ -240,14 +234,13 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set /*%populate */ id = id where id = /* emp.id */1")
   public void testPopulate_IsExecutable() throws Exception {
     var emp = new Emp();
     emp.originalStates = new Emp();
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setCallerClassName("aaa");
@@ -259,11 +252,10 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertFalse(query.isExecutable());
   }
 
+  @Sql("update aaa set NAME = /* name */'hoge', VERSION = /* version */0 + 1 where id = /* id */0")
   public void testNonEntity() throws Exception {
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testNonEntity.sql");
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -286,6 +278,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Sql("update aaa set VERSION = /* emp.version */0 + 1 where id = /* emp.id */0\n")
   public void testOriginalStates_unchanged() throws Exception {
     var emp = new Emp();
     emp.setId(10);
@@ -298,10 +291,8 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.originalStates.setSalary(emp.getSalary());
     emp.originalStates.setVersion(emp.getVersion());
 
-    var query = new SqlFileUpdateQuery();
+    var query = new SqlTemplateUpdateQuery();
     query.setMethod(getClass().getDeclaredMethod(getName()));
-    query.setSqlFilePath(
-        "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testOriginalStates.sql");
     query.setConfig(runtimeConfig);
     query.setEntityAndEntityDesc("emp", emp, _Emp.getSingletonInternal());
     query.setCallerClassName("aaa");

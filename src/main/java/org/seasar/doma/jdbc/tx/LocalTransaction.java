@@ -35,7 +35,7 @@ import org.seasar.doma.message.Message;
  * }
  * </pre>
  *
- * Same instance can handle multiple transactions sequentially.
+ * Same instance can process multiple transactions sequentially.
  *
  * <pre>
  * LocalTransaction tx = AppConfig.getLocalTransaction();

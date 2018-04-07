@@ -56,10 +56,9 @@ public class ParameterizedParamDaoImpl extends org.seasar.doma.internal.jdbc.dao
     public int select(org.seasar.doma.internal.apt.processor.dao.Height<java.lang.String> height) {
         entering("org.seasar.doma.internal.apt.processor.dao.ParameterizedParamDaoImpl", "select", height);
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/ParameterizedParamDao/select.sql");
             __query.addParameter("height", org.seasar.doma.internal.apt.processor.dao.Height.class, height);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ParameterizedParamDaoImpl");
             __query.setCallerMethodName("select");

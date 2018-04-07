@@ -1,0 +1,83 @@
+package org.seasar.doma.internal.apt.processor.dao;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public class SqlTemplateInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlTemplateInsertDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlTemplateInsertDao.class, "insert", java.lang.Integer.class, java.math.BigDecimal.class);
+
+    /** */
+    public SqlTemplateInsertDaoImpl() {
+        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+    }
+
+    /**
+     * @param connection the connection
+     */
+    public SqlTemplateInsertDaoImpl(java.sql.Connection connection) {
+        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+    }
+
+    /**
+     * @param dataSource the dataSource
+     */
+    public SqlTemplateInsertDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+    }
+
+    /**
+     * @param config the configuration
+     */
+    protected SqlTemplateInsertDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected SqlTemplateInsertDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected SqlTemplateInsertDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
+    @Override
+    public int insert(java.lang.Integer id, java.math.BigDecimal salary) {
+        entering("org.seasar.doma.internal.apt.processor.dao.SqlTemplateInsertDaoImpl", "insert", id, salary);
+        try {
+            org.seasar.doma.jdbc.query.SqlTemplateInsertQuery __query = getQueryImplementors().createSqlTemplateInsertQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
+            __query.addParameter("id", java.lang.Integer.class, id);
+            __query.addParameter("salary", java.math.BigDecimal.class, salary);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.SqlTemplateInsertDaoImpl");
+            __query.setCallerMethodName("insert");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setNullExcluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.jdbc.command.InsertCommand __command = getCommandImplementors().createInsertCommand(__method0, __query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.processor.dao.SqlTemplateInsertDaoImpl", "insert", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.SqlTemplateInsertDaoImpl", "insert", __e);
+            throw __e;
+        }
+    }
+
+}

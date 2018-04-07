@@ -61,10 +61,9 @@ public class CollectorOptionalParameterDaoImpl extends org.seasar.doma.internal.
             if (collector == null) {
                 throw new org.seasar.doma.DomaNullPointerException("collector");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
             __query.setMethod(__method0);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/CollectorOptionalParameterDao/selectById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.CollectorOptionalParameterDaoImpl");
             __query.setCallerMethodName("selectById");
@@ -94,10 +93,9 @@ public class CollectorOptionalParameterDaoImpl extends org.seasar.doma.internal.
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
             __query.setMethod(__method1);
             __query.setConfig(__config);
-            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/CollectorOptionalParameterDao/select.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.CollectorOptionalParameterDaoImpl");
             __query.setCallerMethodName("select");
             __query.setResultEnsured(false);

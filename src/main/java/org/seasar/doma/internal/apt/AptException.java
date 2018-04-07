@@ -66,6 +66,16 @@ public class AptException extends DomaException {
     this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue, null, args);
   }
 
+  public AptException(
+      MessageResource messageResource,
+      Element element,
+      AnnotationMirror annotationMirror,
+      AnnotationValue annotationValue,
+      Throwable cause,
+      Object[] args) {
+    this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue, cause, args);
+  }
+
   private AptException(
       MessageResource messageResource,
       Kind kind,

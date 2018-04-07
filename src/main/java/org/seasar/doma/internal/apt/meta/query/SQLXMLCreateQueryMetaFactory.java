@@ -20,6 +20,7 @@ public class SQLXMLCreateQueryMetaFactory
     var queryMeta = new SQLXMLCreateQueryMeta(methodElement);
     queryMeta.setSqlxmlFactoryAnnot(sqlxmlFactoryMirror);
     queryMeta.setQueryKind(QueryKind.SQLXML_FACTORY);
+    doAnnotation(queryMeta, sqlxmlFactoryMirror);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);

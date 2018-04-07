@@ -37,9 +37,9 @@ public interface Sql<P extends SqlParameter> {
   String getFormattedSql();
 
   /**
-   * Returns the file path that contains this SQL.
+   * Returns the SQL file path.
    *
-   * @return the file path that contains this SQL、or {@code null} if this SQL is auto-generated
+   * @return the SQL file path、or {@code null}
    */
   String getSqlFilePath();
 

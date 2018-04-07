@@ -21,6 +21,7 @@ public class AutoProcedureQueryMetaFactory
     var queryMeta = new AutoProcedureQueryMeta(methodElement);
     queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
     queryMeta.setProcedureAnnot(procedureAnnot);
+    doAnnotation(queryMeta, procedureAnnot);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);

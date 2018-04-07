@@ -20,6 +20,7 @@ public class ClobCreateQueryMetaFactory
     var queryMeta = new ClobCreateQueryMeta(methodElement);
     queryMeta.setClobFactoryAnnot(clobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.CLOB_FACTORY);
+    doAnnotation(queryMeta, clobFactoryAnnot);
     doTypeParameters(queryMeta);
     doReturnType(queryMeta);
     doParameters(queryMeta);
