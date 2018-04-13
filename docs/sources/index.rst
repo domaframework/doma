@@ -9,23 +9,19 @@
    :align: right
    :target: https://github.com/domaframework/doma
 
-Welcome to Doma
-===============
+Welcome to Doma 3
+=====================
 
-Doma は Java のDBアクセスフレームワークです。
+Doma 3 is a database access framework for Java 11+.
+Doma has some strong points:
 
-Doma のバージョンには 1 と 2 がありますが、
-このドキュメントは **バージョン 2** を対象としています。
+* Verifies and generates source code at compile-time using annotation processing.
+* Maps a database column to a user-defined Java object.
+* Uses SQL-templates that is called two-way-SQL.
+* Supports classes introduced in Java8, such as ``java.time.LocalDate``,  ``java.util.Optional`` and ``java.util.stream.Stream``.
+* Has no dependence on other libraries.
 
-Doma 2 には以下の特徴があります。
-
-* 注釈処理を使用して **コンパイル時** にコードの生成やコードの検証を行う
-* データベース上のカラムの値を振る舞いを持った Java オブジェクトにマッピングできる
-* 2-way SQL と呼ばれる SQL テンプレートを利用できる
-* Java 8 の ``java.time.LocalDate`` や  ``java.util.Optional`` や ``java.util.stream.Stream`` を利用できる
-* JRE 以外のライブラリへの依存が一切ない
-
-このドキュメントは複数のセクションから成ります。
+This document consists of following sections:
 
 * `User Documentation`_
 * `Developer Documentation`_
