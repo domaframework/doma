@@ -160,6 +160,8 @@ public abstract class AptinaTestCase extends TestCase {
 
   Boolean compiledResult;
 
+  boolean assertionForCompilation = true;
+
   /** インスタンスを構築します． */
   protected AptinaTestCase() {}
 
@@ -181,6 +183,14 @@ public abstract class AptinaTestCase extends TestCase {
       }
     }
     super.tearDown();
+  }
+
+  protected void enableAssertionForCompilation() {
+    assertionForCompilation = true;
+  }
+
+  protected void disableAssertionForCompilation() {
+    assertionForCompilation = false;
   }
 
   /**
@@ -783,7 +793,7 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    */
   void assertCompiled() throws IllegalStateException {
-    if (compiledResult == null) {
+    if (assertionForCompilation && compiledResult == null) {
       throw new IllegalStateException("not compiled");
     }
   }

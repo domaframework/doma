@@ -271,7 +271,7 @@ public enum Message implements MessageResource {
   DOMA4014("Cannot annotate to anything but interfaces."),
   DOMA4015("Cannot annotate to anything but classes."),
   DOMA4016(
-      "An unexpected error has occurred. Check the logs for more information. For example, if you use Eclipse, see the error log view."),
+      "An unexpected error has occurred. It may be a bug in the Doma framework. Report the following stacktrace: {0}"),
   DOMA4017("The Dao interface must be a top level interface."),
   DOMA4019("The file[{0}] is not found from the classpath. The absolute path is \"{1}\"."),
   DOMA4020("The SQL template is empty. PATH=[{0}]."),

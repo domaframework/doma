@@ -1,5 +1,7 @@
 package org.seasar.doma.internal.apt.processor;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.util.function.Consumer;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -55,9 +57,10 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
     } catch (AptIllegalStateException e) {
       ctx.getNotifier().send(Kind.ERROR, Message.DOMA4039, typeElement, new Object[] {});
       throw new AptTypeHandleException(typeElement, e);
-    } catch (RuntimeException e) {
-      ctx.getNotifier().send(Kind.ERROR, Message.DOMA4016, typeElement, new Object[] {});
-      throw new AptTypeHandleException(typeElement, e);
+    } catch (RuntimeException | AssertionError e) {
+      var stackTrace = getStackTraceAsString(e);
+      ctx.getNotifier().send(Kind.ERROR, Message.DOMA4016, typeElement, new Object[] {stackTrace});
+      throw e;
     }
     if (ctx.getOptions().isDebugEnabled()) {
       ctx.getNotifier()
@@ -65,5 +68,11 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
               Message.DOMA4091,
               new Object[] {getClass().getName(), typeElement.getQualifiedName()});
     }
+  }
+
+  private String getStackTraceAsString(Throwable throwable) {
+    var stringWriter = new StringWriter();
+    throwable.printStackTrace(new PrintWriter(stringWriter));
+    return stringWriter.toString();
   }
 }
