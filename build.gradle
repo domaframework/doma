@@ -38,7 +38,7 @@ compileJava {
             replace: "\\1${version}\\2",
             encoding: encoding, 
             flags: 'g') {
-                fileset(dir: 'docs/sources') {
+                fileset(dir: 'docs') {
                     include(name: '**/*.rst')
                 }
             }
