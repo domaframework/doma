@@ -49,12 +49,6 @@ public class MessageTest extends TestCase {
     System.out.println(message);
   }
 
-  public void testDOMA2136() throws Exception {
-    var message = Message.DOMA2136.getMessage("aaa", "bbb");
-    assertNotNull(message);
-    System.out.println(message);
-  }
-
   /**
    * Test that the same code is used for English setting and Japanese setting,
    * also test that the same parameters are used.
