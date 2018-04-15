@@ -48,8 +48,8 @@ public class MessageTest extends TestCase {
   }
 
   /**
-   * Test that the same code is used for English setting and Japanese setting,
-   * also test that the same parameters are used.
+   * Test that the same code is used for English setting and Japanese setting, also test that the
+   * same parameters are used.
    *
    * @throws Exception
    */
