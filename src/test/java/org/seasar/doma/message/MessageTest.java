@@ -2,9 +2,7 @@ package org.seasar.doma.message;
 
 import java.util.Locale;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import junit.framework.TestCase;
 
 public class MessageTest extends TestCase {
@@ -57,27 +55,26 @@ public class MessageTest extends TestCase {
    */
   public void testCompareEnAndJa() throws Exception {
 
-    Pattern p = Pattern.compile("\\{(\\d+)\\}");
-    Message[] enArray = Message.class.getEnumConstants();
-    Message_ja[] jaArray = Message_ja.class.getEnumConstants();
+    var p = Pattern.compile("\\{(\\d+)\\}");
+    var enArray = Message.class.getEnumConstants();
+    var jaArray = Message_ja.class.getEnumConstants();
     assertEquals(enArray.length, jaArray.length);
 
     for (int i = 0; i < enArray.length; i++) {
-      Message en = enArray[i];
-      Message_ja ja = jaArray[i];
+      var en = enArray[i];
+      var ja = jaArray[i];
       assertEquals(en.getCode(), ja.getCode());
-      TreeSet<String> enSet = new TreeSet<String>();
-      Matcher enMatcher = p.matcher(en.getMessagePattern());
+      var enSet = new TreeSet<String>();
+      var enMatcher = p.matcher(en.getMessagePattern());
       while (enMatcher.find()) {
         enSet.add(enMatcher.group(1));
       }
-      TreeSet<String> jaSet = new TreeSet<String>();
-      Matcher jaMatcher = p.matcher(ja.getMessagePattern());
+      var jaSet = new TreeSet<String>();
+      var jaMatcher = p.matcher(ja.getMessagePattern());
       while (jaMatcher.find()) {
         jaSet.add(jaMatcher.group(1));
       }
-      System.out.println(
-              en.getCode() + enSet + " - " + ja.getCode() + jaSet);
+      System.out.println(en.getCode() + enSet + " - " + ja.getCode() + jaSet);
       assertEquals(enSet, jaSet);
     }
   }
