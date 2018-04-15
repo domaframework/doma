@@ -141,9 +141,9 @@ public enum Message implements MessageResource {
   DOMA2135(
       "Failed to parse the SQL on line [{1}] at column [{2}]. The parenthesis is not closed. Otherwise, using with \"/%if ...*/～/*%end*/\" or \"/%for ...*/～/*%end*/\", the open parenthesis and the close parenthesis are not in a same block. SQL[{0}]"),
   DOMA2136(
-      "The result set that corresponds to the parameter[{0}] of the Dao method is not returned from the stored procedure or the stored function."),
+      "The result set that corresponds to the parameter[{0}] of the Dao method is not returned from the stored procedure or the stored function[{1}]."),
   DOMA2137(
-      "The result set that corresponds to the [{0}]th parameter[{1}] is not returned from the stored procedure or the stored function."),
+      "The result set that corresponds to the [{0}]th parameter[{1}] is not returned from the stored procedure or the stored function[{2}]."),
   DOMA2138(
       "Failed to parse the SQL on line [{1}] at column [{2}]. \"/*%if ...*/\" that corresponds to \"/*%elseif ...*/\" is not found. SQL[{0}]"),
   DOMA2139(
@@ -233,7 +233,7 @@ public enum Message implements MessageResource {
   DOMA3019(
       "Failed to evaluate the expression[{0}] at column[{1}]. Cannot access the field[{3}] in the class[{2}]. The cause is as follows: {4}"),
   DOMA3020(
-      "Failed to evaluate the expression[{0}] at column[{1}]. Cannot execute the operator[{2}]. To execute concatenation, the class of the right operand[{3}] must be either String, Character or char. To execute addition, both of the operands must be numeric."),
+      "Failed to evaluate the expression[{0}] at column[{1}]. Cannot execute the operator[{2}]. To execute concatenation, the class[{4}] of the right operand[{3}] must be either String, Character or char. To execute addition, both of the operands must be numeric."),
   DOMA3021(
       "Failed to analyze the expression[{0}] at column[{1}]. The field name or the method name must follow closely the token \".\"."),
   DOMA3022(
@@ -355,7 +355,7 @@ public enum Message implements MessageResource {
   DOMA4107("The class that is annotated with @Holder cannot have type parameters."),
   DOMA4108("The type argument is required for Reference."),
   DOMA4109(
-      "The type argument is required for the subtype of java.lang.Iterable, that is the return type."),
+      "The type argument is required for the subtype[{0}] of java.lang.Iterable, that is the return type."),
   DOMA4111(
       "The parameter type that is annotated with @InOut must be org.seasar.doma.jdbc.Reference."),
   DOMA4112("The wildcard is not supported for the parameter type[{0}]."),
@@ -382,12 +382,12 @@ public enum Message implements MessageResource {
   DOMA4125(
       "@OriginalStates is duplicated. The filed that annotated with @OriginalStates must be only one in the class hierarchy."),
   DOMA4126(
-      "To execute concatenation, the type[{4}] of the right operand[{3}] in the expression[{0}] at column [{1}] must be either String, Character or char. To execute addition, both of the operands must be numeric."),
+      "To execute concatenation, the type[{4}] of the right operand[{3}] of the operand[{2}] in the expression[{0}] at column [{1}] must be either String, Character or char. To execute addition, both of the operands must be numeric."),
   DOMA4127("The constructor[{2}] in the expression[{0}] at column [{1}] cannot be identified."),
   DOMA4132(
       "If the factoryMethod element of @Holder is specified with \"new\", the class must not be abstract."),
   DOMA4135(
-      "The type of the field that is annotated with @OriginalStates must be same with the type of the entity class."),
+      "The type of the field that is annotated with @OriginalStates must be same with the type of the entity class[{0}]."),
   DOMA4138("The class[{2}] in the expression[{0}] at column [{1}] is not found."),
   DOMA4139(
       "The comparison operator[{2}] cannot be applied to the null literal in the expression[{0}] at column [{1}]."),
@@ -515,7 +515,7 @@ public enum Message implements MessageResource {
   DOMA4229(
       "The upper bound[{1}] of the type parameter[{0}] of the entity listener class is not compatible with the entity class[{2}]."),
   DOMA4230(
-      "The entity listener[{}0] class that is took over from the parent entity class must have a type parameter that accepts the entity class[{1}]."),
+      "The entity listener[{0}] class that is took over from the parent entity class must have a type parameter that accepts the entity class[{1}]."),
   DOMA4231(
       "The upper bound[{2}] of the type parameter[{1}] of the entity listener class[{0}] that is took over from the parent entity class is not compatible with the entity class[{3}]."),
   DOMA4232("The raw type of the class[{0}] cannot be used."),
@@ -552,7 +552,7 @@ public enum Message implements MessageResource {
   DOMA4253(
       "@SingletonConfig cannot be annotated to anything but the subtype of org.seasar.doma.Config."),
   DOMA4254(
-      "The method[{0}] is not found. The method must be public and static. The return type must be this class[{0}]. The number of parameters must be 0."),
+      "The method[{0}] is not found. The method must be public and static. The return type must be this class[{1}]. The number of parameters must be 0."),
   DOMA4255("The method[{1}] is not found in the class[{0}]."),
   DOMA4256("The constructor of the class that is annotated with @SingletonConfig must be private."),
   DOMA4257(
@@ -658,7 +658,7 @@ public enum Message implements MessageResource {
   DOMA4427(DOMA4426.getMessagePattern()),
   DOMA4428(DOMA4419.getMessagePattern()),
   DOMA4429(
-      "The method name that is generated by @lombok.Value is not same with the value of the accessorMethod element of @Holder."),
+      "The method name[{0}] that is generated by @lombok.Value is not same with the value[{1}] of the accessorMethod element of @Holder."),
   DOMA4430("There is no instance field to be initialized by @lombok.Value."),
   DOMA4431(
       "The number of instance fields that is initialized by @lombok.Value must be 1, but greater than or equal to 2."),
