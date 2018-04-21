@@ -2,17 +2,17 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class SqlProcessorDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao {
+public class SqlProcessorDaoImpl extends org.seasar.doma.jdbc.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao.class, "process_typeParameter", java.lang.Integer.class, java.util.function.BiFunction.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao.class, "process_typeParameter", java.lang.Integer.class, java.util.function.BiFunction.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao.class, "process_string", java.lang.Integer.class, java.util.function.BiFunction.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao.class, "process_string", java.lang.Integer.class, java.util.function.BiFunction.class);
 
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao.class, "process_void", java.lang.Integer.class, java.util.function.BiFunction.class);
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlProcessorDao.class, "process_void", java.lang.Integer.class, java.util.function.BiFunction.class);
 
     /** */
     public SqlProcessorDaoImpl() {

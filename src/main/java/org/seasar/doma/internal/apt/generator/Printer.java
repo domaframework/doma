@@ -9,19 +9,18 @@ import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 
-public abstract class AbstractGenerator implements Generator {
-
+public class Printer {
   private static final String INDENT_SPACE = "    ";
 
-  protected final Context ctx;
+  private final Context ctx;
 
-  protected final CodeSpec codeSpec;
+  private final CodeSpec codeSpec;
 
   private final Formatter formatter;
 
   private final StringBuilder indentBuffer = new StringBuilder();
 
-  protected AbstractGenerator(Context ctx, CodeSpec codeSpec, Formatter formatter) {
+  public Printer(Context ctx, CodeSpec codeSpec, Formatter formatter) {
     assertNotNull(ctx, codeSpec, formatter);
     this.ctx = ctx;
     this.codeSpec = codeSpec;
@@ -67,7 +66,7 @@ public abstract class AbstractGenerator implements Generator {
     throwExceptionIfNecessary();
   }
 
-  protected void throwExceptionIfNecessary() {
+  private void throwExceptionIfNecessary() {
     var ioException = formatter.ioException();
     if (ioException != null) {
       formatter.close();

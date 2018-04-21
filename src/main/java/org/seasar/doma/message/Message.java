@@ -268,7 +268,7 @@ public enum Message implements MessageResource {
   DOMA4007("The type argument[{0}] of java.util.List that is the return type is not supported."),
   DOMA4008("The return type[{0}] is not supported."),
   DOMA4011("The annotation processing for the class[{0}] is failed. The cause is as follows: {1}"),
-  DOMA4014("Cannot annotate to anything but interfaces."),
+  DOMA4014("Cannot annotate to anything but interfaces and abstract classes."),
   DOMA4015("Cannot annotate to anything but classes."),
   DOMA4016(
       "An unexpected error has occurred. It may be a bug in the Doma framework. Report the following stacktrace: {0}"),
@@ -677,6 +677,12 @@ public enum Message implements MessageResource {
   DOMA4441("The value element must be empty when the useFile element is true."),
   DOMA4442("@Sql must not be annotated to the default method."),
   DOMA4443("@Sql can not be used in combination with the annotation[{0}]."),
+  DOMA4444("@Sql must not be specified to the non-abstract method."),
+  DOMA4445(
+      "When @Dao is specified to the abstract class, the abstract class must extend org.seasar.doma.jdbc.AbstractDao."),
+  DOMA4446(
+      "When @Dao is specified to the abstract class, the abstract class must have a single constructor whose parameter type is org.seasar.doma.jdbc.Config."),
+  DOMA4447("The annotation[{0}] cannot be specified to the non-abstract method."),
 
   // other
   DOMA5001(

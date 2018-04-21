@@ -2,35 +2,35 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao {
+public class ImmutableEmpDaoImpl extends org.seasar.doma.jdbc.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "update", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "update", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
 
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "delete", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "delete", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
 
-    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchInsert", java.util.List.class);
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchInsert", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchUpdate", java.util.List.class);
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchUpdate", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchDelete", java.util.List.class);
+    private static final java.lang.reflect.Method __method5 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchDelete", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method6 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "insert2", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+    private static final java.lang.reflect.Method __method6 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "insert2", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
 
-    private static final java.lang.reflect.Method __method7 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "update2", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+    private static final java.lang.reflect.Method __method7 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "update2", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
 
-    private static final java.lang.reflect.Method __method8 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "delete2", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
+    private static final java.lang.reflect.Method __method8 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "delete2", org.seasar.doma.internal.apt.processor.entity.ImmutableEmp.class);
 
-    private static final java.lang.reflect.Method __method9 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchInsert2", java.util.List.class);
+    private static final java.lang.reflect.Method __method9 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchInsert2", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method10 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchUpdate2", java.util.List.class);
+    private static final java.lang.reflect.Method __method10 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchUpdate2", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method11 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchDelete2", java.util.List.class);
+    private static final java.lang.reflect.Method __method11 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ImmutableEmpDao.class, "batchDelete2", java.util.List.class);
 
     /** */
     public ImmutableEmpDaoImpl() {

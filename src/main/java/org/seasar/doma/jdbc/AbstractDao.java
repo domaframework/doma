@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.jdbc.dao;
+package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -7,14 +7,10 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.RuntimeConfig;
 import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.jdbc.dao.NeverClosedConnection;
+import org.seasar.doma.internal.jdbc.dao.NeverClosedConnectionProvider;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
-import org.seasar.doma.jdbc.CommandImplementors;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.ConfigException;
-import org.seasar.doma.jdbc.ConfigProvider;
-import org.seasar.doma.jdbc.DaoMethodNotFoundException;
-import org.seasar.doma.jdbc.QueryImplementors;
 
 /**
  * {@link Dao} が注釈されたインタフェースの実装クラスのための骨格実装です。
@@ -33,7 +29,7 @@ public abstract class AbstractDao implements ConfigProvider {
    *
    * @param config JDBCの設定
    * @throws DomaNullPointerException {@code config} が {@code null} の場合
-   * @throws ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
+   * @throws org.seasar.doma.jdbc.ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
    */
   protected AbstractDao(Config config) {
     if (config == null) {
@@ -48,7 +44,7 @@ public abstract class AbstractDao implements ConfigProvider {
    *
    * @param config JDBCの設定
    * @throws DomaNullPointerException {@code config} が {@code null} の場合
-   * @throws ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
+   * @throws org.seasar.doma.jdbc.ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
    */
   protected AbstractDao(Config config, Connection connection) {
     if (config == null) {
@@ -73,7 +69,7 @@ public abstract class AbstractDao implements ConfigProvider {
    * @param config JDBCの設定
    * @param dataSource データソース
    * @throws DomaNullPointerException {@code config} が {@code null} の場合
-   * @throws ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
+   * @throws org.seasar.doma.jdbc.ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
    */
   protected AbstractDao(Config config, DataSource dataSource) {
     if (config == null) {

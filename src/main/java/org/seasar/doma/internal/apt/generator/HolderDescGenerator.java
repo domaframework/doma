@@ -3,47 +3,54 @@ package org.seasar.doma.internal.apt.generator;
 import static org.seasar.doma.internal.apt.generator.CodeHelper.wrapperSupplier;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.Formatter;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.meta.holder.HolderMeta;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.holder.AbstractHolderDesc;
 
-public class HolderDescGenerator extends AbstractGenerator {
+public class HolderDescGenerator implements Generator {
+
+  private final CodeSpec codeSpec;
+
+  private final Printer printer;
 
   private final HolderMeta holderMeta;
+
+  private final Context ctx;
 
   private final String typeName;
 
   public HolderDescGenerator(
-      Context ctx, HolderMeta holderMeta, CodeSpec codeSpec, Formatter formatter) {
-    super(ctx, codeSpec, formatter);
-    assertNotNull(holderMeta);
+      CodeSpec codeSpec, Printer printer, HolderMeta holderMeta, Context ctx) {
+    assertNotNull(codeSpec, printer, holderMeta, ctx);
+    this.ctx = ctx;
     this.holderMeta = holderMeta;
+    this.codeSpec = codeSpec;
+    this.printer = printer;
     this.typeName = ctx.getTypes().getTypeName(holderMeta.getType());
   }
 
   @Override
   public void generate() {
-    printPackage();
     printClass();
   }
 
   private void printClass() {
+    printer.printPackage();
     var typeElement = holderMeta.getHolderElement();
     if (typeElement.getTypeParameters().isEmpty()) {
-      iprint("/** */%n");
+      printer.iprint("/** */%n");
     } else {
-      iprint("/**%n");
+      printer.iprint("/**%n");
       for (var typeParam : typeElement.getTypeParameters()) {
-        iprint(" * @param <%1$s> %1$s%n", typeParam.getSimpleName());
+        printer.iprint(" * @param <%1$s> %1$s%n", typeParam.getSimpleName());
       }
-      iprint(" */%n");
+      printer.iprint(" */%n");
     }
-    printGenerated();
+    printer.printGenerated();
     if (holderMeta.isParameterized()) {
-      iprint(
+      printer.iprint(
           "public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ codeSpec.getSimpleName(),
           /* 2 */ AbstractHolderDesc.class.getName(),
@@ -51,38 +58,38 @@ public class HolderDescGenerator extends AbstractGenerator {
           /* 4 */ typeName,
           /* 5 */ codeSpec.getTypeParamsName());
     } else {
-      iprint(
+      printer.iprint(
           "public final class %1$s extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ codeSpec.getSimpleName(),
           /* 2 */ AbstractHolderDesc.class.getName(),
           /* 3 */ ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()),
           /* 4 */ typeName);
     }
-    print("%n");
-    indent();
-    printValidateVersionStaticInitializer();
+    printer.print("%n");
+    printer.indent();
+    printer.printValidateVersionStaticInitializer();
     printFields();
     printConstructors();
     printMethods();
-    unindent();
-    unindent();
-    iprint("}%n");
+    printer.unindent();
+    printer.unindent();
+    printer.iprint("}%n");
   }
 
   private void printFields() {
     if (holderMeta.isParameterized()) {
-      iprint("@SuppressWarnings(\"rawtypes\")%n");
+      printer.iprint("@SuppressWarnings(\"rawtypes\")%n");
     }
-    iprint("private static final %1$s singleton = new %1$s();%n", codeSpec.getSimpleName());
-    print("%n");
+    printer.iprint("private static final %1$s singleton = new %1$s();%n", codeSpec.getSimpleName());
+    printer.print("%n");
   }
 
   private void printConstructors() {
-    iprint("private %1$s() {%n", codeSpec.getSimpleName());
+    printer.iprint("private %1$s() {%n", codeSpec.getSimpleName());
     var basicCtType = holderMeta.getBasicCtType();
-    iprint("    super(%1$s);%n", wrapperSupplier(basicCtType));
-    iprint("}%n");
-    print("%n");
+    printer.iprint("    super(%1$s);%n", wrapperSupplier(basicCtType));
+    printer.iprint("}%n");
+    printer.print("%n");
   }
 
   private void printMethods() {
@@ -95,96 +102,96 @@ public class HolderDescGenerator extends AbstractGenerator {
 
   private void printNewHolderMethod() {
     var primitive = holderMeta.getBasicCtType().isPrimitive();
-    iprint("@Override%n");
-    iprint(
+    printer.iprint("@Override%n");
+    printer.iprint(
         "protected %1$s newHolder(%2$s value) {%n",
         /* 1 */ typeName, /* 2 */ ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()));
     if (!primitive && !holderMeta.getAcceptNull()) {
-      iprint("    if (value == null) {%n");
-      iprint("        return null;%n");
-      iprint("    }%n");
+      printer.iprint("    if (value == null) {%n");
+      printer.iprint("        return null;%n");
+      printer.iprint("    }%n");
     }
     if (holderMeta.providesConstructor()) {
       if (primitive) {
-        iprint(
+        printer.iprint(
             "    return new %1$s(%2$s.unbox(value));%n",
             /* 1 */ typeName, /* 2 */ BoxedPrimitiveUtil.class.getName());
       } else {
-        iprint("    return new %1$s(value);%n", /* 1 */ typeName);
+        printer.iprint("    return new %1$s(value);%n", /* 1 */ typeName);
       }
     } else {
       if (primitive) {
-        iprint(
+        printer.iprint(
             "    return %1$s.%2$s(%3$s.unbox(value));%n",
             /* 1 */ holderMeta.getHolderElement().getQualifiedName(),
             /* 2 */ holderMeta.getFactoryMethod(),
             /* 3 */ BoxedPrimitiveUtil.class.getName());
       } else {
-        iprint(
+        printer.iprint(
             "    return %1$s.%2$s(value);%n",
             /* 1 */ holderMeta.getHolderElement().getQualifiedName(),
             /* 2 */ holderMeta.getFactoryMethod());
       }
     }
-    iprint("}%n");
-    print("%n");
+    printer.iprint("}%n");
+    printer.print("%n");
   }
 
   private void printGetBasicValueMethod() {
-    iprint("@Override%n");
-    iprint(
+    printer.iprint("@Override%n");
+    printer.iprint(
         "protected %1$s getBasicValue(%2$s holder) {%n",
         /* 1 */ ctx.getTypes().boxIfPrimitive(holderMeta.getValueType()), /* 2 */ typeName);
-    iprint("    if (holder == null) {%n");
-    iprint("        return null;%n");
-    iprint("    }%n");
-    iprint("    return holder.%1$s();%n", holderMeta.getAccessorMethod());
-    iprint("}%n");
-    print("%n");
+    printer.iprint("    if (holder == null) {%n");
+    printer.iprint("        return null;%n");
+    printer.iprint("    }%n");
+    printer.iprint("    return holder.%1$s();%n", holderMeta.getAccessorMethod());
+    printer.iprint("}%n");
+    printer.print("%n");
   }
 
   private void printGetBasicClassMethod() {
-    iprint("@Override%n");
-    iprint("public Class<?> getBasicClass() {%n");
-    iprint("    return %1$s.class;%n", holderMeta.getValueType());
-    iprint("}%n");
-    print("%n");
+    printer.iprint("@Override%n");
+    printer.iprint("public Class<?> getBasicClass() {%n");
+    printer.iprint("    return %1$s.class;%n", holderMeta.getValueType());
+    printer.iprint("}%n");
+    printer.print("%n");
   }
 
   private void printGetHolderClassMethod() {
     if (holderMeta.isParameterized()) {
-      iprint("@SuppressWarnings(\"unchecked\")%n");
+      printer.iprint("@SuppressWarnings(\"unchecked\")%n");
     }
-    iprint("@Override%n");
-    iprint("public Class<%1$s> getHolderClass() {%n", typeName);
+    printer.iprint("@Override%n");
+    printer.iprint("public Class<%1$s> getHolderClass() {%n", typeName);
     if (holderMeta.isParameterized()) {
-      iprint(
+      printer.iprint(
           "    Class<?> clazz = %1$s.class;%n", holderMeta.getHolderElement().getQualifiedName());
-      iprint("    return (Class<%1$s>) clazz;%n", typeName);
+      printer.iprint("    return (Class<%1$s>) clazz;%n", typeName);
     } else {
-      iprint("    return %1$s.class;%n", holderMeta.getHolderElement().getQualifiedName());
+      printer.iprint("    return %1$s.class;%n", holderMeta.getHolderElement().getQualifiedName());
     }
-    iprint("}%n");
-    print("%n");
+    printer.iprint("}%n");
+    printer.print("%n");
   }
 
   private void printGetSingletonInternalMethod() {
-    iprint("/**%n");
-    iprint(" * @return the singleton%n");
-    iprint(" */%n");
+    printer.iprint("/**%n");
+    printer.iprint(" * @return the singleton%n");
+    printer.iprint(" */%n");
     if (holderMeta.isParameterized()) {
-      iprint("@SuppressWarnings(\"unchecked\")%n");
-      iprint(
+      printer.iprint("@SuppressWarnings(\"unchecked\")%n");
+      printer.iprint(
           "public static <%1$s> %2$s<%1$s> getSingletonInternal() {%n",
           /* 1 */ codeSpec.getTypeParamsName(), /* 2 */ codeSpec.getSimpleName());
-      iprint(
+      printer.iprint(
           "    return (%2$s<%1$s>) singleton;%n",
           /* 1 */ codeSpec.getTypeParamsName(), /* 2 */ codeSpec.getSimpleName());
     } else {
-      iprint("public static %1$s getSingletonInternal() {%n", codeSpec.getSimpleName());
-      iprint("    return singleton;%n");
+      printer.iprint("public static %1$s getSingletonInternal() {%n", codeSpec.getSimpleName());
+      printer.iprint("    return singleton;%n");
     }
-    iprint("}%n");
-    print("%n");
+    printer.iprint("}%n");
+    printer.print("%n");
   }
 }

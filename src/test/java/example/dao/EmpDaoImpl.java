@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
-import org.seasar.doma.internal.jdbc.dao.AbstractDao;
+import org.seasar.doma.jdbc.AbstractDao;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 

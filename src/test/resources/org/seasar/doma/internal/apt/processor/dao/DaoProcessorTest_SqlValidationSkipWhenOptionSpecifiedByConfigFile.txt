@@ -2,13 +2,13 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao {
+public class SqlValidationSkipDaoImpl extends org.seasar.doma.jdbc.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao.class, "selectById", java.lang.String.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao.class, "selectById", java.lang.String.class);
 
     /** */
     public SqlValidationSkipDaoImpl() {

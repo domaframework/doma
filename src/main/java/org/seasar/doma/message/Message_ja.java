@@ -205,7 +205,7 @@ public enum Message_ja implements MessageResource {
   DOMA4007("戻り値のjava.util.Listに対する実型引数の型[{0}]はサポートされていません。"),
   DOMA4008("戻り値の型[{0}]はサポートされていません。"),
   DOMA4011("クラス[{0}]のアノテーション処理に失敗しました。原因は次のものです。{1}"),
-  DOMA4014("インタフェース以外には注釈できません。"),
+  DOMA4014("インタフェースと抽象クラス以外には注釈できません。"),
   DOMA4015("クラス以外には注釈できません。"),
   DOMA4016("予期しないエラーが発生しました。Domaの不具合かもしれません。次のスタックトレースを報告してください。 {0}"),
   DOMA4017("Daoインタフェースはトップレベルでなければいけません。"),
@@ -518,6 +518,11 @@ public enum Message_ja implements MessageResource {
   DOMA4441("useFile要素がtrueのとき、value要素は空でなければいけません。"),
   DOMA4442("@Sqlはデフォルトメソッドに注釈してはいけません。"),
   DOMA4443("@Sqlはアノテーション[{0}]と併用できません。"),
+  DOMA4444("@Sqlはabstractでないメソッドに注釈してはいけません。"),
+  DOMA4445("@Daoが抽象クラスに注釈されるとき、 その抽象クラスはorg.seasar.doma.jdbc.AbstractDaoを継承しなければいけません。"),
+  DOMA4446(
+      "@Daoが抽象クラスに注釈されるとき、 その抽象クラスはorg.seasar.doma.jdbc.Configをパラメータとするたった1つのコンストラクを持たねばいけません。"),
+  DOMA4447("abstractでないメソッドにアノテーション[{0}]は注釈できません。"),
 
   // other
   DOMA5001(

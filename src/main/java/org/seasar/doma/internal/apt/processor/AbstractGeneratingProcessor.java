@@ -12,6 +12,7 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.message.Message;
@@ -52,7 +53,8 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
     try {
       var file = ctx.getResources().createSourceFile(codeSpec, typeElement);
       try (var formatter = new Formatter(new BufferedWriter(file.openWriter()))) {
-        var generator = createGenerator(meta, codeSpec, formatter);
+        var printer = new Printer(ctx, codeSpec, formatter);
+        var generator = createGenerator(codeSpec, printer, meta);
         generator.generate();
       }
     } catch (IOException | UncheckedIOException e) {
@@ -63,5 +65,5 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
 
   protected abstract CodeSpec createCodeSpec(M meta);
 
-  protected abstract Generator createGenerator(M meta, CodeSpec codeSpec, Formatter formatter);
+  protected abstract Generator createGenerator(CodeSpec codeSpec, Printer printer, M meta);
 }

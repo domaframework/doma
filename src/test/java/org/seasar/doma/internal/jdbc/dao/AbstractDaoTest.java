@@ -5,6 +5,7 @@ import java.sql.Connection;
 import javax.sql.DataSource;
 import junit.framework.TestCase;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.AbstractDao;
 import org.seasar.doma.jdbc.Config;
 
 /** @author backpaper0 */

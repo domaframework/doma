@@ -339,6 +339,20 @@ public enum QueryKind {
       return SqlProcessorCommand.class;
     }
   },
+
+  NON_ABSTRACT {
+
+    @Override
+    public Class<? extends Query> getQueryClass() {
+      return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Class<? extends Command> getCommandClass() {
+      return null;
+    }
+  },
   ;
 
   public abstract Class<? extends Query> getQueryClass();

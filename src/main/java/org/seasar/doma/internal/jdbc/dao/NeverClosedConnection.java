@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-class NeverClosedConnection implements Connection {
+public class NeverClosedConnection implements Connection {
 
   /** コネクション */
   protected final Connection connection;

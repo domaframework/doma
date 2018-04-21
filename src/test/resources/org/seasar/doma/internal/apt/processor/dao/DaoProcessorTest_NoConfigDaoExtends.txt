@@ -8,9 +8,9 @@ public class NoConfigDaoExtendsDaoImpl extends org.seasar.doma.internal.apt.proc
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDao.class, "update2", example.entity.Emp.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDao.class, "update2", example.entity.Emp.class);
 
     /** */
     public NoConfigDaoExtendsDaoImpl() {

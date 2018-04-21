@@ -2,23 +2,23 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class AutoFunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao {
+public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction", java.lang.Integer.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction", java.lang.Integer.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction2", example.holder.PhoneNumber.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction2", example.holder.PhoneNumber.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class);
 
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction3", java.util.List.class);
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction3", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction4", java.util.List.class);
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction4", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction5", java.util.List.class);
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction5", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction6", org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.MyEnum.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class);
+    private static final java.lang.reflect.Method __method5 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.class, "executeFunction6", org.seasar.doma.internal.apt.processor.dao.AutoFunctionDao.MyEnum.class, org.seasar.doma.jdbc.Reference.class, org.seasar.doma.jdbc.Reference.class);
 
     /** */
     public AutoFunctionDaoImpl() {

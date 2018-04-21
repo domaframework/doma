@@ -9,7 +9,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
-class NeverClosedConnectionProvider implements DataSource {
+public class NeverClosedConnectionProvider implements DataSource {
 
   private final NeverClosedConnection connection;
 

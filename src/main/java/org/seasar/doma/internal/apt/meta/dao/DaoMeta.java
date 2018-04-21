@@ -96,4 +96,8 @@ public class DaoMeta implements TypeElementMeta {
   public void setConfigMeta(ConfigMeta configMeta) {
     this.configMeta = configMeta;
   }
+
+  public boolean isInterface() {
+    return daoElement.getKind().isInterface();
+  }
 }

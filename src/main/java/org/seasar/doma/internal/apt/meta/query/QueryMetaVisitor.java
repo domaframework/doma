@@ -25,4 +25,6 @@ public interface QueryMetaVisitor<P> {
   void visitDefaultQueryMeta(DefaultQueryMeta m, P p);
 
   void visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m, P p);
+
+  void visitNonAbstractQueryMeta(NonAbstractQueryMeta m, P p);
 }

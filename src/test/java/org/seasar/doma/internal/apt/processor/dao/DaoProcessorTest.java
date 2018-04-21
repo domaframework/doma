@@ -1138,4 +1138,64 @@ public class DaoProcessorTest extends AptTestCase {
     assertFalse(getCompiledResult());
     assertMessage(Message.DOMA4443);
   }
+
+  public void testClass() throws Exception {
+    Class<?> target = ClassDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertTrue(getCompiledResult());
+    assertGeneratedSource(target);
+  }
+
+  public void testSqlAnnotationOnNonAbstractMethod() throws Exception {
+    Class<?> target = SqlAnnotationOnNonAbstractMethodDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4444);
+  }
+
+  public void testNoParentClass() throws Exception {
+    Class<?> target = NoParentClassDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4445);
+  }
+
+  public void testIllegalSingleConstructorClass() throws Exception {
+    Class<?> target = IllegalSingleConstructorClassDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4446);
+  }
+
+  public void testIllegalMultipleConstructorsClass() throws Exception {
+    Class<?> target = IllegalMultipleConstructorsClassDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4446);
+  }
+
+  public void testAnnotationOnNonAbstractMethod() throws Exception {
+    Class<?> target = AnnotationOnNonAbstractMethodDao.class;
+    var processor = new DaoProcessor();
+    addProcessor(processor);
+    addCompilationUnit(target);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(Message.DOMA4447);
+  }
 }

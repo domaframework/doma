@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.Formatter;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
@@ -11,6 +10,7 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.codespec.CodeSpec;
 import org.seasar.doma.internal.apt.generator.EntityDescGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 
@@ -42,8 +42,8 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
   }
 
   @Override
-  protected Generator createGenerator(EntityMeta meta, CodeSpec codeSpec, Formatter formatter) {
-    assertNotNull(meta, codeSpec, formatter);
-    return new EntityDescGenerator(ctx, meta, codeSpec, formatter);
+  protected Generator createGenerator(CodeSpec codeSpec, Printer printer, EntityMeta meta) {
+    assertNotNull(meta, codeSpec, printer);
+    return new EntityDescGenerator(codeSpec, printer, meta, ctx);
   }
 }

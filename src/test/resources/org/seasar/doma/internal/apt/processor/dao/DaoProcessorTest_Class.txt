@@ -1,0 +1,121 @@
+package org.seasar.doma.internal.apt.processor.dao;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public class ClassDaoImpl extends org.seasar.doma.internal.apt.processor.dao.ClassDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ClassDao.class, "select_public_abstract");
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ClassDao.class, "select_protected_abstract");
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ClassDao.class, "select_abstract");
+
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ClassDao.class, "select_notFinal");
+
+    /** */
+    public ClassDaoImpl() {
+        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+    }
+
+    @Override
+    public int select_public_abstract() {
+        entering("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_public_abstract");
+        try {
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl");
+            __query.setCallerMethodName("select_public_abstract");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper(), true)));
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_public_abstract", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_public_abstract", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    protected int select_protected_abstract() {
+        entering("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_protected_abstract");
+        try {
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl");
+            __query.setCallerMethodName("select_protected_abstract");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper(), true)));
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_protected_abstract", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_protected_abstract", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    int select_abstract() {
+        entering("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_abstract");
+        try {
+            org.seasar.doma.jdbc.query.SqlTemplateSelectQuery __query = getQueryImplementors().createSqlTemplateSelectQuery(__method2);
+            __query.setMethod(__method2);
+            __query.setConfig(__config);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl");
+            __query.setCallerMethodName("select_abstract");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.ScalarSingleResultHandler<>(() -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper(), true)));
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_abstract", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_abstract", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public int select_notFinal() {
+        entering("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_notFinal");
+        try {
+            int __result = super.select_notFinal();
+            exiting("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_notFinal", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.ClassDaoImpl", "select_notFinal", __e);
+            throw __e;
+        }
+    }
+
+}

@@ -2,19 +2,19 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.ResultStreamDao {
+public class ResultStreamDaoImpl extends org.seasar.doma.jdbc.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.ResultStreamDao {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "selectByIdAndName", java.lang.Integer.class, java.lang.String.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "selectByIdAndName", java.lang.Integer.class, java.lang.String.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "selectById", java.lang.Integer.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "selectById", java.lang.Integer.class);
 
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "select");
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "select");
 
-    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "selectByIdAsMap", java.lang.Integer.class);
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.jdbc.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.ResultStreamDao.class, "selectByIdAsMap", java.lang.Integer.class);
 
     /** */
     public ResultStreamDaoImpl() {
