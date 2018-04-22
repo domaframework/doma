@@ -21,7 +21,7 @@ public class ObjectType extends AbstractJdbcType<Object> {
   @Override
   protected void doSetValue(PreparedStatement preparedStatement, int index, Object value)
       throws SQLException {
-    preparedStatement.setObject(index, value);
+    preparedStatement.setObject(index, value, this.type);
   }
 
   @Override
