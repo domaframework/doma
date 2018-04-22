@@ -155,7 +155,7 @@ public class GeneratedIdPropertyDesc<ENTITY, BASIC extends Number, CONTAINER>
     public <V extends Number> Boolean visitNumberWrapper(
         NumberWrapper<V> wrapper, Supplier<Long> valueSupplier, Void q) throws RuntimeException {
       Number currentValue = wrapper.get();
-      if (currentValue == null || currentValue.intValue() < 0) {
+      if (currentValue == null || currentValue.intValue() <= 0) {
         var value = valueSupplier.get();
         if (value != null) {
           wrapper.set(value);
