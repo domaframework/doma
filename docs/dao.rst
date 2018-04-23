@@ -2,19 +2,19 @@
 Dao interfaces
 ==================
 
-.. contents:: 目次
+.. contents:: Contents
    :depth: 3
 
-Data Access Object （Dao） はデータベースアクセスのためのインタフェースです。
+Data Access Object (Dao) is interface for access to database.
 
-Dao定義
+Dao definition
 ==================
 
 Daoは ``@Dao`` が注釈されたインタフェースとして定義します。
 
 インタフェースの実装クラスはaptによりコンパイル時に自動生成されます。
 
-クエリ定義
+Query definition
 ==================
 
 アノテーションを使って :doc:`query/index` を定義できます。
@@ -23,7 +23,7 @@ Javaコードで任意のクエリを組み立てるには `デフォルトメ�
 
 .. _dao-default-method:
 
-デフォルトメソッド
+Default method
 ==================
 
 デフォルトメソッドでは任意の処理を記述できます。
@@ -43,7 +43,7 @@ Javaコードで任意のクエリを組み立てるには `デフォルトメ�
       }
   }
 
-利用例
+Example
 ==================
 
 コンパイルすると注釈処理により実装クラスが生成されます。
