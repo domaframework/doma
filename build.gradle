@@ -64,6 +64,7 @@ javadoc {
     options.links 'http://docs.oracle.com/javase/jp/8/docs/api/'
     options.use = true
     options.addStringOption('Xdoclint:none', '-quiet')
+    options.addBooleanOption('html5', true)
     exclude '**/internal/**'
 }
 
