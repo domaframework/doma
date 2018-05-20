@@ -1,11 +1,11 @@
 ==================
-挿入
+Insert
 ==================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-挿入を行うには、 ``@Insert`` をDaoのメソッドに注釈します。
+Annotate with ``@Insert`` to Dao method for execute insert.
 
 .. code-block:: java
 
@@ -18,28 +18,25 @@
       Result<ImmutableEmployee> insert(ImmutableEmployee employee);
   }
 
-デフォルトでは、INSERT文が自動生成されます。
-``@Insert`` の ``sqlFile`` 要素に ``true`` を設定することで、任意のSQLファイルにマッピングできます。
+By default INSERT statement is auto generated.
+You can mapping arbitrary SQL file by specifying ``true`` to ``sqlFile`` property within the ``@Insert`` annotation.
 
-パラメータの :doc:`../entity` にエンティティリスナーが指定されている場合、
-挿入の実行前にエンティティリスナーの ``preInsert`` メソッドが呼び出されます。
-また、挿入の実行後にエンティティリスナーの ``postInsert`` メソッドが呼び出されます。
+The ``preInsert`` method of entity listener is called when before executing insert if the entity listener is specified at :doc:`../entity` parameter.
+Also the ``postInsert`` entity listener  method is called when after executing insert.
 
-戻り値
-======
+Return value
+============
 
-パラメータがイミュータブルなエンティティクラスの場合、
-戻り値はそのエンティティクラスを要素とする ``org.seasar.doma.jdbc.Result``
-でなければいけません。
+Return value must be ``org.seasar.doma.jdbc.Result`` that has entity class as an element if parameter is immutable entity class.
 
-上記の条件を満たさないない場合、戻り値は更新件数を表す ``int`` でなければいけません。
+Return value must be ``int`` that is represented updated count if the above conditions are not satisfied.
 
-SQLの自動生成による挿入
-=======================
+Insert by auto generated SQL
+============================
 
-パラメータの型はエンティティクラスでなければいけません。
-指定できるパラメータの数は1つです。
-引数はnullであってはいけません。
+Parameter type must be entity class.
+Specifiable parameter is only one.
+Parameter must not be null.
 
 .. code-block:: java
 
@@ -49,36 +46,34 @@ SQLの自動生成による挿入
   @Insert
   Result<ImmutableEmployee> insert(ImmutableEmployee employee);
 
-識別子
-------
+Identifier
+----------
 
-:doc:`../entity` の識別子に、 ``@GeneratedValue`` が注釈されている場合、
-識別子が自動的に生成され設定されます。
 
-注意点については :ref:`identity-auto-generation` を参照ください。
+Identifier is auto generated and auto setting if :doc:`../entity` identifier is annotated with ``@GeneratedValue``.
 
-バージョン番号
---------------
+Reference :ref:`identity-auto-generation` about cautionary point.
 
-:doc:`../entity` に ``@Version`` が注釈されたプロパティがある場合、
-そのプロパティに明示的に ``0`` 以上の値が設定されていればその値を使用します。
-もし設定されていないか、 ``0`` 未満の値が設定されていれば ``1`` を自動で設定します。
+Version numbers
+----------------
 
-挿入対象プロパティの制御
-~~~~~~~~~~~~~~~~~~~~~~~~
+If :doc:`../entity` has property that is annotated  with ``@Version``, if the property is explicitly specified over 0 then use the value.
+
+If the value is not specified or is specified less than 0 then the value is specified 1 automatically.
+
+Control insertion target property
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 insertable
 ~~~~~~~~~~
 
-エンティティクラスに ``@Column`` が注釈されたプロパティがある場合、
-``@Column`` の ``insertable`` 要素が ``false`` のものは挿入対象外です。
+The ``insertable`` property within ``@Column`` annotation that is specified ``false`` is excluded from insertion target if entity class has property that is annotated with ``@Column``.
 
 exclude
 ~~~~~~~
 
-``@Insert`` の ``exclude`` 要素に指定されたプロパティを挿入対象外とします。
-プロパティがこの要素に指定されていれば、 ``@Column`` の ``insertable`` 要素が
-``true`` であっても挿入対象外です。
+Property that is specified with ``exclude`` property within the ``@Insert`` annotation is excluded from insertion target.
+Even if ``insertable`` property within ``@Column`` annotation is  specified ``true`` the property is excluded from insertion target if the property is specified by this element.
 
 .. code-block:: java
 
@@ -88,12 +83,10 @@ exclude
 include
 ~~~~~~~
 
-``@Insert`` の ``include`` 要素に指定されたプロパティのみを挿入対象とします。
-``@Insert`` の ``include`` 要素と ``exclude`` 要素の両方に同じプロパティが指定された場合、
-そのプロパティは挿入対象外になります。
+Only property that is specified with ``include`` property within ``@Insert`` annotation is included to insertion target.
+If same property are specified with both of ``include`` element and ``exclude`` element of ``@Insert`` the property is excluded from insertion target.
 
-プロパティがこの要素に指定されていても、 ``@Column`` の ``insertable`` 要素が
-``false`` であれば挿入対象外です。
+Even if property is specified with this element the property is excluded from insertion target if ``insertable`` property within ``@Column`` annotation is ``false``.
 
 .. code-block:: java
 
@@ -103,26 +96,25 @@ include
 excludeNull
 ~~~~~~~~~~~
 
-``@Insert`` の ``excludeNull`` 要素が ``true`` の場合、
-値が ``null`` のプロパティを挿入対象外とします。
-この要素が ``true`` の場合、 ``@Column`` の ``insertable`` 要素が ``true`` であったり、
-``@Insert`` の ``include`` 要素にプロパティが指定されていても、値が ``null`` であれば挿入対象外です。
+Property that value is ``null`` is excluded from insertion target if ``excludeNull`` property within ``@Insert`` annotation is specified ``true``.
+If this element is ``true``, even if ``insertable`` property within ``@Column`` annotation is specified ``true`` or property is specified with ``include`` property within ``@Insert`` annotation
+the property is excluded from insertion target if value is ``null``.
 
 .. code-block:: java
 
   @Insert(excludeNull = true)
   int insert(Employee employee);
 
-SQLファイルによる挿入
+Insert by SQL file
 =====================
 
-SQLファイルによる挿入を行うには、 ``@Insert`` の ``sqlFile`` 要素に ``true`` を設定し、
-メソッドに対応するSQLファイルを用意します。
+To execute insertion by SQL file,
+you set ``true`` to ``sqlFile`` property within ``@Insert`` annotation and prepare SQL file that correspond method.
 
-パラメータには任意の型が使用できます。
-指定できるパラメータの数に制限はありません。
-パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
-それ以外の型の場合、引数は ``null`` であってはいけません。
+You can use arbitrary type as parameter.
+Specifiable parameters count is no limit.
+You can set ``null`` to parameter if parameter type is basic type or domain class.
+Parameter must not be ``null`` if the type is other than that.
 
 .. code-block:: java
 
@@ -132,7 +124,7 @@ SQLファイルによる挿入を行うには、 ``@Insert`` の ``sqlFile`` 要
   @Insert(sqlFile = true)
   Result<ImmutableEmployee> insert(ImmutableEmployee employee);
 
-たとえば、上記のメソッドに対応するSQLは次のように記述します。
+For example, you describe SQL file like below to correspond above method.
 
 .. code-block:: sql
 
@@ -142,37 +134,35 @@ SQLファイルによる挿入を行うには、 ``@Insert`` の ``sqlFile`` 要
           /* employee.salary */100, 
           /* employee.version */0)
 
-SQLファイルによる挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
-また、 ``@Insert`` の ``exclude`` 要素、 ``include`` 要素、 ``excludeNull`` 要素は参照されません。
+Identifier auto setting and version value auto setting are not done by insertion by SQL file.
+Also, ``exclude`` property and ``include`` property and ``excludeNull`` property within ``@Insert`` annotation are not referenced.
 
-一意制約違反
-============
+Unique constraint violation
+===========================
 
-一意制約違反が発生した場合は、SQLファイルの使用の有無に関係なく
-``UniqueConstraintException`` がスローされます。
+``UniqueConstraintException`` is thrown regardless of with or without using sql file if unique constraint violation is occurred.
 
-クエリタイムアウト
+Query timeout
 ==================
 
-``@Insert`` の ``queryTimeout`` 要素にクエリタイムアウトの秒数を指定できます。
+You can specify seconds of query timeout to ``queryTimeout`` property within ``@Insert`` annotation.
 
 .. code-block:: java
 
   @Insert(queryTimeout = 10)
   int insert(Employee employee);
 
-この指定は、SQLファイルの使用の有無に関係なく適用されます。
-``queryTimeout`` 要素に値を指定しない場合、
-:doc:`../config` に指定されたクエリタイムアウトが使用されます。
+This specifying is applied regardless of with or without using sql file.
+Query timeout that is specified in :doc:`../config` is used if ``queryTimeout`` property is not set value.
 
-SQL のログ出力形式
-==================
+SQL log output format
+======================
 
-``@Insert`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+You can specify SQL log output format to ``sqlLog`` property within ``@Insert`` annotation.
 
 .. code-block:: java
 
   @Insert(sqlLog = SqlLogType.RAW)
   int insert(Employee employee);
 
-``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+``SqlLogType.RAW`` represent outputting log that is sql with a binding parameter.
