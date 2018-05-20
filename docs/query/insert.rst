@@ -19,7 +19,7 @@ Annotate with ``@Insert`` to Dao method for execute insert.
   }
 
 By default INSERT statement is auto generated.
-You can mapping arbitrary SQL file by setting true to ``sqlFile`` element of ``@Insert``.
+You can mapping arbitrary SQL file by specifying ``true`` to ``sqlFile`` property within the ``@Insert`` annotation.
 
 The ``preInsert`` method of entity listener is called when before executing insert if the entity listener is specified at :doc:`../entity` parameter.
 Also the ``postInsert`` entity listener  method is called when after executing insert.
@@ -50,16 +50,16 @@ Identifier
 ----------
 
 
-Identifier is auto generated and setting if :doc:`../entity` identifier is annotated with ``@GeneratedValue``.
+Identifier is auto generated and auto setting if :doc:`../entity` identifier is annotated with ``@GeneratedValue``.
 
 Reference :ref:`identity-auto-generation` about cautionary point.
 
 Version numbers
 ----------------
 
-If :doc:`../entity` has property that is annotated  with ``@Version`, if the property is explicitly set over 0 then use the value.
+If :doc:`../entity` has property that is annotated  with ``@Version``, if the property is explicitly specified over 0 then use the value.
 
-If the value is not set or is less than 0 then the value is set 1 automatically.
+If the value is not specified or is specified less than 0 then the value is specified 1 automatically.
 
 Control insertion target property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,13 +67,13 @@ Control insertion target property
 insertable
 ~~~~~~~~~~
 
-Property that is set false to ``insertable`` element of ``@Column`` is excluded from insertion target if entity class has property that is annotated with ``@Column``.
+The ``insertable`` property within ``@Column`` annotation that is specified ``false`` is excluded from insertion target if entity class has property that is annotated with ``@Column``.
 
 exclude
 ~~~~~~~
 
-Property that is specified with ``exclude`` element of ``@Insert`` is excluded from insertion target.
-Even if ``insertable`` element of ``@Column`` is true the property is excluded from insertion target if the property is specified by this element.
+Property that is specified with ``exclude`` property within the ``@Insert`` annotation is excluded from insertion target.
+Even if ``insertable`` property within ``@Column`` annotation is  specified ``true`` the property is excluded from insertion target if the property is specified by this element.
 
 .. code-block:: java
 
@@ -83,10 +83,10 @@ Even if ``insertable`` element of ``@Column`` is true the property is excluded f
 include
 ~~~~~~~
 
-Only property that is specified with ``include`` element of ``@Insert`` is included to insertion target.
+Only property that is specified with ``include`` property within ``@Insert`` annotation is included to insertion target.
 If same property are specified with both of ``include`` element and ``exclude`` element of ``@Insert`` the property is excluded from insertion target.
 
-Even if property is specified with this element the property is excluded from insertion target if ``insertable`` element of ``@Column`` is false.
+Even if property is specified with this element the property is excluded from insertion target if ``insertable`` property within ``@Column`` annotation is ``false``.
 
 .. code-block:: java
 
@@ -96,8 +96,8 @@ Even if property is specified with this element the property is excluded from in
 excludeNull
 ~~~~~~~~~~~
 
-Property that value is ``null`` is excluded from insertion target if ``excludeNull`` element of ``@Insert`` is true.
-If this element is true, even if ``insertable`` element of ``@Column`` is true or property is specified with ``include`` element of ``@Insert``
+Property that value is ``null`` is excluded from insertion target if ``excludeNull`` property within ``@Insert`` annotation is specified ``true``.
+If this element is ``true``, even if ``insertable`` property within ``@Column`` annotation is specified ``true`` or property is specified with ``include`` property within ``@Insert`` annotation
 the property is excluded from insertion target if value is ``null``.
 
 .. code-block:: java
@@ -109,7 +109,7 @@ Insert by SQL file
 =====================
 
 To execute insertion by SQL file,
-you set ``true`` to ``sqlFile`` element of ``@Insert`` and prepare SQL file that correspond method.
+you set ``true`` to ``sqlFile`` property within ``@Insert`` annotation and prepare SQL file that correspond method.
 
 You can use arbitrary type as parameter.
 Specifiable parameters count is no limit.
@@ -135,7 +135,7 @@ For example, you describe SQL file like below to correspond above method.
           /* employee.version */0)
 
 Identifier auto setting and version value auto setting are not done by insertion by SQL file.
-Also, ``exclude`` element and ``include`` element and ``excludeNull`` element of ``@Insert`` are not referenced.
+Also, ``exclude`` property and ``include`` property and ``excludeNull`` property within ``@Insert`` annotation are not referenced.
 
 Unique constraint violation
 ===========================
@@ -145,7 +145,7 @@ Unique constraint violation
 Query timeout
 ==================
 
-You can specify seconds of query timeout to ``queryTimeout`` element of ``@Insert``.
+You can specify seconds of query timeout to ``queryTimeout`` property within ``@Insert`` annotation.
 
 .. code-block:: java
 
@@ -153,12 +153,12 @@ You can specify seconds of query timeout to ``queryTimeout`` element of ``@Inser
   int insert(Employee employee);
 
 This specifying is applied regardless of with or without using sql file.
-Query timeout that is specified in :doc:`../config` is used if ``queryTimeout`` element is not set value.
+Query timeout that is specified in :doc:`../config` is used if ``queryTimeout`` property is not set value.
 
 SQL log output format
 ======================
 
-You can specify SQL log output format to ``sqlLog`` element of ``@Insert``.
+You can specify SQL log output format to ``sqlLog`` property within ``@Insert`` annotation.
 
 .. code-block:: java
 
