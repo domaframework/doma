@@ -1,11 +1,11 @@
 ==================
-削除
+Delete
 ==================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-削除を行うには、 ``@Delete`` をDaoのメソッドに注釈します。
+Annotate with ``@Delete`` to Dao method for execute delete.
 
 .. code-block:: java
 
@@ -15,24 +15,23 @@
       int delete(Employee employee);
   }
 
-デフォルトでは、DELETE文が自動生成されます。
-``@Delete`` の ``sqlFile`` に ``true`` を設定することで、任意のSQLファイルにマッピングできます。
+By default DELETE statement is auto generated.
+You can mapping arbitrary SQL file by specifying ``true`` to ``sqlFile`` property within the ``@Delete`` annotation.
 
-パラメータのエンティティクラスにエンティティリスナーが指定されている場合、
-削除の実行前にエンティティリスナーの ``preDelete`` メソッドが呼び出されます。
-また、削除の実行後にエンティティリスナーの ``postDelete`` メソッドを呼び出されます。
+The ``preDelete`` method of entity listener is called when before executing delete if the entity listener is specified at entity class parameter.
+Also the ``postDelete`` method of entity listener is called when after executing delete.
 
-戻り値
-======
+Return value
+============
 
-戻り値は更新件数を表す ``int`` でなければいけません。
+Return value must be ``int`` that represent update count.
 
-SQLの自動生成による削除
+Delete by auto generated SQL
 =============================
 
-パラメータの型はエンティティクラスでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
+Parameter type must be entity class.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
 
 .. code-block:: java
 
@@ -42,22 +41,22 @@ SQLの自動生成による削除
   @Delete
   Result<ImmutableEmployee> delete(ImmutableEmployee employee);
 
-SQL自動生成におけるバージョン番号と楽観的排他制御
--------------------------------------------------
+Version number and optimistic concurrency control in auto generated SQL
+-----------------------------------------------------------------------
 
-次の条件を満たす場合に、楽観的排他制御が行われます。
+Optimistic concurrency control is executed if you satisfied below conditions.
 
-* パラメータのエンティティクラスに@Versionが注釈されたプロパティがある
-* @DeleteのignoreVersion要素がfalseである
+* Entity class within parameter has property that is annotated with @Version
+* The ignoreVersion element within @Delete annotation is false
 
-楽観的排他制御が有効であれば、バージョン番号は識別子とともに削除条件に含まれます。
-この場合、削除件数が0件であれば、楽観的排他制御の失敗を示す ``OptimisticLockException`` がスローされます。
+If optimistic concurrency control is enable, version number is included with identifier in delete condition.
+``OptimisticLockException`` representing optimistic concurrency control failure is thrown, if at that time delete count is 0.
 
 ignoreVersion
 ~~~~~~~~~~~~~
 
-``@Delete`` の ``ignoreVersion`` 要素が ``true`` の場合、 バージョン番号は削除条件に含まれません。
-この場合、削除件数が0件であっても、 ``OptimisticLockException`` はスローされません。
+If ``ignoreVersion`` property within ``@Delete`` annotation is true, version number is not include in delete condition.
+``OptimisticLockException`` is not thrown in this case, even if delete count is 0.
 
 .. code-block:: java
 
@@ -67,64 +66,63 @@ ignoreVersion
 suppressOptimisticLockException
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``@Delete`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
-バージョン番号は削除条件に含まれます。
-しかし、この場合、削除件数が0件であっても、 ``OptimisticLockException`` はスローされません。
+If ``suppressOptimisticLockException`` property within ``@Delete`` is ``true``, version number is included in delete condition.
+But in this case ``OptimisticLockException`` is not thrown even if delete count is 0.
 
 .. code-block:: java
 
   @Delete(suppressOptimisticLockException = true)
   int delete(Employee employee);
 
-SQLファイルによる削除
+Delete by SQL file
 ===========================
 
-SQLファイルによる削除を行うには、 ``@Delete`` の ``sqlFile`` 要素に ``true`` を設定し、
-メソッドに対応するSQLファイルを用意します。
+To execute deleting by SQL file, you set ``true`` to ``sqlFile`` property within ``@Delete`` annotation and prepare SQL file that correspond method.
 
-パラメータには任意の型が使用できます。
-指定できるパラメータの数に制限はありません。
-パラメータの型が基本型もしくはドメインクラスの場合、引数を ``null`` にできます。
-それ以外の型の場合、引数は ``null`` であってはいけません。
 
-エンティティにエンティティリスナーが指定されていても、エンティティリスナーのメソッドは呼び出しません。
+You can use arbitrary type as parameter.
+Specifiable parameters count is no limit.
+You can set ``null`` to parameter if parameter type is basic type or domain class.
+Parameter must not be ``null`` if the type is other than that.
+
+Entity listener method is not called even if the entity listener is specified to entity.
 
 .. code-block:: java
 
   @Delete(sqlFile = true)
   int delete(Employee employee);
 
-たとえば、上記のメソッドに対応するSQLは次のように記述します。
+For example, you describe SQL file like below to correspond above method.
 
 .. code-block:: sql
 
   delete from employee where name = /* employee.name */'hoge'
 
-SQLファイルにおけるバージョン番号と楽観的排他制御
--------------------------------------------------
+Version number and optimistic concurrency control in  SQL File
+--------------------------------------------------------------
 
-次の条件を満たす場合に、楽観的排他制御が行われます。
+Optimistic concurrency control is executed if you satisfied below conditions.
 
-* パラメータにエンティティクラスを含む
-* パラメータの内、左から数えて最初に登場するエンティティクラスに@Versionが注釈されたプロパティがある
-* @DeleteのignoreVersion要素がfalseである
-* @DeleteのsuppressOptimisticLockException要素がfalseである
+* Entity class is included in parameter
+* Entity class at first from the left within parameter has property that is annotated with @Version
+* The ignoreVersion property within @Delete annotation is false
+* The suppressOptimisticLockException property within @Delete annotation is false
 
-ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
-たとえば、下記のSQLのように、WHERE句でバージョンを番号を指定しなければいけません。
+However, describing to SQL file for Optimistic concurrency control SQL is application developer's responsibility.
+For example like below SQL, you must specify version number in WHERE clauses.
 
 .. code-block:: sql
 
   delete from EMPLOYEE where ID = /* employee.id */1 and VERSION = /* employee.version */1
 
-このSQLの削除件数が0件の場合、楽観的排他制御の失敗を示す ``OptimisticLockException`` がスローされます。
-削除件数が0件でない場合、 ``OptimisticLockException`` はスローされません。
+``OptimisticLockException`` representing optimistic concurrency control failure is thrown, if this SQL delete count is 0.
+``OptimisticLockException`` is not thrown if delete count is not 0.
 
 ignoreVersion
 ~~~~~~~~~~~~~
 
-``@Delete`` の ``ignoreVersion`` 要素が ``true`` の場合、
-削除件数が0件であっても、 ``OptimisticLockException`` はスローされません。
+If ``ignoreVersion`` property within ``@Delete`` annotation is ``true``,
+``OptimisticLockException`` is not thrown even if delete count is 0.
 
 .. code-block:: java
 
@@ -134,36 +132,36 @@ ignoreVersion
 suppressOptimisticLockException
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``@Delete`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
-削除件数が0件であっても、 ``OptimisticLockException`` はスローされません。
+If ``suppressOptimisticLockException`` property within ``@Delete`` annotation is ``true``,
+``OptimisticLockException`` is not thrown even if delete count is 0.
 
 .. code-block:: java
 
   @Delete(sqlFile = true, suppressOptimisticLockException = true)
   int delete(Employee employee);
 
-クエリタイムアウト
+Query timeout
 ==================
 
 
-``@Delete`` の ``queryTimeout`` 要素にクエリタイムアウトの秒数を指定できます。
+You can specify seconds of query timeout to ``queryTimeout`` property within ``@Delete`` annotation.
 
 .. code-block:: java
 
   @Delete(queryTimeout = 10)
   int delete(Employee employee);
 
-この指定は、SQLファイルの使用の有無に関係なく適用されます。
-``queryTimeout`` 要素に値を指定しない場合、 :doc:`../config` に指定されたクエリタイムアウトが使用されます。
+This specifying is applied regardless of with or without using sql file.
+Query timeout that is specified in :doc:`../config` is used if ``queryTimeout`` property is not set value.
 
-SQL のログ出力形式
-==================
+SQL log output format
+=====================
 
-``@Delete`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+You can specify SQL log output format to ``sqlLog`` property within ``@Delete`` annotation.
 
 .. code-block:: java
 
   @Delete(sqlLog = SqlLogType.RAW)
   int delete(Employee employee);
 
-``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+``SqlLogType.RAW`` represent outputting log that is sql with a binding parameter.
