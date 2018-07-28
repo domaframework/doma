@@ -1,35 +1,36 @@
-======
-式言語
-======
+===================
+Expression language
+===================
 
-.. contents:: 目次
+.. contents:: Contents
    :depth: 3
 
-:doc:`sql` 中の式コメントには簡易な式を記述できます。
-文法はJavaとほとんど同じです。
-ただし、Javaで可能なことすべてができるわけではありません。
+You can write simple expressions in expression comments of :doc:`sql`.
+The grammar is almost the same as Java.
+However, not everything is possible that Java can do.
 
 .. note::
 
-  特に大きな違いは、 ``java.util.Optional`` などのオプショナルな型の扱い方にあります。
-  式の中では、 ``Optional`` 型の値は常にその要素の型の値に自動変換されます。
-  たとえば、 ``Optional<String>`` 型の値は ``String`` 型の値として扱われます。
-  したがって、 ``Optional`` 型のメソッドを呼び出したり、
-  ``Optional`` 型をパラメータとするメソッドの呼び出しはできません。
+  Especially, the big difference is how to use optional types like ``java.util.Optional``.
+  In the expression, a value of ``Optional`` type is always converted
+  to a value of the element type automatically.
+  For example a value of the ``Optional<String>`` type is treated as a value of ``String`` type.
+  Therefore, we can't call methods of ``Optional`` type,
+  nor do we call methods which have an ``Optional`` type in the parameters.
 
-  値の存在の有無を確認する場合は、 ``/*%if optional.isPresent() */`` とする替わりに
-  ``/*%if optional != null */`` としてください。
+  When you want to check existence of a value, use ``/*%if optional != null */``
+  instead of ``/*%if optional.isPresent() */``.
 
-  ``java.util.OptionalInt`` 、 ``java.util.OptionalDouble`` 、 ``java.util.OptionalLong``
-  についても同様です。
+  The same is true for ``java.util.OptionalInt``, ``java.util.OptionalDouble``,
+  and ``java.util.OptionalLong``.
 
-リテラル
+Literals
 ========
 
-以下のリテラルが用意されています。
+You can use the following literals:
 
 +----------+----------------------+
-| リテラル | 型                   |
+| Literal  | Type                 |
 +==========+======================+
 | null     | void                 |
 +----------+----------------------+
@@ -52,8 +53,8 @@
 | "a"      | java.lang.String     |
 +----------+----------------------+
 
-数値の型は、リテラルの最後に ``L`` や ``F`` などのサフィックスを付与して区別します。 
-サフィックスは大文字でなければいけません。
+The numeral types are distinguished by suffix letters such as ``L`` or ``F``
+at the end of the literals. The suffixes must be capital letters.
 
 .. code-block:: sql
 
@@ -62,30 +63,30 @@
       employee_name = /* employeeName */'smith'
   /*%end*/
 
-比較演算子
-==========
+Comparison operators
+====================
 
-以下の比較演算子を使用できます。
+You can use the following comparison operators:
 
-+--------+------------------------+
-| 演算子 |   説明                 |
-+========+========================+
-| ==     |   等値演算子           |
-+--------+------------------------+
-| !=     |   不等値演算子         |
-+--------+------------------------+
-| <      |   小なり演算子         |
-+--------+------------------------+
-| <=     |   小なりイコール演算子 |
-+--------+------------------------+
-| >      |   大なり演算子         |
-+--------+------------------------+
-| >=     |   大なりイコール演算子 |
-+--------+------------------------+
++-----------+-------------------------------------+
+| Operator  |   Description                       |
++===========+=====================================+
+| ==        |   Equal to operator                 |
++-----------+-------------------------------------+
+| !=        |   Not equal to operator             |
++-----------+-------------------------------------+
+| <         |   Less than operator                |
++-----------+-------------------------------------+
+| <=        |   Less than or equal to operator    |
++-----------+-------------------------------------+
+| >         |   Greater than operator             |
++-----------+-------------------------------------+
+| >=        |   Greater than or equal to operator |
++-----------+-------------------------------------+
 
-比較演算子を利用するには、 被演算子が ``java.lang.Comparable`` を実装している必要があります。
+To use comparison operators, operands must implement ``java.lang.Comparable``.
 
-``<`` 、 ``<=`` 、 ``>`` 、 ``>=`` では、被演算子が ``null`` であってはいけません。
+The operands for ``<``, ``<=``, ``>`` and ``>=`` must not be ``null``.
 
 .. code-block:: sql
 
@@ -94,20 +95,20 @@
       employee_name = /* employeeName */'smith'
   /*%end*/
 
-論理演算子
-==========
+Logical operators
+=================
 
-以下の論理演算子を使用できます。
+You can use the following logical operators:
 
-========= ====================
-演算子    説明
-========= ====================
-!         論理否定演算子
-&&        論理積演算子
-||        論理和演算子
-========= ====================
+========= ===========================
+Operator  Description
+========= ===========================
+!         Logical complement operator
+&&        Conditional-AND operator
+||        Conditional-OR operator
+========= ===========================
 
-括弧を使って、演算子が適用される優先度を制御できます。
+With parentheses, you can override the precedence of operators.
 
 .. code-block:: sql
 
@@ -116,38 +117,38 @@
       employee_name = /* employeeName */'smith'
   /*%end*/
 
-算術演算子
-==========
+Arithmetic operators
+====================
 
-以下の算術演算子を使用できます。
+You can use the following arithmetic operators:
 
-+--------+---------------+
-| 演算子 |    説明       |
-+========+===============+
-| \+     |    加算演算子 |
-+--------+---------------+
-| \-     |    減算演算子 |
-+--------+---------------+
-| \*     |    乗算演算子 |
-+--------+---------------+
-| /      |    除算演算子 |
-+--------+---------------+
-| %      |    剰余演算子 |
-+--------+---------------+
++----------+----------------------------+
+| Operator |    Description             |
++==========+============================+
+| \+       |    Additive operator       |
++----------+----------------------------+
+| \-       |    Subtraction operator    |
++----------+----------------------------+
+| \*       |    Multiplication operator |
++----------+----------------------------+
+| /        |    Division operator       |
++----------+----------------------------+
+| %        |    Remainder operator      |
++----------+----------------------------+
 
-被演算子は数値型でなければいけません。
+Operands must be numeric type.
 
 .. code-block:: sql
 
   select * from employee where 
       salary = /* salary + 1000 */0
 
-連結演算子
-==============
+String concatenation operator
+=============================
 
-連結演算子 ``+`` を使って文字を連結できます。
+You can concatenate characters using a concatenation operator ``+``.
 
-被演算子は次のいずれかの型でなければいけません。
+The operand must be one of the following types:
 
 * java.lang.String
 * java.lang.Character
@@ -158,11 +159,11 @@
   select * from employee where 
      employee_name like /* employeeName + "_" */'smith'
 
-インスタンスメソッドの呼び出し
-==============================
+Calling instance methods
+========================
 
-ドット ``.`` で区切ってメソッド名を指定することでインスタンスメソッドを実行可能です。
-実行可能なメソッドは可視性がpublicなものだけに限られます。
+You can call instance methods with the method names separated by dots ``.``.
+The method visibility must be public.
 
 .. code-block:: sql
 
@@ -171,7 +172,7 @@
       employee_name = /* employeeName */'smith'
   /*%end*/
 
-引数がない場合はメソッド名の後ろに ``()`` を指定します。
+If the method has no argument, specify ``()`` after the method name.
 
 .. code-block:: sql
 
@@ -180,22 +181,23 @@
       employee_name = /* employeeName */'smith'
   /*%end*/
 
-インスタンスフィールドへのアクセス
-==================================
+Accessing to instance fields
+============================
 
-ドット ``.`` で区切ってフィールド名を指定することでインスタンスフィールドにアクセスできます。
-可視性はprivateであってもアクセス可能です。
+You can access instance fields with the field names separated by dots ``.``.
+Even if the visibility is private, you can access it.
 
 .. code-block:: sql
 
   select * from employee where 
       employee_name = /* employee.employeeName */'smith'
 
-staticメソッドの呼び出し
-========================
+Calling static methods
+======================
 
-``@`` で囲まれたクラスの完全修飾名にメソッドを続けることでstaticメソッドを実行可能です。
-実行可能なメソッドは可視性がpublicなものだけに限られます。
+You can call static methods by continuing the method names
+with the fully qualified class names enclosed in ``@``.
+The method visibility must be public.
 
 .. code-block:: sql
 
@@ -204,11 +206,12 @@ staticメソッドの呼び出し
       employee_name = /* employeeName */'smith'
   /*%end*/
 
-staticフィールドへのアクセス
-============================
+Accessing to static fields
+==========================
 
-``@`` で囲まれたクラスの完全修飾名にフィールドを続けることでstaticフィールドにアクセスできます。
-可視性はprivateであってもアクセス可能です。
+You can access static fields by continuing the field name
+with the fully qualified class name enclosed in ``@``.
+Even if the visibility is private, you can access it.
 
 .. code-block:: sql
 
@@ -217,114 +220,123 @@ staticフィールドへのアクセス
     employee_name = /* employeeName */'smith'
   /*%end*/
 
-組み込み関数の使用
-==================
+Using built-in functions
+========================
 
-組み込み関数は、主に、SQLにバインドする前にバインド変数の値を変更するためのユーティリティです。
+Built-in functions are utilities mainly for changing values of binding variables
+before binding them to SQL.
 
-たとえば、LIKE句で前方一致検索を行う場合に次のように記述できます。
+For example, when you run a prefix search with a LIKE clause,
+you can write like this:
 
 .. code-block:: sql
 
   select * from employee where 
       employee_name like /* @prefix(employee.employeeName) */'smith' escape '$'
 
-ここでは、 ``@prefix(employee.employeeName)`` というように、 ``employee.employeeName`` 
-を ``@prefix`` 関数に渡しています。
-``@prefix`` 関数は、パラメータで受け取る文字シーケンスを前方一致検索用の文字列に変換します。
-また、特別な意味を持つ文字をエスケープします。
-たとえば ``employee.employeeName`` の値が ``ABC`` である場合、 値は ``ABC%`` に変換されます。
-もし、 ``employee.employeeName`` の値が ``AB%C`` というように ``%`` を含んでいる場合、
-``%`` はデフォルトのエスケープシーケンス ``$`` でエスケープされ、値は ``AB$%C%`` に変換されます。
+``@prefix(employee.employeeName)`` means that we pass ``employee.employeeName``
+to the ``@prefix`` function.
+The ``@prefix`` function converts the character sequence which is received by the parameter
+to a string for forward match search.
+It also escapes special characters.
+For example, if the value of ``employee.employeeName`` is ``ABC``, it's converted to ``ABC%``.
+If the value of ``employee.employeeName`` contains ``%`` such as ``AB%C``,
+the ``%`` is escaped with a default escape sequence ``$``,
+therefore the value is converted to ``AB$%C%``.
 
-使用可能な関数のシグネチャは以下のとおりです。
+You can use following function signatures:
 
 String @escape(CharSequence text, char escapeChar = '$')
-  LIKE演算のためのエスケープを行うことを示します。
-  戻り値は入力値をエスケープした文字列です。
-  ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Escapes the character sequence for LIKE operation.
+  The return value is a string which is a result of escaping the character sequence.
+  If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 String @prefix(CharSequence prefix, char escapeChar = '$')
-  前方一致検索を行うことを示します。
-  戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。
-  ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Converts the character sequence for prefix search.
+  The return value is a string which is a result of escaping the character sequence
+  and adding a wild card character at the end.
+  If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 String @infix(CharSequence infix, char escapeChar = '$')
-  中間一致検索を行うことを示します。
-  戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。
-  ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Converts the character sequence for infix search. 
+  The return value is a string which is a result of escaping the character sequence
+  and adding wild card characters at the beginning and the end.
+  If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 String @suffix(CharSequence suffix, char escapeChar = '$')
-  後方一致検索を行うことを示します。
-  戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。
-  ``escapeChar`` が指定されない場合、デフォルトのエスケープ文字 ``$`` が使用されます。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Converts the character sequence for suffix search.
+  The return value is a string which is a result of escaping the character sequence
+  and adding a wild card character at the beginning.
+  If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 java.util.Date @roundDownTimePart(java.util.Date date)
-  時刻部分を切り捨てることを示します。
-  戻り値は時刻部分が切り捨てられた新しい日付です。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Rounds down the time part.
+  The return value is a new Date which is rounded down the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 java.sql.Date @roundDownTimePart(java.sql.Date date)
-  時刻部分を切り捨てることを示します。
-  戻り値は時刻部分が切り捨てられた新しい日付です。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Rounds down the time part.
+  The return value is a new Date which is rounded down the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 java.sql.Timestamp @roundDownTimePart(java.sql.Timestamp timestamp)
-  時刻部分を切り捨てることを示します。
-  戻り値は時刻部分が切り捨てられた新しいタイムスタンプです。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Rounds down the time part.
+  The return value is a new Timestamp which is rounded down the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 java.util.Date @roundUpTimePart(java.util.Date date)
-  時刻部分を切り上げることを示します。
-  戻り値は時刻部分が切り上げられた新しい日付です。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Rounds up the time part.
+  The return value is a new Date which is rounded up the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 java.sql.Date @roundUpTimePart(java.sql.Date date)
-  時刻部分を切り上げることを示します。
-  戻り値は時刻部分が切り上げられた新しい日付です。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Rounds up the time part.
+  The return value is a new Date which is rounded up the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 java.sql.Timestamp @roundUpTimePart(java.sql.Timestamp timestamp)
-  時刻部分を切り上げることを示します。
-  戻り値は時刻部分が切り上げられた新しいタイムスタンプです。
-  引数に ``null`` を渡した場合、 ``null`` を返します。
+  Rounds up the time part.
+  The return value is a new Timestamp which is rounded up the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
 
 boolean @isEmpty(CharSequence charSequence)
-  文字シーケンスが ``null`` 、もしくは文字シーケンスの長さが ``0`` の場合 ``true`` を返します。
+  Returns ``true`` if the character sequence is ``null`` or the length is ``0``.
 
 boolean @isNotEmpty(CharSequence charSequence)
-  文字シーケンスが ``null`` でない、かつ文字シーケンスの長さが ``0`` でない場合 ``true`` を返します。
+  Returns ``true`` if the character sequence isn't ``null`` and the length isn't ``0``.
 
 boolean @isBlank(CharSequence charSequence)
-  文字シーケンスが ``null`` 、もしくは文字シーケンスの長さが ``0`` 、
-  もしくは文字シーケンスが空白だけから形成される場合 trueを返します。
+  Returns ``true`` only if the character sequence is ``null``, the length is ``0``,
+  or the sequence is formed with whitespaces only.
 
 boolean @isNotBlank(CharSequence charSequence)
-  文字シーケンスが ``null`` でない、かつ文字シーケンスの長さが ``0`` でない、
-  かつ文字シーケンスが空白だけで形成されない場合 ``true`` を返します。
+  Returns ``true`` if the character sequence isn't ``null``, the length isn't ``0``,
+  and the sequence isn't formed with whitespaces only.
 
-これらの関数は、 ``org.seasar.doma.expr.ExpressionFunctions`` のメソッドに対応しています。
+These functions are correspond to the methods of ``org.seasar.doma.expr.ExpressionFunctions``.
 
-カスタム関数の使用
-==================
+Using custom functions
+======================
 
-関数を独自に定義し使用できます。
+You can define and use your own functions.
 
-独自に定義した関数（カスタム関数）を使用するには次の設定が必要です。
+You need to follow these settings when you use custom functions which you define by yourself:
 
-* 関数は、 ``org.seasar.doma.expr.ExpressionFunctions`` を実装したクラスのメソッドとして定義する。
-* メソッドはpublicなインスタンスメソッドとする。
-* 作成したクラスは :doc:`annotation-processing` のオプションで登録する。
-  オプションのキーは ``doma.expr.functions`` である。
-* 作成したクラスのインスタンスを設定クラスのRDBMSの方言で使用する
-  （Domaが提供するRDBMSの方言の実装はコンストラクタで ``ExpressionFunctions`` を受け取ることが可能）。
+* The function is defined as a method of a class which implements
+  ``org.seasar.doma.expr.ExpressionFunctions``.
+* The method is a public instance method.
+* The class is registered as an option in :doc:`annotation-processing`.
+  The key of the option is ``doma.expr.functions``.
+* The instance of the class you create is used in an RDBMS dialect in your configuration class
+  (The implementations of RDBMS dialect provided by Doma can receive
+  ``ExpressionFunctions`` in the constructor).
 
-カスタム関数を呼び出すには、組み込み関数と同じように関数名の先頭に ``@`` をつけます。
-たとえば、 ``myfunc`` という関数の呼び出しは次のように記述できます。
+To call a custom function, add ``@`` at the beginning of the function name like built-in functions.
+For example, you can call ``myfunc`` function like this:
 
 .. code-block:: sql
 
