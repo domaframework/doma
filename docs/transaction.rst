@@ -1,29 +1,30 @@
 ==================
-トランザクション
+Transaction
 ==================
 
-.. contents:: 目次
+.. contents:: Contents
    :depth: 3
 
-Domaは、ローカルトランザクションをサポートします。
-このドキュメントでは、ローカルトランザクションの設定方法と利用方法について説明します。
+Doma supports local transaction.
+This document explains how to configure and use the local transaction.
 
-グローバルトランザクションを使用したい場合は、JTA（Java Transaction API）
-の実装をもつフレームワークやアプリケーションサーバーの機能を利用してください。
+If you want to use global transaction, use frameworks or application servers
+which support JTA (Java Transaction API).
 
-設定
-====
+Configuration
+=============
 
-ローカルトランザクションを実行するには次の条件を満たす必要があります。
+To use local transaction, these conditions are required:
 
-* ``Config`` の ``getDataSource`` で ``LocalTransactionDataSource`` を返す
-* 上記の ``LocalTransactionDataSource`` をコンストラクタで受けて ``LocalTransactionManager`` を生成する
-* 上記の ``LocalTransactionManager`` の管理下でデータベースアクセスを行う
+* Return ``LocalTransactionDataSource`` from ``getDataSource`` in ``Config``
+* Generate ``LocalTransactionManager`` using the ``LocalTransactionDataSource`` above in the constructor
+* Use the ``LocalTransactionManager`` above to control database access
 
-``LocalTransactionManager`` の生成と取得方法はいくつかありますが、最も単純な方法は、
-``Config`` の実装クラスのコンストラクタで生成し ``Config`` の実装クラスをシングルトンとすることです。
+There are several ways to generate and get the ``LocalTransactionManager``,
+but the simplest way is to generate it in the constructor of ``Config`` implementaion class
+and make the ``Config`` implementaiton class singleton.
 
-実装例です。
+Here is an example:
 
 .. code-block:: java
 
@@ -68,12 +69,13 @@ Domaは、ローカルトランザクションをサポートします。
 
 .. note::
 
-  クラスに ``@SingletonConfig`` を指定することでシングルトンであることを表しています
+  The ``@SingletonConfig`` shows that this class is a singleton class.
 
-利用例
+Usage
 ======
 
-`設定`_ で示した ``AppConfig`` クラスを以下のようにDaoインタフェースに注釈するものとして例を示します。
+Let's see examples on the condition that we use the following Dao interface annotated with
+the ``AppConfig`` class which we saw in the `Configuration`_.
 
 .. code-block:: java
 
@@ -82,18 +84,18 @@ Domaは、ローカルトランザクションをサポートします。
       ...
   }
 
-以降のコード例に登場する ``dao`` は上記クラスのインスタンスです。
+The ``dao`` used in the code examples below are instances of this class.
 
-トランザクションの開始と終了
-----------------------------
+Start and finish transactions
+-----------------------------
 
-トランザクションは ``TransactionManager`` の以下のメソッドのいずれかを使って開始します。
+You can start a transaction with one of following methods of ``TransactionManager``:
 
 * required
 * requiresNew
 * notSupported
 
-トランザクション内で行う処理はラムダ式として渡します。
+Use a lambda expression to write a process which you want to run in a transaction.
 
 .. code-block:: java
 
@@ -106,13 +108,13 @@ Domaは、ローカルトランザクションをサポートします。
       dao.update(employee);
   });
 
-ラムダ式が正常に終了すればトランザクションはコミットされます。
-ラムダ式が例外をスローした場合はトランザクションはロールバックされます。
+The transaction is committed if the lambda expression finishes successfully.
+The transaction is rolled back if the lambda expression throws an exception.
 
-明示的なロールバック
+Explicit rollback
 --------------------
 
-例外をスローする方法以外でトランザクションをロールバックするには ``setRollbackOnly`` メソッドを呼び出します。
+Besides throwing an exception, you can use ``setRollbackOnly`` method to rollback a transaction.
 
 .. code-block:: java
 
@@ -123,32 +125,32 @@ Domaは、ローカルトランザクションをサポートします。
       employee.setName("hoge");
       employee.setJobType(JobType.PRESIDENT);
       dao.update(employee);
-      // ロールバックするものとしてマークする
+      // Mark as rollback
       tm.setRollbackOnly();
   });
 
-セーブポイント
+Savepoint
 --------------
 
-セーブポイントを使用することで、トランザクション中の特定の変更を取り消すことができます。
+With a savepoint, you can cancel specific changes in a transaction.
 
 .. code-block:: java
 
   TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
   tm.required(() -> {
-      // 検索して更新
+      // Search and update
       Employee employee = dao.selectById(1);
       employee.setName("hoge");
       dao.update(employee);
 
-      // セーブポイントを作成
+      // Create a savepoint
       tm.setSavepoint("beforeDelete");
 
-      // 削除
+      // Delete
       dao.delete(employee);
 
-      // セーブポイントへ戻る（上で行った削除を取り消す）
+      // Rollback to the savepoint (cancel the deletion above)
       tm.rollback("beforeDelete");
   });
 
