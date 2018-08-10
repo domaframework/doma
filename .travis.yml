@@ -14,14 +14,10 @@ env:
   - secure: ZtNxg0Vb1Z+Mt9cAfF2v7dgH6fWjcX6wADS5z3n2gXeS0W2BxyCtgvJ3SWSXygBGEht01tJQbCMhcgcoRvPW658v3ezc7ffhtEFmmycjLliOePt5TH7wprNVlumSnApv0P7bgRgxgQL4PqQztwQmQ+O9X1joHdjRpIs3fqfWK6E=
 matrix:
   include:
-    - jdk: oraclejdk10
-    - jdk: oraclejdk-ea
-    - jdk: openjdk10
     - jdk: openjdk11
+    - jdk: oraclejdk-ea
   allow_failures:
-    - jdk: oraclejdk10
     - jdk: oraclejdk-ea
-    - jdk: openjdk11
 after_success:
 - chmod +x publish.sh
 - ./publish.sh
