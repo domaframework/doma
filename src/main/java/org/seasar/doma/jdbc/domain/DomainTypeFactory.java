@@ -151,10 +151,21 @@ public final class DomainTypeFactory {
         if (classHelper == null) {
             throw new DomaNullPointerException("classHelper");
         }
-        String domainTypeClassName = Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
-                + "." + Conventions.toFullMetaName(domainClass.getName());
+        Class<?> clazz = ClassUtil.traverse(domainClass, c -> {
+            String domainTypeClassName = Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
+                    + "." + Conventions.toFullMetaName(c.getName());
+            try {
+                return classHelper.forName(domainTypeClassName);
+            } catch (WrapException e) {
+                return null;
+            } catch (Exception e) {
+                return null;
+            }
+        });
+        if (clazz == null) {
+            return null;
+        }
         try {
-            Class<DOMAIN> clazz = classHelper.forName(domainTypeClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
