@@ -17,6 +17,7 @@ package org.seasar.doma.internal.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -68,6 +69,41 @@ public class ClassUtilTest extends TestCase {
         assertEquals(2, names.size());
         assertEquals("Ccc", names.get(0));
         assertEquals("Ddd", names.get(1));
+    }
+
+    public void testTraverse() throws Exception {
+        List<Class<?>> list = new ArrayList<>();
+        ClassUtil.traverse(Ccc.class, c -> {
+            list.add(c);
+            return null;
+        });
+        assertEquals(8, list.size());
+        assertEquals(Ccc.class, list.get(0));
+        assertEquals(ICcc.class, list.get(1));
+        assertEquals(Bbb.class, list.get(2));
+        assertEquals(IBbb.class, list.get(3));
+        assertEquals(IAaa.class, list.get(4));
+        assertEquals(Aaa.class, list.get(5));
+        assertEquals(IAaa.class, list.get(6));
+        assertEquals(Object.class, list.get(7));
+    }
+
+    private interface IAaa {
+    }
+
+    private interface IBbb extends IAaa {
+    }
+
+    private interface ICcc {
+    }
+
+    private static class Aaa implements IAaa {
+    }
+
+    private static class Bbb extends Aaa implements IBbb {
+    }
+
+    private static class Ccc extends Bbb implements ICcc {
     }
 
 }

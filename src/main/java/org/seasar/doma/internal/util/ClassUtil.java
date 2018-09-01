@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import org.seasar.doma.internal.WrapException;
 
@@ -152,4 +153,30 @@ public final class ClassUtil {
         }
         return clazz;
     }
+
+    public static <R> R traverse(Class<?> clazz, Function<Class<?>, R> f) {
+        assertNotNull(clazz);
+        {
+            R result = f.apply(clazz);
+            if (result != null) {
+                return result;
+            }
+        }
+        for (Class<?> c : clazz.getInterfaces()) {
+            R result = traverse(c, f);
+            if (result != null) {
+                return result;
+            }
+        }
+        Class<?> superclass = clazz.getSuperclass();
+        if (superclass == null) {
+            return null;
+        }
+        R result = traverse(superclass, f);
+        if (result != null) {
+            return result;
+        }
+        return null;
+    }
+
 }
