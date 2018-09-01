@@ -2,30 +2,32 @@ apply plugin: 'eclipse'
 
 eclipse {
     classpath {
-        containers = [
-            'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-        ]
+        file {
+            whenMerged { classpath ->
+                classpath.entries.removeAll { it.kind == "con" }
+            }
+            withXml {
+                def node = it.asNode()
+                node.appendNode( 'classpathentry', [ kind: 'con', path: 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'])
+            }
+        }
     }
 }
 
-task eclipseSettings(type: Copy) {
-  from rootProject.files(
-    "eclipse/org.eclipse.jdt.ui.prefs")
-  into project.file('.settings/')
-  outputs.upToDateWhen { false }
+eclipseJdt {
+    doLast { 
+        file('.settings/org.eclipse.jdt.core.prefs').withWriter { writer ->
+            writer << file('eclipse/org.eclipse.jdt.core.prefs').text
+        }
+        file('.settings/org.eclipse.jdt.ui.prefs').withWriter { writer ->
+            writer << file('eclipse/org.eclipse.jdt.ui.prefs').text
+        }
+    }
 }
 
-task eclipseJdtPrepare(type: Copy) {
-  from rootProject.file("eclipse/org.eclipse.jdt.core.prefs")
-  into project.file(".settings/")
-  outputs.upToDateWhen { false }
+task cleanEclipseJdtSettings(type: Delete) {
+  delete file('.settings/org.eclipse.jdt.ui.prefs')
+  delete file('.settings/org.eclipse.jdt.core.prefs')
 }
 
-task cleanEclipseJdtUi(type: Delete) {
-  delete project.file(".settings/org.eclipse.jdt.ui.prefs")
-  delete project.file(".settings/org.eclipse.jdt.core.prefs")
-}
-
-tasks["eclipseJdt"].dependsOn(eclipseJdtPrepare)
-tasks["cleanEclipse"].dependsOn(cleanEclipseJdtUi)
-tasks["eclipse"].dependsOn(eclipseSettings)
+tasks["cleanEclipse"].dependsOn(cleanEclipseJdtSettings)
