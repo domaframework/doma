@@ -58,10 +58,6 @@ jar {
     }
 }
 
-wrapper {
-    gradleVersion = '4.10'
-}
-
 repositories {
     mavenCentral()
     maven {url 'http://maven.seasar.org/maven2'}
