@@ -58,8 +58,8 @@ jar {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+wrapper {
+    gradleVersion = '4.10'
 }
 
 repositories {
