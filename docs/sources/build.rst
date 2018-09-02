@@ -95,7 +95,7 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
   }
 
   dependencies {
-      compile "org.seasar.doma:doma:2.19.3-SNAPSHOT"
+      compile "org.seasar.doma:doma:2.19.3"
   }
 
 .. note::

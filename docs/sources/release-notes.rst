@@ -2,6 +2,22 @@
 リリースノート
 ==============
 
+v2.19.3: 2018-09-02
+======================
+
+* `GH242 <https://github.com/domaframework/doma/pull/242>`_
+  Remove wrapper task
+* `GH241 <https://github.com/domaframework/doma/pull/241>`_
+  Upgrade Gradle version
+* `GH240 <https://github.com/domaframework/doma/pull/240>`_
+  Refactor gradle script for eclipse
+* `GH239 <https://github.com/domaframework/doma/pull/239>`_
+  Resolve an external domain class by traversing class hierarchy
+* `GH225 <https://github.com/domaframework/doma/pull/225>`_
+  Add documents for IntelliJ IDEA
+* `GH223 <https://github.com/domaframework/doma/pull/223>`_
+  Fix Javadoc comment for Update#includeUnchanged
+
 v2.19.2: 2018-03-11
 ======================
 
