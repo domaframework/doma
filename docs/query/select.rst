@@ -1,11 +1,11 @@
 ===============
-検索
+Search
 ===============
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-検索を行うには、 ``@Select`` をDaoのメソッドに注釈します。
+Annotate with ``@Select`` to Dao method for execute search.
 
 .. code-block:: java
 
@@ -16,59 +16,55 @@
       ...
   }
 
-
-検索では、 **SQLファイルが必須** です。
-検索系のSQLを自動生成する機能はありません。
+**SQL file is required** in search.
+There is no feature that auto generating search SQL.
 
 .. note::
 
-  エンティティクラスを利用する場合、エンティティクラスは **検索結果に応じて** 作成する必要があります。
-  たとえば、EMPLOYEEテーブルに対応するEmployeeエンティティクラスが定義されている場合、
-  EMPLOYEEテーブルのカラムを含む結果セットはEmployeeエンティティクラスで受けられますが、
-  EMPLOYEEテーブルとDEPARTMENTテーブルを結合して得られる結果セットに対しては、
-  Employeeエンティティクラスとは別のクラス（たとえばEmployeeDepartmentクラス）が必要です。
+  You need creating entity class **depending on search result**.
+  For example, result set including column in EMPLOYEE table is accepted Employee class if the Employee class that correspond EMPLOYEE table is declared.
+  But, you need different class from the Employee entity class(For example EmmployeeDepartment class) for result set that is get by joining EMPLOYEE table and DEPARTMENT table.
 
-問い合わせ条件
-==============
+Query condition
+=================
 
-問い合わせ条件にはメソッドのパラメータを使用します。
-利用できるパラメータの型は以下のものです。
+You use method parameters for query condition.
+Available types is below.
 
 * :doc:`../basic`
 * :doc:`../domain`
-* 任意の型
-* :doc:`../basic` や :doc:`../domain` や任意の型を要素とするjava.util.Optional
-* :doc:`../basic` や :doc:`../domain` を要素とするjava.util.Iterable
+* Arbitrary type
+* :doc:`../basic` , :doc:`../domain` or arbitrary type are within java.util.Optional
+* :doc:`../basic` or :doc:`../domain` are within java.util.Iterable
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
 
-パラメータの数に制限はありません。
-パラメータの型が :doc:`../basic` もしくは :doc:`../domain` の場合、引数を ``null`` にできます。
-それ以外の型の場合、引数は ``null`` であってはいけません。
+Parameters count is no limit.
+You can set ``null`` to parameter if parameter type is :doc:`../basic` or :doc:`../domain`.
+Parameter must not be ``null`` if the type is other than that.
 
-基本型やドメインクラスを使った問い合わせ
-----------------------------------------
+Query that is used basic type or domain class
+----------------------------------------------
 
-メソッドやパラメータに :doc:`../basic` や :doc:`../domain` を定義します。
+You declare :doc:`../basic` or :doc:`../domain` to method or parameter.
 
 .. code-block:: java
 
   @Select
   List<Employee> selectByNameAndSalary(String name, Salary salary);
 
-SQLファイルではSQLコメントを使いメソッドのパラメータをSQLにマッピングさせます。
-SQLコメントではメソッドのパラメータ名を参照します。
+You map method parameter to SQL by using SQL comment in SQL file.
+In SQL comment, method parameter name is referenced.
 
 .. code-block:: sql
 
   select * from employee where employee_name = /* name */'hoge' and salary > /* salary */100
 
-任意の型を使った問い合わせ
---------------------------
+Query that is used arbitrary type
+----------------------------------
 
-メソッドのパラメータに任意の型を使用する場合は、ドット ``.``
-でフィールドにアクセスしたりメソッドを呼び出すなどしてSQLにマッピングさせます。
+You map to SQL by access field or call method there are using by dot ``.`` if using arbitrary parameter type in method parameter.
 
 .. code-block:: java
 
@@ -79,17 +75,17 @@ SQLコメントではメソッドのパラメータ名を参照します。
 
   select * from employee where employee_name = /* employee.name */'hoge' and salary > /* employee.getSalary() */100
 
-パラメータは複数指定できます。
+You can specify multiple parameter.
 
 .. code-block:: java
 
   @Select
   List<Employee> selectByEmployeeAndDepartment(Employee employee, Department department);
 
-Iterableを使ったIN句へのマッピング
-----------------------------------
+Mapping to IN clauses by using Iterable.
+-----------------------------------------
 
-``java.lang.Iterable`` のサブタイプは、 IN句を利用した検索を行う場合に使用します。
+You use subtype of ``java.lang.Iterable`` if excute searching by using IN clauses.
 
 .. code-block:: java
 
@@ -100,17 +96,17 @@ Iterableを使ったIN句へのマッピング
 
   select * from employee where employee_name in /* names */('aaa','bbb','ccc')
 
-1件検索
-========
+Single record search
+=====================
 
-1件を検索するには、メソッドの戻り値の型を次のいずれかにします。
+You specify method return value type either of below for search single record.
 
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../entity`
 * java.util.Map<String, Object>
-* :doc:`../basic` 、 :doc:`../domain` 、 :doc:`../entity` 、 java.util.Map<String, Object>
-  のいずれかを要素とするjava.util.Optional
+* Either :doc:`../basic` , :doc:`../domain` , :doc:`../entity` or java.util.Map<String, Object>
+  is within java.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
@@ -120,22 +116,22 @@ Iterableを使ったIN句へのマッピング
   @Select
   Employee selectByNameAndSalary(String name, BigDecimal salary);
 
-戻り値の型が ``Optional`` でなく、かつ、結果が0件のときは ``null`` が返されます。
-`検索結果の保証`_ を有効にした場合は、戻り値の型に関係なく結果が0件ならば例外がスローされます。
+``null`` is return if return type is not ``Optional`` and result count is 0.
+If `Ensure of search result`_ is enabled, exception is thrown regardless return value type if search count is 0.
 
-結果が2件以上存在するときは、 ``NonUniqueResultException`` がスローされます。
+``NonUniqueResultException`` is thrown if result exists 2 or more.
 
-複数件検索
-==========
+Multiple record search
+========================
 
-複数件を検索するには、メソッドの戻り値の型を ``java.util.List`` にします。
-``List`` の要素の型には次のものが使用できます。
+You specify ``java.util.List`` to method return value type to for search multiple record.
+You can use below property in ``List``.
 
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../entity`
 * java.util.Map<String, Object>
-* :doc:`../basic` もしくは :doc:`../domain` のいずれかを要素とするjava.util.Optional
+* Either :doc:`../basic` or :doc:`../domain` is within java.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
@@ -145,29 +141,28 @@ Iterableを使ったIN句へのマッピング
   @Select
   List<Employee> selectByNameAndSalary(String name, Salary salary);
 
-結果が0件のときは ``null`` ではなく空のListが返されます。
-ただし、 `検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+Empty list instead of ``null`` is return if result count is 0.
+But if `Ensure of search result`_ is enabled, exception is thrown if search count is 0.
 
-ストリーム検索
+Stream search
 ==============
 
-全件を一度に ``java.util.List`` で受け取るのではなく ``java.util.stream.Stream`` で扱いたい場合は、ストリーム検索を利用できます。
+You can use stream search if  handle all record at one try as ``java.util.stream.Stream`` rather than recieve as ``java.util.List``.
 
-ストリーム検索には、 ``Stream`` を ``java.util.Function`` へ渡す方法と戻り値で返す方法の2種類があります。
+There are two kind in stream search such as return the return value and pass ``Stream`` to ``java.util.Function``.
 
-Functionへ渡す方法
+Pass to the Function
 ---------------------------
 
-``@Select`` の ``strategy`` 要素に ``SelectType.STREAM`` を設定し、
-メソッドのパラメータに ``java.util.Function<Stream<TARGET>, RESULT>`` もしくは
-``java.util.Function<Stream<TARGET>, RESULT>`` のサブタイプを定義します。
+You set ``SelectType.STREAM`` to ``strategy`` property within ``@Select`` annotation and 
+define subtype that is ``java.util.Function<Stream<TARGET>, RESULT>`` or ``java.util.Function<Stream<TARGET>, RESULT>`` to method parameter.
 
 .. code-block:: java
 
   @Select(strategy = SelectType.STREAM)
   BigDecimal selectByNameAndSalary(String name, BigDecimal salary, Function<Stream<Employee>, BigDecimal> mapper);
 
-呼び出し元はストリームを受け取って結果を返すラムダ式を渡します。
+Caller receive stream and pass lambda expression that return result.
 
 .. code-block:: java
 
@@ -176,32 +171,32 @@ Functionへ渡す方法
       return ...;
   });
 
-``Function<Stream<TARGET>, RESULT>`` の型パラメータ ``TARGET`` は次のいずれかでなければいけません。
+``Function<Stream<TARGET>, RESULT>`` corresponding type parameter ``TARGET`` must be either of below.
 
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../entity`
 * java.util.Map<String, Object>
-* :doc:`../basic` もしくは :doc:`../domain` のいずれかを要素とするjava.util.Optional
+* Either :doc:`../basic` or :doc:`../domain` is within java.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
 
-型パラメータ ``RESULT`` はDaoのメソッドの戻り値に合わせなければいけません。
+Type parameter ``RESULT`` must match to Dao method return value.
 
-`検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+If `Ensure of search result`_ is enabled, exception is thrown if search count is 0.
 
-戻り値で返す方法
+Return the return value
 ---------------------------
 
-メソッドの戻り値の型を ``java.util.stream.Stream`` にします。
-``Stream`` の要素の型には次のものが使用できます。
+You define ``java.util.stream.Stream`` to method return value.
+You can use following type at property within ``Stream``.
 
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../entity`
 * java.util.Map<String, Object>
-* :doc:`../basic` もしくは :doc:`../domain` のいずれかを要素とするjava.util.Optional
+* Either :doc:`../basic` or :doc:`../domain` within java.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
@@ -211,7 +206,7 @@ Functionへ渡す方法
   @Select
   Stream<Employee> selectByNameAndSalary(String name, BigDecimal salary);
 
-呼び出し元です。
+Below is a caller.
 
 .. code-block:: java
 
@@ -220,20 +215,20 @@ Functionへ渡す方法
     ...
   }
 
-`検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+If `Ensure of search result`_ is enabled, exception is thrown if search count is 0.
 
 .. warning::
 
-  リソースの解放漏れを防ぐためにストリームは必ずクローズしてください。
-  ストリームをクローズしないと、 ``java.sql.ResultSet`` 、
-  ``java.sql.PreparedStatement`` 、 ``java.sql.Connection`` のクローズが行われません。
+  Make sure to close the stream for prevent forgetting of release the resource.
+  If you do not close the stream, ``java.sql.ResultSet``  or ``java.sql.PreparedStatement`` ,
+  ``java.sql.Connection`` those are not closing.
 
 .. note::
 
-  戻り値で返す方法はリソース解放漏れのリスクがあるため、特に理由がない限りは、
-  Functionへ渡す方法の採用を検討してください。
-  注意を促すためにDaoのメソッドに対して警告メッセージを表示します。
-  警告を抑制するには以下のように ``@Suppress`` を指定してください。
+  Consider adoption of pass to Function unless there is some particular reason,
+  because return the return value has the risk that is forgetting of release the resource.
+  Doma display warning message at Dao method for attention.
+  You specify ``@Suppress`` below for suppress warning.
 
   .. code-block:: java
 
@@ -241,21 +236,20 @@ Functionへ渡す方法
     @Suppress(messages = { Message.DOMA4274 })
     Stream<Employee> selectByNameAndSalary(String name, BigDecimal salary);
 
-コレクト検索
-============
+Collect search
+===============
 
-検索結果を ``java.util.Collector`` で処理したい場合は、コレクト検索を利用できます。
+You can use collect search if handle result as ``java.util.Collector``.
 
-コレクト検索を実施するには、 ``@Select`` の ``strategy`` 要素に ``SelectType.COLLECT`` を設定し、
-メソッドのパラメータに ``java.stream.Collector<TARGET, ACCUMULATION, RESULT>`` もしくは
-``java.stream.Collector<TARGET, ?, RESULT>`` のサブタイプを定義します。
+You set ``SelectType.COLLECT`` to ``strategy`` property within ``@Select`` annotation and 
+define subtype that is ``java.stream.Collector<TARGET, ACCUMULATION, RESULT>`` or ``java.stream.Collector<TARGET, ?, RESULT>`` to method parameter.
 
 .. code-block:: java
 
   @Select(strategy = SelectType.COLLECT)
   <RESULT> RESULT selectBySalary(BigDecimal salary, Collector<Employee, ?, RESULT> collector);
 
-呼び出し元は ``Collector`` のインスタンスを渡します。
+Caller pass ``Collector`` instance.
 
 .. code-block:: java
 
@@ -263,36 +257,35 @@ Functionへ渡す方法
   Map<Integer, List<Employee>> result =
       dao.selectBySalary(salary, Collectors.groupingBy(Employee::getDepartmentId));
 
-``Collector<TARGET, ACCUMULATION, RESULT>`` の型パラメータ ``TARGET`` は次のいずれかでなければいけません。
+``Collector<TARGET, ACCUMULATION, RESULT>`` corresponding type parameter ``TARGET`` must be either of below.
 
 * :doc:`../basic`
 * :doc:`../domain`
 * :doc:`../entity`
 * java.util.Map<String, Object>
-* :doc:`../basic` もしくは :doc:`../domain` のいずれかを要素とするjava.util.Optional
+* Either :doc:`../basic` or :doc:`../domain` within java.util.Optional
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
 
-型パラメータ ``RESULT`` はDaoのメソッドの戻り値に合わせなければいけません。
+Type parameter ``RESULT`` must match Dao method return value.
 
-`検索結果の保証`_ を有効にした場合、結果が0件ならば例外がスローされます。
+If `Ensure of search result`_ is enabled, exception is thrown if search count is 0.
 
 .. note::
 
-  コレクト検索はストリーム検索のFunctionに渡す方法のショートカットです。
-  ストリーム検索で得られる ``Stream`` オブジェクトの ``collect`` メソッドを使って同等のことができます。
+  Collect search is the shortcut that pass to Function within stream search.
+  You can do equivalent by using `collect`` method in ``Stream`` object that is getting from stream search.
 
-検索オプションを利用した検索
+Using search option search
 ============================
 
-検索オプションを表す ``SelectOptions`` を使用することで、SELECT文が記述されたSQLファイルをベースにし、
-ページング処理や悲観的排他制御用のSQLを自動で生成できます。
+You can automatically generate SQL for paging and pessimistic concurrency control from SQL file that is wrote SELECT clauses
+by you use ``SelectOptions`` that is represent search option.
 
-``SelectOptions`` は、 `1件検索`_ 、 `複数件検索`_ 、 `ストリーム検索`_
-と組み合わせて使用します。
+You use ``SelectOptions`` in combination with `Single record search`_ ,  `Multiple record search`_ ,  `Stream search`_
 
-``SelectOptions`` は、Daoのメソッドのパラメータとして定義します。
+You define ``SelectOptions`` as Dao method parameter.
 
 .. code-block:: java
 
@@ -303,17 +296,17 @@ Functionへ渡す方法
       ...
   }
 
-``SelectOptions`` のインスタンスは、staticな ``get`` メソッドにより取得できます。
+You can get ``SelectOptions`` instance by static ``get`` method.
 
 .. code-block:: java
 
   SelectOptions options = SelectOptions.get();
 
-ページング
+Paging
 ----------
 
-``SelectOptions`` の ``offset`` メソッドで開始位置、 ``limit`` メソッドで取得件数を指定し、
-``SelectOptions`` のインスタンスをDaoのメソッドに渡します。
+You specify start position by ``offset`` method and get count by ``limit`` method those are within ``SelectOptions``,
+and pass the ``SelectOptions`` instance to Dao method. 
 
 .. code-block:: java
 
@@ -321,36 +314,37 @@ Functionへ渡す方法
   EmployeeDao dao = new EmployeeDaoImpl();
   List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);
 
-ページングは、ファイルに記述されているオリジナルのSQLを書き換え実行することで実現されています。
-オリジナルのSQLは次の条件を満たしていなければいけません。
+Paging is materialized by rewriting original SQL writing in file and executing.
+Original SQL must be satisfied condition below.
 
-* SELECT文である
-* 最上位のレベルでUNION、EXCEPT、INTERSECT等の集合演算を行っていない（サブクエリで利用している場合は可）
-* ページング処理を含んでいない
+* SQL is SELECT clauses
+* In top level, set operation is not executed like UNION, EXCEPT, INTERSECT.(But using at subquery is able)
+* Paging process is not included.
 
-さらに、データベースの方言によっては特定の条件を満たしていなければいけません。
+In addition, particular condition must be satisfied according to the database dialect.
 
+If specify offset, there are ORDER BY clauses and all column that is specified at ORDER BY clauses is included in SELECT clauses.
 
-+------------------+---------------------------------------------------------------+
-| Dialect          |    条件                                                       |
-+==================+===============================================================+
-| Db2Dialect       |    offsetを指定する場合、ORDER BY句を持ちORDER BY句で指定する |
-|                  |    カラムすべてをSELECT句に含んでいる                         |
-+------------------+---------------------------------------------------------------+
-| Mssql2008Dialect |    offsetを指定する場合、ORDER BY句を持ちORDER BY句で指定する |
-|                  |    カラムすべてをSELECT句に含んでいる                         |
-+------------------+---------------------------------------------------------------+
-| MssqlDialect     |    offsetを指定する場合、ORDER BY句を持つ必要があります       |
-+------------------+---------------------------------------------------------------+
-| StandardDialect  |    ORDER BY句を持ちORDER BY句で指定する                       |
-|                  |    カラムすべてをSELECT句に含んでいる                         |
-+------------------+---------------------------------------------------------------+
++------------------+-------------------------------------------------------------------------------------+
+| Dialect          |    Condition                                                                        |
++==================+=====================================================================================+
+| Db2Dialect       |    If specify offset, there are ORDER BY clauses and                                |
+|                  |    all column that is specified at ORDER BY clauses is included in SELECT clauses.  |
++------------------+-------------------------------------------------------------------------------------+
+| Mssql2008Dialect |    If specify offset, there are ORDER BY clauses and                                |
+|                  |    all column that is specified at ORDER BY clauses is included in SELECT clauses.  |
++------------------+-------------------------------------------------------------------------------------+
+| MssqlDialect     |    If specify offset, there are ORDER BY clauses.                                   |
++------------------+-------------------------------------------------------------------------------------+
+| StandardDialect  |    There are ORDER BY clauses and                                                   |
+|                  |    all column that is specified at ORDER BY clauses is included in SELECT clauses.  |
++------------------+-------------------------------------------------------------------------------------+
 
-悲観的排他制御
---------------
+Pessimistic concurrency control
+---------------------------------
 
-``SelectOptions`` の ``forUpdate`` メソッドで悲観的排他制御を行うことを示し、
-SelectOptionsのインスタンスをDaoのメソッドに渡します。
+You indicate executing pessimistic concurrency control by ``forUpdate`` within ``SelectOptions``,
+and pass the SelectOptions instance to Dao method. 
 
 .. code-block:: java
 
@@ -358,48 +352,48 @@ SelectOptionsのインスタンスをDaoのメソッドに渡します。
   EmployeeDao dao = new EmployeeDaoImpl();
   List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);
 
-``SelectOptions`` には、ロック対象のテーブルやカラムのエイリアスを指定できる ``forUpdate`` メソッドや、
-ロックの取得を待機しない ``forUpdateNowait`` など、名前が *forUpdate*
-で始まる悲観的排他制御用のメソッドが用意されています。
+The method that name is started *forUpdate* for pessimistic concurrency control is prepared
+such as ``forUpdateNowait`` method that do not wait for getting lock
+and ``forUpdate`` method that can specify lock target table or column alias.
 
-悲観的排他制御は、ファイルに記述されているオリジナルのSQLを書き換えて実行しています。
-オリジナルのSQLは次の条件を満たしていなければいけません。
+Pessimistic concurrency control is executed by rewriting original SQL writing in file.
+Original SQL must be satisfied condition below.
 
-* SELECT文である
-* 最上位のレベルでUNION、EXCEPT、INTERSECT等の集合演算を行っていない（サブクエリで利用している場合は可）
-* 悲観的排他制御の処理を含んでいない
+* SQL is SELECT clauses
+* In top level, set operation is not executed like UNION, EXCEPT, INTERSECT.(But using at subquery is able)
+* Pessimistic concurrency control process is not included.
 
-データベースの方言によっては、悲観的排他制御用のメソッドのすべてもしくは一部が使用できません。
+Part or all of pessimistic concurrency control method can not used according to the database dialect.
 
 +------------------+-----------------------------------------------------------------------------+
-| Dialect          |    説明                                                                     |
+| Dialect          |    Description                                                              |
 +==================+=============================================================================+
-| Db2Dialect       |    forUpdate()を使用できる                                                  |
+| Db2Dialect       |    You can use forUpdate().                                                 |
 +------------------+-----------------------------------------------------------------------------+
-| H2Dialect        |    forUpdate()を使用できる                                                  |
+| H2Dialect        |    You can use forUpdate().                                                 |
 +------------------+-----------------------------------------------------------------------------+
-| HsqldbDialect    |    forUpdate()を使用できる                                                  |
+| HsqldbDialect    |    You can useforUpdate().                                                  |
 +------------------+-----------------------------------------------------------------------------+
-| Mssql2008Dialect |    forUpdate()とforUpdateNoWait()を使用できる。                             |
-|                  |    ただし、オリジナルのSQLのFROM句は1つのテーブルだけから成らねばならない。 |
+| Mssql2008Dialect |    You can use forUpdate() and forUpdateNoWait().                           |
+|                  |    However, FROM clauses in original SQL must consist single table.         |
 +------------------+-----------------------------------------------------------------------------+
-| MysqlDialect     |    forUpdate()を使用できる                                                  |
+| MysqlDialect     |    You can use forUpdate()                                                  |
 +------------------+-----------------------------------------------------------------------------+
-| OracleDialect    |    forUpdate()、forUpdate(String... aliases)、                              |
-|                  |    forUpdateNowait()、forUpdateNowait(String... aliases)、                  |
-|                  |    forUpdateWait(int waitSeconds)、                                         |
-|                  |    forUpdateWait(int waitSeconds, String... aliases)を使用できる            |
+| OracleDialect    |    You can use forUpdate(), forUpdate(String... aliases),                   |
+|                  |    forUpdateNowait(), forUpdateNowait(String... aliases),                   |
+|                  |    forUpdateWait(int waitSeconds),                                          |
+|                  |    forUpdateWait(int waitSeconds, String... aliases).                       |
 +------------------+-----------------------------------------------------------------------------+
-| PostgresDialect  |    forUpdate()とforUpdate(String... aliases)を使用できる                    |
+| PostgresDialect  |    You can use forUpdate() and forUpdate(String... aliases).                |
 +------------------+-----------------------------------------------------------------------------+
-| StandardDialect  |    悲観的排他制御用のメソッドすべてを使用できない                           |
+| StandardDialect  |    You can not use all of pessimistic concurrency control method.           |
 +------------------+-----------------------------------------------------------------------------+
 
-集計
-----
+Aggregate
+---------
 
-``SelectOptions`` の ``count`` メソッドを呼び出すことで集計件数を取得できるようになります。
-通常、ページングのオプションと組み合わせて使用し、ページングで絞り込まない場合の全件数を取得する場合に使います。
+You can get aggregate count by calling ``count`` method within ``SelectOptions``.
+Usually, you use combination in paging option and use in case of getting all count if not narrowing by paging.
 
 .. code-block:: java
 
@@ -408,95 +402,94 @@ SelectOptionsのインスタンスをDaoのメソッドに渡します。
   List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);
   long count = options.getCount();
 
-集計件数は、Daoのメソッド呼出し後に ``SelectOptions`` の ``getCount`` メソッドを使って取得します。
-メソッド呼び出しの前に ``count`` メソッドを実行していない場合、 ``getCount`` メソッドは ``-1`` を返します。
+Aggregate count is get by using ``getCount`` method within ``SelectOptions`` after calling Dao method.
+The ``getCount`` method is return ``-1`` if you do not execute ``count`` method before calling method.
 
-検索結果の保証
-==============
+Ensure of search result
+========================
 
-検索結果が1件以上存在することを保証したい場合は、 ``@Select`` の ``ensureResult`` 要素に ``true`` を指定します。
+You specify ``true`` to ``ensureResult`` property within ``@Select`` annotation if you want to ensure of search result count is over 1.
 
 .. code-block:: java
 
   @Select(ensureResult = true)
   Employee selectById(Integer id);
 
-検索結果が0件ならば ``NoResultException`` がスローされます。
+``NoResultException`` is thrown if search result count is 0.
 
-検索結果のマッピングの保証
-==========================
+Ensure of mapping search result
+================================
 
-エンティティのプロパティすべてに対して漏れなく結果セットのカラムをマッピングすることを保証したい場合は、
-``@Select`` の ``ensureResultMapping`` 要素に ``true`` を指定します。
+You specify ``true`` to ``ensureResultMapping`` property within ``@Select`` annotation,
+if you want ensure that mapping result set column to all entity properties without exception.
 
 .. code-block:: java
 
   @Select(ensureResultMapping = true)
   Employee selectById(Integer id);
 
-結果セットのカラムにマッピングされないプロパティが存在する場合 ``ResultMappingException`` がスローされます。
+``ResultMappingException`` is thrown if there are property that is not mapping to result set column.
 
-クエリタイムアウト
+Query timeout
 ==================
 
-``@Select`` の ``queryTimeout`` 要素にクエリタイムアウトの秒数を指定できます。
+You can specify seconds of query timeout to ``queryTimeout`` property within ``@Update`` annotation.
 
 .. code-block:: java
 
   @Select(queryTimeout = 10)
   List<Employee> selectAll();
 
-値を指定しない場合、 :doc:`../config` に指定されたクエリタイムアウトが使用されます。
+Query timeout that is specified in :doc:`../config` is used if ``queryTimeout`` property is not set value.
 
-フェッチサイズ
+Fetch size
 ==============
 
-``@Select`` の ``fetchSize`` 要素にフェッチサイズを指定できます。
+You can specify fetch size to ``fetchSize`` property within ``@Select`` annotation.
 
 .. code-block:: java
 
   @Select(fetchSize = 20)
   List<Employee> selectAll();
 
-値を指定しない場合、 :doc:`../config` に指定されたフェッチサイズが使用されます。
+Fetch size that is specified in :doc:`../config` is used if value is not set.
 
-最大行数
-========
+Max row count
+===============
 
-``@Select`` の ``maxRows`` 要素に最大行数を指定できます。
+You can specify max row count to ``maxRows`` property within ``@Select`` annotation.
 
 .. code-block:: java
 
   @Select(maxRows = 100)
   List<Employee> selectAll();
 
-値を指定しない場合、 :doc:`../config` に指定された最大行数が使用されます。
+Max row count that is is specified in :doc:`../config` is used if value is not set.
 
-マップのキーのネーミング規約
+Naming rule of map's key
 ============================
 
-検索結果を ``java.util.Map<String, Object>`` にマッピングする場合、
-``@Select`` の ``mapKeyNaming`` 要素にマップのキーのネーミング規約を指定できます。
+You can specify naming rule of map's key to ``mapKeyNaming`` property within ``@Select`` annotation,
+if you want mapping search result to ``java.util.Map<String, Object>``.
 
 .. code-block:: java
 
   @Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
   List<Map<String, Object>> selectAll();
 
-``MapKeyNamingType.CAMEL_CASE`` は、カラム名をキャメルケースに変換することを示します。
-そのほかにカラム名を大文字や小文字に変換する規約があります。
+``MapKeyNamingType.CAMEL_CASE`` present converting column name to camel case.
+In addition to there are rule that converting upper case or lower case.
 
-最終的な変換結果は、ここに指定した値と :doc:`../config` に指定された
-``MapKeyNaming`` の実装により決まります。
+The final conversion result is decide by value specified here and implementation of ``MapKeyNaming`` is specified at :doc:`../config`.
 
-SQL のログ出力形式
-==================
+SQL log output format
+======================
 
-``@Select`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+You can specify SQL log output format to ``sqlLog`` property within ``@Select`` annotation.
 
 .. code-block:: java
 
   @Select(sqlLog = SqlLogType.RAW)
   List<Employee> selectById(Integer id);
 
-``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+``SqlLogType.RAW`` represent outputting log that is sql with a binding parameter.
