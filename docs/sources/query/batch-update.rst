@@ -101,7 +101,7 @@ exclude
 
 ``@BatchUpdate`` の ``exclude`` 要素に指定されたプロパティを更新対象外とします。
 プロパティがこの要素に指定されていれば、 ``@Column`` の ``updatable`` 要素が
-``true`` であっても削除対象外です。
+``true`` であっても更新対象外です。
 
 .. code-block:: java
 
@@ -111,7 +111,7 @@ exclude
 include
 ~~~~~~~
 
-``@BatchUpdate`` の ``include`` 要素に指定されたプロパティのみを削除対象とします。
+``@BatchUpdate`` の ``include`` 要素に指定されたプロパティのみを更新対象とします。
 ``@BatchUpdate`` の ``include`` 要素と ``exclude``
 要素の両方に同じプロパティが指定された場合、そのプロパティは更新対象外になります。
 プロパティがこの要素に指定されていても、 ``@Column`` の
