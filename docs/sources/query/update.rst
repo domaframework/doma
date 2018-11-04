@@ -131,7 +131,7 @@ excludeNull
 ~~~~~~~~~~~
 
 ``@Update`` の ``excludeNull`` 要素が ``true`` の場合、
-値が ``null`` のプロパティを削除対象外とします。
+値が ``null`` のプロパティを更新対象外とします。
 この要素が ``true`` の場合、 ``@Column`` の ``updatable`` 要素が ``true`` であったり、
 ``@Update`` の ``include`` 要素にプロパティが指定されていても、
 値が ``null`` であれば更新対象外です。
