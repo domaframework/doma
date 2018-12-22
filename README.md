@@ -12,23 +12,23 @@ Doma uses [Pluggable Annotation Processing API][apt] to generate source code and
 Major versions
 ---------------------
 
-| Version                                | Status            | Repository                             | Branch |
+| Version                                | Status            | Repository                             | Branch |
 | -------------------------------------- | ----------------- | -------------------------------------- | ------ |
-| [Doma 1](http://doma.seasar.org/)      | stable            | https://github.com/seasarorg/doma/     | master |
-| [Doma 2](http://doma.readthedocs.org/) | stable            | https://github.com/domaframework/doma/ | master |
-| Doma 3                                 | under development | https://github.com/domaframework/doma/ | doma-3 |
+| [Doma 1](http://doma.seasar.org/)      | stable            | https://github.com/seasarorg/doma/     | master |
+| [Doma 2](http://doma.readthedocs.org/) | stable            | https://github.com/domaframework/doma/ | master |
+| Doma 3                                 | under development | https://github.com/domaframework/doma/ | doma-3 |
 
 
 Compatibility matrix
 -------------------------
 
-|         | Doma 1 | Doma 2 | Doma 3 |
+|         | Doma 1 | Doma 2 | Doma 3 |
 | ------- | ------ | ------ | ------ |
-| Java 6  |   v    |        |        |
-| Java 7  |   v    |        |        |
-| Java 8  |   v    |   v    |        |
-| Java 9  |        |   v    |        |
-| Java 10 |        |   v    |        |
+| Java 6  |   v    |        |        |
+| Java 7  |   v    |        |        |
+| Java 8  |   v    |   v    |        |
+| Java 9  |        |   v    |        |
+| Java 10 |        |   v    |        |
 | Java 11 |        |   v    |   v    |
 
 License
