@@ -76,6 +76,8 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
 
 * JavaクラスとSQLファイルの出力先ディレクトリを同じにする
 * コンパイルより前にSQLファイルを出力先ディレクトリにコピーする
+* テスト時は注釈処理を無効にする
+* 依存関係の設定でdomaの注釈処理を実行することを示す
 * 依存関係の設定でdomaへの依存を指定する
 
 サンプルのbuild.gradleです。
@@ -94,8 +96,17 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
       maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
   }
 
+  compileTestJava {
+      options.encoding = 'UTF-8'
+      // テストの実行時は注釈処理を無効にする
+      options.compilerArgs = ['-proc:none']
+  }
+
   dependencies {
-      compile "org.seasar.doma:doma:2.19.4-SNAPSHOT"
+      // domaの注釈処理を実行することを示す
+      annotationProcessor "org.seasar.doma:doma:2.19.4-SNAPSHOT"
+      // domaへの依存を示す
+      implementation "org.seasar.doma:doma:2.19.4-SNAPSHOT"
   }
 
 .. note::
