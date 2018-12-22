@@ -46,7 +46,11 @@ public interface ClassHelper {
             if (classLoader == null) {
                 return (Class<T>) Class.forName(className);
             } else {
-                return (Class<T>) classLoader.loadClass(className);
+                try {
+                    return (Class<T>) classLoader.loadClass(className);
+                } catch (ClassNotFoundException e) {
+                    return (Class<T>) Class.forName(className);
+                }
             }
         } catch (ClassNotFoundException e) {
             throw new WrapException(e);
