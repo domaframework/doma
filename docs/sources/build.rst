@@ -74,11 +74,12 @@ Gradle を使ったビルド
 
 Gradle でビルドを行う際のポイントは以下のとおりです。
 
-* JavaクラスとSQLファイルの出力先ディレクトリを同じにする
-* コンパイルより前にSQLファイルを出力先ディレクトリにコピーする
+* domaが注釈処理で参照するリソースをテンポラリディレクトリに抽出する
+* テンポラリディレクトリ内のリソースをcompileJavaタスクの出力先ディレクトリにコピーする
+* テンポラリディレクトリをcompileJavaタスクの入力ディレクトリに設定する
 * テスト時は注釈処理を無効にする
 * 依存関係の設定でdomaの注釈処理を実行することを示す
-* 依存関係の設定でdomaへの依存を指定する
+* 依存関係の設定でdomaへの依存を示す
 
 サンプルのbuild.gradleです。
 
@@ -86,15 +87,31 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
 
   apply plugin: 'java'
 
-  // JavaクラスとSQLファイルの出力先ディレクトリを同じにする
-  processResources.destinationDir = compileJava.destinationDir
-  // コンパイルより前にSQLファイルを出力先ディレクトリにコピーするために依存関係を逆転する
-  compileJava.dependsOn processResources
+  // テンポラリディレクトリのパスを定義する
+  ext.domaResourcesDir = "${buildDir}/tmp/doma-resources"
 
-  repositories {
-      mavenCentral()
-      maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
+  // domaが注釈処理で参照するリソースをテンポラリディレクトリに抽出
+  task extractDomaResources(type: Copy, dependsOn: processResources)  {
+      from processResources.destinationDir
+      include 'doma.compile.config'
+      include 'META-INF/**/*.sql'
+      include 'META-INF/**/*.script'
+      into domaResourcesDir
   }
+
+ 　// テンポラリディレクトリ内のリソースをcompileJavaタスクの出力先ディレクトリにコピーする
+  task copyDomaResources(type: Copy, dependsOn: extractDomaResources)  {
+      from domaResourcesDir
+      into compileJava.destinationDir
+  }
+
+ 　compileJava {
+   　　 // 上述のタスクに依存させる
+  　　  dependsOn copyDomaResources
+       // テンポラリディレクトリをcompileJavaタスクの入力ディレクトリに設定する
+    　　inputs.dir domaResourcesDir
+    　　options.encoding = 'UTF-8'
+ 　}
 
   compileTestJava {
       options.encoding = 'UTF-8'
@@ -109,6 +126,11 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
       implementation "org.seasar.doma:doma:2.19.4-SNAPSHOT"
   }
 
+  repositories {
+      mavenCentral()
+      maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
+  }
+
 .. note::
 
   リポジトリにおける https://oss.sonatype.org/content/repositories/snapshots/ の設定は
@@ -116,6 +138,12 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
 
   Doma の SNAPSHOT は `Travis-CI <https://travis-ci.org/domaframework/doma>`_
   でビルドが成功されるたびに作成されリポジトリに配置されます。
+
+.. note::
+
+  上述のbuild.gradleの書き方により、Gradle 5.0 で導入された
+  `Incremental annotation processing <https://gradle.org/whats-new/gradle-5/#incremental-annotation-processing>`_ の恩恵を受けられます。
+  
 
 Gradle を使ったより詳細なビルドスクリプトの例として、
 `domaframework/simple-boilerplate <https://github.com/domaframework/simple-boilerplate>`_ 

@@ -1,0 +1,7 @@
+org.seasar.doma.internal.apt.DomainProcessor,isolating
+org.seasar.doma.internal.apt.ExternalDomainProcessor,isolating
+org.seasar.doma.internal.apt.DomainConvertersProcessor,isolating
+org.seasar.doma.internal.apt.EmbeddableProcessor,isolating
+org.seasar.doma.internal.apt.EntityProcessor,isolating
+org.seasar.doma.internal.apt.DaoProcessor,isolating
+org.seasar.doma.internal.apt.SingletonConfigProcessor,isolating
