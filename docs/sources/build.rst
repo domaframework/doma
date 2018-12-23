@@ -121,9 +121,9 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
 
   dependencies {
       // domaの注釈処理を実行することを示す
-      annotationProcessor "org.seasar.doma:doma:2.20.0"
+      annotationProcessor "org.seasar.doma:doma:2.20.1-SNAPSHOT"
       // domaへの依存を示す
-      implementation "org.seasar.doma:doma:2.20.0"
+      implementation "org.seasar.doma:doma:2.20.1-SNAPSHOT"
   }
 
   repositories {
