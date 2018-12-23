@@ -2,6 +2,26 @@
 リリースノート
 ==============
 
+v2.20.0: 2018-12-23
+======================
+
+* `GH255 <https://github.com/domaframework/doma/pull/255>`_
+  Support Gradle incremental annotation processing
+* `GH254 <https://github.com/domaframework/doma/pull/254>`_
+  Specify supported Java versions
+* `GH253 <https://github.com/domaframework/doma/pull/253>`_
+  Explain how to write gradle build script in Gradle 5.0
+* `GH252 <https://github.com/domaframework/doma/pull/252>`_
+  Polish Gradle configuration
+* `GH251 <https://github.com/domaframework/doma/pull/251>`_
+  Use Gradle 5.0 
+* `GH248 <https://github.com/domaframework/doma/pull/248>`_
+  Fix mistake in abbreviation for JRE
+* `GH247 <https://github.com/domaframework/doma/pull/247>`_
+  Load a class with Class.forName when the context class loader fails to load the class
+* `GH245 <https://github.com/domaframework/doma/pull/245>`_
+  Revise wrong descriptions about `@Update.excludeNull`, `@BatchUpdate.include` and `@BatchUpdate.exclude`
+
 v2.19.3: 2018-09-02
 ======================
 
