@@ -7,7 +7,7 @@ Doma is a Database access framework for Java.
 
 Doma uses [Pluggable Annotation Processing API][apt] to generate source code and validate sql mappings at **compile time**.
 
-![doma](https://github.com/domaframework/doma/blob/master/docs/sources/images/doma.png)
+![doma](https://github.com/domaframework/doma/blob/master/docs/images/doma.png)
 
 Major versions
 ---------------------
