@@ -29,7 +29,7 @@ Compatibility matrix
 | Java 8  |   v    |   v    |        |
 | Java 9  |        |   v    |        |
 | Java 10 |        |   v    |        |
-| Java 11 |        |   v    |   v    |
+| Java 11 |        |   v    |        |
 
 License
 -------
