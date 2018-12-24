@@ -1,107 +1,107 @@
 ===============================
-はじめよう！ (Eclipse)
+Get started!(Eclipse)
 ===============================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-概要
-====
+Summary
+========
 
-開発環境のセットアップ方法と基本的なデータベースアクセスの実行方法を紹介します。
+Introduce how to setting up development environment and how to executing basic database access.
 
-JDK のインストール
-==================
+Install JDK
+============
 
 .. _JDK 8: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
-`JDK 8`_ をインストールしてください。
+You install `JDK 8`_ .
 
 .. note::
 
-  JDK 9、10、11 もサポートされています。
+  Doma also supports JDK 9, 10 and 11.
 
-Eclipse のインストール
-======================
+Install Eclipse
+===============
 
 .. _Eclipse: http://www.eclipse.org/downloads/
 
-`Eclipse`_ をインストールしてください。
+You install `Eclipse`_ .
 
 .. note::
 
-  Eclipse IDE for Java EE Developers など他のパッケージでも動作しますが
-  このドキュメントでは Eclipse Standard 4.4 で動作確認しています。
-  上位のバージョンでも動作すると思われます。
+  Running on Eclipse IDE for Java EE Developers and so on other
+  but checking of running by Eclipse Standard 4.4 in this document.
+  It seems to that it is running at higher version.
 
-Eclipse プラグイン Doma Tools のインストール
+Install Doma Tools that is Eclipse plugin
 ============================================
 
-Doma Tools は Java ファイルと SQL ファイルの相互遷移を可能にするプラグインです。
-Doma の利用に必須ではありませんが、このプラグインを使用すると生産性が高まります。
+Doma tool is plugin that enable mutual transition between Java file and SQL file.
+This plugin is not required to using Doma, but if you use this plugin then productivity is growth.
 
-Eclipse メニューバーから Help > Install New Software... と進み、
-'Work With' のテキストボックスに次のURLを入力してください。
+You select Help > Install New Software... from menu bar and
+input next url to 'Work With' textbox.
 
 ::
 
   http://dl.bintray.com/domaframework/eclipse/
 
-以下の図のようにインストール可能なプラグインの候補が表示されるので
-Doma Tools の最新バージョンにチェックをつけてダイアログを進め
-インスートルを完了してください。
+Install enable plugin candidate is shown like below
+then you check to Doma tool latest version
+and go on dialog to finish installing.
 
 .. image:: images/install-doma-tools.png
 
-ファイルの関連づけ
+Associate to file
 ------------------
 
-Doma Tools は、 SQL ファイルの更新をフックして注釈処理を実行します。
-そのためには、 SQL ファイルを Eclipse 内で開く必要があります。
+Doma tools execute annotation processing by hook the file updating.
+In order to do that , you need to open SQL file in Eclipse.
 
-メニューバーから Eclipse > 環境設定... もしくは Window > Preference と選択し、設定画面を開いてください。
+You select Eclipse > Preference... or Window > Preference from menu bar and open preference dialog.
 
-以下の図が示すように ``.sql`` の拡張子をもつファイルを Text Editor に関連づけてください。
+You associate file that has ``.sql`` extensions to Text Editor like shown below figure.
 
 .. image:: images/sql-file-association.png
    :width: 80 %
 
-同様に ``.script`` の拡張子をもつファイルを Text Editor に関連づけてください。
+Similarly you associate file that has ``.script`` extensions to Text Editor.
 
 .. image:: images/script-file-association.png
    :width: 80 %
 
 .. note::
 
-   Eclipse IDE for Java EE Developers を利用する場合は、
-   デフォルトでSQLファイルが専用のエディタに関連づけられているため
-   この手順をスキップできます。
+   You can skip this setting
+   if you use Eclipse IDE for Java EE Developers
+   because SQL file is associated to specialized editor by default.
 
 .. _Oracle SQL Developer: http://www.oracle.com/technetwork/developer-tools/sql-developer/overview/index.html
 .. _pgAdmin: http://www.pgadmin.org/
 
 .. note::
 
-  SQL は RDBMS 固有のツール（`Oracle SQL Developer`_ や `pgAdmin`_）で作成し、
-  完成したものを Eclipse のエディターにコピーするといった
-  開発スタイルをお奨めします。
+  We recommend to you development style that
+  you create SQL by RDBMS specific tools (`Oracle SQL Developer`_ and `pgAdmin`_) and
+  copy accomplished SQL to Eclipse editor.
 
-雛形プロジェクトのインポート
+Import template project
 ============================
 
-GitHub から simple-boilerplate を clone してください。
+You clone simple-boilerplate from GitHub.
 
 .. code-block:: bash
 
   $ git clone https://github.com/domaframework/simple-boilerplate.git
 
-clone されたディレクトリに移動します。
+Move to the cloned directory.
 
 .. code-block:: bash
 
   $ cd simple-boilerplate
 
-次のコマンドで Eclipse 用の設定ファイルを生成します。
+Create config file for Eclipse by next command.
 
 .. code-block:: bash
 
@@ -109,32 +109,31 @@ clone されたディレクトリに移動します。
 
 .. note::
 
-  Windows 環境では ``./gradlew eclipse`` とする代わりに ``gradlew eclipse`` としてください。
+  You input ``gradlew eclipse`` instead of ``./gradlew eclipse`` in Windows environment.
 
 .. note::
 
-  環境変数 ``JAVA_HOME`` に JDK 8 （もしくは JDK 9 や 10）をインストールしたディレクトリを設定しておいてください。
-  gradlew の実行に必要です。
+  Please set  JDK 8 (or JDK 9 and 10) installed directory to environment variable ``JAVA_HOME``.
+  It is needed for executing gradlew.
 
 .. note::
 
-  Eclipse 用の設定ファイルには注釈処理の設定が含まれます。
-  手動で設定する場合は、 :ref:`eclipse-build` を参照ください。
+  The config that is for annotation processing config is included in Eclipse config file.
+  Reference :ref:`eclipse-build` if configure by manual.
 
-
-Eclipse のメニューからFile > Import... を実行し
-'Existing Projects into Workspace' を選んで simple-boilerplate をインポートします。
+You select File > Import... from Eclipse menu bar and
+select 'Existing Projects into Workspace' and import simple-boilerplate.
 
 .. image:: images/import.png
    :width: 80 %
 
-インポートが成功したことを確認するためにプロジェクトを選択して JUnit を実行してください。
-テストが1件成功すれば正常にインポートできています。
+You select project and execute JUnit for confirming the accomplished the importing.
+If one test case is success then importing was finished normally.
 
-雛形プロジェクトの構成
-======================
+Structure of template project
+=============================
 
-プロジェクトのソースコードの構成は次のようになっています。
+The project source code's structure is like next.
 
 ::
 
@@ -166,33 +165,32 @@ Eclipse のメニューからFile > Import... を実行し
         │           └── EmployeeDaoTest.java
         └── resources
 
-主要なものについて説明します。
+Explain about important file.
 
 AppConfig.java
-  Doma を実行するために必要な :doc:`config` です。
+  The :doc:`config` that is needed for executing Doma.
 
 AppDao.java
-  このアプリケーションで利用するデータベースのスキーマを実行時に作成/破棄するユーティリティです。
-  実環境では不要になります。
-  スキーマの作成と破棄には ``META-INF/boilerplate/dao/AppDao/`` 以下のスクリプトファイルを使用します。
+  Utility that create/drop the database schema that is using in this application.
+  This is not need in production environment.
+  The script file is under ``META-INF/boilerplate/dao/AppDao/`` and is used for creating and dropping schema.
 
 Employee.java
-  データベースの `EMPLOYEE` テーブルに対応する :doc:`entity` です。
+  The :doc:`entity` that correspond to `EMPLOYEE` table within database.
 
 EmployeeDao.java
-  ``Employee`` クラスの取得や更新などを行う :doc:`dao` です。
-  ``META-INF/boilerplate/dao/EmployeeDao/`` 以下の SQLファイル を使用します。
+  The :doc:`dao` that is execute getting and updating ``Employee`` class.
+  The SQL file is under ``META-INF/boilerplate/dao/EmployeeDao/`` and is used.
 
 EmployeeDaoTest.java
-  ``EmployeeDao`` を使ったテストです。
-  このファイルにテストケースを追加しながら Doma の学習ができます。
-  テストメソッドごとにデータベーススキーマの作成と破棄を行っているため
-  データの更新によって他のテストが影響を受けることはありません。
+  The test that is using ``EmployeeDao``.
+  You can learn about Doma by adding test case to this file.
+  Other test is not affected by updating data because database schema is created and disposed per test method.
 
-Java と SQL の相互遷移
-======================
+Mutual transition between Java file and SQL file
+=================================================
 
-``EmployeeDao.java`` では次のように定義されています。
+``EmployeeDao.java`` is defined like next.
 
 .. code-block:: java
 
@@ -216,21 +214,17 @@ Java と SQL の相互遷移
 
   }
 
-Eclipse のエディタ上で ``selectById`` メソッドにカーソルを合わせ右クリックなどで
-コンテキストメニューを表示させてください。
-メニューの中から Doma > Jump to SQL を選択すると
-``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` ファイルへ遷移できます。
+You move cursor to ``selectById`` method and do right click at Eclipse editor and show context menu.
+You can transition to ``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` file by selecting Doma > Jum to SQL in menu.
 
-次に、``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` ファイルの任意の場所に
-カーソルを置き、コンテキストメニューを表示させてください。
-メニューの中から Doma > Jump to Java を選択すると
-``EmployeeDao.java`` ファイルへ戻ってこられます。
+Next, you put cursor to arbitrary place in ``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` file and show context menu.
+You can back to ``EmployeeDao.java`` file by selecting Doma > Jump to Java in menu.
 
-SQL ファイル
+SQL File
 ============
 
-``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` ファイルを開いてください。
-このファイルには次のように記述されています。
+You open ``META-INF/boilerplate/dao/EmployeeDao/selectById.sql`` file.
+This file is described like next.
 
 .. code-block:: sql
 
@@ -241,61 +235,57 @@ SQL ファイル
   where
       id = /* id */0
 
-``/*%expand*/`` は Java メソッドでマッッピングされた
-エンティティクラスの定義を参照してカラムリストを展開することを示しています。
+The ``/*%expand*/`` show that expansioning column list by referencing entity class that is mapped at Java method.
 
-``/* id */`` は Java メソッドのパラメータの値がこの SQL へバインドされることを
-示しています。
+The ``/* id */`` show that Java method parameter value is binding to this SQL.
 
-後ろにある ``0`` はテスト用のデータです。
-このテストデータを含めることで、 SQL をツールで実行して構文上の
-誤りがないことを容易に確認できます。
-テスト用のデータは Java プログラム実行時には使われません。
+The ``0`` that is placed at behind is test data.
+By including this test data, you can confirm easily that there is not mistake in SQL at executing by tool.
+Test data is not used at executing Java program.
 
-詳細については、 :doc:`sql`  を参照してください。
+About detail you reference :doc:`sql`.
 
-検索
-====
+Search
+=========
 
-:doc:`query/select` 処理を実行するには、 ``@Select`` が注釈された Dao メソッドを呼び出します。
+You call Dao method that is annotated ``@Select`` for executing :doc:`query/select` process.
 
-検索処理の追加
---------------
+Add searching process
+----------------------
 
-ある年齢より小さい従業員を検索する処理を追加する手順を示します。
+Show how to adding process that searching young employee than arbitrary age.
 
-``EmployeeDao`` に次のコードを追加してください。
+You add next program code to ``EmployeeDao``.
 
 .. code-block:: java
 
    @Select
    List<Employee> selectByAge(Integer age);
 
-このとき、注釈処理により次のエラーメッセージが Eclilpse 上に表示されます。
+At this time, next error message is shown on Eclipse by annotation process.
 
 ::
 
-  [DOMA4019] ファイル[META-INF/boilerplate/dao/EmployeeDao/selectByAge.sql]が
-  クラスパスから見つかりませんでした。
+  [DOMA4019] The file[META-INF/boilerplate/dao/EmployeeDao/selectByAge.sql] is is not found from the classpath.
 
-Eclipse のエディタ上で ``selectByAge`` メソッドにカーソルを合わせ右クリックなどで
-コンテキストメニューを表示させ、メニューの中から Doma > Jump to SQL を選択してください。
 
-SQL ファイルの新規作成を行うためのダイアログが次のように表示されます。
+You move cursor to ``selectByAge`` method and show context menu by doing right click,
+and you select Doma > Jump to SQL in menu.
+
+The dialog that is for creating SQL file is show like next.
 
 .. image:: images/new-sql-file.png
    :width: 80 %
 
-'Finish' を押してファイルを作成してください。
+You push 'Finish' and create file.
 
-ファイル作成後、ファイルを空のまま保管して ``EmployeeDao`` に戻ると
-エラーメッセージの内容が変わります。
+After creating file, you save the file that state is empty and back to ``EmployeeDao`` then error message is changed.
 
 ::
 
-  [DOMA4020] SQLファイル[META-INF/boilerplate/dao/EmployeeDao/selectByAge.sql]が空です。
+  [DOMA4020] The SQL template is empty. PATH=[META-INF/boilerplate/dao/EmployeeDao/selectByAge.sql].
 
-``selectByAge.sql`` ファイルに戻って次の SQL を記述してください。
+You back to ``selectByAge.sql`` file and describe next SQL.
 
 .. code-block:: sql
 
@@ -306,15 +296,15 @@ SQL ファイルの新規作成を行うためのダイアログが次のよう�
   where
       age < /* age  */0
 
-これでエラーが解消されます。
+Then error is resolved.
 
 
-検索処理の実行
---------------
+Execute searching process
+--------------------------
 
-上記で作成した検索処理を実際に実行します。
+Actually execute the created searching process at the above.
 
-``EmployeeDaoTest`` に次のコードを追加してください。
+You add next code to ``EmployeeDaoTest``.
 
 .. code-block:: java
 
@@ -327,9 +317,9 @@ SQL ファイルの新規作成を行うためのダイアログが次のよう�
       });
   }
 
-JUnit を実行し、このコードが動作することを確認してください。
+You execute JUnit and confirm that this code is run.
 
-このとき発行される検索のための SQL は次のものです。
+At that time, created for the searching SQL is next.
 
 .. code-block:: sql
 
@@ -340,24 +330,24 @@ JUnit を実行し、このコードが動作することを確認してくだ�
   where
       age < 35
 
-挿入
-====
+Insert
+=======
 
-:doc:`query/insert` 処理を実行するには、 ``@Insert`` が注釈された Dao メソッドを呼び出します。
+For executing :doc:`query/insert` process, you call Dao method that is annotated ``@Insert`` annotation.
 
-挿入処理の実行
---------------
+Execute insert process
+-----------------------
 
-``EmployeeDao`` に次のコードが存在することを確認してください。
+You confirm that next code is exists at ``EmployeeDao``.
 
 .. code-block:: java
 
   @Insert
   int insert(Employee employee);
 
-このコードを利用して挿入処理を実行します。
+Execute insert process by using this code.
 
-``EmployeeDaoTest`` に次のコードを追加してください。
+You add next code to ``EmployeeDaoTest``.
 
 .. code-block:: java
 
@@ -367,8 +357,8 @@ JUnit を実行し、このコードが動作することを確認してくだ�
 
       Employee employee = new Employee();
 
-      // 最初のトランザクション
-      // 挿入を実行している
+      // First transaction
+      // Execute inserting
       tm.required(() -> {
           employee.name = "HOGE";
           employee.age = 20;
@@ -376,8 +366,8 @@ JUnit を実行し、このコードが動作することを確認してくだ�
           assertNotNull(employee.id);
       });
 
-      // 2番目のトランザクション
-      // 挿入が成功していることを確認している
+      // Second transaction
+      // Confirm that inserting is success
       tm.required(() -> {
           Employee employee2 = dao.selectById(employee.id);
           assertEquals("HOGE", employee2.name);
@@ -386,34 +376,34 @@ JUnit を実行し、このコードが動作することを確認してくだ�
       });
   }
 
-JUnit を実行し、このコードが動作することを確認してください。
+You execute JUnit and confirm that this code is run.
 
-このとき発行される挿入のための SQL は次のものです。
+At that time, created for the inserting SQL is next.
 
 .. code-block:: sql
 
   insert into Employee (age, id, name, version) values (20, 100, 'HOGE', 1)
 
-識別子とバージョン番号が自動で設定されています。
+Identifier and version number is automatically setting.
 
-更新
-====
+Update
+========
 
-:doc:`query/update` 処理を実行するには、 ``@Update`` が注釈された Dao メソッドを呼び出します。
+For executing :doc:`query/update` process, you call Dao method that is annotated ``@Update`` annotation.
 
-更新処理の実行
---------------
+Execute update process
+-----------------------
 
-``EmployeeDao`` に次のコードが存在することを確認してください。
+You confirm that next code is exists at ``EmployeeDao``.
 
 .. code-block:: java
 
   @Update
   int update(Employee employee);
 
-このコードを利用して更新処理を実行します。
+Execute update process by using this code.
 
-``EmployeeDaoTest`` に次のコードを追加してください。
+You add next code to ``EmployeeDaoTest``.
 
 .. code-block:: java
 
@@ -421,8 +411,8 @@ JUnit を実行し、このコードが動作することを確認してくだ�
   public void testUpdate() {
       TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
-      // 最初のトランザクション
-      // 検索して age フィールドを更新している
+      // First transaction
+      // Search and update age field
       tm.required(() -> {
           Employee employee = dao.selectById(1);
           assertEquals("ALLEN", employee.name);
@@ -433,8 +423,8 @@ JUnit を実行し、このコードが動作することを確認してくだ�
           assertEquals(Integer.valueOf(1), employee.version);
       });
 
-      // 2番目のトランザクション
-      // 更新が成功していることを確認している
+      // Second transaction
+      // Confirm that updating is success
       tm.required(() -> {
           Employee employee = dao.selectById(1);
           assertEquals("ALLEN", employee.name);
@@ -443,34 +433,34 @@ JUnit を実行し、このコードが動作することを確認してくだ�
       });
   }
 
-JUnit を実行し、このコードが動作することを確認してください。
+You execute JUnit and confirm that this code is run.
 
-このとき発行される更新のための SQL は次のものです。
+At that time, created for the updating SQL is next.
 
 .. code-block:: sql
 
   update Employee set age = 50, name = 'ALLEN', version = 0 + 1 where id = 1 and version = 0
 
-楽観的排他制御のためのバージョン番号が自動でインクリメントされています。
+The version number that is for optimistic concurrency control is automatically increment.
 
-削除
-====
+Delete
+=======
 
-:doc:`query/delete` 処理を実行するには、 ``@Delete`` が注釈された Dao メソッドを呼び出します。
+For executing :doc:`query/delete` process, you call Dao method that is annotated ``@Delete`` annotation.
 
-削除処理の実行
---------------
+Execute delete process
+-----------------------
 
-``EmployeeDao`` に次のコードが存在することを確認してください。
+You confirm that next code is exists at ``EmployeeDao``.
 
 .. code-block:: java
 
   @Delete
   int delete(Employee employee);
 
-このコードを利用して削除処理を実行します。
+Execute delete process by using this code.
 
-``EmployeeDaoTest`` に次のコードを追加してください。
+You add next code to ``EmployeeDaoTest``.
 
 .. code-block:: java
 
@@ -478,15 +468,15 @@ JUnit を実行し、このコードが動作することを確認してくだ�
   public void testDelete() {
       TransactionManager tm = AppConfig.singleton().getTransactionManager();
 
-      // 最初のトランザクション
-      // 削除を実行している
+      // First transaction
+      // Execute deleting
       tm.required(() -> {
           Employee employee = dao.selectById(1);
           dao.delete(employee);
       });
 
-      // 2番目のトランザクション
-      // 削除が成功していることを確認している
+      // Second transaction
+      // Confirm that deleting is success
       tm.required(() -> {
           Employee employee = dao.selectById(1);
           assertNull(employee);
@@ -494,13 +484,12 @@ JUnit を実行し、このコードが動作することを確認してくだ�
   }
 
 
-JUnit を実行し、このコードが動作することを確認してください。
+You execute JUnit and confirm that this code is run.
 
-このとき発行される削除のための SQL は次のものです。
+At that time, created for the deleting SQL is next.
 
 .. code-block:: sql
 
   delete from Employee where id = 1 and version = 0
 
-識別子に加えバージョン番号も検索条件に指定されます。
-
+Identifier and version number is specified in search condition.

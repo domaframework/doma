@@ -1,11 +1,11 @@
 ==================
-バッチ更新
+Batch update
 ==================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-バッチ更新を行うには、 ``@BatchUpdate`` をDaoのメソッドに注釈します。
+Annotate with ``@BatchUpdate`` to Dao method for execute batch update.
 
 .. code-block:: java
 
@@ -18,56 +18,49 @@
       BatchResult<ImmutableEmployee> update(List<ImmutableEmployee> employees);
   }
 
-デフォルトでは、UPDATE文が自動生成されます。
-``@BatchUpdate`` の ``sqlFile`` に ``true`` を設定することで、任意のSQLファイルにマッピングできます。
+By default UPDATE statement is auto generated.
+You can mapping arbitrary SQL file by specifying ``true`` to ``sqlFile`` property within the ``@BatchUpdate`` annotation.
 
-パラメータの要素の :doc:`../entity` にエンティティリスナーが指定されている場合、
-更新の実行前にエンティティリスナーの ``preUpdate`` メソッドがエンティティごとに呼び出されます。
-また、更新の実行後にエンティティリスナーの ``postUpdate`` メソッドがエンティティごとに呼び出されます。
+The ``preUpdate`` method of entity listener is called each entity when before executing update if the entity listener is specified at :doc:`../entity` parameter.
+Also the ``postUpdate`` method of entity listener method is called each entity when after executing update.
 
-戻り値
-======
+Return value
+=============
 
-パラメータ ``Iterable`` のサブタイプの要素がイミュータブルなエンティティクラスの場合、
-戻り値はそのエンティティクラスを要素とする ``org.seasar.doma.BatchResult``
-でなければいけません。
+Return value must be ``org.seasar.doma.jdbc.Result`` that has entity class as an element if parameter ``Iterable`` subtype element is immutable entity class.
 
-上記の条件を満たさないない場合、戻り値は各更新処理の更新件数を表す ``int[]`` でなければいけません。
+Return value must be ``int[]`` that is represented each updating process's updated count if the above conditions are not satisfied.
 
 .. _auto-batch-update:
 
-SQLの自動生成によるバッチ更新
-=============================
+Batch update by auto generated SQL
+===================================
 
-パラメータの型は :doc:`../entity` を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
-戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
-配列のそれぞれの要素が更新された件数を返します。
+Parameter type must be ``java.lang.Iterable`` subtype that has :doc:`../entity` as an element.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
+Return value array element count become equal ``Iterable`` element count.
+Update count is returned to array each element.
 
-SQL自動生成におけるバージョン番号と楽観的排他制御
--------------------------------------------------
+Version number and optimistic concurrency control in auto generated SQL
+-----------------------------------------------------------------------
 
-次の条件を満たす場合に、楽観的排他制御が行われます。
+Optimistic concurrency control is executed if you satisfied below conditions.
 
-* パラメータのjava.lang.Iterableのサブタイプの要素である
-  :doc:`../entity` に@Versionが注釈されたプロパティがある
-* @BatchUpdateのignoreVersion要素がfalseである
+* :doc:`../entity` within parameter java.lang.Iterable subtype has property that is annotated with @Version
+* The ignoreVersion element within @BatchUpdate annotation is false
 
-楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、
-1増分して更新されます。
-このときの更新件数が0件の場合、楽観的排他制御の失敗を示す
-``BatchOptimisticLockException`` がスローされます。
-一方、更新件数が1件の場合は、 ``BatchOptimisticLockException`` はスローされず、
-エンティティのバージョンプロパティの値が1増分されます。
+If optimistic concurrency control is enable, version number is included with identifier in update condition and is updated increment by 1.
+``BatchOptimisticLockException`` representing optimistic concurrency control failure is thrown, if at that time updated count is 0.
+Also, ``BatchOptimisticLockException`` is not thrown and version property within entity is increment by 1 if updated count is 1.
 
 ignoreVersion
 ~~~~~~~~~~~~~
 
-``@BatchUpdate`` の ``ignoreVersion`` 要素が ``true`` の場合、
-バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。
-バージョン番号はアプリケーションで設定した値で更新されます。
-この場合、更新件数が0件であっても、 ``BatchOptimisticLockException`` はスローされません。
+If ``ignoreVersion`` property within ``@BatchUpdate`` annotation is true,
+version number is not include in update condition and be included in SET clauses within UPDATE statement.
+Version number is updated by setting value at application.
+``BatchOptimisticLockException`` is not thrown in this case, even if update count is 0.
 
 .. code-block:: java
 
@@ -77,31 +70,29 @@ ignoreVersion
 suppressOptimisticLockException
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``@BatchUpdate`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
-``@Versioni`` が注釈されたプロパティがあればバージョン番号は更新条件に含まれ増分もされますが、
-更新件数が0件であっても ``BatchOptimisticLockException`` はスローされません。
-ただし、エンティティのバージョンプロパティの値は1増分されます。
+In case of ``suppressOptimisticLockException`` property within ``@BatchUpdate`` is ``true``,
+if property that annotated with ``@Version`` is exists then version number is include in update condition and be increment by 1 
+but ``BatchOptimisticLockException`` is not thrown even if update count is 0.
+However, version property value within entity is increment by 1.
 
 .. code-block:: java
 
   @BatchUpdate(suppressOptimisticLockException = true)
   int[] update(List<Employee> employees);
 
-更新対象プロパティ
-------------------
+Update target property
+----------------------
 
 updatable
 ~~~~~~~~~
 
-:doc:`../entity` に ``@Column`` が注釈されたプロパティがある場合、
-``@Column`` の ``updatable`` 要素が ``false`` のものは更新対象外です。
+The ``updatable`` property within ``@Column`` annotation that is specified ``false`` is excluded from updating target if :doc:`../entity` has property that is annotated with ``@Column``.
 
 exclude
 ~~~~~~~
 
-``@BatchUpdate`` の ``exclude`` 要素に指定されたプロパティを更新対象外とします。
-プロパティがこの要素に指定されていれば、 ``@Column`` の ``updatable`` 要素が
-``true`` であっても更新対象外です。
+Property that is specified with ``exclude`` property within the ``@BatchUpdate`` annotation is excluded from updating target.
+Even if ``updatable`` property within ``@Column`` annotation is  specified ``true`` the property is excluded from updating target if the property is specified by this element.
 
 .. code-block:: java
 
@@ -111,30 +102,27 @@ exclude
 include
 ~~~~~~~
 
-``@BatchUpdate`` の ``include`` 要素に指定されたプロパティのみを更新対象とします。
-``@BatchUpdate`` の ``include`` 要素と ``exclude``
-要素の両方に同じプロパティが指定された場合、そのプロパティは更新対象外になります。
-プロパティがこの要素に指定されていても、 ``@Column`` の
-``updatable`` 要素が ``false`` であれば更新対象外です。
+Only property that is specified with ``include`` property within ``@BatchUpdate`` annotation is included to updating target.
+If same property are specified with both of ``include`` property and ``exclude`` property within ``@BatchUpdate`` the property is excluded from updating target.
+Even if property is specified with this element the property is excluded from updating target if ``updatable`` property within ``@Column`` annotation is ``false``.
 
 .. code-block:: java
 
   @BatchUpdate(include = {"name", "salary"})
   int[] update(List<Employee> employees);
 
-SQLファイルによるバッチ更新
-===========================
+Batch update by SQL file
+=========================
 
-SQLファイルによるバッチ更新を行うには、
-``@BatchUpdate`` の ``sqlFile`` 要素に ``true`` を設定し、
-メソッドに対応するSQLファイルを用意します。
+To execute batch updating by SQL file,
+you set ``true`` to ``sqlFile`` property within ``@BatchUpdate`` annotation and prepare SQL file that correspond method.
 
 .. note::
 
-  SQLファイルによるバッチ更新は、 :ref:`populate` の利用有無によりルールが異なります。
+  In batch updating by SQL file, rule is different according to using or not using :ref:`populate`.
 
-更新カラムリスト生成コメントを使用する場合
--------------------------------------------------
+Case of using comment that generating update column list 
+---------------------------------------------------------
 
 .. code-block:: java
 
@@ -144,24 +132,24 @@ SQLファイルによるバッチ更新を行うには、
   @BatchUpdate
   BatchResult<ImmutableEmployee> update(List<ImmutableEmployee> employees);
 
-パラメータの型は :doc:`../entity` を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
-戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
-配列のそれぞれの要素が更新された件数を返します。
+Parameter type must be ``java.lang.Iterable`` subtype that has :doc:`../entity` as an element.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
+Return value array element count become equal ``Iterable`` element count.
+Update count is returned to array each element.
 
-たとえば、上記のメソッドに対応するSQLは次のように記述します。
+For example, you describe SQL like below to correspond above method.
 
 .. code-block:: sql
 
   update employee set /*%populate*/ id = id where name = /* employees.name */'hoge'
 
-SQLファイル上では、パラメータの名前は ``Iterable`` のサブタイプの要素を指します。
+Parameter name indicate ``Iterable`` subtype element in SQL file.
 
-更新対象プロパティの制御に関するルールは、 :ref:`auto-batch-update` と同じです。
+The rule that is about update target property  equals :ref:`auto-batch-update`.
 
-更新カラムリスト生成コメントを使用しない場合
--------------------------------------------------
+Case of not using comment that generating update column list
+------------------------------------------------------------
 
 .. code-block:: java
 
@@ -171,60 +159,54 @@ SQLファイル上では、パラメータの名前は ``Iterable`` のサブタ
   @BatchUpdate
   BatchResult<ImmutableEmployee> update(List<ImmutableEmployee> employees);
 
-パラメータは任意の型を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
-戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
-配列のそれぞれの要素が更新された件数を返します。
+Parameter type must be ``java.lang.Iterable`` subtype that has arbitrary type as an element.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
+Return value array element count become equal ``Iterable`` element count.
+Update count is returned to array each element.
 
-たとえば、上記のメソッドに対応するSQLは次のように記述します。
+For example, you describe SQL like below to correspond above method.
 
 .. code-block:: sql
 
   update employee set name = /* employees.name */'hoge', salary = /* employees.salary */100
   where id = /* employees.id */0
 
-SQLファイル上では、パラメータの名前は ``Iterable`` のサブタイプの要素を指します。
+Parameter name indicate ``Iterable`` subtype element in SQL file.
 
-SQLファイルによるバッチ更新では、バージョン番号の自動更新は行われません。
-また、 ``@BatchUpdate`` の ``exclude`` 要素、 ``include`` 要素は参照されません。
+Version number auto updating is not executed in batch update by SQL file.
+Also, ``exclude`` property and ``include`` property within ``@BatchUpdate`` annotation are not referenced.
 
-SQLファイルにおけるバージョン番号と楽観的排他制御
+Version number and optimistic concurrency control in SQL file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-次の条件を満たす場合に、楽観的排他制御が行われます。
+Optimistic concurrency control is executed if you satisfied below conditions.
 
-* パラメータのjava.lang.Iterableのサブタイプの要素が :doc:`../entity` であり、
-  :doc:`../entity` に@Versionが注釈されたプロパティがある
-* @BatchUpdateのignoreVersion要素がfalseである
+* java.lang.Iterable subtype element in parameter is :doc:`../entity`
+  and has property that is annotated @Version existing at :doc:`../entity`.
+* ignoreVersion property within @BatchUpdate annotation is false.
 
-ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
-たとえば、下記のSQLのように、
-WHERE句でバージョンを番号を指定しSET句でバージョン番号を1だけ増分しなければいけません。
+However, describing to SQL file for Optimistic concurrency control SQL is application developer's responsibility.
+For example like below SQL, you must specify version number in WHERE clauses and increment version number by 1 in SET clauses.
 
 .. code-block:: sql
 
   update EMPLOYEE set DELETE_FLAG = 1, VERSION = /* employees.version */1 + 1
   where ID = /* employees.id */1 and VERSION = /* employees.version */1
 
-このSQLの更新件数が0件または複数件の場合、楽観的排他制御の失敗を示す
-``BatchOptimisticLockException`` がスローされます。
-更新件数が1件の場合、 ``BatchOptimisticLockException`` はスローされず、
-エンティティのバージョンプロパティの値が1増分されます。
+``BatchOptimisticLockException`` representing optimistic concurrency control failure is thrown, if this SQL updated count is 0.
+``BatchOptimisticLockException`` is not thrown and version property within entity is increment by 1 if updated count is not 0.
 
-楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、
-1増分して更新されます。
-このときの更新件数が0件または複数件の場合、楽観的排他制御の失敗を示す
-``BatchOptimisticLockException`` がスローされます。
-一方、更新件数が1件の場合、 ``BatchOptimisticLockException``
-はスローされず、エンティティのバージョンプロパティの値が1増分されます。
+If optimistic concurrency control is enable, version number is included with identifier in update condition and is updated increment by 1.
+``BatchOptimisticLockException`` representing optimistic concurrency control failure is thrown, if at that time updated count is 0.
+On the other hand, if update count is 1, ``BatchOptimisticLockException`` is not thrown and entity version property is increment by 1.
 
 ignoreVersion
 ^^^^^^^^^^^^^
 
-``@BatchUpdate`` の ``ignoreVersion`` 要素が ``true`` の場合、
-更新件数が0件または複数件であっても、 ``BatchOptimisticLockException`` はスローされません。
-また、エンティティのバージョンプロパティの値は変更されません。
+If ``ignoreVersion`` property within ``@BatchUpdate`` annotation is true,
+``BatchOptimisticLockException`` is not thrown, even if update count is 0 or multiple.
+Also, entity version property is not modified.
 
 .. code-block:: java
 
@@ -234,56 +216,54 @@ ignoreVersion
 suppressOptimisticLockException
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``@BatchUpdate`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
-更新件数が0件または複数件であっても ``BatchOptimisticLockException`` はスローされません。
-ただし、エンティティのバージョンプロパティの値は1増分されます。
+In case of ``suppressOptimisticLockException`` property within ``@BatchUpdate`` is ``true``,
+``BatchOptimisticLockException`` is not thrown even if update count is 0.
+However, entity version property value is incremented by 1.
 
 .. code-block:: java
 
   @BatchUpdate(sqlFile = true, suppressOptimisticLockException = true)
   int[] update(List<Employee> employees);
 
-一意制約違反
-============
+Unique constraint violation
+============================
 
-一意制約違反が発生した場合は、SQLファイルの使用の有無に関係なく
-``UniqueConstraintException`` がスローされます。
+``UniqueConstraintException`` is thrown regardless of with or without using sql file if unique constraint violation is occurred.
 
-クエリタイムアウト
+Query timeout
 ==================
 
-``@BatchUpdate`` の ``queryTimeout`` 要素にクエリタイムアウトの秒数を指定できます。
+You can specify seconds of query timeout to ``queryTimeout`` property within ``@BatchUpdate`` annotation.
 
 .. code-block:: java
 
   @BatchUpdate(queryTimeout = 10)
   int[] update(List<Employee> employees);
 
-この設定は、SQLファイルの使用の有無に関係なく適用されます。
-``queryTimeout`` 要素に値を指定しない場合、
-設定クラスに指定されたクエリタイムアウトが使用されます。
+This specifying is applied regardless of with or without using sql file.
+Query timeout that is specified in config class is used if ``queryTimeout`` property is not set value.
 
-バッチサイズ
+Batch size
 ============
 
-``@BatchUpdate`` の ``batchSize`` 要素にバッチサイズを指定できます。
+You can specify batch size to ``batchSize`` property within ``@BatchUpdate`` annotation.
 
 .. code-block:: java
 
   @BatchUpdate(batchSize = 10)
   int[] update(List<Employee> employees);
 
-この指定は、SQLファイルの使用の有無に関係なく適用されます。
-``batchSize`` 要素に値を指定しない場合、 :doc:`../config` クラスに指定されたバッチサイズが使用されます。
+This specify is applied Regardless of using or not using SQL file.
+It you do not specify the value to ``batchSize`` property, batch size that is specified at :doc:`../config` class is applied.
 
-SQL のログ出力形式
-==================
+SQL log output format
+======================
 
-``@BatchUpdate`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+You can specify SQL log output format to ``sqlLog`` property within ``@BatchUpdate`` annotation.
 
 .. code-block:: java
 
   @BatchUpdate(sqlLog = SqlLogType.RAW)
   int[] update(List<Employee> employees);
 
-``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+``SqlLogType.RAW`` represent outputting log that is sql with a binding parameter.
