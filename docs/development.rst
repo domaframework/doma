@@ -63,34 +63,22 @@ Continuous Integration の実行には `Travis CI`_ を利用しています。
 
 .. code-block:: bash
 
-   $ cd docs
-   $ pip install -r requirements.txt
+  $ cd docs
+  $ pip install -r requirements.txt
 
-ドキュメントの生成
-------------------
+ドキュメントの生成と確認
+-------------------------------
 
-.. code-block:: bash
-
-   $ make dirhtml
-
-LiveReload
-----------
-
-Google Chrome に `LiveReload`_ をインストールすることで
-ドキュメントの修正を即座にブラウザで確認できます。
-
-この拡張機能を有効にした上でサーバーを起動します。
+docsディレクトリで次のコマンドを実行します。
 
 .. code-block:: bash
 
-   $ python server.py
+  $ sphinx-autobuild . _build/html
 
-次の URL でドキュメントを確認できます。
-
-   http://localhost:5500/_build/dirhtml/
+ブラウザで `http://127.0.0.1:8000` にアクセスするとビルドされたドキュメントを確認できます。
+ドキュメントへの修正は即座にブラウザ上に反映されます。
 
 
 .. _Travis CI: http://docs.travis-ci.com/
-.. _LiveReload: https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei
 .. _Sphinx: http://sphinx-doc.org/
 
