@@ -1,16 +1,16 @@
 ==================
-エンティティクラス
+Entity classes
 ==================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-Entity（エンティティ）は、データベースのテーブルやクエリの結果セットに対応します。
+Entity classes correspond to database tables or query result sets.
 
-エンティティ定義
+Entity definition
 ==================
 
-エンティティクラスは ``@Entity`` を注釈して示します。
+The following code snippet shows how to define an entity:
 
 .. code-block:: java
 
@@ -19,11 +19,32 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
       ...
   }
 
-エンティティリスナー
+An entity class can inherit other entity class.
+
+The following code snippet shows how to inherit other entity class:
+
+.. code-block:: java
+
+  @Entity
+  public class SkilledEmployee extends Employee {
+      ...
+  }
+
+
+Entity listeners
 ---------------------------
 
-エンティティがデータベースに対し挿入、更新、削除される直前/直後に処理を実行したい場合、
-``@Entity`` の ``listener`` 要素に ``EntityListener`` の実装クラスを指定できます。
+Entity listeners work before/after Doma issues the database modification statements - INSERT, DELETE and UPDATE.
+
+The following code snippet shows how to define an entity listener:
+
+.. code-block:: java
+
+  public class EmployeeEntityListener implements EntityListener<Employee> {
+      ...
+  }
+
+To use the entity listener, specify it to the ``listener`` property within the ``@Entity`` annotation:
 
 .. code-block:: java
 
@@ -32,17 +53,17 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
       ...
   }
 
-``listener`` 要素に何も指定しない場合、エンティティクラスが他のエンティティクラスを継承
-しているかどうかで採用する設定が変わります。
+An entity subclass inherits parent`s entity listener.
 
-* 継承している場合、親エンティティクラスの設定を引き継ぎます
-* 継承していない場合、何も行いません（ ``NullEntityListener`` が使用されます）
-
-ネーミング規約
+Naming convention
 ---------------------------
 
-エンティティに対応するテーブル名やプロパティに対応するカラム名を解決するためのネーミング規約
-を変更したい場合、 ``naming`` 要素に ``NamingType`` の列挙型を指定できます。
+Naming convention maps the names between:
+
+* the database tables and the Java entity classes
+* the database column and the Java entity fields
+
+The following code snippet shows how to apply the naming convention to an entity:
 
 .. code-block:: java
 
@@ -51,29 +72,17 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
       ...
   }
 
+When the ``name`` property within the ``@Table`` or ``@Column`` annotation is explicitly specified,
+the naming convention is ignored.
 
-``naming`` 要素に何も指定しない場合、エンティティクラスが他のエンティティクラスを継承している
-かどうかで採用する設定が変わります。
+An entity subclass inherits parent's naming convention.
 
-* 継承している場合、親エンィティクラスの設定を引き継ぎます
-* 継承していない場合、何も行いません（ ``NamingType.NONE`` が使用されます）
-
-``NamingType.SNAKE_UPPER_CASE`` は、エンティティ名やプロパティ名を
-スネークケース（アンダースコア区切り）の大文字に変換します。
-この例の場合、テーブル名はEMPLOYEE_INFOになります。
-
-``naming`` 要素に何も指定しない場合、デフォルトでは、テーブル名にはエンティティクラスの単純名、
-カラム名にはプロパティ名が使用されます。
-
-ネーミング規約は、 ``@Table`` や ``@Colum`` の ``name`` 要素が指定されない場合のみ使用されます。
-``@Table`` や ``@Colum`` の ``name`` 要素が指定された場合は、 ``name`` 要素
-に指定した値が使用され、ネーミング規約は適用されません。
-
-イミュータブルなエンティティ
+Immutable
 ----------------------------
 
-エンティティをイミュータブルなオブジェクトとして扱いたい場合は
-``@Entity`` の ``immutable`` 要素に ``true`` を設定します。
+An entity class can be immutable.
+
+The following code snippet shows how to define an immutable entity:
 
 .. code-block:: java
 
@@ -90,16 +99,18 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
           this.name = name;
           this.version = version;
       }
+      ...
   }
 
-永続的なフィールドには ``final`` 修飾子が必須です。
+The ``immutable`` property within the ``@Entity`` annotation must be ``true``.
+The persistent field must be ``final``.
 
-テーブル
+An entity subclass inherits parent's immutable property.
+
+Table
 ------------------
 
-エンティティに対応するテーブル情報を指定するには、 ``@Table`` を使用します。
-
-``name`` 要素でテーブル名を指定できます。
+You can specify the corresponding table name with the ``@Table`` annotation:
 
 .. code-block:: java
 
@@ -109,23 +120,25 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
       ...
   }
 
-``@Table`` を使用しない、もしくは ``@Table`` の ``name`` 要素を使用しない場合、
-テーブル名は `ネーミング規約`_ により解決されます。
+Without the ``@Table`` annotation, the table name is resolved by `Naming Convention`_.
 
-フィールド定義
+Field definition
 ==================
 
-エンティティクラスのフィールドはデフォルトで永続的です。
-つまり、テーブルや結果セットのカラムに対応します。
-フィールドの型は次のいずれかでなければいけません。
+By default, the fields are persistent and correspond to the database columns or result set columns.
+
+The field type must be one of the following:
 
 * :doc:`basic`
 * :doc:`domain`
 * :doc:`embeddable`
-* :doc:`basic` または :doc:`domain` のいずれかを要素とするjava.util.Optional
+* java.util.Optional, whose element is either :doc:`basic` or :doc:`domain`
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
+
+
+The following code snippet shows how to define a filed:
 
 .. code-block:: java
 
@@ -135,43 +148,42 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
       Integer employeeId;
   }
 
-カラム
+Column
 ------------------
 
-カラム情報を指定するには、 ``@Column`` を使用します。
-
-``name`` 要素でカラム名を指定できます。
+You can specify the corresponding column name with the ``@Column`` annotation:
 
 .. code-block:: java
 
   @Column(name = "ENAME")
   String employeeName;
 
-``insertable`` 要素や ``updatable`` 要素で挿入や更新の対象とするかどうかを指定できます。
+
+To exclude fields from INSERT or UPDATE statements, specify ``false`` to the ``insertable`` or ``updatable``
+property within the ``@Column`` annotation:
 
 .. code-block:: java
 
   @Column(insertable = false, updatable = false)
   String employeeName;
 
-``@Column`` を使用しない、もしくは ``@Column`` の ``name`` 要素を使用しない場合、
-カラム名は `ネーミング規約`_ により解決されます。
+Without the ``@Column`` annotation, the column name is resolved by `Naming Convention`_.
 
 .. note::
 
-  フィールドの型が :doc:`embeddable` の場合、　``@Column`` は指定できません。
+  When the filed type is :doc:`embeddable`, you cannot specify the ``@Column`` annotation to the field.
 
-識別子
-------
+Id
+--------------------
 
-識別子(主キー)であることを指定するには、 ``@Id`` を使います。
+The database primary keys are represented with the ``@Id`` annotation:
 
 .. code-block:: java
 
   @Id
   Integer id;
 
-複合主キーの場合は ``@Id`` を複数指定します。
+When there is a composite primary key, use the ``@Id`` annotation many times:
 
 .. code-block:: java
 
@@ -183,35 +195,36 @@ Entity（エンティティ）は、データベースのテーブルやクエ�
 
 .. note::
 
-  フィールドの型が :doc:`embeddable` の場合、　``@Id`` は指定できません。
+  When the filed type is :doc:`embeddable`, you cannot specify the ``@Id`` annotation to the field.
 
 .. _identity-auto-generation:
 
-識別子の自動生成
-~~~~~~~~~~~~~~~~
+Id generation
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-識別子を自動生成するには ``@GeneratedValue`` を注釈して示します。
-フィールドの型は以下のいずれかでなければいけません。
+You can instruct Doma to generate id values automatically using the ``@GeneratedValue`` annotation.
 
-* java.lang.Number のサブタイプ
-* java.lang.Number のサブタイプを値とする :doc:`domain`
-* 上記のいずれかを要素の型とする java.util.Optional
+The field type must be one of the following:
+
+* the subclass of java.lang.Number
+* :doc:`domain`, whose value type is the subclass of java.lang.Number
+* java.util.Optional, whose element is either above types
 * OptionalInt
 * OptionalLong
 * OptionalDouble
-* 数値のプリミティブ型
+* the primitive types for number
 
 .. note::
 
-  自動生成された値が識別子フィールドに設定される条件は、フィールドの値が ``null`` もしくは ``0`` 未満であることです。
-  プリミティブ型を使う場合は、フィールドの初期値に ``-1`` など ``0`` 未満の値を明示してください。
+  The generated values are assign to the field only when the field is either ``null`` or less than ``0``.
+  If you use one of the primitive types as filed type,
+  initialize the field with tha value that is less than ``0``, such as ``-1``.
 
-IDENTITYを使った識別子の自動生成
+Id generation by IDENTITY
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-データベースのIDENTITY自動生成機能を利用する方法です。
-RDBMSによってはサポートされていません。
-フィールドに対応するカラムの定義でIDENTITY自動生成を有効にしておく必要があります。
+To generate values using the RDBMS IDENTITY function, specify the ``GenerationType.IDENTITY`` enum value
+to ``strategy`` property within the ``@GeneratedValue``:
 
 .. code-block:: java
 
@@ -219,15 +232,18 @@ RDBMSによってはサポートされていません。
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer id;
 
-シーケンスを使った識別子の自動生成
+In advance, define the database primary key as IDENTITY.
+
+.. warning::
+
+  All RDBMS does't support the IDENTITY function.
+
+Id generation by SEQUENCE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-データベースのシーケンスを利用する方法です。
-RDBMSによってはサポートされていません。
-
-``@SequenceGenerator`` では、シーケンスの名前、割り当てサイズ、初期値等を設定できます。
-データベースにあらかじめシーケンスを定義しておく必要がありますが、
-その定義は ``@SequenceGenerator`` の定義とあわせておく必要があります。
+To generate values using the RDBMS SEQUENCE, specify the ``GenerationType.SEQUENCE`` enum value
+to ``strategy`` property within the ``@GeneratedValue`` annotation.
+And use the ``@SequenceGenerator`` annotation:
 
 .. code-block:: java
 
@@ -236,19 +252,20 @@ RDBMSによってはサポートされていません。
   @SequenceGenerator(sequence = "EMPLOYEE_SEQ")
   Integer id;
 
-テーブルを使った識別子の自動採番
+In advance, define the SEQUENCE in the database.
+The SEQUENCE definitions such as the name, the allocation size and the initial size must
+correspond the properties within the ``@SequenceGenerator`` annotation.
+
+.. warning::
+
+  All RDBMS does't support the SEQUENCE.
+
+Id generation by TABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-生成される識別子をテーブルで管理する方法です。
-すべてのRDBMSで利用できます。
-
-``@TableGenerator`` では、テーブル名、割り当てサイズ、初期値等を設定できます。
-データベースにあらかじめテーブルを定義しておく必要がありますが、
-その定義は ``@TableGenerator`` の定義とあわせておく必要があります。
-デフォルトでは、 ``ID_GENERATOR`` という名前のテーブルに、文字列型の ``PK`` と数値型の ``VALUE``
-という2つのカラムが定義されているものとして動作します（ ``PK`` カラムが主キーです）。
-``PK`` カラムにはエンティティクラスごとの一意な名前、 ``VALUE`` カラムには識別子の値が格納されます。
-テーブルには、エンティティクラスごとのレコードをあらかじめ登録しておく必要があります。
+To generate values using the RDBMS TABLE, specify the ``GenerationType.TABLE`` enum value
+to ``strategy`` property within the ``@GeneratedValue`` annotation.
+And use the ``@TableGenerator`` annotation:
 
 .. code-block:: java
 
@@ -257,23 +274,30 @@ RDBMSによってはサポートされていません。
   @TableGenerator(pkColumnValue = "EMPLOYEE_ID")
   Integer id;
 
-``@TableGenerator`` の ``pkColumnValue`` 要素には、 識別子を管理するテーブル
-（デフォルトでは、 ``ID_GENERATOR`` という名前のテーブル）の主キーの値を指定します。
+In advance, define the TABLE in the database.
+The TABLE`s definition must correspond to the properties within the ``@TableGenerator`` annotation.
+For example, the DDL should be following:
 
+.. code-block:: sql
 
-バージョン
+  CREATE TABLE ID_GENERATOR(PK VARCHAR(20) NOT NULL PRIMARY KEY, VALUE INTEGER NOT NULL);
+
+You can change the table name and the column names using the properties within the ``@TableGenerator`` annotation.
+
+Version
 ------------------
 
-楽観的排他制御用のバージョンは ``@Version`` を注釈して示します。
-フィールドの型は以下のいずれかでなければいけません。
+The version fields for optimistic locking are represented with the ``@Version`` annotation.
 
-* java.lang.Number のサブタイプ
-* java.lang.Number のサブタイプを値とする :doc:`domain`
-* 上記のいずれかを要素の型とする java.util.Optional
+The field type must be one of the following:
+
+* the subclass of java.lang.Number
+* :doc:`domain`, whose value type is the subclass of java.lang.Number
+* java.util.Optional, whose element is either above types
 * OptionalInt
 * OptionalLong
 * OptionalDouble
-* 数値のプリミティブ型
+* the primitive types for number
 
 .. code-block:: java
 
@@ -282,14 +306,13 @@ RDBMSによってはサポートされていません。
 
 .. note::
 
-  フィールドの型が :doc:`embeddable` の場合、　``@Version`` は指定できません。
+  When the filed type is :doc:`embeddable`, you cannot specify the ``@Version`` annotation to the field.
 
-
-テナント識別子
+Tenant Id
 ------------------------------
 
-テナント識別子は ``@TenantId`` を注釈して示します。
-テナント識別子を注釈すると、更新や削除などSQLが生成されるタイプのクエリにおいて対応するカラムが検索条件としてWHERE句に含まれます。
+The tenant id fields are represented with the ``@TenantId`` annotation.
+The column corresponding to the annotated field is included in the WHERE clause of UPDATE and DELETE stetements.
 
 .. code-block:: java
 
@@ -298,53 +321,46 @@ RDBMSによってはサポートされていません。
 
 .. note::
 
-  フィールドの型が :doc:`embeddable` の場合、　``@TenantId`` は指定できません。
+  When the filed type is :doc:`embeddable`, you cannot specify the ``@TenantId`` annotation to the field.
 
-非永続的なフィールド
---------------------------------
+Transient
+----------------
 
-非永続的なフィールドは、テーブルや結果セットのカラムに対応しません。
-
-``@Transient`` を注釈して示します。
-
-フィールドの型や可視性に制限はありません。
+If an entity has fields that you don't want to persist, you can annotate them using ``@Transient``:
 
 .. code-block:: java
 
   @Transient
   List<String> nameList;
 
-取得時の状態を管理するフィールド
+OriginalStates
 --------------------------------------------
 
-取得時の状態とは、エンティティがDaoから取得されときの全プロパティの値です。
-取得時の状態を保持しておくことで、更新処理を実行する際、UPDATE文のSET句に変更したフィールドのみを含められます。
-取得時の状態を管理するフィールドは、テーブルや結果セットのカラムに対応しません。
+If you want to include only changed values in UPDATE statements,
+you can define fields annotated with ``@OriginalStates``.
+The fields can hold the original values that were fetched from the database.
 
-``@OriginalStates`` を注釈して示します。
+Doma uses the values to know which values are changed in the application and
+includes the only changed values in UPDATE statements.
+
+The following code snippet shows how to define original states:
 
 .. code-block:: java
 
   @OriginalStates
   Employee originalStates;
 
-.. note::
+The field type must be the same as the entity type.
 
-  エンティティクラスのフィールドに :doc:`embeddable` が含まれている場合、　``@OriginalStates`` は使用できません。
+Method definition
+====================
 
-メソッド定義
+There are no limitations in the use of methods.
+
+Example
 ==================
 
-メソッドの定義に制限はありません。
-
-フィールドの可視性を ``protected`` やパッケージプライベートにして ``public`` なメソッド経由で
-アクセスすることも、メソッドを一切使用せず ``public`` フィールドに直接アクセスすること
-もどちらもサポートされています。
-
-利用例
-==================
-
-インスタンス化して利用します。
+Instantiate the ``Employee`` entity class and use its instance:
 
 .. code-block:: java
 
