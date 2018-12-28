@@ -20,37 +20,29 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
- * 
  * @author nakamura-to
- * 
- * @param <BASIC>
- *            基本型
- * @param <CONTAINER>
- *            基本型のコンテナ
- * @param <RESULT>
- *            結果
+ * @param <BASIC> 基本型
+ * @param <CONTAINER> 基本型のコンテナ
+ * @param <RESULT> 結果
  */
-public class ScalarStreamHandler<BASIC, CONTAINER, RESULT> extends
-        AbstractStreamHandler<CONTAINER, RESULT> {
+public class ScalarStreamHandler<BASIC, CONTAINER, RESULT>
+    extends AbstractStreamHandler<CONTAINER, RESULT> {
 
-    protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
+  protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
-    public ScalarStreamHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier,
-            Function<Stream<CONTAINER>, RESULT> mapper) {
-        super(mapper);
-        assertNotNull(supplier);
-        this.supplier = supplier;
-    }
+  public ScalarStreamHandler(
+      Supplier<Scalar<BASIC, CONTAINER>> supplier, Function<Stream<CONTAINER>, RESULT> mapper) {
+    super(mapper);
+    assertNotNull(supplier);
+    this.supplier = supplier;
+  }
 
-    @Override
-    protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(
-            SelectQuery query) {
-        return new ScalarProvider<>(supplier, query);
-    }
-
+  @Override
+  protected ScalarProvider<BASIC, CONTAINER> createObjectProvider(SelectQuery query) {
+    return new ScalarProvider<>(supplier, query);
+  }
 }

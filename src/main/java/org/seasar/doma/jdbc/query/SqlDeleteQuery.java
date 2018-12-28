@@ -17,14 +17,10 @@ package org.seasar.doma.jdbc.query;
 
 import org.seasar.doma.jdbc.SqlKind;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class SqlDeleteQuery extends SqlModifyQuery implements DeleteQuery {
 
-    public SqlDeleteQuery() {
-        super(SqlKind.DELETE);
-    }
-
+  public SqlDeleteQuery() {
+    super(SqlKind.DELETE);
+  }
 }

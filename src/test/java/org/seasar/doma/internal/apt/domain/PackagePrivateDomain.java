@@ -20,14 +20,13 @@ import org.seasar.doma.Domain;
 @Domain(valueType = int.class)
 class PackagePrivateDomain {
 
-    private final int value;
+  private final int value;
 
-    PackagePrivateDomain(int value) {
-        this.value = value;
-    }
+  PackagePrivateDomain(int value) {
+    this.value = value;
+  }
 
-    int getValue() {
-        return value;
-    }
-
+  int getValue() {
+    return value;
+  }
 }

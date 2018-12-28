@@ -18,14 +18,11 @@ package org.seasar.doma.internal.apt.dao;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Target(ElementType.PARAMETER)
 public @interface ConstructorParameterAnnotation2 {
 
-    int aaa();
+  int aaa();
 
-    boolean bbb();
+  boolean bbb();
 }

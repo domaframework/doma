@@ -17,11 +17,8 @@ package org.seasar.doma.jdbc.query;
 
 import java.sql.Statement;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface InsertQuery extends ModifyQuery {
 
-    void generateId(Statement statement);
+  void generateId(Statement statement);
 }

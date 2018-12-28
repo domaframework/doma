@@ -15,10 +15,5 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-/**
- * @author taedium
- * 
- */
-public class IllegalConstructorDelegateDaoDelegate {
-
-}
+/** @author taedium */
+public class IllegalConstructorDelegateDaoDelegate {}

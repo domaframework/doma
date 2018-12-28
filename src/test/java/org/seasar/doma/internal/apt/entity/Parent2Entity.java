@@ -17,23 +17,19 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Entity(listener = Parent2EntityListener.class)
 public class Parent2Entity {
 
-    Integer aaa;
+  Integer aaa;
 
-    Integer bbb;
+  Integer bbb;
 
-    public Integer getAaa() {
-        return aaa;
-    }
+  public Integer getAaa() {
+    return aaa;
+  }
 
-    public void setAaa(Integer aaa) {
-        this.aaa = aaa;
-    }
-
+  public void setAaa(Integer aaa) {
+    this.aaa = aaa;
+  }
 }

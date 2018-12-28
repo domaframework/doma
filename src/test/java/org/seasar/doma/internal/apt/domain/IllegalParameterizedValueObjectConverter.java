@@ -18,22 +18,18 @@ package org.seasar.doma.internal.apt.domain;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @ExternalDomain
-public class IllegalParameterizedValueObjectConverter implements
-        DomainConverter<ParameterizedValueObject<?, String>, String> {
+public class IllegalParameterizedValueObjectConverter
+    implements DomainConverter<ParameterizedValueObject<?, String>, String> {
 
-    @Override
-    public String fromDomainToValue(ParameterizedValueObject<?, String> domain) {
-        return null;
-    }
+  @Override
+  public String fromDomainToValue(ParameterizedValueObject<?, String> domain) {
+    return null;
+  }
 
-    @Override
-    public ParameterizedValueObject<?, String> fromValueToDomain(String value) {
-        return null;
-    }
-
+  @Override
+  public ParameterizedValueObject<?, String> fromValueToDomain(String value) {
+    return null;
+  }
 }

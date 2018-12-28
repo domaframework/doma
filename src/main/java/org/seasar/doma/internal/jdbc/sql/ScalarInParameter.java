@@ -18,54 +18,49 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Optional;
-
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * 
  * @author nakamura-to
- * 
- * @param <BASIC>
- *            基本型
- * @param <CONTAINER>
- *            基本型のコンテナとなる型
+ * @param <BASIC> 基本型
+ * @param <CONTAINER> 基本型のコンテナとなる型
  */
 public class ScalarInParameter<BASIC, CONTAINER> implements InParameter<BASIC> {
 
-    protected final Scalar<BASIC, CONTAINER> scalar;
+  protected final Scalar<BASIC, CONTAINER> scalar;
 
-    public ScalarInParameter(Scalar<BASIC, CONTAINER> holder) {
-        assertNotNull(holder);
-        this.scalar = holder;
-    }
+  public ScalarInParameter(Scalar<BASIC, CONTAINER> holder) {
+    assertNotNull(holder);
+    this.scalar = holder;
+  }
 
-    public ScalarInParameter(Scalar<BASIC, CONTAINER> holder, CONTAINER value) {
-        assertNotNull(holder);
-        this.scalar = holder;
-        holder.set(value);
-    }
+  public ScalarInParameter(Scalar<BASIC, CONTAINER> holder, CONTAINER value) {
+    assertNotNull(holder);
+    this.scalar = holder;
+    holder.set(value);
+  }
 
-    @Override
-    public CONTAINER getValue() {
-        return scalar.get();
-    }
+  @Override
+  public CONTAINER getValue() {
+    return scalar.get();
+  }
 
-    @Override
-    public Wrapper<BASIC> getWrapper() {
-        return scalar.getWrapper();
-    }
+  @Override
+  public Wrapper<BASIC> getWrapper() {
+    return scalar.getWrapper();
+  }
 
-    @Override
-    public Optional<Class<?>> getDomainClass() {
-        return scalar.getDomainClass();
-    }
+  @Override
+  public Optional<Class<?>> getDomainClass() {
+    return scalar.getDomainClass();
+  }
 
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            SqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitInParameter(this, p);
-    }
+  @Override
+  public <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p)
+      throws TH {
+    return visitor.visitInParameter(this, p);
+  }
 }

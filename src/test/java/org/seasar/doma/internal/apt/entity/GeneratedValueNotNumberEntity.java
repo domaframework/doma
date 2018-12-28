@@ -20,15 +20,11 @@ import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Entity
 public class GeneratedValueNotNumberEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
-
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  String id;
 }

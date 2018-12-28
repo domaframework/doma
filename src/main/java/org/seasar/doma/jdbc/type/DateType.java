@@ -24,36 +24,33 @@ import java.sql.Types;
 
 /**
  * {@link Date} 用の {@link JdbcType} の実装です。
- * 
+ *
  * @author taedium
- * 
  */
 public class DateType extends AbstractJdbcType<Date> {
 
-    public DateType() {
-        super(Types.DATE);
-    }
+  public DateType() {
+    super(Types.DATE);
+  }
 
-    @Override
-    public Date doGetValue(ResultSet resultSet, int index) throws SQLException {
-        return resultSet.getDate(index);
-    }
+  @Override
+  public Date doGetValue(ResultSet resultSet, int index) throws SQLException {
+    return resultSet.getDate(index);
+  }
 
-    @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Date value) throws SQLException {
-        preparedStatement.setDate(index, value);
-    }
+  @Override
+  protected void doSetValue(PreparedStatement preparedStatement, int index, Date value)
+      throws SQLException {
+    preparedStatement.setDate(index, value);
+  }
 
-    @Override
-    protected Date doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
-        return callableStatement.getDate(index);
-    }
+  @Override
+  protected Date doGetValue(CallableStatement callableStatement, int index) throws SQLException {
+    return callableStatement.getDate(index);
+  }
 
-    @Override
-    protected String doConvertToLogFormat(Date value) {
-        return "'" + value + "'";
-    }
-
+  @Override
+  protected String doConvertToLogFormat(Date value) {
+    return "'" + value + "'";
+  }
 }

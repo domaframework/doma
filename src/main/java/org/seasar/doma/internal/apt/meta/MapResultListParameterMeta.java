@@ -19,26 +19,22 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class MapResultListParameterMeta implements ResultListParameterMeta {
 
-    protected final MapCtType mapCtType;
+  protected final MapCtType mapCtType;
 
-    public MapResultListParameterMeta(MapCtType mapCtType) {
-        assertNotNull(mapCtType);
-        this.mapCtType = mapCtType;
-    }
+  public MapResultListParameterMeta(MapCtType mapCtType) {
+    assertNotNull(mapCtType);
+    this.mapCtType = mapCtType;
+  }
 
-    public MapCtType getMapCtType() {
-        return mapCtType;
-    }
+  public MapCtType getMapCtType() {
+    return mapCtType;
+  }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitMapResultListParameterMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitMapResultListParameterMeta(this, p);
+  }
 }

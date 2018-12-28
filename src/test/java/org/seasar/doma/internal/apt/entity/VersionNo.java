@@ -15,10 +15,5 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-/**
- * @author taedium
- *
- */
-public class VersionNo {
-
-}
+/** @author taedium */
+public class VersionNo {}

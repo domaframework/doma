@@ -18,16 +18,13 @@ package org.seasar.doma.internal.apt.dao;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Script;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ScriptDao {
 
-    @Script
-    void createTables();
+  @Script
+  void createTables();
 
-    @Script(blockDelimiter = "GO", haltOnError = false)
-    void dropTables();
+  @Script(blockDelimiter = "GO", haltOnError = false)
+  void dropTables();
 }

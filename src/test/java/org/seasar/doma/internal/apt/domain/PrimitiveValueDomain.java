@@ -20,14 +20,13 @@ import org.seasar.doma.Domain;
 @Domain(valueType = int.class)
 public class PrimitiveValueDomain {
 
-    private final int value;
+  private final int value;
 
-    public PrimitiveValueDomain(int value) {
-        this.value = value;
-    }
+  public PrimitiveValueDomain(int value) {
+    this.value = value;
+  }
 
-    public int getValue() {
-        return value;
-    }
-
+  public int getValue() {
+    return value;
+  }
 }

@@ -15,20 +15,16 @@
  */
 package org.seasar.doma.jdbc.builder;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 class ParamIndex {
 
-    private int value = 1;
+  private int value = 1;
 
-    void increment() {
-        value++;
-    }
+  void increment() {
+    value++;
+  }
 
-    int getValue() {
-        return value;
-    }
-
+  int getValue() {
+    return value;
+  }
 }

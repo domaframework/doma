@@ -15,12 +15,8 @@
  */
 package org.seasar.doma.jdbc.query;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface UpdateQuery extends ModifyQuery {
 
-    void incrementVersion();
-
+  void incrementVersion();
 }

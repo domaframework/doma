@@ -20,13 +20,10 @@ import org.seasar.doma.In;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.jdbc.Reference;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ReferenceWildcardTypeParamDao {
 
-    @Procedure
-    void select(@In Reference<Height<?>> height);
+  @Procedure
+  void select(@In Reference<Height<?>> height);
 }

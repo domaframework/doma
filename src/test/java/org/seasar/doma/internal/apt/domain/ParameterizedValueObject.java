@@ -15,10 +15,5 @@
  */
 package org.seasar.doma.internal.apt.domain;
 
-/**
- * @author taedium
- * 
- */
-public class ParameterizedValueObject<T, U> {
-
-}
+/** @author taedium */
+public class ParameterizedValueObject<T, U> {}

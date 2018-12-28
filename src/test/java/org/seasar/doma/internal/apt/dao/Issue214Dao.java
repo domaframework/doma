@@ -6,6 +6,6 @@ import org.seasar.doma.Select;
 @Dao
 public interface Issue214Dao {
 
-    @Select
-    Issue214Entity select(Issue214Entity entity);
+  @Select
+  Issue214Entity select(Issue214Entity entity);
 }

@@ -20,171 +20,174 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Formatter;
-
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.JavaFileObject;
-
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public abstract class AbstractGenerator implements Generator {
 
-    protected static final String INDENT_SPACE = "    ";
+  protected static final String INDENT_SPACE = "    ";
 
-    protected final ProcessingEnvironment env;
+  protected final ProcessingEnvironment env;
 
-    protected final TypeElement typeElement;
+  protected final TypeElement typeElement;
 
-    protected final String canonicalName;
+  protected final String canonicalName;
 
-    protected final String packageName;
+  protected final String packageName;
 
-    protected final String simpleName;
+  protected final String simpleName;
 
-    protected final String fullpackage;
+  protected final String fullpackage;
 
-    protected final String subpackage;
+  protected final String subpackage;
 
-    protected final String prefix;
+  protected final String prefix;
 
-    protected final String suffix;
+  protected final String suffix;
 
-    protected final Formatter formatter;
+  protected final Formatter formatter;
 
-    protected final StringBuilder indentBuffer = new StringBuilder();
+  protected final StringBuilder indentBuffer = new StringBuilder();
 
-    protected AbstractGenerator(ProcessingEnvironment env,
-            TypeElement typeElement, String fullpackage, String subpackage,
-            String prefix, String suffix) throws IOException {
-        assertNotNull(env, typeElement, prefix, suffix);
-        this.env = env;
-        this.typeElement = typeElement;
-        this.fullpackage = fullpackage;
-        this.subpackage = subpackage;
-        this.prefix = prefix;
-        this.suffix = suffix;
-        this.canonicalName = createCanonicalName(env, typeElement, fullpackage,
-                subpackage, prefix, suffix);
-        this.packageName = ClassUtil.getPackageName(canonicalName);
-        this.simpleName = ClassUtil.getSimpleName(canonicalName);
-        Filer filer = env.getFiler();
-        JavaFileObject file = filer
-                .createSourceFile(canonicalName, typeElement);
-        formatter = new Formatter(new BufferedWriter(file.openWriter()));
+  protected AbstractGenerator(
+      ProcessingEnvironment env,
+      TypeElement typeElement,
+      String fullpackage,
+      String subpackage,
+      String prefix,
+      String suffix)
+      throws IOException {
+    assertNotNull(env, typeElement, prefix, suffix);
+    this.env = env;
+    this.typeElement = typeElement;
+    this.fullpackage = fullpackage;
+    this.subpackage = subpackage;
+    this.prefix = prefix;
+    this.suffix = suffix;
+    this.canonicalName =
+        createCanonicalName(env, typeElement, fullpackage, subpackage, prefix, suffix);
+    this.packageName = ClassUtil.getPackageName(canonicalName);
+    this.simpleName = ClassUtil.getSimpleName(canonicalName);
+    Filer filer = env.getFiler();
+    JavaFileObject file = filer.createSourceFile(canonicalName, typeElement);
+    formatter = new Formatter(new BufferedWriter(file.openWriter()));
+  }
+
+  protected String createCanonicalName(
+      ProcessingEnvironment env,
+      TypeElement typeElement,
+      String fullpackage,
+      String subpackage,
+      String prefix,
+      String suffix) {
+    String qualifiedNamePrefix = getQualifiedNamePrefix(env, typeElement, fullpackage, subpackage);
+    String binaryName =
+        Conventions.normalizeBinaryName(ElementUtil.getBinaryName(typeElement, env));
+    String infix = ClassUtil.getSimpleName(binaryName);
+    return qualifiedNamePrefix + prefix + infix + suffix;
+  }
+
+  protected String getQualifiedNamePrefix(
+      ProcessingEnvironment env, TypeElement typeElement, String fullpackage, String subpackage) {
+    if (fullpackage != null) {
+      return fullpackage + ".";
     }
-
-    protected String createCanonicalName(ProcessingEnvironment env,
-            TypeElement typeElement, String fullpackage, String subpackage,
-            String prefix, String suffix) {
-        String qualifiedNamePrefix = getQualifiedNamePrefix(env, typeElement,
-                fullpackage, subpackage);
-        String binaryName = Conventions.normalizeBinaryName(ElementUtil
-                .getBinaryName(typeElement, env));
-        String infix = ClassUtil.getSimpleName(binaryName);
-        return qualifiedNamePrefix + prefix + infix + suffix;
+    String packageName = ElementUtil.getPackageName(typeElement, env);
+    String base = "";
+    if (packageName != null && packageName.length() > 0) {
+      base = packageName + ".";
     }
-
-    protected String getQualifiedNamePrefix(ProcessingEnvironment env,
-            TypeElement typeElement, String fullpackage, String subpackage) {
-        if (fullpackage != null) {
-            return fullpackage + ".";
-        }
-        String packageName = ElementUtil.getPackageName(typeElement, env);
-        String base = "";
-        if (packageName != null && packageName.length() > 0) {
-            base = packageName + ".";
-        }
-        if (subpackage != null) {
-            return base + subpackage + ".";
-        }
-        return base;
+    if (subpackage != null) {
+      return base + subpackage + ".";
     }
+    return base;
+  }
 
-    protected void printGenerated() {
-        String annotationElements = String.format(
-                "value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\"",
-                Artifact.getName(), Options.getVersion(env),
-                Options.getDate(env));
-        TypeMirror generatedTypeMirror = getGeneratedTypeMirror();
-        if (generatedTypeMirror == null) {
-            iprint("// %s%n", annotationElements);
-        }
-        iprint("@%s(%s)%n", generatedTypeMirror, annotationElements);
+  protected void printGenerated() {
+    String annotationElements =
+        String.format(
+            "value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\"",
+            Artifact.getName(), Options.getVersion(env), Options.getDate(env));
+    TypeMirror generatedTypeMirror = getGeneratedTypeMirror();
+    if (generatedTypeMirror == null) {
+      iprint("// %s%n", annotationElements);
     }
+    iprint("@%s(%s)%n", generatedTypeMirror, annotationElements);
+  }
 
-    protected void printValidateVersionStaticInitializer() {
-        if (Options.getVersionValidation(env)) {
-            iprint("static {%n");
-            iprint("    %1$s.validateVersion(\"%2$s\");%n",
-                    Artifact.class.getName(), Options.getVersion(env));
-            iprint("}%n");
-            print("%n");
-        }
+  protected void printValidateVersionStaticInitializer() {
+    if (Options.getVersionValidation(env)) {
+      iprint("static {%n");
+      iprint(
+          "    %1$s.validateVersion(\"%2$s\");%n",
+          Artifact.class.getName(), Options.getVersion(env));
+      iprint("}%n");
+      print("%n");
     }
+  }
 
-    protected void iprint(String format, Object... args) {
-        formatter.format(indentBuffer.toString());
-        throwExceptionIfNecessary();
-        formatter.format(format, args);
-        throwExceptionIfNecessary();
+  protected void iprint(String format, Object... args) {
+    formatter.format(indentBuffer.toString());
+    throwExceptionIfNecessary();
+    formatter.format(format, args);
+    throwExceptionIfNecessary();
+  }
+
+  protected void print(String format, Object... args) {
+    formatter.format(format, args);
+    throwExceptionIfNecessary();
+  }
+
+  protected void throwExceptionIfNecessary() {
+    IOException ioException = formatter.ioException();
+    if (ioException != null) {
+      formatter.close();
+      throw new AptException(
+          Message.DOMA4079,
+          env,
+          typeElement,
+          ioException,
+          new Object[] {canonicalName, ioException});
     }
+  }
 
-    protected void print(String format, Object... args) {
-        formatter.format(format, args);
-        throwExceptionIfNecessary();
+  protected void indent() {
+    indentBuffer.append(INDENT_SPACE);
+  }
+
+  protected void unindent() {
+    if (indentBuffer.length() >= INDENT_SPACE.length()) {
+      indentBuffer.setLength(indentBuffer.length() - INDENT_SPACE.length());
     }
+  }
 
-    protected void throwExceptionIfNecessary() {
-        IOException ioException = formatter.ioException();
-        if (ioException != null) {
-            formatter.close();
-            throw new AptException(Message.DOMA4079, env, typeElement,
-                    ioException, new Object[] { canonicalName, ioException });
-        }
+  @Override
+  public void close() {
+    if (formatter != null) {
+      formatter.close();
     }
+  }
 
-    protected void indent() {
-        indentBuffer.append(INDENT_SPACE);
+  private TypeMirror getGeneratedTypeMirror() {
+    Elements elements = env.getElementUtils();
+    TypeElement java8 = elements.getTypeElement("javax.annotation.Generated");
+    if (java8 != null) {
+      return java8.asType();
     }
-
-    protected void unindent() {
-        if (indentBuffer.length() >= INDENT_SPACE.length()) {
-            indentBuffer.setLength(indentBuffer.length()
-                    - INDENT_SPACE.length());
-        }
+    TypeElement java9 = elements.getTypeElement("javax.annotation.processing.Generated");
+    if (java9 != null) {
+      return java9.asType();
     }
-
-    @Override
-    public void close() {
-        if (formatter != null) {
-            formatter.close();
-        }
-    }
-
-    private TypeMirror getGeneratedTypeMirror() {
-        Elements elements = env.getElementUtils();
-        TypeElement java8 = elements
-                .getTypeElement("javax.annotation.Generated");
-        if (java8 != null) {
-            return java8.asType();
-        }
-        TypeElement java9 = elements
-                .getTypeElement("javax.annotation.processing.Generated");
-        if (java9 != null) {
-            return java9.asType();
-        }
-        return null;
-    }
-
+    return null;
+  }
 }

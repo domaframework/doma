@@ -19,15 +19,11 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
 
-    @Override
-    public Blob create(Connection connection) throws SQLException {
-        return connection.createBlob();
-    }
-
+  @Override
+  public Blob create(Connection connection) throws SQLException {
+    return connection.createBlob();
+  }
 }

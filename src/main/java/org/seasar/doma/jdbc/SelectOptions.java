@@ -16,205 +16,190 @@
 package org.seasar.doma.jdbc;
 
 import java.io.Serializable;
-
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
  * 検索系SQLを実行する際のオプションです。
- * <p>
- * {@link #get()}でインスタンスを取得し、メソッド呼び出しをチェインさせることができます。
- * 
+ *
+ * <p>{@link #get()}でインスタンスを取得し、メソッド呼び出しをチェインさせることができます。
+ *
  * <h3>例</h3>
- * 
+ *
  * <pre>
  * SelectOptions options = SelectOptions.get().offset(10).limit(50).forUpdate();
  * </pre>
- * 
+ *
  * @author taedium
- * 
  */
 public class SelectOptions implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** ページングのオフセット */
-    protected long offset = -1;
+  /** ページングのオフセット */
+  protected long offset = -1;
 
-    /** ページングのリミット */
-    protected long limit = -1;
+  /** ページングのリミット */
+  protected long limit = -1;
 
-    /** 集計するかどうか */
-    protected boolean count;
+  /** 集計するかどうか */
+  protected boolean count;
 
-    /** 集計サイズ */
-    protected long countSize = -1;
+  /** 集計サイズ */
+  protected long countSize = -1;
 
-    /** 悲観的排他制御の種別 */
-    protected SelectForUpdateType forUpdateType;
+  /** 悲観的排他制御の種別 */
+  protected SelectForUpdateType forUpdateType;
 
-    /** 悲観的排他制御の待機時間（秒） */
-    protected int waitSeconds;
+  /** 悲観的排他制御の待機時間（秒） */
+  protected int waitSeconds;
 
-    /** 悲観的排他制御のロック対象のエイリアスの配列 */
-    protected String[] aliases = new String[] {};
+  /** 悲観的排他制御のロック対象のエイリアスの配列 */
+  protected String[] aliases = new String[] {};
 
-    /**
-     * インスタンスを構築します。
-     */
-    protected SelectOptions() {
+  /** インスタンスを構築します。 */
+  protected SelectOptions() {}
+
+  /**
+   * インスタンスを取得するためのファクトリメソッドです。
+   *
+   * @return 新しい {@link SelectOptions}
+   */
+  public static SelectOptions get() {
+    return new SelectOptions();
+  }
+
+  /**
+   * 悲観的排他制御用のSQLへ変換することを示します。
+   *
+   * @return このインスタンス
+   */
+  public SelectOptions forUpdate() {
+    forUpdateType = SelectForUpdateType.NORMAL;
+    return this;
+  }
+
+  /**
+   * ロック対象のテーブルやカラムのエイリアスを指定し、悲観的排他制御用のSQLへ変換することを示します。
+   *
+   * @param aliases テーブルやカラムのエイリアス
+   * @return このインスタンス
+   */
+  public SelectOptions forUpdate(String... aliases) {
+    if (aliases == null) {
+      throw new DomaNullPointerException("aliases");
     }
+    forUpdateType = SelectForUpdateType.NORMAL;
+    this.aliases = aliases;
+    return this;
+  }
 
-    /**
-     * インスタンスを取得するためのファクトリメソッドです。
-     * 
-     * @return 新しい {@link SelectOptions}
-     */
-    public static SelectOptions get() {
-        return new SelectOptions();
+  /**
+   * ロックの取得を待機しない悲観的排他制御用のSQLへ変換することを示します。
+   *
+   * @return このインスタンス
+   */
+  public SelectOptions forUpdateNowait() {
+    forUpdateType = SelectForUpdateType.NOWAIT;
+    return this;
+  }
+
+  /**
+   * ロック対象のテーブルやカラムのエイリアスを指定し、ロックの取得を待機しない悲観的排他制御用のSQLへ変換することを示します。
+   *
+   * @param aliases テーブルやカラムのエイリアス
+   * @return このインスタンス
+   */
+  public SelectOptions forUpdateNowait(String... aliases) {
+    if (aliases == null) {
+      throw new DomaNullPointerException("aliases");
     }
+    forUpdateType = SelectForUpdateType.NOWAIT;
+    this.aliases = aliases;
+    return this;
+  }
 
-    /**
-     * 悲観的排他制御用のSQLへ変換することを示します。
-     * 
-     * @return このインスタンス
-     */
-    public SelectOptions forUpdate() {
-        forUpdateType = SelectForUpdateType.NORMAL;
-        return this;
+  /**
+   * ロックの取得まで指定された時間待機する悲観的排他制御用のSQLへ変換することを示します。
+   *
+   * @param waitSeconds 待機時間（秒）
+   * @return このインスタンス
+   */
+  public SelectOptions forUpdateWait(int waitSeconds) {
+    if (waitSeconds < 0) {
+      throw new DomaIllegalArgumentException("waitSeconds", "waitSeconds < 0");
     }
+    forUpdateType = SelectForUpdateType.WAIT;
+    this.waitSeconds = waitSeconds;
+    return this;
+  }
 
-    /**
-     * ロック対象のテーブルやカラムのエイリアスを指定し、悲観的排他制御用のSQLへ変換することを示します。
-     * 
-     * @param aliases
-     *            テーブルやカラムのエイリアス
-     * @return このインスタンス
-     */
-    public SelectOptions forUpdate(String... aliases) {
-        if (aliases == null) {
-            throw new DomaNullPointerException("aliases");
-        }
-        forUpdateType = SelectForUpdateType.NORMAL;
-        this.aliases = aliases;
-        return this;
+  /**
+   * ロック対象のテーブルやカラムのエイリアスを指定し、ロックの取得まで指定された時間待機する悲観的排他制御用のSQLへ変換することを示します。
+   *
+   * @param waitSeconds 待機時間（秒）
+   * @param aliases テーブルやカラムのエイリアス
+   * @return このインスタンス
+   */
+  public SelectOptions forUpdateWait(int waitSeconds, String... aliases) {
+    if (waitSeconds < 0) {
+      throw new DomaIllegalArgumentException("waitSeconds", "waitSeconds < 0");
     }
-
-    /**
-     * ロックの取得を待機しない悲観的排他制御用のSQLへ変換することを示します。
-     * 
-     * @return このインスタンス
-     */
-    public SelectOptions forUpdateNowait() {
-        forUpdateType = SelectForUpdateType.NOWAIT;
-        return this;
+    if (aliases == null) {
+      throw new DomaNullPointerException("aliases");
     }
+    forUpdateType = SelectForUpdateType.WAIT;
+    this.waitSeconds = waitSeconds;
+    this.aliases = aliases;
+    return this;
+  }
 
-    /**
-     * ロック対象のテーブルやカラムのエイリアスを指定し、ロックの取得を待機しない悲観的排他制御用のSQLへ変換することを示します。
-     * 
-     * @param aliases
-     *            テーブルやカラムのエイリアス
-     * @return このインスタンス
-     */
-    public SelectOptions forUpdateNowait(String... aliases) {
-        if (aliases == null) {
-            throw new DomaNullPointerException("aliases");
-        }
-        forUpdateType = SelectForUpdateType.NOWAIT;
-        this.aliases = aliases;
-        return this;
+  /**
+   * オフセットを指定してページング用のSQLへ変換することを示します。
+   *
+   * @param offset オフセット
+   * @return このインスタンス
+   */
+  public SelectOptions offset(int offset) {
+    if (offset < 0) {
+      throw new DomaIllegalArgumentException("offset", "offset < 0");
     }
+    this.offset = offset;
+    return this;
+  }
 
-    /**
-     * ロックの取得まで指定された時間待機する悲観的排他制御用のSQLへ変換することを示します。
-     * 
-     * @param waitSeconds
-     *            待機時間（秒）
-     * @return このインスタンス
-     */
-    public SelectOptions forUpdateWait(int waitSeconds) {
-        if (waitSeconds < 0) {
-            throw new DomaIllegalArgumentException("waitSeconds",
-                    "waitSeconds < 0");
-        }
-        forUpdateType = SelectForUpdateType.WAIT;
-        this.waitSeconds = waitSeconds;
-        return this;
+  /**
+   * リミットを指定してページング用のSQLへ変換することを示します。
+   *
+   * @param limit リミット
+   * @return このインスタンス
+   */
+  public SelectOptions limit(int limit) {
+    if (limit < 0) {
+      throw new DomaIllegalArgumentException("limit", "limit < 0");
     }
+    this.limit = limit;
+    return this;
+  }
 
-    /**
-     * ロック対象のテーブルやカラムのエイリアスを指定し、ロックの取得まで指定された時間待機する悲観的排他制御用のSQLへ変換することを示します。
-     * 
-     * @param waitSeconds
-     *            待機時間（秒）
-     * @param aliases
-     *            テーブルやカラムのエイリアス
-     * @return このインスタンス
-     */
-    public SelectOptions forUpdateWait(int waitSeconds, String... aliases) {
-        if (waitSeconds < 0) {
-            throw new DomaIllegalArgumentException("waitSeconds",
-                    "waitSeconds < 0");
-        }
-        if (aliases == null) {
-            throw new DomaNullPointerException("aliases");
-        }
-        forUpdateType = SelectForUpdateType.WAIT;
-        this.waitSeconds = waitSeconds;
-        this.aliases = aliases;
-        return this;
-    }
+  /**
+   * 集計することを示します。
+   *
+   * @return このインスタンス
+   */
+  public SelectOptions count() {
+    this.count = true;
+    return this;
+  }
 
-    /**
-     * オフセットを指定してページング用のSQLへ変換することを示します。
-     * 
-     * @param offset
-     *            オフセット
-     * @return このインスタンス
-     */
-    public SelectOptions offset(int offset) {
-        if (offset < 0) {
-            throw new DomaIllegalArgumentException("offset", "offset < 0");
-        }
-        this.offset = offset;
-        return this;
-    }
-
-    /**
-     * リミットを指定してページング用のSQLへ変換することを示します。
-     * 
-     * @param limit
-     *            リミット
-     * @return このインスタンス
-     */
-    public SelectOptions limit(int limit) {
-        if (limit < 0) {
-            throw new DomaIllegalArgumentException("limit", "limit < 0");
-        }
-        this.limit = limit;
-        return this;
-    }
-
-    /**
-     * 集計することを示します。
-     * 
-     * @return このインスタンス
-     */
-    public SelectOptions count() {
-        this.count = true;
-        return this;
-    }
-
-    /**
-     * 集計を返します。
-     * <p>
-     * Daoのメソッドを実行する前に{@link #count()}を呼び出していない場合 {@code -1} を返します。
-     * 
-     * @return 集計サイズ
-     */
-    public long getCount() {
-        return countSize;
-    }
-
+  /**
+   * 集計を返します。
+   *
+   * <p>Daoのメソッドを実行する前に{@link #count()}を呼び出していない場合 {@code -1} を返します。
+   *
+   * @return 集計サイズ
+   */
+  public long getCount() {
+    return countSize;
+  }
 }

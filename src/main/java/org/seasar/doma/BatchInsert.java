@@ -21,7 +21,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
@@ -30,34 +29,34 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
  * バッチ挿入処理を示します。
- * <p>
- * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * 
+ *
+ * <p>このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
+ *
  * <h3>例:</h3>
- * 
+ *
  * <pre>
  * &#064;Entity
  * public class Employee {
  *     ...
  * }
- * 
+ *
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
- * 
+ *
  *     &#064;BatchInsert
  *     int[] insert(List&lt;Employee&gt; employee);
  * }
  * </pre>
- * 
+ *
  * 注釈されるメソッドは、次の例外をスローすることがあります。
+ *
  * <ul>
- * <li> {@link DomaNullPointerException} パラメータに {@code null} を渡した場合
- * <li> {@link UniqueConstraintException} 一意制約違反が発生した場合
- * <li> {@link SqlFileNotFoundException} {@code sqlFile} 要素の値が {@code true}
- * で、SQLファイルが見つからなかった場合
- * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
+ *   <li>{@link DomaNullPointerException} パラメータに {@code null} を渡した場合
+ *   <li>{@link UniqueConstraintException} 一意制約違反が発生した場合
+ *   <li>{@link SqlFileNotFoundException} {@code sqlFile} 要素の値が {@code true} で、SQLファイルが見つからなかった場合
+ *   <li>{@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
- * 
+ *
  * @author taedium
  */
 @Target(ElementType.METHOD)
@@ -65,65 +64,65 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 @DaoMethod
 public @interface BatchInsert {
 
-    /**
-     * SQLファイルにマッピングするかどうかを返します。
-     * 
-     * @return SQLファイルにマッピングするかどうか
-     */
-    boolean sqlFile() default false;
+  /**
+   * SQLファイルにマッピングするかどうかを返します。
+   *
+   * @return SQLファイルにマッピングするかどうか
+   */
+  boolean sqlFile() default false;
 
-    /**
-     * クエリタイムアウト（秒）を返します。
-     * <p>
-     * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
-     * 
-     * @return クエリタイムアウト（秒）
-     * @see Statement#setQueryTimeout(int)
-     */
-    int queryTimeout() default -1;
+  /**
+   * クエリタイムアウト（秒）を返します。
+   *
+   * <p>指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
+   *
+   * @return クエリタイムアウト（秒）
+   * @see Statement#setQueryTimeout(int)
+   */
+  int queryTimeout() default -1;
 
-    /**
-     * バッチサイズを返します。
-     * <p>
-     * 指定しない場合、{@link Config#getBatchSize()}が使用されます。
-     * <p>
-     * {@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。
-     * バッチ対象の数がバッチサイズを上回る場合、バッチサイズの数だけ {@link PreparedStatement#addBatch()}
-     * を呼び出し、 {@link PreparedStatement#executeBatch()} を実行するということを繰り返します。
-     * 
-     * @return バッチサイズ
-     * @see PreparedStatement#addBatch()
-     * @since 1.21.0
-     */
-    int batchSize() default -1;
+  /**
+   * バッチサイズを返します。
+   *
+   * <p>指定しない場合、{@link Config#getBatchSize()}が使用されます。
+   *
+   * <p>{@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。 バッチ対象の数がバッチサイズを上回る場合、バッチサイズの数だけ
+   * {@link PreparedStatement#addBatch()} を呼び出し、 {@link PreparedStatement#executeBatch()}
+   * を実行するということを繰り返します。
+   *
+   * @return バッチサイズ
+   * @see PreparedStatement#addBatch()
+   * @since 1.21.0
+   */
+  int batchSize() default -1;
 
-    /**
-     * INSERT文に含めるプロパティ名の配列を返します。
-     * <p>
-     * ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return INSERT文に含めるプロパティ名の配列
-     */
-    String[] include() default {};
+  /**
+   * INSERT文に含めるプロパティ名の配列を返します。
+   *
+   * <p>ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
+   *
+   * <p>この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+   *
+   * @return INSERT文に含めるプロパティ名の配列
+   */
+  String[] include() default {};
 
-    /**
-     * INSERT文から除去するプロパティ名の配列を返します。
-     * <p>
-     * ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
-     * 
-     * @return INSERT文から除去するプロパティ名の配列
-     */
-    String[] exclude() default {};
+  /**
+   * INSERT文から除去するプロパティ名の配列を返します。
+   *
+   * <p>ここに指定できるのは、カラム名ではなく挿入対象エンティティクラスのプロパティ名です。
+   *
+   * <p>この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+   *
+   * @return INSERT文から除去するプロパティ名の配列
+   */
+  String[] exclude() default {};
 
-    /**
-     * SQLのログの出力形式を返します。
-     * 
-     * @return SQLログの出力形式
-     * @since 2.0.0
-     */
-    SqlLogType sqlLog() default SqlLogType.FORMATTED;
+  /**
+   * SQLのログの出力形式を返します。
+   *
+   * @return SQLログの出力形式
+   * @since 2.0.0
+   */
+  SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

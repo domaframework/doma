@@ -24,37 +24,33 @@ import java.sql.Types;
 
 /**
  * {@link Time} 用の {@link JdbcType} の実装です。
- * 
+ *
  * @author taedium
- * 
  */
 public class TimeType extends AbstractJdbcType<Time> {
 
-    public TimeType() {
-        super(Types.TIME);
-    }
+  public TimeType() {
+    super(Types.TIME);
+  }
 
-    @Override
-    protected Time doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
-        return resultSet.getTime(index);
-    }
+  @Override
+  protected Time doGetValue(ResultSet resultSet, int index) throws SQLException {
+    return resultSet.getTime(index);
+  }
 
-    @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Time value) throws SQLException {
-        preparedStatement.setTime(index, value);
-    }
+  @Override
+  protected void doSetValue(PreparedStatement preparedStatement, int index, Time value)
+      throws SQLException {
+    preparedStatement.setTime(index, value);
+  }
 
-    @Override
-    protected Time doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
-        return callableStatement.getTime(index);
-    }
+  @Override
+  protected Time doGetValue(CallableStatement callableStatement, int index) throws SQLException {
+    return callableStatement.getTime(index);
+  }
 
-    @Override
-    protected String doConvertToLogFormat(Time value) {
-        return "'" + value + "'";
-    }
-
+  @Override
+  protected String doConvertToLogFormat(Time value) {
+    return "'" + value + "'";
+  }
 }

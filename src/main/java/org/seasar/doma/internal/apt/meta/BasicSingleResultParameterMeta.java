@@ -19,27 +19,22 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
-/**
- * @author taedium
- * 
- */
-public class BasicSingleResultParameterMeta implements
-        SingleResultParameterMeta {
+/** @author taedium */
+public class BasicSingleResultParameterMeta implements SingleResultParameterMeta {
 
-    protected final BasicCtType basicCtType;
+  protected final BasicCtType basicCtType;
 
-    public BasicSingleResultParameterMeta(BasicCtType basicCtType) {
-        assertNotNull(basicCtType);
-        this.basicCtType = basicCtType;
-    }
+  public BasicSingleResultParameterMeta(BasicCtType basicCtType) {
+    assertNotNull(basicCtType);
+    this.basicCtType = basicCtType;
+  }
 
-    public BasicCtType getBasicCtType() {
-        return basicCtType;
-    }
+  public BasicCtType getBasicCtType() {
+    return basicCtType;
+  }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitBasicSingleResultParameterMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitBasicSingleResultParameterMeta(this, p);
+  }
 }

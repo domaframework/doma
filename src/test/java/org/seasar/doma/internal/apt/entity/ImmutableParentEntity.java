@@ -17,29 +17,25 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Entity(immutable = true)
 public class ImmutableParentEntity {
 
-    final Integer aaa;
+  final Integer aaa;
 
-    final Integer bbb;
+  final Integer bbb;
 
-    public ImmutableParentEntity(Integer aaa, Integer bbb) {
-        super();
-        this.aaa = aaa;
-        this.bbb = bbb;
-    }
+  public ImmutableParentEntity(Integer aaa, Integer bbb) {
+    super();
+    this.aaa = aaa;
+    this.bbb = bbb;
+  }
 
-    public Integer getAaa() {
-        return aaa;
-    }
+  public Integer getAaa() {
+    return aaa;
+  }
 
-    public Integer getBbb() {
-        return bbb;
-    }
-
+  public Integer getBbb() {
+    return bbb;
+  }
 }

@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt.mirror;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -26,7 +25,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-
 import org.seasar.doma.AccessLevel;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -35,87 +33,78 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class DaoMirror {
 
-    protected final AnnotationMirror annotationMirror;
+  protected final AnnotationMirror annotationMirror;
 
-    protected final ProcessingEnvironment env;
+  protected final ProcessingEnvironment env;
 
-    protected AnnotationValue config;
+  protected AnnotationValue config;
 
-    protected AnnotationValue accessLevel;
+  protected AnnotationValue accessLevel;
 
-    protected TypeMirror configValue;
+  protected TypeMirror configValue;
 
-    protected DaoMirror(AnnotationMirror annotationMirror,
-            ProcessingEnvironment env) {
-        assertNotNull(annotationMirror, env);
-        this.annotationMirror = annotationMirror;
-        this.env = env;
+  protected DaoMirror(AnnotationMirror annotationMirror, ProcessingEnvironment env) {
+    assertNotNull(annotationMirror, env);
+    this.annotationMirror = annotationMirror;
+    this.env = env;
+  }
+
+  public static DaoMirror newInstance(TypeElement interfase, ProcessingEnvironment env) {
+    assertNotNull(env);
+    AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(interfase, Dao.class, env);
+    if (annotationMirror == null) {
+      return null;
     }
-
-    public static DaoMirror newInstance(TypeElement interfase,
-            ProcessingEnvironment env) {
-        assertNotNull(env);
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                interfase, Dao.class, env);
-        if (annotationMirror == null) {
-            return null;
+    DaoMirror result = new DaoMirror(annotationMirror, env);
+    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
+        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+      String name = entry.getKey().getSimpleName().toString();
+      AnnotationValue value = entry.getValue();
+      if ("config".equals(name)) {
+        result.config = value;
+        result.configValue = AnnotationValueUtil.toType(value);
+        if (result.configValue == null) {
+          throw new AptIllegalStateException("config");
         }
-        DaoMirror result = new DaoMirror(annotationMirror, env);
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
-                .getElementUtils()
-                .getElementValuesWithDefaults(annotationMirror).entrySet()) {
-            String name = entry.getKey().getSimpleName().toString();
-            AnnotationValue value = entry.getValue();
-            if ("config".equals(name)) {
-                result.config = value;
-                result.configValue = AnnotationValueUtil.toType(value);
-                if (result.configValue == null) {
-                    throw new AptIllegalStateException("config");
-                }
-            } else if ("accessLevel".equals(name)) {
-                result.accessLevel = value;
-            }
-        }
-        return result;
+      } else if ("accessLevel".equals(name)) {
+        result.accessLevel = value;
+      }
     }
+    return result;
+  }
 
-    public AnnotationMirror getAnnotationMirror() {
-        return annotationMirror;
+  public AnnotationMirror getAnnotationMirror() {
+    return annotationMirror;
+  }
+
+  public AnnotationValue getConfig() {
+    return config;
+  }
+
+  public AnnotationValue getAccessLevel() {
+    return accessLevel;
+  }
+
+  public TypeMirror getConfigValue() {
+    TypeMirror value = AnnotationValueUtil.toType(config);
+    if (value == null) {
+      throw new AptIllegalStateException("config");
     }
+    return value;
+  }
 
-    public AnnotationValue getConfig() {
-        return config;
+  public AccessLevel getAccessLevelValue() {
+    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(accessLevel);
+    if (enumConstant == null) {
+      throw new AptIllegalStateException("accessLevel");
     }
+    return AccessLevel.valueOf(enumConstant.getSimpleName().toString());
+  }
 
-    public AnnotationValue getAccessLevel() {
-        return accessLevel;
-    }
-
-    public TypeMirror getConfigValue() {
-        TypeMirror value = AnnotationValueUtil.toType(config);
-        if (value == null) {
-            throw new AptIllegalStateException("config");
-        }
-        return value;
-    }
-
-    public AccessLevel getAccessLevelValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(accessLevel);
-        if (enumConstant == null) {
-            throw new AptIllegalStateException("accessLevel");
-        }
-        return AccessLevel.valueOf(enumConstant.getSimpleName().toString());
-    }
-
-    public boolean hasUserDefinedConfig() {
-        return !TypeMirrorUtil.isSameType(configValue, Config.class, env);
-    }
-
+  public boolean hasUserDefinedConfig() {
+    return !TypeMirrorUtil.isSameType(configValue, Config.class, env);
+  }
 }

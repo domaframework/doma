@@ -19,33 +19,29 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class DomainInOutParameterMeta implements CallableSqlParameterMeta {
 
-    private final String name;
+  private final String name;
 
-    protected final DomainCtType domainCtType;
+  protected final DomainCtType domainCtType;
 
-    public DomainInOutParameterMeta(String name, DomainCtType domainCtType) {
-        assertNotNull(name, domainCtType);
-        this.name = name;
-        this.domainCtType = domainCtType;
-    }
+  public DomainInOutParameterMeta(String name, DomainCtType domainCtType) {
+    assertNotNull(name, domainCtType);
+    this.name = name;
+    this.domainCtType = domainCtType;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public DomainCtType getDomainCtType() {
-        return domainCtType;
-    }
+  public DomainCtType getDomainCtType() {
+    return domainCtType;
+  }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitDomainInOutParameterMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitDomainInOutParameterMeta(this, p);
+  }
 }

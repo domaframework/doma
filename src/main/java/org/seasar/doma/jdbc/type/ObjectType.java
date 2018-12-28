@@ -23,37 +23,33 @@ import java.sql.Types;
 
 /**
  * {@link Object} 用の {@link JdbcType} の実装です。
- * 
+ *
  * @author taedium
- * 
  */
 public class ObjectType extends AbstractJdbcType<Object> {
 
-    public ObjectType() {
-        super(Types.OTHER);
-    }
+  public ObjectType() {
+    super(Types.OTHER);
+  }
 
-    @Override
-    protected Object doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
-        return resultSet.getObject(index);
-    }
+  @Override
+  protected Object doGetValue(ResultSet resultSet, int index) throws SQLException {
+    return resultSet.getObject(index);
+  }
 
-    @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Object value) throws SQLException {
-        preparedStatement.setObject(index, value);
-    }
+  @Override
+  protected void doSetValue(PreparedStatement preparedStatement, int index, Object value)
+      throws SQLException {
+    preparedStatement.setObject(index, value);
+  }
 
-    @Override
-    protected Object doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
-        return callableStatement.getObject(index);
-    }
+  @Override
+  protected Object doGetValue(CallableStatement callableStatement, int index) throws SQLException {
+    return callableStatement.getObject(index);
+  }
 
-    @Override
-    protected String doConvertToLogFormat(Object value) {
-        return "'" + value + "'";
-    }
-
+  @Override
+  protected String doConvertToLogFormat(Object value) {
+    return "'" + value + "'";
+  }
 }

@@ -22,36 +22,31 @@ import java.util.Map;
 
 /**
  * コレクションを扱うユーティリティです．
- * 
+ *
  * @author koichik
  */
 class CollectionUtils {
 
-    private CollectionUtils() {
-    }
+  private CollectionUtils() {}
 
-    /**
-     * {@link ArrayList} のインスタンスを生成して返します．
-     * 
-     * @param <T>
-     *            要素の型
-     * @return {@link ArrayList} のインスタンス
-     */
-    public static <T> List<T> newArrayList() {
-        return new ArrayList<T>();
-    }
+  /**
+   * {@link ArrayList} のインスタンスを生成して返します．
+   *
+   * @param <T> 要素の型
+   * @return {@link ArrayList} のインスタンス
+   */
+  public static <T> List<T> newArrayList() {
+    return new ArrayList<T>();
+  }
 
-    /**
-     * {@link HashMap} のインスタンスを生成して返します．
-     * 
-     * @param <K>
-     *            キーの型
-     * @param <V>
-     *            値の型
-     * @return {@link HashMap} のインスタンス
-     */
-    public static <K, V> Map<K, V> newHashMap() {
-        return new HashMap<K, V>();
-    }
-
+  /**
+   * {@link HashMap} のインスタンスを生成して返します．
+   *
+   * @param <K> キーの型
+   * @param <V> 値の型
+   * @return {@link HashMap} のインスタンス
+   */
+  public static <K, V> Map<K, V> newHashMap() {
+    return new HashMap<K, V>();
+  }
 }

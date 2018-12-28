@@ -15,10 +15,5 @@
  */
 package org.seasar.doma.internal.apt.domain;
 
-/**
- * @author taedium
- *
- */
-public class ValueObject {
-
-}
+/** @author taedium */
+public class ValueObject {}

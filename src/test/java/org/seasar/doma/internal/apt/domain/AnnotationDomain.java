@@ -5,5 +5,5 @@ import org.seasar.doma.Domain;
 @Domain(valueType = Integer.class, factoryMethod = "of")
 public @interface AnnotationDomain {
 
-    String getValue();
+  String getValue();
 }

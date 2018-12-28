@@ -13,7 +13,5 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/**
- * {@literal RDBMS} の方言を提供します。
- */
+/** {@literal RDBMS} の方言を提供します。 */
 package org.seasar.doma.jdbc.dialect;

@@ -15,11 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public final class MetaConstants {
 
-    public static final String RESERVED_NAME_PREFIX = "__";
+  public static final String RESERVED_NAME_PREFIX = "__";
 }

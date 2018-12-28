@@ -20,18 +20,17 @@ import org.seasar.doma.Domain;
 @Domain(valueType = int.class, factoryMethod = "of")
 public class OfPrimitiveValueDomain {
 
-    private final int value;
+  private final int value;
 
-    private OfPrimitiveValueDomain(int value) {
-        this.value = value;
-    }
+  private OfPrimitiveValueDomain(int value) {
+    this.value = value;
+  }
 
-    public int getValue() {
-        return value;
-    }
+  public int getValue() {
+    return value;
+  }
 
-    public static OfPrimitiveValueDomain of(int value) {
-        return new OfPrimitiveValueDomain(value);
-    }
-
+  public static OfPrimitiveValueDomain of(int value) {
+    return new OfPrimitiveValueDomain(value);
+  }
 }

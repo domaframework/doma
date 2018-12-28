@@ -17,41 +17,37 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-
 import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected String elementsParameterName;
+  protected String elementsParameterName;
 
-    protected ArrayFactoryMirror arrayFactoryMirror;
+  protected ArrayFactoryMirror arrayFactoryMirror;
 
-    public ArrayCreateQueryMeta(ExecutableElement method, TypeElement dao) {
-        super(method, dao);
-    }
+  public ArrayCreateQueryMeta(ExecutableElement method, TypeElement dao) {
+    super(method, dao);
+  }
 
-    public String getParameterName() {
-        return elementsParameterName;
-    }
+  public String getParameterName() {
+    return elementsParameterName;
+  }
 
-    public void setElementsParameterName(String elementsParameterName) {
-        this.elementsParameterName = elementsParameterName;
-    }
+  public void setElementsParameterName(String elementsParameterName) {
+    this.elementsParameterName = elementsParameterName;
+  }
 
-    void setArrayFactoryMirror(ArrayFactoryMirror arrayFactoryMirror) {
-        this.arrayFactoryMirror = arrayFactoryMirror;
-    }
+  void setArrayFactoryMirror(ArrayFactoryMirror arrayFactoryMirror) {
+    this.arrayFactoryMirror = arrayFactoryMirror;
+  }
 
-    public String getArrayTypeName() {
-        return arrayFactoryMirror.getTypeNameValue();
-    }
+  public String getArrayTypeName() {
+    return arrayFactoryMirror.getTypeNameValue();
+  }
 
-    @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitArrayCreateQueryMeta(this, p);
-    }
+  @Override
+  public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitArrayCreateQueryMeta(this, p);
+  }
 }

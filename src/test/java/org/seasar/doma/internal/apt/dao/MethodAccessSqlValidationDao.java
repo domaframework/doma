@@ -22,6 +22,6 @@ import org.seasar.doma.internal.apt.entity.Emp;
 @Dao(config = MyConfig.class)
 public interface MethodAccessSqlValidationDao {
 
-    @Select
-    Emp select(Integer id);
+  @Select
+  Emp select(Integer id);
 }

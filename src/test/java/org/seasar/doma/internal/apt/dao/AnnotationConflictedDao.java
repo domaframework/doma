@@ -20,14 +20,11 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.entity.Emp;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface AnnotationConflictedDao {
 
-    @Update
-    @Delete
-    int delete(Emp entity);
+  @Update
+  @Delete
+  int delete(Emp entity);
 }

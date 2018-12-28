@@ -21,22 +21,20 @@ import org.seasar.doma.Id;
 @Entity(immutable = true)
 public class ImmutableUser {
 
-    @Id
-    final private Integer id;
+  @Id private final Integer id;
 
-    final private UserAddress address;
+  private final UserAddress address;
 
-    public ImmutableUser(Integer id, UserAddress address) {
-        this.id = id;
-        this.address = address;
-    }
+  public ImmutableUser(Integer id, UserAddress address) {
+    this.id = id;
+    this.address = address;
+  }
 
-    public Integer getId() {
-        return id;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public UserAddress getAddress() {
-        return address;
-    }
-
+  public UserAddress getAddress() {
+    return address;
+  }
 }

@@ -19,27 +19,22 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
-/**
- * @author taedium
- * 
- */
-public class OptionalDomainResultListParameterMeta implements
-        ResultListParameterMeta {
+/** @author taedium */
+public class OptionalDomainResultListParameterMeta implements ResultListParameterMeta {
 
-    protected final DomainCtType domainCtType;
+  protected final DomainCtType domainCtType;
 
-    public OptionalDomainResultListParameterMeta(DomainCtType domainCtType) {
-        assertNotNull(domainCtType);
-        this.domainCtType = domainCtType;
-    }
+  public OptionalDomainResultListParameterMeta(DomainCtType domainCtType) {
+    assertNotNull(domainCtType);
+    this.domainCtType = domainCtType;
+  }
 
-    public DomainCtType getDomainCtType() {
-        return domainCtType;
-    }
+  public DomainCtType getDomainCtType() {
+    return domainCtType;
+  }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitOptionalDomainResultListParameterMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitOptionalDomainResultListParameterMeta(this, p);
+  }
 }

@@ -20,9 +20,9 @@ import org.seasar.doma.Embeddable;
 @Embeddable
 public class Base {
 
-    public String aaa;
+  public String aaa;
 
-    public Base(String aaa) {
-        this.aaa = aaa;
-    }
+  public Base(String aaa) {
+    this.aaa = aaa;
+  }
 }

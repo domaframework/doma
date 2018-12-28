@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt.entity;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -36,154 +35,158 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
-    private final NamingType __namingType = NamingType.UPPER_CASE;
+  private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public DefaultPropertyType<Object, ParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
-            ParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "aaa", "AAA", __namingType, true, true, false);
+  public DefaultPropertyType<Object, ParentEntity, Integer, Integer> $aaa =
+      new DefaultPropertyType<>(
+          ParentEntity.class,
+          Integer.class,
+          Integer.class,
+          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
+          null,
+          null,
+          "aaa",
+          "AAA",
+          __namingType,
+          true,
+          true,
+          false);
 
-    public DefaultPropertyType<Object, ParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
-            ParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "bbb", "BBB", __namingType, true, true, false);
+  public DefaultPropertyType<Object, ParentEntity, Integer, Integer> $bbb =
+      new DefaultPropertyType<>(
+          ParentEntity.class,
+          Integer.class,
+          Integer.class,
+          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
+          null,
+          null,
+          "bbb",
+          "BBB",
+          __namingType,
+          true,
+          true,
+          false);
 
-    private _ParentEntity() {
-    }
+  private _ParentEntity() {}
 
-    @Override
-    public void saveCurrentStates(ParentEntity entity) {
-    }
+  @Override
+  public void saveCurrentStates(ParentEntity entity) {}
 
-    @Override
-    public String getCatalogName() {
+  @Override
+  public String getCatalogName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public Class<ParentEntity> getEntityClass() {
+  @Override
+  public Class<ParentEntity> getEntityClass() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public EntityPropertyType<ParentEntity, ?> getEntityPropertyType(
-            String name) {
+  @Override
+  public EntityPropertyType<ParentEntity, ?> getEntityPropertyType(String name) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public List<EntityPropertyType<ParentEntity, ?>> getEntityPropertyTypes() {
+  @Override
+  public List<EntityPropertyType<ParentEntity, ?>> getEntityPropertyTypes() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public GeneratedIdPropertyType<Object, ParentEntity, ?, ?> getGeneratedIdPropertyType() {
+  @Override
+  public GeneratedIdPropertyType<Object, ParentEntity, ?, ?> getGeneratedIdPropertyType() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getName() {
+  @Override
+  public String getName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public ParentEntity getOriginalStates(ParentEntity entity) {
+  @Override
+  public ParentEntity getOriginalStates(ParentEntity entity) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getSchemaName() {
+  @Override
+  public String getSchemaName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getTableName() {
+  @Override
+  public String getTableName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+  @Override
+  public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public VersionPropertyType<Object, ParentEntity, ?, ?> getVersionPropertyType() {
+  @Override
+  public VersionPropertyType<Object, ParentEntity, ?, ?> getVersionPropertyType() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public TenantIdPropertyType<Object, ParentEntity, ?, ?> getTenantIdPropertyType() {
-        return null;
-    }
+  @Override
+  public TenantIdPropertyType<Object, ParentEntity, ?, ?> getTenantIdPropertyType() {
+    return null;
+  }
 
-    @Override
-    public void preDelete(ParentEntity entity,
-            PreDeleteContext<ParentEntity> context) {
-    }
+  @Override
+  public void preDelete(ParentEntity entity, PreDeleteContext<ParentEntity> context) {}
 
-    @Override
-    public void preInsert(ParentEntity entity,
-            PreInsertContext<ParentEntity> context) {
-    }
+  @Override
+  public void preInsert(ParentEntity entity, PreInsertContext<ParentEntity> context) {}
 
-    @Override
-    public void preUpdate(ParentEntity entity,
-            PreUpdateContext<ParentEntity> context) {
-    }
+  @Override
+  public void preUpdate(ParentEntity entity, PreUpdateContext<ParentEntity> context) {}
 
-    @Override
-    public void postDelete(ParentEntity entity,
-            PostDeleteContext<ParentEntity> context) {
-    }
+  @Override
+  public void postDelete(ParentEntity entity, PostDeleteContext<ParentEntity> context) {}
 
-    @Override
-    public void postInsert(ParentEntity entity,
-            PostInsertContext<ParentEntity> context) {
-    }
+  @Override
+  public void postInsert(ParentEntity entity, PostInsertContext<ParentEntity> context) {}
 
-    @Override
-    public void postUpdate(ParentEntity entity,
-            PostUpdateContext<ParentEntity> context) {
-    }
+  @Override
+  public void postUpdate(ParentEntity entity, PostUpdateContext<ParentEntity> context) {}
 
-    @Override
-    public List<EntityPropertyType<ParentEntity, ?>> getIdPropertyTypes() {
-        return null;
-    }
+  @Override
+  public List<EntityPropertyType<ParentEntity, ?>> getIdPropertyTypes() {
+    return null;
+  }
 
-    @Override
-    public NamingType getNamingType() {
-        return null;
-    }
+  @Override
+  public NamingType getNamingType() {
+    return null;
+  }
 
-    public static _ParentEntity getSingletonInternal() {
-        return null;
-    }
+  public static _ParentEntity getSingletonInternal() {
+    return null;
+  }
 
-    @Override
-    public boolean isImmutable() {
-        return false;
-    }
+  @Override
+  public boolean isImmutable() {
+    return false;
+  }
 
-    @Override
-    public ParentEntity newEntity(Map<String, Property<ParentEntity, ?>> args) {
-        return null;
-    }
+  @Override
+  public ParentEntity newEntity(Map<String, Property<ParentEntity, ?>> args) {
+    return null;
+  }
 
-    @Override
-    public boolean isQuoteRequired() {
-        return false;
-    }
+  @Override
+  public boolean isQuoteRequired() {
+    return false;
+  }
 }

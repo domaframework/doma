@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.apt.entity;
 
 import java.math.BigDecimal;
-
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
@@ -28,19 +27,17 @@ import org.seasar.doma.Version;
 @Entity
 class PackagePrivateEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(sequence = "EMP_ID")
-    Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @SequenceGenerator(sequence = "EMP_ID")
+  Integer id;
 
-    String name;
+  String name;
 
-    @Column(name = "SALARY", insertable = false, updatable = false)
-    BigDecimal salary;
+  @Column(name = "SALARY", insertable = false, updatable = false)
+  BigDecimal salary;
 
-    @Version
-    Integer version;
+  @Version Integer version;
 
-    PackagePrivateEntity() {
-    }
+  PackagePrivateEntity() {}
 }

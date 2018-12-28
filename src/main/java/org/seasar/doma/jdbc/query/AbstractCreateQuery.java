@@ -19,24 +19,21 @@ import org.seasar.doma.jdbc.Sql;
 
 /**
  * @author taedium
- * @param <RESULT>
- *            結果
+ * @param <RESULT> 結果
  */
 public abstract class AbstractCreateQuery<RESULT> extends AbstractQuery
-        implements CreateQuery<RESULT> {
+    implements CreateQuery<RESULT> {
 
-    @Override
-    public int getQueryTimeout() {
-        return -1;
-    }
+  @Override
+  public int getQueryTimeout() {
+    return -1;
+  }
 
-    @Override
-    public Sql<?> getSql() {
-        return null;
-    }
+  @Override
+  public Sql<?> getSql() {
+    return null;
+  }
 
-    @Override
-    public void complete() {
-    }
-
+  @Override
+  public void complete() {}
 }

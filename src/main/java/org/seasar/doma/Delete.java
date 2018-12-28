@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
-
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
@@ -29,34 +28,34 @@ import org.seasar.doma.jdbc.SqlLogType;
 
 /**
  * 削除処理を示します。
- * <p>
- * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
- * 
+ *
+ * <p>このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
+ *
  * <h3>例:</h3>
- * 
+ *
  * <pre>
  * &#064;Entity
  * public class Employee {
  *     ...
  * }
- * 
+ *
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
- * 
+ *
  *     &#064;Delete
  *     int delete(Employee employee);
  * }
  * </pre>
- * 
+ *
  * 注釈されるメソッドは、次の例外をスローすることがあります。
+ *
  * <ul>
- * <li> {@link DomaNullPointerException} パラメータに {@code null} を渡した場合
- * <li> {@link OptimisticLockException} 楽観的排他制御が有効で更新件数が0件の場合
- * <li> {@link SqlFileNotFoundException} {@code sqlFile} 要素が {@code true}
- * で、SQLファイルが見つからなかった場合
- * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
+ *   <li>{@link DomaNullPointerException} パラメータに {@code null} を渡した場合
+ *   <li>{@link OptimisticLockException} 楽観的排他制御が有効で更新件数が0件の場合
+ *   <li>{@link SqlFileNotFoundException} {@code sqlFile} 要素が {@code true} で、SQLファイルが見つからなかった場合
+ *   <li>{@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
- * 
+ *
  * @author taedium
  */
 @Target(ElementType.METHOD)
@@ -65,44 +64,44 @@ import org.seasar.doma.jdbc.SqlLogType;
 @EntityField
 public @interface Delete {
 
-    /**
-     * SQLファイルにマッピングするかどうかを返します。
-     * 
-     * @return SQLファイルにマッピングするかどうか
-     */
-    boolean sqlFile() default false;
+  /**
+   * SQLファイルにマッピングするかどうかを返します。
+   *
+   * @return SQLファイルにマッピングするかどうか
+   */
+  boolean sqlFile() default false;
 
-    /**
-     * クエリタイムアウト（秒）を返します。
-     * <p>
-     * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
-     * 
-     * @return クエリタイムアウト（秒）
-     * @see Statement#setQueryTimeout(int)
-     */
-    int queryTimeout() default -1;
+  /**
+   * クエリタイムアウト（秒）を返します。
+   *
+   * <p>指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
+   *
+   * @return クエリタイムアウト（秒）
+   * @see Statement#setQueryTimeout(int)
+   */
+  int queryTimeout() default -1;
 
-    /**
-     * 楽観的排他制御用のバージョン番号を無視するかどうかを返します。
-     * <p>
-     * {@code true} の場合、削除条件にバージョン番号を含めません。
-     * 
-     * @return 楽観的排他制御用のバージョン番号を無視するかどうか
-     */
-    boolean ignoreVersion() default false;
+  /**
+   * 楽観的排他制御用のバージョン番号を無視するかどうかを返します。
+   *
+   * <p>{@code true} の場合、削除条件にバージョン番号を含めません。
+   *
+   * @return 楽観的排他制御用のバージョン番号を無視するかどうか
+   */
+  boolean ignoreVersion() default false;
 
-    /**
-     * 削除結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを返します。
-     * 
-     * @return {@link OptimisticLockException}を抑制するかどうか
-     */
-    boolean suppressOptimisticLockException() default false;
+  /**
+   * 削除結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを返します。
+   *
+   * @return {@link OptimisticLockException}を抑制するかどうか
+   */
+  boolean suppressOptimisticLockException() default false;
 
-    /**
-     * SQLのログの出力形式を返します。
-     * 
-     * @return SQLログの出力形式
-     * @since 2.0.0
-     */
-    SqlLogType sqlLog() default SqlLogType.FORMATTED;
+  /**
+   * SQLのログの出力形式を返します。
+   *
+   * @return SQLログの出力形式
+   * @since 2.0.0
+   */
+  SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

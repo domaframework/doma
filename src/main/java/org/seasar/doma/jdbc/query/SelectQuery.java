@@ -20,28 +20,25 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface SelectQuery extends Query {
 
-    @Override
-    PreparedSql getSql();
+  @Override
+  PreparedSql getSql();
 
-    SelectOptions getOptions();
+  SelectOptions getOptions();
 
-    boolean isResultEnsured();
+  boolean isResultEnsured();
 
-    boolean isResultMappingEnsured();
+  boolean isResultMappingEnsured();
 
-    FetchType getFetchType();
+  FetchType getFetchType();
 
-    int getFetchSize();
+  int getFetchSize();
 
-    int getMaxRows();
+  int getMaxRows();
 
-    SqlLogType getSqlLogType();
+  SqlLogType getSqlLogType();
 
-    boolean isResultStream();
+  boolean isResultStream();
 }

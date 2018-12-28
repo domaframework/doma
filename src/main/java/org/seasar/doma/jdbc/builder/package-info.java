@@ -13,7 +13,5 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/**
- * SQLを動的に組み立て実行するためのクラスを提供します。
- */
+/** SQLを動的に組み立て実行するためのクラスを提供します。 */
 package org.seasar.doma.jdbc.builder;

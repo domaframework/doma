@@ -17,16 +17,12 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.jdbc.query.Query;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface ListParameter<ELEMENT> extends SqlParameter {
 
-    String getName();
+  String getName();
 
-    ObjectProvider<ELEMENT> createObjectProvider(Query query);
+  ObjectProvider<ELEMENT> createObjectProvider(Query query);
 
-    void add(ELEMENT element);
-
+  void add(ELEMENT element);
 }

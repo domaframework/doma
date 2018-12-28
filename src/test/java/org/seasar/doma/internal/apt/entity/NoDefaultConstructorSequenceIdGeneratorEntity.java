@@ -21,15 +21,12 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Entity
 public class NoDefaultConstructorSequenceIdGeneratorEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(sequence = "aaa", implementer = NoDefaultConstructorSequenceIdGenerator.class)
-    Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @SequenceGenerator(sequence = "aaa", implementer = NoDefaultConstructorSequenceIdGenerator.class)
+  Integer id;
 }

@@ -16,19 +16,13 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import java.util.OptionalLong;
-
 import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.jdbc.Reference;
 
-/**
- * @author taedium
- * 
- */
-public class OptionalLongOutParameter extends
-        ScalarOutParameter<Long, OptionalLong> {
+/** @author taedium */
+public class OptionalLongOutParameter extends ScalarOutParameter<Long, OptionalLong> {
 
-    public OptionalLongOutParameter(Reference<OptionalLong> reference) {
-        super(new OptionalLongScalar(), reference);
-    }
-
+  public OptionalLongOutParameter(Reference<OptionalLong> reference) {
+    super(new OptionalLongScalar(), reference);
+  }
 }

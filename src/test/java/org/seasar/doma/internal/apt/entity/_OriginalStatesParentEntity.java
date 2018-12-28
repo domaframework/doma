@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt.entity;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -34,159 +33,168 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-public class _OriginalStatesParentEntity
-        extends AbstractEntityType<OriginalStatesParentEntity> {
+public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStatesParentEntity> {
 
-    private final NamingType __namingType = NamingType.UPPER_CASE;
+  private final NamingType __namingType = NamingType.UPPER_CASE;
 
-    public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $aaa = new DefaultPropertyType<>(
-            OriginalStatesParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "aaa", "AAA", __namingType, true, true, false);
+  public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $aaa =
+      new DefaultPropertyType<>(
+          OriginalStatesParentEntity.class,
+          Integer.class,
+          Integer.class,
+          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
+          null,
+          null,
+          "aaa",
+          "AAA",
+          __namingType,
+          true,
+          true,
+          false);
 
-    public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $bbb = new DefaultPropertyType<>(
-            OriginalStatesParentEntity.class, Integer.class, Integer.class,
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
-            "bbb", "BBB", __namingType, true, true, false);
+  public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $bbb =
+      new DefaultPropertyType<>(
+          OriginalStatesParentEntity.class,
+          Integer.class,
+          Integer.class,
+          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
+          null,
+          null,
+          "bbb",
+          "BBB",
+          __namingType,
+          true,
+          true,
+          false);
 
-    private _OriginalStatesParentEntity() {
-    }
+  private _OriginalStatesParentEntity() {}
 
-    @Override
-    public void saveCurrentStates(OriginalStatesParentEntity entity) {
-    }
+  @Override
+  public void saveCurrentStates(OriginalStatesParentEntity entity) {}
 
-    @Override
-    public String getCatalogName() {
+  @Override
+  public String getCatalogName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public Class<OriginalStatesParentEntity> getEntityClass() {
+  @Override
+  public Class<OriginalStatesParentEntity> getEntityClass() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public EntityPropertyType<OriginalStatesParentEntity, ?> getEntityPropertyType(
-            String name) {
+  @Override
+  public EntityPropertyType<OriginalStatesParentEntity, ?> getEntityPropertyType(String name) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public List<EntityPropertyType<OriginalStatesParentEntity, ?>> getEntityPropertyTypes() {
+  @Override
+  public List<EntityPropertyType<OriginalStatesParentEntity, ?>> getEntityPropertyTypes() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public GeneratedIdPropertyType<Object, OriginalStatesParentEntity, ?, ?> getGeneratedIdPropertyType() {
+  @Override
+  public GeneratedIdPropertyType<Object, OriginalStatesParentEntity, ?, ?>
+      getGeneratedIdPropertyType() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getName() {
+  @Override
+  public String getName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public OriginalStatesParentEntity getOriginalStates(
-            OriginalStatesParentEntity entity) {
+  @Override
+  public OriginalStatesParentEntity getOriginalStates(OriginalStatesParentEntity entity) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getSchemaName() {
+  @Override
+  public String getSchemaName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getTableName() {
+  @Override
+  public String getTableName() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public String getTableName(
-            BiFunction<NamingType, String, String> namingFunction) {
+  @Override
+  public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public VersionPropertyType<Object, OriginalStatesParentEntity, ?, ?> getVersionPropertyType() {
+  @Override
+  public VersionPropertyType<Object, OriginalStatesParentEntity, ?, ?> getVersionPropertyType() {
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public TenantIdPropertyType<Object, OriginalStatesParentEntity, ?, ?> getTenantIdPropertyType() {
-        return null;
-    }
+  @Override
+  public TenantIdPropertyType<Object, OriginalStatesParentEntity, ?, ?> getTenantIdPropertyType() {
+    return null;
+  }
 
-    @Override
-    public void preDelete(OriginalStatesParentEntity entity,
-            PreDeleteContext<OriginalStatesParentEntity> context) {
-    }
+  @Override
+  public void preDelete(
+      OriginalStatesParentEntity entity, PreDeleteContext<OriginalStatesParentEntity> context) {}
 
-    @Override
-    public void preInsert(OriginalStatesParentEntity entity,
-            PreInsertContext<OriginalStatesParentEntity> context) {
-    }
+  @Override
+  public void preInsert(
+      OriginalStatesParentEntity entity, PreInsertContext<OriginalStatesParentEntity> context) {}
 
-    @Override
-    public void preUpdate(OriginalStatesParentEntity entity,
-            PreUpdateContext<OriginalStatesParentEntity> context) {
-    }
+  @Override
+  public void preUpdate(
+      OriginalStatesParentEntity entity, PreUpdateContext<OriginalStatesParentEntity> context) {}
 
-    @Override
-    public void postDelete(OriginalStatesParentEntity entity,
-            PostDeleteContext<OriginalStatesParentEntity> context) {
-    }
+  @Override
+  public void postDelete(
+      OriginalStatesParentEntity entity, PostDeleteContext<OriginalStatesParentEntity> context) {}
 
-    @Override
-    public void postInsert(OriginalStatesParentEntity entity,
-            PostInsertContext<OriginalStatesParentEntity> context) {
-    }
+  @Override
+  public void postInsert(
+      OriginalStatesParentEntity entity, PostInsertContext<OriginalStatesParentEntity> context) {}
 
-    @Override
-    public void postUpdate(OriginalStatesParentEntity entity,
-            PostUpdateContext<OriginalStatesParentEntity> context) {
-    }
+  @Override
+  public void postUpdate(
+      OriginalStatesParentEntity entity, PostUpdateContext<OriginalStatesParentEntity> context) {}
 
-    @Override
-    public List<EntityPropertyType<OriginalStatesParentEntity, ?>> getIdPropertyTypes() {
-        return null;
-    }
+  @Override
+  public List<EntityPropertyType<OriginalStatesParentEntity, ?>> getIdPropertyTypes() {
+    return null;
+  }
 
-    @Override
-    public NamingType getNamingType() {
-        return null;
-    }
+  @Override
+  public NamingType getNamingType() {
+    return null;
+  }
 
-    public static _OriginalStatesParentEntity getSingletonInternal() {
-        return null;
-    }
+  public static _OriginalStatesParentEntity getSingletonInternal() {
+    return null;
+  }
 
-    @Override
-    public boolean isImmutable() {
-        return false;
-    }
+  @Override
+  public boolean isImmutable() {
+    return false;
+  }
 
-    @Override
-    public OriginalStatesParentEntity newEntity(
-            Map<String, Property<OriginalStatesParentEntity, ?>> args) {
-        return null;
-    }
+  @Override
+  public OriginalStatesParentEntity newEntity(
+      Map<String, Property<OriginalStatesParentEntity, ?>> args) {
+    return null;
+  }
 
-    @Override
-    public boolean isQuoteRequired() {
-        return false;
-    }
+  @Override
+  public boolean isQuoteRequired() {
+    return false;
+  }
 }

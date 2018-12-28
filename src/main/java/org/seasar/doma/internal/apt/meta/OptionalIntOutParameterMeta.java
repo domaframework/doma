@@ -17,27 +17,22 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-/**
- * 
- * @author nakamura-to
- *
- */
+/** @author nakamura-to */
 public class OptionalIntOutParameterMeta implements CallableSqlParameterMeta {
 
-    private final String name;
+  private final String name;
 
-    public OptionalIntOutParameterMeta(String name) {
-        assertNotNull(name);
-        this.name = name;
-    }
+  public OptionalIntOutParameterMeta(String name) {
+    assertNotNull(name);
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitOptionalIntOutParameterMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitOptionalIntOutParameterMeta(this, p);
+  }
 }

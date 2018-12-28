@@ -20,10 +20,9 @@ import java.sql.SQLException;
 
 /**
  * @author taedium
- * @param <RESULT>
- *            結果
+ * @param <RESULT> 結果
  */
 public interface CreateQuery<RESULT> extends Query {
 
-    RESULT create(Connection connection) throws SQLException;
+  RESULT create(Connection connection) throws SQLException;
 }

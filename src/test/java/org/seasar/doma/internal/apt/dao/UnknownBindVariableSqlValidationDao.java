@@ -22,6 +22,6 @@ import org.seasar.doma.internal.apt.entity.Emp;
 @Dao(config = MyConfig.class)
 public interface UnknownBindVariableSqlValidationDao {
 
-    @Select
-    Emp select();
+  @Select
+  Emp select();
 }

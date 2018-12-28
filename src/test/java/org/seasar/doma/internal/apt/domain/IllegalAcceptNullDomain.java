@@ -20,14 +20,13 @@ import org.seasar.doma.Domain;
 @Domain(valueType = int.class, acceptNull = true)
 public class IllegalAcceptNullDomain {
 
-    private final int value;
+  private final int value;
 
-    public IllegalAcceptNullDomain(int value) {
-        this.value = value;
-    }
+  public IllegalAcceptNullDomain(int value) {
+    this.value = value;
+  }
 
-    public int getValue() {
-        return value;
-    }
-
+  public int getValue() {
+    return value;
+  }
 }

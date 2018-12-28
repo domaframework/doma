@@ -16,32 +16,27 @@
 package org.seasar.doma.jdbc.query;
 
 import java.lang.reflect.Method;
-
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface Query {
 
-    Sql<?> getSql();
+  Sql<?> getSql();
 
-    String getClassName();
+  String getClassName();
 
-    String getMethodName();
+  String getMethodName();
 
-    Method getMethod();
+  Method getMethod();
 
-    Config getConfig();
+  Config getConfig();
 
-    int getQueryTimeout();
+  int getQueryTimeout();
 
-    void prepare();
+  void prepare();
 
-    void complete();
+  void complete();
 
-    String comment(String sql);
-
+  String comment(String sql);
 }
