@@ -15,12 +15,8 @@
  */
 package org.seasar.doma.jdbc.query;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface BatchUpdateQuery extends BatchModifyQuery {
 
-    void incrementVersions();
-
+  void incrementVersions();
 }

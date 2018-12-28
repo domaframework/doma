@@ -24,83 +24,72 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.nio.charset.Charset;
-
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 
 /**
  * 生成されたリソースをメモリ上に保持する{@link JavaFileObject}の実装です。
- * 
+ *
  * @author koichik
  */
 class InMemoryJavaFileObject extends SimpleJavaFileObject {
 
-    byte[] content;
+  byte[] content;
 
-    ByteArrayOutputStream outputStream;
+  ByteArrayOutputStream outputStream;
 
-    final Charset charset;
+  final Charset charset;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param uri
-     *            ファイルオブジェクトの{@link URI}
-     * @param kind
-     *            ファイルオブジェクトの種類
-     * @param charset
-     *            文字セット
-     */
-    public InMemoryJavaFileObject(final URI uri, final Kind kind,
-            final Charset charset) {
-        super(uri, kind);
-        this.charset = charset;
-    }
+  /**
+   * インスタンスを構築します。
+   *
+   * @param uri ファイルオブジェクトの{@link URI}
+   * @param kind ファイルオブジェクトの種類
+   * @param charset 文字セット
+   */
+  public InMemoryJavaFileObject(final URI uri, final Kind kind, final Charset charset) {
+    super(uri, kind);
+    this.charset = charset;
+  }
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param uri
-     *            ファイルオブジェクトの{@link URI}
-     * @param kind
-     *            ファイルオブジェクトの種類
-     * @param charset
-     *            文字セット
-     * @param content
-     *            ファイルの内容
-     */
-    public InMemoryJavaFileObject(final URI uri, final Kind kind,
-            final Charset charset, final byte[] content) {
-        super(uri, kind);
-        this.charset = charset;
-        this.content = content;
-    }
+  /**
+   * インスタンスを構築します。
+   *
+   * @param uri ファイルオブジェクトの{@link URI}
+   * @param kind ファイルオブジェクトの種類
+   * @param charset 文字セット
+   * @param content ファイルの内容
+   */
+  public InMemoryJavaFileObject(
+      final URI uri, final Kind kind, final Charset charset, final byte[] content) {
+    super(uri, kind);
+    this.charset = charset;
+    this.content = content;
+  }
 
-    @Override
-    public InputStream openInputStream() throws IOException {
-        return new ByteArrayInputStream(content != null ? content
-                : outputStream != null ? outputStream.toByteArray()
-                        : new byte[0]);
-    }
+  @Override
+  public InputStream openInputStream() throws IOException {
+    return new ByteArrayInputStream(
+        content != null
+            ? content
+            : outputStream != null ? outputStream.toByteArray() : new byte[0]);
+  }
 
-    @Override
-    public OutputStream openOutputStream() throws IOException {
-        content = null;
-        outputStream = new ByteArrayOutputStream(1024);
-        return outputStream;
-    }
+  @Override
+  public OutputStream openOutputStream() throws IOException {
+    content = null;
+    outputStream = new ByteArrayOutputStream(1024);
+    return outputStream;
+  }
 
-    @Override
-    public Writer openWriter() throws IOException {
-        return new OutputStreamWriter(openOutputStream(), charset);
-    }
+  @Override
+  public Writer openWriter() throws IOException {
+    return new OutputStreamWriter(openOutputStream(), charset);
+  }
 
-    @Override
-    public CharSequence getCharContent(final boolean ignoreEncodingErrors)
-            throws IOException {
-        return new String(
-            IOUtils.readBytes(openInputStream()),
-            charset == null ? Charset.defaultCharset() : charset);
-    }
-
+  @Override
+  public CharSequence getCharContent(final boolean ignoreEncodingErrors) throws IOException {
+    return new String(
+        IOUtils.readBytes(openInputStream()), charset == null ? Charset.defaultCharset() : charset);
+  }
 }

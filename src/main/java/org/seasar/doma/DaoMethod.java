@@ -22,13 +22,11 @@ import java.lang.annotation.Target;
 
 /**
  * Daoインタフェースのメソッドのアノテーションであることを示します。
- * <p>
- * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
- * 
+ *
+ * <p>{@literal Doma} がアノテーション処理に利用するメタアノテーションです。
+ *
  * @author taedium
- * 
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DaoMethod {
-}
+public @interface DaoMethod {}

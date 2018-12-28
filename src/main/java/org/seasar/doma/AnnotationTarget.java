@@ -17,18 +17,18 @@ package org.seasar.doma;
 
 /**
  * アノテーションを注釈する対象です。
- * 
+ *
  * @author taedium
  * @see Annotation
  */
 public enum AnnotationTarget {
 
-    /** クラス */
-    CLASS,
+  /** クラス */
+  CLASS,
 
-    /** コンストラクタ */
-    CONSTRUCTOR,
+  /** コンストラクタ */
+  CONSTRUCTOR,
 
-    /** コンストラクターのパラメータ */
-    CONSTRUCTOR_PARAMETER,
+  /** コンストラクターのパラメータ */
+  CONSTRUCTOR_PARAMETER,
 }

@@ -22,12 +22,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.LinkedHashMap;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
-
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Options;
@@ -41,133 +39,132 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMeta>
-        extends AbstractQueryMetaFactory<M> {
+    extends AbstractQueryMetaFactory<M> {
 
-    protected AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
-    }
+  protected AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env) {
+    super(env);
+  }
 
-    protected void doSqlFiles(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta, boolean expandable, boolean populatable) {
-        if (!Options.getSqlValidation(env)) {
-            return;
-        }
-        String filePath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
-                .getQualifiedName().toString(), queryMeta.getName());
-        File file = getFile(queryMeta, method, filePath);
-        File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
-        String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
-                .getQualifiedName().toString());
-        String methodName = queryMeta.getName();
-        for (File siblingfile : siblingfiles) {
-            if (SqlFileUtil.isSqlFile(siblingfile, methodName)) {
-                String fileName = siblingfile.getName();
-                String sqlFilePath = dirPath + "/" + fileName;
-                String sql = getSql(method, siblingfile, sqlFilePath);
-                if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
-                    throw new AptException(Message.DOMA4020, env, method,
-                            new Object[] { sqlFilePath });
-                }
-                SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
-                        sqlFilePath, sql);
-                SqlValidator validator = createSqlValidator(method,
-                        queryMeta.getBindableParameterTypeMap(), sqlFilePath,
-                        expandable, populatable);
-                validator.validate(sqlNode);
-                queryMeta.addFileName(fileName);
-            }
-        }
+  protected void doSqlFiles(
+      M queryMeta,
+      ExecutableElement method,
+      DaoMeta daoMeta,
+      boolean expandable,
+      boolean populatable) {
+    if (!Options.getSqlValidation(env)) {
+      return;
     }
+    String filePath =
+        SqlFileUtil.buildPath(
+            daoMeta.getDaoElement().getQualifiedName().toString(), queryMeta.getName());
+    File file = getFile(queryMeta, method, filePath);
+    File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
+    String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString());
+    String methodName = queryMeta.getName();
+    for (File siblingfile : siblingfiles) {
+      if (SqlFileUtil.isSqlFile(siblingfile, methodName)) {
+        String fileName = siblingfile.getName();
+        String sqlFilePath = dirPath + "/" + fileName;
+        String sql = getSql(method, siblingfile, sqlFilePath);
+        if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
+          throw new AptException(Message.DOMA4020, env, method, new Object[] {sqlFilePath});
+        }
+        SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta, sqlFilePath, sql);
+        SqlValidator validator =
+            createSqlValidator(
+                method,
+                queryMeta.getBindableParameterTypeMap(),
+                sqlFilePath,
+                expandable,
+                populatable);
+        validator.validate(sqlNode);
+        queryMeta.addFileName(fileName);
+      }
+    }
+  }
 
-    protected File getFile(M queryMeta, ExecutableElement method,
-            String filePath) {
-        FileObject fileObject = getFileObject(filePath, method);
-        URI uri = fileObject.toUri();
-        if (!uri.isAbsolute()) {
-            uri = new File(".").toURI().resolve(uri);
-        }
-        File file = getCanonicalFile(new File(uri));
-        if (!file.exists()) {
-            throw new AptException(Message.DOMA4019, env, method, new Object[] {
-                    filePath, file.getAbsolutePath() });
-        }
-        if (file.isDirectory()) {
-            throw new AptException(Message.DOMA4021, env, method, new Object[] {
-                    filePath, file.getAbsolutePath() });
-        }
-        if (!IOUtil.endsWith(file, filePath)) {
-            throw new AptException(Message.DOMA4309, env, method, new Object[] {
-                    filePath, file.getAbsolutePath() });
-        }
-        return file;
+  protected File getFile(M queryMeta, ExecutableElement method, String filePath) {
+    FileObject fileObject = getFileObject(filePath, method);
+    URI uri = fileObject.toUri();
+    if (!uri.isAbsolute()) {
+      uri = new File(".").toURI().resolve(uri);
     }
+    File file = getCanonicalFile(new File(uri));
+    if (!file.exists()) {
+      throw new AptException(
+          Message.DOMA4019, env, method, new Object[] {filePath, file.getAbsolutePath()});
+    }
+    if (file.isDirectory()) {
+      throw new AptException(
+          Message.DOMA4021, env, method, new Object[] {filePath, file.getAbsolutePath()});
+    }
+    if (!IOUtil.endsWith(file, filePath)) {
+      throw new AptException(
+          Message.DOMA4309, env, method, new Object[] {filePath, file.getAbsolutePath()});
+    }
+    return file;
+  }
 
-    protected File getCanonicalFile(File file) {
-        try {
-            return file.getCanonicalFile();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+  protected File getCanonicalFile(File file) {
+    try {
+      return file.getCanonicalFile();
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
     }
+  }
 
-    protected File[] getSiblingFiles(M queryMeta, ExecutableElement method,
-            File file) {
-        File dir = getDir(file);
-        File[] files = dir.listFiles();
-        if (files == null) {
-            throw new AptException(Message.DOMA4144, env, method,
-                    new Object[] { dir.getAbsolutePath() });
-        }
-        return files;
+  protected File[] getSiblingFiles(M queryMeta, ExecutableElement method, File file) {
+    File dir = getDir(file);
+    File[] files = dir.listFiles();
+    if (files == null) {
+      throw new AptException(Message.DOMA4144, env, method, new Object[] {dir.getAbsolutePath()});
     }
+    return files;
+  }
 
-    protected File getDir(File sqlFile) {
-        File dir = sqlFile.getParentFile();
-        if (dir == null) {
-            assertUnreachable();
-        }
-        return dir;
+  protected File getDir(File sqlFile) {
+    File dir = sqlFile.getParentFile();
+    if (dir == null) {
+      assertUnreachable();
     }
+    return dir;
+  }
 
-    protected FileObject getFileObject(String path, ExecutableElement method) {
-        try {
-            return ResourceUtil.getResource(path, env);
-        } catch (IOException e) {
-            throw new AptException(Message.DOMA4143, env, method, e,
-                    new Object[] { path, e });
-        }
+  protected FileObject getFileObject(String path, ExecutableElement method) {
+    try {
+      return ResourceUtil.getResource(path, env);
+    } catch (IOException e) {
+      throw new AptException(Message.DOMA4143, env, method, e, new Object[] {path, e});
     }
+  }
 
-    protected String getSql(ExecutableElement method, File file, String filePath) {
-        try {
-            return IOUtil.readAsString(file);
-        } catch (WrapException e) {
-            Throwable cause = e.getCause();
-            throw new AptException(Message.DOMA4068, env, method, cause,
-                    new Object[] { filePath, cause });
-        }
+  protected String getSql(ExecutableElement method, File file, String filePath) {
+    try {
+      return IOUtil.readAsString(file);
+    } catch (WrapException e) {
+      Throwable cause = e.getCause();
+      throw new AptException(Message.DOMA4068, env, method, cause, new Object[] {filePath, cause});
     }
+  }
 
-    protected SqlNode createSqlNode(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta, String path, String sql) {
-        try {
-            SqlParser sqlParser = new SqlParser(sql);
-            return sqlParser.parse();
-        } catch (JdbcException e) {
-            throw new AptException(Message.DOMA4069, env, method, e,
-                    new Object[] { path, e });
-        }
+  protected SqlNode createSqlNode(
+      M queryMeta, ExecutableElement method, DaoMeta daoMeta, String path, String sql) {
+    try {
+      SqlParser sqlParser = new SqlParser(sql);
+      return sqlParser.parse();
+    } catch (JdbcException e) {
+      throw new AptException(Message.DOMA4069, env, method, e, new Object[] {path, e});
     }
+  }
 
-    protected SqlValidator createSqlValidator(ExecutableElement method,
-            LinkedHashMap<String, TypeMirror> parameterTypeMap,
-            String sqlFilePath, boolean expandable, boolean populatable) {
-        return new SqlValidator(env, method, parameterTypeMap, sqlFilePath,
-                expandable, populatable);
-    }
+  protected SqlValidator createSqlValidator(
+      ExecutableElement method,
+      LinkedHashMap<String, TypeMirror> parameterTypeMap,
+      String sqlFilePath,
+      boolean expandable,
+      boolean populatable) {
+    return new SqlValidator(env, method, parameterTypeMap, sqlFilePath, expandable, populatable);
+  }
 }

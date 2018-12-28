@@ -20,12 +20,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @author nakamura-to
- *
- */
+/** @author nakamura-to */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface Value {
-    String staticConstructor() default "";
+  String staticConstructor() default "";
 }

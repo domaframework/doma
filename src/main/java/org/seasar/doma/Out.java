@@ -22,31 +22,29 @@ import java.lang.annotation.Target;
 
 /**
  * ストアドファンクションやストアドプロシージャーへのOUTパラメータを示します。
- * <p>
- * このアノテーションが注釈されるパラメータは、 {@link Function} もしくは {@link Procedure}
- * が注釈されたメソッドのパラメータでなければいけません。
- * 
+ *
+ * <p>このアノテーションが注釈されるパラメータは、 {@link Function} もしくは {@link Procedure} が注釈されたメソッドのパラメータでなければいけません。
+ *
  * <h3>例:</h3>
- * 
+ *
  * <pre>
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
- * 
+ *
  *     &#064;Procedure
  *     void updateSalary(@In Integer id, @Out Reference&lt;BigDecimal&gt; salary);
  * }
  * </pre>
- * 
+ *
  * <pre>
  * EmployeeDao dao = new EmployeeDaoImpl();
  * Reference&lt;BigDecimal&gt; salaryRef = new Reference&lt;BigDecimal&gt;();
  * dao.updateSalary(1, salaryRef);
  * BigDecimal salary = salaryRef.get();
  * </pre>
- * 
+ *
  * @author taedium
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Out {
-}
+public @interface Out {}

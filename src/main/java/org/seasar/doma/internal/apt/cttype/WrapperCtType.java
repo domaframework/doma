@@ -31,7 +31,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -41,7 +40,6 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleTypeVisitor8;
-
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.wrapper.ArrayWrapper;
@@ -72,169 +70,164 @@ import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class WrapperCtType extends AbstractCtType {
 
-    protected BasicCtType basicCtType;
+  protected BasicCtType basicCtType;
 
-    public WrapperCtType(TypeMirror type, ProcessingEnvironment env) {
-        super(type, env);
+  public WrapperCtType(TypeMirror type, ProcessingEnvironment env) {
+    super(type, env);
+  }
+
+  public BasicCtType getBasicCtType() {
+    return basicCtType;
+  }
+
+  public static WrapperCtType newInstance(BasicCtType basicCtType, ProcessingEnvironment env) {
+    assertNotNull(basicCtType, env);
+    Class<?> wrapperClass =
+        basicCtType.getTypeMirror().accept(new WrapperTypeMappingVisitor(env), null);
+    if (wrapperClass == null) {
+      return null;
     }
-
-    public BasicCtType getBasicCtType() {
-        return basicCtType;
+    TypeElement wrapperTypeElement = ElementUtil.getTypeElement(wrapperClass, env);
+    if (wrapperTypeElement == null) {
+      return null;
     }
+    WrapperCtType wrapperCtType;
+    if (wrapperClass == EnumWrapper.class) {
+      DeclaredType declaredType =
+          env.getTypeUtils().getDeclaredType(wrapperTypeElement, basicCtType.getTypeMirror());
+      wrapperCtType = new EnumWrapperCtType(declaredType, env);
+    } else {
+      wrapperCtType = new WrapperCtType(wrapperTypeElement.asType(), env);
+    }
+    wrapperCtType.basicCtType = basicCtType;
+    return wrapperCtType;
+  }
 
-    public static WrapperCtType newInstance(BasicCtType basicCtType,
-            ProcessingEnvironment env) {
-        assertNotNull(basicCtType, env);
-        Class<?> wrapperClass = basicCtType.getTypeMirror().accept(
-                new WrapperTypeMappingVisitor(env), null);
-        if (wrapperClass == null) {
-            return null;
-        }
-        TypeElement wrapperTypeElement = ElementUtil.getTypeElement(
-                wrapperClass, env);
-        if (wrapperTypeElement == null) {
-            return null;
-        }
-        WrapperCtType wrapperCtType;
-        if (wrapperClass == EnumWrapper.class) {
-            DeclaredType declaredType = env.getTypeUtils().getDeclaredType(
-                    wrapperTypeElement, basicCtType.getTypeMirror());
-            wrapperCtType = new EnumWrapperCtType(declaredType, env);
-        } else {
-            wrapperCtType = new WrapperCtType(wrapperTypeElement.asType(), env);
-        }
-        wrapperCtType.basicCtType = basicCtType;
-        return wrapperCtType;
+  @Override
+  public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    return visitor.visitWrapperCtType(this, p);
+  }
+
+  protected static class WrapperTypeMappingVisitor extends SimpleTypeVisitor8<Class<?>, Void> {
+
+    protected final ProcessingEnvironment env;
+
+    protected WrapperTypeMappingVisitor(ProcessingEnvironment env) {
+      this.env = env;
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitWrapperCtType(this, p);
+    public Class<?> visitArray(ArrayType t, Void p) {
+      if (t.getComponentType().getKind() == TypeKind.BYTE) {
+        return BytesWrapper.class;
+      }
+      return null;
     }
 
-    protected static class WrapperTypeMappingVisitor extends
-            SimpleTypeVisitor8<Class<?>, Void> {
-
-        protected final ProcessingEnvironment env;
-
-        protected WrapperTypeMappingVisitor(ProcessingEnvironment env) {
-            this.env = env;
-        }
-
-        @Override
-        public Class<?> visitArray(ArrayType t, Void p) {
-            if (t.getComponentType().getKind() == TypeKind.BYTE) {
-                return BytesWrapper.class;
-            }
-            return null;
-        }
-
-        @Override
-        public Class<?> visitDeclared(DeclaredType t, Void p) {
-            TypeElement typeElement = TypeMirrorUtil.toTypeElement(t, env);
-            if (typeElement == null) {
-                return null;
-            }
-            if (typeElement.getKind() == ElementKind.ENUM) {
-                return EnumWrapper.class;
-            }
-            String name = typeElement.getQualifiedName().toString();
-            if (String.class.getName().equals(name)) {
-                return StringWrapper.class;
-            }
-            if (Boolean.class.getName().equals(name)) {
-                return BooleanWrapper.class;
-            }
-            if (Byte.class.getName().equals(name)) {
-                return ByteWrapper.class;
-            }
-            if (Short.class.getName().equals(name)) {
-                return ShortWrapper.class;
-            }
-            if (Integer.class.getName().equals(name)) {
-                return IntegerWrapper.class;
-            }
-            if (Long.class.getName().equals(name)) {
-                return LongWrapper.class;
-            }
-            if (Float.class.getName().equals(name)) {
-                return FloatWrapper.class;
-            }
-            if (Double.class.getName().equals(name)) {
-                return DoubleWrapper.class;
-            }
-            if (Object.class.getName().equals(name)) {
-                return ObjectWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, BigDecimal.class, env)) {
-                return BigDecimalWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, BigInteger.class, env)) {
-                return BigIntegerWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, Time.class, env)) {
-                return TimeWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, Timestamp.class, env)) {
-                return TimestampWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, Date.class, env)) {
-                return DateWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, java.util.Date.class, env)) {
-                return UtilDateWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, LocalTime.class, env)) {
-                return LocalTimeWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, LocalDateTime.class, env)) {
-                return LocalDateTimeWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, LocalDate.class, env)) {
-                return LocalDateWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, Array.class, env)) {
-                return ArrayWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, Blob.class, env)) {
-                return BlobWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, NClob.class, env)) {
-                return NClobWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, Clob.class, env)) {
-                return ClobWrapper.class;
-            }
-            if (TypeMirrorUtil.isAssignable(t, SQLXML.class, env)) {
-                return SQLXMLWrapper.class;
-            }
-            return null;
-        }
-
-        @Override
-        public Class<?> visitPrimitive(PrimitiveType t, Void p) {
-            switch (t.getKind()) {
-            case BOOLEAN:
-                return BooleanWrapper.class;
-            case BYTE:
-                return ByteWrapper.class;
-            case SHORT:
-                return ShortWrapper.class;
-            case INT:
-                return IntegerWrapper.class;
-            case LONG:
-                return LongWrapper.class;
-            case FLOAT:
-                return FloatWrapper.class;
-            case DOUBLE:
-                return DoubleWrapper.class;
-            case CHAR:
-                return null;
-            default:
-                return assertUnreachable();
-            }
-        }
-
+    @Override
+    public Class<?> visitDeclared(DeclaredType t, Void p) {
+      TypeElement typeElement = TypeMirrorUtil.toTypeElement(t, env);
+      if (typeElement == null) {
+        return null;
+      }
+      if (typeElement.getKind() == ElementKind.ENUM) {
+        return EnumWrapper.class;
+      }
+      String name = typeElement.getQualifiedName().toString();
+      if (String.class.getName().equals(name)) {
+        return StringWrapper.class;
+      }
+      if (Boolean.class.getName().equals(name)) {
+        return BooleanWrapper.class;
+      }
+      if (Byte.class.getName().equals(name)) {
+        return ByteWrapper.class;
+      }
+      if (Short.class.getName().equals(name)) {
+        return ShortWrapper.class;
+      }
+      if (Integer.class.getName().equals(name)) {
+        return IntegerWrapper.class;
+      }
+      if (Long.class.getName().equals(name)) {
+        return LongWrapper.class;
+      }
+      if (Float.class.getName().equals(name)) {
+        return FloatWrapper.class;
+      }
+      if (Double.class.getName().equals(name)) {
+        return DoubleWrapper.class;
+      }
+      if (Object.class.getName().equals(name)) {
+        return ObjectWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, BigDecimal.class, env)) {
+        return BigDecimalWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, BigInteger.class, env)) {
+        return BigIntegerWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, Time.class, env)) {
+        return TimeWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, Timestamp.class, env)) {
+        return TimestampWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, Date.class, env)) {
+        return DateWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, java.util.Date.class, env)) {
+        return UtilDateWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, LocalTime.class, env)) {
+        return LocalTimeWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, LocalDateTime.class, env)) {
+        return LocalDateTimeWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, LocalDate.class, env)) {
+        return LocalDateWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, Array.class, env)) {
+        return ArrayWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, Blob.class, env)) {
+        return BlobWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, NClob.class, env)) {
+        return NClobWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, Clob.class, env)) {
+        return ClobWrapper.class;
+      }
+      if (TypeMirrorUtil.isAssignable(t, SQLXML.class, env)) {
+        return SQLXMLWrapper.class;
+      }
+      return null;
     }
+
+    @Override
+    public Class<?> visitPrimitive(PrimitiveType t, Void p) {
+      switch (t.getKind()) {
+        case BOOLEAN:
+          return BooleanWrapper.class;
+        case BYTE:
+          return ByteWrapper.class;
+        case SHORT:
+          return ShortWrapper.class;
+        case INT:
+          return IntegerWrapper.class;
+        case LONG:
+          return LongWrapper.class;
+        case FLOAT:
+          return FloatWrapper.class;
+        case DOUBLE:
+          return DoubleWrapper.class;
+        case CHAR:
+          return null;
+        default:
+          return assertUnreachable();
+      }
+    }
+  }
 }

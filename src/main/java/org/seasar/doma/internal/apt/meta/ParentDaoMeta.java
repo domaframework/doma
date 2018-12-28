@@ -19,62 +19,57 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-
 import org.seasar.doma.internal.apt.mirror.DaoMirror;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class ParentDaoMeta {
 
-    protected final DaoMirror daoMirror;
+  protected final DaoMirror daoMirror;
 
-    protected TypeMirror daoType;
+  protected TypeMirror daoType;
 
-    protected TypeElement daoElement;
+  protected TypeElement daoElement;
 
-    protected String name;
+  protected String name;
 
-    public ParentDaoMeta(DaoMirror daoMirror) {
-        assertNotNull(daoMirror);
-        this.daoMirror = daoMirror;
-    }
+  public ParentDaoMeta(DaoMirror daoMirror) {
+    assertNotNull(daoMirror);
+    this.daoMirror = daoMirror;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public TypeMirror getDaoType() {
-        return daoType;
-    }
+  public TypeMirror getDaoType() {
+    return daoType;
+  }
 
-    public void setDaoType(TypeMirror daoType) {
-        this.daoType = daoType;
-    }
+  public void setDaoType(TypeMirror daoType) {
+    this.daoType = daoType;
+  }
 
-    public TypeElement getDaoElement() {
-        return daoElement;
-    }
+  public TypeElement getDaoElement() {
+    return daoElement;
+  }
 
-    public void setDaoElement(TypeElement daoElement) {
-        this.daoElement = daoElement;
-    }
+  public void setDaoElement(TypeElement daoElement) {
+    this.daoElement = daoElement;
+  }
 
-    public boolean hasUserDefinedConfig() {
-        return daoMirror.hasUserDefinedConfig();
-    }
+  public boolean hasUserDefinedConfig() {
+    return daoMirror.hasUserDefinedConfig();
+  }
 
-    DaoMirror getDaoMirror() {
-        return daoMirror;
-    }
+  DaoMirror getDaoMirror() {
+    return daoMirror;
+  }
 
-    public TypeMirror getConfigType() {
-        return daoMirror.getConfigValue();
-    }
-
+  public TypeMirror getConfigType() {
+    return daoMirror.getConfigValue();
+  }
 }

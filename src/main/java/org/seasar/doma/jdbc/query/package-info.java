@@ -13,7 +13,5 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/**
- * クエリを表すインタフェースやクラスを提供します。
- */
+/** クエリを表すインタフェースやクラスを提供します。 */
 package org.seasar.doma.jdbc.query;

@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -32,7 +31,6 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor8;
-
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
@@ -43,130 +41,123 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
-        implements QueryMetaFactory {
+    implements QueryMetaFactory {
 
-    protected final ProcessingEnvironment env;
+  protected final ProcessingEnvironment env;
 
-    protected AbstractQueryMetaFactory(ProcessingEnvironment env) {
-        assertNotNull(env);
-        this.env = env;
+  protected AbstractQueryMetaFactory(ProcessingEnvironment env) {
+    assertNotNull(env);
+    this.env = env;
+  }
+
+  protected void doTypeParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
+    for (TypeParameterElement element : method.getTypeParameters()) {
+      String name = TypeMirrorUtil.getTypeParameterName(element.asType(), env);
+      queryMeta.addTypeParameterName(name);
     }
+  }
 
-    protected void doTypeParameters(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = TypeMirrorUtil.getTypeParameterName(element.asType(),
-                    env);
-            queryMeta.addTypeParameterName(name);
+  protected abstract void doReturnType(M queryMeta, ExecutableElement method, DaoMeta daoMeta);
+
+  protected abstract void doParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta);
+
+  protected void doThrowTypes(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
+    for (TypeMirror thrownType : method.getThrownTypes()) {
+      queryMeta.addThrownTypeName(TypeMirrorUtil.getTypeName(thrownType, env));
+    }
+  }
+
+  protected boolean isPrimitiveInt(TypeMirror typeMirror) {
+    return typeMirror.getKind() == TypeKind.INT;
+  }
+
+  protected boolean isPrimitiveIntArray(TypeMirror typeMirror) {
+    return typeMirror.accept(
+        new TypeKindVisitor8<Boolean, Void>(false) {
+
+          @Override
+          public Boolean visitArray(ArrayType t, Void p) {
+            return t.getComponentType().getKind() == TypeKind.INT;
+          }
+        },
+        null);
+  }
+
+  protected boolean isPrimitiveVoid(TypeMirror typeMirror) {
+    return typeMirror.getKind() == TypeKind.VOID;
+  }
+
+  protected boolean isEntity(TypeMirror typeMirror) {
+    TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+    return typeElement != null && typeElement.getAnnotation(Entity.class) != null;
+  }
+
+  protected boolean isDomain(TypeMirror typeMirror) {
+    TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+    return typeElement != null && typeElement.getAnnotation(Domain.class) != null;
+  }
+
+  protected boolean isConfig(TypeMirror typeMirror) {
+    return TypeMirrorUtil.isSameType(typeMirror, Config.class, env);
+  }
+
+  protected boolean isCollection(TypeMirror typeMirror) {
+    return TypeMirrorUtil.isAssignable(typeMirror, Collection.class, env);
+  }
+
+  protected boolean isSelectOptions(TypeMirror typeMirror) {
+    return TypeMirrorUtil.isAssignable(typeMirror, SelectOptions.class, env);
+  }
+
+  protected boolean isIterationCallback(TypeMirror typeMirror) {
+    return TypeMirrorUtil.isAssignable(typeMirror, IterationCallback.class, env);
+  }
+
+  protected void validateEntityPropertyNames(
+      TypeMirror entityType,
+      ExecutableElement method,
+      AnnotationMirror annotationMirror,
+      AnnotationValue includeValue,
+      AnnotationValue excludeValue) {
+    List<String> includedPropertyNames = AnnotationValueUtil.toStringList(includeValue);
+    List<String> excludedPropertyNames = AnnotationValueUtil.toStringList(excludeValue);
+    if (includedPropertyNames != null && !includedPropertyNames.isEmpty()
+        || excludedPropertyNames != null && !excludedPropertyNames.isEmpty()) {
+      EntityPropertyNameCollector collector = new EntityPropertyNameCollector(env);
+      Set<String> names = collector.collect(entityType);
+      for (String included : includedPropertyNames) {
+        if (!names.contains(included)) {
+          throw new AptException(
+              Message.DOMA4084,
+              env,
+              method,
+              annotationMirror,
+              includeValue,
+              new Object[] {included, entityType});
         }
-    }
-
-    protected abstract void doReturnType(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta);
-
-    protected abstract void doParameters(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta);
-
-    protected void doThrowTypes(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        for (TypeMirror thrownType : method.getThrownTypes()) {
-            queryMeta.addThrownTypeName(TypeMirrorUtil.getTypeName(thrownType,
-                    env));
+      }
+      for (String excluded : excludedPropertyNames) {
+        if (!names.contains(excluded)) {
+          throw new AptException(
+              Message.DOMA4085,
+              env,
+              method,
+              annotationMirror,
+              excludeValue,
+              new Object[] {excluded, entityType});
         }
+      }
     }
+  }
 
-    protected boolean isPrimitiveInt(TypeMirror typeMirror) {
-        return typeMirror.getKind() == TypeKind.INT;
-    }
+  protected QueryReturnMeta createReturnMeta(QueryMeta queryMeta) {
+    return new QueryReturnMeta(queryMeta, env);
+  }
 
-    protected boolean isPrimitiveIntArray(TypeMirror typeMirror) {
-        return typeMirror.accept(new TypeKindVisitor8<Boolean, Void>(false) {
-
-            @Override
-            public Boolean visitArray(ArrayType t, Void p) {
-                return t.getComponentType().getKind() == TypeKind.INT;
-            }
-        }, null);
-    }
-
-    protected boolean isPrimitiveVoid(TypeMirror typeMirror) {
-        return typeMirror.getKind() == TypeKind.VOID;
-    }
-
-    protected boolean isEntity(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
-        return typeElement != null
-                && typeElement.getAnnotation(Entity.class) != null;
-    }
-
-    protected boolean isDomain(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
-        return typeElement != null
-                && typeElement.getAnnotation(Domain.class) != null;
-    }
-
-    protected boolean isConfig(TypeMirror typeMirror) {
-        return TypeMirrorUtil.isSameType(typeMirror, Config.class, env);
-    }
-
-    protected boolean isCollection(TypeMirror typeMirror) {
-        return TypeMirrorUtil.isAssignable(typeMirror, Collection.class, env);
-    }
-
-    protected boolean isSelectOptions(TypeMirror typeMirror) {
-        return TypeMirrorUtil
-                .isAssignable(typeMirror, SelectOptions.class, env);
-    }
-
-    protected boolean isIterationCallback(TypeMirror typeMirror) {
-        return TypeMirrorUtil.isAssignable(typeMirror, IterationCallback.class,
-                env);
-    }
-
-    protected void validateEntityPropertyNames(TypeMirror entityType,
-            ExecutableElement method, AnnotationMirror annotationMirror,
-            AnnotationValue includeValue, AnnotationValue excludeValue) {
-        List<String> includedPropertyNames = AnnotationValueUtil
-                .toStringList(includeValue);
-        List<String> excludedPropertyNames = AnnotationValueUtil
-                .toStringList(excludeValue);
-        if (includedPropertyNames != null && !includedPropertyNames.isEmpty()
-                || excludedPropertyNames != null
-                && !excludedPropertyNames.isEmpty()) {
-            EntityPropertyNameCollector collector = new EntityPropertyNameCollector(
-                    env);
-            Set<String> names = collector.collect(entityType);
-            for (String included : includedPropertyNames) {
-                if (!names.contains(included)) {
-                    throw new AptException(Message.DOMA4084, env, method,
-                            annotationMirror, includeValue, new Object[] {
-                                    included, entityType });
-                }
-            }
-            for (String excluded : excludedPropertyNames) {
-                if (!names.contains(excluded)) {
-                    throw new AptException(Message.DOMA4085, env, method,
-                            annotationMirror, excludeValue, new Object[] {
-                                    excluded, entityType });
-                }
-            }
-        }
-    }
-
-    protected QueryReturnMeta createReturnMeta(QueryMeta queryMeta) {
-        return new QueryReturnMeta(queryMeta, env);
-    }
-
-    protected QueryParameterMeta createParameterMeta(VariableElement parameter,
-            QueryMeta queryMeta) {
-        QueryParameterMeta queryParameterMeta = new QueryParameterMeta(
-                parameter, queryMeta, env);
-        return queryParameterMeta;
-    }
-
+  protected QueryParameterMeta createParameterMeta(VariableElement parameter, QueryMeta queryMeta) {
+    QueryParameterMeta queryParameterMeta = new QueryParameterMeta(parameter, queryMeta, env);
+    return queryParameterMeta;
+  }
 }

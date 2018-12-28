@@ -13,7 +13,5 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/**
- * 値のラッパークラスとそのビジターを提供します。
- */
+/** 値のラッパークラスとそのビジターを提供します。 */
 package org.seasar.doma.wrapper;

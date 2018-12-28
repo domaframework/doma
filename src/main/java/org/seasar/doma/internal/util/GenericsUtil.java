@@ -28,110 +28,104 @@ import java.lang.reflect.TypeVariable;
  */
 public final class GenericsUtil {
 
-    public static Class<?> inferTypeArgument(Class<?> clazz,
-            TypeVariable<?> typeVariable) {
-        assertNotNull(clazz, typeVariable);
+  public static Class<?> inferTypeArgument(Class<?> clazz, TypeVariable<?> typeVariable) {
+    assertNotNull(clazz, typeVariable);
 
-        TypeArgumentInferrer inferrer = new TypeArgumentInferrer(clazz,
-                typeVariable);
-        Type arg = inferrer.infer();
-        if (arg instanceof Class) {
-            return (Class<?>) arg;
+    TypeArgumentInferrer inferrer = new TypeArgumentInferrer(clazz, typeVariable);
+    Type arg = inferrer.infer();
+    if (arg instanceof Class) {
+      return (Class<?>) arg;
+    }
+    return null;
+  }
+
+  protected static class TypeArgumentInferrer {
+
+    protected final Class<?> clazz;
+
+    protected final GenericDeclaration genericDeclaration;
+
+    protected final int index;
+
+    public TypeArgumentInferrer(Class<?> clazz, TypeVariable<?> typeVariable) {
+      this.clazz = clazz;
+      this.genericDeclaration = typeVariable.getGenericDeclaration();
+      this.index = getTypeParameterIndex(genericDeclaration, typeVariable);
+    }
+
+    private int getTypeParameterIndex(
+        GenericDeclaration genericDeclaration, TypeVariable<?> typeVariable) {
+      Type[] types = genericDeclaration.getTypeParameters();
+      for (int i = 0, len = types.length; i < len; i++) {
+        if (types[i] == typeVariable) {
+          return i;
         }
+      }
+      return 0;
+    }
+
+    public Type infer() {
+      Class<?> superclass = clazz.getSuperclass();
+      Type superclassType = clazz.getGenericSuperclass();
+      if (superclass != null) {
+        Type arg = getTypeArgumentRecursive(superclass, superclassType);
+        if (arg != null) {
+          return arg;
+        }
+      }
+
+      Class<?>[] interfaces = clazz.getInterfaces();
+      Type[] interfaceTypes = clazz.getGenericInterfaces();
+      for (int i = 0; i < interfaces.length; i++) {
+        Type arg = getTypeArgumentRecursive(interfaces[i], interfaceTypes[i]);
+        if (arg != null) {
+          return arg;
+        }
+      }
+
+      return null;
+    }
+
+    protected Type getTypeArgumentRecursive(Class<?> clazz, Type type) {
+      if (clazz == null) {
         return null;
+      }
+
+      Type arg = getTypeArgument(clazz, type);
+      if (arg != null) {
+        return arg;
+      }
+
+      Class<?> superclass = clazz.getSuperclass();
+      Type superclassType = clazz.getGenericSuperclass();
+      if (superclass != null) {
+        arg = getTypeArgumentRecursive(superclass, superclassType);
+        if (arg != null) {
+          return arg;
+        }
+      }
+
+      Class<?>[] interfaces = clazz.getInterfaces();
+      Type[] interfaceTypes = clazz.getGenericInterfaces();
+      for (int i = 0; i < interfaces.length; i++) {
+        arg = getTypeArgumentRecursive(interfaces[i], interfaceTypes[i]);
+        if (arg != null) {
+          return arg;
+        }
+      }
+
+      return null;
     }
 
-    protected static class TypeArgumentInferrer {
-
-        protected final Class<?> clazz;
-
-        protected final GenericDeclaration genericDeclaration;
-
-        protected final int index;
-
-        public TypeArgumentInferrer(Class<?> clazz, TypeVariable<?> typeVariable) {
-            this.clazz = clazz;
-            this.genericDeclaration = typeVariable.getGenericDeclaration();
-            this.index = getTypeParameterIndex(genericDeclaration, typeVariable);
+    protected Type getTypeArgument(Class<?> clazz, Type type) {
+      if (genericDeclaration == clazz && type instanceof ParameterizedType) {
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        Type[] args = parameterizedType.getActualTypeArguments();
+        if (index < args.length) {
+          return args[index];
         }
-
-        private int getTypeParameterIndex(
-                GenericDeclaration genericDeclaration,
-                TypeVariable<?> typeVariable) {
-            Type[] types = genericDeclaration.getTypeParameters();
-            for (int i = 0, len = types.length; i < len; i++) {
-                if (types[i] == typeVariable) {
-                    return i;
-                }
-            }
-            return 0;
-        }
-
-        public Type infer() {
-            Class<?> superclass = clazz.getSuperclass();
-            Type superclassType = clazz.getGenericSuperclass();
-            if (superclass != null) {
-                Type arg = getTypeArgumentRecursive(superclass, superclassType);
-                if (arg != null) {
-                    return arg;
-                }
-            }
-
-            Class<?>[] interfaces = clazz.getInterfaces();
-            Type[] interfaceTypes = clazz.getGenericInterfaces();
-            for (int i = 0; i < interfaces.length; i++) {
-                Type arg = getTypeArgumentRecursive(interfaces[i],
-                        interfaceTypes[i]);
-                if (arg != null) {
-                    return arg;
-                }
-            }
-
-            return null;
-        }
-
-        protected Type getTypeArgumentRecursive(Class<?> clazz, Type type) {
-            if (clazz == null) {
-                return null;
-            }
-
-            Type arg = getTypeArgument(clazz, type);
-            if (arg != null) {
-                return arg;
-            }
-
-            Class<?> superclass = clazz.getSuperclass();
-            Type superclassType = clazz.getGenericSuperclass();
-            if (superclass != null) {
-                arg = getTypeArgumentRecursive(superclass, superclassType);
-                if (arg != null) {
-                    return arg;
-                }
-            }
-
-            Class<?>[] interfaces = clazz.getInterfaces();
-            Type[] interfaceTypes = clazz.getGenericInterfaces();
-            for (int i = 0; i < interfaces.length; i++) {
-                arg = getTypeArgumentRecursive(interfaces[i], interfaceTypes[i]);
-                if (arg != null) {
-                    return arg;
-                }
-            }
-
-            return null;
-        }
-
-        protected Type getTypeArgument(Class<?> clazz, Type type) {
-            if (genericDeclaration == clazz
-                    && type instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) type;
-                Type[] args = parameterizedType.getActualTypeArguments();
-                if (index < args.length) {
-                    return args[index];
-                }
-            }
-            return null;
-        }
-
+      }
+      return null;
     }
+  }
 }

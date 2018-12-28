@@ -17,65 +17,60 @@ package org.seasar.doma.internal.expr.node;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class FieldOperatorNode implements OperatorNode {
 
-    protected static final int PRIORITY = 0;
+  protected static final int PRIORITY = 0;
 
-    protected final ExpressionLocation location;
+  protected final ExpressionLocation location;
 
-    protected final String expression;
+  protected final String expression;
 
-    protected final String fieldName;
+  protected final String fieldName;
 
-    protected ExpressionNode targetObjectNode;
+  protected ExpressionNode targetObjectNode;
 
-    @Override
-    public int getPriority() {
-        return PRIORITY;
-    }
+  @Override
+  public int getPriority() {
+    return PRIORITY;
+  }
 
-    public FieldOperatorNode(ExpressionLocation location, String expression,
-            String fieldName) {
-        assertNotNull(location, fieldName);
-        this.location = location;
-        this.expression = expression;
-        this.fieldName = fieldName;
-    }
+  public FieldOperatorNode(ExpressionLocation location, String expression, String fieldName) {
+    assertNotNull(location, fieldName);
+    this.location = location;
+    this.expression = expression;
+    this.fieldName = fieldName;
+  }
 
-    public String getFieldName() {
-        return fieldName;
-    }
+  public String getFieldName() {
+    return fieldName;
+  }
 
-    public ExpressionNode getTargetObjectNode() {
-        return targetObjectNode;
-    }
+  public ExpressionNode getTargetObjectNode() {
+    return targetObjectNode;
+  }
 
-    public void setTargetObjectNode(ExpressionNode targetObjectNode) {
-        this.targetObjectNode = targetObjectNode;
-    }
+  public void setTargetObjectNode(ExpressionNode targetObjectNode) {
+    this.targetObjectNode = targetObjectNode;
+  }
 
-    @Override
-    public <R, P> R accept(ExpressionNodeVisitor<R, P> visitor, P p) {
-        return visitor.visitFieldOperatorNode(this, p);
-    }
+  @Override
+  public <R, P> R accept(ExpressionNodeVisitor<R, P> visitor, P p) {
+    return visitor.visitFieldOperatorNode(this, p);
+  }
 
-    @Override
-    public ExpressionLocation getLocation() {
-        return location;
-    }
+  @Override
+  public ExpressionLocation getLocation() {
+    return location;
+  }
 
-    @Override
-    public String getExpression() {
-        return expression;
-    }
+  @Override
+  public String getExpression() {
+    return expression;
+  }
 
-    @Override
-    public String toString() {
-        return targetObjectNode + expression;
-    }
-
+  @Override
+  public String toString() {
+    return targetObjectNode + expression;
+  }
 }

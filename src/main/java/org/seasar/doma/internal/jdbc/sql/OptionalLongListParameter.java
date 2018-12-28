@@ -17,18 +17,12 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import java.util.List;
 import java.util.OptionalLong;
-
 import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 
-/**
- * @author taedium
- * 
- */
-public class OptionalLongListParameter extends
-        ScalarListParameter<Long, OptionalLong> {
+/** @author taedium */
+public class OptionalLongListParameter extends ScalarListParameter<Long, OptionalLong> {
 
-    public OptionalLongListParameter(List<OptionalLong> list, String name) {
-        super(() -> new OptionalLongScalar(), list, name);
-    }
-
+  public OptionalLongListParameter(List<OptionalLong> list, String name) {
+    super(() -> new OptionalLongScalar(), list, name);
+  }
 }

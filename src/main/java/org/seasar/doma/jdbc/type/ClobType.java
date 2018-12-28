@@ -24,37 +24,33 @@ import java.sql.Types;
 
 /**
  * {@link Clob} 用の {@link JdbcType} の実装です。
- * 
+ *
  * @author taedium
- * 
  */
 public class ClobType extends AbstractJdbcType<Clob> {
 
-    public ClobType() {
-        super(Types.CLOB);
-    }
+  public ClobType() {
+    super(Types.CLOB);
+  }
 
-    @Override
-    protected Clob doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
-        return resultSet.getClob(index);
-    }
+  @Override
+  protected Clob doGetValue(ResultSet resultSet, int index) throws SQLException {
+    return resultSet.getClob(index);
+  }
 
-    @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Clob value) throws SQLException {
-        preparedStatement.setClob(index, value);
-    }
+  @Override
+  protected void doSetValue(PreparedStatement preparedStatement, int index, Clob value)
+      throws SQLException {
+    preparedStatement.setClob(index, value);
+  }
 
-    @Override
-    protected Clob doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
-        return callableStatement.getClob(index);
-    }
+  @Override
+  protected Clob doGetValue(CallableStatement callableStatement, int index) throws SQLException {
+    return callableStatement.getClob(index);
+  }
 
-    @Override
-    protected String doConvertToLogFormat(Clob value) {
-        return value.toString();
-    }
-
+  @Override
+  protected String doConvertToLogFormat(Clob value) {
+    return value.toString();
+  }
 }

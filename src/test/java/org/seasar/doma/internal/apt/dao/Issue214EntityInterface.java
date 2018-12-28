@@ -2,11 +2,11 @@ package org.seasar.doma.internal.apt.dao;
 
 public interface Issue214EntityInterface {
 
-    String STATIC_FIELD = "";
+  String STATIC_FIELD = "";
 
-    static String staticMethod() {
-        return "";
-    }
+  static String staticMethod() {
+    return "";
+  }
 
-    String instanceMethod();
+  String instanceMethod();
 }

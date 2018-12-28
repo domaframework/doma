@@ -21,8 +21,7 @@ import org.seasar.doma.Id;
 @Entity
 public class User {
 
-    @Id
-    public Integer id;
+  @Id public Integer id;
 
-    public UserAddress address;
+  public UserAddress address;
 }

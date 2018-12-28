@@ -16,7 +16,6 @@
 package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
-
 import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.ArrayCreateQuery;
@@ -49,131 +48,129 @@ import org.seasar.doma.jdbc.query.SqlUpdateQuery;
 
 /**
  * {@link Query} の実装クラスのファクトリです。
- * 
+ *
  * @author nakamura-to
  * @since 2.0.0
  */
 public interface QueryImplementors {
 
-    default SqlFileSelectQuery createSqlFileSelectQuery(Method method) {
-        return new SqlFileSelectQuery();
-    }
+  default SqlFileSelectQuery createSqlFileSelectQuery(Method method) {
+    return new SqlFileSelectQuery();
+  }
 
-    default SqlSelectQuery createSqlSelectQuery(Method method) {
-        return new SqlSelectQuery();
-    }
+  default SqlSelectQuery createSqlSelectQuery(Method method) {
+    return new SqlSelectQuery();
+  }
 
-    default SqlFileScriptQuery createSqlFileScriptQuery(Method method) {
-        return new SqlFileScriptQuery();
-    }
+  default SqlFileScriptQuery createSqlFileScriptQuery(Method method) {
+    return new SqlFileScriptQuery();
+  }
 
-    default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(
-            Method method, EntityType<ENTITY> entityType) {
-        return new AutoDeleteQuery<>(entityType);
-    }
+  default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(
+      Method method, EntityType<ENTITY> entityType) {
+    return new AutoDeleteQuery<>(entityType);
+  }
 
-    default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
-            Method method, EntityType<ENTITY> entityType) {
-        return new AutoInsertQuery<>(entityType);
-    }
+  default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
+      Method method, EntityType<ENTITY> entityType) {
+    return new AutoInsertQuery<>(entityType);
+  }
 
-    default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
-            Method method, EntityType<ENTITY> entityType) {
-        return new AutoUpdateQuery<>(entityType);
-    }
+  default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
+      Method method, EntityType<ENTITY> entityType) {
+    return new AutoUpdateQuery<>(entityType);
+  }
 
-    default SqlFileDeleteQuery createSqlFileDeleteQuery(Method method) {
-        return new SqlFileDeleteQuery();
-    }
+  default SqlFileDeleteQuery createSqlFileDeleteQuery(Method method) {
+    return new SqlFileDeleteQuery();
+  }
 
-    default SqlFileInsertQuery createSqlFileInsertQuery(Method method) {
-        return new SqlFileInsertQuery();
-    }
+  default SqlFileInsertQuery createSqlFileInsertQuery(Method method) {
+    return new SqlFileInsertQuery();
+  }
 
-    default SqlFileUpdateQuery createSqlFileUpdateQuery(Method method) {
-        return new SqlFileUpdateQuery();
-    }
+  default SqlFileUpdateQuery createSqlFileUpdateQuery(Method method) {
+    return new SqlFileUpdateQuery();
+  }
 
-    default SqlDeleteQuery createSqlDeleteQuery(Method method) {
-        return new SqlDeleteQuery();
-    }
+  default SqlDeleteQuery createSqlDeleteQuery(Method method) {
+    return new SqlDeleteQuery();
+  }
 
-    default SqlInsertQuery createSqlInsertQuery(Method method) {
-        return new SqlInsertQuery();
-    }
+  default SqlInsertQuery createSqlInsertQuery(Method method) {
+    return new SqlInsertQuery();
+  }
 
-    default SqlUpdateQuery createSqlUpdateQuery(Method method) {
-        return new SqlUpdateQuery();
-    }
+  default SqlUpdateQuery createSqlUpdateQuery(Method method) {
+    return new SqlUpdateQuery();
+  }
 
-    default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
-            Method method, EntityType<ENTITY> entityType) {
-        return new AutoBatchDeleteQuery<>(entityType);
-    }
+  default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
+      Method method, EntityType<ENTITY> entityType) {
+    return new AutoBatchDeleteQuery<>(entityType);
+  }
 
-    default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
-            Method method, EntityType<ENTITY> entityType) {
-        return new AutoBatchInsertQuery<>(entityType);
-    }
+  default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
+      Method method, EntityType<ENTITY> entityType) {
+    return new AutoBatchInsertQuery<>(entityType);
+  }
 
-    default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
-            Method method, EntityType<ENTITY> entityType) {
-        return new AutoBatchUpdateQuery<>(entityType);
-    }
+  default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
+      Method method, EntityType<ENTITY> entityType) {
+    return new AutoBatchUpdateQuery<>(entityType);
+  }
 
-    default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(
-            Method method, Class<ELEMENT> clazz) {
-        return new SqlFileBatchDeleteQuery<>(clazz);
-    }
+  default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(
+      Method method, Class<ELEMENT> clazz) {
+    return new SqlFileBatchDeleteQuery<>(clazz);
+  }
 
-    default <ELEMENT> SqlFileBatchInsertQuery<ELEMENT> createSqlFileBatchInsertQuery(
-            Method method, Class<ELEMENT> clazz) {
-        return new SqlFileBatchInsertQuery<>(clazz);
-    }
+  default <ELEMENT> SqlFileBatchInsertQuery<ELEMENT> createSqlFileBatchInsertQuery(
+      Method method, Class<ELEMENT> clazz) {
+    return new SqlFileBatchInsertQuery<>(clazz);
+  }
 
-    default <ELEMENT> SqlFileBatchUpdateQuery<ELEMENT> createSqlFileBatchUpdateQuery(
-            Method method, Class<ELEMENT> clazz) {
-        return new SqlFileBatchUpdateQuery<>(clazz);
-    }
+  default <ELEMENT> SqlFileBatchUpdateQuery<ELEMENT> createSqlFileBatchUpdateQuery(
+      Method method, Class<ELEMENT> clazz) {
+    return new SqlFileBatchUpdateQuery<>(clazz);
+  }
 
-    default <RESULT> AutoFunctionQuery<RESULT> createAutoFunctionQuery(
-            Method method) {
-        return new AutoFunctionQuery<>();
-    }
+  default <RESULT> AutoFunctionQuery<RESULT> createAutoFunctionQuery(Method method) {
+    return new AutoFunctionQuery<>();
+  }
 
-    default AutoProcedureQuery createAutoProcedureQuery(Method method) {
-        return new AutoProcedureQuery();
-    }
+  default AutoProcedureQuery createAutoProcedureQuery(Method method) {
+    return new AutoProcedureQuery();
+  }
 
-    default ArrayCreateQuery createArrayCreateQuery(Method method) {
-        return new ArrayCreateQuery();
-    }
+  default ArrayCreateQuery createArrayCreateQuery(Method method) {
+    return new ArrayCreateQuery();
+  }
 
-    default BlobCreateQuery createBlobCreateQuery(Method method) {
-        return new BlobCreateQuery();
-    }
+  default BlobCreateQuery createBlobCreateQuery(Method method) {
+    return new BlobCreateQuery();
+  }
 
-    default ClobCreateQuery createClobCreateQuery(Method method) {
-        return new ClobCreateQuery();
-    }
+  default ClobCreateQuery createClobCreateQuery(Method method) {
+    return new ClobCreateQuery();
+  }
 
-    default NClobCreateQuery createNClobCreateQuery(Method method) {
-        return new NClobCreateQuery();
-    }
+  default NClobCreateQuery createNClobCreateQuery(Method method) {
+    return new NClobCreateQuery();
+  }
 
-    default SQLXMLCreateQuery createSQLXMLCreateQuery(Method method) {
-        return new SQLXMLCreateQuery();
-    }
+  default SQLXMLCreateQuery createSQLXMLCreateQuery(Method method) {
+    return new SQLXMLCreateQuery();
+  }
 
-    /**
-     * {@link SqlProcessor} に対応したクエリを作成します。
-     * 
-     * @param method
-     *            Dao メソッド
-     * @return クエリ
-     * @since 2.14.0
-     */
-    default SqlProcessorQuery createSqlProcessorQuery(Method method) {
-        return new SqlProcessorQuery();
-    }
+  /**
+   * {@link SqlProcessor} に対応したクエリを作成します。
+   *
+   * @param method Dao メソッド
+   * @return クエリ
+   * @since 2.14.0
+   */
+  default SqlProcessorQuery createSqlProcessorQuery(Method method) {
+    return new SqlProcessorQuery();
+  }
 }

@@ -18,12 +18,7 @@ package org.seasar.doma.internal.apt.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.lombok.AllArgsConstructor;
 
-/**
- * @author nakamura-to
- *
- */
+/** @author nakamura-to */
 @Entity(immutable = true)
 @AllArgsConstructor(staticName = "of")
-public class LombokAllArgsConstructorStaticName {
-
-}
+public class LombokAllArgsConstructorStaticName {}

@@ -17,14 +17,10 @@ package org.seasar.doma.jdbc.query;
 
 import java.sql.Statement;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface BatchInsertQuery extends BatchModifyQuery {
 
-    boolean isBatchSupported();
+  boolean isBatchSupported();
 
-    void generateId(Statement statement, int index);
-
+  void generateId(Statement statement, int index);
 }

@@ -16,29 +16,24 @@
 package org.seasar.doma.internal.apt.dao;
 
 import java.math.BigDecimal;
-
 import org.seasar.doma.jdbc.Config;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class DelegateDaoDelegate {
 
-    protected Config config;
+  protected Config config;
 
-    public DelegateDaoDelegate(Config config) {
-        this.config = config;
-    }
+  public DelegateDaoDelegate(Config config) {
+    this.config = config;
+  }
 
-    public BigDecimal execute(String aaa, Integer bbb) {
-        return null;
-    }
+  public BigDecimal execute(String aaa, Integer bbb) {
+    return null;
+  }
 
-    public BigDecimal execute2(String aaa, Integer bbb, String... ccc) {
-        return null;
-    }
+  public BigDecimal execute2(String aaa, Integer bbb, String... ccc) {
+    return null;
+  }
 
-    public void execute3(String aaa, Integer bbb, String... ccc) {
-    }
+  public void execute3(String aaa, Integer bbb, String... ccc) {}
 }

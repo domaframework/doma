@@ -21,7 +21,6 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
@@ -35,179 +34,162 @@ import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor8;
 import javax.lang.model.util.SimpleTypeVisitor8;
-
 import org.seasar.doma.ParameterName;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public final class ElementUtil {
 
-    public static String getPackageName(Element element,
-            ProcessingEnvironment env) {
-        PackageElement packageElement = env.getElementUtils().getPackageOf(
-                element);
-        return packageElement.getQualifiedName().toString();
+  public static String getPackageName(Element element, ProcessingEnvironment env) {
+    PackageElement packageElement = env.getElementUtils().getPackageOf(element);
+    return packageElement.getQualifiedName().toString();
+  }
+
+  public static String getBinaryName(TypeElement typeElement, ProcessingEnvironment env) {
+    return env.getElementUtils().getBinaryName(typeElement).toString();
+  }
+
+  public static String getPackageExcludedBinaryName(
+      TypeElement typeElement, ProcessingEnvironment env) {
+    String binaryName = env.getElementUtils().getBinaryName(typeElement).toString();
+    int pos = binaryName.lastIndexOf('.');
+    if (pos < 0) {
+      return binaryName;
     }
+    return binaryName.substring(pos + 1);
+  }
 
-    public static String getBinaryName(TypeElement typeElement,
-            ProcessingEnvironment env) {
-        return env.getElementUtils().getBinaryName(typeElement).toString();
+  public static String getParameterName(VariableElement variableElement) {
+    assertNotNull(variableElement);
+    ParameterName parameterName = variableElement.getAnnotation(ParameterName.class);
+    if (parameterName != null && !parameterName.value().isEmpty()) {
+      return parameterName.value();
     }
+    return variableElement.getSimpleName().toString();
+  }
 
-    public static String getPackageExcludedBinaryName(TypeElement typeElement,
-            ProcessingEnvironment env) {
-        String binaryName = env.getElementUtils().getBinaryName(typeElement)
-                .toString();
-        int pos = binaryName.lastIndexOf('.');
-        if (pos < 0) {
-            return binaryName;
-        }
-        return binaryName.substring(pos + 1);
+  public static boolean isEnclosing(Element enclosingElement, Element enclosedElement) {
+    assertNotNull(enclosingElement, enclosedElement);
+    if (enclosingElement.equals(enclosedElement)) {
+      return true;
     }
-
-    public static String getParameterName(VariableElement variableElement) {
-        assertNotNull(variableElement);
-        ParameterName parameterName = variableElement
-                .getAnnotation(ParameterName.class);
-        if (parameterName != null && !parameterName.value().isEmpty()) {
-            return parameterName.value();
-        }
-        return variableElement.getSimpleName().toString();
+    for (Element e = enclosedElement; e != null; e = e.getEnclosingElement()) {
+      if (enclosingElement.equals(e)) {
+        return true;
+      }
     }
+    return false;
+  }
 
-    public static boolean isEnclosing(Element enclosingElement,
-            Element enclosedElement) {
-        assertNotNull(enclosingElement, enclosedElement);
-        if (enclosingElement.equals(enclosedElement)) {
-            return true;
-        }
-        for (Element e = enclosedElement; e != null; e = e
-                .getEnclosingElement()) {
-            if (enclosingElement.equals(e)) {
-                return true;
-            }
-        }
-        return false;
-    }
+  public static ExecutableType toExecutableType(
+      ExecutableElement element, ProcessingEnvironment env) {
+    assertNotNull(element, env);
+    return element
+        .asType()
+        .accept(
+            new SimpleTypeVisitor8<ExecutableType, Void>() {
 
-    public static ExecutableType toExecutableType(ExecutableElement element,
-            ProcessingEnvironment env) {
-        assertNotNull(element, env);
-        return element.asType().accept(
-                new SimpleTypeVisitor8<ExecutableType, Void>() {
+              @Override
+              public ExecutableType visitExecutable(ExecutableType t, Void p) {
+                return t;
+              }
+            },
+            null);
+  }
 
-                    @Override
-                    public ExecutableType visitExecutable(ExecutableType t,
-                            Void p) {
-                        return t;
-                    }
-                }, null);
-    }
+  public static TypeElement toTypeElement(Element element, ProcessingEnvironment env) {
+    assertNotNull(element, env);
+    return element.accept(
+        new SimpleElementVisitor8<TypeElement, Void>() {
 
-    public static TypeElement toTypeElement(Element element,
-            ProcessingEnvironment env) {
-        assertNotNull(element, env);
-        return element.accept(new SimpleElementVisitor8<TypeElement, Void>() {
+          @Override
+          public TypeElement visitType(TypeElement e, Void p) {
+            return e;
+          }
+        },
+        null);
+  }
 
-            @Override
-            public TypeElement visitType(TypeElement e, Void p) {
-                return e;
-            }
-
-        }, null);
-    }
-
-    /**
-     * バイナリ名に対応する 型要素 を返します。
-     * 
-     * @param className
-     *            バイナリ名
-     * @param env
-     *            環境
-     * @return 型要素、見つからない場合 {@code null}
-     */
-    public static TypeElement getTypeElement(String className,
-            ProcessingEnvironment env) {
-        assertNotNull(className, env);
-        String[] parts = className.split("\\$");
-        if (parts.length > 1) {
-            TypeElement topElement = getTypeElement(parts[0], env);
-            if (topElement == null) {
-                return null;
-            }
-            return getEnclosedTypeElement(topElement, Arrays.asList(parts)
-                    .subList(1, parts.length), env);
-        }
-        // Class<?> clazz = null;
-        // try {
-        // clazz = Class.forName(className);
-        // return getTypeElement(clazz, env);
-        // } catch (ClassNotFoundException ignored) {
-        // }
-        Elements elements = env.getElementUtils();
-        try {
-            return elements.getTypeElement(className);
-        } catch (NullPointerException ignored) {
-            return null;
-        }
-    }
-
-    public static TypeElement getTypeElement(Class<?> clazz,
-            ProcessingEnvironment env) {
-        assertNotNull(clazz, env);
-        return env.getElementUtils().getTypeElement(clazz.getCanonicalName());
-    }
-
-    public static TypeElement getEnclosedTypeElement(TypeElement typeElement,
-            List<String> enclosedNames, ProcessingEnvironment env) {
-        TypeElement enclosing = typeElement;
-        for (String enclosedName : enclosedNames) {
-            for (TypeElement enclosed : ElementFilter.typesIn(enclosing
-                    .getEnclosedElements())) {
-                if (enclosed.getSimpleName().contentEquals(enclosedName)) {
-                    enclosing = enclosed;
-                    break;
-                }
-            }
-        }
-        return typeElement != enclosing ? enclosing : null;
-    }
-
-    public static AnnotationMirror getAnnotationMirror(Element element,
-            Class<? extends Annotation> annotationClass,
-            ProcessingEnvironment env) {
-        return getAnnotationMirrorInternal(element, env,
-                type -> TypeMirrorUtil.isSameType(type, annotationClass, env));
-    }
-
-    public static AnnotationMirror getAnnotationMirror(Element element,
-            String annotationClassName, ProcessingEnvironment env) {
-        return getAnnotationMirrorInternal(element, env, type -> TypeMirrorUtil
-                .getClassName(type, env).equals(annotationClassName));
-    }
-
-    protected static AnnotationMirror getAnnotationMirrorInternal(
-            Element element, ProcessingEnvironment env,
-            Predicate<DeclaredType> predicate) {
-        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
-            DeclaredType annotationType = annotationMirror.getAnnotationType();
-            if (predicate.test(annotationType)) {
-                return annotationMirror;
-            }
-        }
+  /**
+   * バイナリ名に対応する 型要素 を返します。
+   *
+   * @param className バイナリ名
+   * @param env 環境
+   * @return 型要素、見つからない場合 {@code null}
+   */
+  public static TypeElement getTypeElement(String className, ProcessingEnvironment env) {
+    assertNotNull(className, env);
+    String[] parts = className.split("\\$");
+    if (parts.length > 1) {
+      TypeElement topElement = getTypeElement(parts[0], env);
+      if (topElement == null) {
         return null;
+      }
+      return getEnclosedTypeElement(topElement, Arrays.asList(parts).subList(1, parts.length), env);
     }
+    // Class<?> clazz = null;
+    // try {
+    // clazz = Class.forName(className);
+    // return getTypeElement(clazz, env);
+    // } catch (ClassNotFoundException ignored) {
+    // }
+    Elements elements = env.getElementUtils();
+    try {
+      return elements.getTypeElement(className);
+    } catch (NullPointerException ignored) {
+      return null;
+    }
+  }
 
-    public static ExecutableElement getNoArgConstructor(
-            TypeElement typeElement, ProcessingEnvironment env) {
-        for (ExecutableElement constructor : ElementFilter
-                .constructorsIn(typeElement.getEnclosedElements())) {
-            if (constructor.getParameters().isEmpty()) {
-                return constructor;
-            }
+  public static TypeElement getTypeElement(Class<?> clazz, ProcessingEnvironment env) {
+    assertNotNull(clazz, env);
+    return env.getElementUtils().getTypeElement(clazz.getCanonicalName());
+  }
+
+  public static TypeElement getEnclosedTypeElement(
+      TypeElement typeElement, List<String> enclosedNames, ProcessingEnvironment env) {
+    TypeElement enclosing = typeElement;
+    for (String enclosedName : enclosedNames) {
+      for (TypeElement enclosed : ElementFilter.typesIn(enclosing.getEnclosedElements())) {
+        if (enclosed.getSimpleName().contentEquals(enclosedName)) {
+          enclosing = enclosed;
+          break;
         }
-        return null;
+      }
     }
+    return typeElement != enclosing ? enclosing : null;
+  }
+
+  public static AnnotationMirror getAnnotationMirror(
+      Element element, Class<? extends Annotation> annotationClass, ProcessingEnvironment env) {
+    return getAnnotationMirrorInternal(
+        element, env, type -> TypeMirrorUtil.isSameType(type, annotationClass, env));
+  }
+
+  public static AnnotationMirror getAnnotationMirror(
+      Element element, String annotationClassName, ProcessingEnvironment env) {
+    return getAnnotationMirrorInternal(
+        element, env, type -> TypeMirrorUtil.getClassName(type, env).equals(annotationClassName));
+  }
+
+  protected static AnnotationMirror getAnnotationMirrorInternal(
+      Element element, ProcessingEnvironment env, Predicate<DeclaredType> predicate) {
+    for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
+      DeclaredType annotationType = annotationMirror.getAnnotationType();
+      if (predicate.test(annotationType)) {
+        return annotationMirror;
+      }
+    }
+    return null;
+  }
+
+  public static ExecutableElement getNoArgConstructor(
+      TypeElement typeElement, ProcessingEnvironment env) {
+    for (ExecutableElement constructor :
+        ElementFilter.constructorsIn(typeElement.getEnclosedElements())) {
+      if (constructor.getParameters().isEmpty()) {
+        return constructor;
+      }
+    }
+    return null;
+  }
 }

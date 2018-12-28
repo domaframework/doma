@@ -19,37 +19,36 @@ import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 public class _PhoneNumber extends AbstractDomainType<String, PhoneNumber> {
 
-    private static final _PhoneNumber singleton = new _PhoneNumber();
+  private static final _PhoneNumber singleton = new _PhoneNumber();
 
-    private _PhoneNumber() {
-        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+  private _PhoneNumber() {
+    super(() -> new org.seasar.doma.wrapper.StringWrapper());
+  }
+
+  @Override
+  public PhoneNumber newDomain(String value) {
+    return new PhoneNumber(value);
+  }
+
+  @Override
+  public String getBasicValue(PhoneNumber domain) {
+    if (domain == null) {
+      return null;
     }
+    return domain.getValue();
+  }
 
-    @Override
-    public PhoneNumber newDomain(String value) {
-        return new PhoneNumber(value);
-    }
+  @Override
+  public Class<String> getBasicClass() {
+    return String.class;
+  }
 
-    @Override
-    public String getBasicValue(PhoneNumber domain) {
-        if (domain == null) {
-            return null;
-        }
-        return domain.getValue();
-    }
+  @Override
+  public Class<PhoneNumber> getDomainClass() {
+    return PhoneNumber.class;
+  }
 
-    @Override
-    public Class<String> getBasicClass() {
-        return String.class;
-    }
-
-    @Override
-    public Class<PhoneNumber> getDomainClass() {
-        return PhoneNumber.class;
-    }
-
-    public static _PhoneNumber getSingletonInternal() {
-        return singleton;
-    }
-
+  public static _PhoneNumber getSingletonInternal() {
+    return singleton;
+  }
 }

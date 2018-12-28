@@ -20,13 +20,13 @@ import org.seasar.doma.Domain;
 @Domain(valueType = int.class)
 public abstract class AbstractDomain {
 
-    private final int value;
+  private final int value;
 
-    protected AbstractDomain(int value) {
-        this.value = value;
-    }
+  protected AbstractDomain(int value) {
+    this.value = value;
+  }
 
-    public int getValue() {
-        return value;
-    }
+  public int getValue() {
+    return value;
+  }
 }

@@ -18,30 +18,26 @@ package org.seasar.doma.jdbc.command;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.BiFunction;
-
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 
-/**
- * @author nakamura
- *
- */
+/** @author nakamura */
 public class SqlProcessorCommand<RESULT> implements Command<RESULT> {
 
-    protected final SqlProcessorQuery query;
+  protected final SqlProcessorQuery query;
 
-    protected final BiFunction<Config, PreparedSql, RESULT> handler;
+  protected final BiFunction<Config, PreparedSql, RESULT> handler;
 
-    public SqlProcessorCommand(SqlProcessorQuery query,
-            BiFunction<Config, PreparedSql, RESULT> handler) {
-        assertNotNull(query, handler);
-        this.query = query;
-        this.handler = handler;
-    }
+  public SqlProcessorCommand(
+      SqlProcessorQuery query, BiFunction<Config, PreparedSql, RESULT> handler) {
+    assertNotNull(query, handler);
+    this.query = query;
+    this.handler = handler;
+  }
 
-    @Override
-    public RESULT execute() {
-        return handler.apply(query.getConfig(), query.getSql());
-    }
+  @Override
+  public RESULT execute() {
+    return handler.apply(query.getConfig(), query.getSql());
+  }
 }

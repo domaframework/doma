@@ -13,21 +13,3 @@ eclipse {
         }
     }
 }
-
-eclipseJdt {
-    doLast { 
-        file('.settings/org.eclipse.jdt.core.prefs').withWriter { writer ->
-            writer << file('eclipse/org.eclipse.jdt.core.prefs').text
-        }
-        file('.settings/org.eclipse.jdt.ui.prefs').withWriter { writer ->
-            writer << file('eclipse/org.eclipse.jdt.ui.prefs').text
-        }
-    }
-}
-
-task cleanEclipseJdtSettings(type: Delete) {
-  delete file('.settings/org.eclipse.jdt.ui.prefs')
-  delete file('.settings/org.eclipse.jdt.core.prefs')
-}
-
-tasks["cleanEclipse"].dependsOn(cleanEclipseJdtSettings)

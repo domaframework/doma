@@ -16,32 +16,27 @@
 package org.seasar.doma.internal.apt.config;
 
 import javax.sql.DataSource;
-
 import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/**
- * @author nakamura-to
- *
- */
+/** @author nakamura-to */
 @SingletonConfig
 public class ValidConfig implements Config {
 
-    private ValidConfig() {
-    }
+  private ValidConfig() {}
 
-    @Override
-    public DataSource getDataSource() {
-        return null;
-    }
+  @Override
+  public DataSource getDataSource() {
+    return null;
+  }
 
-    @Override
-    public Dialect getDialect() {
-        return null;
-    }
+  @Override
+  public Dialect getDialect() {
+    return null;
+  }
 
-    public static ValidConfig singleton() {
-        return new ValidConfig();
-    }
+  public static ValidConfig singleton() {
+    return new ValidConfig();
+  }
 }

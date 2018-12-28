@@ -17,24 +17,21 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.Domain;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Domain(valueType = EnumDomain.JobType.class, acceptNull = true)
 public class EnumDomain {
 
-    private final JobType jobType;
+  private final JobType jobType;
 
-    public EnumDomain(JobType jobType) {
-        this.jobType = jobType;
-    }
+  public EnumDomain(JobType jobType) {
+    this.jobType = jobType;
+  }
 
-    public JobType getValue() {
-        return jobType;
-    }
+  public JobType getValue() {
+    return jobType;
+  }
 
-    public static enum JobType {
-        SALESMAN
-    }
+  public static enum JobType {
+    SALESMAN
+  }
 }

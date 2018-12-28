@@ -21,15 +21,12 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.TableGenerator;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Entity
 public class AbstractTableIdGeneratorEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @TableGenerator(pkColumnValue = "aaa", implementer = AbstractTableIdGenerator.class)
-    Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE)
+  @TableGenerator(pkColumnValue = "aaa", implementer = AbstractTableIdGenerator.class)
+  Integer id;
 }

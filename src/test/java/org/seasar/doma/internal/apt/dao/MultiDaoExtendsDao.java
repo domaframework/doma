@@ -17,11 +17,6 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
 
-/**
- * @author nakamura
- *
- */
+/** @author nakamura */
 @Dao(config = MyConfig.class)
-public interface MultiDaoExtendsDao extends MyDao, MyDao2 {
-
-}
+public interface MultiDaoExtendsDao extends MyDao, MyDao2 {}

@@ -25,38 +25,36 @@ import java.sql.Types;
 
 /**
  * {@link BigInteger} 用の {@link JdbcType} の実装です。
- * 
+ *
  * @author taedium
- * 
  */
 public class BigIntegerType extends AbstractJdbcType<BigInteger> {
 
-    public BigIntegerType() {
-        super(Types.BIGINT);
-    }
+  public BigIntegerType() {
+    super(Types.BIGINT);
+  }
 
-    @Override
-    protected BigInteger doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
-        BigDecimal decimal = resultSet.getBigDecimal(index);
-        return decimal != null ? decimal.toBigInteger() : null;
-    }
+  @Override
+  protected BigInteger doGetValue(ResultSet resultSet, int index) throws SQLException {
+    BigDecimal decimal = resultSet.getBigDecimal(index);
+    return decimal != null ? decimal.toBigInteger() : null;
+  }
 
-    @Override
-    protected void doSetValue(PreparedStatement preparedStatement, int index,
-            BigInteger value) throws SQLException {
-        preparedStatement.setBigDecimal(index, new BigDecimal(value));
-    }
+  @Override
+  protected void doSetValue(PreparedStatement preparedStatement, int index, BigInteger value)
+      throws SQLException {
+    preparedStatement.setBigDecimal(index, new BigDecimal(value));
+  }
 
-    @Override
-    protected BigInteger doGetValue(CallableStatement callableStatement,
-            int index) throws SQLException {
-        BigDecimal decimal = callableStatement.getBigDecimal(index);
-        return decimal != null ? decimal.toBigInteger() : null;
-    }
+  @Override
+  protected BigInteger doGetValue(CallableStatement callableStatement, int index)
+      throws SQLException {
+    BigDecimal decimal = callableStatement.getBigDecimal(index);
+    return decimal != null ? decimal.toBigInteger() : null;
+  }
 
-    @Override
-    protected String doConvertToLogFormat(BigInteger value) {
-        return value.toString();
-    }
+  @Override
+  protected String doConvertToLogFormat(BigInteger value) {
+    return value.toString();
+  }
 }

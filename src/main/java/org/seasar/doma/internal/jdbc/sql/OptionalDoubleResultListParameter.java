@@ -16,18 +16,13 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import java.util.OptionalDouble;
-
 import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
 
-/**
- * @author taedium
- * 
- */
-public class OptionalDoubleResultListParameter extends
-        ScalarResultListParameter<Double, OptionalDouble> {
+/** @author taedium */
+public class OptionalDoubleResultListParameter
+    extends ScalarResultListParameter<Double, OptionalDouble> {
 
-    public OptionalDoubleResultListParameter() {
-        super(() -> new OptionalDoubleScalar());
-    }
-
+  public OptionalDoubleResultListParameter() {
+    super(() -> new OptionalDoubleScalar());
+  }
 }

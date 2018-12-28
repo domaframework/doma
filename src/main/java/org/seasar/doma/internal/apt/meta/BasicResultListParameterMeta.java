@@ -19,26 +19,22 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class BasicResultListParameterMeta implements ResultListParameterMeta {
 
-    protected final BasicCtType basicCtType;
+  protected final BasicCtType basicCtType;
 
-    public BasicResultListParameterMeta(BasicCtType basicCtType) {
-        assertNotNull(basicCtType);
-        this.basicCtType = basicCtType;
-    }
+  public BasicResultListParameterMeta(BasicCtType basicCtType) {
+    assertNotNull(basicCtType);
+    this.basicCtType = basicCtType;
+  }
 
-    public BasicCtType getBasicCtType() {
-        return basicCtType;
-    }
+  public BasicCtType getBasicCtType() {
+    return basicCtType;
+  }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitBasicResultListParameterMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitBasicResultListParameterMeta(this, p);
+  }
 }

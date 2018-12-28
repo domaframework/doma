@@ -15,10 +15,5 @@
  */
 package org.seasar.doma.internal.apt.domain;
 
-/**
- * @author taedium
- *
- */
-public class Tuesday {
-
-}
+/** @author taedium */
+public class Tuesday {}

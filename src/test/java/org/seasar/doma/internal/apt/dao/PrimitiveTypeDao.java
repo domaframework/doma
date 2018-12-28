@@ -21,20 +21,16 @@ import org.seasar.doma.In;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 
-/**
- * 
- * @author taedium
- * 
- */
+/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface PrimitiveTypeDao {
 
-    @Select
-    int selectById(int id);
+  @Select
+  int selectById(int id);
 
-    @Update(sqlFile = true)
-    int update(int id);
+  @Update(sqlFile = true)
+  int update(int id);
 
-    @Function
-    int execute(@In int id);
+  @Function
+  int execute(@In int id);
 }

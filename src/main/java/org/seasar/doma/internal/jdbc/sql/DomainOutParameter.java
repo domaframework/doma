@@ -20,18 +20,12 @@ import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
  * @author taedium
- * @param <BASIC>
- *            基本型
- * @param <DOMAIN>
- *            ドメイン型
- * 
+ * @param <BASIC> 基本型
+ * @param <DOMAIN> ドメイン型
  */
-public class DomainOutParameter<BASIC, DOMAIN> extends
-        ScalarOutParameter<BASIC, DOMAIN> {
+public class DomainOutParameter<BASIC, DOMAIN> extends ScalarOutParameter<BASIC, DOMAIN> {
 
-    public DomainOutParameter(DomainType<BASIC, DOMAIN> domainType,
-            Reference<DOMAIN> reference) {
-        super(domainType.createScalar(), reference);
-    }
-
+  public DomainOutParameter(DomainType<BASIC, DOMAIN> domainType, Reference<DOMAIN> reference) {
+    super(domainType.createScalar(), reference);
+  }
 }

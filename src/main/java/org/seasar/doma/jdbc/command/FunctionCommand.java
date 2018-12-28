@@ -17,27 +17,22 @@ package org.seasar.doma.jdbc.command;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
-
 import org.seasar.doma.jdbc.query.FunctionQuery;
 
 /**
  * @author taedium
- * @param <RESULT>
- *            結果
+ * @param <RESULT> 結果
  */
-public class FunctionCommand<RESULT> extends
-        ModuleCommand<FunctionQuery<RESULT>, RESULT> {
+public class FunctionCommand<RESULT> extends ModuleCommand<FunctionQuery<RESULT>, RESULT> {
 
-    public FunctionCommand(FunctionQuery<RESULT> query) {
-        super(query);
-    }
+  public FunctionCommand(FunctionQuery<RESULT> query) {
+    super(query);
+  }
 
-    @Override
-    protected RESULT executeInternal(CallableStatement callableStatement)
-            throws SQLException {
-        callableStatement.execute();
-        fetchParameters(callableStatement);
-        return query.getResult();
-    }
-
+  @Override
+  protected RESULT executeInternal(CallableStatement callableStatement) throws SQLException {
+    callableStatement.execute();
+    fetchParameters(callableStatement);
+    return query.getResult();
+  }
 }

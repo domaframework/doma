@@ -13,7 +13,5 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/**
- * アノテーション、および汎用的な例外を提供します。
- */
+/** アノテーション、および汎用的な例外を提供します。 */
 package org.seasar.doma;

@@ -21,23 +21,22 @@ import org.seasar.doma.Embeddable;
 @Embeddable
 public class Address {
 
-    private final String city;
+  private final String city;
 
-    @Column(name = "STREET", insertable = false)
-    private final String street;
+  @Column(name = "STREET", insertable = false)
+  private final String street;
 
-    public Address(String city, String street) {
-        super();
-        this.city = city;
-        this.street = street;
-    }
+  public Address(String city, String street) {
+    super();
+    this.city = city;
+    this.street = street;
+  }
 
-    public String getCity() {
-        return city;
-    }
+  public String getCity() {
+    return city;
+  }
 
-    public String getStreet() {
-        return street;
-    }
-
+  public String getStreet() {
+    return street;
+  }
 }

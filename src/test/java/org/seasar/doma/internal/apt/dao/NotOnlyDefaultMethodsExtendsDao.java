@@ -17,12 +17,6 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
 
-/**
- * @author nakamura
- *
- */
+/** @author nakamura */
 @Dao(config = MyConfig.class)
-public interface NotOnlyDefaultMethodsExtendsDao
-        extends NotOnlyDefaultMethodsChild<String> {
-
-}
+public interface NotOnlyDefaultMethodsExtendsDao extends NotOnlyDefaultMethodsChild<String> {}

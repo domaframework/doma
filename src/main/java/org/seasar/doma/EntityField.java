@@ -22,13 +22,11 @@ import java.lang.annotation.Target;
 
 /**
  * エンティティクラスのフィールドのアノテーションであることを示します。
- * <p>
- * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
- * 
+ *
+ * <p>{@literal Doma} がアノテーション処理に利用するメタアノテーションです。
+ *
  * @author taedium
- * 
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EntityField {
-}
+public @interface EntityField {}

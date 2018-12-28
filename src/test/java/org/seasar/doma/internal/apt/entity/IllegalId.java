@@ -17,20 +17,17 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Domain;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Domain(valueType = String.class)
 public class IllegalId {
 
-    private final String value;
+  private final String value;
 
-    public IllegalId(String value) {
-        this.value = value;
-    }
+  public IllegalId(String value) {
+    this.value = value;
+  }
 
-    public String getValue() {
-        return value;
-    }
+  public String getValue() {
+    return value;
+  }
 }

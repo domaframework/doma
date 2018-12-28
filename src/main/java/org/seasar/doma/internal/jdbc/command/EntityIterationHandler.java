@@ -22,26 +22,21 @@ import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/**
- * @author taedium
- * 
- */
-public class EntityIterationHandler<ENTITY, RESULT> extends
-        AbstractIterationHandler<ENTITY, RESULT> {
+/** @author taedium */
+public class EntityIterationHandler<ENTITY, RESULT>
+    extends AbstractIterationHandler<ENTITY, RESULT> {
 
-    protected final EntityType<ENTITY> entityType;
+  protected final EntityType<ENTITY> entityType;
 
-    public EntityIterationHandler(EntityType<ENTITY> entityType,
-            IterationCallback<ENTITY, RESULT> iterationCallback) {
-        super(iterationCallback);
-        assertNotNull(entityType);
-        this.entityType = entityType;
-    }
+  public EntityIterationHandler(
+      EntityType<ENTITY> entityType, IterationCallback<ENTITY, RESULT> iterationCallback) {
+    super(iterationCallback);
+    assertNotNull(entityType);
+    this.entityType = entityType;
+  }
 
-    @Override
-    protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
-        return new EntityProvider<>(entityType, query,
-                query.isResultMappingEnsured());
-    }
-
+  @Override
+  protected ObjectProvider<ENTITY> createObjectProvider(SelectQuery query) {
+    return new EntityProvider<>(entityType, query, query.isResultMappingEnsured());
+  }
 }

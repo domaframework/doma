@@ -17,11 +17,6 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 @Entity
-public class NameUnsafeEntity_ {
-
-}
+public class NameUnsafeEntity_ {}

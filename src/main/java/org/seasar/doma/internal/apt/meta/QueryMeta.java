@@ -17,38 +17,34 @@ package org.seasar.doma.internal.apt.meta;
 
 import java.util.List;
 import java.util.Map;
-
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface QueryMeta {
 
-    String getName();
+  String getName();
 
-    List<String> getTypeParameterNames();
+  List<String> getTypeParameterNames();
 
-    List<QueryParameterMeta> getParameterMetas();
+  List<QueryParameterMeta> getParameterMetas();
 
-    QueryReturnMeta getReturnMeta();
+  QueryReturnMeta getReturnMeta();
 
-    Map<String, TypeMirror> getBindableParameterTypeMap();
+  Map<String, TypeMirror> getBindableParameterTypeMap();
 
-    List<String> getThrownTypeNames();
+  List<String> getThrownTypeNames();
 
-    ExecutableElement getMethodElement();
+  ExecutableElement getMethodElement();
 
-    TypeElement getDaoElement();
+  TypeElement getDaoElement();
 
-    QueryKind getQueryKind();
+  QueryKind getQueryKind();
 
-    boolean isVarArgs();
+  boolean isVarArgs();
 
-    List<String> getFileNames();
+  List<String> getFileNames();
 
-    <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p);
+  <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p);
 }

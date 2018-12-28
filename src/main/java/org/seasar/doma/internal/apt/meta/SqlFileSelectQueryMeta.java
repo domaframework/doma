@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
@@ -28,149 +27,145 @@ import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected SelectMirror selectMirror;
+  protected SelectMirror selectMirror;
 
-    protected String functionParameterName;
+  protected String functionParameterName;
 
-    protected FunctionCtType functionCtType;
+  protected FunctionCtType functionCtType;
 
-    protected String collectorParameterName;
+  protected String collectorParameterName;
 
-    protected CollectorCtType collectorCtType;
+  protected CollectorCtType collectorCtType;
 
-    protected String selectOptionsParameterName;
+  protected String selectOptionsParameterName;
 
-    protected SelectOptionsCtType selectOptionsCtType;
+  protected SelectOptionsCtType selectOptionsCtType;
 
-    protected EntityCtType entityCtType;
+  protected EntityCtType entityCtType;
 
-    protected boolean resultStream;
+  protected boolean resultStream;
 
-    public SqlFileSelectQueryMeta(ExecutableElement method, TypeElement dao) {
-        super(method, dao);
-    }
+  public SqlFileSelectQueryMeta(ExecutableElement method, TypeElement dao) {
+    super(method, dao);
+  }
 
-    public String getFunctionParameterName() {
-        return functionParameterName;
-    }
+  public String getFunctionParameterName() {
+    return functionParameterName;
+  }
 
-    public void setFunctionParameterName(String functionParameterName) {
-        this.functionParameterName = functionParameterName;
-    }
+  public void setFunctionParameterName(String functionParameterName) {
+    this.functionParameterName = functionParameterName;
+  }
 
-    public FunctionCtType getFunctionCtType() {
-        return functionCtType;
-    }
+  public FunctionCtType getFunctionCtType() {
+    return functionCtType;
+  }
 
-    public void setFunctionCtType(FunctionCtType functionCtType) {
-        this.functionCtType = functionCtType;
-    }
+  public void setFunctionCtType(FunctionCtType functionCtType) {
+    this.functionCtType = functionCtType;
+  }
 
-    public String getCollectorParameterName() {
-        return collectorParameterName;
-    }
+  public String getCollectorParameterName() {
+    return collectorParameterName;
+  }
 
-    public void setCollectorParameterName(String collectorParameterName) {
-        this.collectorParameterName = collectorParameterName;
-    }
+  public void setCollectorParameterName(String collectorParameterName) {
+    this.collectorParameterName = collectorParameterName;
+  }
 
-    public CollectorCtType getCollectorCtType() {
-        return collectorCtType;
-    }
+  public CollectorCtType getCollectorCtType() {
+    return collectorCtType;
+  }
 
-    public void setCollectorCtType(CollectorCtType collectorCtType) {
-        this.collectorCtType = collectorCtType;
-    }
+  public void setCollectorCtType(CollectorCtType collectorCtType) {
+    this.collectorCtType = collectorCtType;
+  }
 
-    public String getSelectOptionsParameterName() {
-        return selectOptionsParameterName;
-    }
+  public String getSelectOptionsParameterName() {
+    return selectOptionsParameterName;
+  }
 
-    public void setSelectOptionsParameterName(String selectOptionsParameterName) {
-        this.selectOptionsParameterName = selectOptionsParameterName;
-    }
+  public void setSelectOptionsParameterName(String selectOptionsParameterName) {
+    this.selectOptionsParameterName = selectOptionsParameterName;
+  }
 
-    public SelectOptionsCtType getSelectOptionsCtType() {
-        return selectOptionsCtType;
-    }
+  public SelectOptionsCtType getSelectOptionsCtType() {
+    return selectOptionsCtType;
+  }
 
-    public void setSelectOptionsCtType(SelectOptionsCtType selectOptionsCtType) {
-        this.selectOptionsCtType = selectOptionsCtType;
-    }
+  public void setSelectOptionsCtType(SelectOptionsCtType selectOptionsCtType) {
+    this.selectOptionsCtType = selectOptionsCtType;
+  }
 
-    public EntityCtType getEntityCtType() {
-        return entityCtType;
-    }
+  public EntityCtType getEntityCtType() {
+    return entityCtType;
+  }
 
-    public void setEntityCtType(EntityCtType entityCtType) {
-        this.entityCtType = entityCtType;
-    }
+  public void setEntityCtType(EntityCtType entityCtType) {
+    this.entityCtType = entityCtType;
+  }
 
-    void setSelectMirror(SelectMirror selectMirror) {
-        this.selectMirror = selectMirror;
-    }
+  void setSelectMirror(SelectMirror selectMirror) {
+    this.selectMirror = selectMirror;
+  }
 
-    SelectMirror getSelectMirror() {
-        return selectMirror;
-    }
+  SelectMirror getSelectMirror() {
+    return selectMirror;
+  }
 
-    public int getFetchSize() {
-        return selectMirror.getFetchSizeValue();
-    }
+  public int getFetchSize() {
+    return selectMirror.getFetchSizeValue();
+  }
 
-    public int getMaxRows() {
-        return selectMirror.getMaxRowsValue();
-    }
+  public int getMaxRows() {
+    return selectMirror.getMaxRowsValue();
+  }
 
-    public int getQueryTimeout() {
-        return selectMirror.getQueryTimeoutValue();
-    }
+  public int getQueryTimeout() {
+    return selectMirror.getQueryTimeoutValue();
+  }
 
-    public SelectType getSelectStrategyType() {
-        return selectMirror.getStrategyValue();
-    }
+  public SelectType getSelectStrategyType() {
+    return selectMirror.getStrategyValue();
+  }
 
-    public FetchType getFetchType() {
-        return selectMirror.getFetchValue();
-    }
+  public FetchType getFetchType() {
+    return selectMirror.getFetchValue();
+  }
 
-    public boolean getEnsureResult() {
-        return selectMirror.getEnsureResultValue();
-    }
+  public boolean getEnsureResult() {
+    return selectMirror.getEnsureResultValue();
+  }
 
-    public boolean getEnsureResultMapping() {
-        return selectMirror.getEnsureResultMappingValue();
-    }
+  public boolean getEnsureResultMapping() {
+    return selectMirror.getEnsureResultMappingValue();
+  }
 
-    public MapKeyNamingType getMapKeyNamingType() {
-        return selectMirror.getMapKeyNamingValue();
-    }
+  public MapKeyNamingType getMapKeyNamingType() {
+    return selectMirror.getMapKeyNamingValue();
+  }
 
-    public SqlLogType getSqlLogType() {
-        return selectMirror.getSqlLogValue();
-    }
+  public SqlLogType getSqlLogType() {
+    return selectMirror.getSqlLogValue();
+  }
 
-    public boolean isExpandable() {
-        return entityCtType != null;
-    }
+  public boolean isExpandable() {
+    return entityCtType != null;
+  }
 
-    public boolean isResultStream() {
-        return resultStream;
-    }
+  public boolean isResultStream() {
+    return resultStream;
+  }
 
-    public void setResultStream(boolean resultStream) {
-        this.resultStream = resultStream;
-    }
+  public void setResultStream(boolean resultStream) {
+    this.resultStream = resultStream;
+  }
 
-    @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitSqlFileSelectQueryMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitSqlFileSelectQueryMeta(this, p);
+  }
 }

@@ -18,13 +18,11 @@ package org.seasar.doma.internal.apt.mirror;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-
 import org.seasar.doma.Function;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -32,152 +30,141 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class FunctionMirror {
 
-    protected final AnnotationMirror annotationMirror;
+  protected final AnnotationMirror annotationMirror;
 
-    protected final String defaultName;
+  protected final String defaultName;
 
-    protected AnnotationValue catalog;
+  protected AnnotationValue catalog;
 
-    protected AnnotationValue schema;
+  protected AnnotationValue schema;
 
-    protected AnnotationValue name;
+  protected AnnotationValue name;
 
-    protected AnnotationValue quote;
+  protected AnnotationValue quote;
 
-    protected AnnotationValue queryTimeout;
+  protected AnnotationValue queryTimeout;
 
-    protected AnnotationValue mapKeyNaming;
+  protected AnnotationValue mapKeyNaming;
 
-    protected AnnotationValue ensureResultMapping;
+  protected AnnotationValue ensureResultMapping;
 
-    protected AnnotationValue sqlLog;
+  protected AnnotationValue sqlLog;
 
-    protected FunctionMirror(AnnotationMirror annotationMirror,
-            String defaultName) {
-        assertNotNull(annotationMirror, defaultName);
-        this.annotationMirror = annotationMirror;
-        this.defaultName = defaultName;
+  protected FunctionMirror(AnnotationMirror annotationMirror, String defaultName) {
+    assertNotNull(annotationMirror, defaultName);
+    this.annotationMirror = annotationMirror;
+    this.defaultName = defaultName;
+  }
+
+  public static FunctionMirror newInstance(ExecutableElement method, ProcessingEnvironment env) {
+    assertNotNull(env);
+    AnnotationMirror annotationMirror =
+        ElementUtil.getAnnotationMirror(method, Function.class, env);
+    if (annotationMirror == null) {
+      return null;
     }
-
-    public static FunctionMirror newInstance(ExecutableElement method,
-            ProcessingEnvironment env) {
-        assertNotNull(env);
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Function.class, env);
-        if (annotationMirror == null) {
-            return null;
-        }
-        FunctionMirror result = new FunctionMirror(annotationMirror, method
-                .getSimpleName().toString());
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
-                .getElementUtils()
-                .getElementValuesWithDefaults(annotationMirror).entrySet()) {
-            String name = entry.getKey().getSimpleName().toString();
-            AnnotationValue value = entry.getValue();
-            if ("catalog".equals(name)) {
-                result.catalog = value;
-            } else if ("schema".equals(name)) {
-                result.schema = value;
-            } else if ("name".equals(name)) {
-                result.name = value;
-            } else if ("quote".equals(name)) {
-                result.quote = value;
-            } else if ("queryTimeout".equals(name)) {
-                result.queryTimeout = value;
-            } else if ("mapKeyNaming".equals(name)) {
-                result.mapKeyNaming = value;
-            } else if ("ensureResultMapping".equals(name)) {
-                result.ensureResultMapping = value;
-            } else if ("sqlLog".equals(name)) {
-                result.sqlLog = value;
-            }
-        }
-        return result;
+    FunctionMirror result = new FunctionMirror(annotationMirror, method.getSimpleName().toString());
+    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
+        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+      String name = entry.getKey().getSimpleName().toString();
+      AnnotationValue value = entry.getValue();
+      if ("catalog".equals(name)) {
+        result.catalog = value;
+      } else if ("schema".equals(name)) {
+        result.schema = value;
+      } else if ("name".equals(name)) {
+        result.name = value;
+      } else if ("quote".equals(name)) {
+        result.quote = value;
+      } else if ("queryTimeout".equals(name)) {
+        result.queryTimeout = value;
+      } else if ("mapKeyNaming".equals(name)) {
+        result.mapKeyNaming = value;
+      } else if ("ensureResultMapping".equals(name)) {
+        result.ensureResultMapping = value;
+      } else if ("sqlLog".equals(name)) {
+        result.sqlLog = value;
+      }
     }
+    return result;
+  }
 
-    public AnnotationValue getQueryTimeout() {
-        return queryTimeout;
+  public AnnotationValue getQueryTimeout() {
+    return queryTimeout;
+  }
+
+  public AnnotationValue getMapKeyNaming() {
+    return mapKeyNaming;
+  }
+
+  public AnnotationValue getSqlLog() {
+    return sqlLog;
+  }
+
+  public String getCatalogValue() {
+    String value = AnnotationValueUtil.toString(catalog);
+    if (value == null) {
+      throw new AptIllegalStateException("catalog");
     }
+    return value;
+  }
 
-    public AnnotationValue getMapKeyNaming() {
-        return mapKeyNaming;
+  public String getSchemaValue() {
+    String value = AnnotationValueUtil.toString(schema);
+    if (value == null) {
+      throw new AptIllegalStateException("schema");
     }
+    return value;
+  }
 
-    public AnnotationValue getSqlLog() {
-        return sqlLog;
+  public String getNameValue() {
+    String value = AnnotationValueUtil.toString(name);
+    if (value == null || value.isEmpty()) {
+      return defaultName;
     }
+    return value;
+  }
 
-    public String getCatalogValue() {
-        String value = AnnotationValueUtil.toString(catalog);
-        if (value == null) {
-            throw new AptIllegalStateException("catalog");
-        }
-        return value;
+  public boolean getQuoteValue() {
+    Boolean value = AnnotationValueUtil.toBoolean(quote);
+    if (value == null) {
+      throw new AptIllegalStateException("quote");
     }
+    return value.booleanValue();
+  }
 
-    public String getSchemaValue() {
-        String value = AnnotationValueUtil.toString(schema);
-        if (value == null) {
-            throw new AptIllegalStateException("schema");
-        }
-        return value;
+  public int getQueryTimeoutValue() {
+    Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+    if (value == null) {
+      throw new AptIllegalStateException("queryTimeout");
     }
+    return value.intValue();
+  }
 
-    public String getNameValue() {
-        String value = AnnotationValueUtil.toString(name);
-        if (value == null || value.isEmpty()) {
-            return defaultName;
-        }
-        return value;
+  public MapKeyNamingType getMapKeyNamingValue() {
+    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
+    if (enumConstant == null) {
+      throw new AptIllegalStateException("mapKeyNaming");
     }
+    return MapKeyNamingType.valueOf(enumConstant.getSimpleName().toString());
+  }
 
-    public boolean getQuoteValue() {
-        Boolean value = AnnotationValueUtil.toBoolean(quote);
-        if (value == null) {
-            throw new AptIllegalStateException("quote");
-        }
-        return value.booleanValue();
+  public boolean getEnsureResultMappingValue() {
+    Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
+    if (value == null) {
+      throw new AptIllegalStateException("ensureResultMapping");
     }
+    return value.booleanValue();
+  }
 
-    public int getQueryTimeoutValue() {
-        Integer value = AnnotationValueUtil.toInteger(queryTimeout);
-        if (value == null) {
-            throw new AptIllegalStateException("queryTimeout");
-        }
-        return value.intValue();
+  public SqlLogType getSqlLogValue() {
+    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
+    if (enumConstant == null) {
+      throw new AptIllegalStateException("sqlLog");
     }
-
-    public MapKeyNamingType getMapKeyNamingValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(mapKeyNaming);
-        if (enumConstant == null) {
-            throw new AptIllegalStateException("mapKeyNaming");
-        }
-        return MapKeyNamingType
-                .valueOf(enumConstant.getSimpleName().toString());
-    }
-
-    public boolean getEnsureResultMappingValue() {
-        Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
-        if (value == null) {
-            throw new AptIllegalStateException("ensureResultMapping");
-        }
-        return value.booleanValue();
-    }
-
-    public SqlLogType getSqlLogValue() {
-        VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(sqlLog);
-        if (enumConstant == null) {
-            throw new AptIllegalStateException("sqlLog");
-        }
-        return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
-    }
-
+    return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
+  }
 }

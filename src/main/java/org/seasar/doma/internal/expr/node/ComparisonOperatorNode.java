@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.expr.node;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public interface ComparisonOperatorNode extends OperatorNode {
 
-    ExpressionNode getLeftNode();
+  ExpressionNode getLeftNode();
 
-    ExpressionNode getRightNode();
+  ExpressionNode getRightNode();
 }

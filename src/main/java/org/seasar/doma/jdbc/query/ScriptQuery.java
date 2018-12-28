@@ -16,7 +16,6 @@
 package org.seasar.doma.jdbc.query;
 
 import java.net.URL;
-
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
@@ -25,13 +24,13 @@ import org.seasar.doma.jdbc.SqlLogType;
  */
 public interface ScriptQuery extends Query {
 
-    URL getScriptFileUrl();
+  URL getScriptFileUrl();
 
-    String getScriptFilePath();
+  String getScriptFilePath();
 
-    String getBlockDelimiter();
+  String getBlockDelimiter();
 
-    boolean getHaltOnError();
+  boolean getHaltOnError();
 
-    SqlLogType getSqlLogType();
+  SqlLogType getSqlLogType();
 }

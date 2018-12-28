@@ -19,16 +19,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.jdbc.domain.DomainType;
 
-/**
- * @author taedium
- * 
- */
-public class DomainSingleResultHandler<BASIC, DOMAIN> extends
-        ScalarSingleResultHandler<BASIC, DOMAIN> {
+/** @author taedium */
+public class DomainSingleResultHandler<BASIC, DOMAIN>
+    extends ScalarSingleResultHandler<BASIC, DOMAIN> {
 
-    public DomainSingleResultHandler(DomainType<BASIC, DOMAIN> domainType) {
-        super(() -> domainType.createScalar());
-        assertNotNull(domainType);
-    }
-
+  public DomainSingleResultHandler(DomainType<BASIC, DOMAIN> domainType) {
+    super(() -> domainType.createScalar());
+    assertNotNull(domainType);
+  }
 }

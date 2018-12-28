@@ -19,33 +19,29 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.MapCtType;
 
-/**
- * @author taedium
- * 
- */
+/** @author taedium */
 public class MapListParameterMeta implements CallableSqlParameterMeta {
 
-    protected final String name;
+  protected final String name;
 
-    protected final MapCtType mapCtType;
+  protected final MapCtType mapCtType;
 
-    public MapListParameterMeta(String name, MapCtType mapCtType) {
-        assertNotNull(name, mapCtType);
-        this.name = name;
-        this.mapCtType = mapCtType;
-    }
+  public MapListParameterMeta(String name, MapCtType mapCtType) {
+    assertNotNull(name, mapCtType);
+    this.name = name;
+    this.mapCtType = mapCtType;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public MapCtType getMapCtType() {
-        return mapCtType;
-    }
+  public MapCtType getMapCtType() {
+    return mapCtType;
+  }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitMapListParameterMeta(this, p);
-    }
-
+  @Override
+  public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+    return visitor.visitMapListParameterMeta(this, p);
+  }
 }
