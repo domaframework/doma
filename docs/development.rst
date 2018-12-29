@@ -1,84 +1,97 @@
-===========
-Doma の開発
-===========
+===================
+Development of Doma
+===================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
 .. note::
 
-  このページは Doma の開発者に向けて書かれています。
+  This document is written for the developers of Doma.
 
-ソースコード
-============
+Before You Start
+================
+
+To build you will need Git and JDK 8.
+Be sure that your ``JAVA_HOME`` environment variable points to the ``jdk1.8.0`` folder extracted from the JDK download.
+
+Get the Source Code
+===================
 
 .. code-block:: bash
 
   $ git clone https://github.com/domaframework/doma.git
+  $ cd doma
 
-ビルド
-======
+Build from the Command Line
+===========================
 
 .. code-block:: bash
 
   $ ./gradlew build
 
-Maven ローカルリポジトリへのインストール
-----------------------------------------
+Format the Source Code
+======================
+
+We use `google-java-format`_ 1.6 for code formatting.
+
+Command Line
+------------
+
+Use the `Spotless`_ gradle plugin:
 
 .. code-block:: bash
 
-  $ ./gradlew build install
+  $ ./gradlew spotlessApply
 
-.. note::
+IntelliJ
+--------
 
-  ローカルで修正を加えたコードに対して :doc:`integration-test` を実行するには、
-  ローカルの Maven リポジトリに
-  Doma 本体の成果物を事前にインストールしておく必要があります。
+Use the `google-java-format IntelliJ plugin`_.
 
 Eclipse
-=======
+-------
 
-Eclipse の設定ファイルを生成できます。
-
-.. code-block:: bash
-
-  $ ./gradlew eclipse
-
+Use the `google-java-format Eclipse plugin`_.
 
 Continuous Integration
 ======================
 
-Continuous Integration の実行には `Travis CI`_ を利用しています。
+We use `Travis CI`_ for CI.
+All pull requests to master brunch are tested on Travis CI.
 
   https://travis-ci.org/domaframework/doma
 
-ドキュメント
+Documents
 ============
 
-ドキュメントの作成には `Sphinx`_ を利用しています。
+We use `Sphinx`_ to generate documents.
+To use Sphinx you will need Python.
 
-環境構築
---------
+Set up an environment
+---------------------
 
 .. code-block:: bash
 
   $ cd docs
   $ pip install -r requirements.txt
 
-ドキュメントの生成と確認
--------------------------------
+Generate HTML files
+-------------------
 
-docsディレクトリで次のコマンドを実行します。
+Execute the `sphinx-autobuild`_ command in the ``docs`` directory:
 
 .. code-block:: bash
 
   $ sphinx-autobuild . _build/html
 
-ブラウザで `http://127.0.0.1:8000` にアクセスするとビルドされたドキュメントを確認できます。
-ドキュメントへの修正は即座にブラウザ上に反映されます。
+Visit the webpage served at http://127.0.0.1:8000. 
 
 
+.. _google-java-format: https://github.com/google/google-java-format
+.. _google-java-format IntelliJ plugin: https://github.com/google/google-java-format#intellij
+.. _google-java-format Eclipse plugin: https://github.com/google/google-java-format#eclipse
+.. _Spotless: https://github.com/diffplug/spotless
 .. _Travis CI: http://docs.travis-ci.com/
 .. _Sphinx: http://sphinx-doc.org/
-
+.. _sphinx-autobuild: https://pypi.org/project/sphinx-autobuild/
