@@ -7,7 +7,6 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   protected EntityCtType entityCtType;

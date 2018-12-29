@@ -9,7 +9,6 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 
-/** @author nakamura-to */
 @Dao(config = MyConfig.class)
 public interface MapResultDao {
 

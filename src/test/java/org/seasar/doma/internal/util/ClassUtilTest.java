@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class ClassUtilTest extends TestCase {
 
   public void testGetConstructor() throws Exception {

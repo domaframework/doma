@@ -19,7 +19,6 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlParserTest extends TestCase {
 
   private final MockConfig config = new MockConfig();

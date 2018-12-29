@@ -10,7 +10,6 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
 
-/** @author taedium */
 @SupportedAnnotationTypes({"org.seasar.doma.Domain"})
 @SupportedOptions({
   Options.VERSION_VALIDATION,

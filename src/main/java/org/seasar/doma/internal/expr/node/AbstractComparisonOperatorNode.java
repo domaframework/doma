@@ -2,7 +2,6 @@ package org.seasar.doma.internal.expr.node;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-/** @author taedium */
 public abstract class AbstractComparisonOperatorNode implements ComparisonOperatorNode {
 
   protected static final int PRIORITY = 40;

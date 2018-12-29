@@ -6,7 +6,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.Conventions;
 
-/** @author taedium */
 public class MetaUtil {
 
   public static String toFullMetaName(TypeElement originalTypeElement, ProcessingEnvironment env) {

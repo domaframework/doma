@@ -14,7 +14,6 @@ import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-/** @author taedium */
 public class DomainSingleResultHandlerTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

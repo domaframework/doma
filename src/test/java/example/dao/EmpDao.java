@@ -14,7 +14,6 @@ import org.seasar.doma.SelectType;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author taedium */
 @Dao(config = ExampleConfig.class)
 public interface EmpDao {
 

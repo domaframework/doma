@@ -8,7 +8,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author nakamura */
 public class SqlProcessorMirror {
 
   protected final AnnotationMirror annotationMirror;

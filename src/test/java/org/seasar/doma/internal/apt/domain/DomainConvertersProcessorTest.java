@@ -4,7 +4,6 @@ import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.DomainConvertersProcessor;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class DomainConvertersProcessorTest extends AptTestCase {
 
   @Override

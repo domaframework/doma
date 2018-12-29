@@ -37,7 +37,6 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.jdbc.query.SqlFileUpdateQuery;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 
-/** @author taedium */
 public enum QueryKind {
   SQLFILE_SELECT {
 

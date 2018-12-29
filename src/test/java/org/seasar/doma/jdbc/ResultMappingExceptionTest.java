@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class ResultMappingExceptionTest extends TestCase {
 
   public void test() throws Exception {

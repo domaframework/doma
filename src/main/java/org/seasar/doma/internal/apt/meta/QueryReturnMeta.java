@@ -244,7 +244,6 @@ public class QueryReturnMeta {
     return ctType;
   }
 
-  /** @author nakamura-to */
   protected class IterableElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -276,7 +275,6 @@ public class QueryReturnMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class OptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 

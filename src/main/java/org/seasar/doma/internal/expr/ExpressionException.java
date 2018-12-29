@@ -3,7 +3,6 @@ package org.seasar.doma.internal.expr;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionException extends DomaException {
 
   private static final long serialVersionUID = 1L;

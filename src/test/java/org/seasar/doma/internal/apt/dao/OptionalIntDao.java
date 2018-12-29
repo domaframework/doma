@@ -16,7 +16,6 @@ import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author nakamura-to */
 @Dao(config = MyConfig.class)
 public interface OptionalIntDao {
 

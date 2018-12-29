@@ -11,7 +11,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class StandardPagingTransformerTest extends TestCase {
 
   public void testOffsetLimit() throws Exception {

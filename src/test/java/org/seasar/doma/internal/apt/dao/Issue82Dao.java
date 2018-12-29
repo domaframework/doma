@@ -4,7 +4,6 @@ import example.entity.Emp;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Update;
 
-/** @author nakamura-to */
 @Dao(config = MyConfig.class)
 public interface Issue82Dao {
 

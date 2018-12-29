@@ -9,7 +9,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
-/** @author taedium */
 public class EntityCtType extends AbstractCtType {
 
   private final boolean immutable;

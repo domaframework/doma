@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import javax.tools.FileObject;
 import junit.framework.TestCase;
 
-/** @author nakamura */
 public class ResourceUtilTest extends TestCase {
 
   public void testFileObjectImpl_toUri() throws Exception {

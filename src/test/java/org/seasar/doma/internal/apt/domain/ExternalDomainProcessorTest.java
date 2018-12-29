@@ -6,7 +6,6 @@ import org.seasar.doma.internal.apt.ExternalDomainProcessor;
 import org.seasar.doma.internal.apt.domain.NestingValueObjectConverter.NestingValueObject;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExternalDomainProcessorTest extends AptTestCase {
 
   @Override

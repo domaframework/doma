@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.jdbc.domain.DomainType;
 
-/** @author taedium */
 public class DomainResultListHandler<BASIC, DOMAIN> extends ScalarResultListHandler<BASIC, DOMAIN> {
 
   public DomainResultListHandler(DomainType<BASIC, DOMAIN> domainType) {

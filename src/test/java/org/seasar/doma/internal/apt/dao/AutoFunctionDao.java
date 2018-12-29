@@ -11,7 +11,6 @@ import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface AutoFunctionDao {
 

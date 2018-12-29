@@ -28,7 +28,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 
-/** @author nakamura-to */
 public class EmbeddableTypeGenerator extends AbstractGenerator {
 
   protected final EmbeddableMeta embeddableMeta;

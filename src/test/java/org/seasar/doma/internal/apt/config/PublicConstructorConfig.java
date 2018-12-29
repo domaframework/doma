@@ -5,7 +5,6 @@ import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/** @author nakamura-to */
 @SingletonConfig
 public class PublicConstructorConfig implements Config {
 

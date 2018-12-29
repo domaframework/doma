@@ -11,7 +11,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-/** @author taedium */
 public class AnnotationMirror {
   protected final javax.lang.model.element.AnnotationMirror annotationMirror;
 

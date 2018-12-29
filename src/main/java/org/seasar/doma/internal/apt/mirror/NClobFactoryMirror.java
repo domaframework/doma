@@ -8,7 +8,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.NClobFactory;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class NClobFactoryMirror {
 
   protected final AnnotationMirror annotationMirror;

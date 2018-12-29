@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class H212126ForUpdateTransformer extends StandardForUpdateTransformer {
 
   public H212126ForUpdateTransformer(

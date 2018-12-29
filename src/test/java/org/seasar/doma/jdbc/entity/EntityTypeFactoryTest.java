@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.ClassHelper;
 
-/** @author taedium */
 public class EntityTypeFactoryTest extends TestCase {
 
   private ClassHelper classHelper = new ClassHelper() {};

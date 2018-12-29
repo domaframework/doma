@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
 
-/** @author taedium */
 public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
   protected final TableGeneratorMirror tableGeneratorMirror;

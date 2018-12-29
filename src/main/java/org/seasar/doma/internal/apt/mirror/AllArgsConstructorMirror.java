@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author nakamura-to */
 public class AllArgsConstructorMirror {
 
   protected final AnnotationMirror annotationMirror;

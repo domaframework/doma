@@ -10,7 +10,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.Delete;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class DeleteMirror extends ModifyMirror {
 
   protected DeleteMirror(AnnotationMirror annotationMirror) {

@@ -8,7 +8,6 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author nakamura-to */
 public class EmbeddableMirror {
 
   protected final AnnotationMirror annotationMirror;

@@ -14,7 +14,6 @@ import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.internal.apt.mirror.UpdateMirror;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlFileModifyQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileModifyQueryMeta> {
 

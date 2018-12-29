@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.Optional;
 import org.seasar.doma.jdbc.domain.DomainType;
 
-/** @author taedium */
 public class OptionalDomainInParameter<BASIC, DOMAIN>
     extends ScalarInParameter<BASIC, Optional<DOMAIN>> {
 

@@ -24,7 +24,6 @@ import javax.lang.model.util.TypeKindVisitor8;
 import javax.lang.model.util.Types;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 
-/** @author taedium */
 public final class TypeMirrorUtil {
 
   public static TypeElement toTypeElement(TypeMirror typeMirror, final ProcessingEnvironment env) {

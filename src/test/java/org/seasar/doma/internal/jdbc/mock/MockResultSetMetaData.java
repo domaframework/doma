@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.seasar.doma.internal.util.AssertionUtil;
 
-/** @author taedium */
 public class MockResultSetMetaData extends MockWrapper implements ResultSetMetaData {
 
   public final List<ColumnMetaData> columns = new ArrayList<ColumnMetaData>();

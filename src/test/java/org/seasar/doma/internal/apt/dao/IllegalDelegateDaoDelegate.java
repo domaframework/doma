@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.jdbc.Config;
 
-/** @author taedium */
 public class IllegalDelegateDaoDelegate {
 
   public IllegalDelegateDaoDelegate(Config config) {}

@@ -8,7 +8,6 @@ import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 
-/** @author taedium */
 public class KeepAliveLocalTransactionTest extends TestCase {
 
   private final MockConnection connection = new MockConnection();

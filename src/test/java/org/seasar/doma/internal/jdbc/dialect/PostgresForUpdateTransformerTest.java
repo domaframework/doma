@@ -10,7 +10,6 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class PostgresForUpdateTransformerTest extends TestCase {
 
   public void testForUpdateNormal() throws Exception {

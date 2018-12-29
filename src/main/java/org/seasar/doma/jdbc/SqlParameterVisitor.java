@@ -1,6 +1,5 @@
 package org.seasar.doma.jdbc;
 
-/** @author taedium */
 public interface SqlParameterVisitor<R, P, TH extends Throwable> {
 
   <BASIC> R visitInParameter(InParameter<BASIC> parameter, P p) throws TH;

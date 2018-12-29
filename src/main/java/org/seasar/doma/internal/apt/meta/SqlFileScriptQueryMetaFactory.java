@@ -10,7 +10,6 @@ import org.seasar.doma.internal.apt.mirror.ScriptMirror;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlFileScriptQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileScriptQueryMeta> {
 

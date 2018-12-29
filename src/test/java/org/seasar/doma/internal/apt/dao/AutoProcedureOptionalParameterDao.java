@@ -7,7 +7,6 @@ import org.seasar.doma.Out;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface AutoProcedureOptionalParameterDao {
 

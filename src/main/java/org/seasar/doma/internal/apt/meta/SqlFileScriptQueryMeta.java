@@ -5,7 +5,6 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.mirror.ScriptMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
   protected ScriptMirror scriptMirror;

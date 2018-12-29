@@ -33,7 +33,6 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class EntityPropertyMetaFactory {
 
   protected final ProcessingEnvironment env;

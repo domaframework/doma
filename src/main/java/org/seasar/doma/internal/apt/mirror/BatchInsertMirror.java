@@ -10,7 +10,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class BatchInsertMirror extends BatchModifyMirror {
 
   protected BatchInsertMirror(AnnotationMirror annotationMirror) {

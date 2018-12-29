@@ -13,7 +13,6 @@ import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.UtilDateWrapper;
 
-/** @author taedium */
 public class Oracle11DialectTest extends TestCase {
 
   public void testExpressionFunctions_prefix() throws Exception {

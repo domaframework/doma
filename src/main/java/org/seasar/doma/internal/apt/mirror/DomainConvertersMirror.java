@@ -15,7 +15,6 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class DomainConvertersMirror {
 
   protected final AnnotationMirror annotationMirror;

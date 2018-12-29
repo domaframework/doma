@@ -4,7 +4,6 @@ import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.entity.ValueObjectConverter.ValueObject;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
-/** @author taedium */
 @ExternalDomain
 public class ValueObjectConverter implements DomainConverter<ValueObject, String> {
 

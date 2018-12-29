@@ -37,7 +37,6 @@ import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionParser {
 
   protected final Deque<ExpressionNode> expressionNodes = new LinkedList<ExpressionNode>();

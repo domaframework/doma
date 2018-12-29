@@ -10,7 +10,6 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
-/** @author taedium */
 public abstract class AbstractCtType implements CtType {
 
   protected final TypeMirror typeMirror;

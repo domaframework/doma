@@ -13,7 +13,6 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author nakamura-to */
 public class SingletonConfigMirror {
 
   protected final AnnotationMirror annotationMirror;

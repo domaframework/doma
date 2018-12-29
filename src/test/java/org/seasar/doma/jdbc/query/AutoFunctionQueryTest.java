@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class AutoFunctionQueryTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

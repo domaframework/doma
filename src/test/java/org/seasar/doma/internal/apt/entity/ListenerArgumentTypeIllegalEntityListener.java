@@ -8,7 +8,6 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
-/** @author taedium */
 public class ListenerArgumentTypeIllegalEntityListener implements EntityListener<String> {
 
   @Override

@@ -5,7 +5,6 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface BatchSqlValidationDao {
 

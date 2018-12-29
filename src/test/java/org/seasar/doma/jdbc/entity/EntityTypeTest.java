@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import junit.framework.TestCase;
 
-/** @author nakamura-to */
 public class EntityTypeTest extends TestCase {
 
   public void test() throws Exception {

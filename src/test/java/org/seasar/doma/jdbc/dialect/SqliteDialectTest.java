@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.dialect;
 import java.sql.SQLException;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class SqliteDialectTest extends TestCase {
 
   public void testIsUniqueConstraintViolated_true() {

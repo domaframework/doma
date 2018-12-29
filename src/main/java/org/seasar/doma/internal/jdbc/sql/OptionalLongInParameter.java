@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.OptionalLong;
 import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 
-/** @author taedium */
 public class OptionalLongInParameter extends ScalarInParameter<Long, OptionalLong> {
 
   public OptionalLongInParameter(OptionalLong value) {

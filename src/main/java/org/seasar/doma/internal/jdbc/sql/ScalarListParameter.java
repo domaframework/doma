@@ -8,7 +8,6 @@ import org.seasar.doma.internal.jdbc.command.ScalarProvider;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author taedium */
 public class ScalarListParameter<BASIC, CONTAINER> extends AbstractListParameter<CONTAINER> {
 
   protected final Supplier<Scalar<BASIC, CONTAINER>> suppler;

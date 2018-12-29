@@ -8,7 +8,6 @@ import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.jdbc.entity.EntityPropertyAccessException;
 import org.seasar.doma.jdbc.entity.EntityPropertyNotFoundException;
 
-/** @author nakamura-to */
 public class PropertyField<ENTITY> {
 
   protected final String path;

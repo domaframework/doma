@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.cttype;
 
-/** @author taedium */
 public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
   R visitAnyCtType(AnyCtType ctType, P p) throws TH;

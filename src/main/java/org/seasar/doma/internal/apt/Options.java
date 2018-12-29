@@ -14,7 +14,6 @@ import javax.tools.FileObject;
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.apt.util.ResourceUtil;
 
-/** @author taedium */
 public final class Options {
 
   public static final String TEST = "doma.test";

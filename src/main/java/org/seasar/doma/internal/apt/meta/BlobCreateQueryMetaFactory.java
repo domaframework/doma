@@ -7,7 +7,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.mirror.BlobFactoryMirror;
 
-/** @author taedium */
 public class BlobCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<BlobCreateQueryMeta> {
 

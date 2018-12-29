@@ -3,7 +3,6 @@ package org.seasar.doma.internal.util;
 import java.lang.reflect.Field;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class FieldUtilTest extends TestCase {
 
   public String aaa;

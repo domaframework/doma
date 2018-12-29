@@ -7,7 +7,6 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
-/** @author taedium */
 public class GenericListener8<E> implements GenericListener7<E, String> {
 
   @Override

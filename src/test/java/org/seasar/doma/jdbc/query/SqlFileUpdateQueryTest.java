@@ -26,7 +26,6 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-/** @author nakamura-to */
 public class SqlFileUpdateQueryTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

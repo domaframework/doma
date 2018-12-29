@@ -8,7 +8,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.BlobFactory;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class BlobFactoryMirror {
 
   protected final AnnotationMirror annotationMirror;

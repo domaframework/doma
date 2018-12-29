@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
-/** @author taedium */
 public class OptionalDomainInParameterMeta implements CallableSqlParameterMeta {
 
   private final String name;

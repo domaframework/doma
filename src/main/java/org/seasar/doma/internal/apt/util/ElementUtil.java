@@ -21,7 +21,6 @@ import javax.lang.model.util.SimpleElementVisitor8;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import org.seasar.doma.ParameterName;
 
-/** @author taedium */
 public final class ElementUtil {
 
   public static String getPackageName(Element element, ProcessingEnvironment env) {

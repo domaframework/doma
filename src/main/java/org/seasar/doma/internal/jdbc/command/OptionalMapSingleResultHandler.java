@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Optional;
 import org.seasar.doma.MapKeyNamingType;
 
-/** @author nakamura-to */
 public class OptionalMapSingleResultHandler
     extends AbstractSingleResultHandler<Optional<Map<String, Object>>> {
 

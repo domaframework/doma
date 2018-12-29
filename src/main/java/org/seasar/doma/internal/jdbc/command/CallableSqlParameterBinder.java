@@ -21,7 +21,6 @@ import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class CallableSqlParameterBinder
     extends AbstractParameterBinder<CallableStatement, SqlParameter> {
 

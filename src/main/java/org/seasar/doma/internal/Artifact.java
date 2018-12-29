@@ -3,7 +3,6 @@ package org.seasar.doma.internal;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public final class Artifact {
 
   private static final String NAME = "Doma";

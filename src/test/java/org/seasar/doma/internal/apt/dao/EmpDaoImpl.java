@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author taedium */
 public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
   /** */

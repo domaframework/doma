@@ -12,7 +12,6 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ArrayCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<ArrayCreateQueryMeta> {
 

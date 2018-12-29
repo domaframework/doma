@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.expr.node;
 
-/** @author taedium */
 public class ExpressionLocation {
 
   protected final String expression;

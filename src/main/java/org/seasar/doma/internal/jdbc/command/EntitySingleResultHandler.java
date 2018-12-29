@@ -2,7 +2,6 @@ package org.seasar.doma.internal.jdbc.command;
 
 import org.seasar.doma.jdbc.entity.EntityType;
 
-/** @author taedium */
 public class EntitySingleResultHandler<ENTITY> extends AbstractSingleResultHandler<ENTITY> {
 
   public EntitySingleResultHandler(EntityType<ENTITY> entityType) {

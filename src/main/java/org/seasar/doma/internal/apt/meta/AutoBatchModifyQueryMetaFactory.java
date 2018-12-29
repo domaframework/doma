@@ -17,7 +17,6 @@ import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class AutoBatchModifyQueryMetaFactory
     extends AbstractQueryMetaFactory<AutoBatchModifyQueryMeta> {
 

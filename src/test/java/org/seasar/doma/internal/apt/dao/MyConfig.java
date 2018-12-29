@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
-/** @author taedium */
 public class MyConfig implements Config {
 
   protected MockDataSource dataSource = new MockDataSource();

@@ -8,7 +8,6 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ProcedureDao {
 

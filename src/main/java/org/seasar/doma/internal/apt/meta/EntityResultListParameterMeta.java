@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
-/** @author taedium */
 public class EntityResultListParameterMeta implements ResultListParameterMeta {
 
   protected final EntityCtType entityCtType;

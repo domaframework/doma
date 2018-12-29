@@ -3,7 +3,6 @@ package org.seasar.doma.internal.util;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 
-/** @author taedium */
 public class SqlFileUtilTest extends TestCase {
 
   public void testBuildPath() throws Exception {

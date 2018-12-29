@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
-/** @author taedium */
 public class BranchConverter implements DomainConverter<Branch, String> {
 
   @Override

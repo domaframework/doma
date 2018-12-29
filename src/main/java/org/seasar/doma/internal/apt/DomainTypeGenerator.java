@@ -13,7 +13,6 @@ import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-/** @author taedium */
 public class DomainTypeGenerator extends AbstractGenerator {
 
   protected final DomainMeta domainMeta;

@@ -6,7 +6,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-/** @author taedium */
 public class OriginalStatesMeta {
 
   protected final TypeElement typeElement;

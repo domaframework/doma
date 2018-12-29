@@ -6,7 +6,6 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
   protected ResultParameterMeta resultParameterMeta;

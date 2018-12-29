@@ -3,7 +3,6 @@ package org.seasar.doma.internal.util;
 import java.lang.reflect.TypeVariable;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class GenericUtilTest extends TestCase {
 
   public void testFieldType() throws Exception {

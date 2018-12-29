@@ -16,7 +16,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
 
   protected final long offset;

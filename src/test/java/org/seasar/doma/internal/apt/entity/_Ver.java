@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-/** @author taedium */
 public class _Ver extends AbstractDomainType<Integer, Ver> {
 
   private _Ver() {

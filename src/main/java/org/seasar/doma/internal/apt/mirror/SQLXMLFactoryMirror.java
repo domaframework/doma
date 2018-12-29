@@ -8,7 +8,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.SQLXMLFactory;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author nakamura-to */
 public class SQLXMLFactoryMirror {
 
   protected final AnnotationMirror annotationMirror;

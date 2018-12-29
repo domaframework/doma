@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class SimpleDataSourceTest extends TestCase {
 
   public void testUrlIsNull() throws Exception {

@@ -10,7 +10,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class InsertMirror extends ModifyMirror {
 
   protected InsertMirror(AnnotationMirror annotationMirror) {

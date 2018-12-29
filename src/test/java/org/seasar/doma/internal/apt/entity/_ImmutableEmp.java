@@ -17,7 +17,6 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-/** @author taedium */
 public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
   @Override

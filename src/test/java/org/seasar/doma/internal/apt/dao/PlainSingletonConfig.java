@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/** @author nakamura-to */
 public class PlainSingletonConfig implements Config {
 
   public static final PlainSingletonConfig INSTANCE = new PlainSingletonConfig();

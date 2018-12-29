@@ -7,7 +7,6 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/** @author taedium */
 public class ScalarIterationHandler<BASIC, CONTAINER, RESULT>
     extends AbstractIterationHandler<CONTAINER, RESULT> {
 

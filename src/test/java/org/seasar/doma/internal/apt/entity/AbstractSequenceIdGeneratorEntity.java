@@ -6,7 +6,6 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
 
-/** @author taedium */
 @Entity
 public class AbstractSequenceIdGeneratorEntity {
 

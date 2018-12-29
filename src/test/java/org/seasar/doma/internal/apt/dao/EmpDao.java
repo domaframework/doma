@@ -10,7 +10,6 @@ import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.SelectOptions;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface EmpDao {
 

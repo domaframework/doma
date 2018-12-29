@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.net.URL;
 import org.seasar.doma.internal.WrapException;
 
-/** @author taedium */
 public final class ResourceUtil {
 
   public static URL getResource(String path) {

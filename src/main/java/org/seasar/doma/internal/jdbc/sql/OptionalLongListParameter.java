@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.OptionalLong;
 import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 
-/** @author taedium */
 public class OptionalLongListParameter extends ScalarListParameter<Long, OptionalLong> {
 
   public OptionalLongListParameter(List<OptionalLong> list, String name) {

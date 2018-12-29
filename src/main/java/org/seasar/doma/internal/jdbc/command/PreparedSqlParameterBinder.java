@@ -9,7 +9,6 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author taedium */
 public class PreparedSqlParameterBinder
     extends AbstractParameterBinder<PreparedStatement, InParameter<?>> {
 

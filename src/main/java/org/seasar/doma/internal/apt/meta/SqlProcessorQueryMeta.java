@@ -5,7 +5,6 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.mirror.SqlProcessorMirror;
 
-/** @author nakamura */
 public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
 
   protected SqlProcessorMirror sqlProcessorMirror;

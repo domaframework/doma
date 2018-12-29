@@ -10,7 +10,6 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura-to */
 @Dao(config = MyConfig.class)
 public interface ResultStreamDao {
 

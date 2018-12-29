@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import org.seasar.doma.internal.util.AssertionUtil;
 
-/** @author taedium */
 @SuppressWarnings({"all", "deprecation"})
 public class MockResultSet extends MockWrapper implements ResultSet {
 

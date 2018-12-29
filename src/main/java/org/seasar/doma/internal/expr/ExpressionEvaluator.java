@@ -64,7 +64,6 @@ import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResult, Void> {
 
   protected final Map<String, Value> variableValues;

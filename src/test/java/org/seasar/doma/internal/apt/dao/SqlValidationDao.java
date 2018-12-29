@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.seasar.doma.Dao;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface SqlValidationDao {
 

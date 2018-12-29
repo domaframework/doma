@@ -38,7 +38,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlTokenizerTest extends TestCase {
 
   private String lineSeparator;

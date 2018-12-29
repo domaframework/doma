@@ -5,7 +5,6 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
-/** @author nakamura-to */
 public class Person {
 
   public String name;

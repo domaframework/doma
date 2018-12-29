@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.entity;
 import java.math.BigDecimal;
 import org.seasar.doma.Entity;
 
-/** @author taedium */
 @Entity
 public class OriginalStatesChildEntity extends OriginalStatesParentEntity {
 

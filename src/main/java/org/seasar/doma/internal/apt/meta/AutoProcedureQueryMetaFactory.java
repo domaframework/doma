@@ -8,7 +8,6 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class AutoProcedureQueryMetaFactory
     extends AutoModuleQueryMetaFactory<AutoProcedureQueryMeta> {
 

@@ -14,7 +14,6 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
-/** @author taedium */
 public class EntityPropertyNameCollector {
 
   protected final ProcessingEnvironment env;

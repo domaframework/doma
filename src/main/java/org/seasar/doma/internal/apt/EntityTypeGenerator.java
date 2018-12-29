@@ -46,7 +46,6 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-/** @author taedium */
 public class EntityTypeGenerator extends AbstractGenerator {
 
   protected static final String NULL = "null";

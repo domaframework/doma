@@ -9,7 +9,6 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 
-/** @author nakamura-to */
 public class ScalarInOutParameterTest extends TestCase {
 
   public void testGetDomainClass() throws Exception {

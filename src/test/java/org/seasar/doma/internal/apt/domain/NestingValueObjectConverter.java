@@ -4,7 +4,6 @@ import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.domain.NestingValueObjectConverter.NestingValueObject;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
-/** @author taedium */
 @ExternalDomain
 public class NestingValueObjectConverter implements DomainConverter<NestingValueObject, String> {
 

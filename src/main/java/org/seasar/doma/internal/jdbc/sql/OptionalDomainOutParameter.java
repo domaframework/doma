@@ -4,7 +4,6 @@ import java.util.Optional;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.domain.DomainType;
 
-/** @author taedium */
 public class OptionalDomainOutParameter<BASIC, DOMAIN>
     extends ScalarOutParameter<BASIC, Optional<DOMAIN>> {
 

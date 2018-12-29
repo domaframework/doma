@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.util;
 
-/** @author taedium */
 public final class CharSequenceUtil {
 
   public static boolean isEmpty(CharSequence charSequence) {

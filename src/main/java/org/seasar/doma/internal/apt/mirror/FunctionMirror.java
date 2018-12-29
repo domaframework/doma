@@ -15,7 +15,6 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class FunctionMirror {
 
   protected final AnnotationMirror annotationMirror;

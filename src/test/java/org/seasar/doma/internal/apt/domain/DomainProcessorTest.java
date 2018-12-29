@@ -5,7 +5,6 @@ import org.seasar.doma.internal.apt.DomainProcessor;
 import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class DomainProcessorTest extends AptTestCase {
 
   @Override

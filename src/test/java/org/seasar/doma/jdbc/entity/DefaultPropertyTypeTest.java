@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
-/** @author nakamura-to */
 public class DefaultPropertyTypeTest extends TestCase {
 
   @SuppressWarnings("unused")

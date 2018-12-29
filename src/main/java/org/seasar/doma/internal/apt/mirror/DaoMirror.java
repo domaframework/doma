@@ -18,7 +18,6 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
 
-/** @author taedium */
 public class DaoMirror {
 
   protected final AnnotationMirror annotationMirror;

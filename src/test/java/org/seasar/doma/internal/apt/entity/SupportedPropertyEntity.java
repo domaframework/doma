@@ -11,7 +11,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import org.seasar.doma.Entity;
 
-/** @author taedium */
 @Entity
 public class SupportedPropertyEntity {
 

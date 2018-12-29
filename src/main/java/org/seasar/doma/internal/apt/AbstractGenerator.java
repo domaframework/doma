@@ -17,7 +17,6 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AbstractGenerator implements Generator {
 
   protected static final String INDENT_SPACE = "    ";

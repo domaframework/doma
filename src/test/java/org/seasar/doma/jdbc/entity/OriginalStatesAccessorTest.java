@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.entity;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class OriginalStatesAccessorTest extends TestCase {
 
   public void testGet() throws Exception {

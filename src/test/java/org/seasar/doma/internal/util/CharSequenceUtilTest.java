@@ -2,7 +2,6 @@ package org.seasar.doma.internal.util;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class CharSequenceUtilTest extends TestCase {
 
   public void testIsEmpty() throws Exception {

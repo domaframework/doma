@@ -3,7 +3,6 @@ package __.org.seasar.doma.internal.apt.entity;
 import org.seasar.doma.internal.apt.entity.Branch;
 import org.seasar.doma.internal.apt.entity.BranchConverter;
 
-/** @author taedium */
 public final class _Branch
     extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.String, Branch> {
 

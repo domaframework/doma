@@ -10,7 +10,6 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class BatchDeleteMirror extends BatchModifyMirror {
 
   protected BatchDeleteMirror(AnnotationMirror annotationMirror) {

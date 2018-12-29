@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.embeddable;
 
 import org.seasar.doma.Embeddable;
 
-/** @author nakamura-to */
 public class Outer_nonPublicMiddle {
 
   static class Middle {

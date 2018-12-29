@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 
-/** @author taedium */
 public class OrOperatorNodeTest extends TestCase {
 
   protected ExpressionLocation location = new ExpressionLocation("", 0);

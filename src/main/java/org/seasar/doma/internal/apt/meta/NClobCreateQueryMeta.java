@@ -4,7 +4,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.mirror.NClobFactoryMirror;
 
-/** @author taedium */
 public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
   protected NClobFactoryMirror nClobFactoryMirror;

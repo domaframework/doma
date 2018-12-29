@@ -2,7 +2,6 @@ package org.seasar.doma.internal.expr;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-/** @author taedium */
 public class EvaluationResult {
 
   protected final Object value;

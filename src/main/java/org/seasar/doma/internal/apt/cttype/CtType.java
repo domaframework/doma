@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.cttype;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-/** @author taedium */
 public interface CtType {
 
   TypeMirror getTypeMirror();

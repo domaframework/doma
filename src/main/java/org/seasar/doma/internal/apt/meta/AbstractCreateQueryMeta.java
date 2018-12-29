@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.meta;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
-/** @author taedium */
 public abstract class AbstractCreateQueryMeta extends AbstractQueryMeta {
 
   protected AbstractCreateQueryMeta(ExecutableElement method, TypeElement dao) {

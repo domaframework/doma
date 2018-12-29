@@ -9,7 +9,6 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class OraclePagingTransformer extends StandardPagingTransformer {
 
   public OraclePagingTransformer(long offset, long limit) {

@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.domain;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class DomainTypeNotFoundExceptionTest extends TestCase {
 
   public void test() throws Exception {

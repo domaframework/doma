@@ -6,7 +6,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import org.seasar.doma.internal.WrapException;
 
-/** @author taedium */
 public final class FieldUtil {
 
   public static Object get(Field field, Object target) throws WrapException {

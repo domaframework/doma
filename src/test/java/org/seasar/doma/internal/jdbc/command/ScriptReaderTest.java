@@ -8,7 +8,6 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
-/** @author taedium */
 public class ScriptReaderTest extends TestCase {
 
   private SqlFileScriptQuery query;

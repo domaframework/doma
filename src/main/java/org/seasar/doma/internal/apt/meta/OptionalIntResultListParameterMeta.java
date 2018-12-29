@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.meta;
 
-/** @author nakamura-to */
 public class OptionalIntResultListParameterMeta implements ResultListParameterMeta {
 
   @Override

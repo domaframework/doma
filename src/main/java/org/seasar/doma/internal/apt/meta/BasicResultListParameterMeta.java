@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
-/** @author taedium */
 public class BasicResultListParameterMeta implements ResultListParameterMeta {
 
   protected final BasicCtType basicCtType;

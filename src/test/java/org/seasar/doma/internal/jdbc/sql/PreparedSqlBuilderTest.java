@@ -15,7 +15,6 @@ import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class PreparedSqlBuilderTest extends TestCase {
 
   private final MockConfig config = new MockConfig();

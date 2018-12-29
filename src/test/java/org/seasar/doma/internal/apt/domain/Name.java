@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.Domain;
 
-/** @author taedium */
 @Domain(valueType = String.class)
 public class Name {
   private final String value;

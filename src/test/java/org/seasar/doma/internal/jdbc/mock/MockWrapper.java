@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.mock;
 import java.sql.SQLException;
 import java.sql.Wrapper;
 
-/** @author taedium */
 public class MockWrapper implements Wrapper {
 
   @Override

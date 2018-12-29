@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.util;
 
-/** @author nakamura-to */
 public final class SqlTokenUtil {
 
   public static boolean isWordPart(char c) {

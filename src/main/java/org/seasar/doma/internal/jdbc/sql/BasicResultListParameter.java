@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class BasicResultListParameter<BASIC> extends ScalarResultListParameter<BASIC, BASIC> {
 
   public BasicResultListParameter(Supplier<Wrapper<BASIC>> supplier) {

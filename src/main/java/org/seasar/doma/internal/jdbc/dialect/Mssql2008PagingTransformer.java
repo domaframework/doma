@@ -6,7 +6,6 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public class Mssql2008PagingTransformer extends StandardPagingTransformer {
 
   public Mssql2008PagingTransformer(long offset, long limit) {

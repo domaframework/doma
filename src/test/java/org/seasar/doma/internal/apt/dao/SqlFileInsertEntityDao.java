@@ -5,7 +5,6 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.internal.apt.entity.ParentEntity;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface SqlFileInsertEntityDao {
 

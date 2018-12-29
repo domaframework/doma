@@ -12,7 +12,6 @@ import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
   protected SelectMirror selectMirror;

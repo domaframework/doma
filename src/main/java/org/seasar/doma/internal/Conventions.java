@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.List;
 import org.seasar.doma.internal.util.ClassUtil;
 
-/** @author nakamura-to */
 public class Conventions {
 
   public static String normalizeBinaryName(String binaryName) {

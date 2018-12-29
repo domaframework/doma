@@ -36,7 +36,6 @@ import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   protected static final int SQL_MAX_LENGTH = 5000;

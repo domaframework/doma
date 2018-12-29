@@ -12,7 +12,6 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
-/** @author taedium */
 public class BuiltinTableIdGeneratorTest extends TestCase {
 
   public void test() throws Exception {

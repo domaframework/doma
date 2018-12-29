@@ -6,7 +6,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-/** @author taedium */
 public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQueryMeta> {
 
   public DefaultQueryMetaFactory(ProcessingEnvironment env) {

@@ -9,7 +9,6 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQueryMeta>
     extends AbstractQueryMetaFactory<M> {
 

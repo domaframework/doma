@@ -4,7 +4,6 @@ import java.util.OptionalLong;
 import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author taedium */
 public class OptionalLongInOutParameter extends ScalarInOutParameter<Long, OptionalLong> {
 
   public OptionalLongInOutParameter(Reference<OptionalLong> reference) {

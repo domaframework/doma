@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 
-/** @author taedium */
 public class ExternalDomainMeta implements TypeElementMeta {
 
   protected final TypeElement typeElement;

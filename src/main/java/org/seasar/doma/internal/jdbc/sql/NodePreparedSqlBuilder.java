@@ -72,7 +72,6 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
-/** @author taedium */
 public class NodePreparedSqlBuilder
     implements SqlNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
 

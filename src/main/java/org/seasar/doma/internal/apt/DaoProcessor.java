@@ -29,7 +29,6 @@ import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlProcessorQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 
-/** @author taedium */
 @SupportedAnnotationTypes({"org.seasar.doma.Dao"})
 @SupportedOptions({
   Options.TEST,

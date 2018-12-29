@@ -8,7 +8,6 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 
-/** @author nakamura-to */
 public class ScalarInParameterTest extends TestCase {
 
   public void testGetDomainClass() throws Exception {

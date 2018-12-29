@@ -16,7 +16,6 @@ import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-/** @author taedium */
 public class EntityPropertyMeta {
 
   protected final String entityName;

@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Formatter;
 
-/** @author taedium */
 public class Printer {
 
   protected static final String INDENT_SPACE = "    ";

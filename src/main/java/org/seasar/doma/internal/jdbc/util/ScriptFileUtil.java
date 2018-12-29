@@ -4,7 +4,6 @@ import java.io.File;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/** @author taedium */
 public final class ScriptFileUtil {
 
   private static final String PREFIX = Constants.SCRIPT_PATH_PREFIX;

@@ -44,7 +44,6 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura-to */
 public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableMeta> {
 
   protected final ProcessingEnvironment env;

@@ -24,7 +24,6 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-/** @author taedium */
 public class SelectCommandTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

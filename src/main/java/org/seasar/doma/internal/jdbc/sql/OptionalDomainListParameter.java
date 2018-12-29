@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import org.seasar.doma.jdbc.domain.DomainType;
 
-/** @author taedium */
 public class OptionalDomainListParameter<BASIC, DOMAIN>
     extends ScalarListParameter<BASIC, Optional<DOMAIN>> {
 

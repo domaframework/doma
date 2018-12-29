@@ -4,7 +4,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.mirror.ClobFactoryMirror;
 
-/** @author taedium */
 public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
   protected ClobFactoryMirror clobFactoryMirror;

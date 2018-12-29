@@ -17,7 +17,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author taedium */
 public abstract class AbstractQueryMeta implements QueryMeta {
 
   protected final String name;

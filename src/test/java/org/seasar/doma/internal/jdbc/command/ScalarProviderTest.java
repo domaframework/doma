@@ -18,7 +18,6 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/** @author taedium */
 public class ScalarProviderTest extends TestCase {
 
   private final MockConfig runtimeConfig = new MockConfig();

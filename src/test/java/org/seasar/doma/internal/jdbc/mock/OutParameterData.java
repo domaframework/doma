@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.mock;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author taedium */
 public class OutParameterData {
 
   protected final List<Object> values = new ArrayList<Object>();

@@ -10,7 +10,6 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public abstract class BatchModifyMirror {
 
   protected final AnnotationMirror annotationMirror;

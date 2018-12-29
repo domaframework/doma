@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.Domain;
 
-/** @author nakamura-to */
 @Domain(valueType = String.class, acceptNull = false)
 public class NullRejectionDomain {
 

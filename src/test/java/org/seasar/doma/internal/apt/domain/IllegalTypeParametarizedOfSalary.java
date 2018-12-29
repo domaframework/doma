@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.domain;
 import java.math.BigDecimal;
 import org.seasar.doma.Domain;
 
-/** @author taedium */
 @Domain(valueType = BigDecimal.class, factoryMethod = "of")
 public class IllegalTypeParametarizedOfSalary<T, U> {
 

@@ -2,7 +2,6 @@ package org.seasar.doma.internal;
 
 import junit.framework.TestCase;
 
-/** @author nakamura-to */
 public class ConventionsTest extends TestCase {
 
   public void testNormalizeBinaryName() throws Exception {

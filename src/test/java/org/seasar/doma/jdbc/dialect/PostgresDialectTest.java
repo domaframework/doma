@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.dialect;
 import junit.framework.TestCase;
 import org.seasar.doma.jdbc.PreparedSql;
 
-/** @author nakamura-to */
 public class PostgresDialectTest extends TestCase {
 
   public void testGetIdentitySelectSql_quoteNotRequired_idQuoteNotRequired() throws Exception {

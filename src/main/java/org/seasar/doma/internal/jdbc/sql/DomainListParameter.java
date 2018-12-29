@@ -7,7 +7,6 @@ import org.seasar.doma.internal.jdbc.command.ScalarProvider;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author taedium */
 public class DomainListParameter<BASIC, DOMAIN> extends AbstractListParameter<DOMAIN> {
 
   protected final DomainType<BASIC, DOMAIN> domainType;

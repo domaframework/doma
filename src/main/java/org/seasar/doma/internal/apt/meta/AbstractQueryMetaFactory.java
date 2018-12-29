@@ -26,7 +26,6 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     implements QueryMetaFactory {
 

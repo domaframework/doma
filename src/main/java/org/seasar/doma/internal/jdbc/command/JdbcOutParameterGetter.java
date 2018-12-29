@@ -9,7 +9,6 @@ import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class JdbcOutParameterGetter implements JdbcMappingFunction {
 
   protected final CallableStatement callableStatement;

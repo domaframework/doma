@@ -21,7 +21,6 @@ import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class CallableSqlBuilder
     implements SqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
 

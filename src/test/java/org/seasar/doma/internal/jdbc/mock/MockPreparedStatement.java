@@ -27,7 +27,6 @@ import java.util.Calendar;
 import java.util.List;
 import org.seasar.doma.internal.util.AssertionUtil;
 
-/** @author taedium */
 @SuppressWarnings({"all", "deprecation"})
 public class MockPreparedStatement extends MockStatement implements PreparedStatement {
 

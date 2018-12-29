@@ -6,7 +6,6 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class OptionalBasicInOutParameter<BASIC>
     extends ScalarInOutParameter<BASIC, Optional<BASIC>> {
 

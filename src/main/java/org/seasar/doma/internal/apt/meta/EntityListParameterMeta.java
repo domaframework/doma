@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
-/** @author taedium */
 public class EntityListParameterMeta implements CallableSqlParameterMeta {
 
   protected final String name;

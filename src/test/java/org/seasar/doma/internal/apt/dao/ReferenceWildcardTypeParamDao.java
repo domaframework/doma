@@ -5,7 +5,6 @@ import org.seasar.doma.In;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.jdbc.Reference;
 
-/** @author taedium */
 @Dao(config = MyConfig.class)
 public interface ReferenceWildcardTypeParamDao {
 

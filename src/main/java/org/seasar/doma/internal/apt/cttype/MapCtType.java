@@ -9,7 +9,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
-/** @author taedium */
 public class MapCtType extends AbstractCtType {
 
   public MapCtType(TypeMirror type, ProcessingEnvironment env) {

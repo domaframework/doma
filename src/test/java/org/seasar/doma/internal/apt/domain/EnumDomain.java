@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.Domain;
 
-/** @author taedium */
 @Domain(valueType = EnumDomain.JobType.class, acceptNull = true)
 public class EnumDomain {
 

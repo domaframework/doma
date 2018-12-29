@@ -8,7 +8,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyNotDefinedException;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
-/** @author taedium */
 public abstract class AbstractPreUpdateContext<E> extends AbstractEntityListenerContext<E>
     implements PreUpdateContext<E> {
 

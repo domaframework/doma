@@ -14,7 +14,6 @@ import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
-/** @author taedium */
 public class MockConfig implements Config {
 
   public MockDataSource dataSource = new MockDataSource();

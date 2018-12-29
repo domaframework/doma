@@ -9,7 +9,6 @@ import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
-/** @author nakamura-to */
 public class EmbeddablePropertyMeta {
 
   protected final TypeMirror type;

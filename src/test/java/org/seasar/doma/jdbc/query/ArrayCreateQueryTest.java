@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.query;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-/** @author taedium */
 public class ArrayCreateQueryTest extends TestCase {
 
   private final MockConfig config = new MockConfig();

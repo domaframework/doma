@@ -193,7 +193,6 @@ import org.seasar.doma.jdbc.query.FunctionQuery;
 import org.seasar.doma.jdbc.query.ProcedureQuery;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-/** @author taedium */
 public class DaoGenerator extends AbstractGenerator {
 
   protected final DaoMeta daoMeta;
@@ -2080,7 +2079,6 @@ public class DaoGenerator extends AbstractGenerator {
     }
   }
 
-  /** @author nakamura-to */
   protected class SqlFileSelectQueryFunctionCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -2316,7 +2314,6 @@ public class DaoGenerator extends AbstractGenerator {
     }
   }
 
-  /** @author nakamura-to */
   protected class SqlFileSelectQueryCollectorCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
 

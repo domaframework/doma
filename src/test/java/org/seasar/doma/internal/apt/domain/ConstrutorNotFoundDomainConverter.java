@@ -4,7 +4,6 @@ import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.domain.ConstrutorNotFoundDomainConverter.ValueObject;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
-/** @author taedium */
 @ExternalDomain
 public class ConstrutorNotFoundDomainConverter implements DomainConverter<ValueObject, String> {
 

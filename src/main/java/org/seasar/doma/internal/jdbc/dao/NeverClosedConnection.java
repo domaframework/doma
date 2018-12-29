@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-/** @author taedium */
 class NeverClosedConnection implements Connection {
 
   /** コネクション */

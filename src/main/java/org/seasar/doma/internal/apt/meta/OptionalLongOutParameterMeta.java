@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-/** @author nakamura-to */
 public class OptionalLongOutParameterMeta implements CallableSqlParameterMeta {
 
   private final String name;

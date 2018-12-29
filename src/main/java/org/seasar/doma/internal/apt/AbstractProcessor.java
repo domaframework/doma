@@ -7,7 +7,6 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
 
   protected Class<? extends Annotation> supportedAnnotationType;

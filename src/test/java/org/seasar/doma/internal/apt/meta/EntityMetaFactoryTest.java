@@ -5,7 +5,6 @@ import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.entity.NamingType1Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-/** @author taedium */
 public class EntityMetaFactoryTest extends AptTestCase {
 
   public void testNaming1Type() throws Exception {

@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class BasicSingleResultParameter<BASIC> extends ScalarSingleResultParameter<BASIC, BASIC> {
 
   public BasicSingleResultParameter(Supplier<Wrapper<BASIC>> supplier, boolean primitive) {

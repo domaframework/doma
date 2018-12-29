@@ -13,7 +13,6 @@ import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author nakamura-to */
 public class ScalarProvider<BASIC, CONTAINER> extends AbstractObjectProvider<CONTAINER> {
 
   protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;

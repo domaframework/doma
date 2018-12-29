@@ -25,7 +25,6 @@ import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class ExternalDomainMetaFactory implements TypeElementMetaFactory<ExternalDomainMeta> {
 
   private final ProcessingEnvironment env;

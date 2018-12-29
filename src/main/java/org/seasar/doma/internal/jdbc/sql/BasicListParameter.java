@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class BasicListParameter<BASIC> extends ScalarListParameter<BASIC, BASIC> {
 
   public BasicListParameter(Supplier<Wrapper<BASIC>> supplier, List<BASIC> list, String name) {

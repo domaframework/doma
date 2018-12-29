@@ -23,7 +23,6 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
-/** @author nakamura-to */
 public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
   protected final EntityType<ENTITY> entityType;

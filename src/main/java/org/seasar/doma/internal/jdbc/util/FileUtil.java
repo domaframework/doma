@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.io.File;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/** @author taedium */
 final class FileUtil {
 
   static String buildPath(String prefix, String suffix, String className, String methodName) {

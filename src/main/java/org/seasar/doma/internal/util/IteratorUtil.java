@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-/** @author nakamura-to */
 public final class IteratorUtil {
 
   public static <T> List<T> toList(Iterator<T> iterator) {

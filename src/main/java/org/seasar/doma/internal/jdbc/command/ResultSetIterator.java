@@ -11,7 +11,6 @@ import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/** @author nakamura-to */
 public class ResultSetIterator<TARGET> implements Iterator<TARGET> {
 
   protected final ResultSet resultSet;

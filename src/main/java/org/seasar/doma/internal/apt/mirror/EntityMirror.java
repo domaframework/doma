@@ -16,7 +16,6 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-/** @author taedium */
 public class EntityMirror {
 
   protected final AnnotationMirror annotationMirror;

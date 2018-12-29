@@ -28,7 +28,6 @@ import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-/** @author taedium */
 @Generated("")
 public class EmpDaoImpl extends AbstractDao implements EmpDao {
 

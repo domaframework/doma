@@ -15,7 +15,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.message.Message;
 
-/** @author nakamura-to */
 public class EmbeddablePropertyMetaFactory {
 
   protected final ProcessingEnvironment env;

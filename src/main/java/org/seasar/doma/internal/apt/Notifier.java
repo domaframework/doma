@@ -8,7 +8,6 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.message.MessageResource;
 
-/** @author taedium */
 public final class Notifier {
 
   public static void debug(

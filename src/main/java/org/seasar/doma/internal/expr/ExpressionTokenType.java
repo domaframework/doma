@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.expr;
 
-/** @author taedium */
 public enum ExpressionTokenType {
   WHITESPACE,
 

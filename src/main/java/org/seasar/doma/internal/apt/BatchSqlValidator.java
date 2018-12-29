@@ -11,7 +11,6 @@ import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class BatchSqlValidator extends SqlValidator {
 
   protected boolean embeddedVariableWarningNotified;

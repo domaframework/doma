@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Domain;
 
-/** @author taedium */
 @Domain(valueType = String.class)
 public class IllegalId {
 

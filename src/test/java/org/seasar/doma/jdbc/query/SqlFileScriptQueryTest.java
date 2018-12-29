@@ -5,7 +5,6 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 
-/** @author taedium */
 public class SqlFileScriptQueryTest extends TestCase {
 
   private final MockConfig config = new MockConfig();

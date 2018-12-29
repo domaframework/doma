@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.Domain;
 
-/** @author taedium */
 @Domain(valueType = String.class, factoryMethod = "of", acceptNull = true)
 enum OfJobType {
   SALESEMAN("01"),

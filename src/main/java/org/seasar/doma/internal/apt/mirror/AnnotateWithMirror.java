@@ -13,7 +13,6 @@ import org.seasar.doma.AnnotateWith;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
-/** @author taedium */
 public class AnnotateWithMirror {
 
   protected final javax.lang.model.element.AnnotationMirror annotationMirror;

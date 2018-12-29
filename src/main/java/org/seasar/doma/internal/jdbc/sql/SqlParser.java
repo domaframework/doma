@@ -49,7 +49,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class SqlParser {
 
   protected static final Pattern LITERAL_PATTERN =

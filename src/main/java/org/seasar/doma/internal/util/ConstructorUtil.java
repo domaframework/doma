@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.seasar.doma.internal.WrapException;
 
-/** @author taedium */
 public final class ConstructorUtil {
 
   public static <T> T newInstance(Constructor<T> constructor, Object... params)

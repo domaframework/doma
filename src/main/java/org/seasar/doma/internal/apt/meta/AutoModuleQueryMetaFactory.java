@@ -22,7 +22,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.ResultSetMirror;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     extends AbstractQueryMetaFactory<M> {
 
@@ -100,7 +99,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         .accept(new InOutReferentCtTypeVisitor(parameterMeta, referenceCtType), false);
   }
 
-  /** @author nakamura-to */
   protected class ResultSetCtTypeVisitor
       extends SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException> {
 
@@ -132,7 +130,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  /** @author nakamura-to */
   protected class ResultSetElementCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
@@ -227,7 +224,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  /** @author nakamura-to */
   protected class InCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
@@ -294,7 +290,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  /** @author nakamura-to */
   protected class OutCtTypeVisitor
       extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
 
@@ -323,7 +318,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  /** @author nakamura-to */
   protected class OutReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
@@ -394,7 +388,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  /** @author nakamura-to */
   protected class InOutCtTypeVisitor
       extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
 
@@ -423,7 +416,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  /** @author nakamura-to */
   protected class InOutReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 

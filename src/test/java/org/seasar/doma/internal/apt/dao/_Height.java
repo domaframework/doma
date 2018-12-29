@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-/** @author taedium */
 public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
 
   private _Height() {

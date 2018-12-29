@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.function.Function;
 import org.seasar.doma.internal.WrapException;
 
-/** @author taedium */
 public final class ClassUtil {
 
   public static <T> T newInstance(Class<T> clazz) throws WrapException {

@@ -8,7 +8,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
-/** @author taedium */
 public class EmbeddableCtType extends AbstractCtType {
 
   public EmbeddableCtType(TypeMirror type, ProcessingEnvironment env) {

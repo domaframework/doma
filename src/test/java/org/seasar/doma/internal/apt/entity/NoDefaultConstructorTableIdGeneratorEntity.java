@@ -6,7 +6,6 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.TableGenerator;
 
-/** @author taedium */
 @Entity
 public class NoDefaultConstructorTableIdGeneratorEntity {
 

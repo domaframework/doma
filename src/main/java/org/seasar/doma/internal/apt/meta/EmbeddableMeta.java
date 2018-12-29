@@ -8,7 +8,6 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.mirror.EmbeddableMirror;
 
-/** @author nakamura-to */
 public class EmbeddableMeta implements TypeElementMeta {
 
   protected final EmbeddableMirror embeddableMirror;

@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.meta;
 
-/** @author taedium */
 public interface QueryMetaVisitor<R, P> {
 
   R visitSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, P p);

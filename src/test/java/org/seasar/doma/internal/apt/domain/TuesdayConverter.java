@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
-/** @author taedium */
 // @ExternalDomain
 public class TuesdayConverter implements DomainConverter<Tuesday, String> {
 

@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.jdbc.mock;
 
-/** @author taedium */
 public class RegisterOutParameter {
 
   protected final int index;

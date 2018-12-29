@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.dialect;
 import junit.framework.TestCase;
 import org.seasar.doma.expr.ExpressionFunctions;
 
-/** @author taedium */
 public class Mssql2008DialectTest extends TestCase {
 
   public void testExpressionFunctions_prefix() throws Exception {

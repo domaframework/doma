@@ -338,7 +338,6 @@ public class QueryParameterMeta {
     return element.getAnnotation(annotationType) != null;
   }
 
-  /** @author nakamura-to */
   protected class NullableCtTypeVisitor
       extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
@@ -357,7 +356,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class BindableCtTypeVisitor
       extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
@@ -424,7 +422,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class IterableElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -462,7 +459,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class OptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -500,7 +496,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class FunctionTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -548,7 +543,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class CollectorTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -586,7 +580,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class ReferenceReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 

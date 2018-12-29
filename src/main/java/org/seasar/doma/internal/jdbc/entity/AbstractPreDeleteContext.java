@@ -5,7 +5,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
-/** @author taedium */
 public class AbstractPreDeleteContext<E> extends AbstractEntityListenerContext<E>
     implements PreDeleteContext<E> {
 

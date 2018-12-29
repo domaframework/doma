@@ -9,7 +9,6 @@ import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   protected EntityCtType entityCtType;

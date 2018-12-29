@@ -2,7 +2,6 @@ package org.seasar.doma.message;
 
 import junit.framework.TestCase;
 
-/** @author taedium */
 public class MessageTest extends TestCase {
 
   public void testDOMA0001() throws Exception {

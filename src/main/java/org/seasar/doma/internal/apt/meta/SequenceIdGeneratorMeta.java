@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
 
-/** @author taedium */
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
   protected final SequenceGeneratorMirror sequenceGeneratorMirror;

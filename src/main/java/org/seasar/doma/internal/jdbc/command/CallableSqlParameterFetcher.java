@@ -25,7 +25,6 @@ import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class CallableSqlParameterFetcher {
 
   protected final ModuleQuery query;

@@ -19,7 +19,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 import org.seasar.doma.message.Message;
 
-/** @author taedium */
 public class AutoFunctionQueryMetaFactory
     extends AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
@@ -58,7 +57,6 @@ public class AutoFunctionQueryMetaFactory
     return returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta, returnMeta), false);
   }
 
-  /** @author nakamura-to */
   protected class ReturnCtTypeVisitor
       extends SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 
@@ -138,7 +136,6 @@ public class AutoFunctionQueryMetaFactory
     }
   }
 
-  /** @author nakamura-to */
   protected class IterableElementCtTypeVisitor
       extends SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 

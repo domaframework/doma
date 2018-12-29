@@ -2,7 +2,6 @@ package org.seasar.doma.internal.expr.node;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-/** @author taedium */
 public class ParensNode implements ExpressionNode {
 
   protected final ExpressionLocation location;

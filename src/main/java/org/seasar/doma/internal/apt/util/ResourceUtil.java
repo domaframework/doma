@@ -18,7 +18,6 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import org.seasar.doma.internal.apt.Options;
 
-/** @author nakamura */
 public class ResourceUtil {
 
   public static FileObject getResource(String relativePath, ProcessingEnvironment env)
