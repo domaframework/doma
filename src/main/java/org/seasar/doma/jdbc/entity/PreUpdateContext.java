@@ -2,77 +2,73 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Method;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * 更新処理の前処理のコンテキストです。
+ * A context for a pre process of an update.
  *
- * @param <E> エンティティの型
- * @author taedium
- * @since 1.11.0
+ * @param <E> the entity type
  */
 public interface PreUpdateContext<E> {
 
   /**
-   * エンティティが変更されたかどうかを返します。
+   * Whether the entity is changed.
    *
-   * <p>{@link Update#sqlFile()} に {@code false} が指定されたDaoメソッドによる実行でない場合、常に {@code true}を返します。
+   * <p>This method always returns {@code true}, when {@link Update#sqlFile()} returns {@code true}.
    *
-   * @return エンティティが変更されたかどうか
+   * @return {@code true} if the entity is changed
    */
   public boolean isEntityChanged();
 
   /**
-   * プロパティが変更されたかどうかを返します。
+   * Whether the entity property is changed.
    *
-   * <p>{@link Update#sqlFile()} に {@code false} が指定されたDaoメソッドによる実行でない場合、常に {@code true}を返します。
+   * <p>This method always returns {@code true}, when {@link Update#sqlFile()} returns {@code true}.
    *
-   * @param propertyName プロパティ名
-   * @return プロパティが変更されているかどうか
-   * @exception EntityPropertyNotDefinedException プロパティがエンティティに定義されていない場合
+   * @param propertyName the name of property
+   * @return {@code true} if the property is changed
+   * @exception EntityPropertyNotDefinedException if the property is not defined in the entity
+   * @see OriginalStates
    */
   public boolean isPropertyChanged(String propertyName);
 
   /**
-   * エンティティのメタタイプを返します。
+   * Returns the entity description.
    *
-   * @return エンティティのメタタイプ
+   * @return the entity description
    */
   public EntityType<?> getEntityType();
 
   /**
-   * {@link Update} が注釈されたメソッドを返します。
+   * The method that is annotated with {@link Update}.
    *
-   * @return メソッド
-   * @since 1.27.0
+   * @return the method
    */
   public Method getMethod();
 
   /**
-   * JDBCに関する設定を返します。
+   * Returns the configuration.
    *
-   * @return JDBCに関する設定
-   * @since 1.27.0
+   * @return the configuration
    */
   public Config getConfig();
 
   /**
-   * 新しいエンティティを返します。
+   * Returns the new entity.
    *
-   * @return 新しいエンティティ
-   * @since 1.35.0
+   * @return the new entity
    */
   public E getNewEntity();
 
   /**
-   * 新しいエンティティを設定します。
+   * Sets the new entity.
    *
-   * <p>このメソッドは、 {@link PreUpdateContext#getEntityType()} に対応するエンティティがイミュータブルである場合にのみ利用してください。
+   * <p>This method is available, when the entity is immutable.
    *
-   * @param newEntity エンティティ
-   * @throws DomaNullPointerException 引数が {@code null} の場合
-   * @since 1.34.0
+   * @param newEntity the entity
+   * @throws DomaNullPointerException if {@code newEntity} is {@code null}
    */
   public void setNewEntity(E newEntity);
 }

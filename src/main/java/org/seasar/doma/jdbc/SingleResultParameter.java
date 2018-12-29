@@ -1,5 +1,5 @@
 package org.seasar.doma.jdbc;
 
-/** @author nakamura-to */
+/** A single result parameter. */
 public interface SingleResultParameter<BASIC, RESULT>
     extends ResultParameter<RESULT>, JdbcMappable<BASIC> {}

@@ -3,24 +3,21 @@ package org.seasar.doma;
 import org.seasar.doma.message.Message;
 
 /**
- * {@code null} でないことを期待されたパラメータへの引数が {@code null} の場合にスローされる例外です。
+ * Thrown to indicate that an argument is {@code null} and it does not allow in the method.
  *
- * <p>{@link NullPointerException} とは別にこの例外を定義しているのは、 {@literal Doma}のバグによる例外なのか、 {@literal
- * Doma}のAPIの事前条件を満たしていないことによる例外なのかを判別しやすくするためです。
- *
- * @author taedium
+ * <p>This class makes it easy to distinguish Doma's specifications from Doma's bugs.
  */
 public class DomaNullPointerException extends DomaException {
 
   private static final long serialVersionUID = 1L;
 
-  /** {@code null} であるパラメータの名前 */
+  /** the parameter name that corresponds to the argument */
   protected final String parameterName;
 
   /**
-   * インスタンスを構築します。
+   * Constructs an instance.
    *
-   * @param parameterName {@code null} であるパラメータの名前
+   * @param parameterName the parameter name that corresponds to the argument
    */
   public DomaNullPointerException(String parameterName) {
     super(Message.DOMA0001, parameterName);
@@ -28,9 +25,9 @@ public class DomaNullPointerException extends DomaException {
   }
 
   /**
-   * {@code null} であるパラメータの名前を返します。
+   * Returns the parameter name that corresponds to the argument.
    *
-   * @return {@code null} であるパラメータの名前
+   * @return the parameter name
    */
   public String getParameterName() {
     return parameterName;

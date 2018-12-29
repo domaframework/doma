@@ -1,45 +1,38 @@
 package org.seasar.doma.jdbc;
 
-/**
- * SQLの種別を示します。
- *
- * @author taedium
- */
+/** Defines the SQL kinds. */
 public enum SqlKind {
 
-  /** 検索 */
+  /** select */
   SELECT,
 
-  /** 挿入 */
+  /** insert */
   INSERT,
 
-  /** 更新 */
+  /** update */
   UPDATE,
 
-  /** 削除 */
+  /** delete */
   DELETE,
 
-  /** バッチ挿入 */
+  /** batch insert */
   BATCH_INSERT,
 
-  /** バッチ更新 */
+  /** batch update */
   BATCH_UPDATE,
 
-  /** バッチ削除 */
+  /** batch delete */
   BATCH_DELETE,
 
-  /** ストアドプロシージャー */
+  /** stored procedure */
   PROCEDURE,
 
-  /** ストアドファンクション */
+  /** stored function */
   FUNCTION,
 
-  /**
-   * スクリプト
-   *
-   * @since 1.7.0
-   */
+  /** script */
   SCRIPT,
 
+  /** sql processor */
   SQL_PROCESSOR
 }

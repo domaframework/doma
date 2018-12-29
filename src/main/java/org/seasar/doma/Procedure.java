@@ -11,11 +11,9 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 
 /**
- * ストアドプロシージャーの呼び出しを示します。
+ * Indicates a stored procedure call.
  *
- * <p>このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -26,16 +24,15 @@ import org.seasar.doma.jdbc.UnknownColumnException;
  * }
  * </pre>
  *
- * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * The method may throw following exceptions:
  *
  * <ul>
- *   <li>{@link DomaNullPointerException} パラメータに {@code null}を渡した場合
- *   <li>{@link UnknownColumnException} {@code ResultSet}
- *       を使用していて結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
- *   <li>{@link JdbcException} JDBCに関する例外が発生した場合
+ *   <li>{@link DomaNullPointerException} if any of the method parameters are {@code null}
+ *   <li>{@link UnknownColumnException} if {@code ResultSet} is used and a column is not found in
+ *       the result set
+ *   <li>{@link JdbcException} if a JDBC related error occurs
  * </ul>
  *
- * @author taedium
  * @see In
  * @see InOut
  * @see Out
@@ -46,60 +43,47 @@ import org.seasar.doma.jdbc.UnknownColumnException;
 @DaoMethod
 public @interface Procedure {
 
-  /**
-   * カタログ名を返します。
-   *
-   * @return カタログ名
-   */
+  /** @return the catalog name. */
   String catalog() default "";
 
-  /**
-   * スキーマ名を返します。
-   *
-   * @return スキーマ名
-   */
+  /** @return the schema name. */
   String schema() default "";
 
   /**
-   * ストアドプロシージャーの名前を返します。
+   * The stored procedure name.
    *
-   * <p>指定しない場合、注釈されたメソッドの名前が使用されます。
+   * <p>If not specified, the annotated method name is used.
    *
-   * @return ストアドプロシージャーの名前
+   * @return the stored procedure name
    */
   String name() default "";
 
   /**
-   * カタログ、スキーマ、ストアドプロシージャー名を引用符で囲むかどうかを返します。
-   *
-   * @return 引用符で囲むかどうか
+   * @return whether quotation marks are used for the catalog name, the schema name and the stored
+   *     procedure name.
    */
   boolean quote() default false;
 
   /**
-   * クエリタイムアウト（秒）を返します。
+   * The query timeout in seconds.
    *
-   * <p>指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
+   * <p>If not specified, {@link Config#getQueryTimeout()} is used.
    *
-   * @return クエリタイムアウト（秒）
    * @see Statement#setQueryTimeout(int)
+   * @return the query timeout
    */
   int queryTimeout() default -1;
 
   /**
-   * 結果セットを {@code Map<Object, String>} もしくは {@code List<Map<Object, String>>}
-   * として取得する場合のマップのキーに対するネーミング規約を返します。
+   * The naming convention for keys of {@code Map<Object, String>}.
    *
-   * @return ネーミング規約
-   * @since 1.7.0
+   * <p>This value is used only if a result set is fetched as {@code Map<Object, String>} or {@code
+   * List<Map<Object, String>>}.
+   *
+   * @return the naming convention
    */
   MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 
-  /**
-   * SQLのログの出力形式を返します。
-   *
-   * @return SQLログの出力形式
-   * @since 2.0.0
-   */
+  /** @return the output format of SQL logs. */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

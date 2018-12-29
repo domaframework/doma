@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 
-/** @author taedium */
 public class AutoProcedureQuery extends AutoModuleQuery implements ProcedureQuery {
 
   @Override

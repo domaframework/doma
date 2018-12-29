@@ -5,16 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/**
- * SQLの解析結果をメモリが許す限り最大限にキャッシュする {@link SqlFileRepository} の実装です。
- *
- * @author taedium
- */
+/** An SQL file repository that caches the results of SQL parsing without limit. */
 public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
 
-  /** SQLのパスをキー、SQLファイルを値とするマップです。 */
-  protected final ConcurrentMap<String, SqlFile> sqlFileMap =
-      new ConcurrentHashMap<String, SqlFile>(200);
+  protected final ConcurrentMap<String, SqlFile> sqlFileMap = new ConcurrentHashMap<>(200);
 
   @Override
   protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {

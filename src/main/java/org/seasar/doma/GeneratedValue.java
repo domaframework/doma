@@ -6,18 +6,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 識別子を自動生成する方法を示します。
+ * Indicates a strategy to generate identifiers.
  *
- * <p>このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。 このアノテーションは {@link Id} と併わせて使用しなければいけません。
+ * <p>The annotated field must be a member of an {@link Entity} annotated class and the field must
+ * be annotated with {@link Id}.
  *
- * <p>{@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
+ * <p>The additional annotation is required according to the {@code strategy} value:
  *
  * <ul>
- *   <li>{@link GenerationType#SEQUENCE} を指定した場合、{@link SequenceGenerator} が必要です。
- *   <li>{@link GenerationType#TABLE} を指定した場合、 {@link TableGenerator} が必要です。
+ *   <li>the {@link SequenceGenerator} annotation is required, if {@link GenerationType#SEQUENCE} is
+ *       specified.
+ *   <li>the {@link TableGenerator} annotation is required, if {@link GenerationType#TABLE} is
+ *       specified.
  * </ul>
- *
- * <h3>例:</h3>
  *
  * <pre>
  * &#064;Entity
@@ -32,7 +33,6 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * @author taedium
  * @see GenerationType
  * @see SequenceGenerator
  * @see TableGenerator
@@ -41,10 +41,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GeneratedValue {
 
-  /**
-   * 識別子を自動生成する方法を返します。
-   *
-   * @return 識別子を自動生成する方法
-   */
+  /** @return the strategy how to generate identifiers. */
   GenerationType strategy();
 }

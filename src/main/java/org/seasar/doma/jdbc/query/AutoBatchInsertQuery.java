@@ -24,10 +24,6 @@ import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.ReservedIdProvider;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @param <ENTITY> エンティティ
- */
 public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     implements BatchInsertQuery {
 

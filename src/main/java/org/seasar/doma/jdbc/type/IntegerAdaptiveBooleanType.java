@@ -1,16 +1,8 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
-/**
- * {@link Boolean} を JDBCの {@link Integer} に適応させる {@link JdbcType} の実装です。
- *
- * @author taedium
- */
+/** A JDBC type for {@link Types#INTEGER} and {@link Boolean}. */
 public class IntegerAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
 
   public IntegerAdaptiveBooleanType() {

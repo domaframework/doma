@@ -1,17 +1,8 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Types;
+import java.sql.*;
 
-/**
- * {@link Time} 用の {@link JdbcType} の実装です。
- *
- * @author taedium
- */
+/** A JDBC type for {@link Types#TIME} and {@link Time}. */
 public class TimeType extends AbstractJdbcType<Time> {
 
   public TimeType() {

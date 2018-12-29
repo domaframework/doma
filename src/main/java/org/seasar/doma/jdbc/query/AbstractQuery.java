@@ -6,10 +6,6 @@ import java.lang.reflect.Method;
 import org.seasar.doma.jdbc.CommentContext;
 import org.seasar.doma.jdbc.Config;
 
-/**
- * @author nakamura-to
- * @since 2.1.0
- */
 public abstract class AbstractQuery implements Query {
 
   protected String callerClassName;

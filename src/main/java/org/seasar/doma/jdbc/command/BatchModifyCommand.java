@@ -18,10 +18,6 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchModifyQuery;
 
-/**
- * @author taedium
- * @param <QUERY> クエリ
- */
 public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> implements Command<int[]> {
 
   protected final QUERY query;

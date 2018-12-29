@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 
-/** @author taedium */
 public interface Query {
 
   Sql<?> getSql();

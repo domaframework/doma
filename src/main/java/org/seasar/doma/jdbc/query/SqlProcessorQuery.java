@@ -12,7 +12,6 @@ import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author nakamura */
 public class SqlProcessorQuery extends AbstractQuery {
 
   protected final Map<String, Value> parameters = new HashMap<String, Value>();

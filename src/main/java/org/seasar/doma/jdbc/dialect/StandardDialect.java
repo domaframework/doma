@@ -34,6 +34,7 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogFormatter;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -69,33 +70,28 @@ import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.UtilDateWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * 標準の方言です。
- *
- * @author taedium
- */
+/** A standard implementation of {@link Dialect}. */
 public class StandardDialect implements Dialect {
 
-  /** 開始の引用符 */
+  /** the quotation mark of the start */
   protected static final char OPEN_QUOTE = '"';
 
-  /** 終了の引用符 */
+  /** the quotation mark of the end */
   protected static final char CLOSE_QUOTE = '"';
 
-  /** 一意制約違反を表す {@literal SQLState} のセット */
+  /** the set of {@literal SQLState} code that represents unique violation */
   protected static final Set<String> UNIQUE_CONSTRAINT_VIOLATION_STATE_CODES =
       new HashSet<String>(Arrays.asList("23", "27", "44"));
 
-  /** {@link Wrapper} をJDBCの型とマッピングするビジター */
+  /** the visitor that maps {@link Wrapper} to {@link JdbcType} */
   protected final JdbcMappingVisitor jdbcMappingVisitor;
 
-  /** SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター */
+  /** the visitor that maps {@link Wrapper} to {@link SqlLogFormatter} */
   protected final SqlLogFormattingVisitor sqlLogFormattingVisitor;
 
-  /** SQLのコメント式で利用可能な関数群 */
+  /** the aggregation of expression functions */
   protected final ExpressionFunctions expressionFunctions;
 
-  /** インスタンスを構築します。 */
   public StandardDialect() {
     this(
         new StandardJdbcMappingVisitor(),
@@ -103,11 +99,6 @@ public class StandardDialect implements Dialect {
         new StandardExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   */
   public StandardDialect(JdbcMappingVisitor jdbcMappingVisitor) {
     this(
         jdbcMappingVisitor,
@@ -115,11 +106,6 @@ public class StandardDialect implements Dialect {
         new StandardExpressionFunctions());
   }
 
-  /**
-   * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public StandardDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(
         new StandardJdbcMappingVisitor(),
@@ -127,11 +113,6 @@ public class StandardDialect implements Dialect {
         new StandardExpressionFunctions());
   }
 
-  /**
-   * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-   *
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public StandardDialect(ExpressionFunctions expressionFunctions) {
     this(
         new StandardJdbcMappingVisitor(),
@@ -139,25 +120,11 @@ public class StandardDialect implements Dialect {
         expressionFunctions);
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public StandardDialect(
       JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(jdbcMappingVisitor, sqlLogFormattingVisitor, new StandardExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と {@link ExpressionFunctions}
-   * を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public StandardDialect(
       JdbcMappingVisitor jdbcMappingVisitor,
       SqlLogFormattingVisitor sqlLogFormattingVisitor,
@@ -233,38 +200,15 @@ public class StandardDialect implements Dialect {
     return transformed;
   }
 
-  /**
-   * 集計を計算するSQLノードに変換します。
-   *
-   * @param sqlNode SQLノード
-   * @return 変換されたSQLノード
-   */
   protected SqlNode toCountCalculatingSqlNode(SqlNode sqlNode) {
     return sqlNode;
   }
 
-  /**
-   * ページング用のSQLノードに変換します。
-   *
-   * @param sqlNode SQLノード
-   * @param offset オフセット
-   * @param limit リミット
-   * @return 変換されたSQLノード
-   */
   protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
     StandardPagingTransformer transformer = new StandardPagingTransformer(offset, limit);
     return transformer.transform(sqlNode);
   }
 
-  /**
-   * 悲観的排他制御用のSQLノードに変換します。
-   *
-   * @param sqlNode SQLノード
-   * @param forUpdateType 悲観的排他制御の種別
-   * @param waitSeconds ロック取得の待機時間（秒）
-   * @param aliases ロック対象のカラムやテーブルのエイリアス
-   * @return 変換されたSQLノード
-   */
   protected SqlNode toForUpdateSqlNode(
       SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
     StandardForUpdateTransformer transformer =
@@ -280,12 +224,6 @@ public class StandardDialect implements Dialect {
     return toCountGettingSqlNode(sqlNode);
   }
 
-  /**
-   * 集計取得用のSQLノードに変換します。
-   *
-   * @param sqlNode SQLノード
-   * @return 変換されたSQLノード
-   */
   protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
     StandardCountGettingTransformer transformer = new StandardCountGettingTransformer();
     return transformer.transform(sqlNode);
@@ -304,34 +242,16 @@ public class StandardDialect implements Dialect {
     return false;
   }
 
-  /**
-   * {@literal SQLState} を返します。
-   *
-   * @param sqlException SQL例外
-   * @return ステータスコード
-   */
   protected String getSQLState(SQLException sqlException) {
     SQLException cause = getCauseSQLException(sqlException);
     return cause.getSQLState();
   }
 
-  /**
-   * ベンダー固有のエラーコードを返します。
-   *
-   * @param sqlException SQL例外
-   * @return エラーコード
-   */
   protected int getErrorCode(SQLException sqlException) {
     SQLException cause = getCauseSQLException(sqlException);
     return cause.getErrorCode();
   }
 
-  /**
-   * チェーンされたもっとも上位の {@link SQLException} を返します。
-   *
-   * @param sqlException SQL例外
-   * @return 原因となったより上位のSQL例外
-   */
   protected SQLException getCauseSQLException(SQLException sqlException) {
     SQLException cause = sqlException;
     for (Throwable t : sqlException) {
@@ -474,11 +394,6 @@ public class StandardDialect implements Dialect {
     return AutoGeneratedKeysType.DEFAULT;
   }
 
-  /**
-   * 標準の {@link JdbcMappingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class StandardJdbcMappingVisitor implements JdbcMappingVisitor {
 
     @Override
@@ -633,11 +548,6 @@ public class StandardDialect implements Dialect {
     }
   }
 
-  /**
-   * 標準の {@link SqlLogFormattingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class StandardSqlLogFormattingVisitor implements SqlLogFormattingVisitor {
 
     @Override
@@ -785,50 +695,39 @@ public class StandardDialect implements Dialect {
     }
   }
 
-  /**
-   * 標準の {@link ExpressionFunctions} の実装です。
-   *
-   * @author taedium
-   */
+  /** A standard implementation of {@link ExpressionFunctions}. */
   public static class StandardExpressionFunctions implements ExpressionFunctions {
 
-    /** デフォルトのエスケープ文字 */
+    /** the default escape character */
     private static char DEFAULT_ESCAPE_CHAR = '$';
 
-    /** デフォルトのワイルドカード */
+    /** the default wild card characters */
     private static final char[] DEFAULT_WILDCARDS = {'%', '_'};
 
-    /** エスケープ文字 */
+    /** the escape character for the SQL LIKE operator */
     protected final char escapeChar;
 
-    /** ワイルドカード */
+    /** the wild card characters for the SQL LIKE operator */
     protected final char[] wildcards;
 
-    /** デフォルトのワイルドカード置換パターン */
+    /** the default pattern for escape wild card characters */
     protected final Pattern defaultWildcardReplacementPattern;
 
-    /** デフォルトの置換文字列正規表現 */
+    /** the default replacement string for wild card characters */
     protected final String defaultReplacement;
 
-    /** コンストラクタを構築します。 */
     protected StandardExpressionFunctions() {
       this(DEFAULT_WILDCARDS);
     }
 
-    /**
-     * ワイルドカードを指定してコンストラクタを構築します。
-     *
-     * @param wildcards ワイルドカード
-     */
+    /** @param wildcards the wild card characters for the SQL LIKE operator */
     protected StandardExpressionFunctions(char[] wildcards) {
       this(DEFAULT_ESCAPE_CHAR, wildcards);
     }
 
     /**
-     * エスケープ文字とワイルドカードを指定してコンストラクタを構築します。
-     *
-     * @param escapeChar エスケープ文字
-     * @param wildcards ワイルドカード
+     * @param escapeChar the escape character for the SQL LIKE operator
+     * @param wildcards the wild card characters for the SQL LIKE operator
      */
     protected StandardExpressionFunctions(char escapeChar, char[] wildcards) {
       this.escapeChar = escapeChar;
@@ -839,12 +738,10 @@ public class StandardDialect implements Dialect {
     }
 
     /**
-     * エスケープ文字とワイルドカードを指定してコンストラクタを構築します。
-     *
-     * @param escapeChar エスケープ文字
-     * @param wildcards ワイルドカード
-     * @param defaultWildcardReplacementPattern デフォルトのワイルドカード置換パターン
-     * @param defaultReplacement デフォルトのワイルドカード置換文字列正規表現
+     * @param escapeChar the escape character for the SQL LIKE operator
+     * @param wildcards the wild card characters for the SQL LIKE operator
+     * @param defaultWildcardReplacementPattern the default pattern for escape wild card characters
+     * @param defaultReplacement the default replacement string for wild card characters
      */
     protected StandardExpressionFunctions(
         char escapeChar,
@@ -931,11 +828,11 @@ public class StandardDialect implements Dialect {
     }
 
     /**
-     * 入力に含まれるワイルドカードをエスケープします。
+     * Escapes wild card characters.
      *
-     * @param input 入力
-     * @param escapeChar エスケープ文字
-     * @return エスケープされた文字列
+     * @param input the target string for escaping
+     * @param escapeChar the escape character
+     * @return the escaped string
      */
     protected String escapeWildcard(CharSequence input, char escapeChar) {
       Pattern pattern = createWildcardReplacementPattern(escapeChar, wildcards);
@@ -944,12 +841,12 @@ public class StandardDialect implements Dialect {
     }
 
     /**
-     * ワイルドカードを正規表現でエスケープします。
+     * Escapes wild card characters with the regular expression.
      *
-     * @param pattern パターン
-     * @param input 入力
-     * @param replacement 置換文字列正規表現
-     * @return エスケープされた文字列
+     * @param pattern the regular expression pattern
+     * @param input the target string for escaping
+     * @param replacement the replacement string
+     * @return the escaped string
      */
     protected String escapeWildcard(Pattern pattern, CharSequence input, String replacement) {
       Matcher matcher = pattern.matcher(input);
@@ -1056,11 +953,11 @@ public class StandardDialect implements Dialect {
     }
 
     /**
-     * ワイルドカード置換パターンを作成します。
+     * Creates the regular expression pattern that is represents the wild card characters .
      *
-     * @param escapeChar エスケープ文字
-     * @param wildcards ワイルドカード
-     * @return パターン
+     * @param escapeChar the escape character
+     * @param wildcards the wild card character
+     * @return the pattern
      */
     protected Pattern createWildcardReplacementPattern(char escapeChar, char[] wildcards) {
       StringBuilder buf = new StringBuilder();
@@ -1080,10 +977,10 @@ public class StandardDialect implements Dialect {
     }
 
     /**
-     * ワイルドカード置換文字列正規表現を作成します。
+     * Create the replacement string that replaces wild card characters.
      *
-     * @param escapeChar エスケープ
-     * @return ワイルドカード置換文字列正規表現
+     * @param escapeChar the escape character
+     * @return the replacement string
      */
     protected String createWildcardReplacement(char escapeChar) {
       return Matcher.quoteReplacement(String.valueOf(escapeChar)) + "$0";
@@ -1110,21 +1007,16 @@ public class StandardDialect implements Dialect {
     }
   }
 
-  /**
-   * 標準の {@link ScriptBlockContext} の実装です。
-   *
-   * @author taedium
-   * @since 1.7.0
-   */
+  /** A standard implementation of {@link ScriptBlockContext}. */
   public static class StandardScriptBlockContext implements ScriptBlockContext {
 
-    /** ブロックの開始を表すキーワードの連なりのリスト */
+    /** the key wards that represents the start of a block */
     protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<List<String>>();
 
-    /** 追加されたキーワードの連なり */
+    /** the key words */
     protected List<String> keywords = new ArrayList<String>();
 
-    /** ブロックの内側の場合{@code true} */
+    /** {@code true} if this context is inside of a block */
     protected boolean inBlock;
 
     @Override
@@ -1135,7 +1027,7 @@ public class StandardDialect implements Dialect {
       }
     }
 
-    /** ブロックの内側かどうかチェックします。 */
+    /** Whether this context is inside of a block. */
     protected void check() {
       for (List<String> startKeywords : sqlBlockStartKeywordsList) {
         if (startKeywords.size() > keywords.size()) {

@@ -9,11 +9,9 @@ import java.sql.Connection;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * {@link Array} のインスタンスを生成することを示します。
+ * Indicates to create an {@link Array} instance.
  *
- * <p>このアノテーションが注釈されるメソッドは、 Daoインタフェースのメンバでなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -24,14 +22,13 @@ import org.seasar.doma.jdbc.JdbcException;
  * }
  * </pre>
  *
- * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * The method may throw following exceptions:
  *
  * <ul>
- *   <li>{@link DomaNullPointerException} パラメータに {@code null}を渡した場合
- *   <li>{@link JdbcException} JDBCに関する例外が発生した場合
+ *   <li>{@link DomaNullPointerException} if any of the method parameters are {@code null}
+ *   <li>{@link JdbcException} if a JDBC related error occurs
  * </ul>
  *
- * @author taedium
  * @see Connection#createArrayOf(String, Object[])
  */
 @Target(ElementType.METHOD)
@@ -40,11 +37,12 @@ import org.seasar.doma.jdbc.JdbcException;
 public @interface ArrayFactory {
 
   /**
-   * 配列の要素がマッピングされる型のSQL名を返します。。
+   * The SQL name of the type the elements of the array map to.
    *
-   * <p>この値は、 {@link Connection#createArrayOf(String, Object[])} の最初のパラメータに渡されます。
+   * <p>The value is passed as the first argument to {@link Connection#createArrayOf(String,
+   * Object[])}.
    *
-   * @return 配列の要素がマッピングされる型のSQL名
+   * @return the type name
    */
   String typeName();
 }

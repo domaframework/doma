@@ -8,7 +8,6 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
 
-/** @author taedium */
 public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
 
   public BatchInsertCommand(BatchInsertQuery query) {

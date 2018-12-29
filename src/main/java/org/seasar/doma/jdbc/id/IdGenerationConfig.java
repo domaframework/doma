@@ -10,39 +10,19 @@ import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-/**
- * 識別子の生成に関する設定です。
- *
- * @author taedium
- */
+/** A configuration for the identity generation. */
 public class IdGenerationConfig {
 
-  /** JDBCの設定 */
   protected final Config config;
 
-  /** 識別子が属するエンティティ */
   protected final EntityType<?> entityType;
 
-  /** 識別子プロバイダ */
   protected final IdProvider idProvider;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param config JDBCの設定
-   * @param entityType 識別子が属するエンティティ
-   */
   public IdGenerationConfig(Config config, EntityType<?> entityType) {
     this(config, entityType, new UnavailableIdProvider());
   }
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param config JDBCの設定
-   * @param entityType 識別子が属するエンティティ
-   * @param idProvider 識別子プロバイダ
-   */
   public IdGenerationConfig(Config config, EntityType<?> entityType, IdProvider idProvider) {
     assertNotNull(config, entityType, idProvider);
     this.config = config;

@@ -14,10 +14,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 
-/**
- * @author taedium
- * @param <ENTITY> エンティティ
- */
 public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements DeleteQuery {
 
   protected boolean versionIgnored;

@@ -1,19 +1,18 @@
 package org.seasar.doma.wrapper;
 
 /**
- * {@link Number} のラッパーです。
+ * A wrapper for the {@link Number} class.
  *
- * @author taedium
- * @param <BASIC> 値の型
+ * @param <BASIC> The number type subclass
  */
 public interface NumberWrapper<BASIC extends Number> extends Wrapper<BASIC> {
 
   @Override
   void set(Number value);
 
-  /** 値をインクリメントします。 */
+  /** Increments this object. */
   void increment();
 
-  /** 値をデクリメントします。 */
+  /** Decrements this object. */
   void decrement();
 }

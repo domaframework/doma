@@ -6,13 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 非永続化対象を示します。
+ * Indicates that the annotated field is not mapped to a column.
  *
- * <p>注釈されたフィールドは、テーブルのカラムに対応付けされません。一時的な値 を保持するのに適しています。
- *
- * <p>このアノテーションが注釈されるメソッドは、{@link Entity} が注釈されたインタフェースのメンバでなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
  * <pre>
  * &#064;Entity
@@ -24,8 +20,6 @@ import java.lang.annotation.Target;
  *     ...
  * }
  * </pre>
- *
- * @author taedium
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

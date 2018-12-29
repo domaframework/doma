@@ -9,9 +9,14 @@ import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 /**
- * エンティティクラスを示します。エンティティクラスのインスタンスは、テーブルもしくは結果セットのレコードを表現します。
+ * Indicates an entity class.
  *
- * <h3>例: ミュータブルなエンティティ</h3>
+ * <p>The entity class represents a database relation (table or SQL result set). An instance of the
+ * class represents a row.
+ *
+ * <p>The entity class can be defined as either mutable or immutable.
+ *
+ * <p>The mutable entity:
  *
  * <pre>
  * &#064;Entity
@@ -32,7 +37,7 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  * }
  * </pre>
  *
- * <h3>例: イミュータブルなエンティティ</h3>
+ * The immutable entity:
  *
  * <pre>
  * &#064;Entity(immutable = true)
@@ -58,11 +63,8 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  * }
  * </pre>
  *
- * <p>注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
+ * <p>The entity instance is not required to be thread safe.
  *
- * <p>
- *
- * @author taedium
  * @see Table
  * @see Column
  * @see Id
@@ -75,50 +77,35 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
 public @interface Entity {
 
   /**
-   * リスナーを返します。
+   * The entity listener class.
    *
-   * <p>この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class.
    *
-   * <ul>
-   *   <li>継承している場合、親エンティティクラスの設定を引き継ぎます
-   *   <li>継承していない場合、デフォルトの設定を使用します
-   * </ul>
+   * <p>An instance of the entity lister class is instantiated only once per entity class.
    *
-   * <p>リスナーは、エンティティクラスごとに1つだけインスタンス化されます。
-   *
-   * @return リスナー
+   * @return the entity listener class
    */
   @SuppressWarnings("rawtypes")
   Class<? extends EntityListener> listener() default NullEntityListener.class;
 
   /**
-   * ネーミング規約を返します。
+   * The naming convention that maps the entity class to the database table.
    *
-   * <p>この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class.
    *
-   * <ul>
-   *   <li>継承している場合、親エンティティクラスの設定を引き継ぎます
-   *   <li>継承していない場合、デフォルトの設定を使用します
-   * </ul>
-   *
-   * @return ネーミング規約
+   * @return the naming convention
    */
   NamingType naming() default NamingType.NONE;
 
   /**
-   * イミュータブルかどうかを返します。
+   * Whether the entity class is immutable.
    *
-   * <p>この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class. The values must be consistent in the hierarchy.
    *
-   * <ul>
-   *   <li>継承している場合、親エンティティクラスの設定を引き継ぎます
-   *   <li>継承していない場合、デフォルトの設定を使用します
-   * </ul>
-   *
-   * <p>ただし、エンティティクラスの継承階層で {@code true} と {@code false} の混在はできません。
-   *
-   * @return イミュータブルの場合 {@code true}
-   * @since 1.34.0
+   * @return whether the entity class is immutable
    */
   boolean immutable() default false;
 }

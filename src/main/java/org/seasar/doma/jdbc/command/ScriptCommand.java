@@ -18,7 +18,6 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.ScriptQuery;
 
-/** @author taedium */
 public class ScriptCommand implements Command<Void> {
 
   protected final ScriptQuery query;

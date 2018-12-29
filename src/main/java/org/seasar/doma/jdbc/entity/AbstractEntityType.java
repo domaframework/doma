@@ -4,15 +4,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
 
-/**
- * {@link EntityType} の骨格実装です。
- *
- * @author taedium
- * @param <ENTITY> エンティティ
- */
 public abstract class AbstractEntityType<ENTITY> implements EntityType<ENTITY> {
 
-  /** インスタンスを構築します。 */
   protected AbstractEntityType() {}
 
   @Override

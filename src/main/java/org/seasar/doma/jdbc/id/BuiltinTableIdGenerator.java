@@ -18,30 +18,20 @@ import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
-/**
- * {@link TableIdGenerator} のデフォルトの実装です。
- *
- * @author taedium
- */
+/** The built-in implementation for {@link TableIdGenerator}. */
 public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     implements TableIdGenerator {
 
-  /** テーブルの完全修飾名 */
   protected String qualifiedTableName;
 
-  /** 主キーのカラム名 */
   protected String pkColumnName;
 
-  /** 主キーのカラムの値 */
   protected String pkColumnValue;
 
-  /** 識別子を保持するカラム名 */
   protected String valueColumnName;
 
-  /** 識別子を更新するSQL */
   protected PreparedSql updateSql;
 
-  /** 識別子を取得するSQL */
   protected PreparedSql selectSql;
 
   @Override
@@ -102,11 +92,6 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
             SqlLogType.FORMATTED);
   }
 
-  /**
-   * 識別子を更新するバインド変数つきSQLを返します。
-   *
-   * @return 識別子を更新するバインド変数つきSQL
-   */
   protected String createUpdateRawSql() {
     StringBuilder buf = new StringBuilder(100);
     buf.append("update ");
@@ -121,11 +106,6 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     return buf.toString();
   }
 
-  /**
-   * 識別子を更新するログ用SQLを返します。
-   *
-   * @return 識別子を更新するログ用SQL
-   */
   protected String createUpdateFormattedSql() {
     StringBuilder buf = new StringBuilder(100);
     buf.append("update ");
@@ -144,11 +124,6 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     return buf.toString();
   }
 
-  /**
-   * 識別子を取得するバインド変数つきSQLを返します。
-   *
-   * @return 識別子を取得するバインド変数つきSQL
-   */
   protected String createSelectRawSql() {
     StringBuilder buf = new StringBuilder(100);
     buf.append("select ");
@@ -161,11 +136,6 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     return new String(buf);
   }
 
-  /**
-   * 識別子を取得するログ用SQLを返します。
-   *
-   * @return 識別子を取得するログ用SQL
-   */
   protected String createSelectFormattedSql() {
     StringBuilder buf = new StringBuilder(100);
     buf.append("select ");
@@ -200,13 +170,6 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     }
   }
 
-  /**
-   * 識別子を更新します。
-   *
-   * @param config 識別子生成の設定
-   * @param sql 更新用SQL
-   * @throws JdbcException 識別子の更新に失敗した場合
-   */
   protected void updateId(IdGenerationConfig config, PreparedSql sql) {
     JdbcLogger logger = config.getJdbcLogger();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());
@@ -231,14 +194,6 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     }
   }
 
-  /**
-   * 識別子を取得します。
-   *
-   * @param config 識別子生成の設定
-   * @param sql 取得用SQL
-   * @return 取得した識別子
-   * @throws JdbcException 識別子の取得に失敗した場合
-   */
   protected long selectId(IdGenerationConfig config, PreparedSql sql) {
     JdbcLogger logger = config.getJdbcLogger();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());

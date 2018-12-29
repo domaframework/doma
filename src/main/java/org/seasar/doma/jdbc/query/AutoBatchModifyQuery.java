@@ -15,10 +15,6 @@ import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @param <ENTITY> エンティティ
- */
 public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
     implements BatchModifyQuery {
 

@@ -3,12 +3,7 @@ package org.seasar.doma.jdbc.entity;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-/**
- * エンティティプロパティへのアクセスに失敗した場合にスローされる例外です。
- *
- * @author taedium
- * @since 1.20.0
- */
+/** Thrown to indicate that the access to an entity property is failed. */
 public class EntityPropertyAccessException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
@@ -17,13 +12,6 @@ public class EntityPropertyAccessException extends JdbcException {
 
   private final String entityPropertyName;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param cause 原因
-   * @param entityClassName エンティティクラスの名前
-   * @param entityPropertyName エンティティプロパティの名前
-   */
   public EntityPropertyAccessException(
       Throwable cause, String entityClassName, String entityPropertyName) {
     super(Message.DOMA2208, cause, entityClassName, entityPropertyName, cause);
@@ -31,20 +19,10 @@ public class EntityPropertyAccessException extends JdbcException {
     this.entityPropertyName = entityPropertyName;
   }
 
-  /**
-   * エンティティクラスの名前を返します。
-   *
-   * @return エンティティクラスの名前
-   */
   public String getEntityClassName() {
     return entityClassName;
   }
 
-  /**
-   * エンティティプロパティの名前を返します。
-   *
-   * @return エンティティプロパティの名前
-   */
   public String getEntityPropertyName() {
     return entityPropertyName;
   }

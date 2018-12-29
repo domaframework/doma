@@ -7,7 +7,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 
-/** @author nakamura */
 public class SqlProcessorCommand<RESULT> implements Command<RESULT> {
 
   protected final SqlProcessorQuery query;

@@ -18,7 +18,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-/** @author taedium */
 public abstract class SqlFileModifyQuery extends AbstractQuery implements ModifyQuery {
 
   protected static final String[] EMPTY_STRINGS = new String[] {};

@@ -6,11 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 楽観的排他制御で使用されるバージョンを示します。
+ * Indicate a version property that is used for optimistic locking.
  *
- * <p>このアノテーションが注釈されるフィールドは、エンティティインタフェースのメンバでなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
  * <pre>
  * &#064;Entity
@@ -22,8 +20,6 @@ import java.lang.annotation.Target;
  *     int versionNo;
  * }
  * </pre>
- *
- * @author taedium
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

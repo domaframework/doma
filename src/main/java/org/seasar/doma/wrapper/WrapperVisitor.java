@@ -1,13 +1,12 @@
 package org.seasar.doma.wrapper;
 
 /**
- * {@link Wrapper} のビジターです。
+ * A visitor for the {@link Wrapper} interface.
  *
- * @author taedium
- * @param <R> 戻り値の型
- * @param <P> 1番目のパラメータの型
- * @param <Q> 2番目のパラメータの型
- * @param <TH> 例外の型
+ * @param <R> The result type
+ * @param <P> The first parameter type
+ * @param <Q> The second parameter type
+ * @param <TH> The error or exception type
  */
 public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
 

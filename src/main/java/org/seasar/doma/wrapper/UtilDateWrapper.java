@@ -3,24 +3,13 @@ package org.seasar.doma.wrapper;
 import java.util.Date;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link Date} のラッパーです。
- *
- * @author taedium
- * @since 1.9.0
- */
+/** A wrapper for the {@link Date} class. */
 public class UtilDateWrapper extends AbstractWrapper<Date> {
 
-  /** インスタンスを構築します。 */
   public UtilDateWrapper() {
     super(Date.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public UtilDateWrapper(Date value) {
     super(Date.class, value);
   }

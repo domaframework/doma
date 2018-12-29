@@ -40,22 +40,16 @@ import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.UtilDateWrapper;
-import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * Oracle 11g以前のバージョン用の方言です。
- *
- * @author taedium
- */
+/** A dialect for Oracle Database 11g and below. */
 public class Oracle11Dialect extends StandardDialect {
 
-  /** 一意制約違反を表すエラーコード */
+  /** the error code that represents unique violation */
   protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 1;
 
-  /** {@link ResultSet} の JDBC型 */
+  /** the JDBC type for {@link ResultSet} */
   protected static final JdbcType<ResultSet> RESULT_SET = new OracleResultSetType();
 
-  /** インスタンスを構築します。 */
   public Oracle11Dialect() {
     this(
         new Oracle11JdbcMappingVisitor(),
@@ -63,11 +57,6 @@ public class Oracle11Dialect extends StandardDialect {
         new Oracle11ExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   */
   public Oracle11Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
     this(
         jdbcMappingVisitor,
@@ -75,11 +64,6 @@ public class Oracle11Dialect extends StandardDialect {
         new Oracle11ExpressionFunctions());
   }
 
-  /**
-   * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public Oracle11Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(
         new Oracle11JdbcMappingVisitor(),
@@ -87,11 +71,6 @@ public class Oracle11Dialect extends StandardDialect {
         new Oracle11ExpressionFunctions());
   }
 
-  /**
-   * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-   *
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public Oracle11Dialect(ExpressionFunctions expressionFunctions) {
     this(
         new Oracle11JdbcMappingVisitor(),
@@ -99,25 +78,11 @@ public class Oracle11Dialect extends StandardDialect {
         expressionFunctions);
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public Oracle11Dialect(
       JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(jdbcMappingVisitor, sqlLogFormattingVisitor, new Oracle11ExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と {@link ExpressionFunctions}
-   * を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public Oracle11Dialect(
       JdbcMappingVisitor jdbcMappingVisitor,
       SqlLogFormattingVisitor sqlLogFormattingVisitor,
@@ -208,11 +173,6 @@ public class Oracle11Dialect extends StandardDialect {
     return new Oracle11ScriptBlockContext();
   }
 
-  /**
-   * Oracle用の {@link ResultSet} の {@link JdbcType} の実装です。
-   *
-   * @author taedium
-   */
   public static class OracleResultSetType extends AbstractResultSetType {
 
     protected static int CURSOR = -10;
@@ -222,11 +182,6 @@ public class Oracle11Dialect extends StandardDialect {
     }
   }
 
-  /**
-   * Oracle用の {@link JdbcMappingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class Oracle11JdbcMappingVisitor extends StandardJdbcMappingVisitor {
 
     @Override
@@ -236,33 +191,28 @@ public class Oracle11Dialect extends StandardDialect {
     }
   }
 
-  /**
-   * Oracle用の {@link SqlLogFormattingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class Oracle11SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
 
-    /** {@link Date}用日付フォーマッタ */
+    /** the formatter for {@link Date} */
     protected DateFormatter dateFormatter = new DateFormatter();
 
-    /** 時刻フォーマッタ */
+    /** the formatter for {@link Time} */
     protected TimeFormatter timeFormatter = new TimeFormatter();
 
-    /** タイムスタンプフォーマッタ */
+    /** the formatter for {@link Timestamp} */
     protected TimestampFormatter timestampFormatter = new TimestampFormatter();
 
-    /** {@link java.util.Date}用日付フォーマッタ */
+    /** the formatter for {@link java.util.Date} */
     protected UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
 
-    /** {@link LocalDate}用日付フォーマッタ */
+    /** the formatter for {@link LocalDate} */
     protected LocalDateFormatter localDateFormatter = new LocalDateFormatter(dateFormatter);
 
-    /** {@link LocalDateTime}用タイムスタンプフォーマッタ */
+    /** the formatter for {@link LocalDateTime} */
     protected LocalDateTimeFormatter localDateTimeFormatter =
         new LocalDateTimeFormatter(timestampFormatter);
 
-    /** {@link LocalTime}用時刻フォーマッタ */
+    /** the formatter for {@link LocalTime} */
     protected LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(timeFormatter);
 
     @Override
@@ -311,11 +261,7 @@ public class Oracle11Dialect extends StandardDialect {
       return p.apply(wrapper, utilDateFormatter);
     }
 
-    /**
-     * {@link Date} をdateリテラルへ変換するフォーマッタです。
-     *
-     * @author taedium
-     */
+    /** A formatter that converts a {@link Date} object to a date literal. */
     protected static class DateFormatter implements SqlLogFormatter<Date> {
 
       @Override
@@ -327,11 +273,7 @@ public class Oracle11Dialect extends StandardDialect {
       }
     }
 
-    /**
-     * timeリテラルへ変換するフォーマッタです。
-     *
-     * @author taedium
-     */
+    /** A formatter that converts a {@link Time} object to a time literal. */
     protected static class TimeFormatter implements SqlLogFormatter<Time> {
 
       @Override
@@ -343,11 +285,7 @@ public class Oracle11Dialect extends StandardDialect {
       }
     }
 
-    /**
-     * timestampリテラルへ変換するフォーマッタです。
-     *
-     * @author taedium
-     */
+    /** A formatter that converts a {@link Timestamp} object to a timestamp literal. */
     protected static class TimestampFormatter implements SqlLogFormatter<Timestamp> {
 
       @Override
@@ -359,12 +297,7 @@ public class Oracle11Dialect extends StandardDialect {
       }
     }
 
-    /**
-     * {@link java.util.Date} をdateリテラルへ変換するフォーマッタです。
-     *
-     * @author taedium
-     * @since 1.9.0
-     */
+    /** A formatter that converts a {@link java.util.Date} object to a date literal. */
     protected static class UtilDateFormatter implements SqlLogFormatter<java.util.Date> {
 
       @Override
@@ -377,12 +310,7 @@ public class Oracle11Dialect extends StandardDialect {
       }
     }
 
-    /**
-     * {@link LocalDate} をdateリテラルへ変換するフォーマッタです。
-     *
-     * @author nakamura-to
-     * @since 2.0.0
-     */
+    /** A formatter that converts a {@link LocalDate} object to a date literal. */
     protected static class LocalDateFormatter implements SqlLogFormatter<LocalDate> {
 
       protected final DateFormatter delegate;
@@ -401,12 +329,7 @@ public class Oracle11Dialect extends StandardDialect {
       }
     }
 
-    /**
-     * {@link LocalDateTime} をtimestampリテラルへ変換するフォーマッタです。
-     *
-     * @author nakamura-to
-     * @since 2.0.0
-     */
+    /** A formatter that converts a {@link LocalDateTime} object to a timestamp literal. */
     protected static class LocalDateTimeFormatter implements SqlLogFormatter<LocalDateTime> {
 
       protected final TimestampFormatter delegate;
@@ -425,12 +348,7 @@ public class Oracle11Dialect extends StandardDialect {
       }
     }
 
-    /**
-     * {@link LocalTime} をtimeリテラルへ変換するフォーマッタです。
-     *
-     * @author nakamura-to
-     * @since 2.0.0
-     */
+    /** A formatter that converts a {@link LocalTime} object to a time literal. */
     protected static class LocalTimeFormatter implements SqlLogFormatter<LocalTime> {
 
       protected final TimeFormatter delegate;
@@ -450,11 +368,6 @@ public class Oracle11Dialect extends StandardDialect {
     }
   }
 
-  /**
-   * Oracle用の {@link ExpressionFunctions} です。
-   *
-   * @author taedium
-   */
   public static class Oracle11ExpressionFunctions extends StandardExpressionFunctions {
 
     private static final char[] DEFAULT_WILDCARDS = {'%', '_', '％', '＿'};
@@ -472,12 +385,6 @@ public class Oracle11Dialect extends StandardDialect {
     }
   }
 
-  /**
-   * Oracle用の {@link ScriptBlockContext} です。
-   *
-   * @author taedium
-   * @since 1.7.0
-   */
   public static class Oracle11ScriptBlockContext extends StandardScriptBlockContext {
 
     protected Oracle11ScriptBlockContext() {

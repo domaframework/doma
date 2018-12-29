@@ -17,10 +17,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 
-/**
- * @author taedium
- * @param <ENTITY> エンティティ
- */
 public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     implements BatchUpdateQuery {
 

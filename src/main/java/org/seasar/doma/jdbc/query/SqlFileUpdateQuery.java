@@ -14,7 +14,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-/** @author taedium */
 public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuery {
 
   protected EntityHandler<?> entityHandler;

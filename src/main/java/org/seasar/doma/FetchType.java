@@ -1,24 +1,19 @@
 package org.seasar.doma;
 
-/**
- * 検索の結果セットを即時に全て取得するか、遅延で少しづつ取得するかを示します。
- *
- * @author nakamura-to
- * @since 2.0.0
- */
+/** Defines how to fetch rows from an SQL SELECT result set. */
 public enum FetchType {
 
   /**
-   * 即時に全て取得します。
+   * Fetches all rows immediately.
    *
-   * <p>メモリの使用量が増え、DBへの接続時間は短くなります。
+   * <p>More memory usage and less Database connected time.
    */
   EAGER,
 
   /**
-   * 遅延で少しづつ必要なだけを取得します。
+   * Fetches rows gradually.
    *
-   * <p>メモリの使用量は減り、DBへの接続時間は長くなります。
+   * <p>Less memory usage and more Database connected time.
    */
-  LAZY;
+  LAZY
 }

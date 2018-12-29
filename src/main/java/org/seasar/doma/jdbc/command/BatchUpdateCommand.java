@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.BatchUpdateQuery;
 
-/** @author taedium */
 public class BatchUpdateCommand extends BatchModifyCommand<BatchUpdateQuery> {
 
   public BatchUpdateCommand(BatchUpdateQuery query) {

@@ -4,24 +4,14 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link BigDecimal} のラッパーです。
- *
- * @author taedium
- */
+/** A wrapper for the {@link BigDecimal} class. */
 public class BigDecimalWrapper extends AbstractWrapper<BigDecimal>
     implements NumberWrapper<BigDecimal> {
 
-  /** インスタンスを構築します。 */
   public BigDecimalWrapper() {
     super(BigDecimal.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public BigDecimalWrapper(BigDecimal value) {
     super(BigDecimal.class, value);
   }

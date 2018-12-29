@@ -16,10 +16,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-/**
- * @author taedium
- * @param <ELEMENT> リストの要素
- */
 public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
     implements BatchUpdateQuery {
 

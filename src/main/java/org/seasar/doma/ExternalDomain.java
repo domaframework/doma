@@ -7,9 +7,12 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
- * 任意のクラスをドメインクラスとして扱うことを示します。
+ * Indicates to handle an arbitrary class as if it was a {@link Domain} annotated class.
  *
- * <h3>例:</h3>
+ * <p>The annotated class must implement {@link DomainConverter}.
+ *
+ * <p>In the bellow code, the SalaryConverter class handles the Salary class as a {@link Domain}
+ * annotated class:
  *
  * <pre>
  * &#064;ExternalDomain
@@ -25,10 +28,8 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  * }
  * </pre>
  *
- * 注釈されたクラスはスレッドセーフでなければいけません。
+ * <p>The annotated instance is required to be thread safe.
  *
- * @author taedium
- * @since 1.25.0
  * @see DomainConverter
  * @see DomainConverters
  */

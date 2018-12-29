@@ -1,19 +1,18 @@
 package org.seasar.doma;
 
 /**
- * アノテーションを注釈する対象です。
+ * Defines the locations where annotations may appear.
  *
- * @author taedium
  * @see Annotation
  */
 public enum AnnotationTarget {
 
-  /** クラス */
+  /** Class */
   CLASS,
 
-  /** コンストラクタ */
+  /** Constructor */
   CONSTRUCTOR,
 
-  /** コンストラクターのパラメータ */
+  /** Constructor's parameter */
   CONSTRUCTOR_PARAMETER,
 }

@@ -12,44 +12,35 @@ import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.message.Message;
 
-/**
- * {@link DomainType} のファクトリクラスです。
- *
- * @author taedium
- * @since 1.8.0
- */
+/** A factory for domain descriptions. */
 public final class DomainTypeFactory {
 
   /**
-   * {@link DomainType} のインスタンスを生成します。
+   * Creates the domain description.
    *
-   * @param <BASIC> 基本型
-   * @param <DOMAIN> ドメイン型
-   * @param domainClass ドメインクラス
-   * @return {@link DomainType} のインスタンス
-   * @throws DomaNullPointerException 引数が {@code null} の場合
-   * @throws DomaIllegalArgumentException ドメインクラスに {@link Domain} もしくは {@code EnumDomain}
-   *     が注釈されていない場合
-   * @throws DomainTypeNotFoundException ドメインクラスに対応するメタクラスが見つからない場合
-   * @since 2.0.0
+   * @param <BASIC> the basic type
+   * @param <DOMAIN> the domain type
+   * @param domainClass the domain class
+   * @return the domain description
+   * @throws DomaNullPointerException if any arguments are {@code null}
+   * @throws DomaIllegalArgumentException if the domain class is not annotated with {@link Domain}
+   * @throws DomainTypeNotFoundException if the domain description is not found
    */
   public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getDomainType(Class<DOMAIN> domainClass) {
     return getDomainType(domainClass, new ClassHelper() {});
   }
 
   /**
-   * {@link ClassHelper} を使って {@link DomainType} のインスタンスを生成します。
+   * Creates the domain description with {@link ClassHelper}.
    *
-   * @param <BASIC> 基本型
-   * @param <DOMAIN> ドメイン型
-   * @param domainClass ドメインクラス
-   * @param classHelper クラスヘルパー
-   * @return {@link DomainType} のインスタンス
-   * @throws DomaNullPointerException 引数が {@code null} の場合
-   * @throws DomaIllegalArgumentException ドメインクラスに {@link Domain} もしくは {@code EnumDomain}
-   *     が注釈されていない場合
-   * @throws DomainTypeNotFoundException ドメインクラスに対応するメタクラスが見つからない場合
-   * @since 1.27.0
+   * @param <BASIC> the basic type
+   * @param <DOMAIN> the domain type
+   * @param domainClass the domain class
+   * @param classHelper the class helper
+   * @return the domain description
+   * @throws DomaNullPointerException if any arguments are {@code null}
+   * @throws DomaIllegalArgumentException if the domain class is not annotated with {@link Domain}
+   * @throws DomainTypeNotFoundException if the domain description is not found
    */
   public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getDomainType(
       Class<DOMAIN> domainClass, ClassHelper classHelper) {
@@ -77,14 +68,13 @@ public final class DomainTypeFactory {
   }
 
   /**
-   * {@link DomainType} のインスタンスを生成します。
+   * Creates the external domain description.
    *
-   * @param <BASIC> 基本型
-   * @param <DOMAIN> ドメイン型
-   * @param domainClass ドメインクラス
-   * @return {@link DomainType} のインスタンス、存在しない場合 {@code null}
-   * @throws DomaNullPointerException 引数が {@code null} の場合
-   * @since 2.0.0
+   * @param <BASIC> the basic type
+   * @param <DOMAIN> the domain type
+   * @param domainClass the domain class
+   * @return the external domain description
+   * @throws DomaNullPointerException if {@code domainClass} is {@code null}
    */
   public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getExternalDomainType(
       Class<DOMAIN> domainClass) {
@@ -92,15 +82,14 @@ public final class DomainTypeFactory {
   }
 
   /**
-   * {@link ClassHelper} を使って {@link DomainType} のインスタンスを生成します。
+   * Creates the external domain description with {@link ClassHelper}.
    *
-   * @param <BASIC> 基本型
-   * @param <DOMAIN> ドメイン型
-   * @param domainClass ドメインクラス
-   * @param classHelper クラスヘルパー
-   * @return {@link DomainType} のインスタンス、存在しない場合 {@code null}
-   * @throws DomaNullPointerException 引数が {@code null} の場合
-   * @since 1.27.0
+   * @param <BASIC> the basic type
+   * @param <DOMAIN> the domain type
+   * @param domainClass the domain class
+   * @param classHelper the class helper
+   * @return the external domain description
+   * @throws DomaNullPointerException if any arguments are {@code null}
    */
   public static <BASIC, DOMAIN> DomainType<BASIC, DOMAIN> getExternalDomainType(
       Class<DOMAIN> domainClass, ClassHelper classHelper) {

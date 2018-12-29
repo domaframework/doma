@@ -6,10 +6,6 @@ import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
 import org.seasar.doma.jdbc.ResultParameter;
 import org.seasar.doma.jdbc.SqlKind;
 
-/**
- * @author taedium
- * @param <RESULT> 結果
- */
 public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements FunctionQuery<RESULT> {
 
   protected ResultParameter<RESULT> resultParameter;

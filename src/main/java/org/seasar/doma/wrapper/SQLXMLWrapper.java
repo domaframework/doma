@@ -3,24 +3,13 @@ package org.seasar.doma.wrapper;
 import java.sql.SQLXML;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link SQLXML} のラッパーです。
- *
- * @author nakamura-to
- * @since 2.0.0
- */
+/** A wrapper for the {@link SQLXML} class. */
 public class SQLXMLWrapper extends AbstractWrapper<SQLXML> {
 
-  /** インスタンスを構築します。 */
   public SQLXMLWrapper() {
     super(SQLXML.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public SQLXMLWrapper(SQLXML value) {
     super(SQLXML.class, value);
   }

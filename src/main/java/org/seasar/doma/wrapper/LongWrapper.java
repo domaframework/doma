@@ -2,23 +2,13 @@ package org.seasar.doma.wrapper;
 
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link Long} のラッパーです。
- *
- * @author taedium
- */
+/** A wrapper for the {@link Long} class. */
 public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<Long> {
 
-  /** インスタンスを構築します。 */
   public LongWrapper() {
     super(Long.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public LongWrapper(Long value) {
     super(Long.class, value);
   }
@@ -30,14 +20,14 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
 
   @Override
   public Long getDefault() {
-    return Long.valueOf(0L);
+    return 0L;
   }
 
   @Override
   public void increment() {
     Long value = doGet();
     if (value != null) {
-      doSet(value.longValue() + 1L);
+      doSet(value + 1L);
     }
   }
 
@@ -45,7 +35,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
   public void decrement() {
     Long value = doGet();
     if (value != null) {
-      doSet(value.longValue() - 1L);
+      doSet(value - 1L);
     }
   }
 

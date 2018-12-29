@@ -13,7 +13,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author taedium */
 public abstract class SqlModifyQuery extends AbstractQuery implements ModifyQuery {
 
   protected final SqlKind kind;

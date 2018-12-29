@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.query;
 import org.seasar.doma.jdbc.CallableSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public interface ModuleQuery extends Query {
 
   @Override

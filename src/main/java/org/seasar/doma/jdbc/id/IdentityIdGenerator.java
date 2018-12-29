@@ -1,8 +1,4 @@
 package org.seasar.doma.jdbc.id;
 
-/**
- * データベースのIDENTITYを使用するジェネレータです。
- *
- * @author taedium
- */
+/** A generator that uses a database IDENTITY column. */
 public interface IdentityIdGenerator extends IdGenerator {}

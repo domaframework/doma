@@ -1,17 +1,8 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
-/**
- * {@link Date} 用の {@link JdbcType} の実装です。
- *
- * @author taedium
- */
+/** A JDBC type for {@link Types#DATE} and {@link Date}. */
 public class DateType extends AbstractJdbcType<Date> {
 
   public DateType() {

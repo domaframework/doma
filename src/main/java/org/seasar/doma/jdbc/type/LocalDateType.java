@@ -1,17 +1,9 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.time.LocalDate;
 
-/**
- * @author nakamura-to
- * @since 2.0.0
- */
+/** A JDBC type for {@link Types#DATE} and {@link LocalDate}. */
 public class LocalDateType extends AbstractJdbcType<LocalDate> {
 
   public LocalDateType() {

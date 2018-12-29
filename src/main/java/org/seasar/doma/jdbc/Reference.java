@@ -1,12 +1,12 @@
 package org.seasar.doma.jdbc;
 
 /**
- * 値への参照を表します。
+ * A reference to a value.
  *
- * <p>ストアドプロシージャーやストアドファンクションのOUTパラメーターとIN_OUTパラメーターとして使用されます。
+ * <p>This class represents an OUT or INOUT parameter that is used in stored procedures or stored
+ * functions.
  *
- * @author taedium
- * @param <V> 値の型
+ * @param <V> the value type
  */
 public class Reference<V> {
 

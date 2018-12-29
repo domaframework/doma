@@ -4,64 +4,59 @@ import java.util.Optional;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 
 /**
- * ドメイン型のメタタイプです。
+ * A description for a domain type.
  *
- * <p>このインタフェースの実装はスレッドセーフであることは要求されません。
+ * <p>The implementation class is not required to be thread safe.
  *
- * @author taedium
- * @since 1.8.0
- * @param <BASIC> ドメイン型が扱う基本型
- * @param <DOMAIN> ドメイン型
+ * @param <BASIC> the basic type
+ * @param <DOMAIN> the domain type
  */
 public interface DomainType<BASIC, DOMAIN> {
 
   /**
-   * 基本型のクラスを返します。
+   * Returns the basic class.
    *
-   * <p>プリミティブ型を返す場合があるため、戻り値の型は {@code Class<BASIC>} ではなく {@code Class<?>} となっています。
+   * <p>This method may return a primitive type, so the return type is not {@code Class<BASIC>} but
+   * {@code Class<?>}.
    *
-   * @return 基本型のクラス
+   * @return the basic class
    */
   Class<?> getBasicClass();
 
   /**
-   * ドメイン型のクラスを返します。
+   * Returns the domain class.
    *
-   * @return ドメイン型のクラス
+   * @return the domain class
    */
   Class<DOMAIN> getDomainClass();
 
   /**
-   * スカラーを作成します。
+   * Create a scalar.
    *
-   * @return スカラー
-   * @since 2.0.0
+   * @return the scalar
    */
   Scalar<BASIC, DOMAIN> createScalar();
 
   /**
-   * 初期値を持ったスカラーを作成します。
+   * Create a scalar that has the initial value.
    *
-   * @param value 初期値
-   * @return スカラー
-   * @since 2.0.0
+   * @param value the initial value
+   * @return the scalar
    */
   Scalar<BASIC, DOMAIN> createScalar(DOMAIN value);
 
   /**
-   * {@link Optional} なスカラーを作成します。
+   * Create an optional scalar.
    *
-   * @return スカラー
-   * @since 2.0.0
+   * @return the optional scalar
    */
   Scalar<BASIC, Optional<DOMAIN>> createOptionalScalar();
 
   /**
-   * 初期値を持った {@link Optional} なスカラーを作成します。
+   * Create an optional scalar that has the initial value.
    *
-   * @param value 初期値
-   * @return スカラー
-   * @since 2.0.0
+   * @param value the initial value
+   * @return the optional scalar
    */
   Scalar<BASIC, Optional<DOMAIN>> createOptionalScalar(DOMAIN value);
 }

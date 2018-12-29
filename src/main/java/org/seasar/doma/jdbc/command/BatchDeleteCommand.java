@@ -6,7 +6,6 @@ import java.util.List;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.BatchDeleteQuery;
 
-/** @author taedium */
 public class BatchDeleteCommand extends BatchModifyCommand<BatchDeleteQuery> {
 
   public BatchDeleteCommand(BatchDeleteQuery query) {

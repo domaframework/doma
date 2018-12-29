@@ -5,7 +5,6 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public interface SelectQuery extends Query {
 
   @Override

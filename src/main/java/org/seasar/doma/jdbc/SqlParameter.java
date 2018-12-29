@@ -1,18 +1,25 @@
 package org.seasar.doma.jdbc;
 
-/**
- * SQLのパラメータを表します。
- *
- * @author taedium
- */
+/** An SQL parameter. */
 public interface SqlParameter {
 
   /**
-   * パラメータの値を返します。
+   * Returns the parameter value.
    *
-   * @return パラメータの値を返します。
+   * @return the parameter value
    */
   Object getValue();
 
+  /**
+   * Accepts the visitor.
+   *
+   * @param <R> the result type
+   * @param <P> the parameter type
+   * @param <TH> the throwable type
+   * @param visitor the visitor
+   * @param p the parameter
+   * @return the result
+   * @throws TH the exception
+   */
   <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p) throws TH;
 }

@@ -19,10 +19,6 @@ import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/**
- * @author taedium
- * @param <RESULT> 結果
- */
 public class SelectCommand<RESULT> implements Command<RESULT> {
 
   protected final SelectQuery query;

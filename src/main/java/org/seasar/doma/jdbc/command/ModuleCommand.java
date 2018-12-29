@@ -14,11 +14,6 @@ import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModuleQuery;
 
-/**
- * @author taedium
- * @param <QUERY> クエリ
- * @param <RESULT> 結果
- */
 public abstract class ModuleCommand<QUERY extends ModuleQuery, RESULT> implements Command<RESULT> {
 
   protected final QUERY query;

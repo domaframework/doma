@@ -3,23 +3,13 @@ package org.seasar.doma.wrapper;
 import java.sql.Blob;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link Blob} のラッパーです。
- *
- * @author taedium
- */
+/** A wrapper for the {@link Blob} class. */
 public class BlobWrapper extends AbstractWrapper<Blob> {
 
-  /** インスタンスを構築します。 */
   public BlobWrapper() {
     super(Blob.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public BlobWrapper(Blob value) {
     super(Blob.class, value);
   }

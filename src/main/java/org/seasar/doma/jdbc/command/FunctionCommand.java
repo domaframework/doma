@@ -4,10 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.query.FunctionQuery;
 
-/**
- * @author taedium
- * @param <RESULT> 結果
- */
 public class FunctionCommand<RESULT> extends ModuleCommand<FunctionQuery<RESULT>, RESULT> {
 
   public FunctionCommand(FunctionQuery<RESULT> query) {

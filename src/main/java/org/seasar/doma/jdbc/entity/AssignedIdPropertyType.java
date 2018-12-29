@@ -5,31 +5,16 @@ import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * アプリケーションにより割り当てられる識別子のプロパティ型です。
+ * A description for an identity property whose value is assigned by an application.
  *
- * @author nakamura-to
- * @param <PARENT> 親エンティティの型
- * @param <ENTITY> エンティティの型
- * @param <BASIC> プロパティの基本型
- * @param <DOMAIN> プロパティのドメイン型
+ * @param <PARENT> the parent entity type
+ * @param <ENTITY> the entity type
+ * @param <BASIC> the property basic type
+ * @param <DOMAIN> the property domain type
  */
 public class AssignedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param entityClass エンティティのクラス
-   * @param entityPropertyClass プロパティのクラス
-   * @param basicClass 値のクラス
-   * @param wrapperSupplier ラッパーのサプライヤ
-   * @param parentEntityPropertyType 親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
-   * @param domainType ドメインのメタタイプ、ドメインでない場合 {@code null}
-   * @param name プロパティの名前
-   * @param columnName カラム名
-   * @param namingType ネーミング規約
-   * @param quoteRequired カラム名に引用符が必要とされるかどうか
-   */
   public AssignedIdPropertyType(
       Class<ENTITY> entityClass,
       Class<?> entityPropertyClass,

@@ -3,11 +3,7 @@ package org.seasar.doma.jdbc;
 import java.lang.reflect.Method;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-/**
- * SQLの解析結果をキャッシュしない {@link SqlFileRepository} の実装です。
- *
- * @author taedium
- */
+/** An SQL file repository that does not cache the results of SQL parsing. */
 public class NoCacheSqlFileRepository extends AbstractSqlFileRepository {
 
   @Override

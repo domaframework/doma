@@ -1,9 +1,8 @@
 package org.seasar.doma.jdbc.entity;
 
 /**
- * 何も行わない {@link EntityListener} の実装です。
+ * An entity listener that does nothing.
  *
- * @author taedium
- * @param <ENTITY> エンティティの型
+ * @param <ENTITY> the entity type
  */
 public class NullEntityListener<ENTITY> implements EntityListener<ENTITY> {}

@@ -5,45 +5,37 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * 出力先に {@link java.util.logging.Logger} を使用したJDBCロガーです。
- *
- * <p>
- *
- * @author taedium
- */
+/** A logger that delegates to {@link java.util.logging.Logger}. */
 public class UtilLoggingJdbcLogger extends AbstractJdbcLogger<Level> {
 
-  /** このインスタンスで使用するロガーです。 */
   protected final Logger logger;
 
   /**
-   * インスタンスを構築します。
+   * Creates an instance.
    *
-   * <p>ログレベルは {@link Level#INFO} になります。
-   *
-   * <p>ロガーの名前は {@link UtilLoggingJdbcLogger} の完全修飾名になります。
+   * <p>The log level is {@link Level#INFO}. The logger name is the full qualified name of {@link
+   * UtilLoggingJdbcLogger}.
    */
   public UtilLoggingJdbcLogger() {
     this(Level.INFO);
   }
 
   /**
-   * ログレベルを指定してインスタンスを構築します。
+   * Creates an instance with the specified log level.
    *
-   * <p>ロガーの名前は {@link UtilLoggingJdbcLogger} の完全修飾名になります。
+   * <p>The logger name is the full qualified name of {@link UtilLoggingJdbcLogger}.
    *
-   * @param level ログレベル
+   * @param level the log level
    */
   public UtilLoggingJdbcLogger(Level level) {
     this(level, Logger.getLogger(UtilLoggingJdbcLogger.class.getName()));
   }
 
   /**
-   * ログレベルとロガーを指定してインスタンスを構築します。
+   * Creates an instance with the specified log level and logger.
    *
-   * @param level ログレベル
-   * @param logger ロガー
+   * @param level the log level
+   * @param logger the logger
    */
   public UtilLoggingJdbcLogger(Level level, Logger logger) {
     super(level);

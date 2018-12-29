@@ -6,11 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * エンティティの識別子を示します。
+ * Indicates an entity identifier that is mapped to a primary key of a database table.
  *
- * <p>このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
  * <pre>
  * &#064;Entity
@@ -23,9 +21,6 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * 識別子を自動生成する場合は、 {@link GeneratedValue} を合わせて注釈します。
- *
- * @author taedium
  * @see GeneratedValue
  */
 @Target(ElementType.FIELD)

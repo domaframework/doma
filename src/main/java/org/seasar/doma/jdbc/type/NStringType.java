@@ -1,16 +1,8 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
-/**
- * {@link String} 用の {@link JdbcType} の実装です。
- *
- * @author taedium
- */
+/** A JDBC type for {@link Types#NVARCHAR} and {@link String}. */
 public class NStringType extends AbstractJdbcType<String> {
 
   public NStringType() {

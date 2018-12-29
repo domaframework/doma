@@ -3,45 +3,25 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.Message;
 
 /**
- * 1件であることを期待する検索系SQLの結果が2件以上である場合にスローされる例外です。
- *
- * @author taedium
+ * Thrown to indicate that the number of fetched rows is expected less than or equal to 1, but
+ * actually it is greater than or equal to 2.
  */
 public class NonUniqueResultException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
 
-  /** SQLの種別 */
   protected final SqlKind kind;
 
-  /** 未加工SQL */
   protected final String rawSql;
 
-  /** フォーマット済みSQL */
   protected final String formattedSql;
 
-  /** SQLファイルのパス */
   protected final String sqlFilePath;
 
-  /**
-   * 2件以上の結果を返したSQLを指定してインスタンスを構築します。
-   *
-   * @param logType ログタイプ
-   * @param sql SQL
-   */
   public NonUniqueResultException(SqlLogType logType, Sql<?> sql) {
     this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
   }
 
-  /**
-   * 2件以上の結果を返した未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
-   *
-   * @param logType ログタイプ
-   * @param kind SQLの種別
-   * @param rawSql 未加工SQL
-   * @param formattedSql フォーマット済みSQL
-   * @param sqlFilePath SQLファイルのパス
-   */
   public NonUniqueResultException(
       SqlLogType logType, SqlKind kind, String rawSql, String formattedSql, String sqlFilePath) {
     super(Message.DOMA2001, sqlFilePath, choiceSql(logType, rawSql, formattedSql));
@@ -52,37 +32,36 @@ public class NonUniqueResultException extends JdbcException {
   }
 
   /**
-   * SQLの種別を返します。
+   * Returns the SQL kind.
    *
-   * @return SQLの種別
-   * @since 1.5.0
+   * @return the SQL kind
    */
   public SqlKind getKind() {
     return kind;
   }
 
   /**
-   * 未加工SQLを返します。
+   * Returns the raw SQL string.
    *
-   * @return 未加工SQL
+   * @return the raw SQL string
    */
   public String getRawSql() {
     return rawSql;
   }
 
   /**
-   * フォーマット済みSQLを返します。
+   * Returns the formatted SQL string.
    *
-   * @return フォーマット済みSQL
+   * @return the formatted SQL string
    */
   public String getFormattedSql() {
     return formattedSql;
   }
 
   /**
-   * SQLファイルのパスを返します。
+   * Returns the SQL file path
    *
-   * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+   * @return the SQL file path or {@code null} if the SQL is auto generated
    */
   public String getSqlFilePath() {
     return sqlFilePath;

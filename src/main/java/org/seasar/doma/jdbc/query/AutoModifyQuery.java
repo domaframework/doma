@@ -12,10 +12,6 @@ import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @param <ENTITY> エンティティ
- */
 public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements ModifyQuery {
 
   protected static final String[] EMPTY_STRINGS = new String[] {};

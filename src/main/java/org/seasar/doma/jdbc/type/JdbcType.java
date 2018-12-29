@@ -9,61 +9,60 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlLogFormatter;
 
 /**
- * {@literal JDBC} の型を表現します。 型ごとに異なる処理を抽象化します。
+ * An object that converts JDBC data from SQL types to Java types, and vice versa.
  *
- * <p>このインタフェースの実装はスレッドセーフでなければいけません。
+ * <p>The implementation instance must be thread safe.
  *
  * <p>
  *
- * @author taedium
- * @param <T> JDBCで扱う型
+ * @param <T> the Java type
  */
 public interface JdbcType<T> extends SqlLogFormatter<T> {
 
   /**
-   * {@link ResultSet} から値を取得します。
+   * Retrieves the column value from the {@link ResultSet} object.
    *
-   * @param resultSet 結果セット
-   * @param index インデックス
-   * @return 値
-   * @throws DomaNullPointerException {@code resultSet} が {@code null} の場合
-   * @throws DomaIllegalArgumentException {@code index} が {@literal 1} 以下の場合
-   * @throws SQLException SQL例外
+   * @param resultSet the result set
+   * @param index the column index
+   * @return the column value
+   * @throws DomaNullPointerException if {@code resultSet} is {@code null}
+   * @throws DomaIllegalArgumentException if {@code index} is {@literal 1} and below
+   * @throws SQLException if {@code resultSet} throws {@link SQLException}
    */
   T getValue(ResultSet resultSet, int index) throws DomaNullPointerException, SQLException;
 
   /**
-   * {@link PreparedStatement} に値を設定します。
+   * Sets the value to the {@link PreparedStatement} object.
    *
-   * @param preparedStatement 文
-   * @param index インデックス
+   * @param preparedStatement the prepared statement
+   * @param index the parameter index
    * @param value 値
-   * @throws DomaNullPointerException {@code preparedStatement} が {@code null} の場合
-   * @throws DomaIllegalArgumentException {@code index} が {@literal 1} 以下の場合
-   * @throws SQLException SQL例外
+   * @throws DomaNullPointerException if {@code preparedStatement} is {@code null}
+   * @throws DomaIllegalArgumentException {@code index} is {@literal 1} and below
+   * @throws SQLException if {@code preparedStatement} throws {@link SQLException}
    */
   void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
 
   /**
-   * {@link CallableStatement} にOUTパラメータを登録します。
+   * Registers the OUT parameter to the {@link CallableStatement} object.
    *
-   * @param callableStatement 文
-   * @param index インデックス
-   * @throws DomaNullPointerException {@code callableStatement} が {@code null} の場合
-   * @throws DomaIllegalArgumentException {@code index} が {@literal 1} 以下の場合
-   * @throws SQLException SQL例外
+   * @param callableStatement the callable statement
+   * @param index the parameter index
+   * @throws DomaNullPointerException if {@code callableStatement} is {@code null}
+   * @throws DomaIllegalArgumentException if {@code index} is {@literal 1} and below
+   * @throws SQLException if {@code callableStatement} throws {@link SQLException}
    */
   void registerOutParameter(CallableStatement callableStatement, int index) throws SQLException;
 
   /**
-   * {@link CallableStatement} から値を取得します。
+   * Retrieves the value from the {@link CallableStatement} object.
    *
-   * @param callableStatement 文
-   * @param index インデックス
-   * @return 値
-   * @throws DomaNullPointerException {@code callableStatement} が {@code null} の場合
-   * @throws DomaIllegalArgumentException {@code index} が {@literal 1} 以下の場合
-   * @throws SQLException SQL例外
+   * @param callableStatement the callable statement
+   * @param index the parameter index
+   * @return the value
+   * @throws DomaNullPointerException if {@code callableStatement} is {@code null}
+   * @throws DomaIllegalArgumentException if {@code index} is {@literal 1} and below
+   * @throws SQLException if {@code callableStatement} throws {@link SQLException}
    */
   T getValue(CallableStatement callableStatement, int index) throws SQLException;
 }

@@ -1,11 +1,6 @@
 package org.seasar.doma.jdbc;
 
-/**
- * {@link Config} が返すインタフェースのデフォルト実装を提供します。
- *
- * @author nakamura-to
- * @since 2.0.0
- */
+/** Default values for {@link Config} objects. */
 public final class ConfigSupport {
 
   public static SqlFileRepository defaultSqlFileRepository = new GreedyCacheSqlFileRepository();
@@ -22,15 +17,12 @@ public final class ConfigSupport {
 
   public static UnknownColumnHandler defaultUnknownColumnHandler = new UnknownColumnHandler() {};
 
-  /** @since 2.2.0 */
   public static Naming defaultNaming = Naming.DEFAULT;
 
   public static MapKeyNaming defaultMapKeyNaming = new MapKeyNaming() {};
 
-  /** @since 2.1.0 */
   public static Commenter defaultCommenter = new Commenter() {};
 
-  /** @since 2.2.0 */
   public static EntityListenerProvider defaultEntityListenerProvider =
       new EntityListenerProvider() {};
 }

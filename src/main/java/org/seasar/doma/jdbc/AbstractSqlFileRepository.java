@@ -11,13 +11,7 @@ import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.message.Message;
 
-/**
- * {@link SqlFileRepository} の骨格実装です。
- *
- * <p>SQLファイルの解析結果をキャッシュするには {@link #getSqlFileWithCacheControl(Method, String, Dialect)} を実装してください。
- *
- * @author taedium
- */
+/** A skeletal implementation of the {@link SqlFileRepository} interface. */
 public abstract class AbstractSqlFileRepository implements SqlFileRepository {
 
   @Override
@@ -43,24 +37,24 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
   }
 
   /**
-   * キャッシュを制御してSQLファイルを返します。
+   * Returns the SQL file in consideration of cache control.
    *
-   * @param method Daoのメソッド
-   * @param path SQLファイルのパス
-   * @param dialect 方言
-   * @return SQLファイル
-   * @throws SqlFileNotFoundException SQLファイルが見つからない場合
-   * @throws JdbcException 上記以外で例外が発生した場合
+   * @param method the Dao method
+   * @param path the SQL file path
+   * @param dialect the dialect
+   * @return the SQL file
+   * @throws SqlFileNotFoundException if the SQL file is not found
+   * @throws JdbcException if an error occurs
    */
   protected abstract SqlFile getSqlFileWithCacheControl(
       Method method, String path, Dialect dialect);
 
   /**
-   * SQLファイルを作成します。
+   * Creates the SQL file.
    *
-   * @param path SQLのパス
-   * @param dialect 方言
-   * @return SQLファイル
+   * @param path the SQL file path
+   * @param dialect the dialect
+   * @return the SQL file
    */
   protected final SqlFile createSqlFile(String path, Dialect dialect) {
     String primaryPath = getPrimaryPath(path, dialect);
@@ -78,21 +72,21 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
   }
 
   /**
-   * SQLファイルを見つける際の優先パスを取得します。
+   * Returns the primary path to find SQL file for specific RDBMS.
    *
-   * @param path SQLのパス
-   * @param dialect 方言
-   * @return RDBMS固有の名前を含んだSQLのパス
+   * @param path the SQL file path
+   * @param dialect the dialect
+   * @return the primary path
    */
   protected final String getPrimaryPath(String path, Dialect dialect) {
     return SqlFileUtil.convertToDbmsSpecificPath(path, dialect);
   }
 
   /**
-   * SQLを解析します。
+   * Parses the SQL string.
    *
-   * @param sql SQLの文字列
-   * @return SQLの解析結果
+   * @param sql the SQL string
+   * @return the SQL node
    */
   protected final SqlNode parse(String sql) {
     SqlParser parser = new SqlParser(sql);
@@ -100,10 +94,10 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
   }
 
   /**
-   * SQLファイルからSQLを取り出し返します。
+   * Retrieves the SQL string from the SQL file.
    *
-   * @param path パス
-   * @return SQLの文字列
+   * @param path the SQL file path
+   * @return the SQL string
    */
   protected final String getSql(String path) {
     try {

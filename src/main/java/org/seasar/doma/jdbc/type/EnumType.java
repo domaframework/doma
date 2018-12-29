@@ -1,30 +1,24 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link Enum} 用の {@link JdbcType} の実装です。
+ * A JDBC type for {@link Types#VARCHAR} and {@link Enum}.
  *
- * @author taedium
- * @param <E> {@link Enum} の型
+ * @param <E> the enum subclass
  */
 public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
 
-  /** {@link Enum} のクラス */
   protected final Class<E> enumClass;
 
   /**
-   * インスタンスを構築します。
+   * Creates an instance.
    *
-   * @param enumClass {@link Enum} のクラス
-   * @throws DomaNullPointerException {@link Enum} のクラスが {@code null} の場合
+   * @param enumClass the {@link Enum} class
+   * @throws DomaNullPointerException thrown, if {@code enumClass} is {@code null}
    */
   public EnumType(Class<E> enumClass) {
     super(Types.VARCHAR);

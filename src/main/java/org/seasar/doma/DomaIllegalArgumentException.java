@@ -3,28 +3,25 @@ package org.seasar.doma;
 import org.seasar.doma.message.Message;
 
 /**
- * 事前条件をもつパラメータへの引数が不正な場合にスローされる例外です。
+ * Thrown to indicate that the argument does not meet any preconditions in the method.
  *
- * <p>{@link IllegalArgumentException} とは別にこの例外を定義しているのは、 {@literal Doma} のバグによる例外なのか、 {@literal
- * Doma}のAPIの事前条件を満たしていないことによる例外なのかを判別しやすくするためです。
- *
- * @author taedium
+ * <p>This class makes it easy to distinguish Doma's specifications from Doma's bugs.
  */
 public class DomaIllegalArgumentException extends DomaException {
 
   private static final long serialVersionUID = 1L;
 
-  /** 不正な引数のパラメータ名 */
+  /** the parameter name that corresponds to the illegal argument */
   protected final String parameterName;
 
-  /** 不正な引数であることの説明 */
+  /** the detail message */
   protected final String description;
 
   /**
-   * インスタンスを構築します。
+   * Constructs an instance.
    *
-   * @param parameterName 不正な引数のパラメータ名
-   * @param description 不正な引数であることの説明
+   * @param parameterName the parameter name
+   * @param description the detail message
    */
   public DomaIllegalArgumentException(String parameterName, String description) {
     super(Message.DOMA0002, parameterName, description);
@@ -33,18 +30,18 @@ public class DomaIllegalArgumentException extends DomaException {
   }
 
   /**
-   * 不正な引数のパラメータ名を返します。
+   * Returns the parameter name that corresponds to the illegal argument.
    *
-   * @return 不正な引数のパラメータ名
+   * @return the parameter name
    */
   public String getParameterName() {
     return parameterName;
   }
 
   /**
-   * 不正な引数であることの説明を返します。
+   * Returns the detail message.
    *
-   * @return 不正な引数であることの説明
+   * @return the detail message
    */
   public String getDescription() {
     return description;

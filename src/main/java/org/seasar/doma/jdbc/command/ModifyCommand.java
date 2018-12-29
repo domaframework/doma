@@ -16,10 +16,6 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModifyQuery;
 
-/**
- * @author taedium
- * @param <QUERY> クエリ
- */
 public abstract class ModifyCommand<QUERY extends ModifyQuery> implements Command<Integer> {
 
   protected final QUERY query;

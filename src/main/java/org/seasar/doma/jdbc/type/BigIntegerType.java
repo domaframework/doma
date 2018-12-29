@@ -2,17 +2,9 @@ package org.seasar.doma.jdbc.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
-/**
- * {@link BigInteger} 用の {@link JdbcType} の実装です。
- *
- * @author taedium
- */
+/** A JDBC type for {@link Types#BIGINT} and {@link BigInteger}. */
 public class BigIntegerType extends AbstractJdbcType<BigInteger> {
 
   public BigIntegerType() {

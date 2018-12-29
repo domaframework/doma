@@ -6,45 +6,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 
-/**
- * {@link ResultSet} 用の {@link JdbcType} のための骨格実装です。
- *
- * @author taedium
- */
+/** A JDBC type for RDBMS specific SQL type and {@link ResultSet}. */
 public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> {
 
   /**
-   * SQL型を指定してインスタンスを構築します。
+   * Creates an instance.
    *
-   * @param type SQL型
+   * @param type RDBMS specific SQL type
    */
   protected AbstractResultSetType(int type) {
     super(type);
   }
 
-  /** サポートしません。 */
+  /** @throws JdbcUnsupportedOperationException if invoked */
   @Override
-  public ResultSet getValue(ResultSet resultSet, int index) throws SQLException {
+  public ResultSet getValue(ResultSet resultSet, int index) {
     throw new JdbcUnsupportedOperationException(getClass().getName(), "getValue");
   }
 
-  /** サポートしません。 */
+  /** @throws JdbcUnsupportedOperationException if invoked */
   @Override
-  public void setValue(PreparedStatement preparedStatement, int index, ResultSet value)
-      throws SQLException {
+  public void setValue(PreparedStatement preparedStatement, int index, ResultSet value) {
     throw new JdbcUnsupportedOperationException(getClass().getName(), "setValue");
   }
 
-  /** {@code null} を返します。 */
+  /** @return {@code null} */
   @Override
-  protected ResultSet doGetValue(ResultSet resultSet, int index) throws SQLException {
+  protected ResultSet doGetValue(ResultSet resultSet, int index) {
     return null;
   }
 
-  /** 何も行いません。 */
+  /** Does nothing. */
   @Override
-  protected void doSetValue(PreparedStatement preparedStatement, int index, ResultSet value)
-      throws SQLException {}
+  protected void doSetValue(PreparedStatement preparedStatement, int index, ResultSet value) {}
 
   @Override
   protected ResultSet doGetValue(CallableStatement callableStatement, int index)

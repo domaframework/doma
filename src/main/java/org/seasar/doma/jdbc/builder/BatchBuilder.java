@@ -12,10 +12,9 @@ import org.seasar.doma.jdbc.query.SqlBatchModifyQuery;
 import org.seasar.doma.message.Message;
 
 /**
- * バッチ更新で利用される、SQL文を組み立てるクラスです。
+ * A builder that builds an SQL statement for a batch execution.
  *
  * @author bakenezumi
- * @since 2.14.0
  */
 public abstract class BatchBuilder {
 
@@ -56,31 +55,31 @@ public abstract class BatchBuilder {
   }
 
   /**
-   * SQLの断片を追加します。
+   * Appends an SQL fragment.
    *
-   * @param sql SQLの断片
-   * @return このインスタンス
-   * @throws DomaNullPointerException 引数が {@code null} の場合
+   * @param sql the SQL fragment
+   * @return a builder
+   * @throws DomaNullPointerException if {@code sql} is {@code null}
    */
   public abstract BatchBuilder sql(String sql);
 
   /**
-   * 最後に追加したSQLもしくはパラメータを削除します。
+   * Removes the last SQL fragment or parameter.
    *
-   * @return このインスタンス
+   * @return a builder
    */
   public abstract BatchBuilder removeLast();
 
   /**
-   * パラメータを追加します。
+   * Appends a parameter.
    *
-   * <p>パラメータの型には、基本型とドメインクラスを指定できます。
+   * <p>The parameter type must be one of basic types or holder types.
    *
-   * @param <P> パラメータの型
-   * @param paramClass パラメータの要素のクラス
-   * @param param パラメータ
-   * @return このインスタンス
-   * @throws DomaNullPointerException {@code paramClass} が {@code null} の場合
+   * @param <P> the parameter type
+   * @param paramClass the parameter class
+   * @param param the parameter
+   * @return a builder
+   * @throws DomaNullPointerException if {@code paramClass} is {@code null}
    */
   public <P> BatchBuilder param(Class<P> paramClass, P param) {
     if (paramClass == null) {
@@ -90,15 +89,15 @@ public abstract class BatchBuilder {
   }
 
   /**
-   * リテラルとしてパラメータを追加します。
+   * Appends a parameter as literal.
    *
-   * <p>パラメータの型には、基本型とドメインクラスを指定できます。
+   * <p>The parameter type must be one of basic types or holder types.
    *
-   * @param <P> パラメータの型
-   * @param paramClass パラメータのクラス
-   * @param param パラメータ
-   * @return このインスタンス
-   * @throws DomaNullPointerException {@code paramClass} が {@code null} の場合
+   * @param <P> the parameter type
+   * @param paramClass the parameter class
+   * @param param the parameter
+   * @return a builder
+   * @throws DomaNullPointerException if {@code paramClass} is {@code null}
    */
   public <P> BatchBuilder literal(Class<P> paramClass, P param) {
     if (paramClass == null) {

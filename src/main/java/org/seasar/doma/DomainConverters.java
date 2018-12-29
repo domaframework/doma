@@ -7,35 +7,23 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
- * {@link DomainConverter} を複数登録します。
+ * Indicates an aggregation of {@link DomainConverter} classes.
  *
- * <p>このアノテーションの{@code value} 要素に指定される {@code DomainConverter} のクラスには {@link ExternalDomain}
- * が注釈されていないければいけません。
- *
- * <p>このアノテーションが注釈されたクラスの完全修飾名は、注釈処理のオプションに登録する必要があります。オプションのキーは {@code doma.domain.converters} です。
- *
- * <h3>例:</h3>
+ * <p>The full qualified name of the annotated class must be specified in annotation processing
+ * options. The option key is {@code doma.domain.converters}.
  *
  * <pre>
- * &#064;DomainConverters({ SalaryConverter.class, DayConverter.class,
- *         LocationConverter.class })
+ * &#064;DomainConverters({ SalaryConverter.class, DayConverter.class, LocationConverter.class })
  * public class DomainConvertersProvider {
  * }
  * </pre>
  *
- * @author taedium
- * @since 1.25.0
  * @see DomainConverter
- * @see ExternalDomain
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DomainConverters {
 
-  /**
-   * {@code DomainConverter} のクラスの配列を返します。
-   *
-   * @return {@code DomainConverter} のクラスの配列
-   */
+  /** @return the aggregation of {@code DomainConverter} classes. */
   Class<? extends DomainConverter<?, ?>>[] value() default {};
 }

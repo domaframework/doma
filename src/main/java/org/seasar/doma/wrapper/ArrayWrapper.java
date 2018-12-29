@@ -3,23 +3,13 @@ package org.seasar.doma.wrapper;
 import java.sql.Array;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link Array} のラッパーです。
- *
- * @author taedium
- */
+/** A wrapper for the {@link Array} class. */
 public class ArrayWrapper extends AbstractWrapper<Array> {
 
-  /** インスタンスを構築します。 */
   public ArrayWrapper() {
     super(Array.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public ArrayWrapper(Array value) {
     super(Array.class, value);
   }

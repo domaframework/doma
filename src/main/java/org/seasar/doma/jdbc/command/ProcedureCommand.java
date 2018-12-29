@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.query.ProcedureQuery;
 
-/** @author taedium */
 public class ProcedureCommand extends ModuleCommand<ProcedureQuery, Void> {
 
   public ProcedureCommand(ProcedureQuery query) {

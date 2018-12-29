@@ -10,10 +10,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 
-/**
- * @author nakamura-to
- * @since 2.3.0
- */
 public class BatchUpdateQueryHelper<E> {
 
   protected final Config config;

@@ -4,11 +4,9 @@ import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
- * SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換する {@link WrapperVisitor} の拡張です。
+ * A visitor that converts the {@link Wrapper} values to the SQL log formats.
  *
- * <p>このインタフェースの実装はスレッドセーフでなければいけません。
- *
- * @author taedium
+ * <p>The implementation class must be thread safe.
  */
 public interface SqlLogFormattingVisitor
     extends WrapperVisitor<String, SqlLogFormattingFunction, Void, RuntimeException> {}

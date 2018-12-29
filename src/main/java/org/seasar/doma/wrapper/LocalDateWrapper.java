@@ -3,22 +3,13 @@ package org.seasar.doma.wrapper;
 import java.time.LocalDate;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * @author nakamura-to
- * @since 2.0.0
- */
+/** A wrapper for the {@link LocalDate} class. */
 public class LocalDateWrapper extends AbstractWrapper<LocalDate> {
 
-  /** インスタンスを構築します。 */
   public LocalDateWrapper() {
     super(LocalDate.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public LocalDateWrapper(LocalDate value) {
     super(LocalDate.class, value);
   }

@@ -4,21 +4,16 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.query.Query;
 
-/**
- * エンティティにとっての未知のカラムを処理します。
- *
- * @author nakamura-to
- * @since 2.0.0
- */
+/** A handler for the column that is unknown to an entity. */
 public interface UnknownColumnHandler {
 
   /**
-   * 未知のカラムを処理します。
+   * Handles the unknown column.
    *
-   * @param query クエリ
-   * @param entityType エンティティのメタタイプ
-   * @param unknownColumnName 未知のカラム名
-   * @throws UnknownColumnException 未知のカラムを許可しない場合
+   * @param query the query
+   * @param entityType the entity description
+   * @param unknownColumnName the name of the unknown column
+   * @throws UnknownColumnException if this handler does not allow the unknown column
    */
   default void handle(Query query, EntityType<?> entityType, String unknownColumnName) {
     Sql<?> sql = query.getSql();

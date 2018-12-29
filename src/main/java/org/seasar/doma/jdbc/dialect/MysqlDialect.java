@@ -15,26 +15,20 @@ import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * MySQL用の方言です。
- *
- * @author taedium
- */
+/** A dialect for MySQL. */
 public class MysqlDialect extends StandardDialect {
 
-  /** 一意制約違反を表すエラーコードのセット */
+  /** the set of {@literal SQLState} code that represents unique violation */
   protected static final Set<Integer> UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES =
       new HashSet<Integer>(Arrays.asList(1022, 1062));
 
-  /** 開始の引用符 */
+  /** the quotation mark of the start */
   protected static final char OPEN_QUOTE = '`';
 
-  /** 終了の引用符 */
+  /** the quotation mark of the end */
   protected static final char CLOSE_QUOTE = '`';
 
-  /** インスタンスを構築します。 */
   public MysqlDialect() {
     this(
         new MysqlJdbcMappingVisitor(),
@@ -42,52 +36,23 @@ public class MysqlDialect extends StandardDialect {
         new MysqlExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   */
   public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor) {
     this(jdbcMappingVisitor, new MysqlSqlLogFormattingVisitor(), new MysqlExpressionFunctions());
   }
 
-  /**
-   * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public MysqlDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(new MysqlJdbcMappingVisitor(), sqlLogFormattingVisitor, new MysqlExpressionFunctions());
   }
 
-  /**
-   * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-   *
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public MysqlDialect(ExpressionFunctions expressionFunctions) {
     this(new MysqlJdbcMappingVisitor(), new MysqlSqlLogFormattingVisitor(), expressionFunctions);
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public MysqlDialect(
       JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(jdbcMappingVisitor, sqlLogFormattingVisitor, new MysqlExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と {@link ExpressionFunctions}
-   * を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public MysqlDialect(
       JdbcMappingVisitor jdbcMappingVisitor,
       SqlLogFormattingVisitor sqlLogFormattingVisitor,
@@ -165,25 +130,10 @@ public class MysqlDialect extends StandardDialect {
     return OPEN_QUOTE + name + CLOSE_QUOTE;
   }
 
-  /**
-   * MySQL用の {@link JdbcMappingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class MysqlJdbcMappingVisitor extends StandardJdbcMappingVisitor {}
 
-  /**
-   * MySQL用の {@link SqlLogFormattingVisitor} です。
-   *
-   * @author taedium
-   */
   public static class MysqlSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {}
 
-  /**
-   * MySQL用の {@link ExpressionFunctions} です。
-   *
-   * @author taedium
-   */
   public static class MysqlExpressionFunctions extends StandardExpressionFunctions {
 
     public MysqlExpressionFunctions() {
@@ -199,12 +149,6 @@ public class MysqlDialect extends StandardDialect {
     }
   }
 
-  /**
-   * MySQL用の {@link ScriptBlockContext} です。
-   *
-   * @author taedium
-   * @since 1.7.0
-   */
   public static class MysqlScriptBlockContext extends StandardScriptBlockContext {
 
     protected MysqlScriptBlockContext() {

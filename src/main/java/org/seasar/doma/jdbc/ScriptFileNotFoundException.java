@@ -2,23 +2,18 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.message.Message;
 
-/**
- * スクリプトファイルが見つからない場合にスローされる例外です。
- *
- * @author taedium
- * @since 1.7.0
- */
+/** Thrown to indicate that a script file is not found. */
 public class ScriptFileNotFoundException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
 
-  /** 見つからないスクリプトファイルのパス */
+  /** the script file path */
   protected final String path;
 
   /**
-   * スクリプトファイルのパスを指定してインスタンスを構築します。
+   * Creates an instance.
    *
-   * @param path 見つからないスクリプトファイルのパス
+   * @param path the script file path
    */
   public ScriptFileNotFoundException(String path) {
     super(Message.DOMA2012, path);
@@ -26,9 +21,9 @@ public class ScriptFileNotFoundException extends JdbcException {
   }
 
   /**
-   * 見つからないスクリプトファイルのパスを返します。
+   * Returns the script file path.
    *
-   * @return 見つからないスクリプトファイルのパス
+   * @return the script file path
    */
   public String getPath() {
     return path;

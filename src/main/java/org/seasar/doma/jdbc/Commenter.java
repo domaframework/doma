@@ -1,25 +1,21 @@
 package org.seasar.doma.jdbc;
 
 /**
- * SQLのコメンターです。
+ * A commenter for SQL strings.
  *
- * <p>この処理はSQLテンプレートの処理が完了した後で行われます。
+ * <p>The comment is added to the SQL string that may be built from a SQL template or may be auto
+ * generated.
  *
- * <p>このインタフェースでは、バインド変数を追加するなど、コメントを追加する以外のことを実行してはいけません。
- *
- * @author nakamura-to
- * @since 2.1.0
+ * <p>The implementation must not add anything except a comment.
  */
 public interface Commenter {
 
   /**
-   * SQLにコメントを追記します。
+   * Adds the comment to the SQL string.
    *
-   * <p>デフォルトでは何も行いません。
-   *
-   * @param sql SQL
-   * @param context コンテキスト
-   * @return コメントが追記されたSQL
+   * @param sql the SQL string
+   * @param context the context
+   * @return the SQL that the comment is added
    */
   default String comment(String sql, CommentContext context) {
     return sql;

@@ -6,168 +6,156 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * JDBCに関する処理を記録するロガーです。
+ * The logger for JDBC related operations.
  *
- * <p>このインタフェースの実装はスレッドセーフでなければいけません。
+ * <p>The implementation instance must be thread safe.
  *
- * <p>このインタフェースのメソッドは例外をスローしてはいけません。
- *
- * @author taedium
+ * <p>The implementation methods must not throw any exceptions.
  */
 public interface JdbcLogger {
 
   /**
-   * Daoメソッドの実行開始を記録します。
+   * Logs the start of a DAO method.
    *
-   * @param callerClassName Daoのクラス名
-   * @param callerMethodName Daoのメソッド名
-   * @param args メソッドの引数
+   * @param callerClassName the name of the DAO class
+   * @param callerMethodName the name of the DAO method
+   * @param args the arguments of the DAO method
    */
   void logDaoMethodEntering(String callerClassName, String callerMethodName, Object... args);
 
   /**
-   * Daoメソッドの実行終了を記録します。
+   * Logs the normal end of a DAO method.
    *
-   * <p>Daoメソッドの実行終了時には、このメソッドもしくは {@link #logDaoMethodThrowing(String, String, RuntimeException)}
-   * のどちらかが呼び出されます。
+   * <p>At the end of the DAO method, either this method or {@link #logDaoMethodThrowing(String,
+   * String, RuntimeException)} must be invoked.
    *
-   * @param callerClassName Daoのクラス名
-   * @param callerMethodName Daoのメソッド名
-   * @param result メソッドの実行結果、実行結果が存在しない場合{@code null}
+   * @param callerClassName the name of the DAO class
+   * @param callerMethodName the name of the DAO method
+   * @param result the method result or null if the method return type is {@code void}
    */
   void logDaoMethodExiting(String callerClassName, String callerMethodName, Object result);
 
   /**
-   * Daoメソッドの実行時例外による実行終了を記録します。
+   * Logs the abnormal end of a DAO method.
    *
-   * <p>Daoメソッドの実行終了時には、このメソッドもしくは {@link #logDaoMethodExiting(String, String, Object)}
-   * のどちらかが呼び出されます。
+   * <p>At the end of the DAO method, either this method or {@link #logDaoMethodExiting(String,
+   * String, Object)} must be invoked.
    *
-   * @param callerClassName Daoのクラス名
-   * @param callerMethodName Daoのメソッド名
-   * @param e 実行時例外
-   * @since 1.6.0
+   * @param callerClassName the name of the DAO class
+   * @param callerMethodName the name of the DAO method
+   * @param e the runtime exception
    */
   void logDaoMethodThrowing(String callerClassName, String callerMethodName, RuntimeException e);
 
   /**
-   * SQLの実行がスキップされたことを記録します。
+   * Logs a skip of an SQL execution.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param cause 原因
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param cause the cause of the skip
    */
   void logSqlExecutionSkipping(
       String callerClassName, String callerMethodName, SqlExecutionSkipCause cause);
 
   /**
-   * 実行するSQLを記録します。
+   * Logs an SQL statement.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
    * @param sql SQL
    */
   void logSql(String callerClassName, String callerMethodName, Sql<?> sql);
 
   /**
-   * トランザクションの開始を記録します。
+   * Logs a beginning of a transaction.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionId トランザクションの識別子
-   * @since 2.0.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionId the transaction id
    */
   void logTransactionBegun(String callerClassName, String callerMethodName, String transactionId);
 
   /**
-   * トランザクションの終了を記録します。
+   * Logs an end of a transaction.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionId トランザクションの識別子
-   * @since 2.0.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionId the transaction id
    */
   void logTransactionEnded(String callerClassName, String callerMethodName, String transactionId);
 
   /**
-   * トランザクションのコミットを記録します。
+   * Logs a commit of a transaction.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionId トランザクションの識別子
-   * @since 2.0.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionId the transaction id
    */
   void logTransactionCommitted(
       String callerClassName, String callerMethodName, String transactionId);
 
   /**
-   * トランザクションのセーブポイントの作成を記録します。
+   * Logs a creation of a save point.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionId トランザクションの識別子
-   * @param savepointName セーブポイントの名前
-   * @since 2.0.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionId the transaction id
+   * @param savepointName the save point name
    */
   void logTransactionSavepointCreated(
       String callerClassName, String callerMethodName, String transactionId, String savepointName);
 
   /**
-   * トランザクションのロールバックを記録します。
+   * Logs a rollback of a transaction.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionId トランザクションの識別子
-   * @since 2.0.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionId the transaction id
    */
   void logTransactionRolledback(
       String callerClassName, String callerMethodName, String transactionId);
 
   /**
-   * トランザクションのセーブポイントのロールバックを記録します。
+   * Logs a rollback of a save point.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionId トランザクションの識別子
-   * @param savepointName セーブポイントの名前
-   * @since 2.0.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionId the transaction id
+   * @param savepointName the save point name
    */
   void logTransactionSavepointRolledback(
       String callerClassName, String callerMethodName, String transactionId, String savepointName);
 
   /**
-   * トランザクションのロールバックの失敗を記録します。
+   * Logs a failure of a transaction rollback.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionId トランザクションの識別子
-   * @param e {@link Connection#rollback()} 時に発生した {@link SQLException}
-   * @since 2.0.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionId the transaction id
+   * @param e the cause of the failure
    */
   void logTransactionRollbackFailure(
       String callerClassName, String callerMethodName, String transactionId, SQLException e);
 
   /**
-   * {@link Connection#setAutoCommit(boolean)} の引数に {@code true} を渡した時に発生した {@link SQLException}
-   * を記録します。
+   * Logs a failure of an auto commit enabling.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param e {@link Connection#setAutoCommit(boolean)} 時に発生した {@link SQLException}
-   * @since 1.2.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param e the cause of the failure
+   * @see Connection#setAutoCommit(boolean)
    */
   void logAutoCommitEnablingFailure(
       String callerClassName, String callerMethodName, SQLException e);
 
   /**
-   * {@link Connection#setTransactionIsolation(int)} 時に発生した {@link SQLException} を記録します。
+   * Logs a failure of a transaction isolation setting.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param transactionIsolationLevel {@link Connection#setTransactionIsolation(int)}
-   *     で渡されるトランザクション分離レベル
-   * @param e {@link Connection#setTransactionIsolation(int)} 時に発生した {@link SQLException}
-   * @since 1.2.0
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param transactionIsolationLevel the transaction isolation level
+   * @param e the cause of the failure
+   * @see Connection#setTransactionIsolation(int)
    */
   void logTransactionIsolationSettingFailure(
       String callerClassName,
@@ -176,29 +164,32 @@ public interface JdbcLogger {
       SQLException e);
 
   /**
-   * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。
+   * Logs a failure of a connection close.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param e {@link Connection#close()} 時に発生した {@link SQLException}
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param e the cause of the failure
+   * @see Connection#close()
    */
   void logConnectionClosingFailure(String callerClassName, String callerMethodName, SQLException e);
 
   /**
-   * {@link Statement#close()} 時に発生した {@link SQLException} を記録します。
+   * Logs a failure of a statement close.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param e {@link Statement#close()} 時に発生した {@link SQLException}
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param e the cause of the failure
+   * @see Statement#close()
    */
   void logStatementClosingFailure(String callerClassName, String callerMethodName, SQLException e);
 
   /**
-   * {@link ResultSet#close()} 時に発生した {@link SQLException} を記録します。
+   * Logs a failure of a result set close.
    *
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param e {@link ResultSet#close()} 時に発生した {@link SQLException}
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param e the cause of the failure
+   * @see ResultSet#close()
    */
   void logResultSetClosingFailure(String callerClassName, String callerMethodName, SQLException e);
 }

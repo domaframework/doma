@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.query.InsertQuery;
 
-/** @author taedium */
 public class InsertCommand extends ModifyCommand<InsertQuery> {
 
   public InsertCommand(InsertQuery query) {

@@ -1,6 +1,6 @@
 package org.seasar.doma.jdbc;
 
-/** @author taedium */
+/** A result parameter. */
 public interface ResultParameter<RESULT> extends SqlParameter {
 
   RESULT getResult();

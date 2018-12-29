@@ -22,22 +22,16 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
-import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * PostgreSQL用の方言です。
- *
- * @author taedium
- */
+/** A dialect for PostgreSQL. */
 public class PostgresDialect extends StandardDialect {
 
-  /** 一意制約違反を表す {@literal SQLState} */
+  /** the {@literal SQLState} that represents unique violation */
   protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
 
-  /** {@link ResultSet} の JDBC型 */
+  /** the JDBC type for {@link ResultSet} */
   protected static final JdbcType<ResultSet> RESULT_SET = new PostgresResultSetType();
 
-  /** インスタンスを構築します。 */
   public PostgresDialect() {
     this(
         new PostgresJdbcMappingVisitor(),
@@ -45,11 +39,6 @@ public class PostgresDialect extends StandardDialect {
         new PostgresExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   */
   public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor) {
     this(
         jdbcMappingVisitor,
@@ -57,11 +46,6 @@ public class PostgresDialect extends StandardDialect {
         new PostgresExpressionFunctions());
   }
 
-  /**
-   * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public PostgresDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(
         new PostgresJdbcMappingVisitor(),
@@ -69,11 +53,6 @@ public class PostgresDialect extends StandardDialect {
         new PostgresExpressionFunctions());
   }
 
-  /**
-   * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-   *
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public PostgresDialect(ExpressionFunctions expressionFunctions) {
     this(
         new PostgresJdbcMappingVisitor(),
@@ -81,25 +60,11 @@ public class PostgresDialect extends StandardDialect {
         expressionFunctions);
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public PostgresDialect(
       JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(jdbcMappingVisitor, sqlLogFormattingVisitor, new PostgresExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と {@link ExpressionFunctions}
-   * を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public PostgresDialect(
       JdbcMappingVisitor jdbcMappingVisitor,
       SqlLogFormattingVisitor sqlLogFormattingVisitor,
@@ -277,11 +242,6 @@ public class PostgresDialect extends StandardDialect {
     return new PostgresScriptBlockContext();
   }
 
-  /**
-   * PostgreSQL用の {@link ResultSet} の {@link JdbcType} の実装です。
-   *
-   * @author taedium
-   */
   public static class PostgresResultSetType extends AbstractResultSetType {
 
     public PostgresResultSetType() {
@@ -289,25 +249,10 @@ public class PostgresDialect extends StandardDialect {
     }
   }
 
-  /**
-   * PostgreSQL用の {@link JdbcMappingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class PostgresJdbcMappingVisitor extends StandardJdbcMappingVisitor {}
 
-  /**
-   * PostgreSQL用の {@link SqlLogFormattingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class PostgresSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {}
 
-  /**
-   * PostgreSQL用の {@link ExpressionFunctions} です。
-   *
-   * @author taedium
-   */
   public static class PostgresExpressionFunctions extends StandardExpressionFunctions {
 
     public PostgresExpressionFunctions() {
@@ -323,12 +268,6 @@ public class PostgresDialect extends StandardDialect {
     }
   }
 
-  /**
-   * PostgreSQL用の {@link ScriptBlockContext} です。
-   *
-   * @author taedium
-   * @since 1.7.0
-   */
   public static class PostgresScriptBlockContext implements ScriptBlockContext {
 
     protected boolean inBlock;

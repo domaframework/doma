@@ -1,17 +1,11 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 /**
- * DB固有の型用の {@link JdbcType} の実装です。 {@link PreparedStatement#setObject(int, Object, int)}
- * を使って値を設定します。
+ * A JDBC type for {@link Types#OTHER}.
  *
- * @author nakamura-to
- * @since 2.4.0
+ * @see PreparedStatement#setObject(int, Object, int)
  */
 public class PortableObjectType<T> extends AbstractJdbcType<T> {
 

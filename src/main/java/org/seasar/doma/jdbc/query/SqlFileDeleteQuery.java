@@ -10,7 +10,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-/** @author taedium */
 public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuery {
 
   protected EntityHandler<?> entityHandler;

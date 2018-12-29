@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 import org.seasar.doma.DomaNullPointerException;
 
+/** A skeletal implementation of the {@link Sql} interface. */
 public abstract class AbstractSql<P extends SqlParameter> implements Sql<P> {
 
   protected final SqlKind kind;

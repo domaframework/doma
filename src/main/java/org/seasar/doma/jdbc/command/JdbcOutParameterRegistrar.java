@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
@@ -9,7 +10,6 @@ import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
-/** @author taedium */
 public class JdbcOutParameterRegistrar implements JdbcMappingFunction {
 
   protected final CallableStatement callableStatement;

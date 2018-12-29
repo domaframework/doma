@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.query;
 
 import java.sql.Statement;
 
-/** @author taedium */
 public interface BatchInsertQuery extends BatchModifyQuery {
 
   boolean isBatchSupported();

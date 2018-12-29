@@ -7,10 +7,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.query.CreateQuery;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @param <RESULT> 結果
- */
 public class CreateCommand<RESULT> implements Command<RESULT> {
 
   protected final CreateQuery<RESULT> query;

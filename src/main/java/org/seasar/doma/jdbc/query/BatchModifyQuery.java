@@ -5,7 +5,6 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
 
-/** @author taedium */
 public interface BatchModifyQuery extends Query {
 
   List<PreparedSql> getSqls();

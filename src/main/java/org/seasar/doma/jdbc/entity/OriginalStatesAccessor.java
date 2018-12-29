@@ -8,28 +8,23 @@ import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 
 /**
- * {@link OriginalStates} が注釈されたフィールドへアクセスするクラスです。
+ * An accessor that is access to the field that is annotated with {@link OriginalStates}.
  *
- * @param <E> エンティティの型
- * @author taedium
- * @since 1.20.0
+ * @param <E> the entity type
  */
 public class OriginalStatesAccessor<E> {
 
-  /** エンティティクラス */
   protected final Class<? super E> entityClass;
 
-  /** {@link OriginalStates} が注釈されたフィールドの名前 */
   protected final String name;
 
-  /** {@link OriginalStates} が注釈されたフィールド */
   protected final Field field;
 
   /**
-   * インスタンスを構築します
+   * Creates an instance.
    *
-   * @param entityClass エンティティクラス
-   * @param name {@link OriginalStates} が注釈されたフィールドの名前
+   * @param entityClass the entity class
+   * @param name the name of field that is annotated with {@link OriginalStates}
    */
   public OriginalStatesAccessor(Class<? super E> entityClass, String name) {
     if (entityClass == null) {
@@ -63,10 +58,10 @@ public class OriginalStatesAccessor<E> {
   }
 
   /**
-   * エンティティからOriginalStatesを取得します。
+   * Retrieves the original states from the entity.
    *
-   * @param entity エンティティ
-   * @return OriginalStates
+   * @param entity the entity
+   * @return the original states
    */
   @SuppressWarnings("unchecked")
   public E get(E entity) {
@@ -82,10 +77,10 @@ public class OriginalStatesAccessor<E> {
   }
 
   /**
-   * エンティティにOriginalStatesを設定します。
+   * Set the original states to the entity.
    *
-   * @param entity エンティティ
-   * @param states OriginalStates
+   * @param entity the entity
+   * @param states the original states
    */
   public void set(E entity, E states) {
     if (entity == null) {

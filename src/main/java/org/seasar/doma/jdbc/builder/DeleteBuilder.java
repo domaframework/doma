@@ -10,13 +10,11 @@ import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.query.SqlDeleteQuery;
 
 /**
- * DELETE文を組み立て実行するクラスです。
+ * A builder for an SQL DELETE statement.
  *
- * <p>このクラスはスレッドセーフではありません。
+ * <p>This is not thread safe.
  *
- * <h3>例</h3>
- *
- * <h4>Java</h4>
+ * <h2>Java</h2>
  *
  * <pre>
  * DeleteBuilder builder = DeleteBuilder.newInstance(config);
@@ -28,7 +26,7 @@ import org.seasar.doma.jdbc.query.SqlDeleteQuery;
  * builder.execute();
  * </pre>
  *
- * <h4>実行されるSQL</h4>
+ * <h2>built SQL</h2>
  *
  * <pre>
  * delete from Emp
@@ -37,9 +35,6 @@ import org.seasar.doma.jdbc.query.SqlDeleteQuery;
  * and
  * salary = 1000
  * </pre>
- *
- * @author taedium
- * @since 1.8.0
  */
 public class DeleteBuilder {
 
@@ -65,11 +60,11 @@ public class DeleteBuilder {
   }
 
   /**
-   * ファクトリメソッドです。
+   * Creates a new instance.
    *
-   * @param config 設定
-   * @return DELETE文を組み立てるビルダー
-   * @throws DomaNullPointerException 引数が{@code null} の場合
+   * @param config the configuration
+   * @return a builder
+   * @throws DomaNullPointerException if {@code config} is {@code null}
    */
   public static DeleteBuilder newInstance(Config config) {
     if (config == null) {
@@ -79,11 +74,11 @@ public class DeleteBuilder {
   }
 
   /**
-   * SQLの断片を追加します。
+   * Appends an SQL fragment.
    *
-   * @param sql SQLの断片
-   * @return このインスタンス
-   * @throws DomaNullPointerException 引数が {@code null} の場合
+   * @param sql the SQL fragment
+   * @return a builder
+   * @throws DomaNullPointerException if {@code sql} is {@code null}
    */
   public DeleteBuilder sql(String sql) {
     if (sql == null) {
@@ -94,9 +89,9 @@ public class DeleteBuilder {
   }
 
   /**
-   * 最後に追加したSQLもしくはパラメータを削除します。
+   * Removes the last SQL fragment or parameter.
    *
-   * @return このインスタンス
+   * @return a builder
    */
   public DeleteBuilder removeLast() {
     helper.removeLast();
@@ -104,15 +99,15 @@ public class DeleteBuilder {
   }
 
   /**
-   * パラメータを追加します。
+   * Appends a parameter.
    *
-   * <p>パラメータの型には、基本型とドメインクラスを指定できます。
+   * <p>The parameter type must be one of basic types or holder types.
    *
-   * @param <P> パラメータの型
-   * @param paramClass パラメータのクラス
-   * @param param パラメータ
-   * @return このインスタンス
-   * @throws DomaNullPointerException {@code parameterClass} が {@code null} の場合
+   * @param <P> the parameter type
+   * @param paramClass the parameter class
+   * @param param the parameter
+   * @return a builder
+   * @throws DomaNullPointerException if {@code paramClass} is {@code null}
    */
   public <P> DeleteBuilder param(Class<P> paramClass, P param) {
     if (paramClass == null) {
@@ -122,15 +117,15 @@ public class DeleteBuilder {
   }
 
   /**
-   * リテラルとしてパラメータを追加します。
+   * Appends a parameter as literal.
    *
-   * <p>パラメータの型には、基本型とドメインクラスを指定できます。
+   * <p>The parameter type must be one of basic types or holder types.
    *
-   * @param <P> パラメータの型
-   * @param paramClass パラメータのクラス
-   * @param param パラメータ
-   * @return このインスタンス
-   * @throws DomaNullPointerException {@code parameterClass} が {@code null} の場合
+   * @param <P> the parameter type
+   * @param paramClass the parameter class
+   * @param param the parameter
+   * @return a builder
+   * @throws DomaNullPointerException if {@code paramClass} is {@code null}
    */
   public <P> DeleteBuilder literal(Class<P> paramClass, P param) {
     if (paramClass == null) {
@@ -146,10 +141,10 @@ public class DeleteBuilder {
   }
 
   /**
-   * SQLを実行します。
+   * Executes an SQL DELETE statement.
    *
-   * @return 更新件数
-   * @throws JdbcException JDBCに関する例外が発生した場合
+   * @return the affected rows count
+   * @throws JdbcException if a JDBC related error occurs
    */
   public int execute() {
     if (query.getMethodName() == null) {
@@ -172,11 +167,11 @@ public class DeleteBuilder {
   }
 
   /**
-   * クエリタイムアウト（秒）を設定します。
+   * Sets the query timeout limit in seconds.
    *
-   * <p>指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
+   * <p>If not specified, the value of {@link Config#getQueryTimeout()} is used.
    *
-   * @param queryTimeout クエリタイムアウト（秒）
+   * @param queryTimeout the query timeout limit in seconds
    * @see Statement#setQueryTimeout(int)
    */
   public void queryTimeout(int queryTimeout) {
@@ -184,9 +179,9 @@ public class DeleteBuilder {
   }
 
   /**
-   * SQLのログの出力形式を設定します。
+   * Sets the SQL log format.
    *
-   * @param sqlLogType SQLのログの出力形式
+   * @param sqlLogType the SQL log format type
    */
   public void sqlLogType(SqlLogType sqlLogType) {
     if (sqlLogType == null) {
@@ -196,12 +191,12 @@ public class DeleteBuilder {
   }
 
   /**
-   * 呼び出し元のクラス名です。
+   * Sets the caller class name.
    *
-   * <p>指定しない場合このクラスの名前が使用されます。
+   * <p>If not specified, the class name of this instance is used.
    *
-   * @param className 呼び出し元のクラス名
-   * @throws DomaNullPointerException 引数が {@code null} の場合
+   * @param className the caller class name
+   * @throws DomaNullPointerException if {@code className} is {@code null}
    */
   public void callerClassName(String className) {
     if (className == null) {
@@ -211,12 +206,12 @@ public class DeleteBuilder {
   }
 
   /**
-   * 呼び出し元のメソッド名です。
+   * Sets the caller method name.
    *
-   * <p>指定しない場合このSQLを生成するメソッド（{@link #execute()})）の名前が使用されます。
+   * <p>if not specified, {@code execute} is used.
    *
-   * @param methodName 呼び出し元のメソッド名
-   * @throws DomaNullPointerException 引数が {@code null} の場合
+   * @param methodName the caller method name
+   * @throws DomaNullPointerException if {@code methodName} is {@code null}
    */
   public void callerMethodName(String methodName) {
     if (methodName == null) {
@@ -226,9 +221,9 @@ public class DeleteBuilder {
   }
 
   /**
-   * 組み立てられたSQLを返します。
+   * Returns the built SQL.
    *
-   * @return 組み立てられたSQL
+   * @return the built SQL
    */
   public Sql<?> getSql() {
     if (query.getMethodName() == null) {

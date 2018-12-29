@@ -8,12 +8,6 @@ import java.util.function.Function;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.entity.PropertyField;
 
-/**
- * @author nakamura-to
- * @since 2.10.0
- * @param <ENTITY> エンティティクラスの型
- * @param <EMBEDDABLE> エンベッダブルクラスの型
- */
 public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
 
   protected final String name;

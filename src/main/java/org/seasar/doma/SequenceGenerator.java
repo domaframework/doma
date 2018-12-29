@@ -8,12 +8,11 @@ import org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator;
 import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 
 /**
- * シーケンスを利用する識別子ジェネレータを示します。
+ * Indicates an identifier generator that uses a sequence.
  *
- * <p>このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。 このアノテーションは {@link Id} 、 {@link GeneratedValue}
- * と併わせて使用しなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated field must be a member of an {@link Entity} annotated class. This annotation
+ * must be used in conjunction with the {@link Id} annotation and the {@link GeneratedValue}
+ * annotation.
  *
  * <pre>
  * &#064;Entity
@@ -27,52 +26,26 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
  *     ...
  * }
  * </pre>
- *
- * @author taedium
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SequenceGenerator {
 
-  /**
-   * カタログ名を返します。
-   *
-   * @return カタログ名
-   */
+  /** @return the catalog name. */
   String catalog() default "";
 
-  /**
-   * スキーマ名を返します。
-   *
-   * @return スキーマ名
-   */
+  /** @return the schema name. */
   String schema() default "";
 
-  /**
-   * シーケンス名を返します。
-   *
-   * @return シーケンス名
-   */
+  /** @return the sequence name. */
   String sequence();
 
-  /**
-   * 初期値を返します。
-   *
-   * @return 初期値
-   */
+  /** @return the initial value. */
   long initialValue() default 1;
 
-  /**
-   * 割り当てサイズを返します。
-   *
-   * @return 割り当てサイズ
-   */
+  /** @return the allocation size. */
   long allocationSize() default 1;
 
-  /**
-   * ジェネレータの実装クラスを返します。
-   *
-   * @return ジェネレータの実装クラス
-   */
+  /** @return the implementation class of the {@link SequenceIdGenerator} interface. */
   Class<? extends SequenceIdGenerator> implementer() default BuiltinSequenceIdGenerator.class;
 }

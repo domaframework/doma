@@ -2,28 +2,24 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * SQLファイルです。
- *
- * <p>SQLファイルのパス、SQLの文字列、SQLの文字列を解析した結果をカプセル化します。
- *
- * @author taedium
- */
+/** The SQL file. */
 public class SqlFile {
 
-  /** SQLファイルのパス */
+  /** the SQL file path */
   protected final String path;
 
-  /** SQLの文字列 */
+  /** the SQL string */
   protected final String sql;
 
-  /** SQLの解析結果 */
+  /** the SQL node */
   protected final SqlNode sqlNode;
 
   /**
-   * @param path SQLファイルのパス
-   * @param sql SQLの文字列
-   * @param sqlNode SQLの解析結果
+   * Creates an instance.
+   *
+   * @param path the SQL file path
+   * @param sql the SQL string
+   * @param sqlNode the SQL node
    */
   public SqlFile(String path, String sql, SqlNode sqlNode) {
     if (path == null) {
@@ -41,29 +37,29 @@ public class SqlFile {
   }
 
   /**
-   * SQLファイルのパスを返します。
+   * Returns the SQL file path.
    *
-   * @return SQLファイルのパス
+   * @return the SQL file path
    */
   public String getPath() {
     return path;
   }
 
   /**
-   * SQLの文字列を返します。
+   * Returns the SQL string.
    *
-   * @return SQLの文字列
+   * @return the SQL string
    */
   public String getSql() {
     return sql;
   }
 
   /**
-   * SQLの解析結果を返します。
+   * Returns the SQL node.
    *
-   * <p>呼び出し側でSQLの解析結果を変更してはいけません。
+   * <p>Do not modify the SQL node in the client.
    *
-   * @return SQLの解析結果
+   * @return the SQL node
    */
   public SqlNode getSqlNode() {
     return sqlNode;

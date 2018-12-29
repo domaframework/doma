@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.NClob;
 import java.sql.SQLException;
 
-/** @author taedium */
 public class NClobCreateQuery extends AbstractCreateQuery<NClob> {
 
   @Override

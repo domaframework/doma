@@ -1,6 +1,5 @@
 package org.seasar.doma.jdbc.builder;
 
-/** @author taedium */
 class Param {
 
   final String name;

@@ -1,47 +1,14 @@
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
-import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
-import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
-import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
-import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.EndNode;
-import org.seasar.doma.internal.jdbc.sql.node.EolNode;
-import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForNode;
-import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
-import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
-import org.seasar.doma.internal.jdbc.sql.node.IfNode;
-import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
-import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
-import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
-import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.UpdateClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.UpdateStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
-import org.seasar.doma.internal.jdbc.sql.node.WordNode;
+import org.seasar.doma.internal.jdbc.sql.node.*;
 
 /**
- * {@link SqlNode} へのビジターです。
+ * A visitor for {@link SqlNode}.
  *
- * <p>このインタフェースの実装はスレッドセーフでなければいけません。
+ * <p>The implementation class must be thread safe.
  *
- * @author taedium
- * @param <R> 戻り値の型
- * @param <P> パラメータの型
+ * @param <R> the result type
+ * @param <P> the parameter type
  */
 public interface SqlNodeVisitor<R, P> {
 

@@ -1,17 +1,9 @@
 package org.seasar.doma.jdbc.type;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Types;
+import java.sql.*;
 import java.time.LocalTime;
 
-/**
- * @author nakamura-to
- * @since 2.0.0
- */
+/** A JDBC type for {@link Types#TIME} and {@link LocalTime}. */
 public class LocalTimeType extends AbstractJdbcType<LocalTime> {
 
   public LocalTimeType() {

@@ -5,22 +5,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.function.Supplier;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * ローカルトランザクションのマネージャーです。
- *
- * @author nakamura-to
- * @since 2.0.0
- */
+/** A transaction manager for local transactions. */
 public class LocalTransactionManager implements TransactionManager {
 
-  /** ローカルトランザクション */
   protected final LocalTransaction transaction;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param transaction ローカルトランザクション
-   */
   public LocalTransactionManager(LocalTransaction transaction) {
     if (transaction == null) {
       throw new DomaNullPointerException("transaction");
@@ -202,14 +191,6 @@ public class LocalTransactionManager implements TransactionManager {
     return transaction.isRollbackOnly();
   }
 
-  /**
-   * トランザクション内で実行します。
-   *
-   * @param isolationLevel トランザクション分離レベル
-   * @param supplier トランザクション内で実行する処理
-   * @param <RESULT> 結果の型
-   * @return 処理の結果
-   */
   protected <RESULT> RESULT executeInTransaction(
       TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier) {
     assertNotNull(isolationLevel, supplier);

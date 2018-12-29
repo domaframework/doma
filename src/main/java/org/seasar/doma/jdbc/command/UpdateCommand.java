@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.query.UpdateQuery;
 
-/** @author taedium */
 public class UpdateCommand extends ModifyCommand<UpdateQuery> {
 
   public UpdateCommand(UpdateQuery query) {

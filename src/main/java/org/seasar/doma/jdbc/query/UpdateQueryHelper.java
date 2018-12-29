@@ -12,10 +12,6 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author nakamura-to
- * @since 2.3.0
- */
 public class UpdateQueryHelper<E> {
 
   protected final Config config;

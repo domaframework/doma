@@ -10,10 +10,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @since 1.1.0
- */
+/** A context for a local transaction. */
 public class LocalTransactionContext {
 
   private final List<String> savepointNames = new ArrayList<String>();

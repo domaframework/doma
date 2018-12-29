@@ -3,23 +3,13 @@ package org.seasar.doma.wrapper;
 import java.sql.Time;
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link Time} のラッパーです。
- *
- * @author taedium
- */
+/** A wrapper for the {@link Time} class. */
 public class TimeWrapper extends AbstractWrapper<Time> {
 
-  /** インスタンスを構築します。 */
   public TimeWrapper() {
     super(Time.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public TimeWrapper(Time value) {
     super(Time.class, value);
   }

@@ -2,23 +2,13 @@ package org.seasar.doma.wrapper;
 
 import org.seasar.doma.DomaNullPointerException;
 
-/**
- * {@link String} のラッパーです。
- *
- * @author taedium
- */
+/** A wrapper for the {@link Object} class. */
 public class ObjectWrapper extends AbstractWrapper<Object> {
 
-  /** インスタンスを構築します。 */
   public ObjectWrapper() {
     super(Object.class);
   }
 
-  /**
-   * 値を指定してインスタンスを構築します。
-   *
-   * @param value 値
-   */
   public ObjectWrapper(Object value) {
     super(Object.class, value);
   }

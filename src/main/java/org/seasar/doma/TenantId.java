@@ -6,13 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * テナントの識別子を示します。
+ * Indicates the tenant id.
  *
- * <p>このアノテーションが注釈されるフィールドは、エンティティインタフェースのメンバでなければいけません。
+ * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
- * <p>SQLが生成されるタイプのクエリにおいて、注釈されたフィールドにマップされたカラムは検索条件としてWHERE句に含まれます。
- *
- * <h3>例:</h3>
+ * <p>The column mapped to the annotated field is included in WHERE clause in auto-generated SQL
+ * statements
  *
  * <pre>
  * &#064;Entity
@@ -23,8 +22,6 @@ import java.lang.annotation.Target;
  *     String tenantId;
  * }
  * </pre>
- *
- * @author nakamura
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
