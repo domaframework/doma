@@ -1,22 +1,6 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
-import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
@@ -46,22 +30,35 @@ import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 import org.seasar.doma.jdbc.query.SqlSelectQuery;
 import org.seasar.doma.jdbc.query.SqlUpdateQuery;
 
-/**
- * {@link Query} の実装クラスのファクトリです。
- *
- * @author nakamura-to
- * @since 2.0.0
- */
+/** A factory for the {@link Query} implementation classes. */
 public interface QueryImplementors {
 
+  /**
+   * Creates an {@link SqlFileSelectQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlFileSelectQuery createSqlFileSelectQuery(Method method) {
     return new SqlFileSelectQuery();
   }
 
+  /**
+   * Creates an {@link SqlSelectQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlSelectQuery createSqlSelectQuery(Method method) {
     return new SqlSelectQuery();
   }
 
+  /**
+   * Creates an {@link SqlFileScriptQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlFileScriptQuery createSqlFileScriptQuery(Method method) {
     return new SqlFileScriptQuery();
   }
@@ -85,22 +82,52 @@ public interface QueryImplementors {
     return new SqlFileDeleteQuery();
   }
 
+  /**
+   * Creates an {@link SqlFileInsertQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlFileInsertQuery createSqlFileInsertQuery(Method method) {
     return new SqlFileInsertQuery();
   }
 
+  /**
+   * Creates an {@link SqlFileUpdateQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlFileUpdateQuery createSqlFileUpdateQuery(Method method) {
     return new SqlFileUpdateQuery();
   }
 
+  /**
+   * Creates an {@link SqlDeleteQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlDeleteQuery createSqlDeleteQuery(Method method) {
     return new SqlDeleteQuery();
   }
 
+  /**
+   * Creates an {@link SqlInsertQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlInsertQuery createSqlInsertQuery(Method method) {
     return new SqlInsertQuery();
   }
 
+  /**
+   * Creates an {@link SqlUpdateQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlUpdateQuery createSqlUpdateQuery(Method method) {
     return new SqlUpdateQuery();
   }
@@ -125,50 +152,108 @@ public interface QueryImplementors {
     return new SqlFileBatchDeleteQuery<>(clazz);
   }
 
+  /**
+   * Creates an {@link SqlFileBatchInsertQuery} object.
+   *
+   * @param <ELEMENT> the element type of the batch list
+   * @param method the DAO method
+   * @param clazz the element class of the batch list
+   * @return the query
+   */
   default <ELEMENT> SqlFileBatchInsertQuery<ELEMENT> createSqlFileBatchInsertQuery(
       Method method, Class<ELEMENT> clazz) {
     return new SqlFileBatchInsertQuery<>(clazz);
   }
 
+  /**
+   * Creates a {@link SqlFileBatchUpdateQuery} object.
+   *
+   * @param <ELEMENT> the element type of the batch list
+   * @param method the DAO method
+   * @param clazz the element class of the batch list
+   * @return the query
+   */
   default <ELEMENT> SqlFileBatchUpdateQuery<ELEMENT> createSqlFileBatchUpdateQuery(
       Method method, Class<ELEMENT> clazz) {
     return new SqlFileBatchUpdateQuery<>(clazz);
   }
 
+  /**
+   * Creates an {@link AutoFunctionQuery} object.
+   *
+   * @param <RESULT> the result type of the function query
+   * @param method the DAO method
+   * @return the query
+   */
   default <RESULT> AutoFunctionQuery<RESULT> createAutoFunctionQuery(Method method) {
     return new AutoFunctionQuery<>();
   }
 
+  /**
+   * Creates an {@link AutoProcedureQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default AutoProcedureQuery createAutoProcedureQuery(Method method) {
     return new AutoProcedureQuery();
   }
 
+  /**
+   * Creates an {@link ArrayCreateQuery } object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default ArrayCreateQuery createArrayCreateQuery(Method method) {
     return new ArrayCreateQuery();
   }
 
+  /**
+   * Creates a {@link BlobCreateQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default BlobCreateQuery createBlobCreateQuery(Method method) {
     return new BlobCreateQuery();
   }
 
+  /**
+   * Creates a {@link ClobCreateQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default ClobCreateQuery createClobCreateQuery(Method method) {
     return new ClobCreateQuery();
   }
 
+  /**
+   * Creates a {@link NClobCreateQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default NClobCreateQuery createNClobCreateQuery(Method method) {
     return new NClobCreateQuery();
   }
 
+  /**
+   * Creates an {@link SQLXMLCreateQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SQLXMLCreateQuery createSQLXMLCreateQuery(Method method) {
     return new SQLXMLCreateQuery();
   }
 
   /**
-   * {@link SqlProcessor} に対応したクエリを作成します。
+   * Creates an {@link SqlProcessorQuery} object.
    *
-   * @param method Dao メソッド
-   * @return クエリ
-   * @since 2.14.0
+   * @param method the DAO method
+   * @return the query
    */
   default SqlProcessorQuery createSqlProcessorQuery(Method method) {
     return new SqlProcessorQuery();

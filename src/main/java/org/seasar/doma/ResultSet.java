@@ -1,45 +1,24 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.sql.Statement;
+import java.util.List;
 import org.seasar.doma.jdbc.ResultMappingException;
 
 /**
- * ストアドファンクションやストアドプロシージャーから返される結果セットにマッピングされることを示します。
+ * Indicates a result set that is fetch by stored functions or stored procedures.
  *
- * <p>{@code ResultSet} をカーソルとしてOUTパラメータで返すRDBMSにおいては、注釈されたパラメータは実質的にOUTパラメータとして扱われます
- * 。そうでないRDBMSにおいては、IN、INOUT、OUTのいずれのパラメータにもみなされません。 {@link
- * Statement#getResultSet()}で取得される結果セットにマッピングされます。
- *
- * <p>このアノテーションが注釈されるパラメータは、 {@link Function} もしくは {@link Procedure} が注釈されたメソッドのパラメータでなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated parameter type must be {@link List} and it must be one of parameters of the
+ * method that is annotated with {@link Function} or {@link Procedure}.
  *
  * <pre>
  * &#064;Dao(config = AppConfig.class)
  * public interface EmployeeDao {
  *
  *     &#064;Procedure
- *     void fetchEmployees(@In Integer departmentId,
- *             &#064;ResultSet List&lt;Employee&gt; employees);
+ *     void fetchEmployees(@In Integer departmentId, &#064;ResultSet List&lt;Employee&gt; employees);
  * }
  * </pre>
  *
@@ -51,21 +30,20 @@ import org.seasar.doma.jdbc.ResultMappingException;
  *     ...
  * }
  * </pre>
- *
- * @author taedium
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ResultSet {
 
   /**
-   * 結果がエンティティやエンティティのリストの場合、 エンティティのすべてのプロパティに結果セットのカラムがマッピングされることを保証するかどうかを返します。
+   * Whether to ensure that all entity properties are mapped to columns of a result set.
    *
-   * <p>{@code true} の場合、マッピングされないプロパティが存在すれば、このアノテーションが注釈されたパラメータを持つメソッドから {@link
-   * ResultMappingException} がスローされます。
+   * <p>This value is used only if the result set is fetched as an entity or a entity list.
    *
-   * @return 保証するかどうか
-   * @since 1.34.0
+   * <p>If {@code true} and there are some unmapped properties、 {@link ResultMappingException} is
+   * thrown from the annotated method.
+   *
+   * @return whether to ensure that all entity properties are mapped to columns of a result set
    */
   boolean ensureResultMapping() default false;
 }

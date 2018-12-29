@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
@@ -353,7 +338,6 @@ public class QueryParameterMeta {
     return element.getAnnotation(annotationType) != null;
   }
 
-  /** @author nakamura-to */
   protected class NullableCtTypeVisitor
       extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
@@ -372,7 +356,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class BindableCtTypeVisitor
       extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
@@ -439,7 +422,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class IterableElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -477,7 +459,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class OptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -515,7 +496,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class FunctionTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -563,7 +543,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class CollectorTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -601,7 +580,6 @@ public class QueryParameterMeta {
     }
   }
 
-  /** @author nakamura-to */
   protected class ReferenceReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 

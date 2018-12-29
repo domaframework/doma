@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc;
 
 import java.io.PrintWriter;
@@ -26,89 +11,87 @@ import javax.sql.DataSource;
 import org.seasar.doma.message.Message;
 
 /**
- * {@link DriverManager#getConnection(String, Properties)}を使用して {@link Connection} を返す単純なデータソースです。
+ * A simple data source that creates {@link Connection} by using {@link
+ * DriverManager#getConnection(String, Properties)}.
  *
- * <p>ごく単純なアプリケーションやサンプルプログラムで使用されることを想定しています。 通常は、{@literal JTA}トランザクションと連携する 実装やコネクションプーリングを提供する
- * {@link DataSource} の実装を使用してください。
- *
- * @author taedium
+ * <p>It is assumed that this object is used only in simple applications. In production environment,
+ * you should use the {@link DataSource} implementation that provides connection pooling.
  */
 public class SimpleDataSource implements DataSource {
 
-  /** コネクションが確立できない場合の {@code SQLState} コードです。 */
+  /**
+   * the {@code SQLState} code to indicate that the this data source is unable to establish the
+   * connection
+   */
   protected static final String UNABLE_TO_ESTABLISH_CONNECTION = "08001";
 
-  /** {@code jdbc:subprotocol:subname}という形式のデータベースへの接続URLです。 */
   protected String url;
 
-  /** データベースの接続ユーザーです。 */
   protected String user;
 
-  /** データベースの接続パスワードです。 */
   protected String password;
 
-  /** JDBCドライバへのプロパティです。 */
   protected final Properties properties = new Properties();
 
   /**
-   * データベースへの接続URLを返します。
+   * Returns the database url.
    *
-   * @return データベースへの接続URL
+   * @return the database url
    */
   public String getUrl() {
     return url;
   }
 
   /**
-   * データベースの接続URLを設定します。
+   * Sets the database url of the form <code>jdbc:<em>subprotocol</em>:<em>subname</em></code>.
    *
-   * @param url {@code jdbc:subprotocol:subname}という形式のデータベースへの接続URL
+   * @param url the database url
    */
   public void setUrl(String url) {
     this.url = url;
   }
 
   /**
-   * データベースの接続ユーザーを返します。
+   * Returns the database user.
    *
-   * @return データベースの接続ユーザー
+   * @return the database user
    */
   public String getUser() {
     return user;
   }
 
   /**
-   * データベースの接続ユーザーを設定します。
+   * Sets the database user.
    *
-   * @param user データベースの接続ユーザー
+   * @param user the database user
    */
   public void setUser(String user) {
     this.user = user;
   }
 
   /**
-   * データベースの接続パスワードを返します。
+   * Returns the database password
    *
-   * @return データベースの接続パスワード
+   * @return the database password
    */
   public String getPassword() {
     return password;
   }
 
   /**
-   * データベースの接続パスワードを設定します。
+   * Sets the database password
    *
-   * @param password データベースの接続パスワード
+   * @param password the database password
    */
   public void setPassword(String password) {
     this.password = password;
   }
 
   /**
-   * JDBCドライバへのプロパティを追加します。
+   * Add a JDBC property.
    *
-   * @param key プロパティのキー
-   * @param value プロパティの値
+   * @param key the key of the property
+   * @param value the value of the property
    */
   public void addProperty(String key, String value) {
     properties.setProperty(key, value);
@@ -150,13 +133,6 @@ public class SimpleDataSource implements DataSource {
     return getConnectionInternal(info);
   }
 
-  /**
-   * 内部的にコネクションを返します。
-   *
-   * @param info JDBCドライバへのプロパティ
-   * @return コネクション
-   * @throws SQLException SQLに関する例外が発生した場合
-   */
   protected Connection getConnectionInternal(Properties info) throws SQLException {
     if (url == null) {
       throw new SQLException(Message.DOMA5002.getMessage());

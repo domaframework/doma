@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma;
 
 import java.lang.annotation.ElementType;
@@ -23,12 +8,11 @@ import org.seasar.doma.jdbc.id.BuiltinTableIdGenerator;
 import org.seasar.doma.jdbc.id.TableIdGenerator;
 
 /**
- * テーブルを利用する識別子ジェネレータを示します。
+ * Indicates an identifier generator that uses a table.
  *
- * <p>このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。 このアノテーションは {@link Id} 、 {@link GeneratedValue}
- * と併わせて使用しなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated field must be a member of an {@link Entity} annotated class. This annotation
+ * must be used in conjunction with the {@link Id} annotation and the {@link GeneratedValue}
+ * annotation.
  *
  * <pre>
  * &#064;Entity
@@ -49,66 +33,30 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TableGenerator {
 
-  /**
-   * カタログ名を返します。
-   *
-   * @return カタログ名
-   */
+  /** @return the catalog name. */
   String catalog() default "";
 
-  /**
-   * シーケンス名を返します。
-   *
-   * @return シーケンス名
-   */
+  /** @return the schema name. */
   String schema() default "";
 
-  /**
-   * テーブル名を返します。
-   *
-   * @return テーブル名
-   */
+  /** @return the table name. */
   String table() default "ID_GENERATOR";
 
-  /**
-   * 主キーのカラムの名前を返します。
-   *
-   * @return 主キーのカラムの名前
-   */
+  /** @return the column name that is the primary key. */
   String pkColumnName() default "PK";
 
-  /**
-   * 生成される識別子を保持するカラムの名前を返します。
-   *
-   * @return 生成される識別子を保持するカラムの名前
-   */
+  /** @return the column name that has generated identifiers. */
   String valueColumnName() default "VALUE";
 
-  /**
-   * 主キーのカラムの値を返します。
-   *
-   * @return 主キーのカラムの値
-   */
+  /** @return the value of the primary key column. */
   String pkColumnValue();
 
-  /**
-   * 初期値を返します。
-   *
-   * @return 初期値
-   */
+  /** @return the initial value. */
   long initialValue() default 1;
 
-  /**
-   * 割り当てサイズを返します。
-   *
-   * @return 割り当てサイズ
-   */
+  /** @return the allocated size. */
   long allocationSize() default 1;
 
-  /**
-   * ジェネレータの実装クラスを返します。
-   *
-   * @return ジェネレータの実装クラス
-   */
+  /** @return the implementation class of the {@link TableIdGenerator} interface. */
   Class<? extends TableIdGenerator> implementer() default BuiltinTableIdGenerator.class;
 }

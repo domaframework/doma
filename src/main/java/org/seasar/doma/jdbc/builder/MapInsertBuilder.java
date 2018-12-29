@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
@@ -27,13 +12,11 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
- * MAPからINSERT文を自動的に組み立てて実行するクラスです。
+ * A builder that builds an SQL INSERT statement from a map.
  *
- * <p>このクラスはスレッドセーフではありません。
+ * <p>This is not thread safe.
  *
- * <h3>例</h3>
- *
- * <h4>Java</h4>
+ * <h2>Java</h2>
  *
  * <pre>
  * MapInsertBuilder builder = MapInsertBuilder.newInstance(config, "Emp");
@@ -43,7 +26,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * }});
  * </pre>
  *
- * <h4>実行されるSQL</h4>
+ * <h2>built SQL</h2>
  *
  * <pre>
  * insert into Emp
@@ -52,7 +35,6 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * </pre>
  *
  * @author bakenezumi
- * @since 2.13.1
  */
 public class MapInsertBuilder {
 

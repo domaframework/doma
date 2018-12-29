@@ -1,43 +1,16 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.message.Message;
 
-/**
- * JDBCに関するサポートされていないメソッドが呼び出された場合にスローされる例外です。
- *
- * @author taedium
- */
+/** Thrown to indicate that a JDBC related unsupported method is invoked. */
 public class JdbcUnsupportedOperationException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
 
-  /** サポートされていないメソッドを持つクラスの名前 */
   protected final String className;
 
-  /** サポートされていないメソッドの名前 */
   protected final String methodName;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param className サポートされていないメソッドを持つクラスの名前
-   * @param methodName サポートされていないメソッドの名前
-   */
   public JdbcUnsupportedOperationException(String className, String methodName) {
     super(Message.DOMA2034, className, methodName);
     this.className = className;
@@ -45,18 +18,18 @@ public class JdbcUnsupportedOperationException extends JdbcException {
   }
 
   /**
-   * サポートされていないメソッドを持つクラスの名前を返します。
+   * Returns the class name.
    *
-   * @return サポートされていないメソッドを持つクラスの名前
+   * @return the class name
    */
   public String getClassName() {
     return className;
   }
 
   /**
-   * サポートされていないメソッドの名前を返します。
+   * Return the unsupported method name.
    *
-   * @return サポートされていないメソッドの名前
+   * @return the method name
    */
   public String getMethodName() {
     return methodName;

@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.entity;
 
 import java.util.HashMap;
@@ -41,75 +26,44 @@ import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
- * /** デフォルトのプロパティ型です。
+ * A description for a default property.
  *
- * @author nakamura-to
- * @param <PARENT> 親エンティティの型
- * @param <ENTITY> エンティティの型
- * @param <BASIC> プロパティの基本型
- * @param <DOMAIN> プロパティのドメイン型
+ * @param <PARENT> the parent entity type
+ * @param <ENTITY> the entity type
+ * @param <BASIC> the property basic type
+ * @param <DOMAIN> the property domain type
  */
 public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     implements EntityPropertyType<ENTITY, BASIC> {
 
-  /** エンティティのクラス */
   protected final Class<ENTITY> entityClass;
 
-  /** プロパティのクラス */
   protected final Class<?> entityPropertyClass;
 
-  /** 基本型のクラス */
   protected final Class<BASIC> basicClass;
 
-  /** ラッパーのサプライヤ */
   protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
-  /** ドメインのメタタイプ */
   protected final DomainType<BASIC, DOMAIN> domainType;
 
-  /** プロパティの名前 */
   protected final String name;
 
-  /** プロパティの単純名 */
   protected final String simpleName;
 
-  /** カラム名 */
   protected final String columnName;
 
-  /** ネーミング規約 */
   protected final NamingType namingType;
 
-  /** 挿入可能かどうか */
   protected final boolean insertable;
 
-  /** 更新可能かどうか */
   protected final boolean updatable;
 
-  /** 引用符が必要とされるかどうか */
   protected final boolean quoteRequired;
 
-  /** プロパティのフィールド */
   protected final PropertyField<ENTITY> field;
 
-  /** アクセサのサプライヤ */
   protected final Supplier<Property<ENTITY, BASIC>> propertySupplier;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param entityClass エンティティのクラス
-   * @param entityPropertyClass プロパティのクラス
-   * @param basicClass 値のクラス
-   * @param wrapperSupplier ラッパーのサプライヤ
-   * @param parentEntityPropertyType 親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
-   * @param domainType ドメインのメタタイプ、ドメインでない場合 {@code null}
-   * @param name プロパティの名前
-   * @param columnName カラム名
-   * @param namingType ネーミング規約
-   * @param insertable 挿入可能かどうか
-   * @param updatable 更新可能かどうか
-   * @param quoteRequired カラム名に引用符が必要とされるかどうか
-   */
   public DefaultPropertyType(
       Class<ENTITY> entityClass,
       Class<?> entityPropertyClass,
@@ -260,16 +214,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     return updatable;
   }
 
-  /**
-   * 必要ならばエンティティに値を設定して返します。
-   *
-   * @param <VALUE> 値の型
-   * @param entityType エンティティタイプ
-   * @param entity エンティティ
-   * @param visitor ビジター
-   * @param value 値
-   * @return 値が変更されたエンティティもしくは変更されていないエンティティ
-   */
   protected <VALUE> ENTITY modifyIfNecessary(
       EntityType<ENTITY> entityType,
       ENTITY entity,
@@ -302,7 +246,6 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     }
   }
 
-  /** @author nakamura-to */
   protected class DefaultProperty<CONTAINER> implements Property<ENTITY, BASIC> {
 
     protected final Scalar<BASIC, CONTAINER> scalar;

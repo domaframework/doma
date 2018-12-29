@@ -1,77 +1,59 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc;
 
 import java.util.List;
 
 /**
- * SQLを表します。
+ * An SQL.
  *
- * <p>SQLとSQL実行時のパラメータをカプセル化します。また、SQLのバインド変数をパラメータで置換した文字列やSQLファイルのパスを保持します。
+ * <p>The implementation class is not required to be thread safe.
  *
- * <p>このインタフェースの実装はスレッドセーフであることを要求されません。
- *
- * @author taedium
- * @param <P> パラメータの種別を表す型
+ * @param <P> the parameter type
  */
 public interface Sql<P extends SqlParameter> {
 
   /**
-   * SQLの種別を返します。
+   * Returns the kind of the SQL.
    *
-   * @return SQLの種別
+   * @return the kind of the SQL
    */
   SqlKind getKind();
 
   /**
-   * 未加工SQLを返します。
+   * Returns the raw SQL string.
    *
-   * <p>バインド変数は {@code ?} で表されます。
+   * <p>The bind variables are displayed as {@code ?}.
    *
-   * @return 未加工SQL
+   * @return the raw SQL string
    */
   String getRawSql();
 
   /**
-   * フォーマット済みSQLを返します。
+   * Returns the formatted SQL string.
    *
-   * <p>バインド変数 {@code ?} が、 {@link SqlLogFormattingVisitor} の実装によって適切な文字列に置換されたSQLです。
+   * <p>The bind variables are replaced with the string representations of the parameters.
    *
-   * @return フォーマット済みSQL
+   * @return the formatted SQL string
    */
   String getFormattedSql();
 
   /**
-   * 未加工SQLが記述されているSQLファイルのパスを返します。
+   * Returns the file path that contains this SQL.
    *
-   * @return SQLファイルのパス、SQLが自動生成された場合は {@code null}
+   * @return the file path that contains this SQL、or {@code null} if this SQL is auto-generated
    */
   String getSqlFilePath();
 
   /**
-   * バインド変数へのパラメータのリストを返します。
+   * Returns the parameter list.
    *
-   * @return バインド変数のパラメータのリスト
+   * @return the parameter list
    */
   List<P> getParameters();
 
   /**
-   * SQLのログの表示形式を返します。
+   * Returns the type of the SQL log.
    *
-   * @return SQLのログの表示形式
+   * @return the type of the SQL log
    */
   SqlLogType getSqlLogType();
 }

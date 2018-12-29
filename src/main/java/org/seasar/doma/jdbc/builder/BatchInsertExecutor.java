@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
@@ -28,19 +13,15 @@ import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
 
 /**
- * INSERT文を組み立てバッチ実行するクラスです。
+ * An executor that execute SQL INSERT statements in batches.
  *
- * <p>このクラスはスレッドセーフではありません。
+ * <p>This is not thread safe.
  *
- * <h3>例</h3>
- *
- * <h4>Java</h4>
+ * <h2>Java</h2>
  *
  * <pre>
- * List&lt;Employee&gt; employees = Arrays.asList(new Employee[] {
- *     new Employee(&quot;SMITH&quot;, 100),
- *     new Employee(&quot;ALLEN&quot;, 200)
- * });
+ * List&lt;Employee&gt; employees = Arrays
+ *         .asList(new Employee[] { new Employee(&quot;SMITH&quot;, 100), new Employee(&quot;ALLEN&quot;, 200) });
  * BatchInsertExecutor executor = BatchInsertExecutor.newInstance(config);
  * executor.batchSize(10);
  * executor.execute(employees, (emp, builder) -&gt; {
@@ -52,7 +33,7 @@ import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
  * });
  * </pre>
  *
- * <h4>実行されるSQL</h4>
+ * <h2>built SQLs</h2>
  *
  * <pre>
  * insert into Emp
@@ -65,7 +46,6 @@ import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
  * </pre>
  *
  * @author bakenezumi
- * @since 2.13.1
  */
 public class BatchInsertExecutor {
 
@@ -79,11 +59,11 @@ public class BatchInsertExecutor {
   }
 
   /**
-   * ファクトリメソッドです。
+   * Creates a new instance.
    *
-   * @param config 設定
-   * @return INSERT文をバッチ実行するビルダー
-   * @throws DomaNullPointerException 引数が{@code null} の場合
+   * @param config the configuration
+   * @return a executor
+   * @throws DomaNullPointerException if {@code config} is {@code null}
    */
   public static BatchInsertExecutor newInstance(Config config) {
     if (config == null) {
@@ -93,11 +73,11 @@ public class BatchInsertExecutor {
   }
 
   /**
-   * クエリタイムアウト（秒）を設定します。
+   * Sets the query timeout limit in seconds.
    *
-   * <p>指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
+   * <p>If not specified, the value of {@link Config#getQueryTimeout()} is used.
    *
-   * @param queryTimeout クエリタイムアウト（秒）
+   * @param queryTimeout the query timeout limit in seconds
    * @see Statement#setQueryTimeout(int)
    */
   public void queryTimeout(int queryTimeout) {
@@ -105,9 +85,9 @@ public class BatchInsertExecutor {
   }
 
   /**
-   * SQLのログの出力形式を設定します。
+   * Sets the SQL log format.
    *
-   * @param sqlLogType SQLのログの出力形式
+   * @param sqlLogType the SQL log format type
    */
   public void sqlLogType(SqlLogType sqlLogType) {
     if (sqlLogType == null) {
@@ -117,23 +97,23 @@ public class BatchInsertExecutor {
   }
 
   /**
-   * バッチサイズを設定します。
+   * Sets the batch size.
    *
-   * <p>指定しない場合、 {@link Config#getBatchSize()} が使用されます。
+   * <p>If not specified, the value of {@link Config#getBatchSize()} is used.
    *
-   * @param batchSize バッチサイズ
+   * @param batchSize the batch size
    */
   public void batchSize(int batchSize) {
     query.setBatchSize(batchSize);
   }
 
   /**
-   * 呼び出し元のクラス名です。
+   * Sets the caller class name.
    *
-   * <p>指定しない場合このクラスの名前が使用されます。
+   * <p>If not specified, the class name of this instance is used.
    *
-   * @param className 呼び出し元のクラス名
-   * @throws DomaNullPointerException 引数が {@code null} の場合
+   * @param className the caller class name
+   * @throws DomaNullPointerException if {@code className} is {@code null}
    */
   public void callerClassName(String className) {
     if (className == null) {
@@ -143,12 +123,12 @@ public class BatchInsertExecutor {
   }
 
   /**
-   * 呼び出し元のメソッド名です。
+   * Sets the caller method name.
    *
-   * <p>指定しない場合このSQLを生成するメソッド（{@link #execute})）の名前が使用されます。
+   * <p>if not specified, {@code execute} is used.
    *
-   * @param methodName 呼び出し元のメソッド名
-   * @throws DomaNullPointerException 引数が {@code null} の場合
+   * @param methodName the caller method name
+   * @throws DomaNullPointerException if {@code methodName} is {@code null}
    */
   public void callerMethodName(String methodName) {
     if (methodName == null) {
@@ -162,16 +142,16 @@ public class BatchInsertExecutor {
   }
 
   /**
-   * SQLを実行します。
+   * Executes SQL INSERT statements.
    *
-   * @param <P> パラメータの型
-   * @param params 1要素が1クエリのパラメータの元となる {@link java.lang.Iterable} なもの
-   * @param buildConsumer {@link BatchBuilder} を使って1回分のクエリを組み立てるラムダ式。 第一パラメータには params の要素が、
-   *     第二パラメータには {@link BatchBuilder} のインスタンスが渡ります。
-   * @return 更新された件数の配列。 戻り値の配列の要素の数はパラメータのparamsの要素の数と等しくなります。 配列のそれぞれの要素が更新された件数を返します。
-   * @throws DomaNullPointerException 引数が{@code null} の場合
-   * @throws UniqueConstraintException 一意制約違反が発生した場合
-   * @throws JdbcException 上記以外でJDBCに関する例外が発生した場合
+   * @param <P> the parameter type
+   * @param params the parameters
+   * @param buildConsumer the code block that builds SQL statements
+   * @return the array whose each element contains affected rows count. The array length is equal to
+   *     the {@code parameter} size.
+   * @throws DomaNullPointerException if {@code params} or {@code buildConsumer} is {@code null}
+   * @throws UniqueConstraintException if an unique constraint violation occurs
+   * @throws JdbcException if a JDBC related error occurs
    */
   public <P> int[] execute(Iterable<P> params, BiConsumer<P, BatchBuilder> buildConsumer) {
     if (params == null) {
@@ -192,9 +172,9 @@ public class BatchInsertExecutor {
   }
 
   /**
-   * 組み立てられたSQLを返します。
+   * Returns the built SQL.
    *
-   * @return 組み立てられたSQL
+   * @return the built SQL
    */
   public List<? extends Sql<?>> getSqls() {
     return query.getSqls();

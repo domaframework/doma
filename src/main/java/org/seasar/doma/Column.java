@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma;
 
 import java.lang.annotation.ElementType;
@@ -21,11 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * データベースのテーブルのカラムを示します。
+ * Indicates a database column.
  *
- * <p>このアノテーションが注釈されるフィールドは、 エンティティクラスのメンバでなければいけません。
- *
- * <h3>例:</h3>
+ * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
  * <pre>
  * &#064;Entity
@@ -40,40 +23,26 @@ import java.lang.annotation.Target;
  *     ...
  * }
  * </pre>
- *
- * @author taedium
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 
   /**
-   * カラム名を返します。
+   * The name of the column.
    *
-   * <p>指定しない場合、カラム名は {@link Entity#naming()} に指定した列挙型 によって解決されます。
+   * <p>If not specified, the name is resolved by {@link Entity#naming()}.
    *
-   * @return カラム名
+   * @return the name
    */
   String name() default "";
 
-  /**
-   * プロパティに対応するカラムをINSERT文に含めるかどうかを返します。
-   *
-   * @return カラムをINSERT文に含めるかどうか
-   */
+  /** @return whether the column is included in SQL INSERT statements. */
   boolean insertable() default true;
 
-  /**
-   * プロパティに対応するカラムをUPDATE文のSET句に含めるかどうかを返します。
-   *
-   * @return カラムをUPDATE文のSET句に含めるかどうか
-   */
+  /** @return whether the column is included in SQL UPDATE statements. */
   boolean updatable() default true;
 
-  /**
-   * カラム名を引用符で囲むかどうかを返します。
-   *
-   * @return カラム名を引用符で囲むかどうか
-   */
+  /** @return whether the column name is enclosed by quotation marks in SQL statements. */
   boolean quote() default false;
 }

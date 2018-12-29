@@ -1,54 +1,35 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.id;
 
 import org.seasar.doma.jdbc.JdbcException;
 
-/**
- * データベースのシーケンスを使用するジェネレータです。
- *
- * @author taedium
- */
+/** A generator that uses a database SEQUENCE. */
 public interface SequenceIdGenerator extends IdGenerator {
 
   /**
-   * シーケンスの完全修飾名を設定します。
+   * Sets the qualified name of the sequence.
    *
-   * @param qualifiedSequenceName シーケンスの完全修飾名
+   * @param qualifiedSequenceName the qualified name of the sequence
    */
   void setQualifiedSequenceName(String qualifiedSequenceName);
 
   /**
-   * 初期値を設定します。
+   * Sets the initial value.
    *
-   * @param initialValue 初期値
+   * @param initialValue the initial value
    */
   void setInitialValue(long initialValue);
 
   /**
-   * 割り当てサイズを設定します。
+   * Sets the allocation size.
    *
-   * @param allocationSize 割り当てサイズ
+   * @param allocationSize the allocation size
    */
   void setAllocationSize(long allocationSize);
 
   /**
-   * このジェネレータを初期化します。
+   * Initializes this generator.
    *
-   * @throws JdbcException 初期化に失敗した場合
+   * @throws JdbcException if the initialization is failed
    */
   void initialize();
 }

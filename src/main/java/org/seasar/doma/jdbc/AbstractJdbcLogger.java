@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc;
 
 import java.sql.SQLException;
@@ -22,21 +7,19 @@ import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.message.Message;
 
 /**
- * JDBCに関するロガーの骨格実装です。
+ * A skeletal implementation of the {@link JdbcLogger} interface.
  *
- * @author nakamura-to
- * @since 2.0.0
- * @param <LEVEL> ログレベル
+ * @param <LEVEL> The log level
  */
 public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
 
-  /** デフォルトのログレベル */
+  /** the default log level */
   protected LEVEL defaultLevel;
 
   /**
-   * ログレベルを指定してインスタンスを構築します。
+   * Creates an instance with a log level.
    *
-   * @param level ログレベル
+   * @param level the log level
    */
   protected AbstractJdbcLogger(LEVEL level) {
     if (level == null) {
@@ -46,13 +29,13 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
   }
 
   /**
-   * 例外をログ出力します。
+   * Logs an error or an exception.
    *
-   * @param level ログレベル
-   * @param callerClassName 呼び出し元のクラス名
-   * @param callerMethodName 呼び出し元のメソッド名
-   * @param throwable 例外
-   * @param messageSupplier メッセージのサプライヤ
+   * @param level the log level
+   * @param callerClassName the caller class name
+   * @param callerMethodName the caller method name
+   * @param throwable the error or exception
+   * @param messageSupplier the message supplier
    */
   protected abstract void log(
       LEVEL level,

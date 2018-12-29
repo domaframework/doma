@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.expr;
 
 import java.sql.Date;
@@ -20,192 +5,196 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * 式の中で利用可能な関数群です。
- *
- * @author taedium
- */
+/** The aggregation of functions that are available in expressions in SQL templates. */
 public interface ExpressionFunctions {
 
   /**
-   * Like演算子用のエスケープを行います。
+   * Escapes the SQL LIKE wild card characters in a target string by using the default escape
+   * character.
    *
-   * @param text エスケープ対象の文字シーケンス
-   * @return エスケープされた文字列
+   * <p>For example, {@code a%b_} is converted to the a {@code a$%b$_}.
+   *
+   * @param text the target text
+   * @return the escaped text
    */
   String escape(CharSequence text);
 
   /**
-   * Like演算子用のエスケープを行います。
+   * Escapes the SQL LIKE wild card characters in a target string by using a specified escape
+   * character.
    *
-   * @param text エスケープ対象の文字シーケンス
-   * @param escapeChar エスケープ文字
-   * @return エスケープされた文字列
+   * @param text the target text
+   * @param escapeChar the escape character
+   * @return the escaped text
    */
   String escape(CharSequence text, char escapeChar);
 
   /**
-   * 前方一致検索を行うことを示します。
+   * Escapes the SQL LIKE wild card characters in a target string by using the default escape
+   * character '$' and generate a text to perform a prefix search for the SQL Like operator.
    *
-   * @param prefix 前に置かれる文字シーケンス
-   * @return 前方一致検索のための文字列
+   * <p>For example, {@code a%b_} is converted to the a {@code a$%b$_%}.
+   *
+   * @param prefix the prefix text
+   * @return the text for a prefix search
    */
   String prefix(CharSequence prefix);
 
   /**
-   * エスケープ文字を指定して前方一致検索を行うことを示します。
+   * Escapes the SQL LIKE wild card characters in a target string by using a specified escape
+   * character and generate a text to perform a prefix search for the SQL LIKE operator.
    *
-   * @param prefix 前に置かれる文字シーケンス
-   * @param escapeChar エスケープ文字
-   * @return 前方一致検索のための文字列
+   * @param prefix the prefixed text
+   * @param escapeChar the escape character
+   * @return the text for a prefix search
    */
   String prefix(CharSequence prefix, char escapeChar);
 
   /**
-   * 後方一致検索を行うことを示します。
+   * Escapes the SQL LIKE wild card characters in a target string by using the default escape
+   * character '$' and generate a text to perform a suffix search for the SQL LIKE operator.
    *
-   * @param suffix 後に置かれる文字シーケンス
-   * @return 後方一致検索のための文字列
+   * <p>For example, {@code a%b_} is converted to the a {@code %a$%b$_}.
+   *
+   * @param suffix the suffix text
+   * @return the text for a suffix search
    */
   String suffix(CharSequence suffix);
 
   /**
-   * エスケープ文字を指定して後方一致検索を行うことを示します。
+   * Escapes the SQL LIKE wild card characters in a target string by using a specified escape
+   * character and generate a text to perform a suffix search for the SQL LIKE operator.
    *
-   * @param suffix 後に置かれる文字シーケンス
-   * @param escapeChar エスケープ文字
-   * @return 後方一致検索のための文字列
+   * @param suffix the suffix text
+   * @param escapeChar the escape character
+   * @return the text for a suffix search
    */
   String suffix(CharSequence suffix, char escapeChar);
 
   /**
-   * 中間一致検索を行うことを示します。
+   * Escapes the SQL LIKE wild card characters in a target string by using the default escape
+   * character '$' and generate a text to perform a infix search for the SQL LIKE operator.
    *
-   * @param infix 含まれる文字シーケンス
-   * @return 中間一致検索のための文字列
-   * @since 1.33.0
+   * <p>For example, {@code a%b_} is converted to the a {@code %a$%b$_%}.
+   *
+   * @param infix the infix text
+   * @return the text for a infix search
    */
   String infix(CharSequence infix);
 
   /**
-   * エスケープ文字を指定して中間一致検索を行うことを示します。
+   * Escapes the SQL LIKE wild card characters in a target string by using a specified escape
+   * character and generate a text to perform a infix search for the SQL LIKE operator.
    *
-   * @param infix 含まれる文字シーケンス
-   * @param escapeChar エスケープ文字
-   * @return 中間一致検索のための文字列
-   * @since 1.33.0
+   * @param infix the infix text
+   * @param escapeChar the escape character
+   * @return the text for a infix search
    */
   String infix(CharSequence infix, char escapeChar);
 
   /**
-   * 日付の時刻部分を切り捨てます。
+   * Round down a time part of {@link java.util.Date}.
    *
-   * @param date 日付
-   * @return 時刻部分が切り捨てられた日付
-   * @since 1.33.0
+   * @param date the target date
+   * @return the date whose time part is rounded down
    */
   java.util.Date roundDownTimePart(java.util.Date date);
 
   /**
-   * 日付の時刻部分を切り捨てます。
+   * Round down a time part of {@link Date}.
    *
-   * @param date 日付
-   * @return 時刻部分が切り捨てられた日付
+   * @param date the target date
+   * @return the date whose time part is rounded down
    */
   Date roundDownTimePart(Date date);
 
   /**
-   * タイムスタンプの時刻部分を切り捨てます。
+   * Round down a time part of {@link Timestamp}.
    *
-   * @param timestamp タイムスタンプ
-   * @return 時刻部分が切り捨てられたタイムスタンプ
+   * @param timestamp the target timestamp
+   * @return the timestamp whose time part is rounded down
    */
   Timestamp roundDownTimePart(Timestamp timestamp);
 
   /**
-   * LocalDateTime の時刻部分を切り捨てます。
+   * Round down a time part of {@link LocalDateTime}.
    *
-   * @param localDateTime LocalDateTime
-   * @return 時刻部分が切り捨てられたタイムスタンプ
+   * @param localDateTime the target localDateTime
+   * @return the localDateTime whose time part is rounded down
    */
   LocalDateTime roundDownTimePart(LocalDateTime localDateTime);
 
   /**
-   * 日付の時刻部分を切り上げます。
+   * Round up a time part of {@link java.util.Date}.
    *
-   * @param date 日付
-   * @return 時刻部分が切り上げられた日付
-   * @since 1.33.0
+   * @param date the target date
+   * @return the date whose time part is rounded up
    */
   java.util.Date roundUpTimePart(java.util.Date date);
 
   /**
-   * 日付の時刻部分を切り上げます。
+   * Round up a time part of {@link Date}.
    *
-   * @param date 日付
-   * @return 時刻部分が切り上げられた日付
+   * @param date the target date
+   * @return the date whose time part is rounded up
    */
   Date roundUpTimePart(Date date);
 
   /**
-   * タイムスタンプの時刻部分を切り上げます。
+   * Round up a time part of {@link Timestamp}.
    *
-   * @param timestamp タイムスタンプ
-   * @return 時刻部分が切り上げられたタイムスタンプ
+   * @param timestamp the target timestamp
+   * @return the timestamp whose time part is rounded up
    */
   Timestamp roundUpTimePart(Timestamp timestamp);
 
   /**
-   * 翌日の日付を返します。
+   * Return the next day.
    *
-   * @param localDate LocalDate
-   * @return 翌日の日付
+   * @param localDate the target localDate
+   * @return the next day
    */
   LocalDate roundUpTimePart(LocalDate localDate);
 
   /**
-   * LocalDateTime の時刻部分を切り上げます。
+   * Round up a time part of {@link LocalDateTime}.
    *
-   * @param localDateTime LocalDateTime
-   * @return 時刻部分が切り上げられたタイムスタンプ
+   * @param localDateTime the target localDateTime
+   * @return the localDateTime whose time part is rounded up
    */
   LocalDateTime roundUpTimePart(LocalDateTime localDateTime);
 
   /**
-   * 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0} の場合 {@code true} を返します。
+   * Whether a text is empty.
    *
-   * @param charSequence 文字シーケンス
-   * @return 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0} の場合 {@code true}
-   * @since 1.3.0
+   * @param text the target text
+   * @return {@code true} if the text is {@code null} or its length is {@code 0}, else {@code false}
    */
-  boolean isEmpty(CharSequence charSequence);
+  boolean isEmpty(CharSequence text);
 
   /**
-   * 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない場合 {@code true} を返します。
+   * Whether a text is not empty.
    *
-   * @param charSequence 文字シーケンス
-   * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない場合 {@code true}
-   * @since 1.3.0
+   * @param text the target text
+   * @return {@code false} if the text is {@code null} or its length is {@code 0}, else {@code true}
    */
-  boolean isNotEmpty(CharSequence charSequence);
+  boolean isNotEmpty(CharSequence text);
 
   /**
-   * 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0}、もしくは文字シーケンスが空白だけから形成される場合 {@code true} を返します。
+   * Whether a text is blank.
    *
-   * @param charSequence 文字シーケンス
-   * @return 文字シーケンスが{@code null}、もしくは文字シーケンスの長さが {@code 0} 、もしくは文字シーケンスが空白だけから形成される場合 {@code true}
-   * @since 1.3.0
+   * @param text the target text
+   * @return {@code true} if the text is {@code null}, its length is {@code 0} or the text contains
+   *     only blank characters, else {@code false}.
    */
-  boolean isBlank(CharSequence charSequence);
+  boolean isBlank(CharSequence text);
 
   /**
-   * 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない、かつ文字シーケンスが空白だけで形成されない場合 {@code true}
-   * を返します。
+   * Whether a text is not blank.
    *
-   * @param charSequence 文字シーケンス
-   * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない、かつ文字シーケンスが空白だけで形成されない場合 {@code
-   *     true}
-   * @since 1.3.0
+   * @param text the target text
+   * @return {@code false} if the text is {@code null}, its length is {@code 0} or the text contains
+   *     only blank characters, else {@code true}.
    */
-  boolean isNotBlank(CharSequence charSequence);
+  boolean isNotBlank(CharSequence text);
 }

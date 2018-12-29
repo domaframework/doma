@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Method;
@@ -21,53 +6,47 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * 削除処理の前処理のコンテキストです。
+ * A context for a pre process of a delete.
  *
- * @param <E> エンティティの型
- * @author taedium
- * @since 1.11.0
+ * @param <E> the entity type
  */
 public interface PreDeleteContext<E> {
 
   /**
-   * エンティティのメタタイプを返します。
+   * Returns the entity description.
    *
-   * @return エンティティのメタタイプ
+   * @return the entity description
    */
   public EntityType<E> getEntityType();
 
   /**
-   * {@link Delete} が注釈されたメソッドを返します。
+   * The method that is annotated with {@link Delete}.
    *
-   * @return メソッド
-   * @since 1.27.0
+   * @return the method
    */
   public Method getMethod();
 
   /**
-   * JDBCに関する設定を返します。
+   * Returns the configuration.
    *
-   * @return JDBCに関する設定
-   * @since 1.27.0
+   * @return the configuration
    */
   public Config getConfig();
 
   /**
-   * 新しいエンティティを返します。
+   * Returns the new entity.
    *
-   * @return 新しいエンティティ
-   * @since 1.35.0
+   * @return the new entity
    */
   public E getNewEntity();
 
   /**
-   * 新しいエンティティを設定します。
+   * Sets the new entity.
    *
-   * <p>このメソッドは、 {@link PreDeleteContext#getEntityType()} に対応するエンティティがイミュータブルである場合にのみ利用してください。
+   * <p>This method is available, when the entity is immutable.
    *
-   * @param newEntity エンティティ
-   * @throws DomaNullPointerException 引数が {@code null} の場合
-   * @since 1.34.0
+   * @param newEntity the entity
+   * @throws DomaNullPointerException if {@code newEntity} is {@code null}
    */
   public void setNewEntity(E newEntity);
 }

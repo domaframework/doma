@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.id;
 
 import java.sql.Statement;
@@ -20,36 +5,30 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.seasar.doma.jdbc.JdbcException;
 
-/**
- * INSERT文の実行前に識別子を生成するジェネレータの骨格実装です。
- *
- * @author taedium
- */
+/** A generator that generates an identity value before an execution of insert. */
 public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator {
 
-  /** 初期値 */
   protected long initialValue;
 
-  /** 割り当てサイズ */
   protected long allocationSize;
 
-  /** データソース名をキー、識別子コンテキストを値とするマップ */
+  // the keys are data source names and the values are identity contexts
   protected ConcurrentMap<String, IdContext> idContextMap =
       new ConcurrentHashMap<String, IdContext>();
 
   /**
-   * 初期値を設定します。
+   * Sets the initial value.
    *
-   * @param initialValue 初期値
+   * @param initialValue the initial value
    */
   public void setInitialValue(long initialValue) {
     this.initialValue = initialValue;
   }
 
   /**
-   * 割り当てサイズを設定します。
+   * Sets the allocation size.
    *
-   * @param allocationSize 割り当てサイズ
+   * @param allocationSize the allocation size
    */
   public void setAllocationSize(long allocationSize) {
     this.allocationSize = allocationSize;
@@ -82,10 +61,10 @@ public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator
   }
 
   /**
-   * 識別子コンテキストを返します。
+   * Returns the identity context.
    *
-   * @param config 識別子生成の設定
-   * @return 識別子コンテキスト
+   * @param config the configuration
+   * @return the identity context
    */
   protected IdContext getIdContext(IdGenerationConfig config) {
     String dataSourceName = config.getDataSourceName();
@@ -102,35 +81,31 @@ public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator
   }
 
   /**
-   * 新しい初期値を返します。
+   * Return the next initial value.
    *
-   * @param config 識別子生成の設定
-   * @return 新しい初期値
-   * @throws JdbcException 新しい初期値の取得に失敗した場合
+   * @param config the configuration
+   * @return the new initial value
+   * @throws JdbcException if it fails to retrieve the next initial value.
    */
   protected abstract long getNewInitialValue(IdGenerationConfig config);
 
   /**
-   * 識別子コンテキストです。
+   * A context for identity values.
    *
-   * <p>識別子の増分と保持を行います。識別子の増分処理は同期化されます。
-   *
-   * @author taedium
+   * <p>This object increments identity value and holds it.
    */
   public class IdContext {
 
-    /** 初期値 */
     protected long initValue = AbstractPreGenerateIdGenerator.this.initialValue;
 
-    /** 割り当てサイズ */
     protected long allocated = Long.MAX_VALUE;
 
     /**
-     * 次の識別子を返します。
+     * Returns the next identity value.
      *
-     * @param config 識別子生成の設定
-     * @return 次の識別子
-     * @throws JdbcException 次の識別子の生成に失敗した場合
+     * @param config the configuration
+     * @return the next identity value
+     * @throws JdbcException if the identity generation is failed
      */
     public synchronized long getNextValue(IdGenerationConfig config) {
       if (allocated < allocationSize) {

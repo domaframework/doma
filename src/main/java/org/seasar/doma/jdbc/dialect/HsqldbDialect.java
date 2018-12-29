@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
@@ -28,19 +13,13 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * HSQLDB用の方言です。
- *
- * @author taedium
- */
+/** A dialect for HSQLDB. */
 public class HsqldbDialect extends StandardDialect {
 
-  /** 一意制約違反を表すエラーコード */
+  /** the error code that represents unique violation */
   protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = -104;
 
-  /** インスタンスを構築します。 */
   public HsqldbDialect() {
     this(
         new HsqldbJdbcMappingVisitor(),
@@ -48,52 +27,23 @@ public class HsqldbDialect extends StandardDialect {
         new HsqldbExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   */
   public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor) {
     this(jdbcMappingVisitor, new HsqldbSqlLogFormattingVisitor(), new HsqldbExpressionFunctions());
   }
 
-  /**
-   * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public HsqldbDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(new HsqldbJdbcMappingVisitor(), sqlLogFormattingVisitor, new HsqldbExpressionFunctions());
   }
 
-  /**
-   * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-   *
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public HsqldbDialect(ExpressionFunctions expressionFunctions) {
     this(new HsqldbJdbcMappingVisitor(), new HsqldbSqlLogFormattingVisitor(), expressionFunctions);
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   */
   public HsqldbDialect(
       JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
     this(jdbcMappingVisitor, sqlLogFormattingVisitor, new HsqldbExpressionFunctions());
   }
 
-  /**
-   * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と {@link ExpressionFunctions}
-   * を指定してインスタンスを構築します。
-   *
-   * @param jdbcMappingVisitor {@link Wrapper} をJDBCの型とマッピングするビジター
-   * @param sqlLogFormattingVisitor SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
-   * @param expressionFunctions SQLのコメント式で利用可能な関数群
-   */
   public HsqldbDialect(
       JdbcMappingVisitor jdbcMappingVisitor,
       SqlLogFormattingVisitor sqlLogFormattingVisitor,
@@ -184,25 +134,10 @@ public class HsqldbDialect extends StandardDialect {
     return true;
   }
 
-  /**
-   * HSQLDB用の {@link JdbcMappingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class HsqldbJdbcMappingVisitor extends StandardJdbcMappingVisitor {}
 
-  /**
-   * HSQLDB用の {@link SqlLogFormattingVisitor} の実装です。
-   *
-   * @author taedium
-   */
   public static class HsqldbSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {}
 
-  /**
-   * HSQLDB用の {@link ExpressionFunctions} です。
-   *
-   * @author taedium
-   */
   public static class HsqldbExpressionFunctions extends StandardExpressionFunctions {
 
     public HsqldbExpressionFunctions() {
