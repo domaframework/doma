@@ -74,9 +74,7 @@ Gradle を使ったビルド
 
 Gradle でビルドを行う際のポイントは以下のとおりです。
 
-* domaが注釈処理で参照するリソースをテンポラリディレクトリに抽出する
-* テンポラリディレクトリ内のリソースをcompileJavaタスクの出力先ディレクトリにコピーする
-* テンポラリディレクトリをcompileJavaタスクの入力ディレクトリに設定する
+* compileJava実行前にdomaが注釈処理で参照するリソースをcompileJavaタスクの出力先ディレクトリにコピーする
 * テスト時は注釈処理を無効にする
 * 依存関係の設定でdomaの注釈処理を実行することを示す
 * 依存関係の設定でdomaへの依存を示す
@@ -87,29 +85,18 @@ Gradle でビルドを行う際のポイントは以下のとおりです。
 
   apply plugin: 'java'
 
-  // テンポラリディレクトリのパスを定義する
-  ext.domaResourcesDir = "${buildDir}/tmp/doma-resources"
-
-  // domaが注釈処理で参照するリソースをテンポラリディレクトリに抽出
-  task extractDomaResources(type: Copy, dependsOn: processResources)  {
-      from processResources.destinationDir
+  // domaが注釈処理で参照するリソースをcompileJavaタスクの出力先ディレクトリにコピーする
+  task copyDomaResources(type: Sync)  {
+      from sourceSets.main.resources.srcDirs
+      into compileJava.destinationDir
       include 'doma.compile.config'
       include 'META-INF/**/*.sql'
       include 'META-INF/**/*.script'
-      into domaResourcesDir
-  }
-
- 　// テンポラリディレクトリ内のリソースをcompileJavaタスクの出力先ディレクトリにコピーする
-  task copyDomaResources(type: Copy, dependsOn: extractDomaResources)  {
-      from domaResourcesDir
-      into compileJava.destinationDir
   }
 
  　compileJava {
    　　 // 上述のタスクに依存させる
   　　  dependsOn copyDomaResources
-       // テンポラリディレクトリをcompileJavaタスクの入力ディレクトリに設定する
-    　　inputs.dir domaResourcesDir
     　　options.encoding = 'UTF-8'
  　}
 
