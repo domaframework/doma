@@ -1,0 +1,128 @@
+package org.seasar.doma.internal.apt.processor.dao;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.EnsureResultDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EnsureResultDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EnsureResultDao.class, "selectByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    /** */
+    public EnsureResultDaoImpl() {
+        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+    }
+
+    /**
+     * @param connection the connection
+     */
+    public EnsureResultDaoImpl(java.sql.Connection connection) {
+        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+    }
+
+    /**
+     * @param dataSource the dataSource
+     */
+    public EnsureResultDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+    }
+
+    /**
+     * @param config the configuration
+     */
+    protected EnsureResultDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected EnsureResultDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected EnsureResultDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
+    @Override
+    public example.entity.Emp selectById(java.lang.Integer id, org.seasar.doma.jdbc.SelectOptions options) {
+        entering("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl", "selectById", id, options);
+        try {
+            if (options == null) {
+                throw new org.seasar.doma.DomaNullPointerException("options");
+            }
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EnsureResultDao/selectById.sql");
+            __query.setOptions(options);
+            __query.setEntityType(example.entity._Emp.getSingletonInternal());
+            __query.addParameter("id", java.lang.Integer.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl");
+            __query.setCallerMethodName("selectById");
+            __query.setResultEnsured(true);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            example.entity.Emp __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl", "selectById", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl", "selectById", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public java.util.List<example.entity.Emp> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+        entering("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl", "selectByNameAndSalary", name, salary, options);
+        try {
+            if (options == null) {
+                throw new org.seasar.doma.DomaNullPointerException("options");
+            }
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EnsureResultDao/selectByNameAndSalary.sql");
+            __query.setOptions(options);
+            __query.setEntityType(example.entity._Emp.getSingletonInternal());
+            __query.addParameter("name", java.lang.String.class, name);
+            __query.addParameter("salary", java.math.BigDecimal.class, salary);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl");
+            __query.setCallerMethodName("selectByNameAndSalary");
+            __query.setResultEnsured(true);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
+            java.util.List<example.entity.Emp> __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl", "selectByNameAndSalary", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.EnsureResultDaoImpl", "selectByNameAndSalary", __e);
+            throw __e;
+        }
+    }
+
+}
