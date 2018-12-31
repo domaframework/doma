@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.FunctionAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -18,7 +19,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.parameter.*;
-import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 import org.seasar.doma.message.Message;
 
 public class AutoFunctionQueryMetaFactory
@@ -31,12 +31,12 @@ public class AutoFunctionQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    FunctionMirror functionMirror = FunctionMirror.newInstance(method, env);
-    if (functionMirror == null) {
+    FunctionAnnot functionAnnot = FunctionAnnot.newInstance(method, env);
+    if (functionAnnot == null) {
       return null;
     }
     AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method, daoMeta.getDaoElement());
-    queryMeta.setFunctionMirror(functionMirror);
+    queryMeta.setFunctionAnnot(functionAnnot);
     queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
     doTypeParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);

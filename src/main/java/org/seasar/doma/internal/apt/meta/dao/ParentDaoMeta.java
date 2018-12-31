@@ -4,11 +4,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.mirror.DaoMirror;
+import org.seasar.doma.internal.apt.annot.DaoAnnot;
 
 public class ParentDaoMeta {
 
-  protected final DaoMirror daoMirror;
+  protected final DaoAnnot daoAnnot;
 
   protected TypeMirror daoType;
 
@@ -16,9 +16,9 @@ public class ParentDaoMeta {
 
   protected String name;
 
-  public ParentDaoMeta(DaoMirror daoMirror) {
-    assertNotNull(daoMirror);
-    this.daoMirror = daoMirror;
+  public ParentDaoMeta(DaoAnnot daoAnnot) {
+    assertNotNull(daoAnnot);
+    this.daoAnnot = daoAnnot;
   }
 
   public String getName() {
@@ -46,14 +46,14 @@ public class ParentDaoMeta {
   }
 
   public boolean hasUserDefinedConfig() {
-    return daoMirror.hasUserDefinedConfig();
+    return daoAnnot.hasUserDefinedConfig();
   }
 
-  DaoMirror getDaoMirror() {
-    return daoMirror;
+  DaoAnnot getDaoAnnot() {
+    return daoAnnot;
   }
 
   public TypeMirror getConfigType() {
-    return daoMirror.getConfigValue();
+    return daoAnnot.getConfigValue();
   }
 }

@@ -4,6 +4,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -12,7 +13,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
-import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.message.Message;
 
 public class EmbeddablePropertyMetaFactory {
@@ -29,9 +29,9 @@ public class EmbeddablePropertyMetaFactory {
     embeddablePropertyMeta.setName(fieldElement.getSimpleName().toString());
     CtType ctType = resolveCtType(fieldElement, fieldElement.asType(), embeddableMeta);
     embeddablePropertyMeta.setCtType(ctType);
-    ColumnMirror columnMirror = ColumnMirror.newInstance(fieldElement, env);
-    if (columnMirror != null) {
-      embeddablePropertyMeta.setColumnMirror(columnMirror);
+    ColumnAnnot columnAnnot = ColumnAnnot.newInstance(fieldElement, env);
+    if (columnAnnot != null) {
+      embeddablePropertyMeta.setColumnAnnot(columnAnnot);
     }
     return embeddablePropertyMeta;
   }

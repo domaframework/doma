@@ -2,44 +2,44 @@ package org.seasar.doma.internal.apt.meta.id;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
+import org.seasar.doma.internal.apt.annot.SequenceGeneratorAnnot;
 
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
-  protected final SequenceGeneratorMirror sequenceGeneratorMirror;
+  protected final SequenceGeneratorAnnot sequenceGeneratorAnnot;
 
-  public SequenceIdGeneratorMeta(SequenceGeneratorMirror sequenceGeneratorMirror) {
-    assertNotNull(sequenceGeneratorMirror);
-    this.sequenceGeneratorMirror = sequenceGeneratorMirror;
+  public SequenceIdGeneratorMeta(SequenceGeneratorAnnot sequenceGeneratorAnnot) {
+    assertNotNull(sequenceGeneratorAnnot);
+    this.sequenceGeneratorAnnot = sequenceGeneratorAnnot;
   }
 
   public String getQualifiedSequenceName() {
     StringBuilder buf = new StringBuilder();
-    String catalogName = sequenceGeneratorMirror.getCatalogValue();
+    String catalogName = sequenceGeneratorAnnot.getCatalogValue();
     if (!catalogName.isEmpty()) {
       buf.append(catalogName);
       buf.append(".");
     }
-    String schemaName = sequenceGeneratorMirror.getCatalogValue();
+    String schemaName = sequenceGeneratorAnnot.getCatalogValue();
     if (!schemaName.isEmpty()) {
       buf.append(schemaName);
       buf.append(".");
     }
-    buf.append(sequenceGeneratorMirror.getSequenceValue());
+    buf.append(sequenceGeneratorAnnot.getSequenceValue());
     return buf.toString();
   }
 
   public long getInitialValue() {
-    return sequenceGeneratorMirror.getInitialValueValue();
+    return sequenceGeneratorAnnot.getInitialValueValue();
   }
 
   public long getAllocationSize() {
-    return sequenceGeneratorMirror.getAllocationSizeValue();
+    return sequenceGeneratorAnnot.getAllocationSizeValue();
   }
 
   @Override
   public String getIdGeneratorClassName() {
-    return sequenceGeneratorMirror.getImplementerValue().toString();
+    return sequenceGeneratorAnnot.getImplementerValue().toString();
   }
 
   @Override

@@ -14,7 +14,7 @@ import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.mirror.SingletonConfigMirror;
+import org.seasar.doma.internal.apt.annot.SingletonConfigAnnot;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -41,16 +41,16 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   protected void validate(TypeElement typeElement) {
-    SingletonConfigMirror mirror = SingletonConfigMirror.newInstance(typeElement, processingEnv);
+    SingletonConfigAnnot mirror = SingletonConfigAnnot.newInstance(typeElement, processingEnv);
     if (mirror == null) {
-      throw new AptIllegalStateException("mirror must not be null");
+      throw new AptIllegalStateException("annot must not be null");
     }
     validateClass(typeElement, mirror);
     validateConstructors(typeElement);
     validateMethod(typeElement, mirror.getMethodValue());
   }
 
-  protected void validateClass(TypeElement typeElement, SingletonConfigMirror mirror) {
+  protected void validateClass(TypeElement typeElement, SingletonConfigAnnot mirror) {
     if (!TypeMirrorUtil.isAssignable(typeElement.asType(), Config.class, processingEnv)) {
       throw new AptException(
           Message.DOMA4253,

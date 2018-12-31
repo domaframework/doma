@@ -24,10 +24,10 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.annot.DomainAnnot;
+import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.mirror.DomainMirror;
-import org.seasar.doma.internal.apt.mirror.ValueMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.StringUtil;
@@ -45,12 +45,12 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
   @Override
   public DomainMeta createTypeElementMeta(TypeElement classElement) {
     assertNotNull(classElement);
-    DomainMirror domainMirror = DomainMirror.newInstance(classElement, env);
-    if (domainMirror == null) {
-      throw new AptIllegalStateException("domainMirror");
+    DomainAnnot domainAnnot = DomainAnnot.newInstance(classElement, env);
+    if (domainAnnot == null) {
+      throw new AptIllegalStateException("domainAnnot");
     }
     DomainMeta domainMeta = new DomainMeta(classElement, classElement.asType());
-    domainMeta.setDomainMirror(domainMirror);
+    domainMeta.setDomainAnnot(domainAnnot);
     Strategy strategy = createStrategy(classElement, domainMeta);
     strategy.doWrapperCtType(classElement, domainMeta);
     strategy.validateAcceptNull(classElement, domainMeta);
@@ -61,9 +61,9 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
   }
 
   protected Strategy createStrategy(TypeElement classElement, DomainMeta domainMeta) {
-    ValueMirror valueMirror = ValueMirror.newInstance(classElement, env);
-    if (valueMirror != null) {
-      return new ValueStragety(env, valueMirror);
+    ValueAnnot valueAnnot = ValueAnnot.newInstance(classElement, env);
+    if (valueAnnot != null) {
+      return new ValueStragety(env, valueAnnot);
     }
     return new DefaultStrategy(env);
   }
@@ -94,14 +94,14 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     public void doWrapperCtType(TypeElement classElement, DomainMeta domainMeta) {
       BasicCtType basicCtType = BasicCtType.newInstance(domainMeta.getValueType(), env);
       if (basicCtType == null) {
-        DomainMirror domainMirror = domainMeta.getDomainMirror();
+        DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
         throw new AptException(
             Message.DOMA4102,
             env,
             classElement,
-            domainMirror.getAnnotationMirror(),
-            domainMirror.getValueType(),
-            new Object[] {domainMirror.getValueTypeValue(), classElement.getQualifiedName()});
+            domainAnnot.getAnnotationMirror(),
+            domainAnnot.getValueType(),
+            new Object[] {domainAnnot.getValueTypeValue(), classElement.getQualifiedName()});
       }
       domainMeta.setBasicCtType(basicCtType);
       domainMeta.setWrapperCtType(basicCtType.getWrapperCtType());
@@ -110,13 +110,13 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     @Override
     public void validateAcceptNull(TypeElement classElement, DomainMeta domainMeta) {
       if (domainMeta.getBasicCtType().isPrimitive() && domainMeta.getAcceptNull()) {
-        DomainMirror domainMirror = domainMeta.getDomainMirror();
+        DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
         throw new AptException(
             Message.DOMA4251,
             env,
             classElement,
-            domainMirror.getAnnotationMirror(),
-            domainMirror.getAcceptNull(),
+            domainAnnot.getAnnotationMirror(),
+            domainAnnot.getAcceptNull(),
             new Object[] {classElement.getQualifiedName()});
       }
     }
@@ -134,13 +134,13 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         }
       } else if (classElement.getKind() == ElementKind.ENUM) {
         if (domainMeta.providesConstructor()) {
-          DomainMirror domainMirror = domainMeta.getDomainMirror();
+          DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
           throw new AptException(
               Message.DOMA4184,
               env,
               classElement,
-              domainMirror.getAnnotationMirror(),
-              domainMirror.getFactoryMethod(),
+              domainAnnot.getAnnotationMirror(),
+              domainAnnot.getFactoryMethod(),
               new Object[] {classElement.getQualifiedName()});
         }
         if (classElement.getNestingKind().isNested()) {
@@ -155,12 +155,12 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
           validateEnclosingElement(classElement);
         }
       } else {
-        DomainMirror domainMirror = domainMeta.getDomainMirror();
+        DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
         throw new AptException(
             Message.DOMA4105,
             env,
             classElement,
-            domainMirror.getAnnotationMirror(),
+            domainAnnot.getAnnotationMirror(),
             new Object[] {classElement.getQualifiedName()});
       }
     }
@@ -348,23 +348,23 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
   protected static class ValueStragety extends DefaultStrategy {
 
-    protected final ValueMirror valueMirror;
+    protected final ValueAnnot valueAnnot;
 
-    public ValueStragety(ProcessingEnvironment env, ValueMirror valueMirror) {
+    public ValueStragety(ProcessingEnvironment env, ValueAnnot valueAnnot) {
       super(env);
-      assertNotNull(valueMirror);
-      this.valueMirror = valueMirror;
+      assertNotNull(valueAnnot);
+      this.valueAnnot = valueAnnot;
     }
 
     @Override
     public void validateInitializer(TypeElement classElement, DomainMeta domainMeta) {
-      if (!valueMirror.getStaticConstructorValue().isEmpty()) {
+      if (!valueAnnot.getStaticConstructorValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4428,
             env,
             classElement,
-            valueMirror.getAnnotationMirror(),
-            valueMirror.getStaticConstructor(),
+            valueAnnot.getAnnotationMirror(),
+            valueAnnot.getStaticConstructor(),
             new Object[] {classElement.getQualifiedName()});
       }
     }
@@ -374,13 +374,13 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       VariableElement field = findSingleField(classElement, domainMeta);
       String accessorMethod = inferAccessorMethod(field);
       if (!accessorMethod.equals(domainMeta.getAccessorMethod())) {
-        DomainMirror domainMirror = domainMeta.getDomainMirror();
+        DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
         throw new AptException(
             Message.DOMA4429,
             env,
             classElement,
-            domainMirror.getAnnotationMirror(),
-            domainMirror.getAccessorMethod(),
+            domainAnnot.getAnnotationMirror(),
+            domainAnnot.getAccessorMethod(),
             new Object[] {
               accessorMethod, domainMeta.getAccessorMethod(), classElement.getQualifiedName()
             });

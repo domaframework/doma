@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
-import org.seasar.doma.internal.apt.mirror.EmbeddableMirror;
 
 public class EmbeddableMeta implements TypeElementMeta {
 
-  protected final EmbeddableMirror embeddableMirror;
+  protected final EmbeddableAnnot embeddableAnnot;
 
   protected final TypeElement embeddableElement;
 
@@ -21,14 +21,14 @@ public class EmbeddableMeta implements TypeElementMeta {
 
   protected boolean error;
 
-  public EmbeddableMeta(EmbeddableMirror embeddableMirror, TypeElement embeddableElement) {
-    assertNotNull(embeddableMirror, embeddableElement);
-    this.embeddableMirror = embeddableMirror;
+  public EmbeddableMeta(EmbeddableAnnot embeddableAnnot, TypeElement embeddableElement) {
+    assertNotNull(embeddableAnnot, embeddableElement);
+    this.embeddableAnnot = embeddableAnnot;
     this.embeddableElement = embeddableElement;
   }
 
-  public EmbeddableMirror getEmbeddableMirror() {
-    return embeddableMirror;
+  public EmbeddableAnnot getEmbeddableAnnot() {
+    return embeddableAnnot;
   }
 
   public TypeElement getEmbeddableElement() {

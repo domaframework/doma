@@ -9,9 +9,9 @@ import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.annot.EntityAnnot;
+import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
-import org.seasar.doma.internal.apt.mirror.EntityMirror;
-import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 public class EntityMeta implements TypeElementMeta {
@@ -22,7 +22,7 @@ public class EntityMeta implements TypeElementMeta {
 
   protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
-  protected final EntityMirror entityMirror;
+  protected final EntityAnnot entityAnnot;
 
   protected final TypeElement entityElement;
 
@@ -36,7 +36,7 @@ public class EntityMeta implements TypeElementMeta {
 
   protected boolean genericEntityListener;
 
-  protected TableMirror tableMirror;
+  protected TableAnnot tableAnnot;
 
   protected EntityPropertyMeta versionPropertyMeta;
 
@@ -54,9 +54,9 @@ public class EntityMeta implements TypeElementMeta {
 
   protected boolean error;
 
-  public EntityMeta(EntityMirror entityMirror, TypeElement entityElement) {
-    assertNotNull(entityMirror);
-    this.entityMirror = entityMirror;
+  public EntityMeta(EntityAnnot entityAnnot, TypeElement entityElement) {
+    assertNotNull(entityAnnot);
+    this.entityAnnot = entityAnnot;
     this.entityElement = entityElement;
   }
 
@@ -68,8 +68,8 @@ public class EntityMeta implements TypeElementMeta {
     this.entityName = entityName;
   }
 
-  EntityMirror getEntityMirror() {
-    return entityMirror;
+  EntityAnnot getEntityAnnot() {
+    return entityAnnot;
   }
 
   public NamingType getNamingType() {
@@ -92,8 +92,8 @@ public class EntityMeta implements TypeElementMeta {
     return entityElement;
   }
 
-  public void setTableMirror(TableMirror tableMirror) {
-    this.tableMirror = tableMirror;
+  public void setTableAnnot(TableAnnot tableAnnot) {
+    this.tableAnnot = tableAnnot;
   }
 
   public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
@@ -202,19 +202,19 @@ public class EntityMeta implements TypeElementMeta {
   }
 
   public String getCatalogName() {
-    return tableMirror != null ? tableMirror.getCatalogValue() : "";
+    return tableAnnot != null ? tableAnnot.getCatalogValue() : "";
   }
 
   public String getSchemaName() {
-    return tableMirror != null ? tableMirror.getSchemaValue() : "";
+    return tableAnnot != null ? tableAnnot.getSchemaValue() : "";
   }
 
   public String getTableName() {
-    return tableMirror != null ? tableMirror.getNameValue() : "";
+    return tableAnnot != null ? tableAnnot.getNameValue() : "";
   }
 
   public boolean isQuoteRequired() {
-    return tableMirror != null ? tableMirror.getQuoteValue() : false;
+    return tableAnnot != null ? tableAnnot.getQuoteValue() : false;
   }
 
   public boolean isAbstract() {

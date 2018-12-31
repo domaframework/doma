@@ -5,8 +5,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.sql.Blob;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import org.seasar.doma.internal.apt.annot.BlobFactoryAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.BlobFactoryMirror;
 
 public class BlobCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<BlobCreateQueryMeta> {
@@ -18,12 +18,12 @@ public class BlobCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    BlobFactoryMirror blobFactoryMirror = BlobFactoryMirror.newInstance(method, env);
-    if (blobFactoryMirror == null) {
+    BlobFactoryAnnot blobFactoryAnnot = BlobFactoryAnnot.newInstance(method, env);
+    if (blobFactoryAnnot == null) {
       return null;
     }
     BlobCreateQueryMeta queryMeta = new BlobCreateQueryMeta(method, daoMeta.getDaoElement());
-    queryMeta.setBlobFactoryMirror(blobFactoryMirror);
+    queryMeta.setBlobFactoryAnnot(blobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.BLOB_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);

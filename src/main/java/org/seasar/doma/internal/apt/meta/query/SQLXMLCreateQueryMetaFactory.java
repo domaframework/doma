@@ -5,8 +5,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.sql.SQLXML;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import org.seasar.doma.internal.apt.annot.SQLXMLFactoryAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.SQLXMLFactoryMirror;
 
 public class SQLXMLCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<SQLXMLCreateQueryMeta> {
@@ -18,12 +18,12 @@ public class SQLXMLCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    SQLXMLFactoryMirror sqlxmlFactoryMirror = SQLXMLFactoryMirror.newInstance(method, env);
-    if (sqlxmlFactoryMirror == null) {
+    SQLXMLFactoryAnnot sqlxmlFactoryAnnot = SQLXMLFactoryAnnot.newInstance(method, env);
+    if (sqlxmlFactoryAnnot == null) {
       return null;
     }
     SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(method, daoMeta.getDaoElement());
-    queryMeta.setSqlxmlFactoryMirror(sqlxmlFactoryMirror);
+    queryMeta.setSqlxmlFactoryAnnot(sqlxmlFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.SQLXML_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);

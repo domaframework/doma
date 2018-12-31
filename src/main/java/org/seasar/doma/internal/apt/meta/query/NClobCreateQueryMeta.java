@@ -2,21 +2,21 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import org.seasar.doma.internal.apt.mirror.NClobFactoryMirror;
+import org.seasar.doma.internal.apt.annot.NClobFactoryAnnot;
 
 public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  protected NClobFactoryMirror nClobFactoryMirror;
+  protected NClobFactoryAnnot nClobFactoryAnnot;
 
   public NClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);
   }
 
-  NClobFactoryMirror getNClobFactoryMirror() {
-    return nClobFactoryMirror;
+  NClobFactoryAnnot getNClobFactoryMirror() {
+    return nClobFactoryAnnot;
   }
 
-  void setNClobFactoryMirror(NClobFactoryMirror nClobFactoryMirror) {
-    this.nClobFactoryMirror = nClobFactoryMirror;
+  void setNClobFactoryMirror(NClobFactoryAnnot nClobFactoryAnnot) {
+    this.nClobFactoryAnnot = nClobFactoryAnnot;
   }
 }

@@ -2,12 +2,12 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
-import org.seasar.doma.internal.apt.mirror.SqlProcessorMirror;
 
 public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
 
-  protected SqlProcessorMirror sqlProcessorMirror;
+  protected SqlProcessorAnnot sqlProcessorAnnot;
 
   protected String biFunctionParameterName;
 
@@ -22,12 +22,12 @@ public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
     return visitor.visitSqlProcessorQueryMeta(this, p);
   }
 
-  public SqlProcessorMirror getSqlProcessorMirror() {
-    return sqlProcessorMirror;
+  public SqlProcessorAnnot getSqlProcessorAnnot() {
+    return sqlProcessorAnnot;
   }
 
-  public void setSqlProcessorMirror(SqlProcessorMirror sqlProcessorMirror) {
-    this.sqlProcessorMirror = sqlProcessorMirror;
+  public void setSqlProcessorAnnot(SqlProcessorAnnot sqlProcessorAnnot) {
+    this.sqlProcessorAnnot = sqlProcessorAnnot;
   }
 
   public String getBiFunctionParameterName() {

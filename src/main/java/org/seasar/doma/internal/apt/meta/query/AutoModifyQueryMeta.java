@@ -3,8 +3,8 @@ package org.seasar.doma.internal.apt.meta.query;
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.internal.apt.annot.ModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoModifyQueryMeta extends AbstractQueryMeta {
@@ -13,7 +13,7 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
   protected String entityParameterName;
 
-  protected ModifyMirror modifyMirror;
+  protected ModifyAnnot modifyAnnot;
 
   public AutoModifyQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);
@@ -35,48 +35,48 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
     this.entityParameterName = entityParameterName;
   }
 
-  ModifyMirror getModifyMirror() {
-    return modifyMirror;
+  ModifyAnnot getModifyAnnot() {
+    return modifyAnnot;
   }
 
-  void setModifyMirror(ModifyMirror modifyMirror) {
-    this.modifyMirror = modifyMirror;
+  void setModifyAnnot(ModifyAnnot modifyAnnot) {
+    this.modifyAnnot = modifyAnnot;
   }
 
   public boolean getSqlFile() {
-    return modifyMirror.getSqlFileValue();
+    return modifyAnnot.getSqlFileValue();
   }
 
   public int getQueryTimeout() {
-    return modifyMirror.getQueryTimeoutValue();
+    return modifyAnnot.getQueryTimeoutValue();
   }
 
   public Boolean getIgnoreVersion() {
-    return modifyMirror.getIgnoreVersionValue();
+    return modifyAnnot.getIgnoreVersionValue();
   }
 
   public Boolean getExcludeNull() {
-    return modifyMirror.getExcludeNullValue();
+    return modifyAnnot.getExcludeNullValue();
   }
 
   public Boolean getSuppressOptimisticLockException() {
-    return modifyMirror.getSuppressOptimisticLockExceptionValue();
+    return modifyAnnot.getSuppressOptimisticLockExceptionValue();
   }
 
   public Boolean getIncludeUnchanged() {
-    return modifyMirror.getIncludeUnchangedValue();
+    return modifyAnnot.getIncludeUnchangedValue();
   }
 
   public List<String> getInclude() {
-    return modifyMirror.getIncludeValue();
+    return modifyAnnot.getIncludeValue();
   }
 
   public List<String> getExclude() {
-    return modifyMirror.getExcludeValue();
+    return modifyAnnot.getExcludeValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return modifyMirror.getSqlLogValue();
+    return modifyAnnot.getSqlLogValue();
   }
 
   @Override

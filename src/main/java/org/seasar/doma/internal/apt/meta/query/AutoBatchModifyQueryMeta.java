@@ -3,8 +3,8 @@ package org.seasar.doma.internal.apt.meta.query;
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
@@ -13,7 +13,7 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
   protected String entitiesParameterName;
 
-  protected BatchModifyMirror batchModifyMirror;
+  protected BatchModifyAnnot batchModifyAnnot;
 
   public AutoBatchModifyQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);
@@ -35,40 +35,40 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
     this.entitiesParameterName = entitiesParameterName;
   }
 
-  BatchModifyMirror getBatchModifyMirror() {
-    return batchModifyMirror;
+  BatchModifyAnnot getBatchModifyAnnot() {
+    return batchModifyAnnot;
   }
 
-  void setBatchModifyMirror(BatchModifyMirror batchModifyMirror) {
-    this.batchModifyMirror = batchModifyMirror;
+  void setBatchModifyAnnot(BatchModifyAnnot batchModifyAnnot) {
+    this.batchModifyAnnot = batchModifyAnnot;
   }
 
   public int getQueryTimeout() {
-    return batchModifyMirror.getQueryTimeoutValue();
+    return batchModifyAnnot.getQueryTimeoutValue();
   }
 
   public int getBatchSize() {
-    return batchModifyMirror.getBatchSizeValue();
+    return batchModifyAnnot.getBatchSizeValue();
   }
 
   public Boolean getIgnoreVersion() {
-    return batchModifyMirror.getIgnoreVersionValue();
+    return batchModifyAnnot.getIgnoreVersionValue();
   }
 
   public Boolean getSuppressOptimisticLockException() {
-    return batchModifyMirror.getSuppressOptimisticLockExceptionValue();
+    return batchModifyAnnot.getSuppressOptimisticLockExceptionValue();
   }
 
   public List<String> getInclude() {
-    return batchModifyMirror.getIncludeValue();
+    return batchModifyAnnot.getIncludeValue();
   }
 
   public List<String> getExclude() {
-    return batchModifyMirror.getExcludeValue();
+    return batchModifyAnnot.getExcludeValue();
   }
 
   public SqlLogType getSqlLogType() {
-    return batchModifyMirror.getSqlLogValue();
+    return batchModifyAnnot.getSqlLogValue();
   }
 
   @Override

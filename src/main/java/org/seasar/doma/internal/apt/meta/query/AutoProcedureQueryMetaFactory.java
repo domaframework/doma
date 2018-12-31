@@ -5,8 +5,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.ProcedureAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
 import org.seasar.doma.message.Message;
 
 public class AutoProcedureQueryMetaFactory
@@ -19,13 +19,13 @@ public class AutoProcedureQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    ProcedureMirror procedureMirror = ProcedureMirror.newInstance(method, env);
-    if (procedureMirror == null) {
+    ProcedureAnnot procedureAnnot = ProcedureAnnot.newInstance(method, env);
+    if (procedureAnnot == null) {
       return null;
     }
     AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(method, daoMeta.getDaoElement());
     queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
-    queryMeta.setProcedureMirror(procedureMirror);
+    queryMeta.setProcedureAnnot(procedureAnnot);
     doTypeParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);
     doParameters(queryMeta, method, daoMeta);

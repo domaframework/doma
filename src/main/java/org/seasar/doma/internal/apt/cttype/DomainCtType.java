@@ -15,7 +15,7 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.mirror.DomainConvertersMirror;
+import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
@@ -141,8 +141,8 @@ public class DomainCtType extends AbstractCtType {
         if (convertersProviderElement == null) {
           throw new AptIllegalOptionException(Message.DOMA4200.getMessage(className));
         }
-        DomainConvertersMirror convertersMirror =
-            DomainConvertersMirror.newInstance(convertersProviderElement, env);
+        DomainConvertersAnnot convertersMirror =
+            DomainConvertersAnnot.newInstance(convertersProviderElement, env);
         if (convertersMirror == null) {
           throw new AptIllegalOptionException(Message.DOMA4201.getMessage(className));
         }

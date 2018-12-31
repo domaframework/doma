@@ -5,8 +5,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public class EmbeddablePropertyMeta {
@@ -21,7 +21,7 @@ public class EmbeddablePropertyMeta {
 
   protected String name;
 
-  protected ColumnMirror columnMirror;
+  protected ColumnAnnot columnAnnot;
 
   protected CtType ctType;
 
@@ -41,28 +41,28 @@ public class EmbeddablePropertyMeta {
     this.name = name;
   }
 
-  public ColumnMirror getColumnMirror() {
-    return columnMirror;
+  public ColumnAnnot getColumnAnnot() {
+    return columnAnnot;
   }
 
-  public void setColumnMirror(ColumnMirror columnMirror) {
-    this.columnMirror = columnMirror;
+  public void setColumnAnnot(ColumnAnnot columnAnnot) {
+    this.columnAnnot = columnAnnot;
   }
 
   public String getColumnName() {
-    return columnMirror != null ? columnMirror.getNameValue() : "";
+    return columnAnnot != null ? columnAnnot.getNameValue() : "";
   }
 
   public boolean isColumnInsertable() {
-    return columnMirror != null ? columnMirror.getInsertableValue() : true;
+    return columnAnnot != null ? columnAnnot.getInsertableValue() : true;
   }
 
   public boolean isColumnUpdatable() {
-    return columnMirror != null ? columnMirror.getUpdatableValue() : true;
+    return columnAnnot != null ? columnAnnot.getUpdatableValue() : true;
   }
 
   public boolean isColumnQuoteRequired() {
-    return columnMirror != null ? columnMirror.getQuoteValue() : false;
+    return columnAnnot != null ? columnAnnot.getQuoteValue() : false;
   }
 
   public CtType getCtType() {

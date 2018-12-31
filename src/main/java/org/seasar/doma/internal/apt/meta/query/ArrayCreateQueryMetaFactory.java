@@ -9,8 +9,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.ArrayFactoryAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
 import org.seasar.doma.message.Message;
 
 public class ArrayCreateQueryMetaFactory
@@ -23,12 +23,12 @@ public class ArrayCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    ArrayFactoryMirror arrayFactoryMirror = ArrayFactoryMirror.newInstance(method, env);
-    if (arrayFactoryMirror == null) {
+    ArrayFactoryAnnot arrayFactoryAnnot = ArrayFactoryAnnot.newInstance(method, env);
+    if (arrayFactoryAnnot == null) {
       return null;
     }
     ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(method, daoMeta.getDaoElement());
-    queryMeta.setArrayFactoryMirror(arrayFactoryMirror);
+    queryMeta.setArrayFactoryAnnot(arrayFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.ARRAY_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);

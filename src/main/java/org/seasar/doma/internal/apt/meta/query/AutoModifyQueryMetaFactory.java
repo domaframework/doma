@@ -7,14 +7,14 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.DeleteAnnot;
+import org.seasar.doma.internal.apt.annot.InsertAnnot;
+import org.seasar.doma.internal.apt.annot.ModifyAnnot;
+import org.seasar.doma.internal.apt.annot.UpdateAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.DeleteMirror;
-import org.seasar.doma.internal.apt.mirror.InsertMirror;
-import org.seasar.doma.internal.apt.mirror.ModifyMirror;
-import org.seasar.doma.internal.apt.mirror.UpdateMirror;
 import org.seasar.doma.message.Message;
 
 public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoModifyQueryMeta> {
@@ -40,21 +40,21 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
   protected AutoModifyQueryMeta createAutoModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method, daoMeta.getDaoElement());
-    ModifyMirror modifyMirror = InsertMirror.newInstance(method, env);
-    if (modifyMirror != null && !modifyMirror.getSqlFileValue()) {
-      queryMeta.setModifyMirror(modifyMirror);
+    ModifyAnnot modifyAnnot = InsertAnnot.newInstance(method, env);
+    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+      queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
       return queryMeta;
     }
-    modifyMirror = UpdateMirror.newInstance(method, env);
-    if (modifyMirror != null && !modifyMirror.getSqlFileValue()) {
-      queryMeta.setModifyMirror(modifyMirror);
+    modifyAnnot = UpdateAnnot.newInstance(method, env);
+    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+      queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
       return queryMeta;
     }
-    modifyMirror = DeleteMirror.newInstance(method, env);
-    if (modifyMirror != null && !modifyMirror.getSqlFileValue()) {
-      queryMeta.setModifyMirror(modifyMirror);
+    modifyAnnot = DeleteAnnot.newInstance(method, env);
+    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
+      queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
       return queryMeta;
     }
@@ -130,12 +130,12 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     if (parameterMeta.isBindable()) {
       queryMeta.addBindableParameterCtType(parameterMeta.getName(), parameterMeta.getCtType());
     }
-    ModifyMirror modifyMirror = queryMeta.getModifyMirror();
+    ModifyAnnot modifyAnnot = queryMeta.getModifyAnnot();
     validateEntityPropertyNames(
         entityCtType.getTypeMirror(),
         method,
-        modifyMirror.getAnnotationMirror(),
-        modifyMirror.getInclude(),
-        modifyMirror.getExclude());
+        modifyAnnot.getAnnotationMirror(),
+        modifyAnnot.getInclude(),
+        modifyAnnot.getExclude());
   }
 }

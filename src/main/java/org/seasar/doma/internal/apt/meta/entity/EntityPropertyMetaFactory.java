@@ -17,6 +17,9 @@ import org.seasar.doma.TenantId;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.annot.ColumnAnnot;
+import org.seasar.doma.internal.apt.annot.SequenceGeneratorAnnot;
+import org.seasar.doma.internal.apt.annot.TableGeneratorAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -30,9 +33,6 @@ import org.seasar.doma.internal.apt.meta.MetaConstants;
 import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
-import org.seasar.doma.internal.apt.mirror.ColumnMirror;
-import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
-import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
@@ -281,26 +281,26 @@ public class EntityPropertyMetaFactory {
 
   protected void doSequenceIdGeneratorMeta(
       EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
-    SequenceGeneratorMirror sequenceGeneratorMirror =
-        SequenceGeneratorMirror.newInstance(fieldElement, env);
-    if (sequenceGeneratorMirror == null) {
+    SequenceGeneratorAnnot sequenceGeneratorAnnot =
+        SequenceGeneratorAnnot.newInstance(fieldElement, env);
+    if (sequenceGeneratorAnnot == null) {
       throw new AptException(
           Message.DOMA4034,
           env,
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
-    validateSequenceIdGenerator(propertyMeta, fieldElement, sequenceGeneratorMirror);
-    SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(sequenceGeneratorMirror);
+    validateSequenceIdGenerator(propertyMeta, fieldElement, sequenceGeneratorAnnot);
+    SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(sequenceGeneratorAnnot);
     propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
   }
 
   protected void validateSequenceIdGenerator(
       EntityPropertyMeta propertyMeta,
       VariableElement fieldElement,
-      SequenceGeneratorMirror sequenceGeneratorMirror) {
+      SequenceGeneratorAnnot sequenceGeneratorAnnot) {
     TypeElement typeElement =
-        TypeMirrorUtil.toTypeElement(sequenceGeneratorMirror.getImplementerValue(), env);
+        TypeMirrorUtil.toTypeElement(sequenceGeneratorAnnot.getImplementerValue(), env);
     if (typeElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement");
     }
@@ -309,8 +309,8 @@ public class EntityPropertyMetaFactory {
           Message.DOMA4170,
           env,
           fieldElement,
-          sequenceGeneratorMirror.getAnnotationMirror(),
-          sequenceGeneratorMirror.getImplementer(),
+          sequenceGeneratorAnnot.getAnnotationMirror(),
+          sequenceGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
     ExecutableElement constructor = ElementUtil.getNoArgConstructor(typeElement, env);
@@ -319,33 +319,33 @@ public class EntityPropertyMetaFactory {
           Message.DOMA4171,
           env,
           fieldElement,
-          sequenceGeneratorMirror.getAnnotationMirror(),
-          sequenceGeneratorMirror.getImplementer(),
+          sequenceGeneratorAnnot.getAnnotationMirror(),
+          sequenceGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
   }
 
   protected void doTableIdGeneratorMeta(
       EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
-    TableGeneratorMirror tableGeneratorMirror = TableGeneratorMirror.newInstance(fieldElement, env);
-    if (tableGeneratorMirror == null) {
+    TableGeneratorAnnot tableGeneratorAnnot = TableGeneratorAnnot.newInstance(fieldElement, env);
+    if (tableGeneratorAnnot == null) {
       throw new AptException(
           Message.DOMA4035,
           env,
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
-    validateTableIdGenerator(propertyMeta, fieldElement, tableGeneratorMirror);
-    TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(tableGeneratorMirror);
+    validateTableIdGenerator(propertyMeta, fieldElement, tableGeneratorAnnot);
+    TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(tableGeneratorAnnot);
     propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
   }
 
   protected void validateTableIdGenerator(
       EntityPropertyMeta propertyMeta,
       VariableElement fieldElement,
-      TableGeneratorMirror tableGeneratorMirror) {
+      TableGeneratorAnnot tableGeneratorAnnot) {
     TypeElement typeElement =
-        TypeMirrorUtil.toTypeElement(tableGeneratorMirror.getImplementerValue(), env);
+        TypeMirrorUtil.toTypeElement(tableGeneratorAnnot.getImplementerValue(), env);
     if (typeElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement");
     }
@@ -354,8 +354,8 @@ public class EntityPropertyMetaFactory {
           Message.DOMA4168,
           env,
           fieldElement,
-          tableGeneratorMirror.getAnnotationMirror(),
-          tableGeneratorMirror.getImplementer(),
+          tableGeneratorAnnot.getAnnotationMirror(),
+          tableGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
     ExecutableElement constructor = ElementUtil.getNoArgConstructor(typeElement, env);
@@ -364,8 +364,8 @@ public class EntityPropertyMetaFactory {
           Message.DOMA4169,
           env,
           fieldElement,
-          tableGeneratorMirror.getAnnotationMirror(),
-          tableGeneratorMirror.getImplementer(),
+          tableGeneratorAnnot.getAnnotationMirror(),
+          tableGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
   }
@@ -433,8 +433,8 @@ public class EntityPropertyMetaFactory {
 
   protected void doColumn(
       EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
-    ColumnMirror columnMirror = ColumnMirror.newInstance(fieldElement, env);
-    if (columnMirror == null) {
+    ColumnAnnot columnAnnot = ColumnAnnot.newInstance(fieldElement, env);
+    if (columnAnnot == null) {
       return;
     }
     if (propertyMeta.isEmbedded()) {
@@ -442,36 +442,36 @@ public class EntityPropertyMetaFactory {
           Message.DOMA4306,
           env,
           fieldElement,
-          columnMirror.getAnnotationMirror(),
+          columnAnnot.getAnnotationMirror(),
           new Object[] {
             entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
           });
     }
     if (propertyMeta.isId() || propertyMeta.isVersion()) {
-      if (!columnMirror.getInsertableValue()) {
+      if (!columnAnnot.getInsertableValue()) {
         throw new AptException(
             Message.DOMA4088,
             env,
             fieldElement,
-            columnMirror.getAnnotationMirror(),
-            columnMirror.getInsertable(),
+            columnAnnot.getAnnotationMirror(),
+            columnAnnot.getInsertable(),
             new Object[] {
               entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
             });
       }
-      if (!columnMirror.getUpdatableValue()) {
+      if (!columnAnnot.getUpdatableValue()) {
         throw new AptException(
             Message.DOMA4089,
             env,
             fieldElement,
-            columnMirror.getAnnotationMirror(),
-            columnMirror.getUpdatable(),
+            columnAnnot.getAnnotationMirror(),
+            columnAnnot.getUpdatable(),
             new Object[] {
               entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
             });
       }
     }
-    propertyMeta.setColumnMirror(columnMirror);
+    propertyMeta.setColumnAnnot(columnAnnot);
   }
 
   protected boolean isNumber(CtType ctType) {

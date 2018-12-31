@@ -17,6 +17,7 @@ import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -101,7 +102,6 @@ import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMeta;
-import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
 import org.seasar.doma.internal.jdbc.command.BasicCollectorHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
@@ -226,7 +226,7 @@ public class DaoGenerator extends AbstractGenerator {
 
   protected void printClass() {
     iprint("/** */%n");
-    for (AnnotationMirror annotation : daoMeta.getAnnotationMirrors(AnnotationTarget.CLASS)) {
+    for (AnnotationAnnot annotation : daoMeta.getAnnotationMirrors(AnnotationTarget.CLASS)) {
       iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
     }
     printGenerated();
@@ -295,7 +295,7 @@ public class DaoGenerator extends AbstractGenerator {
       unindent();
       iprint("}%n");
       print("%n");
-      if (daoMeta.getAnnotateWithMirror() == null) {
+      if (daoMeta.getAnnotateWithAnnot() == null) {
         ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
         boolean jdbcConstructorsNecessary =
             parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
@@ -376,16 +376,16 @@ public class DaoGenerator extends AbstractGenerator {
         }
       }
     }
-    if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithMirror() != null) {
+    if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithAnnot() != null) {
       iprint("/**%n");
       iprint(" * @param config the config%n");
       iprint(" */%n");
-      for (AnnotationMirror annotation :
+      for (AnnotationAnnot annotation :
           daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
         iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
       }
       iprint("public %1$s(", simpleName);
-      for (AnnotationMirror annotation :
+      for (AnnotationAnnot annotation :
           daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
         print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation.getElementsValue());
       }

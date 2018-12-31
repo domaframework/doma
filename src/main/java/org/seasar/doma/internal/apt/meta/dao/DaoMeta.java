@@ -9,19 +9,19 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.AccessLevel;
 import org.seasar.doma.AnnotationTarget;
+import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
+import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
+import org.seasar.doma.internal.apt.annot.DaoAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
-import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
-import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
-import org.seasar.doma.internal.apt.mirror.DaoMirror;
 
 public class DaoMeta implements TypeElementMeta {
 
   protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
 
-  protected final DaoMirror daoMirror;
+  protected final DaoAnnot daoAnnot;
 
-  protected AnnotateWithMirror annotateWithMirror;
+  protected AnnotateWithAnnot annotateWithAnnot;
 
   protected TypeMirror daoType;
 
@@ -37,9 +37,9 @@ public class DaoMeta implements TypeElementMeta {
 
   protected String singletonFieldName;
 
-  public DaoMeta(DaoMirror daoMirror) {
-    assertNotNull(daoMirror);
-    this.daoMirror = daoMirror;
+  public DaoMeta(DaoAnnot daoAnnot) {
+    assertNotNull(daoAnnot);
+    this.daoAnnot = daoAnnot;
   }
 
   public String getName() {
@@ -75,38 +75,38 @@ public class DaoMeta implements TypeElementMeta {
   }
 
   public boolean hasUserDefinedConfig() {
-    return daoMirror.hasUserDefinedConfig();
+    return daoAnnot.hasUserDefinedConfig();
   }
 
-  DaoMirror getDaoMirror() {
-    return daoMirror;
+  DaoAnnot getDaoAnnot() {
+    return daoAnnot;
   }
 
   public TypeMirror getConfigType() {
-    return daoMirror.getConfigValue();
+    return daoAnnot.getConfigValue();
   }
 
   public AccessLevel getAccessLevel() {
-    return daoMirror.getAccessLevelValue();
+    return daoAnnot.getAccessLevelValue();
   }
 
-  public AnnotateWithMirror getAnnotateWithMirror() {
-    return annotateWithMirror;
+  public AnnotateWithAnnot getAnnotateWithAnnot() {
+    return annotateWithAnnot;
   }
 
-  public void setAnnotateWithMirror(AnnotateWithMirror annotateWithMirror) {
-    this.annotateWithMirror = annotateWithMirror;
+  public void setAnnotateWithAnnot(AnnotateWithAnnot annotateWithAnnot) {
+    this.annotateWithAnnot = annotateWithAnnot;
   }
 
-  public List<AnnotationMirror> getAnnotationMirrors(AnnotationTarget target) {
+  public List<AnnotationAnnot> getAnnotationMirrors(AnnotationTarget target) {
     assertNotNull(target);
-    if (annotateWithMirror == null || annotateWithMirror.getAnnotationsValue() == null) {
+    if (annotateWithAnnot == null || annotateWithAnnot.getAnnotationsValue() == null) {
       return Collections.emptyList();
     }
-    List<AnnotationMirror> results = new ArrayList<AnnotationMirror>();
-    for (AnnotationMirror annotationMirror : annotateWithMirror.getAnnotationsValue()) {
-      if (target.name().contentEquals(annotationMirror.getTargetValue().getSimpleName())) {
-        results.add(annotationMirror);
+    List<AnnotationAnnot> results = new ArrayList<AnnotationAnnot>();
+    for (AnnotationAnnot annotationAnnot : annotateWithAnnot.getAnnotationsValue()) {
+      if (target.name().contentEquals(annotationAnnot.getTargetValue().getSimpleName())) {
+        results.add(annotationAnnot);
       }
     }
     return results;

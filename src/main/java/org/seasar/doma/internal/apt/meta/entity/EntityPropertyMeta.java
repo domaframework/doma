@@ -8,11 +8,11 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.id.IdGeneratorMeta;
-import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -47,7 +47,7 @@ public class EntityPropertyMeta {
 
   protected boolean tenantId;
 
-  protected ColumnMirror columnMirror;
+  protected ColumnAnnot columnAnnot;
 
   protected IdGeneratorMeta idGeneratorMeta;
 
@@ -151,24 +151,24 @@ public class EntityPropertyMeta {
     this.ctType = ctType;
   }
 
-  public void setColumnMirror(ColumnMirror columnMirror) {
-    this.columnMirror = columnMirror;
+  public void setColumnAnnot(ColumnAnnot columnAnnot) {
+    this.columnAnnot = columnAnnot;
   }
 
   public String getColumnName() {
-    return columnMirror != null ? columnMirror.getNameValue() : "";
+    return columnAnnot != null ? columnAnnot.getNameValue() : "";
   }
 
   public boolean isColumnInsertable() {
-    return columnMirror != null ? columnMirror.getInsertableValue() : true;
+    return columnAnnot != null ? columnAnnot.getInsertableValue() : true;
   }
 
   public boolean isColumnUpdatable() {
-    return columnMirror != null ? columnMirror.getUpdatableValue() : true;
+    return columnAnnot != null ? columnAnnot.getUpdatableValue() : true;
   }
 
   public boolean isColumnQuoteRequired() {
-    return columnMirror != null ? columnMirror.getQuoteValue() : false;
+    return columnAnnot != null ? columnAnnot.getQuoteValue() : false;
   }
 
   public boolean isEmbedded() {

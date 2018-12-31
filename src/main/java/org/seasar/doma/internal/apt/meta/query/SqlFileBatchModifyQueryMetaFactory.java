@@ -9,15 +9,15 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.BatchDeleteAnnot;
+import org.seasar.doma.internal.apt.annot.BatchInsertAnnot;
+import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
+import org.seasar.doma.internal.apt.annot.BatchUpdateAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
-import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
-import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
-import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
 import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
 import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.message.Message;
@@ -48,21 +48,21 @@ public class SqlFileBatchModifyQueryMetaFactory
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileBatchModifyQueryMeta queryMeta =
         new SqlFileBatchModifyQueryMeta(method, daoMeta.getDaoElement());
-    BatchModifyMirror batchModifyMirror = BatchInsertMirror.newInstance(method, env);
-    if (batchModifyMirror != null && batchModifyMirror.getSqlFileValue()) {
-      queryMeta.setBatchModifyMirror(batchModifyMirror);
+    BatchModifyAnnot batchModifyAnnot = BatchInsertAnnot.newInstance(method, env);
+    if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
+      queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_INSERT);
       return queryMeta;
     }
-    batchModifyMirror = BatchUpdateMirror.newInstance(method, env);
-    if (batchModifyMirror != null && batchModifyMirror.getSqlFileValue()) {
-      queryMeta.setBatchModifyMirror(batchModifyMirror);
+    batchModifyAnnot = BatchUpdateAnnot.newInstance(method, env);
+    if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
+      queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_UPDATE);
       return queryMeta;
     }
-    batchModifyMirror = BatchDeleteMirror.newInstance(method, env);
-    if (batchModifyMirror != null && batchModifyMirror.getSqlFileValue()) {
-      queryMeta.setBatchModifyMirror(batchModifyMirror);
+    batchModifyAnnot = BatchDeleteAnnot.newInstance(method, env);
+    if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
+      queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_DELETE);
       return queryMeta;
     }

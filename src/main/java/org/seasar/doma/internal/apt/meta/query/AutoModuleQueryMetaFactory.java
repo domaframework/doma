@@ -7,6 +7,7 @@ import org.seasar.doma.In;
 import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.ResultSetAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -21,7 +22,6 @@ import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.parameter.*;
-import org.seasar.doma.internal.apt.mirror.ResultSetMirror;
 import org.seasar.doma.message.Message;
 
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
@@ -47,9 +47,9 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
   }
 
   protected CallableSqlParameterMeta createParameterMeta(final QueryParameterMeta parameterMeta) {
-    ResultSetMirror resultSetMirror = ResultSetMirror.newInstance(parameterMeta.getElement(), env);
-    if (resultSetMirror != null) {
-      return createResultSetParameterMeta(parameterMeta, resultSetMirror);
+    ResultSetAnnot resultSetAnnot = ResultSetAnnot.newInstance(parameterMeta.getElement(), env);
+    if (resultSetAnnot != null) {
+      return createResultSetParameterMeta(parameterMeta, resultSetAnnot);
     }
     if (parameterMeta.isAnnotated(In.class)) {
       return createInParameterMeta(parameterMeta);
@@ -71,12 +71,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
   }
 
   protected CallableSqlParameterMeta createResultSetParameterMeta(
-      final QueryParameterMeta parameterMeta, final ResultSetMirror resultSetMirror) {
+      final QueryParameterMeta parameterMeta, final ResultSetAnnot resultSetAnnot) {
     IterableCtType iterableCtType =
         parameterMeta.getCtType().accept(new ResultSetCtTypeVisitor(parameterMeta), null);
     return iterableCtType
         .getElementCtType()
-        .accept(new ResultSetElementCtTypeVisitor(parameterMeta, resultSetMirror), false);
+        .accept(new ResultSetElementCtTypeVisitor(parameterMeta, resultSetAnnot), false);
   }
 
   protected CallableSqlParameterMeta createInParameterMeta(final QueryParameterMeta parameterMeta) {
@@ -137,12 +137,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
     protected final QueryParameterMeta parameterMeta;
 
-    protected final ResultSetMirror resultSetMirror;
+    protected final ResultSetAnnot resultSetAnnot;
 
     public ResultSetElementCtTypeVisitor(
-        QueryParameterMeta parameterMeta, ResultSetMirror resultSetMirror) {
+        QueryParameterMeta parameterMeta, ResultSetAnnot resultSetAnnot) {
       this.parameterMeta = parameterMeta;
-      this.resultSetMirror = resultSetMirror;
+      this.resultSetAnnot = resultSetAnnot;
     }
 
     @Override
@@ -174,7 +174,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             });
       }
       return new EntityListParameterMeta(
-          parameterMeta.getName(), ctType, resultSetMirror.getEnsureResultMappingValue());
+          parameterMeta.getName(), ctType, resultSetAnnot.getEnsureResultMappingValue());
     }
 
     @Override

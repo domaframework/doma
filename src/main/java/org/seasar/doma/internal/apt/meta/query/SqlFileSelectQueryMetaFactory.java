@@ -10,6 +10,7 @@ import org.seasar.doma.SelectType;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Notifier;
+import org.seasar.doma.internal.apt.annot.SelectAnnot;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
@@ -27,7 +28,6 @@ import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.message.Message;
 
 public class SqlFileSelectQueryMetaFactory
@@ -54,12 +54,12 @@ public class SqlFileSelectQueryMetaFactory
 
   protected SqlFileSelectQueryMeta createSqlFileSelectQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
-    SelectMirror selectMirror = SelectMirror.newInstance(method, env);
-    if (selectMirror == null) {
+    SelectAnnot selectAnnot = SelectAnnot.newInstance(method, env);
+    if (selectAnnot == null) {
       return null;
     }
     SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(method, daoMeta.getDaoElement());
-    queryMeta.setSelectMirror(selectMirror);
+    queryMeta.setSelectAnnot(selectAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
     return queryMeta;
   }
@@ -94,13 +94,13 @@ public class SqlFileSelectQueryMetaFactory
       }
     } else {
       if (queryMeta.getFunctionCtType() != null) {
-        SelectMirror selectMirror = queryMeta.getSelectMirror();
+        SelectAnnot selectAnnot = queryMeta.getSelectAnnot();
         throw new AptException(
             Message.DOMA4248,
             env,
             method,
-            selectMirror.getAnnotationMirror(),
-            selectMirror.getStrategy(),
+            selectAnnot.getAnnotationMirror(),
+            selectAnnot.getStrategy(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
     }

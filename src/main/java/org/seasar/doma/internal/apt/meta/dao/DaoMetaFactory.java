@@ -33,11 +33,11 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
+import org.seasar.doma.internal.apt.annot.DaoAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryMetaFactory;
-import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
-import org.seasar.doma.internal.apt.mirror.DaoMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.ResourceUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -62,11 +62,11 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   @Override
   public DaoMeta createTypeElementMeta(TypeElement interfaceElement) {
     assertNotNull(interfaceElement);
-    DaoMirror daoMirror = DaoMirror.newInstance(interfaceElement, env);
-    if (daoMirror == null) {
-      throw new AptIllegalStateException("daoMirror");
+    DaoAnnot daoAnnot = DaoAnnot.newInstance(interfaceElement, env);
+    if (daoAnnot == null) {
+      throw new AptIllegalStateException("daoAnnot");
     }
-    DaoMeta daoMeta = new DaoMeta(daoMirror);
+    DaoMeta daoMeta = new DaoMeta(daoAnnot);
     doDaoElement(interfaceElement, daoMeta);
     doMethodElements(interfaceElement, daoMeta);
     validateFiles(interfaceElement, daoMeta);
@@ -92,18 +92,18 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     doAnnotateWith(daoMeta);
     doParentDao(daoMeta);
 
-    DaoMirror daoMirror = daoMeta.getDaoMirror();
-    if (daoMirror.hasUserDefinedConfig()) {
-      TypeElement configElement = TypeMirrorUtil.toTypeElement(daoMirror.getConfigValue(), env);
+    DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
+    if (daoAnnot.hasUserDefinedConfig()) {
+      TypeElement configElement = TypeMirrorUtil.toTypeElement(daoAnnot.getConfigValue(), env);
       if (configElement == null) {
         throw new AptIllegalStateException("failed to convert to TypeElement.");
       }
-      validateUserDefinedConfig(configElement, daoMeta, daoMirror);
+      validateUserDefinedConfig(configElement, daoMeta, daoAnnot);
     }
   }
 
   protected void validateUserDefinedConfig(
-      TypeElement configElement, DaoMeta daoMeta, DaoMirror daoMirror) {
+      TypeElement configElement, DaoMeta daoMeta, DaoAnnot daoAnnot) {
     SingletonConfig singletonConfig = configElement.getAnnotation(SingletonConfig.class);
     if (singletonConfig == null) {
       if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
@@ -111,8 +111,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             Message.DOMA4163,
             env,
             daoMeta.getDaoElement(),
-            daoMirror.getAnnotationMirror(),
-            daoMirror.getConfig(),
+            daoAnnot.getAnnotationMirror(),
+            daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName()});
       }
       ExecutableElement constructor = ElementUtil.getNoArgConstructor(configElement, env);
@@ -135,8 +135,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
               Message.DOMA4164,
               env,
               daoMeta.getDaoElement(),
-              daoMirror.getAnnotationMirror(),
-              daoMirror.getConfig(),
+              daoAnnot.getAnnotationMirror(),
+              daoAnnot.getConfig(),
               new Object[] {configElement.getQualifiedName()});
         }
       }
@@ -159,8 +159,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             Message.DOMA4255,
             env,
             daoMeta.getDaoElement(),
-            daoMirror.getAnnotationMirror(),
-            daoMirror.getConfig(),
+            daoAnnot.getAnnotationMirror(),
+            daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName(), methodName});
       }
     }
@@ -168,12 +168,12 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   protected void validateInterface(TypeElement interfaceElement, DaoMeta daoMeta) {
     if (!interfaceElement.getKind().isInterface()) {
-      DaoMirror daoMirror = daoMeta.getDaoMirror();
+      DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
       throw new AptException(
           Message.DOMA4014,
           env,
           interfaceElement,
-          daoMirror.getAnnotationMirror(),
+          daoAnnot.getAnnotationMirror(),
           new Object[] {interfaceElement.getQualifiedName()});
     }
     if (interfaceElement.getNestingKind().isNested()) {
@@ -193,10 +193,10 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   protected void doAnnotateWith(DaoMeta daoMeta) {
-    AnnotateWithMirror annotateWithMirror =
-        AnnotateWithMirror.newInstance(daoMeta.getDaoElement(), env);
-    if (annotateWithMirror != null) {
-      daoMeta.setAnnotateWithMirror(annotateWithMirror);
+    AnnotateWithAnnot annotateWithAnnot =
+        AnnotateWithAnnot.newInstance(daoMeta.getDaoElement(), env);
+    if (annotateWithAnnot != null) {
+      daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
     }
   }
 
@@ -215,8 +215,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 })
             .collect(toList());
     for (TypeElement typeElement : interfaces) {
-      DaoMirror daoMirror = DaoMirror.newInstance(typeElement, env);
-      if (daoMirror == null) {
+      DaoAnnot daoAnnot = DaoAnnot.newInstance(typeElement, env);
+      if (daoAnnot == null) {
         ExecutableElement nonDefaultMethod = findNonDefaultMethod(typeElement);
         if (nonDefaultMethod == null) {
           continue;
@@ -236,7 +236,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             daoMeta.getDaoElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName()});
       }
-      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoMirror);
+      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot);
       parentDaoMeta.setDaoType(typeElement.asType());
       parentDaoMeta.setDaoElement(typeElement);
       daoMeta.setParentDaoMeta(parentDaoMeta);

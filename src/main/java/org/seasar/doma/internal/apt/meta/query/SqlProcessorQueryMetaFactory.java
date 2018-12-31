@@ -7,6 +7,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.ConfigCtType;
@@ -14,7 +15,6 @@ import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.PreparedSqlCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.mirror.SqlProcessorMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -42,12 +42,12 @@ public class SqlProcessorQueryMetaFactory
 
   protected SqlProcessorQueryMeta createSqlContentQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
-    SqlProcessorMirror sqlProcessorMirror = SqlProcessorMirror.newInstance(method, env);
-    if (sqlProcessorMirror == null) {
+    SqlProcessorAnnot sqlProcessorAnnot = SqlProcessorAnnot.newInstance(method, env);
+    if (sqlProcessorAnnot == null) {
       return null;
     }
     SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method, daoMeta.getDaoElement());
-    queryMeta.setSqlProcessorMirror(sqlProcessorMirror);
+    queryMeta.setSqlProcessorAnnot(sqlProcessorAnnot);
     queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
     return queryMeta;
   }
@@ -65,12 +65,12 @@ public class SqlProcessorQueryMetaFactory
     }
 
     if (queryMeta.getBiFunctionCtType() == null) {
-      SqlProcessorMirror sqlProcessorMirror = queryMeta.getSqlProcessorMirror();
+      SqlProcessorAnnot sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
       throw new AptException(
           Message.DOMA4433,
           env,
           method,
-          sqlProcessorMirror.getAnnotationMirror(),
+          sqlProcessorAnnot.getAnnotationMirror(),
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
   }
