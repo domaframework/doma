@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.generator;
 
 import java.io.Closeable;
 

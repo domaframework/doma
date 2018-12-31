@@ -7,9 +7,9 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Domain;
-import org.seasar.doma.internal.apt.DomainTypeGenerator;
-import org.seasar.doma.internal.apt.Generator;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.generator.DomainTypeGenerator;
+import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
 

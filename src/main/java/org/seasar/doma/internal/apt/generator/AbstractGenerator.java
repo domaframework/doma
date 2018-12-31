@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
@@ -13,6 +13,8 @@ import javax.lang.model.util.Elements;
 import javax.tools.JavaFileObject;
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.Conventions;
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.Message;

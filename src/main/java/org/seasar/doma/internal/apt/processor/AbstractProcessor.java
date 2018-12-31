@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
-
 import org.seasar.doma.internal.apt.*;
 import org.seasar.doma.message.Message;
 
