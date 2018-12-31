@@ -7,7 +7,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import org.seasar.doma.internal.Constants;
-import org.seasar.doma.internal.apt.meta.DomainMeta;
+import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;

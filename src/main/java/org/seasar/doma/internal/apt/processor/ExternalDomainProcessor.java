@@ -10,8 +10,8 @@ import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.generator.ExternalDomainTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
-import org.seasar.doma.internal.apt.meta.ExternalDomainMeta;
-import org.seasar.doma.internal.apt.meta.ExternalDomainMetaFactory;
+import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
+import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.ExternalDomain"})
 @SupportedOptions({Options.VERSION_VALIDATION, Options.RESOURCES_DIR, Options.TEST, Options.DEBUG})

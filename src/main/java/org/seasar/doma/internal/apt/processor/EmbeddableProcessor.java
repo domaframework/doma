@@ -10,9 +10,9 @@ import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.generator.EmbeddableTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
-import org.seasar.doma.internal.apt.meta.EmbeddableMeta;
-import org.seasar.doma.internal.apt.meta.EmbeddableMetaFactory;
-import org.seasar.doma.internal.apt.meta.EmbeddablePropertyMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.Embeddable"})
 @SupportedOptions({

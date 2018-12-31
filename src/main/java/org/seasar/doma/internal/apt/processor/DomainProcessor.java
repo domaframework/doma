@@ -10,8 +10,8 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.generator.DomainTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
-import org.seasar.doma.internal.apt.meta.DomainMeta;
-import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
+import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
+import org.seasar.doma.internal.apt.meta.domain.DomainMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.Domain"})
 @SupportedOptions({

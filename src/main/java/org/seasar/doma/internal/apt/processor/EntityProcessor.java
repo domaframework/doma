@@ -10,9 +10,9 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.generator.EntityTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
-import org.seasar.doma.internal.apt.meta.EntityMeta;
-import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
-import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.Entity"})
 @SupportedOptions({

@@ -2,6 +2,9 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMetaFactory;
 import org.seasar.doma.internal.apt.processor.entity.NamingType1Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
