@@ -78,7 +78,6 @@ public class SqlFileBatchModifyQueryMetaFactory
       if (!returnMeta.isBatchResult(entityCtType)) {
         throw new AptException(
             Message.DOMA4223,
-            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -86,7 +85,6 @@ public class SqlFileBatchModifyQueryMetaFactory
       if (!returnMeta.isPrimitiveIntArray()) {
         throw new AptException(
             Message.DOMA4040,
-            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -104,7 +102,6 @@ public class SqlFileBatchModifyQueryMetaFactory
     if (size != 1) {
       throw new AptException(
           Message.DOMA4002,
-          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -120,7 +117,6 @@ public class SqlFileBatchModifyQueryMetaFactory
                       throws RuntimeException {
                     throw new AptException(
                         Message.DOMA4042,
-                        ctx.getEnv(),
                         method,
                         new Object[] {
                           daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()

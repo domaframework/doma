@@ -40,7 +40,6 @@ public class AutoProcedureQueryMetaFactory
     if (!resultMeta.isPrimitiveVoid()) {
       throw new AptException(
           Message.DOMA4064,
-          ctx.getEnv(),
           resultMeta.getMethodElement(),
           new Object[] {
             queryMeta.getDaoElement().getQualifiedName(),

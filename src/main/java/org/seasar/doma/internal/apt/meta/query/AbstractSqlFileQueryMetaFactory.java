@@ -52,8 +52,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         String sqlFilePath = dirPath + "/" + fileName;
         String sql = getSql(method, siblingfile, sqlFilePath);
         if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
-          throw new AptException(
-              Message.DOMA4020, ctx.getEnv(), method, new Object[] {sqlFilePath});
+          throw new AptException(Message.DOMA4020, method, new Object[] {sqlFilePath});
         }
         SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta, sqlFilePath, sql);
         SqlValidator validator =
@@ -78,15 +77,15 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     File file = getCanonicalFile(new File(uri));
     if (!file.exists()) {
       throw new AptException(
-          Message.DOMA4019, ctx.getEnv(), method, new Object[] {filePath, file.getAbsolutePath()});
+          Message.DOMA4019, method, new Object[] {filePath, file.getAbsolutePath()});
     }
     if (file.isDirectory()) {
       throw new AptException(
-          Message.DOMA4021, ctx.getEnv(), method, new Object[] {filePath, file.getAbsolutePath()});
+          Message.DOMA4021, method, new Object[] {filePath, file.getAbsolutePath()});
     }
     if (!IOUtil.endsWith(file, filePath)) {
       throw new AptException(
-          Message.DOMA4309, ctx.getEnv(), method, new Object[] {filePath, file.getAbsolutePath()});
+          Message.DOMA4309, method, new Object[] {filePath, file.getAbsolutePath()});
     }
     return file;
   }
@@ -103,8 +102,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     File dir = getDir(file);
     File[] files = dir.listFiles();
     if (files == null) {
-      throw new AptException(
-          Message.DOMA4144, ctx.getEnv(), method, new Object[] {dir.getAbsolutePath()});
+      throw new AptException(Message.DOMA4144, method, new Object[] {dir.getAbsolutePath()});
     }
     return files;
   }
@@ -121,7 +119,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     try {
       return ctx.getResources().getResource(path);
     } catch (IOException e) {
-      throw new AptException(Message.DOMA4143, ctx.getEnv(), method, e, new Object[] {path, e});
+      throw new AptException(Message.DOMA4143, method, e, new Object[] {path, e});
     }
   }
 
@@ -130,8 +128,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
       return IOUtil.readAsString(file);
     } catch (WrapException e) {
       Throwable cause = e.getCause();
-      throw new AptException(
-          Message.DOMA4068, ctx.getEnv(), method, cause, new Object[] {filePath, cause});
+      throw new AptException(Message.DOMA4068, method, cause, new Object[] {filePath, cause});
     }
   }
 
@@ -141,7 +138,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
       SqlParser sqlParser = new SqlParser(sql);
       return sqlParser.parse();
     } catch (JdbcException e) {
-      throw new AptException(Message.DOMA4069, ctx.getEnv(), method, e, new Object[] {path, e});
+      throw new AptException(Message.DOMA4069, method, e, new Object[] {path, e});
     }
   }
 

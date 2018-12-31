@@ -108,7 +108,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
         EmbeddableAnnot embeddableAnnot = embeddableMeta.getEmbeddableAnnot();
         throw new AptException(
             Message.DOMA4283,
-            ctx.getEnv(),
             embeddableElement,
             embeddableAnnot.getAnnotationMirror(),
             new Object[] {embeddableElement.getQualifiedName()});
@@ -116,7 +115,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (!embeddableElement.getTypeParameters().isEmpty()) {
         throw new AptException(
             Message.DOMA4285,
-            ctx.getEnv(),
             embeddableElement,
             new Object[] {embeddableElement.getQualifiedName()});
       }
@@ -132,10 +130,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
           || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
         throw new AptException(
-            Message.DOMA4417,
-            ctx.getEnv(),
-            typeElement,
-            new Object[] {typeElement.getQualifiedName()});
+            Message.DOMA4417, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
       NestingKind nestingKind = typeElement.getNestingKind();
       if (nestingKind == NestingKind.TOP_LEVEL) {
@@ -146,17 +141,11 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
           validateEnclosingElement(typeElement.getEnclosingElement());
         } else {
           throw new AptException(
-              Message.DOMA4415,
-              ctx.getEnv(),
-              typeElement,
-              new Object[] {typeElement.getQualifiedName()});
+              Message.DOMA4415, typeElement, new Object[] {typeElement.getQualifiedName()});
         }
       } else {
         throw new AptException(
-            Message.DOMA4416,
-            ctx.getEnv(),
-            typeElement,
-            new Object[] {typeElement.getQualifiedName()});
+            Message.DOMA4416, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
     }
 
@@ -171,31 +160,26 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
           } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
             throw new AptException(
                 Message.DOMA4286,
-                ctx.getEnv(),
                 fieldElement,
                 new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
           } else if (fieldElement.getAnnotation(Id.class) != null) {
             throw new AptException(
                 Message.DOMA4289,
-                ctx.getEnv(),
                 fieldElement,
                 new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
           } else if (fieldElement.getAnnotation(Version.class) != null) {
             throw new AptException(
                 Message.DOMA4290,
-                ctx.getEnv(),
                 fieldElement,
                 new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
           } else if (fieldElement.getAnnotation(TenantId.class) != null) {
             throw new AptException(
                 Message.DOMA4443,
-                ctx.getEnv(),
                 fieldElement,
                 new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
           } else if (fieldElement.getAnnotation(GeneratedValue.class) != null) {
             throw new AptException(
                 Message.DOMA4291,
-                ctx.getEnv(),
                 fieldElement,
                 new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
           } else {
@@ -255,7 +239,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
           if (foundAnnotationTypeElement != null) {
             throw new AptException(
                 Message.DOMA4288,
-                ctx.getEnv(),
                 fieldElement,
                 new Object[] {
                   foundAnnotationTypeElement.getQualifiedName(),
@@ -279,14 +262,12 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (constructorMeta == null) {
         throw new AptException(
             Message.DOMA4293,
-            ctx.getEnv(),
             embeddableElement,
             new Object[] {embeddableElement.getQualifiedName()});
       }
       if (constructorMeta.getConstructorElement().getModifiers().contains(Modifier.PRIVATE)) {
         throw new AptException(
             Message.DOMA4294,
-            ctx.getEnv(),
             embeddableElement,
             new Object[] {embeddableElement.getQualifiedName()});
       }
@@ -347,7 +328,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (!allArgsConstructorAnnot.getStaticNameValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4424,
-            ctx.getEnv(),
             embeddableElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getStaticName(),
@@ -356,7 +336,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (allArgsConstructorAnnot.isAccessPrivate()) {
         throw new AptException(
             Message.DOMA4425,
-            ctx.getEnv(),
             embeddableElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getAccess(),
@@ -365,7 +344,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (allArgsConstructorAnnot.isAccessNone()) {
         throw new AptException(
             Message.DOMA4427,
-            ctx.getEnv(),
             embeddableElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getAccess(),
@@ -390,7 +368,6 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       if (!valueAnnot.getStaticConstructorValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4423,
-            ctx.getEnv(),
             embeddableElement,
             valueAnnot.getAnnotationMirror(),
             valueAnnot.getStaticConstructor(),

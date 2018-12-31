@@ -324,7 +324,6 @@ public enum Message implements MessageResource {
   DOMA4072("The function[{2}] in the expression[{0}] at column [{1}] is not found."),
   DOMA4073(
       "The public and non-void method[{4}] cannot be identified from the variable[{2}] in the expression[{0}] at column[{1}]. The variable type is [{3}]."),
-  DOMA4074("The message[{0}] is raised from the following exception: {1}"),
   DOMA4076("The parameter type must be the array type."),
   DOMA4078("The number of parameters must be 0."),
   DOMA4079("Failed to generate the source file for the class[{0}]. The cause is as follows: {1}"),

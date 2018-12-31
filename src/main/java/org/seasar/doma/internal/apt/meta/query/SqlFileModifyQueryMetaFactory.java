@@ -70,7 +70,6 @@ public class SqlFileModifyQueryMetaFactory
       if (!returnMeta.isResult(entityCtType)) {
         throw new AptException(
             Message.DOMA4222,
-            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -78,7 +77,6 @@ public class SqlFileModifyQueryMetaFactory
       if (!returnMeta.isPrimitiveInt()) {
         throw new AptException(
             Message.DOMA4001,
-            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }

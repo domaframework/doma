@@ -75,7 +75,6 @@ public class AutoFunctionQueryMetaFactory
     protected ResultParameterMeta defaultAction(CtType type, Boolean p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4063,
-          ctx.getEnv(),
           returnMeta.getMethodElement(),
           new Object[] {
             returnMeta.getType(),
@@ -155,7 +154,6 @@ public class AutoFunctionQueryMetaFactory
     protected ResultParameterMeta defaultAction(CtType ctType, Boolean p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4065,
-          ctx.getEnv(),
           returnMeta.getMethodElement(),
           new Object[] {
             ctType.getTypeName(),
@@ -188,7 +186,6 @@ public class AutoFunctionQueryMetaFactory
       if (ctType.isAbstract()) {
         throw new AptException(
             Message.DOMA4156,
-            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {
               ctType.getTypeName(),

@@ -154,7 +154,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     ExpressionLocation location = node.getLocation();
     throw new AptException(
         Message.DOMA4116,
-        ctx.getEnv(),
         methodElement,
         new Object[] {
           location.getExpression(),
@@ -175,7 +174,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4139,
-          ctx.getEnv(),
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), node.getExpression()});
     }
@@ -185,7 +183,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     ExpressionLocation location = node.getLocation();
     throw new AptException(
         Message.DOMA4116,
-        ctx.getEnv(),
         methodElement,
         new Object[] {
           location.getExpression(),
@@ -216,7 +213,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4117,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -230,7 +226,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4118,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -252,7 +247,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     ExpressionLocation location = node.getLocation();
     throw new AptException(
         Message.DOMA4119,
-        ctx.getEnv(),
         methodElement,
         new Object[] {
           location.getExpression(),
@@ -274,7 +268,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4126,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -321,7 +314,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4120,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -335,7 +327,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4121,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -375,7 +366,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4138,
-          ctx.getEnv(),
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), className});
     }
@@ -387,7 +377,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       String signature = createConstructorSignature(className, parameterTypeDeclarations);
       throw new AptException(
           Message.DOMA4115,
-          ctx.getEnv(),
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), signature});
     }
@@ -398,7 +387,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     String signature = createConstructorSignature(className, parameterTypeDeclarations);
     throw new AptException(
         Message.DOMA4127,
-        ctx.getEnv(),
         methodElement,
         new Object[] {location.getExpression(), location.getPosition(), signature});
   }
@@ -442,7 +430,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
       throw new AptException(
           Message.DOMA4071,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -463,7 +450,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
     throw new AptException(
         Message.DOMA4073,
-        ctx.getEnv(),
         methodElement,
         new Object[] {
           location.getExpression(),
@@ -482,7 +468,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4145,
-          ctx.getEnv(),
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), className});
     }
@@ -497,7 +482,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
       throw new AptException(
           Message.DOMA4146,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(), location.getPosition(), className, methodSignature
@@ -514,7 +498,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
     throw new AptException(
         Message.DOMA4147,
-        ctx.getEnv(),
         methodElement,
         new Object[] {
           location.getExpression(), location.getPosition(), className, methodSignature
@@ -534,7 +517,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       String methodSignature = createMethodSignature(methodName, parameterTypeDeclarations);
       throw new AptException(
           Message.DOMA4072,
-          ctx.getEnv(),
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), methodSignature});
     }
@@ -557,7 +539,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4189,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -571,7 +552,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4190,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             location.getExpression(),
@@ -613,7 +593,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     ExpressionLocation location = node.getLocation();
     throw new AptException(
         Message.DOMA4114,
-        ctx.getEnv(),
         methodElement,
         new Object[] {
           location.getExpression(),
@@ -632,7 +611,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4145,
-          ctx.getEnv(),
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), className});
     }
@@ -648,7 +626,6 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     ExpressionLocation location = node.getLocation();
     throw new AptException(
         Message.DOMA4148,
-        ctx.getEnv(),
         methodElement,
         new Object[] {location.getExpression(), location.getPosition(), className, fieldName});
   }
@@ -679,10 +656,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     if (type == null) {
       ExpressionLocation location = node.getLocation();
       throw new AptException(
-          Message.DOMA4067,
-          ctx.getEnv(),
-          methodElement,
-          new Object[] {variableName, location.getPosition()});
+          Message.DOMA4067, methodElement, new Object[] {variableName, location.getPosition()});
     }
     validatedParameterNames.add(variableName);
     return TypeDeclaration.newTypeDeclaration(type, ctx);

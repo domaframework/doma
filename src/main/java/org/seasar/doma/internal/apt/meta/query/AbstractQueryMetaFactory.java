@@ -116,7 +116,6 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
         if (!names.contains(included)) {
           throw new AptException(
               Message.DOMA4084,
-              ctx.getEnv(),
               method,
               annotationMirror,
               includeValue,
@@ -127,7 +126,6 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
         if (!names.contains(excluded)) {
           throw new AptException(
               Message.DOMA4085,
-              ctx.getEnv(),
               method,
               annotationMirror,
               excludeValue,

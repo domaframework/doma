@@ -28,7 +28,6 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     if (!returnClass.getName().equals(resultMeta.getCtType().getQualifiedName())) {
       throw new AptException(
           Message.DOMA4097,
-          ctx.getEnv(),
           method,
           new Object[] {
             returnClass.getName(),
@@ -45,7 +44,6 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     if (size != 0) {
       throw new AptException(
           Message.DOMA4078,
-          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }

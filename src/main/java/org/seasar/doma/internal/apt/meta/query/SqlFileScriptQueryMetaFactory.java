@@ -52,7 +52,6 @@ public class SqlFileScriptQueryMetaFactory
     if (!returnMeta.isPrimitiveVoid()) {
       throw new AptException(
           Message.DOMA4172,
-          ctx.getEnv(),
           returnMeta.getMethodElement(),
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -65,7 +64,6 @@ public class SqlFileScriptQueryMetaFactory
     if (!method.getParameters().isEmpty()) {
       throw new AptException(
           Message.DOMA4173,
-          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }

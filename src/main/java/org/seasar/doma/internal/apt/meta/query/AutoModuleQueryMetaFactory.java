@@ -62,7 +62,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
     throw new AptException(
         Message.DOMA4066,
-        ctx.getEnv(),
         parameterMeta.getElement(),
         new Object[] {
           parameterMeta.getDaoElement().getQualifiedName(),
@@ -114,7 +113,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected IterableCtType defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4062,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {
             parameterMeta.getDaoElement().getQualifiedName(),
@@ -150,7 +148,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         throws RuntimeException {
       throw new AptException(
           Message.DOMA4186,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {
             type.getTypeName(),
@@ -165,7 +162,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
       if (ctType.isAbstract()) {
         throw new AptException(
             Message.DOMA4157,
-            ctx.getEnv(),
             parameterMeta.getElement(),
             new Object[] {
               ctType.getTypeName(),
@@ -240,7 +236,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         throws RuntimeException {
       throw new AptException(
           Message.DOMA4101,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {
             parameterMeta.getType(),
@@ -305,7 +300,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected ReferenceCtType defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4098,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {
             parameterMeta.getDaoElement().getQualifiedName(),
@@ -338,7 +332,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         throws RuntimeException {
       throw new AptException(
           Message.DOMA4100,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {
             referenceCtType.getReferentTypeMirror(),
@@ -403,7 +396,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected ReferenceCtType defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4111,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {
             parameterMeta.getDaoElement().getQualifiedName(),
@@ -436,7 +428,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         throws RuntimeException {
       throw new AptException(
           Message.DOMA4100,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {
             referenceCtType.getReferentTypeMirror(),

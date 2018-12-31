@@ -67,7 +67,6 @@ public class SqlProcessorQueryMetaFactory
       SqlProcessorAnnot sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
       throw new AptException(
           Message.DOMA4433,
-          ctx.getEnv(),
           method,
           sqlProcessorAnnot.getAnnotationMirror(),
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
@@ -85,7 +84,6 @@ public class SqlProcessorQueryMetaFactory
     if (resultCtType == null || !isConvertibleReturnType(returnMeta, resultCtType)) {
       throw new AptException(
           Message.DOMA4436,
-          ctx.getEnv(),
           method,
           new Object[] {
             returnMeta.getType(),
@@ -123,7 +121,6 @@ public class SqlProcessorQueryMetaFactory
       if (queryMeta.getBiFunctionCtType() != null) {
         throw new AptException(
             Message.DOMA4434,
-            ctx.getEnv(),
             parameterMeta.getElement(),
             new Object[] {
               parameterMeta.getDaoElement().getQualifiedName(),
@@ -159,7 +156,6 @@ public class SqlProcessorQueryMetaFactory
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4437,
-          ctx.getEnv(),
           queryMeta.getMethodElement(),
           new Object[] {
             parameterMeta.getDaoElement().getQualifiedName(),
@@ -190,7 +186,6 @@ public class SqlProcessorQueryMetaFactory
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4435,
-          ctx.getEnv(),
           queryMeta.getMethodElement(),
           new Object[] {
             parameterMeta.getDaoElement().getQualifiedName(),

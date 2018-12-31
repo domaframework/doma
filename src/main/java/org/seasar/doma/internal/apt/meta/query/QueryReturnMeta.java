@@ -59,14 +59,12 @@ public class QueryReturnMeta {
       if (iterableCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4109,
-            ctx.getEnv(),
             methodElement,
             new Object[] {typeName, daoElement.getQualifiedName(), methodElement.getSimpleName()});
       }
       if (iterableCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4113,
-            ctx.getEnv(),
             methodElement,
             new Object[] {typeName, daoElement.getQualifiedName(), methodElement.getSimpleName()});
       }
@@ -89,7 +87,6 @@ public class QueryReturnMeta {
       if (optionalCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4236,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -100,7 +97,6 @@ public class QueryReturnMeta {
       if (optionalCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4237,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -132,7 +128,6 @@ public class QueryReturnMeta {
       if (domainCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4206,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -143,7 +138,6 @@ public class QueryReturnMeta {
       if (domainCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4207,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -251,7 +245,6 @@ public class QueryReturnMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4210,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -262,7 +255,6 @@ public class QueryReturnMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4211,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -282,7 +274,6 @@ public class QueryReturnMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4238,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -293,7 +284,6 @@ public class QueryReturnMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4239,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),

@@ -75,7 +75,6 @@ public class EntityPropertyMetaFactory {
       if (optionalCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4232,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -86,7 +85,6 @@ public class EntityPropertyMetaFactory {
       if (optionalCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4233,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -117,7 +115,6 @@ public class EntityPropertyMetaFactory {
       if (domainCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4204,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -128,7 +125,6 @@ public class EntityPropertyMetaFactory {
       if (domainCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4205,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -151,7 +147,6 @@ public class EntityPropertyMetaFactory {
 
     throw new AptException(
         Message.DOMA4096,
-        ctx.getEnv(),
         fieldElement,
         new Object[] {
           type, entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -164,7 +159,6 @@ public class EntityPropertyMetaFactory {
     if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
       throw new AptException(
           Message.DOMA4025,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {
             MetaConstants.RESERVED_NAME_PREFIX, entityMeta.getEntityElement().getQualifiedName()
@@ -185,14 +179,12 @@ public class EntityPropertyMetaFactory {
       }
       throw new AptException(
           Message.DOMA4033,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
     if (propertyMeta.isEmbedded()) {
       throw new AptException(
           Message.DOMA4302,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {
             entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -208,7 +200,6 @@ public class EntityPropertyMetaFactory {
     if (propertyMeta.isEmbedded()) {
       throw new AptException(
           Message.DOMA4303,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {
             entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -217,7 +208,6 @@ public class EntityPropertyMetaFactory {
     if (entityMeta.hasGeneratedIdPropertyMeta()) {
       throw new AptException(
           Message.DOMA4037,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {
             entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -226,7 +216,6 @@ public class EntityPropertyMetaFactory {
     if (!isNumber(propertyMeta.getCtType())) {
       throw new AptException(
           Message.DOMA4095,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {
             entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -254,7 +243,6 @@ public class EntityPropertyMetaFactory {
     if (sequenceGenerator != null) {
       throw new AptException(
           Message.DOMA4030,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
@@ -266,7 +254,6 @@ public class EntityPropertyMetaFactory {
     if (tableGenerator != null) {
       throw new AptException(
           Message.DOMA4031,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
@@ -284,7 +271,6 @@ public class EntityPropertyMetaFactory {
     if (sequenceGeneratorAnnot == null) {
       throw new AptException(
           Message.DOMA4034,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
@@ -305,7 +291,6 @@ public class EntityPropertyMetaFactory {
     if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
       throw new AptException(
           Message.DOMA4170,
-          ctx.getEnv(),
           fieldElement,
           sequenceGeneratorAnnot.getAnnotationMirror(),
           sequenceGeneratorAnnot.getImplementer(),
@@ -315,7 +300,6 @@ public class EntityPropertyMetaFactory {
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
           Message.DOMA4171,
-          ctx.getEnv(),
           fieldElement,
           sequenceGeneratorAnnot.getAnnotationMirror(),
           sequenceGeneratorAnnot.getImplementer(),
@@ -329,7 +313,6 @@ public class EntityPropertyMetaFactory {
     if (tableGeneratorAnnot == null) {
       throw new AptException(
           Message.DOMA4035,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
@@ -350,7 +333,6 @@ public class EntityPropertyMetaFactory {
     if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
       throw new AptException(
           Message.DOMA4168,
-          ctx.getEnv(),
           fieldElement,
           tableGeneratorAnnot.getAnnotationMirror(),
           tableGeneratorAnnot.getImplementer(),
@@ -360,7 +342,6 @@ public class EntityPropertyMetaFactory {
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
           Message.DOMA4169,
-          ctx.getEnv(),
           fieldElement,
           tableGeneratorAnnot.getAnnotationMirror(),
           tableGeneratorAnnot.getImplementer(),
@@ -375,7 +356,6 @@ public class EntityPropertyMetaFactory {
       if (propertyMeta.isEmbedded()) {
         throw new AptException(
             Message.DOMA4304,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -384,7 +364,6 @@ public class EntityPropertyMetaFactory {
       if (entityMeta.hasVersionPropertyMeta()) {
         throw new AptException(
             Message.DOMA4024,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -393,7 +372,6 @@ public class EntityPropertyMetaFactory {
       if (!isNumber(propertyMeta.getCtType())) {
         throw new AptException(
             Message.DOMA4093,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -410,7 +388,6 @@ public class EntityPropertyMetaFactory {
       if (propertyMeta.isEmbedded()) {
         throw new AptException(
             Message.DOMA4441,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -419,7 +396,6 @@ public class EntityPropertyMetaFactory {
       if (entityMeta.hasTenantIdPropertyMeta()) {
         throw new AptException(
             Message.DOMA4442,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
@@ -438,7 +414,6 @@ public class EntityPropertyMetaFactory {
     if (propertyMeta.isEmbedded()) {
       throw new AptException(
           Message.DOMA4306,
-          ctx.getEnv(),
           fieldElement,
           columnAnnot.getAnnotationMirror(),
           new Object[] {
@@ -449,7 +424,6 @@ public class EntityPropertyMetaFactory {
       if (!columnAnnot.getInsertableValue()) {
         throw new AptException(
             Message.DOMA4088,
-            ctx.getEnv(),
             fieldElement,
             columnAnnot.getAnnotationMirror(),
             columnAnnot.getInsertable(),
@@ -460,7 +434,6 @@ public class EntityPropertyMetaFactory {
       if (!columnAnnot.getUpdatableValue()) {
         throw new AptException(
             Message.DOMA4089,
-            ctx.getEnv(),
             fieldElement,
             columnAnnot.getAnnotationMirror(),
             columnAnnot.getUpdatable(),

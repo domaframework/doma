@@ -44,7 +44,6 @@ public class EmbeddablePropertyMetaFactory {
       if (optionalCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4299,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -55,7 +54,6 @@ public class EmbeddablePropertyMetaFactory {
       if (optionalCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4301,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -86,7 +84,6 @@ public class EmbeddablePropertyMetaFactory {
       if (domainCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4295,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -97,7 +94,6 @@ public class EmbeddablePropertyMetaFactory {
       if (domainCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4296,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -117,7 +113,6 @@ public class EmbeddablePropertyMetaFactory {
     if (embeddableCtType != null) {
       throw new AptException(
           Message.DOMA4297,
-          ctx.getEnv(),
           fieldElement,
           new Object[] {
             type,
@@ -128,7 +123,6 @@ public class EmbeddablePropertyMetaFactory {
 
     throw new AptException(
         Message.DOMA4298,
-        ctx.getEnv(),
         fieldElement,
         new Object[] {
           type,

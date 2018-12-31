@@ -70,7 +70,6 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
       if (!returnMeta.isResult(entityCtType)) {
         throw new AptException(
             Message.DOMA4222,
-            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -78,7 +77,6 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
       if (!returnMeta.isPrimitiveInt()) {
         throw new AptException(
             Message.DOMA4001,
-            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -94,7 +92,6 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     if (size != 1) {
       throw new AptException(
           Message.DOMA4002,
-          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -110,7 +107,6 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
                       throws RuntimeException {
                     throw new AptException(
                         Message.DOMA4003,
-                        ctx.getEnv(),
                         parameterMeta.getElement(),
                         new Object[] {
                           daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()

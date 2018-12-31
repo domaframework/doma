@@ -134,11 +134,7 @@ public abstract class AbstractGenerator implements Generator {
     if (ioException != null) {
       formatter.close();
       throw new AptException(
-          Message.DOMA4079,
-          ctx.getEnv(),
-          typeElement,
-          ioException,
-          new Object[] {canonicalName, ioException});
+          Message.DOMA4079, typeElement, ioException, new Object[] {canonicalName, ioException});
     }
   }
 

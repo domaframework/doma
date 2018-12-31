@@ -45,7 +45,6 @@ public class ArrayCreateQueryMetaFactory
     if (size != 1) {
       throw new AptException(
           Message.DOMA4002,
-          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -53,7 +52,6 @@ public class ArrayCreateQueryMetaFactory
     if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
       throw new AptException(
           Message.DOMA4076,
-          ctx.getEnv(),
           parameterMeta.getElement(),
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }

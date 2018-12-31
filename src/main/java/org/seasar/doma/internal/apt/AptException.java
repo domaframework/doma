@@ -1,12 +1,10 @@
 package org.seasar.doma.internal.apt;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.DomaException;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.message.MessageResource;
 
 public class AptException extends DomaException {
@@ -21,42 +19,34 @@ public class AptException extends DomaException {
 
   protected AnnotationValue annotationValue;
 
+  public AptException(MessageResource messageResource, Element element, Object[] args) {
+    this(messageResource, Kind.ERROR, element, null, null, null, args);
+  }
+
   public AptException(
-      MessageResource messageResource, ProcessingEnvironment env, Element element, Object[] args) {
-    this(messageResource, env, Kind.ERROR, element, null, null, null, args);
+      MessageResource messageResource, Element element, Throwable cause, Object[] args) {
+    this(messageResource, Kind.ERROR, element, null, null, cause, args);
   }
 
   public AptException(
       MessageResource messageResource,
-      ProcessingEnvironment env,
-      Element element,
-      Throwable cause,
-      Object[] args) {
-    this(messageResource, env, Kind.ERROR, element, null, null, cause, args);
-  }
-
-  public AptException(
-      MessageResource messageResource,
-      ProcessingEnvironment env,
       Element element,
       AnnotationMirror annotationMirror,
       Object[] args) {
-    this(messageResource, env, Kind.ERROR, element, annotationMirror, null, null, args);
+    this(messageResource, Kind.ERROR, element, annotationMirror, null, null, args);
   }
 
   public AptException(
       MessageResource messageResource,
-      ProcessingEnvironment env,
       Element element,
       AnnotationMirror annotationMirror,
       AnnotationValue annotationValue,
       Object[] args) {
-    this(messageResource, env, Kind.ERROR, element, annotationMirror, annotationValue, null, args);
+    this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue, null, args);
   }
 
   private AptException(
       MessageResource messageResource,
-      ProcessingEnvironment env,
       Kind kind,
       Element element,
       AnnotationMirror annotationMirror,
@@ -68,9 +58,6 @@ public class AptException extends DomaException {
     this.element = element;
     this.annotationMirror = annotationMirror;
     this.annotationValue = annotationValue;
-    if (new Context(env).getOptions().isDebugEnabled()) {
-      new Context(env).getNotifier().debug(Message.DOMA4074, new Object[] {messageResource, cause});
-    }
   }
 
   public Kind getKind() {

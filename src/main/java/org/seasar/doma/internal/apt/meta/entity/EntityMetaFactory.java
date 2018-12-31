@@ -146,7 +146,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     if (resolvedList.contains(Boolean.TRUE) && resolvedList.contains(Boolean.FALSE)) {
       throw new AptException(
           Message.DOMA4226,
-          ctx.getEnv(),
           classElement,
           entityAnnot.getAnnotationMirror(),
           entityAnnot.getImmutable(),
@@ -217,17 +216,13 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (classElement.getKind() != ElementKind.CLASS) {
         throw new AptException(
             Message.DOMA4015,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             new Object[] {classElement.getQualifiedName()});
       }
       if (!classElement.getTypeParameters().isEmpty()) {
         throw new AptException(
-            Message.DOMA4051,
-            ctx.getEnv(),
-            classElement,
-            new Object[] {classElement.getQualifiedName()});
+            Message.DOMA4051, classElement, new Object[] {classElement.getQualifiedName()});
       }
       validateEnclosingElement(classElement);
     }
@@ -241,10 +236,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
           || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
         throw new AptException(
-            Message.DOMA4317,
-            ctx.getEnv(),
-            typeElement,
-            new Object[] {typeElement.getQualifiedName()});
+            Message.DOMA4317, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
       NestingKind nestingKind = typeElement.getNestingKind();
       if (nestingKind == NestingKind.TOP_LEVEL) {
@@ -255,17 +247,11 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
           validateEnclosingElement(typeElement.getEnclosingElement());
         } else {
           throw new AptException(
-              Message.DOMA4315,
-              ctx.getEnv(),
-              typeElement,
-              new Object[] {typeElement.getQualifiedName()});
+              Message.DOMA4315, typeElement, new Object[] {typeElement.getQualifiedName()});
         }
       } else {
         throw new AptException(
-            Message.DOMA4316,
-            ctx.getEnv(),
-            typeElement,
-            new Object[] {typeElement.getQualifiedName()});
+            Message.DOMA4316, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
     }
 
@@ -280,7 +266,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (listenerElement.getModifiers().contains(Modifier.ABSTRACT)) {
         throw new AptException(
             Message.DOMA4166,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getListener(),
@@ -291,7 +276,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
         throw new AptException(
             Message.DOMA4167,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getListener(),
@@ -319,7 +303,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (typeParams.size() > 1) {
         throw new AptException(
             Message.DOMA4227,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getListener(),
@@ -330,7 +313,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         if (!ctx.getTypes().isAssignable(classElement.asType(), bound)) {
           throw new AptException(
               Message.DOMA4229,
-              ctx.getEnv(),
               classElement,
               entityAnnot.getAnnotationMirror(),
               entityAnnot.getListener(),
@@ -340,7 +322,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (findListenerTypeParam(listenerElement, 0) == null) {
         throw new AptException(
             Message.DOMA4228,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getListener(),
@@ -417,7 +398,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (argumentType == null) {
         throw new AptException(
             Message.DOMA4202,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getListener(),
@@ -426,7 +406,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (!ctx.getTypes().isAssignable(classElement.asType(), argumentType)) {
         throw new AptException(
             Message.DOMA4038,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getListener(),
@@ -442,7 +421,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (typeParams.size() == 0) {
         throw new AptException(
             Message.DOMA4230,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             new Object[] {
@@ -454,7 +432,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         if (!ctx.getTypes().isAssignable(classElement.asType(), bound)) {
           throw new AptException(
               Message.DOMA4231,
-              ctx.getEnv(),
               classElement,
               entityAnnot.getAnnotationMirror(),
               new Object[] {
@@ -552,17 +529,13 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (entityMeta.hasOriginalStatesMeta()) {
         throw new AptException(
             Message.DOMA4125,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {classElement.getQualifiedName(), fieldElement.getSimpleName()});
       }
       if (classElement.equals(fieldElement.getEnclosingElement())) {
         if (!ctx.getTypes().isSameType(fieldElement.asType(), classElement.asType())) {
           throw new AptException(
-              Message.DOMA4135,
-              ctx.getEnv(),
-              fieldElement,
-              new Object[] {classElement.getQualifiedName()});
+              Message.DOMA4135, fieldElement, new Object[] {classElement.getQualifiedName()});
         }
       }
       TypeElement enclosingElement =
@@ -573,7 +546,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (entityMeta.isImmutable() && classElement.equals(enclosingElement)) {
         throw new AptException(
             Message.DOMA4224,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {classElement.getQualifiedName(), fieldElement.getSimpleName()});
       }
@@ -600,7 +572,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
           if (foundAnnotationTypeElement != null) {
             throw new AptException(
                 Message.DOMA4086,
-                ctx.getEnv(),
                 fieldElement,
                 new Object[] {
                   foundAnnotationTypeElement.getQualifiedName(),
@@ -619,7 +590,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (entityMeta.isImmutable() && !fieldElement.getModifiers().contains(Modifier.FINAL)) {
         throw new AptException(
             Message.DOMA4225,
-            ctx.getEnv(),
             fieldElement,
             new Object[] {classElement.getQualifiedName(), fieldElement.getSimpleName()});
       }
@@ -628,20 +598,14 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     public void validateGeneratedId(TypeElement classElement, EntityMeta entityMeta) {
       if (entityMeta.hasGeneratedIdPropertyMeta() && entityMeta.getIdPropertyMetas().size() > 1) {
         throw new AptException(
-            Message.DOMA4036,
-            ctx.getEnv(),
-            classElement,
-            new Object[] {classElement.getQualifiedName()});
+            Message.DOMA4036, classElement, new Object[] {classElement.getQualifiedName()});
       }
     }
 
     public void validateOriginalStates(TypeElement classElement, EntityMeta entityMeta) {
       if (entityMeta.hasOriginalStatesMeta() && entityMeta.hasEmbeddedProperties()) {
         throw new AptException(
-            Message.DOMA4305,
-            ctx.getEnv(),
-            classElement,
-            new Object[] {classElement.getQualifiedName()});
+            Message.DOMA4305, classElement, new Object[] {classElement.getQualifiedName()});
       }
     }
 
@@ -653,27 +617,18 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         EntityConstructorMeta constructorMeta = getConstructorMeta(classElement, entityMeta);
         if (constructorMeta == null) {
           throw new AptException(
-              Message.DOMA4281,
-              ctx.getEnv(),
-              classElement,
-              new Object[] {classElement.getQualifiedName()});
+              Message.DOMA4281, classElement, new Object[] {classElement.getQualifiedName()});
         }
         if (constructorMeta.getConstructorElement().getModifiers().contains(Modifier.PRIVATE)) {
           throw new AptException(
-              Message.DOMA4221,
-              ctx.getEnv(),
-              classElement,
-              new Object[] {classElement.getQualifiedName()});
+              Message.DOMA4221, classElement, new Object[] {classElement.getQualifiedName()});
         }
         entityMeta.setConstructorMeta(constructorMeta);
       } else {
         ExecutableElement constructor = ctx.getElements().getNoArgConstructor(classElement);
         if (constructor == null || constructor.getModifiers().contains(Modifier.PRIVATE)) {
           throw new AptException(
-              Message.DOMA4124,
-              ctx.getEnv(),
-              classElement,
-              new Object[] {classElement.getQualifiedName()});
+              Message.DOMA4124, classElement, new Object[] {classElement.getQualifiedName()});
         }
       }
     }
@@ -732,7 +687,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (!entityMeta.isImmutable()) {
         throw new AptException(
             Message.DOMA4420,
-            ctx.getEnv(),
             classElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             new Object[] {classElement.getQualifiedName()});
@@ -745,7 +699,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (!allArgsConstructorAnnot.getStaticNameValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4421,
-            ctx.getEnv(),
             classElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getStaticName(),
@@ -754,7 +707,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (allArgsConstructorAnnot.isAccessPrivate()) {
         throw new AptException(
             Message.DOMA4422,
-            ctx.getEnv(),
             classElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getAccess(),
@@ -763,7 +715,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (allArgsConstructorAnnot.isAccessNone()) {
         throw new AptException(
             Message.DOMA4426,
-            ctx.getEnv(),
             classElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getAccess(),
@@ -795,7 +746,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
         throw new AptException(
             Message.DOMA4418,
-            ctx.getEnv(),
             classElement,
             entityAnnot.getAnnotationMirror(),
             entityAnnot.getImmutable(),
@@ -809,7 +759,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       if (!valueAnnot.getStaticConstructorValue().isEmpty()) {
         throw new AptException(
             Message.DOMA4419,
-            ctx.getEnv(),
             classElement,
             valueAnnot.getAnnotationMirror(),
             valueAnnot.getStaticConstructor(),

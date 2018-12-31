@@ -116,7 +116,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         String sql = getSql(location);
         throw new AptException(
             Message.DOMA4153,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               path,
@@ -133,7 +132,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         ctx.getEnv().getMessager().printMessage(Kind.NOTE, parameterTypeMap.toString());
         throw new AptException(
             Message.DOMA4161,
-            ctx.getEnv(),
             methodElement,
             new Object[] {
               path,
@@ -199,7 +197,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4140,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -223,7 +220,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4141,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -249,7 +245,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4149,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -266,7 +261,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4150,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -313,7 +307,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4257,
-          ctx.getEnv(),
           methodElement,
           new Object[] {path, sql, location.getLineNumber(), location.getPosition()});
     }
@@ -327,7 +320,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4270,
-          ctx.getEnv(),
           methodElement,
           new Object[] {path, sql, location.getLineNumber(), location.getPosition()});
     }
@@ -360,7 +352,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4092,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             path, sql, location.getLineNumber(), location.getPosition(), e.getMessage()
@@ -376,7 +367,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4092,
-          ctx.getEnv(),
           methodElement,
           new Object[] {
             path, sql, location.getLineNumber(), location.getPosition(), e.getMessage()

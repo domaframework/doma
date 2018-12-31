@@ -102,7 +102,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
         throw new AptException(
             Message.DOMA4163,
-            ctx.getEnv(),
             daoMeta.getDaoElement(),
             daoAnnot.getAnnotationMirror(),
             daoAnnot.getConfig(),
@@ -126,7 +125,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         } else {
           throw new AptException(
               Message.DOMA4164,
-              ctx.getEnv(),
               daoMeta.getDaoElement(),
               daoAnnot.getAnnotationMirror(),
               daoAnnot.getConfig(),
@@ -150,7 +148,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       } else {
         throw new AptException(
             Message.DOMA4255,
-            ctx.getEnv(),
             daoMeta.getDaoElement(),
             daoAnnot.getAnnotationMirror(),
             daoAnnot.getConfig(),
@@ -164,24 +161,17 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
       throw new AptException(
           Message.DOMA4014,
-          ctx.getEnv(),
           interfaceElement,
           daoAnnot.getAnnotationMirror(),
           new Object[] {interfaceElement.getQualifiedName()});
     }
     if (interfaceElement.getNestingKind().isNested()) {
       throw new AptException(
-          Message.DOMA4017,
-          ctx.getEnv(),
-          interfaceElement,
-          new Object[] {interfaceElement.getQualifiedName()});
+          Message.DOMA4017, interfaceElement, new Object[] {interfaceElement.getQualifiedName()});
     }
     if (!interfaceElement.getTypeParameters().isEmpty()) {
       throw new AptException(
-          Message.DOMA4059,
-          ctx.getEnv(),
-          interfaceElement,
-          new Object[] {interfaceElement.getQualifiedName()});
+          Message.DOMA4059, interfaceElement, new Object[] {interfaceElement.getQualifiedName()});
     }
   }
 
@@ -216,7 +206,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         }
         throw new AptException(
             Message.DOMA4440,
-            ctx.getEnv(),
             daoMeta.getDaoElement(),
             new Object[] {
               nonDefaultMethod.getSimpleName(), daoMeta.getDaoElement().getQualifiedName()
@@ -225,7 +214,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       if (daoMeta.getParentDaoMeta() != null) {
         throw new AptException(
             Message.DOMA4188,
-            ctx.getEnv(),
             daoMeta.getDaoElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName()});
       }
@@ -289,7 +277,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         if (foundAnnotationTypeElement != null) {
           throw new AptException(
               Message.DOMA4087,
-              ctx.getEnv(),
               methodElement,
               new Object[] {
                 foundAnnotationTypeElement.getQualifiedName(),
@@ -301,7 +288,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         if (methodElement.isDefault()) {
           throw new AptException(
               Message.DOMA4252,
-              ctx.getEnv(),
               methodElement,
               new Object[] {
                 typeElement.getQualifiedName(),
@@ -323,7 +309,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
     throw new AptException(
         Message.DOMA4005,
-        ctx.getEnv(),
         method,
         new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
   }

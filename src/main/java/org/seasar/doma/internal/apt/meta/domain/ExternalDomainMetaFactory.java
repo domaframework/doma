@@ -50,32 +50,20 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   protected void validateConverter(TypeElement convElement) {
     if (!ctx.getTypes().isAssignable(convElement.asType(), DomainConverter.class)) {
       throw new AptException(
-          Message.DOMA4191,
-          ctx.getEnv(),
-          convElement,
-          new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4191, convElement, new Object[] {convElement.getQualifiedName()});
     }
     if (convElement.getNestingKind().isNested()) {
       throw new AptException(
-          Message.DOMA4198,
-          ctx.getEnv(),
-          convElement,
-          new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4198, convElement, new Object[] {convElement.getQualifiedName()});
     }
     if (convElement.getModifiers().contains(Modifier.ABSTRACT)) {
       throw new AptException(
-          Message.DOMA4192,
-          ctx.getEnv(),
-          convElement,
-          new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4192, convElement, new Object[] {convElement.getQualifiedName()});
     }
     ExecutableElement constructor = ctx.getElements().getNoArgConstructor(convElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
-          Message.DOMA4193,
-          ctx.getEnv(),
-          convElement,
-          new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4193, convElement, new Object[] {convElement.getQualifiedName()});
     }
   }
 
@@ -112,7 +100,6 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     if (pkgElement.isUnnamed()) {
       throw new AptException(
           Message.DOMA4197,
-          ctx.getEnv(),
           convElement,
           new Object[] {domainElement.getQualifiedName(), convElement.getQualifiedName()});
     }
@@ -124,7 +111,6 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
       if (typeArg.getKind() != TypeKind.WILDCARD) {
         throw new AptException(
             Message.DOMA4203,
-            ctx.getEnv(),
             convElement,
             new Object[] {domainElement.getQualifiedName(), convElement.getQualifiedName()});
       }
@@ -141,10 +127,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
         || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
       throw new AptException(
-          Message.DOMA4280,
-          ctx.getEnv(),
-          typeElement,
-          new Object[] {typeElement.getQualifiedName()});
+          Message.DOMA4280, typeElement, new Object[] {typeElement.getQualifiedName()});
     }
     NestingKind nestingKind = typeElement.getNestingKind();
     if (nestingKind == NestingKind.TOP_LEVEL) {
@@ -155,17 +138,11 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
         validateEnclosingElement(typeElement.getEnclosingElement());
       } else {
         throw new AptException(
-            Message.DOMA4278,
-            ctx.getEnv(),
-            typeElement,
-            new Object[] {typeElement.getQualifiedName()});
+            Message.DOMA4278, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
     } else {
       throw new AptException(
-          Message.DOMA4279,
-          ctx.getEnv(),
-          typeElement,
-          new Object[] {typeElement.getQualifiedName()});
+          Message.DOMA4279, typeElement, new Object[] {typeElement.getQualifiedName()});
     }
   }
 
@@ -178,7 +155,6 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     if (basicCtType == null) {
       throw new AptException(
           Message.DOMA4194,
-          ctx.getEnv(),
           convElement,
           new Object[] {valueTypeName, convElement.getQualifiedName()});
     }

@@ -60,7 +60,6 @@ public class QueryParameterMeta {
     if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
       throw new AptException(
           Message.DOMA4025,
-          ctx.getEnv(),
           parameterElement,
           new Object[] {
             MetaConstants.RESERVED_NAME_PREFIX,
@@ -85,14 +84,12 @@ public class QueryParameterMeta {
       if (iterableCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4159,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
       }
       if (iterableCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4160,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
       }
@@ -112,7 +109,6 @@ public class QueryParameterMeta {
       if (optionalCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4236,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -123,7 +119,6 @@ public class QueryParameterMeta {
       if (optionalCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4237,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -157,7 +152,6 @@ public class QueryParameterMeta {
       if (domainCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4208,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -168,7 +162,6 @@ public class QueryParameterMeta {
       if (domainCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4209,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -194,7 +187,6 @@ public class QueryParameterMeta {
       if (functionCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4240,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
@@ -203,7 +195,6 @@ public class QueryParameterMeta {
       if (functionCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4241,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
@@ -220,7 +211,6 @@ public class QueryParameterMeta {
       if (collectorCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4258,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
@@ -229,7 +219,6 @@ public class QueryParameterMeta {
       if (collectorCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4259,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
@@ -246,14 +235,12 @@ public class QueryParameterMeta {
       if (referenceCtType.isRaw()) {
         throw new AptException(
             Message.DOMA4108,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
       }
       if (referenceCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4112,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
@@ -270,7 +257,6 @@ public class QueryParameterMeta {
       if (biFunctionCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4438,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
@@ -279,7 +265,6 @@ public class QueryParameterMeta {
       if (biFunctionCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4439,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
@@ -433,7 +418,6 @@ public class QueryParameterMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4212,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -444,7 +428,6 @@ public class QueryParameterMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4213,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -470,7 +453,6 @@ public class QueryParameterMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4238,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -481,7 +463,6 @@ public class QueryParameterMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4239,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -516,7 +497,6 @@ public class QueryParameterMeta {
         if (ctType.isRawType()) {
           throw new AptException(
               Message.DOMA4242,
-              ctx.getEnv(),
               parameterElement,
               new Object[] {
                 ctType.getQualifiedName(),
@@ -527,7 +507,6 @@ public class QueryParameterMeta {
         if (ctType.isWildcardType()) {
           throw new AptException(
               Message.DOMA4243,
-              ctx.getEnv(),
               parameterElement,
               new Object[] {
                 ctType.getQualifiedName(),
@@ -554,7 +533,6 @@ public class QueryParameterMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4260,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -565,7 +543,6 @@ public class QueryParameterMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4261,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -591,7 +568,6 @@ public class QueryParameterMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4218,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -602,7 +578,6 @@ public class QueryParameterMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4219,
-            ctx.getEnv(),
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),

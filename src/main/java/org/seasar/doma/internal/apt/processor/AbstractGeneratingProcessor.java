@@ -50,11 +50,7 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
       generator.generate();
     } catch (IOException e) {
       throw new AptException(
-          Message.DOMA4011,
-          ctx.getEnv(),
-          typeElement,
-          e,
-          new Object[] {typeElement.getQualifiedName(), e});
+          Message.DOMA4011, typeElement, e, new Object[] {typeElement.getQualifiedName(), e});
     } finally {
       IOUtil.close(generator);
     }
