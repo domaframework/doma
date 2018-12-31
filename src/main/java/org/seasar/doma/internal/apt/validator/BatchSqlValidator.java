@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.validator;
 
 import java.util.LinkedHashMap;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -6,6 +6,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.Suppress;
+import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;

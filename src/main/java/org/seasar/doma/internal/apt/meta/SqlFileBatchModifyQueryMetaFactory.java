@@ -9,8 +9,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.BatchSqlValidator;
-import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
@@ -19,6 +17,8 @@ import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
 import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
+import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
+import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.message.Message;
 
 public class SqlFileBatchModifyQueryMetaFactory

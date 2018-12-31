@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.validator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
@@ -12,6 +12,9 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
