@@ -3,10 +3,10 @@ package org.seasar.doma.internal.apt.decl;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.Context;
 
 public class FieldDeclaration {
 
@@ -14,7 +14,7 @@ public class FieldDeclaration {
 
   protected List<TypeParameterDeclaration> typeParameterDeclarations;
 
-  protected ProcessingEnvironment env;
+  protected Context ctx;
 
   public VariableElement getElement() {
     return element;
@@ -22,7 +22,7 @@ public class FieldDeclaration {
 
   public TypeDeclaration getTypeDeclaration() {
     TypeMirror fieldType = resolveTypeParameter(element.asType());
-    return TypeDeclaration.newTypeDeclaration(fieldType, env);
+    return TypeDeclaration.newTypeDeclaration(fieldType, ctx);
   }
 
   protected TypeMirror resolveTypeParameter(TypeMirror formalType) {
@@ -37,8 +37,8 @@ public class FieldDeclaration {
   public static FieldDeclaration newInstance(
       VariableElement fieldElement,
       List<TypeParameterDeclaration> typeParameterDeclarations,
-      ProcessingEnvironment env) {
-    assertNotNull(fieldElement, typeParameterDeclarations, env);
+      Context ctx) {
+    assertNotNull(fieldElement, typeParameterDeclarations, ctx);
     assertTrue(
         fieldElement.getKind() == ElementKind.FIELD
             || fieldElement.getKind() == ElementKind.ENUM_CONSTANT,
@@ -46,7 +46,7 @@ public class FieldDeclaration {
     FieldDeclaration fieldDeclaration = new FieldDeclaration();
     fieldDeclaration.element = fieldElement;
     fieldDeclaration.typeParameterDeclarations = typeParameterDeclarations;
-    fieldDeclaration.env = env;
+    fieldDeclaration.ctx = ctx;
     return fieldDeclaration;
   }
 }

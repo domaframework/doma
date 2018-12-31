@@ -3,15 +3,14 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Table;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 public class TableAnnot {
 
@@ -30,15 +29,15 @@ public class TableAnnot {
     this.annotationMirror = annotationMirror;
   }
 
-  public static TableAnnot newInstance(TypeElement clazz, ProcessingEnvironment env) {
-    assertNotNull(env);
-    AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(clazz, Table.class, env);
+  public static TableAnnot newInstance(TypeElement clazz, Context ctx) {
+    assertNotNull(ctx);
+    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(clazz, Table.class);
     if (annotationMirror == null) {
       return null;
     }
     TableAnnot result = new TableAnnot(annotationMirror);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("catalog".equals(name)) {

@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
@@ -16,7 +15,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
@@ -198,15 +197,14 @@ public class DaoGenerator extends AbstractGenerator {
 
   protected final DaoMeta daoMeta;
 
-  public DaoGenerator(ProcessingEnvironment env, TypeElement daoElement, DaoMeta daoMeta)
-      throws IOException {
+  public DaoGenerator(Context ctx, TypeElement daoElement, DaoMeta daoMeta) throws IOException {
     super(
-        env,
+        ctx,
         daoElement,
-        Options.getDaoPackage(env),
-        Options.getDaoSubpackage(env),
+        ctx.getOptions().getDaoPackage(),
+        ctx.getOptions().getDaoSubpackage(),
         "",
-        Options.getDaoSuffix(env));
+        ctx.getOptions().getDaoSuffix());
     assertNotNull(daoMeta);
     this.daoMeta = daoMeta;
   }
@@ -235,7 +233,7 @@ public class DaoGenerator extends AbstractGenerator {
     if (parentDaoMeta != null) {
       TypeElement parentDaotElement = parentDaoMeta.getDaoElement();
       parentClassName =
-          createCanonicalName(env, parentDaotElement, fullpackage, subpackage, prefix, suffix);
+          createCanonicalName(ctx, parentDaotElement, fullpackage, subpackage, prefix, suffix);
     }
     iprint(
         "%4$s class %1$s extends %2$s implements %3$s {%n",

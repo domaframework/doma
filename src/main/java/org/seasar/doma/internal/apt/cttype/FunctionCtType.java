@@ -4,11 +4,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import java.util.function.Function;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class FunctionCtType extends AbstractCtType {
 
@@ -16,8 +15,8 @@ public class FunctionCtType extends AbstractCtType {
 
   protected AnyCtType returnCtType;
 
-  public FunctionCtType(TypeMirror type, ProcessingEnvironment env) {
-    super(type, env);
+  public FunctionCtType(TypeMirror type, Context ctx) {
+    super(type, ctx);
   }
 
   public CtType getTargetCtType() {
@@ -39,43 +38,42 @@ public class FunctionCtType extends AbstractCtType {
             && targetCtType.getTypeMirror().getKind() == TypeKind.WILDCARD;
   }
 
-  public static FunctionCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    DeclaredType functionDeclaredType = getFunctionDeclaredType(type, env);
+  public static FunctionCtType newInstance(TypeMirror type, Context ctx) {
+    assertNotNull(type, ctx);
+    DeclaredType functionDeclaredType = getFunctionDeclaredType(type, ctx);
     if (functionDeclaredType == null) {
       return null;
     }
 
-    FunctionCtType functionCtType = new FunctionCtType(type, env);
+    FunctionCtType functionCtType = new FunctionCtType(type, ctx);
     List<? extends TypeMirror> typeArguments = functionDeclaredType.getTypeArguments();
     if (typeArguments.size() == 2) {
       TypeMirror targetTypeMirror = typeArguments.get(0);
       TypeMirror returnTypeMirror = typeArguments.get(1);
 
-      functionCtType.targetCtType = StreamCtType.newInstance(targetTypeMirror, env);
+      functionCtType.targetCtType = StreamCtType.newInstance(targetTypeMirror, ctx);
       if (functionCtType.targetCtType == null) {
-        functionCtType.targetCtType = PreparedSqlCtType.newInstance(targetTypeMirror, env);
+        functionCtType.targetCtType = PreparedSqlCtType.newInstance(targetTypeMirror, ctx);
         if (functionCtType.targetCtType == null) {
-          functionCtType.targetCtType = AnyCtType.newInstance(targetTypeMirror, env);
+          functionCtType.targetCtType = AnyCtType.newInstance(targetTypeMirror, ctx);
         }
       }
 
-      functionCtType.returnCtType = AnyCtType.newInstance(returnTypeMirror, env);
+      functionCtType.returnCtType = AnyCtType.newInstance(returnTypeMirror, ctx);
     }
 
     return functionCtType;
   }
 
-  protected static DeclaredType getFunctionDeclaredType(
-      TypeMirror type, ProcessingEnvironment env) {
-    if (TypeMirrorUtil.isSameType(type, Function.class, env)) {
-      return TypeMirrorUtil.toDeclaredType(type, env);
+  protected static DeclaredType getFunctionDeclaredType(TypeMirror type, Context ctx) {
+    if (ctx.getTypes().isSameType(type, Function.class)) {
+      return ctx.getTypes().toDeclaredType(type);
     }
-    for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-      if (TypeMirrorUtil.isSameType(supertype, Function.class, env)) {
-        return TypeMirrorUtil.toDeclaredType(supertype, env);
+    for (TypeMirror supertype : ctx.getTypes().directSupertypes(type)) {
+      if (ctx.getTypes().isSameType(supertype, Function.class)) {
+        return ctx.getTypes().toDeclaredType(supertype);
       }
-      DeclaredType result = getFunctionDeclaredType(supertype, env);
+      DeclaredType result = getFunctionDeclaredType(supertype, ctx);
       if (result != null) {
         return result;
       }

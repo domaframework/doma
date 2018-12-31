@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
@@ -14,13 +13,12 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Notifier;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
@@ -43,7 +41,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   protected static final int SQL_MAX_LENGTH = 5000;
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
   protected final ExecutableElement methodElement;
 
@@ -58,20 +56,20 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   protected final ExpressionValidator expressionValidator;
 
   public SqlValidator(
-      ProcessingEnvironment env,
+      Context ctx,
       ExecutableElement methodElement,
       LinkedHashMap<String, TypeMirror> parameterTypeMap,
       String path,
       boolean expandable,
       boolean populatable) {
-    assertNotNull(env, methodElement, parameterTypeMap, path);
-    this.env = env;
+    assertNotNull(ctx, methodElement, parameterTypeMap, path);
+    this.ctx = ctx;
     this.methodElement = methodElement;
     this.parameterTypeMap = parameterTypeMap;
     this.path = path;
     this.expandable = expandable;
     this.populatable = populatable;
-    expressionValidator = new ExpressionValidator(env, methodElement, parameterTypeMap);
+    expressionValidator = new ExpressionValidator(ctx, methodElement, parameterTypeMap);
   }
 
   public void validate(SqlNode sqlNode) {
@@ -82,12 +80,12 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         if (!validatedParameterNames.contains(parameterName)) {
           for (VariableElement parameterElement : methodElement.getParameters()) {
             if (parameterElement.getSimpleName().contentEquals(parameterName)) {
-              Notifier.notify(
-                  env,
-                  Kind.ERROR,
-                  Message.DOMA4122,
-                  parameterElement,
-                  new Object[] {path, parameterName});
+              ctx.getNotifier()
+                  .notify(
+                      Kind.ERROR,
+                      Message.DOMA4122,
+                      parameterElement,
+                      new Object[] {path, parameterName});
             }
           }
         }
@@ -95,7 +93,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     } catch (AptIllegalStateException e) {
       throw e;
     } catch (AptException e) {
-      Notifier.notify(env, e);
+      ctx.getNotifier().notify(e);
     }
   }
 
@@ -118,7 +116,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         String sql = getSql(location);
         throw new AptException(
             Message.DOMA4153,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               path,
@@ -132,10 +130,10 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     } else {
       if (!isScalarIterable(typeDeclaration)) {
         String sql = getSql(location);
-        env.getMessager().printMessage(Kind.NOTE, parameterTypeMap.toString());
+        ctx.getEnv().getMessager().printMessage(Kind.NOTE, parameterTypeMap.toString());
         throw new AptException(
             Message.DOMA4161,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               path,
@@ -153,13 +151,13 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   protected boolean isScalar(TypeDeclaration typeDeclaration) {
     TypeMirror typeMirror = typeDeclaration.getType();
-    return BasicCtType.newInstance(typeMirror, env) != null
-        || DomainCtType.newInstance(typeMirror, env) != null;
+    return BasicCtType.newInstance(typeMirror, ctx) != null
+        || DomainCtType.newInstance(typeMirror, ctx) != null;
   }
 
   protected boolean isScalarIterable(TypeDeclaration typeDeclaration) {
     TypeMirror typeMirror = typeDeclaration.getType();
-    IterableCtType iterableCtType = IterableCtType.newInstance(typeMirror, env);
+    IterableCtType iterableCtType = IterableCtType.newInstance(typeMirror, ctx);
     if (iterableCtType != null) {
       return iterableCtType
           .getElementCtType()
@@ -201,7 +199,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4140,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -225,7 +223,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4141,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -247,11 +245,11 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     String expression = node.getExpression();
     TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
     TypeMirror typeMirror = typeDeclaration.getType();
-    if (!TypeMirrorUtil.isAssignable(typeMirror, Iterable.class, env)) {
+    if (!ctx.getTypes().isAssignable(typeMirror, Iterable.class)) {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4149,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -262,13 +260,13 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             typeDeclaration.getBinaryName()
           });
     }
-    DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror, env);
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(typeMirror);
     List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
     if (typeArgs.isEmpty()) {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4150,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {
             path,
@@ -285,11 +283,10 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
     TypeMirror originalHasNextType = expressionValidator.removeParameterType(hasNextVariable);
     expressionValidator.putParameterType(
-        hasNextVariable, TypeMirrorUtil.getTypeMirror(boolean.class, env));
+        hasNextVariable, ctx.getTypes().getTypeMirror(boolean.class));
     String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
     TypeMirror originalIndexType = expressionValidator.removeParameterType(indexVariable);
-    expressionValidator.putParameterType(
-        indexVariable, TypeMirrorUtil.getTypeMirror(int.class, env));
+    expressionValidator.putParameterType(indexVariable, ctx.getTypes().getTypeMirror(int.class));
     visitNode(node, p);
     if (originalIdentifierType == null) {
       expressionValidator.removeParameterType(identifier);
@@ -316,7 +313,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4257,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {path, sql, location.getLineNumber(), location.getPosition()});
     }
@@ -330,7 +327,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4270,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {path, sql, location.getLineNumber(), location.getPosition()});
     }
@@ -363,7 +360,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4092,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {
             path, sql, location.getLineNumber(), location.getPosition(), e.getMessage()
@@ -379,7 +376,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4092,
-          env,
+          ctx.getEnv(),
           methodElement,
           new Object[] {
             path, sql, location.getLineNumber(), location.getPosition(), e.getMessage()

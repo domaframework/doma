@@ -3,41 +3,39 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 public class SingletonConfigAnnot {
 
   protected final AnnotationMirror annotationMirror;
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
   protected AnnotationValue method;
 
-  protected SingletonConfigAnnot(AnnotationMirror annotationMirror, ProcessingEnvironment env) {
-    assertNotNull(annotationMirror, env);
+  protected SingletonConfigAnnot(AnnotationMirror annotationMirror, Context ctx) {
+    assertNotNull(annotationMirror, ctx);
     this.annotationMirror = annotationMirror;
-    this.env = env;
+    this.ctx = ctx;
   }
 
-  public static SingletonConfigAnnot newInstance(
-      TypeElement typeElement, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static SingletonConfigAnnot newInstance(TypeElement typeElement, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(typeElement, SingletonConfig.class, env);
+        ctx.getElements().getAnnotationMirror(typeElement, SingletonConfig.class);
     if (annotationMirror == null) {
       return null;
     }
-    SingletonConfigAnnot result = new SingletonConfigAnnot(annotationMirror, env);
+    SingletonConfigAnnot result = new SingletonConfigAnnot(annotationMirror, ctx);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("method".equals(name)) {

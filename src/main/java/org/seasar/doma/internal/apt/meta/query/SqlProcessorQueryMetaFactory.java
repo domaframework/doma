@@ -2,11 +2,11 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
@@ -15,14 +15,13 @@ import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.PreparedSqlCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
 public class SqlProcessorQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlProcessorQueryMeta> {
 
-  public SqlProcessorQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public SqlProcessorQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
@@ -42,7 +41,7 @@ public class SqlProcessorQueryMetaFactory
 
   protected SqlProcessorQueryMeta createSqlContentQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
-    SqlProcessorAnnot sqlProcessorAnnot = SqlProcessorAnnot.newInstance(method, env);
+    SqlProcessorAnnot sqlProcessorAnnot = SqlProcessorAnnot.newInstance(method, ctx);
     if (sqlProcessorAnnot == null) {
       return null;
     }
@@ -68,7 +67,7 @@ public class SqlProcessorQueryMetaFactory
       SqlProcessorAnnot sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
       throw new AptException(
           Message.DOMA4433,
-          env,
+          ctx.getEnv(),
           method,
           sqlProcessorAnnot.getAnnotationMirror(),
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
@@ -86,7 +85,7 @@ public class SqlProcessorQueryMetaFactory
     if (resultCtType == null || !isConvertibleReturnType(returnMeta, resultCtType)) {
       throw new AptException(
           Message.DOMA4436,
-          env,
+          ctx.getEnv(),
           method,
           new Object[] {
             returnMeta.getType(),
@@ -98,11 +97,11 @@ public class SqlProcessorQueryMetaFactory
   }
 
   protected boolean isConvertibleReturnType(QueryReturnMeta returnMeta, AnyCtType resultCtType) {
-    if (env.getTypeUtils().isSameType(returnMeta.getType(), resultCtType.getTypeMirror())) {
+    if (ctx.getTypes().isSameType(returnMeta.getType(), resultCtType.getTypeMirror())) {
       return true;
     }
     if (returnMeta.getType().getKind() == TypeKind.VOID) {
-      return TypeMirrorUtil.isSameType(resultCtType.getTypeMirror(), Void.class, env);
+      return ctx.getTypes().isSameType(resultCtType.getTypeMirror(), Void.class);
     }
     return false;
   }
@@ -124,7 +123,7 @@ public class SqlProcessorQueryMetaFactory
       if (queryMeta.getBiFunctionCtType() != null) {
         throw new AptException(
             Message.DOMA4434,
-            env,
+            ctx.getEnv(),
             parameterMeta.getElement(),
             new Object[] {
               parameterMeta.getDaoElement().getQualifiedName(),
@@ -160,7 +159,7 @@ public class SqlProcessorQueryMetaFactory
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4437,
-          env,
+          ctx.getEnv(),
           queryMeta.getMethodElement(),
           new Object[] {
             parameterMeta.getDaoElement().getQualifiedName(),
@@ -191,7 +190,7 @@ public class SqlProcessorQueryMetaFactory
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4435,
-          env,
+          ctx.getEnv(),
           queryMeta.getMethodElement(),
           new Object[] {
             parameterMeta.getDaoElement().getQualifiedName(),

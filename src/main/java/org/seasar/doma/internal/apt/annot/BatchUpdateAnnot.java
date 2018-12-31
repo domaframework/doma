@@ -3,12 +3,11 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.BatchUpdate;
-import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class BatchUpdateAnnot extends BatchModifyAnnot {
 
@@ -16,16 +15,16 @@ public class BatchUpdateAnnot extends BatchModifyAnnot {
     super(annotationMirror);
   }
 
-  public static BatchUpdateAnnot newInstance(ExecutableElement method, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static BatchUpdateAnnot newInstance(ExecutableElement method, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(method, BatchUpdate.class, env);
+        ctx.getElements().getAnnotationMirror(method, BatchUpdate.class);
     if (annotationMirror == null) {
       return null;
     }
     BatchUpdateAnnot result = new BatchUpdateAnnot(annotationMirror);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("sqlFile".equals(name)) {

@@ -3,10 +3,10 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DeleteAnnot;
 import org.seasar.doma.internal.apt.annot.InsertAnnot;
 import org.seasar.doma.internal.apt.annot.ModifyAnnot;
@@ -19,8 +19,8 @@ import org.seasar.doma.message.Message;
 
 public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoModifyQueryMeta> {
 
-  public AutoModifyQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public AutoModifyQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
@@ -40,19 +40,19 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
   protected AutoModifyQueryMeta createAutoModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method, daoMeta.getDaoElement());
-    ModifyAnnot modifyAnnot = InsertAnnot.newInstance(method, env);
+    ModifyAnnot modifyAnnot = InsertAnnot.newInstance(method, ctx);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
       return queryMeta;
     }
-    modifyAnnot = UpdateAnnot.newInstance(method, env);
+    modifyAnnot = UpdateAnnot.newInstance(method, ctx);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
       return queryMeta;
     }
-    modifyAnnot = DeleteAnnot.newInstance(method, env);
+    modifyAnnot = DeleteAnnot.newInstance(method, ctx);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
@@ -70,7 +70,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
       if (!returnMeta.isResult(entityCtType)) {
         throw new AptException(
             Message.DOMA4222,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -78,7 +78,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
       if (!returnMeta.isPrimitiveInt()) {
         throw new AptException(
             Message.DOMA4001,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -94,7 +94,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     if (size != 1) {
       throw new AptException(
           Message.DOMA4002,
-          env,
+          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -110,7 +110,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
                       throws RuntimeException {
                     throw new AptException(
                         Message.DOMA4003,
-                        env,
+                        ctx.getEnv(),
                         parameterMeta.getElement(),
                         new Object[] {
                           daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()

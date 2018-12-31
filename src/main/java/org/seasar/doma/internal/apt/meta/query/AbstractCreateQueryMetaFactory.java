@@ -3,10 +3,10 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.message.Message;
 
@@ -15,8 +15,8 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
 
   protected final Class<?> returnClass;
 
-  protected AbstractCreateQueryMetaFactory(ProcessingEnvironment env, Class<?> returnClass) {
-    super(env);
+  protected AbstractCreateQueryMetaFactory(Context ctx, Class<?> returnClass) {
+    super(ctx);
     assertNotNull(returnClass);
     this.returnClass = returnClass;
   }
@@ -28,7 +28,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     if (!returnClass.getName().equals(resultMeta.getCtType().getQualifiedName())) {
       throw new AptException(
           Message.DOMA4097,
-          env,
+          ctx.getEnv(),
           method,
           new Object[] {
             returnClass.getName(),
@@ -45,7 +45,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     if (size != 0) {
       throw new AptException(
           Message.DOMA4078,
-          env,
+          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }

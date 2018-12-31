@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class CollectorCtType extends AbstractCtType {
 
@@ -19,8 +18,8 @@ public class CollectorCtType extends AbstractCtType {
 
   protected AnyCtType returnCtType;
 
-  public CollectorCtType(TypeMirror type, ProcessingEnvironment env) {
-    super(type, env);
+  public CollectorCtType(TypeMirror type, Context ctx) {
+    super(type, ctx);
   }
 
   public CtType getTargetCtType() {
@@ -42,40 +41,39 @@ public class CollectorCtType extends AbstractCtType {
             && targetCtType.getTypeMirror().getKind() == TypeKind.WILDCARD;
   }
 
-  public static CollectorCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    DeclaredType collectorDeclaredType = getCollectorDeclaredType(type, env);
+  public static CollectorCtType newInstance(TypeMirror type, Context ctx) {
+    assertNotNull(type, ctx);
+    DeclaredType collectorDeclaredType = getCollectorDeclaredType(type, ctx);
     if (collectorDeclaredType == null) {
       return null;
     }
 
-    CollectorCtType collectorCtType = new CollectorCtType(type, env);
+    CollectorCtType collectorCtType = new CollectorCtType(type, ctx);
     List<? extends TypeMirror> typeArguments = collectorDeclaredType.getTypeArguments();
     if (typeArguments.size() == 3) {
       TypeMirror targetTypeMirror = typeArguments.get(0);
       TypeMirror returnTypeMirror = typeArguments.get(2);
       collectorCtType.targetCtType =
-          buildCtTypeSuppliers(targetTypeMirror, env)
+          buildCtTypeSuppliers(targetTypeMirror, ctx)
               .stream()
               .map(Supplier::get)
               .filter(Objects::nonNull)
               .findFirst()
               .get();
-      collectorCtType.returnCtType = AnyCtType.newInstance(returnTypeMirror, env);
+      collectorCtType.returnCtType = AnyCtType.newInstance(returnTypeMirror, ctx);
     }
     return collectorCtType;
   }
 
-  protected static DeclaredType getCollectorDeclaredType(
-      TypeMirror type, ProcessingEnvironment env) {
-    if (TypeMirrorUtil.isSameType(type, Collector.class, env)) {
-      return TypeMirrorUtil.toDeclaredType(type, env);
+  protected static DeclaredType getCollectorDeclaredType(TypeMirror type, Context ctx) {
+    if (ctx.getTypes().isSameType(type, Collector.class)) {
+      return ctx.getTypes().toDeclaredType(type);
     }
-    for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-      if (TypeMirrorUtil.isSameType(supertype, Collector.class, env)) {
-        return TypeMirrorUtil.toDeclaredType(supertype, env);
+    for (TypeMirror supertype : ctx.getTypes().directSupertypes(type)) {
+      if (ctx.getTypes().isSameType(supertype, Collector.class)) {
+        return ctx.getTypes().toDeclaredType(supertype);
       }
-      DeclaredType result = getCollectorDeclaredType(supertype, env);
+      DeclaredType result = getCollectorDeclaredType(supertype, ctx);
       if (result != null) {
         return result;
       }
@@ -83,18 +81,17 @@ public class CollectorCtType extends AbstractCtType {
     return null;
   }
 
-  protected static List<Supplier<CtType>> buildCtTypeSuppliers(
-      TypeMirror typeMirror, ProcessingEnvironment env) {
+  protected static List<Supplier<CtType>> buildCtTypeSuppliers(TypeMirror typeMirror, Context ctx) {
     return Arrays.<Supplier<CtType>>asList(
-        () -> EntityCtType.newInstance(typeMirror, env),
-        () -> OptionalCtType.newInstance(typeMirror, env),
-        () -> OptionalIntCtType.newInstance(typeMirror, env),
-        () -> OptionalLongCtType.newInstance(typeMirror, env),
-        () -> OptionalDoubleCtType.newInstance(typeMirror, env),
-        () -> DomainCtType.newInstance(typeMirror, env),
-        () -> BasicCtType.newInstance(typeMirror, env),
-        () -> MapCtType.newInstance(typeMirror, env),
-        () -> AnyCtType.newInstance(typeMirror, env));
+        () -> EntityCtType.newInstance(typeMirror, ctx),
+        () -> OptionalCtType.newInstance(typeMirror, ctx),
+        () -> OptionalIntCtType.newInstance(typeMirror, ctx),
+        () -> OptionalLongCtType.newInstance(typeMirror, ctx),
+        () -> OptionalDoubleCtType.newInstance(typeMirror, ctx),
+        () -> DomainCtType.newInstance(typeMirror, ctx),
+        () -> BasicCtType.newInstance(typeMirror, ctx),
+        () -> MapCtType.newInstance(typeMirror, ctx),
+        () -> AnyCtType.newInstance(typeMirror, ctx));
   }
 
   @Override

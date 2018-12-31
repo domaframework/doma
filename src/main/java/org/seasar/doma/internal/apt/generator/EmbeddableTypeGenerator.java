@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -21,7 +21,6 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EmbeddableType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -33,9 +32,8 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
   protected final EmbeddableMeta embeddableMeta;
 
   public EmbeddableTypeGenerator(
-      ProcessingEnvironment env, TypeElement entityElement, EmbeddableMeta embeddableMeta)
-      throws IOException {
-    super(env, entityElement, null, null, Constants.METATYPE_PREFIX, "");
+      Context ctx, TypeElement entityElement, EmbeddableMeta embeddableMeta) throws IOException {
+    super(ctx, entityElement, null, null, Constants.METATYPE_PREFIX, "");
     assertNotNull(embeddableMeta);
     this.embeddableMeta = embeddableMeta;
   }
@@ -160,7 +158,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
         EmbeddablePropertyMeta propertyMeta = it.next();
         iprint(
             "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") != null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
-            TypeMirrorUtil.boxIfPrimitive(propertyMeta.getType(), env), propertyMeta.getName());
+            ctx.getTypes().boxIfPrimitive(propertyMeta.getType()), propertyMeta.getName());
         if (it.hasNext()) {
           print(",%n");
         }

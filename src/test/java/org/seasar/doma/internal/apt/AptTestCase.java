@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -22,9 +21,7 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.Message;
 
@@ -137,11 +134,11 @@ public abstract class AptTestCase extends AptinaTestCase {
 
   protected ExecutableElement createMethodElement(
       Class<?> clazz, String methodName, Class<?>... parameterClasses) {
-    ProcessingEnvironment env = getProcessingEnvironment();
-    TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
+    Context ctx = new Context(getProcessingEnvironment());
+    TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
     for (TypeElement t = typeElement;
         t != null && t.asType().getKind() != TypeKind.NONE;
-        t = TypeMirrorUtil.toTypeElement(t.getSuperclass(), env)) {
+        t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
       for (ExecutableElement methodElement : ElementFilter.methodsIn(t.getEnclosedElements())) {
         if (!methodElement.getSimpleName().contentEquals(methodName)) {
           continue;
@@ -155,7 +152,7 @@ public abstract class AptTestCase extends AptinaTestCase {
             it.hasNext(); ) {
           TypeMirror parameterType = it.next().asType();
           Class<?> parameterClass = parameterClasses[i];
-          if (!TypeMirrorUtil.isSameType(parameterType, parameterClass, env)) {
+          if (!ctx.getTypes().isSameType(parameterType, parameterClass)) {
             return null;
           }
         }

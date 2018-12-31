@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -12,6 +11,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor8;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -25,14 +25,13 @@ import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.message.Message;
 
 public class QueryReturnMeta {
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
   protected final ExecutableElement methodElement;
 
@@ -44,30 +43,30 @@ public class QueryReturnMeta {
 
   protected final CtType ctType;
 
-  public QueryReturnMeta(QueryMeta queryMeta, ProcessingEnvironment env) {
-    assertNotNull(queryMeta, env);
-    this.env = env;
+  public QueryReturnMeta(QueryMeta queryMeta, Context ctx) {
+    assertNotNull(queryMeta, ctx);
+    this.ctx = ctx;
     methodElement = queryMeta.getMethodElement();
     daoElement = queryMeta.getDaoElement();
     type = methodElement.getReturnType();
-    typeName = TypeMirrorUtil.getTypeName(type, env);
+    typeName = ctx.getTypes().getTypeName(type);
     ctType = createCtType();
   }
 
   protected CtType createCtType() {
-    IterableCtType iterableCtType = IterableCtType.newInstance(type, env);
+    IterableCtType iterableCtType = IterableCtType.newInstance(type, ctx);
     if (iterableCtType != null) {
       if (iterableCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4109,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {typeName, daoElement.getQualifiedName(), methodElement.getSimpleName()});
       }
       if (iterableCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4113,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {typeName, daoElement.getQualifiedName(), methodElement.getSimpleName()});
       }
@@ -75,22 +74,22 @@ public class QueryReturnMeta {
       return iterableCtType;
     }
 
-    StreamCtType streamCtType = StreamCtType.newInstance(type, env);
+    StreamCtType streamCtType = StreamCtType.newInstance(type, ctx);
     if (streamCtType != null) {
       return streamCtType;
     }
 
-    EntityCtType entityCtType = EntityCtType.newInstance(type, env);
+    EntityCtType entityCtType = EntityCtType.newInstance(type, ctx);
     if (entityCtType != null) {
       return entityCtType;
     }
 
-    OptionalCtType optionalCtType = OptionalCtType.newInstance(type, env);
+    OptionalCtType optionalCtType = OptionalCtType.newInstance(type, ctx);
     if (optionalCtType != null) {
       if (optionalCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4236,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -101,7 +100,7 @@ public class QueryReturnMeta {
       if (optionalCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4237,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               optionalCtType.getQualifiedName(),
@@ -113,27 +112,27 @@ public class QueryReturnMeta {
       return optionalCtType;
     }
 
-    OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(type, env);
+    OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(type, ctx);
     if (optionalIntCtType != null) {
       return optionalIntCtType;
     }
 
-    OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(type, env);
+    OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(type, ctx);
     if (optionalLongCtType != null) {
       return optionalLongCtType;
     }
 
-    OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType.newInstance(type, env);
+    OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType.newInstance(type, ctx);
     if (optionalDoubleCtType != null) {
       return optionalDoubleCtType;
     }
 
-    DomainCtType domainCtType = DomainCtType.newInstance(type, env);
+    DomainCtType domainCtType = DomainCtType.newInstance(type, ctx);
     if (domainCtType != null) {
       if (domainCtType.isRawType()) {
         throw new AptException(
             Message.DOMA4206,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -144,7 +143,7 @@ public class QueryReturnMeta {
       if (domainCtType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4207,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               domainCtType.getQualifiedName(),
@@ -155,17 +154,17 @@ public class QueryReturnMeta {
       return domainCtType;
     }
 
-    BasicCtType basicCtType = BasicCtType.newInstance(type, env);
+    BasicCtType basicCtType = BasicCtType.newInstance(type, ctx);
     if (basicCtType != null) {
       return basicCtType;
     }
 
-    MapCtType mapCtType = MapCtType.newInstance(type, env);
+    MapCtType mapCtType = MapCtType.newInstance(type, ctx);
     if (mapCtType != null) {
       return mapCtType;
     }
 
-    return AnyCtType.newInstance(type, env);
+    return AnyCtType.newInstance(type, ctx);
   }
 
   public String getTypeName() {
@@ -197,10 +196,10 @@ public class QueryReturnMeta {
   }
 
   public boolean isResult(EntityCtType entityCtType) {
-    if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type), Result.class, env)) {
+    if (!ctx.getTypes().isSameType(ctx.getTypes().erasure(type), Result.class)) {
       return false;
     }
-    DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return false;
     }
@@ -209,14 +208,14 @@ public class QueryReturnMeta {
       return false;
     }
     TypeMirror typeArg = typeArgs.get(0);
-    return TypeMirrorUtil.isSameType(typeArg, entityCtType.getTypeMirror(), env);
+    return ctx.getTypes().isSameType(typeArg, entityCtType.getTypeMirror());
   }
 
   public boolean isBatchResult(EntityCtType entityCtType) {
-    if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type), BatchResult.class, env)) {
+    if (!ctx.getTypes().isSameType(ctx.getTypes().erasure(type), BatchResult.class)) {
       return false;
     }
-    DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return false;
     }
@@ -225,7 +224,7 @@ public class QueryReturnMeta {
       return false;
     }
     TypeMirror typeArg = typeArgs.get(0);
-    return TypeMirrorUtil.isSameType(typeArg, entityCtType.getTypeMirror(), env);
+    return ctx.getTypes().isSameType(typeArg, entityCtType.getTypeMirror());
   }
 
   public ExecutableElement getMethodElement() {
@@ -252,7 +251,7 @@ public class QueryReturnMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4210,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -263,7 +262,7 @@ public class QueryReturnMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4211,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -283,7 +282,7 @@ public class QueryReturnMeta {
       if (ctType.isRawType()) {
         throw new AptException(
             Message.DOMA4238,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),
@@ -294,7 +293,7 @@ public class QueryReturnMeta {
       if (ctType.isWildcardType()) {
         throw new AptException(
             Message.DOMA4239,
-            env,
+            ctx.getEnv(),
             methodElement,
             new Object[] {
               ctType.getQualifiedName(),

@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
@@ -14,10 +13,8 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
 
@@ -36,8 +33,8 @@ public class DomainCtType extends AbstractCtType {
   private boolean isWildcardType;
 
   public DomainCtType(
-      TypeMirror domainType, ProcessingEnvironment env, BasicCtType basicCtType, boolean external) {
-    super(domainType, env);
+      TypeMirror domainType, Context ctx, BasicCtType basicCtType, boolean external) {
+    super(domainType, ctx);
     assertNotNull(basicCtType);
     this.basicCtType = basicCtType;
     this.external = external;
@@ -50,7 +47,7 @@ public class DomainCtType extends AbstractCtType {
       this.typeArgDecl = "";
     }
     if (!typeElement.getTypeParameters().isEmpty()) {
-      DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(getTypeMirror(), env);
+      DeclaredType declaredType = ctx.getTypes().toDeclaredType(getTypeMirror());
       if (declaredType == null) {
         throw new AptIllegalStateException(getTypeName());
       }
@@ -93,29 +90,29 @@ public class DomainCtType extends AbstractCtType {
     return name;
   }
 
-  public static DomainCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
+  public static DomainCtType newInstance(TypeMirror type, Context ctx) {
+    assertNotNull(type, ctx);
+    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
-    DomainInfo info = getDomainInfo(typeElement, env);
+    DomainInfo info = getDomainInfo(typeElement, ctx);
     if (info == null) {
       return null;
     }
-    BasicCtType basicCtType = BasicCtType.newInstance(info.valueType, env);
+    BasicCtType basicCtType = BasicCtType.newInstance(info.valueType, ctx);
     if (basicCtType == null) {
       return null;
     }
-    return new DomainCtType(type, env, basicCtType, info.external);
+    return new DomainCtType(type, ctx, basicCtType, info.external);
   }
 
-  protected static DomainInfo getDomainInfo(TypeElement typeElement, ProcessingEnvironment env) {
+  protected static DomainInfo getDomainInfo(TypeElement typeElement, Context ctx) {
     Domain domain = typeElement.getAnnotation(Domain.class);
     if (domain != null) {
       return getDomainInfo(typeElement, domain);
     }
-    return getExternalDomainInfo(typeElement, env);
+    return getExternalDomainInfo(typeElement, ctx);
   }
 
   protected static DomainInfo getDomainInfo(TypeElement typeElement, Domain domain) {
@@ -127,9 +124,8 @@ public class DomainCtType extends AbstractCtType {
     throw new AptIllegalStateException("unreachable.");
   }
 
-  protected static DomainInfo getExternalDomainInfo(
-      TypeElement typeElement, ProcessingEnvironment env) {
-    String csv = Options.getDomainConverters(env);
+  protected static DomainInfo getExternalDomainInfo(TypeElement typeElement, Context ctx) {
+    String csv = ctx.getOptions().getDomainConverters();
     if (csv != null) {
       TypeMirror domainType = typeElement.asType();
       for (String value : csv.split(",")) {
@@ -137,24 +133,24 @@ public class DomainCtType extends AbstractCtType {
         if (className.isEmpty()) {
           continue;
         }
-        TypeElement convertersProviderElement = ElementUtil.getTypeElement(className, env);
+        TypeElement convertersProviderElement = ctx.getElements().getTypeElement(className);
         if (convertersProviderElement == null) {
           throw new AptIllegalOptionException(Message.DOMA4200.getMessage(className));
         }
         DomainConvertersAnnot convertersMirror =
-            DomainConvertersAnnot.newInstance(convertersProviderElement, env);
+            DomainConvertersAnnot.newInstance(convertersProviderElement, ctx);
         if (convertersMirror == null) {
           throw new AptIllegalOptionException(Message.DOMA4201.getMessage(className));
         }
         for (TypeMirror converterType : convertersMirror.getValueValue()) {
           // converterType does not contain adequate information in
           // eclipse incremental compile, so reload typeMirror
-          converterType = reloadTypeMirror(converterType, env);
+          converterType = reloadTypeMirror(converterType, ctx);
           if (converterType == null) {
             continue;
           }
-          TypeMirror[] argTypes = getConverterArgTypes(converterType, env);
-          if (argTypes == null || !TypeMirrorUtil.isSameType(domainType, argTypes[0], env)) {
+          TypeMirror[] argTypes = getConverterArgTypes(converterType, ctx);
+          if (argTypes == null || !ctx.getTypes().isSameType(domainType, argTypes[0])) {
             continue;
           }
           TypeMirror valueType = argTypes[1];
@@ -165,33 +161,32 @@ public class DomainCtType extends AbstractCtType {
     return null;
   }
 
-  protected static TypeMirror reloadTypeMirror(TypeMirror typeMirror, ProcessingEnvironment env) {
-    TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+  protected static TypeMirror reloadTypeMirror(TypeMirror typeMirror, Context ctx) {
+    TypeElement typeElement = ctx.getTypes().toTypeElement(typeMirror);
     if (typeElement == null) {
       return null;
     }
-    String binaryName = ElementUtil.getBinaryName(typeElement, env);
-    typeElement = ElementUtil.getTypeElement(binaryName, env);
+    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
+    typeElement = ctx.getElements().getTypeElement(binaryName);
     if (typeElement == null) {
       return null;
     }
     return typeElement.asType();
   }
 
-  protected static TypeMirror[] getConverterArgTypes(
-      TypeMirror typeMirror, ProcessingEnvironment env) {
-    for (TypeMirror supertype : env.getTypeUtils().directSupertypes(typeMirror)) {
-      if (!TypeMirrorUtil.isAssignable(supertype, DomainConverter.class, env)) {
+  protected static TypeMirror[] getConverterArgTypes(TypeMirror typeMirror, Context ctx) {
+    for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
+      if (!ctx.getTypes().isAssignable(supertype, DomainConverter.class)) {
         continue;
       }
-      if (TypeMirrorUtil.isSameType(supertype, DomainConverter.class, env)) {
-        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(supertype, env);
+      if (ctx.getTypes().isSameType(supertype, DomainConverter.class)) {
+        DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
         List<? extends TypeMirror> args = declaredType.getTypeArguments();
         assertEquals(2, args.size());
         return new TypeMirror[] {args.get(0), args.get(1)};
       }
-      TypeMirror[] argTypes = getConverterArgTypes(supertype, env);
+      TypeMirror[] argTypes = getConverterArgTypes(supertype, ctx);
       if (argTypes != null) {
         return argTypes;
       }

@@ -23,13 +23,13 @@ public class ExternalDomainProcessor extends AbstractGeneratingProcessor<Externa
 
   @Override
   protected ExternalDomainMetaFactory createTypeElementMetaFactory() {
-    return new ExternalDomainMetaFactory(processingEnv);
+    return new ExternalDomainMetaFactory(ctx);
   }
 
   @Override
   protected Generator createGenerator(TypeElement typeElement, ExternalDomainMeta meta)
       throws IOException {
     assertNotNull(typeElement, meta);
-    return new ExternalDomainTypeGenerator(processingEnv, meta.getDomainElement(), meta);
+    return new ExternalDomainTypeGenerator(ctx, meta.getDomainElement(), meta);
   }
 }

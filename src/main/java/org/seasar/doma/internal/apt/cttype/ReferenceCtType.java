@@ -6,11 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.jdbc.Reference;
 
 public class ReferenceCtType extends AbstractCtType {
@@ -19,8 +18,8 @@ public class ReferenceCtType extends AbstractCtType {
 
   protected CtType referentType;
 
-  public ReferenceCtType(TypeMirror type, ProcessingEnvironment env) {
-    super(type, env);
+  public ReferenceCtType(TypeMirror type, Context ctx) {
+    super(type, ctx);
   }
 
   public CtType getReferentCtType() {
@@ -39,18 +38,18 @@ public class ReferenceCtType extends AbstractCtType {
     return referentTypeMirror != null && referentTypeMirror.getKind() == TypeKind.WILDCARD;
   }
 
-  public static ReferenceCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    DeclaredType referenceDeclaredType = getReferenceDeclaredType(type, env);
+  public static ReferenceCtType newInstance(TypeMirror type, Context ctx) {
+    assertNotNull(type, ctx);
+    DeclaredType referenceDeclaredType = getReferenceDeclaredType(type, ctx);
     if (referenceDeclaredType == null) {
       return null;
     }
-    ReferenceCtType referenceCtType = new ReferenceCtType(type, env);
+    ReferenceCtType referenceCtType = new ReferenceCtType(type, ctx);
     List<? extends TypeMirror> typeArguments = referenceDeclaredType.getTypeArguments();
     if (typeArguments.size() == 1) {
       referenceCtType.referentTypeMirror = typeArguments.get(0);
       referenceCtType.referentType =
-          buildCtTypeSuppliers(referenceCtType.referentTypeMirror, env)
+          buildCtTypeSuppliers(referenceCtType.referentTypeMirror, ctx)
               .stream()
               .map(Supplier::get)
               .filter(Objects::nonNull)
@@ -60,28 +59,26 @@ public class ReferenceCtType extends AbstractCtType {
     return referenceCtType;
   }
 
-  protected static List<Supplier<CtType>> buildCtTypeSuppliers(
-      TypeMirror typeMirror, ProcessingEnvironment env) {
+  protected static List<Supplier<CtType>> buildCtTypeSuppliers(TypeMirror typeMirror, Context ctx) {
     return Arrays.<Supplier<CtType>>asList(
-        () -> OptionalCtType.newInstance(typeMirror, env),
-        () -> OptionalIntCtType.newInstance(typeMirror, env),
-        () -> OptionalLongCtType.newInstance(typeMirror, env),
-        () -> OptionalDoubleCtType.newInstance(typeMirror, env),
-        () -> DomainCtType.newInstance(typeMirror, env),
-        () -> BasicCtType.newInstance(typeMirror, env),
-        () -> AnyCtType.newInstance(typeMirror, env));
+        () -> OptionalCtType.newInstance(typeMirror, ctx),
+        () -> OptionalIntCtType.newInstance(typeMirror, ctx),
+        () -> OptionalLongCtType.newInstance(typeMirror, ctx),
+        () -> OptionalDoubleCtType.newInstance(typeMirror, ctx),
+        () -> DomainCtType.newInstance(typeMirror, ctx),
+        () -> BasicCtType.newInstance(typeMirror, ctx),
+        () -> AnyCtType.newInstance(typeMirror, ctx));
   }
 
-  protected static DeclaredType getReferenceDeclaredType(
-      TypeMirror type, ProcessingEnvironment env) {
-    if (TypeMirrorUtil.isSameType(type, Reference.class, env)) {
-      return TypeMirrorUtil.toDeclaredType(type, env);
+  protected static DeclaredType getReferenceDeclaredType(TypeMirror type, Context ctx) {
+    if (ctx.getTypes().isSameType(type, Reference.class)) {
+      return ctx.getTypes().toDeclaredType(type);
     }
-    for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-      if (TypeMirrorUtil.isSameType(supertype, Reference.class, env)) {
-        return TypeMirrorUtil.toDeclaredType(supertype, env);
+    for (TypeMirror supertype : ctx.getTypes().directSupertypes(type)) {
+      if (ctx.getTypes().isSameType(supertype, Reference.class)) {
+        return ctx.getTypes().toDeclaredType(supertype);
       }
-      getReferenceDeclaredType(supertype, env);
+      getReferenceDeclaredType(supertype, ctx);
     }
     return null;
   }

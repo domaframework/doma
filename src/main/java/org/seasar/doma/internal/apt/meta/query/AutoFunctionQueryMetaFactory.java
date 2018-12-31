@@ -2,9 +2,9 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.FunctionAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -24,14 +24,14 @@ import org.seasar.doma.message.Message;
 public class AutoFunctionQueryMetaFactory
     extends AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
-  public AutoFunctionQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public AutoFunctionQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    FunctionAnnot functionAnnot = FunctionAnnot.newInstance(method, env);
+    FunctionAnnot functionAnnot = FunctionAnnot.newInstance(method, ctx);
     if (functionAnnot == null) {
       return null;
     }
@@ -75,7 +75,7 @@ public class AutoFunctionQueryMetaFactory
     protected ResultParameterMeta defaultAction(CtType type, Boolean p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4063,
-          env,
+          ctx.getEnv(),
           returnMeta.getMethodElement(),
           new Object[] {
             returnMeta.getType(),
@@ -155,7 +155,7 @@ public class AutoFunctionQueryMetaFactory
     protected ResultParameterMeta defaultAction(CtType ctType, Boolean p) throws RuntimeException {
       throw new AptException(
           Message.DOMA4065,
-          env,
+          ctx.getEnv(),
           returnMeta.getMethodElement(),
           new Object[] {
             ctType.getTypeName(),
@@ -188,7 +188,7 @@ public class AutoFunctionQueryMetaFactory
       if (ctType.isAbstract()) {
         throw new AptException(
             Message.DOMA4156,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {
               ctType.getTypeName(),

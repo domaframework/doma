@@ -3,15 +3,14 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 public class ResultSetAnnot {
 
@@ -23,16 +22,16 @@ public class ResultSetAnnot {
     this.annotationMirror = annotationMirror;
   }
 
-  public static ResultSetAnnot newInstance(VariableElement param, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static ResultSetAnnot newInstance(VariableElement param, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(param, ResultSet.class, env);
+        ctx.getElements().getAnnotationMirror(param, ResultSet.class);
     if (annotationMirror == null) {
       return null;
     }
     ResultSetAnnot result = new ResultSetAnnot(annotationMirror);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("ensureResultMapping".equals(name)) {

@@ -6,6 +6,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.Person;
@@ -31,7 +32,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("notFound").parse();
     try {
@@ -51,7 +53,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.equals(emp)").parse();
     TypeDeclaration result = validator.validate(node);
@@ -66,7 +69,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("\"aaa\".equals(\"aaa\")").parse();
     TypeDeclaration result = validator.validate(node);
@@ -81,7 +85,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.notFound(1, \"aaa\".length())").parse();
     try {
@@ -101,7 +106,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.hoge(\"aaa\")").parse();
     TypeDeclaration result = validator.validate(node);
@@ -116,7 +122,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.hoge(new java.lang.Integer(1))").parse();
     TypeDeclaration result = validator.validate(node);
@@ -131,7 +138,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.foo(new java.lang.Integer(1))").parse();
     TypeDeclaration result = validator.validate(node);
@@ -146,7 +154,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     String expression = String.format("@%s@staticMethod(\"aaa\")", Emp.class.getName());
     ExpressionNode node = new ExpressionParser(expression).parse();
@@ -162,7 +171,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("@Xxx@staticMethod(\"aaa\")").parse();
     try {
@@ -182,7 +192,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     String expression = String.format("@%s@getName()", Emp.class.getName());
     ExpressionNode node = new ExpressionParser(expression).parse();
@@ -203,7 +214,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     String expression = String.format("@%s@staticField", Emp.class.getName());
     ExpressionNode node = new ExpressionParser(expression).parse();
@@ -219,7 +231,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("@Xxx@staticField").parse();
     try {
@@ -239,7 +252,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     String expression = String.format("@%s@name", Emp.class.getName());
     ExpressionNode node = new ExpressionParser(expression).parse();
@@ -261,7 +275,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("@prefix(emp.name)").parse();
     TypeDeclaration result = validator.validate(node);
@@ -277,7 +292,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("@hoge(emp.name)").parse();
     try {
@@ -299,7 +315,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
         new ExpressionValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             MyExpressionFunctions.class.getName());
@@ -319,7 +335,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
         new ExpressionValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             MyExpressionFunctions.class.getName());
@@ -339,7 +355,10 @@ public class ExpressionValidatorTest extends AptTestCase {
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
         new ExpressionValidator(
-            getProcessingEnvironment(), methodElement, parameterTypeMap, "nonExistent");
+            new Context(getProcessingEnvironment()),
+            methodElement,
+            parameterTypeMap,
+            "nonExistent");
 
     ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
     try {
@@ -361,7 +380,10 @@ public class ExpressionValidatorTest extends AptTestCase {
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
         new ExpressionValidator(
-            getProcessingEnvironment(), methodElement, parameterTypeMap, "java.lang.String");
+            new Context(getProcessingEnvironment()),
+            methodElement,
+            parameterTypeMap,
+            "java.lang.String");
 
     ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
     try {
@@ -383,7 +405,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
         new ExpressionValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             MyExpressionFunctions.class.getName());
@@ -406,7 +428,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("new java.lang.String(1, 2)").parse();
     try {
@@ -426,7 +449,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.id").parse();
     TypeDeclaration result = validator.validate(node);
@@ -441,7 +465,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.name").parse();
     TypeDeclaration result = validator.validate(node);
@@ -456,7 +481,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.age").parse();
     TypeDeclaration result = validator.validate(node);
@@ -471,7 +497,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.salary").parse();
     TypeDeclaration result = validator.validate(node);
@@ -486,7 +513,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.temperature").parse();
     TypeDeclaration result = validator.validate(node);
@@ -501,7 +529,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.staticName").parse();
     TypeDeclaration result = validator.validate(node);
@@ -516,7 +545,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.staticAge").parse();
     TypeDeclaration result = validator.validate(node);
@@ -531,7 +561,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.getId()").parse();
     TypeDeclaration result = validator.validate(node);
@@ -546,7 +577,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.getName()").parse();
     TypeDeclaration result = validator.validate(node);
@@ -561,7 +593,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.getAge()").parse();
     TypeDeclaration result = validator.validate(node);
@@ -576,7 +609,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.getStaticName()").parse();
     TypeDeclaration result = validator.validate(node);
@@ -591,7 +625,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testPerson", Person.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("person.getStaticAge()").parse();
     TypeDeclaration result = validator.validate(node);
@@ -606,7 +641,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.id == new java.lang.Integer(1)").parse();
     TypeDeclaration result = validator.validate(node);
@@ -621,7 +657,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.add(2, 3)").parse();
     TypeDeclaration result = validator.validate(node);
@@ -636,7 +673,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("emp.add(2, 3) == 5").parse();
     TypeDeclaration result = validator.validate(node);
@@ -651,7 +689,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("true").parse();
     validator.validate(node);
@@ -666,7 +705,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("1 + 2").parse();
     TypeDeclaration result = validator.validate(node);
@@ -681,7 +721,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("1 + \"2\"").parse();
     try {
@@ -701,7 +742,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("\"1\" + \"2\"").parse();
     TypeDeclaration result = validator.validate(node);
@@ -716,7 +758,8 @@ public class ExpressionValidatorTest extends AptTestCase {
     ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
     Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     ExpressionValidator validator =
-        new ExpressionValidator(getProcessingEnvironment(), methodElement, parameterTypeMap);
+        new ExpressionValidator(
+            new Context(getProcessingEnvironment()), methodElement, parameterTypeMap);
 
     ExpressionNode node = new ExpressionParser("\"2\" + 1").parse();
     try {

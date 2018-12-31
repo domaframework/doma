@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
@@ -13,8 +12,8 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SelectAnnot {
@@ -155,15 +154,15 @@ public class SelectAnnot {
     return annotationMirror;
   }
 
-  public static SelectAnnot newInstance(ExecutableElement method, ProcessingEnvironment env) {
-    assertNotNull(env);
-    AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(method, Select.class, env);
+  public static SelectAnnot newInstance(ExecutableElement method, Context ctx) {
+    assertNotNull(ctx);
+    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(method, Select.class);
     if (annotationMirror == null) {
       return null;
     }
     SelectAnnot result = new SelectAnnot(annotationMirror);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("strategy".equals(name)) {

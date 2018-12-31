@@ -2,15 +2,15 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 
 public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQueryMeta> {
 
-  public DefaultQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public DefaultQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override

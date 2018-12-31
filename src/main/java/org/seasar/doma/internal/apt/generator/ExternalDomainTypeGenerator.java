@@ -3,14 +3,12 @@ package org.seasar.doma.internal.apt.generator;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 public class ExternalDomainTypeGenerator extends AbstractGenerator {
@@ -26,21 +24,20 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
   protected final boolean parametarized;
 
   public ExternalDomainTypeGenerator(
-      ProcessingEnvironment env, TypeElement typeElement, ExternalDomainMeta domainMeta)
-      throws IOException {
+      Context ctx, TypeElement typeElement, ExternalDomainMeta domainMeta) throws IOException {
     super(
-        env,
+        ctx,
         typeElement,
         Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
             + "."
-            + ElementUtil.getPackageName(typeElement, env),
+            + ctx.getElements().getPackageName(typeElement),
         null,
         Constants.METATYPE_PREFIX,
         "");
     assertNotNull(domainMeta);
     this.domainMeta = domainMeta;
-    this.domainTypeName = TypeMirrorUtil.getTypeName(domainMeta.getDomainElement().asType(), env);
-    this.simpleMetaClassName = MetaUtil.toSimpleMetaName(typeElement, env);
+    this.domainTypeName = ctx.getTypes().getTypeName(domainMeta.getDomainElement().asType());
+    this.simpleMetaClassName = MetaUtil.toSimpleMetaName(typeElement, ctx);
     this.typeParamDecl = makeTypeParamDecl(domainTypeName);
     this.parametarized = !domainMeta.getDomainElement().getTypeParameters().isEmpty();
   }

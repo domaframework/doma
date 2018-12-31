@@ -7,6 +7,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
@@ -32,7 +33,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -54,7 +55,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -75,7 +76,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -97,7 +98,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -118,7 +119,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -139,7 +140,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -161,7 +162,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -190,7 +191,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -219,7 +220,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -248,7 +249,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -269,7 +270,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -296,7 +297,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -317,7 +318,7 @@ public class SqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     SqlValidator validator =
         new SqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",

@@ -2,21 +2,20 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.Embeddable;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class EmbeddableCtType extends AbstractCtType {
 
-  public EmbeddableCtType(TypeMirror type, ProcessingEnvironment env) {
-    super(type, env);
+  public EmbeddableCtType(TypeMirror type, Context ctx) {
+    super(type, ctx);
   }
 
-  public static EmbeddableCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
+  public static EmbeddableCtType newInstance(TypeMirror type, Context ctx) {
+    assertNotNull(type, ctx);
+    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
@@ -24,7 +23,7 @@ public class EmbeddableCtType extends AbstractCtType {
     if (embeddable == null) {
       return null;
     }
-    return new EmbeddableCtType(type, env);
+    return new EmbeddableCtType(type, ctx);
   }
 
   @Override

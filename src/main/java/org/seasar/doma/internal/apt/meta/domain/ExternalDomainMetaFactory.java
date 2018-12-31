@@ -6,7 +6,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -19,20 +18,19 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
 
 public class ExternalDomainMetaFactory implements TypeElementMetaFactory<ExternalDomainMeta> {
 
-  private final ProcessingEnvironment env;
+  private final Context ctx;
 
-  public ExternalDomainMetaFactory(ProcessingEnvironment env) {
-    assertNotNull(env);
-    this.env = env;
+  public ExternalDomainMetaFactory(Context ctx) {
+    assertNotNull(ctx);
+    this.ctx = ctx;
   }
 
   @Override
@@ -50,32 +48,44 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   }
 
   protected void validateConverter(TypeElement convElement) {
-    if (!TypeMirrorUtil.isAssignable(convElement.asType(), DomainConverter.class, env)) {
+    if (!ctx.getTypes().isAssignable(convElement.asType(), DomainConverter.class)) {
       throw new AptException(
-          Message.DOMA4191, env, convElement, new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4191,
+          ctx.getEnv(),
+          convElement,
+          new Object[] {convElement.getQualifiedName()});
     }
     if (convElement.getNestingKind().isNested()) {
       throw new AptException(
-          Message.DOMA4198, env, convElement, new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4198,
+          ctx.getEnv(),
+          convElement,
+          new Object[] {convElement.getQualifiedName()});
     }
     if (convElement.getModifiers().contains(Modifier.ABSTRACT)) {
       throw new AptException(
-          Message.DOMA4192, env, convElement, new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4192,
+          ctx.getEnv(),
+          convElement,
+          new Object[] {convElement.getQualifiedName()});
     }
-    ExecutableElement constructor = ElementUtil.getNoArgConstructor(convElement, env);
+    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(convElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
-          Message.DOMA4193, env, convElement, new Object[] {convElement.getQualifiedName()});
+          Message.DOMA4193,
+          ctx.getEnv(),
+          convElement,
+          new Object[] {convElement.getQualifiedName()});
     }
   }
 
   protected TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
-    for (TypeMirror supertype : env.getTypeUtils().directSupertypes(typeMirror)) {
-      if (!TypeMirrorUtil.isAssignable(supertype, DomainConverter.class, env)) {
+    for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
+      if (!ctx.getTypes().isAssignable(supertype, DomainConverter.class)) {
         continue;
       }
-      if (TypeMirrorUtil.isSameType(supertype, DomainConverter.class, env)) {
-        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(supertype, env);
+      if (ctx.getTypes().isSameType(supertype, DomainConverter.class)) {
+        DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
         List<? extends TypeMirror> args = declaredType.getTypeArguments();
         assertEquals(2, args.size());
@@ -91,22 +101,22 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
 
   protected void doDomainType(
       TypeElement convElement, TypeMirror domainType, ExternalDomainMeta meta) {
-    TypeElement domainElement = TypeMirrorUtil.toTypeElement(domainType, env);
+    TypeElement domainElement = ctx.getTypes().toTypeElement(domainType);
     if (domainElement == null) {
       throw new AptIllegalStateException(domainType.toString());
     }
     if (domainElement.getNestingKind().isNested()) {
       validateEnclosingElement(domainElement);
     }
-    PackageElement pkgElement = env.getElementUtils().getPackageOf(domainElement);
+    PackageElement pkgElement = ctx.getElements().getPackageOf(domainElement);
     if (pkgElement.isUnnamed()) {
       throw new AptException(
           Message.DOMA4197,
-          env,
+          ctx.getEnv(),
           convElement,
           new Object[] {domainElement.getQualifiedName(), convElement.getQualifiedName()});
     }
-    DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(domainType, env);
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(domainType);
     if (declaredType == null) {
       throw new AptIllegalStateException(domainType.toString());
     }
@@ -114,7 +124,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
       if (typeArg.getKind() != TypeKind.WILDCARD) {
         throw new AptException(
             Message.DOMA4203,
-            env,
+            ctx.getEnv(),
             convElement,
             new Object[] {domainElement.getQualifiedName(), convElement.getQualifiedName()});
       }
@@ -123,7 +133,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   }
 
   protected void validateEnclosingElement(Element element) {
-    TypeElement typeElement = ElementUtil.toTypeElement(element, env);
+    TypeElement typeElement = ctx.getElements().toTypeElement(element);
     if (typeElement == null) {
       return;
     }
@@ -131,7 +141,10 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
         || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
       throw new AptException(
-          Message.DOMA4280, env, typeElement, new Object[] {typeElement.getQualifiedName()});
+          Message.DOMA4280,
+          ctx.getEnv(),
+          typeElement,
+          new Object[] {typeElement.getQualifiedName()});
     }
     NestingKind nestingKind = typeElement.getNestingKind();
     if (nestingKind == NestingKind.TOP_LEVEL) {
@@ -142,24 +155,30 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
         validateEnclosingElement(typeElement.getEnclosingElement());
       } else {
         throw new AptException(
-            Message.DOMA4278, env, typeElement, new Object[] {typeElement.getQualifiedName()});
+            Message.DOMA4278,
+            ctx.getEnv(),
+            typeElement,
+            new Object[] {typeElement.getQualifiedName()});
       }
     } else {
       throw new AptException(
-          Message.DOMA4279, env, typeElement, new Object[] {typeElement.getQualifiedName()});
+          Message.DOMA4279,
+          ctx.getEnv(),
+          typeElement,
+          new Object[] {typeElement.getQualifiedName()});
     }
   }
 
   protected void doValueType(
       TypeElement convElement, TypeMirror valueType, ExternalDomainMeta meta) {
-    String valueTypeName = TypeMirrorUtil.getTypeName(valueType, env);
+    String valueTypeName = ctx.getTypes().getTypeName(valueType);
     meta.setValueTypeName(valueTypeName);
 
-    BasicCtType basicCtType = BasicCtType.newInstance(valueType, env);
+    BasicCtType basicCtType = BasicCtType.newInstance(valueType, ctx);
     if (basicCtType == null) {
       throw new AptException(
           Message.DOMA4194,
-          env,
+          ctx.getEnv(),
           convElement,
           new Object[] {valueTypeName, convElement.getQualifiedName()});
     }

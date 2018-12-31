@@ -3,13 +3,12 @@ package org.seasar.doma.internal.apt.generator;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
 import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
@@ -23,14 +22,13 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
   protected final String typeParamDecl;
 
-  public DomainTypeGenerator(
-      ProcessingEnvironment env, TypeElement domainElement, DomainMeta domainMeta)
+  public DomainTypeGenerator(Context ctx, TypeElement domainElement, DomainMeta domainMeta)
       throws IOException {
-    super(env, domainElement, null, null, Constants.METATYPE_PREFIX, "");
+    super(ctx, domainElement, null, null, Constants.METATYPE_PREFIX, "");
     assertNotNull(domainMeta);
     this.domainMeta = domainMeta;
-    this.typeName = TypeMirrorUtil.getTypeName(domainMeta.getType(), env);
-    this.simpleMetaClassName = MetaUtil.toSimpleMetaName(domainElement, env);
+    this.typeName = ctx.getTypes().getTypeName(domainMeta.getType());
+    this.simpleMetaClassName = MetaUtil.toSimpleMetaName(domainElement, ctx);
     this.typeParamDecl = makeTypeParamDecl(typeName);
   }
 
@@ -70,7 +68,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
         "public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
         simpleMetaClassName,
         AbstractDomainType.class.getName(),
-        TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env),
+        ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()),
         typeName,
         typeParamDecl);
     print("%n");
@@ -98,7 +96,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
       iprint(
           "    super(() -> new %1$s(%2$s.class));%n",
           domainMeta.getWrapperCtType().getTypeName(),
-          TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
+          ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()));
     } else {
       iprint("    super(() -> new %1$s());%n", domainMeta.getWrapperCtType().getTypeName());
     }
@@ -119,7 +117,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "protected %1$s newDomain(%2$s value) {%n",
-        typeName, TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
+        typeName, ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()));
     if (!primitive && !domainMeta.getAcceptNull()) {
       iprint("    if (value == null) {%n");
       iprint("        return null;%n");
@@ -155,7 +153,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "protected %1$s getBasicValue(%2$s domain) {%n",
-        TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env), typeName);
+        ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()), typeName);
     iprint("    if (domain == null) {%n");
     iprint("        return null;%n");
     iprint("    }%n");

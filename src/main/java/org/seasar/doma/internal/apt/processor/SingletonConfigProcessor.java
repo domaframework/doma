@@ -15,7 +15,6 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.annot.SingletonConfigAnnot;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
 
@@ -41,7 +40,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   protected void validate(TypeElement typeElement) {
-    SingletonConfigAnnot mirror = SingletonConfigAnnot.newInstance(typeElement, processingEnv);
+    SingletonConfigAnnot mirror = SingletonConfigAnnot.newInstance(typeElement, ctx);
     if (mirror == null) {
       throw new AptIllegalStateException("annot must not be null");
     }
@@ -51,7 +50,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   protected void validateClass(TypeElement typeElement, SingletonConfigAnnot mirror) {
-    if (!TypeMirrorUtil.isAssignable(typeElement.asType(), Config.class, processingEnv)) {
+    if (!ctx.getTypes().isAssignable(typeElement.asType(), Config.class)) {
       throw new AptException(
           Message.DOMA4253,
           processingEnv,
@@ -81,8 +80,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         ElementFilter.methodsIn(typeElement.getEnclosedElements())
             .stream()
             .filter(m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-            .filter(
-                m -> TypeMirrorUtil.isAssignable(m.getReturnType(), Config.class, processingEnv))
+            .filter(m -> ctx.getTypes().isAssignable(m.getReturnType(), Config.class))
             .filter(m -> m.getParameters().isEmpty())
             .filter(m -> m.getSimpleName().toString().equals(methodName))
             .findAny();

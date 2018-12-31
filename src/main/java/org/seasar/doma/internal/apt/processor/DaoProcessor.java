@@ -53,32 +53,32 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
   @Override
   protected TypeElementMetaFactory<DaoMeta> createTypeElementMetaFactory() {
     List<QueryMetaFactory> queryMetaFactories = createQueryMetaFactory();
-    return new DaoMetaFactory(processingEnv, queryMetaFactories);
+    return new DaoMetaFactory(ctx, queryMetaFactories);
   }
 
   protected List<QueryMetaFactory> createQueryMetaFactory() {
     List<QueryMetaFactory> factories = new ArrayList<QueryMetaFactory>();
-    factories.add(new SqlFileSelectQueryMetaFactory(processingEnv));
-    factories.add(new AutoModifyQueryMetaFactory(processingEnv));
-    factories.add(new AutoBatchModifyQueryMetaFactory(processingEnv));
-    factories.add(new AutoFunctionQueryMetaFactory(processingEnv));
-    factories.add(new AutoProcedureQueryMetaFactory(processingEnv));
-    factories.add(new SqlFileModifyQueryMetaFactory(processingEnv));
-    factories.add(new SqlFileBatchModifyQueryMetaFactory(processingEnv));
-    factories.add(new SqlFileScriptQueryMetaFactory(processingEnv));
-    factories.add(new DefaultQueryMetaFactory(processingEnv));
-    factories.add(new ArrayCreateQueryMetaFactory(processingEnv));
-    factories.add(new BlobCreateQueryMetaFactory(processingEnv));
-    factories.add(new ClobCreateQueryMetaFactory(processingEnv));
-    factories.add(new NClobCreateQueryMetaFactory(processingEnv));
-    factories.add(new SQLXMLCreateQueryMetaFactory(processingEnv));
-    factories.add(new SqlProcessorQueryMetaFactory(processingEnv));
+    factories.add(new SqlFileSelectQueryMetaFactory(ctx));
+    factories.add(new AutoModifyQueryMetaFactory(ctx));
+    factories.add(new AutoBatchModifyQueryMetaFactory(ctx));
+    factories.add(new AutoFunctionQueryMetaFactory(ctx));
+    factories.add(new AutoProcedureQueryMetaFactory(ctx));
+    factories.add(new SqlFileModifyQueryMetaFactory(ctx));
+    factories.add(new SqlFileBatchModifyQueryMetaFactory(ctx));
+    factories.add(new SqlFileScriptQueryMetaFactory(ctx));
+    factories.add(new DefaultQueryMetaFactory(ctx));
+    factories.add(new ArrayCreateQueryMetaFactory(ctx));
+    factories.add(new BlobCreateQueryMetaFactory(ctx));
+    factories.add(new ClobCreateQueryMetaFactory(ctx));
+    factories.add(new NClobCreateQueryMetaFactory(ctx));
+    factories.add(new SQLXMLCreateQueryMetaFactory(ctx));
+    factories.add(new SqlProcessorQueryMetaFactory(ctx));
     return factories;
   }
 
   @Override
   protected Generator createGenerator(TypeElement typeElement, DaoMeta meta) throws IOException {
     assertNotNull(typeElement, meta);
-    return new DaoGenerator(processingEnv, typeElement, meta);
+    return new DaoGenerator(ctx, typeElement, meta);
   }
 }

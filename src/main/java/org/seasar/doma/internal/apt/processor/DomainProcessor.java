@@ -29,12 +29,12 @@ public class DomainProcessor extends AbstractGeneratingProcessor<DomainMeta> {
 
   @Override
   protected DomainMetaFactory createTypeElementMetaFactory() {
-    return new DomainMetaFactory(processingEnv);
+    return new DomainMetaFactory(ctx);
   }
 
   @Override
   protected Generator createGenerator(TypeElement typeElement, DomainMeta meta) throws IOException {
     assertNotNull(typeElement, meta);
-    return new DomainTypeGenerator(processingEnv, typeElement, meta);
+    return new DomainTypeGenerator(ctx, typeElement, meta);
   }
 }

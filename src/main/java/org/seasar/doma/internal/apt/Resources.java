@@ -1,35 +1,42 @@
-package org.seasar.doma.internal.apt.util;
+package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import javax.annotation.processing.Filer;
-import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.tools.FileObject;
+import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
-import org.seasar.doma.internal.apt.Options;
 
-public class ResourceUtil {
+public class Resources {
 
-  public static FileObject getResource(String relativePath, ProcessingEnvironment env)
+  private Context ctx;
+
+  public Resources(Context ctx) {
+    this.ctx = ctx;
+  }
+
+  public JavaFileObject createSourceFile(CharSequence name, Element... originatingElements)
       throws IOException {
-    assertNotNull(relativePath, env);
-    Map<String, String> options = env.getOptions();
+    Filer filer = ctx.getEnv().getFiler();
+    return filer.createSourceFile(name, originatingElements);
+  }
+
+  public FileObject getResource(String relativePath) throws IOException {
+    assertNotNull(relativePath);
+    Map<String, String> options = ctx.getEnv().getOptions();
     String resourcesDir = options.get(Options.RESOURCES_DIR);
     if (resourcesDir != null) {
       Path path = Paths.get(resourcesDir, relativePath);
       return new FileObjectImpl(path);
     }
-    Filer filer = env.getFiler();
+    Filer filer = ctx.getEnv().getFiler();
     return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
   }
 
@@ -37,7 +44,7 @@ public class ResourceUtil {
 
     private final Path path;
 
-    public FileObjectImpl(Path path) {
+    protected FileObjectImpl(Path path) {
       this.path = path;
     }
 

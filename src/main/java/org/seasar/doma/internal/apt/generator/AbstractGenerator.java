@@ -5,17 +5,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Formatter;
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
 import javax.tools.JavaFileObject;
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.Conventions;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.Message;
 
@@ -23,7 +19,7 @@ public abstract class AbstractGenerator implements Generator {
 
   protected static final String INDENT_SPACE = "    ";
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
   protected final TypeElement typeElement;
 
@@ -46,49 +42,48 @@ public abstract class AbstractGenerator implements Generator {
   protected final StringBuilder indentBuffer = new StringBuilder();
 
   protected AbstractGenerator(
-      ProcessingEnvironment env,
+      Context ctx,
       TypeElement typeElement,
       String fullpackage,
       String subpackage,
       String prefix,
       String suffix)
       throws IOException {
-    assertNotNull(env, typeElement, prefix, suffix);
-    this.env = env;
+    assertNotNull(ctx, typeElement, prefix, suffix);
+    this.ctx = ctx;
     this.typeElement = typeElement;
     this.fullpackage = fullpackage;
     this.subpackage = subpackage;
     this.prefix = prefix;
     this.suffix = suffix;
     this.canonicalName =
-        createCanonicalName(env, typeElement, fullpackage, subpackage, prefix, suffix);
+        createCanonicalName(ctx, typeElement, fullpackage, subpackage, prefix, suffix);
     this.packageName = ClassUtil.getPackageName(canonicalName);
     this.simpleName = ClassUtil.getSimpleName(canonicalName);
-    Filer filer = env.getFiler();
-    JavaFileObject file = filer.createSourceFile(canonicalName, typeElement);
+    JavaFileObject file = ctx.getResources().createSourceFile(canonicalName, typeElement);
     formatter = new Formatter(new BufferedWriter(file.openWriter()));
   }
 
   protected String createCanonicalName(
-      ProcessingEnvironment env,
+      Context ctx,
       TypeElement typeElement,
       String fullpackage,
       String subpackage,
       String prefix,
       String suffix) {
-    String qualifiedNamePrefix = getQualifiedNamePrefix(env, typeElement, fullpackage, subpackage);
+    String qualifiedNamePrefix = getQualifiedNamePrefix(ctx, typeElement, fullpackage, subpackage);
     String binaryName =
-        Conventions.normalizeBinaryName(ElementUtil.getBinaryName(typeElement, env));
+        Conventions.normalizeBinaryName(ctx.getElements().getBinaryNameAsString(typeElement));
     String infix = ClassUtil.getSimpleName(binaryName);
     return qualifiedNamePrefix + prefix + infix + suffix;
   }
 
   protected String getQualifiedNamePrefix(
-      ProcessingEnvironment env, TypeElement typeElement, String fullpackage, String subpackage) {
+      Context ctx, TypeElement typeElement, String fullpackage, String subpackage) {
     if (fullpackage != null) {
       return fullpackage + ".";
     }
-    String packageName = ElementUtil.getPackageName(typeElement, env);
+    String packageName = ctx.getElements().getPackageName(typeElement);
     String base = "";
     if (packageName != null && packageName.length() > 0) {
       base = packageName + ".";
@@ -103,7 +98,7 @@ public abstract class AbstractGenerator implements Generator {
     String annotationElements =
         String.format(
             "value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\"",
-            Artifact.getName(), Options.getVersion(env), Options.getDate(env));
+            Artifact.getName(), ctx.getOptions().getVersion(), ctx.getOptions().getDate());
     TypeMirror generatedTypeMirror = getGeneratedTypeMirror();
     if (generatedTypeMirror == null) {
       iprint("// %s%n", annotationElements);
@@ -112,11 +107,11 @@ public abstract class AbstractGenerator implements Generator {
   }
 
   protected void printValidateVersionStaticInitializer() {
-    if (Options.getVersionValidation(env)) {
+    if (ctx.getOptions().getVersionValidation()) {
       iprint("static {%n");
       iprint(
           "    %1$s.validateVersion(\"%2$s\");%n",
-          Artifact.class.getName(), Options.getVersion(env));
+          Artifact.class.getName(), ctx.getOptions().getVersion());
       iprint("}%n");
       print("%n");
     }
@@ -140,7 +135,7 @@ public abstract class AbstractGenerator implements Generator {
       formatter.close();
       throw new AptException(
           Message.DOMA4079,
-          env,
+          ctx.getEnv(),
           typeElement,
           ioException,
           new Object[] {canonicalName, ioException});
@@ -165,12 +160,13 @@ public abstract class AbstractGenerator implements Generator {
   }
 
   private TypeMirror getGeneratedTypeMirror() {
-    Elements elements = env.getElementUtils();
-    TypeElement java8 = elements.getTypeElement("javax.annotation.Generated");
+    TypeElement java8 =
+        ctx.getElements().getTypeElement((CharSequence) "javax.annotation.Generated");
     if (java8 != null) {
       return java8.asType();
     }
-    TypeElement java9 = elements.getTypeElement("javax.annotation.processing.Generated");
+    TypeElement java9 =
+        ctx.getElements().getTypeElement((CharSequence) "javax.annotation.processing.Generated");
     if (java9 != null) {
       return java9.asType();
     }

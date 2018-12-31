@@ -5,13 +5,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.AnnotateWith;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 public class AnnotateWithAnnot {
 
@@ -30,20 +29,20 @@ public class AnnotateWithAnnot {
     this.ownerElement = ownerElement;
   }
 
-  public static AnnotateWithAnnot newInstance(TypeElement clazz, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static AnnotateWithAnnot newInstance(TypeElement clazz, Context ctx) {
+    assertNotNull(ctx);
     javax.lang.model.element.AnnotationMirror annotateWith =
-        ElementUtil.getAnnotationMirror(clazz, AnnotateWith.class, env);
+        ctx.getElements().getAnnotationMirror(clazz, AnnotateWith.class);
     TypeElement ownerElement = null;
     if (annotateWith == null) {
       for (javax.lang.model.element.AnnotationMirror annotationMirror :
           clazz.getAnnotationMirrors()) {
         ownerElement =
-            ElementUtil.toTypeElement(annotationMirror.getAnnotationType().asElement(), env);
+            ctx.getElements().toTypeElement(annotationMirror.getAnnotationType().asElement());
         if (ownerElement == null) {
           continue;
         }
-        annotateWith = ElementUtil.getAnnotationMirror(ownerElement, AnnotateWith.class, env);
+        annotateWith = ctx.getElements().getAnnotationMirror(ownerElement, AnnotateWith.class);
         if (annotateWith != null) {
           break;
         }
@@ -56,7 +55,7 @@ public class AnnotateWithAnnot {
     }
     AnnotateWithAnnot result = new AnnotateWithAnnot(annotateWith, ownerElement);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotateWith).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotateWith).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("annotations".equals(name)) {
@@ -64,7 +63,7 @@ public class AnnotateWithAnnot {
         result.annotationsValue = new ArrayList<AnnotationAnnot>();
         for (javax.lang.model.element.AnnotationMirror a :
             AnnotationValueUtil.toAnnotationList(value)) {
-          result.annotationsValue.add(AnnotationAnnot.newInstance(a, env));
+          result.annotationsValue.add(AnnotationAnnot.newInstance(a, ctx));
         }
       }
     }

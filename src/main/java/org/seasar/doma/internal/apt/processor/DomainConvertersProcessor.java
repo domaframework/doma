@@ -12,7 +12,6 @@ import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
 /**
@@ -41,17 +40,16 @@ public class DomainConvertersProcessor extends AbstractProcessor {
   }
 
   protected void validate(TypeElement typeElement) {
-    DomainConvertersAnnot convertersMirror =
-        DomainConvertersAnnot.newInstance(typeElement, processingEnv);
+    DomainConvertersAnnot convertersMirror = DomainConvertersAnnot.newInstance(typeElement, ctx);
     for (TypeMirror convType : convertersMirror.getValueValue()) {
-      TypeElement convElement = TypeMirrorUtil.toTypeElement(convType, processingEnv);
+      TypeElement convElement = ctx.getTypes().toTypeElement(convType);
       if (convElement == null) {
         continue;
       }
       if (convElement.getAnnotation(ExternalDomain.class) == null) {
         throw new AptException(
             Message.DOMA4196,
-            processingEnv,
+            ctx.getEnv(),
             typeElement,
             convertersMirror.getAnnotationMirror(),
             new Object[] {convElement.getQualifiedName()});

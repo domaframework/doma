@@ -68,8 +68,8 @@ public class AptException extends DomaException {
     this.element = element;
     this.annotationMirror = annotationMirror;
     this.annotationValue = annotationValue;
-    if (Options.isDebugEnabled(env)) {
-      Notifier.debug(env, Message.DOMA4074, new Object[] {messageResource, cause});
+    if (new Context(env).getOptions().isDebugEnabled()) {
+      new Context(env).getNotifier().debug(Message.DOMA4074, new Object[] {messageResource, cause});
     }
   }
 

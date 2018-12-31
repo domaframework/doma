@@ -3,16 +3,14 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 public class AllArgsConstructorAnnot {
 
@@ -27,17 +25,17 @@ public class AllArgsConstructorAnnot {
     this.annotationMirror = annotationMirror;
   }
 
-  public static AllArgsConstructorAnnot newInstance(
-      TypeElement typeElement, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static AllArgsConstructorAnnot newInstance(TypeElement typeElement, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(typeElement, Options.getLombokAllArgsConstructor(env), env);
+        ctx.getElements()
+            .getAnnotationMirror(typeElement, ctx.getOptions().getLombokAllArgsConstructor());
     if (annotationMirror == null) {
       return null;
     }
     AllArgsConstructorAnnot result = new AllArgsConstructorAnnot(annotationMirror);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("staticName".equals(name)) {

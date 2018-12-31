@@ -4,11 +4,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.BatchDeleteAnnot;
 import org.seasar.doma.internal.apt.annot.BatchInsertAnnot;
 import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
@@ -25,8 +25,8 @@ import org.seasar.doma.message.Message;
 public class SqlFileBatchModifyQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileBatchModifyQueryMeta> {
 
-  public SqlFileBatchModifyQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public SqlFileBatchModifyQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
@@ -48,19 +48,19 @@ public class SqlFileBatchModifyQueryMetaFactory
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileBatchModifyQueryMeta queryMeta =
         new SqlFileBatchModifyQueryMeta(method, daoMeta.getDaoElement());
-    BatchModifyAnnot batchModifyAnnot = BatchInsertAnnot.newInstance(method, env);
+    BatchModifyAnnot batchModifyAnnot = BatchInsertAnnot.newInstance(method, ctx);
     if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_INSERT);
       return queryMeta;
     }
-    batchModifyAnnot = BatchUpdateAnnot.newInstance(method, env);
+    batchModifyAnnot = BatchUpdateAnnot.newInstance(method, ctx);
     if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_UPDATE);
       return queryMeta;
     }
-    batchModifyAnnot = BatchDeleteAnnot.newInstance(method, env);
+    batchModifyAnnot = BatchDeleteAnnot.newInstance(method, ctx);
     if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_DELETE);
@@ -78,7 +78,7 @@ public class SqlFileBatchModifyQueryMetaFactory
       if (!returnMeta.isBatchResult(entityCtType)) {
         throw new AptException(
             Message.DOMA4223,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -86,7 +86,7 @@ public class SqlFileBatchModifyQueryMetaFactory
       if (!returnMeta.isPrimitiveIntArray()) {
         throw new AptException(
             Message.DOMA4040,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -104,7 +104,7 @@ public class SqlFileBatchModifyQueryMetaFactory
     if (size != 1) {
       throw new AptException(
           Message.DOMA4002,
-          env,
+          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -120,7 +120,7 @@ public class SqlFileBatchModifyQueryMetaFactory
                       throws RuntimeException {
                     throw new AptException(
                         Message.DOMA4042,
-                        env,
+                        ctx.getEnv(),
                         method,
                         new Object[] {
                           daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()
@@ -161,6 +161,6 @@ public class SqlFileBatchModifyQueryMetaFactory
       boolean expandable,
       boolean populatable) {
     return new BatchSqlValidator(
-        env, method, parameterTypeMap, sqlFilePath, expandable, populatable);
+        ctx, method, parameterTypeMap, sqlFilePath, expandable, populatable);
   }
 }

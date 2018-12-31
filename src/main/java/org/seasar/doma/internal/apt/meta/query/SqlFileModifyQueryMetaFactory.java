@@ -2,10 +2,10 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DeleteAnnot;
 import org.seasar.doma.internal.apt.annot.InsertAnnot;
 import org.seasar.doma.internal.apt.annot.ModifyAnnot;
@@ -18,8 +18,8 @@ import org.seasar.doma.message.Message;
 public class SqlFileModifyQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileModifyQueryMeta> {
 
-  public SqlFileModifyQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public SqlFileModifyQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
@@ -40,19 +40,19 @@ public class SqlFileModifyQueryMetaFactory
   protected SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method, daoMeta.getDaoElement());
-    ModifyAnnot modifyAnnot = InsertAnnot.newInstance(method, env);
+    ModifyAnnot modifyAnnot = InsertAnnot.newInstance(method, ctx);
     if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
       return queryMeta;
     }
-    modifyAnnot = UpdateAnnot.newInstance(method, env);
+    modifyAnnot = UpdateAnnot.newInstance(method, ctx);
     if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
       return queryMeta;
     }
-    modifyAnnot = DeleteAnnot.newInstance(method, env);
+    modifyAnnot = DeleteAnnot.newInstance(method, ctx);
     if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
@@ -70,7 +70,7 @@ public class SqlFileModifyQueryMetaFactory
       if (!returnMeta.isResult(entityCtType)) {
         throw new AptException(
             Message.DOMA4222,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -78,7 +78,7 @@ public class SqlFileModifyQueryMetaFactory
       if (!returnMeta.isPrimitiveInt()) {
         throw new AptException(
             Message.DOMA4001,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }

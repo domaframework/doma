@@ -3,22 +3,22 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.Blob;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.BlobFactoryAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 
 public class BlobCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<BlobCreateQueryMeta> {
 
-  public BlobCreateQueryMetaFactory(ProcessingEnvironment env) {
-    super(env, Blob.class);
+  public BlobCreateQueryMetaFactory(Context ctx) {
+    super(ctx, Blob.class);
   }
 
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    BlobFactoryAnnot blobFactoryAnnot = BlobFactoryAnnot.newInstance(method, env);
+    BlobFactoryAnnot blobFactoryAnnot = BlobFactoryAnnot.newInstance(method, ctx);
     if (blobFactoryAnnot == null) {
       return null;
     }

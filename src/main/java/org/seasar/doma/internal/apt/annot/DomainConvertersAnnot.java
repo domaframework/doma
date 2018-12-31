@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
@@ -12,34 +11,33 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.DomainConverters;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 public class DomainConvertersAnnot {
 
   protected final AnnotationMirror annotationMirror;
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
   protected AnnotationValue value;
 
-  protected DomainConvertersAnnot(AnnotationMirror annotationMirror, ProcessingEnvironment env) {
-    assertNotNull(annotationMirror, env);
+  protected DomainConvertersAnnot(AnnotationMirror annotationMirror, Context ctx) {
+    assertNotNull(annotationMirror, ctx);
     this.annotationMirror = annotationMirror;
-    this.env = env;
+    this.ctx = ctx;
   }
 
-  public static DomainConvertersAnnot newInstance(
-      TypeElement typeElement, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static DomainConvertersAnnot newInstance(TypeElement typeElement, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(typeElement, DomainConverters.class, env);
+        ctx.getElements().getAnnotationMirror(typeElement, DomainConverters.class);
     if (annotationMirror == null) {
       return null;
     }
-    DomainConvertersAnnot result = new DomainConvertersAnnot(annotationMirror, env);
+    DomainConvertersAnnot result = new DomainConvertersAnnot(annotationMirror, ctx);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("value".equals(name)) {

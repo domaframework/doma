@@ -2,9 +2,9 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import org.seasar.doma.internal.apt.Context;
 
 public class OriginalStatesMeta {
 
@@ -18,8 +18,8 @@ public class OriginalStatesMeta {
       TypeElement typeElement,
       VariableElement fieldElement,
       TypeElement fieldEnclosingElement,
-      ProcessingEnvironment env) {
-    assertNotNull(typeElement, fieldElement, fieldEnclosingElement, env);
+      Context ctx) {
+    assertNotNull(typeElement, fieldElement, fieldEnclosingElement, ctx);
     this.typeElement = typeElement;
     this.fieldElement = fieldElement;
     this.fieldEnclosingElement = fieldEnclosingElement;

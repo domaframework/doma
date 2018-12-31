@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
@@ -11,8 +10,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 public class SequenceGeneratorAnnot {
 
@@ -35,17 +34,16 @@ public class SequenceGeneratorAnnot {
     this.annotationMirror = annotationMirror;
   }
 
-  public static SequenceGeneratorAnnot newInstance(
-      VariableElement field, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static SequenceGeneratorAnnot newInstance(VariableElement field, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(field, SequenceGenerator.class, env);
+        ctx.getElements().getAnnotationMirror(field, SequenceGenerator.class);
     if (annotationMirror == null) {
       return null;
     }
     SequenceGeneratorAnnot result = new SequenceGeneratorAnnot(annotationMirror);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("catalog".equals(name)) {

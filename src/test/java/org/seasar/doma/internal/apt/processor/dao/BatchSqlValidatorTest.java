@@ -5,6 +5,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
@@ -29,7 +30,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -51,7 +52,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -72,7 +73,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -93,7 +94,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -115,7 +116,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -138,7 +139,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -160,7 +161,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",
@@ -181,7 +182,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     LinkedHashMap<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
     BatchSqlValidator validator =
         new BatchSqlValidator(
-            getProcessingEnvironment(),
+            new Context(getProcessingEnvironment()),
             methodElement,
             parameterTypeMap,
             "aaa/bbbDao/ccc.sql",

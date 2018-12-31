@@ -3,10 +3,10 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.BatchDeleteAnnot;
 import org.seasar.doma.internal.apt.annot.BatchInsertAnnot;
 import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
@@ -21,8 +21,8 @@ import org.seasar.doma.message.Message;
 public class AutoBatchModifyQueryMetaFactory
     extends AbstractQueryMetaFactory<AutoBatchModifyQueryMeta> {
 
-  public AutoBatchModifyQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public AutoBatchModifyQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
@@ -43,19 +43,19 @@ public class AutoBatchModifyQueryMetaFactory
       ExecutableElement method, DaoMeta daoMeta) {
     AutoBatchModifyQueryMeta queryMeta =
         new AutoBatchModifyQueryMeta(method, daoMeta.getDaoElement());
-    BatchModifyAnnot batchModifyAnnot = BatchInsertAnnot.newInstance(method, env);
+    BatchModifyAnnot batchModifyAnnot = BatchInsertAnnot.newInstance(method, ctx);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
       return queryMeta;
     }
-    batchModifyAnnot = BatchUpdateAnnot.newInstance(method, env);
+    batchModifyAnnot = BatchUpdateAnnot.newInstance(method, ctx);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
       return queryMeta;
     }
-    batchModifyAnnot = BatchDeleteAnnot.newInstance(method, env);
+    batchModifyAnnot = BatchDeleteAnnot.newInstance(method, ctx);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);
@@ -73,7 +73,7 @@ public class AutoBatchModifyQueryMetaFactory
       if (!returnMeta.isBatchResult(entityCtType)) {
         throw new AptException(
             Message.DOMA4223,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -81,7 +81,7 @@ public class AutoBatchModifyQueryMetaFactory
       if (!returnMeta.isPrimitiveIntArray()) {
         throw new AptException(
             Message.DOMA4040,
-            env,
+            ctx.getEnv(),
             returnMeta.getMethodElement(),
             new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
       }
@@ -97,7 +97,7 @@ public class AutoBatchModifyQueryMetaFactory
     if (size != 1) {
       throw new AptException(
           Message.DOMA4002,
-          env,
+          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -113,7 +113,7 @@ public class AutoBatchModifyQueryMetaFactory
                       throws RuntimeException {
                     throw new AptException(
                         Message.DOMA4042,
-                        env,
+                        ctx.getEnv(),
                         method,
                         new Object[] {
                           daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()
@@ -138,7 +138,7 @@ public class AutoBatchModifyQueryMetaFactory
                       throws RuntimeException {
                     throw new AptException(
                         Message.DOMA4043,
-                        env,
+                        ctx.getEnv(),
                         method,
                         new Object[] {
                           daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()

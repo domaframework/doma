@@ -2,19 +2,17 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public abstract class AbstractCtType implements CtType {
 
   protected final TypeMirror typeMirror;
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
   protected final String typeName;
 
@@ -30,18 +28,18 @@ public abstract class AbstractCtType implements CtType {
 
   protected final String qualifiedName;
 
-  protected AbstractCtType(TypeMirror typeMirror, ProcessingEnvironment env) {
-    assertNotNull(typeMirror, env);
+  protected AbstractCtType(TypeMirror typeMirror, Context ctx) {
+    assertNotNull(typeMirror, ctx);
     this.typeMirror = typeMirror;
-    this.env = env;
-    this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
-    this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(typeMirror, env);
-    this.metaTypeName = getMetaTypeName(typeMirror, env);
-    this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+    this.ctx = ctx;
+    this.typeName = ctx.getTypes().getTypeName(typeMirror);
+    this.boxedTypeName = ctx.getTypes().getBoxedTypeName(typeMirror);
+    this.metaTypeName = getMetaTypeName(typeMirror, ctx);
+    this.typeElement = ctx.getTypes().toTypeElement(typeMirror);
     if (typeElement != null) {
       qualifiedName = typeElement.getQualifiedName().toString();
-      packageName = ElementUtil.getPackageName(typeElement, env);
-      packageExcludedBinaryName = ElementUtil.getPackageExcludedBinaryName(typeElement, env);
+      packageName = ctx.getElements().getPackageName(typeElement);
+      packageExcludedBinaryName = ctx.getElements().getPackageExcludedBinaryName(typeElement);
     } else {
       qualifiedName = typeName;
       packageName = "";
@@ -49,14 +47,14 @@ public abstract class AbstractCtType implements CtType {
     }
   }
 
-  private static String getMetaTypeName(TypeMirror typeMirror, ProcessingEnvironment env) {
-    assertNotNull(typeMirror, env);
-    String typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
-    TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+  private static String getMetaTypeName(TypeMirror typeMirror, Context ctx) {
+    assertNotNull(typeMirror, ctx);
+    String typeName = ctx.getTypes().getTypeName(typeMirror);
+    TypeElement typeElement = ctx.getTypes().toTypeElement(typeMirror);
     if (typeElement == null) {
       return typeName;
     }
-    return MetaUtil.toFullMetaName(typeElement, env) + makeTypeParamDecl(typeName);
+    return MetaUtil.toFullMetaName(typeElement, ctx) + makeTypeParamDecl(typeName);
   }
 
   private static String makeTypeParamDecl(String typeName) {

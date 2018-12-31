@@ -1,12 +1,11 @@
 package org.seasar.doma.internal.apt.validator;
 
 import java.util.LinkedHashMap;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.Suppress;
-import org.seasar.doma.internal.apt.Notifier;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
@@ -23,20 +22,20 @@ public class BatchSqlValidator extends SqlValidator {
   protected Suppress suppress;
 
   public BatchSqlValidator(
-      ProcessingEnvironment env,
+      Context ctx,
       ExecutableElement methodElement,
       LinkedHashMap<String, TypeMirror> parameterTypeMap,
       String path,
       boolean expandable,
       boolean populatable) {
-    super(env, methodElement, parameterTypeMap, path, expandable, populatable);
+    super(ctx, methodElement, parameterTypeMap, path, expandable, populatable);
     suppress = methodElement.getAnnotation(Suppress.class);
   }
 
   @Override
   public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
     if (!isSuppressed(Message.DOMA4181) && !embeddedVariableWarningNotified) {
-      Notifier.notify(env, Kind.WARNING, Message.DOMA4181, methodElement, new Object[] {path});
+      ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4181, methodElement, new Object[] {path});
       embeddedVariableWarningNotified = true;
     }
     return super.visitEmbeddedVariableNode(node, p);
@@ -45,7 +44,7 @@ public class BatchSqlValidator extends SqlValidator {
   @Override
   public Void visitIfNode(IfNode node, Void p) {
     if (!isSuppressed(Message.DOMA4182) && !ifWarningNotified) {
-      Notifier.notify(env, Kind.WARNING, Message.DOMA4182, methodElement, new Object[] {path});
+      ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4182, methodElement, new Object[] {path});
       ifWarningNotified = true;
     }
     return super.visitIfNode(node, p);
@@ -54,7 +53,7 @@ public class BatchSqlValidator extends SqlValidator {
   @Override
   public Void visitForNode(ForNode node, Void p) {
     if (!isSuppressed(Message.DOMA4183) && !forWarningNotified) {
-      Notifier.notify(env, Kind.WARNING, Message.DOMA4183, methodElement, new Object[] {path});
+      ctx.getNotifier().notify(Kind.WARNING, Message.DOMA4183, methodElement, new Object[] {path});
       forWarningNotified = true;
     }
     return super.visitForNode(node, p);

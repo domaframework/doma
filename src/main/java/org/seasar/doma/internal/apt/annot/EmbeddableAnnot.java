@@ -2,11 +2,10 @@ package org.seasar.doma.internal.apt.annot;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Embeddable;
-import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class EmbeddableAnnot {
 
@@ -20,10 +19,10 @@ public class EmbeddableAnnot {
     return annotationMirror;
   }
 
-  public static EmbeddableAnnot newInstance(TypeElement clazz, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static EmbeddableAnnot newInstance(TypeElement clazz, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(clazz, Embeddable.class, env);
+        ctx.getElements().getAnnotationMirror(clazz, Embeddable.class);
     if (annotationMirror == null) {
       return null;
     }

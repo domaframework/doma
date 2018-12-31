@@ -3,12 +3,11 @@ package org.seasar.doma.internal.apt.cttype;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Optional;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class OptionalCtType extends AbstractCtType {
 
@@ -18,9 +17,9 @@ public class OptionalCtType extends AbstractCtType {
 
   private boolean isWildcardType;
 
-  public OptionalCtType(TypeMirror optionalType, ProcessingEnvironment env) {
-    super(optionalType, env);
-    DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(getTypeMirror(), env);
+  public OptionalCtType(TypeMirror optionalType, Context ctx) {
+    super(optionalType, ctx);
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(getTypeMirror());
     if (declaredType == null) {
       throw new AptIllegalStateException(getTypeName());
     }
@@ -33,23 +32,23 @@ public class OptionalCtType extends AbstractCtType {
         isWildcardType = true;
         elementCtType = null;
       } else {
-        EntityCtType entityCtType = EntityCtType.newInstance(typeArg, env);
+        EntityCtType entityCtType = EntityCtType.newInstance(typeArg, ctx);
         if (entityCtType != null) {
           elementCtType = entityCtType;
         } else {
-          DomainCtType domainCtType = DomainCtType.newInstance(typeArg, env);
+          DomainCtType domainCtType = DomainCtType.newInstance(typeArg, ctx);
           if (domainCtType != null) {
             elementCtType = domainCtType;
           } else {
-            BasicCtType basicCtType = BasicCtType.newInstance(typeArg, env);
+            BasicCtType basicCtType = BasicCtType.newInstance(typeArg, ctx);
             if (basicCtType != null) {
               elementCtType = basicCtType;
             } else {
-              MapCtType mapCtType = MapCtType.newInstance(typeArg, env);
+              MapCtType mapCtType = MapCtType.newInstance(typeArg, ctx);
               if (mapCtType != null) {
                 elementCtType = mapCtType;
               } else {
-                elementCtType = AnyCtType.newInstance(typeArg, env);
+                elementCtType = AnyCtType.newInstance(typeArg, ctx);
               }
             }
           }
@@ -70,16 +69,16 @@ public class OptionalCtType extends AbstractCtType {
     return isWildcardType;
   }
 
-  public static OptionalCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    if (!TypeMirrorUtil.isSameType(type, Optional.class, env)) {
+  public static OptionalCtType newInstance(TypeMirror type, Context ctx) {
+    assertNotNull(type, ctx);
+    if (!ctx.getTypes().isSameType(type, Optional.class)) {
       return null;
     }
-    DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
-    return new OptionalCtType(type, env);
+    return new OptionalCtType(type, ctx);
   }
 
   @Override

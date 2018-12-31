@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
@@ -11,8 +10,8 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.Function;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class FunctionAnnot {
@@ -43,16 +42,16 @@ public class FunctionAnnot {
     this.defaultName = defaultName;
   }
 
-  public static FunctionAnnot newInstance(ExecutableElement method, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static FunctionAnnot newInstance(ExecutableElement method, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(method, Function.class, env);
+        ctx.getElements().getAnnotationMirror(method, Function.class);
     if (annotationMirror == null) {
       return null;
     }
     FunctionAnnot result = new FunctionAnnot(annotationMirror, method.getSimpleName().toString());
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("catalog".equals(name)) {

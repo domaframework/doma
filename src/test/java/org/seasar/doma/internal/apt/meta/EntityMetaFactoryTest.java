@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMetaFactory;
@@ -42,7 +43,8 @@ public class EntityMetaFactoryTest extends AptTestCase {
 
   protected EntityMetaFactory createEntityMetaFactory() {
     ProcessingEnvironment env = getProcessingEnvironment();
-    EntityPropertyMetaFactory propertyMetaFactory = new EntityPropertyMetaFactory(env);
-    return new EntityMetaFactory(env, propertyMetaFactory);
+    Context ctx = new Context(env);
+    EntityPropertyMetaFactory propertyMetaFactory = new EntityPropertyMetaFactory(ctx);
+    return new EntityMetaFactory(ctx, propertyMetaFactory);
   }
 }

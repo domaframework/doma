@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Map;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
@@ -13,16 +12,15 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.AccessLevel;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
 
 public class DaoAnnot {
 
   protected final AnnotationMirror annotationMirror;
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
   protected AnnotationValue config;
 
@@ -30,21 +28,21 @@ public class DaoAnnot {
 
   protected TypeMirror configValue;
 
-  protected DaoAnnot(AnnotationMirror annotationMirror, ProcessingEnvironment env) {
-    assertNotNull(annotationMirror, env);
+  protected DaoAnnot(AnnotationMirror annotationMirror, Context ctx) {
+    assertNotNull(annotationMirror, ctx);
     this.annotationMirror = annotationMirror;
-    this.env = env;
+    this.ctx = ctx;
   }
 
-  public static DaoAnnot newInstance(TypeElement interfase, ProcessingEnvironment env) {
-    assertNotNull(env);
-    AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(interfase, Dao.class, env);
+  public static DaoAnnot newInstance(TypeElement interfase, Context ctx) {
+    assertNotNull(ctx);
+    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(interfase, Dao.class);
     if (annotationMirror == null) {
       return null;
     }
-    DaoAnnot result = new DaoAnnot(annotationMirror, env);
+    DaoAnnot result = new DaoAnnot(annotationMirror, ctx);
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        env.getElementUtils().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
       String name = entry.getKey().getSimpleName().toString();
       AnnotationValue value = entry.getValue();
       if ("config".equals(name)) {
@@ -89,6 +87,6 @@ public class DaoAnnot {
   }
 
   public boolean hasUserDefinedConfig() {
-    return !TypeMirrorUtil.isSameType(configValue, Config.class, env);
+    return !ctx.getTypes().isSameType(configValue, Config.class);
   }
 }

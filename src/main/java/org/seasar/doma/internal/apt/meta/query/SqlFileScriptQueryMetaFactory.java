@@ -3,9 +3,9 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.File;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ScriptAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
@@ -14,8 +14,8 @@ import org.seasar.doma.message.Message;
 public class SqlFileScriptQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileScriptQueryMeta> {
 
-  public SqlFileScriptQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public SqlFileScriptQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
@@ -36,7 +36,7 @@ public class SqlFileScriptQueryMetaFactory
   protected SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method, daoMeta.getDaoElement());
-    ScriptAnnot scriptAnnot = ScriptAnnot.newInstance(method, env);
+    ScriptAnnot scriptAnnot = ScriptAnnot.newInstance(method, ctx);
     if (scriptAnnot == null) {
       return null;
     }
@@ -52,7 +52,7 @@ public class SqlFileScriptQueryMetaFactory
     if (!returnMeta.isPrimitiveVoid()) {
       throw new AptException(
           Message.DOMA4172,
-          env,
+          ctx.getEnv(),
           returnMeta.getMethodElement(),
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }
@@ -65,7 +65,7 @@ public class SqlFileScriptQueryMetaFactory
     if (!method.getParameters().isEmpty()) {
       throw new AptException(
           Message.DOMA4173,
-          env,
+          ctx.getEnv(),
           method,
           new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
     }

@@ -4,7 +4,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -12,15 +11,15 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Transient;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class EntityPropertyNameCollector {
 
-  protected final ProcessingEnvironment env;
+  protected final Context ctx;
 
-  public EntityPropertyNameCollector(ProcessingEnvironment env) {
-    assertNotNull(env);
-    this.env = env;
+  public EntityPropertyNameCollector(Context ctx) {
+    assertNotNull(ctx);
+    this.ctx = ctx;
   }
 
   public Set<String> collect(TypeMirror entityType) {
@@ -30,9 +29,9 @@ public class EntityPropertyNameCollector {
   }
 
   protected void collectNames(TypeMirror type, Set<String> names) {
-    for (TypeElement t = TypeMirrorUtil.toTypeElement(type, env);
+    for (TypeElement t = ctx.getTypes().toTypeElement(type);
         t != null && t.asType().getKind() != TypeKind.NONE;
-        t = TypeMirrorUtil.toTypeElement(t.getSuperclass(), env)) {
+        t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
       for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
         if (isPersistent(field)) {
           names.add(field.getSimpleName().toString());

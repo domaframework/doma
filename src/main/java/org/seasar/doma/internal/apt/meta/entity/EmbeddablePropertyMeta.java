@@ -2,12 +2,11 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public class EmbeddablePropertyMeta {
 
@@ -25,12 +24,12 @@ public class EmbeddablePropertyMeta {
 
   protected CtType ctType;
 
-  public EmbeddablePropertyMeta(VariableElement fieldElement, ProcessingEnvironment env) {
-    assertNotNull(fieldElement, env);
+  public EmbeddablePropertyMeta(VariableElement fieldElement, Context ctx) {
+    assertNotNull(fieldElement, ctx);
     this.type = fieldElement.asType();
-    this.typeName = TypeMirrorUtil.getTypeName(type, env);
-    this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(type, env);
-    this.boxedClassName = TypeMirrorUtil.getBoxedClassName(type, env);
+    this.typeName = ctx.getTypes().getTypeName(type);
+    this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
+    this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
   }
 
   public String getName() {

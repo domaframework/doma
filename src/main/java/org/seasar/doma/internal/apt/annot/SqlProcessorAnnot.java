@@ -2,11 +2,10 @@ package org.seasar.doma.internal.apt.annot;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.SqlProcessor;
-import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class SqlProcessorAnnot {
 
@@ -16,10 +15,10 @@ public class SqlProcessorAnnot {
     this.annotationMirror = annotationMirror;
   }
 
-  public static SqlProcessorAnnot newInstance(ExecutableElement method, ProcessingEnvironment env) {
-    assertNotNull(env);
+  public static SqlProcessorAnnot newInstance(ExecutableElement method, Context ctx) {
+    assertNotNull(ctx);
     AnnotationMirror annotationMirror =
-        ElementUtil.getAnnotationMirror(method, SqlProcessor.class, env);
+        ctx.getElements().getAnnotationMirror(method, SqlProcessor.class);
     if (annotationMirror == null) {
       return null;
     }

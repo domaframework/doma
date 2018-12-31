@@ -2,9 +2,9 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ProcedureAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.message.Message;
@@ -12,14 +12,14 @@ import org.seasar.doma.message.Message;
 public class AutoProcedureQueryMetaFactory
     extends AutoModuleQueryMetaFactory<AutoProcedureQueryMeta> {
 
-  public AutoProcedureQueryMetaFactory(ProcessingEnvironment env) {
-    super(env);
+  public AutoProcedureQueryMetaFactory(Context ctx) {
+    super(ctx);
   }
 
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    ProcedureAnnot procedureAnnot = ProcedureAnnot.newInstance(method, env);
+    ProcedureAnnot procedureAnnot = ProcedureAnnot.newInstance(method, ctx);
     if (procedureAnnot == null) {
       return null;
     }
@@ -40,7 +40,7 @@ public class AutoProcedureQueryMetaFactory
     if (!resultMeta.isPrimitiveVoid()) {
       throw new AptException(
           Message.DOMA4064,
-          env,
+          ctx.getEnv(),
           resultMeta.getMethodElement(),
           new Object[] {
             queryMeta.getDaoElement().getQualifiedName(),
