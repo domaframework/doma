@@ -43,7 +43,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
   @Override
   public DomainMeta createTypeElementMeta(TypeElement classElement) {
     assertNotNull(classElement);
-    DomainAnnot domainAnnot = DomainAnnot.newInstance(classElement, ctx);
+    DomainAnnot domainAnnot = ctx.getAnnotations().newDomainAnnot(classElement);
     if (domainAnnot == null) {
       throw new AptIllegalStateException("domainAnnot");
     }
@@ -59,7 +59,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
   }
 
   protected Strategy createStrategy(TypeElement classElement, DomainMeta domainMeta) {
-    ValueAnnot valueAnnot = ValueAnnot.newInstance(classElement, ctx);
+    ValueAnnot valueAnnot = ctx.getAnnotations().newValueAnnot(classElement);
     if (valueAnnot != null) {
       return new ValueStragety(ctx, valueAnnot);
     }

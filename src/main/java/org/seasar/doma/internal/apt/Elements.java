@@ -4,9 +4,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
@@ -249,5 +247,16 @@ public class Elements {
       }
     }
     return null;
+  }
+
+  public Map<String, AnnotationValue> getValuesWithDefaults(AnnotationMirror annotationMirror) {
+    Map<String, AnnotationValue> map = new HashMap<>();
+    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
+        getElementValuesWithDefaults(annotationMirror).entrySet()) {
+      String key = entry.getKey().getSimpleName().toString();
+      AnnotationValue value = entry.getValue();
+      map.put(key, value);
+    }
+    return Collections.unmodifiableMap(map);
   }
 }

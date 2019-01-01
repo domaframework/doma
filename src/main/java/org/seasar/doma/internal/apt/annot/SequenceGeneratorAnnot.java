@@ -5,66 +5,44 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-public class SequenceGeneratorAnnot {
+public class SequenceGeneratorAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String CATALOG = "catalog";
 
-  protected AnnotationValue catalog;
+  private static final String SCHEMA = "schema";
 
-  protected AnnotationValue schema;
+  private static final String SEQUENCE = "sequence";
 
-  protected AnnotationValue sequence;
+  private static final String INITIAL_VALUE = "initialValue";
 
-  protected AnnotationValue initialValue;
+  private static final String ALLOCATION_SIZE = "allocationSize";
 
-  protected AnnotationValue allocationSize;
+  private static final String IMPLEMENTER = "implementer";
 
-  protected AnnotationValue implementer;
+  private final AnnotationValue catalog;
 
-  protected SequenceGeneratorAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    this.annotationMirror = annotationMirror;
-  }
+  private final AnnotationValue schema;
 
-  public static SequenceGeneratorAnnot newInstance(VariableElement field, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror =
-        ctx.getElements().getAnnotationMirror(field, SequenceGenerator.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    SequenceGeneratorAnnot result = new SequenceGeneratorAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("catalog".equals(name)) {
-        result.catalog = value;
-      } else if ("schema".equals(name)) {
-        result.schema = value;
-      } else if ("sequence".equals(name)) {
-        result.sequence = value;
-      } else if ("initialValue".equals(name)) {
-        result.initialValue = value;
-      } else if ("allocationSize".equals(name)) {
-        result.allocationSize = value;
-      } else if ("implementer".equals(name)) {
-        result.implementer = value;
-      }
-    }
-    return result;
-  }
+  private final AnnotationValue sequence;
 
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
+  private final AnnotationValue initialValue;
+
+  private final AnnotationValue allocationSize;
+
+  private final AnnotationValue implementer;
+
+  SequenceGeneratorAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.catalog = assertNonNullValue(values, CATALOG);
+    this.schema = assertNonNullValue(values, SCHEMA);
+    this.sequence = assertNonNullValue(values, SEQUENCE);
+    this.initialValue = assertNonNullValue(values, INITIAL_VALUE);
+    this.allocationSize = assertNonNullValue(values, ALLOCATION_SIZE);
+    this.implementer = assertNonNullValue(values, IMPLEMENTER);
   }
 
   public AnnotationValue getCatalog() {
@@ -94,7 +72,7 @@ public class SequenceGeneratorAnnot {
   public String getCatalogValue() {
     String value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
-      throw new AptIllegalStateException("catalog");
+      throw new AptIllegalStateException(CATALOG);
     }
     return value;
   }
@@ -102,7 +80,7 @@ public class SequenceGeneratorAnnot {
   public String getSchemaValue() {
     String value = AnnotationValueUtil.toString(schema);
     if (value == null) {
-      throw new AptIllegalStateException("schema");
+      throw new AptIllegalStateException(SCHEMA);
     }
     return value;
   }
@@ -110,7 +88,7 @@ public class SequenceGeneratorAnnot {
   public String getSequenceValue() {
     String value = AnnotationValueUtil.toString(sequence);
     if (value == null) {
-      throw new AptIllegalStateException("sequence");
+      throw new AptIllegalStateException(SEQUENCE);
     }
     return value;
   }
@@ -118,7 +96,7 @@ public class SequenceGeneratorAnnot {
   public Long getInitialValueValue() {
     Long value = AnnotationValueUtil.toLong(initialValue);
     if (value == null) {
-      throw new AptIllegalStateException("initialValue");
+      throw new AptIllegalStateException(INITIAL_VALUE);
     }
     return value;
   }
@@ -126,7 +104,7 @@ public class SequenceGeneratorAnnot {
   public Long getAllocationSizeValue() {
     Long value = AnnotationValueUtil.toLong(allocationSize);
     if (value == null) {
-      throw new AptIllegalStateException("allocationSize");
+      throw new AptIllegalStateException(ALLOCATION_SIZE);
     }
     return value;
   }
@@ -134,7 +112,7 @@ public class SequenceGeneratorAnnot {
   public TypeMirror getImplementerValue() {
     TypeMirror value = AnnotationValueUtil.toType(implementer);
     if (value == null) {
-      throw new AptIllegalStateException("implementer");
+      throw new AptIllegalStateException(IMPLEMENTER);
     }
     return value;
   }

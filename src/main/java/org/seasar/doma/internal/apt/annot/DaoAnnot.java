@@ -1,65 +1,38 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.AccessLevel;
-import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.jdbc.Config;
 
-public class DaoAnnot {
+public class DaoAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String CONFIG = "config";
 
-  protected final Context ctx;
+  private static final String ACCESS_LEVEL = "accessLevel";
 
-  protected AnnotationValue config;
+  private final AnnotationValue config;
 
-  protected AnnotationValue accessLevel;
+  private final AnnotationValue accessLevel;
 
-  protected TypeMirror configValue;
+  private final boolean hasUserDefinedConfig;
 
-  protected DaoAnnot(AnnotationMirror annotationMirror, Context ctx) {
-    assertNotNull(annotationMirror, ctx);
-    this.annotationMirror = annotationMirror;
-    this.ctx = ctx;
-  }
-
-  public static DaoAnnot newInstance(TypeElement interfase, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(interfase, Dao.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    DaoAnnot result = new DaoAnnot(annotationMirror, ctx);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("config".equals(name)) {
-        result.config = value;
-        result.configValue = AnnotationValueUtil.toType(value);
-        if (result.configValue == null) {
-          throw new AptIllegalStateException("config");
-        }
-      } else if ("accessLevel".equals(name)) {
-        result.accessLevel = value;
-      }
-    }
-    return result;
-  }
-
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
+  DaoAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.config = assertNonNullValue(values, CONFIG);
+    this.accessLevel = assertNonNullValue(values, ACCESS_LEVEL);
+    this.hasUserDefinedConfig =
+        annotationMirror
+            .getElementValues()
+            .keySet()
+            .stream()
+            .anyMatch(e -> e.getSimpleName().contentEquals(CONFIG));
   }
 
   public AnnotationValue getConfig() {
@@ -73,7 +46,7 @@ public class DaoAnnot {
   public TypeMirror getConfigValue() {
     TypeMirror value = AnnotationValueUtil.toType(config);
     if (value == null) {
-      throw new AptIllegalStateException("config");
+      throw new AptIllegalStateException(CONFIG);
     }
     return value;
   }
@@ -81,12 +54,12 @@ public class DaoAnnot {
   public AccessLevel getAccessLevelValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(accessLevel);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("accessLevel");
+      throw new AptIllegalStateException(ACCESS_LEVEL);
     }
     return AccessLevel.valueOf(enumConstant.getSimpleName().toString());
   }
 
   public boolean hasUserDefinedConfig() {
-    return !ctx.getTypes().isSameType(configValue, Config.class);
+    return hasUserDefinedConfig;
   }
 }

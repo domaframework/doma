@@ -53,7 +53,7 @@ public class SqlFileSelectQueryMetaFactory
 
   protected SqlFileSelectQueryMeta createSqlFileSelectQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
-    SelectAnnot selectAnnot = SelectAnnot.newInstance(method, ctx);
+    SelectAnnot selectAnnot = ctx.getAnnotations().newSelectAnnot(method);
     if (selectAnnot == null) {
       return null;
     }

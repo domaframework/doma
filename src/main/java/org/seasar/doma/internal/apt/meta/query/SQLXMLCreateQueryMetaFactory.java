@@ -18,7 +18,7 @@ public class SQLXMLCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    SQLXMLFactoryAnnot sqlxmlFactoryAnnot = SQLXMLFactoryAnnot.newInstance(method, ctx);
+    SQLXMLFactoryAnnot sqlxmlFactoryAnnot = ctx.getAnnotations().newSQLXMLFactoryAnnot(method);
     if (sqlxmlFactoryAnnot == null) {
       return null;
     }

@@ -18,7 +18,7 @@ public class BlobCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    BlobFactoryAnnot blobFactoryAnnot = BlobFactoryAnnot.newInstance(method, ctx);
+    BlobFactoryAnnot blobFactoryAnnot = ctx.getAnnotations().newBlobFactoryAnnot(method);
     if (blobFactoryAnnot == null) {
       return null;
     }

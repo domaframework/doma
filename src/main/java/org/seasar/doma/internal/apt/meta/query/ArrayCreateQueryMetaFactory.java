@@ -23,7 +23,7 @@ public class ArrayCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    ArrayFactoryAnnot arrayFactoryAnnot = ArrayFactoryAnnot.newInstance(method, ctx);
+    ArrayFactoryAnnot arrayFactoryAnnot = ctx.getAnnotations().newArrayFactoryAnnot(method);
     if (arrayFactoryAnnot == null) {
       return null;
     }

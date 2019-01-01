@@ -1,6 +1,7 @@
 package org.seasar.doma.internal.apt;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import org.seasar.doma.internal.apt.annot.Annotations;
 
 public class Context {
 
@@ -32,5 +33,9 @@ public class Context {
 
   public Resources getResources() {
     return new Resources(this);
+  }
+
+  public Annotations getAnnotations() {
+    return new Annotations(this);
   }
 }

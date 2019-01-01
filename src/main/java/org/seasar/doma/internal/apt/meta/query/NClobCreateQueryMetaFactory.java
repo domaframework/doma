@@ -18,7 +18,7 @@ public class NClobCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    NClobFactoryAnnot nClobFactoryAnnot = NClobFactoryAnnot.newInstance(method, ctx);
+    NClobFactoryAnnot nClobFactoryAnnot = ctx.getAnnotations().newNClobFactoryAnnot(method);
     if (nClobFactoryAnnot == null) {
       return null;
     }

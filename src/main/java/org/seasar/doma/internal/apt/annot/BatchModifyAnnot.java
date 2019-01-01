@@ -1,8 +1,9 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.List;
+import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
@@ -10,33 +11,47 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public abstract class BatchModifyAnnot {
+public abstract class BatchModifyAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  public static final String SQL_FILE = "sqlFile";
+  public static final String QUERY_TIMEOUT = "queryTimeout";
+  public static final String BATCH_SIZE = "batchSize";
+  public static final String IGNORE_VERSION = "ignoreVersion";
+  public static final String SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION = "suppressOptimisticLockException";
+  public static final String SQL_LOG = "sqlLog";
+  public static final String INCLUDE = "include";
+  public static final String EXCLUDE = "exclude";
 
-  protected AnnotationValue sqlFile;
+  private final AnnotationValue sqlFile;
 
-  protected AnnotationValue queryTimeout;
+  private final AnnotationValue queryTimeout;
 
-  protected AnnotationValue batchSize;
+  private final AnnotationValue batchSize;
 
-  protected AnnotationValue ignoreVersion;
+  private final AnnotationValue ignoreVersion;
 
-  protected AnnotationValue suppressOptimisticLockException;
+  private final AnnotationValue suppressOptimisticLockException;
 
-  protected AnnotationValue include;
+  private final AnnotationValue include;
 
-  protected AnnotationValue exclude;
+  private final AnnotationValue exclude;
 
-  protected AnnotationValue sqlLog;
+  private final AnnotationValue sqlLog;
 
-  protected BatchModifyAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    this.annotationMirror = annotationMirror;
-  }
+  BatchModifyAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
 
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
+    // non null values
+    this.sqlFile = assertNonNullValue(values, SQL_FILE);
+    this.queryTimeout = assertNonNullValue(values, QUERY_TIMEOUT);
+    this.batchSize = assertNonNullValue(values, BATCH_SIZE);
+    this.sqlLog = assertNonNullValue(values, SQL_LOG);
+
+    // nullable values
+    this.ignoreVersion = values.get(IGNORE_VERSION);
+    this.suppressOptimisticLockException = values.get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
+    this.include = values.get(INCLUDE);
+    this.exclude = values.get(EXCLUDE);
   }
 
   public AnnotationValue getSqlFile() {
@@ -74,7 +89,7 @@ public abstract class BatchModifyAnnot {
   public int getQueryTimeoutValue() {
     Integer value = AnnotationValueUtil.toInteger(queryTimeout);
     if (value == null) {
-      throw new AptIllegalStateException("queryTimeout");
+      throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
     return value;
   }
@@ -82,7 +97,7 @@ public abstract class BatchModifyAnnot {
   public int getBatchSizeValue() {
     Integer value = AnnotationValueUtil.toInteger(batchSize);
     if (value == null) {
-      throw new AptIllegalStateException("batchSize");
+      throw new AptIllegalStateException(BATCH_SIZE);
     }
     return value;
   }
@@ -106,7 +121,7 @@ public abstract class BatchModifyAnnot {
   public SqlLogType getSqlLogValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("sqlLog");
+      throw new AptIllegalStateException(SQL_LOG);
     }
     return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
   }
@@ -114,7 +129,7 @@ public abstract class BatchModifyAnnot {
   public boolean getSqlFileValue() {
     Boolean value = AnnotationValueUtil.toBoolean(sqlFile);
     if (value == null) {
-      throw new AptIllegalStateException("sqlFile");
+      throw new AptIllegalStateException(SQL_FILE);
     }
     return value.booleanValue();
   }

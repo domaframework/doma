@@ -1,61 +1,38 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-public class DomainAnnot {
+public class DomainAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String VALUE_TYPE = "valueType";
 
-  protected AnnotationValue valueType;
+  private static final String FACTORY_METHOD = "factoryMethod";
 
-  protected AnnotationValue factoryMethod;
+  private static final String ACCESSOR_METHOD = "accessorMethod";
 
-  protected AnnotationValue accessorMethod;
+  private static final String ACCEPT_NULL = "acceptNull";
 
-  protected AnnotationValue acceptNull;
+  private final AnnotationValue valueType;
 
-  protected DomainAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    this.annotationMirror = annotationMirror;
-  }
+  private final AnnotationValue factoryMethod;
 
-  public static DomainAnnot newInstance(TypeElement clazz, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(clazz, Domain.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    DomainAnnot result = new DomainAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("valueType".equals(name)) {
-        result.valueType = value;
-      } else if ("factoryMethod".equals(name)) {
-        result.factoryMethod = value;
-      } else if ("accessorMethod".equals(name)) {
-        result.accessorMethod = value;
-      } else if ("acceptNull".equals(name)) {
-        result.acceptNull = value;
-      }
-    }
-    return result;
-  }
+  private final AnnotationValue accessorMethod;
 
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
+  private final AnnotationValue acceptNull;
+
+  DomainAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.valueType = assertNonNullValue(values, VALUE_TYPE);
+    this.factoryMethod = assertNonNullValue(values, FACTORY_METHOD);
+    this.accessorMethod = assertNonNullValue(values, ACCESSOR_METHOD);
+    this.acceptNull = assertNonNullValue(values, ACCEPT_NULL);
   }
 
   public AnnotationValue getValueType() {
@@ -77,7 +54,7 @@ public class DomainAnnot {
   public TypeMirror getValueTypeValue() {
     TypeMirror value = AnnotationValueUtil.toType(valueType);
     if (value == null) {
-      throw new AptIllegalStateException("valueType");
+      throw new AptIllegalStateException(VALUE_TYPE);
     }
     return value;
   }
@@ -85,7 +62,7 @@ public class DomainAnnot {
   public String getFactoryMethodValue() {
     String value = AnnotationValueUtil.toString(factoryMethod);
     if (value == null) {
-      throw new AptIllegalStateException("factoryMethod");
+      throw new AptIllegalStateException(FACTORY_METHOD);
     }
     return value;
   }
@@ -93,7 +70,7 @@ public class DomainAnnot {
   public String getAccessorMethodValue() {
     String value = AnnotationValueUtil.toString(accessorMethod);
     if (value == null) {
-      throw new AptIllegalStateException("accessorMethod");
+      throw new AptIllegalStateException(ACCESSOR_METHOD);
     }
     return value;
   }
@@ -101,7 +78,7 @@ public class DomainAnnot {
   public boolean getAcceptNullValue() {
     Boolean value = AnnotationValueUtil.toBoolean(acceptNull);
     if (value == null) {
-      throw new AptIllegalStateException("acceptNull");
+      throw new AptIllegalStateException(ACCEPT_NULL);
     }
     return value.booleanValue();
   }

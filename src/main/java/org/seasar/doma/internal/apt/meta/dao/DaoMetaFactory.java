@@ -55,7 +55,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   @Override
   public DaoMeta createTypeElementMeta(TypeElement interfaceElement) {
     assertNotNull(interfaceElement);
-    DaoAnnot daoAnnot = DaoAnnot.newInstance(interfaceElement, ctx);
+    DaoAnnot daoAnnot = ctx.getAnnotations().newDaoAnnot(interfaceElement);
     if (daoAnnot == null) {
       throw new AptIllegalStateException("daoAnnot");
     }
@@ -177,7 +177,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   protected void doAnnotateWith(DaoMeta daoMeta) {
     AnnotateWithAnnot annotateWithAnnot =
-        AnnotateWithAnnot.newInstance(daoMeta.getDaoElement(), ctx);
+        ctx.getAnnotations().newAnnotateWithAnnot(daoMeta.getDaoElement());
     if (annotateWithAnnot != null) {
       daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
     }
@@ -198,7 +198,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 })
             .collect(toList());
     for (TypeElement typeElement : interfaces) {
-      DaoAnnot daoAnnot = DaoAnnot.newInstance(typeElement, ctx);
+      DaoAnnot daoAnnot = ctx.getAnnotations().newDaoAnnot(typeElement);
       if (daoAnnot == null) {
         ExecutableElement nonDefaultMethod = findNonDefaultMethod(typeElement);
         if (nonDefaultMethod == null) {

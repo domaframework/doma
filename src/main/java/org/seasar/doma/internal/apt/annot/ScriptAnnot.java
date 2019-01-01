@@ -1,30 +1,34 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import org.seasar.doma.Script;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class ScriptAnnot {
+public class ScriptAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String HALT_ON_ERROR = "haltOnError";
 
-  protected AnnotationValue haltOnError;
+  private static final String BLOCK_DELIMITER = "blockDelimiter";
 
-  protected AnnotationValue blockDelimiter;
+  private static final String SQL_LOG = "sqlLog";
 
-  protected AnnotationValue sqlLog;
+  private final AnnotationValue haltOnError;
 
-  protected ScriptAnnot(AnnotationMirror annotationMirror) {
-    this.annotationMirror = annotationMirror;
+  private final AnnotationValue blockDelimiter;
+
+  private final AnnotationValue sqlLog;
+
+  ScriptAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.haltOnError = assertNonNullValue(values, HALT_ON_ERROR);
+    this.blockDelimiter = assertNonNullValue(values, BLOCK_DELIMITER);
+    this.sqlLog = assertNonNullValue(values, SQL_LOG);
   }
 
   public AnnotationValue getHaltOnError() {
@@ -50,7 +54,7 @@ public class ScriptAnnot {
   public String getBlockDelimiterValue() {
     String value = AnnotationValueUtil.toString(blockDelimiter);
     if (value == null) {
-      throw new AptIllegalStateException("blockDelimiter");
+      throw new AptIllegalStateException(BLOCK_DELIMITER);
     }
     return value;
   }
@@ -58,34 +62,8 @@ public class ScriptAnnot {
   public SqlLogType getSqlLogValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("sqlLog");
+      throw new AptIllegalStateException(SQL_LOG);
     }
     return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
-  }
-
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
-  }
-
-  public static ScriptAnnot newInstance(ExecutableElement method, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(method, Script.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    ScriptAnnot result = new ScriptAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("haltOnError".equals(name)) {
-        result.haltOnError = value;
-      } else if ("blockDelimiter".equals(name)) {
-        result.blockDelimiter = value;
-      } else if ("sqlLog".equals(name)) {
-        result.sqlLog = value;
-      }
-    }
-    return result;
   }
 }

@@ -1,5 +1,7 @@
 package org.seasar.doma.internal.util;
 
+import java.util.Map;
+
 public final class AssertionUtil {
 
   public static void assertNull(Object o) {
@@ -78,6 +80,17 @@ public final class AssertionUtil {
         throw new AssertionError("Null. index = " + (i + 1));
       }
     }
+  }
+
+  public static <K, V> V assertNonNullValue(Map<K, V> map, K key) {
+    if (map == null) {
+      throw new AssertionError("The map is null");
+    }
+    V value = map.get(key);
+    if (value == null) {
+      throw new AssertionError("The value is null. key = [" + key + "].");
+    }
+    return value;
   }
 
   public static void assertTrue(boolean evalResult, Object... messages) {

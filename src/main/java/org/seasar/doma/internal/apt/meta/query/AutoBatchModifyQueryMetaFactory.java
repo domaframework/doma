@@ -7,10 +7,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.BatchDeleteAnnot;
-import org.seasar.doma.internal.apt.annot.BatchInsertAnnot;
 import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
-import org.seasar.doma.internal.apt.annot.BatchUpdateAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
@@ -43,19 +40,19 @@ public class AutoBatchModifyQueryMetaFactory
       ExecutableElement method, DaoMeta daoMeta) {
     AutoBatchModifyQueryMeta queryMeta =
         new AutoBatchModifyQueryMeta(method, daoMeta.getDaoElement());
-    BatchModifyAnnot batchModifyAnnot = BatchInsertAnnot.newInstance(method, ctx);
+    BatchModifyAnnot batchModifyAnnot = ctx.getAnnotations().newBatchInsertAnnot(method);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
       return queryMeta;
     }
-    batchModifyAnnot = BatchUpdateAnnot.newInstance(method, ctx);
+    batchModifyAnnot = ctx.getAnnotations().newBatchUpdateAnnot(method);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
       return queryMeta;
     }
-    batchModifyAnnot = BatchDeleteAnnot.newInstance(method, ctx);
+    batchModifyAnnot = ctx.getAnnotations().newBatchDeleteAnnot(method);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);

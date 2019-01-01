@@ -19,7 +19,7 @@ public class AutoProcedureQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    ProcedureAnnot procedureAnnot = ProcedureAnnot.newInstance(method, ctx);
+    ProcedureAnnot procedureAnnot = ctx.getAnnotations().newProcedureAnnot(method);
     if (procedureAnnot == null) {
       return null;
     }

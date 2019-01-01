@@ -138,7 +138,7 @@ public class DomainCtType extends AbstractCtType {
           throw new AptIllegalOptionException(Message.DOMA4200.getMessage(className));
         }
         DomainConvertersAnnot convertersMirror =
-            DomainConvertersAnnot.newInstance(convertersProviderElement, ctx);
+            ctx.getAnnotations().newDomainConvertersAnnot(convertersProviderElement);
         if (convertersMirror == null) {
           throw new AptIllegalOptionException(Message.DOMA4201.getMessage(className));
         }

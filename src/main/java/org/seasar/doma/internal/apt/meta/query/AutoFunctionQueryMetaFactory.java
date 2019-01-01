@@ -31,7 +31,7 @@ public class AutoFunctionQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    FunctionAnnot functionAnnot = FunctionAnnot.newInstance(method, ctx);
+    FunctionAnnot functionAnnot = ctx.getAnnotations().newFunctionAnnot(method);
     if (functionAnnot == null) {
       return null;
     }

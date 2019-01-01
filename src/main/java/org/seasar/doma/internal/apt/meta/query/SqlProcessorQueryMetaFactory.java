@@ -41,7 +41,7 @@ public class SqlProcessorQueryMetaFactory
 
   protected SqlProcessorQueryMeta createSqlContentQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
-    SqlProcessorAnnot sqlProcessorAnnot = SqlProcessorAnnot.newInstance(method, ctx);
+    SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnotations().newSqlProcessorAnnot(method);
     if (sqlProcessorAnnot == null) {
       return null;
     }

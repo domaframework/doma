@@ -40,7 +40,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   protected void validate(TypeElement typeElement) {
-    SingletonConfigAnnot mirror = SingletonConfigAnnot.newInstance(typeElement, ctx);
+    SingletonConfigAnnot mirror = ctx.getAnnotations().newSingletonConfigAnnot(typeElement);
     if (mirror == null) {
       throw new AptIllegalStateException("annot must not be null");
     }

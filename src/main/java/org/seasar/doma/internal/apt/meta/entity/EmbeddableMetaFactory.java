@@ -56,7 +56,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
   @Override
   public EmbeddableMeta createTypeElementMeta(TypeElement embeddableElement) {
-    EmbeddableAnnot mirror = EmbeddableAnnot.newInstance(embeddableElement, ctx);
+    EmbeddableAnnot mirror = ctx.getAnnotations().newEmbeddableAnnot(embeddableElement);
     if (mirror == null) {
       throw new AptIllegalStateException("annot must not be null");
     }
@@ -69,12 +69,12 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
   }
 
   protected Strategy createStrategy(TypeElement embeddableElement, EmbeddableMeta embeddableMeta) {
-    ValueAnnot valueAnnot = ValueAnnot.newInstance(embeddableElement, ctx);
+    ValueAnnot valueAnnot = ctx.getAnnotations().newValueAnnot(embeddableElement);
     if (valueAnnot != null) {
       return new ValueStrategy(ctx, propertyMetaFactory, valueAnnot);
     }
     AllArgsConstructorAnnot allArgsConstructorAnnot =
-        AllArgsConstructorAnnot.newInstance(embeddableElement, ctx);
+        ctx.getAnnotations().newAllArgsConstructorAnnot(embeddableElement);
     if (allArgsConstructorAnnot != null) {
       return new AllArgsConstructorStrategy(ctx, propertyMetaFactory, allArgsConstructorAnnot);
     }

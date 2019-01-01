@@ -5,78 +5,59 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.TableGenerator;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-public class TableGeneratorAnnot {
+public class TableGeneratorAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String CATALOG = "catalog";
 
-  protected AnnotationValue catalog;
+  private static final String SCHEMA = "schema";
 
-  protected AnnotationValue schema;
+  private static final String TABLE = "table";
 
-  protected AnnotationValue table;
+  private static final String PK_COLUMN_NAME = "pkColumnName";
 
-  protected AnnotationValue pkColumnName;
+  private static final String VALUE_COLUMN_NAME = "valueColumnName";
 
-  protected AnnotationValue valueColumnName;
+  private static final String PK_COLUMN_VALUE = "pkColumnValue";
 
-  protected AnnotationValue pkColumnValue;
+  private static final String INITIAL_VALUE = "initialValue";
 
-  protected AnnotationValue initialValue;
+  private static final String ALLOCATION_SIZE = "allocationSize";
 
-  protected AnnotationValue allocationSize;
+  private static final String IMPLEMENTER = "implementer";
 
-  protected AnnotationValue implementer;
+  private final AnnotationValue catalog;
 
-  protected TableGeneratorAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    this.annotationMirror = annotationMirror;
-  }
+  private final AnnotationValue schema;
 
-  public static TableGeneratorAnnot newInstance(VariableElement field, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror =
-        ctx.getElements().getAnnotationMirror(field, TableGenerator.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    TableGeneratorAnnot result = new TableGeneratorAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("catalog".equals(name)) {
-        result.catalog = value;
-      } else if ("schema".equals(name)) {
-        result.schema = value;
-      } else if ("table".equals(name)) {
-        result.table = value;
-      } else if ("pkColumnName".equals(name)) {
-        result.pkColumnName = value;
-      } else if ("valueColumnName".equals(name)) {
-        result.valueColumnName = value;
-      } else if ("pkColumnValue".equals(name)) {
-        result.pkColumnValue = value;
-      } else if ("initialValue".equals(name)) {
-        result.initialValue = value;
-      } else if ("allocationSize".equals(name)) {
-        result.allocationSize = value;
-      } else if ("implementer".equals(name)) {
-        result.implementer = value;
-      }
-    }
-    return result;
-  }
+  private final AnnotationValue table;
 
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
+  private final AnnotationValue pkColumnName;
+
+  private final AnnotationValue valueColumnName;
+
+  private final AnnotationValue pkColumnValue;
+
+  private final AnnotationValue initialValue;
+
+  private final AnnotationValue allocationSize;
+
+  private final AnnotationValue implementer;
+
+  TableGeneratorAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.catalog = assertNonNullValue(values, CATALOG);
+    this.schema = assertNonNullValue(values, SCHEMA);
+    this.table = assertNonNullValue(values, TABLE);
+    this.pkColumnName = assertNonNullValue(values, PK_COLUMN_NAME);
+    this.valueColumnName = assertNonNullValue(values, VALUE_COLUMN_NAME);
+    this.pkColumnValue = assertNonNullValue(values, PK_COLUMN_VALUE);
+    this.initialValue = assertNonNullValue(values, INITIAL_VALUE);
+    this.allocationSize = assertNonNullValue(values, ALLOCATION_SIZE);
+    this.implementer = assertNonNullValue(values, IMPLEMENTER);
   }
 
   public AnnotationValue getCatalog() {
@@ -118,7 +99,7 @@ public class TableGeneratorAnnot {
   public String getCatalogValue() {
     String value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
-      throw new AptIllegalStateException("catalog");
+      throw new AptIllegalStateException(CATALOG);
     }
     return value;
   }
@@ -126,7 +107,7 @@ public class TableGeneratorAnnot {
   public String getSchemaValue() {
     String value = AnnotationValueUtil.toString(schema);
     if (value == null) {
-      throw new AptIllegalStateException("schema");
+      throw new AptIllegalStateException(SCHEMA);
     }
     return value;
   }
@@ -134,7 +115,7 @@ public class TableGeneratorAnnot {
   public String getTableValue() {
     String value = AnnotationValueUtil.toString(table);
     if (value == null) {
-      throw new AptIllegalStateException("table");
+      throw new AptIllegalStateException(TABLE);
     }
     return value;
   }
@@ -142,7 +123,7 @@ public class TableGeneratorAnnot {
   public String getPkColumnNameValue() {
     String value = AnnotationValueUtil.toString(pkColumnName);
     if (value == null) {
-      throw new AptIllegalStateException("pkColumnName");
+      throw new AptIllegalStateException(PK_COLUMN_NAME);
     }
     return value;
   }
@@ -150,7 +131,7 @@ public class TableGeneratorAnnot {
   public String getValueColumnNameValue() {
     String value = AnnotationValueUtil.toString(valueColumnName);
     if (value == null) {
-      throw new AptIllegalStateException("valueColumnName");
+      throw new AptIllegalStateException(VALUE_COLUMN_NAME);
     }
     return value;
   }
@@ -158,7 +139,7 @@ public class TableGeneratorAnnot {
   public String getPkColumnValueValue() {
     String value = AnnotationValueUtil.toString(pkColumnValue);
     if (value == null) {
-      throw new AptIllegalStateException("pkColumnValue");
+      throw new AptIllegalStateException(PK_COLUMN_VALUE);
     }
     return value;
   }
@@ -166,7 +147,7 @@ public class TableGeneratorAnnot {
   public Long getInitialValueValue() {
     Long value = AnnotationValueUtil.toLong(initialValue);
     if (value == null) {
-      throw new AptIllegalStateException("initialValue");
+      throw new AptIllegalStateException(INITIAL_VALUE);
     }
     return value;
   }
@@ -174,7 +155,7 @@ public class TableGeneratorAnnot {
   public Long getAllocationSizeValue() {
     Long value = AnnotationValueUtil.toLong(allocationSize);
     if (value == null) {
-      throw new AptIllegalStateException("allocationSize");
+      throw new AptIllegalStateException(ALLOCATION_SIZE);
     }
     return value;
   }
@@ -182,7 +163,7 @@ public class TableGeneratorAnnot {
   public TypeMirror getImplementerValue() {
     TypeMirror value = AnnotationValueUtil.toType(implementer);
     if (value == null) {
-      throw new AptIllegalStateException("implementer");
+      throw new AptIllegalStateException(IMPLEMENTER);
     }
     return value;
   }

@@ -1,62 +1,43 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import org.seasar.doma.Table;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-public class TableAnnot {
+public class TableAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String CATALOG = "catalog";
 
-  protected AnnotationValue catalog;
+  private static final String SCHEMA = "schema";
 
-  protected AnnotationValue schema;
+  private static final String NAME = "name";
 
-  protected AnnotationValue name;
+  private static final String QUOTE = "quote";
 
-  protected AnnotationValue quote;
+  private final AnnotationValue catalog;
 
-  protected TableAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    this.annotationMirror = annotationMirror;
-  }
+  private final AnnotationValue schema;
 
-  public static TableAnnot newInstance(TypeElement clazz, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(clazz, Table.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    TableAnnot result = new TableAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("catalog".equals(name)) {
-        result.catalog = value;
-      } else if ("schema".equals(name)) {
-        result.schema = value;
-      } else if ("name".equals(name)) {
-        result.name = value;
-      } else if ("quote".equals(name)) {
-        result.quote = value;
-      }
-    }
-    return result;
+  private final AnnotationValue name;
+
+  private final AnnotationValue quote;
+
+  TableAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.catalog = assertNonNullValue(values, CATALOG);
+    this.schema = assertNonNullValue(values, SCHEMA);
+    this.name = assertNonNullValue(values, NAME);
+    this.quote = assertNonNullValue(values, QUOTE);
   }
 
   public String getCatalogValue() {
     String value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
-      throw new AptIllegalStateException("catalog");
+      throw new AptIllegalStateException(CATALOG);
     }
     return value;
   }
@@ -64,7 +45,7 @@ public class TableAnnot {
   public String getSchemaValue() {
     String value = AnnotationValueUtil.toString(schema);
     if (value == null) {
-      throw new AptIllegalStateException("catalog");
+      throw new AptIllegalStateException(SCHEMA);
     }
     return value;
   }
@@ -72,7 +53,7 @@ public class TableAnnot {
   public String getNameValue() {
     String value = AnnotationValueUtil.toString(name);
     if (value == null) {
-      throw new AptIllegalStateException("name");
+      throw new AptIllegalStateException(NAME);
     }
     return value;
   }
@@ -80,7 +61,7 @@ public class TableAnnot {
   public boolean getQuoteValue() {
     Boolean value = AnnotationValueUtil.toBoolean(quote);
     if (value == null) {
-      throw new AptIllegalStateException("quote");
+      throw new AptIllegalStateException(QUOTE);
     }
     return value.booleanValue();
   }

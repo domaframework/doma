@@ -6,10 +6,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.DeleteAnnot;
-import org.seasar.doma.internal.apt.annot.InsertAnnot;
 import org.seasar.doma.internal.apt.annot.ModifyAnnot;
-import org.seasar.doma.internal.apt.annot.UpdateAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
@@ -40,19 +37,19 @@ public class SqlFileModifyQueryMetaFactory
   protected SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method, daoMeta.getDaoElement());
-    ModifyAnnot modifyAnnot = InsertAnnot.newInstance(method, ctx);
+    ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(method);
     if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
       return queryMeta;
     }
-    modifyAnnot = UpdateAnnot.newInstance(method, ctx);
+    modifyAnnot = ctx.getAnnotations().newUpdateAnnot(method);
     if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
       return queryMeta;
     }
-    modifyAnnot = DeleteAnnot.newInstance(method, ctx);
+    modifyAnnot = ctx.getAnnotations().newDeleteAnnot(method);
     if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);

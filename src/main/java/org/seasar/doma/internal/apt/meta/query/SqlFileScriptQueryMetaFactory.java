@@ -36,7 +36,7 @@ public class SqlFileScriptQueryMetaFactory
   protected SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method, daoMeta.getDaoElement());
-    ScriptAnnot scriptAnnot = ScriptAnnot.newInstance(method, ctx);
+    ScriptAnnot scriptAnnot = ctx.getAnnotations().newScriptAnnot(method);
     if (scriptAnnot == null) {
       return null;
     }

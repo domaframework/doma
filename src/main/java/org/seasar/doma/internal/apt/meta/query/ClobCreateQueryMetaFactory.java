@@ -18,7 +18,7 @@ public class ClobCreateQueryMetaFactory
   @Override
   public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     assertNotNull(method, daoMeta);
-    ClobFactoryAnnot clobFactoryAnnot = ClobFactoryAnnot.newInstance(method, ctx);
+    ClobFactoryAnnot clobFactoryAnnot = ctx.getAnnotations().newClobFactoryAnnot(method);
     if (clobFactoryAnnot == null) {
       return null;
     }

@@ -3,49 +3,32 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Map;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
-public class AnnotationAnnot {
-  protected final javax.lang.model.element.AnnotationMirror annotationMirror;
+public class AnnotationAnnot extends AbstractAnnot {
 
-  protected AnnotationValue target;
+  private static final String TARGET = "target";
 
-  protected AnnotationValue type;
+  private static final String TYPE = "type";
 
-  protected AnnotationValue elements;
+  private static final String ELEMENTS = "elements";
 
-  protected AnnotationAnnot(javax.lang.model.element.AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    this.annotationMirror = annotationMirror;
-  }
+  private final AnnotationValue target;
 
-  public static AnnotationAnnot newInstance(
-      javax.lang.model.element.AnnotationMirror annotationMirror, Context ctx) {
-    assertNotNull(annotationMirror);
-    AnnotationAnnot result = new AnnotationAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("target".equals(name)) {
-        result.target = value;
-      } else if ("type".equals(name)) {
-        result.type = value;
-      } else if ("elements".equals(name)) {
-        result.elements = value;
-      }
-    }
-    return result;
-  }
+  private final AnnotationValue type;
 
-  public javax.lang.model.element.AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
+  private final AnnotationValue elements;
+
+  AnnotationAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.target = assertNonNullValue(values, TARGET);
+    this.type = assertNonNullValue(values, TYPE);
+    this.elements = assertNonNullValue(values, ELEMENTS);
   }
 
   public AnnotationValue getTarget() {
@@ -63,7 +46,7 @@ public class AnnotationAnnot {
   public VariableElement getTargetValue() {
     VariableElement value = AnnotationValueUtil.toEnumConstant(target);
     if (value == null) {
-      throw new AptIllegalStateException("target");
+      throw new AptIllegalStateException(TARGET);
     }
     return value;
   }
@@ -71,7 +54,7 @@ public class AnnotationAnnot {
   public TypeMirror getTypeValue() {
     TypeMirror value = AnnotationValueUtil.toType(type);
     if (value == null) {
-      throw new AptIllegalStateException("type");
+      throw new AptIllegalStateException(TYPE);
     }
     return value;
   }
@@ -79,7 +62,7 @@ public class AnnotationAnnot {
   public String getElementsValue() {
     String value = AnnotationValueUtil.toString(elements);
     if (value == null) {
-      throw new AptIllegalStateException("elements");
+      throw new AptIllegalStateException(ELEMENTS);
     }
     return value;
   }

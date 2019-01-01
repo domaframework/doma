@@ -5,32 +5,31 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-public class EntityAnnot {
+public class EntityAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String LISTENER = "listener";
 
-  protected AnnotationValue listener;
+  private static final String NAMING = "naming";
 
-  protected AnnotationValue naming;
+  private static final String IMMUTABLE = "immutable";
 
-  protected AnnotationValue immutable;
+  private final AnnotationValue listener;
 
-  public EntityAnnot(AnnotationMirror annotationMirror) {
-    this.annotationMirror = annotationMirror;
-  }
+  private final AnnotationValue naming;
 
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
+  private final AnnotationValue immutable;
+
+  EntityAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.listener = assertNonNullValue(values, LISTENER);
+    this.naming = assertNonNullValue(values, NAMING);
+    this.immutable = assertNonNullValue(values, IMMUTABLE);
   }
 
   public AnnotationValue getListener() {
@@ -48,7 +47,7 @@ public class EntityAnnot {
   public TypeMirror getListenerValue() {
     TypeMirror result = AnnotationValueUtil.toType(listener);
     if (result == null) {
-      throw new AptIllegalStateException("listener");
+      throw new AptIllegalStateException(LISTENER);
     }
     return result;
   }
@@ -56,7 +55,7 @@ public class EntityAnnot {
   public NamingType getNamingValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(naming);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("naming");
+      throw new AptIllegalStateException(NAMING);
     }
     return NamingType.valueOf(enumConstant.getSimpleName().toString());
   }
@@ -64,30 +63,8 @@ public class EntityAnnot {
   public boolean getImmutableValue() {
     Boolean result = AnnotationValueUtil.toBoolean(immutable);
     if (result == null) {
-      throw new AptIllegalStateException("immutable");
+      throw new AptIllegalStateException(IMMUTABLE);
     }
     return result.booleanValue();
-  }
-
-  public static EntityAnnot newInstance(TypeElement clazz, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(clazz, Entity.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    EntityAnnot result = new EntityAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("listener".equals(name)) {
-        result.listener = value;
-      } else if ("naming".equals(name)) {
-        result.naming = value;
-      } else if ("immutable".equals(name)) {
-        result.immutable = value;
-      }
-    }
-    return result;
   }
 }

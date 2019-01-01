@@ -1,45 +1,67 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class SelectAnnot {
+public class SelectAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String STRATEGY = "strategy";
 
-  protected AnnotationValue strategy;
+  private static final String FETCH = "fetch";
 
-  protected AnnotationValue fetch;
+  private static final String ENSURE_RESULT = "ensureResult";
 
-  protected AnnotationValue ensureResult;
+  private static final String ENSURE_RESULT_MAPPING = "ensureResultMapping";
 
-  protected AnnotationValue ensureResultMapping;
+  private static final String QUERY_TIMEOUT = "queryTimeout";
 
-  protected AnnotationValue queryTimeout;
+  private static final String FETCH_SIZE = "fetchSize";
 
-  protected AnnotationValue fetchSize;
+  private static final String MAX_ROWS = "maxRows";
 
-  protected AnnotationValue maxRows;
+  private static final String MAP_KEY_NAMING = "mapKeyNaming";
 
-  protected AnnotationValue mapKeyNaming;
+  private static final String SQL_LOG = "sqlLog";
 
-  protected AnnotationValue sqlLog;
+  private final AnnotationValue strategy;
 
-  protected SelectAnnot(AnnotationMirror annotationMirror) {
-    this.annotationMirror = annotationMirror;
+  private final AnnotationValue fetch;
+
+  private final AnnotationValue ensureResult;
+
+  private final AnnotationValue ensureResultMapping;
+
+  private final AnnotationValue queryTimeout;
+
+  private final AnnotationValue fetchSize;
+
+  private final AnnotationValue maxRows;
+
+  private final AnnotationValue mapKeyNaming;
+
+  private final AnnotationValue sqlLog;
+
+  SelectAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+    super(annotationMirror);
+    this.strategy = assertNonNullValue(values, STRATEGY);
+    this.fetch = assertNonNullValue(values, FETCH);
+    this.ensureResult = assertNonNullValue(values, ENSURE_RESULT);
+    this.ensureResultMapping = assertNonNullValue(values, ENSURE_RESULT_MAPPING);
+    this.queryTimeout = assertNonNullValue(values, QUERY_TIMEOUT);
+    this.fetchSize = assertNonNullValue(values, FETCH_SIZE);
+    this.maxRows = assertNonNullValue(values, MAX_ROWS);
+    this.mapKeyNaming = assertNonNullValue(values, MAP_KEY_NAMING);
+    this.sqlLog = assertNonNullValue(values, SQL_LOG);
   }
 
   public AnnotationValue getStrategy() {
@@ -81,7 +103,7 @@ public class SelectAnnot {
   public int getQueryTimeoutValue() {
     Integer value = AnnotationValueUtil.toInteger(queryTimeout);
     if (value == null) {
-      throw new AptIllegalStateException("queryTimeout");
+      throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
     return value.intValue();
   }
@@ -89,7 +111,7 @@ public class SelectAnnot {
   public int getFetchSizeValue() {
     Integer value = AnnotationValueUtil.toInteger(fetchSize);
     if (value == null) {
-      throw new AptIllegalStateException("fetchSize");
+      throw new AptIllegalStateException(FETCH_SIZE);
     }
     return value.intValue();
   }
@@ -97,7 +119,7 @@ public class SelectAnnot {
   public int getMaxRowsValue() {
     Integer value = AnnotationValueUtil.toInteger(maxRows);
     if (value == null) {
-      throw new AptIllegalStateException("maxRows");
+      throw new AptIllegalStateException(MAX_ROWS);
     }
     return value.intValue();
   }
@@ -105,7 +127,7 @@ public class SelectAnnot {
   public SelectType getStrategyValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(strategy);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("strategy");
+      throw new AptIllegalStateException(STRATEGY);
     }
     return SelectType.valueOf(enumConstant.getSimpleName().toString());
   }
@@ -113,7 +135,7 @@ public class SelectAnnot {
   public FetchType getFetchValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(fetch);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("fetch");
+      throw new AptIllegalStateException(FETCH);
     }
     return FetchType.valueOf(enumConstant.getSimpleName().toString());
   }
@@ -121,7 +143,7 @@ public class SelectAnnot {
   public boolean getEnsureResultValue() {
     Boolean value = AnnotationValueUtil.toBoolean(ensureResult);
     if (value == null) {
-      throw new AptIllegalStateException("ensureResult");
+      throw new AptIllegalStateException(ENSURE_RESULT);
     }
     return value.booleanValue();
   }
@@ -129,7 +151,7 @@ public class SelectAnnot {
   public boolean getEnsureResultMappingValue() {
     Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
     if (value == null) {
-      throw new AptIllegalStateException("ensureResultMapping");
+      throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }
     return value.booleanValue();
   }
@@ -137,7 +159,7 @@ public class SelectAnnot {
   public MapKeyNamingType getMapKeyNamingValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("mapKeyNaming");
+      throw new AptIllegalStateException(MAP_KEY_NAMING);
     }
     return MapKeyNamingType.valueOf(enumConstant.getSimpleName().toString());
   }
@@ -145,46 +167,8 @@ public class SelectAnnot {
   public SqlLogType getSqlLogValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("sqlLog");
+      throw new AptIllegalStateException(SQL_LOG);
     }
     return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
-  }
-
-  public AnnotationMirror getAnnotationMirror() {
-    return annotationMirror;
-  }
-
-  public static SelectAnnot newInstance(ExecutableElement method, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror = ctx.getElements().getAnnotationMirror(method, Select.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    SelectAnnot result = new SelectAnnot(annotationMirror);
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("strategy".equals(name)) {
-        result.strategy = value;
-      } else if ("fetch".equals(name)) {
-        result.fetch = value;
-      } else if ("ensureResult".equals(name)) {
-        result.ensureResult = value;
-      } else if ("ensureResultMapping".equals(name)) {
-        result.ensureResultMapping = value;
-      } else if ("queryTimeout".equals(name)) {
-        result.queryTimeout = value;
-      } else if ("fetchSize".equals(name)) {
-        result.fetchSize = value;
-      } else if ("maxRows".equals(name)) {
-        result.maxRows = value;
-      } else if ("mapKeyNaming".equals(name)) {
-        result.mapKeyNaming = value;
-      } else if ("sqlLog".equals(name)) {
-        result.sqlLog = value;
-      }
-    }
-    return result;
   }
 }

@@ -1,78 +1,64 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import org.seasar.doma.Function;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class FunctionAnnot {
+public class FunctionAnnot extends AbstractAnnot {
 
-  protected final AnnotationMirror annotationMirror;
+  private static final String CATALOG = "catalog";
 
-  protected final String defaultName;
+  private static final String SCHEMA = "schema";
 
-  protected AnnotationValue catalog;
+  private static final String NAME = "name";
 
-  protected AnnotationValue schema;
+  private static final String QUOTE = "quote";
 
-  protected AnnotationValue name;
+  private static final String QUERY_TIMEOUT = "queryTimeout";
 
-  protected AnnotationValue quote;
+  private static final String MAP_KEY_NAMING = "mapKeyNaming";
 
-  protected AnnotationValue queryTimeout;
+  private static final String ENSURE_RESULT_MAPPING = "ensureResultMapping";
 
-  protected AnnotationValue mapKeyNaming;
+  private static final String SQL_LOG = "sqlLog";
 
-  protected AnnotationValue ensureResultMapping;
+  private final AnnotationValue catalog;
 
-  protected AnnotationValue sqlLog;
+  private final AnnotationValue schema;
 
-  protected FunctionAnnot(AnnotationMirror annotationMirror, String defaultName) {
-    assertNotNull(annotationMirror, defaultName);
-    this.annotationMirror = annotationMirror;
+  private final AnnotationValue name;
+
+  private final AnnotationValue quote;
+
+  private final AnnotationValue queryTimeout;
+
+  private final AnnotationValue mapKeyNaming;
+
+  private final AnnotationValue ensureResultMapping;
+
+  private final AnnotationValue sqlLog;
+
+  private final String defaultName;
+
+  FunctionAnnot(
+      AnnotationMirror annotationMirror, Map<String, AnnotationValue> values, String defaultName) {
+    super(annotationMirror);
+    this.catalog = assertNonNullValue(values, CATALOG);
+    this.schema = assertNonNullValue(values, SCHEMA);
+    this.name = assertNonNullValue(values, NAME);
+    this.quote = assertNonNullValue(values, QUOTE);
+    this.queryTimeout = assertNonNullValue(values, QUERY_TIMEOUT);
+    this.mapKeyNaming = assertNonNullValue(values, MAP_KEY_NAMING);
+    this.ensureResultMapping = assertNonNullValue(values, ENSURE_RESULT_MAPPING);
+    this.sqlLog = assertNonNullValue(values, SQL_LOG);
     this.defaultName = defaultName;
-  }
-
-  public static FunctionAnnot newInstance(ExecutableElement method, Context ctx) {
-    assertNotNull(ctx);
-    AnnotationMirror annotationMirror =
-        ctx.getElements().getAnnotationMirror(method, Function.class);
-    if (annotationMirror == null) {
-      return null;
-    }
-    FunctionAnnot result = new FunctionAnnot(annotationMirror, method.getSimpleName().toString());
-    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-        ctx.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-      String name = entry.getKey().getSimpleName().toString();
-      AnnotationValue value = entry.getValue();
-      if ("catalog".equals(name)) {
-        result.catalog = value;
-      } else if ("schema".equals(name)) {
-        result.schema = value;
-      } else if ("name".equals(name)) {
-        result.name = value;
-      } else if ("quote".equals(name)) {
-        result.quote = value;
-      } else if ("queryTimeout".equals(name)) {
-        result.queryTimeout = value;
-      } else if ("mapKeyNaming".equals(name)) {
-        result.mapKeyNaming = value;
-      } else if ("ensureResultMapping".equals(name)) {
-        result.ensureResultMapping = value;
-      } else if ("sqlLog".equals(name)) {
-        result.sqlLog = value;
-      }
-    }
-    return result;
   }
 
   public AnnotationValue getQueryTimeout() {
@@ -90,7 +76,7 @@ public class FunctionAnnot {
   public String getCatalogValue() {
     String value = AnnotationValueUtil.toString(catalog);
     if (value == null) {
-      throw new AptIllegalStateException("catalog");
+      throw new AptIllegalStateException(CATALOG);
     }
     return value;
   }
@@ -98,7 +84,7 @@ public class FunctionAnnot {
   public String getSchemaValue() {
     String value = AnnotationValueUtil.toString(schema);
     if (value == null) {
-      throw new AptIllegalStateException("schema");
+      throw new AptIllegalStateException(SCHEMA);
     }
     return value;
   }
@@ -114,7 +100,7 @@ public class FunctionAnnot {
   public boolean getQuoteValue() {
     Boolean value = AnnotationValueUtil.toBoolean(quote);
     if (value == null) {
-      throw new AptIllegalStateException("quote");
+      throw new AptIllegalStateException(QUOTE);
     }
     return value.booleanValue();
   }
@@ -122,7 +108,7 @@ public class FunctionAnnot {
   public int getQueryTimeoutValue() {
     Integer value = AnnotationValueUtil.toInteger(queryTimeout);
     if (value == null) {
-      throw new AptIllegalStateException("queryTimeout");
+      throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
     return value.intValue();
   }
@@ -130,7 +116,7 @@ public class FunctionAnnot {
   public MapKeyNamingType getMapKeyNamingValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(mapKeyNaming);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("mapKeyNaming");
+      throw new AptIllegalStateException(MAP_KEY_NAMING);
     }
     return MapKeyNamingType.valueOf(enumConstant.getSimpleName().toString());
   }
@@ -138,7 +124,7 @@ public class FunctionAnnot {
   public boolean getEnsureResultMappingValue() {
     Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
     if (value == null) {
-      throw new AptIllegalStateException("ensureResultMapping");
+      throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }
     return value.booleanValue();
   }
@@ -146,7 +132,7 @@ public class FunctionAnnot {
   public SqlLogType getSqlLogValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(sqlLog);
     if (enumConstant == null) {
-      throw new AptIllegalStateException("sqlLog");
+      throw new AptIllegalStateException(SQL_LOG);
     }
     return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
   }

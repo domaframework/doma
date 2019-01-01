@@ -29,7 +29,7 @@ public class EmbeddablePropertyMetaFactory {
     embeddablePropertyMeta.setName(fieldElement.getSimpleName().toString());
     CtType ctType = resolveCtType(fieldElement, fieldElement.asType(), embeddableMeta);
     embeddablePropertyMeta.setCtType(ctType);
-    ColumnAnnot columnAnnot = ColumnAnnot.newInstance(fieldElement, ctx);
+    ColumnAnnot columnAnnot = ctx.getAnnotations().newColumnAnnot(fieldElement);
     if (columnAnnot != null) {
       embeddablePropertyMeta.setColumnAnnot(columnAnnot);
     }

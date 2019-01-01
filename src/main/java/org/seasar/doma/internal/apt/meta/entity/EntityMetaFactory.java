@@ -61,7 +61,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
   @Override
   public EntityMeta createTypeElementMeta(TypeElement classElement) {
     assertNotNull(classElement);
-    EntityAnnot entityAnnot = EntityAnnot.newInstance(classElement, ctx);
+    EntityAnnot entityAnnot = ctx.getAnnotations().newEntityAnnot(classElement);
     if (entityAnnot == null) {
       throw new AptIllegalStateException("entityAnnot.");
     }
@@ -90,12 +90,12 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
   }
 
   protected Strategy createStrategy(TypeElement classElement, EntityMeta entityMeta) {
-    ValueAnnot valueAnnot = ValueAnnot.newInstance(classElement, ctx);
+    ValueAnnot valueAnnot = ctx.getAnnotations().newValueAnnot(classElement);
     if (valueAnnot != null) {
       return new ValueStrategy(ctx, propertyMetaFactory, valueAnnot);
     }
     AllArgsConstructorAnnot allArgsConstructorAnnot =
-        AllArgsConstructorAnnot.newInstance(classElement, ctx);
+        ctx.getAnnotations().newAllArgsConstructorAnnot(classElement);
     if (allArgsConstructorAnnot != null) {
       return new AllArgsConstructorStrategy(ctx, propertyMetaFactory, allArgsConstructorAnnot);
     }
@@ -469,7 +469,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     protected void doTable(TypeElement classElement, EntityMeta entityMeta) {
-      TableAnnot tableAnnot = TableAnnot.newInstance(classElement, ctx);
+      TableAnnot tableAnnot = ctx.getAnnotations().newTableAnnot(classElement);
       if (tableAnnot == null) {
         return;
       }

@@ -267,7 +267,7 @@ public class EntityPropertyMetaFactory {
   protected void doSequenceIdGeneratorMeta(
       EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
     SequenceGeneratorAnnot sequenceGeneratorAnnot =
-        SequenceGeneratorAnnot.newInstance(fieldElement, ctx);
+        ctx.getAnnotations().newSequenceGeneratorAnnot(fieldElement);
     if (sequenceGeneratorAnnot == null) {
       throw new AptException(
           Message.DOMA4034,
@@ -309,7 +309,8 @@ public class EntityPropertyMetaFactory {
 
   protected void doTableIdGeneratorMeta(
       EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
-    TableGeneratorAnnot tableGeneratorAnnot = TableGeneratorAnnot.newInstance(fieldElement, ctx);
+    TableGeneratorAnnot tableGeneratorAnnot =
+        ctx.getAnnotations().newTableGeneratorAnnot(fieldElement);
     if (tableGeneratorAnnot == null) {
       throw new AptException(
           Message.DOMA4035,
@@ -407,7 +408,7 @@ public class EntityPropertyMetaFactory {
 
   protected void doColumn(
       EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
-    ColumnAnnot columnAnnot = ColumnAnnot.newInstance(fieldElement, ctx);
+    ColumnAnnot columnAnnot = ctx.getAnnotations().newColumnAnnot(fieldElement);
     if (columnAnnot == null) {
       return;
     }

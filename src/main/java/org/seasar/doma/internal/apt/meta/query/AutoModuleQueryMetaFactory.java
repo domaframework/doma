@@ -47,7 +47,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
   }
 
   protected CallableSqlParameterMeta createParameterMeta(final QueryParameterMeta parameterMeta) {
-    ResultSetAnnot resultSetAnnot = ResultSetAnnot.newInstance(parameterMeta.getElement(), ctx);
+    ResultSetAnnot resultSetAnnot =
+        ctx.getAnnotations().newResultSetAnnot(parameterMeta.getElement());
     if (resultSetAnnot != null) {
       return createResultSetParameterMeta(parameterMeta, resultSetAnnot);
     }
