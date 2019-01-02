@@ -75,205 +75,9 @@ public class QueryParameterMeta {
     } else {
       qualifiedName = typeName;
     }
-    ctType = createCtType(parameterElement, ctx);
-  }
-
-  protected CtType createCtType(final VariableElement parameterElement, final Context ctx) {
-    IterableCtType iterableCtType = IterableCtType.newInstance(type, ctx);
-    if (iterableCtType != null) {
-      if (iterableCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4159,
-            parameterElement,
-            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
-      }
-      if (iterableCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4160,
-            parameterElement,
-            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
-      }
-      iterableCtType
-          .getElementCtType()
-          .accept(new IterableElementCtTypeVisitor(parameterElement), null);
-      return iterableCtType;
-    }
-
-    EntityCtType entityCtType = EntityCtType.newInstance(type, ctx);
-    if (entityCtType != null) {
-      return entityCtType;
-    }
-
-    OptionalCtType optionalCtType = OptionalCtType.newInstance(type, ctx);
-    if (optionalCtType != null) {
-      if (optionalCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4236,
-            parameterElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
-      }
-      if (optionalCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4237,
-            parameterElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
-      }
-      optionalCtType
-          .getElementCtType()
-          .accept(new OptionalElementCtTypeVisitor(parameterElement), null);
-      return optionalCtType;
-    }
-
-    OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(type, ctx);
-    if (optionalIntCtType != null) {
-      return optionalIntCtType;
-    }
-
-    OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(type, ctx);
-    if (optionalLongCtType != null) {
-      return optionalLongCtType;
-    }
-
-    OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType.newInstance(type, ctx);
-    if (optionalDoubleCtType != null) {
-      return optionalDoubleCtType;
-    }
-
-    final DomainCtType domainCtType = DomainCtType.newInstance(type, ctx);
-    if (domainCtType != null) {
-      if (domainCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4208,
-            parameterElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
-      }
-      if (domainCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4209,
-            parameterElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
-      }
-      return domainCtType;
-    }
-
-    BasicCtType basicCtType = BasicCtType.newInstance(type, ctx);
-    if (basicCtType != null) {
-      return basicCtType;
-    }
-
-    SelectOptionsCtType selectOptionsCtType = SelectOptionsCtType.newInstance(type, ctx);
-    if (selectOptionsCtType != null) {
-      return selectOptionsCtType;
-    }
-
-    FunctionCtType functionCtType = FunctionCtType.newInstance(type, ctx);
-    if (functionCtType != null) {
-      if (functionCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4240,
-            parameterElement,
-            new Object[] {
-              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
-            });
-      }
-      if (functionCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4241,
-            parameterElement,
-            new Object[] {
-              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
-            });
-      }
-      functionCtType
-          .getTargetCtType()
-          .accept(new FunctionTargetCtTypeVisitor(parameterElement), null);
-      return functionCtType;
-    }
-
-    CollectorCtType collectorCtType = CollectorCtType.newInstance(type, ctx);
-    if (collectorCtType != null) {
-      if (collectorCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4258,
-            parameterElement,
-            new Object[] {
-              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
-            });
-      }
-      if (collectorCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4259,
-            parameterElement,
-            new Object[] {
-              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
-            });
-      }
-      collectorCtType
-          .getTargetCtType()
-          .accept(new CollectorTargetCtTypeVisitor(parameterElement), null);
-      return collectorCtType;
-    }
-
-    ReferenceCtType referenceCtType = ReferenceCtType.newInstance(type, ctx);
-    if (referenceCtType != null) {
-      if (referenceCtType.isRaw()) {
-        throw new AptException(
-            Message.DOMA4108,
-            parameterElement,
-            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
-      }
-      if (referenceCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4112,
-            parameterElement,
-            new Object[] {
-              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
-            });
-      }
-      referenceCtType
-          .getReferentCtType()
-          .accept(new ReferenceReferentCtTypeVisitor(parameterElement), null);
-      return referenceCtType;
-    }
-
-    BiFunctionCtType biFunctionCtType = BiFunctionCtType.newInstance(type, ctx);
-    if (biFunctionCtType != null) {
-      if (biFunctionCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4438,
-            parameterElement,
-            new Object[] {
-              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
-            });
-      }
-      if (biFunctionCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4439,
-            parameterElement,
-            new Object[] {
-              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
-            });
-      }
-      return biFunctionCtType;
-    }
-
-    return AnyCtType.newInstance(type, ctx);
+    ctType =
+        ctx.getCtTypes()
+            .newCtType(parameterElement.asType(), new CtTypeValidator(parameterElement));
   }
 
   public VariableElement getElement() {
@@ -404,6 +208,219 @@ public class QueryParameterMeta {
     }
   }
 
+  private class CtTypeValidator extends SimpleCtTypeVisitor<Void, Void, AptException> {
+
+    private final VariableElement parameterElement;
+
+    private CtTypeValidator(VariableElement parameterElement) {
+      this.parameterElement = parameterElement;
+    }
+
+    @Override
+    protected Void defaultAction(CtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitEntityCtType(EntityCtType ctType, Void aVoid) throws AptException {
+      return super.visitEntityCtType(ctType, aVoid);
+    }
+
+    @Override
+    public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void aVoid) throws AptException {
+      return super.visitOptionalIntCtType(ctType, aVoid);
+    }
+
+    @Override
+    public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void aVoid) throws AptException {
+      return super.visitOptionalLongCtType(ctType, aVoid);
+    }
+
+    @Override
+    public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void aVoid)
+        throws AptException {
+      return super.visitOptionalDoubleCtType(ctType, aVoid);
+    }
+
+    @Override
+    public Void visitBasicCtType(BasicCtType ctType, Void aVoid) throws AptException {
+      return super.visitBasicCtType(ctType, aVoid);
+    }
+
+    @Override
+    public Void visitSelectOptionsCtType(SelectOptionsCtType ctType, Void aVoid)
+        throws AptException {
+      return super.visitSelectOptionsCtType(ctType, aVoid);
+    }
+
+    @Override
+    public Void visitIterableCtType(IterableCtType iterableCtType, Void aVoid) throws AptException {
+      if (iterableCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4159,
+            parameterElement,
+            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
+      }
+      if (iterableCtType.hasWildcard()) {
+        throw new AptException(
+            Message.DOMA4160,
+            parameterElement,
+            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
+      }
+      iterableCtType
+          .getElementCtType()
+          .accept(new IterableElementCtTypeVisitor(parameterElement), null);
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalCtType(OptionalCtType optionalCtType, Void aVoid) throws AptException {
+      if (optionalCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4236,
+            parameterElement,
+            new Object[] {
+              optionalCtType.getQualifiedName(),
+              daoElement.getQualifiedName(),
+              methodElement.getSimpleName()
+            });
+      }
+      if (optionalCtType.hasWildcard()) {
+        throw new AptException(
+            Message.DOMA4237,
+            parameterElement,
+            new Object[] {
+              optionalCtType.getQualifiedName(),
+              daoElement.getQualifiedName(),
+              methodElement.getSimpleName()
+            });
+      }
+      optionalCtType
+          .getElementCtType()
+          .accept(new OptionalElementCtTypeVisitor(parameterElement), null);
+      return null;
+    }
+
+    @Override
+    public Void visitDomainCtType(DomainCtType domainCtType, Void aVoid) throws AptException {
+      if (domainCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4208,
+            parameterElement,
+            new Object[] {
+              domainCtType.getQualifiedName(),
+              daoElement.getQualifiedName(),
+              methodElement.getSimpleName()
+            });
+      }
+      if (domainCtType.hasWildcard() || domainCtType.hasTypevar()) {
+        throw new AptException(
+            Message.DOMA4209,
+            parameterElement,
+            new Object[] {
+              domainCtType.getQualifiedName(),
+              daoElement.getQualifiedName(),
+              methodElement.getSimpleName()
+            });
+      }
+      return null;
+    }
+
+    @Override
+    public Void visitFunctionCtType(FunctionCtType functionCtType, Void aVoid) throws AptException {
+      if (functionCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4240,
+            parameterElement,
+            new Object[] {
+              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
+            });
+      }
+      if (functionCtType.hasWildcard()) {
+        throw new AptException(
+            Message.DOMA4241,
+            parameterElement,
+            new Object[] {
+              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
+            });
+      }
+      functionCtType
+          .getTargetCtType()
+          .accept(new FunctionTargetCtTypeVisitor(parameterElement), null);
+      return null;
+    }
+
+    @Override
+    public Void visitCollectorCtType(CollectorCtType collectorCtType, Void aVoid)
+        throws AptException {
+      if (collectorCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4258,
+            parameterElement,
+            new Object[] {
+              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
+            });
+      }
+      if (collectorCtType.hasWildcard()) {
+        throw new AptException(
+            Message.DOMA4259,
+            parameterElement,
+            new Object[] {
+              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
+            });
+      }
+      collectorCtType
+          .getTargetCtType()
+          .accept(new CollectorTargetCtTypeVisitor(parameterElement), null);
+      return null;
+    }
+
+    @Override
+    public Void visitReferenceCtType(ReferenceCtType referenceCtType, Void aVoid)
+        throws AptException {
+      if (referenceCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4108,
+            parameterElement,
+            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
+      }
+      if (referenceCtType.hasWildcard()) {
+        throw new AptException(
+            Message.DOMA4112,
+            parameterElement,
+            new Object[] {
+              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
+            });
+      }
+      referenceCtType
+          .getReferentCtType()
+          .accept(new ReferenceReferentCtTypeVisitor(parameterElement), null);
+      return null;
+    }
+
+    @Override
+    public Void visitBiFunctionCtType(BiFunctionCtType biFunctionCtType, Void aVoid)
+        throws AptException {
+      if (biFunctionCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4438,
+            parameterElement,
+            new Object[] {
+              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
+            });
+      }
+      if (biFunctionCtType.hasWildcard()) {
+        throw new AptException(
+            Message.DOMA4439,
+            parameterElement,
+            new Object[] {
+              qualifiedName, daoElement.getQualifiedName(), methodElement.getSimpleName()
+            });
+      }
+      return null;
+    }
+  }
+
   protected class IterableElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
@@ -415,7 +432,7 @@ public class QueryParameterMeta {
 
     @Override
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
-      if (ctType.isRawType()) {
+      if (ctType.isRaw()) {
         throw new AptException(
             Message.DOMA4212,
             parameterElement,
@@ -425,7 +442,7 @@ public class QueryParameterMeta {
               methodElement.getSimpleName()
             });
       }
-      if (ctType.isWildcardType()) {
+      if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
             Message.DOMA4213,
             parameterElement,
@@ -450,7 +467,7 @@ public class QueryParameterMeta {
 
     @Override
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
-      if (ctType.isRawType()) {
+      if (ctType.isRaw()) {
         throw new AptException(
             Message.DOMA4238,
             parameterElement,
@@ -460,7 +477,7 @@ public class QueryParameterMeta {
               methodElement.getSimpleName()
             });
       }
-      if (ctType.isWildcardType()) {
+      if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
             Message.DOMA4239,
             parameterElement,
@@ -494,7 +511,7 @@ public class QueryParameterMeta {
 
       @Override
       public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
-        if (ctType.isRawType()) {
+        if (ctType.isRaw()) {
           throw new AptException(
               Message.DOMA4242,
               parameterElement,
@@ -504,7 +521,7 @@ public class QueryParameterMeta {
                 methodElement.getSimpleName()
               });
         }
-        if (ctType.isWildcardType()) {
+        if (ctType.hasWildcard() || ctType.hasTypevar()) {
           throw new AptException(
               Message.DOMA4243,
               parameterElement,
@@ -530,7 +547,7 @@ public class QueryParameterMeta {
 
     @Override
     public Void visitDomainCtType(DomainCtType ctType, Void p) throws RuntimeException {
-      if (ctType.isRawType()) {
+      if (ctType.isRaw()) {
         throw new AptException(
             Message.DOMA4260,
             parameterElement,
@@ -540,7 +557,7 @@ public class QueryParameterMeta {
               methodElement.getSimpleName()
             });
       }
-      if (ctType.isWildcardType()) {
+      if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
             Message.DOMA4261,
             parameterElement,
@@ -565,7 +582,7 @@ public class QueryParameterMeta {
 
     @Override
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
-      if (ctType.isRawType()) {
+      if (ctType.isRaw()) {
         throw new AptException(
             Message.DOMA4218,
             parameterElement,
@@ -575,7 +592,7 @@ public class QueryParameterMeta {
               methodElement.getSimpleName()
             });
       }
-      if (ctType.isWildcardType()) {
+      if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
             Message.DOMA4219,
             parameterElement,

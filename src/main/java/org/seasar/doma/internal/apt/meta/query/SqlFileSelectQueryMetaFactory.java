@@ -10,7 +10,6 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.SelectAnnot;
-import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -110,9 +109,9 @@ public class SqlFileSelectQueryMetaFactory
 
     if (queryMeta.getSelectStrategyType() == SelectType.STREAM) {
       FunctionCtType functionCtType = queryMeta.getFunctionCtType();
-      AnyCtType returnCtType = functionCtType.getReturnCtType();
+      CtType returnCtType = functionCtType.getReturnCtType();
       if (returnCtType == null
-          || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getTypeMirror())) {
+          || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
             Message.DOMA4246,
             method,
@@ -125,9 +124,9 @@ public class SqlFileSelectQueryMetaFactory
       }
     } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
       CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
-      AnyCtType returnCtType = collectorCtType.getReturnCtType();
+      CtType returnCtType = collectorCtType.getReturnCtType();
       if (returnCtType == null
-          || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getTypeMirror())) {
+          || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
             Message.DOMA4265,
             method,
@@ -608,7 +607,7 @@ public class SqlFileSelectQueryMetaFactory
             Message.DOMA4155,
             returnMeta.getMethodElement(),
             new Object[] {
-              ctType.getTypeMirror(),
+              ctType.getType(),
               returnMeta.getDaoElement().getQualifiedName(),
               returnMeta.getMethodElement().getSimpleName()
             });
@@ -689,7 +688,7 @@ public class SqlFileSelectQueryMetaFactory
             Message.DOMA4272,
             returnMeta.getMethodElement(),
             new Object[] {
-              ctType.getTypeMirror(),
+              ctType.getType(),
               returnMeta.getDaoElement().getQualifiedName(),
               returnMeta.getMethodElement().getSimpleName()
             });
@@ -770,7 +769,7 @@ public class SqlFileSelectQueryMetaFactory
             Message.DOMA4234,
             returnMeta.getMethodElement(),
             new Object[] {
-              ctType.getTypeMirror(),
+              ctType.getType(),
               returnMeta.getDaoElement().getQualifiedName(),
               returnMeta.getMethodElement().getSimpleName()
             });

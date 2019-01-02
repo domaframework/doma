@@ -5,14 +5,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
-import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
+import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.message.Message;
 
 public class EmbeddablePropertyMetaFactory {
@@ -38,10 +31,56 @@ public class EmbeddablePropertyMetaFactory {
 
   protected CtType resolveCtType(
       VariableElement fieldElement, TypeMirror type, EmbeddableMeta embeddableMeta) {
+    return ctx.getCtTypes().newCtType(type, new CtTypeValidator(fieldElement, embeddableMeta));
+  }
 
-    final OptionalCtType optionalCtType = OptionalCtType.newInstance(type, ctx);
-    if (optionalCtType != null) {
-      if (optionalCtType.isRawType()) {
+  private class CtTypeValidator extends SimpleCtTypeVisitor<Void, Void, AptException> {
+
+    private final VariableElement fieldElement;
+
+    private final EmbeddableMeta embeddableMeta;
+
+    private CtTypeValidator(VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
+      this.fieldElement = fieldElement;
+      this.embeddableMeta = embeddableMeta;
+    }
+
+    @Override
+    protected Void defaultAction(CtType ctType, Void aVoid) throws AptException {
+      throw new AptException(
+          Message.DOMA4298,
+          fieldElement,
+          new Object[] {
+            ctType.getType(),
+            embeddableMeta.getEmbeddableElement().getQualifiedName(),
+            fieldElement.getSimpleName()
+          });
+    }
+
+    @Override
+    public Void visitBasicCtType(BasicCtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void aVoid)
+        throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalCtType(OptionalCtType optionalCtType, Void aVoid) throws AptException {
+      if (optionalCtType.isRaw()) {
         throw new AptException(
             Message.DOMA4299,
             fieldElement,
@@ -51,7 +90,7 @@ public class EmbeddablePropertyMetaFactory {
               fieldElement.getSimpleName()
             });
       }
-      if (optionalCtType.isWildcardType()) {
+      if (optionalCtType.hasWildcard()) {
         throw new AptException(
             Message.DOMA4301,
             fieldElement,
@@ -61,27 +100,12 @@ public class EmbeddablePropertyMetaFactory {
               fieldElement.getSimpleName()
             });
       }
-      return optionalCtType;
+      return null;
     }
 
-    OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(type, ctx);
-    if (optionalIntCtType != null) {
-      return optionalIntCtType;
-    }
-
-    OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(type, ctx);
-    if (optionalLongCtType != null) {
-      return optionalLongCtType;
-    }
-
-    OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType.newInstance(type, ctx);
-    if (optionalDoubleCtType != null) {
-      return optionalDoubleCtType;
-    }
-
-    final DomainCtType domainCtType = DomainCtType.newInstance(type, ctx);
-    if (domainCtType != null) {
-      if (domainCtType.isRawType()) {
+    @Override
+    public Void visitDomainCtType(DomainCtType domainCtType, Void aVoid) throws AptException {
+      if (domainCtType.isRaw()) {
         throw new AptException(
             Message.DOMA4295,
             fieldElement,
@@ -91,7 +115,7 @@ public class EmbeddablePropertyMetaFactory {
               fieldElement.getSimpleName()
             });
       }
-      if (domainCtType.isWildcardType()) {
+      if (domainCtType.hasWildcard() || domainCtType.hasTypevar()) {
         throw new AptException(
             Message.DOMA4296,
             fieldElement,
@@ -101,33 +125,20 @@ public class EmbeddablePropertyMetaFactory {
               fieldElement.getSimpleName()
             });
       }
-      return domainCtType;
+      return null;
     }
 
-    BasicCtType basicCtType = BasicCtType.newInstance(type, ctx);
-    if (basicCtType != null) {
-      return basicCtType;
-    }
-
-    final EmbeddableCtType embeddableCtType = EmbeddableCtType.newInstance(type, ctx);
-    if (embeddableCtType != null) {
+    @Override
+    public Void visitEmbeddableCtType(EmbeddableCtType embeddableCtType, Void aVoid)
+        throws AptException {
       throw new AptException(
           Message.DOMA4297,
           fieldElement,
           new Object[] {
-            type,
+            embeddableCtType.getType(),
             embeddableMeta.getEmbeddableElement().getQualifiedName(),
             fieldElement.getSimpleName()
           });
     }
-
-    throw new AptException(
-        Message.DOMA4298,
-        fieldElement,
-        new Object[] {
-          type,
-          embeddableMeta.getEmbeddableElement().getQualifiedName(),
-          fieldElement.getSimpleName()
-        });
   }
 }

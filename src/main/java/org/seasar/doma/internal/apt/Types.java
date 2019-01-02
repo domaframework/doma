@@ -238,6 +238,11 @@ public class Types {
             return null;
           }
 
+          @Override
+          public Void visitNoTypeAsNone(NoType t, StringBuilder stringBuilder) {
+            return null;
+          }
+
           public Void visitPrimitive(PrimitiveType t, StringBuilder p) {
             p.append(t.getKind().name().toLowerCase());
             return null;
@@ -328,6 +333,11 @@ public class Types {
 
           public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
             p.append("void");
+            return null;
+          }
+
+          @Override
+          public Void visitNoTypeAsNone(NoType t, StringBuilder stringBuilder) {
             return null;
           }
 
@@ -514,6 +524,11 @@ public class Types {
 
           public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
             p.append("void");
+            return null;
+          }
+
+          @Override
+          public Void visitNoTypeAsNone(NoType t, StringBuilder stringBuilder) {
             return null;
           }
 

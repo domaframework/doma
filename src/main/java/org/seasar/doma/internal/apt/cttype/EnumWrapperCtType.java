@@ -5,8 +5,8 @@ import org.seasar.doma.internal.apt.Context;
 
 public class EnumWrapperCtType extends WrapperCtType {
 
-  public EnumWrapperCtType(TypeMirror type, Context ctx) {
-    super(type, ctx);
+  EnumWrapperCtType(Context ctx, TypeMirror type) {
+    super(ctx, type);
   }
 
   @Override

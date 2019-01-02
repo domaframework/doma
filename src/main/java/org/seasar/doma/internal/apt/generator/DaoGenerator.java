@@ -1261,9 +1261,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
                       /* 1 */ BasicListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 4 */ basicCtType.getQualifiedName(),
                       /* 5 */ m.getName());
                   return null;
                 }
@@ -1274,7 +1274,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s, \"%4$s\"));%n",
                       /* 1 */ BasicListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
                       /* 4 */ m.getName());
                   return null;
@@ -1338,9 +1338,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
                       /* 1 */ BasicInOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 4 */ basicCtType.getQualifiedName(),
                       /* 5 */ m.getName());
                   return null;
                 }
@@ -1351,7 +1351,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
                       /* 1 */ BasicInOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
                       /* 4 */ m.getName());
                   return null;
@@ -1389,9 +1389,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
                       /* 1 */ BasicOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 4 */ basicCtType.getQualifiedName(),
                       /* 5 */ m.getName());
                   return null;
                 }
@@ -1402,7 +1402,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
                       /* 1 */ BasicOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
                       /* 4 */ m.getName());
                   return null;
@@ -1441,9 +1441,9 @@ public class DaoGenerator extends AbstractGenerator {
                       "__query.addParameter(new %1$s<%5$s>(() -> new %2$s(%3$s.class, %4$s)));%n",
                       /* 1 */ BasicInParameter.class.getName(),
                       /* 2 */ ctType.getTypeName(),
-                      /* 3 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 3 */ basicCtType.getQualifiedName(),
                       /* 4 */ m.getName(),
-                      /* 5 */ ctType.getBasicCtType().getBoxedTypeName());
+                      /* 5 */ basicCtType.getBoxedTypeName());
                   return null;
                 }
 
@@ -1455,7 +1455,7 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 1 */ BasicInParameter.class.getName(),
                       /* 2 */ ctType.getTypeName(),
                       /* 3 */ m.getName(),
-                      /* 4 */ ctType.getBasicCtType().getBoxedTypeName());
+                      /* 4 */ basicCtType.getBoxedTypeName());
                   return null;
                 }
               },
@@ -1492,9 +1492,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
                       /* 1 */ BasicResultListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName());
+                      /* 4 */ basicCtType.getQualifiedName());
                   return null;
                 }
 
@@ -1504,7 +1504,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(%3$s::new));%n",
                       /* 1 */ BasicResultListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName());
                   return null;
                 }
@@ -1567,9 +1567,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), false));%n",
                       /* 1 */ BasicSingleResultParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName());
+                      /* 4 */ basicCtType.getQualifiedName());
                   return null;
                 }
 
@@ -1579,7 +1579,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(%3$s::new, %4$s));%n",
                       /* 1 */ BasicSingleResultParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
                       /* 4 */ basicCtType.isPrimitive());
                   return null;
@@ -1619,9 +1619,9 @@ public class DaoGenerator extends AbstractGenerator {
                       "__query.addParameter(new %1$s<%5$s>(() -> new %2$s(%3$s.class), %4$s));%n",
                       /* 1 */ OptionalBasicInParameter.class.getName(),
                       /* 2 */ ctType.getTypeName(),
-                      /* 3 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 3 */ basicCtType.getQualifiedName(),
                       /* 4 */ m.getName(),
-                      /* 5 */ ctType.getBasicCtType().getBoxedTypeName());
+                      /* 5 */ basicCtType.getBoxedTypeName());
                   return null;
                 }
 
@@ -1633,7 +1633,7 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 1 */ OptionalBasicInParameter.class.getName(),
                       /* 2 */ ctType.getTypeName(),
                       /* 3 */ m.getName(),
-                      /* 4 */ ctType.getBasicCtType().getBoxedTypeName());
+                      /* 4 */ basicCtType.getBoxedTypeName());
                   return null;
                 }
               },
@@ -1657,9 +1657,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
                       /* 1 */ OptionalBasicOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 4 */ basicCtType.getQualifiedName(),
                       /* 5 */ m.getName());
                   return null;
                 }
@@ -1670,7 +1670,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s));%n",
                       /* 1 */ OptionalBasicOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
                       /* 4 */ m.getName());
                   return null;
@@ -1696,9 +1696,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s));%n",
                       /* 1 */ OptionalBasicInOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 4 */ basicCtType.getQualifiedName(),
                       /* 5 */ m.getName());
                   return null;
                 }
@@ -1709,7 +1709,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s));%n",
                       /* 1 */ OptionalBasicInOutParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
                       /* 4 */ m.getName());
                   return null;
@@ -1734,9 +1734,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
                       /* 1 */ OptionalBasicListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 4 */ basicCtType.getQualifiedName(),
                       /* 5 */ m.getName());
                   return null;
                 }
@@ -1747,7 +1747,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.addParameter(new %1$s<%2$s>(() -> new %3$s(), %4$s, \"%4$s\"));%n",
                       /* 1 */ OptionalBasicListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
                       /* 4 */ m.getName());
                   return null;
@@ -1772,9 +1772,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
                       /* 1 */ OptionalBasicSingleResultParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName());
+                      /* 4 */ basicCtType.getQualifiedName());
                   return null;
                 }
 
@@ -1784,7 +1784,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s()));%n",
                       /* 1 */ OptionalBasicSingleResultParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName());
                   return null;
                 }
@@ -1808,9 +1808,9 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s(%4$s.class)));%n",
                       /* 1 */ OptionalBasicResultListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName(),
-                      /* 4 */ ctType.getBasicCtType().getQualifiedName());
+                      /* 4 */ basicCtType.getQualifiedName());
                   return null;
                 }
 
@@ -1820,7 +1820,7 @@ public class DaoGenerator extends AbstractGenerator {
                   iprint(
                       "__query.setResultParameter(new %1$s<%2$s>(() -> new %3$s()));%n",
                       /* 1 */ OptionalBasicResultListParameter.class.getName(),
-                      /* 2 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 2 */ basicCtType.getBoxedTypeName(),
                       /* 3 */ ctType.getTypeName());
                   return null;
                 }
@@ -2150,9 +2150,9 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     @Override
-    public Void visitBasicCtType(BasicCtType ctType, final Boolean optional)
+    public Void visitBasicCtType(BasicCtType basicCtType, final Boolean optional)
         throws RuntimeException {
-      ctType
+      basicCtType
           .getWrapperCtType()
           .accept(
               new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
@@ -2165,9 +2165,9 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 1 */ commandClassName,
                       /* 2 */ resultBoxedTypeName,
                       /* 3 */ getBasicStreamHandlerName(optional),
-                      /* 4 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 4 */ basicCtType.getBoxedTypeName(),
                       /* 5 */ ctType.getTypeName(),
-                      /* 6 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 6 */ basicCtType.getQualifiedName(),
                       /* 7 */ functionParamName,
                       /* 8 */ commandName, /* 9 */
                       methodName);
@@ -2182,7 +2182,7 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 1 */ commandClassName,
                       /* 2 */ resultBoxedTypeName,
                       /* 3 */ getBasicStreamHandlerName(optional),
-                      /* 4 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 4 */ basicCtType.getBoxedTypeName(),
                       /* 5 */ ctType.getTypeName(),
                       /* 6 */ functionParamName,
                       /* 7 */ commandName, /* 8 */
@@ -2338,9 +2338,9 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     @Override
-    public Void visitBasicCtType(BasicCtType ctType, final Boolean optional)
+    public Void visitBasicCtType(BasicCtType basicCtType, final Boolean optional)
         throws RuntimeException {
-      ctType
+      basicCtType
           .getWrapperCtType()
           .accept(
               new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
@@ -2353,9 +2353,9 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 1 */ commandClassName,
                       /* 2 */ resultMeta.getBoxedTypeName(),
                       /* 3 */ getBasicCollectorHandlerName(optional),
-                      /* 4 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 4 */ basicCtType.getBoxedTypeName(),
                       /* 5 */ ctType.getTypeName(),
-                      /* 6 */ ctType.getBasicCtType().getQualifiedName(),
+                      /* 6 */ basicCtType.getQualifiedName(),
                       /* 7 */ collectorParamName,
                       /* 8 */ commandName, /* 9 */
                       methodName);
@@ -2370,7 +2370,7 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 1 */ commandClassName,
                       /* 2 */ resultMeta.getBoxedTypeName(),
                       /* 3 */ getBasicCollectorHandlerName(optional),
-                      /* 4 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 4 */ basicCtType.getBoxedTypeName(),
                       /* 5 */ ctType.getTypeName(),
                       /* 6 */ collectorParamName,
                       /* 7 */ commandName, /* 8 */
@@ -2544,8 +2544,8 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 2 */ resultBoxedTypeName,
                       /* 3 */ getBasicSingleResultHandlerName(optional),
                       /* 4 */ ctType.getTypeName(),
-                      /* 5 */ ctType.getBasicCtType().getQualifiedName(),
-                      /* 6 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 5 */ basicCtType.getQualifiedName(),
+                      /* 6 */ basicCtType.getBoxedTypeName(),
                       /* 7 */ commandName, /* 8 */
                       methodName);
                   return null;
@@ -2561,7 +2561,7 @@ public class DaoGenerator extends AbstractGenerator {
                       /* 3 */ getBasicSingleResultHandlerName(optional),
                       /* 4 */ ctType.getTypeName(),
                       /* 5 */ basicCtType.isPrimitive(),
-                      /* 6 */ ctType.getBasicCtType().getBoxedTypeName(),
+                      /* 6 */ basicCtType.getBoxedTypeName(),
                       /* 7 */ commandName, /* 8 */
                       methodName);
                   return null;
@@ -2670,9 +2670,9 @@ public class DaoGenerator extends AbstractGenerator {
               new SimpleCtTypeVisitor<Void, Boolean, RuntimeException>() {
 
                 @Override
-                public Void visitBasicCtType(BasicCtType ctType, Boolean optional)
+                public Void visitBasicCtType(BasicCtType basicCtType, Boolean optional)
                     throws RuntimeException {
-                  ctType
+                  basicCtType
                       .getWrapperCtType()
                       .accept(
                           new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
@@ -2685,9 +2685,9 @@ public class DaoGenerator extends AbstractGenerator {
                                   /* 1 */ commandClassName,
                                   /* 2 */ resultBoxedTypeName,
                                   /* 3 */ getBasicResultListHandlerName(optional),
-                                  /* 4 */ ctType.getBasicCtType().getBoxedTypeName(),
+                                  /* 4 */ basicCtType.getBoxedTypeName(),
                                   /* 5 */ ctType.getTypeName(),
-                                  /* 6 */ ctType.getBasicCtType().getQualifiedName(),
+                                  /* 6 */ basicCtType.getQualifiedName(),
                                   /* 7 */ commandName,
                                   /* 8 */ methodName);
                               return null;
@@ -2701,7 +2701,7 @@ public class DaoGenerator extends AbstractGenerator {
                                   /* 1 */ commandClassName,
                                   /* 2 */ resultBoxedTypeName,
                                   /* 3 */ getBasicResultListHandlerName(optional),
-                                  /* 4 */ ctType.getBasicCtType().getBoxedTypeName(),
+                                  /* 4 */ basicCtType.getBoxedTypeName(),
                                   /* 5 */ ctType.getTypeName(),
                                   /* 6 */ commandName,
                                   /* 7 */ methodName);

@@ -125,7 +125,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     }
     ModifyAnnot modifyAnnot = queryMeta.getModifyAnnot();
     validateEntityPropertyNames(
-        entityCtType.getTypeMirror(),
+        entityCtType.getType(),
         method,
         modifyAnnot.getAnnotationMirror(),
         modifyAnnot.getInclude(),

@@ -5,7 +5,7 @@ import javax.lang.model.type.TypeMirror;
 
 public interface CtType {
 
-  TypeMirror getTypeMirror();
+  TypeMirror getType();
 
   TypeElement getTypeElement();
 
@@ -19,11 +19,15 @@ public interface CtType {
 
   String getPackageName();
 
-  String getPackageExcludedBinaryName();
-
   boolean isPrimitive();
 
   boolean isEnum();
+
+  boolean isNone();
+
+  boolean isWildcard();
+
+  boolean isTypevar();
 
   <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH;
 }

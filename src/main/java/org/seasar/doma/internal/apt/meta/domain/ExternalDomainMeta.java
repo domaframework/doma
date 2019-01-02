@@ -3,14 +3,14 @@ package org.seasar.doma.internal.apt.meta.domain;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
 public class ExternalDomainMeta implements TypeElementMeta {
 
   protected final TypeElement typeElement;
 
-  protected WrapperCtType wrapperCtType;
+  private BasicCtType basicCtType;
 
   protected String valueTypeName;
 
@@ -25,12 +25,12 @@ public class ExternalDomainMeta implements TypeElementMeta {
     return typeElement;
   }
 
-  public WrapperCtType getWrapperCtType() {
-    return wrapperCtType;
+  public BasicCtType getBasicCtType() {
+    return basicCtType;
   }
 
-  public void setWrapperCtType(WrapperCtType wrapperCtType) {
-    this.wrapperCtType = wrapperCtType;
+  public void setBasicCtType(BasicCtType basicCtType) {
+    this.basicCtType = basicCtType;
   }
 
   public String getValueTypeName() {

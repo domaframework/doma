@@ -157,7 +157,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     @Override
     protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
-      bindableParameterTypeMap.put(parameterName, ctType.getTypeMirror());
+      bindableParameterTypeMap.put(parameterName, ctType.getType());
       return null;
     }
 

@@ -7,6 +7,8 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
@@ -106,13 +108,15 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
   protected void printConstructors() {
     iprint("private %1$s() {%n", simpleName);
-    if (domainMeta.getWrapperCtType().getBasicCtType().isEnum()) {
+    BasicCtType basicCtType = domainMeta.getBasicCtType();
+    WrapperCtType wrapperCtType = basicCtType.getWrapperCtType();
+    if (basicCtType.isEnum()) {
       iprint(
           "    super(() -> new %1$s(%2$s.class));%n",
-          domainMeta.getWrapperCtType().getTypeName(), domainMeta.getValueTypeName());
+          wrapperCtType.getTypeName(), domainMeta.getValueTypeName());
       iprint("}%n");
     } else {
-      iprint("    super(() -> new %1$s());%n", domainMeta.getWrapperCtType().getTypeName());
+      iprint("    super(() -> new %1$s());%n", wrapperCtType.getTypeName());
       iprint("}%n");
     }
     print("%n");

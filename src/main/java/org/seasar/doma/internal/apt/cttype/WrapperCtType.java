@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.math.BigDecimal;
@@ -53,37 +52,8 @@ import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class WrapperCtType extends AbstractCtType {
 
-  protected BasicCtType basicCtType;
-
-  public WrapperCtType(TypeMirror type, Context ctx) {
-    super(type, ctx);
-  }
-
-  public BasicCtType getBasicCtType() {
-    return basicCtType;
-  }
-
-  public static WrapperCtType newInstance(BasicCtType basicCtType, Context ctx) {
-    assertNotNull(basicCtType, ctx);
-    Class<?> wrapperClass =
-        basicCtType.getTypeMirror().accept(new WrapperTypeMappingVisitor(ctx), null);
-    if (wrapperClass == null) {
-      return null;
-    }
-    TypeElement wrapperTypeElement = ctx.getElements().getTypeElement(wrapperClass);
-    if (wrapperTypeElement == null) {
-      return null;
-    }
-    WrapperCtType wrapperCtType;
-    if (wrapperClass == EnumWrapper.class) {
-      DeclaredType declaredType =
-          ctx.getTypes().getDeclaredType(wrapperTypeElement, basicCtType.getTypeMirror());
-      wrapperCtType = new EnumWrapperCtType(declaredType, ctx);
-    } else {
-      wrapperCtType = new WrapperCtType(wrapperTypeElement.asType(), ctx);
-    }
-    wrapperCtType.basicCtType = basicCtType;
-    return wrapperCtType;
+  WrapperCtType(Context ctx, TypeMirror type) {
+    super(ctx, type);
   }
 
   @Override

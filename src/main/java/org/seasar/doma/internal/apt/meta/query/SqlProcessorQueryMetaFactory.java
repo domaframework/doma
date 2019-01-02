@@ -8,7 +8,6 @@ import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
-import org.seasar.doma.internal.apt.cttype.AnyCtType;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.ConfigCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -80,7 +79,7 @@ public class SqlProcessorQueryMetaFactory
     queryMeta.setReturnMeta(returnMeta);
 
     BiFunctionCtType biFunctionCtType = queryMeta.getBiFunctionCtType();
-    AnyCtType resultCtType = biFunctionCtType.getResultCtType();
+    CtType resultCtType = biFunctionCtType.getResultCtType();
     if (resultCtType == null || !isConvertibleReturnType(returnMeta, resultCtType)) {
       throw new AptException(
           Message.DOMA4436,
@@ -94,12 +93,12 @@ public class SqlProcessorQueryMetaFactory
     }
   }
 
-  protected boolean isConvertibleReturnType(QueryReturnMeta returnMeta, AnyCtType resultCtType) {
-    if (ctx.getTypes().isSameType(returnMeta.getType(), resultCtType.getTypeMirror())) {
+  protected boolean isConvertibleReturnType(QueryReturnMeta returnMeta, CtType resultCtType) {
+    if (ctx.getTypes().isSameType(returnMeta.getType(), resultCtType.getType())) {
       return true;
     }
     if (returnMeta.getType().getKind() == TypeKind.VOID) {
-      return ctx.getTypes().isSameType(resultCtType.getTypeMirror(), Void.class);
+      return ctx.getTypes().isSameType(resultCtType.getType(), Void.class);
     }
     return false;
   }

@@ -152,7 +152,7 @@ public class AutoBatchModifyQueryMetaFactory
     }
     BatchModifyAnnot batchModifyAnnot = queryMeta.getBatchModifyAnnot();
     validateEntityPropertyNames(
-        entityCtType.getTypeMirror(),
+        entityCtType.getType(),
         method,
         batchModifyAnnot.getAnnotationMirror(),
         batchModifyAnnot.getInclude(),

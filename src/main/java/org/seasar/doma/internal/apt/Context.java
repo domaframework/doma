@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import org.seasar.doma.internal.apt.annot.Annotations;
+import org.seasar.doma.internal.apt.cttype.CtTypes;
 import org.seasar.doma.internal.apt.decl.Declarations;
 
 public class Context {
@@ -42,5 +43,9 @@ public class Context {
 
   public Declarations getDeclarations() {
     return new Declarations(this);
+  }
+
+  public CtTypes getCtTypes() {
+    return new CtTypes(this);
   }
 }

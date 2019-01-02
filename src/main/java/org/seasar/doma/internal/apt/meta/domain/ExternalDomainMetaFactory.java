@@ -151,13 +151,13 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     String valueTypeName = ctx.getTypes().getTypeName(valueType);
     meta.setValueTypeName(valueTypeName);
 
-    BasicCtType basicCtType = BasicCtType.newInstance(valueType, ctx);
+    BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
     if (basicCtType == null) {
       throw new AptException(
           Message.DOMA4194,
           convElement,
           new Object[] {valueTypeName, convElement.getQualifiedName()});
     }
-    meta.setWrapperCtType(basicCtType.getWrapperCtType());
+    meta.setBasicCtType(basicCtType);
   }
 }

@@ -148,13 +148,13 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   protected boolean isScalar(TypeDeclaration typeDeclaration) {
     TypeMirror typeMirror = typeDeclaration.getType();
-    return BasicCtType.newInstance(typeMirror, ctx) != null
-        || DomainCtType.newInstance(typeMirror, ctx) != null;
+    return ctx.getCtTypes().newBasicCtType(typeMirror) != null
+        || ctx.getCtTypes().newDomainCtType(typeMirror) != null;
   }
 
   protected boolean isScalarIterable(TypeDeclaration typeDeclaration) {
     TypeMirror typeMirror = typeDeclaration.getType();
-    IterableCtType iterableCtType = IterableCtType.newInstance(typeMirror, ctx);
+    IterableCtType iterableCtType = ctx.getCtTypes().newIterableCtType(typeMirror);
     if (iterableCtType != null) {
       return iterableCtType
           .getElementCtType()

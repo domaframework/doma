@@ -64,93 +64,10 @@ public class EntityPropertyMetaFactory {
 
   protected void doCtType(
       EntityPropertyMeta propertyMeta, final VariableElement fieldElement, EntityMeta entityMeta) {
-    CtType ctType = resolveCtType(fieldElement, fieldElement.asType(), entityMeta);
+    CtType ctType =
+        ctx.getCtTypes()
+            .newCtType(fieldElement.asType(), new CtTypeValidator(fieldElement, entityMeta));
     propertyMeta.setCtType(ctType);
-  }
-
-  protected CtType resolveCtType(
-      VariableElement fieldElement, TypeMirror type, EntityMeta entityMeta) {
-    final OptionalCtType optionalCtType = OptionalCtType.newInstance(type, ctx);
-    if (optionalCtType != null) {
-      if (optionalCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4232,
-            fieldElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              entityMeta.getEntityElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
-      }
-      if (optionalCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4233,
-            fieldElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              entityMeta.getEntityElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
-      }
-      return optionalCtType;
-    }
-
-    OptionalIntCtType optionalIntCtType = OptionalIntCtType.newInstance(type, ctx);
-    if (optionalIntCtType != null) {
-      return optionalIntCtType;
-    }
-
-    OptionalLongCtType optionalLongCtType = OptionalLongCtType.newInstance(type, ctx);
-    if (optionalLongCtType != null) {
-      return optionalLongCtType;
-    }
-
-    OptionalDoubleCtType optionalDoubleCtType = OptionalDoubleCtType.newInstance(type, ctx);
-    if (optionalDoubleCtType != null) {
-      return optionalDoubleCtType;
-    }
-
-    final DomainCtType domainCtType = DomainCtType.newInstance(type, ctx);
-    if (domainCtType != null) {
-      if (domainCtType.isRawType()) {
-        throw new AptException(
-            Message.DOMA4204,
-            fieldElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              entityMeta.getEntityElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
-      }
-      if (domainCtType.isWildcardType()) {
-        throw new AptException(
-            Message.DOMA4205,
-            fieldElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              entityMeta.getEntityElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
-      }
-      return domainCtType;
-    }
-
-    final EmbeddableCtType embeddableCtType = EmbeddableCtType.newInstance(type, ctx);
-    if (embeddableCtType != null) {
-      return embeddableCtType;
-    }
-
-    BasicCtType basicCtType = BasicCtType.newInstance(type, ctx);
-    if (basicCtType != null) {
-      return basicCtType;
-    }
-
-    throw new AptException(
-        Message.DOMA4096,
-        fieldElement,
-        new Object[] {
-          type, entityMeta.getEntityElement().getQualifiedName(), fieldElement.getSimpleName()
-        });
   }
 
   protected void doName(
@@ -483,11 +400,111 @@ public class EntityPropertyMetaFactory {
 
               @Override
               public Boolean visitBasicCtType(BasicCtType ctType, Void p) throws RuntimeException {
-                TypeMirror boxedType = ctx.getTypes().boxIfPrimitive(ctType.getTypeMirror());
+                TypeMirror boxedType = ctx.getTypes().boxIfPrimitive(ctType.getType());
                 return ctx.getTypes().isAssignable(boxedType, Number.class);
               }
             },
             null);
     return isNumber == Boolean.TRUE;
+  }
+
+  private class CtTypeValidator extends SimpleCtTypeVisitor<Void, Void, AptException> {
+
+    private final VariableElement fieldElement;
+
+    private final EntityMeta entityMeta;
+
+    private CtTypeValidator(VariableElement fieldElement, EntityMeta entityMeta) {
+      this.fieldElement = fieldElement;
+      this.entityMeta = entityMeta;
+    }
+
+    @Override
+    protected Void defaultAction(CtType ctType, Void aVoid) throws AptException {
+      throw new AptException(
+          Message.DOMA4096,
+          fieldElement,
+          new Object[] {
+            ctType.getType(),
+            entityMeta.getEntityElement().getQualifiedName(),
+            fieldElement.getSimpleName()
+          });
+    }
+
+    @Override
+    public Void visitBasicCtType(BasicCtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitEmbeddableCtType(EmbeddableCtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void aVoid)
+        throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void aVoid) throws AptException {
+      return null;
+    }
+
+    @Override
+    public Void visitOptionalCtType(OptionalCtType optionalCtType, Void aVoid) throws AptException {
+      if (optionalCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4232,
+            fieldElement,
+            new Object[] {
+              optionalCtType.getQualifiedName(),
+              entityMeta.getEntityElement().getQualifiedName(),
+              fieldElement.getSimpleName()
+            });
+      }
+      if (optionalCtType.hasWildcard()) {
+        throw new AptException(
+            Message.DOMA4233,
+            fieldElement,
+            new Object[] {
+              optionalCtType.getQualifiedName(),
+              entityMeta.getEntityElement().getQualifiedName(),
+              fieldElement.getSimpleName()
+            });
+      }
+      return null;
+    }
+
+    @Override
+    public Void visitDomainCtType(DomainCtType domainCtType, Void aVoid) throws AptException {
+      if (domainCtType.isRaw()) {
+        throw new AptException(
+            Message.DOMA4204,
+            fieldElement,
+            new Object[] {
+              domainCtType.getQualifiedName(),
+              entityMeta.getEntityElement().getQualifiedName(),
+              fieldElement.getSimpleName()
+            });
+      }
+      if (domainCtType.hasWildcard() || domainCtType.hasTypevar()) {
+        throw new AptException(
+            Message.DOMA4205,
+            fieldElement,
+            new Object[] {
+              domainCtType.getQualifiedName(),
+              entityMeta.getEntityElement().getQualifiedName(),
+              fieldElement.getSimpleName()
+            });
+      }
+      return null;
+    }
   }
 }

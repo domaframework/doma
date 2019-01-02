@@ -90,7 +90,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
     @Override
     public void doWrapperCtType(TypeElement classElement, DomainMeta domainMeta) {
-      BasicCtType basicCtType = BasicCtType.newInstance(domainMeta.getValueType(), ctx);
+      BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(domainMeta.getValueType());
       if (basicCtType == null) {
         DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
         throw new AptException(
