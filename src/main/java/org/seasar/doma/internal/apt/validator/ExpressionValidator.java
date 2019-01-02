@@ -86,7 +86,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     this.methodElement = methodElement;
     this.parameterTypeMap = new HashMap<String, TypeMirror>(parameterTypeMap);
     this.validatedParameterNames = new HashSet<String>();
-    this.unknownTypeDeclaration = TypeDeclaration.newUnknownTypeDeclaration(ctx);
+    this.unknownTypeDeclaration = ctx.getDeclarations().newUnknownTypeDeclaration();
     this.exprFunctionsClassName = exprFunctionsClassName;
   }
 
@@ -149,7 +149,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     TypeDeclaration left = node.getLeftNode().accept(this, p);
     TypeDeclaration right = node.getRightNode().accept(this, p);
     if (left.isNullType() || right.isNullType() || left.isSameType(right)) {
-      return TypeDeclaration.newBooleanTypeDeclaration(ctx);
+      return ctx.getDeclarations().newBooleanTypeDeclaration();
     }
     ExpressionLocation location = node.getLocation();
     throw new AptException(
@@ -178,7 +178,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
           new Object[] {location.getExpression(), location.getPosition(), node.getExpression()});
     }
     if (left.isSameType(right)) {
-      return TypeDeclaration.newBooleanTypeDeclaration(ctx);
+      return ctx.getDeclarations().newBooleanTypeDeclaration();
     }
     ExpressionLocation location = node.getLocation();
     throw new AptException(
@@ -235,14 +235,14 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
             right.getBinaryName()
           });
     }
-    return TypeDeclaration.newBooleanTypeDeclaration(ctx);
+    return ctx.getDeclarations().newBooleanTypeDeclaration();
   }
 
   @Override
   public TypeDeclaration visitNotOperatorNode(NotOperatorNode node, Void p) {
     TypeDeclaration result = node.getNode().accept(this, p);
     if (result.isBooleanType()) {
-      return TypeDeclaration.newBooleanTypeDeclaration(ctx);
+      return ctx.getDeclarations().newBooleanTypeDeclaration();
     }
     ExpressionLocation location = node.getLocation();
     throw new AptException(
@@ -345,7 +345,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
         node.getValueClass() == void.class
             ? ctx.getTypes().getNullType()
             : ctx.getTypes().getTypeMirror(node.getValueClass());
-    return TypeDeclaration.newTypeDeclaration(type, ctx);
+    return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
   @Override
@@ -369,7 +369,8 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), className});
     }
-    TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(typeElement.asType(), ctx);
+    TypeDeclaration typeDeclaration =
+        ctx.getDeclarations().newTypeDeclaration(typeElement.asType());
     List<ConstructorDeclaration> constructorDeclarations =
         typeDeclaration.getConstructorDeclarations(parameterTypeDeclarations);
     if (constructorDeclarations.size() == 0) {
@@ -471,7 +472,8 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), className});
     }
-    TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(typeElement.asType(), ctx);
+    TypeDeclaration typeDeclaration =
+        ctx.getDeclarations().newTypeDeclaration(typeElement.asType());
     List<TypeDeclaration> parameterTypeDeclarations =
         new ParameterCollector().collect(node.getParametersNode());
     String methodName = node.getMethodName();
@@ -532,7 +534,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
 
   protected TypeDeclaration getExpressionFunctionsDeclaration(FunctionOperatorNode node) {
     if (exprFunctionsClassName == null) {
-      return TypeDeclaration.newTypeDeclaration(ExpressionFunctions.class, ctx);
+      return ctx.getDeclarations().newTypeDeclaration(ExpressionFunctions.class);
     }
     TypeElement element = ctx.getElements().getTypeElement(exprFunctionsClassName);
     if (element == null) {
@@ -560,7 +562,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
             exprFunctionsClassName
           });
     }
-    return TypeDeclaration.newTypeDeclaration(type, ctx);
+    return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
   protected String createMethodSignature(
@@ -614,7 +616,8 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
           methodElement,
           new Object[] {location.getExpression(), location.getPosition(), className});
     }
-    TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(typeElement.asType(), ctx);
+    TypeDeclaration typeDeclaration =
+        ctx.getDeclarations().newTypeDeclaration(typeElement.asType());
     String fieldName = node.getFieldName();
     FieldDeclaration fieldDeclaration = typeDeclaration.getStaticFieldDeclaration(fieldName);
     if (fieldDeclaration != null) {
@@ -638,13 +641,13 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
               .stream()
               .findFirst()
               .orElseThrow(() -> new AptIllegalStateException(typeDeclaration.toString()));
-      return TypeDeclaration.newTypeDeclaration(typeParameterDeclaration.getActualType(), ctx);
+      return ctx.getDeclarations().newTypeDeclaration(typeParameterDeclaration.getActualType());
     } else if (typeDeclaration.is(OptionalInt.class)) {
-      return TypeDeclaration.newTypeDeclaration(Integer.class, ctx);
+      return ctx.getDeclarations().newTypeDeclaration(Integer.class);
     } else if (typeDeclaration.is(OptionalLong.class)) {
-      return TypeDeclaration.newTypeDeclaration(Long.class, ctx);
+      return ctx.getDeclarations().newTypeDeclaration(Long.class);
     } else if (typeDeclaration.is(OptionalDouble.class)) {
-      return TypeDeclaration.newTypeDeclaration(Double.class, ctx);
+      return ctx.getDeclarations().newTypeDeclaration(Double.class);
     }
     return typeDeclaration;
   }
@@ -659,7 +662,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
           Message.DOMA4067, methodElement, new Object[] {variableName, location.getPosition()});
     }
     validatedParameterNames.add(variableName);
-    return TypeDeclaration.newTypeDeclaration(type, ctx);
+    return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
   protected class ParameterCollector implements ExpressionNodeVisitor<Void, List<TypeDeclaration>> {

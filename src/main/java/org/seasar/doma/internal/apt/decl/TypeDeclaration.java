@@ -5,17 +5,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -24,7 +21,7 @@ import org.seasar.doma.internal.apt.Context;
 
 public class TypeDeclaration {
 
-  protected static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<String, Integer>();
+  private static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<>();
 
   static {
     NUMBER_PRIORITY_MAP.put(BigDecimal.class.getName(), 80);
@@ -43,25 +40,31 @@ public class TypeDeclaration {
     NUMBER_PRIORITY_MAP.put(Byte.class.getName(), 10);
   }
 
-  protected TypeElement typeElement;
+  private final Context ctx;
 
-  protected TypeMirror type;
+  private final TypeMirror type;
 
-  protected Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap =
-      new HashMap<String, List<TypeParameterDeclaration>>();
+  private final TypeElement typeElement;
 
-  protected Context ctx;
+  private final Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap;
 
-  protected int numberPriority;
+  private final int numberPriority;
 
-  protected TypeDeclaration() {}
+  protected TypeDeclaration(
+      Context ctx,
+      TypeMirror type,
+      TypeElement typeElement,
+      Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap) {
+    assertNotNull(ctx, type, typeParameterDeclarationsMap);
+    this.ctx = ctx;
+    this.type = type;
+    this.typeElement = typeElement; // nullable
+    this.typeParameterDeclarationsMap = typeParameterDeclarationsMap;
+    this.numberPriority = determineNumberPriority(typeElement, type, ctx);
+  }
 
   public TypeMirror getType() {
     return type;
-  }
-
-  public Context getContext() {
-    return ctx;
   }
 
   public String getBinaryName() {
@@ -112,10 +115,6 @@ public class TypeDeclaration {
     return ctx.getTypes().isSameType(type, clazz);
   }
 
-  public int getNumberPriority() {
-    return numberPriority;
-  }
-
   public List<TypeParameterDeclaration> getTypeParameterDeclarations() {
     Optional<List<TypeParameterDeclaration>> typeParameterDeclarations =
         typeParameterDeclarationsMap.values().stream().findFirst();
@@ -137,9 +136,9 @@ public class TypeDeclaration {
     return candidates;
   }
 
-  protected List<ConstructorDeclaration> getCandidateConstructorDeclarations(
+  private List<ConstructorDeclaration> getCandidateConstructorDeclarations(
       List<TypeDeclaration> parameterTypeDeclarations) {
-    List<ConstructorDeclaration> results = new LinkedList<ConstructorDeclaration>();
+    List<ConstructorDeclaration> results = new LinkedList<>();
     for (Map.Entry<String, List<TypeParameterDeclaration>> e :
         typeParameterDeclarationsMap.entrySet()) {
       String typeQualifiedName = e.getKey();
@@ -166,14 +165,14 @@ public class TypeDeclaration {
           }
         }
         ConstructorDeclaration constructorDeclaration =
-            ConstructorDeclaration.newInstance(constructor, typeParameterDeclarations, ctx);
+            ctx.getDeclarations().newConstructorDeclaration(constructor, typeParameterDeclarations);
         results.add(constructorDeclaration);
       }
     }
     return results;
   }
 
-  protected ConstructorDeclaration findSuitableConstructorDeclaration(
+  private ConstructorDeclaration findSuitableConstructorDeclaration(
       List<TypeDeclaration> parameterTypeDeclarations, List<ConstructorDeclaration> candidates) {
     outer:
     for (ConstructorDeclaration constructorDeclaration : candidates) {
@@ -200,7 +199,7 @@ public class TypeDeclaration {
     return getFieldDeclarationInternal(name, true);
   }
 
-  public FieldDeclaration getFieldDeclarationInternal(String name, boolean statik) {
+  private FieldDeclaration getFieldDeclarationInternal(String name, boolean statik) {
     List<FieldDeclaration> candidates = getCandidateFieldDeclaration(name, statik);
     removeHiddenFieldDeclarations(candidates);
 
@@ -213,7 +212,7 @@ public class TypeDeclaration {
     throw new AptIllegalStateException(name);
   }
 
-  public List<FieldDeclaration> getCandidateFieldDeclaration(String name, boolean statik) {
+  private List<FieldDeclaration> getCandidateFieldDeclaration(String name, boolean statik) {
     List<FieldDeclaration> results = new LinkedList<FieldDeclaration>();
     for (Map.Entry<String, List<TypeParameterDeclaration>> e :
         typeParameterDeclarationsMap.entrySet()) {
@@ -228,15 +227,15 @@ public class TypeDeclaration {
           continue;
         }
         FieldDeclaration fieldDeclaration =
-            FieldDeclaration.newInstance(field, typeParameterDeclarations, ctx);
+            ctx.getDeclarations().newFieldDeclaration(field, typeParameterDeclarations);
         results.add(fieldDeclaration);
       }
     }
     return results;
   }
 
-  protected void removeHiddenFieldDeclarations(List<FieldDeclaration> candidates) {
-    List<FieldDeclaration> hiders = new LinkedList<FieldDeclaration>(candidates);
+  private void removeHiddenFieldDeclarations(List<FieldDeclaration> candidates) {
+    List<FieldDeclaration> hiders = new LinkedList<>(candidates);
     for (Iterator<FieldDeclaration> it = candidates.iterator(); it.hasNext(); ) {
       FieldDeclaration hidden = it.next();
       for (FieldDeclaration hider : hiders) {
@@ -258,7 +257,7 @@ public class TypeDeclaration {
     return getMethodDeclarationsInternal(name, parameterTypeDeclarations, true);
   }
 
-  protected List<MethodDeclaration> getMethodDeclarationsInternal(
+  private List<MethodDeclaration> getMethodDeclarationsInternal(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
     List<MethodDeclaration> candidates =
         getCandidateMethodDeclarations(name, parameterTypeDeclarations, statik);
@@ -275,9 +274,9 @@ public class TypeDeclaration {
     return candidates;
   }
 
-  protected List<MethodDeclaration> getCandidateMethodDeclarations(
+  private List<MethodDeclaration> getCandidateMethodDeclarations(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
-    List<MethodDeclaration> results = new LinkedList<MethodDeclaration>();
+    List<MethodDeclaration> results = new LinkedList<>();
     for (Map.Entry<String, List<TypeParameterDeclaration>> e :
         typeParameterDeclarationsMap.entrySet()) {
       String binaryName = e.getKey();
@@ -315,15 +314,15 @@ public class TypeDeclaration {
           }
         }
         MethodDeclaration methodDeclaration =
-            MethodDeclaration.newInstance(method, typeParameterDeclarations, ctx);
+            ctx.getDeclarations().newMethodDeclaration(method, typeParameterDeclarations);
         results.add(methodDeclaration);
       }
     }
     return results;
   }
 
-  protected void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
-    List<MethodDeclaration> overriders = new LinkedList<MethodDeclaration>(candidates);
+  private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
+    List<MethodDeclaration> overriders = new LinkedList<>(candidates);
     for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext(); ) {
       MethodDeclaration overridden = it.next();
       for (MethodDeclaration overrider : overriders) {
@@ -341,8 +340,8 @@ public class TypeDeclaration {
     }
   }
 
-  protected void removeHiddenMethodDeclarations(List<MethodDeclaration> candidates) {
-    List<MethodDeclaration> hiders = new LinkedList<MethodDeclaration>(candidates);
+  private void removeHiddenMethodDeclarations(List<MethodDeclaration> candidates) {
+    List<MethodDeclaration> hiders = new LinkedList<>(candidates);
     for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext(); ) {
       MethodDeclaration hidden = it.next();
       for (MethodDeclaration hider : hiders) {
@@ -382,7 +381,7 @@ public class TypeDeclaration {
     assertTrue(isTextType());
     assertTrue(other.isTextType());
     TypeMirror type = ctx.getTypes().getTypeMirror(String.class);
-    return newTypeDeclaration(type, ctx);
+    return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
   public TypeDeclaration emulateArithmeticOperation(TypeDeclaration other) {
@@ -390,7 +389,7 @@ public class TypeDeclaration {
     assertTrue(isNumberType());
     assertTrue(other.isNumberType());
     TypeMirror type = this.numberPriority >= other.numberPriority ? this.type : other.type;
-    return newTypeDeclaration(type, ctx);
+    return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
   public boolean isSameType(TypeDeclaration other) {
@@ -410,27 +409,7 @@ public class TypeDeclaration {
     return type.toString();
   }
 
-  public static TypeDeclaration newTypeDeclaration(Class<?> clazz, Context ctx) {
-    assertNotNull(clazz);
-    return newTypeDeclaration(ctx.getTypes().getTypeMirror(clazz), ctx);
-  }
-
-  public static TypeDeclaration newTypeDeclaration(TypeMirror type, Context ctx) {
-    assertNotNull(type, ctx);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
-    Map<String, List<TypeParameterDeclaration>> map =
-        new LinkedHashMap<String, List<TypeParameterDeclaration>>();
-    gatherTypeParameterDeclarations(type, map, ctx);
-    TypeDeclaration typeDeclaration = new TypeDeclaration();
-    typeDeclaration.type = type;
-    typeDeclaration.typeElement = typeElement;
-    typeDeclaration.typeParameterDeclarationsMap = map;
-    typeDeclaration.ctx = ctx;
-    typeDeclaration.numberPriority = determineNumberPriority(typeElement, type, ctx);
-    return typeDeclaration;
-  }
-
-  protected static int determineNumberPriority(
+  private static int determineNumberPriority(
       TypeElement typeElement, TypeMirror type, Context ctx) {
     if (typeElement != null) {
       String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
@@ -444,63 +423,5 @@ public class TypeDeclaration {
       return result.intValue();
     }
     return 0;
-  }
-
-  public static TypeDeclaration newUnknownTypeDeclaration(Context ctx) {
-    TypeDeclaration typeDeclaration = new TypeDeclaration();
-    typeDeclaration.type = ctx.getTypes().getNoType(TypeKind.NONE);
-    typeDeclaration.typeParameterDeclarationsMap = Collections.emptyMap();
-    typeDeclaration.ctx = ctx;
-    return typeDeclaration;
-  }
-
-  public static TypeDeclaration newBooleanTypeDeclaration(Context ctx) {
-    assertNotNull(ctx);
-    TypeMirror type = ctx.getTypes().getTypeMirror(boolean.class);
-    return newTypeDeclaration(type, ctx);
-  }
-
-  protected static void gatherTypeParameterDeclarations(
-      TypeMirror type,
-      Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap,
-      Context ctx) {
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
-    if (typeElement == null) {
-      return;
-    }
-    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
-    typeParameterDeclarationsMap.put(
-        binaryName, createTypeParameterDeclarations(typeElement, type, ctx));
-    for (TypeMirror superType : ctx.getTypes().directSupertypes(type)) {
-      TypeElement superElement = ctx.getTypes().toTypeElement(superType);
-      if (superElement == null) {
-        continue;
-      }
-      String superBinaryName = ctx.getElements().getBinaryNameAsString(superElement);
-      if (typeParameterDeclarationsMap.containsKey(superBinaryName)) {
-        continue;
-      }
-      typeParameterDeclarationsMap.put(
-          superBinaryName, createTypeParameterDeclarations(superElement, superType, ctx));
-      gatherTypeParameterDeclarations(superType, typeParameterDeclarationsMap, ctx);
-    }
-  }
-
-  public static List<TypeParameterDeclaration> createTypeParameterDeclarations(
-      TypeElement typeElement, TypeMirror type, Context ctx) {
-    assertNotNull(typeElement, type, ctx);
-    List<TypeParameterDeclaration> list = new ArrayList<TypeParameterDeclaration>();
-    Iterator<? extends TypeParameterElement> formalParams =
-        typeElement.getTypeParameters().iterator();
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
-    Iterator<? extends TypeMirror> actualParams = declaredType.getTypeArguments().iterator();
-    for (; formalParams.hasNext() && actualParams.hasNext(); ) {
-      TypeMirror formalType = formalParams.next().asType();
-      TypeMirror actualType = actualParams.next();
-      TypeParameterDeclaration typeParameterDeclaration =
-          TypeParameterDeclaration.newInstance(formalType, actualType, ctx);
-      list.add(typeParameterDeclaration);
-    }
-    return Collections.unmodifiableList(list);
   }
 }
