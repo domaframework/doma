@@ -22,10 +22,7 @@ import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.Reference;
-import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.*;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.EnumWrapper;
@@ -40,6 +37,19 @@ public class CtTypes {
 
   private AnyCtType newAnyCtType(TypeMirror type) {
     return new AnyCtType(ctx, type);
+  }
+
+  private BatchResultCtType newBatchResultCtType(TypeMirror type) {
+    if (!ctx.getTypes().isSameType(type, BatchResult.class)) {
+      return null;
+    }
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    if (declaredType == null) {
+      return null;
+    }
+    Iterator<? extends TypeMirror> typeArgs = declaredType.getTypeArguments().iterator();
+    CtType elementCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
+    return new BatchResultCtType(ctx, type, elementCtType);
   }
 
   public BasicCtType newBasicCtType(TypeMirror type) {
@@ -334,6 +344,19 @@ public class CtTypes {
     return new ReferenceCtType(ctx, type, referentCtType);
   }
 
+  private ResultCtType newResultCtType(TypeMirror type) {
+    if (!ctx.getTypes().isSameType(type, Result.class)) {
+      return null;
+    }
+    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    if (declaredType == null) {
+      return null;
+    }
+    Iterator<? extends TypeMirror> typeArgs = declaredType.getTypeArguments().iterator();
+    CtType elementCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
+    return new ResultCtType(ctx, type, elementCtType);
+  }
+
   private SelectOptionsCtType newSelectOptionsCtType(TypeMirror type) {
     if (!ctx.getTypes().isAssignable(type, SelectOptions.class)) {
       return null;
@@ -403,7 +426,9 @@ public class CtTypes {
             this::newReferenceCtType,
             this::newBiFunctionCtType,
             this::newPreparedSqlCtType,
-            this::newConfigCtType);
+            this::newConfigCtType,
+            this::newResultCtType,
+            this::newBatchResultCtType);
     CtType ctType =
         functions
             .stream()

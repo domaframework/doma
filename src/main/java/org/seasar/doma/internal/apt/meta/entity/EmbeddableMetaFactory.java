@@ -46,12 +46,9 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
   protected final Context ctx;
 
-  protected final EmbeddablePropertyMetaFactory propertyMetaFactory;
-
-  public EmbeddableMetaFactory(Context ctx, EmbeddablePropertyMetaFactory propertyMetaFactory) {
-    assertNotNull(ctx, propertyMetaFactory);
+  public EmbeddableMetaFactory(Context ctx) {
+    assertNotNull(ctx);
     this.ctx = ctx;
-    this.propertyMetaFactory = propertyMetaFactory;
   }
 
   @Override
@@ -71,14 +68,14 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
   protected Strategy createStrategy(TypeElement embeddableElement, EmbeddableMeta embeddableMeta) {
     ValueAnnot valueAnnot = ctx.getAnnotations().newValueAnnot(embeddableElement);
     if (valueAnnot != null) {
-      return new ValueStrategy(ctx, propertyMetaFactory, valueAnnot);
+      return new ValueStrategy(ctx, valueAnnot);
     }
     AllArgsConstructorAnnot allArgsConstructorAnnot =
         ctx.getAnnotations().newAllArgsConstructorAnnot(embeddableElement);
     if (allArgsConstructorAnnot != null) {
-      return new AllArgsConstructorStrategy(ctx, propertyMetaFactory, allArgsConstructorAnnot);
+      return new AllArgsConstructorStrategy(ctx, allArgsConstructorAnnot);
     }
-    return new DefaultStrategy(ctx, propertyMetaFactory);
+    return new DefaultStrategy(ctx);
   }
 
   protected interface Strategy {
@@ -94,12 +91,9 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     protected final Context ctx;
 
-    protected final EmbeddablePropertyMetaFactory propertyMetaFactory;
-
-    public DefaultStrategy(Context ctx, EmbeddablePropertyMetaFactory propertyMetaFactory) {
-      assertNotNull(ctx, propertyMetaFactory);
+    public DefaultStrategy(Context ctx) {
+      assertNotNull(ctx);
       this.ctx = ctx;
-      this.propertyMetaFactory = propertyMetaFactory;
     }
 
     @Override
@@ -195,20 +189,21 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
     protected void doEmbeddablePropertyMeta(
         VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
       validateFieldAnnotation(fieldElement, embeddableMeta);
-      EmbeddablePropertyMeta propertyMeta =
-          propertyMetaFactory.createEmbeddablePropertyMeta(fieldElement, embeddableMeta);
+      EmbeddablePropertyMetaFactory propertyMetaFactory =
+          new EmbeddablePropertyMetaFactory(ctx, embeddableMeta, fieldElement);
+      EmbeddablePropertyMeta propertyMeta = propertyMetaFactory.createEmbeddablePropertyMeta();
       embeddableMeta.addEmbeddablePropertyMeta(propertyMeta);
     }
 
     protected List<VariableElement> getFieldElements(TypeElement embeddableElement) {
-      List<VariableElement> results = new LinkedList<VariableElement>();
+      List<VariableElement> results = new LinkedList<>();
       for (TypeElement t = embeddableElement;
           t != null && t.asType().getKind() != TypeKind.NONE;
           t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
         if (t.getAnnotation(Embeddable.class) == null) {
           continue;
         }
-        List<VariableElement> fields = new LinkedList<VariableElement>();
+        List<VariableElement> fields = new LinkedList<>();
         for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
           fields.add(field);
         }
@@ -217,7 +212,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       }
       Collections.reverse(results);
 
-      List<VariableElement> hiderFields = new LinkedList<VariableElement>(results);
+      List<VariableElement> hiderFields = new LinkedList<>(results);
       for (Iterator<VariableElement> it = results.iterator(); it.hasNext(); ) {
         VariableElement hidden = it.next();
         for (VariableElement hider : hiderFields) {
@@ -315,10 +310,8 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
     protected final AllArgsConstructorAnnot allArgsConstructorAnnot;
 
     public AllArgsConstructorStrategy(
-        Context ctx,
-        EmbeddablePropertyMetaFactory propertyMetaFactory,
-        AllArgsConstructorAnnot allArgsConstructorAnnot) {
-      super(ctx, propertyMetaFactory);
+        Context ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
+      super(ctx);
       assertNotNull(allArgsConstructorAnnot);
       this.allArgsConstructorAnnot = allArgsConstructorAnnot;
     }
@@ -356,9 +349,8 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     protected final ValueAnnot valueAnnot;
 
-    public ValueStrategy(
-        Context ctx, EmbeddablePropertyMetaFactory propertyMetaFactory, ValueAnnot valueAnnot) {
-      super(ctx, propertyMetaFactory);
+    public ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
+      super(ctx);
       assertNotNull(valueAnnot);
       this.valueAnnot = valueAnnot;
     }

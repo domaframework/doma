@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.annot.BlobFactoryAnnot;
 
 public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  protected BlobFactoryAnnot blobFactoryAnnot;
+  private BlobFactoryAnnot blobFactoryAnnot;
 
   public BlobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

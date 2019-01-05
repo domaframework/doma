@@ -9,11 +9,11 @@ import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
-  protected EntityCtType entityCtType;
+  private EntityCtType entityCtType;
 
-  protected String entityParameterName;
+  private String entityParameterName;
 
-  protected ModifyAnnot modifyAnnot;
+  private ModifyAnnot modifyAnnot;
 
   public AutoModifyQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

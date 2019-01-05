@@ -6,9 +6,9 @@ import org.seasar.doma.internal.apt.annot.ArrayFactoryAnnot;
 
 public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  protected String elementsParameterName;
+  private String elementsParameterName;
 
-  protected ArrayFactoryAnnot arrayFactoryAnnot;
+  private ArrayFactoryAnnot arrayFactoryAnnot;
 
   public ArrayCreateQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

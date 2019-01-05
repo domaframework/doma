@@ -13,7 +13,7 @@ import org.seasar.doma.message.Message;
 public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQueryMeta>
     extends AbstractQueryMetaFactory<M> {
 
-  protected final Class<?> returnClass;
+  private final Class<?> returnClass;
 
   protected AbstractCreateQueryMetaFactory(Context ctx, Class<?> returnClass) {
     super(ctx);

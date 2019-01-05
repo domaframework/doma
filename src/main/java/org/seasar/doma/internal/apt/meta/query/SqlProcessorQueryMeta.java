@@ -7,11 +7,11 @@ import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 
 public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
 
-  protected SqlProcessorAnnot sqlProcessorAnnot;
+  private SqlProcessorAnnot sqlProcessorAnnot;
 
-  protected String biFunctionParameterName;
+  private String biFunctionParameterName;
 
-  protected BiFunctionCtType biFunctionCtType;
+  private BiFunctionCtType biFunctionCtType;
 
   protected SqlProcessorQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

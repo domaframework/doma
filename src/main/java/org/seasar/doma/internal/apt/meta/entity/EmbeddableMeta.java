@@ -11,15 +11,15 @@ import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
 public class EmbeddableMeta implements TypeElementMeta {
 
-  protected final EmbeddableAnnot embeddableAnnot;
+  private final EmbeddableAnnot embeddableAnnot;
 
-  protected final TypeElement embeddableElement;
+  private final TypeElement embeddableElement;
 
-  protected final List<EmbeddablePropertyMeta> propertyMetas = new ArrayList<>();
+  private final List<EmbeddablePropertyMeta> propertyMetas = new ArrayList<>();
 
-  protected EmbeddableConstructorMeta constructorMeta;
+  private EmbeddableConstructorMeta constructorMeta;
 
-  protected boolean error;
+  private boolean error;
 
   public EmbeddableMeta(EmbeddableAnnot embeddableAnnot, TypeElement embeddableElement) {
     assertNotNull(embeddableAnnot, embeddableElement);

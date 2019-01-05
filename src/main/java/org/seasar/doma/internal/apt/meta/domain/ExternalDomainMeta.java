@@ -12,9 +12,9 @@ public class ExternalDomainMeta implements TypeElementMeta {
 
   private BasicCtType basicCtType;
 
-  protected String valueTypeName;
+  private String valueTypeName;
 
-  protected TypeElement domainElement;
+  private TypeElement domainElement;
 
   public ExternalDomainMeta(TypeElement typeElement) {
     assertNotNull(typeElement);

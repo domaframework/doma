@@ -1,25 +1,21 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import org.seasar.doma.internal.apt.Context;
 
 public class OriginalStatesMeta {
 
-  protected final TypeElement typeElement;
+  private final TypeElement typeElement;
 
-  protected final VariableElement fieldElement;
+  private final VariableElement fieldElement;
 
-  protected final TypeElement fieldEnclosingElement;
+  private final TypeElement fieldEnclosingElement;
 
   public OriginalStatesMeta(
-      TypeElement typeElement,
-      VariableElement fieldElement,
-      TypeElement fieldEnclosingElement,
-      Context ctx) {
-    assertNotNull(typeElement, fieldElement, fieldEnclosingElement, ctx);
+      TypeElement typeElement, VariableElement fieldElement, TypeElement fieldEnclosingElement) {
+    assertNotNull(typeElement, fieldElement, fieldEnclosingElement);
     this.typeElement = typeElement;
     this.fieldElement = fieldElement;
     this.fieldEnclosingElement = fieldEnclosingElement;

@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
-  protected ProcedureAnnot procedureAnnot;
+  private ProcedureAnnot procedureAnnot;
 
   public AutoProcedureQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

@@ -83,7 +83,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
   }
 
   protected void printFields() {
-    if (domainMeta.isParametarized()) {
+    if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"rawtypes\")%n");
     }
     iprint("private static final %1$s singleton = new %1$s();%n", simpleName);
@@ -171,12 +171,12 @@ public class DomainTypeGenerator extends AbstractGenerator {
   }
 
   protected void printGetDomainClassMethod() {
-    if (domainMeta.isParametarized()) {
+    if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
     }
     iprint("@Override%n");
     iprint("public Class<%1$s> getDomainClass() {%n", typeName);
-    if (domainMeta.isParametarized()) {
+    if (domainMeta.isParameterized()) {
       iprint("    Class<?> clazz = %1$s.class;%n", domainMeta.getTypeElement().getQualifiedName());
       iprint("    return (Class<%1$s>) clazz;%n", typeName);
     } else {
@@ -190,7 +190,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
     iprint("/**%n");
     iprint(" * @return the singleton%n");
     iprint(" */%n");
-    if (domainMeta.isParametarized()) {
+    if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
       iprint(
           "public static %1$s %2$s%1$s getSingletonInternal() {%n",

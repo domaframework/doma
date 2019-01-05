@@ -13,11 +13,15 @@ public interface CtType {
 
   String getBoxedTypeName();
 
-  String getMetaTypeName();
+  String getBoxedClassName();
 
   String getQualifiedName();
 
   String getPackageName();
+
+  String getMetaTypeName();
+
+  String getMetaClassName();
 
   boolean isPrimitive();
 
@@ -28,6 +32,8 @@ public interface CtType {
   boolean isWildcard();
 
   boolean isTypevar();
+
+  boolean isSameType(CtType ctType);
 
   <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH;
 }

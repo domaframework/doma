@@ -12,7 +12,6 @@ import org.seasar.doma.internal.apt.generator.EntityTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
-import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.Entity"})
 @SupportedOptions({
@@ -33,12 +32,7 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
 
   @Override
   protected EntityMetaFactory createTypeElementMetaFactory() {
-    EntityPropertyMetaFactory propertyMetaFactory = createEntityPropertyMetaFactory();
-    return new EntityMetaFactory(ctx, propertyMetaFactory);
-  }
-
-  protected EntityPropertyMetaFactory createEntityPropertyMetaFactory() {
-    return new EntityPropertyMetaFactory(ctx);
+    return new EntityMetaFactory(ctx);
   }
 
   @Override

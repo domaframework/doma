@@ -11,25 +11,20 @@ import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
 public class DomainMeta implements TypeElementMeta {
 
-  protected final TypeElement typeElement;
+  private final TypeElement typeElement;
 
-  protected final TypeMirror type;
+  private final TypeMirror type;
 
-  protected final boolean parametarized;
+  private BasicCtType basicCtType;
 
-  protected BasicCtType basicCtType;
+  private WrapperCtType wrapperCtType;
 
-  protected WrapperCtType wrapperCtType;
-
-  protected DomainAnnot domainAnnot;
-
-  protected String simpleTypeName;
+  private DomainAnnot domainAnnot;
 
   public DomainMeta(TypeElement typeElement, TypeMirror type) {
     assertNotNull(typeElement, type);
     this.typeElement = typeElement;
     this.type = type;
-    this.parametarized = !typeElement.getTypeParameters().isEmpty();
   }
 
   public TypeMirror getType() {
@@ -84,8 +79,8 @@ public class DomainMeta implements TypeElementMeta {
     return "new".equals(domainAnnot.getFactoryMethodValue());
   }
 
-  public boolean isParametarized() {
-    return parametarized;
+  public boolean isParameterized() {
+    return !typeElement.getTypeParameters().isEmpty();
   }
 
   @Override

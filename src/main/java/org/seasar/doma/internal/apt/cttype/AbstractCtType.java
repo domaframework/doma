@@ -15,17 +15,23 @@ public abstract class AbstractCtType implements CtType {
 
   protected final TypeMirror type;
 
-  private final String typeName;
-
-  private final String boxedTypeName;
-
-  protected final String metaTypeName;
-
   protected final TypeElement typeElement;
+
+  private final String typeName;
 
   private final String packageName;
 
   private final String qualifiedName;
+
+  private final String boxedTypeName;
+
+  private final String boxedClassName;
+
+  protected final String metaTypeName;
+
+  protected final String metaClassName;
+
+  protected final String typeParametersDeclaration;
 
   protected AbstractCtType(Context ctx, TypeMirror type) {
     assertNotNull(ctx, type);
@@ -33,28 +39,22 @@ public abstract class AbstractCtType implements CtType {
     this.type = type;
     this.typeName = ctx.getTypes().getTypeName(type);
     this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
-    this.metaTypeName = getMetaTypeName(type, ctx);
+    this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
     this.typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement != null) {
-      qualifiedName = typeElement.getQualifiedName().toString();
       packageName = ctx.getElements().getPackageName(typeElement);
+      qualifiedName = typeElement.getQualifiedName().toString();
+      metaClassName = MetaUtil.toFullMetaName(typeElement, ctx);
     } else {
-      qualifiedName = typeName;
       packageName = "";
+      qualifiedName = typeName;
+      metaClassName = typeName;
     }
+    this.typeParametersDeclaration = makeTypeParametersDeclaration(typeName);
+    this.metaTypeName = metaClassName + typeParametersDeclaration;
   }
 
-  private static String getMetaTypeName(TypeMirror typeMirror, Context ctx) {
-    assertNotNull(typeMirror, ctx);
-    String typeName = ctx.getTypes().getTypeName(typeMirror);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(typeMirror);
-    if (typeElement == null) {
-      return typeName;
-    }
-    return MetaUtil.toFullMetaName(typeElement, ctx) + makeTypeParamDecl(typeName);
-  }
-
-  private static String makeTypeParamDecl(String typeName) {
+  private static String makeTypeParametersDeclaration(String typeName) {
     int pos = typeName.indexOf("<");
     if (pos == -1) {
       return "";
@@ -88,6 +88,11 @@ public abstract class AbstractCtType implements CtType {
   }
 
   @Override
+  public String getMetaClassName() {
+    return metaClassName;
+  }
+
+  @Override
   public String getQualifiedName() {
     return qualifiedName;
   }
@@ -95,6 +100,11 @@ public abstract class AbstractCtType implements CtType {
   @Override
   public String getPackageName() {
     return packageName;
+  }
+
+  @Override
+  public String getBoxedClassName() {
+    return boxedClassName;
   }
 
   @Override
@@ -120,5 +130,10 @@ public abstract class AbstractCtType implements CtType {
   @Override
   public boolean isTypevar() {
     return type.getKind() == TypeKind.TYPEVAR;
+  }
+
+  @Override
+  public boolean isSameType(CtType other) {
+    return ctx.getTypes().isSameType(type, other.getType());
   }
 }

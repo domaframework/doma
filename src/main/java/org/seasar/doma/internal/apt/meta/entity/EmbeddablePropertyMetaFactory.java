@@ -1,7 +1,8 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
@@ -12,16 +13,22 @@ public class EmbeddablePropertyMetaFactory {
 
   protected final Context ctx;
 
-  public EmbeddablePropertyMetaFactory(Context ctx) {
+  protected EmbeddableMeta embeddableMeta;
+
+  protected VariableElement fieldElement;
+
+  public EmbeddablePropertyMetaFactory(
+      Context ctx, EmbeddableMeta embeddableMeta, VariableElement fieldElement) {
+    assertNotNull(ctx, embeddableMeta, fieldElement);
     this.ctx = ctx;
+    this.embeddableMeta = embeddableMeta;
+    this.fieldElement = fieldElement;
   }
 
-  public EmbeddablePropertyMeta createEmbeddablePropertyMeta(
-      VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
-    EmbeddablePropertyMeta embeddablePropertyMeta = new EmbeddablePropertyMeta(fieldElement, ctx);
+  public EmbeddablePropertyMeta createEmbeddablePropertyMeta() {
+    CtType ctType = ctx.getCtTypes().newCtType(fieldElement.asType(), new CtTypeValidator());
+    EmbeddablePropertyMeta embeddablePropertyMeta = new EmbeddablePropertyMeta(ctType);
     embeddablePropertyMeta.setName(fieldElement.getSimpleName().toString());
-    CtType ctType = resolveCtType(fieldElement, fieldElement.asType(), embeddableMeta);
-    embeddablePropertyMeta.setCtType(ctType);
     ColumnAnnot columnAnnot = ctx.getAnnotations().newColumnAnnot(fieldElement);
     if (columnAnnot != null) {
       embeddablePropertyMeta.setColumnAnnot(columnAnnot);
@@ -29,21 +36,7 @@ public class EmbeddablePropertyMetaFactory {
     return embeddablePropertyMeta;
   }
 
-  protected CtType resolveCtType(
-      VariableElement fieldElement, TypeMirror type, EmbeddableMeta embeddableMeta) {
-    return ctx.getCtTypes().newCtType(type, new CtTypeValidator(fieldElement, embeddableMeta));
-  }
-
   private class CtTypeValidator extends SimpleCtTypeVisitor<Void, Void, AptException> {
-
-    private final VariableElement fieldElement;
-
-    private final EmbeddableMeta embeddableMeta;
-
-    private CtTypeValidator(VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
-      this.fieldElement = fieldElement;
-      this.embeddableMeta = embeddableMeta;
-    }
 
     @Override
     protected Void defaultAction(CtType ctType, Void aVoid) throws AptException {

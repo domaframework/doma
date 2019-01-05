@@ -9,9 +9,9 @@ import org.seasar.doma.jdbc.SqlLogType;
 
 public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
-  protected ResultParameterMeta resultParameterMeta;
+  private ResultParameterMeta resultParameterMeta;
 
-  protected FunctionAnnot functionAnnot;
+  private FunctionAnnot functionAnnot;
 
   public AutoFunctionQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

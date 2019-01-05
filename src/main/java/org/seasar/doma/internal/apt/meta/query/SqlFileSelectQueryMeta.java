@@ -14,23 +14,23 @@ import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
-  protected SelectAnnot selectAnnot;
+  private SelectAnnot selectAnnot;
 
-  protected String functionParameterName;
+  private String functionParameterName;
 
-  protected FunctionCtType functionCtType;
+  private FunctionCtType functionCtType;
 
-  protected String collectorParameterName;
+  private String collectorParameterName;
 
-  protected CollectorCtType collectorCtType;
+  private CollectorCtType collectorCtType;
 
-  protected String selectOptionsParameterName;
+  private String selectOptionsParameterName;
 
-  protected SelectOptionsCtType selectOptionsCtType;
+  private SelectOptionsCtType selectOptionsCtType;
 
-  protected EntityCtType entityCtType;
+  private EntityCtType entityCtType;
 
-  protected boolean resultStream;
+  private boolean resultStream;
 
   public SqlFileSelectQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

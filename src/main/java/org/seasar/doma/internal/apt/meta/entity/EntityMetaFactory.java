@@ -50,12 +50,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
   protected final Context ctx;
 
-  protected final EntityPropertyMetaFactory propertyMetaFactory;
-
-  public EntityMetaFactory(Context ctx, EntityPropertyMetaFactory propertyMetaFactory) {
-    assertNotNull(ctx, propertyMetaFactory);
+  public EntityMetaFactory(Context ctx) {
+    assertNotNull(ctx);
     this.ctx = ctx;
-    this.propertyMetaFactory = propertyMetaFactory;
   }
 
   @Override
@@ -67,7 +64,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
     EntityMeta entityMeta = new EntityMeta(entityAnnot, classElement);
     TypeMirror entityListener = resolveEntityListener(classElement);
-    entityMeta.setEntityListener(entityListener);
     TypeElement entityListenerElement = ctx.getTypes().toTypeElement(entityListener);
     if (entityListenerElement == null) {
       throw new AptIllegalStateException("entityListener.");
@@ -92,14 +88,14 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
   protected Strategy createStrategy(TypeElement classElement, EntityMeta entityMeta) {
     ValueAnnot valueAnnot = ctx.getAnnotations().newValueAnnot(classElement);
     if (valueAnnot != null) {
-      return new ValueStrategy(ctx, propertyMetaFactory, valueAnnot);
+      return new ValueStrategy(ctx, valueAnnot);
     }
     AllArgsConstructorAnnot allArgsConstructorAnnot =
         ctx.getAnnotations().newAllArgsConstructorAnnot(classElement);
     if (allArgsConstructorAnnot != null) {
-      return new AllArgsConstructorStrategy(ctx, propertyMetaFactory, allArgsConstructorAnnot);
+      return new AllArgsConstructorStrategy(ctx, allArgsConstructorAnnot);
     }
-    return new DefaultStrategy(ctx, propertyMetaFactory);
+    return new DefaultStrategy(ctx);
   }
 
   protected TypeMirror resolveEntityListener(TypeElement classElement) {
@@ -196,12 +192,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     protected final Context ctx;
 
-    protected final EntityPropertyMetaFactory propertyMetaFactory;
-
-    public DefaultStrategy(Context ctx, EntityPropertyMetaFactory propertyMetaFactory) {
-      assertNotNull(ctx, propertyMetaFactory);
+    public DefaultStrategy(Context ctx) {
+      assertNotNull(ctx);
       this.ctx = ctx;
-      this.propertyMetaFactory = propertyMetaFactory;
     }
 
     public void doClassElement(TypeElement classElement, EntityMeta entityMeta) {
@@ -550,15 +543,16 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             new Object[] {classElement.getQualifiedName(), fieldElement.getSimpleName()});
       }
       OriginalStatesMeta originalStatesMeta =
-          new OriginalStatesMeta(classElement, fieldElement, enclosingElement, ctx);
+          new OriginalStatesMeta(classElement, fieldElement, enclosingElement);
       entityMeta.setOriginalStatesMeta(originalStatesMeta);
     }
 
     protected void doEntityPropertyMeta(
         TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
       validateFieldAnnotation(fieldElement, entityMeta);
-      EntityPropertyMeta propertyMeta =
-          propertyMetaFactory.createEntityPropertyMeta(fieldElement, entityMeta);
+      EntityPropertyMetaFactory propertyMetaFactory =
+          new EntityPropertyMetaFactory(ctx, entityMeta, fieldElement);
+      EntityPropertyMeta propertyMeta = propertyMetaFactory.createEntityPropertyMeta();
       entityMeta.addPropertyMeta(propertyMeta);
       validateField(classElement, fieldElement, entityMeta);
     }
@@ -674,10 +668,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     protected final AllArgsConstructorAnnot allArgsConstructorAnnot;
 
     public AllArgsConstructorStrategy(
-        Context ctx,
-        EntityPropertyMetaFactory propertyMetaFactory,
-        AllArgsConstructorAnnot allArgsConstructorAnnot) {
-      super(ctx, propertyMetaFactory);
+        Context ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
+      super(ctx);
       assertNotNull(allArgsConstructorAnnot);
       this.allArgsConstructorAnnot = allArgsConstructorAnnot;
     }
@@ -733,9 +725,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     protected final ValueAnnot valueAnnot;
 
-    public ValueStrategy(
-        Context ctx, EntityPropertyMetaFactory propertyMetaFactory, ValueAnnot valueAnnot) {
-      super(ctx, propertyMetaFactory);
+    public ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
+      super(ctx);
       assertNotNull(valueAnnot);
       this.valueAnnot = valueAnnot;
     }

@@ -19,26 +19,25 @@ import org.seasar.doma.jdbc.query.Query;
 
 public abstract class AbstractQueryMeta implements QueryMeta {
 
-  protected final String name;
+  private final String name;
 
-  protected final ExecutableElement executableElement;
+  private final ExecutableElement executableElement;
 
-  protected final TypeElement daoElement;
+  private final TypeElement daoElement;
 
-  protected List<String> typeParameterNames = new ArrayList<String>();
+  private List<String> typeParameterNames = new ArrayList<>();
 
-  protected List<String> thrownTypeNames = new ArrayList<String>();
+  private List<String> thrownTypeNames = new ArrayList<>();
 
   protected QueryKind queryKind;
 
-  protected LinkedHashMap<String, TypeMirror> bindableParameterTypeMap =
-      new LinkedHashMap<String, TypeMirror>();
+  private LinkedHashMap<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<>();
 
-  protected QueryReturnMeta returnMeta;
+  private QueryReturnMeta returnMeta;
 
-  protected List<QueryParameterMeta> parameterMetas = new ArrayList<QueryParameterMeta>();
+  private List<QueryParameterMeta> parameterMetas = new ArrayList<>();
 
-  protected List<String> fileNames = new ArrayList<String>();
+  private List<String> fileNames = new ArrayList<>();
 
   protected AbstractQueryMeta(ExecutableElement method, TypeElement dao) {
     assertNotNull(method);

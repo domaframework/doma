@@ -23,7 +23,7 @@ public class EntityPropertyNameCollector {
   }
 
   public Set<String> collect(TypeMirror entityType) {
-    Set<String> names = new HashSet<String>();
+    Set<String> names = new HashSet<>();
     collectNames(entityType, names);
     return names;
   }

@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.annot.NClobFactoryAnnot;
 
 public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  protected NClobFactoryAnnot nClobFactoryAnnot;
+  private NClobFactoryAnnot nClobFactoryAnnot;
 
   public NClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

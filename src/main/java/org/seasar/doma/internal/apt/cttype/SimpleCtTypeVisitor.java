@@ -20,6 +20,11 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVi
   }
 
   @Override
+  public R visitBatchResultCtType(BatchResultCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
+
+  @Override
   public R visitBasicCtType(BasicCtType ctType, P p) throws TH {
     return defaultAction(ctType, p);
   }
@@ -51,6 +56,11 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVi
 
   @Override
   public R visitReferenceCtType(ReferenceCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
+
+  @Override
+  public R visitResultCtType(ResultCtType ctType, P p) throws TH {
     return defaultAction(ctType, p);
   }
 

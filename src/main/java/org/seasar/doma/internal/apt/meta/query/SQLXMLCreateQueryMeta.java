@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.annot.SQLXMLFactoryAnnot;
 
 public class SQLXMLCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  protected SQLXMLFactoryAnnot sqlxmlFactoryAnnot;
+  private SQLXMLFactoryAnnot sqlxmlFactoryAnnot;
 
   public SQLXMLCreateQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

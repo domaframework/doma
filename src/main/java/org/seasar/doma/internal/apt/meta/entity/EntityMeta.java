@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
@@ -16,41 +15,39 @@ import org.seasar.doma.jdbc.entity.NamingType;
 
 public class EntityMeta implements TypeElementMeta {
 
-  protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
+  private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
 
-  protected final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
+  private final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
 
-  protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
+  private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
-  protected final EntityAnnot entityAnnot;
+  private final EntityAnnot entityAnnot;
 
-  protected final TypeElement entityElement;
+  private final TypeElement entityElement;
 
-  protected boolean immutable;
+  private boolean immutable;
 
-  protected NamingType namingType;
+  private NamingType namingType;
 
-  protected TypeMirror entityListener;
+  private TypeElement entityListenerElement;
 
-  protected TypeElement entityListenerElement;
+  private boolean genericEntityListener;
 
-  protected boolean genericEntityListener;
+  private TableAnnot tableAnnot;
 
-  protected TableAnnot tableAnnot;
+  private EntityPropertyMeta versionPropertyMeta;
 
-  protected EntityPropertyMeta versionPropertyMeta;
+  private EntityPropertyMeta tenantIdPropertyMeta;
 
-  protected EntityPropertyMeta tenantIdPropertyMeta;
+  private EntityPropertyMeta generatedIdPropertyMeta;
 
-  protected EntityPropertyMeta generatedIdPropertyMeta;
+  private String entityName;
 
-  protected String entityName;
+  private String entityTypeName;
 
-  protected String entityTypeName;
+  private OriginalStatesMeta originalStatesMeta;
 
-  protected OriginalStatesMeta originalStatesMeta;
-
-  protected EntityConstructorMeta constructorMeta;
+  private EntityConstructorMeta constructorMeta;
 
   protected boolean error;
 
@@ -137,7 +134,7 @@ public class EntityMeta implements TypeElementMeta {
     return tenantIdPropertyMeta != null;
   }
 
-  public EntityPropertyMeta getTenanatIdPropertyMeta() {
+  public EntityPropertyMeta getTenantIdPropertyMeta() {
     return tenantIdPropertyMeta;
   }
 
@@ -169,20 +166,8 @@ public class EntityMeta implements TypeElementMeta {
     this.originalStatesMeta = originalStatesMeta;
   }
 
-  public EntityConstructorMeta getConstructorMeta() {
-    return constructorMeta;
-  }
-
   public void setConstructorMeta(EntityConstructorMeta constructorMeta) {
     this.constructorMeta = constructorMeta;
-  }
-
-  public TypeMirror getEntityListener() {
-    return entityListener;
-  }
-
-  public void setEntityListener(TypeMirror entityListener) {
-    this.entityListener = entityListener;
   }
 
   public TypeElement getEntityListenerElement() {

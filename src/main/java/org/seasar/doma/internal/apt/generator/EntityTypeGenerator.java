@@ -146,7 +146,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             /* 3 */ pm.getTypeName(), /* 4 */
             pm.getFieldName(),
             /* 5 */ pm.getName(),
-            /* 6 */ pm.getEmbeddableMetaTypeName(),
+            /* 6 */ pm.getEmbeddableMetaClassName(),
             /* 7 */ pm.getName());
       } else {
         EntityPropertyCtTypeVisitor visitor = new EntityPropertyCtTypeVisitor();
@@ -626,7 +626,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
   protected void printGetTenantIdPropertyTypeMethod() {
     String tenantIdName = "null";
     if (entityMeta.hasTenantIdPropertyMeta()) {
-      EntityPropertyMeta pm = entityMeta.getTenanatIdPropertyMeta();
+      EntityPropertyMeta pm = entityMeta.getTenantIdPropertyMeta();
       tenantIdName = pm.getFieldName();
     }
     iprint("@Override%n");
@@ -659,7 +659,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
           if (propertyMeta.isEmbedded()) {
             iprint(
                 "        %1$s.getSingletonInternal().newEmbeddable(\"%2$s\", __args)",
-                propertyMeta.getEmbeddableMetaTypeName(), propertyMeta.getName());
+                propertyMeta.getEmbeddableMetaClassName(), propertyMeta.getName());
           } else {
             iprint(
                 "        (%1$s)(__args.get(\"%2$s\") != null ? __args.get(\"%2$s\").get() : null)",
@@ -677,7 +677,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             iprint(
                 "    %1$s.save(entity, %2$s.getSingletonInternal().newEmbeddable(\"%3$s\", __args));%n",
                 propertyMeta.getFieldName(),
-                propertyMeta.getEmbeddableMetaTypeName(),
+                propertyMeta.getEmbeddableMetaClassName(),
                 propertyMeta.getName());
           } else {
             iprint(

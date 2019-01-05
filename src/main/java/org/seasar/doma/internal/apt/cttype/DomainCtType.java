@@ -15,10 +15,6 @@ public class DomainCtType extends AbstractCtType {
 
   private final boolean external;
 
-  private final String metaClassName;
-
-  private final String typeArgDecl;
-
   DomainCtType(
       Context ctx,
       TypeMirror domainType,
@@ -30,14 +26,6 @@ public class DomainCtType extends AbstractCtType {
     this.basicCtType = basicCtType;
     this.typeArgCtTypes = typeArgCtTypes;
     this.external = external;
-    int pos = metaTypeName.indexOf('<');
-    if (pos > -1) {
-      this.metaClassName = metaTypeName.substring(0, pos);
-      this.typeArgDecl = metaTypeName.substring(pos);
-    } else {
-      this.metaClassName = metaTypeName;
-      this.typeArgDecl = "";
-    }
   }
 
   public BasicCtType getBasicCtType() {
@@ -57,7 +45,7 @@ public class DomainCtType extends AbstractCtType {
   }
 
   public String getInstantiationCommand() {
-    return normalize(metaClassName) + "." + typeArgDecl + "getSingletonInternal()";
+    return normalize(metaClassName) + "." + typeParametersDeclaration + "getSingletonInternal()";
   }
 
   @Override

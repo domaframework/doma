@@ -12,7 +12,6 @@ import org.seasar.doma.internal.apt.generator.EmbeddableTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
-import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.Embeddable"})
 @SupportedOptions({
@@ -31,12 +30,7 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
 
   @Override
   protected EmbeddableMetaFactory createTypeElementMetaFactory() {
-    EmbeddablePropertyMetaFactory propertyMetaFactory = createEmbeddablePropertyMetaFactory();
-    return new EmbeddableMetaFactory(ctx, propertyMetaFactory);
-  }
-
-  protected EmbeddablePropertyMetaFactory createEmbeddablePropertyMetaFactory() {
-    return new EmbeddablePropertyMetaFactory(ctx);
+    return new EmbeddableMetaFactory(ctx);
   }
 
   @Override

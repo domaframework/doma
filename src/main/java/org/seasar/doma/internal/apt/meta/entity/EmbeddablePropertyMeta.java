@@ -1,35 +1,19 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 
 public class EmbeddablePropertyMeta {
 
-  protected final TypeMirror type;
+  private final CtType ctType;
 
-  protected final String typeName;
+  private String name;
 
-  protected final String boxedTypeName;
+  private ColumnAnnot columnAnnot;
 
-  protected final String boxedClassName;
-
-  protected String name;
-
-  protected ColumnAnnot columnAnnot;
-
-  protected CtType ctType;
-
-  public EmbeddablePropertyMeta(VariableElement fieldElement, Context ctx) {
-    assertNotNull(fieldElement, ctx);
-    this.type = fieldElement.asType();
-    this.typeName = ctx.getTypes().getTypeName(type);
-    this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
-    this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
+  public EmbeddablePropertyMeta(CtType ctType) {
+    this.ctType = ctType;
   }
 
   public String getName() {
@@ -38,10 +22,6 @@ public class EmbeddablePropertyMeta {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public ColumnAnnot getColumnAnnot() {
-    return columnAnnot;
   }
 
   public void setColumnAnnot(ColumnAnnot columnAnnot) {
@@ -53,38 +33,34 @@ public class EmbeddablePropertyMeta {
   }
 
   public boolean isColumnInsertable() {
-    return columnAnnot != null ? columnAnnot.getInsertableValue() : true;
+    return columnAnnot == null || columnAnnot.getInsertableValue();
   }
 
   public boolean isColumnUpdatable() {
-    return columnAnnot != null ? columnAnnot.getUpdatableValue() : true;
+    return columnAnnot == null || columnAnnot.getUpdatableValue();
   }
 
   public boolean isColumnQuoteRequired() {
-    return columnAnnot != null ? columnAnnot.getQuoteValue() : false;
+    return columnAnnot != null && columnAnnot.getQuoteValue();
   }
 
   public CtType getCtType() {
     return ctType;
   }
 
-  public void setCtType(CtType ctType) {
-    this.ctType = ctType;
-  }
-
   public TypeMirror getType() {
-    return type;
+    return ctType.getType();
   }
 
   public String getTypeName() {
-    return typeName;
+    return ctType.getTypeName();
   }
 
   public String getBoxedTypeName() {
-    return boxedTypeName;
+    return ctType.getBoxedTypeName();
   }
 
   public String getBoxedClassName() {
-    return boxedClassName;
+    return ctType.getBoxedClassName();
   }
 }

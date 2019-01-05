@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.annot.ClobFactoryAnnot;
 
 public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
-  protected ClobFactoryAnnot clobFactoryAnnot;
+  private ClobFactoryAnnot clobFactoryAnnot;
 
   public ClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);

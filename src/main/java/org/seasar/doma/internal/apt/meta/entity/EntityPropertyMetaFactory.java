@@ -37,41 +37,38 @@ import org.seasar.doma.message.Message;
 
 public class EntityPropertyMetaFactory {
 
-  protected final Context ctx;
+  private final Context ctx;
 
-  public EntityPropertyMetaFactory(Context ctx) {
-    assertNotNull(ctx);
+  private final EntityMeta entityMeta;
+
+  private final VariableElement fieldElement;
+
+  public EntityPropertyMetaFactory(
+      Context ctx, EntityMeta entityMeta, VariableElement fieldElement) {
+    assertNotNull(ctx, entityMeta, fieldElement);
     this.ctx = ctx;
+    this.entityMeta = entityMeta;
+    this.fieldElement = fieldElement;
   }
 
-  public EntityPropertyMeta createEntityPropertyMeta(
-      VariableElement fieldElement, EntityMeta entityMeta) {
+  public EntityPropertyMeta createEntityPropertyMeta() {
     assertNotNull(fieldElement, entityMeta);
     TypeElement entityElement = ctx.getElements().toTypeElement(fieldElement.getEnclosingElement());
     if (entityElement == null) {
       throw new AptIllegalStateException(fieldElement.toString());
     }
-    EntityPropertyMeta propertyMeta =
-        new EntityPropertyMeta(entityElement, fieldElement, entityMeta.getNamingType(), ctx);
-    doCtType(propertyMeta, fieldElement, entityMeta);
-    doName(propertyMeta, fieldElement, entityMeta);
-    doId(propertyMeta, fieldElement, entityMeta);
-    doVersion(propertyMeta, fieldElement, entityMeta);
-    doTenantId(propertyMeta, fieldElement, entityMeta);
-    doColumn(propertyMeta, fieldElement, entityMeta);
+    CtType ctType = ctx.getCtTypes().newCtType(fieldElement.asType(), new CtTypeValidator());
+    String fieldPrefix = ctx.getOptions().getEntityFieldPrefix();
+    EntityPropertyMeta propertyMeta = new EntityPropertyMeta(ctType, fieldPrefix);
+    doName(propertyMeta);
+    doId(propertyMeta);
+    doVersion(propertyMeta);
+    doTenantId(propertyMeta);
+    doColumn(propertyMeta);
     return propertyMeta;
   }
 
-  protected void doCtType(
-      EntityPropertyMeta propertyMeta, final VariableElement fieldElement, EntityMeta entityMeta) {
-    CtType ctType =
-        ctx.getCtTypes()
-            .newCtType(fieldElement.asType(), new CtTypeValidator(fieldElement, entityMeta));
-    propertyMeta.setCtType(ctType);
-  }
-
-  protected void doName(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doName(EntityPropertyMeta propertyMeta) {
     String name = fieldElement.getSimpleName().toString();
     if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
       throw new AptException(
@@ -84,14 +81,13 @@ public class EntityPropertyMetaFactory {
     propertyMeta.setName(name);
   }
 
-  protected void doId(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doId(EntityPropertyMeta propertyMeta) {
     Id id = fieldElement.getAnnotation(Id.class);
     if (id == null) {
       GeneratedValue generatedValue = fieldElement.getAnnotation(GeneratedValue.class);
       if (generatedValue == null) {
-        validateSequenceGeneratorNotExistent(propertyMeta, fieldElement, entityMeta);
-        validateTableGeneratorNotExistent(propertyMeta, fieldElement, entityMeta);
+        validateSequenceGeneratorNotExistent(propertyMeta);
+        validateTableGeneratorNotExistent(propertyMeta);
         return;
       }
       throw new AptException(
@@ -110,8 +106,8 @@ public class EntityPropertyMetaFactory {
     propertyMeta.setId(true);
     final GeneratedValue generatedValue = fieldElement.getAnnotation(GeneratedValue.class);
     if (generatedValue == null) {
-      validateSequenceGeneratorNotExistent(propertyMeta, fieldElement, entityMeta);
-      validateTableGeneratorNotExistent(propertyMeta, fieldElement, entityMeta);
+      validateSequenceGeneratorNotExistent(propertyMeta);
+      validateTableGeneratorNotExistent(propertyMeta);
       return;
     }
     if (propertyMeta.isEmbedded()) {
@@ -140,13 +136,13 @@ public class EntityPropertyMetaFactory {
     }
     switch (generatedValue.strategy()) {
       case IDENTITY:
-        doIdentityIdGeneratorMeta(propertyMeta, fieldElement, entityMeta);
+        doIdentityIdGeneratorMeta(propertyMeta);
         break;
       case SEQUENCE:
-        doSequenceIdGeneratorMeta(propertyMeta, fieldElement, entityMeta);
+        doSequenceIdGeneratorMeta(propertyMeta);
         break;
       case TABLE:
-        doTableIdGeneratorMeta(propertyMeta, fieldElement, entityMeta);
+        doTableIdGeneratorMeta(propertyMeta);
         break;
       default:
         assertUnreachable();
@@ -154,8 +150,7 @@ public class EntityPropertyMetaFactory {
     }
   }
 
-  protected void validateSequenceGeneratorNotExistent(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void validateSequenceGeneratorNotExistent(EntityPropertyMeta propertyMeta) {
     SequenceGenerator sequenceGenerator = fieldElement.getAnnotation(SequenceGenerator.class);
     if (sequenceGenerator != null) {
       throw new AptException(
@@ -165,8 +160,7 @@ public class EntityPropertyMetaFactory {
     }
   }
 
-  protected void validateTableGeneratorNotExistent(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void validateTableGeneratorNotExistent(EntityPropertyMeta propertyMeta) {
     TableGenerator tableGenerator = fieldElement.getAnnotation(TableGenerator.class);
     if (tableGenerator != null) {
       throw new AptException(
@@ -176,13 +170,11 @@ public class EntityPropertyMetaFactory {
     }
   }
 
-  protected void doIdentityIdGeneratorMeta(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doIdentityIdGeneratorMeta(EntityPropertyMeta propertyMeta) {
     propertyMeta.setIdGeneratorMeta(new IdentityIdGeneratorMeta());
   }
 
-  protected void doSequenceIdGeneratorMeta(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doSequenceIdGeneratorMeta(EntityPropertyMeta propertyMeta) {
     SequenceGeneratorAnnot sequenceGeneratorAnnot =
         ctx.getAnnotations().newSequenceGeneratorAnnot(fieldElement);
     if (sequenceGeneratorAnnot == null) {
@@ -191,15 +183,13 @@ public class EntityPropertyMetaFactory {
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
-    validateSequenceIdGenerator(propertyMeta, fieldElement, sequenceGeneratorAnnot);
+    validateSequenceIdGenerator(propertyMeta, sequenceGeneratorAnnot);
     SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(sequenceGeneratorAnnot);
     propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
   }
 
-  protected void validateSequenceIdGenerator(
-      EntityPropertyMeta propertyMeta,
-      VariableElement fieldElement,
-      SequenceGeneratorAnnot sequenceGeneratorAnnot) {
+  private void validateSequenceIdGenerator(
+      EntityPropertyMeta propertyMeta, SequenceGeneratorAnnot sequenceGeneratorAnnot) {
     TypeElement typeElement =
         ctx.getTypes().toTypeElement(sequenceGeneratorAnnot.getImplementerValue());
     if (typeElement == null) {
@@ -224,8 +214,7 @@ public class EntityPropertyMetaFactory {
     }
   }
 
-  protected void doTableIdGeneratorMeta(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta) {
     TableGeneratorAnnot tableGeneratorAnnot =
         ctx.getAnnotations().newTableGeneratorAnnot(fieldElement);
     if (tableGeneratorAnnot == null) {
@@ -234,15 +223,13 @@ public class EntityPropertyMetaFactory {
           fieldElement,
           new Object[] {entityMeta.getEntityElement(), fieldElement.getSimpleName()});
     }
-    validateTableIdGenerator(propertyMeta, fieldElement, tableGeneratorAnnot);
+    validateTableIdGenerator(propertyMeta, tableGeneratorAnnot);
     TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(tableGeneratorAnnot);
     propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
   }
 
-  protected void validateTableIdGenerator(
-      EntityPropertyMeta propertyMeta,
-      VariableElement fieldElement,
-      TableGeneratorAnnot tableGeneratorAnnot) {
+  private void validateTableIdGenerator(
+      EntityPropertyMeta propertyMeta, TableGeneratorAnnot tableGeneratorAnnot) {
     TypeElement typeElement =
         ctx.getTypes().toTypeElement(tableGeneratorAnnot.getImplementerValue());
     if (typeElement == null) {
@@ -267,8 +254,7 @@ public class EntityPropertyMetaFactory {
     }
   }
 
-  protected void doVersion(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doVersion(EntityPropertyMeta propertyMeta) {
     Version version = fieldElement.getAnnotation(Version.class);
     if (version != null) {
       if (propertyMeta.isEmbedded()) {
@@ -299,8 +285,7 @@ public class EntityPropertyMetaFactory {
     }
   }
 
-  protected void doTenantId(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doTenantId(EntityPropertyMeta propertyMeta) {
     TenantId tenantId = fieldElement.getAnnotation(TenantId.class);
     if (tenantId != null) {
       if (propertyMeta.isEmbedded()) {
@@ -323,8 +308,7 @@ public class EntityPropertyMetaFactory {
     }
   }
 
-  protected void doColumn(
-      EntityPropertyMeta propertyMeta, VariableElement fieldElement, EntityMeta entityMeta) {
+  private void doColumn(EntityPropertyMeta propertyMeta) {
     ColumnAnnot columnAnnot = ctx.getAnnotations().newColumnAnnot(fieldElement);
     if (columnAnnot == null) {
       return;
@@ -363,7 +347,7 @@ public class EntityPropertyMetaFactory {
     propertyMeta.setColumnAnnot(columnAnnot);
   }
 
-  protected boolean isNumber(CtType ctType) {
+  private boolean isNumber(CtType ctType) {
     Boolean isNumber =
         ctType.accept(
             new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
@@ -409,15 +393,6 @@ public class EntityPropertyMetaFactory {
   }
 
   private class CtTypeValidator extends SimpleCtTypeVisitor<Void, Void, AptException> {
-
-    private final VariableElement fieldElement;
-
-    private final EntityMeta entityMeta;
-
-    private CtTypeValidator(VariableElement fieldElement, EntityMeta entityMeta) {
-      this.fieldElement = fieldElement;
-      this.entityMeta = entityMeta;
-    }
 
     @Override
     protected Void defaultAction(CtType ctType, Void aVoid) throws AptException {
