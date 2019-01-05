@@ -2,406 +2,852 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
-import javax.lang.model.element.TypeElement;
-import javax.sql.DataSource;
-import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.CollectorCtType;
-import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
-import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.EnumWrapperCtType;
-import org.seasar.doma.internal.apt.cttype.FunctionCtType;
-import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.MapCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
+import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.BasicSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.CallableSqlParameterMetaVisitor;
-import org.seasar.doma.internal.apt.meta.parameter.DomainInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.DomainInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.DomainListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.DomainOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.DomainResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.DomainSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.EntityListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.EntityResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.MapListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.MapResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalBasicSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDomainInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDomainInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDomainListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDomainOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDomainResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDomainSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalDoubleSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalIntSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongInParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongResultListParameterMeta;
-import org.seasar.doma.internal.apt.meta.parameter.OptionalLongSingleResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.query.AbstractCreateQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.AutoBatchModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.AutoModuleQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.DefaultQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.QueryKind;
-import org.seasar.doma.internal.apt.meta.query.QueryMeta;
-import org.seasar.doma.internal.apt.meta.query.QueryMetaVisitor;
-import org.seasar.doma.internal.apt.meta.query.QueryParameterMeta;
-import org.seasar.doma.internal.apt.meta.query.QueryReturnMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
-import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMeta;
-import org.seasar.doma.internal.jdbc.command.BasicCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
-import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.BasicStreamHandler;
-import org.seasar.doma.internal.jdbc.command.DomainCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
-import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.DomainStreamHandler;
-import org.seasar.doma.internal.jdbc.command.EntityCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
-import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
-import org.seasar.doma.internal.jdbc.command.MapCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
-import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.MapStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalBasicCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalBasicResultListHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalBasicSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalBasicStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDomainStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDoubleCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDoubleResultListHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDoubleSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalDoubleStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalIntCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalIntResultListHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalIntSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalIntStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalLongCollectorHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalLongResultListHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalLongSingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalLongStreamHandler;
-import org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler;
-import org.seasar.doma.internal.jdbc.dao.AbstractDao;
-import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
-import org.seasar.doma.internal.jdbc.sql.EntityResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.MapListParameter;
-import org.seasar.doma.internal.jdbc.sql.MapResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalBasicInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalBasicInParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalBasicListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalBasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalBasicResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalBasicSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainInParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDomainSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDoubleInParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDoubleListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDoubleOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDoubleResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalDoubleSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalIntInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalIntInParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalIntListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalIntOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalIntResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalIntSingleResultParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalLongInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalLongInParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalLongListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalLongOutParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalLongResultListParameter;
-import org.seasar.doma.internal.jdbc.sql.OptionalLongSingleResultParameter;
+import org.seasar.doma.internal.apt.meta.parameter.*;
+import org.seasar.doma.internal.apt.meta.query.*;
+import org.seasar.doma.internal.jdbc.command.*;
+import org.seasar.doma.internal.jdbc.sql.*;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.query.FunctionQuery;
-import org.seasar.doma.jdbc.query.ProcedureQuery;
-import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-public class DaoGenerator extends AbstractGenerator {
+public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMetaVisitor<Void> {
 
-  protected final DaoMeta daoMeta;
+  private final DaoMeta daoMeta;
 
-  public DaoGenerator(Context ctx, TypeElement daoElement, DaoMeta daoMeta) throws IOException {
-    super(
-        ctx,
-        daoElement,
-        ctx.getOptions().getDaoPackage(),
-        ctx.getOptions().getDaoSubpackage(),
-        "",
-        ctx.getOptions().getDaoSuffix());
-    assertNotNull(daoMeta);
+  private final QueryMeta queryMeta;
+
+  private final String methodName;
+
+  public DaoImplMethodGenerator(
+      Context ctx,
+      ClassName className,
+      Printer printer,
+      DaoMeta daoMeta,
+      QueryMeta queryMeta,
+      int index) {
+    super(ctx, className, printer);
+    assertNotNull(daoMeta, queryMeta);
     this.daoMeta = daoMeta;
+    this.queryMeta = queryMeta;
+    this.methodName = "__method" + index;
   }
 
   @Override
   public void generate() {
-    printPackage();
-    printClass();
+    printMethod();
   }
 
-  protected void printPackage() {
-    if (!packageName.isEmpty()) {
-      iprint("package %1$s;%n", packageName);
-      iprint("%n");
+  private void printMethod() {
+    iprint("@Override%n");
+    iprint("public ");
+    if (!queryMeta.getTypeParameterNames().isEmpty()) {
+      print("<");
+      for (Iterator<String> it = queryMeta.getTypeParameterNames().iterator(); it.hasNext(); ) {
+        print("%1$s", it.next());
+        if (it.hasNext()) {
+          print(", ");
+        }
+      }
+      print("> ");
     }
-  }
-
-  protected void printClass() {
-    iprint("/** */%n");
-    for (AnnotationAnnot annotation : daoMeta.getAnnotationMirrors(AnnotationTarget.CLASS)) {
-      iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
+    print("%1$s %2$s(", queryMeta.getReturnMeta().getTypeName(), queryMeta.getName());
+    for (Iterator<QueryParameterMeta> it = queryMeta.getParameterMetas().iterator();
+        it.hasNext(); ) {
+      QueryParameterMeta parameterMeta = it.next();
+      String parameterTypeName = parameterMeta.getTypeName();
+      if (!it.hasNext() && queryMeta.isVarArgs()) {
+        parameterTypeName = parameterTypeName.replace("[]", "...");
+      }
+      print("%1$s %2$s", parameterTypeName, parameterMeta.getName());
+      if (it.hasNext()) {
+        print(", ");
+      }
     }
-    printGenerated();
-    String parentClassName = AbstractDao.class.getName();
-    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-    if (parentDaoMeta != null) {
-      TypeElement parentDaotElement = parentDaoMeta.getDaoElement();
-      parentClassName =
-          createCanonicalName(ctx, parentDaotElement, fullpackage, subpackage, prefix, suffix);
+    print(") ");
+    if (!queryMeta.getThrownTypeNames().isEmpty()) {
+      print("throws ");
+      for (Iterator<String> it = queryMeta.getThrownTypeNames().iterator(); it.hasNext(); ) {
+        print("%1$s", it.next());
+        if (it.hasNext()) {
+          print(", ");
+        }
+      }
+      print(" ");
     }
-    iprint(
-        "%4$s class %1$s extends %2$s implements %3$s {%n",
-        /* 1 */ simpleName, /* 2 */
-        parentClassName,
-        /* 3 */ daoMeta.getDaoType(),
-        /* 4 */ daoMeta.getAccessLevel().getModifier());
-    print("%n");
+    print("{%n");
     indent();
-    printValidateVersionStaticInitializer();
-    printStaticFields();
-    printConstructors();
-    printMethods();
+    queryMeta.accept(this);
     unindent();
-    print("}%n");
+    iprint("}%n");
+    print("%n");
   }
 
-  protected void printStaticFields() {
-    int i = 0;
-    for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-      QueryKind kind = queryMeta.getQueryKind();
-      if (kind != QueryKind.DEFAULT) {
-        iprint(
-            "private static final %1$s __method%2$s = %3$s.getDeclaredMethod(%4$s.class, \"%5$s\"",
-            Method.class.getName(),
-            i,
-            AbstractDao.class.getName(),
-            daoMeta.getDaoType(),
-            queryMeta.getName());
-        for (QueryParameterMeta parameterMeta : queryMeta.getParameterMetas()) {
-          print(", %1$s.class", parameterMeta.getQualifiedName());
-        }
-        print(");%n");
-        print("%n");
-      }
-      i++;
+  @Override
+  public Void visitSqlFileSelectQueryMeta(final SqlFileSelectQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint(
+        "__query.setSqlFilePath(\"%1$s\");%n",
+        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    if (m.getSelectOptionsCtType() != null) {
+      iprint("__query.setOptions(%1$s);%n", m.getSelectOptionsParameterName());
     }
-  }
+    if (m.getEntityCtType() != null) {
+      iprint(
+          "__query.setEntityType(%1$s.getSingletonInternal());%n",
+          m.getEntityCtType().getMetaTypeName());
+    }
 
-  protected void printConstructors() {
-    if (daoMeta.hasUserDefinedConfig()) {
-      String singletonMethodName = daoMeta.getSingletonMethodName();
-      String singletonFieldName = daoMeta.getSingletonFieldName();
+    printAddParameterStatements(m.getParameterMetas());
 
-      iprint("/** */%n");
-      iprint("public %1$s() {%n", simpleName);
-      indent();
-      if (singletonMethodName == null) {
-        if (singletonFieldName == null) {
-          iprint("super(new %1$s());%n", daoMeta.getConfigType());
-        } else {
-          iprint("super(%1$s.%2$s);%n", daoMeta.getConfigType(), singletonFieldName);
-        }
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
+    iprint("__query.setResultMappingEnsured(%1$s);%n", m.getEnsureResultMapping());
+    if (m.getSelectStrategyType() == SelectType.RETURN) {
+      iprint("__query.setFetchType(%1$s.%2$s);%n", FetchType.class.getName(), FetchType.LAZY);
+    } else {
+      iprint("__query.setFetchType(%1$s.%2$s);%n", FetchType.class.getName(), m.getFetchType());
+    }
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
+    iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+    if (m.isResultStream()) {
+      iprint("__query.setResultStream(true);%n");
+    }
+    iprint("__query.prepare();%n");
+
+    QueryReturnMeta returnMeta = m.getReturnMeta();
+
+    if (m.getSelectStrategyType() == SelectType.RETURN) {
+      CtType returnCtType = returnMeta.getCtType();
+      returnCtType.accept(new SqlFileSelectQueryReturnCtTypeVisitor(m), false);
+      iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
+      iprint("__query.complete();%n");
+      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+      iprint("return __result;%n");
+    } else {
+      if (m.getSelectStrategyType() == SelectType.STREAM) {
+        FunctionCtType functionCtType = m.getFunctionCtType();
+        functionCtType
+            .getTargetCtType()
+            .accept(new SqlFileSelectQueryFunctionCtTypeVisitor(m), null);
+      } else if (m.getSelectStrategyType() == SelectType.COLLECT) {
+        CollectorCtType collectorCtType = m.getCollectorCtType();
+        collectorCtType
+            .getTargetCtType()
+            .accept(new SqlFileSelectQueryCollectorCtTypeVisitor(m), false);
+      }
+      if ("void".equals(returnMeta.getTypeName())) {
+        iprint("__command.execute();%n");
+        iprint("__query.complete();%n");
+        iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
       } else {
-        iprint("super(%1$s.%2$s());%n", daoMeta.getConfigType(), singletonMethodName);
-      }
-      unindent();
-      iprint("}%n");
-      print("%n");
-      if (daoMeta.getAnnotateWithAnnot() == null) {
-        ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-        boolean jdbcConstructorsNecessary =
-            parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
-        if (jdbcConstructorsNecessary) {
-          iprint("/**%n");
-          iprint(" * @param connection the connection%n");
-          iprint(" */%n");
-          iprint("public %1$s(%2$s connection) {%n", simpleName, Connection.class.getName());
-          indent();
-          if (singletonMethodName == null) {
-            if (singletonFieldName == null) {
-              iprint("super(new %1$s(), connection);%n", daoMeta.getConfigType());
-            } else {
-              iprint(
-                  "super(%1$s.%2$s, connection);%n", daoMeta.getConfigType(), singletonFieldName);
-            }
-          } else {
-            iprint(
-                "super(%1$s.%2$s(), connection);%n", daoMeta.getConfigType(), singletonMethodName);
-          }
-          unindent();
-          iprint("}%n");
-          print("%n");
-          iprint("/**%n");
-          iprint(" * @param dataSource the dataSource%n");
-          iprint(" */%n");
-          iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class.getName());
-          indent();
-          if (singletonMethodName == null) {
-            if (singletonFieldName == null) {
-              iprint("super(new %1$s(), dataSource);%n", daoMeta.getConfigType());
-            } else {
-              iprint(
-                  "super(%1$s.%2$s, dataSource);%n", daoMeta.getConfigType(), singletonFieldName);
-            }
-          } else {
-            iprint(
-                "super(%1$s.%2$s(), dataSource);%n", daoMeta.getConfigType(), singletonMethodName);
-          }
-          unindent();
-          iprint("}%n");
-          print("%n");
-        }
-        iprint("/**%n");
-        iprint(" * @param config the configuration%n");
-        iprint(" */%n");
-        iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class.getName());
-        indent();
-        iprint("super(config);%n");
-        unindent();
-        iprint("}%n");
-        print("%n");
-        if (jdbcConstructorsNecessary) {
-          iprint("/**%n");
-          iprint(" * @param config the configuration%n");
-          iprint(" * @param connection the connection%n");
-          iprint(" */%n");
-          iprint(
-              "protected %1$s(%2$s config, %3$s connection) {%n",
-              simpleName, Config.class.getName(), Connection.class.getName());
-          indent();
-          iprint("super(config, connection);%n");
-          unindent();
-          iprint("}%n");
-          print("%n");
-          iprint("/**%n");
-          iprint(" * @param config the configuration%n");
-          iprint(" * @param dataSource the dataSource%n");
-          iprint(" */%n");
-          iprint(
-              "protected %1$s(%2$s config, %3$s dataSource) {%n",
-              simpleName, Config.class.getName(), DataSource.class.getName());
-          indent();
-          iprint("super(config, dataSource);%n");
-          unindent();
-          iprint("}%n");
-          print("%n");
-        }
+        iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
+        iprint("__query.complete();%n");
+        iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+        iprint("return __result;%n");
       }
     }
-    if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithAnnot() != null) {
-      iprint("/**%n");
-      iprint(" * @param config the config%n");
-      iprint(" */%n");
-      for (AnnotationAnnot annotation :
-          daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
-        iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint(
+        "__query.setScriptFilePath(\"%1$s\");%n",
+        ScriptFileUtil.buildPath(
+            daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setBlockDelimiter(\"%1$s\");%n", m.getBlockDelimiter());
+    iprint("__query.setHaltOnError(%1$s);%n", m.getHaltOnError());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ m.getCommandClass().getSimpleName(),
+        /* 3 */ methodName);
+    iprint("__command.execute();%n");
+    iprint("__query.complete();%n");
+    iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitAutoModifyQueryMeta(AutoModifyQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getEntityCtType().getTypeName(),
+        /* 3 */ m.getEntityCtType().getMetaTypeName(),
+        /* 4 */ m.getQueryClass().getSimpleName(),
+        /* 5 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+
+    Boolean excludeNull = m.getExcludeNull();
+    if (excludeNull != null) {
+      iprint("__query.setNullExcluded(%1$s);%n", excludeNull);
+    }
+
+    Boolean ignoreVersion = m.getIgnoreVersion();
+    if (ignoreVersion != null) {
+      iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+    }
+
+    List<String> include = m.getInclude();
+    if (include != null) {
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+    }
+
+    List<String> exclude = m.getExclude();
+    if (exclude != null) {
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(m.getExclude()));
+    }
+
+    Boolean includeUnchanged = m.getIncludeUnchanged();
+    if (includeUnchanged != null) {
+      iprint("__query.setUnchangedPropertyIncluded(%1$s);%n", includeUnchanged);
+    }
+
+    Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
+    if (suppressOptimisticLockException != null) {
+      iprint(
+          "__query.setOptimisticLockExceptionSuppressed(%1$s);%n", suppressOptimisticLockException);
+    }
+
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        m.getCommandClass().getName(), m.getCommandClass().getSimpleName(), methodName);
+
+    EntityCtType entityCtType = m.getEntityCtType();
+    if (entityCtType != null && entityCtType.isImmutable()) {
+      iprint("int __count = __command.execute();%n");
+      iprint("__query.complete();%n");
+      iprint(
+          "%1$s __result = new %1$s(__count, __query.getEntity());%n",
+          m.getReturnMeta().getTypeName());
+    } else {
+      iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
+      iprint("__query.complete();%n");
+    }
+
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getQueryClass().getSimpleName(),
+        /* 3 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint(
+        "__query.setSqlFilePath(\"%1$s\");%n",
+        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+
+    printAddParameterStatements(m.getParameterMetas());
+
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+
+    if (m.getEntityParameterName() != null && m.getEntityCtType() != null) {
+      iprint(
+          "__query.setEntityAndEntityType(\"%1$s\", %2$s, %3$s.getSingletonInternal());%n",
+          m.getEntityParameterName(),
+          m.getEntityParameterName(),
+          m.getEntityCtType().getMetaTypeName());
+    }
+
+    Boolean excludeNull = m.getExcludeNull();
+    if (excludeNull != null) {
+      iprint("__query.setNullExcluded(%1$s);%n", excludeNull);
+    }
+
+    Boolean ignoreVersion = m.getIgnoreVersion();
+    if (ignoreVersion != null) {
+      iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+    }
+
+    List<String> include = m.getInclude();
+    if (include != null) {
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+    }
+
+    List<String> exclude = m.getExclude();
+    if (exclude != null) {
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(m.getExclude()));
+    }
+
+    Boolean includeUnchanged = m.getIncludeUnchanged();
+    if (includeUnchanged != null) {
+      iprint("__query.setUnchangedPropertyIncluded(%1$s);%n", includeUnchanged);
+    }
+
+    Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
+    if (suppressOptimisticLockException != null) {
+      iprint(
+          "__query.setOptimisticLockExceptionSuppressed(%1$s);%n", suppressOptimisticLockException);
+    }
+
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ m.getCommandClass().getSimpleName(),
+        /* 3 */ methodName);
+
+    EntityCtType entityCtType = m.getEntityCtType();
+    if (entityCtType != null && entityCtType.isImmutable()) {
+      iprint("int __count = __command.execute();%n");
+      iprint("__query.complete();%n");
+      iprint(
+          "%1$s __result = new %1$s(__count, __query.getEntity(%2$s.class));%n",
+          m.getReturnMeta().getTypeName(), entityCtType.getBoxedTypeName());
+    } else {
+      iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
+      iprint("__query.complete();%n");
+    }
+
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getEntityCtType().getTypeName(),
+        /* 3 */ m.getEntityCtType().getMetaTypeName(),
+        /* 4 */ m.getQueryClass().getSimpleName(),
+        /* 5 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+
+    Boolean ignoreVersion = m.getIgnoreVersion();
+    if (ignoreVersion != null) {
+      iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+    }
+
+    List<String> include = m.getInclude();
+    if (include != null) {
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+    }
+
+    List<String> exclude = m.getExclude();
+    if (exclude != null) {
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(exclude));
+    }
+
+    Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
+    if (suppressOptimisticLockException != null) {
+      iprint(
+          "__query.setOptimisticLockExceptionSuppressed(%1$s);%n", suppressOptimisticLockException);
+    }
+
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ m.getCommandClass().getSimpleName(),
+        /* 3 */ methodName);
+
+    EntityCtType entityCtType = m.getEntityCtType();
+    if (entityCtType != null && entityCtType.isImmutable()) {
+      iprint("int[] __counts = __command.execute();%n");
+      iprint("__query.complete();%n");
+      iprint(
+          "%1$s __result = new %1$s(__counts, __query.getEntities());%n",
+          m.getReturnMeta().getTypeName());
+    } else {
+      iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
+      iprint("__query.complete();%n");
+    }
+
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.class);%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getElementCtType().getBoxedTypeName(),
+        /* 3 */ m.getElementCtType().getQualifiedName(),
+        /* 4 */ m.getQueryClass().getSimpleName(),
+        /* 5 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
+    iprint(
+        "__query.setSqlFilePath(\"%1$s\");%n",
+        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    iprint("__query.setParameterName(\"%1$s\");%n", m.getElementsParameterName());
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+
+    if (m.getEntityType() != null) {
+      iprint(
+          "__query.setEntityType(%1$s.getSingletonInternal());%n",
+          m.getEntityType().getMetaTypeName());
+    }
+
+    Boolean ignoreVersion = m.getIgnoreVersion();
+    if (ignoreVersion != null) {
+      iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+    }
+
+    List<String> include = m.getInclude();
+    if (include != null) {
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+    }
+
+    List<String> exclude = m.getExclude();
+    if (exclude != null) {
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(exclude));
+    }
+
+    Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
+    if (suppressOptimisticLockException != null) {
+      iprint(
+          "__query.setOptimisticLockExceptionSuppressed(%1$s);%n", suppressOptimisticLockException);
+    }
+
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ m.getCommandClass().getSimpleName(),
+        /* 3 */ methodName);
+
+    EntityCtType entityCtType = m.getEntityType();
+    if (entityCtType != null && entityCtType.isImmutable()) {
+      iprint("int[] __counts = __command.execute();%n");
+      iprint("__query.complete();%n");
+      iprint(
+          "%1$s __result = new %1$s(__counts, __query.getEntities());%n",
+          m.getReturnMeta().getTypeName());
+    } else {
+      iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
+      iprint("__query.complete();%n");
+    }
+
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    QueryReturnMeta returnMeta = m.getReturnMeta();
+    iprint(
+        "%1$s<%2$s> __query = getQueryImplementors().create%3$s(%4$s);%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ returnMeta.getBoxedTypeName(),
+        /* 3 */ m.getQueryClass().getSimpleName(),
+        /* 4 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
+    iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
+    iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
+    iprint("__query.setQuoteRequired(%1$s);%n", m.isQuoteRequired());
+    CallableSqlParameterStatementGenerator parameterGenerator =
+        new CallableSqlParameterStatementGenerator();
+    m.getResultParameterMeta().accept(parameterGenerator, m);
+    for (CallableSqlParameterMeta parameterMeta : m.getCallableSqlParameterMetas()) {
+      parameterMeta.accept(parameterGenerator, m);
+    }
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ returnMeta.getBoxedTypeName(),
+        /* 3 */ m.getCommandClass().getSimpleName(),
+        /* 4 */ methodName);
+    iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
+    iprint("__query.complete();%n");
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
+    iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
+    iprint("__query.setProcedureName(\"%1$s\");%n", m.getProcedureName());
+    iprint("__query.setQuoteRequired(%1$s);%n", m.isQuoteRequired());
+    CallableSqlParameterStatementGenerator parameterGenerator =
+        new CallableSqlParameterStatementGenerator();
+    for (CallableSqlParameterMeta parameterMeta : m.getCallableSqlParameterMetas()) {
+      parameterMeta.accept(parameterGenerator, m);
+    }
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint(
+        "__query.setSqlLogType(%1$s.%2$s);%n",
+        m.getSqlLogType().getClass().getName(), m.getSqlLogType());
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ m.getCommandClass().getSimpleName(),
+        /* 3 */ methodName);
+    iprint("__command.execute();%n");
+    iprint("__query.complete();%n");
+    iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    QueryReturnMeta resultMeta = m.getReturnMeta();
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getQueryClass().getSimpleName(),
+        /* 3 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ resultMeta.getTypeName(),
+        /* 3 */ m.getCommandClass().getSimpleName(),
+        /* 4 */ methodName);
+    iprint("%1$s __result = __command.execute();%n", resultMeta.getTypeName());
+    iprint("__query.complete();%n");
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m) {
+    printArrayCreateEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    QueryReturnMeta resultMeta = m.getReturnMeta();
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getQueryClass().getSimpleName(),
+        /* 3 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setTypeName(\"%1$s\");%n", m.getArrayTypeName());
+    iprint("__query.setElements(%1$s);%n", m.getParameterName());
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ resultMeta.getBoxedTypeName(),
+        /* 3 */ m.getCommandClass().getSimpleName(),
+        /* 4 */ methodName);
+    iprint("%1$s __result = __command.execute();%n", resultMeta.getTypeName());
+    iprint("__query.complete();%n");
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitDefaultQueryMeta(DefaultQueryMeta m) {
+    printEnteringStatements(m);
+
+    QueryReturnMeta resultMeta = m.getReturnMeta();
+    if ("void".equals(resultMeta.getTypeName())) {
+      iprint("Object __result = null;%n");
+      iprint("");
+    } else {
+      iprint("%1$s __result = ", resultMeta.getTypeName());
+    }
+    print("%1$s.super.%2$s(", daoMeta.getDaoElement().getQualifiedName(), m.getName());
+    for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
+      QueryParameterMeta parameterMeta = it.next();
+      print("%1$s", parameterMeta.getName());
+      if (it.hasNext()) {
+        print(", ");
       }
-      iprint("public %1$s(", simpleName);
-      for (AnnotationAnnot annotation :
-          daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
-        print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation.getElementsValue());
+    }
+    print(");%n");
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    if (!"void".equals(resultMeta.getTypeName())) {
+      iprint("return __result;%n");
+    }
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint(
+        "__query.setSqlFilePath(\"%1$s\");%n",
+        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+
+    printAddParameterStatements(m.getParameterMetas());
+
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.prepare();%n");
+
+    QueryReturnMeta returnMeta = m.getReturnMeta();
+    iprint(
+        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query, %5$s);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ m.getBiFunctionCtType().getResultCtType().getBoxedTypeName(),
+        /* 3 */ m.getCommandClass().getSimpleName(),
+        /* 4 */ methodName, /* 5 */
+        m.getBiFunctionParameterName());
+
+    if ("void".equals(returnMeta.getTypeName())) {
+      iprint("__command.execute();%n");
+      iprint("__query.complete();%n");
+      iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
+    } else {
+      iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
+      iprint("__query.complete();%n");
+      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+      iprint("return __result;%n");
+    }
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  private void printEnteringStatements(QueryMeta m) {
+    iprint("entering(\"%1$s\", \"%2$s\"", className, m.getName());
+    for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
+      QueryParameterMeta parameterMeta = it.next();
+      print(", %1$s", parameterMeta.getName());
+    }
+    print(");%n");
+    iprint("try {%n");
+    indent();
+  }
+
+  private void printArrayCreateEnteringStatements(ArrayCreateQueryMeta m) {
+    iprint(
+        "entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
+        className, m.getName(), m.getParameterName());
+    iprint("try {%n");
+    indent();
+  }
+
+  private void printThrowingStatements(QueryMeta m) {
+    unindent();
+    iprint("} catch (%1$s __e) {%n", RuntimeException.class.getName());
+    indent();
+    iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", className, m.getName());
+    iprint("throw __e;%n");
+    unindent();
+    iprint("}%n");
+  }
+
+  private void printPrerequisiteStatements(QueryMeta m) {
+    for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
+      QueryParameterMeta parameterMeta = it.next();
+      if (parameterMeta.isNullable()) {
+        continue;
       }
-      print("%1$s config) {%n", Config.class.getName());
-      indent();
-      iprint("super(config);%n");
-      unindent();
+      String paramName = parameterMeta.getName();
+      iprint("if (%1$s == null) {%n", paramName);
+      iprint(
+          "    throw new %1$s(\"%2$s\");%n", DomaNullPointerException.class.getName(), paramName);
       iprint("}%n");
-      print("%n");
     }
   }
 
-  protected boolean isJdbcConstructoNecessary() {
-    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-    return parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
+  private void printAddParameterStatements(List<QueryParameterMeta> ParameterMetas) {
+    for (Iterator<QueryParameterMeta> it = ParameterMetas.iterator(); it.hasNext(); ) {
+      QueryParameterMeta parameterMeta = it.next();
+      if (parameterMeta.isBindable()) {
+        CtType ctType = parameterMeta.getCtType();
+        ctType.accept(
+            new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+              @Override
+              protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
+                iprint(
+                    "__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                    /* 1 */ parameterMeta.getName(), /* 2 */ ctType.getQualifiedName());
+                return null;
+              }
+
+              @Override
+              public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                  throws RuntimeException {
+                iprint(
+                    "__query.addParameter(\"%1$s\", %2$s.class, %1$s.orElse(null));%n",
+                    /* 1 */ parameterMeta.getName(),
+                    /* 2 */ ctType.getElementCtType().getQualifiedName());
+                return null;
+              }
+
+              @Override
+              public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
+                  throws RuntimeException {
+                iprint(
+                    "__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsInt() : null);%n",
+                    /* 1 */ parameterMeta.getName(), /* 2 */ Integer.class.getName());
+                return null;
+              }
+
+              @Override
+              public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
+                  throws RuntimeException {
+                iprint(
+                    "__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsLong() : null);%n",
+                    /* 1 */ parameterMeta.getName(), /* 2 */ Long.class.getName());
+                return null;
+              }
+
+              @Override
+              public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void p)
+                  throws RuntimeException {
+                iprint(
+                    "__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsDouble() : null);%n",
+                    /* 1 */ parameterMeta.getName(), /* 2 */ Double.class.getName());
+                return null;
+              }
+            },
+            null);
+      }
+    }
   }
 
-  protected String toCSVFormat(List<String> values) {
+  private String toCSVFormat(List<String> values) {
     final StringBuilder buf = new StringBuilder();
     if (values.size() > 0) {
       for (String value : values) {
@@ -414,837 +860,7 @@ public class DaoGenerator extends AbstractGenerator {
     return buf.toString();
   }
 
-  protected void printMethods() {
-    MethodBodyGenerator generator = new MethodBodyGenerator();
-    int i = 0;
-    for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-      printMethod(generator, queryMeta, i);
-      i++;
-    }
-  }
-
-  protected void printMethod(MethodBodyGenerator generator, QueryMeta m, int index) {
-    iprint("@Override%n");
-    iprint("public ");
-    if (!m.getTypeParameterNames().isEmpty()) {
-      print("<");
-      for (Iterator<String> it = m.getTypeParameterNames().iterator(); it.hasNext(); ) {
-        print("%1$s", it.next());
-        if (it.hasNext()) {
-          print(", ");
-        }
-      }
-      print("> ");
-    }
-    print("%1$s %2$s(", m.getReturnMeta().getTypeName(), m.getName());
-    for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
-      QueryParameterMeta parameterMeta = it.next();
-      String parameterTypeName = parameterMeta.getTypeName();
-      if (!it.hasNext() && m.isVarArgs()) {
-        parameterTypeName = parameterTypeName.replace("[]", "...");
-      }
-      print("%1$s %2$s", parameterTypeName, parameterMeta.getName());
-      if (it.hasNext()) {
-        print(", ");
-      }
-    }
-    print(") ");
-    if (!m.getThrownTypeNames().isEmpty()) {
-      print("throws ");
-      for (Iterator<String> it = m.getThrownTypeNames().iterator(); it.hasNext(); ) {
-        print("%1$s", it.next());
-        if (it.hasNext()) {
-          print(", ");
-        }
-      }
-      print(" ");
-    }
-    print("{%n");
-    indent();
-    m.accept(generator, "__method" + index);
-    unindent();
-    iprint("}%n");
-    print("%n");
-  }
-
-  /**
-   * メソッドボディのコードを生成します。
-   *
-   * @author nakamura-to
-   */
-  protected class MethodBodyGenerator implements QueryMetaVisitor<Void, String> {
-
-    @Override
-    public Void visitSqlFileSelectQueryMeta(final SqlFileSelectQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-          m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
-      if (m.getSelectOptionsCtType() != null) {
-        iprint("__query.setOptions(%1$s);%n", m.getSelectOptionsParameterName());
-      }
-      if (m.getEntityCtType() != null) {
-        iprint(
-            "__query.setEntityType(%1$s.getSingletonInternal());%n",
-            m.getEntityCtType().getMetaTypeName());
-      }
-
-      printAddParameterStatements(m.getParameterMetas());
-
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
-      iprint("__query.setResultMappingEnsured(%1$s);%n", m.getEnsureResultMapping());
-      if (m.getSelectStrategyType() == SelectType.RETURN) {
-        iprint("__query.setFetchType(%1$s.%2$s);%n", FetchType.class.getName(), FetchType.LAZY);
-      } else {
-        iprint("__query.setFetchType(%1$s.%2$s);%n", FetchType.class.getName(), m.getFetchType());
-      }
-      iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-      iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
-      iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-      if (m.isResultStream()) {
-        iprint("__query.setResultStream(true);%n");
-      }
-      iprint("__query.prepare();%n");
-
-      QueryReturnMeta returnMeta = m.getReturnMeta();
-
-      if (m.getSelectStrategyType() == SelectType.RETURN) {
-        CtType returnCtType = returnMeta.getCtType();
-        returnCtType.accept(new SqlFileSelectQueryReturnCtTypeVisitor(m, methodName), false);
-        iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
-        iprint("__query.complete();%n");
-        iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-        iprint("return __result;%n");
-      } else {
-        if (m.getSelectStrategyType() == SelectType.STREAM) {
-          FunctionCtType functionCtType = m.getFunctionCtType();
-          functionCtType
-              .getTargetCtType()
-              .accept(new SqlFileSelectQueryFunctionCtTypeVisitor(m, methodName), null);
-        } else if (m.getSelectStrategyType() == SelectType.COLLECT) {
-          CollectorCtType collectorCtType = m.getCollectorCtType();
-          collectorCtType
-              .getTargetCtType()
-              .accept(new SqlFileSelectQueryCollectorCtTypeVisitor(m, methodName), false);
-        }
-        if ("void".equals(returnMeta.getTypeName())) {
-          iprint("__command.execute();%n");
-          iprint("__query.complete();%n");
-          iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName, m.getName());
-        } else {
-          iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
-          iprint("__query.complete();%n");
-          iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-          iprint("return __result;%n");
-        }
-      }
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-          m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setScriptFilePath(\"%1$s\");%n",
-          ScriptFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setBlockDelimiter(\"%1$s\");%n", m.getBlockDelimiter());
-      iprint("__query.setHaltOnError(%1$s);%n", m.getHaltOnError());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ m.getCommandClass().getSimpleName(),
-          /* 3 */ methodName);
-      iprint("__command.execute();%n");
-      iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName, m.getName());
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitAutoModifyQueryMeta(AutoModifyQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
-          /* 1 */ m.getQueryClass().getName(),
-          /* 2 */ m.getEntityCtType().getTypeName(),
-          /* 3 */ m.getEntityCtType().getMetaTypeName(),
-          /* 4 */ m.getQueryClass().getSimpleName(),
-          /* 5 */ methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-
-      Boolean excludeNull = m.getExcludeNull();
-      if (excludeNull != null) {
-        iprint("__query.setNullExcluded(%1$s);%n", excludeNull);
-      }
-
-      Boolean ignoreVersion = m.getIgnoreVersion();
-      if (ignoreVersion != null) {
-        iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
-      }
-
-      List<String> include = m.getInclude();
-      if (include != null) {
-        iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
-      }
-
-      List<String> exclude = m.getExclude();
-      if (exclude != null) {
-        iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(m.getExclude()));
-      }
-
-      Boolean includeUnchanged = m.getIncludeUnchanged();
-      if (includeUnchanged != null) {
-        iprint("__query.setUnchangedPropertyIncluded(%1$s);%n", includeUnchanged);
-      }
-
-      Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
-      if (suppressOptimisticLockException != null) {
-        iprint(
-            "__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-            suppressOptimisticLockException);
-      }
-
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
-          m.getCommandClass().getName(), m.getCommandClass().getSimpleName(), methodName);
-
-      EntityCtType entityCtType = m.getEntityCtType();
-      if (entityCtType != null && entityCtType.isImmutable()) {
-        iprint("int __count = __command.execute();%n");
-        iprint("__query.complete();%n");
-        iprint(
-            "%1$s __result = new %1$s(__count, __query.getEntity());%n",
-            m.getReturnMeta().getTypeName());
-      } else {
-        iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
-        iprint("__query.complete();%n");
-      }
-
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      iprint("return __result;%n");
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-          /* 1 */ m.getQueryClass().getName(),
-          /* 2 */ m.getQueryClass().getSimpleName(),
-          /* 3 */ methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
-
-      printAddParameterStatements(m.getParameterMetas());
-
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-
-      if (m.getEntityParameterName() != null && m.getEntityCtType() != null) {
-        iprint(
-            "__query.setEntityAndEntityType(\"%1$s\", %2$s, %3$s.getSingletonInternal());%n",
-            m.getEntityParameterName(),
-            m.getEntityParameterName(),
-            m.getEntityCtType().getMetaTypeName());
-      }
-
-      Boolean excludeNull = m.getExcludeNull();
-      if (excludeNull != null) {
-        iprint("__query.setNullExcluded(%1$s);%n", excludeNull);
-      }
-
-      Boolean ignoreVersion = m.getIgnoreVersion();
-      if (ignoreVersion != null) {
-        iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
-      }
-
-      List<String> include = m.getInclude();
-      if (include != null) {
-        iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
-      }
-
-      List<String> exclude = m.getExclude();
-      if (exclude != null) {
-        iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(m.getExclude()));
-      }
-
-      Boolean includeUnchanged = m.getIncludeUnchanged();
-      if (includeUnchanged != null) {
-        iprint("__query.setUnchangedPropertyIncluded(%1$s);%n", includeUnchanged);
-      }
-
-      Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
-      if (suppressOptimisticLockException != null) {
-        iprint(
-            "__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-            suppressOptimisticLockException);
-      }
-
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ m.getCommandClass().getSimpleName(),
-          /* 3 */ methodName);
-
-      EntityCtType entityCtType = m.getEntityCtType();
-      if (entityCtType != null && entityCtType.isImmutable()) {
-        iprint("int __count = __command.execute();%n");
-        iprint("__query.complete();%n");
-        iprint(
-            "%1$s __result = new %1$s(__count, __query.getEntity(%2$s.class));%n",
-            m.getReturnMeta().getTypeName(), entityCtType.getBoxedTypeName());
-      } else {
-        iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
-        iprint("__query.complete();%n");
-      }
-
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      iprint("return __result;%n");
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.getSingletonInternal());%n",
-          /* 1 */ m.getQueryClass().getName(),
-          /* 2 */ m.getEntityCtType().getTypeName(),
-          /* 3 */ m.getEntityCtType().getMetaTypeName(),
-          /* 4 */ m.getQueryClass().getSimpleName(),
-          /* 5 */ methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-      iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-
-      Boolean ignoreVersion = m.getIgnoreVersion();
-      if (ignoreVersion != null) {
-        iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
-      }
-
-      List<String> include = m.getInclude();
-      if (include != null) {
-        iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
-      }
-
-      List<String> exclude = m.getExclude();
-      if (exclude != null) {
-        iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(exclude));
-      }
-
-      Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
-      if (suppressOptimisticLockException != null) {
-        iprint(
-            "__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-            suppressOptimisticLockException);
-      }
-
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ m.getCommandClass().getSimpleName(),
-          /* 3 */ methodName);
-
-      EntityCtType entityCtType = m.getEntityCtType();
-      if (entityCtType != null && entityCtType.isImmutable()) {
-        iprint("int[] __counts = __command.execute();%n");
-        iprint("__query.complete();%n");
-        iprint(
-            "%1$s __result = new %1$s(__counts, __query.getEntities());%n",
-            m.getReturnMeta().getTypeName());
-      } else {
-        iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
-        iprint("__query.complete();%n");
-      }
-
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      iprint("return __result;%n");
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.class);%n",
-          /* 1 */ m.getQueryClass().getName(),
-          /* 2 */ m.getElementCtType().getBoxedTypeName(),
-          /* 3 */ m.getElementCtType().getQualifiedName(),
-          /* 4 */ m.getQueryClass().getSimpleName(),
-          /* 5 */ methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
-      iprint("__query.setParameterName(\"%1$s\");%n", m.getElementsParameterName());
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-      iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-
-      if (m.getEntityType() != null) {
-        iprint(
-            "__query.setEntityType(%1$s.getSingletonInternal());%n",
-            m.getEntityType().getMetaTypeName());
-      }
-
-      Boolean ignoreVersion = m.getIgnoreVersion();
-      if (ignoreVersion != null) {
-        iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
-      }
-
-      List<String> include = m.getInclude();
-      if (include != null) {
-        iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
-      }
-
-      List<String> exclude = m.getExclude();
-      if (exclude != null) {
-        iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(exclude));
-      }
-
-      Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
-      if (suppressOptimisticLockException != null) {
-        iprint(
-            "__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-            suppressOptimisticLockException);
-      }
-
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ m.getCommandClass().getSimpleName(),
-          /* 3 */ methodName);
-
-      EntityCtType entityCtType = m.getEntityType();
-      if (entityCtType != null && entityCtType.isImmutable()) {
-        iprint("int[] __counts = __command.execute();%n");
-        iprint("__query.complete();%n");
-        iprint(
-            "%1$s __result = new %1$s(__counts, __query.getEntities());%n",
-            m.getReturnMeta().getTypeName());
-      } else {
-        iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getTypeName());
-        iprint("__query.complete();%n");
-      }
-
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      iprint("return __result;%n");
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      QueryReturnMeta returnMeta = m.getReturnMeta();
-      iprint(
-          "%1$s<%2$s> __query = getQueryImplementors().create%3$s(%4$s);%n",
-          /* 1 */ m.getQueryClass().getName(),
-          /* 2 */ returnMeta.getBoxedTypeName(),
-          /* 3 */ m.getQueryClass().getSimpleName(),
-          /* 4 */ methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
-      iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
-      iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
-      iprint("__query.setQuoteRequired(%1$s);%n", m.isQuoteRequired());
-      CallableSqlParameterStatementGenerator parameterGenerator =
-          new CallableSqlParameterStatementGenerator();
-      m.getResultParameterMeta().accept(parameterGenerator, m);
-      for (CallableSqlParameterMeta parameterMeta : m.getCallableSqlParameterMetas()) {
-        parameterMeta.accept(parameterGenerator, m);
-      }
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ returnMeta.getBoxedTypeName(),
-          /* 3 */ m.getCommandClass().getSimpleName(),
-          /* 4 */ methodName);
-      iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
-      iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      iprint("return __result;%n");
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-          m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
-      iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
-      iprint("__query.setProcedureName(\"%1$s\");%n", m.getProcedureName());
-      iprint("__query.setQuoteRequired(%1$s);%n", m.isQuoteRequired());
-      CallableSqlParameterStatementGenerator parameterGenerator =
-          new CallableSqlParameterStatementGenerator();
-      for (CallableSqlParameterMeta parameterMeta : m.getCallableSqlParameterMetas()) {
-        parameterMeta.accept(parameterGenerator, m);
-      }
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-      iprint(
-          "__query.setSqlLogType(%1$s.%2$s);%n",
-          m.getSqlLogType().getClass().getName(), m.getSqlLogType());
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ m.getCommandClass().getSimpleName(),
-          /* 3 */ methodName);
-      iprint("__command.execute();%n");
-      iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName, m.getName());
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      QueryReturnMeta resultMeta = m.getReturnMeta();
-      iprint(
-          "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-          /* 1 */ m.getQueryClass().getName(),
-          /* 2 */ m.getQueryClass().getSimpleName(),
-          /* 3 */ methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ resultMeta.getTypeName(),
-          /* 3 */ m.getCommandClass().getSimpleName(),
-          /* 4 */ methodName);
-      iprint("%1$s __result = __command.execute();%n", resultMeta.getTypeName());
-      iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      iprint("return __result;%n");
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, String methodName) {
-      printArrayCreateEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      QueryReturnMeta resultMeta = m.getReturnMeta();
-      iprint(
-          "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-          /* 1 */ m.getQueryClass().getName(),
-          /* 2 */ m.getQueryClass().getSimpleName(),
-          /* 3 */ methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.setTypeName(\"%1$s\");%n", m.getArrayTypeName());
-      iprint("__query.setElements(%1$s);%n", m.getParameterName());
-      iprint("__query.prepare();%n");
-      iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ resultMeta.getBoxedTypeName(),
-          /* 3 */ m.getCommandClass().getSimpleName(),
-          /* 4 */ methodName);
-      iprint("%1$s __result = __command.execute();%n", resultMeta.getTypeName());
-      iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      iprint("return __result;%n");
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitDefaultQueryMeta(DefaultQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-
-      QueryReturnMeta resultMeta = m.getReturnMeta();
-      if ("void".equals(resultMeta.getTypeName())) {
-        iprint("Object __result = null;%n");
-        iprint("");
-      } else {
-        iprint("%1$s __result = ", resultMeta.getTypeName());
-      }
-      print("%1$s.super.%2$s(", daoMeta.getDaoElement().getQualifiedName(), m.getName());
-      for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
-        QueryParameterMeta parameterMeta = it.next();
-        print("%1$s", parameterMeta.getName());
-        if (it.hasNext()) {
-          print(", ");
-        }
-      }
-      print(");%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-      if (!"void".equals(resultMeta.getTypeName())) {
-        iprint("return __result;%n");
-      }
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    @Override
-    public Void visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m, String methodName) {
-      printEnteringStatements(m);
-      printPrerequisiteStatements(m);
-
-      iprint(
-          "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-          m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
-      iprint("__query.setMethod(%1$s);%n", methodName);
-      iprint("__query.setConfig(__config);%n");
-      iprint(
-          "__query.setSqlFilePath(\"%1$s\");%n",
-          SqlFileUtil.buildPath(
-              daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
-
-      printAddParameterStatements(m.getParameterMetas());
-
-      iprint("__query.setCallerClassName(\"%1$s\");%n", canonicalName);
-      iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-      iprint("__query.prepare();%n");
-
-      QueryReturnMeta returnMeta = m.getReturnMeta();
-      iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query, %5$s);%n",
-          /* 1 */ m.getCommandClass().getName(),
-          /* 2 */ m.getBiFunctionCtType().getResultCtType().getBoxedTypeName(),
-          /* 3 */ m.getCommandClass().getSimpleName(),
-          /* 4 */ methodName, /* 5 */
-          m.getBiFunctionParameterName());
-
-      if ("void".equals(returnMeta.getTypeName())) {
-        iprint("__command.execute();%n");
-        iprint("__query.complete();%n");
-        iprint("exiting(\"%1$s\", \"%2$s\", null);%n", canonicalName, m.getName());
-      } else {
-        iprint("%1$s __result = __command.execute();%n", returnMeta.getTypeName());
-        iprint("__query.complete();%n");
-        iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", canonicalName, m.getName());
-        iprint("return __result;%n");
-      }
-
-      printThrowingStatements(m);
-      return null;
-    }
-
-    protected void printEnteringStatements(QueryMeta m) {
-      iprint("entering(\"%1$s\", \"%2$s\"", canonicalName, m.getName());
-      for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
-        QueryParameterMeta parameterMeta = it.next();
-        print(", %1$s", parameterMeta.getName());
-      }
-      print(");%n");
-      iprint("try {%n");
-      indent();
-    }
-
-    protected void printArrayCreateEnteringStatements(ArrayCreateQueryMeta m) {
-      iprint(
-          "entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
-          canonicalName, m.getName(), m.getParameterName());
-      iprint("try {%n");
-      indent();
-    }
-
-    protected void printThrowingStatements(QueryMeta m) {
-      unindent();
-      iprint("} catch (%1$s __e) {%n", RuntimeException.class.getName());
-      indent();
-      iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", canonicalName, m.getName());
-      iprint("throw __e;%n");
-      unindent();
-      iprint("}%n");
-    }
-
-    protected void printPrerequisiteStatements(QueryMeta m) {
-      for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
-        QueryParameterMeta parameterMeta = it.next();
-        if (parameterMeta.isNullable()) {
-          continue;
-        }
-        String paramName = parameterMeta.getName();
-        iprint("if (%1$s == null) {%n", paramName);
-        iprint(
-            "    throw new %1$s(\"%2$s\");%n", DomaNullPointerException.class.getName(), paramName);
-        iprint("}%n");
-      }
-    }
-
-    protected void printAddParameterStatements(List<QueryParameterMeta> ParameterMetas) {
-      for (Iterator<QueryParameterMeta> it = ParameterMetas.iterator(); it.hasNext(); ) {
-        QueryParameterMeta parameterMeta = it.next();
-        if (parameterMeta.isBindable()) {
-          CtType ctType = parameterMeta.getCtType();
-          ctType.accept(
-              new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                @Override
-                protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
-                  iprint(
-                      "__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                      /* 1 */ parameterMeta.getName(), /* 2 */ ctType.getQualifiedName());
-                  return null;
-                }
-
-                @Override
-                public Void visitOptionalCtType(OptionalCtType ctType, Void p)
-                    throws RuntimeException {
-                  iprint(
-                      "__query.addParameter(\"%1$s\", %2$s.class, %1$s.orElse(null));%n",
-                      /* 1 */ parameterMeta.getName(),
-                      /* 2 */ ctType.getElementCtType().getQualifiedName());
-                  return null;
-                }
-
-                @Override
-                public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p)
-                    throws RuntimeException {
-                  iprint(
-                      "__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsInt() : null);%n",
-                      /* 1 */ parameterMeta.getName(), /* 2 */ Integer.class.getName());
-                  return null;
-                }
-
-                @Override
-                public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p)
-                    throws RuntimeException {
-                  iprint(
-                      "__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsLong() : null);%n",
-                      /* 1 */ parameterMeta.getName(), /* 2 */ Long.class.getName());
-                  return null;
-                }
-
-                @Override
-                public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void p)
-                    throws RuntimeException {
-                  iprint(
-                      "__query.addParameter(\"%1$s\", %2$s.class, %1$s.isPresent() ? %1$s.getAsDouble() : null);%n",
-                      /* 1 */ parameterMeta.getName(), /* 2 */ Double.class.getName());
-                  return null;
-                }
-              },
-              null);
-        }
-      }
-    }
-  }
-
-  /**
-   * {@link ProcedureQuery } や {@link FunctionQuery} のパラメータに関するコードを生成します。
-   *
-   * @author nakamura-to
-   */
-  protected class CallableSqlParameterStatementGenerator
+  private class CallableSqlParameterStatementGenerator
       implements CallableSqlParameterMetaVisitor<Void, AutoModuleQueryMeta> {
 
     @Override
@@ -2078,12 +1694,10 @@ public class DaoGenerator extends AbstractGenerator {
     }
   }
 
-  protected class SqlFileSelectQueryFunctionCtTypeVisitor
+  private class SqlFileSelectQueryFunctionCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     protected final SqlFileSelectQueryMeta m;
-
-    protected final String methodName;
 
     protected final QueryReturnMeta resultMeta;
 
@@ -2093,9 +1707,8 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected final String functionParamName;
 
-    public SqlFileSelectQueryFunctionCtTypeVisitor(SqlFileSelectQueryMeta m, String methodName) {
+    public SqlFileSelectQueryFunctionCtTypeVisitor(SqlFileSelectQueryMeta m) {
       this.m = m;
-      this.methodName = methodName;
       this.resultMeta = m.getReturnMeta();
       this.commandClassName = m.getCommandClass().getName();
       this.commandName = m.getCommandClass().getSimpleName();
@@ -2109,7 +1722,6 @@ public class DaoGenerator extends AbstractGenerator {
           .accept(
               new StreamElementCtTypeVisitor(
                   m,
-                  methodName,
                   resultMeta.getBoxedTypeName(),
                   commandClassName,
                   commandName,
@@ -2119,12 +1731,10 @@ public class DaoGenerator extends AbstractGenerator {
     }
   }
 
-  protected class StreamElementCtTypeVisitor
+  private class StreamElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
 
     protected final SqlFileSelectQueryMeta m;
-
-    protected final String methodName;
 
     protected final String resultBoxedTypeName;
 
@@ -2136,13 +1746,11 @@ public class DaoGenerator extends AbstractGenerator {
 
     public StreamElementCtTypeVisitor(
         SqlFileSelectQueryMeta m,
-        String methodName,
         String resultBoxedTypeName,
         String commandClassName,
         String commandName,
         String functionParamName) {
       this.m = m;
-      this.methodName = methodName;
       this.resultBoxedTypeName = resultBoxedTypeName;
       this.commandClassName = commandClassName;
       this.commandName = commandName;
@@ -2290,47 +1898,44 @@ public class DaoGenerator extends AbstractGenerator {
       return null;
     }
 
-    protected String getBasicStreamHandlerName(Boolean optional) {
+    private String getBasicStreamHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalBasicStreamHandler.class.getName();
       }
       return BasicStreamHandler.class.getName();
     }
 
-    protected String getDomainStreamHandlerName(Boolean optional) {
+    private String getDomainStreamHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalDomainStreamHandler.class.getName();
       }
       return DomainStreamHandler.class.getName();
     }
 
-    protected String getMapStreamHandlerName(Boolean optional) {
+    private String getMapStreamHandlerName(Boolean optional) {
       return MapStreamHandler.class.getName();
     }
 
-    protected String getEntityStreamHandlerName(Boolean optional) {
+    private String getEntityStreamHandlerName(Boolean optional) {
       return EntityStreamHandler.class.getName();
     }
   }
 
-  protected class SqlFileSelectQueryCollectorCtTypeVisitor
+  private class SqlFileSelectQueryCollectorCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
 
-    protected final SqlFileSelectQueryMeta m;
+    private final SqlFileSelectQueryMeta m;
 
-    protected final String methodName;
+    private final QueryReturnMeta resultMeta;
 
-    protected final QueryReturnMeta resultMeta;
+    private final String commandClassName;
 
-    protected final String commandClassName;
+    private final String commandName;
 
-    protected final String commandName;
+    private final String collectorParamName;
 
-    protected final String collectorParamName;
-
-    public SqlFileSelectQueryCollectorCtTypeVisitor(SqlFileSelectQueryMeta m, String methodName) {
+    public SqlFileSelectQueryCollectorCtTypeVisitor(SqlFileSelectQueryMeta m) {
       this.m = m;
-      this.methodName = methodName;
       this.resultMeta = m.getReturnMeta();
       this.commandClassName = m.getCommandClass().getName();
       this.commandName = m.getCommandClass().getSimpleName();
@@ -2478,21 +2083,21 @@ public class DaoGenerator extends AbstractGenerator {
       return null;
     }
 
-    protected String getBasicCollectorHandlerName(Boolean optional) {
+    private String getBasicCollectorHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalBasicCollectorHandler.class.getName();
       }
       return BasicCollectorHandler.class.getName();
     }
 
-    protected String getDomainCollectorHandlerName(Boolean optional) {
+    private String getDomainCollectorHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalDomainCollectorHandler.class.getName();
       }
       return DomainCollectorHandler.class.getName();
     }
 
-    protected String getMapCollectorHandlerName(Boolean optional) {
+    private String getMapCollectorHandlerName(Boolean optional) {
       return MapCollectorHandler.class.getName();
     }
 
@@ -2501,27 +2106,19 @@ public class DaoGenerator extends AbstractGenerator {
     }
   }
 
-  /**
-   * {@link SqlFileSelectQuery} に関して、 戻り値に関するコードを生成します。
-   *
-   * @author nakamura-to
-   */
-  protected class SqlFileSelectQueryReturnCtTypeVisitor
+  private class SqlFileSelectQueryReturnCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Boolean, RuntimeException> {
 
-    protected final SqlFileSelectQueryMeta m;
+    private final SqlFileSelectQueryMeta m;
 
-    protected final String methodName;
+    private final String resultBoxedTypeName;
 
-    protected final String resultBoxedTypeName;
+    private final String commandClassName;
 
-    protected final String commandClassName;
+    private final String commandName;
 
-    protected final String commandName;
-
-    protected SqlFileSelectQueryReturnCtTypeVisitor(SqlFileSelectQueryMeta m, String methodName) {
+    private SqlFileSelectQueryReturnCtTypeVisitor(SqlFileSelectQueryMeta m) {
       this.m = m;
-      this.methodName = methodName;
       this.resultBoxedTypeName = this.m.getReturnMeta().getBoxedTypeName();
       this.commandClassName = m.getCommandClass().getName();
       this.commandName = m.getCommandClass().getSimpleName();
@@ -2816,7 +2413,6 @@ public class DaoGenerator extends AbstractGenerator {
           .accept(
               new StreamElementCtTypeVisitor(
                   m,
-                  methodName,
                   resultBoxedTypeName,
                   commandClassName,
                   commandName,
@@ -2825,53 +2421,53 @@ public class DaoGenerator extends AbstractGenerator {
       return null;
     }
 
-    protected String getBasicSingleResultHandlerName(Boolean optional) {
+    private String getBasicSingleResultHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalBasicSingleResultHandler.class.getName();
       }
       return BasicSingleResultHandler.class.getName();
     }
 
-    protected String getBasicResultListHandlerName(Boolean optional) {
+    private String getBasicResultListHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalBasicResultListHandler.class.getName();
       }
       return BasicResultListHandler.class.getName();
     }
 
-    protected String getDomainSingleResultHandlerName(Boolean optional) {
+    private String getDomainSingleResultHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalDomainSingleResultHandler.class.getName();
       }
       return DomainSingleResultHandler.class.getName();
     }
 
-    protected String getDomainResultListHandlerName(Boolean optional) {
+    private String getDomainResultListHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalDomainResultListHandler.class.getName();
       }
       return DomainResultListHandler.class.getName();
     }
 
-    protected String getMapSingleResultHandlerName(Boolean optional) {
+    private String getMapSingleResultHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalMapSingleResultHandler.class.getName();
       }
       return MapSingleResultHandler.class.getName();
     }
 
-    protected String getMapResultListHandlerName(Boolean optional) {
+    private String getMapResultListHandlerName(Boolean optional) {
       return MapResultListHandler.class.getName();
     }
 
-    protected String getEntitySingleResultHandlerName(Boolean optional) {
+    private String getEntitySingleResultHandlerName(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalEntitySingleResultHandler.class.getName();
       }
       return EntitySingleResultHandler.class.getName();
     }
 
-    protected String getEntityResultListHandlerName(Boolean optional) {
+    private String getEntityResultListHandlerName(Boolean optional) {
       return EntityResultListHandler.class.getName();
     }
   }

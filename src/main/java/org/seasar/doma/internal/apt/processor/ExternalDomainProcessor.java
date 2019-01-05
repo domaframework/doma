@@ -2,14 +2,15 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.generator.ClassName;
 import org.seasar.doma.internal.apt.generator.ExternalDomainTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMetaFactory;
 
@@ -27,9 +28,16 @@ public class ExternalDomainProcessor extends AbstractGeneratingProcessor<Externa
   }
 
   @Override
-  protected Generator createGenerator(TypeElement typeElement, ExternalDomainMeta meta)
-      throws IOException {
+  protected ClassName createNameSpec(TypeElement typeElement, ExternalDomainMeta meta) {
     assertNotNull(typeElement, meta);
-    return new ExternalDomainTypeGenerator(ctx, meta.getDomainElement(), meta);
+    TypeElement domainElement = meta.getDomainElement();
+    return ctx.getClassNames().newExternalDomainMetaTypeClassName(domainElement);
+  }
+
+  @Override
+  protected Generator createGenerator(
+      ClassName className, Printer printer, ExternalDomainMeta meta) {
+    assertNotNull(className, meta, printer);
+    return new ExternalDomainTypeGenerator(ctx, className, printer, meta);
   }
 }

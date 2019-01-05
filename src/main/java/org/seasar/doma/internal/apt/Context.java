@@ -4,6 +4,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import org.seasar.doma.internal.apt.annot.Annotations;
 import org.seasar.doma.internal.apt.cttype.CtTypes;
 import org.seasar.doma.internal.apt.decl.Declarations;
+import org.seasar.doma.internal.apt.generator.ClassNames;
 
 public class Context {
 
@@ -47,5 +48,9 @@ public class Context {
 
   public CtTypes getCtTypes() {
     return new CtTypes(this);
+  }
+
+  public ClassNames getClassNames() {
+    return new ClassNames(this);
   }
 }

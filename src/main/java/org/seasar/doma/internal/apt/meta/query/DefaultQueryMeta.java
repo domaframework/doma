@@ -10,7 +10,7 @@ public class DefaultQueryMeta extends AbstractQueryMeta {
   }
 
   @Override
-  public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-    return visitor.visitDefaultQueryMeta(this, p);
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitDefaultQueryMeta(this);
   }
 }

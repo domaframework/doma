@@ -2,14 +2,15 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.generator.ClassName;
 import org.seasar.doma.internal.apt.generator.EmbeddableTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
 
@@ -34,9 +35,14 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
   }
 
   @Override
-  protected Generator createGenerator(TypeElement typeElement, EmbeddableMeta meta)
-      throws IOException {
+  protected ClassName createNameSpec(TypeElement typeElement, EmbeddableMeta meta) {
     assertNotNull(typeElement, meta);
-    return new EmbeddableTypeGenerator(ctx, typeElement, meta);
+    return ctx.getClassNames().newEmbeddableMetaTypeClassName(typeElement);
+  }
+
+  @Override
+  protected Generator createGenerator(ClassName className, Printer printer, EmbeddableMeta meta) {
+    assertNotNull(className, meta, printer);
+    return new EmbeddableTypeGenerator(ctx, className, printer, meta);
   }
 }

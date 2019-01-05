@@ -102,7 +102,7 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
   }
 
   @Override
-  public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-    return visitor.visitSqlFileBatchModifyQueryMeta(this, p);
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitSqlFileBatchModifyQueryMeta(this);
   }
 }

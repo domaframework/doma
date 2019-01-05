@@ -30,5 +30,5 @@ public interface QueryMeta {
 
   List<String> getFileNames();
 
-  <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p);
+  <R> R accept(QueryMetaVisitor<R> visitor);
 }

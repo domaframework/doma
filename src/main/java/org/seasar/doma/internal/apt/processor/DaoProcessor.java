@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -10,8 +9,10 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.DaoGenerator;
+import org.seasar.doma.internal.apt.generator.ClassName;
+import org.seasar.doma.internal.apt.generator.DaoImplGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.dao.DaoMetaFactory;
@@ -77,8 +78,14 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
   }
 
   @Override
-  protected Generator createGenerator(TypeElement typeElement, DaoMeta meta) throws IOException {
+  protected ClassName createNameSpec(TypeElement typeElement, DaoMeta meta) {
     assertNotNull(typeElement, meta);
-    return new DaoGenerator(ctx, typeElement, meta);
+    return ctx.getClassNames().newDaoImplClassName(typeElement);
+  }
+
+  @Override
+  protected Generator createGenerator(ClassName className, Printer printer, DaoMeta meta) {
+    assertNotNull(className, meta, printer);
+    return new DaoImplGenerator(ctx, className, printer, meta);
   }
 }

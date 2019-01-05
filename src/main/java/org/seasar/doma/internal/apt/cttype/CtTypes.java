@@ -35,7 +35,7 @@ public class CtTypes {
     this.ctx = ctx;
   }
 
-  private AnyCtType newAnyCtType(TypeMirror type) {
+  public AnyCtType newAnyCtType(TypeMirror type) {
     return new AnyCtType(ctx, type);
   }
 

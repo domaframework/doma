@@ -2,13 +2,7 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.lang.model.element.TypeElement;
-import org.seasar.doma.internal.Constants;
+import java.util.*;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -29,11 +23,11 @@ import org.seasar.doma.jdbc.entity.Property;
 
 public class EmbeddableTypeGenerator extends AbstractGenerator {
 
-  protected final EmbeddableMeta embeddableMeta;
+  private final EmbeddableMeta embeddableMeta;
 
   public EmbeddableTypeGenerator(
-      Context ctx, TypeElement entityElement, EmbeddableMeta embeddableMeta) throws IOException {
-    super(ctx, entityElement, null, null, Constants.METATYPE_PREFIX, "");
+      Context ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
+    super(ctx, className, printer);
     assertNotNull(embeddableMeta);
     this.embeddableMeta = embeddableMeta;
   }
@@ -44,14 +38,14 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     printClass();
   }
 
-  protected void printPackage() {
+  private void printPackage() {
     if (!packageName.isEmpty()) {
       iprint("package %1$s;%n", packageName);
       iprint("%n");
     }
   }
 
-  protected void printClass() {
+  private void printClass() {
     iprint("/** */%n");
     printGenerated();
     iprint(
@@ -68,22 +62,22 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     iprint("}%n");
   }
 
-  protected void printFields() {
+  private void printFields() {
     printSingletonField();
   }
 
-  protected void printSingletonField() {
+  private void printSingletonField() {
     iprint("private static final %1$s __singleton = new %1$s();%n", simpleName);
     print("%n");
   }
 
-  protected void printMethods() {
+  private void printMethods() {
     printGetEmbeddablePropertyTypesMethod();
     printNewEmbeddableMethod();
     printGetSingletonInternalMethod();
   }
 
-  protected void printGetEmbeddablePropertyTypesMethod() {
+  private void printGetEmbeddablePropertyTypesMethod() {
     iprint("@Override%n");
     iprint(
         "public <ENTITY> %1$s<%2$s<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, %3$s namingType) {%n",
@@ -141,7 +135,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     print("%n");
   }
 
-  protected void printNewEmbeddableMethod() {
+  private void printNewEmbeddableMethod() {
     iprint("@Override%n");
     iprint(
         "public <ENTITY> %1$s newEmbeddable(String embeddedPropertyName, %2$s<String, %3$s<ENTITY, ?>> __args) {%n",
@@ -169,7 +163,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     print("%n");
   }
 
-  protected void printGetSingletonInternalMethod() {
+  private void printGetSingletonInternalMethod() {
     iprint("/**%n");
     iprint(" * @return the singleton%n");
     iprint(" */%n");
@@ -182,11 +176,11 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
   protected class EmbeddablePropertyCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected BasicCtType basicCtType;
+    private BasicCtType basicCtType;
 
-    protected WrapperCtType wrapperCtType;
+    private WrapperCtType wrapperCtType;
 
-    protected DomainCtType domainCtType;
+    private DomainCtType domainCtType;
 
     @Override
     protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {

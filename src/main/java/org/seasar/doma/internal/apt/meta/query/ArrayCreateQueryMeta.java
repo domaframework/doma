@@ -31,7 +31,7 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
   }
 
   @Override
-  public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-    return visitor.visitArrayCreateQueryMeta(this, p);
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitArrayCreateQueryMeta(this);
   }
 }

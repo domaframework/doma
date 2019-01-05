@@ -72,7 +72,7 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
   }
 
   @Override
-  public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-    return visitor.visitAutoBatchModifyQueryMeta(this, p);
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitAutoBatchModifyQueryMeta(this);
   }
 }

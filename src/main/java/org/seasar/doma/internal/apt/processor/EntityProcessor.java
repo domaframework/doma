@@ -2,14 +2,15 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.generator.ClassName;
 import org.seasar.doma.internal.apt.generator.EntityTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 
@@ -36,8 +37,14 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
   }
 
   @Override
-  protected Generator createGenerator(TypeElement typeElement, EntityMeta meta) throws IOException {
+  protected ClassName createNameSpec(TypeElement typeElement, EntityMeta meta) {
     assertNotNull(typeElement, meta);
-    return new EntityTypeGenerator(ctx, typeElement, meta);
+    return ctx.getClassNames().newEntityMetaTypeClassName(typeElement);
+  }
+
+  @Override
+  protected Generator createGenerator(ClassName className, Printer printer, EntityMeta meta) {
+    assertNotNull(className, meta, printer);
+    return new EntityTypeGenerator(ctx, className, printer, meta);
   }
 }

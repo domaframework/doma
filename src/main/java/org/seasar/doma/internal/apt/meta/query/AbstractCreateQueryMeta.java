@@ -10,7 +10,7 @@ public abstract class AbstractCreateQueryMeta extends AbstractQueryMeta {
   }
 
   @Override
-  public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-    return visitor.visitAbstractCreateQueryMeta(this, p);
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitAbstractCreateQueryMeta(this);
   }
 }

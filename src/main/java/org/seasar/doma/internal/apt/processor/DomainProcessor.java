@@ -2,14 +2,15 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.io.IOException;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.generator.ClassName;
 import org.seasar.doma.internal.apt.generator.DomainTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
 import org.seasar.doma.internal.apt.meta.domain.DomainMetaFactory;
 
@@ -33,8 +34,14 @@ public class DomainProcessor extends AbstractGeneratingProcessor<DomainMeta> {
   }
 
   @Override
-  protected Generator createGenerator(TypeElement typeElement, DomainMeta meta) throws IOException {
+  protected ClassName createNameSpec(TypeElement typeElement, DomainMeta meta) {
     assertNotNull(typeElement, meta);
-    return new DomainTypeGenerator(ctx, typeElement, meta);
+    return ctx.getClassNames().newDomainMetaTypeClassName(typeElement);
+  }
+
+  @Override
+  protected Generator createGenerator(ClassName className, Printer printer, DomainMeta meta) {
+    assertNotNull(className, meta, printer);
+    return new DomainTypeGenerator(ctx, className, printer, meta);
   }
 }
