@@ -278,7 +278,7 @@ public enum Message implements MessageResource {
   DOMA4014("Cannot annotate @Dao to anything but interfaces."),
   DOMA4015("Cannot annotate @Entity to anything but classes."),
   DOMA4016(
-      "An unexpected error has occurred. Check the logs for more information. For example, if you use Eclipse, see the error log view."),
+      "An unexpected error has occurred. It may be a bug in the Doma framework. Report the following stacktrace: {0}"),
   DOMA4017("The Dao interface must be a top level interface."),
   DOMA4019("The file[{0}] is not found from the classpath. The absolute path is \"{1}\"."),
   DOMA4020("The SQL file[{0}] is empty."),
@@ -301,7 +301,7 @@ public enum Message implements MessageResource {
   DOMA4038(
       "The type argument[{1}] of EntityListener[{0}] must be supertype of the entity class[{2}]."),
   DOMA4039(
-      "The annotation processing is stopped because of compilation error. Check the error message from the execution environment such as Eclipse and javac."),
+      "The annotation processing is stopped because of compilation error. Check the error message from your execution environment such as Eclipse and javac. Stacktrace: {0}"),
   DOMA4040("The return type must be the array of int that indicates the affected rows count."),
   DOMA4042("The parameter type must be the subtype of java.lang.Iterable."),
   DOMA4043("The type argument of the subtype of java.lang.Iterable must be the entity class."),
@@ -614,8 +614,6 @@ public enum Message implements MessageResource {
   DOMA4298(
       "The class[{0}] is not supported as a persistent type. If you intend to map the class to the external domain class with @ExternalDomain, the configuration may be not enough. Check the class that is annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
   DOMA4299("The raw type of the class[{0}] cannot be used as a persistent property."),
-  DOMA4300(
-      "The annotation processing for the type[{0}] is failed. Are there any compilation errors that are unrelated to the annotation processing?"),
   DOMA4301(
       "The type argument of the class[{0}] that is a wildcard or type variable cannot be used as a persistent property."),
   DOMA4302("@Id cannot be annotated to the property whose type is annotated with @Embeddable."),
