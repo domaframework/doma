@@ -1,6 +1,32 @@
-==============
-リリースノート
-==============
+=============
+Release Notes
+=============
+
+v2.21.0: 2019-01-06
+======================
+
+* `GH267 <https://github.com/domaframework/doma/pull/267>`_
+  Change the description of Doma
+* `GH266 <https://github.com/domaframework/doma/pull/266>`_
+  Remove descriptions of Doma 3
+* `GH265 <https://github.com/domaframework/doma/pull/265>`_
+  Polish annotation processing
+* `GH264 <https://github.com/domaframework/doma/pull/264>`_
+  Improve build script example
+* `GH263 <https://github.com/domaframework/doma/pull/263>`_
+  Translate resource bundle messages from Japanese into English
+* `GH262 <https://github.com/domaframework/doma/pull/262>`_
+  Translate javadoc comments from Japanese into English
+* `GH261 <https://github.com/domaframework/doma/pull/261>`_
+  Change the sphinx langulage option
+* `GH260 <https://github.com/domaframework/doma/pull/260>`_
+  Translate development.rst
+* `GH259 <https://github.com/domaframework/doma/pull/259>`_
+  Format with google-java-format 1.6
+* `GH258 <https://github.com/domaframework/doma/pull/258>`_
+  Translate docs from Japanese into English
+* `GH257 <https://github.com/domaframework/doma/pull/258>`_
+  Use Sphinx 1.8.2
 
 v2.20.0: 2018-12-23
 ======================
