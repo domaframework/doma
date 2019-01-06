@@ -11,7 +11,7 @@ FAQ
 Domaとはどのような意味ですか？
 ------------------------------
 
-**D** omain **O** riented Database **MA** pping Framework の略です。
+**D** AO **O** riented Database **MA** pping Framework の略です。
 
 注釈処理とはなんですか？
 ------------------------
