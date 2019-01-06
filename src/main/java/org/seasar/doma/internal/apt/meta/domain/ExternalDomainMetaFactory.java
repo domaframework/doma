@@ -49,21 +49,17 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
 
   protected void validateConverter(TypeElement convElement) {
     if (!ctx.getTypes().isAssignable(convElement.asType(), DomainConverter.class)) {
-      throw new AptException(
-          Message.DOMA4191, convElement, new Object[] {convElement.getQualifiedName()});
+      throw new AptException(Message.DOMA4191, convElement, new Object[] {});
     }
     if (convElement.getNestingKind().isNested()) {
-      throw new AptException(
-          Message.DOMA4198, convElement, new Object[] {convElement.getQualifiedName()});
+      throw new AptException(Message.DOMA4198, convElement, new Object[] {});
     }
     if (convElement.getModifiers().contains(Modifier.ABSTRACT)) {
-      throw new AptException(
-          Message.DOMA4192, convElement, new Object[] {convElement.getQualifiedName()});
+      throw new AptException(Message.DOMA4192, convElement, new Object[] {});
     }
     ExecutableElement constructor = ctx.getElements().getNoArgConstructor(convElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-      throw new AptException(
-          Message.DOMA4193, convElement, new Object[] {convElement.getQualifiedName()});
+      throw new AptException(Message.DOMA4193, convElement, new Object[] {});
     }
   }
 
@@ -99,9 +95,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     PackageElement pkgElement = ctx.getElements().getPackageOf(domainElement);
     if (pkgElement.isUnnamed()) {
       throw new AptException(
-          Message.DOMA4197,
-          convElement,
-          new Object[] {domainElement.getQualifiedName(), convElement.getQualifiedName()});
+          Message.DOMA4197, convElement, new Object[] {domainElement.getQualifiedName()});
     }
     DeclaredType declaredType = ctx.getTypes().toDeclaredType(domainType);
     if (declaredType == null) {
@@ -110,9 +104,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     for (TypeMirror typeArg : declaredType.getTypeArguments()) {
       if (typeArg.getKind() != TypeKind.WILDCARD) {
         throw new AptException(
-            Message.DOMA4203,
-            convElement,
-            new Object[] {domainElement.getQualifiedName(), convElement.getQualifiedName()});
+            Message.DOMA4203, convElement, new Object[] {domainElement.getQualifiedName()});
       }
     }
     meta.setDomainElement(domainElement);
@@ -153,10 +145,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
 
     BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
     if (basicCtType == null) {
-      throw new AptException(
-          Message.DOMA4194,
-          convElement,
-          new Object[] {valueTypeName, convElement.getQualifiedName()});
+      throw new AptException(Message.DOMA4194, convElement, new Object[] {valueTypeName});
     }
     meta.setBasicCtType(basicCtType);
   }

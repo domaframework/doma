@@ -73,17 +73,11 @@ public class SqlFileBatchModifyQueryMetaFactory
     EntityCtType entityCtType = queryMeta.getEntityType();
     if (entityCtType != null && entityCtType.isImmutable()) {
       if (!returnMeta.isBatchResult(entityCtType)) {
-        throw new AptException(
-            Message.DOMA4223,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4223, returnMeta.getMethodElement(), new Object[] {});
       }
     } else {
       if (!returnMeta.isPrimitiveIntArray()) {
-        throw new AptException(
-            Message.DOMA4040,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4040, returnMeta.getMethodElement(), new Object[] {});
       }
     }
     queryMeta.setReturnMeta(returnMeta);
@@ -97,10 +91,7 @@ public class SqlFileBatchModifyQueryMetaFactory
     List<? extends VariableElement> parameters = method.getParameters();
     int size = parameters.size();
     if (size != 1) {
-      throw new AptException(
-          Message.DOMA4002,
-          method,
-          new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+      throw new AptException(Message.DOMA4002, method, new Object[] {});
     }
     QueryParameterMeta parameterMeta = createParameterMeta(parameters.get(0), queryMeta);
     IterableCtType iterableCtType =
@@ -112,12 +103,7 @@ public class SqlFileBatchModifyQueryMetaFactory
                   @Override
                   protected IterableCtType defaultAction(CtType type, Void p)
                       throws RuntimeException {
-                    throw new AptException(
-                        Message.DOMA4042,
-                        method,
-                        new Object[] {
-                          daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()
-                        });
+                    throw new AptException(Message.DOMA4042, method, new Object[] {});
                   }
 
                   @Override

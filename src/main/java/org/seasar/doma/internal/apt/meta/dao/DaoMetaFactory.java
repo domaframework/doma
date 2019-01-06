@@ -73,11 +73,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     String suffix = ctx.getOptions().getDaoSuffix();
     if (name.endsWith(suffix)) {
       ctx.getNotifier()
-          .notify(
-              Kind.WARNING,
-              Message.DOMA4026,
-              interfaceElement,
-              new Object[] {suffix, interfaceElement.getQualifiedName()});
+          .notify(Kind.WARNING, Message.DOMA4026, interfaceElement, new Object[] {suffix});
     }
     daoMeta.setName(name);
     daoMeta.setDaoElement(interfaceElement);
@@ -160,18 +156,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     if (!interfaceElement.getKind().isInterface()) {
       DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
       throw new AptException(
-          Message.DOMA4014,
-          interfaceElement,
-          daoAnnot.getAnnotationMirror(),
-          new Object[] {interfaceElement.getQualifiedName()});
+          Message.DOMA4014, interfaceElement, daoAnnot.getAnnotationMirror(), new Object[] {});
     }
     if (interfaceElement.getNestingKind().isNested()) {
-      throw new AptException(
-          Message.DOMA4017, interfaceElement, new Object[] {interfaceElement.getQualifiedName()});
+      throw new AptException(Message.DOMA4017, interfaceElement, new Object[] {});
     }
     if (!interfaceElement.getTypeParameters().isEmpty()) {
-      throw new AptException(
-          Message.DOMA4059, interfaceElement, new Object[] {interfaceElement.getQualifiedName()});
+      throw new AptException(Message.DOMA4059, interfaceElement, new Object[] {});
     }
   }
 
@@ -207,15 +198,10 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         throw new AptException(
             Message.DOMA4440,
             daoMeta.getDaoElement(),
-            new Object[] {
-              nonDefaultMethod.getSimpleName(), daoMeta.getDaoElement().getQualifiedName()
-            });
+            new Object[] {nonDefaultMethod.getSimpleName()});
       }
       if (daoMeta.getParentDaoMeta() != null) {
-        throw new AptException(
-            Message.DOMA4188,
-            daoMeta.getDaoElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName()});
+        throw new AptException(Message.DOMA4188, daoMeta.getDaoElement(), new Object[] {});
       }
       ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot);
       parentDaoMeta.setDaoType(typeElement.asType());
@@ -279,21 +265,12 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
               Message.DOMA4087,
               methodElement,
               new Object[] {
-                foundAnnotationTypeElement.getQualifiedName(),
-                typeElement.getQualifiedName(),
-                daoMeta.getDaoElement().getQualifiedName(),
-                methodElement.getSimpleName()
+                foundAnnotationTypeElement.getQualifiedName(), typeElement.getQualifiedName()
               });
         }
         if (methodElement.isDefault()) {
           throw new AptException(
-              Message.DOMA4252,
-              methodElement,
-              new Object[] {
-                typeElement.getQualifiedName(),
-                daoMeta.getDaoElement().getQualifiedName(),
-                methodElement.getSimpleName()
-              });
+              Message.DOMA4252, methodElement, new Object[] {typeElement.getQualifiedName()});
         }
         foundAnnotationTypeElement = typeElement;
       }
@@ -307,10 +284,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         return queryMeta;
       }
     }
-    throw new AptException(
-        Message.DOMA4005,
-        method,
-        new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+    throw new AptException(Message.DOMA4005, method, new Object[] {});
   }
 
   protected void validateFiles(TypeElement interfaceElement, DaoMeta daoMeta) {

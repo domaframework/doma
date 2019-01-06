@@ -43,17 +43,11 @@ public class ArrayCreateQueryMetaFactory
     List<? extends VariableElement> parameters = method.getParameters();
     int size = parameters.size();
     if (size != 1) {
-      throw new AptException(
-          Message.DOMA4002,
-          method,
-          new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+      throw new AptException(Message.DOMA4002, method, new Object[] {});
     }
     QueryParameterMeta parameterMeta = createParameterMeta(parameters.get(0), queryMeta);
     if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
-      throw new AptException(
-          Message.DOMA4076,
-          parameterMeta.getElement(),
-          new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+      throw new AptException(Message.DOMA4076, parameterMeta.getElement(), new Object[] {});
     }
     queryMeta.setElementsParameterName(parameterMeta.getName());
     queryMeta.addParameterMeta(parameterMeta);

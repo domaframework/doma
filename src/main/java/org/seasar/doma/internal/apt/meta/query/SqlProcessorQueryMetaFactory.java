@@ -65,10 +65,7 @@ public class SqlProcessorQueryMetaFactory
     if (queryMeta.getBiFunctionCtType() == null) {
       SqlProcessorAnnot sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
       throw new AptException(
-          Message.DOMA4433,
-          method,
-          sqlProcessorAnnot.getAnnotationMirror(),
-          new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+          Message.DOMA4433, method, sqlProcessorAnnot.getAnnotationMirror(), new Object[] {});
     }
   }
 
@@ -84,12 +81,7 @@ public class SqlProcessorQueryMetaFactory
       throw new AptException(
           Message.DOMA4436,
           method,
-          new Object[] {
-            returnMeta.getType(),
-            resultCtType.getBoxedTypeName(),
-            daoMeta.getDaoElement().getQualifiedName(),
-            method.getSimpleName()
-          });
+          new Object[] {returnMeta.getType(), resultCtType.getBoxedTypeName()});
     }
   }
 
@@ -153,13 +145,7 @@ public class SqlProcessorQueryMetaFactory
 
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
-      throw new AptException(
-          Message.DOMA4437,
-          queryMeta.getMethodElement(),
-          new Object[] {
-            parameterMeta.getDaoElement().getQualifiedName(),
-            parameterMeta.getMethodElement().getSimpleName()
-          });
+      throw new AptException(Message.DOMA4437, queryMeta.getMethodElement(), new Object[] {});
     }
 
     @Override
@@ -183,13 +169,7 @@ public class SqlProcessorQueryMetaFactory
 
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
-      throw new AptException(
-          Message.DOMA4435,
-          queryMeta.getMethodElement(),
-          new Object[] {
-            parameterMeta.getDaoElement().getQualifiedName(),
-            parameterMeta.getMethodElement().getSimpleName()
-          });
+      throw new AptException(Message.DOMA4435, queryMeta.getMethodElement(), new Object[] {});
     }
 
     @Override

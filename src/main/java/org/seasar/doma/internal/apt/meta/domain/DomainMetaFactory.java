@@ -98,7 +98,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             classElement,
             domainAnnot.getAnnotationMirror(),
             domainAnnot.getValueType(),
-            new Object[] {domainAnnot.getValueTypeValue(), classElement.getQualifiedName()});
+            new Object[] {domainAnnot.getValueTypeValue()});
       }
       domainMeta.setBasicCtType(basicCtType);
       domainMeta.setWrapperCtType(basicCtType.getWrapperCtType());
@@ -113,7 +113,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             classElement,
             domainAnnot.getAnnotationMirror(),
             domainAnnot.getAcceptNull(),
-            new Object[] {classElement.getQualifiedName()});
+            new Object[] {});
       }
     }
 
@@ -122,8 +122,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       if (classElement.getKind() == ElementKind.CLASS) {
         if (domainMeta.providesConstructor()
             && classElement.getModifiers().contains(Modifier.ABSTRACT)) {
-          throw new AptException(
-              Message.DOMA4132, classElement, new Object[] {classElement.getQualifiedName()});
+          throw new AptException(Message.DOMA4132, classElement, new Object[] {});
         }
         if (classElement.getNestingKind().isNested()) {
           validateEnclosingElement(classElement);
@@ -136,15 +135,14 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
               classElement,
               domainAnnot.getAnnotationMirror(),
               domainAnnot.getFactoryMethod(),
-              new Object[] {classElement.getQualifiedName()});
+              new Object[] {});
         }
         if (classElement.getNestingKind().isNested()) {
           validateEnclosingElement(classElement);
         }
       } else if (classElement.getKind() == ElementKind.INTERFACE) {
         if (domainMeta.providesConstructor()) {
-          throw new AptException(
-              Message.DOMA4268, classElement, new Object[] {classElement.getQualifiedName()});
+          throw new AptException(Message.DOMA4268, classElement, new Object[] {});
         }
         if (classElement.getNestingKind().isNested()) {
           validateEnclosingElement(classElement);
@@ -152,10 +150,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       } else {
         DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
         throw new AptException(
-            Message.DOMA4105,
-            classElement,
-            domainAnnot.getAnnotationMirror(),
-            new Object[] {classElement.getQualifiedName()});
+            Message.DOMA4105, classElement, domainAnnot.getAnnotationMirror(), new Object[] {});
       }
     }
 
@@ -212,9 +207,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         }
       }
       throw new AptException(
-          Message.DOMA4103,
-          classElement,
-          new Object[] {domainMeta.getValueType(), classElement.getQualifiedName()});
+          Message.DOMA4103, classElement, new Object[] {domainMeta.getValueType()});
     }
 
     protected void validateFactoryMethod(TypeElement classElement, DomainMeta domainMeta) {
@@ -260,11 +253,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
           Message.DOMA4106,
           classElement,
           new Object[] {
-            domainMeta.getFactoryMethod(),
-            classElement.asType(),
-            domainMeta.getValueType(),
-            domainMeta.getFactoryMethod(),
-            classElement.getQualifiedName()
+            domainMeta.getFactoryMethod(), classElement.asType(), domainMeta.getValueType()
           });
     }
 
@@ -305,11 +294,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       throw new AptException(
           Message.DOMA4104,
           classElement,
-          new Object[] {
-            domainMeta.getAccessorMethod(),
-            domainMeta.getValueType(),
-            classElement.getQualifiedName()
-          });
+          new Object[] {domainMeta.getAccessorMethod(), domainMeta.getValueType()});
     }
 
     protected TypeMirror inferType(
@@ -355,7 +340,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             classElement,
             valueAnnot.getAnnotationMirror(),
             valueAnnot.getStaticConstructor(),
-            new Object[] {classElement.getQualifiedName()});
+            new Object[] {});
       }
     }
 
@@ -370,9 +355,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             classElement,
             domainAnnot.getAnnotationMirror(),
             domainAnnot.getAccessorMethod(),
-            new Object[] {
-              accessorMethod, domainMeta.getAccessorMethod(), classElement.getQualifiedName()
-            });
+            new Object[] {});
       }
     }
 
@@ -395,24 +378,15 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
               .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
               .collect(Collectors.toList());
       if (fields.size() == 0) {
-        throw new AptException(
-            Message.DOMA4430, classElement, new Object[] {classElement.getQualifiedName()});
+        throw new AptException(Message.DOMA4430, classElement, new Object[] {});
       }
       if (fields.size() > 1) {
-        throw new AptException(
-            Message.DOMA4431, classElement, new Object[] {classElement.getQualifiedName()});
+        throw new AptException(Message.DOMA4431, classElement, new Object[] {});
       }
       VariableElement field = fields.get(0);
       if (!ctx.getTypes().isAssignable(field.asType(), domainMeta.getValueType())) {
         throw new AptException(
-            Message.DOMA4432,
-            field,
-            new Object[] {
-              field.asType(),
-              domainMeta.getValueType(),
-              classElement.getQualifiedName(),
-              field.getSimpleName()
-            });
+            Message.DOMA4432, field, new Object[] {field.asType(), domainMeta.getValueType()});
       }
       return field;
     }

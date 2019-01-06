@@ -38,13 +38,7 @@ public class AutoProcedureQueryMetaFactory
       AutoProcedureQueryMeta queryMeta, ExecutableElement method, DaoMeta daoMeta) {
     QueryReturnMeta resultMeta = createReturnMeta(queryMeta);
     if (!resultMeta.isPrimitiveVoid()) {
-      throw new AptException(
-          Message.DOMA4064,
-          resultMeta.getMethodElement(),
-          new Object[] {
-            queryMeta.getDaoElement().getQualifiedName(),
-            queryMeta.getMethodElement().getSimpleName()
-          });
+      throw new AptException(Message.DOMA4064, resultMeta.getMethodElement(), new Object[] {});
     }
     queryMeta.setReturnMeta(resultMeta);
   }

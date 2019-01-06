@@ -76,17 +76,11 @@ public class SqlFileSelectQueryMetaFactory
 
     if (queryMeta.getSelectStrategyType() == SelectType.STREAM) {
       if (queryMeta.getFunctionCtType() == null) {
-        throw new AptException(
-            Message.DOMA4247,
-            method,
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4247, method, new Object[] {});
       }
     } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
       if (queryMeta.getCollectorCtType() == null) {
-        throw new AptException(
-            Message.DOMA4266,
-            method,
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4266, method, new Object[] {});
       }
     } else {
       if (queryMeta.getFunctionCtType() != null) {
@@ -96,7 +90,7 @@ public class SqlFileSelectQueryMetaFactory
             method,
             selectAnnot.getAnnotationMirror(),
             selectAnnot.getStrategy(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+            new Object[] {});
       }
     }
   }
@@ -115,12 +109,7 @@ public class SqlFileSelectQueryMetaFactory
         throw new AptException(
             Message.DOMA4246,
             method,
-            new Object[] {
-              returnMeta.getType(),
-              returnCtType.getBoxedTypeName(),
-              daoMeta.getDaoElement().getQualifiedName(),
-              method.getSimpleName()
-            });
+            new Object[] {returnMeta.getType(), returnCtType.getBoxedTypeName()});
       }
     } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
       CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
@@ -130,12 +119,7 @@ public class SqlFileSelectQueryMetaFactory
         throw new AptException(
             Message.DOMA4265,
             method,
-            new Object[] {
-              returnMeta.getType(),
-              returnCtType.getBoxedTypeName(),
-              daoMeta.getDaoElement().getQualifiedName(),
-              method.getSimpleName()
-            });
+            new Object[] {returnMeta.getType(), returnCtType.getBoxedTypeName()});
       }
     } else {
       returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta, returnMeta), null);
@@ -157,13 +141,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     public Void visitFunctionCtType(FunctionCtType ctType, Void p) throws RuntimeException {
       if (queryMeta.getFunctionCtType() != null) {
-        throw new AptException(
-            Message.DOMA4249,
-            parameterMeta.getElement(),
-            new Object[] {
-              parameterMeta.getDaoElement().getQualifiedName(),
-              parameterMeta.getMethodElement().getSimpleName()
-            });
+        throw new AptException(Message.DOMA4249, parameterMeta.getElement(), new Object[] {});
       }
       ctType
           .getTargetCtType()
@@ -176,13 +154,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     public Void visitCollectorCtType(CollectorCtType ctType, Void p) throws RuntimeException {
       if (queryMeta.getCollectorCtType() != null) {
-        throw new AptException(
-            Message.DOMA4264,
-            parameterMeta.getElement(),
-            new Object[] {
-              parameterMeta.getDaoElement().getQualifiedName(),
-              parameterMeta.getMethodElement().getSimpleName()
-            });
+        throw new AptException(Message.DOMA4264, parameterMeta.getElement(), new Object[] {});
       }
       ctType
           .getTargetCtType()
@@ -196,13 +168,7 @@ public class SqlFileSelectQueryMetaFactory
     public Void visitSelectOptionsCtType(SelectOptionsCtType ctType, Void p)
         throws RuntimeException {
       if (queryMeta.getSelectOptionsCtType() != null) {
-        throw new AptException(
-            Message.DOMA4053,
-            parameterMeta.getElement(),
-            new Object[] {
-              queryMeta.getDaoElement().getQualifiedName(),
-              queryMeta.getMethodElement().getSimpleName()
-            });
+        throw new AptException(Message.DOMA4053, parameterMeta.getElement(), new Object[] {});
       }
       queryMeta.setSelectOptionsCtType(ctType);
       queryMeta.setSelectOptionsParameterName(parameterMeta.getName());
@@ -225,13 +191,7 @@ public class SqlFileSelectQueryMetaFactory
 
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
-      throw new AptException(
-          Message.DOMA4244,
-          queryMeta.getMethodElement(),
-          new Object[] {
-            parameterMeta.getDaoElement().getQualifiedName(),
-            parameterMeta.getMethodElement().getSimpleName()
-          });
+      throw new AptException(Message.DOMA4244, queryMeta.getMethodElement(), new Object[] {});
     }
 
     @Override
@@ -244,13 +204,7 @@ public class SqlFileSelectQueryMetaFactory
 
       @Override
       protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
-        throw new AptException(
-            Message.DOMA4245,
-            queryMeta.getMethodElement(),
-            new Object[] {
-              parameterMeta.getDaoElement().getQualifiedName(),
-              parameterMeta.getMethodElement().getSimpleName()
-            });
+        throw new AptException(Message.DOMA4245, queryMeta.getMethodElement(), new Object[] {});
       }
 
       @Override
@@ -272,13 +226,7 @@ public class SqlFileSelectQueryMetaFactory
       public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
         if (ctType.isAbstract()) {
           throw new AptException(
-              Message.DOMA4250,
-              parameterMeta.getElement(),
-              new Object[] {
-                ctType.getTypeName(),
-                parameterMeta.getDaoElement().getQualifiedName(),
-                parameterMeta.getMethodElement().getSimpleName()
-              });
+              Message.DOMA4250, parameterMeta.getElement(), new Object[] {ctType.getTypeName()});
         }
         queryMeta.setEntityCtType(ctType);
         return null;
@@ -351,13 +299,7 @@ public class SqlFileSelectQueryMetaFactory
 
     @Override
     protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
-      throw new AptException(
-          Message.DOMA4262,
-          queryMeta.getMethodElement(),
-          new Object[] {
-            parameterMeta.getDaoElement().getQualifiedName(),
-            parameterMeta.getMethodElement().getSimpleName()
-          });
+      throw new AptException(Message.DOMA4262, queryMeta.getMethodElement(), new Object[] {});
     }
 
     @Override
@@ -379,13 +321,7 @@ public class SqlFileSelectQueryMetaFactory
     public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4263,
-            parameterMeta.getElement(),
-            new Object[] {
-              ctType.getTypeName(),
-              parameterMeta.getDaoElement().getQualifiedName(),
-              parameterMeta.getMethodElement().getSimpleName()
-            });
+            Message.DOMA4263, parameterMeta.getElement(), new Object[] {ctType.getTypeName()});
       }
       queryMeta.setEntityCtType(ctType);
       return null;
@@ -457,11 +393,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4008,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            returnMeta.getType(), queryMeta.getDaoElement(), queryMeta.getMethodElement()
-          });
+          Message.DOMA4008, returnMeta.getMethodElement(), new Object[] {returnMeta.getType()});
     }
 
     @Override
@@ -480,11 +412,7 @@ public class SqlFileSelectQueryMetaFactory
         throw new AptException(
             Message.DOMA4154,
             returnMeta.getMethodElement(),
-            new Object[] {
-              ctType.getQualifiedName(),
-              returnMeta.getDaoElement().getQualifiedName(),
-              returnMeta.getMethodElement().getSimpleName()
-            });
+            new Object[] {ctType.getQualifiedName()});
       }
       queryMeta.setEntityCtType(ctType);
       return null;
@@ -510,14 +438,7 @@ public class SqlFileSelectQueryMetaFactory
     public Void visitStreamCtType(StreamCtType ctType, Void p) throws RuntimeException {
       if (!isSuppressed(Message.DOMA4274)) {
         ctx.getNotifier()
-            .notify(
-                Kind.WARNING,
-                Message.DOMA4274,
-                returnMeta.getMethodElement(),
-                new Object[] {
-                  returnMeta.getDaoElement().getQualifiedName(),
-                  returnMeta.getMethodElement().getSimpleName()
-                });
+            .notify(Kind.WARNING, Message.DOMA4274, returnMeta.getMethodElement(), new Object[] {});
       }
       queryMeta.setResultStream(true);
       ctType
@@ -578,11 +499,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4007,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            type.getTypeName(), queryMeta.getDaoElement(), queryMeta.getMethodElement()
-          });
+          Message.DOMA4007, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
     }
 
     @Override
@@ -604,13 +521,7 @@ public class SqlFileSelectQueryMetaFactory
     public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4155,
-            returnMeta.getMethodElement(),
-            new Object[] {
-              ctType.getType(),
-              returnMeta.getDaoElement().getQualifiedName(),
-              returnMeta.getMethodElement().getSimpleName()
-            });
+            Message.DOMA4155, returnMeta.getMethodElement(), new Object[] {ctType.getType()});
       }
       queryMeta.setEntityCtType(ctType);
       return null;
@@ -657,13 +568,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4271,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            type.getTypeName(),
-            returnMeta.getDaoElement().getQualifiedName(),
-            returnMeta.getMethodElement().getSimpleName()
-          });
+          Message.DOMA4271, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
     }
 
     @Override
@@ -685,13 +590,7 @@ public class SqlFileSelectQueryMetaFactory
     public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4272,
-            returnMeta.getMethodElement(),
-            new Object[] {
-              ctType.getType(),
-              returnMeta.getDaoElement().getQualifiedName(),
-              returnMeta.getMethodElement().getSimpleName()
-            });
+            Message.DOMA4272, returnMeta.getMethodElement(), new Object[] {ctType.getType()});
       }
       queryMeta.setEntityCtType(ctType);
       return null;
@@ -738,13 +637,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4235,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            type.getTypeName(),
-            returnMeta.getDaoElement().getQualifiedName(),
-            returnMeta.getMethodElement().getSimpleName()
-          });
+          Message.DOMA4235, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
     }
 
     @Override
@@ -766,13 +659,7 @@ public class SqlFileSelectQueryMetaFactory
     public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4234,
-            returnMeta.getMethodElement(),
-            new Object[] {
-              ctType.getType(),
-              returnMeta.getDaoElement().getQualifiedName(),
-              returnMeta.getMethodElement().getSimpleName()
-            });
+            Message.DOMA4234, returnMeta.getMethodElement(), new Object[] {ctType.getType()});
       }
       queryMeta.setEntityCtType(ctType);
       return null;
@@ -795,13 +682,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4267,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            type.getTypeName(),
-            returnMeta.getDaoElement().getQualifiedName(),
-            returnMeta.getMethodElement().getSimpleName()
-          });
+          Message.DOMA4267, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
     }
 
     @Override
@@ -831,13 +712,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4267,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            type.getTypeName(),
-            returnMeta.getDaoElement().getQualifiedName(),
-            returnMeta.getMethodElement().getSimpleName()
-          });
+          Message.DOMA4267, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
     }
 
     @Override

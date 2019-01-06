@@ -65,17 +65,11 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     EntityCtType entityCtType = queryMeta.getEntityCtType();
     if (entityCtType != null && entityCtType.isImmutable()) {
       if (!returnMeta.isResult(entityCtType)) {
-        throw new AptException(
-            Message.DOMA4222,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4222, returnMeta.getMethodElement(), new Object[] {});
       }
     } else {
       if (!returnMeta.isPrimitiveInt()) {
-        throw new AptException(
-            Message.DOMA4001,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4001, returnMeta.getMethodElement(), new Object[] {});
       }
     }
     queryMeta.setReturnMeta(returnMeta);
@@ -87,10 +81,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     List<? extends VariableElement> parameters = method.getParameters();
     int size = parameters.size();
     if (size != 1) {
-      throw new AptException(
-          Message.DOMA4002,
-          method,
-          new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+      throw new AptException(Message.DOMA4002, method, new Object[] {});
     }
     final QueryParameterMeta parameterMeta = createParameterMeta(parameters.get(0), queryMeta);
     EntityCtType entityCtType =
@@ -103,11 +94,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
                   protected EntityCtType defaultAction(CtType type, Void p)
                       throws RuntimeException {
                     throw new AptException(
-                        Message.DOMA4003,
-                        parameterMeta.getElement(),
-                        new Object[] {
-                          daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()
-                        });
+                        Message.DOMA4003, parameterMeta.getElement(), new Object[] {});
                   }
 
                   @Override

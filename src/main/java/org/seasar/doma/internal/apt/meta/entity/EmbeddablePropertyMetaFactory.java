@@ -40,14 +40,7 @@ public class EmbeddablePropertyMetaFactory {
 
     @Override
     protected Void defaultAction(CtType ctType, Void aVoid) throws AptException {
-      throw new AptException(
-          Message.DOMA4298,
-          fieldElement,
-          new Object[] {
-            ctType.getType(),
-            embeddableMeta.getEmbeddableElement().getQualifiedName(),
-            fieldElement.getSimpleName()
-          });
+      throw new AptException(Message.DOMA4298, fieldElement, new Object[] {ctType.getType()});
     }
 
     @Override
@@ -75,23 +68,11 @@ public class EmbeddablePropertyMetaFactory {
     public Void visitOptionalCtType(OptionalCtType optionalCtType, Void aVoid) throws AptException {
       if (optionalCtType.isRaw()) {
         throw new AptException(
-            Message.DOMA4299,
-            fieldElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              embeddableMeta.getEmbeddableElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
+            Message.DOMA4299, fieldElement, new Object[] {optionalCtType.getQualifiedName()});
       }
       if (optionalCtType.hasWildcard()) {
         throw new AptException(
-            Message.DOMA4301,
-            fieldElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              embeddableMeta.getEmbeddableElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
+            Message.DOMA4301, fieldElement, new Object[] {optionalCtType.getQualifiedName()});
       }
       return null;
     }
@@ -100,23 +81,11 @@ public class EmbeddablePropertyMetaFactory {
     public Void visitDomainCtType(DomainCtType domainCtType, Void aVoid) throws AptException {
       if (domainCtType.isRaw()) {
         throw new AptException(
-            Message.DOMA4295,
-            fieldElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              embeddableMeta.getEmbeddableElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
+            Message.DOMA4295, fieldElement, new Object[] {domainCtType.getQualifiedName()});
       }
       if (domainCtType.hasWildcard() || domainCtType.hasTypevar()) {
         throw new AptException(
-            Message.DOMA4296,
-            fieldElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              embeddableMeta.getEmbeddableElement().getQualifiedName(),
-              fieldElement.getSimpleName()
-            });
+            Message.DOMA4296, fieldElement, new Object[] {domainCtType.getQualifiedName()});
       }
       return null;
     }
@@ -125,13 +94,7 @@ public class EmbeddablePropertyMetaFactory {
     public Void visitEmbeddableCtType(EmbeddableCtType embeddableCtType, Void aVoid)
         throws AptException {
       throw new AptException(
-          Message.DOMA4297,
-          fieldElement,
-          new Object[] {
-            embeddableCtType.getType(),
-            embeddableMeta.getEmbeddableElement().getQualifiedName(),
-            fieldElement.getSimpleName()
-          });
+          Message.DOMA4297, fieldElement, new Object[] {embeddableCtType.getType()});
     }
   }
 }

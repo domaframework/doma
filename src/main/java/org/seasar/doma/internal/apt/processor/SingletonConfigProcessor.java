@@ -52,10 +52,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   protected void validateClass(TypeElement typeElement, SingletonConfigAnnot mirror) {
     if (!ctx.getTypes().isAssignable(typeElement.asType(), Config.class)) {
       throw new AptException(
-          Message.DOMA4253,
-          typeElement,
-          mirror.getAnnotationMirror(),
-          new Object[] {typeElement.getQualifiedName()});
+          Message.DOMA4253, typeElement, mirror.getAnnotationMirror(), new Object[] {});
     }
   }
 
@@ -66,8 +63,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         .findAny()
         .ifPresent(
             c -> {
-              throw new AptException(
-                  Message.DOMA4256, c, new Object[] {typeElement.getQualifiedName()});
+              throw new AptException(Message.DOMA4256, c, new Object[] {});
             });
   }
 

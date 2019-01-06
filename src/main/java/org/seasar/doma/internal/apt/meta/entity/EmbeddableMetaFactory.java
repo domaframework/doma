@@ -104,13 +104,10 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             Message.DOMA4283,
             embeddableElement,
             embeddableAnnot.getAnnotationMirror(),
-            new Object[] {embeddableElement.getQualifiedName()});
+            new Object[] {});
       }
       if (!embeddableElement.getTypeParameters().isEmpty()) {
-        throw new AptException(
-            Message.DOMA4285,
-            embeddableElement,
-            new Object[] {embeddableElement.getQualifiedName()});
+        throw new AptException(Message.DOMA4285, embeddableElement, new Object[] {});
       }
       validateEnclosingElement(embeddableElement);
     }
@@ -152,30 +149,15 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
           } else if (fieldElement.getModifiers().contains(Modifier.STATIC)) {
             continue;
           } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
-            throw new AptException(
-                Message.DOMA4286,
-                fieldElement,
-                new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
+            throw new AptException(Message.DOMA4286, fieldElement, new Object[] {});
           } else if (fieldElement.getAnnotation(Id.class) != null) {
-            throw new AptException(
-                Message.DOMA4289,
-                fieldElement,
-                new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
+            throw new AptException(Message.DOMA4289, fieldElement, new Object[] {});
           } else if (fieldElement.getAnnotation(Version.class) != null) {
-            throw new AptException(
-                Message.DOMA4290,
-                fieldElement,
-                new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
+            throw new AptException(Message.DOMA4290, fieldElement, new Object[] {});
           } else if (fieldElement.getAnnotation(TenantId.class) != null) {
-            throw new AptException(
-                Message.DOMA4443,
-                fieldElement,
-                new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
+            throw new AptException(Message.DOMA4443, fieldElement, new Object[] {});
           } else if (fieldElement.getAnnotation(GeneratedValue.class) != null) {
-            throw new AptException(
-                Message.DOMA4291,
-                fieldElement,
-                new Object[] {embeddableElement.getQualifiedName(), fieldElement.getSimpleName()});
+            throw new AptException(Message.DOMA4291, fieldElement, new Object[] {});
           } else {
             doEmbeddablePropertyMeta(fieldElement, embeddableMeta);
           }
@@ -236,10 +218,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
                 Message.DOMA4288,
                 fieldElement,
                 new Object[] {
-                  foundAnnotationTypeElement.getQualifiedName(),
-                  typeElement.getQualifiedName(),
-                  embeddableMeta.getEmbeddableElement().getQualifiedName(),
-                  fieldElement.getSimpleName()
+                  foundAnnotationTypeElement.getQualifiedName(), typeElement.getQualifiedName()
                 });
           }
           foundAnnotationTypeElement = typeElement;
@@ -255,16 +234,10 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       EmbeddableConstructorMeta constructorMeta =
           getConstructorMeta(embeddableElement, embeddableMeta);
       if (constructorMeta == null) {
-        throw new AptException(
-            Message.DOMA4293,
-            embeddableElement,
-            new Object[] {embeddableElement.getQualifiedName()});
+        throw new AptException(Message.DOMA4293, embeddableElement, new Object[] {});
       }
       if (constructorMeta.getConstructorElement().getModifiers().contains(Modifier.PRIVATE)) {
-        throw new AptException(
-            Message.DOMA4294,
-            embeddableElement,
-            new Object[] {embeddableElement.getQualifiedName()});
+        throw new AptException(Message.DOMA4294, embeddableElement, new Object[] {});
       }
       embeddableMeta.setConstructorMeta(constructorMeta);
     }
@@ -324,7 +297,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             embeddableElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getStaticName(),
-            new Object[] {embeddableElement.getQualifiedName()});
+            new Object[] {});
       }
       if (allArgsConstructorAnnot.isAccessPrivate()) {
         throw new AptException(
@@ -332,7 +305,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             embeddableElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getAccess(),
-            new Object[] {embeddableElement.getQualifiedName()});
+            new Object[] {});
       }
       if (allArgsConstructorAnnot.isAccessNone()) {
         throw new AptException(
@@ -340,7 +313,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             embeddableElement,
             allArgsConstructorAnnot.getAnnotationMirror(),
             allArgsConstructorAnnot.getAccess(),
-            new Object[] {embeddableElement.getQualifiedName()});
+            new Object[] {});
       }
     }
   }

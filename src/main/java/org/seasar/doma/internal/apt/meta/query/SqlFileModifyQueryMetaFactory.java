@@ -65,17 +65,11 @@ public class SqlFileModifyQueryMetaFactory
     EntityCtType entityCtType = queryMeta.getEntityCtType();
     if (entityCtType != null && entityCtType.isImmutable()) {
       if (!returnMeta.isResult(entityCtType)) {
-        throw new AptException(
-            Message.DOMA4222,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4222, returnMeta.getMethodElement(), new Object[] {});
       }
     } else {
       if (!returnMeta.isPrimitiveInt()) {
-        throw new AptException(
-            Message.DOMA4001,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4001, returnMeta.getMethodElement(), new Object[] {});
       }
     }
     queryMeta.setReturnMeta(returnMeta);

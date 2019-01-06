@@ -68,17 +68,11 @@ public class AutoBatchModifyQueryMetaFactory
     EntityCtType entityCtType = queryMeta.getEntityCtType();
     if (entityCtType != null && entityCtType.isImmutable()) {
       if (!returnMeta.isBatchResult(entityCtType)) {
-        throw new AptException(
-            Message.DOMA4223,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4223, returnMeta.getMethodElement(), new Object[] {});
       }
     } else {
       if (!returnMeta.isPrimitiveIntArray()) {
-        throw new AptException(
-            Message.DOMA4040,
-            returnMeta.getMethodElement(),
-            new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+        throw new AptException(Message.DOMA4040, returnMeta.getMethodElement(), new Object[] {});
       }
     }
     queryMeta.setReturnMeta(returnMeta);
@@ -90,10 +84,7 @@ public class AutoBatchModifyQueryMetaFactory
     List<? extends VariableElement> parameters = method.getParameters();
     int size = parameters.size();
     if (size != 1) {
-      throw new AptException(
-          Message.DOMA4002,
-          method,
-          new Object[] {daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()});
+      throw new AptException(Message.DOMA4002, method, new Object[] {});
     }
     final QueryParameterMeta parameterMeta = createParameterMeta(parameters.get(0), queryMeta);
     IterableCtType iterableCtType =
@@ -105,12 +96,7 @@ public class AutoBatchModifyQueryMetaFactory
                   @Override
                   protected IterableCtType defaultAction(CtType ctType, Void p)
                       throws RuntimeException {
-                    throw new AptException(
-                        Message.DOMA4042,
-                        method,
-                        new Object[] {
-                          daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()
-                        });
+                    throw new AptException(Message.DOMA4042, method, new Object[] {});
                   }
 
                   @Override
@@ -129,12 +115,7 @@ public class AutoBatchModifyQueryMetaFactory
                   @Override
                   protected EntityCtType defaultAction(CtType ctType, Void p)
                       throws RuntimeException {
-                    throw new AptException(
-                        Message.DOMA4043,
-                        method,
-                        new Object[] {
-                          daoMeta.getDaoElement().getQualifiedName(), method.getSimpleName()
-                        });
+                    throw new AptException(Message.DOMA4043, method, new Object[] {});
                   }
 
                   @Override

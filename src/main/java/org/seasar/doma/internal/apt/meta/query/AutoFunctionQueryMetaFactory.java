@@ -74,13 +74,7 @@ public class AutoFunctionQueryMetaFactory
     @Override
     protected ResultParameterMeta defaultAction(CtType type, Boolean p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4063,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            returnMeta.getType(),
-            queryMeta.getDaoElement().getQualifiedName(),
-            queryMeta.getMethodElement().getSimpleName()
-          });
+          Message.DOMA4063, returnMeta.getMethodElement(), new Object[] {returnMeta.getType()});
     }
 
     @Override
@@ -153,13 +147,7 @@ public class AutoFunctionQueryMetaFactory
     @Override
     protected ResultParameterMeta defaultAction(CtType ctType, Boolean p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4065,
-          returnMeta.getMethodElement(),
-          new Object[] {
-            ctType.getTypeName(),
-            queryMeta.getDaoElement().getQualifiedName(),
-            queryMeta.getMethodElement().getSimpleName()
-          });
+          Message.DOMA4065, returnMeta.getMethodElement(), new Object[] {ctType.getTypeName()});
     }
 
     @Override
@@ -185,13 +173,7 @@ public class AutoFunctionQueryMetaFactory
         throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4156,
-            returnMeta.getMethodElement(),
-            new Object[] {
-              ctType.getTypeName(),
-              returnMeta.getDaoElement().getQualifiedName(),
-              returnMeta.getMethodElement().getSimpleName()
-            });
+            Message.DOMA4156, returnMeta.getMethodElement(), new Object[] {ctType.getTypeName()});
       }
       return new EntityResultListParameterMeta(ctType, queryMeta.getEnsureResultMapping());
     }

@@ -35,9 +35,7 @@ public class QueryParameterMetaFactory {
     String name = ctx.getElements().getParameterName(parameterElement);
     if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
       throw new AptException(
-          Message.DOMA4025,
-          parameterElement,
-          new Object[] {MetaConstants.RESERVED_NAME_PREFIX, daoElement, methodElement});
+          Message.DOMA4025, parameterElement, new Object[] {MetaConstants.RESERVED_NAME_PREFIX});
     }
     TypeMirror type = parameterElement.asType();
     CtType ctType = ctx.getCtTypes().newCtType(type, new CtTypeValidator());
@@ -86,16 +84,10 @@ public class QueryParameterMetaFactory {
     @Override
     public Void visitIterableCtType(IterableCtType iterableCtType, Void aVoid) throws AptException {
       if (iterableCtType.isRaw()) {
-        throw new AptException(
-            Message.DOMA4159,
-            parameterElement,
-            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
+        throw new AptException(Message.DOMA4159, parameterElement, new Object[] {});
       }
       if (iterableCtType.hasWildcard()) {
-        throw new AptException(
-            Message.DOMA4160,
-            parameterElement,
-            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
+        throw new AptException(Message.DOMA4160, parameterElement, new Object[] {});
       }
       iterableCtType.getElementCtType().accept(new IterableElementCtTypeValidator(), null);
       return null;
@@ -105,23 +97,11 @@ public class QueryParameterMetaFactory {
     public Void visitOptionalCtType(OptionalCtType optionalCtType, Void aVoid) throws AptException {
       if (optionalCtType.isRaw()) {
         throw new AptException(
-            Message.DOMA4236,
-            parameterElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4236, parameterElement, new Object[] {optionalCtType.getQualifiedName()});
       }
       if (optionalCtType.hasWildcard()) {
         throw new AptException(
-            Message.DOMA4237,
-            parameterElement,
-            new Object[] {
-              optionalCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4237, parameterElement, new Object[] {optionalCtType.getQualifiedName()});
       }
       optionalCtType.getElementCtType().accept(new OptionalElementCtTypeValidator(), null);
       return null;
@@ -131,23 +111,11 @@ public class QueryParameterMetaFactory {
     public Void visitDomainCtType(DomainCtType domainCtType, Void aVoid) throws AptException {
       if (domainCtType.isRaw()) {
         throw new AptException(
-            Message.DOMA4208,
-            parameterElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4208, parameterElement, new Object[] {domainCtType.getQualifiedName()});
       }
       if (domainCtType.hasWildcard() || domainCtType.hasTypevar()) {
         throw new AptException(
-            Message.DOMA4209,
-            parameterElement,
-            new Object[] {
-              domainCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4209, parameterElement, new Object[] {domainCtType.getQualifiedName()});
       }
       return null;
     }
@@ -156,23 +124,11 @@ public class QueryParameterMetaFactory {
     public Void visitFunctionCtType(FunctionCtType functionCtType, Void aVoid) throws AptException {
       if (functionCtType.isRaw()) {
         throw new AptException(
-            Message.DOMA4240,
-            parameterElement,
-            new Object[] {
-              functionCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4240, parameterElement, new Object[] {functionCtType.getQualifiedName()});
       }
       if (functionCtType.hasWildcard()) {
         throw new AptException(
-            Message.DOMA4241,
-            parameterElement,
-            new Object[] {
-              functionCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4241, parameterElement, new Object[] {functionCtType.getQualifiedName()});
       }
       functionCtType.getTargetCtType().accept(new FunctionTargetCtTypeValidator(), null);
       return null;
@@ -183,23 +139,11 @@ public class QueryParameterMetaFactory {
         throws AptException {
       if (collectorCtType.isRaw()) {
         throw new AptException(
-            Message.DOMA4258,
-            parameterElement,
-            new Object[] {
-              collectorCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4258, parameterElement, new Object[] {collectorCtType.getQualifiedName()});
       }
       if (collectorCtType.hasWildcard()) {
         throw new AptException(
-            Message.DOMA4259,
-            parameterElement,
-            new Object[] {
-              collectorCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4259, parameterElement, new Object[] {collectorCtType.getQualifiedName()});
       }
       collectorCtType.getTargetCtType().accept(new CollectorTargetCtTypeValidator(), null);
       return null;
@@ -209,20 +153,11 @@ public class QueryParameterMetaFactory {
     public Void visitReferenceCtType(ReferenceCtType referenceCtType, Void aVoid)
         throws AptException {
       if (referenceCtType.isRaw()) {
-        throw new AptException(
-            Message.DOMA4108,
-            parameterElement,
-            new Object[] {daoElement.getQualifiedName(), methodElement.getSimpleName()});
+        throw new AptException(Message.DOMA4108, parameterElement, new Object[] {});
       }
       if (referenceCtType.hasWildcard()) {
         throw new AptException(
-            Message.DOMA4112,
-            parameterElement,
-            new Object[] {
-              referenceCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4112, parameterElement, new Object[] {referenceCtType.getQualifiedName()});
       }
       referenceCtType.getReferentCtType().accept(new ReferenceReferentCtTypeValidator(), null);
       return null;
@@ -233,23 +168,11 @@ public class QueryParameterMetaFactory {
         throws AptException {
       if (biFunctionCtType.isRaw()) {
         throw new AptException(
-            Message.DOMA4438,
-            parameterElement,
-            new Object[] {
-              biFunctionCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4438, parameterElement, new Object[] {biFunctionCtType.getQualifiedName()});
       }
       if (biFunctionCtType.hasWildcard()) {
         throw new AptException(
-            Message.DOMA4439,
-            parameterElement,
-            new Object[] {
-              biFunctionCtType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4439, parameterElement, new Object[] {biFunctionCtType.getQualifiedName()});
       }
       return null;
     }
@@ -262,23 +185,11 @@ public class QueryParameterMetaFactory {
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
       if (ctType.isRaw()) {
         throw new AptException(
-            Message.DOMA4212,
-            parameterElement,
-            new Object[] {
-              ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4212, parameterElement, new Object[] {ctType.getQualifiedName()});
       }
       if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
-            Message.DOMA4213,
-            parameterElement,
-            new Object[] {
-              ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4213, parameterElement, new Object[] {ctType.getQualifiedName()});
       }
       return null;
     }
@@ -291,13 +202,7 @@ public class QueryParameterMetaFactory {
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
       if (ctType.isRaw()) {
         throw new AptException(
-            Message.DOMA4238,
-            parameterElement,
-            new Object[] {
-              ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4238, parameterElement, new Object[] {ctType.getQualifiedName()});
       }
       if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
@@ -305,8 +210,6 @@ public class QueryParameterMetaFactory {
             parameterElement,
             new Object[] {
               ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
             });
       }
       return null;
@@ -329,23 +232,11 @@ public class QueryParameterMetaFactory {
       public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
         if (ctType.isRaw()) {
           throw new AptException(
-              Message.DOMA4242,
-              parameterElement,
-              new Object[] {
-                ctType.getQualifiedName(),
-                daoElement.getQualifiedName(),
-                methodElement.getSimpleName()
-              });
+              Message.DOMA4242, parameterElement, new Object[] {ctType.getQualifiedName()});
         }
         if (ctType.hasWildcard() || ctType.hasTypevar()) {
           throw new AptException(
-              Message.DOMA4243,
-              parameterElement,
-              new Object[] {
-                ctType.getQualifiedName(),
-                daoElement.getQualifiedName(),
-                methodElement.getSimpleName()
-              });
+              Message.DOMA4243, parameterElement, new Object[] {ctType.getQualifiedName()});
         }
         return null;
       }
@@ -359,23 +250,11 @@ public class QueryParameterMetaFactory {
     public Void visitDomainCtType(DomainCtType ctType, Void p) throws RuntimeException {
       if (ctType.isRaw()) {
         throw new AptException(
-            Message.DOMA4260,
-            parameterElement,
-            new Object[] {
-              ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4260, parameterElement, new Object[] {ctType.getQualifiedName()});
       }
       if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
-            Message.DOMA4261,
-            parameterElement,
-            new Object[] {
-              ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4261, parameterElement, new Object[] {ctType.getQualifiedName()});
       }
       return null;
     }
@@ -388,23 +267,11 @@ public class QueryParameterMetaFactory {
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
       if (ctType.isRaw()) {
         throw new AptException(
-            Message.DOMA4218,
-            parameterElement,
-            new Object[] {
-              ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4218, parameterElement, new Object[] {ctType.getQualifiedName()});
       }
       if (ctType.hasWildcard() || ctType.hasTypevar()) {
         throw new AptException(
-            Message.DOMA4219,
-            parameterElement,
-            new Object[] {
-              ctType.getQualifiedName(),
-              daoElement.getQualifiedName(),
-              methodElement.getSimpleName()
-            });
+            Message.DOMA4219, parameterElement, new Object[] {ctType.getQualifiedName()});
       }
       return null;
     }
