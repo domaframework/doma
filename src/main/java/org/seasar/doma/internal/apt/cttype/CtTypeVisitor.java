@@ -4,6 +4,8 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
   R visitAnyCtType(AnyCtType ctType, P p) throws TH;
 
+  R visitBatchResultCtType(BatchResultCtType ctType, P p) throws TH;
+
   R visitBasicCtType(BasicCtType ctType, P p) throws TH;
 
   R visitDomainCtType(DomainCtType ctType, P p) throws TH;
@@ -18,6 +20,8 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
   R visitReferenceCtType(ReferenceCtType ctType, P p) throws TH;
 
+  R visitResultCtType(ResultCtType ctType, P p) throws TH;
+
   R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p) throws TH;
 
   R visitWrapperCtType(WrapperCtType ctType, P p) throws TH;
@@ -25,6 +29,8 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
   R visitEnumWrapperCtType(EnumWrapperCtType ctType, P p) throws TH;
 
   R visitMapCtType(MapCtType ctType, P p) throws TH;
+
+  R visitNoneCtType(NoneCtType ctType, P p) throws TH;
 
   R visitOptionalCtType(OptionalCtType ctType, P p) throws TH;
 

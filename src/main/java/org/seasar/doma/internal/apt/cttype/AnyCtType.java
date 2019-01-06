@@ -2,18 +2,13 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.Context;
 
 public class AnyCtType extends AbstractCtType {
 
-  public AnyCtType(TypeMirror type, ProcessingEnvironment env) {
-    super(type, env);
-  }
-
-  public static AnyCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    return new AnyCtType(type, env);
+  AnyCtType(Context ctx, TypeMirror type) {
+    super(ctx, type);
   }
 
   @Override

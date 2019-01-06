@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.math.BigDecimal;
@@ -16,7 +15,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -25,8 +23,7 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleTypeVisitor8;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.BigIntegerWrapper;
@@ -55,37 +52,8 @@ import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class WrapperCtType extends AbstractCtType {
 
-  protected BasicCtType basicCtType;
-
-  public WrapperCtType(TypeMirror type, ProcessingEnvironment env) {
-    super(type, env);
-  }
-
-  public BasicCtType getBasicCtType() {
-    return basicCtType;
-  }
-
-  public static WrapperCtType newInstance(BasicCtType basicCtType, ProcessingEnvironment env) {
-    assertNotNull(basicCtType, env);
-    Class<?> wrapperClass =
-        basicCtType.getTypeMirror().accept(new WrapperTypeMappingVisitor(env), null);
-    if (wrapperClass == null) {
-      return null;
-    }
-    TypeElement wrapperTypeElement = ElementUtil.getTypeElement(wrapperClass, env);
-    if (wrapperTypeElement == null) {
-      return null;
-    }
-    WrapperCtType wrapperCtType;
-    if (wrapperClass == EnumWrapper.class) {
-      DeclaredType declaredType =
-          env.getTypeUtils().getDeclaredType(wrapperTypeElement, basicCtType.getTypeMirror());
-      wrapperCtType = new EnumWrapperCtType(declaredType, env);
-    } else {
-      wrapperCtType = new WrapperCtType(wrapperTypeElement.asType(), env);
-    }
-    wrapperCtType.basicCtType = basicCtType;
-    return wrapperCtType;
+  WrapperCtType(Context ctx, TypeMirror type) {
+    super(ctx, type);
   }
 
   @Override
@@ -95,10 +63,10 @@ public class WrapperCtType extends AbstractCtType {
 
   protected static class WrapperTypeMappingVisitor extends SimpleTypeVisitor8<Class<?>, Void> {
 
-    protected final ProcessingEnvironment env;
+    protected final Context ctx;
 
-    protected WrapperTypeMappingVisitor(ProcessingEnvironment env) {
-      this.env = env;
+    protected WrapperTypeMappingVisitor(Context ctx) {
+      this.ctx = ctx;
     }
 
     @Override
@@ -111,7 +79,7 @@ public class WrapperCtType extends AbstractCtType {
 
     @Override
     public Class<?> visitDeclared(DeclaredType t, Void p) {
-      TypeElement typeElement = TypeMirrorUtil.toTypeElement(t, env);
+      TypeElement typeElement = ctx.getTypes().toTypeElement(t);
       if (typeElement == null) {
         return null;
       }
@@ -146,46 +114,46 @@ public class WrapperCtType extends AbstractCtType {
       if (Object.class.getName().equals(name)) {
         return ObjectWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, BigDecimal.class, env)) {
+      if (ctx.getTypes().isAssignable(t, BigDecimal.class)) {
         return BigDecimalWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, BigInteger.class, env)) {
+      if (ctx.getTypes().isAssignable(t, BigInteger.class)) {
         return BigIntegerWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, Time.class, env)) {
+      if (ctx.getTypes().isAssignable(t, Time.class)) {
         return TimeWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, Timestamp.class, env)) {
+      if (ctx.getTypes().isAssignable(t, Timestamp.class)) {
         return TimestampWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, Date.class, env)) {
+      if (ctx.getTypes().isAssignable(t, Date.class)) {
         return DateWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, java.util.Date.class, env)) {
+      if (ctx.getTypes().isAssignable(t, java.util.Date.class)) {
         return UtilDateWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, LocalTime.class, env)) {
+      if (ctx.getTypes().isAssignable(t, LocalTime.class)) {
         return LocalTimeWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, LocalDateTime.class, env)) {
+      if (ctx.getTypes().isAssignable(t, LocalDateTime.class)) {
         return LocalDateTimeWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, LocalDate.class, env)) {
+      if (ctx.getTypes().isAssignable(t, LocalDate.class)) {
         return LocalDateWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, Array.class, env)) {
+      if (ctx.getTypes().isAssignable(t, Array.class)) {
         return ArrayWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, Blob.class, env)) {
+      if (ctx.getTypes().isAssignable(t, Blob.class)) {
         return BlobWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, NClob.class, env)) {
+      if (ctx.getTypes().isAssignable(t, NClob.class)) {
         return NClobWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, Clob.class, env)) {
+      if (ctx.getTypes().isAssignable(t, Clob.class)) {
         return ClobWrapper.class;
       }
-      if (TypeMirrorUtil.isAssignable(t, SQLXML.class, env)) {
+      if (ctx.getTypes().isAssignable(t, SQLXML.class)) {
         return SQLXMLWrapper.class;
       }
       return null;

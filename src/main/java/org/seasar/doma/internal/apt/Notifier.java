@@ -3,53 +3,51 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.message.MessageResource;
 
 public final class Notifier {
 
-  public static void debug(
-      ProcessingEnvironment env, MessageResource messageResource, Object[] args) {
-    assertNotNull(env, messageResource, args);
-    Messager messager = env.getMessager();
+  private Context ctx;
+
+  public Notifier(Context ctx) {
+    this.ctx = ctx;
+  }
+
+  public void debug(MessageResource messageResource, Object[] args) {
+    assertNotNull(messageResource, args);
+    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(Kind.OTHER, messageResource.getMessage(args));
   }
 
-  public static void debug(ProcessingEnvironment env, CharSequence message) {
-    assertNotNull(env, message);
-    Messager messager = env.getMessager();
+  public void debug(CharSequence message) {
+    assertNotNull(message);
+    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(Kind.OTHER, message);
   }
 
-  public static void notify(
-      ProcessingEnvironment env, Kind kind, MessageResource messageResource, Object[] args) {
-    assertNotNull(env, messageResource, args);
-    Messager messager = env.getMessager();
+  public void notify(Kind kind, MessageResource messageResource, Object[] args) {
+    assertNotNull(messageResource, args);
+    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(kind, messageResource.getMessage(args));
   }
 
-  public static void notify(
-      ProcessingEnvironment env,
-      Kind kind,
-      MessageResource messageResource,
-      Element element,
-      Object[] args) {
-    assertNotNull(env, kind, element, args);
-    Messager messager = env.getMessager();
+  public void notify(Kind kind, MessageResource messageResource, Element element, Object[] args) {
+    assertNotNull(kind, element, args);
+    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(kind, messageResource.getMessage(args), element);
   }
 
-  public static void notify(ProcessingEnvironment env, Kind kind, String message, Element element) {
-    assertNotNull(env, kind, message, element);
-    Messager messager = env.getMessager();
+  public void notify(Kind kind, String message, Element element) {
+    assertNotNull(kind, message, element);
+    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(kind, message, element);
   }
 
-  public static void notify(ProcessingEnvironment env, AptException e) {
-    assertNotNull(env, e);
-    Messager messager = env.getMessager();
+  public void notify(AptException e) {
+    assertNotNull(e);
+    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(
         e.getKind(),
         e.getMessage(),

@@ -2,85 +2,36 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
-import java.util.function.Function;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class FunctionCtType extends AbstractCtType {
 
-  protected CtType targetCtType;
+  private final CtType targetCtType;
 
-  protected AnyCtType returnCtType;
+  private final CtType returnCtType;
 
-  public FunctionCtType(TypeMirror type, ProcessingEnvironment env) {
-    super(type, env);
+  FunctionCtType(Context ctx, TypeMirror type, CtType targetCtType, CtType returnCtType) {
+    super(ctx, type);
+    assertNotNull(targetCtType, returnCtType);
+    this.targetCtType = targetCtType;
+    this.returnCtType = returnCtType;
   }
 
   public CtType getTargetCtType() {
     return targetCtType;
   }
 
-  public AnyCtType getReturnCtType() {
+  public CtType getReturnCtType() {
     return returnCtType;
   }
 
-  public boolean isRawType() {
-    return returnCtType.getTypeMirror() == null || targetCtType.getTypeMirror() == null;
+  public boolean isRaw() {
+    return returnCtType.isNone() || targetCtType.isNone();
   }
 
-  public boolean isWildcardType() {
-    return returnCtType.getTypeMirror() != null
-            && returnCtType.getTypeMirror().getKind() == TypeKind.WILDCARD
-        || targetCtType.getTypeMirror() != null
-            && targetCtType.getTypeMirror().getKind() == TypeKind.WILDCARD;
-  }
-
-  public static FunctionCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    DeclaredType functionDeclaredType = getFunctionDeclaredType(type, env);
-    if (functionDeclaredType == null) {
-      return null;
-    }
-
-    FunctionCtType functionCtType = new FunctionCtType(type, env);
-    List<? extends TypeMirror> typeArguments = functionDeclaredType.getTypeArguments();
-    if (typeArguments.size() == 2) {
-      TypeMirror targetTypeMirror = typeArguments.get(0);
-      TypeMirror returnTypeMirror = typeArguments.get(1);
-
-      functionCtType.targetCtType = StreamCtType.newInstance(targetTypeMirror, env);
-      if (functionCtType.targetCtType == null) {
-        functionCtType.targetCtType = PreparedSqlCtType.newInstance(targetTypeMirror, env);
-        if (functionCtType.targetCtType == null) {
-          functionCtType.targetCtType = AnyCtType.newInstance(targetTypeMirror, env);
-        }
-      }
-
-      functionCtType.returnCtType = AnyCtType.newInstance(returnTypeMirror, env);
-    }
-
-    return functionCtType;
-  }
-
-  protected static DeclaredType getFunctionDeclaredType(
-      TypeMirror type, ProcessingEnvironment env) {
-    if (TypeMirrorUtil.isSameType(type, Function.class, env)) {
-      return TypeMirrorUtil.toDeclaredType(type, env);
-    }
-    for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-      if (TypeMirrorUtil.isSameType(supertype, Function.class, env)) {
-        return TypeMirrorUtil.toDeclaredType(supertype, env);
-      }
-      DeclaredType result = getFunctionDeclaredType(supertype, env);
-      if (result != null) {
-        return result;
-      }
-    }
-    return null;
+  public boolean hasWildcard() {
+    return returnCtType.isWildcard() || targetCtType.isWildcard();
   }
 
   @Override

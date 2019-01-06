@@ -278,7 +278,7 @@ public enum Message implements MessageResource {
   DOMA4014("Cannot annotate @Dao to anything but interfaces."),
   DOMA4015("Cannot annotate @Entity to anything but classes."),
   DOMA4016(
-      "An unexpected error has occurred. Check the logs for more information. For example, if you use Eclipse, see the error log view."),
+      "An unexpected error has occurred. It may be a bug in the Doma framework. Report the following stacktrace: {0}"),
   DOMA4017("The Dao interface must be a top level interface."),
   DOMA4019("The file[{0}] is not found from the classpath. The absolute path is \"{1}\"."),
   DOMA4020("The SQL file[{0}] is empty."),
@@ -301,7 +301,7 @@ public enum Message implements MessageResource {
   DOMA4038(
       "The type argument[{1}] of EntityListener[{0}] must be supertype of the entity class[{2}]."),
   DOMA4039(
-      "The annotation processing is stopped because of compilation error. Check the error message from the execution evironment such as Eclipse and javac."),
+      "The annotation processing is stopped because of compilation error. Check the error message from your execution environment such as Eclipse and javac. Stacktrace: {0}"),
   DOMA4040("The return type must be the array of int that indicates the affected rows count."),
   DOMA4042("The parameter type must be the subtype of java.lang.Iterable."),
   DOMA4043("The type argument of the subtype of java.lang.Iterable must be the entity class."),
@@ -317,17 +317,15 @@ public enum Message implements MessageResource {
       "The parameters of the method that is annotated with @Function or @Procedure must be annotated with either of @In, @InOut, @Out or @ResultSet."),
   DOMA4067(
       "The parameter that corresponds to the variable[{0}] in the SQL at column[{1}] is not found in the method."),
-  DOMA4068("Failed to read the SQL file{0}]. The cause is as follows: {1}"),
-  DOMA4069("Failed to parse the SQL file{0}]. The cause is as follows: {1}"),
+  DOMA4068("Failed to read the SQL file[{0}]. The cause is as follows: {1}"),
+  DOMA4069("Failed to parse the SQL file[{0}]. The cause is as follows: {1}"),
   DOMA4071(
       "The variable[{2}] in the expression[{0}] at column[{1}] does not have a public and non-void method[{4}]. The variable type is [{3}]."),
   DOMA4072("The function[{2}] in the expression[{0}] at column [{1}] is not found."),
   DOMA4073(
       "The public and non-void method[{4}] cannot be identified from the variable[{2}] in the expression[{0}] at column[{1}]. The variable type is [{3}]."),
-  DOMA4074("The message[{0}] is raised from the following exception: {1}"),
   DOMA4076("The parameter type must be the array type."),
   DOMA4078("The number of parameters must be 0."),
-  DOMA4079("Failed to generate the source file for the class[{0}]. The cause is as follows: {1}"),
   DOMA4084("The property[{0}] is not found in the entity class[{1}]."),
   DOMA4085("The property[{0}] is not found in the entity class[{1}]."),
   DOMA4086(
@@ -342,9 +340,9 @@ public enum Message implements MessageResource {
   DOMA4091("The annotation processor[{0}] ends processing for the class[{1}]."),
   DOMA4092(
       "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. The cause is as follows: {4} SQL[{1}]."),
-  DOMA4093("@Version can be annotated to the property that is comaptible with the numerical type."),
+  DOMA4093("@Version can be annotated to the property that is compatible with the numerical type."),
   DOMA4095(
-      "@GeneratedValue can be annotated to the property that is comaptible with the numerical type."),
+      "@GeneratedValue can be annotated to the property that is compatible with the numerical type."),
   DOMA4096(
       "The class[{0}] is not supported as a persistent type. If you intend to map the class to the external domain class with @ExternalDomain, the configuration may be not enough. Check the class that is annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
   DOMA4097("The return type must be [{0}]."),
@@ -360,7 +358,6 @@ public enum Message implements MessageResource {
   DOMA4105("You can annotate @Domain to only classes, interfaces and enums"),
   DOMA4106(
       "The factory method[{0}] is not found. The method must have the return type[{1}] and the parameter type[{2}] and must be non-private and static. The type parameter of the method must be same with the one of the class. Define the factory method. Or if you do not use the factory method, do not specify the value to the factoryMethod element of @Domain and define the constructor."),
-  DOMA4107("The class that is annotated with @Domain cannot have type parameters."),
   DOMA4108("The type argument is required for Reference."),
   DOMA4109(
       "The type argument is required for the subtype of java.lang.Iterable, that is the return type."),
@@ -445,10 +442,6 @@ public enum Message implements MessageResource {
       "The implementation class[{0}] of org.seasar.doma.jdbc.id.SequenceIdGenerator must have a public no-args constructor."),
   DOMA4172("The return type must be void."),
   DOMA4173("The number of parameters is 0."),
-  DOMA4176(
-      "The accessor method[{0}] is not found. The method must return the type[{1}] and accept no parameters. And the method must be non-private, no-args and non-static."),
-  DOMA4177(
-      "The factory method[{0}] is not found. The method must return the type[{1}] and accept the parameter type[{2}]. And the method must be be non-private and static."),
   DOMA4181(
       "The SQL file[{0}] contains embedded variable comments. Because the SQL in a batch is immutable, the embedded variable comments cannot change the SQL dynamically. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4181 }') to the method."),
   DOMA4182(
@@ -467,9 +460,9 @@ public enum Message implements MessageResource {
       "Failed to resolve the function[{2}] in the expression[{0}] at column [{1}]. The class[{3}] that is specified for the annotation processing option \"doma.expr.functions\" must be the subtype of org.seasar.doma.expr.ExpressionFunctions."),
   DOMA4191(
       "@ExternalDomain can be annotated to only the subtype of org.seasar.doma.jdbc.domain.DomainConverter."),
-  DOMA4192("The class[{0}] that is annotated with @ExternalDomain must not be abstract."),
+  DOMA4192("The class that is annotated with @ExternalDomain must not be abstract."),
   DOMA4193(
-      "The class[{0}] that is annotated with @ExternalDomain must have a public and no-args constructor."),
+      "The class that is annotated with @ExternalDomain must have a public and no-args constructor."),
   DOMA4194(
       "The second type argument[{0}] of org.seasar.doma.jdbc.domain.DomainConverter is not supported as a persistent type."),
   DOMA4196("The type[{0}] is not annotated with @ExternalDomain."),
@@ -482,10 +475,10 @@ public enum Message implements MessageResource {
       "The class[{0}] that is specified for the annotation processing option \"doma.doma.converters\" is not annotated with @DomainConverters."),
   DOMA4202("The type argument of org.seasar.doma.jdbc.entity.EntityListener is not resolved."),
   DOMA4203(
-      "All type arguments of the type[{0}] that is fisrt type argument of org.seasar.doma.jdbc.doma.DomainConverter must be wildcard."),
+      "All type arguments of the type[{0}] that is first type argument of org.seasar.doma.jdbc.doma.DomainConverter must be wildcard."),
   DOMA4204("The raw type of the class[{0}] cannot be used as an entity property."),
   DOMA4205(
-      "The class[{0}] whose type arguments contain a wildcard or type variable cannot be used as an entity prpoerty."),
+      "The class[{0}] whose type arguments contain a wildcard or type variable cannot be used as an entity property."),
   DOMA4206("The raw type of the class[{0}] cannot be used as a return type of the Dao method."),
   DOMA4207(
       "The class[{0}] whose type arguments contain a wildcard or type variable cannot be used as a return type of the Dao method."),
@@ -522,9 +515,9 @@ public enum Message implements MessageResource {
   DOMA4229(
       "The upper bound[{1}] of the type parameter[{0}] of the entity listener class is not compatible with the entity class[{2}]."),
   DOMA4230(
-      "The entity listener class[{0}] that is took over from the parent entityt class must have a type parameter that accepts the entity class[{1}]."),
+      "The entity listener class[{0}] that is took over from the parent entity class must have a type parameter that accepts the entity class[{1}]."),
   DOMA4231(
-      "The upper bound[{2}] of the type parameter[{1}] of the entity listener class[{0}] that is took over from the parent entityt class is not compatible with the entity class[{3}]."),
+      "The upper bound[{2}] of the type parameter[{1}] of the entity listener class[{0}] that is took over from the parent entity class is not compatible with the entity class[{3}]."),
   DOMA4232("The raw type of the class[{0}] cannot be used."),
   DOMA4233(
       "The type argument of the class[{0}] must not be a wildcard or type variable. Instead specify the basic type or the domain type."),
@@ -551,7 +544,7 @@ public enum Message implements MessageResource {
       "When you use the java.util.function.Function parameter, SelectStrategyType.STREAM must be specified for the strategy element of @Select."),
   DOMA4248(
       "When you specify SelectStrategyType.STREAM for the strategy element of @Select, the java.util.function.Function parameter is required for the method."),
-  DOMA4249("Mutilple java.util.function.Function parameters are not allowed."),
+  DOMA4249("Multiple java.util.function.Function parameters are not allowed."),
   DOMA4250("The entity class[{0}] as a type argument of Stream must not be abstract."),
   DOMA4251(
       "When the primitive type is specified for the valueType element of @Domain, the acceptNull element of @Domain must be \"false\"."),
@@ -559,12 +552,12 @@ public enum Message implements MessageResource {
   DOMA4253(
       "@SingletonConfig cannot be annotated to anything but the subtype of org.seasar.doma.Config."),
   DOMA4254(
-      "The method[{0}] is not found. The method must be public and static. The retun type must be this class[{0}]. The number of parameters must be 0."),
+      "The method[{0}] is not found. The method must be public and static. The return type must be this class[{1}]. The number of parameters must be 0."),
   DOMA4255("The method[{1}] is not found in the class[{0}]."),
   DOMA4256("The constructor of the class that is annotated with @SingletonConfig must be private."),
   DOMA4257(
       "Failed to verify the SQL file[{0}] on line [{2}] at column [{3}]. While the comment \"/*%expand ...*/\" is used, it cannot exapnd columns. Check that the method is annotaed with @Select and the result set is mapped to the entity class. SQL[{1}]"),
-  DOMA4258("The parameter tyep[{0}] must not be the raw type."),
+  DOMA4258("The parameter type[{0}] must not be the raw type."),
   DOMA4259(
       "The first or third type argument of the parameter type[{0}] must not be a wildcard type."),
   DOMA4260(
@@ -586,8 +579,6 @@ public enum Message implements MessageResource {
   DOMA4271("The type argument[{0}] is not supported for java.util.stream.Stream as a return type."),
   DOMA4272(
       "The abstract entity class[{0}] is not supported for the type argument of java.util.stream.Stream as a return type."),
-  DOMA4273(
-      "The type argument[{0}] is not supported for java.util.Optional of java.util.stream.Stream. Supported types are as follows: basic type and domain type."),
   DOMA4274(
       "The application must close the Stream object that is returned from the Dao method. To suppress this warning, annotate @Suppress(messages = '{ Message.DOMA4274 }') to the method."),
   DOMA4275(
@@ -617,14 +608,12 @@ public enum Message implements MessageResource {
   DOMA4294("A non-private constructor is required for the embeddable class."),
   DOMA4295("The raw type of the class[{0}] cannot be used as a persistent property."),
   DOMA4296(
-      "The class[{0}] whose type arguments contains a wildcard or type variable cannot be used as a persistent prpoerty."),
+      "The class[{0}] whose type arguments contains a wildcard or type variable cannot be used as a persistent property."),
   DOMA4297(
       "The embeddable class[{0}] cannot be used as a persistent property in the embeddable class."),
   DOMA4298(
-      "The class[{0}] is not supported as a persistent type. If you intend to map the class to the external holder class with @ExternalDomain, the configuration may be not enough. Check the class that is annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
+      "The class[{0}] is not supported as a persistent type. If you intend to map the class to the external domain class with @ExternalDomain, the configuration may be not enough. Check the class that is annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
   DOMA4299("The raw type of the class[{0}] cannot be used as a persistent property."),
-  DOMA4300(
-      "The annotation processing for the type[{0}] is failed. Are there any compilation errors that are unrelated to the annotation processing?"),
   DOMA4301(
       "The type argument of the class[{0}] that is a wildcard or type variable cannot be used as a persistent property."),
   DOMA4302("@Id cannot be annotated to the property whose type is annotated with @Embeddable."),
@@ -665,12 +654,12 @@ public enum Message implements MessageResource {
   DOMA4427(DOMA4426.getMessagePattern()),
   DOMA4428(DOMA4419.getMessagePattern()),
   DOMA4429(
-      "The method name that is generated by @lombok.Value is not same with the value of the accessorMethod element of @Holder."),
+      "The method name that is generated by @lombok.Value is not same with the value of the accessorMethod element of @Domain."),
   DOMA4430("There is no instance field to be initialized by @lombok.Value."),
   DOMA4431(
       "The number of instance fields that is initialized by @lombok.Value must be 1, but greater than or equal to 2."),
   DOMA4432(
-      "The type[{0}] of the instance field that is initialized by @lombok.Value is not same with the type[{1}] that is specified to the valueType element of @Holder."),
+      "The type[{0}] of the instance field that is initialized by @lombok.Value is not same with the type[{1}] that is specified to the valueType element of @Domain."),
   DOMA4433(
       "When you annotate @SqlProcessor to the method、the BiFunction parameter is required for the method."),
   DOMA4434("Multiple BiFunction parameters are not allowed."),
@@ -680,7 +669,7 @@ public enum Message implements MessageResource {
   DOMA4438("The parameter type[{0}] must not be the raw type."),
   DOMA4439("The parameter type[{0}] must not contain a wildcard as a type argument."),
   DOMA4440(
-      "The method[{0}] in the parent interface is not default method. When the parent interface is not annotaed with @Dao, the all methods in the interface must be default methods."),
+      "The method[{0}] in the parent interface is not default method. When the parent interface is not annotated with @Dao, the all methods in the interface must be default methods."),
   DOMA4441(
       "@TenantId cannot be annotated to the property whose type is annotated with @Embeddable."),
   DOMA4442(

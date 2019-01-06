@@ -1,39 +1,22 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import java.util.OptionalDouble;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.Context;
 
 public class OptionalDoubleCtType extends AbstractCtType {
 
   private final CtType elementCtType;
 
-  public OptionalDoubleCtType(TypeMirror typeMirro, ProcessingEnvironment env) {
-    super(typeMirro, env);
-    PrimitiveType primitiveType = env.getTypeUtils().getPrimitiveType(TypeKind.DOUBLE);
-    this.elementCtType = BasicCtType.newInstance(primitiveType, env);
+  OptionalDoubleCtType(Context ctx, TypeMirror typeMirror) {
+    super(ctx, typeMirror);
+    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.DOUBLE);
+    this.elementCtType = ctx.getCtTypes().newBasicCtType(primitiveType);
   }
 
   public CtType getElementCtType() {
     return elementCtType;
-  }
-
-  public static OptionalDoubleCtType newInstance(TypeMirror type, ProcessingEnvironment env) {
-    assertNotNull(type, env);
-    if (!TypeMirrorUtil.isSameType(type, OptionalDouble.class, env)) {
-      return null;
-    }
-    DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
-    if (declaredType == null) {
-      return null;
-    }
-    return new OptionalDoubleCtType(type, env);
   }
 
   @Override

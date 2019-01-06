@@ -2,64 +2,59 @@ package org.seasar.doma.internal.apt.cttype;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.MetaUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public abstract class AbstractCtType implements CtType {
 
-  protected final TypeMirror typeMirror;
+  protected final Context ctx;
 
-  protected final ProcessingEnvironment env;
-
-  protected final String typeName;
-
-  protected final String boxedTypeName;
-
-  protected final String metaTypeName;
+  protected final TypeMirror type;
 
   protected final TypeElement typeElement;
 
-  protected final String packageName;
+  private final String typeName;
 
-  protected final String packageExcludedBinaryName;
+  private final String packageName;
 
-  protected final String qualifiedName;
+  private final String qualifiedName;
 
-  protected AbstractCtType(TypeMirror typeMirror, ProcessingEnvironment env) {
-    assertNotNull(typeMirror, env);
-    this.typeMirror = typeMirror;
-    this.env = env;
-    this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
-    this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(typeMirror, env);
-    this.metaTypeName = getMetaTypeName(typeMirror, env);
-    this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+  private final String boxedTypeName;
+
+  private final String boxedClassName;
+
+  protected final String metaTypeName;
+
+  protected final String metaClassName;
+
+  protected final String typeParametersDeclaration;
+
+  protected AbstractCtType(Context ctx, TypeMirror type) {
+    assertNotNull(ctx, type);
+    this.ctx = ctx;
+    this.type = type;
+    this.typeName = ctx.getTypes().getTypeName(type);
+    this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
+    this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
+    this.typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement != null) {
+      packageName = ctx.getElements().getPackageName(typeElement);
       qualifiedName = typeElement.getQualifiedName().toString();
-      packageName = ElementUtil.getPackageName(typeElement, env);
-      packageExcludedBinaryName = ElementUtil.getPackageExcludedBinaryName(typeElement, env);
+      metaClassName = MetaUtil.toFullMetaName(typeElement, ctx);
     } else {
-      qualifiedName = typeName;
       packageName = "";
-      packageExcludedBinaryName = typeName;
+      qualifiedName = typeName;
+      metaClassName = typeName;
     }
+    this.typeParametersDeclaration = makeTypeParametersDeclaration(typeName);
+    this.metaTypeName = metaClassName + typeParametersDeclaration;
   }
 
-  private static String getMetaTypeName(TypeMirror typeMirror, ProcessingEnvironment env) {
-    assertNotNull(typeMirror, env);
-    String typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
-    TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
-    if (typeElement == null) {
-      return typeName;
-    }
-    return MetaUtil.toFullMetaName(typeElement, env) + makeTypeParamDecl(typeName);
-  }
-
-  private static String makeTypeParamDecl(String typeName) {
+  private static String makeTypeParametersDeclaration(String typeName) {
     int pos = typeName.indexOf("<");
     if (pos == -1) {
       return "";
@@ -68,8 +63,8 @@ public abstract class AbstractCtType implements CtType {
   }
 
   @Override
-  public TypeMirror getTypeMirror() {
-    return typeMirror;
+  public TypeMirror getType() {
+    return type;
   }
 
   @Override
@@ -93,6 +88,11 @@ public abstract class AbstractCtType implements CtType {
   }
 
   @Override
+  public String getMetaClassName() {
+    return metaClassName;
+  }
+
+  @Override
   public String getQualifiedName() {
     return qualifiedName;
   }
@@ -103,8 +103,8 @@ public abstract class AbstractCtType implements CtType {
   }
 
   @Override
-  public String getPackageExcludedBinaryName() {
-    return packageExcludedBinaryName;
+  public String getBoxedClassName() {
+    return boxedClassName;
   }
 
   @Override
@@ -114,6 +114,26 @@ public abstract class AbstractCtType implements CtType {
 
   @Override
   public boolean isPrimitive() {
-    return typeMirror.getKind().isPrimitive();
+    return type.getKind().isPrimitive();
+  }
+
+  @Override
+  public boolean isNone() {
+    return type.getKind() == TypeKind.NONE;
+  }
+
+  @Override
+  public boolean isWildcard() {
+    return type.getKind() == TypeKind.WILDCARD;
+  }
+
+  @Override
+  public boolean isTypevar() {
+    return type.getKind() == TypeKind.TYPEVAR;
+  }
+
+  @Override
+  public boolean isSameType(CtType other) {
+    return ctx.getTypes().isSameType(type, other.getType());
   }
 }

@@ -9,10 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
 import org.seasar.doma.internal.Artifact;
-import org.seasar.doma.internal.apt.util.ResourceUtil;
 
 public final class Options {
 
@@ -44,101 +42,107 @@ public final class Options {
 
   public static final String LOMBOK_VALUE = "doma.lombok.Value";
 
-  public static boolean isTestEnabled(ProcessingEnvironment env) {
-    String test = getOption(env, Options.TEST);
+  private final Context ctx;
+
+  public Options(Context ctx) {
+    this.ctx = ctx;
+  }
+
+  public boolean isTestEnabled() {
+    String test = getOption(TEST);
     return Boolean.valueOf(test).booleanValue();
   }
 
-  public static String getVersion(ProcessingEnvironment env) {
-    if (isTestEnabled(env)) {
+  public String getVersion() {
+    if (isTestEnabled()) {
       return "@VERSION@";
     }
     return Artifact.getVersion();
   }
 
-  public static Date getDate(ProcessingEnvironment env) {
-    if (isTestEnabled(env)) {
+  public Date getDate() {
+    if (isTestEnabled()) {
       return new Date(0L);
     }
     return new Date();
   }
 
-  public static boolean isDebugEnabled(ProcessingEnvironment env) {
-    String debug = getOption(env, Options.DEBUG);
+  public boolean isDebugEnabled() {
+    String debug = getOption(DEBUG);
     return Boolean.valueOf(debug).booleanValue();
   }
 
-  public static String getDaoPackage(ProcessingEnvironment env) {
-    String pkg = getOption(env, Options.DAO_PACKAGE);
+  public String getDaoPackage() {
+    String pkg = getOption(DAO_PACKAGE);
     return pkg != null ? pkg : null;
   }
 
-  public static String getDaoSubpackage(ProcessingEnvironment env) {
-    String subpackage = getOption(env, Options.DAO_SUBPACKAGE);
+  public String getDaoSubpackage() {
+    String subpackage = getOption(DAO_SUBPACKAGE);
     return subpackage != null ? subpackage : null;
   }
 
-  public static String getDaoSuffix(ProcessingEnvironment env) {
-    String suffix = getOption(env, Options.DAO_SUFFIX);
+  public String getDaoSuffix() {
+    String suffix = getOption(DAO_SUFFIX);
     return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
   }
 
-  public static String getEntityFieldPrefix(ProcessingEnvironment env) {
-    String prefix = getOption(env, Options.ENTITY_FIELD_PREFIX);
+  public String getEntityFieldPrefix() {
+    String prefix = getOption(ENTITY_FIELD_PREFIX);
     if ("none".equalsIgnoreCase(prefix)) {
       return "";
     }
     return prefix != null ? prefix : Constants.DEFAULT_ENTITY_FIELD_PREFIX;
   }
 
-  public static String getExprFunctions(ProcessingEnvironment env) {
-    String name = getOption(env, Options.EXPR_FUNCTIONS);
+  public String getExprFunctions() {
+    String name = getOption(EXPR_FUNCTIONS);
     return name != null ? name : null;
   }
 
-  public static String getDomainConverters(ProcessingEnvironment env) {
-    String converters = getOption(env, Options.DOMAIN_CONVERTERS);
+  public String getDomainConverters() {
+    String converters = getOption(DOMAIN_CONVERTERS);
     return converters != null ? converters : null;
   }
 
-  public static boolean getSqlValidation(ProcessingEnvironment env) {
-    String v = getOption(env, Options.SQL_VALIDATION);
+  public boolean getSqlValidation() {
+    String v = getOption(SQL_VALIDATION);
     return v != null ? Boolean.valueOf(v).booleanValue() : true;
   }
 
-  public static boolean getVersionValidation(ProcessingEnvironment env) {
-    String v = getOption(env, Options.VERSION_VALIDATION);
+  public boolean getVersionValidation() {
+    String v = getOption(VERSION_VALIDATION);
     return v != null ? Boolean.valueOf(v).booleanValue() : true;
   }
 
-  public static String getConfigPath(ProcessingEnvironment env) {
-    String configPath = env.getOptions().get(Options.CONFIG_PATH);
+  public String getConfigPath() {
+    String configPath = ctx.getEnv().getOptions().get(CONFIG_PATH);
     return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
   }
 
-  public static String getLombokAllArgsConstructor(ProcessingEnvironment env) {
-    String name = getOption(env, Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
+  public String getLombokAllArgsConstructor() {
+    String name = getOption(LOMBOK_ALL_ARGS_CONSTRUCTOR);
     return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
   }
 
-  public static String getLombokValue(ProcessingEnvironment env) {
-    String name = getOption(env, Options.LOMBOK_VALUE);
+  public String getLombokValue() {
+    String name = getOption(LOMBOK_VALUE);
     return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
   }
 
-  private static String getOption(ProcessingEnvironment env, String key) {
-    String v = env.getOptions().get(key);
+  private String getOption(String key) {
+    String v = ctx.getEnv().getOptions().get(key);
     if (v != null) {
       return v;
     }
 
-    return getConfig(env).get(key);
+    return getConfig().get(key);
   }
 
-  private static Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
+  private Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
 
-  private static Map<String, String> getConfig(ProcessingEnvironment env) {
-    FileObject config = getFileObject(env, getConfigPath(env));
+  private Map<String, String> getConfig() {
+    FileObject config = getFileObject(getConfigPath());
     if (config == null) {
       return Collections.emptyMap();
     }
@@ -153,16 +157,16 @@ public final class Options {
         });
   }
 
-  private static FileObject getFileObject(ProcessingEnvironment env, String path) {
+  private FileObject getFileObject(String path) {
     try {
-      return ResourceUtil.getResource(path, env);
+      return ctx.getResources().getResource(path);
     } catch (IOException e) {
       return null;
     }
   }
 
   @SuppressWarnings("unchecked")
-  private static Map<String, String> loadProperties(FileObject config) throws IOException {
+  private Map<String, String> loadProperties(FileObject config) throws IOException {
     try (InputStream is = config.openInputStream();
         InputStreamReader isr = new InputStreamReader(is, "UTF-8")) {
       Properties props = new Properties();

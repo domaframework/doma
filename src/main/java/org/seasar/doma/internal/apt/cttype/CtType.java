@@ -5,7 +5,7 @@ import javax.lang.model.type.TypeMirror;
 
 public interface CtType {
 
-  TypeMirror getTypeMirror();
+  TypeMirror getType();
 
   TypeElement getTypeElement();
 
@@ -13,17 +13,27 @@ public interface CtType {
 
   String getBoxedTypeName();
 
-  String getMetaTypeName();
+  String getBoxedClassName();
 
   String getQualifiedName();
 
   String getPackageName();
 
-  String getPackageExcludedBinaryName();
+  String getMetaTypeName();
+
+  String getMetaClassName();
 
   boolean isPrimitive();
 
   boolean isEnum();
+
+  boolean isNone();
+
+  boolean isWildcard();
+
+  boolean isTypevar();
+
+  boolean isSameType(CtType ctType);
 
   <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH;
 }
