@@ -1,43 +1,29 @@
-==================
-ドメインクラス
-==================
+==============
+Domain classes
+==============
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-Domain （ドメイン）クラスの定義方法を示します。
+A domain class represents a table column and it allows you to handle the column value as a Java object.
+In the Doma framework, a **domain** means all the values which a data type may contain.
+In short, a domain class is a user defined class that can be map to a column.
+The use of the domain classes is optional.
 
-Doma では、テーブルのカラムの値を **ドメイン** と呼ばれる Java オブジェクトで扱えます。
-ドメインとは値のとり得る範囲、つまり定義域のことです。
+Every domain class is either an internal domain class or an external domain class.
 
-ドメインクラスを利用することで、データベース上のカラムの型が同じあっても
-アプリケーション上意味が異なるものを別のJavaの型で表現できます。
-これにより意味を明確にしプログラミングミスを事前に防ぎやすくなります。
-また、ドメインクラスに振る舞いを持たせることでよりわかりやすいプログラミングが可能です。
+Internal domain classes
+=======================
 
-ドメインクラスの作成と利用は任意です。
-ドメインクラスを利用しなくても ``Integer`` や ``String``
-など基本型のみでデータアクセスは可能です。
+The internal domain class must be annotated with ``@Domain``.
+The ``@Domain``'s ``valueType`` element corresponds to a data type of a column.
+Specify any type of :doc:`basic` to the ``valueType`` element.
 
-ドメインは、定義の仕方により内部ドメインと外部ドメインに分けられます。
+Instantiation with a constructor
+--------------------------------
 
-内部ドメイン
-======================
-
-ドメインとして扱いたい対象のクラスのソースコードに直接定義を記述します。
-
-内部ドメインを定義するには、クラスに ``@Domain`` を注釈します。
-
-``@Domain`` の ``valueType`` 要素には :doc:`basic` を指定します。
-
-コンストラクタで生成する方法
------------------------------------------------
-
-``@Domain`` の ``factoryMethod`` 要素のデフォルトの値は ``new`` であり、
-非privateなコンストラクタでインスタンスを生成することを示します。
-そのため、コンストラクタで生成する場合は ``factoryMethod`` 要素を省略できます。
-次の例では、 ``public`` なコンストラクタを持つドメインクラスを作成しています。
-このクラスは電話番号を表しています。
+The default value of the ``@Domain``'s ``factoryMethod`` element is ``new``.
+The value ``new`` means that the object of annotated class is created with a constructor.
 
 .. code-block:: java
 
@@ -55,18 +41,17 @@ Doma では、テーブルのカラムの値を **ドメイン** と呼ばれる
       }
 
       public String getAreaCode() {
-         // ドメインに固有の振る舞いを記述できる。
          ...
       }
   }
 
-ファクトリメソッドで生成する方法
------------------------------------------------
+Instantiation with a static factory method
+------------------------------------------
 
-コンストラクタをprivateにしファクトリメソッドを使ってインスタンスを生成したい場合は、
-staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod`` 要素にそのメソッドの名前を指定します。
-次の例では、publicなファクトリメソッドをもつドメインクラスを作成しています。
-このクラスは電話番号を表しています。
+To create the object of annotated class with a static factory method,
+specify the method name to the ``@Domain``'s ``factoryMethod`` element.
+
+The method must be static and non-private:
 
 .. code-block:: java
 
@@ -84,7 +69,6 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
 
       public String getAreaCode() {
-         // ドメインに固有の振る舞いを記述できる。
          ...
       }
 
@@ -93,8 +77,7 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-次の例では、 ``public`` なファクトリメソッドをもつ列挙型をドメインクラスとして作成しています。
-この列挙型は仕事の種別を表しています。
+With a static factory method, you can apply the ``@Domain`` annotation to enum types:
 
 .. code-block:: java
 
@@ -126,13 +109,10 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-型パラメータを利用する方法
------------------------------------------------
+Using type parameters in internal domain classes
+------------------------------------------------
 
-ドメインクラスには任意の数の型パラメータを宣言できます。
-次の例では、1つの型パラメータを持ち、さらに ``public`` なコンストラクタを持つ
-ドメインクラスを作成しています。
-このクラスは識別子を表しています。
+All internal domain class declarations have type parameters:
 
 .. code-block:: java
 
@@ -150,8 +130,9 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-型パラメータを持ったドメインクラスはファクトリメソッドで生成することも可能です。
-この場合、ファクトリメソッドにはクラスの型変数宣言と同等の宣言が必要です。
+
+When you create the object of annotated class with a static factory method,
+the method declaration must have same type parameters that are declared in the class declaration:
 
 .. code-block:: java
 
@@ -173,17 +154,22 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-外部ドメイン
-======================
+External domain classes
+=======================
 
-ドメインとして扱いたい対象のクラスとは別のクラスに定義を記述します。
+This feature allows you to define arbitrary classes as domain classes,
+even if the classes can be annotated with the ``@Domain`` annotation.
 
-外部ドメインは、ソースコードに手を加えられない、 Doma へ依存させたくない、
-といった理由がある場合に有効です。
-外部ドメインを定義するには、 ``DomainConverter`` の実装クラスに
-``@ExternalDomain`` を注釈して示します。
+To define external domain classes, you have to do as follows:
 
-例えば、次のような ``PhoneNumber`` というクラスがありソースコードに手を加えられないとします。
+- Create a class that implements ``org.seasar.doma.jdbc.domain.DomainConverter`` and
+  annotate ``@ExternalDomain`` to the class
+- Create a class that is annotated with ``@DomainConverters``
+- Specify the class annotated with ``@ExternalDomain`` to the ``@DomainConverters``'s ``value`` element
+- Specify the full qualified name of the class annotated with ``@DomainConverters`` to
+  the option of :doc:`annotation-processing`
+
+Suppose, for instance, there is the ``PhoneNumber`` class that you can change:
 
 .. code-block:: java
 
@@ -204,7 +190,7 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-上記の ``PhoneNumber`` をドメインクラスとして扱うには、次のようなクラスを作成します。
+First, to define the ``PhoneNumber`` class as an external domain class, create following class:
 
 .. code-block:: java
 
@@ -223,9 +209,7 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-これで外部ドメイン定義は完成ですが、これだけではまだ利用できません。
-外部ドメイン定義を ``@DomainConverters`` へ登録します。
-``@DomainConverters`` には複数の外部ドメイン定義を登録可能です。
+Then create following class and specify the above class to the ``@DomainConverters``'s ``value`` element:
 
 .. code-block:: java
 
@@ -233,16 +217,21 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
   public class DomainConvertersProvider {
   }
 
-そして最後に、 ``@DomainConverters`` が注釈されたクラスの完全修飾名を
-:doc:`annotation-processing` のオプションに指定します。
-オプションのkeyは、 ``doma.domain.converters`` です。
+Finally, specify the full qualified name of the above class to the option of :doc:`annotation-processing`.
+If you use Gradle, specify the option in the build script as follows:
 
-型パラメータを利用する方法
-----------------------------------------
+.. code-block:: groovy
 
-任意の数の型パラメータを持ったクラスを扱えます。
-次の例のような1つの型パラメータを持つクラスがあるとします。
-このクラスは識別子を表しています。
+  compileJava {
+      options {
+          compilerArgs = ['-Adoma.domain.converters=example.DomainConvertersProvider']
+      }
+  }
+
+Using type parameters in external domain classes
+------------------------------------------------
+
+All external domain class declarations have type parameters:
 
 .. code-block:: java
 
@@ -259,8 +248,8 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-上記の ``Identity`` をドメインクラスとして扱うには、次のようなクラスを作成します。
-``Identity`` の型パラメータにはワイルドカード ``?`` を指定しなければいけません。
+In the ``DomainConverter`` implementation class,
+specify a wildcard ``?`` as type arguments to the external domain class:
 
 .. code-block:: java
 
@@ -280,13 +269,10 @@ staticな非privateなメソッドを定義し ``@Domain`` の ``factoryMethod``
       }
   }
 
-その他の設定方法については、型パラメータを使用しない場合と同様です。
+Example
+=======
 
-利用例
-==================
-
-ドメインクラスが型パラメータを持つ場合、型パラメータには具体的な型が必要です。
-ワイルドカード ``?`` や型変数の指定はサポートされていません。
+The Domain classes showed above are used as follows:
 
 .. code-block:: java
 
