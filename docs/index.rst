@@ -59,7 +59,6 @@ Developer Documentation
    :maxdepth: 2
 
    development
-   integration-test
 
 About Doma
 ==========
@@ -68,7 +67,6 @@ About Doma
    :maxdepth: 1
 
    release-notes
-   changelog
    faq
 
 Links
