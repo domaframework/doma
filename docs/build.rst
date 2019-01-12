@@ -59,6 +59,8 @@ Build with IntelliJ IDEA
 
 See :ref:`idea-annotation-processor`.
 
+.. _build-with-gradle:
+
 Build with Gradle
 =================
 
