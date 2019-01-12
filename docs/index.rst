@@ -47,8 +47,8 @@ User Documentation
    sql
    expression
    transaction
-   annotation-processing
    build
+   annotation-processing
    lombok-support
    kotlin-support
 
@@ -59,7 +59,6 @@ Developer Documentation
    :maxdepth: 2
 
    development
-   integration-test
 
 About Doma
 ==========
@@ -68,7 +67,6 @@ About Doma
    :maxdepth: 1
 
    release-notes
-   changelog
    faq
 
 Links
