@@ -1,113 +1,118 @@
-============================
-注釈処理
-============================
+=====================
+Annotation processing
+=====================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-`Pluggable Annotation Processing API <https://www.jcp.org/en/jsr/detail?id=269>`_
-を利用すると、ソースコードの自動生成や検証を **コンパイル時** に行うことができます。
+Doma uses `Pluggable Annotation Processing API <https://www.jcp.org/en/jsr/detail?id=269>`_ at compile time.
 
-DomaではこのAPIを利用することで ``@Entity`` や ``@Dao`` と言ったアノテーションが注釈されたクラスやインタフェースを処理し、
-必要なクラスを自動生成します。
-また、注釈されたクラスやインタフェースの検証を行い、Domaの規約に従っていないソースコードがある場合は
-エラーメッセージをIDE（Eclipseなど）のエディタやjavacを実行したコンソール上に表示します。
+In this document, we describe the options for the annotation processors in Doma
+and show you how to pass them to build tools.
 
-ここでは、Domaが提供するオプションの種類と、ビルドツールごとのオプションの設定方法を説明します。
-
-オプション
-==================
-
-doma.dao.package
-  ``@Dao`` が注釈されたインタフェースの実装クラスが生成されるパッケージ。
-  何らかの値を指定した場合、doma.dao.subpackageの指定よりも優先される。
-  デフォルトの値は、 ``@Dao`` が注釈されたインタフェースと同じパッケージ。
-
-doma.dao.subpackage
-  ``@Dao`` が注釈されたインタフェースの実装クラスが生成されるサブパッケージ。
-  doma.dao.packageに値を指定していない場合にのみ有効。
-  ``@Dao`` が注釈されたインタフェースのパッケージが ``example.dao`` で、ここに指定した値が ``impl`` の場合、
-  生成されるクラスのパッケージは ``example.dao.impl`` となる。
-
-doma.dao.suffix
-  ``@Dao`` が注釈されたインタフェースの実装クラスの名前のサフィックス。
-  ``@Dao`` が注釈されたインタフェースの単純名が ``EmployeeDao`` で、ここに指定した値が ``Bean`` の場合、
-  生成されるクラスの単純名は ``EmployeeDaoBean`` となる。
-  デフォルトの値は ``Impl`` 。
-
-doma.debug
-  注釈処理のデバッグ情報をログ出力するかどうか。
-  ``true`` の場合、ログ出力を行う。
-  デフォルトの値は、 ``false`` 。
-
-doma.domain.converters
-  任意の型と基本型を相互変換する ``DomainConverter`` のプロバイダとなるクラスの完全修飾名のカンマ区切り。
-  クラスは ``org.seasar.doma.DomainConverters`` によって注釈されていないければいけない。
-
-doma.entity.field.prefix
-  ``@Entity`` が注釈されたクラスごとに生成されるタイプクラスで使用される。
-  タイプクラスのpublicなフィールド名のプレフィックス。
-  ``none`` を指定するとプレフィックスを使用しないという意味になる。
-  デフォルトの値は、 ``$`` 。
-
-doma.expr.functions
-  式コメントで利用可能な関数群を表すクラスの完全修飾名。
-  ``org.seasar.doma.expr.ExpressionFunctions`` のサブタイプでなければいけない。
-  デフォルトの値は、 ``org.seasar.doma.expr.ExpressionFunctions`` 。
-
-doma.resources.dir
-  SQLファイルなどリソースファイルの出力先ディレクトリ。
-  絶対パスで指定する。
-  指定しない場合はクラスファイルの出力先ディレクトリが使われる。
-
-doma.sql.validation
-  SQLファイルの存在チェックとSQLコメントの文法チェックを行う場合は ``true`` 。
-  行わない場合は ``false`` 。
-  デフォルトの値は、 ``true`` 。
-
-doma.version.validation
-  注釈処理によるソースコード生成で利用したDomaのバージョンと実行時のDomaのバージョンが同じであることを
-  チェックする場合は ``true`` 。
-  しない場合は ``false`` 。
-  Domaのあるバージョンで生成されたコードを含むライブラリを作成する場合に ``false`` を指定してビルドすると、
-  そのライブラリの再利用性が高まります。
-  ライブラリが依存するDomaのバージョンとは異なるバージョンのDomaで実行できるからです
-  （Domaのバージョンに互換性がある限りにおいて）。
-  デフォルトの値は、 ``true`` 。
-
-doma.config.path
-  オプションの設定ファイルを置く場所の指定。
-  デフォルトの値は、 ``doma.compile.config``。
-
-Eclipse
+Options
 =======
 
-プロジェクトの「Properties」-「Java Compiler」-「Annotation Processing」の項目でオプションを登録します。
+doma.dao.package
+  The package that the generated implementation classes of interfaces annotated with ``@Dao`` belong to.
+  The specified value overrides the value of doma.dao.subpackage.
+  The default value is the same package as the one the interfaces annotated with ``@Dao`` belong to.
 
-IntelliJ IDEA
-=============
+doma.dao.subpackage
+  The subpackage that the generated implementation classes of interfaces annotated with ``@Dao`` belong to.
+  The specified value is overridden by the value of doma.dao.package.
+  If this value is ``impl`` and the package of interfaces annotated with ``@Dao`` is ``example.dao``,
+  the generated implementation classes belong to the package ``example.dao.impl``.
 
-Preferrences から Build, Execution, Deployment > Compiler > Annotation Processors の画面を開き登録します。
+doma.dao.suffix
+  The name suffix that the generated implementation classes of interfaces annotated with ``@Dao`` have.
+  If this value is ``Bean`` and the simple name of the interface annotated with ``@Dao`` is ``EmployeeDao``,
+  the simple name of the generated implementation class is ``EmployeeDaoBean``.
+  The default value is ``Impl``.
 
-javac
-=====
+doma.debug
+  Whether to output the debug log in annotation processing.
+  If the value is ``true``, the annotation processors output the debug log.
+  The default value is ``false``.
 
--Aオプションにより登録します。
-詳細はjavacのドキュメントを参照してください。
+doma.domain.converters
+  The full qualified names of the classes annotated with ``@DomainConverters``.
+  The names are described as comma separated list.
+  This value are used to find external domain classes.
 
-Gradle
-======
+doma.entity.field.prefix
+  The name prefix that the fields of the generated entity meta classes have.
+  The value ``none`` means the prefix is not used.
+  The default value is ``$``.
 
-``compileJava.options.compilerArgs`` に指定します。
+doma.expr.functions
+  The full qualified name of the class that implements ``org.seasar.doma.expr.ExpressionFunctions``.
+  The default value is ``org.seasar.doma.expr.ExpressionFunctions``.
+  This value are used to determine which functions are available in expression comments.
+
+doma.resources.dir
+  The resource directory that contains the resource files such as a doma.compile.config file and sql files.
+  Specify the value as an absolute path.
+  If the value is not specified, the resource directory is same as the directory the classes are generated.
+
+doma.sql.validation
+  Whether to validate the existence of sql files and the grammar of sql comments.
+  If the value is ``true``, the validations run.
+  To disable the validations, set ``false``.
+  The default value is ``true``.
+
+doma.version.validation
+  Whether to validate the versions of doma.jar between runtime and compile-time.
+  If the value is ``true``, the validation runs.
+  To disable the validation, set ``false``.
+  The default value is ``true``.
+
+doma.config.path
+  The file path of the configuration file for Doma.
+  The default value is ``doma.compile.config``.
+
+Setting options in Eclipse
+==========================
+
+- Select “Project > Properties” from the menu bar and open the dialog
+- Select “Java Compiler > Annotation Processing” from the left menu of the dialog
+- Add "Processor options"
+
+Setting options in IntelliJ IDEA
+================================
+
+- Select "Preferrences" from the menu bar and open the dialog
+- Select "Build, Execution, Deployment > Compiler > Annotation Processors" from the left menu of the dialog
+- Add "Annotation Processor options"
+
+Setting options in javac
+========================
+
+- Use `the -A option <https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCDIFEE>`_
+
+Setting options in Gradle
+=========================
+
+- Use `the compilerArgs property
+  <https://docs.gradle.org/5.0/dsl/org.gradle.api.tasks.compile.CompileOptions.html#org.gradle.api.tasks.compile.CompileOptions:compilerArgs>`_
 
 .. code-block:: groovy
 
-  compileJava.options.compilerArgs = ['-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
+  compileJava {
+      options {
+          compilerArgs = ['-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
+      }
+  }
 
-設定ファイル
-==================
+Setting options with configuration file
+=======================================
 
-デフォルトでは ``main/resources/doma.compile.config`` ファイルにオプションを記述しておくことで、
-ビルドツールごとのオプションの設定を利用する必要がなくなります。
-記述形式はプロパティファイルと同様です。
-なお、設定がバッティングした場合、ビルドツールごとのオプションの設定が優先されます。
+The options specified in the ``doma.compile.config`` file are available in all build tools
+such as Eclipse, IDEA, Gradle and so on.
+
+The ``doma.compile.config`` file must follow the properties file format
+and be placed in the root directory such as ``src/main/resources``.
+
+.. note::
+  The options specified in the ``doma.compile.config`` file are overridden by
+  the ones specific to the build tools.

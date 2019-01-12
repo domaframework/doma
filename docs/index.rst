@@ -47,8 +47,8 @@ User Documentation
    sql
    expression
    transaction
-   annotation-processing
    build
+   annotation-processing
    lombok-support
    kotlin-support
 
