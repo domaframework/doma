@@ -12,11 +12,16 @@ public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
     super(method, dao);
   }
 
-  NClobFactoryAnnot getNClobFactoryMirror() {
+  public NClobFactoryAnnot getNClobFactoryAnnot() {
     return nClobFactoryAnnot;
   }
 
   void setNClobFactoryMirror(NClobFactoryAnnot nClobFactoryAnnot) {
     this.nClobFactoryAnnot = nClobFactoryAnnot;
+  }
+
+  @Override
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitNClobCreateQueryMeta(this);
   }
 }

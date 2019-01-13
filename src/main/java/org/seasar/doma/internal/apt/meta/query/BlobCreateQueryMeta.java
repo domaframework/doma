@@ -12,11 +12,16 @@ public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
     super(method, dao);
   }
 
-  BlobFactoryAnnot getBlobFactoryAnnot() {
+  public BlobFactoryAnnot getBlobFactoryAnnot() {
     return blobFactoryAnnot;
   }
 
   void setBlobFactoryAnnot(BlobFactoryAnnot blobFactoryAnnot) {
     this.blobFactoryAnnot = blobFactoryAnnot;
+  }
+
+  @Override
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitBlobCreateQueryMeta(this);
   }
 }

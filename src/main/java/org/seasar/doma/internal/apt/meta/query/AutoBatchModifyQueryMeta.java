@@ -35,7 +35,7 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
     this.entitiesParameterName = entitiesParameterName;
   }
 
-  BatchModifyAnnot getBatchModifyAnnot() {
+  public BatchModifyAnnot getBatchModifyAnnot() {
     return batchModifyAnnot;
   }
 

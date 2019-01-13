@@ -7,6 +7,7 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ModifyAnnot;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
@@ -30,32 +31,38 @@ public class SqlFileModifyQueryMetaFactory
     doParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);
     doThrowTypes(queryMeta, method, daoMeta);
-    doSqlFiles(queryMeta, method, daoMeta, false, queryMeta.isPopulatable());
+    doSqlTemplate(queryMeta, method, daoMeta, false, queryMeta.isPopulatable());
     return queryMeta;
   }
 
   protected SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method, daoMeta.getDaoElement());
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    queryMeta.setSqlAnnot(sqlAnnot);
     ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(method);
-    if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
+    if (modifyAnnot != null && usesSqlTemplate(sqlAnnot, modifyAnnot)) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
       return queryMeta;
     }
     modifyAnnot = ctx.getAnnotations().newUpdateAnnot(method);
-    if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
+    if (modifyAnnot != null && usesSqlTemplate(sqlAnnot, modifyAnnot)) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
       return queryMeta;
     }
     modifyAnnot = ctx.getAnnotations().newDeleteAnnot(method);
-    if (modifyAnnot != null && modifyAnnot.getSqlFileValue()) {
+    if (modifyAnnot != null && usesSqlTemplate(sqlAnnot, modifyAnnot)) {
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
       return queryMeta;
     }
     return null;
+  }
+
+  private boolean usesSqlTemplate(SqlAnnot sqlAnnot, ModifyAnnot modifyAnnot) {
+    return sqlAnnot != null || modifyAnnot.getSqlFileValue();
   }
 
   @Override

@@ -20,7 +20,13 @@ public interface QueryMetaVisitor<R> {
 
   R visitArrayCreateQueryMeta(ArrayCreateQueryMeta m);
 
-  R visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m);
+  R visitBlobCreateQueryMeta(BlobCreateQueryMeta m);
+
+  R visitClobCreateQueryMeta(ClobCreateQueryMeta m);
+
+  R visitNClobCreateQueryMeta(NClobCreateQueryMeta m);
+
+  R visitSQLXMLCreateQueryMeta(SQLXMLCreateQueryMeta m);
 
   R visitDefaultQueryMeta(DefaultQueryMeta m);
 

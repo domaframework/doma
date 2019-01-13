@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.meta.dao;
 
 import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -14,11 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -29,11 +26,9 @@ import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.*;
-import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
-import org.seasar.doma.internal.apt.annot.DaoAnnot;
+import org.seasar.doma.internal.apt.annot.*;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.meta.query.QueryMeta;
-import org.seasar.doma.internal.apt.meta.query.QueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.*;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -251,6 +246,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
     validateMethod(methodElement, daoMeta);
     QueryMeta queryMeta = createQueryMeta(methodElement, daoMeta);
+    validateQueryMeta(queryMeta, methodElement);
     daoMeta.addQueryMeta(queryMeta);
   }
 
@@ -285,6 +281,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       }
     }
     throw new AptException(Message.DOMA4005, method, new Object[] {});
+  }
+
+  protected void validateQueryMeta(QueryMeta queryMeta, ExecutableElement method) {
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    if (sqlAnnot != null) {
+      queryMeta.accept(new SqlAnnotationCombinationValidator(method, sqlAnnot));
+    }
   }
 
   protected void validateFiles(TypeElement interfaceElement, DaoMeta daoMeta) {
@@ -365,5 +368,123 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       }
     }
     return false;
+  }
+
+  private static class SqlAnnotationCombinationValidator implements QueryMetaVisitor<Void> {
+
+    private final ExecutableElement method;
+
+    private final SqlAnnot sqlAnnot;
+
+    private SqlAnnotationCombinationValidator(ExecutableElement method, SqlAnnot sqlAnnot) {
+      assertNotNull(method, sqlAnnot);
+      this.method = method;
+      this.sqlAnnot = sqlAnnot;
+    }
+
+    @Override
+    public Void visitSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m) {
+      // always OK
+      return null;
+    }
+
+    @Override
+    public Void visitSqlProcessorQueryMeta(SqlProcessorQueryMeta m) {
+      // always OK
+      return null;
+    }
+
+    @Override
+    public Void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m) {
+      // always OK
+      return null;
+    }
+
+    @Override
+    public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m) {
+      return handleConflict(m.getFunctionAnnot());
+    }
+
+    @Override
+    public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m) {
+      return handleConflict(m.getProcedureAnnot());
+    }
+
+    @Override
+    public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m) {
+      return handleConflict(m.getArrayFactoryAnnot());
+    }
+
+    @Override
+    public Void visitBlobCreateQueryMeta(BlobCreateQueryMeta m) {
+      return handleConflict(m.getBlobFactoryAnnot());
+    }
+
+    @Override
+    public Void visitClobCreateQueryMeta(ClobCreateQueryMeta m) {
+      return handleConflict(m.getClobFactoryAnnot());
+    }
+
+    @Override
+    public Void visitNClobCreateQueryMeta(NClobCreateQueryMeta m) {
+      return handleConflict(m.getNClobFactoryAnnot());
+    }
+
+    @Override
+    public Void visitSQLXMLCreateQueryMeta(SQLXMLCreateQueryMeta m) {
+      return handleConflict(m.getSqlxmlFactoryAnnot());
+    }
+
+    private Void handleConflict(Annot annot) {
+      assertNotNull(annot);
+      throw new AptException(
+          Message.DOMA4444,
+          method,
+          sqlAnnot.getAnnotationMirror(),
+          new Object[] {annot.getAnnotationMirror()});
+    }
+
+    @Override
+    public Void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m) {
+      ModifyAnnot annot = m.getModifyAnnot();
+      if (annot.getSqlFileValue()) {
+        handleConflictWithSqlFileElement(annot.getAnnotationMirror(), annot.getSqlFile());
+      }
+      return null;
+    }
+
+    @Override
+    public Void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m) {
+      BatchModifyAnnot annot = m.getBatchModifyAnnot();
+      if (annot.getSqlFileValue()) {
+        handleConflictWithSqlFileElement(annot.getAnnotationMirror(), annot.getSqlFile());
+      }
+      return null;
+    }
+
+    private Void handleConflictWithSqlFileElement(
+        AnnotationMirror annotationMirror, AnnotationValue annotationValue) {
+      assertNotNull(annotationMirror, annotationValue);
+      throw new AptException(
+          Message.DOMA4445, method, annotationMirror, annotationValue, new Object[] {});
+    }
+
+    @Override
+    public Void visitDefaultQueryMeta(DefaultQueryMeta m) {
+      throw new AptException(
+          Message.DOMA4446, method, sqlAnnot.getAnnotationMirror(), new Object[] {});
+    }
+
+    @Override
+    public Void visitAutoModifyQueryMeta(AutoModifyQueryMeta m) {
+      assertUnreachable("visitAutoModifyQueryMeta");
+      return null;
+    }
+
+    @Override
+    public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m) {
+      assertUnreachable("visitAutoBatchModifyQueryMeta");
+      return null;
+    }
   }
 }

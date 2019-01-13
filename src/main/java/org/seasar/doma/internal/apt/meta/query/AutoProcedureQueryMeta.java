@@ -14,7 +14,7 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
     super(method, dao);
   }
 
-  ProcedureAnnot getProcedureAnnot() {
+  public ProcedureAnnot getProcedureAnnot() {
     return procedureAnnot;
   }
 

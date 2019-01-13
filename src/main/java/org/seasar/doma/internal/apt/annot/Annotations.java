@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.lang.model.element.*;
 import org.seasar.doma.*;
+import org.seasar.doma.experimental.Sql;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
@@ -175,6 +176,11 @@ public class Annotations {
   public SingletonConfigAnnot newSingletonConfigAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, SingletonConfig.class, SingletonConfigAnnot::new);
+  }
+
+  public SqlAnnot newSqlAnnot(ExecutableElement method) {
+    assertNotNull(method);
+    return newInstance(method, Sql.class, SqlAnnot::new);
   }
 
   public SqlProcessorAnnot newSqlProcessorAnnot(ExecutableElement method) {

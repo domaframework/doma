@@ -10,6 +10,7 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.SelectAnnot;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -46,7 +47,7 @@ public class SqlFileSelectQueryMetaFactory
     doParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);
     doThrowTypes(queryMeta, method, daoMeta);
-    doSqlFiles(queryMeta, method, daoMeta, queryMeta.isExpandable(), false);
+    doSqlTemplate(queryMeta, method, daoMeta, queryMeta.isExpandable(), false);
     return queryMeta;
   }
 
@@ -59,6 +60,8 @@ public class SqlFileSelectQueryMetaFactory
     SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(method, daoMeta.getDaoElement());
     queryMeta.setSelectAnnot(selectAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    queryMeta.setSqlAnnot(sqlAnnot);
     return queryMeta;
   }
 

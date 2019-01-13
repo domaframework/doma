@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.meta.query;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.annot.ScriptAnnot;
+import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
@@ -17,7 +18,7 @@ public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
     this.scriptAnnot = scriptAnnot;
   }
 
-  ScriptAnnot getScriptAnnot() {
+  public ScriptAnnot getScriptAnnot() {
     return scriptAnnot;
   }
 
@@ -31,6 +32,15 @@ public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
   public SqlLogType getSqlLogType() {
     return scriptAnnot.getSqlLogValue();
+  }
+
+  @Override
+  public String getPath() {
+    if (sqlAnnot == null) {
+      // script file path
+      return ScriptFileUtil.buildPath(getDaoElement().getQualifiedName().toString(), getName());
+    }
+    return buildQualifiedMethodName();
   }
 
   @Override

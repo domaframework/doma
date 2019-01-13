@@ -8,6 +8,7 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
@@ -38,6 +39,10 @@ public class AutoBatchModifyQueryMetaFactory
 
   protected AutoBatchModifyQueryMeta createAutoBatchModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    if (sqlAnnot != null) {
+      return null;
+    }
     AutoBatchModifyQueryMeta queryMeta =
         new AutoBatchModifyQueryMeta(method, daoMeta.getDaoElement());
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnotations().newBatchInsertAnnot(method);

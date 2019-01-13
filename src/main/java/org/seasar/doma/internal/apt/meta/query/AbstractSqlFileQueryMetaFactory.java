@@ -13,6 +13,7 @@ import javax.tools.FileObject;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -30,7 +31,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     super(ctx);
   }
 
-  protected void doSqlFiles(
+  protected void doSqlTemplate(
       M queryMeta,
       ExecutableElement method,
       DaoMeta daoMeta,
@@ -39,9 +40,31 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     if (!ctx.getOptions().getSqlValidation()) {
       return;
     }
-    String filePath =
-        SqlFileUtil.buildPath(
-            daoMeta.getDaoElement().getQualifiedName().toString(), queryMeta.getName());
+    SqlAnnot sqlAnnot = queryMeta.getSqlAnnot();
+    if (sqlAnnot == null) {
+      processSqlFiles(queryMeta, method, daoMeta, expandable, populatable);
+    } else {
+      // experimental logic
+      String sql = sqlAnnot.getValueValue();
+      String path = queryMeta.getPath();
+      if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
+        throw new AptException(Message.DOMA4020, method, new Object[] {path});
+      }
+      SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta, path, sql);
+      SqlValidator validator =
+          createSqlValidator(
+              method, queryMeta.getBindableParameterTypeMap(), path, expandable, populatable);
+      validator.validate(sqlNode);
+    }
+  }
+
+  private void processSqlFiles(
+      M queryMeta,
+      ExecutableElement method,
+      DaoMeta daoMeta,
+      boolean expandable,
+      boolean populatable) {
+    String filePath = queryMeta.getPath();
     File file = getFile(queryMeta, method, filePath);
     File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
     String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString());

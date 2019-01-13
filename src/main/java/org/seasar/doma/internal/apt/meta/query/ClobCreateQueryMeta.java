@@ -12,11 +12,16 @@ public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
     super(method, dao);
   }
 
-  ClobFactoryAnnot getClobFactoryAnnot() {
+  public ClobFactoryAnnot getClobFactoryAnnot() {
     return clobFactoryAnnot;
   }
 
   void setClobFactoryAnnot(ClobFactoryAnnot clobFactoryAnnot) {
     this.clobFactoryAnnot = clobFactoryAnnot;
+  }
+
+  @Override
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitClobCreateQueryMeta(this);
   }
 }

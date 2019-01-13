@@ -10,6 +10,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
@@ -37,7 +38,7 @@ public class SqlFileBatchModifyQueryMetaFactory
     doParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);
     doThrowTypes(queryMeta, method, daoMeta);
-    doSqlFiles(queryMeta, method, daoMeta, false, queryMeta.isPopulatable());
+    doSqlTemplate(queryMeta, method, daoMeta, false, queryMeta.isPopulatable());
     return queryMeta;
   }
 
@@ -45,25 +46,31 @@ public class SqlFileBatchModifyQueryMetaFactory
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileBatchModifyQueryMeta queryMeta =
         new SqlFileBatchModifyQueryMeta(method, daoMeta.getDaoElement());
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    queryMeta.setSqlAnnot(sqlAnnot);
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnotations().newBatchInsertAnnot(method);
-    if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
+    if (batchModifyAnnot != null && usesSqlTemplate(sqlAnnot, batchModifyAnnot)) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_INSERT);
       return queryMeta;
     }
     batchModifyAnnot = ctx.getAnnotations().newBatchUpdateAnnot(method);
-    if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
+    if (batchModifyAnnot != null && usesSqlTemplate(sqlAnnot, batchModifyAnnot)) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_UPDATE);
       return queryMeta;
     }
     batchModifyAnnot = ctx.getAnnotations().newBatchDeleteAnnot(method);
-    if (batchModifyAnnot != null && batchModifyAnnot.getSqlFileValue()) {
+    if (batchModifyAnnot != null && usesSqlTemplate(sqlAnnot, batchModifyAnnot)) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_DELETE);
       return queryMeta;
     }
     return null;
+  }
+
+  private boolean usesSqlTemplate(SqlAnnot sqlAnnot, BatchModifyAnnot batchModifyAnnot) {
+    return sqlAnnot != null || batchModifyAnnot.getSqlFileValue();
   }
 
   @Override

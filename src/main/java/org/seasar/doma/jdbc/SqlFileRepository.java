@@ -25,8 +25,9 @@ public interface SqlFileRepository {
    * @param dialect the SQL dialect
    * @return the SQL file
    * @throws DomaNullPointerException if any arguments are {@code null}
-   * @throws DomaIllegalArgumentException if {@code path} does not start with 'META-INF/' or {@code
-   *     path} does not end with '.sql'
+   * @throws DomaIllegalArgumentException if the {@code method} is not annotated with {@link
+   *     org.seasar.doma.experimental.Sql} and the {@code path} does not match the Ant-style glob
+   *     pattern "META-INF&#47;**&#47;*.sql"
    * @throws SqlFileNotFoundException if the SQL file is not found
    * @throws JdbcException if an error other than listed above occurs
    */

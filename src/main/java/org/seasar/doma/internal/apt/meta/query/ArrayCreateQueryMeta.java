@@ -22,6 +22,10 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
     this.elementsParameterName = elementsParameterName;
   }
 
+  public ArrayFactoryAnnot getArrayFactoryAnnot() {
+    return arrayFactoryAnnot;
+  }
+
   void setArrayFactoryAnnot(ArrayFactoryAnnot arrayFactoryAnnot) {
     this.arrayFactoryAnnot = arrayFactoryAnnot;
   }

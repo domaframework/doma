@@ -25,7 +25,7 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
     this.resultParameterMeta = resultParameterMeta;
   }
 
-  FunctionAnnot getFunctionAnnot() {
+  public FunctionAnnot getFunctionAnnot() {
     return functionAnnot;
   }
 

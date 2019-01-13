@@ -7,6 +7,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.ConfigCtType;
@@ -34,7 +35,7 @@ public class SqlProcessorQueryMetaFactory
     doParameters(queryMeta, method, daoMeta);
     doReturnType(queryMeta, method, daoMeta);
     doThrowTypes(queryMeta, method, daoMeta);
-    doSqlFiles(queryMeta, method, daoMeta, false, false);
+    doSqlTemplate(queryMeta, method, daoMeta, false, false);
     return queryMeta;
   }
 
@@ -47,6 +48,8 @@ public class SqlProcessorQueryMetaFactory
     SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method, daoMeta.getDaoElement());
     queryMeta.setSqlProcessorAnnot(sqlProcessorAnnot);
     queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    queryMeta.setSqlAnnot(sqlAnnot);
     return queryMeta;
   }
 

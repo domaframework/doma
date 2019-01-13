@@ -3,6 +3,7 @@ package org.seasar.doma.jdbc;
 import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.experimental.Sql;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -22,13 +23,15 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
     if (path == null) {
       throw new DomaNullPointerException("path");
     }
-    if (!path.startsWith(Constants.SQL_PATH_PREFIX)) {
-      throw new DomaIllegalArgumentException(
-          "path", "The path does not start with '" + Constants.SQL_PATH_PREFIX + "'");
-    }
-    if (!path.endsWith(Constants.SQL_PATH_SUFFIX)) {
-      throw new DomaIllegalArgumentException(
-          "path", "The path does not end with '" + Constants.SQL_PATH_SUFFIX + "'");
+    if (!method.isAnnotationPresent(Sql.class)) {
+      if (!path.startsWith(Constants.SQL_PATH_PREFIX)) {
+        throw new DomaIllegalArgumentException(
+            "path", "The path does not start with '" + Constants.SQL_PATH_PREFIX + "'");
+      }
+      if (!path.endsWith(Constants.SQL_PATH_SUFFIX)) {
+        throw new DomaIllegalArgumentException(
+            "path", "The path does not end with '" + Constants.SQL_PATH_SUFFIX + "'");
+      }
     }
     if (dialect == null) {
       throw new DomaNullPointerException("dialect");
@@ -52,11 +55,18 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
   /**
    * Creates the SQL file.
    *
+   * @param method the Dao method
    * @param path the SQL file path
    * @param dialect the dialect
    * @return the SQL file
    */
-  protected final SqlFile createSqlFile(String path, Dialect dialect) {
+  protected final SqlFile createSqlFile(Method method, String path, Dialect dialect) {
+    Sql sqlAnnotation = method.getAnnotation(Sql.class);
+    if (sqlAnnotation != null) {
+      String sql = sqlAnnotation.value();
+      SqlNode sqlNode = parse(sqlAnnotation.value());
+      return new SqlFile(path, sql, sqlNode);
+    }
     String primaryPath = getPrimaryPath(path, dialect);
     String sql = getSql(primaryPath);
     if (sql != null) {
