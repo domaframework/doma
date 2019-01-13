@@ -2,13 +2,10 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.seasar.doma.internal.Constants;
+import java.util.function.Supplier;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.ScriptBlockContext;
@@ -115,8 +112,12 @@ public class ScriptReader {
    * @throws IOException IOに関する例外が発生した場合
    */
   protected BufferedReader createBufferedReader() throws IOException {
-    InputStream inputStream = query.getScriptFileUrl().openStream();
-    return new BufferedReader(new InputStreamReader(inputStream, Constants.UTF_8));
+    Supplier<Reader> supplier = query.getReaderSupplier();
+    try {
+      return new BufferedReader(supplier.get());
+    } catch (UncheckedIOException e) {
+      throw e.getCause();
+    }
   }
 
   /**

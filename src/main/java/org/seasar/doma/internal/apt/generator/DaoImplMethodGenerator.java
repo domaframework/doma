@@ -16,8 +16,6 @@ import org.seasar.doma.internal.apt.meta.parameter.*;
 import org.seasar.doma.internal.apt.meta.query.*;
 import org.seasar.doma.internal.jdbc.command.*;
 import org.seasar.doma.internal.jdbc.sql.*;
-import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 
 public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMetaVisitor<Void> {
 
@@ -101,9 +99,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
         m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__config);%n");
-    iprint(
-        "__query.setSqlFilePath(\"%1$s\");%n",
-        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
     if (m.getSelectOptionsCtType() != null) {
       iprint("__query.setOptions(%1$s);%n", m.getSelectOptionsParameterName());
     }
@@ -182,10 +178,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
         m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__config);%n");
-    iprint(
-        "__query.setScriptFilePath(\"%1$s\");%n",
-        ScriptFileUtil.buildPath(
-            daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    iprint("__query.setScriptFilePath(\"%1$s\");%n", m.getPath());
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
     iprint("__query.setBlockDelimiter(\"%1$s\");%n", m.getBlockDelimiter());
@@ -296,9 +289,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
         /* 3 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__config);%n");
-    iprint(
-        "__query.setSqlFilePath(\"%1$s\");%n",
-        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
 
     printAddParameterStatements(m.getParameterMetas());
 
@@ -459,9 +450,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__config);%n");
     iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
-    iprint(
-        "__query.setSqlFilePath(\"%1$s\");%n",
-        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
     iprint("__query.setParameterName(\"%1$s\");%n", m.getElementsParameterName());
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -610,37 +599,6 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
   }
 
   @Override
-  public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m) {
-    printEnteringStatements(m);
-    printPrerequisiteStatements(m);
-
-    QueryReturnMeta resultMeta = m.getReturnMeta();
-    iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
-        /* 1 */ m.getQueryClass().getName(),
-        /* 2 */ m.getQueryClass().getSimpleName(),
-        /* 3 */ methodName);
-    iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
-    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
-    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-    iprint("__query.prepare();%n");
-    iprint(
-        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
-        /* 1 */ m.getCommandClass().getName(),
-        /* 2 */ resultMeta.getTypeName(),
-        /* 3 */ m.getCommandClass().getSimpleName(),
-        /* 4 */ methodName);
-    iprint("%1$s __result = __command.execute();%n", resultMeta.getTypeName());
-    iprint("__query.complete();%n");
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
-    iprint("return __result;%n");
-
-    printThrowingStatements(m);
-    return null;
-  }
-
-  @Override
   public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m) {
     printArrayCreateEnteringStatements(m);
     printPrerequisiteStatements(m);
@@ -662,6 +620,56 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
         "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ resultMeta.getBoxedTypeName(),
+        /* 3 */ m.getCommandClass().getSimpleName(),
+        /* 4 */ methodName);
+    iprint("%1$s __result = __command.execute();%n", resultMeta.getTypeName());
+    iprint("__query.complete();%n");
+    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
+  public Void visitBlobCreateQueryMeta(BlobCreateQueryMeta m) {
+    return visitAbstractCreateQueryMeta(m);
+  }
+
+  @Override
+  public Void visitClobCreateQueryMeta(ClobCreateQueryMeta m) {
+    return visitAbstractCreateQueryMeta(m);
+  }
+
+  @Override
+  public Void visitNClobCreateQueryMeta(NClobCreateQueryMeta m) {
+    return visitAbstractCreateQueryMeta(m);
+  }
+
+  @Override
+  public Void visitSQLXMLCreateQueryMeta(SQLXMLCreateQueryMeta m) {
+    return visitAbstractCreateQueryMeta(m);
+  }
+
+  private Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    QueryReturnMeta resultMeta = m.getReturnMeta();
+    iprint(
+        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getQueryClass().getSimpleName(),
+        /* 3 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+        /* 1 */ m.getCommandClass().getName(),
+        /* 2 */ resultMeta.getTypeName(),
         /* 3 */ m.getCommandClass().getSimpleName(),
         /* 4 */ methodName);
     iprint("%1$s __result = __command.execute();%n", resultMeta.getTypeName());
@@ -712,9 +720,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
         m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__config);%n");
-    iprint(
-        "__query.setSqlFilePath(\"%1$s\");%n",
-        SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString(), m.getName()));
+    iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
 
     printAddParameterStatements(m.getParameterMetas());
 

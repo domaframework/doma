@@ -12,11 +12,16 @@ public class SQLXMLCreateQueryMeta extends AbstractCreateQueryMeta {
     super(method, dao);
   }
 
-  SQLXMLFactoryAnnot getSqlxmlFactoryAnnot() {
+  public SQLXMLFactoryAnnot getSqlxmlFactoryAnnot() {
     return sqlxmlFactoryAnnot;
   }
 
   void setSqlxmlFactoryAnnot(SQLXMLFactoryAnnot sqlxmlFactoryAnnot) {
     this.sqlxmlFactoryAnnot = sqlxmlFactoryAnnot;
+  }
+
+  @Override
+  public <R> R accept(QueryMetaVisitor<R> visitor) {
+    return visitor.visitSQLXMLCreateQueryMeta(this);
   }
 }

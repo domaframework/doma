@@ -8,6 +8,6 @@ public class NoCacheSqlFileRepository extends AbstractSqlFileRepository {
 
   @Override
   protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {
-    return createSqlFile(path, dialect);
+    return createSqlFile(method, path, dialect);
   }
 }

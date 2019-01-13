@@ -35,7 +35,7 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
     this.entityParameterName = entityParameterName;
   }
 
-  ModifyAnnot getModifyAnnot() {
+  public ModifyAnnot getModifyAnnot() {
     return modifyAnnot;
   }
 

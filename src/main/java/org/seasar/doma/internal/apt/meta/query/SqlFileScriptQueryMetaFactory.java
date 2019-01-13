@@ -7,6 +7,7 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ScriptAnnot;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.message.Message;
@@ -29,7 +30,7 @@ public class SqlFileScriptQueryMetaFactory
     doReturnType(queryMeta, method, daoMeta);
     doParameters(queryMeta, method, daoMeta);
     doThrowTypes(queryMeta, method, daoMeta);
-    doSqlFiles(queryMeta, method, daoMeta, false, false);
+    doSqlTemplate(queryMeta, method, daoMeta, false, false);
     return queryMeta;
   }
 
@@ -42,6 +43,8 @@ public class SqlFileScriptQueryMetaFactory
     }
     queryMeta.setScriptAnnot(scriptAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SCRIPT);
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    queryMeta.setSqlAnnot(sqlAnnot);
     return queryMeta;
   }
 
@@ -64,15 +67,17 @@ public class SqlFileScriptQueryMetaFactory
   }
 
   @Override
-  protected void doSqlFiles(
+  protected void doSqlTemplate(
       SqlFileScriptQueryMeta queryMeta,
       ExecutableElement method,
       DaoMeta daoMeta,
       boolean expandable,
       boolean populatable) {
-    String filePath =
-        ScriptFileUtil.buildPath(
-            daoMeta.getDaoElement().getQualifiedName().toString(), queryMeta.getName());
+    SqlAnnot sqlAnnot = queryMeta.getSqlAnnot();
+    if (sqlAnnot != null) {
+      return;
+    }
+    String filePath = queryMeta.getPath();
     File file = getFile(queryMeta, method, filePath);
     File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
     String methodName = queryMeta.getName();

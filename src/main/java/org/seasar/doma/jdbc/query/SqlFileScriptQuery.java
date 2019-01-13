@@ -4,7 +4,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
+import java.io.*;
 import java.net.URL;
+import java.util.function.Supplier;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
@@ -21,6 +23,8 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
   protected boolean haltOnError;
 
   protected URL scriptFileUrl;
+
+  protected org.seasar.doma.experimental.Sql sqlAnnotation;
 
   protected SqlLogType sqlLogType;
 
@@ -44,18 +48,21 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
   public void prepare() {
     super.prepare();
     assertNotNull(scriptFilePath, blockDelimiter);
-    assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
-    assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
+    sqlAnnotation = method.getAnnotation(org.seasar.doma.experimental.Sql.class);
+    if (sqlAnnotation == null) {
+      assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
+      assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
 
-    String dbmsSpecificPath =
-        ScriptFileUtil.convertToDbmsSpecificPath(scriptFilePath, config.getDialect());
-    scriptFileUrl = ResourceUtil.getResource(dbmsSpecificPath);
-    if (scriptFileUrl != null) {
-      scriptFilePath = dbmsSpecificPath;
-    } else {
-      scriptFileUrl = ResourceUtil.getResource(scriptFilePath);
-      if (scriptFileUrl == null) {
-        throw new ScriptFileNotFoundException(scriptFilePath);
+      String dbmsSpecificPath =
+          ScriptFileUtil.convertToDbmsSpecificPath(scriptFilePath, config.getDialect());
+      scriptFileUrl = ResourceUtil.getResource(dbmsSpecificPath);
+      if (scriptFileUrl != null) {
+        scriptFilePath = dbmsSpecificPath;
+      } else {
+        scriptFileUrl = ResourceUtil.getResource(scriptFilePath);
+        if (scriptFileUrl == null) {
+          throw new ScriptFileNotFoundException(scriptFilePath);
+        }
       }
     }
     if (blockDelimiter.isEmpty()) {
@@ -85,6 +92,20 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
   @Override
   public URL getScriptFileUrl() {
     return scriptFileUrl;
+  }
+
+  public Supplier<Reader> getReaderSupplier() {
+    if (sqlAnnotation == null) {
+      return () -> {
+        try {
+          InputStream inputStream = scriptFileUrl.openStream();
+          return new InputStreamReader(inputStream, Constants.UTF_8);
+        } catch (IOException e) {
+          throw new UncheckedIOException(e);
+        }
+      };
+    }
+    return () -> new StringReader(sqlAnnotation.value());
   }
 
   @Override

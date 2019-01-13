@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc.command;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -11,9 +12,18 @@ import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
 public class ScriptCommandTest extends TestCase {
 
+  private Method method;
+
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+    method = getClass().getMethod(getName());
+  }
+
   public void testExecute() throws Exception {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(new MockConfig());
+    query.setMethod(method);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));
@@ -37,6 +47,7 @@ public class ScriptCommandTest extends TestCase {
 
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(config);
+    query.setMethod(method);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));

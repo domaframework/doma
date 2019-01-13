@@ -16,7 +16,7 @@ public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
     if (file != null) {
       return file;
     }
-    file = createSqlFile(path, dialect);
+    file = createSqlFile(method, path, dialect);
     SqlFile current = sqlFileMap.putIfAbsent(path, file);
     return current != null ? current : file;
   }
