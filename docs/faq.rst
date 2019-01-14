@@ -34,7 +34,7 @@ Which version of JRE does Doma support?
 JRE 8、9、10 and 11.
 
 What libraries are required to work Doma?
---------------------------------------
+-----------------------------------------
 
 Nothing.
 

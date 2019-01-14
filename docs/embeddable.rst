@@ -1,21 +1,20 @@
-=========================
-エンベッダブルクラス
-=========================
+==================
+Embeddable classes
+==================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-Embeddable（エンベッダブル）は、データベースのテーブルやクエリの結果セット複数カラムをグループ化します。
+Embeddable classes group the properties for :doc:`../entity`.
 
-エンベッダブル定義
-=========================
+Embeddable definition
+=====================
 
-エンベッダブルクラスは ``@Enbeddable`` を注釈して示します。
-コンストラクタには永続的なフィールドに対応するパラメータが必要です。
+The following code snippet shows how to define an embeddable:
 
 .. code-block:: java
 
-  @Embeddalbe
+  @Embeddable
   public class Address {
 
       final String city;
@@ -32,7 +31,7 @@ Embeddable（エンベッダブル）は、データベースのテーブルや�
       }
   }
 
-エンベッダブルクラスは :doc:`../entity` のフィールドとして使用します。
+The embeddable class is used as the entity field type:
 
 .. code-block:: java
 
@@ -44,7 +43,7 @@ Embeddable（エンベッダブル）は、データベースのテーブルや�
       Address address;
   }
 
-テーブルや結果セットとのマッピングにおいて、上記のクラス定義は下記のクラス定義と同等です。
+The above entity definition is equivalent to following one:
 
 .. code-block:: java
 
@@ -62,80 +61,59 @@ Embeddable（エンベッダブル）は、データベースのテーブルや�
   }
 
 
-ネーミング規約
----------------------------
+Naming convention
+-----------------
 
-ネーミング規約は、エンベッダブルクラスを保有する :doc:`../entity` から引き継ぎます。
+A naming convention is inherited from the enclosing :doc:`../entity`.
 
-フィールド定義
-==================
+Field definition
+================
 
-エンベッダブルクラスのフィールドはデフォルトで永続的です。
-つまり、テーブルや結果セットのカラムに対応します。
-フィールドの型は次のいずれかでなければいけません。
+By default, the fields are persistent and correspond to the database columns or result set columns.
+
+The field type must be one of the following:
 
 * :doc:`basic`
 * :doc:`domain`
-* :doc:`basic` または :doc:`domain` のいずれかを要素とするjava.util.Optional
+* java.util.Optional, whose element is either :doc:`basic` or :doc:`domain`
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
 
 .. code-block:: java
 
-  @Embeddalbe
+  @Embeddable
   public class Address {
       ...
       String street;
   }
 
-カラム
-------------------
+Column
+------
 
-カラム情報を指定するには、 ``@Column`` を使用します。
+You can specify the corresponding column name with the ``@Column`` annotation:
 
 .. code-block:: java
 
   @Column(name = "ZIP_CODE")
   final String zip;
 
-識別子
-------
+Transient
+---------
 
-エンベッダブルクラスには識別子(主キー)を定義できません。
+If an embeddable has fields that you don’t want to persist, you can annotate them using ``@Transient``:
 
-バージョン
-------------------
+Method definition
+=================
 
-エンベッダブルクラスには楽観的排他制御用のバージョンを定義できません。
+There are no limitations in the use of methods.
 
-非永続的なフィールド
---------------------------------
-
-非永続的なフィールドは、``@Transient`` を注釈して示します。
-
-取得時の状態を管理するフィールド
---------------------------------------------
-
-エンベッダブルクラスには取得時の状態を管理するフィールドを定義できません。
-
-メソッド定義
-==================
-
-メソッドの定義に制限はありません。
-
-フィールドの可視性を ``protected`` やパッケージプライベートにして ``public`` なメソッド経由で
-アクセスすることも、メソッドを一切使用せず ``public`` フィールドに直接アクセスすること
-もどちらもサポートされています。
-
-利用例
-==================
-
-インスタンス化して利用します。
+Example
+=======
 
 .. code-block:: java
 
-  Employee employee = new Employee(); // エンティティ
-  Address address = new Address("Tokyo", "Yaesu", "103-0028"); // エンベッダブル
+  Employee employee = new Employee(); // Entity
+  Address address = new Address("Tokyo", "Yaesu", "103-0028"); // Embeddable
   employee.setAddress(address);
 
