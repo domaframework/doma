@@ -1,289 +1,243 @@
-==================
-設定
-==================
+=============
+Configuration
+=============
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-Domaに対する設定は、 ``Confing`` インタフェースの実装クラスで表現します。
+The configurable items must be returned from the methods of the implementation class of
+the ``org.seasar.doma.jdbc.Confing`` interface.
 
-設定項目
-=================
+Configurable items
+==================
 
-設定必須と明示していない項目についてはデフォルトの値が使用されます。
+DataSource
+----------
 
-データソース
-----------------
+Return a JDBC ``DataSource`` from the ``getDataSource`` method.
+If you need local transactions provided by Doma, return a ``LocalTransactionDataSource``.
 
-``DataSource`` を ``getDataSource`` メソッドで返してください。
-ローカルトランザクションを利用する場合は、 ``LocalTransactionDataSource`` を返してください。
+See also: :doc:`transaction`
 
 .. note::
 
-   この項目は設定必須です。
+   Required item
 
-データソースの名前
-------------------
+DataSource's name
+-----------------
 
-データソース名をあらわす ``String`` を ``getDataSourceName`` メソッドで返してください。
-データソース名は、複数のデータソースを利用する環境で重要です。
-データソース名はデータソースごとに自動生成される識別子を区別するために使用されます。
-複数データソースを利用する場合は、それぞれ異なる名前を返すようにしてください。
+Return a DataSource's name from the ``getDataSourceName`` method.
+In the environment where multiple DataSources are used, the name is important.
+You have to give an unique name to each DataSource.
 
-デフォルトの実装では、 ``Config`` の実装クラスの完全修飾名が使用されます。
+The default value is the full qualified name of the implementation class of ``Config``.
 
-データベースの方言
---------------------------
+SQL dialect
+-----------
 
-``Dialect`` を ``getDialect`` メソッドで返してください。
-``Dialect`` はRDBMSの方言を表すインタフェースです。
-``Dialect`` には次のものがあります。
+Return a ``Dialect`` from the  ``getDialect`` method.
+You have to choose an appropriate dialect for the database you use.
+
+Doma provides following dialects:
 
 +----------------------------+------------------+--------------------------------------+
-| データベース               | Dialect          | 説明                                 |
+| Database                   | Dialect Name     | Description                          |
 +============================+==================+======================================+
 | DB2                        | Db2Dialect       |                                      |
 +----------------------------+------------------+--------------------------------------+
-| H2 Database Engine 1.2.126 | H212126Dialect   | H2 Database Engine 1.2.126で稼動     |
+| H2 Database Engine 1.2.126 | H212126Dialect   | H2 Database Engine 1.2.126           |
 +----------------------------+------------------+--------------------------------------+
-| H2 Database                | H2Dialect        | H2 Database Engine 1.3.171以降に対応 |
+| H2 Database                | H2Dialect        | H2 Database Engine 1.3.171 and above |
 +----------------------------+------------------+--------------------------------------+
 | HSQLDB                     | HsqldbDialect    |                                      |
 +----------------------------+------------------+--------------------------------------+
-| Microsoft SQL Server 2008  | Mssql2008Dialect | Microsoft SQL Server 2008に対応      |
+| Microsoft SQL Server 2008  | Mssql2008Dialect | Microsoft SQL Server 2008            |
 +----------------------------+------------------+--------------------------------------+
-| Microsoft SQL Server       | MssqlDialect     | Microsoft SQL Server 2012以降に対応  |
+| Microsoft SQL Server       | MssqlDialect     | Microsoft SQL Server 2012 and above  |
 +----------------------------+------------------+--------------------------------------+
 | MySQL                      | MySqlDialect     |                                      |
 +----------------------------+------------------+--------------------------------------+
-| Oracle Database            | OracleDialect    |                                      |
+| Oracle Database 11g        | Oracle11Dialect  | Oracle Database 11g                  |
++----------------------------+------------------+--------------------------------------+
+| Oracle Database            | OracleDialect    | Oracle Database 12g and above        |
 +----------------------------+------------------+--------------------------------------+
 | PostgreSQL                 | PostgresDialect  |                                      |
 +----------------------------+------------------+--------------------------------------+
 | SQLite                     | SqliteDialect    |                                      |
 +----------------------------+------------------+--------------------------------------+
 
+These dialect are located in the ``org.seasar.doma.jdbc.dialect`` package.
+
 .. note::
 
-   この項目は設定必須です。
+   Required item
 
-ログ出力ライブラリへのアダプタ
-------------------------------
+Logger
+------
 
-``JdbcLogger`` を ``getJdbcLogger`` メソッドで返してください。
-``JdbcLogger`` はデータベースアクセスに関するログを扱うインタフェースです。
-実装クラスには次のものがあります。
+Return a ``JdbcLogger`` from the ``getJdbcLogger`` method.
+
+Doma provides following JdbcLogger:
 
 * org.seasar.doma.jdbc.UtilLoggingJdbcLogger
 
-``UtilLoggingJdbcLogger`` は ``java.util.logging`` のロガーを使用する実装で、
-デフォルトで使用されます。
+The default JdbcLogger is UtilLoggingJdbcLogger which uses ``java.util.logging``.
 
-SQLファイルのリポジトリ
------------------------
+SQL File Repository
+-------------------
 
-``SqlFileRepository`` を ``getSqlFileRepository`` メソッドで返してください。
-``SqlFileRepository`` は SQL ファイルのリポジトリを扱うインタフェースです。
-実装クラスには次のものがあります。
+Return a ``SqlFileRepository`` from the ``getSqlFileRepository`` method.
+
+Doma provides following SqlFileRepositories:
 
 * org.seasar.doma.jdbc.GreedyCacheSqlFileRepository
 * org.seasar.doma.jdbc.NoCacheSqlFileRepository
 
-``GreedyCacheSqlFileRepository`` は、読み込んだSQLファイルの内容をパースし、
-その結果をメモリが許す限り最大限にキャッシュします。
+The default SqlFileRepository is GreedyCacheSqlFileRepository
+which caches the result of SQL parsing without limitation.
 
-``NoCacheSqlFileRepository`` は、一切キャッシュを行いません。
-毎回、SQLファイルからSQLを読み取りパースします。
+Controlling REQUIRES_NEW transaction
+------------------------------------
 
-メモリの利用に厳しい制限がある環境や、扱うSQLファイルが膨大にある環境では、
-適切なキャッシュアルゴリズムをもった実装クラスを作成し使用してください。
+Return a ``RequiresNewController`` from the ``getRequiresNewController`` method.
+RequiresNewController may begin new transactions to makes transaction locked time shorter.
 
-デフォルトでは ``GreedyCacheSqlFileRepository`` が使用されます。
+This feature is used only when you use ``@TableGenerator`` which generates identities with the table.
 
-REQUIRES_NEW 属性のトランザクションとの連動
+The default RequiresNewController does nothing.
+
+Loading classes
+---------------
+
+Return a ``ClassHelper`` from the ``getClassHelper`` method.
+
+When the application server and framework you use loads classes with their specific way,
+consider to create your own ClassHelper.
+
+The default ClassHelper loads classes with ``Class#forName`` mainly.
+
+Choosing SQL format contained in exception messages
+---------------------------------------------------
+
+Return a ``SqlLogType`` from the ``getExceptionSqlLogType``.
+The default SqlLogType contains the formatted SQL in exception messages.
+
+Handling unknown columns
+------------------------
+
+Return a ``UnknownColumnHandler`` from the ``getUnknownColumnHandler`` method.
+In result set mappings, if an unknown column to an entity class is found,
+the UnknownColumnHandler handles the situation.
+
+The default UnknownColumnHandler throws an ``UnknownColumnException``.
+
+Naming convention for tables and columns
+----------------------------------------
+
+Return a ``Naming`` from the ``getNaming`` method.
+The naming element of ``@Entity`` have preference over this value.
+When you specify explicit value to the name elements of ``@Table`` and ``@Column``,
+the naming convention is not applied to them.
+
+The default Naming does nothing.
+
+Naming convention for keys of java.util.Map
 -------------------------------------------
 
-``RequiresNewController`` を ``getRequiresNewController`` メソッドで返してください。
-``RequiresNewController`` は REQUIRES_NEW の属性をもつトランザクションを
-制御するインタフェースです。
+Return a ``MapKeyNaming`` from the ``getMapKeyNaming`` method.
+The MapKeyNaming is used when the result set is mapped to ``java.util.Map<String, Object>``.
 
-このインタフェースは、 ``@TableGenerator`` で、識別子を自動生成する際にしか使われません。
-``@TableGenerator`` を利用しない場合は、この設定項目を考慮する必要はありません。
-また、 ``@TableGenerator`` を利用する場合であっても、
-識別子を採番するための更新ロックが問題にならない程度のトランザクション数であれば、
-設定する必要ありません。
+The default MapKeyNaming does nothing.
 
-デフォルトの実装は何の処理もしません。
+Local transaction manager
+-------------------------
 
-クラスのロード方法
-------------------
+Return a ``LocalTransactionManager`` from the ``getTransactionManager`` method.
+The ``getTransactionManager`` method throws ``UnsupportedOperationException`` as default.
 
-``ClassHelper`` を ``getClassHelper`` メソッドで返してください。
-``ClassHelper`` はクラスのロードに関してアプリケーションサーバや
-フレームワークの差異を抽象化するインタフェースです。
+See also: :doc:`transaction`
 
-デフォルトの実装は ``java.lang.Class.forName(name)``  を用いてクラスをロードします。
+Adding SQL identifiers to the SQLs as a comment
+-----------------------------------------------
 
-例外メッセージに含めるSQLの種別
--------------------------------
+Return a ``Commenter`` from the ``getCommenter`` method.
 
-例外メッセージに含めるSQLのタイプをあらわす ``SqlLogType``
-を ``getExceptionSqlLogType`` メソッドで返してください。
-この値は、Doma がスローする例外にどのような形式のSQLを含めるかを決定します。
-
-デフォルトの実装では、フォーマットされた SQL を含めます。
-
-未知のカラムのハンドラ
-----------------------
-
-``UnknownColumnHandler`` を ``getUnknownColumnHandler`` メソッドで返してください。
-``UnknownColumnHandler`` は :doc:`query/select` の結果を :doc:`entity` にマッピングする際、
-エンティティクラスにとって未知のカラムが存在する場合に実行されます。
-
-デフォルトでは、 ``UnknownColumnException`` がスローされます。
-
-テーブルやカラムにおけるネーミング規約の制御
---------------------------------------------
-
-``Naming`` を ``getNaming`` メソッドで返してください。
-
-``Naming`` は、 ``@Entity`` の ``name`` 要素に指定された（もしくは指定されない） ``NamingType``
-をどのように適用するかについて制御するインタフェースです。
-このインタフェースを使うことで、個別のエンティティクラスに ``NamingType`` を指定しなくても
-エンティティのクラス名とプロパティ名からデータベースのテーブル名とカラム名を解決できます。
-
-``Naming`` が使用される条件は以下の通りです。
-
-* ``@Table`` や ``@Column`` の ``name`` 要素に値が指定されていない。
-
-一般的なユースケースを実現するための実装は、 ``Naming`` の ``static`` なメンバに定義されています。
-
-デフォルトでは、 ``Naming.NONE`` が使用されます。
-この実装は、エンティティクラスに指定された ``NamingType`` を使い、
-指定がない場合は何の規約も適用しません。
-
-例えば、指定がない場合にスネークケースの大文字を適用したいというケースでは、
-``Naming.SNAKE_UPPER_CASE`` を使用できます。
-
-マップのキーのネーミング規約の制御
-----------------------------------
-
-``MapKeyNaming`` を ``getMapKeyNaming`` メソッドで返してください。
-``MapKeyNaming`` は検索結果を ``java.util.Map<String, Object>`` にマッピングする場合に実行されます。
-
-デフォルトでは、 ``@Select`` などの ``mapKeyNaming`` 要素に指定された規約を適用します。
-
-ローカルトランザクションマネージャー
-------------------------------------
-
-``LocalTransactionManager`` を ``getTransactionManager`` メソッドで返してください。
-``getTransactionManager`` メソッドは、デフォルトで
-``UnsupportedOperationException`` をスローします。
-
-.. note::
-
-  この項目は設定必須ではありませんが、
-  ``org.seasar.doma.jdbc.tx.TransactionManager`` のインタフェースでトランザクションを利用したい場合は設定してください。
-  設定方法については :doc:`transaction` を参照してください。
-
-SQLの識別子の追記
-------------------------------------
-
-``Commenter`` を ``getCommenter`` メソッドで返してください。
-``Commenter`` はSQLの識別子（SQLの発行箇所等を特定するための文字列）をSQLコメントとして追記するためのインタフェースです。
-
-実装クラスには次のものがあります。
+Doma provides following commenter:
 
 * org.seasar.doma.jdbc.CallerCommenter
 
-``CallerCommenter`` は、SQLの呼び出し元のクラス名とメソッド名を識別子として使用します。
+The default Commenter does nothing.
 
-デフォルトの実装では、 識別子を追記しません。
+Command implementors
+--------------------
 
-Command の実装
---------------
+Return a ``CommandImplementors`` from the ``getCommandImplementors`` method.
+For example, the CommandImplementors provides you a hook to execute JDBC API.
 
-``CommandImplementors`` を ``getCommandImplementors`` メソッドで返してください。
-``CommandImplementors`` を実装すると :doc:`query/index` の実行をカスタマイズできます。
+Query implementors
+------------------
 
-たとえば、 JDBC の API を直接呼び出すことができます。
+Return a ``QueryImplementors`` from the ``getQueryImplementors`` method.
+For example, the QueryImplementors provides you a hook to rewrite SQL statements.
 
-Query の実装
-------------
+Query timeout
+-------------
 
-``QueryImplementors`` を ``getQueryImplementors`` メソッドで返してください。
-``QueryImplementors`` を実装すると :doc:`query/index` の内容をカスタマイズできます。
+Return the query timeout (second) from the ``getQueryTimeout`` method.
+This value is used as default in :doc:`query/index`.
 
-たとえば、自動生成される SQL の一部を書き換え可能です。
-
-タイムアウト
-------------
-
-クエリタイムアウト（秒）をあらわす ``int`` を ``getQueryTimeout`` メソッドで返してください。
-この値はすべての :doc:`query/index` においてデフォルト値として使われます。
-
-最大件数
+Max rows
 --------
 
-SELECT時の最大行数をあらわす ``int`` を ``getMaxRows`` メソッドで返します。
-この値はすべての :doc:`query/select` においてデフォルト値として使われます。
+Return the max rows from the ``getMaxRows`` method.
+This value is used as default in :doc:`query/select`.
 
-フェッチサイズ
---------------
+Fetch size
+----------
 
-SELECT時のフェッチサイズをあらわす ``int`` を ``getFetchSize`` メソッドで返します。
-この値はすべての :doc:`query/select` においてデフォルト値として使われます。
+Return the fetch size from the ``getFetchSize`` method.
+This value is used as default in :doc:`query/select`.
 
-バッチサイズ
-------------
+Batch size
+----------
 
-バッチサイズをあらわす ``int`` を ``getBatchSize`` メソッドで返します。
-この値は :doc:`query/batch-insert` 、:doc:`query/batch-update` 、:doc:`query/batch-delete`
-においてデフォルト値として使われます。
+Return the batch size from the ``getBatchSize`` method.
+This value is used as default in :doc:`query/batch-insert`,
+:doc:`query/batch-update` and :doc:`query/batch-delete`.
 
-エンティティリスナーの取得
+Providing entity listeners
 --------------------------
 
-``EntityListenerProvider`` を ``getEntityListenerProvider`` メソッドで返して下さい。
+Return a ``EntityListenerProvider`` from the ``getEntityListenerProvider`` method.
+When you want to get entity listeners from a dependency injection container,
+create your own EntityListenerProvider.
 
-``EntityListenerProvider`` の ``get`` メソッドは ``EntityListener`` 実装クラスの ``Class`` と ``EntityListener`` 実装クラスのインスタンスを返す ``Supplier``
-を引数に取り ``EntityListener`` のインスタンスを返します。
-デフォルトの実装では ``Supplier.get`` メソッドを実行して得たインスタンスを返します。
+The default EntityListenerProvider get the entity listener from the accepted supplier.
 
-``EntityListener`` 実装クラスのインスタンスをDIコンテナから取得したいなど、
-インスタンス取得方法をカスタマイズする場合は ``EntityListenerProvider`` を実装したクラスを作成し、
-``getEntityListenerProvider`` メソッドでそのインスタンスを返すよう設定してください。
+Loading JDBC drivers
+====================
 
-JDBC ドライバのロード
-=====================
-
-.. _service provider: http://docs.oracle.com/javase/7/docs/technotes/guides/jar/jar.html#Service%20Provider
+.. _service provider: https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html#Service_Provider
 .. _tomcat driver: http://tomcat.apache.org/tomcat-7.0-doc/jndi-datasource-examples-howto.html#DriverManager,_the_service_provider_mechanism_and_memory_leaks
 
-クラスパスが通っていれば JDBC ドライバは
-`サービスプロバイダメカニズム <service provider_>`_ により自動でロードされます。
+All JDBC drivers are loaded automatically by the `service provider <service provider_>`_ mechanism.
 
 .. warning::
 
-  実行環境によっては、 JDBC ドライバが自動でロードされないことがあります。
-  たとえば Tomcat 上では WEB-INF/lib に配置された
-  `JDBC ドライバは自動でロードされません <tomcat driver_>`_ 。
-  そのような環境においては、その環境に応じた適切は方法を採ってください。
-  たとえば Tomcat 上で動作させるためのには、上記のリンク先の指示に従って
-  ``ServletContextListener`` を利用したロードとアンロードを行ってください。
+  But in the specific environment, the mechanism doesn't work appropriately.
+  For example, when you use Apache Tomcat, you will find the case.
+  See also: `DriverManager, the service provider mechanism and memory leaks <tomcat driver_>`_
 
-定義と利用例
-============
+Configuration definition
+========================
 
-シンプル
---------
+Simple definition
+-----------------
 
-シンプルな定義は次の場合に適しています。
+The simple definition is appropriate in following cases:
 
-* DIコンテナで管理しない
-* ローカルトランザクションを使用する
-
-実装例です。
+* The configuration instance isn't managed in the dependency injection container
+* Local transactions is used
 
 .. code-block:: java
 
@@ -328,10 +282,9 @@ JDBC ドライバのロード
 
 .. note::
 
-  クラスに ``@SingletonConfig`` を注釈するのを忘れないようにしてください。
+  Remember to annotate the class with ``@SingletonConfig``
 
-利用例です。
-定義した設定クラスは、@Daoに指定します。
+Specify the above class to the config element of ``@Dao``.
 
 .. code-block:: java
 
@@ -343,16 +296,15 @@ JDBC ドライバのロード
   }
 
 
-アドバンスド
-------------------
+Advanced definition
+-------------------
 
-アドバンスドな定義は次の場合に適しています。
+The advanced definition is appropriate in following cases:
 
-* DIコンテナでシングルトンとして管理する
-* DIコンテナやアプリケーションサーバーが提供するトランザクション管理機能を使う
+* The configuration instance is managed as a singleton object in the dependency injection container
+* The transaction manager is provided from the application server or framework you use
 
-実装例です。
-``dialect`` と ``dataSource`` はDIコンテナによってインジェクションされることを想定しています。
+Suppose the ``dialect`` and the ``dataSource`` are injected by the dependency injection container:
 
 .. code-block:: java
 
@@ -381,8 +333,8 @@ JDBC ドライバのロード
       }
   }
 
-利用例です。
-定義した設定クラスのインスタンスがDIコンテナによってインジェクトされるようにします。
+To inject the instance of the above class to your DAO implementation instance,
+you have to annotate your DAO interfaces with ``@AnnotateWith``:
 
 .. code-block:: java
 
@@ -396,9 +348,20 @@ JDBC ドライバのロード
       Employee selectById(Integer id);
   }
 
-上記の例では ``@AnnotateWith`` の記述をDaoごとに繰り返し記述する必要があります。
-繰り返しを避けたい場合は、任意のアノテーションに一度だけ ``@AnnotateWith`` を記述し、
-Daoにはそのアノテーションを注釈してください。
+.. code-block:: java
+
+  @Dao
+  @AnnotateWith(annotations = {
+      @Annotation(target = AnnotationTarget.CONSTRUCTOR, type = javax.inject.Inject.class),
+      @Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = javax.inject.Named.class, elements = "\"config\"") })
+  public interface DepartmentDao {
+
+      @Select
+      Department selectById(Integer id);
+  }
+
+To avoid annotating your DAO interfaces with ``@AnnotateWith`` repeatedly,
+annotate the arbitrary annotation with it only once:
 
 .. code-block:: java
    
@@ -407,6 +370,8 @@ Daoにはそのアノテーションを注釈してください。
       @Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = javax.inject.Named.class, elements = "\"config\"") })
   public @interface InjectConfig {
   }
+
+Then, you can annotate your DAO interfaces with the above ``@InjectConfig`` annotation:
 
 .. code-block:: java
 
@@ -418,4 +383,13 @@ Daoにはそのアノテーションを注釈してください。
       Employee selectById(Integer id);
   }
 
+.. code-block:: java
+
+  @Dao
+  @InjectConfig
+  public interface DepartmentDao {
+
+      @Select
+      Department selectById(Integer id);
+  }
 
