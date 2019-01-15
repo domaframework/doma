@@ -1,79 +1,86 @@
-==================
-Kotlin サポート
-==================
+==============
+Kotlin support
+==============
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-Doma は `Kotlin <https://kotlinlang.org/>`_ 1.1.2を実験的にサポートしています。
+Doma supports `Kotlin <https://kotlinlang.org/>`_ 1.3.11 or above **experimentally**.
 
-Kotlin利用のベストプラクティス
-================================
+Best practices
+==============
 
-クラスの定義やビルドに関する事柄について推奨する方法を記載します。
+We show you recommended ways to define classes and build them with Kotlin.
 
-エンティティクラス
--------------------
+Entity classes
+--------------
 
-* Data Classで定義する
-* イミュータブルで定義する（ `@Entity` の `immutable` 要素に `true` を設定する）
-* コンストラクタは1つだけ定義する
-* コンストラクタ以外でプロパティを定義しない
-* コンストラクタで定義するプロパティには `val` を使用する
+* Define as a data class
+* Specify ``true`` to the ``immutable`` element of ``@Entity``
+* Define only one constructor
+* Define properties only in the constructor
+* Use `val` for the property definitions
 
 .. code-block:: java
 
   @Entity(immutable = true)
   data class Person(
         @Id
-        @GeneratedValue(strategy = org.seasar.doma.GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Int? = null,
         val name: Name,
         val address: Address)
 
-ドメインクラス
--------------------
+Domain classes
+--------------
 
-* Data Classで定義する
-* コンストラクタは1つだけ定義する
-* コンストラクタで定義するプロパティの名前は `value` にする
-* コンストラクタで定義するプロパティには `val` を使用する
+* Define as a data class
+* Define only one constructor
+* Define only one property whose name is ``value`` in the constructor
+* Use `val` for the property definition
 
 .. code-block:: java
 
   @Domain(valueType = String::class)
   data class Name(val value: String)
 
-エンベッダブルクラス
-----------------------
+Embeddable classes
+------------------
 
-* Data Classで定義する
-* コンストラクタは1つだけ定義する
-* コンストラクタ以外でプロパティを定義しない
-* コンストラクタで定義するプロパティには `val` を使用する
+* Define as a data class
+* Define only one constructor
+* Define properties only in the constructor
+* Use `val` for the property definitions
 
 .. code-block:: java
 
   @Embeddable
   data class Address(val city: String, val street: String)
 
-Daoインタフェース
--------------------
+Dao interfaces
+--------------
 
-* KotlinではなくJavaで定義する
-* 更新処理の戻り値の型は `org.seasar.doma.jdbc.Result` や `org.seasar.doma.jdbc.BatchResult` を使う
+* Specify a SQL template to ``@org.seasar.doma.experimental.Sql``
+* Use ``org.seasar.doma.jdbc.Result`` as the return type of ``@Delete``, ``@Insert`` and ``@Update``
+* Use ``org.seasar.doma.jdbc.BatchResult`` as the return type of
+  ``@BatchDelete``, ``@BatchInsert`` and ``@BatchUpdate``
 
 .. code-block:: java
 
-  @Dao(config = AppConfig.class)
-  public interface PersonDao {
+  @Dao(config = AppConfig::class)
+  interface PersonDao {
+    @Sql("""
+    select * from person where id = /*id*/0
+    """)
     @Select
-    Person selectById(Integer id);
+    fun selectById(id: Int): Person
+
     @Insert
     Result<Person> insert(Person person);
   }
 
-* 更新処理の戻り値を扱う際は `Destructuring Declarations <https://kotlinlang.org/docs/reference/multi-declarations.html>`_ を使う
+* Use `Destructuring Declarations <https://kotlinlang.org/docs/reference/multi-declarations.html>`_
+  for ``org.seasar.doma.jdbc.Result`` and ``org.seasar.doma.jdbc.BatchResult``
 
 .. code-block:: java
 
@@ -81,44 +88,55 @@ Daoインタフェース
   val person = Person(name = Name("Jhon"), address = Address(city = "Tokyo", street = "Yaesu"))
   val (newPerson, count) = dao.insert(person)
 
+Using kapt in Gradle
+--------------------
 
-kaptによるビルド
--------------------
+Annotation processors are supported in Kotlin with the
+`kapt <https://kotlinlang.org/docs/reference/kapt.html>`_ compiler plugin.
 
-Kotlinで記述されたクラスやインタフェースに対して注釈処理をするには `kapt <https://blog.jetbrains.com/kotlin/2016/12/kotlin-1-0-6-is-here/>`_ を実行する必要があります。
-kaptは実験的な位置付けにありドキュメントがありません。
-Gradleでビルドする際は、確実な注釈処理が行われるように常に `clean build` を実行することを推奨します。
-
-.. code-block:: sh
-
-  ./gradlew clean build
-
-Eclispeを利用する場合設定を適切に行えばJavaの注釈処理は自動で行われますが、kapt（Kotlinの注釈処理）はGradleを実行しない限り行われないことに注意してください。
-
-下記はbuild.gradleの抜粋です。コンパイル時にSQLファイルを参照するために下記の設定に特に注意してください。
+Add the dependencies using the `kapt` and `implementation` configuration in your dependencies block:
 
 .. code-block:: groovy
 
-  // コンパイルより前にSQLファイルを出力先ディレクトリにコピーするために依存関係を逆転する
-  compileJava.dependsOn processResources
-  
-  // SQLファイルなどリソースファイルの出力先ディレクトリをkaptに伝える
-  kapt {
-      arguments {
-          arg("doma.resources.dir", processResources.destinationDir)
-      }
+  dependencies {
+      kapt "org.seasar.doma:doma:2.21.1-SNAPSHOT"
+      implementation "org.seasar.doma:doma:2.21.1-SNAPSHOT"
   }
 
+If you use resource files such as SQL files, make the kapt find them:
 
-JavaとKotlinの混在
--------------------------
+.. code-block:: groovy
 
-kaptの不確実な挙動を避けるため、Domaに関するコードの全てをJavaで書くことは検討に値します。
-Domaの利用において、JavaとKotlinの混在は問題ありません。
+    kapt {
+        arguments {
+            arg("doma.resources.dir", compileKotlin.destinationDir)
+        }
+    }
 
-サンプルプロジェクト
-=====================
+    task copyDomaResources(type: Sync)  {
+        from sourceSets.main.resources.srcDirs
+        into compileKotlin.destinationDir
+        include 'doma.compile.config'
+        include 'META-INF/**/*.sql'
+        include 'META-INF/**/*.script'
+    }
 
-サンプルコードについては下記のプロジェクトを参照ください。
+    compileKotlin {
+        dependsOn copyDomaResources
+    }
+
+
+.. note::
+
+    Remember that you always have options as follows:
+
+    - Write all codes with Kotlin
+    - Write all codes with Java
+    - Write codes annotated with Doma's annotations in Java and others in Kotlin
+
+    The third option is worth considering, because it can avoid some troubles with the kapt.
+
+Sample project
+==============
 
 * `kotlin-sample <https://github.com/domaframework/kotlin-sample>`_
