@@ -4,6 +4,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
@@ -453,7 +454,12 @@ public class NodePreparedSqlBuilder
     EvaluationResult expressionResult = p.evaluate(location, forNode.getExpression());
     Object expressionValue = expressionResult.getValue();
     Class<?> expressionValueClass = expressionResult.getValueClass();
-    if (!Iterable.class.isAssignableFrom(expressionValueClass)) {
+    Iterable<?> iterable;
+    if (Iterable.class.isAssignableFrom(expressionValueClass)) {
+      iterable = (Iterable<?>) expressionValue;
+    } else if (expressionValueClass.isArray()) {
+      iterable = Arrays.asList((Object[]) expressionValue);
+    } else {
       throw new JdbcException(
           Message.DOMA2129,
           location.getSql(),
@@ -463,7 +469,6 @@ public class NodePreparedSqlBuilder
           expressionValueClass);
     }
 
-    Iterable<?> iterable = (Iterable<?>) expressionValue;
     String identifier = forNode.getIdentifier();
     Value originalIdentifierValue = p.removeValue(identifier);
     String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;

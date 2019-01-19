@@ -71,6 +71,30 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  public void testBindVariable_array() throws Exception {
+    Class<?> target = SqlValidationDao.class;
+    addCompilationUnit(target);
+    addCompilationUnit(StringWrapper.class);
+    addProcessor(
+        new AptTestProcessor() {
+          @Override
+          protected void run() {
+            ExecutableElement methodElement =
+                createMethodElement(target, "testBindVariable_array", String[].class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap =
+                createParameterTypeMap(methodElement);
+            SqlValidator validator =
+                new SqlValidator(
+                    ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("select * from emp where name in /* names */('aaa')");
+            SqlNode sqlNode = parser.parse();
+            sqlNode.accept(validator, null);
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
   public void testLiteralVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -119,6 +143,30 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  public void testLiteralVariable_array() throws Exception {
+    Class<?> target = SqlValidationDao.class;
+    addCompilationUnit(target);
+    addCompilationUnit(StringWrapper.class);
+    addProcessor(
+        new AptTestProcessor() {
+          @Override
+          protected void run() {
+            ExecutableElement methodElement =
+                createMethodElement(target, "testBindVariable_array", String[].class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap =
+                createParameterTypeMap(methodElement);
+            SqlValidator validator =
+                new SqlValidator(
+                    ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser = new SqlParser("select * from emp where name in /*^ names */('aaa')");
+            SqlNode sqlNode = parser.parse();
+            sqlNode.accept(validator, null);
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
   public void testEmbeddedVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -151,6 +199,32 @@ public class SqlValidatorTest extends AptTestCase {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testFor", List.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap =
+                createParameterTypeMap(methodElement);
+            SqlValidator validator =
+                new SqlValidator(
+                    ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser =
+                new SqlParser(
+                    "select * from emp where name = /*%for e : names*/ /*e*/'aaa' /*%if e_has_next*/or/*%end*//*%end*/");
+            SqlNode sqlNode = parser.parse();
+            sqlNode.accept(validator, null);
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
+  public void testFor_array() throws Exception {
+    Class<?> target = SqlValidationDao.class;
+    addCompilationUnit(target);
+    addCompilationUnit(StringWrapper.class);
+    addProcessor(
+        new AptTestProcessor() {
+          @Override
+          protected void run() {
+            ExecutableElement methodElement =
+                createMethodElement(target, "testFor_array", String[].class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =

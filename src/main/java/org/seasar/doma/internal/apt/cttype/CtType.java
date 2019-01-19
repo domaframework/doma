@@ -33,6 +33,8 @@ public interface CtType {
 
   boolean isTypevar();
 
+  boolean isArray();
+
   boolean isSameType(CtType ctType);
 
   <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH;

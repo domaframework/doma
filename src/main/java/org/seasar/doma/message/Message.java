@@ -141,7 +141,7 @@ public enum Message implements MessageResource {
   DOMA2126(
       "Failed to parse the SQL on line [{1}] at column [{2}]. The expression is not found after the tonken \":\" in the block comment \"/*%for ...*/\". SQL[{0}]"),
   DOMA2129(
-      "Failed to build the SQL on line [{1}] at column [{2}]. The object type[{4}] that corresponds to the expression[{3}] that is after the token \":\" in the block comment \"/*%for ...*/\" is not subtype of java.lang.Iterable. SQL[{0}]"),
+      "Failed to build the SQL on line [{1}] at column [{2}]. The object type[{4}] that corresponds to the expression[{3}] that is after the token \":\" in the block comment \"/*%for ...*/\" is not subtype of java.lang.Iterable or Array. SQL[{0}]"),
   DOMA2133(
       "Failed to parse the SQL on line [{1}] at column [{2}]. \"/%if ...*/\" is not closed with \"/*%end*/\". The pair of \"/%if ...*/\" and \"/*%end*/\" must exist in the same clause such as SELECT, FROM, WHERE and so on. SQL[{0}]"),
   DOMA2134(
@@ -411,7 +411,7 @@ public enum Message implements MessageResource {
   DOMA4148(
       "The class[{2}] in the expression[{0}] at column [{1}] does not have the static field[{3}]."),
   DOMA4149(
-      "Failed to verify the SQL template[{0}] on line [{2}] at column [{3}]. While the expression[{4}] in \"/*%for ...*/\" is evaluated as the type[{5}], the type must be the subtype of java.lang.Iterable. SQL[{1}]"),
+      "Failed to verify the SQL template[{0}] on line [{2}] at column [{3}]. While the expression[{4}] in \"/*%for ...*/\" is evaluated as the type[{5}], the type must be the subtype of java.lang.Iterable or Array. SQL[{1}]"),
   DOMA4150(
       "Failed to verify the SQL template[{0}] on line [{2}] at column [{3}]. While the expression[{4}] in \"/*%for ...*/\" is evaluated as the type[{5}], the type argument for the type is obscure. SQL[{1}]"),
   DOMA4153(
@@ -426,7 +426,7 @@ public enum Message implements MessageResource {
   DOMA4159("The type argument is required for the subtype of java.lang.Iterable."),
   DOMA4160("The subtype of java.lang.Iterable must not be wildcard."),
   DOMA4161(
-      "Failed to verify the SQL template[{0}] on line [{2}] at column [{3}]. The parameter type that corresponds to the bind or literal variable[{4}] just before the open parenthesis must be the subtype of the java.lang.Iterable whose element type is the basic or doma type. But the actual type is [{5}]. You may forget to access its field or to invoke its method. SQL[{1}]"),
+      "Failed to verify the SQL template[{0}] on line [{2}] at column [{3}]. The parameter type that corresponds to the bind or literal variable[{4}] just before the open parenthesis must be the subtype of the java.lang.Iterable or Array whose element type is the basic or doma type. But the actual type is [{5}]. You may forget to access its field or to invoke its method. SQL[{1}]"),
   DOMA4163("The user defined Config class must not be abstract. The class[{0}] is abstract."),
   DOMA4164(
       "The user defined Config class must have a no-args and public constructor or have a public static final field that is named \"INSTANCE\".　The type of the field must be the subtype of org.seasar.doma.Config. The class[{0}] does not meet these requirements."),

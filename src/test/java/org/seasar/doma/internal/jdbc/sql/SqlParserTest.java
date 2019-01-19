@@ -641,6 +641,28 @@ public class SqlParserTest extends TestCase {
     assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
   }
 
+  public void testFor_array() throws Exception {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    String[] array = new String[] {"aaa", "bbb", "ccc"};
+    evaluator.add("names", new Value(String[].class, array));
+    String testSql =
+        "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa where name = ? or name = ? or name = ?", sql.getRawSql());
+    assertEquals(
+        "select * from aaa where name = 'aaa' or name = 'bbb' or name = 'ccc'",
+        sql.getFormattedSql());
+    assertEquals(3, sql.getParameters().size());
+    assertEquals("aaa", sql.getParameters().get(0).getWrapper().get());
+    assertEquals("bbb", sql.getParameters().get(1).getWrapper().get());
+    assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
+  }
+
   public void testFor_removeWhere() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<String>();

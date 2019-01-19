@@ -11,11 +11,15 @@ public interface SqlValidationDao {
 
   void testBindVariable_list(List<String> names);
 
+  void testBindVariable_array(String[] names);
+
   void testEmbeddedVariable(String orderBy);
 
   void testEmbeddedVariable_unsupportedType(Integer orderBy);
 
   void testFor(List<String> names);
+
+  void testFor_array(String[] names);
 
   void testFor_notIterable(Iterator<String> names);
 

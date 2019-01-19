@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
+import javax.lang.model.type.TypeKind;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
@@ -756,7 +757,11 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     iprint("entering(\"%1$s\", \"%2$s\"", className, m.getName());
     for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
       QueryParameterMeta parameterMeta = it.next();
-      print(", %1$s", parameterMeta.getName());
+      if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
+        print(", %1$s", parameterMeta.getName());
+      } else {
+        print(", (Object) %1$s", parameterMeta.getName());
+      }
     }
     print(");%n");
     iprint("try {%n");
