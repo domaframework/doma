@@ -1,19 +1,21 @@
-==================
-基本型
-==================
+=============
+Basic classes
+=============
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-Domaでは、データベースのカラムにマッピング可能なJavaの型を基本型と呼びます。
+Overview
+========
 
-種類
-==================
+The Java types can be mapped to database column types are called "Basic classes" in Doma.
 
-基本型には以下の種類があります。
+List of basic classes
+=====================
 
-* プリミティブ型とそのラッパー型（ただし ``char`` と ``java.lang.Character`` は除く）
-* 列挙型
+* primitive types except ``char``
+* wrapper class for above primitive types
+* enum types
 * byte[]
 * java.lang.String
 * java.lang.Object
@@ -31,37 +33,35 @@ Domaでは、データベースのカラムにマッピング可能なJavaの型
 * java.sql.SQLXML
 * java.util.Date
 
-日付/時刻型
-------------------
+Differences between temporal classes
+------------------------------------
 
-日付と時刻の型の違いについて説明します。
+:java.time.LocalDate:
+  represents SQL DATE
 
-java.time.LocalDate
-  SQL標準のDATE型 (日付のみ)を表します。
+:java.time.LocalTime:
+  represents SQL TIME
 
-java.time.LocalTime
-  SQL標準のTIME型 (時刻のみ)を表します。
+:java.time.LocalDateTime:
+  represents SQL TIMESTAMP and may hold nanoseconds if RDBMS supports it
 
-java.time.LocalDateTime
-  SQL標準のTIMESTAMP型 (日付と時刻)を表します。RDBMSがサポートしている場合ナノ秒を保持します。
+:java.sql.Date:
+  represents SQL DATE
 
-java.sql.Date
-  SQL標準のDATE型 (日付のみ)を表します。
+:java.sql.Time:
+  represents SQL TIME
 
-java.sql.Time
-  SQL標準のTIME型 (時刻のみ)を表します。
+:java.sql.Timestamp:
+  represents SQL TIMESTAMP and may hold nanoseconds if RDBMS supports it
 
-java.sql.Timestamp
-  SQL標準のTIMESTAMP型 (日付と時刻)を表します。RDBMSがサポートしている場合ナノ秒を保持します。
+:java.util.Date:
+  represents SQL TIMESTAMP and doesn't hold nanoseconds
 
-java.util.Date
-  SQL標準のTIMESTAMP型 (日付と時刻)を表します。ナノ秒を保持しません。
+Examples
+========
 
-利用例
-==================
-
-エンティティクラス
-------------------
+Using in entity class
+---------------------
 
 .. code-block:: java
 
@@ -80,8 +80,8 @@ java.util.Date
   }
 
 
-ドメインクラス
-------------------
+Using in domain class
+---------------------
 
 .. code-block:: java
 
@@ -99,8 +99,8 @@ java.util.Date
       }
   }
 
-Daoクラス
-------------------
+Using in DAO interface
+----------------------
 
 .. code-block:: java
 
