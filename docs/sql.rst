@@ -1,47 +1,64 @@
-==================
-SQL
-==================
+=============
+SQL templates
+=============
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-SQL テンプレート
-================
+Overview
+========
 
-SQL は SQL テンプレートを使用して記述します。
+Doma supports SQL templates, called "two-way SQL".
+"Two-way SQL" means that the SQL templates can be used in two ways:
 
-SQL テンプレートの文法は SQL のブロックコメント ``/* */`` をベースにしたもので
-あるため1つのテンプレートは次の2つの方法で使用できます。
+1. to build dynamic SQL statements from the templates; and
+2. to execute the templates in SQL tools as they are.
 
-* Doma でテンプレートの文法を解釈し動的にSQLを組み立てて実行する
-* SQL のツールでテンプレートの文法はコメントアウトされたものとして
-  静的な SQL を実行する
-
-この特徴は **2-way SQL** と呼ばれることがあります。
-
-SQL テンプレートはファイルに記述してDaoのメソッドにマッピングする必要があります。
-
-たとえば、 SQL ファイルには次のような SQL テンプレートを格納します。
+Every SQL template must correspond to a DAO method.
+For example, suppose you have the pair of an SQL template and a DAO method as follows:
 
 .. code-block:: sql
 
   select * from employee where employee_id = /* employeeId */99
 
-ここでは、ブロックコメントで囲まれた ``employeeId`` がDaoインタフェースのメソッドのパラメータに対応し、
-直後の ``99`` はテスト用のデータになります。
-テスト用のデータは、 Doma に解釈されて実行される場合には使用されません。
-SQL のツールによる静的な実行時にのみ使用されます。
+.. code-block:: java
 
-対応するDaoインタフェースのメソッドは次のとおりです。
+  Employee selectById(Integer employeeId);
+
+The ``employeeId`` expression enclosed between ``/*`` and ``*/`` corresponds to
+the method parameter "employeeId" of the DAO.
+In runtime, the SQL comment and following number ``/* employeeId */99`` is replaced with a bind variable ``?``
+and the method parameter "employeeId" is passed to the variable.
+The SQL statement generated from the SQL template is as follows:
+
+.. code-block:: sql
+
+  select * from employee where employee_id = ?
+
+The number ``99`` in the SQL template is test data and never used in runtime.
+The test data is only useful when you execute the SQL template as is.
+In other words, you can check whether the SQL template is grammatically correct with your favorite SQL tools.
+
+Each SQL template is represented either a text file or an annotation.
+
+SQL templates in files
+======================
+
+You can specify SQL templates in text files:
 
 .. code-block:: java
 
-  Employee selectById(employeeId);
+  @Dao
+  public interface EmployeeDao {
+    @Select
+    Employee selectById(Integer employeeId);
 
-アノテーション
-==============
+    @Delete(sqlFile = true)
+    int deleteByName(Employee employee);
+  }
 
-SQLファイルとDaoのメソッドのマッピングは次のアノテーションで示します。
+Above ``selectById`` and ``deleteByName`` methods are mapped onto their own SQL files.
+DAO methods must be annotated with one of following annotations:
 
 * @Select
 * @Insert(sqlFile = true)
@@ -51,114 +68,134 @@ SQLファイルとDaoのメソッドのマッピングは次のアノテーシ�
 * @BatchUpdate(sqlFile = true)
 * @BatchDelete(sqlFile = true)
 
-SQLファイル
-===========
-
-エンコーディング
-----------------
-
-SQLファイルのエンコーディングはUTF-8でなければいけません。
-
-配置場所
+Encoding
 --------
 
-SQLファイルはクラスパスが通った META-INF ディレクトリ以下に配置しなければいけません。
+The SQL files must be saved as UTF-8 encoded.
 
-ファイル名の形式
-----------------
+Location
+--------
 
-ファイル名は、次の形式でなければいけません。
+The SQL files must be located in directories below a "META-INF" directory which is included in CLASSPATH.
 
-::
+Format of file path
+-------------------
 
- META-INF/Daoのクラスの完全修飾名をディレクトリに変換したもの/Daoのメソッド名.sql
+The SQL file path must follow the following format:
 
-例えば、 Daoのクラスが ``aaa.bbb.EmployeeDao`` でマッピングしたいメソッドが
-``selectById`` の場合、パス名は次のようになります。
+  META-INF/*path-format-of-dao-interface*/*dao-method*.sql
 
-::
+
+For example, when the DAO interface name is ``aaa.bbb.EmployeeDao`` and the DAO method name is ``selectById``,
+the SQL file path is as follows:
 
   META-INF/aaa/bbb/EmployeeDao/selectById.sql
 
-複数の RDBMS を使用する環境下で特定の RDBMS では別の SQL ファイルを使いたい場合、
-拡張子 ``.sql`` の前にハイフン区切りで RDBMS 名を入れることで、
-優先的に使用するファイルを指示できます。
-たとえば、PostgreSQL専用のSQLファイルは次の名前にします。
+Dependency on a specific RDBMS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-::
+You can specify dependency on a specific RDBMS by file name.
+To do this, put the hyphen "-" and RDBMS name before the extension ".sql".
+For example, the file path specific to PostgreSQL is as follows:
 
-  META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql
+  META-INF/aaa/bbb/EmployeeDao/selectById-*postgres*.sql
 
-この例ではPostgreSQLを使用している場合に限り、 ``META-INF/aaa/bbb/EmployeeDao/selectById.sql``
-よりも ``META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql`` が優先的に使用されます。
+The SQL files specific to RDBMSs are given priority.
+For example, in the environment where PostgreSQL is used,
+"META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql"
+is chosen instead of "META-INF/aaa/bbb/EmployeeDao/selectById.sql".
+But in other environment,
 
-RDBMS 名は、 ``Dialect`` の ``getName`` メソッドの値が使用されます。
-あらかじめ用意された ``Dialect`` についてそれぞれの RDBMS 名を以下の表に示します。
+The RDBMS names are stem from dialects:
 
-+----------------------------+------------------+----------+
-| データベース               | Dialect          | RDBMS 名 |
-+============================+==================+==========+
-| DB2                        | Db2Dialect       | db2      |
-+----------------------------+------------------+----------+
-| H2 Database Engine 1.2.126 | H212126Dialect   | h2       |
-+----------------------------+------------------+----------+
-| H2 Database                | H2Dialect        | h2       |
-+----------------------------+------------------+----------+
-| HSQLDB                     | HsqldbDialect    | hsqldb   |
-+----------------------------+------------------+----------+
-| Microsoft SQL Server 2008  | Mssql2008Dialect | mssql    |
-+----------------------------+------------------+----------+
-| Microsoft SQL Server       | MssqlDialect     | mssql    |
-+----------------------------+------------------+----------+
-| MySQL                      | MySqlDialect     | mysql    |
-+----------------------------+------------------+----------+
-| Oracle Database            | OracleDialect    | oracle   |
-+----------------------------+------------------+----------+
-| PostgreSQL                 | PostgresDialect  | postgres |
-+----------------------------+------------------+----------+
-| SQLite                     | SqliteDialect    | sqlite   |
-+----------------------------+------------------+----------+
++----------------------------+------------------+------------+
+| RDBMS                      | Dialect          | RDBMS Name |
++============================+==================+============+
+| DB2                        | Db2Dialect       | db2        |
++----------------------------+------------------+------------+
+| H2 Database                | H2Dialect        | h2         |
++----------------------------+------------------+------------+
+| HSQLDB                     | HsqldbDialect    | hsqldb     |
++----------------------------+------------------+------------+
+| Microsoft SQL Server       | MssqlDialect     | mssql      |
++----------------------------+------------------+------------+
+| MySQL                      | MySqlDialect     | mysql      |
++----------------------------+------------------+------------+
+| Oracle Database            | OracleDialect    | oracle     |
++----------------------------+------------------+------------+
+| PostgreSQL                 | PostgresDialect  | postgres   |
++----------------------------+------------------+------------+
+| SQLite                     | SqliteDialect    | sqlite     |
++----------------------------+------------------+------------+
 
-SQL コメント
-============
+SQL templates in annotations
+============================
 
-SQL コメント中に式を記述することで値のバインディングや条件分岐を行います。
-Doma に解釈されるSQLコメントを *式コメント* と呼びます。
+You can specify SQL templates to DAO methods with the ``@Sql`` annotation:
 
-式コメントには以下のものがあります。
+.. code-block:: java
 
-* `バインド変数コメント`_
-* `リテラル変数コメント`_
-* `埋め込み変数コメント`_
-* `条件コメント`_
-* `繰り返しコメント`_
-* `選択カラムリスト展開コメント`_
-* `更新カラムリスト生成コメント`_
+  @Dao
+  public interface EmployeeDao {
+    @Sql("select * from employee where employee_id = /* employeeId */99")
+    @Select
+    Employee selectById(Integer employeeId);
+
+    @Sql("delete from employee where employee_name = /* employee.employeeName */'aaa'")
+    @Delete
+    int deleteByName(Employee employee);
+  }
+
+
+The ``@Sql`` annotation must be combined with following annotations:
+
+* @Select
+* @Script
+* @Insert
+* @Update
+* @Delete
+* @BatchInsert
+* @BatchUpdate
+* @BatchDelete
+
+.. warning::
+
+  The ``@Sql`` annotation is an experimental feature.
+  The full qualified name of ``@Sql`` is ``@org.seasar.doma.experimental.Sql``.
+
+Directives
+==========
+
+In SQL templates, the SQL comments following the specific rules are recognised as directives.
+Supported directives are as follows:
+
+* `Bind variable directive`_
+* `Literal variable directive`_
+* `Embedded variable directive`_
+* `Condition directive`_
+* `Loop directive`_
+* `Expansion directive`_
+* `Population directive`_
 
 .. note::
 
-  式コメントに記述できる式の文法については :doc:`expression` を参照してください。
+  See also :doc:`expression` for information of the expression language available in directives.
 
-バインド変数コメント
---------------------
+Bind variable directive
+-----------------------
 
-バインド変数を示す式コメントを *バインド変数* コメントと呼びます。
-バインド変数は、 ``java.sql.PreparedStatement`` を介してSQLに設定されます。
+Bind variable directive is represented with the format ``/*...*/``.
+The expression enclosed between ``/*`` and ``*/`` is evaluated and
+its evaluation result is passed to bind variable in SQL statement.
+The directive must be followed by test data, which is never used in runtime.
 
-バインド変数は ``/*～*/`` というブロックコメントで囲んで示します。
-バインド変数の名前はDaoメソッドのパラメータ名に対応します。
-対応するパラメータの型は :doc:`basic` もしくは :doc:`domain` でなければいけません。
-バインド変数コメントの直後にはテスト用データを指定する必要があります。
-ただし、テスト用データは実行時には使用されません。
+Basic or domain parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-基本型もしくはドメインクラス型のパラメータ
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The parameter whose type is one of :doc:`basic` or :doc:`domain`
+is recognised as a bind variable.
 
-Dao インタフェースのメソッドのパラメータが :doc:`basic` もしくは :doc:`domain` の場合、
-このパラメータは1つのバインド変数を表現できます。
-バインド変数コメントはバインド変数を埋め込みたい場所に記述し、
-バインド変数コメントの直後にはテスト用データを指定しなければいけません。
-Dao インタフェースのメソッドと対応する SQL の例は次のとおりです。
+The following example is the pair of a DAO method and an SQL template:
 
 .. code-block:: java
 
@@ -168,15 +205,21 @@ Dao インタフェースのメソッドと対応する SQL の例は次のと�
 
    select * from employee where employee_id = /* employeeId */99
 
-Iterable型のパラメータ
-~~~~~~~~~~~~~~~~~~~~~~
+The following SQL statement is generated from the SQL template:
 
-Dao インタフェースのメソッドのパラメータが ``java.lang.Iterable`` のサブタイプの場合、
-このパラメータは、 IN句内の複数のバインド変数を表現できます。
-ただし、 ``java.lang.Iterable`` のサブタイプの実型引数は :doc:`basic` もしくは :doc:`domain` でなければいけません。
-バインド変数コメントはINキーワードの直後に置き、
-バインド変数コメントの直後には括弧つきでテスト用データを指定しなければいけません。
-Dao インタフェースのメソッドと対応する SQL の例は次のとおりです。
+.. code-block:: sql
+
+   select * from employee where employee_id = ?
+
+Iterable parameters in IN clause
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The parameter whose type is subtype of ``java.lang.Iterable`` is
+recognised as bind variables in IN clause.
+But the type argument of ``java.lang.Iterable`` must be one of :doc:`basic` or :doc:`domain`.
+The directives must be followed by test data enclosed between ``(`` and ``)``.
+
+The following example is the pair of a DAO method and an SQL template:
 
 .. code-block:: java
 
@@ -186,59 +229,29 @@ Dao インタフェースのメソッドと対応する SQL の例は次のと�
 
   select * from employee where employee_id in /* employeeIdList */(1,2,3)
 
-``Iterable`` が空であるとき、IN句の括弧内の値は ``null`` になります。
+In case that the ``employeeIdList`` contains five elements,
+the following SQL statement is generated from the SQL template:
+
+.. code-block:: sql
+
+  select * from employee where employee_id in (?, ?, ?, ?, ?)
+
+In case that the ``employeeIdList`` is empty,
+the IN clause is replaced with ``in (null)`` in runtime:
 
 .. code-block:: sql
 
   select * from employee where employee_id in (null)
 
-任意の型のパラメータ
-~~~~~~~~~~~~~~~~~~~~
+Literal variable directive
+--------------------------
 
-Dao インタフェースのメソッドのパラメータが :doc:`basic` もしくは :doc:`domain` でない場合、
-パラメータは複数のバインド変数コメントに対応します。
-バインド変数コメントの中では、ドット ``.`` を使用し任意の型のフィールドやメソッドにアクセスできます。
-Dao インタフェースのメソッドと対応する SQL の例は次のとおりです。
+Literal variable directive is represented with the format ``/*^...*/``.
+The expression enclosed between ``/*^`` and ``*/`` is evaluated and
+its evaluation result is converted to literal format to be embedded in SQL statement.
+The directive must be followed by test data, which is never used in runtime.
 
-``EmployeeDto`` クラスには、 ``employeeName`` フィールドや ``salary`` フィールドが存在するものとします。
-
-.. code-block:: java
-
-  List<Employee> selectByNameAndSalary(EmployeeDto dto);
-
-.. code-block:: sql
-
-  select * from employee
-  where
-  employee_name = /* dto.employeeName */'abc'
-  and
-  salary = /* dto.salary */1234
-
-フィールドにアクセスする代わりに ``public`` なメソッドを呼び出すことも可能です。
-
-.. code-block:: sql
-
-  select * from employee
-  where
-  salary = /* dto.getTaxedSalary() */1234
-
-リテラル変数コメント
---------------------
-
-リテラル変数を示す式コメントを *リテラル変数* コメントと呼びます。
-リテラル変数は、 SQLのリテラルの形式に変換された後にSQLに埋め込まれます。
-リテラルの形式に変換とは、文字列型をシングルクォートで囲むなどを指します。
-この変換にはSQLインジェクション対策としてのエスケープ処理は含まれません。
-
-SQL インジェクションを防ぐため、リテラル変数の値にシングルクォテーションを含めることは禁止しています。
-
-リテラル変数は ``/*^～*/`` というブロックコメントで囲んで示します。
-リテラル変数の名前はDaoメソッドのパラメータ名に対応します。
-対応するパラメータの型は :doc:`basic` もしくは :doc:`domain` でなければいけません。
-リテラル変数コメントの直後にはテスト用データを指定する必要があります。
-ただし、テスト用データは実行時には使用されません。
-
-Dao インタフェースのメソッドと対応する SQL の例は次のとおりです。
+The following example is the pair of a DAO method and an SQL template:
 
 .. code-block:: java
 
@@ -248,42 +261,36 @@ Dao インタフェースのメソッドと対応する SQL の例は次のと�
 
    select * from employee where code = /*^ code */'test'
 
-Dao の呼び出し例は次の通りです。
+The DAO method is invoked as follows:
 
 .. code-block:: java
 
   EmployeeDao dao = new EmployeeDaoImpl();
   List<Employee> list = dao.selectByCode("abc");
 
-発行される SQL は次のようになります。
+The generated SQL statement is as follows:
 
 .. code-block:: sql
 
   select * from employee where code = 'abc'
 
-記法が異なることを除けば、使い方はバインド変数コメントと同様です。
-
 .. note::
 
-  リテラル変数コメントは、実行計画を固定するなどあえてバインド変数の使用を避けたい場合に利用できます。
+  Literal variable directives are helpful to avoid bind variables and fix SQL plans.
 
-埋め込み変数コメント
---------------------
+.. warning::
 
-埋め込み変数を示す式コメントを *埋め込み変数* コメントと呼びます。
-埋め込み変数の値は SQL を組み立てる際に SQL の一部として直接埋め込まれます。
+  Literal variable directives do not escape parameters for SQL injection.
+  But the directives reject parameters containing the single quotation ``'``.
 
-SQL インジェクションを防ぐため、埋め込み変数の値に以下の値を含めることは禁止しています。
+Embedded variable directive
+---------------------------
 
-* シングルクォテーション
-* セミコロン
-* 行コメント
-* ブロックコメント
+Embedded variable directive is represented with the format ``/*#...*/``.
+The expression enclosed between ``/*#`` and ``*/`` is evaluated and
+its evaluation result is embedded in SQL statement.
 
-埋め込み変数は ``/*#～*/`` というブロックコメントで示します。
-埋め込み変数の名前は Dao メソッドのパラメータ名にマッピングされます。
-
-Dao のメソッドと対応する SQL の例は次のとおりです。
+The following example is the pair of a DAO method and an SQL template:
 
 .. code-block:: java
 
@@ -293,7 +300,7 @@ Dao のメソッドと対応する SQL の例は次のとおりです。
 
   select * from employee where salary > /* salary */100 /*# orderBy */
 
-Dao の呼び出し例は次の通りです。
+The DAO method is invoked as follows:
 
 .. code-block:: java
 
@@ -302,7 +309,7 @@ Dao の呼び出し例は次の通りです。
   String orderBy = "order by salary asc, employee_name";
   List<Employee> list = dao.selectAll(salary, orderBy);
 
-発行される SQL は次のようになります。
+The generated SQL statement is as follows:
 
 .. code-block:: sql
 
@@ -310,23 +317,47 @@ Dao の呼び出し例は次の通りです。
 
 .. note::
 
-  埋め込み変数コメントは、 ORDER BY 句など SQL の一部をプログラムで組み立てたい場合に使用できます。
+  Embedded variable directives are helpful to build SQL fragments such as ORDER BY clause.
 
-条件コメント
-------------
+.. warning::
 
-ifとend
-~~~~~~~
+  To prevent SQL injection vulnerabilities,
+  embedded variable directives reject parameters containing the following values:
 
-条件分岐を示す式コメントを条件コメントと呼びます。
-構文は次のとおりです。
+  * a single quotation ``'``
+  * a semi colon ``;``
+  * two hyphen ``--``
+  * a slash and an asterisk ``/*``
+
+Condition directive
+-------------------
+
+Condition directive allows you to build SQL statements conditionally.
+
+Synopsis
+~~~~~~~~
 
 .. code-block:: sql
 
-  /*%if 条件式*/ ～ /*%end*/
+  /*%if condition*/
+    ...
+  /*%elseif condition2*/
+    ...
+  /*%elseif condition3*/
+    ...
+  /*%else*/
+    ...
+  /*%end*/
 
-条件式は結果が ``boolean`` もしくは ``java.lang.Boolean`` 型と評価される式でなければいけません。
-例を示します。
+The expressions ``condition``, ``condition2``, and ``condition3`` must be evaluated
+to either ``boolean`` or ``java.lang.Boolean``.
+
+The ``elseif`` directives and the ``else`` directive are optional.
+
+if
+~~
+
+Suppose you have the following SQL template:
 
 .. code-block:: sql
 
@@ -335,70 +366,24 @@ ifとend
       employee_id = /* employeeId */99
   /*%end*/
 
-上記の SQL 文は ``employeeId`` が ``null`` でない場合、 次のような準備された文に変換されます。
+If the ``employeeId`` is not ``null``, the generated SQL statement is as follows:
 
 .. code-block:: sql
 
   select * from employee where employee_id = ?
 
-この SQL 文は ``employeeId`` が ``null`` の場合に次のような準備された文に変換されます。
+If the ``employeeId`` is ``null``, the generated SQL statement is as follows:
 
 .. code-block:: sql
 
   select * from employee
 
-``if`` の条件が成り立たない場合に ``if`` の外にある WHERE句が出力されないのは、
-`条件コメントにおけるWHEREやHAVINGの自動除去`_ 機能が働いているためです。
+The SQL keyword ``where`` is removed automatically.
 
-条件コメントにおけるWHEREやHAVINGの自動除去
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+elseif and else
+~~~~~~~~~~~~~~~
 
-条件コメントを使用した場合、条件の前にある ``WHERE`` や ``HAVING`` について自動で出力の要/不要を判定します。
-たとえば、次のようなSQLで ``employeeId`` が ``null`` の場合、
-
-.. code-block:: sql
-
-  select * from employee where
-  /*%if employeeId != null */
-      employee_id = /* employeeId */99
-  /*%end*/
-
-``/*%if ～*/`` の前の ``where`` は自動で除去され、次のSQLが生成されます。
-
-
-.. code-block:: sql
-
-  select * from employee
-
-条件コメントにおけるANDやORの自動除去
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-条件コメントを使用した場合、条件の後ろにつづく ``AND`` や ``OR`` について自動で出力の要/不要を判定します。
-たとえば、次のようなSQLで ``employeeId`` が ``null`` の場合、
-
-.. code-block:: sql
-
-  select * from employee where
-  /*%if employeeId != null */
-      employee_id = /* employeeId */99
-  /*%end*/
-  and employeeName like 's%'
-
-``/*%end*/`` の後ろの ``and`` は自動で除去され、次の SQL が生成されます。
-
-.. code-block:: sql
-
-  select * from employee where employeeName like 's%'
-
-elseifとelse
-~~~~~~~~~~~~
-
-``/*%if 条件式*/`` と ``/*%end*/`` の間では、 ``elseif`` や ``else`` を表す次の構文も使用できます。
-
-* /\*%elseif 条件式\*/
-* /\*%else\*/
-
-例を示します。
+Suppose you have the following SQL template:
 
 .. code-block:: sql
 
@@ -417,7 +402,7 @@ elseifとelse
     department_id is null
   /*%end*/
 
-上の SQL は、 ``employeeId != null``  が成立するとき実際は次の SQL に変換されます。
+If the ``employeeId != null`` is evaluated ``true``, the generated SQL statement is as follows:
 
 .. code-block:: sql
 
@@ -428,8 +413,8 @@ elseifとelse
   where
     employee_id = ?
 
-``employeeId == null && department_id != null`` が成立するとき、実際は次の SQL に変換されます。
-``department_id`` の直前の ``AND`` は自動で除去されるため出力されません。
+If the ``employeeId == null && department_id != null`` is evaluated ``true``,
+the generated SQL statement is as follows:
 
 .. code-block:: sql
 
@@ -440,8 +425,10 @@ elseifとelse
   where
     department_id = ?
 
-``employeeId == null && department_id == null`` が成立するとき、実際は次の SQL に変換されます。
-``department_id`` の直前の ``AND`` は自動で除去されるため出力されません。
+The SQL keyword ``and`` followed by ``department_id`` is remove automatically:
+
+If the ``employeeId == null && department_id == null`` is evaluated ``true``,
+the generated SQL statement is as follows:
 
 .. code-block:: sql
 
@@ -452,10 +439,12 @@ elseifとelse
   where
     department_id is null
 
-ネストした条件コメント
-~~~~~~~~~~~~~~~~~~~~~~
+The SQL keyword ``and`` followed by ``department_id`` is remove automatically:
 
-条件コメントはネストさせることができます。
+Nested condition directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can nest condition directives as follows:
 
 .. code-block:: sql
 
@@ -471,42 +460,108 @@ elseifとelse
     /*%end*/
   /*%end*/
 
-条件コメントにおける制約
-~~~~~~~~~~~~~~~~~~~~~~~~
+Removal of WHERE and HAVING clauses on condition directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-条件コメントの ``if`` と ``end`` はSQLの同じ節に含まれなければいけません。
-節とは、 SELECT節、FROM節、WHERE節、GROUP BY節、HAVING節、ORDER BY節などです。
-次の例では、 ``if`` がFROM節にあり ``end`` がWHERE節にあるため不正です。
+WHERE and HAVING clauses can be unnecessary on condition directive.
+Those clauses are removed automatically.
+
+Suppose you have the following SQL template:
+
+.. code-block:: sql
+
+  select * from employee where
+  /*%if employeeId != null */
+      employee_id = /* employeeId */99
+  /*%end*/
+
+If the ``employeeId != null`` is evaluated ``false``,
+the generated SQL statement is as follows:
+
+.. code-block:: sql
+
+  select * from employee
+
+Because the SQL clause ``where`` followed by ``/*%if ...*/`` is unnecessary,
+it is removed automatically.
+
+Removal of AND and OR keywords on condition directives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+AND and OR keywords can be unnecessary on condition directive.
+Those clauses are removed automatically.
+
+Suppose you have the following SQL template:
+
+.. code-block:: sql
+
+  select * from employee where
+  /*%if employeeId != null */
+      employee_id = /* employeeId */99
+  /*%end*/
+  and employeeName like 's%'
+
+If the ``employeeId != null`` is evaluated ``false``,
+the generated SQL statement is as follows:
+
+.. code-block:: sql
+
+  select * from employee where employeeName like 's%'
+
+Because the SQL keyword ``and`` following ``/*%end*/`` is unnecessary,
+it is removed automatically.
+
+Restriction on condition directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``/*%if condition*/`` and ``/*%end*/`` must be included in
+same SQL clause and in same statement level.
+
+The following template is invalid, because ``/*%if condition*/`` is
+in the FROM clause and ``/*%end*/`` is in the WHERE clause:
 
 .. code-block:: sql
 
   select * from employee /*%if employeeId != null */
   where employee_id = /* employeeId */99 /*%end*/
 
-また、 ``if`` と ``end`` は同じレベルの文に含まれなければいけません。
-次の例では、 ``if`` が括弧の外にありendが括弧の内側にあるので不正です。
+The following template is invalid, because ``/*%if condition*/`` is
+in the outer statement and ``/*%end*/`` is in the inner statement:
 
 .. code-block:: sql
 
   select * from employee
-  where employee_id in /*%if departmentId != null */(...  /*%end*/ ...)
+  where employee_id in /*%if departmentId != null */(select ...  /*%end*/ ...)
 
-繰り返しコメント
-----------------
+Loop directive
+--------------
 
-forとend
+Loop directive allows you to build SQL statements using loop.
+
+Synopsis
 ~~~~~~~~
 
-繰り返しを示す式コメントを繰り返しコメントと呼びます。
-構文は次のとおりです。
+.. code-block:: sql
 
-::
+  /*%for item : sequence*/
+    ...
+  /*%end*/
 
-  /*%for 識別子 : 式*/ ～ /*%end*/
+The ``item`` is the loop variable.
+The expression ``sequence`` must be evaluated to subtype of ``java.lang.Iterable``
 
-識別子は、繰り返される要素を指す変数です。
-式は ``java.lang.Iterable`` 型として評価される式でなければいけません。
-例を示します。
+In the inside between ``/*%for item : sequence*/`` and ``/*%end*/``,
+two extra loop variables are available:
+
+:item_index: The index (0-based number) of the current item in the loop
+:item_has_next: Boolean value that tells if the current item is the last in the sequence or not
+
+The prefix ``item`` indicates the name of the loop variable.
+
+for and item_has_next
+~~~~~~~~~~~~~~~~~~~~~
+
+Suppose you have the following SQL template:
 
 .. code-block:: sql
 
@@ -518,7 +573,8 @@ forとend
     /*%end */
   /*%end*/
 
-上記の SQL 文は、 ``names`` が3つの要素からなるリストを表す場合、次のような準備された文に変換されます。
+If the sequence ``names`` contains three items,
+the generated SQL statement is as follows:
 
 .. code-block:: sql
 
@@ -529,27 +585,13 @@ forとend
   or
   employee_name like ?
 
-item_has_nextとitem_index
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Removal of WHERE and HAVING clauses on loop directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``/*%for 識別子 : 式*/`` から ``/*%end*/`` までの内側では次の2つの特別な変数を使用できます。
+WHERE and HAVING clauses can be unnecessary on loop directive.
+Those clauses are removed automatically.
 
-* item_has_next
-* item_index
-
-接頭辞の *item* は識別子を表します。つまり、 ``for`` の識別子が ``name`` の場合
-この変数はそれぞれ ``name_has_next`` と ``name_index`` となります。
-
-``item_has_next`` は次の繰り返し要素が存在するかどうかを示す ``boolean`` の値です。
-
-``item_index`` は繰り返しのindexを表す ``int`` の値です。値は0始まりです。
-
-繰り返しコメントにおけるWHEREやHAVINGの自動除去
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-繰り返しコメントを使用した場合、コメントの前にある
-``WHERE`` や ``HAVING`` について自動で出力の要/不要を判定します。
-たとえば、次のような SQL で ``names`` の ``size`` が ``0`` の場合（繰り返しが行われない場合）、
+Suppose you have the following SQL template:
 
 .. code-block:: sql
 
@@ -561,18 +603,23 @@ item_has_nextとitem_index
     /*%end */
   /*%end*/
 
-``/*%for ～*/`` の前の ``where`` は自動で除去され、次の SQL が生成されます。
+If the sequence ``names`` is empty,
+the generated SQL statement is as follows:
 
 .. code-block:: sql
 
   select * from employee
 
-繰り返しコメントにおけるANDやORの自動除去
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Because the SQL clause ``where`` followed by ``/*%for ...*/`` is unnecessary,
+it is removed automatically.
 
-繰り返しコメントを使用した場合、コメントの後ろにつづく
-``AND`` や ``OR`` について自動で出力の要/不要を判定します。
-たとえば、次のような SQL で ``names`` の ``size`` が ``0`` の場合（繰り返しが行われない場合）、
+Removal of AND and OR keywords on loop directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+AND and OR keywords can be unnecessary on loop directive.
+Those keywords are removed automatically.
+
+Suppose you have the following SQL template:
 
 .. code-block:: sql
 
@@ -586,47 +633,49 @@ item_has_nextとitem_index
   or
   salary > 1000
 
-``/*%end*/`` の後ろの ``or`` は自動で除去され、次のSQLが生成されます。
+If the sequence ``names`` is empty,
+the generated SQL statement is as follows:
 
 .. code-block:: sql
 
   select * from employee where salary > 1000
 
-繰り返しコメントにおける制約
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Because the SQL keyword ``or`` following ``/*%end*/`` is unnecessary,
+it is removed automatically.
 
-繰り返しコメントの ``for`` と ``end`` は SQL の同じ節に含まれなければいけません。
-節とは、SELECT節、FROM節、WHERE節、GROUP BY節、HAVING節、ORDER BY節などです。
+Restriction on loop directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-また、 ``for`` と ``end`` は同じレベルの文に含まれなければいけません。
-つまり、括弧の外で ``for`` 、括弧の内側で ``end`` という記述は認められません。
+``/*%for ...*/`` and ``/*%end*/`` must be included in
+same SQL clause and in same statement level.
 
-選択カラムリスト展開コメント
-----------------------------
+See also `Restriction on condition directive`_.
+
+Expansion directive
+-------------------
+
+Expansion directive allows you to build column list of SELECT clause from the definition of :doc:`entity`.
+
+Synopsis
+~~~~~~~~
+
+.. code-block:: sql
+
+  /*%expand alias*/
+
+The expression ``alias`` is optional.
+If it is specified, it must be evaluated to ``java.lang.String``.
+
+The directive must be followed by the asterisk ``*``.
 
 expand
 ~~~~~~
 
-SELECT節のアスタリスク ``*`` を :doc:`entity` の定義を
-参照して自動でカラムのリストに展開する式を選択カラムリスト展開コメントと呼びます。
-構文は次のとおりです。
-
-::
-
-  /*%expand エイリアス*/
-
-エイリアスは文字列として評価される式でなければいけません。
-エイリアスは省略可能です。
-
-このコメントの直後にはアスタリスク ``*`` が必須です。
-
-例を示します。
+Suppose you have the following SQL template and the entity class mapped to the template:
 
 .. code-block:: sql
 
   select /*%expand*/* from employee
-
-上記のSQL文の結果が次のような :doc:`entity` にマッピングされているものとします。
 
 .. code-block:: java
 
@@ -637,20 +686,19 @@ SELECT節のアスタリスク ``*`` を :doc:`entity` の定義を
        Integer age;
    }
 
-このとき、 SQL は以下のように変換されます。
+The generated SQL statement is as follows:
 
 .. code-block:: sql
 
   select id, name, age from employee
 
-SQL 上でテーブルにエイリアスを指定する場合、
-選択カラムリスト展開コメントにも同じエイリアスを指定してください。
+If you specify an alias to the table, specify same alias to the expansion directive:
 
 .. code-block:: sql
 
   select /*%expand "e" */* from employee e
 
-このとき、 SQL は以下のように変換されます。
+The generated SQL statement is as follows:
 
 .. code-block:: sql
 
@@ -658,28 +706,27 @@ SQL 上でテーブルにエイリアスを指定する場合、
 
 .. _populate:
 
-更新カラムリスト生成コメント
------------------------------
+Population directive
+--------------------
+
+Population directive allows you to build column list of
+UPDATE SET clause from the definition of :doc:`entity`.
+
+Synopsis
+~~~~~~~~
+
+.. code-block:: sql
+
+  /*%populate*/
 
 populate
 ~~~~~~~~
 
-UPDATE文のSET節 を :doc:`entity` の定義を
-参照して自動で生成する式を更新カラムリスト生成コメントと呼びます。
-構文は次のとおりです。
-
-::
-
-  /*%populate*/
-
-
-例を示します。
+Suppose you have the following SQL template and the entity class mapped to the template:
 
 .. code-block:: sql
 
   update employee set /*%populate*/ id = id where age < 30
-
-上記のSQL文への入力が次のような :doc:`entity` にマッピングされているものとします。
 
 .. code-block:: java
 
@@ -690,56 +737,53 @@ UPDATE文のSET節 を :doc:`entity` の定義を
        Integer age;
    }
 
-このとき、 SQL は以下のように変換されます。
+The generated SQL statement is as follows:
 
 .. code-block:: sql
 
   update employee set id = ?, name = ?, age = ? where age < 30
 
-更新カラムリスト生成コメントは、 ``/*%populate*/`` からWHERE句までをカラムリストで置き換えます。
-つまり、元のSQLにあった ``id = id`` の記述は最終的なSQLからは削除されます。
+Comments
+========
 
-通常のブロックコメント
-----------------------
+This section show you how to distinguish between directives and normal SQL comments.
 
-``/*`` の直後に続く3文字目がJavaの識別子の先頭で使用できない文字
-（ただし、空白および式で特別な意味をもつ ``%``、``#``、 ``@``、 ``"``、 ``'`` は除く）の場合、
-それは通常のブロックコメントだとみなされます。
+Single line comment
+-------------------
 
-たとえば、次の例はすべて通常のブロックコメントです。
+Always the string consisting of two hyphens ``--`` is a single line comment.
+It is never directive.
 
-.. code-block:: sql
+Multi line comment
+------------------
 
-  /**～*/
-  /*+～*/
-  /*=～*/
-  /*:～*/
-  /*;～*/
-  /*(～*/
-  /*)～*/
-  /*&～*/
+If the character following ``/*`` is not permissible as the first character in a Java identifier
+and it is neither ``%``, ``#``, ``@``, ``"`` nor ``'``,
+the ``/*`` is beginning of a multi line comment.
 
-一方、次の例はすべて式コメントだとみなされます。
+The followings are the beginning of a multi line comment:
 
-.. code-block:: sql
+* /\*\*...\*/
+* /\*+...\*/
+* /\*=...\*/
+* /\*:...\*/
+* /\*;...\*/
+* /\*(...\*/
+* /\*)...\*/
+* /\*&...\*/
 
-  /* ～*/ ...--3文字目が空白であるため式コメントです。
-  /*a～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるため式コメントです。
-  /*$～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるため式コメントです。
-  /*%～*/ ...--3文字目が条件コメントや繰り返しコメントの始まりを表す「%」であるため式コメントです。
-  /*#～*/ ...--3文字目が埋め込み変数コメントを表す「#」であるため式コメントです。
-  /*@～*/ ...--3文字目が組み込み関数もしくはクラス名を表す「@」であるため式コメントです。
-  /*"～*/ ...--3文字目が文字列リテラルの引用符を表す「"」であるため式コメントです。
-  /*'～*/ ...--3文字目が文字リテラルの引用符を表す「'」であるため式コメントです。
+In other hand, the followings are the beginning of a directive:
+
+* /\* ...\*/
+* /\*a...\*/
+* /\*$...\*/
+* /\*@...\*/
+* /\*"...\*/
+* /\*'...\*/
+* /\*#...\*/
+* /\*%...\*/
 
 .. note::
 
-  特に理由がない場合、通常のブロックコメントには
-  最初のアスタリスクを2つ重ねる ``/**～*/`` を使用するのがよいでしょう。
+  We recommend you always to use ``/**～*/`` to begin multi line comments.
 
-通常の行コメント
-----------------
-
-``--`` は通常の行コメントだとみなされます。
-
-Domaでは行コメントを特別に解釈することはありません。
