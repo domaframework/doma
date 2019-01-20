@@ -93,8 +93,8 @@ build.gradle as an example:
   }
 
   dependencies {
-      annotationProcessor "org.seasar.doma:doma:2.22.0"
-      implementation "org.seasar.doma:doma:2.22.0"
+      annotationProcessor "org.seasar.doma:doma:2.23.0-SNAPSHOT"
+      implementation "org.seasar.doma:doma:2.23.0-SNAPSHOT"
   }
 
   repositories {
