@@ -189,10 +189,10 @@ The expression enclosed between ``/*`` and ``*/`` is evaluated and
 its evaluation result is passed to bind variable in SQL statement.
 The directive must be followed by test data, which is never used in runtime.
 
-Basic or domain parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Basic and domain parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The parameter whose type is one of :doc:`basic` or :doc:`domain`
+The parameter whose type is one of :doc:`basic` and :doc:`domain`
 is recognised as a bind variable.
 
 The following example is the pair of a DAO method and an SQL template:
