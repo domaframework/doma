@@ -5,7 +5,7 @@ Expression language
 .. contents:: Contents
    :depth: 3
 
-You can write simple expressions in expression comments of :doc:`sql`.
+You can write simple expressions in directives of :doc:`sql`.
 The grammar is almost the same as Java.
 However, not everything is possible that Java can do.
 
