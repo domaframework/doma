@@ -2,6 +2,22 @@
 Release Notes
 =============
 
+v2.22.0: 2019-01-20
+======================
+
+* `GH278 <https://github.com/domaframework/doma/pull/278>`_
+  Remove unused Dockerfile
+* `GH272 <https://github.com/domaframework/doma/pull/272>`_
+  Add experimental Sql annotation
+* `GH279 <https://github.com/domaframework/doma/pull/279>`_
+  `GH277 <https://github.com/domaframework/doma/pull/277>`_
+  `GH274 <https://github.com/domaframework/doma/pull/274>`_
+  `GH273 <https://github.com/domaframework/doma/pull/273>`_
+  `GH272 <https://github.com/domaframework/doma/pull/272>`_
+  `GH270 <https://github.com/domaframework/doma/pull/270>`_
+  `GH269 <https://github.com/domaframework/doma/pull/269>`_
+  Translate documents from Japanese into English
+
 v2.21.0: 2019-01-06
 ======================
 
