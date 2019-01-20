@@ -785,5 +785,5 @@ In other hand, the followings are the beginning of a directive:
 
 .. note::
 
-  We recommend you always to use ``/**～*/`` to begin multi line comments.
+  We recommend you always use ``/**...*/`` to begin multi line comments because it is simple.
 
