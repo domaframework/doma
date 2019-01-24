@@ -27,26 +27,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.Writer;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 import javax.tools.DiagnosticListener;
@@ -95,21 +81,6 @@ import junit.framework.TestCase;
  *         <li>{@link #getDiagnostics(javax.tools.Diagnostic.Kind)}
  *         <li>{@link #getDiagnostics(Class, javax.tools.Diagnostic.Kind)}
  *         <li>{@link #getDiagnostics(String, javax.tools.Diagnostic.Kind)}
- *         <li>{@link #getProcessingEnvironment()}
- *         <li>{@link #getElementUtils()}
- *         <li>{@link #getTypeUtils()}
- *         <li>{@link #getTypeElement(Class)}
- *         <li>{@link #getTypeElement(String)}
- *         <li>{@link #getFieldElement(TypeElement, Field)}
- *         <li>{@link #getFieldElement(TypeElement, String)}
- *         <li>{@link #getConstructorElement(TypeElement)}
- *         <li>{@link #getConstructorElement(TypeElement, Class...)}
- *         <li>{@link #getConstructorElement(TypeElement, String...)}
- *         <li>{@link #getMethodElement(TypeElement, String)}
- *         <li>{@link #getMethodElement(TypeElement, String, Class...)}
- *         <li>{@link #getMethodElement(TypeElement, String, String...)}
- *         <li>{@link #getTypeMirror(Class)}
- *         <li>{@link #getTypeMirror(String)}
  *         <li>{@link #getGeneratedSource(Class)}
  *         <li>{@link #getGeneratedSource(String)}
  *       </ul>
@@ -179,10 +150,6 @@ public abstract class AptinaTestCase extends TestCase {
 
   final List<Processor> processors = newArrayList();
 
-  {
-    processors.add(new AptinaUnitProcessor());
-  }
-
   final List<CompilationUnit> compilationUnits = newArrayList();
 
   JavaCompiler javaCompiler;
@@ -192,8 +159,6 @@ public abstract class AptinaTestCase extends TestCase {
   StandardJavaFileManager standardJavaFileManager;
 
   JavaFileManager testingJavaFileManager;
-
-  ProcessingEnvironment processingEnvironment;
 
   Boolean compiledResult;
 
@@ -506,226 +471,6 @@ public abstract class AptinaTestCase extends TestCase {
   }
 
   /**
-   * {@link ProcessingEnvironment} を返します．
-   *
-   * @return {@link ProcessingEnvironment}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected ProcessingEnvironment getProcessingEnvironment() throws IllegalStateException {
-    assertCompiled();
-    return processingEnvironment;
-  }
-
-  /**
-   * {@link Elements} を返します．
-   *
-   * @return {@link Elements}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   * @see ProcessingEnvironment#getElementUtils()
-   */
-  protected Elements getElementUtils() throws IllegalStateException {
-    assertCompiled();
-    return processingEnvironment.getElementUtils();
-  }
-
-  /**
-   * {@link Types} を返します．
-   *
-   * @return {@link Types}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   * @see ProcessingEnvironment#getTypeUtils()
-   */
-  protected Types getTypeUtils() throws IllegalStateException {
-    assertCompiled();
-    return processingEnvironment.getTypeUtils();
-  }
-
-  /**
-   * クラスに対応する {@link TypeElement} を返します．
-   *
-   * <p>このメソッドが返す {@link TypeElement} およびその {@link Element#getEnclosedElements()} が返す {@link
-   * Element} から， {@link Elements#getDocComment(Element)} を使って Javadoc コメントを取得することはできません．
-   *
-   * @param clazz クラス
-   * @return クラスに対応する{@link TypeElement}， 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected TypeElement getTypeElement(final Class<?> clazz) throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getTypeElement(getElementUtils(), clazz.getName());
-  }
-
-  /**
-   * クラスに対応する {@link TypeElement} を返します．
-   *
-   * <p>このメソッドが返す {@link TypeElement} およびその {@link Element#getEnclosedElements()} が返す {@link
-   * Element} から， {@link Elements#getDocComment(Element)} を使って Javadoc コメントを取得することはできません．
-   *
-   * @param className クラスの完全限定名
-   * @return クラスに対応する{@link TypeElement}， 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected TypeElement getTypeElement(final String className) throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getTypeElement(getElementUtils(), className);
-  }
-
-  /**
-   * 型エレメントに定義されたフィールドの変数エレメントを返します．
-   *
-   * @param typeElement 型エレメント
-   * @param field フィールド
-   * @return 型エレメントに定義されたフィールドの変数エレメント． 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected VariableElement getFieldElement(final TypeElement typeElement, final Field field)
-      throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getFieldElement(typeElement, field);
-  }
-
-  /**
-   * 型エレメントに定義されたフィールドの変数エレメントを返します．
-   *
-   * @param typeElement 型エレメント
-   * @param fieldName フィールド名
-   * @return 型エレメントに定義されたフィールドの変数エレメント． 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected VariableElement getFieldElement(final TypeElement typeElement, final String fieldName)
-      throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getFieldElement(typeElement, fieldName);
-  }
-
-  /**
-   * 型エレメントに定義されたデフォルトコンストラクタの実行可能エレメントを返します．
-   *
-   * @param typeElement 型エレメント
-   * @return 型エレメントに定義されたデフォルトコンストラクタの実行可能エレメント． 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected ExecutableElement getConstructorElement(final TypeElement typeElement)
-      throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getConstructorElement(typeElement);
-  }
-
-  /**
-   * 型エレメントに定義されたコンストラクタの実行可能エレメントを返します．
-   *
-   * <p>引数型が型引数を持つ場合は {@link #getConstructorElement(TypeElement, String...)} を使用してください．
-   *
-   * @param typeElement 型エレメント
-   * @param parameterTypes 引数型の並び
-   * @return 型エレメントに定義されたコンストラクタの実行可能エレメント． 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected ExecutableElement getConstructorElement(
-      final TypeElement typeElement, final Class<?>... parameterTypes)
-      throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getConstructorElement(typeElement, parameterTypes);
-  }
-
-  /**
-   * 型エレメントに定義されたコンストラクタの実行可能エレメントを返します．
-   *
-   * <p>引数がの型が配列の場合は， 要素型の名前の後に {@code []} を連ねる形式と， {@code [[LString;} のような形式のどちらでも指定することができます．
-   *
-   * <p>引数型が型引数を持つ場合は {@code "java.util.List&lt;T&gt;"} のようにそのまま指定します．
-   *
-   * @param typeElement 型エレメント
-   * @param parameterTypeNames 引数の型名の並び
-   * @return 型エレメントに定義されたコンストラクタの実行可能エレメント． 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected ExecutableElement getConstructorElement(
-      final TypeElement typeElement, final String... parameterTypeNames)
-      throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getConstructorElement(typeElement, parameterTypeNames);
-  }
-
-  /**
-   * 型エレメントに定義されたメソッドの実行可能エレメントを返します．
-   *
-   * @param typeElement 型エレメント
-   * @param methodName メソッド名
-   * @return 型エレメントに定義されたメソッドの実行可能エレメント．存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected ExecutableElement getMethodElement(
-      final TypeElement typeElement, final String methodName) throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getMethodElement(typeElement, methodName);
-  }
-
-  /**
-   * 型エレメントに定義されたメソッドの実行可能エレメントを返します．
-   *
-   * <p>引数型が型引数を持つ場合は {@link #getMethodElement(TypeElement, String, String...)} を使用してください．
-   *
-   * @param typeElement 型エレメント
-   * @param methodName メソッド名
-   * @param parameterTypes 引数型の並び
-   * @return 型エレメントに定義されたメソッドの実行可能エレメント． 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected ExecutableElement getMethodElement(
-      final TypeElement typeElement, final String methodName, final Class<?>... parameterTypes)
-      throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getMethodElement(typeElement, methodName, parameterTypes);
-  }
-
-  /**
-   * 型エレメントに定義されたメソッドの実行可能エレメントを返します．
-   *
-   * <p>引数がの型が配列の場合は， 要素型の名前の後に {@code []} を連ねる形式と， {@code [[LString;} のような形式のどちらでも指定することができます．
-   *
-   * <p>引数型が型引数を持つ場合は {@code "java.util.List&lt;T&gt;"} のようにそのまま指定します．
-   *
-   * @param typeElement 型エレメント
-   * @param methodName メソッド名
-   * @param parameterTypeNames 引数の型名の並び
-   * @return 型エレメントに定義されたメソッドの実行可能エレメント． 存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected ExecutableElement getMethodElement(
-      final TypeElement typeElement, final String methodName, final String... parameterTypeNames)
-      throws IllegalStateException {
-    assertCompiled();
-    return ElementUtils.getMethodElement(typeElement, methodName, parameterTypeNames);
-  }
-
-  /**
-   * クラスに対応する {@link TypeMirror} を返します．
-   *
-   * @param clazz クラス
-   * @return クラスに対応する{@link TypeMirror}， クラスが存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected TypeMirror getTypeMirror(final Class<?> clazz) throws IllegalStateException {
-    assertCompiled();
-    return TypeMirrorUtils.getTypeMirror(getTypeUtils(), getElementUtils(), clazz);
-  }
-
-  /**
-   * クラスに対応する {@link TypeMirror} を返します．
-   *
-   * <p>配列の場合は要素型の名前の後に {@code []} を連ねる形式と， {@code [[LString;} のような 形式のどちらでも指定することができます．
-   *
-   * @param className クラスの完全限定名
-   * @return クラスに対応する{@link TypeMirror}， クラスが存在しない場合は {@code null}
-   * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
-   */
-  protected TypeMirror getTypeMirror(final String className) throws IllegalStateException {
-    assertCompiled();
-    return TypeMirrorUtils.getTypeMirror(getTypeUtils(), getElementUtils(), className);
-  }
-
-  /**
    * {@link Processor} が生成したソースを返します．
    *
    * @param clazz 生成されたクラス
@@ -1016,7 +761,6 @@ public abstract class AptinaTestCase extends TestCase {
     options.clear();
     sourcePaths.clear();
     processors.clear();
-    processors.add(new AptinaUnitProcessor());
     compilationUnits.clear();
     javaCompiler = null;
     diagnostics = null;
@@ -1028,7 +772,6 @@ public abstract class AptinaTestCase extends TestCase {
       }
     }
     testingJavaFileManager = null;
-    processingEnvironment = null;
     compiledResult = null;
   }
 
@@ -1100,32 +843,6 @@ public abstract class AptinaTestCase extends TestCase {
     public void report(final Diagnostic<? extends JavaFileObject> diagnostic) {
       System.out.println(diagnostic);
       listener.report(diagnostic);
-    }
-  }
-
-  /**
-   * コンパイル時に {@link Processor} に渡される @ ProcessingEnvironment} を取得するための {@link Processor} です．
-   *
-   * @author koichik
-   */
-  @SupportedAnnotationTypes("*")
-  class AptinaUnitProcessor extends AbstractProcessor {
-
-    @Override
-    public synchronized void init(final ProcessingEnvironment processingEnvironment) {
-      super.init(processingEnvironment);
-      AptinaTestCase.this.processingEnvironment = processingEnvironment;
-    }
-
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-      return SourceVersion.latest();
-    }
-
-    @Override
-    public boolean process(
-        final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
-      return false;
     }
   }
 
