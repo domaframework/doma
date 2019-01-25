@@ -130,6 +130,7 @@ public class LocalTransaction {
     context.begin(
         () -> {
           Connection connection = JdbcUtil.getConnection(dataSource);
+
           int transactionIsolation;
           try {
             transactionIsolation = connection.getTransactionIsolation();
@@ -147,13 +148,24 @@ public class LocalTransaction {
               throw new JdbcException(Message.DOMA2055, e, transactionIsolationLevel.name(), e);
             }
           }
+
+          boolean isAutoCommit;
           try {
-            connection.setAutoCommit(false);
+            isAutoCommit = connection.getAutoCommit();
           } catch (SQLException e) {
             closeConnection(connection);
-            throw new JdbcException(Message.DOMA2041, e, e);
+            throw new JdbcException(Message.DOMA2084, e, e);
           }
-          return new LocalTransactionConnection(connection, transactionIsolation);
+          if (isAutoCommit) {
+            try {
+              connection.setAutoCommit(false);
+            } catch (SQLException e) {
+              closeConnection(connection);
+              throw new JdbcException(Message.DOMA2041, e, e);
+            }
+          }
+
+          return new LocalTransactionConnection(connection, transactionIsolation, isAutoCommit);
         });
     jdbcLogger.logTransactionBegun(className, callerMethodName, context.getId());
   }
@@ -408,8 +420,10 @@ public class LocalTransaction {
     if (!context.hasConnection()) {
       return;
     }
-    LocalTransactionConnection connection = context.getConnection();
-    int isolationLevel = connection.getPreservedTransactionIsolation();
+    LocalTransactionConnection localTransactionConnection = context.getConnection();
+    Connection connection = localTransactionConnection.getWrappedConnection();
+
+    int isolationLevel = localTransactionConnection.getPreservedTransactionIsolation();
     if (isolationLevel != Connection.TRANSACTION_NONE) {
       try {
         connection.setTransactionIsolation(isolationLevel);
@@ -418,12 +432,17 @@ public class LocalTransaction {
             className, callerMethodName, isolationLevel, ignored);
       }
     }
-    try {
-      connection.setAutoCommit(true);
-    } catch (SQLException ignored) {
-      jdbcLogger.logAutoCommitEnablingFailure(className, callerMethodName, ignored);
+
+    boolean isAutoCommit = localTransactionConnection.getPreservedAutoCommitState();
+    if (isAutoCommit) {
+      try {
+        connection.setAutoCommit(true);
+      } catch (SQLException ignored) {
+        jdbcLogger.logAutoCommitEnablingFailure(className, callerMethodName, ignored);
+      }
     }
-    closeConnection(connection.getWrappedConnection());
+
+    closeConnection(connection);
   }
 
   protected void closeConnection(Connection connection) {

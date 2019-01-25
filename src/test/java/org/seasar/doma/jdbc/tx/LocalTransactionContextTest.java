@@ -11,7 +11,7 @@ public class LocalTransactionContextTest extends TestCase {
   public void testReleaseAndGetSavepoint() throws Exception {
     try (LocalTransactionConnection connection =
         new LocalTransactionConnection(
-            new MockConnection(), Connection.TRANSACTION_READ_COMMITTED)) {
+            new MockConnection(), Connection.TRANSACTION_READ_COMMITTED, true)) {
       LocalTransactionContext context = new LocalTransactionContext();
       context.addSavepoint("1", new MySavepoint("1"));
       context.addSavepoint("2", new MySavepoint("2"));

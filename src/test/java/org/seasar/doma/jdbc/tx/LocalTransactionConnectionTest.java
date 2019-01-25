@@ -10,7 +10,7 @@ public class LocalTransactionConnectionTest extends TestCase {
   public void testIsWrapperFor() throws Exception {
     try (Connection connection =
         new LocalTransactionConnection(
-            new MockConnection(), Connection.TRANSACTION_READ_COMMITTED)) {
+            new MockConnection(), Connection.TRANSACTION_READ_COMMITTED, true)) {
       assertTrue(connection.isWrapperFor(LocalTransactionConnection.class));
       assertTrue(connection.isWrapperFor(MockConnection.class));
       assertFalse(connection.isWrapperFor(Runnable.class));
@@ -20,7 +20,7 @@ public class LocalTransactionConnectionTest extends TestCase {
   public void testUnwrap() throws Exception {
     try (Connection connection =
         new LocalTransactionConnection(
-            new MockConnection(), Connection.TRANSACTION_READ_COMMITTED)) {
+            new MockConnection(), Connection.TRANSACTION_READ_COMMITTED, true)) {
       assertNotNull(connection.unwrap(LocalTransactionConnection.class));
       assertNotNull(connection.unwrap(LocalTransactionConnection.class));
       try {
