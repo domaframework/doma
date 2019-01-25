@@ -101,6 +101,7 @@ public enum Message implements MessageResource {
   DOMA2081("Pessimistic locking with aliases and WAIT option is not supported in the DBMS[{0}]."),
   DOMA2082("Pessimistic locking with aliases and NOWAIT option is not supported in the DBMS[{0}]."),
   DOMA2083("Cannot reserve identity values for the entity[{0}]. The cause is as follows: {1}"),
+  DOMA2084("Cannot get the auto commit state. The cause is as follows: {0}"),
   DOMA2101(
       "Failed to parse the SQL on line [{1}] at column [{2}]. The quotation mark \"''\" that indicates the end of a string literal is not found. SQL[{0}]"),
   DOMA2102(
