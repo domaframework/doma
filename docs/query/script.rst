@@ -1,11 +1,12 @@
-==================
-スクリプト
-==================
+======
+Script
+======
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-SQLスクリプトの実行を行うには、 ``@Script`` をDaoのメソッドに注釈します。
+To run a series of static SQL statements,
+annotate DAO methods with ``@Script``:
 
 .. code-block:: java
 
@@ -16,134 +17,162 @@ SQLスクリプトの実行を行うには、 ``@Script`` をDaoのメソッド�
       ...
   }
 
-メソッドの戻り値の型は ``void`` でなければいけません。パラメータの数は0でなければいけません。
+The return type of the method must be ``void`` and the number of parameters must be zero.
 
-また、メソッドに対応するスクリプトファイルが必須です。
+Script representation
+=====================
 
-スクリプトファイル
-==================
-
-スクリプトファイルでは、
-``Dialect`` が提供するRDBMS名や区切り文字が使用されます。
-
-+----------------------------+------------------+----------+------------+
-| データベース               | Dialectの名前    | RDBMS名  | 区切り文字 |
-+============================+==================+==========+============+
-| DB2                        | Db2Dialect       | db2      | @          |
-+----------------------------+------------------+----------+------------+
-| H2 Database Engine 1.2.126 | H212126Dialect   | h2       |            |
-+----------------------------+------------------+----------+------------+
-| H2 Database                | H2Dialect        | h2       |            |
-+----------------------------+------------------+----------+------------+
-| HSQLDB                     | HsqldbDialect    | hsqldb   |            |
-+----------------------------+------------------+----------+------------+
-| Microsoft SQL Server 2008  | Mssql2008Dialect | mssql    | GO         |
-+----------------------------+------------------+----------+------------+
-| Microsoft SQL Server       | MssqlDialect     | mssql    | GO         |
-+----------------------------+------------------+----------+------------+
-| MySQL                      | MySqlDialect     | mysql    | /          |
-+----------------------------+------------------+----------+------------+
-| Oracle Database            | OracleDialect    | oracle   | /          |
-+----------------------------+------------------+----------+------------+
-| PostgreSQL                 | PostgresDialect  | postgres | $$         |
-+----------------------------+------------------+----------+------------+
-| SQLite                     | SqliteDialect    | sqlite   |            |
-+----------------------------+------------------+----------+------------+
-
-配置場所
---------
-
-スクリプトファイルはクラスパスが通った META-INF ディレクトリ以下に配置しなければいけません。
-
-ファイル名の形式
+Scripts in files
 ----------------
 
-ファイル名は、次の形式でなければいけません。
+Encoding
+~~~~~~~~
 
-::
+The script files must be saved as UTF-8 encoded.
 
-  META-INF/Daoのクラスの完全修飾名をディレクトリに変換したもの/Daoのメソッド名.script
+Location
+~~~~~~~~
 
-例えば、 Daoのクラスが ``aaa.bbb.EmployeeDao`` でマッピングしたいメソッドが
-``createTable`` の場合、パス名は次のようになります。
+The script files must be located in directories below a “META-INF” directory
+which is included in CLASSPATH.
 
-::
+Format of file path
+~~~~~~~~~~~~~~~~~~~
+
+The script file path must follow the following format:
+
+  META-INF/*path-format-of-dao-interface*/*dao-method*.script
+
+For example, when the DAO interface name is ``aaa.bbb.EmployeeDao``
+and the DAO method name is ``createTable``, the script file path is as follows:
 
   META-INF/aaa/bbb/EmployeeDao/createTable.script
 
-複数のRDBMSに対応する必要があり特定のRDBMSでは別のスクリプトファイルを使いたい場合、
-.script の前にハイフン区切りでRDBMS名を入れることで、
-優先的に使用するファイルを指示できます。
-たとえば、PostgreSQL専用のSQLファイルは次の名前にします。
+Dependency on a specific RDBMS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-::
+You can specify a dependency on a specific RDBMS by file name.
+To do this, put the hyphen "-" and RDBMS name before the extension ".sql".
+For example, the file path specific to PostgreSQL is as follows:
 
-  META-INF/aaa/bbb/EmployeeDao/createTables-postgres.script
+  META-INF/aaa/bbb/EmployeeDao/createTable-*postgres*.script
 
-この場合、PostgreSQLを使用している場合に限り、
-``META-INF/aaa/bbb/EmployeeDao/createTable.script`` よりも
-``META-INF/aaa/bbb/EmployeeDao/createTable-postgres.script`` が優先的に使用されます。
+The script files specific to RDBMSs are given priority.
+For example, in the environment where PostgreSQL is used,
+"META-INF/aaa/bbb/EmployeeDao/createTable-postgres.script"
+is chosen instead of "META-INF/aaa/bbb/EmployeeDao/createTable.script".
 
-エンコーディング
-----------------
+See also :ref:`dependency-on-a-specific-rdbms`.
 
-スクリプトファイルのエンコーディングはUTF-8でなければいけません。
+Scripts in annotation
+---------------------
 
-区切り文字
-----------
+You can specify scripts to DAO methods with the ``@Sql`` annotation:
 
-スクリプトファイルの区切り文字には、
-ステートメントの区切り文字とブロックの区切り文字の2種類があります。
+.. code-block:: java
 
-ステートメントの区切り文字はセミコロン ``;`` です。
+  @Config(config = AppConfig.class)
+  public interface EmployeeDao {
+      @Sql("create table employee (id integer, name varchar(200))")
+      @Script
+      void createTable();
+      ...
+  }
 
-ブロックの区切り文字は、 ``Dialect`` が提供する値が使用されます。
+See also :ref:`sql-templates-in-annotations`.
 
-ブロックの区切り文字は、アノテーションの ``blockDelimiter``
-要素で明示することもできます。
-アノテーションで指定した場合、 ``Dialect`` の値よりも優先されます。
+Delimiter
+=========
+
+There are two kinds of delimiters in scripts:
+
+- statement delimiter
+- block delimiter
+
+The statement delimiter is always a semicolon ``;``.
+The block delimiter is determined by a ``Dialect`` instance.
+The RDBMS block delimiters are as follows:
+
++----------------------------+------------------+-----------------+
+| RDBMS                      | Dialect          | block delimiter |
++============================+==================+=================+
+| DB2                        | Db2Dialect       | @               |
++----------------------------+------------------+-----------------+
+| H2 Database Engine 1.2.126 | H212126Dialect   |                 |
++----------------------------+------------------+-----------------+
+| H2 Database                | H2Dialect        |                 |
++----------------------------+------------------+-----------------+
+| HSQLDB                     | HsqldbDialect    |                 |
++----------------------------+------------------+-----------------+
+| Microsoft SQL Server 2008  | Mssql2008Dialect | GO              |
++----------------------------+------------------+-----------------+
+| Microsoft SQL Server       | MssqlDialect     | GO              |
++----------------------------+------------------+-----------------+
+| MySQL                      | MySqlDialect     | /               |
++----------------------------+------------------+-----------------+
+| Oracle Database            | OracleDialect    | /               |
++----------------------------+------------------+-----------------+
+| PostgreSQL                 | PostgresDialect  | $$              |
++----------------------------+------------------+-----------------+
+| SQLite                     | SqliteDialect    |                 |
++----------------------------+------------------+-----------------+
+
+You can also specify the block delimiter to ``@Script``'s ``blockDelimiter`` element:
 
 .. code-block:: java
 
   @Script(blockDelimiter = "GO")
-  void createTable();
+  void createProcedure();
 
-エラー発生時の継続実行
-----------------------
+The corresponding script file is as follows:
 
-デフォルトでは、スクリプト中のどれかのSQLの実行が失敗すれば、
-処理はそこで止まります。
-しかし、アノテーションの ``haltOnError`` 要素に ``false``
-を指定することで、エラー発生時に処理を継続させることができます。
+.. code-block:: sql
+
+  SET ANSI_NULLS ON
+  GO
+  SET QUOTED_IDENTIFIER ON
+  GO
+
+  CREATE PROCEDURE [dbo].[MY_PROCEDURE]
+  AS
+  BEGIN
+      SET NOCOUNT ON;
+  END
+  GO
+
+Stopping on error
+=================
+
+Script running will stop when any statement execution fails.
+To continue the script running, specify ``false`` to the ``haltOnError`` element:
 
 .. code-block:: java
 
   @Script(haltOnError = false)
   void createTable();
 
-記述例
-======
+Example
+=======
 
-スクリプトファイルは次のように記述できます。
-この例は、Oracle Databaseに有効なスクリプトです。
+Following script is valid for Oracle Database:
 
 .. code-block:: sql
 
   /*
-   * テーブル定義（SQLステートメント）
+   * table creation statement
    */
   create table EMPLOYEE (
-    ID numeric(5) primary key,  -- 識別子
-    NAME varchar2(20)           -- 名前
+    ID numeric(5) primary key,  -- identifier is not generated automatically
+    NAME varchar2(20)           -- first name only
   );
 
   /*
-   * データの追加（SQLステートメント）
+   * insert statement
    */
   insert into EMPLOYEE (ID, NAME) values (1, 'SMITH');
 
   /*
-   * プロシージャー定義（SQLブロック）
+   * procedure creatiton block
    */
   create or replace procedure proc
   ( cur out sys_refcursor,
@@ -155,7 +184,7 @@ SQLスクリプトの実行を行うには、 ``@Script`` をDaoのメソッド�
   /
 
   /*
-   * プロシージャー定義2（SQLブロック）
+   * procedure creation block
    */
   create or replace procedure proc2
   ( cur out sys_refcursor,
@@ -166,30 +195,9 @@ SQLスクリプトの実行を行うには、 ``@Script`` をDaoのメソッド�
   end proc_resultset;
   /
 
-コメントは1行コメント ``--`` とブロックコメント ``/* */`` の2種類が使用できます。
-コメントは取り除かれてデータベースへ発行されます。
+You can use both a single line comment ``--`` and a multi-line comment ``/* ... */``.
+Each statement must end with a semicolon ``;``.
+Be careful that a new line doesn't mean the end of a statement.
 
-1つのSQLステートメントは複数行に分けて記述できます。
-ステートメントはセミコロン ``;`` で区切らなければいけません。
-改行はステートメントの区切りとはみなされません。
-
-ストアドプロシージャーなどのブロックの区切りは、 ``Dialect`` のデフォルトの値か、
-``@Script`` の ``blockDelimiter`` 要素に指定した値を使用して示せます。
-この例では、 ``OracleDialect`` のデフォルトの区切り文字であるスラッシュ
-``/`` を使用しています。
-ブロックの 区切り文字は行頭に記述し、
-区切り文字の後ろには何も記述しないようにしてください。
-つまり、区切り文字だけの行としなければいけません。
-
-SQL のログ出力形式
-==================
-
-``@Script`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
-
-.. code-block:: java
-
-  @Script(sqlLog = SqlLogType.RAW)
-  void createTable();
-
-``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
-
+In this example, the slash ``/`` is a block delimiter.
+The block delimiter must appear at the beginning of a line and be followed by a new line.

@@ -1,11 +1,12 @@
-==================
-SQLプロセッサ
-==================
+=============
+SQL processor
+=============
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-SQLテンプレートで組み立てられたSQLをアプリケーションで扱うには、 ``@SqlProcessor`` をDaoのメソッドに注釈します。
+SQL processors can handle the SQL statements generated from corresponding SQL templates.
+To mark a DAO method as an SQL processor, annotate the method with ``@SqlProcessor``:
 
 .. code-block:: java
 
@@ -16,40 +17,39 @@ SQLテンプレートで組み立てられたSQLをアプリケーションで�
       ...
   }
 
-メソッドに対応する :doc:`../sql` が必須です。
-
 .. warning::
 
-  SQLプロセッサを使ってSQLを組み立て実行する場合、潜在的には常にSQLインジェクションのリスクがあります。
-  まずは、他のクエリもしくはクエリビルダを使う方法を検討してください。
-  また、SQLプロセッサでは信頼できない値をSQLの組み立てに使わないように注意してください。
+  Being aware of SQL injection vulnerabilities is essential.
+  If it's possible, consider alternative ways other than SQL processors.
 
-戻り値
-==================
+Return type
+===========
 
-メソッドの戻り値は任意の型にできます。
-ただし、 ``BiFunction`` 型のパラメータの3番目の型パラメータと合わせる必要があります。
+The return type must be the same type as the third type parameter of ``BiFunction``:
 
-なお、戻り値の型を ``void`` にする場合、 ``BiFunction`` 型のパラメータの3番目の型パラメータには ``Void`` を指定します。
+.. code-block:: java
+
+  @SqlProcessor
+  String process(Integer id, BiFunction<Config, PreparedSql, String> handler);
+
+If the return type is ``void``, the third type parameter of ``BiFunction`` must be ``Void``:
 
 .. code-block:: java
 
   @SqlProcessor
   void process(Integer id, BiFunction<Config, PreparedSql, Void> handler);
 
-パラメータ
-==================
+Parameter
+=========
 
- ``BiFunction`` 型のパラメータを1つのみ含める必要があります。
- ``BiFunction`` 型のパラメータはSQLテンプレート処理後のSQLを処理するために使われます。
+Include a parameter whose type is ``BiFunction``.
+The ``BiFunction`` parameter accepts a configuration and an SQL statement then processes them.
+Parameters other than the ``BiFunction`` parameter are used in the SQL template.
 
-その他のパラメータはSQLテンプレートで参照できます。
-基本的には、 :doc:`select` の問い合わせ条件に指定できるのと同じ型を使用できます。 
+Example
+=======
 
-利用例
-==================
-
-例えば、SQLテンプレートで処理したSQLをさらに変形し直接実行することができます。（この例では例外処理を省略しています。）
+Suppose you want to change the SQL statement generated from an SQL template and execute it:
 
 .. code-block:: java
 

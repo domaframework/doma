@@ -91,6 +91,8 @@ the SQL file path is as follows:
 
   META-INF/aaa/bbb/EmployeeDao/selectById.sql
 
+.. _dependency-on-a-specific-rdbms:
+
 Dependency on a specific RDBMS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -104,7 +106,6 @@ The SQL files specific to RDBMSs are given priority.
 For example, in the environment where PostgreSQL is used,
 "META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql"
 is chosen instead of "META-INF/aaa/bbb/EmployeeDao/selectById.sql".
-But in other environment,
 
 The RDBMS names are stem from dialects:
 
@@ -127,6 +128,8 @@ The RDBMS names are stem from dialects:
 +----------------------------+------------------+------------+
 | SQLite                     | SqliteDialect    | sqlite     |
 +----------------------------+------------------+------------+
+
+.. _sql-templates-in-annotations:
 
 SQL templates in annotations
 ============================
