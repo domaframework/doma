@@ -43,7 +43,7 @@ class LocalTransactionConnection implements Connection {
     return this.preservedTransactionIsolation;
   }
 
-  public boolean getPreservedAutoCommitState() {
+  protected boolean getPreservedAutoCommitState() {
     return preservedAutoCommitState;
   }
 
