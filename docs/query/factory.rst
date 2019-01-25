@@ -1,66 +1,66 @@
-==================
-ファクトリ
-==================
+=========
+Factories
+=========
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-``java.sql.Connection`` が提供するファクトリメソッドからインスタンスを取得するには、
-Daoのメソッドに次のアノテーションを注釈します。
+To get instances from the factory methods of ``java.sql.Connection``,
+annotate DAO methods with one of following annotations;
 
-* java.sql.Arrayを生成するには、@ArrayFactory
-* java.sql.Blobを生成するには、@BlobFactory
-* java.sql.Clobを生成するには、@ClobFactory
-* java.sql.NClobを生成するには、@NClobFactory
-* java.sql.SQLXMLを生成するには、@SQLXMLFactory
+* @ArrayFactory
+* @BlobFactory
+* @ClobFactory
+* @NClobFactory
+* @SQLXMLFactory
 
-Arrayの生成
-===========
+Creating Array instances
+========================
 
-戻り値の型は ``java.sql.Array`` 、パラメータは1つの配列型でなければいけません。
-引数は ``null`` であってはいけません。
+A return type must be ``java.sql.Array`` and the number of parameters must be one.
+The parameter type must be an array type and the parameter must not be null.
 
-``@ArrayFactory`` の ``typeName`` 要素にはデータベースの型名を指定します。
+Specify a database type name to the ``@ArrayFactory``'s ``typeName`` element:
 
 .. code-block:: java
 
   @ArrayFactory(typeName = "integer")
   Array createIntegerArray(Integer[] elements);
 
-Blobの生成
-==========
+Creating Blob instances
+=======================
 
-戻り値の型は ``java.sql.Blob`` 、パラメータの数は0でなければいけません。
+A return type must be ``java.sql.Blob`` and the number of parameters must be zero:
 
 .. code-block:: java
 
   @BlobFactory
   Blob createBlob();
 
-Clobの生成
-==========
+Creating Clob instances
+=======================
 
-戻り値の型は ``java.sql.Clob`` 、パラメータの数は0でなければいけません。
+A return type must be ``java.sql.Clob`` and the number of parameters must be zero:
 
 .. code-block:: java
 
   @ClobFactory
   Clob createClob();
 
-NClobの生成
-===========
+Creating NClob instances
+========================
 
-戻り値の型は ``java.sql.NClob`` 、パラメータの数は0でなければいけません。
+A return type must be ``java.sql.NClob`` and the number of parameters must be zero:
 
 .. code-block:: java
 
   @NClobFactory
   NClob createNClob();
 
-SQLXMLの生成
-============
+Creating SQLXML instances
+=========================
 
-戻り値の型は ``java.sql.SQLXML`` 、パラメータの数は0でなければいけません。
+A return type must be ``java.sql.SQLXML`` and the number of parameters must be zero:
 
 .. code-block:: java
 
