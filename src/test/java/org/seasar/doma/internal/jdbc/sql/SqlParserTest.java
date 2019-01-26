@@ -456,7 +456,7 @@ public class SqlParserTest extends TestCase {
     SqlNode sqlNode = parser.parse();
     PreparedSql sql =
         new NodePreparedSqlBuilder(
-            config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
     assertEquals("select * from aaa", sql.getRawSql());
     assertEquals("select * from aaa", sql.getFormattedSql());
@@ -471,7 +471,7 @@ public class SqlParserTest extends TestCase {
     SqlNode sqlNode = parser.parse();
     PreparedSql sql =
         new NodePreparedSqlBuilder(
-            config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
     assertEquals("select * from aaa", sql.getRawSql());
     assertEquals("select * from aaa", sql.getFormattedSql());
@@ -668,7 +668,7 @@ public class SqlParserTest extends TestCase {
     SqlNode sqlNode = parser.parse();
     PreparedSql sql =
         new NodePreparedSqlBuilder(
-            config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
     assertEquals("select * from aaa", sql.getRawSql());
     assertEquals("select * from aaa", sql.getFormattedSql());
@@ -685,7 +685,7 @@ public class SqlParserTest extends TestCase {
     SqlNode sqlNode = parser.parse();
     PreparedSql sql =
         new NodePreparedSqlBuilder(
-            config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
     assertEquals("select * from aaa", sql.getRawSql());
     assertEquals("select * from aaa", sql.getFormattedSql());
