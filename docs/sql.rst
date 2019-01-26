@@ -463,11 +463,17 @@ You can nest condition directives as follows:
     /*%end*/
   /*%end*/
 
-Removal of WHERE and HAVING clauses on condition directive
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Removal of clauses on the condition directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-WHERE and HAVING clauses can be unnecessary on condition directive.
-Those clauses are removed automatically.
+Following clauses can become unnecessary on the condition directive:
+
+* WHERE
+* HAVING
+* ORDER BY
+* GROUP BY
+
+In the case, they are removed automatically.
 
 Suppose you have the following SQL template:
 
@@ -488,11 +494,11 @@ the generated SQL statement is as follows:
 Because the SQL clause ``where`` followed by ``/*%if ...*/`` is unnecessary,
 it is removed automatically.
 
-Removal of AND and OR keywords on condition directives
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Removal of AND and OR keywords on the condition directives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AND and OR keywords can be unnecessary on condition directive.
-Those clauses are removed automatically.
+AND and OR keywords can become unnecessary on the condition directive.
+In the case, they are removed automatically.
 
 Suppose you have the following SQL template:
 
@@ -588,11 +594,17 @@ the generated SQL statement is as follows:
   or
   employee_name like ?
 
-Removal of WHERE and HAVING clauses on loop directive
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Removal of clauses on the loop directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-WHERE and HAVING clauses can be unnecessary on loop directive.
-Those clauses are removed automatically.
+Following clauses can become unnecessary on the loop directive:
+
+* WHERE
+* HAVING
+* ORDER BY
+* GROUP BY
+
+In the case, they are removed automatically.
 
 Suppose you have the following SQL template:
 
@@ -616,11 +628,11 @@ the generated SQL statement is as follows:
 Because the SQL clause ``where`` followed by ``/*%for ...*/`` is unnecessary,
 it is removed automatically.
 
-Removal of AND and OR keywords on loop directive
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Removal of AND and OR keywords on the loop directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AND and OR keywords can be unnecessary on loop directive.
-Those keywords are removed automatically.
+AND and OR keywords can become unnecessary on the loop directive.
+In the case, they are removed automatically.
 
 Suppose you have the following SQL template:
 

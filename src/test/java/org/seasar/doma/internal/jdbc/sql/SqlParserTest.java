@@ -448,6 +448,36 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  public void testIf_removeOrderBy() throws Exception {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("name", new Value(String.class, null));
+    String testSql = "select * from aaa order by /*%if name != null*/bbb/*%end*/";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa", sql.getRawSql());
+    assertEquals("select * from aaa", sql.getFormattedSql());
+    assertEquals(0, sql.getParameters().size());
+  }
+
+  public void testIf_removeGroupBy() throws Exception {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("name", new Value(String.class, null));
+    String testSql = "select * from aaa group by /*%if name != null*/bbb/*%end*/";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa", sql.getRawSql());
+    assertEquals("select * from aaa", sql.getFormattedSql());
+    assertEquals(0, sql.getParameters().size());
+  }
+
   public void testIf_removeAnd() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
@@ -617,6 +647,40 @@ public class SqlParserTest extends TestCase {
     evaluator.add("names", new Value(List.class, list));
     String testSql =
         "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa", sql.getRawSql());
+    assertEquals("select * from aaa", sql.getFormattedSql());
+    assertEquals(0, sql.getParameters().size());
+  }
+
+  public void testFor_removeOrderBy() throws Exception {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    ArrayList<String> list = new ArrayList<String>();
+    evaluator.add("names", new Value(List.class, list));
+    String testSql =
+        "select * from aaa order by /*%for n : names*/name = /*n*/'a' /*%if n_has_next */, /*%end*//*%end*/";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa", sql.getRawSql());
+    assertEquals("select * from aaa", sql.getFormattedSql());
+    assertEquals(0, sql.getParameters().size());
+  }
+
+  public void testFor_removeGroupBy() throws Exception {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    ArrayList<String> list = new ArrayList<String>();
+    evaluator.add("names", new Value(List.class, list));
+    String testSql =
+        "select * from aaa group by /*%for n : names*/name = /*n*/'a' /*%if n_has_next */, /*%end*//*%end*/";
     SqlParser parser = new SqlParser(testSql);
     SqlNode sqlNode = parser.parse();
     PreparedSql sql =

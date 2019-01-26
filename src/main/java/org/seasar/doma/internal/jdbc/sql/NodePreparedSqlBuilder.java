@@ -24,7 +24,6 @@ import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
-import org.seasar.doma.internal.jdbc.sql.node.ClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
@@ -48,6 +47,7 @@ import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
 import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
+import org.seasar.doma.internal.jdbc.sql.node.RemovableClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.internal.jdbc.sql.node.SetClauseNode;
@@ -541,23 +541,19 @@ public class NodePreparedSqlBuilder
 
   @Override
   public Void visitWhereClauseNode(WhereClauseNode node, Context p) {
-    handleConditionalClauseNode(node, p);
+    handleRemovableClauseNode(node, p);
     return null;
   }
 
   @Override
   public Void visitGroupByClauseNode(GroupByClauseNode node, Context p) {
-    WordNode wordNode = node.getWordNode();
-    wordNode.accept(this, p);
-    for (SqlNode child : node.getChildren()) {
-      child.accept(this, p);
-    }
+    handleRemovableClauseNode(node, p);
     return null;
   }
 
   @Override
   public Void visitHavingClauseNode(HavingClauseNode node, Context p) {
-    handleConditionalClauseNode(node, p);
+    handleRemovableClauseNode(node, p);
     return null;
   }
 
@@ -573,11 +569,7 @@ public class NodePreparedSqlBuilder
 
   @Override
   public Void visitOrderByClauseNode(OrderByClauseNode node, Context p) {
-    WordNode wordNode = node.getWordNode();
-    wordNode.accept(this, p);
-    for (SqlNode child : node.getChildren()) {
-      child.accept(this, p);
-    }
+    handleRemovableClauseNode(node, p);
     return null;
   }
 
@@ -591,7 +583,7 @@ public class NodePreparedSqlBuilder
     return null;
   }
 
-  protected void handleConditionalClauseNode(ClauseNode node, Context p) {
+  protected void handleRemovableClauseNode(RemovableClauseNode node, Context p) {
     Context context = new Context(p);
     for (SqlNode child : node.getChildren()) {
       child.accept(this, context);
