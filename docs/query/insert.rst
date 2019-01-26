@@ -57,7 +57,7 @@ Reference :ref:`identity-auto-generation` about cautionary point.
 Version numbers
 ----------------
 
-If value that explicitly set is over 0 then use the value if :doc:`../entity` has property that is annotated  with ``@Version`.
+If value that explicitly set is over 0 then use the value if :doc:`../entity` has property that is annotated  with ``@Version``.
 
 If the value is not set or is less than 0 the value is set 1 automatically.
 
