@@ -3,7 +3,7 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-public class HavingClauseNode extends AbstractClauseNode {
+public class HavingClauseNode extends AbstractClauseNode implements RemovableClauseNode {
 
   public HavingClauseNode(String word) {
     super(word);
