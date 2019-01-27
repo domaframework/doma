@@ -214,12 +214,12 @@ The following SQL statement is generated from the SQL template:
 
    select * from employee where employee_id = ?
 
-Iterable parameters in IN clause
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Parameters in IN clause
+~~~~~~~~~~~~~~~~~~~~~~~
 
-The parameter whose type is subtype of ``java.lang.Iterable`` is
+The parameter whose type is a subtype of ``java.lang.Iterable`` or an array type is
 recognised as bind variables in IN clause.
-But the type argument of ``java.lang.Iterable`` must be one of :doc:`basic` or :doc:`domain`.
+The type argument of ``java.lang.Iterable`` must be one of :doc:`basic` and :doc:`domain`.
 The directives must be followed by test data enclosed between ``(`` and ``)``.
 
 The following example is the pair of a DAO method and an SQL template:
@@ -557,7 +557,7 @@ Synopsis
   /*%end*/
 
 The ``item`` is the loop variable.
-The expression ``sequence`` must be evaluated to subtype of ``java.lang.Iterable``
+The expression ``sequence`` must be evaluated to a subtype of ``java.lang.Iterable`` or an array type.
 
 In the inside between ``/*%for item : sequence*/`` and ``/*%end*/``,
 two extra loop variables are available:
