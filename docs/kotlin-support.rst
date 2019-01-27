@@ -130,9 +130,9 @@ If you use resource files such as SQL files, make the kapt find them:
 
     Remember that you always have options as follows:
 
-    - Write all codes with Kotlin
-    - Write all codes with Java
-    - Write codes annotated with Doma's annotations in Java and others in Kotlin
+    - Write all code in Kotlin
+    - Write all code in Java
+    - Write code annotated with Doma's annotations in Java and others in Kotlin
 
     The third option is worth considering, because it can avoid some troubles with the kapt.
 

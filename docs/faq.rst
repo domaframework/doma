@@ -5,8 +5,8 @@ Frequently Asked Questions
 .. contents::
    :depth: 3
 
-General Questions
-=================
+General
+=======
 
 What does "Doma" mean?
 ----------------------
@@ -19,11 +19,11 @@ What is annotation processing?
 Annotation processing, that was introduced in Java 6,
 allows us to validate and generate source code at compile time.
 
-We use annotation processing to the following:
+We use annotation processing for the following purposes:
 
-- generating meta classes from the classes annotated with ``@Entity`` and ``@Domain``;
-- generating implementation classes of the interfaces annotated with ``@Dao``; and
-- validating SQL statements.
+- Generating meta classes from the classes annotated with ``@Entity`` and ``@Domain``.
+- Generating implementation classes of the interfaces annotated with ``@Dao``.
+- Validating SQL templates.
 
 Runtime environment
 ===================
@@ -93,11 +93,11 @@ Does Doma generate SQL statements?
 
 Yes, Doma generates the following statements:
 
-- INSERT;
-- DELETE;
-- UPDATE;
-- stored procedure call; and
-- stored function call.
+- INSERT
+- DELETE
+- UPDATE
+- Stored procedure call
+- Stored function call
 
 Doma doesn't generate SELECT statements
 but executes arbitrary SELECT statements and maps the results to the Java objects.

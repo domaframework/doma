@@ -14,15 +14,15 @@ Doma supports `Lombok <https://projectlombok.org/>`_ 1.16.12 or above.
 Overview
 ========
 
-Both Lombok and Doma provide their own annotation processors.
+Both Lombok and Doma provide annotation processors.
 Because the execution order of annotation processors is not determined in Java,
-the Doma's annotation processors are not always aware of the class modifications made by
-the Lombok annotation processors.
+Doma's annotation processors are not always aware of the class modifications made by
+Lombok annotation processors.
 
-To resolve the issue, the Doma's annotation processors recognise several Lombok's annotations
-and change their own behavior.
-For example, if the Doma's annotation processors find a class annotated with ``@lombok.Value``,
-they supposes that the class has a constructor whose arguments covers all instance fields.
+To resolve the issue, Doma's annotation processors recognize several of Lombok's annotations
+and change their behavior.
+For example, if Doma's annotation processors find a class annotated with ``@lombok.Value``,
+they suppose that the class has a constructor whose arguments cover all instance fields.
 
 Best practices
 ==============

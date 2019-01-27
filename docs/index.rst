@@ -18,7 +18,8 @@ Doma has various strengths:
 * Verifies and generates source code at compile time using annotation processing.
 * Maps database columns to user-defined Java objects.
 * Uses SQL templates, called "two-way SQL".
-* Supports classes introduced in Java 8, such as ``java.time.LocalDate``, ``java.util.Optional``, and ``java.util.stream.Stream``.
+* Supports classes introduced in Java 8, such as ``java.time.LocalDate``,
+  ``java.util.Optional``, and ``java.util.stream.Stream``.
 * Has no dependence on other libraries.
 
 This document consists of following sections:
@@ -27,6 +28,14 @@ This document consists of following sections:
 * `Developer Documentation`_
 * `About Doma`_
 * `Links`_
+
+.. admonition:: Help improve our documentation
+  :class: important
+
+  Have feedback or a question? Found a typo?
+
+  Please add an issue or pull request to
+  https://github.com/domaframework/doma and we’ll get back to you.
 
 User Documentation
 ==================
@@ -72,6 +81,7 @@ About Doma
 Links
 =====
 
+* `News and announcements <https://twitter.com/domaframework>`_
 * `GitHub repository <https://github.com/domaframework/doma>`_
 * `JavaDoc <http://www.javadoc.io/doc/org.seasar.doma/doma>`_
 * `Examples <https://github.com/domaframework/simple-examples>`_
