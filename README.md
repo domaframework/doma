@@ -29,7 +29,7 @@ Define a DAO interface:
 @Dao(config = AppConfig.class)
 public interface EmployeeDao {
     @Select
-    List<Employee> selectAll();
+    Employee selectById(Integer id);
     @Update
     int update(Employee employee);
 }
