@@ -128,6 +128,11 @@ public abstract class AbstractCtType implements CtType {
   }
 
   @Override
+  public boolean isArray() {
+    return type.getKind() == TypeKind.ARRAY;
+  }
+
+  @Override
   public boolean isTypevar() {
     return type.getKind() == TypeKind.TYPEVAR;
   }

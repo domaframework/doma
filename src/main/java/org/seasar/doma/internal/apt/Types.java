@@ -2,13 +2,27 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
-import javax.lang.model.type.*;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.NoType;
+import javax.lang.model.type.NullType;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
+import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleElementVisitor8;
+import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.TypeKindVisitor8;
 
@@ -153,6 +167,18 @@ public class Types {
         null);
   }
 
+  public ArrayType toArrayType(TypeMirror typeMirror) {
+    assertNotNull(typeMirror);
+    return typeMirror.accept(
+        new SimpleTypeVisitor6<ArrayType, Void>() {
+
+          public ArrayType visitArray(ArrayType t, Void p) {
+            return t;
+          }
+        },
+        null);
+  }
+
   public boolean isAssignable(TypeMirror lhs, Class<?> rhs) {
     assertNotNull(lhs, rhs);
     TypeElement typeElement = ctx.getElements().getTypeElement(rhs);
@@ -197,6 +223,15 @@ public class Types {
     if (typeMirror.getKind() == TypeKind.VOID) {
       return clazz == void.class;
     }
+    if (clazz.isArray()) {
+      TypeElement componentType = ctx.getElements().getTypeElement(clazz.getComponentType());
+      ArrayType arrayType = ctx.getTypes().getArrayType(componentType.asType());
+      if (arrayType == null) {
+        return false;
+      }
+      return isSameType(typeMirror, arrayType);
+    }
+
     TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
     if (typeElement == null) {
       return false;
@@ -225,6 +260,10 @@ public class Types {
     TypeMirror erasuredType2 = typeUtils.erasure(t2);
     return typeUtils.isSameType(erasuredType1, erasuredType2)
         || erasuredType1.equals(erasuredType2);
+  }
+
+  public boolean isArray(TypeMirror typeMirror) {
+    return typeMirror.getKind() == TypeKind.ARRAY;
   }
 
   public String getTypeName(TypeMirror typeMirror) {

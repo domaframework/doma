@@ -2,18 +2,21 @@ package org.seasar.doma.internal.apt.validator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.cttype.ArrayCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
@@ -127,7 +130,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             });
       }
     } else {
-      if (!isScalarIterable(typeDeclaration)) {
+      if (!isScalarIterable(typeDeclaration) && !isScalarArray(typeDeclaration)) {
         String sql = getSql(location);
         throw new AptException(
             Message.DOMA4161,
@@ -157,6 +160,32 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     IterableCtType iterableCtType = ctx.getCtTypes().newIterableCtType(typeMirror);
     if (iterableCtType != null) {
       return iterableCtType
+          .getElementCtType()
+          .accept(
+              new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
+
+                @Override
+                public Boolean visitBasicCtType(BasicCtType ctType, Void p)
+                    throws RuntimeException {
+                  return true;
+                }
+
+                @Override
+                public Boolean visitDomainCtType(DomainCtType ctType, Void p)
+                    throws RuntimeException {
+                  return true;
+                }
+              },
+              null);
+    }
+    return false;
+  }
+
+  protected boolean isScalarArray(TypeDeclaration typeDeclaration) {
+    TypeMirror typeMirror = typeDeclaration.getType();
+    ArrayCtType arrayCtType = ctx.getCtTypes().newArrayCtType(typeMirror);
+    if (arrayCtType != null) {
+      return arrayCtType
           .getElementCtType()
           .accept(
               new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
@@ -240,7 +269,14 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     String expression = node.getExpression();
     TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
     TypeMirror typeMirror = typeDeclaration.getType();
-    if (!ctx.getTypes().isAssignable(typeMirror, Iterable.class)) {
+    List<? extends TypeMirror> typeArgs;
+    if (ctx.getTypes().isAssignable(typeMirror, Iterable.class)) {
+      DeclaredType declaredType = ctx.getTypes().toDeclaredType(typeMirror);
+      typeArgs = declaredType.getTypeArguments();
+    } else if (ctx.getTypes().isArray(typeMirror)) {
+      ArrayType arrayType = ctx.getTypes().toArrayType(typeMirror);
+      typeArgs = Collections.singletonList(arrayType.getComponentType());
+    } else {
       String sql = getSql(location);
       throw new AptException(
           Message.DOMA4149,
@@ -254,8 +290,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             typeDeclaration.getBinaryName()
           });
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(typeMirror);
-    List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
     if (typeArgs.isEmpty()) {
       String sql = getSql(location);
       throw new AptException(

@@ -4,12 +4,21 @@ import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
@@ -22,7 +31,12 @@ import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.BatchResult;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.Reference;
+import org.seasar.doma.jdbc.Result;
+import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.EnumWrapper;
@@ -266,6 +280,19 @@ public class CtTypes {
     return new IterableCtType(ctx, type, elementCtType);
   }
 
+  public ArrayCtType newArrayCtType(TypeMirror type) {
+    assertNotNull(type);
+    if (type.getKind() != TypeKind.ARRAY) {
+      return null;
+    }
+    TypeMirror componentType = ((ArrayType) type).getComponentType();
+    if (componentType.getKind() == TypeKind.BYTE) {
+      return null;
+    }
+    CtType elementCtType = newCtType(componentType);
+    return new ArrayCtType(ctx, type, elementCtType);
+  }
+
   private MapCtType newMapCtType(TypeMirror type) {
     if (!ctx.getTypes().isSameType(type, Map.class)) {
       return null;
@@ -410,6 +437,7 @@ public class CtTypes {
     List<Function<TypeMirror, CtType>> functions =
         Arrays.asList(
             this::newIterableCtType,
+            this::newArrayCtType,
             this::newStreamCtType,
             this::newEntityCtType,
             this::newOptionalCtType,
