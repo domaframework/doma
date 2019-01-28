@@ -11,8 +11,8 @@ Overview
 Doma supports SQL templates, called "two-way SQL".
 "Two-way SQL" means that the SQL templates can be used in two ways:
 
-1. to build dynamic SQL statements from the templates; and
-2. to execute the templates in SQL tools as they are.
+* To build dynamic SQL statements from the templates.
+* To execute the templates in SQL tools as they are.
 
 Every SQL template must correspond to a DAO method.
 For example, suppose you have the pair of an SQL template and a DAO method as follows:
