@@ -1,11 +1,11 @@
 ==================
-バッチ挿入
+Batch insert
 ==================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-バッチ挿入を行うには、 ``@BatchInsert`` をDaoのメソッドに注釈します。
+Annotate with ``@BatchInsert`` to Dao method for execute batch insert.
 
 .. code-block:: java
 
@@ -18,60 +18,54 @@
       BatchResult<ImmutableEmployee> insert(List<ImmutableEmployee> employees);
   }
 
-デフォルトでは、INSERT文が自動生成されます。
-``@BatchInsert`` の ``sqlFile`` に ``true`` を設定することで、任意のSQLファイルにマッピングできます。
+By default INSERT statement is auto generated.
+You can mapping arbitrary SQL file by specifying ``true`` to ``sqlFile`` property within the ``@BatchInsert`` annotation.
 
-パラメータの要素のに :doc:`../entity` が指定されている場合、
-挿入の実行前にエンティティリスナーの ``preInsert`` メソッドをエンティティごとに呼び出します。
-また、挿入の実行後にエンティティリスナーの ``postInsert`` メソッドをエンティティごとに呼び出します。
+The ``preInsert`` method of entity listener is called each entity when before executing insert if the entity listener is specified at :doc:`../entity` parameter.
+Also the ``postInsert`` method of entity listener method is called each entity when after executing insert.
 
-戻り値
-======
+Return value
+=============
 
-パラメータ ``Iterable`` のサブタイプの要素がイミュータブルなエンティティクラスの場合、
-戻り値はそのエンティティクラスを要素とする ``org.seasar.doma.BatchResult``
-でなければいけません。
+Return value must be ``org.seasar.doma.jdbc.BatchResult`` that has entity class as an element if parameter ``Iterable`` subtype element is immutable entity class.
 
-上記の条件を満たさないない場合、戻り値は各更新処理の更新件数を表す ``int[]`` でなければいけません。
+Return value must be ``int[]`` that is represented each inserting process's updated count if the above conditions are not satisfied.
 
-SQLの自動生成によるバッチ挿入
-=============================
+Batch insert by auto generated SQL
+=====================================
 
-パラメータの型は :doc:`../entity` 要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
-戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
-配列のそれぞれの要素が更新された件数を返します。
+Parameter type must be ``java.lang.Iterable`` subtype that has :doc:`../entity` as an element.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
+Return value array element count become equal ``Iterable`` element count.
+Insert count is returned to array each element.
 
-識別子
-------
+Identifier
+-----------
 
-:doc:`../entity` の識別子に、 ``@GeneratedValue`` が注釈されている場合、
-識別子が自動的に生成され設定されます。
+If annotated with ``@GeneratedValue`` at :doc:`../entity` identifier, the identifier is auto generated and set.
 
-注意点については :ref:`identity-auto-generation` を参照ください。
+You reference :ref:`identity-auto-generation` about cautionary point.
 
-バージョン番号
---------------
+Version number
+----------------
 
-:doc:`../entity` に ``@Version`` が注釈されたプロパティがある場合、
-そのプロパティに明示的に ``0`` 以上の値が設定されていればその値を使用します。
-もし設定されていないか、 ``0`` 未満の値が設定されていれば ``1`` を自動で設定します。
+If value that explicitly set is over ``0`` then use the value if :doc:`../entity` has property that is annotated  with ``@Version``.
+If the value is not set or is less than ``0`` the value is set ``1`` automatically.
 
-挿入対象プロパティ
-------------------
+Insert target property
+-----------------------
 
 insertable
 ~~~~~~~~~~
 
-:doc:`../entity` に ``@Column`` が注釈されたプロパティがある場合、
-``@BatchInsert`` の ``insertable`` 要素が ``false`` のものは挿入対象外です。
+The ``insertable`` property within ``@BatchInsert`` annotation that is specified ``false`` is excluded from insert target if :doc:`../entity` has property that is annotated with ``@Column``.
 
 exclude
 ~~~~~~~
 
-``@BatchInsert`` の ``exclude`` 要素に指定されたプロパティを挿入対象外とします。
-プロパティがこの要素に指定されていれば、 ``@Column`` の ``insertable`` 要素が ``true`` であっても挿入対象外です。
+Property that is specified with ``exclude`` property within the ``@BatchInsert`` annotation is excluded from inserting target.
+Even if ``insertable`` property within ``@Column`` annotation is specified ``true`` the property is excluded from inserting target if the property is specified by this element.
 
 .. code-block:: java
 
@@ -81,21 +75,20 @@ exclude
 include
 ~~~~~~~
 
-``@BatchInsert`` の ``include`` 要素に指定されたプロパティのみを挿入対象とします。
-``@BatchInsert`` の ``include`` 要素と ``exclude`` 要素の両方に同じプロパティが指定された場合、
-そのプロパティは挿入対象外になります。
-プロパティがこの要素に指定されていても、 ``@Column`` の ``insertable`` 要素が ``false`` であれば挿入対象外です。
+Only property that is specified with ``include`` property within ``@BatchInsert`` annotation is included to inserting target.
+If same property are specified with both of ``include`` property and ``exclude`` property within ``@BatchInsert`` the property is excluded from updating target.
+Even if property is specified with this element the property is excluded from inserting target if ``insertable`` property within ``@Column`` annotation is ``false``.
 
 .. code-block:: java
 
   @BatchInsert(include = {"name", "salary"})
   int[] insert(List<Employee> employees);
 
-SQLファイルによるバッチ挿入
+Batch insert by SQL file
 ===========================
 
-SQLファイルによるバッチ挿入を行うには、 ``@BatchInsert`` の ``sqlFile`` 要素に ``true`` を設定し、
-メソッドに対応するSQLファイルを用意します。
+To execute batch inserting by SQL file,
+you set ``true`` to ``sqlFile`` property within ``@BatchInsert`` annotation and prepare SQL file that correspond method.
 
 .. code-block:: java
 
@@ -105,65 +98,65 @@ SQLファイルによるバッチ挿入を行うには、 ``@BatchInsert`` の `
   @BatchInsert(sqlFile = true)
   BatchResult<ImmutableEmployee> insert(List<ImmutableEmployee> employees);
 
-パラメータは任意の型を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
-戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
-配列のそれぞれの要素が更新された件数を返します。
+Parameter type must be ``java.lang.Iterable`` subtype that has :doc:`../entity` as an element.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
+Return value array element count become equal ``Iterable`` element count.
+Insert count is returned to array each element.
 
-:doc:`../entity` にエンティティリスナーが指定されていても、エンティティリスナーのメソッドは呼び出しません。
+If entity listener is specified at :doc:`../entity` then entity listener method is not called.
 
-たとえば、上記のメソッドに対応するSQLは次のように記述します。
+For example, you describe SQL like below to correspond above method.
 
 .. code-block:: sql
 
   insert into employee (id, name, salary, version) 
   values (/* employees.id */0, /* employees.name */'hoge', /* employees.salary */100, /* employees.version */0)
 
-SQLファイル上では、パラメータの名前は ``java.lang.Iterable`` のサブタイプの要素を指します。
+Parameter name indicate ``java.lang.Iterable`` subtype element in SQL file.
 
-SQLファイルによるバッチ挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
-また、 ``@BatchInsert`` の ``exclude`` 要素、 ``include`` 要素は参照されません。
+Identifier auto setting and version number auto setting are not executed in batch insert by SQL file.
+Also, ``exclude`` property and ``include`` property within ``@BatchInsert`` are not referenced.
 
-一意制約違反
-============
+Unique constraint violation
+============================
 
-一意制約違反が発生した場合は、SQLファイルの使用の有無に関係なく ``UniqueConstraintException`` がスローされます。
+``UniqueConstraintException`` is thrown regardless of with or without using sql file if unique constraint violation is occurred.
 
-クエリタイムアウト
+Query timeout
 ==================
 
-``@BatchInsert`` の ``queryTimeout`` 要素にクエリタイムアウトの秒数を指定できます。
+You can specify seconds of query timeout to ``queryTimeout`` property within ``@BatchInsert`` annotation.
 
 .. code-block:: java
 
   @BatchInsert(queryTimeout = 10)
   int[] insert(List<Employee> employees);
 
-この指定は、SQLファイルの使用の有無に関係なく適用されます。
-``queryTimeout`` 要素に値を指定しない場合、  :doc:`../config` に指定されたクエリタイムアウトが使用されます。
+This specifying is applied regardless of with or without using sql file.
+Query timeout that is specified in config class is used if ``queryTimeout`` property is not set value.
 
-バッチサイズ
+Batch size
 ============
 
-``@BatchInsert`` の ``batchSize`` 要素にバッチサイズを指定できます。
+You can specify batch size to ``batchSize`` property within ``@BatchInsert`` annotation.
 
 .. code-block:: java
 
   @BatchInsert(batchSize = 10)
   int[] insert(List<Employee> employees);
 
-この指定は、SQLファイルの使用の有無に関係なく適用されます。
-``batchSize`` 要素に値を指定しない場合、  :doc:`../config` に指定されたバッチサイズが使用されます。
+This specify is applied Regardless of using or not using SQL file.
+It you do not specify the value to ``batchSize`` property, batch size that is specified at :doc:`../config` class is applied.
 
-SQL のログ出力形式
-==================
+SQL log output format
+=====================
 
-``@BatchInsert`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+You can specify SQL log output format to ``sqlLog`` property within ``@BatchInsert`` annotation.
 
 .. code-block:: java
 
   @BatchInsert(sqlLog = SqlLogType.RAW)
   int insert(Employee employee);
 
-``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+``SqlLogType.RAW`` represent outputting log that is sql with a binding parameter.
