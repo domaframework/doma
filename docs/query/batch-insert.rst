@@ -59,7 +59,7 @@ Insert target property
 insertable
 ~~~~~~~~~~
 
-The ``insertable`` property within ``@BatchInsert`` annotation that is specified ``false`` is excluded from insert target if :doc:`../entity` has property that is annotated with ``@Column``.
+The ``insertable`` property within ``@Column`` annotation that is specified ``false`` is excluded from insert target if :doc:`../entity` has property that is annotated with ``@Column``.
 
 exclude
 ~~~~~~~
