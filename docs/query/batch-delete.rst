@@ -1,11 +1,11 @@
 ==================
-バッチ削除
+Batch delete
 ==================
 
-.. contents:: 目次
+.. contents::
    :depth: 3
 
-バッチ削除を行うには、 ``@BatchDelete`` をDaoのメソッドに注釈します。
+Annotate with ``@BatchDelete`` to Dao method for execute batch insert.
 
 .. code-block:: java
 
@@ -16,49 +16,42 @@
       ...
   }
 
-デフォルトでは、DELETE文が自動生成されます。
-``@BatchDelete`` の ``sqlFile`` に ``true`` を設定することで、任意のSQLファイルにマッピングできます。
+By default DELETE statement is auto generated.
+You can mapping arbitrary SQL file by specifying ``true`` to ``sqlFile`` property within the ``@BatchDelete`` annotation.
 
-パラメータの要素である :doc:`../entity` にエンティティリスナーが指定されている場合、
-削除の実行前にエンティティリスナーの ``preDelete``
-メソッドがエンティティごとに呼び出されます。
-また、削除の実行後にエンティティリスナーの ``postDelete``
-メソッドがエンティティごとに呼び出されます。
+The ``preDelete`` method of entity listener is called each entity when before executing delete if the entity listener is specified at :doc:`../entity` parameter.
+Also the ``postDelete`` method of entity listener method is called each entity when after executing delete.
 
-戻り値
-======
+Return value
+==============
 
-戻り値は各更新処理の更新件数を表す ``int[]`` でなければいけません。
+Return value must be ``int[]`` that is represented each deleting process's updated count.
 
-SQLの自動生成によるバッチ削除
-=============================
+Batch delete by auto generated SQL
+====================================
 
-パラメータの型は :doc:`../entity` を要素とする ``java.lang.Iterable``
-のサブタイプでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
-戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
-配列のそれぞれの要素が更新された件数を返します。
+Parameter type must be ``java.lang.Iterable`` subtype that has :doc:`../entity` as an element.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
+Return value array element count become equal ``Iterable`` element count.
+Delete count is returned to array each element.
 
-SQL自動生成におけるバージョン番号と楽観的排他制御
--------------------------------------------------
+Version number and optimistic concurrency control in auto generated SQL
+-----------------------------------------------------------------------------
 
-次の条件を満たす場合に、楽観的排他制御が行われます。
+Optimistic concurrency control is executed if you satisfied below conditions.
 
-* パラメータのjava.lang.Iterableのサブタイプの要素である
-  :doc:`../entity` に@Versionが注釈されたプロパティがある
-* @BatchDeleteのignoreVersion要素がfalseである
+* :doc:`../entity` within parameter java.lang.Iterable subtype has property that is annotated with @Version
+* The ignoreVersion element within @BatchDelete annotation is false
 
-楽観的排他制御が有効であれば、バージョン番号は識別子とともに削除条件に含まれます。
-この場合、削除件数が0件であれば、楽観的排他制御の失敗を示す
-``BatchOptimisticLockException`` がスローされます。
+If optimistic concurrency control is enable, version number is included with identifier in delete condition.
+``BatchOptimisticLockException`` representing optimistic concurrency control failure is thrown, if at that time deleted count is 0.
 
 ignoreVersion
 ~~~~~~~~~~~~~
 
-``@BatchDelete`` の ``ignoreVersion`` 要素が ``true`` の場合、
-バージョン番号は削除条件には含まれません。
-削除件数が0件であっても ``BatchOptimisticLockException`` はスローされません。
+If ``ignoreVersion`` property within ``@BatchDelete`` annotation is ``true``, version number is not include in delete condition.
+``BatchOptimisticLockException`` is not thrown, even if delete count is 0.
 
 .. code-block:: java
 
@@ -68,65 +61,61 @@ ignoreVersion
 suppressOptimisticLockException
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``@BatchDelete`` の ``suppressOptimisticLockException`` 要素が ``true`` の場合、
-バージョン番号は削除条件に含まれますが、
-削除件数が0件であっても ``BatchOptimisticLockException`` はスローされません。
+In case of ``suppressOptimisticLockException`` property within ``@BatchDelete`` is ``true``,
+version number is include in delete condition but ``BatchOptimisticLockException`` is not thrown even if delete count is 0.
 
 .. code-block:: java
 
   @BatchDelete(suppressOptimisticLockException = true)
   int[] delete(List<Employee> employees);
 
-SQLファイルによるバッチ削除
+Batch delete by SQL file
 ===========================
 
-SQLファイルによるバッチ削除を行うには、 ``@BatchDelete`` の ``sqlFile`` 要素に
-``true`` を設定し、 メソッドに対応するSQLファイルを用意します。
+To execute batch deleting by SQL file,
+you set ``true`` to ``sqlFile`` property within ``@BatchDelete`` annotation and prepare SQL file that correspond method.
 
 .. code-block:: java
 
   @BatchDelete(sqlFile = true)
   int[] delete(List<Employee> employees);
 
-パラメータは任意の型を要素とする ``java.lang.Iterable`` のサブタイプでなければいけません。
-指定できるパラメータの数は1つです。
-引数は ``null`` であってはいけません。
-戻り値の配列の要素の数はパラメータの ``Iterable`` の要素の数と等しくなります。
-配列のそれぞれの要素が更新された件数を返します。
+Parameter type must be ``java.lang.Iterable`` subtype that has arbitrary type as an element.
+Specifiable parameter is only one.
+Parameter must not be ``null``.
+Return value array element count become equal ``Iterable`` element count.
+Delete count is returned to array each element.
 
-たとえば、上記のメソッドに対応するSQLは次のように記述します。
+For example, you describe SQL like below to correspond above method.
 
 .. code-block:: sql
 
   delete from employee where name = /* employees.name */'hoge'
 
-SQLファイル上では、パラメータの名前は ``java.lang.Iterable`` のサブタイプの要素を指します。
+Parameter name indicate ``java.lang.Iterable`` subtype element in SQL file.
 
-SQLファイルにおけるバージョン番号と楽観的排他制御
--------------------------------------------------
+Version number and optimistic concurrency control in SQL file
+--------------------------------------------------------------
 
-次の条件を満たす場合に、楽観的排他制御が行われます。
+Optimistic concurrency control is executed if you satisfied below conditions.
 
-* パラメータの ``java.lang.Iterable`` のサブタイプの要素が :doc:`../entity` であり、
-  :doc:`../entity` に@Versionが注釈されたプロパティがある
-* @BatchDeleteのignoreVersion要素がfalseである
+* The parameter ``java.lang.Iterable`` subtype has :doc:`../entity` element, the  :doc:`../entity` element is annotated with @Version
+* The ignoreVersion element within @BatchDelete annotation is false
 
-ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
-たとえば、下記のSQLのように、WHERE句でバージョンを番号を指定しなければいけません。
+However, describing to SQL file for Optimistic concurrency control SQL is application developer's responsibility.
+For example like below SQL, you must specify version number in WHERE clauses.
 
 .. code-block:: sql
 
   delete from EMPLOYEE where ID = /* employees.id */1 and VERSION = /* employees.version */1
 
-このSQLの削除件数が0件または複数件の場合、
-楽観的排他制御の失敗を示す ``BatchOptimisticLockException`` がスローされます。
+``BatchOptimisticLockException`` representing optimistic concurrency control failure is thrown, if deleted count is 0 or multiple in this SQL.
 
 ignoreVersion
 ~~~~~~~~~~~~~
 
-``@BatchDelete`` の ``ignoreVersion``
-要素が ``true`` の場合、削除件数が0件または複数件であっても
-``BatchOptimisticLockException`` はスローされません。
+If ``ignoreVersion`` property within ``@BatchDelete`` annotation is true,
+``BatchOptimisticLockException`` is not thrown even if deleted count is 0 or multiple.
 
 .. code-block:: java
 
@@ -136,51 +125,48 @@ ignoreVersion
 suppressOptimisticLockException
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``@BatchDelete`` の ``suppressOptimisticLockException``
-要素が ``true`` の場合、削除件数が0件または複数件であっても
-``BatchOptimisticLockException`` はスローされません。
+If ``suppressOptimisticLockException`` property within ``@BatchDelete`` is ``true``,
+``BatchOptimisticLockException`` is not thrown even if deleted count is 0 or multiple.
 
 .. code-block:: java
 
   @BatchDelete(sqlFile = true, suppressOptimisticLockException = true)
   int[] delete(List<Employee> employees);
 
-クエリタイムアウト
+Query timeout
 ==================
 
-``@BatchDelete`` の ``queryTimeout`` 要素にクエリタイムアウトの秒数を指定できます。
+You can specify seconds of query timeout to ``queryTimeout`` property within ``@BatchDelete`` annotation.
 
 .. code-block:: java
 
   @BatchDelete(queryTimeout = 10)
   int[] delete(List<Employee> employees);
 
-この指定は、SQLファイルの使用の有無に関係なく適用されます。
-``queryTimeout`` 要素に値を指定しない場合、
-:doc:`../config` に指定されたクエリタイムアウトが使用されます。
+This specifying is applied regardless of with or without using sql file.
+Query timeout that is specified in config class is used if ``queryTimeout`` property is not set value.
 
-バッチサイズ
+Batch size
 ============
 
-``@BatchDelete`` の ``batchSize`` 要素にバッチサイズを指定できます。
+You can specify batch size to ``batchSize`` property within ``@BatchDelete`` annotation.
 
 .. code-block:: java
 
   @BatchDelete(batchSize = 10)
   int[] delete(List<Employee> employees);
 
-この設定は、SQLファイルの使用の有無に関係なく適用されます。
-``batchSize`` 要素に値を指定しない場合、 :doc:`../config` に指定されたバッチサイズが使用されます。
+This specify is applied regardless of using or not using SQL file.
+It you do not specify the value to ``batchSize`` property, batch size that is specified at :doc:`../config` class is applied.
 
+SQL log output format
+=======================
 
-SQL のログ出力形式
-==================
-
-``@BatchDelete`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。
+You can specify SQL log output format to ``sqlLog`` property within ``@BatchDelete`` annotation.
 
 .. code-block:: java
 
   @BatchDelete(sqlLog = SqlLogType.RAW)
   int[] delete(List<Employee> employees);
 
-``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。
+``SqlLogType.RAW`` represent outputting log that is sql with a binding parameter.
