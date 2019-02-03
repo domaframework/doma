@@ -115,7 +115,7 @@ public enum Message implements MessageResource {
   DOMA2111(
       "Failed to build the SQL on line [{1}] at column [{2}]. The cause is as follows: {3}. SQL[{0}]"),
   DOMA2112(
-      "Failed to build the SQL on line [{1}] at column [{2}]. The object type[{4}] that corresponds to the bind variable comment or the literal variable comment[{3}] that is just before the parenthesis is not subtype of java.lang.Iterable. SQL[{0}]"),
+      "Failed to build the SQL on line [{1}] at column [{2}]. The type of the variable [{3}] must be a subtype of either java.lang.Iterable or Array, but it is [{4}]. SQL[{0}]"),
   DOMA2115(
       "Failed to build the SQL on line [{1}] at column [{2}]. The [{4}]th element of java.lang.Iterable that corresponds to the bind variable comment or the literal variable comment[{3}] that is just before the parenthesis is null. SQL[{0}]"),
   DOMA2116(

@@ -57,9 +57,26 @@ public class SqlParserTest extends TestCase {
     assertEquals("01-2345-6789", sql.getParameters().get(0).getWrapper().get());
   }
 
-  public void testBindVariable_in() throws Exception {
+  public void testBindVariable_in_iterable() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Arrays.asList("hoge", "foo")));
+    String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa where ename in (?, ?)", sql.getRawSql());
+    assertEquals("select * from aaa where ename in ('hoge', 'foo')", sql.getFormattedSql());
+    assertEquals(2, sql.getParameters().size());
+    assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+    assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
+  }
+
+  public void testBindVariable_in_array() throws Exception {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("name", new Value(String[].class, new String[] {"hoge", "foo"}));
     String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
     SqlParser parser = new SqlParser(testSql);
     SqlNode sqlNode = parser.parse();
