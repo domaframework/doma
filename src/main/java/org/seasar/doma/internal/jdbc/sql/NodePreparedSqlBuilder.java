@@ -232,7 +232,7 @@ public class NodePreparedSqlBuilder
                 location.getSql(),
                 location.getLineNumber(),
                 location.getPosition(),
-                node.getText());
+                node.getVariableName());
           }
         };
     return visitValueNode(node, p, validator.andThen(p::addLiteralValue));
@@ -286,7 +286,7 @@ public class NodePreparedSqlBuilder
             location.getSql(),
             location.getLineNumber(),
             location.getPosition(),
-            node.getText());
+            node.getVariableName());
       }
       if (fragment.indexOf(';') > -1) {
         throw new JdbcException(
@@ -294,7 +294,7 @@ public class NodePreparedSqlBuilder
             location.getSql(),
             location.getLineNumber(),
             location.getPosition(),
-            node.getText());
+            node.getVariableName());
       }
       if (fragment.indexOf("--") > -1) {
         throw new JdbcException(
@@ -302,7 +302,7 @@ public class NodePreparedSqlBuilder
             location.getSql(),
             location.getLineNumber(),
             location.getPosition(),
-            node.getText());
+            node.getVariableName());
       }
       if (fragment.indexOf("/*") > -1) {
         throw new JdbcException(
@@ -310,7 +310,7 @@ public class NodePreparedSqlBuilder
             location.getSql(),
             location.getLineNumber(),
             location.getPosition(),
-            node.getText());
+            node.getVariableName());
       }
       if (!startsWithClauseKeyword(fragment)) {
         p.setAvailable(true);
@@ -335,7 +335,8 @@ public class NodePreparedSqlBuilder
       Object value,
       Class<?> valueClass,
       Consumer<Scalar<?, ?>> consumer) {
-    Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(), node.getText(), value, valueClass);
+    Supplier<Scalar<?, ?>> supplier =
+        wrap(node.getLocation(), node.getVariableName(), value, valueClass);
     consumer.accept(supplier.get());
     return null;
   }
@@ -355,10 +356,11 @@ public class NodePreparedSqlBuilder
             location.getSql(),
             location.getLineNumber(),
             location.getPosition(),
-            node.getText(),
+            node.getVariableName(),
             index);
       }
-      Supplier<Scalar<?, ?>> supplier = wrap(node.getLocation(), node.getText(), v, v.getClass());
+      Supplier<Scalar<?, ?>> supplier =
+          wrap(node.getLocation(), node.getVariableName(), v, v.getClass());
       consumer.accept(supplier.get());
       p.appendRawSql(", ");
       p.appendFormattedSql(", ");
