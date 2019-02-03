@@ -1,6 +1,33 @@
 =============
-Release Notes
+Release notes
 =============
+
+v2.23.0: 2019-02-03
+======================
+
+* `GH294 <https://github.com/domaframework/doma/pull/294>`_
+  Support array types for bind and literal variable directives
+* `GH276 <https://github.com/domaframework/doma/pull/276>`_
+  Support array types for loop directives
+* `GH286 <https://github.com/domaframework/doma/pull/286>`_
+  Support automatic removal of unnecessary ORDER BY and GROUP BY clauses
+* `GH295 <https://github.com/domaframework/doma/pull/295>`_
+  Polish messages
+* `GH284 <https://github.com/domaframework/doma/pull/284>`_
+  Preserve the auto-commit state of a JDBC connection
+* `GH283 <https://github.com/domaframework/doma/pull/283>`_
+  Run tests in each annotation processor instance
+* `GH296 <https://github.com/domaframework/doma/pull/296>`_
+  `GH293 <https://github.com/domaframework/doma/pull/293>`_
+  `GH292 <https://github.com/domaframework/doma/pull/292>`_
+  `GH291 <https://github.com/domaframework/doma/pull/291>`_
+  `GH290 <https://github.com/domaframework/doma/pull/290>`_
+  `GH289 <https://github.com/domaframework/doma/pull/289>`_
+  `GH288 <https://github.com/domaframework/doma/pull/288>`_
+  `GH287 <https://github.com/domaframework/doma/pull/287>`_
+  `GH285 <https://github.com/domaframework/doma/pull/285>`_
+  `GH282 <https://github.com/domaframework/doma/pull/282>`_
+  Polish documents
 
 v2.22.0: 2019-01-20
 ======================
