@@ -253,13 +253,15 @@ public class NodePreparedSqlBuilder
       openedFragmentNode.accept(this, p);
       if (Iterable.class.isAssignableFrom(valueClass)) {
         handleIterableValueNode(node, p, (Iterable<?>) value, valueClass, valueHandler);
+      } else if (valueClass.isArray()) {
+        handleIterableValueNode(node, p, Arrays.asList((Object[]) value), valueClass, valueHandler);
       } else {
         throw new JdbcException(
             Message.DOMA2112,
             location.getSql(),
             location.getLineNumber(),
             location.getPosition(),
-            node.getText(),
+            node.getVariableName(),
             valueClass);
       }
       OtherNode closedFragmentNode = parensNode.getClosedFragmentNode();
