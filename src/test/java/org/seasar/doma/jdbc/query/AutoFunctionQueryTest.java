@@ -1,14 +1,17 @@
 package org.seasar.doma.jdbc.query;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class AutoFunctionQueryTest extends TestCase {
+public class AutoFunctionQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  @Test
   public void testPrepare() throws Exception {
     AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
     query.setConfig(runtimeConfig);

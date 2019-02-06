@@ -1,23 +1,39 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import example.entity.Emp;
 import example.entity.Salesman;
 import example.entity._Emp;
 import example.entity._Salesman;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class AutoBatchUpdateQueryTest extends TestCase {
+public class AutoBatchUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPrepare() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -30,7 +46,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -42,6 +58,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(2, batchUpdateQuery.getSqls().size());
   }
 
+  @Test
   public void testOption_default() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -54,7 +71,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -87,6 +104,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
   }
 
+  @Test
   public void testOption_ignoreVersion() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -99,7 +117,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -127,6 +145,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
   }
 
+  @Test
   public void testOption_include() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -139,7 +158,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setIncludedPropertyNames("name");
@@ -169,6 +188,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
   }
 
+  @Test
   public void testOption_exclude() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -181,7 +201,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setExcludedPropertyNames("name");
@@ -211,9 +231,10 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
   }
 
+  @Test
   public void testIsExecutable() throws Exception {
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -222,6 +243,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     assertFalse(query.isExecutable());
   }
 
+  @Test
   public void testTenantId() throws Exception {
     Salesman s1 = new Salesman();
     s1.setId(10);
@@ -237,7 +259,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
 
     AutoBatchUpdateQuery<Salesman> query =
         new AutoBatchUpdateQuery<Salesman>(_Salesman.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(s1, s2));
     query.setCallerClassName("aaa");

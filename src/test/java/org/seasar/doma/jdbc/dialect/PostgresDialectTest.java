@@ -1,10 +1,13 @@
 package org.seasar.doma.jdbc.dialect;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.PreparedSql;
 
-public class PostgresDialectTest extends TestCase {
+public class PostgresDialectTest {
 
+  @Test
   public void testGetIdentitySelectSql_quoteNotRequired_idQuoteNotRequired() throws Exception {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", false, false);
@@ -12,6 +15,7 @@ public class PostgresDialectTest extends TestCase {
         "select currval(pg_catalog.pg_get_serial_sequence('aaa.bbb.ccc', 'ddd'))", sql.getRawSql());
   }
 
+  @Test
   public void testGetIdentitySelectSql_quoteRequired_idQuoteNotRequired() throws Exception {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", true, false);
@@ -20,6 +24,7 @@ public class PostgresDialectTest extends TestCase {
         sql.getRawSql());
   }
 
+  @Test
   public void testGetIdentitySelectSql_quoteNotRequired_idQuoteRequired() throws Exception {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", false, true);
@@ -27,6 +32,7 @@ public class PostgresDialectTest extends TestCase {
         "select currval(pg_catalog.pg_get_serial_sequence('aaa.bbb.ccc', 'DDD'))", sql.getRawSql());
   }
 
+  @Test
   public void testGetIdentitySelectSql_quoteRequired_idQuoteRequired() throws Exception {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", true, true);

@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SqlFileNotFoundExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class SqlFileNotFoundExceptionTest {
+
+  @Test
   public void test() throws Exception {
     SqlFileNotFoundException e = new SqlFileNotFoundException("aaa");
     assertEquals("aaa", e.getPath());

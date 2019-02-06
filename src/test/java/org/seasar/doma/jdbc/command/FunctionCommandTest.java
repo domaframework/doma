@@ -1,7 +1,10 @@
 package org.seasar.doma.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
@@ -12,10 +15,11 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
-public class FunctionCommandTest extends TestCase {
+public class FunctionCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  @Test
   public void testExecute() throws Exception {
     List<Object> outParameters =
         runtimeConfig.dataSource.connection.callableStatement.outParameters;

@@ -1,10 +1,12 @@
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import example.domain.PhoneNumber;
 import example.domain._PhoneNumber;
 import java.lang.reflect.Method;
 import java.util.Optional;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -18,10 +20,11 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-public class ScalarProviderTest extends TestCase {
+public class ScalarProviderTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  @Test
   public void testBasic() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));
@@ -40,6 +43,7 @@ public class ScalarProviderTest extends TestCase {
     assertEquals("hoge", result);
   }
 
+  @Test
   public void testOptionalBasic() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));
@@ -58,6 +62,7 @@ public class ScalarProviderTest extends TestCase {
     assertEquals("hoge", result.get());
   }
 
+  @Test
   public void testDomain() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));
@@ -74,6 +79,7 @@ public class ScalarProviderTest extends TestCase {
     assertEquals("hoge", result.getValue());
   }
 
+  @Test
   public void testOptionalDomain() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("aaa"));

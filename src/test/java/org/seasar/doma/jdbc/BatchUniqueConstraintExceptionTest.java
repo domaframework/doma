@@ -1,9 +1,14 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class BatchUniqueConstraintExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class BatchUniqueConstraintExceptionTest {
+
+  @Test
   public void test() throws Exception {
     BatchUniqueConstraintException e =
         new BatchUniqueConstraintException(

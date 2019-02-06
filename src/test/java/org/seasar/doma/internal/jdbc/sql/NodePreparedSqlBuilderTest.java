@@ -1,8 +1,11 @@
 package org.seasar.doma.internal.jdbc.sql;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.math.BigDecimal;
 import java.util.function.Function;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -28,12 +31,13 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-public class NodePreparedSqlBuilderTest extends TestCase {
+public class NodePreparedSqlBuilderTest {
 
   private final SqlLocation location = new SqlLocation("dummy sql", 0, 0);
 
   private final MockConfig config = new MockConfig();
 
+  @Test
   public void testBindVariableNode() throws Exception {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
@@ -77,6 +81,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals(new BigDecimal(100), sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testIfNode_true() throws Exception {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
@@ -110,6 +115,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa where bbb = ccc", sql.getRawSql());
   }
 
+  @Test
   public void testIfNode_false() throws Exception {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
@@ -143,6 +149,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa", sql.getRawSql());
   }
 
+  @Test
   public void testElseNode() throws Exception {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
@@ -182,6 +189,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa where ddd = eee", sql.getRawSql());
   }
 
+  @Test
   public void testWhere() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */";
@@ -194,6 +202,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa", sql.getRawSql());
   }
 
+  @Test
   public void testWhere_embeddedVariable() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("embedded", new Value(String.class, "bbb = ccc"));
@@ -207,6 +216,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa where  bbb = ccc", sql.getRawSql());
   }
 
+  @Test
   public void testWhere_embeddedVariable_orderBy() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("embedded", new Value(String.class, "order by bbb"));
@@ -220,6 +230,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa   order by bbb", sql.getRawSql());
   }
 
+  @Test
   public void testWhere_embeddedVariable_orderBy_followedByForUpdate() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("embedded", new Value(String.class, "order by bbb"));
@@ -234,6 +245,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa   order by bbb for update", sql.getRawSql());
   }
 
+  @Test
   public void testAndNode() throws Exception {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
@@ -281,6 +293,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa where bbb = ccc and ddd = eee", sql.getRawSql());
   }
 
+  @Test
   public void testAndNode_remove() throws Exception {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
@@ -328,6 +341,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa where  ddd = eee", sql.getRawSql());
   }
 
+  @Test
   public void testEmbeddedVariable_containsSingleQuote() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -348,6 +362,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     }
   }
 
+  @Test
   public void testEmbeddedVariable_containsSemicolon() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -368,6 +383,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     }
   }
 
+  @Test
   public void testEmbeddedVariable_lineComment() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -388,6 +404,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     }
   }
 
+  @Test
   public void testEmbeddedVariable_blockComment() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -408,6 +425,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     }
   }
 
+  @Test
   public void testEmbeddedVariable_issue_95() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("envPrefix", new Value(String.class, "prefix_"));
@@ -421,6 +439,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from prefix_SCHEMA.TABLE", sql.getRawSql());
   }
 
+  @Test
   public void testLiteralVariable_containsSingleQuote() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hog'e"));

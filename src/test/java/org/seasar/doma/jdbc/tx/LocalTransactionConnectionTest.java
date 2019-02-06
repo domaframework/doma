@@ -1,12 +1,18 @@
 package org.seasar.doma.jdbc.tx;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 
-public class LocalTransactionConnectionTest extends TestCase {
+public class LocalTransactionConnectionTest {
 
+  @Test
   public void testIsWrapperFor() throws Exception {
     try (Connection connection =
         new LocalTransactionConnection(
@@ -17,6 +23,7 @@ public class LocalTransactionConnectionTest extends TestCase {
     }
   }
 
+  @Test
   public void testUnwrap() throws Exception {
     try (Connection connection =
         new LocalTransactionConnection(

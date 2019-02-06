@@ -1,5 +1,9 @@
 package org.seasar.doma.internal.expr;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -10,13 +14,14 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.node.ExpressionLocation;
 
-public class ExpressionEvaluatorTest extends TestCase {
+public class ExpressionEvaluatorTest {
 
   protected ExpressionLocation location = new ExpressionLocation("dummy expression", 0);
 
+  @Test
   public void testInvokeMethod() throws Exception {
     Class<?>[] paramTypes = new Class[] {int.class, int.class};
     Method method = String.class.getMethod("substring", paramTypes);
@@ -28,6 +33,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testInvokeMethod_optional() throws Exception {
     Method method = Person.class.getMethod("getOptionalName");
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -40,6 +46,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testInvokeMethod_optional_empty() throws Exception {
     Method method = Person.class.getMethod("getOptionalName");
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -52,6 +59,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testInvokeMethod_static_optional() throws Exception {
     Method method = Person.class.getMethod("getStaticOptionalName");
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -62,6 +70,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testInvokeMethod_optionalInt() throws Exception {
     Method method = Person.class.getMethod("getAge");
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -74,6 +83,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testInvokeMethod_optionalInt_empty() throws Exception {
     Method method = Person.class.getMethod("getAge");
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -86,6 +96,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testInvokeMethod_static_optionalInt() throws Exception {
     Method method = Person.class.getMethod("getStaticAge");
     Person.staticAge = OptionalInt.of(10);
@@ -97,6 +108,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testInvokeMethod_static_optionalInt_empty() throws Exception {
     Method method = Person.class.getMethod("getStaticAge");
     Person.staticAge = OptionalInt.empty();
@@ -108,6 +120,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testFindMethod() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -117,6 +130,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Collection.class, method.getDeclaringClass());
   }
 
+  @Test
   public void testFindMethod_String_is_subtype_of_Object() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -126,6 +140,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Collection.class, method.getDeclaringClass());
   }
 
+  @Test
   public void testFindMethod_List_is_subtype_of_Object() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -135,6 +150,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Collection.class, method.getDeclaringClass());
   }
 
+  @Test
   public void testFindMethod_List_is_subtype_of_Collection() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -144,6 +160,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Collection.class, method.getDeclaringClass());
   }
 
+  @Test
   public void testFindMethod_overload_int() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -152,6 +169,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, method.getDeclaringClass());
   }
 
+  @Test
   public void testFindMethod_overload_string() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -160,6 +178,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, method.getDeclaringClass());
   }
 
+  @Test
   public void testFindMethod_autoBoxing() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -169,6 +188,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, method.getDeclaringClass());
   }
 
+  @Test
   public void testFindMethod_notFound() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
@@ -176,12 +196,14 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertNull(method);
   }
 
+  @Test
   public void testForClassName() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Class<?> clazz = evaluator.forClassName(location, "java.lang.String");
     assertNotNull(clazz);
   }
 
+  @Test
   public void testForClassName_notFound() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     try {
@@ -191,6 +213,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     }
   }
 
+  @Test
   public void testFindConstructor() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Constructor<?> constructor =
@@ -198,6 +221,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertNotNull(constructor);
   }
 
+  @Test
   public void testFindConstructor_notFound() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Constructor<?> constructor =
@@ -205,6 +229,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertNull(constructor);
   }
 
+  @Test
   public void testInvokeConstructor() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Constructor<?> constructor =
@@ -216,6 +241,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("name");
@@ -226,6 +252,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optional() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("optionalName");
@@ -236,6 +263,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optional_empty() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("optionalName");
@@ -246,6 +274,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_static() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("staticName");
@@ -254,6 +283,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_static_optional() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("staticOptionalName");
@@ -262,6 +292,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(String.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_static_optionalInt() throws Exception {
     Person.staticAge = OptionalInt.of(10);
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -271,6 +302,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_static_optionalInt_empty() throws Exception {
     Person.staticAge = OptionalInt.empty();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -280,6 +312,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optionalInt() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("age");
@@ -290,6 +323,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optionalInt_empty() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("age");
@@ -300,6 +334,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Integer.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optionalLong() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("salary");
@@ -310,6 +345,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Long.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optionalLong_empty() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("salary");
@@ -320,6 +356,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Long.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optionalDouble() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("temperature");
@@ -330,6 +367,7 @@ public class ExpressionEvaluatorTest extends TestCase {
     assertEquals(Double.class, result.getValueClass());
   }
 
+  @Test
   public void testGetFieldValue_optionalDouble_empty() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("temperature");

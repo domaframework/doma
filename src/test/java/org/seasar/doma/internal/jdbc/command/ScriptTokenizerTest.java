@@ -1,18 +1,22 @@
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.*;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ScriptTokenizerTest extends TestCase {
+public class ScriptTokenizerTest {
 
   private ScriptTokenizer tokenizer;
 
-  @Override
+  @BeforeEach
   public void setUp() throws Exception {
     tokenizer = new ScriptTokenizer("/");
   }
 
+  @Test
   public void testGetToken_endOfLine() {
     tokenizer.addLine("aaa");
     assertEquals(WORD, tokenizer.nextToken());
@@ -23,6 +27,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals("", tokenizer.getToken());
   }
 
+  @Test
   public void testGetToken_endOfFile() {
     tokenizer.addLine("aaa");
     assertEquals(WORD, tokenizer.nextToken());
@@ -37,6 +42,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testGetToken_lineComment() {
     tokenizer.addLine("aaa -- bbb /* ; ");
     assertEquals(WORD, tokenizer.nextToken());
@@ -48,6 +54,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals(END_OF_LINE, tokenizer.nextToken());
   }
 
+  @Test
   public void testGetToken_blockCommentInTwoLines() {
     tokenizer.addLine("aaa/*b");
     assertEquals(WORD, tokenizer.nextToken());
@@ -69,6 +76,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals(END_OF_LINE, tokenizer.nextToken());
   }
 
+  @Test
   public void testGetToken_blockCommentsInOneLine() {
     tokenizer.addLine("aaa/*bbb*/ccc/*ddd*/");
     assertEquals(WORD, tokenizer.nextToken());
@@ -90,6 +98,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals(END_OF_LINE, tokenizer.nextToken());
   }
 
+  @Test
   public void testGetToken_statementDelimiter() throws Exception {
     tokenizer.addLine("select * from aaa; ");
     assertEquals(WORD, tokenizer.nextToken());
@@ -109,6 +118,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals(END_OF_LINE, tokenizer.nextToken());
   }
 
+  @Test
   public void testGetToken_blockDelimiter() throws Exception {
     tokenizer.addLine("aaa go");
     assertEquals(WORD, tokenizer.nextToken());
@@ -126,6 +136,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals(END_OF_LINE, tokenizer.nextToken());
   }
 
+  @Test
   public void testGetToken_wordAndOther() throws Exception {
     tokenizer.addLine("select,");
     assertEquals(WORD, tokenizer.nextToken());
@@ -141,6 +152,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals(END_OF_LINE, tokenizer.nextToken());
   }
 
+  @Test
   public void testGetToken_quote() throws Exception {
     tokenizer.addLine("'aaa'");
     assertEquals(QUOTE, tokenizer.nextToken());
@@ -148,6 +160,7 @@ public class ScriptTokenizerTest extends TestCase {
     assertEquals(END_OF_LINE, tokenizer.nextToken());
   }
 
+  @Test
   public void testGetToken_quoteNotClosed() throws Exception {
     tokenizer.addLine("'aaa");
     assertEquals(QUOTE, tokenizer.nextToken());

@@ -1,27 +1,34 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.function.Supplier;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.experimental.Sql;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 
-public class SqlFileScriptQueryTest extends TestCase {
+public class SqlFileScriptQueryTest {
 
   private final MockConfig config = new MockConfig();
 
   private Method method;
 
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-    method = getClass().getMethod(getName());
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
   }
 
+  @Test
   public void testPrepare() throws Exception {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(config);
@@ -43,6 +50,7 @@ public class SqlFileScriptQueryTest extends TestCase {
     assertNull(query.getBlockDelimiter());
   }
 
+  @Test
   public void testPrepare_dbmsSpecific() throws Exception {
     config.dialect = new Mssql2008Dialect();
     SqlFileScriptQuery query = new SqlFileScriptQuery();
@@ -65,6 +73,7 @@ public class SqlFileScriptQueryTest extends TestCase {
     assertEquals("GO", query.getBlockDelimiter());
   }
 
+  @Test
   public void testPrepare_ScriptFileNotFoundException() throws Exception {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(config);
@@ -82,13 +91,14 @@ public class SqlFileScriptQueryTest extends TestCase {
   }
 
   @Sql("drop table employee;\ndrop table department;")
+  @Test
   public void testGetReaderSupplier() throws Exception {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(config);
     query.setMethod(method);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setScriptFilePath(String.format("%s#%s", getClass().getName(), getName()));
+    query.setScriptFilePath(String.format("%s#%s", getClass().getName(), method.getName()));
     query.setBlockDelimiter("ddd");
     query.prepare();
 

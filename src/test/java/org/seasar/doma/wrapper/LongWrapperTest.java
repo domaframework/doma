@@ -1,10 +1,13 @@
 package org.seasar.doma.wrapper;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LongWrapperTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class LongWrapperTest {
 
   /** */
+  @Test
   public void testIncrement() {
     LongWrapper wrapper = new LongWrapper(10L);
     wrapper.increment();
@@ -12,6 +15,7 @@ public class LongWrapperTest extends TestCase {
   }
 
   /** */
+  @Test
   public void testDecrement() {
     LongWrapper wrapper = new LongWrapper(10L);
     wrapper.decrement();

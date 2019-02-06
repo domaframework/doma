@@ -1,11 +1,14 @@
 package org.seasar.doma.jdbc.builder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.math.BigDecimal;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-public class UpdateBuilderTest extends TestCase {
+public class UpdateBuilderTest {
 
+  @Test
   public void test() throws Exception {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
@@ -17,6 +20,7 @@ public class UpdateBuilderTest extends TestCase {
     builder.execute();
   }
 
+  @Test
   public void testGetSql() throws Exception {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
@@ -34,6 +38,7 @@ public class UpdateBuilderTest extends TestCase {
     builder.execute();
   }
 
+  @Test
   public void testLiteral() throws Exception {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");

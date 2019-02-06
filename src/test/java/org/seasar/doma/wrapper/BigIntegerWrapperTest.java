@@ -1,12 +1,15 @@
 package org.seasar.doma.wrapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class BigIntegerWrapperTest extends TestCase {
+public class BigIntegerWrapperTest {
 
   /** */
+  @Test
   public void testSetBigIntegerAsNumber() {
     Number greaterThanLongMaxValue =
         new BigDecimal(Long.MAX_VALUE).add(BigDecimal.ONE).toBigInteger();
@@ -16,6 +19,7 @@ public class BigIntegerWrapperTest extends TestCase {
   }
 
   /** */
+  @Test
   public void testSetBigDecimal() {
     BigDecimal greaterThanLongMaxValue = new BigDecimal(Long.MAX_VALUE).add(BigDecimal.ONE);
     BigIntegerWrapper wrapper = new BigIntegerWrapper();
@@ -24,6 +28,7 @@ public class BigIntegerWrapperTest extends TestCase {
   }
 
   /** */
+  @Test
   public void testIncrement() {
     BigIntegerWrapper wrapper = new BigIntegerWrapper(new BigInteger("10"));
     wrapper.increment();
@@ -31,6 +36,7 @@ public class BigIntegerWrapperTest extends TestCase {
   }
 
   /** */
+  @Test
   public void testDecrement() {
     BigIntegerWrapper wrapper = new BigIntegerWrapper(new BigInteger("10"));
     wrapper.decrement();

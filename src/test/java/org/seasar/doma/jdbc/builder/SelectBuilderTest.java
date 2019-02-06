@@ -1,12 +1,17 @@
 package org.seasar.doma.jdbc.builder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import example.domain.PhoneNumber;
 import example.entity.Emp;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -15,8 +20,9 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.message.Message;
 
-public class SelectBuilderTest extends TestCase {
+public class SelectBuilderTest {
 
+  @Test
   public void testGetSql() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
@@ -46,6 +52,7 @@ public class SelectBuilderTest extends TestCase {
     assertNull(emp);
   }
 
+  @Test
   public void testRmoveLast() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("aaa").sql("bbb");
@@ -53,6 +60,7 @@ public class SelectBuilderTest extends TestCase {
     assertEquals("aaa", builder.getSql().getRawSql());
   }
 
+  @Test
   public void testSingleResult_Entity() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
@@ -68,6 +76,7 @@ public class SelectBuilderTest extends TestCase {
     assertNull(emp);
   }
 
+  @Test
   public void testSingleResult_Map() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
@@ -83,6 +92,7 @@ public class SelectBuilderTest extends TestCase {
     assertNull(emp);
   }
 
+  @Test
   public void testSingleResult_Domain() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
@@ -94,6 +104,7 @@ public class SelectBuilderTest extends TestCase {
     assertNull(phoneNumber);
   }
 
+  @Test
   public void testSingleResult_Basic() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
@@ -105,6 +116,7 @@ public class SelectBuilderTest extends TestCase {
     assertNull(result);
   }
 
+  @Test
   public void testSingleResult_DomaIllegalArgumentException() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
@@ -123,6 +135,7 @@ public class SelectBuilderTest extends TestCase {
     }
   }
 
+  @Test
   public void testGetResultList_Entity() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select * from Emp");
@@ -134,6 +147,7 @@ public class SelectBuilderTest extends TestCase {
     assertNotNull(list);
   }
 
+  @Test
   public void testGetResultList_Map() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select * from Emp");
@@ -145,6 +159,7 @@ public class SelectBuilderTest extends TestCase {
     assertNotNull(list);
   }
 
+  @Test
   public void testGetResultList_Domain() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
@@ -156,6 +171,7 @@ public class SelectBuilderTest extends TestCase {
     assertNotNull(list);
   }
 
+  @Test
   public void testGetResultList_Basic() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
@@ -167,6 +183,7 @@ public class SelectBuilderTest extends TestCase {
     assertNotNull(list);
   }
 
+  @Test
   public void testLiteral() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
@@ -192,6 +209,7 @@ public class SelectBuilderTest extends TestCase {
     assertEquals(sql, builder.getSql().getRawSql());
   }
 
+  @Test
   public void testLiteral_singleQuoteIncluded() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
@@ -210,6 +228,7 @@ public class SelectBuilderTest extends TestCase {
     }
   }
 
+  @Test
   public void testParams() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
@@ -226,6 +245,7 @@ public class SelectBuilderTest extends TestCase {
     assertEquals("z", params.get(2).getValue());
   }
 
+  @Test
   public void testParams_empty() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
@@ -239,6 +259,7 @@ public class SelectBuilderTest extends TestCase {
     assertEquals(0, params.size());
   }
 
+  @Test
   public void testLiterals() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
@@ -252,6 +273,7 @@ public class SelectBuilderTest extends TestCase {
     assertEquals(0, params.size());
   }
 
+  @Test
   public void testLiterals_empty() throws Exception {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");

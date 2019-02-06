@@ -1,18 +1,23 @@
 package org.seasar.doma.internal.apt.processor.dao.experimental;
 
-import org.seasar.doma.internal.apt.AptTestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.processor.DaoProcessor;
 import org.seasar.doma.message.Message;
 
 /** Test case for {@link org.seasar.doma.experimental.Sql} */
-public class SqlTest extends AptTestCase {
+public class SqlTest extends CompilerSupport {
 
-  @Override
+  @BeforeEach
   protected void setUp() throws Exception {
-    super.setUp();
     addOption("-Adoma.test=true");
   }
 
+  @Test
   public void testAnnotationConflict() throws Exception {
     Class<?> target = AnnotationConflictDao.class;
     DaoProcessor processor = new DaoProcessor();
@@ -23,6 +28,7 @@ public class SqlTest extends AptTestCase {
     assertMessage(Message.DOMA4444);
   }
 
+  @Test
   public void testModifySqlFileElementConflict() throws Exception {
     Class<?> target = ModifySqlFileElementConflictDao.class;
     DaoProcessor processor = new DaoProcessor();
@@ -33,6 +39,7 @@ public class SqlTest extends AptTestCase {
     assertMessage(Message.DOMA4445);
   }
 
+  @Test
   public void testBatchModifySqlFileElementConflict() throws Exception {
     Class<?> target = BatchModifySqlFileElementConflictDao.class;
     DaoProcessor processor = new DaoProcessor();
@@ -43,6 +50,7 @@ public class SqlTest extends AptTestCase {
     assertMessage(Message.DOMA4445);
   }
 
+  @Test
   public void testDefaultMethodConflict() throws Exception {
     Class<?> target = DefaultMethodConflictDao.class;
     DaoProcessor processor = new DaoProcessor();
@@ -53,6 +61,7 @@ public class SqlTest extends AptTestCase {
     assertMessage(Message.DOMA4446);
   }
 
+  @Test
   public void testSqlAnnotation() throws Exception {
     Class<?> target = SqlAnnotationDao.class;
     DaoProcessor processor = new DaoProcessor();

@@ -1,12 +1,18 @@
 package org.seasar.doma.internal.apt;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import junit.framework.AssertionFailedError;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.opentest4j.AssertionFailedError;
 import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
@@ -17,11 +23,17 @@ import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.Message;
 
-public abstract class AptTestCase extends AptinaTestCase {
+public class CompilerExtension extends AptinaTestCase
+    implements BeforeEachCallback, AfterEachCallback {
+
+  private Class<?> testClass;
+
+  private Method testMethod;
 
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  public void beforeEach(ExtensionContext context) throws Exception {
+    testClass = context.getTestClass().get();
+    testMethod = context.getTestMethod().get();
     addSourcePath("src/test/java");
     addSourcePath("src/test/resources");
     setCharset("UTF-8");
@@ -30,18 +42,18 @@ public abstract class AptTestCase extends AptinaTestCase {
   }
 
   @Override
-  protected void tearDown() throws Exception {
+  public void afterEach(ExtensionContext context) throws Exception {
     TimeZone.setDefault(null);
     super.tearDown();
   }
 
-  protected String getExpectedContent() throws Exception {
-    String path = getClass().getName().replace(".", "/");
-    String suffix = "_" + getName().substring("test".length()) + ".txt";
+  public String getExpectedContent() throws Exception {
+    String path = testClass.getName().replace(".", "/");
+    String suffix = "_" + testMethod.getName().substring("test".length()) + ".txt";
     return ResourceUtil.getResourceAsString(path + suffix);
   }
 
-  protected void assertGeneratedSource(Class<?> originalClass) throws Exception {
+  public void assertGeneratedSource(Class<?> originalClass) throws Exception {
     String generatedClassName = getGeneratedClassName(originalClass);
     try {
       assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
@@ -51,7 +63,7 @@ public abstract class AptTestCase extends AptinaTestCase {
     }
   }
 
-  protected String getGeneratedClassName(Class<?> originalClass) {
+  public String getGeneratedClassName(Class<?> originalClass) {
     if (originalClass.isAnnotationPresent(Dao.class)) {
       return originalClass.getName() + Options.Constants.DEFAULT_DAO_SUFFIX;
     }
@@ -64,7 +76,7 @@ public abstract class AptTestCase extends AptinaTestCase {
     throw new AssertionFailedError("annotation not found.");
   }
 
-  protected void assertMessage(Message message) {
+  public void assertMessage(Message message) {
     List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
     if (diagnostics.size() == 1) {
       Message m = extractMessage(diagnostics.get(0));
@@ -102,13 +114,6 @@ public abstract class AptTestCase extends AptinaTestCase {
       }
     }
     return results;
-  }
-
-  protected Message getMessageCode() {
-    for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
-      return extractMessage(diagnostic);
-    }
-    return null;
   }
 
   protected Message extractMessage(Diagnostic<? extends JavaFileObject> diagnostic) {

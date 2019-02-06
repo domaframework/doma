@@ -1,22 +1,36 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import example.entity.Emp;
 import example.entity.Salesman;
 import example.entity._Emp;
 import example.entity._Salesman;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class AutoBatchDeleteQueryTest extends TestCase {
+public class AutoBatchDeleteQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPrepare() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -27,7 +41,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     emp2.setName("bbb");
 
     AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -39,6 +53,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     assertEquals(2, batchDeleteQuery.getSqls().size());
   }
 
+  @Test
   public void testOption_default() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -50,7 +65,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     emp2.setVersion(new Integer(10));
 
     AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -73,6 +88,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
   }
 
+  @Test
   public void testOption_ignoreVersion() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -84,7 +100,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     emp2.setVersion(new Integer(10));
 
     AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setVersionIgnored(true);
@@ -106,6 +122,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
     assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
   }
 
+  @Test
   public void testTenantId() throws Exception {
     Salesman emp1 = new Salesman();
     emp1.setId(10);
@@ -119,7 +136,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
 
     AutoBatchDeleteQuery<Salesman> query =
         new AutoBatchDeleteQuery<Salesman>(_Salesman.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");

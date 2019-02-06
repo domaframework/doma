@@ -1,9 +1,13 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class NonSingleColumnExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class NonSingleColumnExceptionTest {
+
+  @Test
   public void test() throws Exception {
     NonSingleColumnException e =
         new NonSingleColumnException(SqlLogType.FORMATTED, SqlKind.SELECT, "aaa", "bbb", "ccc");

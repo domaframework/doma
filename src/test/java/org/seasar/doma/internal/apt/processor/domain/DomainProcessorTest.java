@@ -1,18 +1,23 @@
 package org.seasar.doma.internal.apt.processor.domain;
 
-import org.seasar.doma.internal.apt.AptTestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.internal.apt.processor.DomainProcessor;
 import org.seasar.doma.message.Message;
 
-public class DomainProcessorTest extends AptTestCase {
+public class DomainProcessorTest extends CompilerSupport {
 
-  @Override
+  @BeforeEach
   protected void setUp() throws Exception {
-    super.setUp();
     addOption("-Adoma.test=true");
   }
 
+  @Test
   public void testSalary() throws Exception {
     Class<?> target = Salary.class;
     DomainProcessor processor = new DomainProcessor();
@@ -23,6 +28,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testPrimitiveValue() throws Exception {
     Class<?> target = PrimitiveValueDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -33,6 +39,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testEnum() throws Exception {
     Class<?> target = EnumDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -43,6 +50,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testUnsupportedValueType() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -52,6 +60,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4102);
   }
 
+  @Test
   public void testConstrutorNotFound() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -61,6 +70,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4103);
   }
 
+  @Test
   public void testAccessorNotFound() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -70,6 +80,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4104);
   }
 
+  @Test
   public void testInner() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -79,6 +90,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testInner_deep() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -88,6 +100,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testInner_nonStatic() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -97,6 +110,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4275);
   }
 
+  @Test
   public void testInner_nonPublic() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -106,6 +120,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4275);
   }
 
+  @Test
   public void testInner_illegalName() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -115,6 +130,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4277);
   }
 
+  @Test
   public void testMiddle_nonPublic() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -124,6 +140,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4275);
   }
 
+  @Test
   public void testPackagePrivate() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -132,6 +149,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testJobType() throws Exception {
     Class<?> target = JobType.class;
     DomainProcessor processor = new DomainProcessor();
@@ -142,6 +160,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4184);
   }
 
+  @Test
   public void testAbstractDomain() throws Exception {
     Class<?> target = AbstractDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -152,6 +171,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4132);
   }
 
+  @Test
   public void testOfSalary() throws Exception {
     Class<?> target = OfSalary.class;
     DomainProcessor processor = new DomainProcessor();
@@ -162,6 +182,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testOfPrimitiveValue() throws Exception {
     Class<?> target = OfPrimitiveValueDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -172,6 +193,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testOfEnum() throws Exception {
     Class<?> target = OfEnumDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -182,6 +204,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testOfJobType() throws Exception {
     Class<?> target = OfJobType.class;
     DomainProcessor processor = new DomainProcessor();
@@ -192,6 +215,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testOfPrimitiveValueType() throws Exception {
     Class<?> target = OfPrimitiveValueType.class;
     DomainProcessor processor = new DomainProcessor();
@@ -202,6 +226,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testOfAbstractDomain() throws Exception {
     Class<?> target = OfAbstractDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -212,6 +237,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testGenericDomain() throws Exception {
     Class<?> target = SpecificDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -222,6 +248,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testVersionCheckSuppressed() throws Exception {
     addOption("-Adoma.version.validation=false");
     Class<?> target = VersionCheckSuppressedDomain.class;
@@ -233,6 +260,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testParametarizedSalary() throws Exception {
     Class<?> target = ParametarizedSalary.class;
     DomainProcessor processor = new DomainProcessor();
@@ -243,6 +271,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testParametarizedOfSalary() throws Exception {
     Class<?> target = ParametarizedOfSalary.class;
     DomainProcessor processor = new DomainProcessor();
@@ -253,6 +282,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testIllegalSizeParametarizedOfSalary() throws Exception {
     Class<?> target = IllegalSizeParametarizedOfSalary.class;
     DomainProcessor processor = new DomainProcessor();
@@ -262,6 +292,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4106);
   }
 
+  @Test
   public void testIllegalTypeParametarizedOfSalary() throws Exception {
     Class<?> target = IllegalTypeParametarizedOfSalary.class;
     DomainProcessor processor = new DomainProcessor();
@@ -271,6 +302,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4106);
   }
 
+  @Test
   public void testNullRejection() throws Exception {
     Class<?> target = NullRejectionDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -281,6 +313,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testIllegalAcceptNullDomain() throws Exception {
     Class<?> target = IllegalAcceptNullDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -290,6 +323,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4251);
   }
 
+  @Test
   public void testObjectDomain() throws Exception {
     Class<?> target = ObjectDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -300,6 +334,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testInterface() throws Exception {
     Class<?> target = InterfaceDomain.class;
     DomainProcessor processor = new DomainProcessor();
@@ -310,6 +345,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testInterfaceFactoryOfAttributeMustNotBeNew() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -319,6 +355,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4268);
   }
 
+  @Test
   public void testInterfaceInner() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -328,6 +365,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testAnnotationMustNotBeDomainClass() throws Exception {
     DomainProcessor processor = new DomainProcessor();
     addProcessor(processor);
@@ -337,6 +375,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4105);
   }
 
+  @Test
   public void testLombokValue() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     DomainProcessor processor = new DomainProcessor();
@@ -348,6 +387,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testLombokValueStaticConstructor() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     DomainProcessor processor = new DomainProcessor();
@@ -359,6 +399,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4428);
   }
 
+  @Test
   public void testLombokValueNoField() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     DomainProcessor processor = new DomainProcessor();
@@ -370,6 +411,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4430);
   }
 
+  @Test
   public void testLombokValueTwoFields() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     DomainProcessor processor = new DomainProcessor();
@@ -381,6 +423,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4431);
   }
 
+  @Test
   public void testLombokValueTypeNotAssignable() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     DomainProcessor processor = new DomainProcessor();
@@ -392,6 +435,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4432);
   }
 
+  @Test
   public void testLombokValueAccessorMethod() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     DomainProcessor processor = new DomainProcessor();
@@ -403,6 +447,7 @@ public class DomainProcessorTest extends AptTestCase {
     assertMessage(Message.DOMA4429);
   }
 
+  @Test
   public void testLombokValueAccessorMethod_boolean() throws Exception {
     addOption("-Adoma.lombok.Value=" + Value.class.getName());
     DomainProcessor processor = new DomainProcessor();

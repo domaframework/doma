@@ -1,15 +1,20 @@
 package org.seasar.doma.internal.apt.meta;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import javax.lang.model.element.TypeElement;
-import org.seasar.doma.internal.apt.AptTestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptTestProcessor;
+import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 import org.seasar.doma.internal.apt.processor.entity.NamingType1Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-public class EntityMetaFactoryTest extends AptTestCase {
+public class EntityMetaFactoryTest extends CompilerSupport {
 
+  @Test
   public void testNaming1Type() throws Exception {
     Class<?> target = NamingType1Entity.class;
     addCompilationUnit(target);
@@ -27,6 +32,7 @@ public class EntityMetaFactoryTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testNaming2Type() throws Exception {
     Class<?> target = NamingType2Entity.class;
     addCompilationUnit(target);
@@ -44,6 +50,7 @@ public class EntityMetaFactoryTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testNaming3Type() throws Exception {
     Class<?> target = NamingType3Entity.class;
     addCompilationUnit(target);

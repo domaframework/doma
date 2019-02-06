@@ -1,25 +1,31 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.LinkedHashMap;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.AptTestProcessor;
+import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-public class BatchSqlValidatorTest extends AptTestCase {
+public class BatchSqlValidatorTest extends CompilerSupport {
 
-  @Override
+  @BeforeEach
   protected void setUp() throws Exception {
-    super.setUp();
     addSourcePath("src/main/java");
     addSourcePath("src/test/java");
   }
 
+  @Test
   public void testEmbeddedVariable() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
@@ -44,6 +50,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     assertMessage(Message.DOMA4181);
   }
 
+  @Test
   public void testEmbeddedVariableSuppressed() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
@@ -68,6 +75,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     assertNoMessage();
   }
 
+  @Test
   public void testIf() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
@@ -92,6 +100,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     assertMessage(Message.DOMA4182);
   }
 
+  @Test
   public void testIfSuppressed() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
@@ -116,6 +125,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     assertNoMessage();
   }
 
+  @Test
   public void testIfAndEmbeddedVariable() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
@@ -142,6 +152,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     assertEquals(2, getDiagnostics().size());
   }
 
+  @Test
   public void testIfAndEmbeddedVariableSuppressed() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
@@ -168,6 +179,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     assertNoMessage();
   }
 
+  @Test
   public void testPopulate() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
@@ -192,6 +204,7 @@ public class BatchSqlValidatorTest extends AptTestCase {
     assertNoMessage();
   }
 
+  @Test
   public void testPopulate_noPopulatable() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);

@@ -1,10 +1,13 @@
 package org.seasar.doma.jdbc.builder;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-public class DeleteBuilderTest extends TestCase {
+public class DeleteBuilderTest {
 
+  @Test
   public void test() throws Exception {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
@@ -15,6 +18,7 @@ public class DeleteBuilderTest extends TestCase {
     builder.execute();
   }
 
+  @Test
   public void testGetSql() throws Exception {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
@@ -30,6 +34,7 @@ public class DeleteBuilderTest extends TestCase {
     builder.execute();
   }
 
+  @Test
   public void testLiterall() throws Exception {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");

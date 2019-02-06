@@ -1,14 +1,17 @@
 package org.seasar.doma.jdbc.id;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import example.entity._IdGeneratedEmp;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
-public class BuiltinSequenceIdGeneratorTest extends TestCase {
+public class BuiltinSequenceIdGeneratorTest {
 
+  @Test
   public void test() throws Exception {
     MockConfig config = new MockConfig();
     config.setDialect(new PostgresDialect());

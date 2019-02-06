@@ -1,15 +1,18 @@
 package org.seasar.doma.jdbc.builder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.LinkedHashMap;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlParameter;
 
 /** @author bakenezumi */
-public class MapInsertBuilderTest extends TestCase {
+public class MapInsertBuilderTest {
 
   @SuppressWarnings("serial")
+  @Test
   public void test() throws Exception {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
@@ -22,6 +25,7 @@ public class MapInsertBuilderTest extends TestCase {
   }
 
   @SuppressWarnings("serial")
+  @Test
   public void testGetSql() throws Exception {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
 
@@ -43,6 +47,7 @@ public class MapInsertBuilderTest extends TestCase {
   }
 
   @SuppressWarnings("serial")
+  @Test
   public void testNullValue() throws Exception {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
@@ -63,6 +68,7 @@ public class MapInsertBuilderTest extends TestCase {
   }
 
   @SuppressWarnings("serial")
+  @Test
   public void testLastNullValue() throws Exception {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(

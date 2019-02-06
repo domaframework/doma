@@ -1,5 +1,8 @@
 package org.seasar.doma.internal.jdbc.sql;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.AND_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BIND_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BLOCK_COMMENT;
@@ -34,27 +37,28 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHERE_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WHITESPACE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.WORD;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-public class SqlTokenizerTest extends TestCase {
+public class SqlTokenizerTest {
 
   private String lineSeparator;
 
-  @Override
+  @BeforeEach
   protected void setUp() throws Exception {
-    super.setUp();
     lineSeparator = System.getProperty("line.separator");
     System.setProperty("line.separator", "\r\n");
   }
 
-  @Override
+  @AfterEach
   protected void tearDown() throws Exception {
     System.setProperty("line.separator", lineSeparator);
-    super.tearDown();
   }
 
+  @Test
   public void testEof() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -65,6 +69,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testDelimiter() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where;");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -75,6 +80,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testLineComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where--aaa\r\nbbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -89,6 +95,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*+aaa*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -103,6 +110,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBlockComment_empty() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /**/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -117,6 +125,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testQuote() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where 'aaa'");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -129,6 +138,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testQuote_escaped() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where 'aaa'''");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -141,6 +151,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testQuote_notClosed() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where 'aaa");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -152,6 +163,7 @@ public class SqlTokenizerTest extends TestCase {
     }
   }
 
+  @Test
   public void testQuote_escaped_notClosed() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where 'aaa''bbb''");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -163,6 +175,7 @@ public class SqlTokenizerTest extends TestCase {
     }
   }
 
+  @Test
   public void testUnion() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("union");
     assertEquals(UNION_WORD, tokenizer.next());
@@ -171,6 +184,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testExcept() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("except");
     assertEquals(EXCEPT_WORD, tokenizer.next());
@@ -179,6 +193,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testMinus() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("minus");
     assertEquals(MINUS_WORD, tokenizer.next());
@@ -187,6 +202,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testIntersect() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("intersect");
     assertEquals(INTERSECT_WORD, tokenizer.next());
@@ -195,6 +211,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testSelect() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("select");
     assertEquals(SELECT_WORD, tokenizer.next());
@@ -203,6 +220,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testFrom() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("from");
     assertEquals(FROM_WORD, tokenizer.next());
@@ -211,6 +229,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testWhere() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -219,6 +238,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testGroupBy() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("group by");
     assertEquals(GROUP_BY_WORD, tokenizer.next());
@@ -227,6 +247,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testHaving() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("having");
     assertEquals(HAVING_WORD, tokenizer.next());
@@ -235,6 +256,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testOrderBy() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("order by");
     assertEquals(ORDER_BY_WORD, tokenizer.next());
@@ -243,6 +265,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testForUpdateBy() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("for update");
     assertEquals(FOR_UPDATE_WORD, tokenizer.next());
@@ -251,6 +274,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testOption() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("option (");
     assertEquals(OPTION_WORD, tokenizer.next());
@@ -263,6 +287,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testUpdate() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("update");
     assertEquals(UPDATE_WORD, tokenizer.next());
@@ -271,6 +296,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testSet() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("set");
     assertEquals(SET_WORD, tokenizer.next());
@@ -279,6 +305,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testAnd() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("and");
     assertEquals(AND_WORD, tokenizer.next());
@@ -287,6 +314,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testOr() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("or");
     assertEquals(OR_WORD, tokenizer.next());
@@ -295,6 +323,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBindBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*aaa*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -309,6 +338,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBindBlockComment_followingQuote() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*aaa*/'2001-01-01 12:34:56'");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -323,6 +353,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBindBlockComment_followingWordAndQuote() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*aaa*/timestamp'2001-01-01 12:34:56' and");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -341,6 +372,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBindBlockComment_spaceIncluded() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /* aaa */bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -355,6 +387,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBindBlockComment_startWithStringLiteral() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*\"aaa\"*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -369,6 +402,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testBindBlockComment_startWithCharLiteral() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*'a'*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -383,6 +417,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testLiteralBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*^aaa*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -397,6 +432,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testLiteralBlockComment_followingQuote() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*^aaa*/'2001-01-01 12:34:56'");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -411,6 +447,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testLiteralBlockComment_spaceIncluded() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*^ aaa */bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -425,6 +462,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testIfBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*%if true*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -439,6 +477,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testForBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*%for element : list*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -453,6 +492,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testEndBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where bbb/*%end*/");
     assertEquals(WHERE_WORD, tokenizer.next());
@@ -467,6 +507,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testExpandBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("select /*%expand*/* from");
     assertEquals(SELECT_WORD, tokenizer.next());
@@ -485,6 +526,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testExpandBlockComment_alias() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("select /*%expand e*/* from");
     assertEquals(SELECT_WORD, tokenizer.next());
@@ -503,6 +545,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testPopulateBlockComment() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("set /*%populate*/ id = id");
     assertEquals(SET_WORD, tokenizer.next());
@@ -527,6 +570,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testLineNumber() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("aaa\nbbb\nccc\n/* \nddd\n */");
     assertEquals(1, tokenizer.getLineNumber());
@@ -555,6 +599,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testColumnNumber() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("aaa bbb\nc\nd eee\n");
     assertEquals(0, tokenizer.getPosition());
@@ -592,6 +637,7 @@ public class SqlTokenizerTest extends TestCase {
     assertNull(tokenizer.getToken());
   }
 
+  @Test
   public void testIllegalDirective() throws Exception {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*%*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());

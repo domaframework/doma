@@ -1,7 +1,12 @@
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.Method;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -13,17 +18,18 @@ import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-public class BasicSingleResultHandlerTest extends TestCase {
+public class BasicSingleResultHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
   private Method method;
 
-  @Override
-  protected void setUp() throws Exception {
-    method = getClass().getMethod(getName());
+  @BeforeEach
+  void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
   }
 
+  @Test
   public void testHandle() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
@@ -32,7 +38,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
 
     SqlFileSelectQuery query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(method);
@@ -46,6 +52,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
     assertEquals("aaa", result);
   }
 
+  @Test
   public void testHandle_NonUniqueResultException() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
@@ -55,7 +62,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
 
     SqlFileSelectQuery query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(method);
@@ -72,6 +79,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
     }
   }
 
+  @Test
   public void testHandle_NonSingleColumnException() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("x"));
@@ -81,7 +89,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
 
     SqlFileSelectQuery query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setMethod(method);

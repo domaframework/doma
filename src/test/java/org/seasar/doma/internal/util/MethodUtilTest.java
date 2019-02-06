@@ -1,9 +1,12 @@
 package org.seasar.doma.internal.util;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MethodUtilTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class MethodUtilTest {
+
+  @Test
   public void testCreateSignature() {
     String signature =
         MethodUtil.createSignature(

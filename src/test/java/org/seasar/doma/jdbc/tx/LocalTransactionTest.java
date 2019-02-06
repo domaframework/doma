@@ -1,14 +1,19 @@
 package org.seasar.doma.jdbc.tx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.sql.SQLException;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 
-public class LocalTransactionTest extends TestCase {
+public class LocalTransactionTest {
 
   private final MockConnection connection = new MockConnection();
 
@@ -19,6 +24,7 @@ public class LocalTransactionTest extends TestCase {
 
   private final LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
 
+  @Test
   public void testBegin() throws Exception {
     transaction.begin();
     assertTrue(transaction.isActive());
@@ -27,6 +33,7 @@ public class LocalTransactionTest extends TestCase {
     assertEquals(TransactionIsolationLevel.READ_COMMITTED.getLevel(), connection.isolationLevel);
   }
 
+  @Test
   public void testBeginImlicitDefaultTransactionIsolationLevel() throws Exception {
     LocalTransaction transaction =
         dataSource.getLocalTransaction(jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
@@ -37,6 +44,7 @@ public class LocalTransactionTest extends TestCase {
     assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(), connection.isolationLevel);
   }
 
+  @Test
   public void testBeginWithTransactionIsolationLevel() throws Exception {
     transaction.begin(TransactionIsolationLevel.SERIALIZABLE);
     assertTrue(transaction.isActive());
@@ -45,6 +53,7 @@ public class LocalTransactionTest extends TestCase {
     assertEquals(TransactionIsolationLevel.SERIALIZABLE.getLevel(), connection.isolationLevel);
   }
 
+  @Test
   public void testBegin_alreadyBegun() throws Exception {
     transaction.begin();
     try {
@@ -55,6 +64,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testBeginAndGetConnection_failedToSetAutoCommit() throws Exception {
     final SQLException exception = new SQLException();
     MockConnection connection =
@@ -79,6 +89,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testBegin_failedToSetTransactionIsolation() throws Exception {
     final SQLException exception = new SQLException();
     MockConnection connection =
@@ -103,6 +114,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testSetSavepoint() throws Exception {
     transaction.begin();
     transaction.setSavepoint("hoge");
@@ -111,6 +123,7 @@ public class LocalTransactionTest extends TestCase {
     assertTrue(connection.savepointNames.contains("hoge"));
   }
 
+  @Test
   public void testSetSavepoint_alreadyExists() throws Exception {
     transaction.begin();
     transaction.setSavepoint("hoge");
@@ -122,6 +135,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testSetSavepoint_notYetBegun() throws Exception {
     try {
       transaction.setSavepoint("hoge");
@@ -131,6 +145,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testSetSavepoint_nullPointer() throws Exception {
     transaction.begin();
     try {
@@ -141,6 +156,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testHasSavepoint() throws Exception {
     transaction.begin();
     assertFalse(transaction.hasSavepoint("hoge"));
@@ -150,6 +166,7 @@ public class LocalTransactionTest extends TestCase {
     assertTrue(transaction.hasSavepoint("hoge"));
   }
 
+  @Test
   public void testHasSavepoint_notYetBegun() throws Exception {
     try {
       transaction.hasSavepoint("hoge");
@@ -159,6 +176,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testHasSavepoint_nullPointer() throws Exception {
     transaction.begin();
     try {
@@ -169,6 +187,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testReleaseSavepoint() throws Exception {
     transaction.begin();
     transaction.setSavepoint("hoge");
@@ -182,6 +201,7 @@ public class LocalTransactionTest extends TestCase {
     assertTrue(connection.savepointNames.contains("bar"));
   }
 
+  @Test
   public void testReleaseSavepoint_notYetBegun() throws Exception {
     try {
       transaction.releaseSavepoint("hoge");
@@ -191,6 +211,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testReleaseSavepoint_notFound() throws Exception {
     transaction.begin();
     transaction.setSavepoint("hoge");
@@ -202,6 +223,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testReleaseSavepoint_nullPointer() throws Exception {
     transaction.begin();
     try {
@@ -212,6 +234,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testCommit() throws Exception {
     transaction.begin();
     dataSource.getConnection();
@@ -221,6 +244,7 @@ public class LocalTransactionTest extends TestCase {
     assertTrue(connection.committed);
   }
 
+  @Test
   public void testCommit_ConnectionUnused() {
     transaction.begin();
     transaction.commit();
@@ -229,6 +253,7 @@ public class LocalTransactionTest extends TestCase {
     assertFalse(connection.committed);
   }
 
+  @Test
   public void testCommit_notYetBegun() throws Exception {
     try {
       transaction.commit();
@@ -238,6 +263,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testRollback() throws Exception {
     transaction.begin();
     dataSource.getConnection();
@@ -247,6 +273,7 @@ public class LocalTransactionTest extends TestCase {
     assertTrue(connection.rolledback);
   }
 
+  @Test
   public void testRollback_ConnectionUnused() throws Exception {
     transaction.begin();
     transaction.rollback();
@@ -255,10 +282,12 @@ public class LocalTransactionTest extends TestCase {
     assertFalse(connection.rolledback);
   }
 
+  @Test
   public void testRollback_notYetBegun() throws Exception {
     transaction.rollback();
   }
 
+  @Test
   public void testRollbackSavepoint() throws Exception {
     transaction.begin();
     transaction.setSavepoint("hoge");
@@ -268,6 +297,7 @@ public class LocalTransactionTest extends TestCase {
     assertFalse(connection.savepointNames.contains("hoge"));
   }
 
+  @Test
   public void testRollbackSavepoint_notYetBegun() throws Exception {
     try {
       transaction.rollback("hoge");
@@ -276,6 +306,7 @@ public class LocalTransactionTest extends TestCase {
     }
   }
 
+  @Test
   public void testRollbackSavepoint_notFound() throws Exception {
     transaction.begin();
     transaction.setSavepoint("hoge");

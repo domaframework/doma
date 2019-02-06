@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc.entity;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OriginalStatesNotFoundExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class OriginalStatesNotFoundExceptionTest {
+
+  @Test
   public void test() throws Exception {
     OriginalStatesNotFoundException e =
         new OriginalStatesNotFoundException(new Exception(), "aaa", "bbb");

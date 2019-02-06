@@ -1,11 +1,14 @@
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
+
 import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Collections;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -23,8 +26,9 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-public class EntityProviderTest extends TestCase {
+public class EntityProviderTest {
 
+  @Test
   public void testGetEntity() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
@@ -46,6 +50,7 @@ public class EntityProviderTest extends TestCase {
     assertEquals(new Integer(100), emp.getVersion());
   }
 
+  @Test
   public void testGetEntity_UnknownColumnException() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
@@ -67,6 +72,7 @@ public class EntityProviderTest extends TestCase {
     }
   }
 
+  @Test
   public void testGetEntity_EmptyUnknownColumnHandler() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));

@@ -1,9 +1,13 @@
 package org.seasar.doma.internal.util;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CharSequenceUtilTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class CharSequenceUtilTest {
+
+  @Test
   public void testIsEmpty() throws Exception {
     assertTrue(CharSequenceUtil.isEmpty(null));
     assertTrue(CharSequenceUtil.isEmpty(""));
@@ -13,6 +17,7 @@ public class CharSequenceUtilTest extends TestCase {
     assertFalse(CharSequenceUtil.isEmpty(" a "));
   }
 
+  @Test
   public void testIsNotEmpty() throws Exception {
     assertFalse(CharSequenceUtil.isNotEmpty(null));
     assertFalse(CharSequenceUtil.isNotEmpty(""));
@@ -22,6 +27,7 @@ public class CharSequenceUtilTest extends TestCase {
     assertTrue(CharSequenceUtil.isNotEmpty(" a "));
   }
 
+  @Test
   public void testIsBlank() throws Exception {
     assertTrue(CharSequenceUtil.isBlank(null));
     assertTrue(CharSequenceUtil.isBlank(""));
@@ -31,6 +37,7 @@ public class CharSequenceUtilTest extends TestCase {
     assertFalse(CharSequenceUtil.isBlank(" a "));
   }
 
+  @Test
   public void testIsNotBlank() throws Exception {
     assertFalse(CharSequenceUtil.isNotBlank(null));
     assertFalse(CharSequenceUtil.isNotBlank(""));

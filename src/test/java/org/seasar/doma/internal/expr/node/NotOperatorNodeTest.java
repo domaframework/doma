@@ -1,10 +1,13 @@
 package org.seasar.doma.internal.expr.node;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 
-public class NotOperatorNodeTest extends TestCase {
+public class NotOperatorNodeTest {
 
   protected ExpressionLocation location = new ExpressionLocation("", 0);
 
@@ -14,6 +17,7 @@ public class NotOperatorNodeTest extends TestCase {
 
   protected LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
 
+  @Test
   public void test_true() throws Exception {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(trueLiteral);
@@ -22,6 +26,7 @@ public class NotOperatorNodeTest extends TestCase {
     assertFalse(evaluationResult.getBooleanValue());
   }
 
+  @Test
   public void test_false() throws Exception {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(falseLiteral);
@@ -30,6 +35,7 @@ public class NotOperatorNodeTest extends TestCase {
     assertTrue(evaluationResult.getBooleanValue());
   }
 
+  @Test
   public void test_null() throws Exception {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(nullLiteral);

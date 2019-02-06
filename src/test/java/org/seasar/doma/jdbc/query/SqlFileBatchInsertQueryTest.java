@@ -1,20 +1,34 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import example.entity.Emp;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class SqlFileBatchInsertQueryTest extends TestCase {
+public class SqlFileBatchInsertQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPrepare() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -27,9 +41,9 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setParameterName("e");
     query.setElements(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -41,6 +55,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
     assertEquals(2, batchInsertQuery.getSqls().size());
   }
 
+  @Test
   public void testOption_default() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -53,9 +68,9 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setParameterName("e");
     query.setElements(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");

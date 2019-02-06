@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc.builder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
@@ -14,7 +17,7 @@ import org.seasar.doma.jdbc.query.SqlBatchUpdateQuery;
 import org.seasar.doma.message.Message;
 
 /** @author bakenezumi */
-public class BatchUpdateExecutorTest extends TestCase {
+public class BatchUpdateExecutorTest {
 
   private SqlBatchUpdateQuery mockQuery() {
     final SqlBatchUpdateQuery query = new SqlBatchUpdateQuery();
@@ -23,6 +26,7 @@ public class BatchUpdateExecutorTest extends TestCase {
     return query;
   }
 
+  @Test
   public void testBuilder() throws Exception {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -44,6 +48,7 @@ public class BatchUpdateExecutorTest extends TestCase {
     builder.execute(() -> new BatchUpdateCommand(query));
   }
 
+  @Test
   public void testGetSql() throws Exception {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -85,6 +90,7 @@ public class BatchUpdateExecutorTest extends TestCase {
     assertEquals(20, parameters1.get(2).getValue());
   }
 
+  @Test
   public void testLiteral() throws Exception {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -134,6 +140,7 @@ public class BatchUpdateExecutorTest extends TestCase {
     assertEquals(20, parameters1.get(0).getValue());
   }
 
+  @Test
   public void testNotEqualParamCall() throws Exception {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -159,6 +166,7 @@ public class BatchUpdateExecutorTest extends TestCase {
     fail();
   }
 
+  @Test
   public void testChangeType() throws Exception {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -184,6 +192,7 @@ public class BatchUpdateExecutorTest extends TestCase {
     fail();
   }
 
+  @Test
   public void testParamToLiteral() throws Exception {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -220,6 +229,7 @@ public class BatchUpdateExecutorTest extends TestCase {
     }
   }
 
+  @Test
   public void testExecutor() throws Exception {
     List<Employee> employees =
         Arrays.asList(

@@ -1,5 +1,11 @@
 package org.seasar.doma.internal.jdbc.scalar;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import example.domain.InternationalPhoneNumber;
 import example.domain.PhoneNumber;
 import java.math.BigDecimal;
@@ -16,17 +22,18 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Optional;
 import java.util.function.Supplier;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class ScalarsTest extends TestCase {
+public class ScalarsTest {
 
   private final ClassHelper classHelper = new ClassHelper() {};
 
+  @Test
   public void testWrapBasic() throws Exception {
     assertNotNull(Scalars.wrap(true, boolean.class, false, classHelper));
     assertNotNull(Scalars.wrap(true, Boolean.class, false, classHelper));
@@ -63,6 +70,7 @@ public class ScalarsTest extends TestCase {
     assertNotNull(Scalars.wrap(null, NClob.class, false, classHelper));
   }
 
+  @Test
   public void testWrapBasic_primitiveType() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(new Integer(10), int.class, false, classHelper);
     assertNotNull(supplier);
@@ -75,19 +83,21 @@ public class ScalarsTest extends TestCase {
     assertEquals(new Integer(10), wrapper.get());
   }
 
+  @Test
   public void testWrapBasic_null() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class, false, classHelper);
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertNull(null, scalar.get());
+    assertNull(scalar.get());
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(IntegerWrapper.class, wrapper.getClass());
-    assertNull(null, wrapper.get());
+    assertNull(wrapper.get());
   }
 
   @SuppressWarnings("unchecked")
+  @Test
   public void testWrapBasic_optional() throws Exception {
     Supplier<Scalar<?, ?>> supplier =
         Scalars.wrap(new Integer(10), Integer.class, true, classHelper);
@@ -104,6 +114,7 @@ public class ScalarsTest extends TestCase {
   }
 
   @SuppressWarnings("unchecked")
+  @Test
   public void testWrapBasic_optional_null() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class, true, classHelper);
     assertNotNull(supplier);
@@ -118,6 +129,7 @@ public class ScalarsTest extends TestCase {
     assertNull(wrapper.get());
   }
 
+  @Test
   public void testWrapEnum() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA, MyEnum.class, false, classHelper);
     assertNotNull(supplier);
@@ -130,6 +142,7 @@ public class ScalarsTest extends TestCase {
     assertEquals(MyEnum.AAA, wrapper.get());
   }
 
+  @Test
   public void testWrapEnum_null() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class, false, classHelper);
     assertNotNull(supplier);
@@ -143,6 +156,7 @@ public class ScalarsTest extends TestCase {
   }
 
   @SuppressWarnings("unchecked")
+  @Test
   public void testWrapEnum_optional() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA, MyEnum.class, true, classHelper);
     assertNotNull(supplier);
@@ -158,6 +172,7 @@ public class ScalarsTest extends TestCase {
   }
 
   @SuppressWarnings("unchecked")
+  @Test
   public void testWrapEnum_optional_null() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class, true, classHelper);
     assertNotNull(supplier);
@@ -172,6 +187,7 @@ public class ScalarsTest extends TestCase {
     assertNull(wrapper.get());
   }
 
+  @Test
   public void testWrapDomain() throws Exception {
     PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
     Supplier<Scalar<?, ?>> supplier =
@@ -186,6 +202,7 @@ public class ScalarsTest extends TestCase {
     assertEquals("123-456-789", wrapper.get());
   }
 
+  @Test
   public void testWrapDomain_subclass() throws Exception {
     PhoneNumber phoneNumber = new InternationalPhoneNumber("123-456-789");
     Supplier<Scalar<?, ?>> supplier =
@@ -200,6 +217,7 @@ public class ScalarsTest extends TestCase {
     assertEquals("123-456-789", wrapper.get());
   }
 
+  @Test
   public void testWrapDomain_null() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class, false, classHelper);
     assertNotNull(supplier);
@@ -215,6 +233,7 @@ public class ScalarsTest extends TestCase {
   }
 
   @SuppressWarnings("unchecked")
+  @Test
   public void testWrapDomain_option() throws Exception {
     PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
     Supplier<Scalar<?, ?>> supplier =
@@ -232,6 +251,7 @@ public class ScalarsTest extends TestCase {
   }
 
   @SuppressWarnings("unchecked")
+  @Test
   public void testWrapDomain_option_null() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class, true, classHelper);
     assertNotNull(supplier);

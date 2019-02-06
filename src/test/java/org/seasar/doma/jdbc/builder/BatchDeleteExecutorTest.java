@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc.builder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
@@ -14,7 +17,7 @@ import org.seasar.doma.jdbc.query.SqlBatchDeleteQuery;
 import org.seasar.doma.message.Message;
 
 /** @author bakenezumi */
-public class BatchDeleteExecutorTest extends TestCase {
+public class BatchDeleteExecutorTest {
 
   private SqlBatchDeleteQuery mockQuery() {
     final SqlBatchDeleteQuery query = new SqlBatchDeleteQuery();
@@ -23,6 +26,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     return query;
   }
 
+  @Test
   public void testBuilder() throws Exception {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -42,6 +46,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     builder.execute(() -> new BatchDeleteCommand(query));
   }
 
+  @Test
   public void testGetSql() throws Exception {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -78,6 +83,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     assertEquals(new BigDecimal("2000"), parameters1.get(1).getValue());
   }
 
+  @Test
   public void testLiteral() throws Exception {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -113,6 +119,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     assertEquals(0, parameters1.size());
   }
 
+  @Test
   public void testNotEqualParamCall() throws Exception {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -136,6 +143,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     fail();
   }
 
+  @Test
   public void testChangeType() throws Exception {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -161,6 +169,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     fail();
   }
 
+  @Test
   public void testParamToLiteral() throws Exception {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -198,6 +207,7 @@ public class BatchDeleteExecutorTest extends TestCase {
     }
   }
 
+  @Test
   public void testExecutor() throws Exception {
     List<Employee> employees =
         Arrays.asList(

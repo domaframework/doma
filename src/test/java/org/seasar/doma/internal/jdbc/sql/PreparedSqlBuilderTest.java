@@ -1,9 +1,11 @@
 package org.seasar.doma.internal.jdbc.sql;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import example.domain.PhoneNumber;
 import java.math.BigDecimal;
 import java.util.function.Function;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -15,10 +17,11 @@ import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class PreparedSqlBuilderTest extends TestCase {
+public class PreparedSqlBuilderTest {
 
   private final MockConfig config = new MockConfig();
 
+  @Test
   public void testAppend() throws Exception {
     PreparedSqlBuilder builder =
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);
@@ -33,6 +36,7 @@ public class PreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa where name = ? and salary = ?", sql.toString());
   }
 
+  @Test
   public void testAppendParameter_domain() throws Exception {
     PreparedSqlBuilder builder =
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);
@@ -46,6 +50,7 @@ public class PreparedSqlBuilderTest extends TestCase {
     assertEquals("select * from aaa where phoneNumber = ?", sql.toString());
   }
 
+  @Test
   public void testCutBackSql() {
     PreparedSqlBuilder builder =
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);

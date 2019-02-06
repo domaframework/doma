@@ -1,10 +1,13 @@
 package org.seasar.doma.jdbc.entity;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
-public class DefaultPropertyTypeTest extends TestCase {
+public class DefaultPropertyTypeTest {
 
   @SuppressWarnings("unused")
   private String hoge;
@@ -18,6 +21,7 @@ public class DefaultPropertyTypeTest extends TestCase {
   @SuppressWarnings("unused")
   private Integer integer;
 
+  @Test
   public void testIsQuoteRequired_true() throws Exception {
     boolean isQuoteRequired = true;
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
@@ -38,6 +42,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("[hoge]", propertyType.getColumnName((n, t) -> t, s -> "[" + s + "]"));
   }
 
+  @Test
   public void testIsQuoteRequired_false() throws Exception {
     boolean isQuoteRequired = false;
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
@@ -58,6 +63,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("hoge", propertyType.getColumnName((n, t) -> t, s -> "[" + s + "]"));
   }
 
+  @Test
   public void testGetColumnName_naming_columnNameDefined() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -76,6 +82,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("foo", propertyType.getColumnName((namingType, text) -> namingType.apply(text)));
   }
 
+  @Test
   public void testGetColumnName_columnDefined() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -94,6 +101,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("foo", propertyType.getColumnName());
   }
 
+  @Test
   public void testGetColumnName_columnNotDefined() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -112,6 +120,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("HOGE", propertyType.getColumnName());
   }
 
+  @Test
   public void testGetColumnName_columnNotDefined_embeddableProeprty() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -130,6 +139,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("HOGE", propertyType.getColumnName());
   }
 
+  @Test
   public void testGetColumnName_quote_quoteRequired() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -148,6 +158,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("[HOGE]", propertyType.getColumnName(text -> "[" + text + "]"));
   }
 
+  @Test
   public void testGetColumnName_quote_quoteNotRequired() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -166,6 +177,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("HOGE", propertyType.getColumnName(text -> "[" + text + "]"));
   }
 
+  @Test
   public void testGetColumnName_naiming_columnNotDefined() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -184,6 +196,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals("HOGE", propertyType.getColumnName((namingType, text) -> namingType.apply(text)));
   }
 
+  @Test
   public void testGetColumnName_naiming_quote_quoteRequired() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -205,6 +218,7 @@ public class DefaultPropertyTypeTest extends TestCase {
             (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
   }
 
+  @Test
   public void testGetColumnName_naiming_quote_quoteNotRequired() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
         new DefaultPropertyType<>(
@@ -226,6 +240,7 @@ public class DefaultPropertyTypeTest extends TestCase {
             (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
   }
 
+  @Test
   public void testPrimitivePropertyDefaultValue() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, Integer, Object> propertyType =
         new DefaultPropertyType<>(
@@ -245,6 +260,7 @@ public class DefaultPropertyTypeTest extends TestCase {
     assertEquals(0, property.get());
   }
 
+  @Test
   public void testWrapperPropertyDefaultValue() throws Exception {
     DefaultPropertyType<Object, DefaultPropertyTypeTest, Integer, Object> propertyType =
         new DefaultPropertyType<>(

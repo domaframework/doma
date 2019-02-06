@@ -1,13 +1,22 @@
 package org.seasar.doma.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import example.entity.Emp;
 import example.entity._Emp;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
@@ -24,10 +33,18 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
-public class SelectCommandTest extends TestCase {
+public class SelectCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testExecute_singleResult() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
@@ -40,10 +57,10 @@ public class SelectCommandTest extends TestCase {
 
     SqlFileSelectQuery query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.addParameter("name", String.class, "hoge");
     query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
-    query.setMethod(getClass().getMethod(getName()));
+    query.setMethod(getClass().getMethod(method.getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -70,6 +87,7 @@ public class SelectCommandTest extends TestCase {
     assertEquals(2, bindValue.getIndex());
   }
 
+  @Test
   public void testExecute_resultList() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
@@ -84,11 +102,11 @@ public class SelectCommandTest extends TestCase {
 
     SqlFileSelectQuery query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.addParameter("salary", BigDecimal.class, new BigDecimal(5000));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setMethod(getClass().getMethod(getName()));
+    query.setMethod(getClass().getMethod(method.getName()));
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
@@ -123,6 +141,7 @@ public class SelectCommandTest extends TestCase {
     assertEquals(1, bindValue.getIndex());
   }
 
+  @Test
   public void testExecute_NoResultException() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
@@ -134,10 +153,10 @@ public class SelectCommandTest extends TestCase {
 
     SqlFileSelectQuery query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.addParameter("name", String.class, "hoge");
     query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
-    query.setMethod(getClass().getMethod(getName()));
+    query.setMethod(getClass().getMethod(method.getName()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setResultEnsured(true);
@@ -154,6 +173,7 @@ public class SelectCommandTest extends TestCase {
     }
   }
 
+  @Test
   public void testExecute_resultStream() throws Exception {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
@@ -168,11 +188,11 @@ public class SelectCommandTest extends TestCase {
 
     SqlFileSelectQuery query = new SqlFileSelectQuery();
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.addParameter("salary", BigDecimal.class, new BigDecimal(5000));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setMethod(getClass().getMethod(getName()));
+    query.setMethod(getClass().getMethod(method.getName()));
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.setFetchType(FetchType.LAZY);
     query.setResultStream(true);

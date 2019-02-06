@@ -1,17 +1,21 @@
 package org.seasar.doma.internal.jdbc.dao;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import javax.sql.DataSource;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 
 /** @author backpaper0 */
-public class AbstractDaoTest extends TestCase {
+public class AbstractDaoTest {
 
+  @Test
   public void testConstructorParameter1() throws Exception {
     Config config = null;
     try {
@@ -22,6 +26,7 @@ public class AbstractDaoTest extends TestCase {
     }
   }
 
+  @Test
   public void testConstructorParameter2() throws Exception {
     Config config = null;
     Connection connection = mock(Connection.class);
@@ -33,6 +38,7 @@ public class AbstractDaoTest extends TestCase {
     }
   }
 
+  @Test
   public void testConstructorParameter3() throws Exception {
     Config config = mock(Config.class);
     Connection connection = null;
@@ -44,6 +50,7 @@ public class AbstractDaoTest extends TestCase {
     }
   }
 
+  @Test
   public void testConstructorParameter4() throws Exception {
     Config config = null;
     DataSource dataSource = mock(DataSource.class);
@@ -55,6 +62,7 @@ public class AbstractDaoTest extends TestCase {
     }
   }
 
+  @Test
   public void testConstructorParameter5() throws Exception {
     Config config = mock(Config.class);
     DataSource dataSource = null;

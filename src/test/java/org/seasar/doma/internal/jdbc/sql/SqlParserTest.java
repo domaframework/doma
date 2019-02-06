@@ -1,5 +1,9 @@
 package org.seasar.doma.internal.jdbc.sql;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import example.domain.PhoneNumber;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -7,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -19,10 +23,11 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-public class SqlParserTest extends TestCase {
+public class SqlParserTest {
 
   private final MockConfig config = new MockConfig();
 
+  @Test
   public void testBindVariable() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -41,6 +46,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(new BigDecimal(10000), sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testBindVariable_domain() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("phone", new Value(PhoneNumber.class, new PhoneNumber("01-2345-6789")));
@@ -57,6 +63,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("01-2345-6789", sql.getParameters().get(0).getWrapper().get());
   }
 
+  @Test
   public void testBindVariable_in_iterable() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Arrays.asList("hoge", "foo")));
@@ -74,6 +81,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testBindVariable_in_array() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String[].class, new String[] {"hoge", "foo"}));
@@ -91,6 +99,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testBindVariable_in_empty_iterable() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Collections.emptyList()));
@@ -106,6 +115,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testBindVariable_endsWithBindVariableComment() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -120,6 +130,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testBindVariable_emptyName() throws Exception {
     String testSql = "select * from aaa where ename = /*   */'aaa'";
     SqlParser parser = new SqlParser(testSql);
@@ -132,6 +143,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testBindVariable_stringLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*name*/'bbb'";
     SqlParser parser = new SqlParser(testSql);
@@ -139,6 +151,7 @@ public class SqlParserTest extends TestCase {
     assertNotNull(node);
   }
 
+  @Test
   public void testBindVariable_intLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*name*/10";
     SqlParser parser = new SqlParser(testSql);
@@ -146,6 +159,7 @@ public class SqlParserTest extends TestCase {
     assertNotNull(node);
   }
 
+  @Test
   public void testBindVariable_floatLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*name*/.0";
     SqlParser parser = new SqlParser(testSql);
@@ -153,6 +167,7 @@ public class SqlParserTest extends TestCase {
     assertNotNull(node);
   }
 
+  @Test
   public void testBindVariable_booleanTrueLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*name*/true";
     SqlParser parser = new SqlParser(testSql);
@@ -160,6 +175,7 @@ public class SqlParserTest extends TestCase {
     assertNotNull(node);
   }
 
+  @Test
   public void testBindVariable_booleanFalseLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*name*/false";
     SqlParser parser = new SqlParser(testSql);
@@ -167,6 +183,7 @@ public class SqlParserTest extends TestCase {
     assertNotNull(node);
   }
 
+  @Test
   public void testBindVariable_nullLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*name*/null";
     SqlParser parser = new SqlParser(testSql);
@@ -174,6 +191,7 @@ public class SqlParserTest extends TestCase {
     assertNotNull(node);
   }
 
+  @Test
   public void testBindVariable_illegalLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*name*/bbb";
     SqlParser parser = new SqlParser(testSql);
@@ -186,6 +204,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testBindVariable_enum() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(MyEnum.class, MyEnum.BBB));
@@ -204,6 +223,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(new BigDecimal(10000), sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testLiteralVariable() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -220,6 +240,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testLiteralVariable_emptyName() throws Exception {
     String testSql = "select * from aaa where ename = /*^   */'aaa'";
     SqlParser parser = new SqlParser(testSql);
@@ -232,6 +253,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testLiteralVariable_in() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Arrays.asList("hoge", "foo")));
@@ -247,6 +269,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testLiteralVariable_endsWithLiteralVariableComment() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -261,6 +284,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testLiteralVariable_illegalLiteral() throws Exception {
     String testSql = "select * from aaa where ename = /*^name*/bbb";
     SqlParser parser = new SqlParser(testSql);
@@ -273,6 +297,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testEmbeddedVariable() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -296,6 +321,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(new BigDecimal(10000), sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testEmbeddedVariable_inside() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -316,6 +342,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(new BigDecimal(10000), sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testEmbeddedVariable_emptyName() throws Exception {
     String testSql = "select * from aaa where ename = /*#   */'aaa'";
     SqlParser parser = new SqlParser(testSql);
@@ -328,6 +355,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testExpand() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     String testSql = "select /*%expand*/* from aaa";
@@ -346,6 +374,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select bbb, ccc from aaa", sql.getFormattedSql());
   }
 
+  @Test
   public void testExpand_withSpace() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     String testSql = "select /*%expand */* from aaa";
@@ -364,6 +393,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select bbb, ccc from aaa", sql.getFormattedSql());
   }
 
+  @Test
   public void testExpand_alias() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     String testSql = "select /*%expand \"a\"*/* from aaa a";
@@ -382,6 +412,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select a.bbb, a.ccc from aaa a", sql.getFormattedSql());
   }
 
+  @Test
   public void testExpand_notAsteriskChar() throws Exception {
     String testSql = "select /*%expand*/+ from aaa";
     SqlParser parser = new SqlParser(testSql);
@@ -394,6 +425,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testExpand_word() throws Exception {
     String testSql = "select /*%expand*/'hoge' from aaa";
     SqlParser parser = new SqlParser(testSql);
@@ -406,6 +438,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testIf() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -422,6 +455,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
   }
 
+  @Test
   public void testIf_fromClause() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("type", new Value(String.class, "a"));
@@ -436,6 +470,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select * from aaa", sql.getFormattedSql());
   }
 
+  @Test
   public void testIf_selectClause() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("type", new Value(String.class, "a"));
@@ -450,6 +485,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select aaa from ccc", sql.getFormattedSql());
   }
 
+  @Test
   public void testIf_removeWhere() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
@@ -465,6 +501,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testIf_removeOrderBy() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
@@ -480,6 +517,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testIf_removeGroupBy() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
@@ -495,6 +533,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testIf_removeAnd() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
@@ -511,6 +550,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testIf_nest() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -527,6 +567,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, sql.getParameters().size());
   }
 
+  @Test
   public void testIf_nestContinuously() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -544,6 +585,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testElseifBlock() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, ""));
@@ -561,6 +603,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("", sql.getParameters().get(0).getWrapper().get());
   }
 
+  @Test
   public void testElseBlock() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -578,6 +621,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
   }
 
+  @Test
   public void testUnion() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     String testSql = "select * from aaa where /*%if false*//*%end*/union all select * from bbb";
@@ -590,6 +634,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select * from aaa union all select * from bbb", sql.getRawSql());
   }
 
+  @Test
   public void testSelect() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
@@ -613,6 +658,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(new Integer(5), sql.getParameters().get(1).getWrapper().get());
   }
 
+  @Test
   public void testUpdate() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("no", new Value(Integer.class, 10));
@@ -633,6 +679,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(new Integer(100), sql.getParameters().get(2).getWrapper().get());
   }
 
+  @Test
   public void testFor() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<String>();
@@ -658,6 +705,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
   }
 
+  @Test
   public void testFor_array() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     String[] array = new String[] {"aaa", "bbb", "ccc"};
@@ -680,6 +728,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
   }
 
+  @Test
   public void testFor_removeWhere() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<String>();
@@ -697,6 +746,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testFor_removeOrderBy() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<String>();
@@ -714,6 +764,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testFor_removeGroupBy() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<String>();
@@ -731,6 +782,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testFor_removeOr() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<String>();
@@ -748,6 +800,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testFor_index() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<String>();
@@ -773,6 +826,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
   }
 
+  @Test
   public void testValidate_ifEnd() throws Exception {
     SqlParser parser = new SqlParser("select * from aaa /*%if true*/");
     try {
@@ -784,6 +838,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testValidate_ifEnd_selectClause() throws Exception {
     SqlParser parser = new SqlParser("select /*%if true*/* from aaa");
     try {
@@ -795,6 +850,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testValidate_ifEnd_subquery() throws Exception {
     SqlParser parser = new SqlParser("select *, (select /*%if true */ from aaa) x from aaa");
     try {
@@ -806,6 +862,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testValidate_forEnd() throws Exception {
     SqlParser parser = new SqlParser("select * from aaa /*%for name : names*/");
     try {
@@ -817,6 +874,7 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testValidate_unclosedParens() throws Exception {
     SqlParser parser = new SqlParser("select * from (select * from bbb");
     try {
@@ -828,11 +886,13 @@ public class SqlParserTest extends TestCase {
     }
   }
 
+  @Test
   public void testValidate_enclosedParensByIfBlock() throws Exception {
     SqlParser parser = new SqlParser("select * from /*%if true*/(select * from bbb)/*%end*/");
     parser.parse();
   }
 
+  @Test
   public void testParens_removeAnd() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, null));
@@ -849,6 +909,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(0, sql.getParameters().size());
   }
 
+  @Test
   public void testEmptyParens() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     SqlParser parser = new SqlParser("select rank()");
@@ -860,6 +921,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select rank()", sql.getRawSql());
   }
 
+  @Test
   public void testEmptyParens_whiteSpace() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     SqlParser parser = new SqlParser("select rank(   )");
@@ -871,6 +933,7 @@ public class SqlParserTest extends TestCase {
     assertEquals("select rank(   )", sql.getRawSql());
   }
 
+  @Test
   public void testManyEol() throws Exception {
     String path = "META-INF/" + getClass().getName().replace('.', '/') + "/manyEol.sql";
     String sql = ResourceUtil.getResourceAsString(path);

@@ -1,12 +1,19 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import example.entity.Emp;
 import example.entity._Emp;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.InParameter;
@@ -14,10 +21,18 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class SqlFileBatchUpdateQueryTest extends TestCase {
+public class SqlFileBatchUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPrepare() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -30,9 +45,9 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setParameterName("e");
     query.setElements(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -44,6 +59,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     assertEquals(2, batchUpdateQuery.getSqls().size());
   }
 
+  @Test
   public void testOption_default() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -56,9 +72,9 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setParameterName("e");
     query.setElements(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -83,11 +99,12 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
   }
 
+  @Test
   public void testIsExecutable() throws Exception {
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setParameterName("e");
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
@@ -96,6 +113,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     assertFalse(query.isExecutable());
   }
 
+  @Test
   public void testPopulate() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -108,7 +126,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
     query.setParameterName("e");
@@ -125,6 +143,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         "update aaa set NAME = ?, SALARY = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
   }
 
+  @Test
   public void testPopulate_include() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -137,7 +156,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
     query.setParameterName("e");
@@ -154,6 +173,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
   }
 
+  @Test
   public void testPopulate_exclude() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -166,7 +186,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
     query.setParameterName("e");
@@ -183,6 +203,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     assertEquals("update aaa set SALARY = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
   }
 
+  @Test
   public void testPopulate_ignoreVersion() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -195,7 +216,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
     query.setParameterName("e");

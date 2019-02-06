@@ -1,14 +1,17 @@
 package org.seasar.doma.internal.expr.node;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 
-public class MethodOperatorNodeTest extends TestCase {
+public class MethodOperatorNodeTest {
 
   protected ExpressionLocation location = new ExpressionLocation("", 0);
 
+  @Test
   public void testOneParameter() throws Exception {
     MethodOperatorNode node = new MethodOperatorNode(location, ".equals", "equals");
     node.setTargetObjectNode(new VariableNode(location, "hoge"));

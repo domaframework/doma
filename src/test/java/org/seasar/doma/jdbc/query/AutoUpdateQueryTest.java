@@ -1,21 +1,37 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import example.entity.Emp;
 import example.entity.Salesman;
 import example.entity._Emp;
 import example.entity._Salesman;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class AutoUpdateQueryTest extends TestCase {
+public class AutoUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPrepare() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -23,7 +39,7 @@ public class AutoUpdateQueryTest extends TestCase {
     emp.setVersion(100);
 
     AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setCallerClassName("aaa");
@@ -35,6 +51,7 @@ public class AutoUpdateQueryTest extends TestCase {
     assertNotNull(updateQuery.getSql());
   }
 
+  @Test
   public void testOption_default() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -43,7 +60,7 @@ public class AutoUpdateQueryTest extends TestCase {
     emp.originalStates = new Emp();
 
     AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setCallerClassName("aaa");
@@ -63,13 +80,14 @@ public class AutoUpdateQueryTest extends TestCase {
     assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
   }
 
+  @Test
   public void testOption_excludeNull() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setVersion(100);
 
     AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setNullExcluded(true);
@@ -87,6 +105,7 @@ public class AutoUpdateQueryTest extends TestCase {
     assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
   }
 
+  @Test
   public void testOption_ignoreVersion() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -95,7 +114,7 @@ public class AutoUpdateQueryTest extends TestCase {
     emp.originalStates = new Emp();
 
     AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setVersionIgnored(true);
@@ -113,6 +132,7 @@ public class AutoUpdateQueryTest extends TestCase {
     assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
   }
 
+  @Test
   public void testOption_include() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -121,7 +141,7 @@ public class AutoUpdateQueryTest extends TestCase {
     emp.setVersion(100);
 
     AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setIncludedPropertyNames("name");
@@ -141,6 +161,7 @@ public class AutoUpdateQueryTest extends TestCase {
     assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
   }
 
+  @Test
   public void testOption_exclude() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -149,7 +170,7 @@ public class AutoUpdateQueryTest extends TestCase {
     emp.setVersion(100);
 
     AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setExcludedPropertyNames("name");
@@ -169,12 +190,13 @@ public class AutoUpdateQueryTest extends TestCase {
     assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
   }
 
+  @Test
   public void testIsExecutable() throws Exception {
     Emp emp = new Emp();
     emp.originalStates = new Emp();
 
     AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setCallerClassName("aaa");
@@ -185,6 +207,7 @@ public class AutoUpdateQueryTest extends TestCase {
     assertFalse(query.isExecutable());
   }
 
+  @Test
   public void testTenantId() throws Exception {
     Salesman salesman = new Salesman();
     salesman.setId(10);
@@ -194,7 +217,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
     AutoUpdateQuery<Salesman> query =
         new AutoUpdateQuery<Salesman>(_Salesman.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(salesman);
     query.setCallerClassName("aaa");
