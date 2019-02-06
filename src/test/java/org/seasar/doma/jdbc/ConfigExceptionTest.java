@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ConfigExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class ConfigExceptionTest {
+
+  @Test
   public void test() throws Exception {
     ConfigException e = new ConfigException("aaa", "bbb");
     System.out.println(e);

@@ -16,6 +16,7 @@
 package org.seasar.aptina.unit;
 
 import static java.util.Arrays.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.seasar.aptina.unit.AssertionUtils.*;
 import static org.seasar.aptina.unit.CollectionUtils.*;
 import static org.seasar.aptina.unit.IOUtils.*;
@@ -44,8 +45,6 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
-import junit.framework.ComparisonFailure;
-import junit.framework.TestCase;
 
 /**
  * {@link Processor} をテストするための抽象クラスです．
@@ -54,7 +53,7 @@ import junit.framework.TestCase;
  * コンパイル後に生成されたソースの検証などを行うことができます．
  *
  * <dl>
- *   <dt>{@link #compile()} 前に以下のメソッドを呼び出すことができます ({@link #setUp()}から呼び出すこともできます)．
+ *   <dt>{@link #compile()} 前に以下のメソッドを呼び出すことができます．
  *   <dd>
  *       <ul>
  *         <li>{@link #setLocale(Locale)}
@@ -136,7 +135,7 @@ import junit.framework.TestCase;
  *
  * @author koichik
  */
-public abstract class AptinaTestCase extends TestCase {
+public abstract class AptinaTestCase {
 
   Locale locale;
 
@@ -167,16 +166,6 @@ public abstract class AptinaTestCase extends TestCase {
   /** インスタンスを構築します． */
   protected AptinaTestCase() {}
 
-  /**
-   * インスタンスを構築します．
-   *
-   * @param name 名前
-   */
-  protected AptinaTestCase(final String name) {
-    super(name);
-  }
-
-  @Override
   protected void tearDown() throws Exception {
     if (testingJavaFileManager != null) {
       try {
@@ -184,14 +173,13 @@ public abstract class AptinaTestCase extends TestCase {
       } catch (final Exception ignore) {
       }
     }
-    super.tearDown();
   }
 
-  protected void enableCompilationAssertion() {
+  public void enableCompilationAssertion() {
     this.compilationAssertion = true;
   }
 
-  protected void disableCompilationAssertion() {
+  public void disableCompilationAssertion() {
     this.compilationAssertion = false;
   }
 
@@ -289,7 +277,7 @@ public abstract class AptinaTestCase extends TestCase {
    *
    * @param sourcePaths コンパイル時に参照するソースパスの並び
    */
-  protected void addSourcePath(final String... sourcePaths) {
+  public void addSourcePath(final String... sourcePaths) {
     assertNotEmpty("sourcePaths", sourcePaths);
     for (final String path : sourcePaths) {
       this.sourcePaths.add(new File(path));
@@ -301,7 +289,7 @@ public abstract class AptinaTestCase extends TestCase {
    *
    * @param options 形式のコンパイラオプションの並び
    */
-  protected void addOption(final String... options) {
+  public void addOption(final String... options) {
     assertNotEmpty("options", options);
     this.options.addAll(asList(options));
   }
@@ -311,7 +299,7 @@ public abstract class AptinaTestCase extends TestCase {
    *
    * @param processors 注釈を処理する{@link Processor}の並び
    */
-  protected void addProcessor(final Processor... processors) {
+  public void addProcessor(final Processor... processors) {
     assertNotEmpty("processors", processors);
     this.processors.addAll(asList(processors));
   }
@@ -323,7 +311,7 @@ public abstract class AptinaTestCase extends TestCase {
    *
    * @param clazz コンパイル対象クラス
    */
-  protected void addCompilationUnit(final Class<?> clazz) {
+  public void addCompilationUnit(final Class<?> clazz) {
     AssertionUtils.assertNotNull("clazz", clazz);
     addCompilationUnit(clazz.getName());
   }
@@ -369,7 +357,7 @@ public abstract class AptinaTestCase extends TestCase {
    *
    * @throws IOException 入出力例外が発生した場合
    */
-  protected void compile() throws IOException {
+  public void compile() throws IOException {
     javaCompiler = ToolProvider.getSystemJavaCompiler();
     diagnostics = new DiagnosticCollector<JavaFileObject>();
     final DiagnosticListener<JavaFileObject> listener = new LoggingDiagnosticListener(diagnostics);
@@ -393,7 +381,7 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @see CompilationTask#call()
    */
-  protected Boolean getCompiledResult() throws IllegalStateException {
+  public Boolean getCompiledResult() throws IllegalStateException {
     assertCompiled();
     return compiledResult;
   }
@@ -495,7 +483,7 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected String getGeneratedSource(final String className)
+  public String getGeneratedSource(final String className)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("className", className);
     assertCompiled();
@@ -550,10 +538,10 @@ public abstract class AptinaTestCase extends TestCase {
     while ((expectedLine = expectedReader.readLine()) != null) {
       ++lineNo;
       actualLine = actualReader.readLine();
-      assertEquals("line:" + lineNo, expectedLine, actualLine);
+      assertEquals(expectedLine, actualLine, "line:" + lineNo);
     }
     ++lineNo;
-    assertEquals("line:" + lineNo, null, actualReader.readLine());
+    assertEquals(null, actualReader.readLine(), "line:" + lineNo);
   }
 
   /**
@@ -564,10 +552,9 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSource(final CharSequence expected, final Class<?> clazz)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expected", expected);
     assertNotNull("clazz", clazz);
     assertCompiled();
@@ -582,10 +569,9 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
-  protected void assertEqualsGeneratedSource(final CharSequence expected, final String className)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+  public void assertEqualsGeneratedSource(final CharSequence expected, final String className)
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("className", className);
     assertCompiled();
     final String actual = getGeneratedSource(className);
@@ -601,11 +587,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithFile(
       final File expectedSourceFile, final Class<?> clazz)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedSourceFile", expectedSourceFile);
     assertNotNull("clazz", clazz);
     assertCompiled();
@@ -620,11 +605,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithFile(
       final File expectedSourceFile, final String className)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedSourceFile", expectedSourceFile);
     assertNotEmpty("className", className);
     assertCompiled();
@@ -639,11 +623,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithFile(
       final String expectedSourceFilePath, final Class<?> clazz)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedSourceFilePath", expectedSourceFilePath);
     assertNotNull("clazz", clazz);
     assertCompiled();
@@ -658,11 +641,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithFile(
       final String expectedSourceFilePath, final String className)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedSourceFilePath", expectedSourceFilePath);
     assertNotEmpty("className", className);
     assertCompiled();
@@ -677,11 +659,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithResource(
       final URL expectedResourceUrl, final Class<?> clazz)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedResourceUrl", expectedResourceUrl);
     assertNotNull("clazz", clazz);
     assertCompiled();
@@ -696,11 +677,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithResource(
       final URL expectedResourceUrl, final String className)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedResourceUrl", expectedResourceUrl);
     assertNotEmpty("className", className);
     assertCompiled();
@@ -715,11 +695,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithResource(
       final String expectedResource, final Class<?> clazz)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedResource", expectedResource);
     assertNotNull("clazz", clazz);
     assertCompiled();
@@ -734,11 +713,10 @@ public abstract class AptinaTestCase extends TestCase {
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
-   * @throws ComparisonFailure 生成されたソースが期待される内容と一致しなかった場合
    */
   protected void assertEqualsGeneratedSourceWithResource(
       final String expectedResource, final String className)
-      throws IllegalStateException, IOException, SourceNotGeneratedException, ComparisonFailure {
+      throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedResource", expectedResource);
     assertNotEmpty("className", className);
     assertCompiled();

@@ -1,9 +1,13 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class UniqueConstraintExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class UniqueConstraintExceptionTest {
+
+  @Test
   public void test() throws Exception {
     Exception cause = new Exception();
     UniqueConstraintException e =

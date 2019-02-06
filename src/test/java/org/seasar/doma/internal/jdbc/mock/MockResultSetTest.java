@@ -1,10 +1,15 @@
 package org.seasar.doma.internal.jdbc.mock;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.math.BigDecimal;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class MockResultSetTest extends TestCase {
+public class MockResultSetTest {
 
+  @Test
   public void testNext() throws Exception {
     @SuppressWarnings("resource")
     MockResultSet resultSet = new MockResultSet();
@@ -18,6 +23,7 @@ public class MockResultSetTest extends TestCase {
     assertFalse(resultSet.next());
   }
 
+  @Test
   public void testGetString() throws Exception {
     @SuppressWarnings("resource")
     MockResultSet resultSet = new MockResultSet();
@@ -28,6 +34,7 @@ public class MockResultSetTest extends TestCase {
     assertEquals("bbb", resultSet.getString(2));
   }
 
+  @Test
   public void testGetInteger() throws Exception {
     @SuppressWarnings("resource")
     MockResultSet resultSet = new MockResultSet();
@@ -38,6 +45,7 @@ public class MockResultSetTest extends TestCase {
     assertEquals(20, resultSet.getInt(2));
   }
 
+  @Test
   public void testGetBigDecimal() throws Exception {
     @SuppressWarnings("resource")
     MockResultSet resultSet = new MockResultSet();

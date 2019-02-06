@@ -1,28 +1,34 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.AptTestProcessor;
+import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.StringWrapper;
 
-public class SqlValidatorTest extends AptTestCase {
+public class SqlValidatorTest extends CompilerSupport {
 
-  @Override
+  @BeforeEach
   protected void setUp() throws Exception {
-    super.setUp();
     addSourcePath("src/main/java");
     addSourcePath("src/test/java");
   }
 
+  @Test
   public void testBindVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -47,6 +53,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testBindVariable_list() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -71,6 +78,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testBindVariable_array() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -95,6 +103,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testLiteralVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -119,6 +128,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testLiteralVariable_list() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -143,6 +153,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testLiteralVariable_array() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -167,6 +178,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testEmbeddedVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -190,6 +202,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFor() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -215,6 +228,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFor_array() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -241,6 +255,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFor_identifier() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -271,6 +286,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFor_notIterable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -302,6 +318,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFor_noTypeArgument() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -333,6 +350,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testExpand() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -358,6 +376,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testExpand_notExpandable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -389,6 +408,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testPopulate() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
@@ -413,6 +433,7 @@ public class SqlValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testPopulate_notPopulatable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);

@@ -1,11 +1,15 @@
 package org.seasar.doma.jdbc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class ResultMappingExceptionTest extends TestCase {
+public class ResultMappingExceptionTest {
 
+  @Test
   public void test() throws Exception {
     ResultMappingException e =
         new ResultMappingException(

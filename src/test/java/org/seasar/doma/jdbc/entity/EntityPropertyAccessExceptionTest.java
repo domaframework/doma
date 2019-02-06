@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc.entity;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EntityPropertyAccessExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class EntityPropertyAccessExceptionTest {
+
+  @Test
   public void test() throws Exception {
     EntityPropertyAccessException e =
         new EntityPropertyAccessException(new Exception(), "aaa", "bbb");

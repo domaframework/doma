@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc.entity;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EntityPropertyNotFoundExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class EntityPropertyNotFoundExceptionTest {
+
+  @Test
   public void test() throws Exception {
     EntityPropertyNotFoundException e = new EntityPropertyNotFoundException("aaa", "bbb");
     System.out.println(e.getMessage());

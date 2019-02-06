@@ -1,10 +1,13 @@
 package org.seasar.doma.jdbc.builder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
@@ -15,7 +18,7 @@ import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
 import org.seasar.doma.message.Message;
 
 /** @author bakenezumi */
-public class BatchInsertExecutorTest extends TestCase {
+public class BatchInsertExecutorTest {
 
   private SqlBatchInsertQuery mockQuery() {
     final SqlBatchInsertQuery query = new SqlBatchInsertQuery();
@@ -24,6 +27,7 @@ public class BatchInsertExecutorTest extends TestCase {
     return query;
   }
 
+  @Test
   public void testBuilder() throws Exception {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -43,6 +47,7 @@ public class BatchInsertExecutorTest extends TestCase {
     builder.execute(() -> new BatchInsertCommand(query));
   }
 
+  @Test
   public void testGetSql() throws Exception {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -77,6 +82,7 @@ public class BatchInsertExecutorTest extends TestCase {
     assertEquals(200, parameters1.get(1).getValue());
   }
 
+  @Test
   public void testLiteral() throws Exception {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -112,6 +118,7 @@ public class BatchInsertExecutorTest extends TestCase {
     assertEquals(200, parameters1.get(0).getValue());
   }
 
+  @Test
   public void testNotEqualParamCall() throws Exception {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -136,6 +143,7 @@ public class BatchInsertExecutorTest extends TestCase {
     fail();
   }
 
+  @Test
   public void testChangeType() throws Exception {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -159,6 +167,7 @@ public class BatchInsertExecutorTest extends TestCase {
     fail();
   }
 
+  @Test
   public void testParamToLiteral() throws Exception {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
@@ -192,6 +201,7 @@ public class BatchInsertExecutorTest extends TestCase {
     }
   }
 
+  @Test
   public void testExecutor() throws Exception {
     List<Employee> employees =
         Arrays.asList(new Employee[] {new Employee("SMITH", 100), new Employee("ALLEN", 200)});
@@ -208,6 +218,7 @@ public class BatchInsertExecutorTest extends TestCase {
   }
 
   @SuppressWarnings("serial")
+  @Test
   public void testExecutorByMap() throws Exception {
     List<LinkedHashMap<String, Object>> employees =
         new ArrayList<LinkedHashMap<String, Object>>() {

@@ -1,18 +1,32 @@
 package org.seasar.doma.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import example.entity.Emp;
 import example.entity._Emp;
+import java.lang.reflect.Method;
 import java.util.Arrays;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 
-public class BatchUpdateCommandTest extends TestCase {
+public class BatchUpdateCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testExecute() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(1);
@@ -25,7 +39,7 @@ public class BatchUpdateCommandTest extends TestCase {
     emp2.setVersion(20);
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -43,6 +57,7 @@ public class BatchUpdateCommandTest extends TestCase {
     assertEquals(new Integer(21), emp2.getVersion());
   }
 
+  @Test
   public void testExecute_throwsOptimisticLockException() throws Exception {
     Emp emp = new Emp();
     emp.setId(1);
@@ -52,7 +67,7 @@ public class BatchUpdateCommandTest extends TestCase {
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp));
     query.setCallerClassName("aaa");
@@ -67,6 +82,7 @@ public class BatchUpdateCommandTest extends TestCase {
     }
   }
 
+  @Test
   public void testExecute_suppressesOptimisticLockException() throws Exception {
     Emp emp = new Emp();
     emp.setId(1);
@@ -76,7 +92,7 @@ public class BatchUpdateCommandTest extends TestCase {
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp));
     query.setOptimisticLockExceptionSuppressed(true);

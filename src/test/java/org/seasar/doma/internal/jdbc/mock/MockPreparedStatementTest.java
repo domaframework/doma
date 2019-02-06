@@ -1,11 +1,15 @@
 package org.seasar.doma.internal.jdbc.mock;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.math.BigDecimal;
 import java.sql.Types;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class MockPreparedStatementTest extends TestCase {
+public class MockPreparedStatementTest {
 
+  @Test
   public void testSetString() throws Exception {
     @SuppressWarnings("resource")
     MockPreparedStatement ps = new MockPreparedStatement();
@@ -16,6 +20,7 @@ public class MockPreparedStatementTest extends TestCase {
     assertEquals("bbb", ps.bindValues.get(1).getValue());
   }
 
+  @Test
   public void testSetInt() throws Exception {
     @SuppressWarnings("resource")
     MockPreparedStatement ps = new MockPreparedStatement();
@@ -26,6 +31,7 @@ public class MockPreparedStatementTest extends TestCase {
     assertEquals(new Integer(200), ps.bindValues.get(1).getValue());
   }
 
+  @Test
   public void testSetBigDecimal() throws Exception {
     @SuppressWarnings("resource")
     MockPreparedStatement ps = new MockPreparedStatement();
@@ -36,6 +42,7 @@ public class MockPreparedStatementTest extends TestCase {
     assertEquals(new BigDecimal(20), ps.bindValues.get(1).getValue());
   }
 
+  @Test
   public void testSetNull() throws Exception {
     @SuppressWarnings("resource")
     MockPreparedStatement ps = new MockPreparedStatement();
@@ -46,12 +53,14 @@ public class MockPreparedStatementTest extends TestCase {
     assertNull(ps.bindValues.get(1).getValue());
   }
 
+  @Test
   public void testExecuteUpdate() throws Exception {
     @SuppressWarnings("resource")
     MockPreparedStatement ps = new MockPreparedStatement();
     assertEquals(1, ps.executeUpdate());
   }
 
+  @Test
   public void testExecuteUpdate_updatedRows() throws Exception {
     @SuppressWarnings("resource")
     MockPreparedStatement ps = new MockPreparedStatement();

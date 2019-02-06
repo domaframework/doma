@@ -1,35 +1,47 @@
 package org.seasar.doma.internal.jdbc.entity;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 /** */
-public class PropertyFieldTest extends TestCase {
+public class PropertyFieldTest {
 
+  @Test
   public void testConstructor_simplePath() throws Exception {
     PropertyField<Person> path = new PropertyField<>("name", Person.class);
     assertEquals(1, path.fields.size());
   }
 
+  @Test
   public void testConstructor_parentPath() throws Exception {
     PropertyField<Person> path = new PropertyField<>("kind", Person.class);
     assertEquals(1, path.fields.size());
   }
 
+  @Test
   public void testConstructor_grandParentPath() throws Exception {
     PropertyField<Person> path = new PropertyField<>("weight", Person.class);
     assertEquals(1, path.fields.size());
   }
 
+  @Test
   public void testConstructor_nestedPath() throws Exception {
     PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
     assertEquals(2, path.fields.size());
   }
 
+  @Test
   public void testConstructor_nestedParentPath() throws Exception {
     PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
     assertEquals(2, path.fields.size());
   }
 
+  @Test
   public void testGetValue_simplePath() throws Exception {
     Person person = new Person();
     person.name = "hoge";
@@ -37,6 +49,7 @@ public class PropertyFieldTest extends TestCase {
     assertEquals("hoge", path.getValue(person));
   }
 
+  @Test
   public void testGetValue_parentPath() throws Exception {
     Person person = new Person();
     person.kind = "hoge";
@@ -44,6 +57,7 @@ public class PropertyFieldTest extends TestCase {
     assertEquals("hoge", path.getValue(person));
   }
 
+  @Test
   public void testGetValue_nestedPath() throws Exception {
     Person person = new Person();
     person.address = new Address("island", "Tokyo", "Yaesu");
@@ -51,12 +65,14 @@ public class PropertyFieldTest extends TestCase {
     assertEquals("Tokyo", path.getValue(person));
   }
 
+  @Test
   public void testGetValue_nestedPath_null() throws Exception {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
     assertNull(path.getValue(person));
   }
 
+  @Test
   public void testGetValue_nestedParentPath() throws Exception {
     Person person = new Person();
     person.address = new Address("island", "Tokyo", "Yaesu");
@@ -64,6 +80,7 @@ public class PropertyFieldTest extends TestCase {
     assertEquals("island", path.getValue(person));
   }
 
+  @Test
   public void testSetValue_simplePath() throws Exception {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("name", Person.class);
@@ -71,6 +88,7 @@ public class PropertyFieldTest extends TestCase {
     assertEquals("foo", person.name);
   }
 
+  @Test
   public void testSetValue_parentPath() throws Exception {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("kind", Person.class);
@@ -78,6 +96,7 @@ public class PropertyFieldTest extends TestCase {
     assertEquals("foo", person.kind);
   }
 
+  @Test
   public void testSetValue_nestedPath() throws Exception {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
@@ -88,6 +107,7 @@ public class PropertyFieldTest extends TestCase {
     }
   }
 
+  @Test
   public void testSetValue_nestedParentPath() throws Exception {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
@@ -98,6 +118,7 @@ public class PropertyFieldTest extends TestCase {
     }
   }
 
+  @Test
   public void testIsPrimitive() throws Exception {
     PropertyField<Person> age = new PropertyField<>("age", Person.class);
     assertTrue(age.isPrimitive());

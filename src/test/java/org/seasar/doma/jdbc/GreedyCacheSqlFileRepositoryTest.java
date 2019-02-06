@@ -1,20 +1,28 @@
 package org.seasar.doma.jdbc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.lang.reflect.Method;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
-public class GreedyCacheSqlFileRepositoryTest extends TestCase {
+public class GreedyCacheSqlFileRepositoryTest {
 
   private Method method;
 
-  @Override
-  protected void setUp() throws Exception {
-    method = getClass().getMethod(getName());
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
   }
 
+  @Test
   public void testGetSqlFile() throws Exception {
     StandardDialect dialect = new StandardDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
@@ -26,6 +34,7 @@ public class GreedyCacheSqlFileRepositoryTest extends TestCase {
     assertEquals(path, sqlFile.getPath());
   }
 
+  @Test
   public void testGetSqlFile_oracle() throws Exception {
     OracleDialect dialect = new OracleDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
@@ -35,6 +44,7 @@ public class GreedyCacheSqlFileRepositoryTest extends TestCase {
         "META-INF/" + getClass().getName().replace(".", "/") + "-oracle.sql", sqlFile.getPath());
   }
 
+  @Test
   public void testGetSqlFile_postgres() throws Exception {
     PostgresDialect dialect = new PostgresDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
@@ -43,6 +53,7 @@ public class GreedyCacheSqlFileRepositoryTest extends TestCase {
     assertEquals(path, sqlFile.getPath());
   }
 
+  @Test
   public void testClearCache() throws Exception {
     StandardDialect dialect = new StandardDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";

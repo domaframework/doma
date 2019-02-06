@@ -1,18 +1,23 @@
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
-public class ScriptReaderTest extends TestCase {
+public class ScriptReaderTest {
 
   private SqlFileScriptQuery query;
 
-  @Override
+  @BeforeEach
   public void setUp() {
     MockConfig config = new MockConfig();
     config.dialect = new Mssql2008Dialect();
@@ -29,6 +34,7 @@ public class ScriptReaderTest extends TestCase {
     query.prepare();
   }
 
+  @Test
   public void testReadSql_delimiter() throws Exception {
     ScriptReader reader =
         new ScriptReader(query) {
@@ -51,6 +57,7 @@ public class ScriptReaderTest extends TestCase {
     assertNull(reader.readSql());
   }
 
+  @Test
   public void testReadSql_delimiterInLine() throws Exception {
     ScriptReader reader =
         new ScriptReader(query) {
@@ -69,6 +76,7 @@ public class ScriptReaderTest extends TestCase {
     assertNull(reader.readSql());
   }
 
+  @Test
   public void testReadSql_sqlBlock() throws Exception {
     ScriptReader reader =
         new ScriptReader(query) {
@@ -86,6 +94,7 @@ public class ScriptReaderTest extends TestCase {
     assertNull(reader.readSql());
   }
 
+  @Test
   public void testReadSql_sqlBlock_createTrigger() throws Exception {
     ScriptReader reader =
         new ScriptReader(query) {
@@ -103,6 +112,7 @@ public class ScriptReaderTest extends TestCase {
     assertNull(reader.readSql());
   }
 
+  @Test
   public void testReadSql_notSqlBlock() throws Exception {
     ScriptReader reader =
         new ScriptReader(query) {
@@ -119,6 +129,7 @@ public class ScriptReaderTest extends TestCase {
     assertEquals("end", reader.readSql());
   }
 
+  @Test
   public void testReadSql_commentBlock() throws Exception {
     ScriptReader reader =
         new ScriptReader(query) {
@@ -137,6 +148,7 @@ public class ScriptReaderTest extends TestCase {
     assertNull(reader.readSql());
   }
 
+  @Test
   public void testReadSql_lineNumber() throws Exception {
     ScriptReader reader =
         new ScriptReader(query) {

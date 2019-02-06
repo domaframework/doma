@@ -1,10 +1,12 @@
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockCallableStatement;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -19,10 +21,11 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.Query;
 
-public class CallableSqlParameterBinderTest extends TestCase {
+public class CallableSqlParameterBinderTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  @Test
   public void testBind() throws Exception {
     MockCallableStatement callableStatement = new MockCallableStatement();
 

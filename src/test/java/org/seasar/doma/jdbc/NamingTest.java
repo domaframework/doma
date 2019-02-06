@@ -1,10 +1,13 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-public class NamingTest extends TestCase {
+public class NamingTest {
 
+  @Test
   public void testNONE() throws Exception {
     Naming naming = Naming.NONE;
 
@@ -15,6 +18,7 @@ public class NamingTest extends TestCase {
     assertEquals("hogeFoo", naming.revert(NamingType.SNAKE_UPPER_CASE, "HOGE_FOO"));
   }
 
+  @Test
   public void testSNAKE_UPPER_CASE() throws Exception {
     Naming naming = Naming.SNAKE_UPPER_CASE;
 

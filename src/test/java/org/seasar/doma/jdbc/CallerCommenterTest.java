@@ -1,12 +1,15 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-public class CallerCommenterTest extends TestCase {
+public class CallerCommenterTest {
 
   private CallerCommenter commenter = new CallerCommenter();
 
+  @Test
   public void testComment() throws Exception {
     CommentContext context = new CommentContext("class", "method", new MockConfig(), null);
     String actual = commenter.comment("select * from emp", context);

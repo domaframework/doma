@@ -1,12 +1,19 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Map;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.AptTestProcessor;
+import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.Person;
@@ -15,15 +22,15 @@ import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
 
-public class ExpressionValidatorTest extends AptTestCase {
+public class ExpressionValidatorTest extends CompilerSupport {
 
-  @Override
+  @BeforeEach
   protected void setUp() throws Exception {
-    super.setUp();
     addSourcePath("src/main/java");
     addSourcePath("src/test/java");
   }
 
+  @Test
   public void testVariable_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -50,6 +57,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethod_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -71,6 +79,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethod_overriderFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -92,6 +101,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethod_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -117,6 +127,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethod_foundFromCandidates() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -138,6 +149,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethod_foundWithSupertype() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -160,6 +172,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethod_foundWithTypeParameter() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -181,6 +194,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testStaticMethod_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -203,6 +217,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testStaticMethod_classNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -229,6 +244,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testStaticMethod_methodNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -256,6 +272,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testStaticField_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -278,6 +295,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testStaticField_classNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -304,6 +322,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testStaticField_fieldNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -331,6 +350,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFunction_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
@@ -353,6 +373,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFunction_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
@@ -380,6 +401,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testCustomFunction_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
@@ -403,6 +425,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testCustomFunction_superClassMethodFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
@@ -426,6 +449,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testCustomFunction_classNotfound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
@@ -453,6 +477,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testCustomFunction_classIllegal() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
@@ -480,6 +505,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testCustomFunction_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
@@ -508,6 +534,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testConstructor_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -534,6 +561,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFieldAccess() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -555,6 +583,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFieldAccess_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -577,6 +606,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFieldAccess_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -599,6 +629,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFieldAccess_optionalLong() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -621,6 +652,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFieldAccess_optionalDouble() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -643,6 +675,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFieldAccess_static_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -665,6 +698,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testFieldAccess_static_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -687,6 +721,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethodAccess() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -708,6 +743,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethodAccess_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -730,6 +766,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethodAccess_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -752,6 +789,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethodAccess_static_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -774,6 +812,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethodAccess_static_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -796,6 +835,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testConstructorAccess() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -818,6 +858,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testMethodAccess_withArguments() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -839,6 +880,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testEqOperator() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -860,6 +902,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testUnreferencedParameter() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -881,6 +924,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testAddOperator_number_number() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -902,6 +946,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testAddOperator_number_text() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -928,6 +973,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testAddOperator_text_text() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
@@ -949,6 +995,7 @@ public class ExpressionValidatorTest extends AptTestCase {
     assertTrue(getCompiledResult());
   }
 
+  @Test
   public void testAddOperator_text_number() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);

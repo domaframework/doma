@@ -1,25 +1,39 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import example.entity.Emp;
 import example.entity.Salesman;
 import example.entity._Emp;
 import example.entity._Salesman;
+import java.lang.reflect.Method;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class AutoDeleteQueryTest extends TestCase {
+public class AutoDeleteQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPrepare() throws Exception {
     Emp emp = new Emp();
 
     AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setCallerClassName("aaa");
@@ -31,6 +45,7 @@ public class AutoDeleteQueryTest extends TestCase {
     assertNotNull(deleteQuery.getSql());
   }
 
+  @Test
   public void testOption_default() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -38,7 +53,7 @@ public class AutoDeleteQueryTest extends TestCase {
     emp.setVersion(100);
 
     AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setCallerClassName("aaa");
@@ -54,6 +69,7 @@ public class AutoDeleteQueryTest extends TestCase {
     assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
   }
 
+  @Test
   public void testOption_ignoreVersion() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -61,7 +77,7 @@ public class AutoDeleteQueryTest extends TestCase {
     emp.setVersion(100);
 
     AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setVersionIgnored(true);
@@ -77,6 +93,7 @@ public class AutoDeleteQueryTest extends TestCase {
     assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
   }
 
+  @Test
   public void testTenantId() throws Exception {
     Salesman salesman = new Salesman();
     salesman.setId(10);
@@ -86,7 +103,7 @@ public class AutoDeleteQueryTest extends TestCase {
 
     AutoDeleteQuery<Salesman> query =
         new AutoDeleteQuery<Salesman>(_Salesman.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(salesman);
     query.setCallerClassName("aaa");

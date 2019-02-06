@@ -1,10 +1,13 @@
 package org.seasar.doma.wrapper;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DoubleWrapperTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class DoubleWrapperTest {
 
   /** */
+  @Test
   public void testIncrement() {
     DoubleWrapper wrapper = new DoubleWrapper(10d);
     wrapper.increment();
@@ -12,6 +15,7 @@ public class DoubleWrapperTest extends TestCase {
   }
 
   /** */
+  @Test
   public void testDecrement() {
     DoubleWrapper wrapper = new DoubleWrapper(10d);
     wrapper.decrement();

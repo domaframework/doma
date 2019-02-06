@@ -1,8 +1,9 @@
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class WhitespaceNodeTest extends TestCase {
+public class WhitespaceNodeTest {
 
+  @Test
   public void test() throws Exception {}
 }

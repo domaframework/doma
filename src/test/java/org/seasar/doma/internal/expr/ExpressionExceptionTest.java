@@ -1,11 +1,15 @@
 package org.seasar.doma.internal.expr;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
 
-public class ExpressionExceptionTest extends TestCase {
+public class ExpressionExceptionTest {
 
+  @Test
   public void testMethodInvocationFailed() throws Exception {
     ExpressionParser parser = new ExpressionParser("new java.util.ArrayList().get(0)");
     ExpressionNode node = parser.parse();
@@ -19,6 +23,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testMethodNotFound() throws Exception {
     ExpressionParser parser = new ExpressionParser("\"aaa\".bbb()");
     ExpressionNode node = parser.parse();
@@ -32,6 +37,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testVariableUnresolvable() throws Exception {
     ExpressionParser parser = new ExpressionParser("aaa.eq(100)");
     ExpressionNode node = parser.parse();
@@ -45,6 +51,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testDoubleQuotationNotClosed() throws Exception {
     ExpressionParser parser = new ExpressionParser("\"bbb\" == \"bbb");
     try {
@@ -56,6 +63,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testClassNotFound() throws Exception {
     ExpressionParser parser = new ExpressionParser("new MyString()");
     ExpressionNode node = parser.parse();
@@ -69,6 +77,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testConstructorNotFound() throws Exception {
     ExpressionParser parser = new ExpressionParser("new java.lang.String(10B)");
     ExpressionNode node = parser.parse();
@@ -82,6 +91,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testConstructorInvocationFailed() throws Exception {
     ExpressionParser parser = new ExpressionParser("new java.util.ArrayList(-1)");
     ExpressionNode node = parser.parse();
@@ -95,6 +105,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testComparisonFailed_incomparable() throws Exception {
     ExpressionParser parser = new ExpressionParser("1 > true");
     ExpressionNode node = parser.parse();
@@ -108,6 +119,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testComparisonFailed_null() throws Exception {
     ExpressionParser parser = new ExpressionParser("1 > null");
     ExpressionNode node = parser.parse();
@@ -121,6 +133,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testOperandNotFound() throws Exception {
     ExpressionParser parser = new ExpressionParser("true &&");
     try {
@@ -132,6 +145,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testUnsupportedTokenFound() throws Exception {
     ExpressionParser parser = new ExpressionParser("5 & 5");
     try {
@@ -143,6 +157,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testUnsupportedNumberLiteralFound() throws Exception {
     ExpressionParser parser = new ExpressionParser("5aaa");
     try {
@@ -154,6 +169,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testOperandNotNumber() throws Exception {
     ExpressionParser parser = new ExpressionParser("5 + \"10\"");
     ExpressionNode node = parser.parse();
@@ -167,6 +183,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testOperandNotText() throws Exception {
     ExpressionParser parser = new ExpressionParser("\"10\" + 5");
     ExpressionNode node = parser.parse();
@@ -180,6 +197,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testArithmeticOperationFailed() throws Exception {
     ExpressionParser parser = new ExpressionParser("5 / 0");
     ExpressionNode node = parser.parse();
@@ -193,6 +211,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testArithmeticOperationFailed_null() throws Exception {
     ExpressionParser parser = new ExpressionParser("5 / null");
     ExpressionNode node = parser.parse();
@@ -206,6 +225,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testQuotationNotClosed() throws Exception {
     ExpressionParser parser = new ExpressionParser(" 'aaa");
     try {
@@ -217,6 +237,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
   }
 
+  @Test
   public void testFieldNotFound() throws Exception {
     ExpressionParser parser = new ExpressionParser("\"aaa\".bbb");
     ExpressionNode node = parser.parse();

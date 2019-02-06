@@ -1,10 +1,13 @@
 package org.seasar.doma.internal.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.lang.reflect.Constructor;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class ConstructorUtilTest extends TestCase {
+public class ConstructorUtilTest {
 
+  @Test
   public void testToSignature() throws Exception {
     Constructor<String> constructor =
         String.class.getConstructor(char[].class, int.class, int.class);
@@ -12,6 +15,7 @@ public class ConstructorUtilTest extends TestCase {
         "java.lang.String(char[], int, int)", ConstructorUtil.createSignature(constructor));
   }
 
+  @Test
   public void testGetConstructor() throws Exception {
     Constructor<String> constructor =
         String.class.getConstructor(char[].class, int.class, int.class);

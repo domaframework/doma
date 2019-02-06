@@ -1,10 +1,14 @@
 package org.seasar.doma.internal.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.lang.reflect.TypeVariable;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class GenericUtilTest extends TestCase {
+public class GenericUtilTest {
 
+  @Test
   public void testFieldType() throws Exception {
     Class<?> arg1 =
         GenericsUtil.inferTypeArgument(
@@ -22,6 +26,7 @@ public class GenericUtilTest extends TestCase {
     assertNull(arg3);
   }
 
+  @Test
   public void testInterfaceReturnType() throws Exception {
     // type argument T1 is generic
     Class<?> arg =
@@ -45,6 +50,7 @@ public class GenericUtilTest extends TestCase {
     assertEquals(Boolean.class, arg);
   }
 
+  @Test
   public void testClassReturnType() throws Exception {
     // type argument T1 is concrete
     Class<?> arg =

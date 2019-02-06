@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc.entity;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OriginalStatesAccessExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class OriginalStatesAccessExceptionTest {
+
+  @Test
   public void test() throws Exception {
     OriginalStatesAccessException e =
         new OriginalStatesAccessException(new Exception(), "aaa", "bbb");

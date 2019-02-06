@@ -1,9 +1,13 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class OptimisticLockExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class OptimisticLockExceptionTest {
+
+  @Test
   public void test() throws Exception {
     OptimisticLockException e =
         new OptimisticLockException(SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb", "ccc");

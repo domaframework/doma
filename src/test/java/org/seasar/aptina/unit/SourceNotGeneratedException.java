@@ -15,7 +15,7 @@
  */
 package org.seasar.aptina.unit;
 
-import junit.framework.AssertionFailedError;
+import org.opentest4j.AssertionFailedError;
 
 /**
  * ソースが生成されなかった場合にスローされる例外です。

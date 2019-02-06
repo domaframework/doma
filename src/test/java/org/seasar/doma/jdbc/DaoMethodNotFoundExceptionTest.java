@@ -1,9 +1,13 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class DaoMethodNotFoundExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class DaoMethodNotFoundExceptionTest {
+
+  @Test
   public void test() throws Exception {
     Exception cause = new Exception("hoge");
     DaoMethodNotFoundException e = new DaoMethodNotFoundException(cause, "aaa", "bbb");

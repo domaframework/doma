@@ -1,7 +1,9 @@
 package org.seasar.doma.internal.jdbc.dialect;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.function.Function;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -10,8 +12,9 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-public class OracleForUpdateTransformerTest extends TestCase {
+public class OracleForUpdateTransformerTest {
 
+  @Test
   public void testForUpdateNormal() throws Exception {
     String expected = "select * from emp order by emp.id for update";
     OracleForUpdateTransformer transformer =
@@ -24,6 +27,7 @@ public class OracleForUpdateTransformerTest extends TestCase {
     assertEquals(expected, sql.getRawSql());
   }
 
+  @Test
   public void testForUpdateNormal_alias() throws Exception {
     String expected = "select * from emp order by emp.id for update of emp.name, emp.salary";
     OracleForUpdateTransformer transformer =
@@ -36,6 +40,7 @@ public class OracleForUpdateTransformerTest extends TestCase {
     assertEquals(expected, sql.getRawSql());
   }
 
+  @Test
   public void testForUpdateNowait() throws Exception {
     String expected = "select * from emp order by emp.id for update nowait";
     OracleForUpdateTransformer transformer =
@@ -48,6 +53,7 @@ public class OracleForUpdateTransformerTest extends TestCase {
     assertEquals(expected, sql.getRawSql());
   }
 
+  @Test
   public void testForUpdateWait() throws Exception {
     String expected = "select * from emp order by emp.id for update wait 10";
     OracleForUpdateTransformer transformer =

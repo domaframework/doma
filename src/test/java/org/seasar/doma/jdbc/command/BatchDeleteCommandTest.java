@@ -1,17 +1,30 @@
 package org.seasar.doma.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import example.entity.Emp;
 import example.entity._Emp;
+import java.lang.reflect.Method;
 import java.util.Arrays;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 
-public class BatchDeleteCommandTest extends TestCase {
+public class BatchDeleteCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testExecute() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(1);
@@ -24,7 +37,7 @@ public class BatchDeleteCommandTest extends TestCase {
     emp2.setVersion(20);
 
     AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");

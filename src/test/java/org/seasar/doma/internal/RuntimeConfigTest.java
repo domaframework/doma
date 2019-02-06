@@ -1,7 +1,11 @@
 package org.seasar.doma.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import javax.sql.DataSource;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
 import org.seasar.doma.jdbc.EntityListenerProvider;
@@ -11,8 +15,9 @@ import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.jdbc.entity.EntityListener;
 
 /** @author backpaper0 */
-public class RuntimeConfigTest extends TestCase {
+public class RuntimeConfigTest {
 
+  @Test
   public void testGetEntityListener() throws Exception {
     Config originalConfig =
         new MockConfig() {
@@ -32,6 +37,7 @@ public class RuntimeConfigTest extends TestCase {
     assertNotNull(entityListener);
   }
 
+  @Test
   public void testGetEntityListenerNullCheck() throws Exception {
     Config originalConfig =
         new MockConfig() {

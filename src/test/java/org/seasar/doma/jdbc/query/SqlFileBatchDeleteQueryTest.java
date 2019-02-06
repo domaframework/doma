@@ -1,19 +1,32 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import example.entity.Emp;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class SqlFileBatchDeleteQueryTest extends TestCase {
+public class SqlFileBatchDeleteQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPrepare() throws Exception {
     Emp emp1 = new Emp();
     emp1.setId(10);
@@ -26,9 +39,9 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
     emp2.setVersion(200);
 
     SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setParameterName("e");
     query.setElements(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");
@@ -40,6 +53,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
     assertEquals(2, batchDeleteQuery.getSqls().size());
   }
 
+  @Test
   public void testOption_default() throws Exception {
     Emp emp1 = new Emp();
     emp1.setName("aaa");
@@ -48,9 +62,9 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
     emp2.setName("bbb");
 
     SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), getName()));
+    query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setParameterName("e");
     query.setElements(Arrays.asList(emp1, emp2));
     query.setCallerClassName("aaa");

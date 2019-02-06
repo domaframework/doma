@@ -1,13 +1,18 @@
 package org.seasar.doma.jdbc.tx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 
-public class LocalTransactionContextTest extends TestCase {
+public class LocalTransactionContextTest {
 
+  @Test
   public void testReleaseAndGetSavepoint() throws Exception {
     try (LocalTransactionConnection connection =
         new LocalTransactionConnection(

@@ -1,7 +1,9 @@
 package org.seasar.doma.internal.jdbc.dialect;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.function.Function;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -10,8 +12,9 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-public class H2ForUpdateTransformerTest extends TestCase {
+public class H2ForUpdateTransformerTest {
 
+  @Test
   public void testForUpdateNormal() throws Exception {
     String expected = "select * from emp order by emp.id for update";
     H2ForUpdateTransformer transformer = new H2ForUpdateTransformer(SelectForUpdateType.NORMAL, 0);

@@ -1,10 +1,13 @@
 package org.seasar.doma.jdbc.builder;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-public class InsertBuilderTest extends TestCase {
+public class InsertBuilderTest {
 
+  @Test
   public void test() throws Exception {
     InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
     builder.sql("insert into Emp");
@@ -15,6 +18,7 @@ public class InsertBuilderTest extends TestCase {
     builder.execute();
   }
 
+  @Test
   public void testGetSql() throws Exception {
     InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
     builder.sql("insert into Emp");
@@ -29,6 +33,7 @@ public class InsertBuilderTest extends TestCase {
     builder.execute();
   }
 
+  @Test
   public void testLiteral() throws Exception {
     InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
     builder.sql("insert into Emp");

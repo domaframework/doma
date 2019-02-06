@@ -1,11 +1,16 @@
 package org.seasar.doma.jdbc.dialect;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.JdbcException;
@@ -13,91 +18,106 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlNode;
 
-public class StandardDialectTest extends TestCase {
+public class StandardDialectTest {
 
+  @Test
   public void testApplyQuote() {
     StandardDialect dialect = new StandardDialect();
     assertEquals("\"aaa\"", dialect.applyQuote("aaa"));
   }
 
+  @Test
   public void testRemoveQuote() {
     StandardDialect dialect = new StandardDialect();
     assertEquals("aaa", dialect.removeQuote("\"aaa\""));
     assertEquals("bbb", dialect.removeQuote("bbb"));
   }
 
+  @Test
   public void testExpressionFunctions_escape() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a$$a$%a$_", functions.escape("a$a%a_"));
   }
 
+  @Test
   public void testExpressionFunctions_escape_withExclamation() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a!!a!%a!_", functions.escape("a!a%a_", '!'));
   }
 
+  @Test
   public void testExpressionFunctions_escape_withBackslash() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a\\\\a\\%a\\_", functions.escape("a\\a%a_", '\\'));
   }
 
+  @Test
   public void testExpressionFunctions_prefix() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a$$a$%a$_%", functions.prefix("a$a%a_"));
   }
 
+  @Test
   public void testExpressionFunctions_prefix_escape() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a!!a!%a!_%", functions.prefix("a!a%a_", '!'));
   }
 
+  @Test
   public void testExpressionFunctions_prefix_escapeWithBackslash() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a\\\\a\\%a\\_%", functions.prefix("a\\a%a_", '\\'));
   }
 
+  @Test
   public void testExpressionFunctions_suffix() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("%a$$a$%a$_", functions.suffix("a$a%a_"));
   }
 
+  @Test
   public void testExpressionFunctions_suffix_escape() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("%a!!a!%a!_", functions.suffix("a!a%a_", '!'));
   }
 
+  @Test
   public void testExpressionFunctions_suffix_escapeWithBackslash() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("%a\\\\a\\%a\\_", functions.suffix("a\\a%a_", '\\'));
   }
 
+  @Test
   public void testExpressionFunctions_infix() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("%a$$a$%a$_%", functions.infix("a$a%a_"));
   }
 
+  @Test
   public void testExpressionFunctions_infix_escape() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("%a!!a!%a!_%", functions.infix("a!a%a_", '!'));
   }
 
+  @Test
   public void testExpressionFunctions_infix_escapeWithBackslash() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("%a\\\\a\\%a\\_%", functions.infix("a\\a%a_", '\\'));
   }
 
+  @Test
   public void testExpressionFunctions_roundDonwTimePart_forUtilDate() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -107,6 +127,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(Date.valueOf("2009-01-23"), functions.roundDownTimePart(date));
   }
 
+  @Test
   public void testExpressionFunctions_roundDonwTimePart_forDate() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -116,6 +137,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(Date.valueOf("2009-01-23"), functions.roundDownTimePart(date));
   }
 
+  @Test
   public void testExpressionFunctions_roundDonwTimePart_forTimestamp() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -124,6 +146,7 @@ public class StandardDialectTest extends TestCase {
         Timestamp.valueOf("2009-01-23 00:00:00.000000000"), functions.roundDownTimePart(timestamp));
   }
 
+  @Test
   public void testExpressionFunctions_roundDonwTimePart_forLocalDateTime() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -132,6 +155,7 @@ public class StandardDialectTest extends TestCase {
         LocalDateTime.of(2009, 1, 23, 0, 0, 0, 0), functions.roundDownTimePart(localDateTime));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forUtilDate() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -141,6 +165,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(Date.valueOf("2009-01-24").getTime(), functions.roundUpTimePart(date).getTime());
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forDate() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -150,6 +175,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(Date.valueOf("2009-01-24").getTime(), functions.roundUpTimePart(date).getTime());
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forDate_endOfMonth() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -159,6 +185,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(Date.valueOf("2009-04-01").getTime(), functions.roundUpTimePart(date).getTime());
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forDate_endOfYear() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -168,6 +195,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(Date.valueOf("2010-01-01").getTime(), functions.roundUpTimePart(date).getTime());
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forTimestamp() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -176,6 +204,7 @@ public class StandardDialectTest extends TestCase {
         Timestamp.valueOf("2009-01-24 00:00:00.000000000"), functions.roundUpTimePart(timestamp));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forTimestamp_endOfMonth() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -184,6 +213,7 @@ public class StandardDialectTest extends TestCase {
         Timestamp.valueOf("2009-04-01 00:00:00.000000000"), functions.roundUpTimePart(timestamp));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forTimestamp_endOfYear() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -192,6 +222,7 @@ public class StandardDialectTest extends TestCase {
         Timestamp.valueOf("2010-01-01 00:00:00.000000000"), functions.roundUpTimePart(timestamp));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forLocalDate() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -199,6 +230,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(LocalDate.of(2009, 1, 24), functions.roundUpTimePart(localDate));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forLocalDate_endOfMonth() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -206,6 +238,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(LocalDate.of(2009, 4, 1), functions.roundUpTimePart(localDate));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forLocalDate_endOfYear() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -213,6 +246,7 @@ public class StandardDialectTest extends TestCase {
     assertEquals(LocalDate.of(2010, 1, 1), functions.roundUpTimePart(localDate));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forLocalDateTime() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -221,6 +255,7 @@ public class StandardDialectTest extends TestCase {
         LocalDateTime.of(2009, 1, 24, 0, 0, 0, 0), functions.roundUpTimePart(localDateTime));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forLocalDateTime_endOfMonth()
       throws Exception {
     StandardDialect dialect = new StandardDialect();
@@ -230,6 +265,7 @@ public class StandardDialectTest extends TestCase {
         LocalDateTime.of(2009, 4, 1, 0, 0, 0, 0), functions.roundUpTimePart(localDateTime));
   }
 
+  @Test
   public void testExpressionFunctions_roundUpTimePart_forLocalDateTime_endOfYear()
       throws Exception {
     StandardDialect dialect = new StandardDialect();
@@ -239,6 +275,7 @@ public class StandardDialectTest extends TestCase {
         LocalDateTime.of(2010, 1, 1, 0, 0, 0, 0), functions.roundUpTimePart(localDateTime));
   }
 
+  @Test
   public void testExpressionFunctions_isEmpty() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -250,6 +287,7 @@ public class StandardDialectTest extends TestCase {
     assertFalse(functions.isEmpty(" a "));
   }
 
+  @Test
   public void testExpressionFunctions_isNotEmpty() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -261,6 +299,7 @@ public class StandardDialectTest extends TestCase {
     assertTrue(functions.isNotEmpty(" a "));
   }
 
+  @Test
   public void testExpressionFunctions_isBlank() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -272,6 +311,7 @@ public class StandardDialectTest extends TestCase {
     assertFalse(functions.isBlank(" a "));
   }
 
+  @Test
   public void testExpressionFunctions_isNotBlank() throws Exception {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -283,6 +323,7 @@ public class StandardDialectTest extends TestCase {
     assertTrue(functions.isNotBlank(" a "));
   }
 
+  @Test
   public void testTransformSelectSqlNode_forUpdate() throws Exception {
     StandardDialect dialect = new StandardDialect();
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -297,6 +338,7 @@ public class StandardDialectTest extends TestCase {
     }
   }
 
+  @Test
   public void testTransformSelectSqlNode_forUpdateWait() throws Exception {
     StandardDialect dialect = new StandardDialect();
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -311,6 +353,7 @@ public class StandardDialectTest extends TestCase {
     }
   }
 
+  @Test
   public void testTransformSelectSqlNode_forUpdateNowait() throws Exception {
     StandardDialect dialect = new StandardDialect();
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -325,6 +368,7 @@ public class StandardDialectTest extends TestCase {
     }
   }
 
+  @Test
   public void testTransformSelectSqlNode_forUpdate_alias() throws Exception {
     StandardDialect dialect = new StandardDialectStab();
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -339,6 +383,7 @@ public class StandardDialectTest extends TestCase {
     }
   }
 
+  @Test
   public void testTransformSelectSqlNode_forUpdateWait_alias() throws Exception {
     StandardDialect dialect = new StandardDialectStab();
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -353,6 +398,7 @@ public class StandardDialectTest extends TestCase {
     }
   }
 
+  @Test
   public void testTransformSelectSqlNode_forUpdateNowait_alias() throws Exception {
     StandardDialect dialect = new StandardDialectStab();
     SqlParser parser = new SqlParser("select * from emp order by emp.id");

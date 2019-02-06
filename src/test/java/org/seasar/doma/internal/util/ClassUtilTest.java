@@ -1,49 +1,63 @@
 package org.seasar.doma.internal.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class ClassUtilTest extends TestCase {
+public class ClassUtilTest {
 
+  private String fName;
+
+  @Test
   public void testGetConstructor() throws Exception {
     Constructor<String> constructor =
         ClassUtil.getConstructor(String.class, char[].class, int.class, int.class);
     assertNotNull(constructor);
   }
 
+  @Test
   public void testGetDeclaredField() throws Exception {
-    Field field = ClassUtil.getDeclaredField(TestCase.class, "fName");
+    Field field = ClassUtil.getDeclaredField(getClass(), "fName");
     assertNotNull(field);
   }
 
+  @Test
   public void testGetSimpleName() throws Exception {
     String name = ClassUtil.getSimpleName("aaa.bbb.Ccc");
     assertEquals("Ccc", name);
   }
 
+  @Test
   public void testGetSimpleName_noPackage() throws Exception {
     String name = ClassUtil.getSimpleName("Aaa");
     assertEquals("Aaa", name);
   }
 
+  @Test
   public void testGetSimpleName_nestedClass() throws Exception {
     String name = ClassUtil.getSimpleName("aaa.bbb.Ccc$Ddd$Eee");
     assertEquals("Eee", name);
   }
 
+  @Test
   public void testGetEnclosingNames() {
     List<String> names = ClassUtil.getEnclosingNames("aaa.bbb.Ccc");
     assertTrue(names.isEmpty());
   }
 
+  @Test
   public void testGetEnclosingNames_noPackage() {
     List<String> names = ClassUtil.getEnclosingNames("Aaa");
     assertTrue(names.isEmpty());
   }
 
+  @Test
   public void testGetEnclosingNames_nestedClass() {
     List<String> names = ClassUtil.getEnclosingNames("aaa.bbb.Ccc$Ddd$Eee");
     assertEquals(2, names.size());
@@ -51,6 +65,7 @@ public class ClassUtilTest extends TestCase {
     assertEquals("Ddd", names.get(1));
   }
 
+  @Test
   public void testTraverse() throws Exception {
     List<Class<?>> list = new ArrayList<>();
     ClassUtil.traverse(

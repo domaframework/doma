@@ -1,8 +1,12 @@
 package org.seasar.doma.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.Method;
 import java.sql.SQLException;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockStatement;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
@@ -10,23 +14,23 @@ import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
-public class ScriptCommandTest extends TestCase {
+public class ScriptCommandTest {
 
   private Method method;
 
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-    method = getClass().getMethod(getName());
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
   }
 
+  @Test
   public void testExecute() throws Exception {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(new MockConfig());
     query.setMethod(method);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));
+    query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setBlockDelimiter("");
     query.prepare();
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -34,6 +38,7 @@ public class ScriptCommandTest extends TestCase {
     command.execute();
   }
 
+  @Test
   public void testExecute_ScriptException() throws Exception {
     MockConfig config = new MockConfig();
     config.dataSource.connection.statement =
@@ -50,7 +55,7 @@ public class ScriptCommandTest extends TestCase {
     query.setMethod(method);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), getName()));
+    query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(), method.getName()));
     query.setBlockDelimiter("");
     query.setHaltOnError(true);
     query.setSqlLogType(SqlLogType.FORMATTED);

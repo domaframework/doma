@@ -1,13 +1,20 @@
 package org.seasar.doma.jdbc.query;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import example.entity.Emp;
 import example.entity._Emp;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -26,10 +33,18 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-public class SqlFileUpdateQueryTest extends TestCase {
+public class SqlFileUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testPopulate() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -37,7 +52,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setVersion(100);
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -64,6 +79,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testPopulate_states() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -72,7 +88,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.originalStates = new Emp();
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -94,6 +110,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testPopulate_excludeNull() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -101,7 +118,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setVersion(100);
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -123,13 +140,14 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testPopulate_excludeNull_updateNullableInPreUpdate() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setVersion(100);
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -151,6 +169,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testPopulate_ignoreVersion() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -159,7 +178,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.originalStates = new Emp();
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -181,6 +200,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testPopulate_include() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -189,7 +209,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setVersion(100);
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -211,6 +231,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testPopulate_exclude() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -219,7 +240,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.setVersion(100);
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -242,12 +263,13 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testPopulate_IsExecutable() throws Exception {
     Emp emp = new Emp();
     emp.originalStates = new Emp();
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testPopulate.sql");
     query.setConfig(runtimeConfig);
@@ -261,9 +283,10 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertFalse(query.isExecutable());
   }
 
+  @Test
   public void testNonEntity() throws Exception {
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testNonEntity.sql");
     query.setConfig(runtimeConfig);
@@ -288,6 +311,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     assertTrue(query.isExecutable());
   }
 
+  @Test
   public void testOriginalStates_unchanged() throws Exception {
     Emp emp = new Emp();
     emp.setId(10);
@@ -301,7 +325,7 @@ public class SqlFileUpdateQueryTest extends TestCase {
     emp.originalStates.setVersion(emp.getVersion());
 
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(method);
     query.setSqlFilePath(
         "META-INF/org/seasar/doma/jdbc/query/SqlFileUpdateQueryTest/testOriginalStates.sql");
     query.setConfig(runtimeConfig);

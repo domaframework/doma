@@ -1,9 +1,12 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JdbcUnsupportedOperationExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class JdbcUnsupportedOperationExceptionTest {
+
+  @Test
   public void test() throws Exception {
     JdbcUnsupportedOperationException e = new JdbcUnsupportedOperationException("aaa", "bbb");
     System.out.println(e.getMessage());

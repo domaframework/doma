@@ -1,12 +1,16 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
 /** @author backpaper0 */
-public class SelectOptionsTest extends TestCase {
+public class SelectOptionsTest {
 
+  @Test
   public void testForUpdateParameter() throws Exception {
     String[] aliases = null;
     try {
@@ -17,6 +21,7 @@ public class SelectOptionsTest extends TestCase {
     }
   }
 
+  @Test
   public void testForUpdateNowaitParameter() throws Exception {
     String[] aliases = null;
     try {
@@ -27,6 +32,7 @@ public class SelectOptionsTest extends TestCase {
     }
   }
 
+  @Test
   public void testForUpdateWaitParameter1() throws Exception {
     int waitSeconds = -1;
     try {
@@ -38,6 +44,7 @@ public class SelectOptionsTest extends TestCase {
     }
   }
 
+  @Test
   public void testForUpdateWaitParameter2() throws Exception {
     int waitSeconds = -1;
     String[] aliases = {"a"};
@@ -50,6 +57,7 @@ public class SelectOptionsTest extends TestCase {
     }
   }
 
+  @Test
   public void testForUpdateWaitParameter3() throws Exception {
     int waitSeconds = 1;
     String[] aliases = null;
@@ -61,6 +69,7 @@ public class SelectOptionsTest extends TestCase {
     }
   }
 
+  @Test
   public void testOffsetParameter() throws Exception {
     int offset = -1;
     try {
@@ -72,6 +81,7 @@ public class SelectOptionsTest extends TestCase {
     }
   }
 
+  @Test
   public void testLimitParameter() throws Exception {
     int limit = -1;
     try {

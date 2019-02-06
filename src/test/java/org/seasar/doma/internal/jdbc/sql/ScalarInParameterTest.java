@@ -1,15 +1,18 @@
 package org.seasar.doma.internal.jdbc.sql;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import example.domain.PhoneNumber;
 import java.util.Optional;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 
-public class ScalarInParameterTest extends TestCase {
+public class ScalarInParameterTest {
 
+  @Test
   public void testGetDomainClass() throws Exception {
     DomainType<String, PhoneNumber> domainType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});
@@ -19,6 +22,7 @@ public class ScalarInParameterTest extends TestCase {
     assertEquals(PhoneNumber.class, optional.get());
   }
 
+  @Test
   public void testGetDomainClass_optional() throws Exception {
     DomainType<String, PhoneNumber> domainType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});

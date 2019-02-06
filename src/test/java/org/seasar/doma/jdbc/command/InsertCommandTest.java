@@ -1,19 +1,32 @@
 package org.seasar.doma.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import example.entity.Emp;
 import example.entity._Emp;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 
-public class InsertCommandTest extends TestCase {
+public class InsertCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
+  private Method method;
+
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
+
+  @Test
   public void testExecute() throws Exception {
     Emp emp = new Emp();
     emp.setId(1);
@@ -22,7 +35,7 @@ public class InsertCommandTest extends TestCase {
     emp.setVersion(10);
 
     AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setCallerClassName("aaa");
@@ -43,6 +56,7 @@ public class InsertCommandTest extends TestCase {
     assertEquals(new Integer(10), bindValues.get(3).getValue());
   }
 
+  @Test
   public void testExecute_defaultVersion() throws Exception {
     Emp emp = new Emp();
     emp.setId(1);
@@ -51,7 +65,7 @@ public class InsertCommandTest extends TestCase {
     emp.setVersion(null);
 
     AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
-    query.setMethod(getClass().getDeclaredMethod(getName()));
+    query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setCallerClassName("aaa");

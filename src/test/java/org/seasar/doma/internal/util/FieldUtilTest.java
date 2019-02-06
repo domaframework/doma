@@ -1,14 +1,18 @@
 package org.seasar.doma.internal.util;
 
-import java.lang.reflect.Field;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
-public class FieldUtilTest extends TestCase {
+import java.lang.reflect.Field;
+import org.junit.jupiter.api.Test;
+
+public class FieldUtilTest {
 
   public String aaa;
 
   String bbb;
 
+  @Test
   public void testIsPublic() throws Exception {
     Field aaa = FieldUtilTest.class.getField("aaa");
     assertTrue(FieldUtil.isPublic(aaa));

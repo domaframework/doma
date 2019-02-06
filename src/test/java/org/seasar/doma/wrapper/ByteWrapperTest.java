@@ -1,10 +1,13 @@
 package org.seasar.doma.wrapper;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ByteWrapperTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class ByteWrapperTest {
 
   /** */
+  @Test
   public void testIncrement() {
     ByteWrapper wrapper = new ByteWrapper((byte) 10);
     wrapper.increment();
@@ -12,6 +15,7 @@ public class ByteWrapperTest extends TestCase {
   }
 
   /** */
+  @Test
   public void testDecrement() {
     ByteWrapper wrapper = new ByteWrapper((byte) 10);
     wrapper.decrement();

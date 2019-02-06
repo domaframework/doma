@@ -1,14 +1,18 @@
 package org.seasar.doma;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DomaNullPointerExceptionTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+public class DomaNullPointerExceptionTest {
+
+  @Test
   public void test() throws Exception {
     DomaNullPointerException e = new DomaNullPointerException("aaa");
     assertEquals("aaa", e.getParameterName());
   }
 
+  @Test
   public void testGenerics() throws Exception {
     hoge(new A());
     hoge(new B());

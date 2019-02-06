@@ -1,16 +1,21 @@
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-public class ConfigTest extends TestCase {
+public class ConfigTest {
 
+  @Test
   public void testGet() throws Exception {
     Config config = Config.get(new Provider());
     assertNotNull(config);
   }
 
+  @Test
   public void testGet_IllegalArgument() throws Exception {
     try {
       Config.get("hoge");
