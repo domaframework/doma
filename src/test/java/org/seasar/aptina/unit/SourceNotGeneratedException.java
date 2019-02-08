@@ -17,22 +17,12 @@ package org.seasar.aptina.unit;
 
 import org.opentest4j.AssertionFailedError;
 
-/**
- * ソースが生成されなかった場合にスローされる例外です。
- *
- * @author koichik
- */
+/** @author koichik */
 @SuppressWarnings("serial")
 public class SourceNotGeneratedException extends AssertionFailedError {
 
-  /** インスタンスを構築します。 */
   public SourceNotGeneratedException() {}
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param message メッセージ
-   */
   public SourceNotGeneratedException(final String message) {
     super(message);
   }

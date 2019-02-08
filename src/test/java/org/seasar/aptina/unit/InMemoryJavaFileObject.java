@@ -24,14 +24,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.nio.charset.Charset;
-import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 
-/**
- * 生成されたリソースをメモリ上に保持する{@link JavaFileObject}の実装です。
- *
- * @author koichik
- */
+/** @author koichik */
 class InMemoryJavaFileObject extends SimpleJavaFileObject {
 
   byte[] content;
@@ -40,26 +35,11 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
 
   final Charset charset;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param uri ファイルオブジェクトの{@link URI}
-   * @param kind ファイルオブジェクトの種類
-   * @param charset 文字セット
-   */
   public InMemoryJavaFileObject(final URI uri, final Kind kind, final Charset charset) {
     super(uri, kind);
     this.charset = charset;
   }
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param uri ファイルオブジェクトの{@link URI}
-   * @param kind ファイルオブジェクトの種類
-   * @param charset 文字セット
-   * @param content ファイルの内容
-   */
   public InMemoryJavaFileObject(
       final URI uri, final Kind kind, final Charset charset, final byte[] content) {
     super(uri, kind);

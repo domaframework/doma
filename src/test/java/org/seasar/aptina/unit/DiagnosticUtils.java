@@ -22,35 +22,17 @@ import java.util.List;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-/**
- * {@link Diagnostic} を扱うユーティリティです．
- *
- * @author koichik
- */
+/** @author koichik */
 class DiagnosticUtils {
 
   private DiagnosticUtils() {}
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する {@link Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param clazz 取得するクラス
-   * @return 指定されたクラスに対する {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics, final Class<?> clazz) {
     assertNotNull("clazz", clazz);
     return getDiagnostics(diagnostics, clazz.getName());
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する {@link Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param className 取得するクラス名
-   * @return 指定されたクラスに対する {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics, final String className) {
     assertNotNull("className", className);
@@ -65,14 +47,6 @@ class DiagnosticUtils {
     return result;
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic}
-   * のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
-   * @return 指定された{@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics,
       final javax.tools.Diagnostic.Kind kind) {
@@ -86,15 +60,6 @@ class DiagnosticUtils {
     return result;
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link
-   * Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param clazz 取得するクラス
-   * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
-   * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics,
       final Class<?> clazz,
@@ -104,15 +69,6 @@ class DiagnosticUtils {
     return getDiagnostics(diagnostics, clazz.getName(), kind);
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link
-   * Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param className 取得するクラス名
-   * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
-   * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics,
       final String className,

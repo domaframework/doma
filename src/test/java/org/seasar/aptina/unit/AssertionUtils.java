@@ -17,35 +17,17 @@ package org.seasar.aptina.unit;
 
 import java.util.Collection;
 
-/**
- * 表明を扱うユーティリティです．
- *
- * @author koichik
- */
+/** @author koichik */
 class AssertionUtils {
 
   private AssertionUtils() {}
 
-  /**
-   * パラメータが {@code null} ではいけないことを表明します．
-   *
-   * @param name パラメータの名前
-   * @param param パラメータ
-   * @throws AssertionError パラメータが {@code null} の場合
-   */
   public static void assertNotNull(final String name, final Object param) throws AssertionError {
     if (param == null) {
       throw new AssertionError(name + " must not be null");
     }
   }
 
-  /**
-   * 文字列が {@code null} でも空でもいけないことを表明します．
-   *
-   * @param name 配列の名前
-   * @param string 文字列
-   * @throws AssertionError 文字列が {@code null} または場合
-   */
   public static void assertNotEmpty(final String name, final CharSequence string)
       throws AssertionError {
     if (string == null) {
@@ -56,13 +38,6 @@ class AssertionUtils {
     }
   }
 
-  /**
-   * 配列が {@code null} でも空でもいけないことを表明します．
-   *
-   * @param name 配列の名前
-   * @param array 配列
-   * @throws AssertionError 配列が {@code null} または空の場合
-   */
   public static void assertNotEmpty(final String name, final Object[] array) throws AssertionError {
     if (array == null) {
       throw new AssertionError(name + " must not be null");
@@ -77,13 +52,6 @@ class AssertionUtils {
     }
   }
 
-  /**
-   * コレクションが {@code null} でも空でもいけないことを表明します．
-   *
-   * @param name 配列の名前
-   * @param collection コレクション
-   * @throws AssertionError 配列が {@code null} または空の場合
-   */
   public static void assertNotEmpty(final String name, final Collection<?> collection)
       throws AssertionError {
     if (collection == null) {
@@ -101,26 +69,12 @@ class AssertionUtils {
     }
   }
 
-  /**
-   * 期待する値と実際の値が等しくなければならないことを表明します．
-   *
-   * @param expected 期待する値
-   * @param actual 実際の値
-   * @throws AssertionError 期待する値が実際の値と異なった場合
-   */
   public static void assertEquals(final int expected, final int actual) throws AssertionError {
     if (expected != actual) {
       throw new AssertionError("expected <" + expected + ">, but was <" + actual + ">");
     }
   }
 
-  /**
-   * 期待する値と実際の値が等しくなければならないことを表明します．
-   *
-   * @param expected 期待する値
-   * @param actual 実際の値
-   * @throws AssertionError 期待する値が実際の値と異なった場合
-   */
   public static void assertEquals(final long expected, final long actual) throws AssertionError {
     if (expected != actual) {
       throw new AssertionError("expected <" + expected + ">, but was <" + actual + ">");
