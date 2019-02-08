@@ -506,7 +506,7 @@ public abstract class AptinaTestCase {
    * @param expected 期待される文字列
    * @param actual 実際の文字列
    */
-  protected void assertEqualsByLine(final String expected, final String actual) {
+  public void assertEqualsByLine(final String expected, final String actual) {
     if (expected == null || actual == null) {
       assertEquals(expected, actual);
       return;
@@ -678,7 +678,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSourceWithResource(
+  public void assertEqualsGeneratedSourceWithResource(
       final URL expectedResourceUrl, final String className)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedResourceUrl", expectedResourceUrl);
@@ -696,13 +696,13 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSourceWithResource(
+  public void assertEqualsGeneratedSourceWithResource(
       final String expectedResource, final Class<?> clazz)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedResource", expectedResource);
     assertNotNull("clazz", clazz);
     assertCompiled();
-    assertEqualsGeneratedSourceWithResource(clazz.getName(), expectedResource);
+    assertEqualsGeneratedSourceWithResource(expectedResource, clazz.getName());
   }
 
   /**
@@ -788,7 +788,7 @@ public abstract class AptinaTestCase {
    * @return URL から読み込んだ内容の文字列
    * @throws IOException 入出力例外が発生した場合
    */
-  String readFromResource(final URL url) throws IOException {
+  public String readFromResource(final URL url) throws IOException {
     final InputStream is = url.openStream();
     try {
       return readString(is, charset);

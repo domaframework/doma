@@ -12,8 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptTestProcessor;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.Person;
@@ -22,20 +22,20 @@ import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
 
-public class ExpressionValidatorTest extends CompilerSupport {
+@SuppressWarnings("ThrowablePrintedToSystemOut")
+class ExpressionValidatorTest extends CompilerSupport {
 
   @BeforeEach
-  protected void setUp() throws Exception {
+  void beforeEach() {
     addSourcePath("src/main/java");
-    addSourcePath("src/test/java");
   }
 
   @Test
-  public void testVariable_notFound() throws Exception {
+  void testVariable_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -58,11 +58,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethod_found() throws Exception {
+  void testMethod_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -80,11 +80,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethod_overriderFound() throws Exception {
+  void testMethod_overriderFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -102,11 +102,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethod_notFound() throws Exception {
+  void testMethod_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -128,11 +128,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethod_foundFromCandidates() throws Exception {
+  void testMethod_foundFromCandidates() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -150,11 +150,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethod_foundWithSupertype() throws Exception {
+  void testMethod_foundWithSupertype() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -173,11 +173,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethod_foundWithTypeParameter() throws Exception {
+  void testMethod_foundWithTypeParameter() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -195,11 +195,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testStaticMethod_found() throws Exception {
+  void testStaticMethod_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -218,11 +218,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testStaticMethod_classNotFound() throws Exception {
+  void testStaticMethod_classNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -245,11 +245,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testStaticMethod_methodNotFound() throws Exception {
+  void testStaticMethod_methodNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -273,11 +273,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testStaticField_found() throws Exception {
+  void testStaticField_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -296,11 +296,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testStaticField_classNotFound() throws Exception {
+  void testStaticField_classNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -323,11 +323,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testStaticField_fieldNotFound() throws Exception {
+  void testStaticField_fieldNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -351,12 +351,12 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFunction_found() throws Exception {
+  void testFunction_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -374,12 +374,12 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFunction_notFound() throws Exception {
+  void testFunction_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -402,12 +402,12 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testCustomFunction_found() throws Exception {
+  void testCustomFunction_found() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -426,12 +426,12 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testCustomFunction_superClassMethodFound() throws Exception {
+  void testCustomFunction_superClassMethodFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -450,12 +450,12 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testCustomFunction_classNotfound() throws Exception {
+  void testCustomFunction_classNotfound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -478,12 +478,12 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testCustomFunction_classIllegal() throws Exception {
+  void testCustomFunction_classIllegal() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -506,12 +506,12 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testCustomFunction_notFound() throws Exception {
+  void testCustomFunction_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(ExpressionFunctions.class);
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -535,11 +535,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testConstructor_notFound() throws Exception {
+  void testConstructor_notFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -562,11 +562,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFieldAccess() throws Exception {
+  void testFieldAccess() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -584,11 +584,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFieldAccess_optional() throws Exception {
+  void testFieldAccess_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -607,11 +607,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFieldAccess_optionalInt() throws Exception {
+  void testFieldAccess_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -630,11 +630,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFieldAccess_optionalLong() throws Exception {
+  void testFieldAccess_optionalLong() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -653,11 +653,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFieldAccess_optionalDouble() throws Exception {
+  void testFieldAccess_optionalDouble() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -676,11 +676,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFieldAccess_static_optional() throws Exception {
+  void testFieldAccess_static_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -699,11 +699,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFieldAccess_static_optionalInt() throws Exception {
+  void testFieldAccess_static_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -722,11 +722,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethodAccess() throws Exception {
+  void testMethodAccess() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -744,11 +744,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethodAccess_optional() throws Exception {
+  void testMethodAccess_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -767,11 +767,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethodAccess_optionalInt() throws Exception {
+  void testMethodAccess_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -790,11 +790,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethodAccess_static_optional() throws Exception {
+  void testMethodAccess_static_optional() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -813,11 +813,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethodAccess_static_optionalInt() throws Exception {
+  void testMethodAccess_static_optionalInt() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -836,11 +836,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testConstructorAccess() throws Exception {
+  void testConstructorAccess() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -859,11 +859,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testMethodAccess_withArguments() throws Exception {
+  void testMethodAccess_withArguments() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -881,11 +881,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testEqOperator() throws Exception {
+  void testEqOperator() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -903,11 +903,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testUnreferencedParameter() throws Exception {
+  void testUnreferencedParameter() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -925,11 +925,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testAddOperator_number_number() throws Exception {
+  void testAddOperator_number_number() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -947,11 +947,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testAddOperator_number_text() throws Exception {
+  void testAddOperator_number_text() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -974,11 +974,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testAddOperator_text_text() throws Exception {
+  void testAddOperator_text_text() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
@@ -996,11 +996,11 @@ public class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testAddOperator_text_number() throws Exception {
+  void testAddOperator_text_number() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);

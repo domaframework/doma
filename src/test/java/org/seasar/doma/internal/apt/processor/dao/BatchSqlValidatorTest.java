@@ -10,27 +10,26 @@ import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptTestProcessor;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.validator.BatchSqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-public class BatchSqlValidatorTest extends CompilerSupport {
+class BatchSqlValidatorTest extends CompilerSupport {
 
   @BeforeEach
-  protected void setUp() throws Exception {
+  void beforeEach() {
     addSourcePath("src/main/java");
-    addSourcePath("src/test/java");
   }
 
   @Test
-  public void testEmbeddedVariable() throws Exception {
+  void testEmbeddedVariable() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -51,11 +50,11 @@ public class BatchSqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testEmbeddedVariableSuppressed() throws Exception {
+  void testEmbeddedVariableSuppressed() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -76,11 +75,11 @@ public class BatchSqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testIf() throws Exception {
+  void testIf() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testIf");
@@ -101,11 +100,11 @@ public class BatchSqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testIfSuppressed() throws Exception {
+  void testIfSuppressed() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testIfSuppressed");
@@ -126,11 +125,11 @@ public class BatchSqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testIfAndEmbeddedVariable() throws Exception {
+  void testIfAndEmbeddedVariable() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -153,11 +152,11 @@ public class BatchSqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testIfAndEmbeddedVariableSuppressed() throws Exception {
+  void testIfAndEmbeddedVariableSuppressed() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -180,11 +179,11 @@ public class BatchSqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testPopulate() throws Exception {
+  void testPopulate() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -205,11 +204,11 @@ public class BatchSqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testPopulate_noPopulatable() throws Exception {
+  void testPopulate_noPopulatable() throws Exception {
     Class<?> target = BatchSqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =

@@ -1,7 +1,6 @@
 package org.seasar.doma.internal.apt;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -16,11 +15,11 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
-public abstract class AptTestProcessor extends AbstractProcessor {
+public abstract class TestProcessor extends AbstractProcessor {
 
   protected Context ctx;
 
-  protected AptTestProcessor() {}
+  protected TestProcessor() {}
 
   @Override
   public synchronized void init(ProcessingEnvironment env) {
@@ -65,23 +64,23 @@ public abstract class AptTestProcessor extends AbstractProcessor {
           continue;
         }
         int i = 0;
-        for (Iterator<? extends VariableElement> it = parameterElements.iterator();
-            it.hasNext(); ) {
-          TypeMirror parameterType = it.next().asType();
+        for (VariableElement parameterElement : parameterElements) {
+          TypeMirror parameterType = parameterElement.asType();
           Class<?> parameterClass = parameterClasses[i];
           if (!ctx.getTypes().isSameType(parameterType, parameterClass)) {
-            return null;
+            throw new AssertionError(i);
           }
+          i++;
         }
         return methodElement;
       }
     }
-    return null;
+    throw new AssertionError(methodName);
   }
 
   protected LinkedHashMap<String, TypeMirror> createParameterTypeMap(
       ExecutableElement methodElement) {
-    LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<String, TypeMirror>();
+    LinkedHashMap<String, TypeMirror> result = new LinkedHashMap<>();
     for (VariableElement parameter : methodElement.getParameters()) {
       String name = parameter.getSimpleName().toString();
       TypeMirror type = parameter.asType();

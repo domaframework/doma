@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import org.seasar.doma.Domain;
 
 @Domain(valueType = BigDecimal.class, factoryMethod = "of")
-public class IllegalTypeParametarizedOfSalary<T, U> {
+public class IllegalTypeParameterizedOfSalary<T, U> {
 
   private final BigDecimal value;
 
-  private IllegalTypeParametarizedOfSalary(BigDecimal value) {
+  private IllegalTypeParameterizedOfSalary(BigDecimal value) {
     this.value = value;
   }
 
@@ -16,8 +16,8 @@ public class IllegalTypeParametarizedOfSalary<T, U> {
     return value;
   }
 
-  public static <T, U extends Comparable<T>> IllegalTypeParametarizedOfSalary<T, U> of(
+  public static <T, U extends Comparable<T>> IllegalTypeParameterizedOfSalary<T, U> of(
       BigDecimal value) {
-    return new IllegalTypeParametarizedOfSalary<T, U>(value);
+    return new IllegalTypeParameterizedOfSalary<T, U>(value);
   }
 }

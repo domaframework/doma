@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import org.seasar.doma.Domain;
 
 @Domain(valueType = BigDecimal.class, acceptNull = true)
-public class ParametarizedSalary<T, U> {
+public class ParameterizedSalary<T, U> {
 
   private final BigDecimal value;
 
-  public ParametarizedSalary(BigDecimal value) {
+  public ParameterizedSalary(BigDecimal value) {
     this.value = value;
   }
 

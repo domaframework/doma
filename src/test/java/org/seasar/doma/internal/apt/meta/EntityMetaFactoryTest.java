@@ -5,21 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.lang.model.element.TypeElement;
 import org.junit.jupiter.api.Test;
-import org.seasar.doma.internal.apt.AptTestProcessor;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 import org.seasar.doma.internal.apt.processor.entity.NamingType1Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-public class EntityMetaFactoryTest extends CompilerSupport {
+class EntityMetaFactoryTest extends CompilerSupport {
 
   @Test
-  public void testNaming1Type() throws Exception {
+  void testNaming1Type() throws Exception {
     Class<?> target = NamingType1Entity.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             TypeElement typeElement = ctx.getElements().getTypeElement(target);
@@ -33,11 +33,11 @@ public class EntityMetaFactoryTest extends CompilerSupport {
   }
 
   @Test
-  public void testNaming2Type() throws Exception {
+  void testNaming2Type() throws Exception {
     Class<?> target = NamingType2Entity.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             TypeElement typeElement = ctx.getElements().getTypeElement(target);
@@ -51,11 +51,11 @@ public class EntityMetaFactoryTest extends CompilerSupport {
   }
 
   @Test
-  public void testNaming3Type() throws Exception {
+  void testNaming3Type() throws Exception {
     Class<?> target = NamingType3Entity.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             TypeElement typeElement = ctx.getElements().getTypeElement(target);

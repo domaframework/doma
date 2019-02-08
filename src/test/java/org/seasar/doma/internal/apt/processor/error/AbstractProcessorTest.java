@@ -9,22 +9,21 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.message.Message;
 
-public class AbstractProcessorTest extends CompilerSupport {
+class AbstractProcessorTest extends CompilerSupport {
 
   @BeforeEach
-  protected void setUp() throws Exception {
+  void beforeEach() {
     disableCompilationAssertion();
     addSourcePath("src/main/java");
-    addSourcePath("src/test/java");
   }
 
   @AfterEach
-  protected void tearDown() throws Exception {
+  void afterEach() {
     enableCompilationAssertion();
   }
 
   @Test
-  public void testAptIllegalStateException() throws Exception {
+  void testAptIllegalStateException() {
     Class<?> target = Person.class;
     addCompilationUnit(target);
     addProcessor(
@@ -41,7 +40,7 @@ public class AbstractProcessorTest extends CompilerSupport {
   }
 
   @Test
-  public void testRuntimeException() throws Exception {
+  void testRuntimeException() {
     Class<?> target = Person.class;
     addCompilationUnit(target);
     addProcessor(
@@ -58,7 +57,7 @@ public class AbstractProcessorTest extends CompilerSupport {
   }
 
   @Test
-  public void testAssertionError() throws Exception {
+  void testAssertionError() {
     Class<?> target = Person.class;
     addCompilationUnit(target);
     addProcessor(

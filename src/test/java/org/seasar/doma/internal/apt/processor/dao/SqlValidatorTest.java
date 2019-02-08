@@ -12,29 +12,28 @@ import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptTestProcessor;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.StringWrapper;
 
-public class SqlValidatorTest extends CompilerSupport {
+class SqlValidatorTest extends CompilerSupport {
 
   @BeforeEach
-  protected void setUp() throws Exception {
+  void beforeEach() {
     addSourcePath("src/main/java");
-    addSourcePath("src/test/java");
   }
 
   @Test
-  public void testBindVariable() throws Exception {
+  void testBindVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -54,12 +53,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testBindVariable_list() throws Exception {
+  void testBindVariable_list() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -79,12 +78,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testBindVariable_array() throws Exception {
+  void testBindVariable_array() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -104,12 +103,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testLiteralVariable() throws Exception {
+  void testLiteralVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -129,12 +128,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testLiteralVariable_list() throws Exception {
+  void testLiteralVariable_list() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -154,12 +153,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testLiteralVariable_array() throws Exception {
+  void testLiteralVariable_array() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -179,11 +178,11 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testEmbeddedVariable() throws Exception {
+  void testEmbeddedVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -203,12 +202,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFor() throws Exception {
+  void testFor() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testFor", List.class);
@@ -229,12 +228,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFor_array() throws Exception {
+  void testFor_array() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -256,11 +255,11 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFor_identifier() throws Exception {
+  void testFor_identifier() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement = createMethodElement(target, "testFor", List.class);
@@ -287,11 +286,11 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFor_notIterable() throws Exception {
+  void testFor_notIterable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -319,11 +318,11 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testFor_noTypeArgument() throws Exception {
+  void testFor_noTypeArgument() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -351,12 +350,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testExpand() throws Exception {
+  void testExpand() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -377,12 +376,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testExpand_notExpandable() throws Exception {
+  void testExpand_notExpandable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -409,12 +408,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testPopulate() throws Exception {
+  void testPopulate() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =
@@ -434,12 +433,12 @@ public class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
-  public void testPopulate_notPopulatable() throws Exception {
+  void testPopulate_notPopulatable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
     addCompilationUnit(StringWrapper.class);
     addProcessor(
-        new AptTestProcessor() {
+        new TestProcessor() {
           @Override
           protected void run() {
             ExecutableElement methodElement =

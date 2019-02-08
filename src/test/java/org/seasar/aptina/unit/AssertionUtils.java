@@ -35,7 +35,7 @@ class AssertionUtils {
    */
   public static void assertNotNull(final String name, final Object param) throws AssertionError {
     if (param == null) {
-      throw new AssertionError(name + "must not be null");
+      throw new AssertionError(name + " must not be null");
     }
   }
 
@@ -49,7 +49,7 @@ class AssertionUtils {
   public static void assertNotEmpty(final String name, final CharSequence string)
       throws AssertionError {
     if (string == null) {
-      throw new AssertionError(name + "must not be null");
+      throw new AssertionError(name + " must not be null");
     }
     if (string.length() == 0) {
       throw new AssertionError(name + " must not be empty");
