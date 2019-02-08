@@ -16,8 +16,8 @@
 package org.seasar.aptina.unit;
 
 import static org.seasar.aptina.unit.AssertionUtils.assertNotNull;
-import static org.seasar.aptina.unit.CollectionUtils.newArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -55,7 +55,7 @@ class DiagnosticUtils {
       final List<Diagnostic<? extends JavaFileObject>> diagnostics, final String className) {
     assertNotNull("className", className);
     final String name = className.replace('.', '/') + ".java";
-    final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
+    final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
     for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
       final JavaFileObject source = diagnositc.getSource();
       if (source != null && source.toUri().toString().endsWith(name)) {
@@ -77,7 +77,7 @@ class DiagnosticUtils {
       final List<Diagnostic<? extends JavaFileObject>> diagnostics,
       final javax.tools.Diagnostic.Kind kind) {
     assertNotNull("kind", kind);
-    final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
+    final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
     for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
       if (diagnositc.getKind().equals(kind)) {
         result.add(diagnositc);
@@ -120,7 +120,7 @@ class DiagnosticUtils {
     assertNotNull("className", className);
     assertNotNull("kind", kind);
     final String name = className.replace('.', '/') + ".java";
-    final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
+    final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
     for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
       final JavaFileObject source = diagnositc.getSource();
       if (source != null

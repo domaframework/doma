@@ -15,13 +15,13 @@
  */
 package org.seasar.aptina.unit;
 
-import static org.seasar.aptina.unit.CollectionUtils.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.processing.Processor;
 import javax.tools.FileObject;
@@ -39,9 +39,7 @@ import javax.tools.StandardLocation;
  */
 class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
 
-  final Map<String, InMemoryJavaFileObject> fileObjects = newHashMap();
-
-  final Map<String, InMemoryJavaFileObject> javaFileObjects = newHashMap();
+  final Map<String, InMemoryJavaFileObject> fileObjects = new HashMap<>();
 
   final Charset charset;
 

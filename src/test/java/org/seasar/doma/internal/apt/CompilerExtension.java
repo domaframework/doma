@@ -32,7 +32,7 @@ public class CompilerExtension extends AptinaTestCase
     super.tearDown();
   }
 
-  void assertMessage(Message message) {
+  public void assertMessage(Message message) {
     List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
     if (diagnostics.size() == 1) {
       Message m = extractMessage(diagnostics.get(0));
@@ -60,7 +60,7 @@ public class CompilerExtension extends AptinaTestCase
     return null;
   }
 
-  void assertNoMessage() {
+  public void assertNoMessage() {
     List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
     if (!diagnostics.isEmpty()) {
       fail();
@@ -68,7 +68,7 @@ public class CompilerExtension extends AptinaTestCase
   }
 
   @Override
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
+  public List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
     List<Diagnostic<? extends JavaFileObject>> results = new ArrayList<>();
     for (Diagnostic<? extends JavaFileObject> diagnostic : super.getDiagnostics()) {
       switch (diagnostic.getKind()) {

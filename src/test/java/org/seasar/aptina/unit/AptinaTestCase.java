@@ -18,7 +18,6 @@ package org.seasar.aptina.unit;
 import static java.util.Arrays.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.seasar.aptina.unit.AssertionUtils.*;
-import static org.seasar.aptina.unit.CollectionUtils.*;
 import static org.seasar.aptina.unit.IOUtils.*;
 
 import java.io.BufferedReader;
@@ -143,13 +142,13 @@ public abstract class AptinaTestCase {
 
   Writer out;
 
-  final List<String> options = newArrayList();
+  final List<String> options = new ArrayList<>();
 
-  final List<File> sourcePaths = newArrayList();
+  final List<File> sourcePaths = new ArrayList<>();
 
-  final List<Processor> processors = newArrayList();
+  final List<Processor> processors = new ArrayList<>();
 
-  final List<CompilationUnit> compilationUnits = newArrayList();
+  final List<CompilationUnit> compilationUnits = new ArrayList<>();
 
   JavaCompiler javaCompiler;
 
@@ -166,7 +165,7 @@ public abstract class AptinaTestCase {
   /** インスタンスを構築します． */
   protected AptinaTestCase() {}
 
-  protected void tearDown() throws Exception {
+  public void tearDown() throws Exception {
     if (testingJavaFileManager != null) {
       try {
         testingJavaFileManager.close();
@@ -188,7 +187,7 @@ public abstract class AptinaTestCase {
    *
    * @return ロケールまたは {@code null}
    */
-  protected Locale getLocale() {
+  public Locale getLocale() {
     return locale;
   }
 
@@ -200,7 +199,7 @@ public abstract class AptinaTestCase {
    * @param locale ロケール
    * @see Locale#getDefault()
    */
-  protected void setLocale(final Locale locale) {
+  public void setLocale(final Locale locale) {
     this.locale = locale;
   }
 
@@ -212,7 +211,7 @@ public abstract class AptinaTestCase {
    * @param locale ロケール
    * @see Locale#getDefault()
    */
-  protected void setLocale(final String locale) {
+  public void setLocale(final String locale) {
     assertNotEmpty("locale", locale);
     setLocale(new Locale(locale));
   }
@@ -222,7 +221,7 @@ public abstract class AptinaTestCase {
    *
    * @return 文字セットまたは {@code null}
    */
-  protected Charset getCharset() {
+  public Charset getCharset() {
     return charset;
   }
 
@@ -234,7 +233,7 @@ public abstract class AptinaTestCase {
    * @param charset 文字セット
    * @see Charset#defaultCharset()
    */
-  protected void setCharset(final Charset charset) {
+  public void setCharset(final Charset charset) {
     this.charset = charset;
   }
 
@@ -246,7 +245,7 @@ public abstract class AptinaTestCase {
    * @param charset 文字セット
    * @see Charset#defaultCharset()
    */
-  protected void setCharset(final String charset) {
+  public void setCharset(final String charset) {
     assertNotEmpty("charset", charset);
     setCharset(Charset.forName(charset));
   }
@@ -258,7 +257,7 @@ public abstract class AptinaTestCase {
    *
    * @param out コンパイラがメッセージを出力する{@link Writer}
    */
-  protected void setOut(final Writer out) {
+  public void setOut(final Writer out) {
     this.out = out;
   }
 
@@ -267,7 +266,7 @@ public abstract class AptinaTestCase {
    *
    * @param sourcePaths コンパイル時に参照するソースパスの並び
    */
-  protected void addSourcePath(final File... sourcePaths) {
+  public void addSourcePath(final File... sourcePaths) {
     assertNotEmpty("sourcePaths", sourcePaths);
     this.sourcePaths.addAll(asList(sourcePaths));
   }
@@ -323,7 +322,7 @@ public abstract class AptinaTestCase {
    *
    * @param className コンパイル対象クラスの完全限定名
    */
-  protected void addCompilationUnit(final String className) {
+  public void addCompilationUnit(final String className) {
     assertNotEmpty("className", className);
     compilationUnits.add(new FileCompilationUnit(className));
   }
@@ -334,7 +333,7 @@ public abstract class AptinaTestCase {
    * @param clazz コンパイル対象クラス
    * @param source ソース
    */
-  protected void addCompilationUnit(final Class<?> clazz, final CharSequence source) {
+  public void addCompilationUnit(final Class<?> clazz, final CharSequence source) {
     AssertionUtils.assertNotNull("clazz", clazz);
     assertNotEmpty("source", source);
     addCompilationUnit(clazz.getName(), source);
@@ -346,7 +345,7 @@ public abstract class AptinaTestCase {
    * @param className コンパイル対象クラスの完全限定名
    * @param source ソース
    */
-  protected void addCompilationUnit(final String className, final CharSequence source) {
+  public void addCompilationUnit(final String className, final CharSequence source) {
     assertNotEmpty("className", className);
     assertNotEmpty("source", source);
     compilationUnits.add(new InMemoryCompilationUnit(className, source.toString()));
@@ -392,7 +391,7 @@ public abstract class AptinaTestCase {
    * @return コンパイル中に作成された {@link Diagnostic} のリスト
    * @throws IllegalStateException {@link #compile()} が呼び出されていない場合
    */
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics()
+  public List<Diagnostic<? extends JavaFileObject>> getDiagnostics()
       throws IllegalStateException {
     assertCompiled();
     return diagnostics.getDiagnostics();
@@ -404,7 +403,7 @@ public abstract class AptinaTestCase {
    * @param clazz 取得するクラス
    * @return 指定されたクラスに対する {@link Diagnostic} のリスト
    */
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final Class<?> clazz) {
+  public List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final Class<?> clazz) {
     assertCompiled();
     return DiagnosticUtils.getDiagnostics(getDiagnostics(), clazz);
   }
@@ -415,7 +414,7 @@ public abstract class AptinaTestCase {
    * @param className 取得するクラス名
    * @return 指定されたクラスに対する {@link Diagnostic} のリスト
    */
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final String className) {
+  public List<Diagnostic<? extends JavaFileObject>> getDiagnostics(final String className) {
     assertCompiled();
     return DiagnosticUtils.getDiagnostics(getDiagnostics(), className);
   }
@@ -426,7 +425,7 @@ public abstract class AptinaTestCase {
    * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
    * @return 指定された{@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
    */
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
+  public List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final javax.tools.Diagnostic.Kind kind) {
     assertCompiled();
     return DiagnosticUtils.getDiagnostics(getDiagnostics(), kind);
@@ -439,7 +438,7 @@ public abstract class AptinaTestCase {
    * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
    * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
    */
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
+  public List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final Class<?> clazz, final javax.tools.Diagnostic.Kind kind) {
     assertCompiled();
     return DiagnosticUtils.getDiagnostics(getDiagnostics(), clazz, kind);
@@ -452,7 +451,7 @@ public abstract class AptinaTestCase {
    * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
    * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
    */
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
+  public List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final String className, final javax.tools.Diagnostic.Kind kind) {
     assertCompiled();
     return DiagnosticUtils.getDiagnostics(getDiagnostics(), className, kind);
@@ -467,7 +466,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected String getGeneratedSource(final Class<?> clazz)
+  public String getGeneratedSource(final Class<?> clazz)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("clazz", clazz);
     assertCompiled();
@@ -530,7 +529,7 @@ public abstract class AptinaTestCase {
    * @param actualReader 実際の文字列の入力ストリーム
    * @throws IOException 入出力例外が発生した場合
    */
-  protected void assertEqualsByLine(
+  public void assertEqualsByLine(
       final BufferedReader expectedReader, final BufferedReader actualReader) throws IOException {
     String expectedLine;
     String actualLine;
@@ -553,7 +552,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSource(final CharSequence expected, final Class<?> clazz)
+  public void assertEqualsGeneratedSource(final CharSequence expected, final Class<?> clazz)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expected", expected);
     assertNotNull("clazz", clazz);
@@ -588,7 +587,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSourceWithFile(
+  public void assertEqualsGeneratedSourceWithFile(
       final File expectedSourceFile, final Class<?> clazz)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedSourceFile", expectedSourceFile);
@@ -624,7 +623,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSourceWithFile(
+  public void assertEqualsGeneratedSourceWithFile(
       final String expectedSourceFilePath, final Class<?> clazz)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedSourceFilePath", expectedSourceFilePath);
@@ -642,7 +641,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSourceWithFile(
+  public void assertEqualsGeneratedSourceWithFile(
       final String expectedSourceFilePath, final String className)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedSourceFilePath", expectedSourceFilePath);
@@ -660,7 +659,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSourceWithResource(
+  public void assertEqualsGeneratedSourceWithResource(
       final URL expectedResourceUrl, final Class<?> clazz)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedResourceUrl", expectedResourceUrl);
@@ -714,7 +713,7 @@ public abstract class AptinaTestCase {
    * @throws IOException 入出力例外が発生した場合
    * @throws SourceNotGeneratedException ソースが生成されなかった場合
    */
-  protected void assertEqualsGeneratedSourceWithResource(
+  public void assertEqualsGeneratedSourceWithResource(
       final String expectedResource, final String className)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("expectedResource", expectedResource);
@@ -732,7 +731,7 @@ public abstract class AptinaTestCase {
    *
    * <p>{@link #compile()} 呼び出し前に設定した内容も， {@link #compile()} によって得られた状態も全てリセットされます．
    */
-  protected void reset() {
+  public void reset() {
     locale = null;
     charset = null;
     out = null;
@@ -788,7 +787,7 @@ public abstract class AptinaTestCase {
    * @return URL から読み込んだ内容の文字列
    * @throws IOException 入出力例外が発生した場合
    */
-  public String readFromResource(final URL url) throws IOException {
+  String readFromResource(final URL url) throws IOException {
     final InputStream is = url.openStream();
     try {
       return readString(is, charset);
